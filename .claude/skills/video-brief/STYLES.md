@@ -86,8 +86,8 @@ When the user asks for "the same video in three styles", or to compare looks: bu
 ```bash
 for s in paper night brass; do node scripts/render.mjs full --style $s --out out/16x9-$s.mp4; done
 ffmpeg -i out/16x9-paper.mp4 -i out/16x9-night.mp4 -i out/16x9-brass.mp4 \
- -filter_complex "[0:v]scale=640:-2[a];[1:v]scale=640:-2[b];[2:v]scale=640:-2[c];[a][b][c]hstack=inputs=3[v]" \
- -map "[v]" -map 0:a? -c:v libx264 -crf 20 -pix_fmt yuv420p out/compare.mp4
+  -filter_complex "[0:v]scale=640:-2[a];[1:v]scale=640:-2[b];[2:v]scale=640:-2[c];[a][b][c]hstack=inputs=3[v]" \
+  -map "[v]" -map 0:a? -c:v libx264 -crf 20 -pix_fmt yuv420p out/compare.mp4
 ```
 
 For four looks use `xstack=inputs=4:layout=0_0|w0_0|0_h0|w0_h0` (a 2×2 grid). Check the comparison: the same beats at the same moments, each clearly its own look. When an asset must change with the look (a photo texture in a pixel-art look), branch on the style name, but never on timing.

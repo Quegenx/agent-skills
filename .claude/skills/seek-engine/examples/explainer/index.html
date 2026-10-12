@@ -151,8 +151,7 @@ const EASE = {
   emphasized: bez(0.05, 0.7, 0.1, 1),   // hero arrivals, modals
   overshoot: bez(0.3, 0, 0, 1.25),      // a value that lands (sparingly)
 }
-// The 12 eases measured on 53 professional motion moments (seek-engine/measured/motion.md; from motionmaxxing by Tejas Makwana,
-// Apache-2.0): landing decelerates (softLand, glide, snapSettle), leaving accelerates (accelExit, crashOut, gentleIn), overshoot is rare
+// The 12 eases measured on 53 professional motion moments (seek-engine/measured/motion.md): landing decelerates (softLand, glide, snapSettle), leaving accelerates (accelExit, crashOut, gentleIn), overshoot is rare
 // and late (popOver peaks 1.08 at t 0.72), drifts and fades run linear (cruise). MEASURED_FRAMES: typical length in frames at 30 fps.
 const MEASURED = (() => {
   const powerOut = (p) => (t) => 1 - Math.pow(1 - t, p), powerIn = (p) => (t) => Math.pow(t, p)
@@ -199,7 +198,6 @@ function exposure(t, track, fps = FILM.fps) {
 // Hit-stop: game time freezes on each contact while sparks, rings and shake keep running in real time.
 // stops: [[gameTime, seconds], ...] (2-3 frames on a hit, ~0.125 s on a big one, ~0.3 s on a finisher).
 // Choreograph in game time: g = tw.game(t). Place sound cues with tw.real(g) so they land on the freeze.
-// (After timeWarp in claude-animation's fx.mjs, MIT.)
 function timeWarp(stops) {
   const S = [...stops].sort((a, b) => a[0] - b[0])
   return {

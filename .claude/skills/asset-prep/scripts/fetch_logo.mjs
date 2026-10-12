@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// fetch_logo.mjs (from motionmaxxing by Tejas Makwana, Apache-2.0; see LICENSE-motionmaxxing.txt) - fetch the OFFICIAL mark of a brand as clean SVG (never draws or recolours one).
+// fetch_logo.mjs (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - fetch the OFFICIAL mark of a brand as clean SVG (never draws or recolours one).
 //
 // Usage:  node fetch_logo.mjs "<brand name>" [domain] [--out assets/logo] [--slug simple-icons-slug] [--json]
 //

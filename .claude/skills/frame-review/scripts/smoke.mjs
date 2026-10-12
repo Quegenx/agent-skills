@@ -1,7 +1,7 @@
 // smoke.mjs: the computational sensor. Runs the film headless across its whole length and counts defects.
 // Every counter must read 0 before anyone looks at a frame. Run from the film folder.
 //
-//   node scripts/smoke.mjs [--format 16:9] [--rate 10] [--safe 0.05] [--dead 1.5] [--page index.html] [--data record.json]
+//   node scripts/smoke.mjs [--gpu] [--format 16:9] [--rate 10] [--safe 0.05] [--dead 1.5] [--page index.html] [--data record.json]
 //   --data: a data-driven film (render.mjs --data) is smoked once per record; the longest names and numbers first.
 //
 //   runtime errors        page errors and console errors while seeking
@@ -46,7 +46,9 @@ const beatsFile = path.join(root, 'audio', 'beats.json')
 const measured = fs.existsSync(beatsFile) ? JSON.parse(fs.readFileSync(beatsFile, 'utf8')) : null
 
 const errors = []
-const browser = await chromium.launch()
+// --gpu: the real GPU, as render.mjs --gpu (a WebGPU page draws black in software WebGPU); WebGPU needs the flag in headless
+const gpuArgs = process.platform === 'darwin' ? ['--use-gl=angle', '--use-angle=metal'] : ['--use-gl=angle', '--use-angle=vulkan', '--enable-gpu', '--ignore-gpu-blocklist']
+const browser = await chromium.launch({ args: ['--enable-unsafe-webgpu', ...(opt.gpu ? gpuArgs : [])] })
 const page = await browser.newPage({ viewport: { width: 400, height: 400 }, deviceScaleFactor: 0.25 })
 const DATA = opt.data ? JSON.parse(fs.readFileSync(path.resolve(root, opt.data), 'utf8')) : null
 await page.addInitScript((data) => { window.__RENDER__ = true; if (data !== null) window.__DATA__ = data }, DATA)

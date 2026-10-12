@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""blind_review.py (from motionmaxxing by Tejas Makwana, Apache-2.0; see LICENSE-motionmaxxing.txt) - blind side-by-side review page for any set of films (two versions, before/after a fix, two directions, a film vs a reference).
+"""blind_review.py (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - blind side-by-side review page for any set of films (two versions, before/after a fix, two directions, a film vs a reference).
 
 Usage:
   python3 blind_review.py [OUT_DIR=review] --round "Round name" a.mp4 b.mp4 [--round "Another" c.mp4=Name d.mp4=Name e.mp4 ...]

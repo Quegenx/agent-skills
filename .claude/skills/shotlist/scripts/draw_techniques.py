@@ -2,7 +2,7 @@
 """Draw a film's techniques at random from the library, so films stop converging on the same few moves.
 
 An agent left to choose picks the first familiar option: the same fade-up, the same push-in, the same end card.
-This draws from library/techniques.json (273 measured techniques in 14 categories, from the cinetic skill, MIT),
+This draws from library/techniques.json (273 measured techniques in 14 categories),
 weighted toward moves that fit the film's format and energy and toward proven workhorses. The seed is printed so a
 plan can be reproduced and written into shotlist.md.
 

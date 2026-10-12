@@ -3,7 +3,7 @@
 # dependencies = ["numpy"]
 # ///
 """verify_delivery.py - check delivered files by decoding their pixels: duration, background colour, loop seam, probes.
-After product-film-skill's verify.py (Rieranthony, MIT).
+
 
   uv run scripts/verify_delivery.py out/16x9.mp4 out/16x9.webm --bg "#0a0a0a" [--duration 12] [--loop]
                                     [--probe 9.4:944,800=#ff4500] [--tol 2]
@@ -18,7 +18,7 @@ For every file:
   probe      t:x,y prints the decoded colour there (an accent, a surface); t:x,y=#hex also checks it within --tol
   step       with --step N (a film drawn on twos, threes...): at least 98% of picture changes land on one N-frame grid,
              and no hold runs longer than N frames (a boiling line never stops). After day-in-my-life's qc.py
-             (hyperframes-community-skills, Apache-2.0)
+            
 Exits 1 when a check fails.
 """
 import argparse

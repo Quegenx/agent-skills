@@ -1,4 +1,4 @@
-// film.js: the turning dial as a film, for video-skills' seek-engine (not part of anatomy; written for it, MIT like the rest).
+// film.js: the turning dial as a film, for video-skills' seek-engine .
 // live.js runs the figure on its own requestAnimationFrame clock, with a pointer, a tour and stepped springs. Here every
 // frame is a pure function of t: window.seek(t) poses the 3D controller, lights the LED with the closed form of gl.mjs's
 // settle(), and flies the sparks ballistically from seeded starts, so any frame renders alone and identically.

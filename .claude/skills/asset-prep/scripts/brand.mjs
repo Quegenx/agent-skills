@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// brand.mjs (from motionmaxxing by Tejas Makwana, Apache-2.0; see LICENSE-motionmaxxing.txt) - capture a website's brand (copy, colours, fonts, logo, screenshots) with headless Chrome over CDP.
+// brand.mjs (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - capture a website's brand (copy, colours, fonts, logo, screenshots) with headless Chrome over CDP.
 //
 // Usage:  node brand.mjs <url> [outDir=brand]        (zero dependencies; needs Google Chrome)
 //

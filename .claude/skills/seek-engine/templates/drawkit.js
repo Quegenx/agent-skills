@@ -1,4 +1,4 @@
-// drawkit.js: the claude-animation drawing library, ported to the browser as one classic script (pages render
+// drawkit.js: a drawing library as one classic script (pages render
 // from file://, where ES modules are blocked). Load after pen.js when you use the bean cast:
 //   <script src="pen.js"></script><script src="drawkit.js"></script>
 // Namespaces: Draw.core (easing, noise, paths, ik, hatch, fibre, grain, burst, speed lines), Draw.textures
@@ -8,7 +8,7 @@
 // vine, blossom, bee, drop), Draw.colony (leaf, leafPiece, egg, larva, cocoon, seedGrain, fungus, roots,
 // nestCanvas), Draw.rigs.{ant, bean, bug, chibi, critter}. Usage and rules: seek-engine ILLUSTRATION.md.
 //
-// Generated mechanically from claude-animation by Hanif (@hanifproduktif), MIT licence (LICENSE-pen.txt):
+// MIT licence, see LICENSE-pen.txt:
 // each module's code is unchanged; only its import/export lines are rewritten, and @napi-rs/canvas is replaced
 // by the browser canvas. Everything draws as a pure function of its inputs (seeded, no Math.random, no Date).
 // Heavy surfaces (paper, soil, facetMass, nestCanvas) return a canvas: build them once, then drawImage per frame.

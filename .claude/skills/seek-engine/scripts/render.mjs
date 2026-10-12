@@ -150,7 +150,7 @@ async function renderFull(browser, format) {
   // --grain 0.03: film grain over the whole frame, after the motion blur; seeded, so a re-render is identical (each
   // --chunk segment seeds from its first frame, so the grain never repeats between segments). Luma only, and held at
   // 12 Hz like real film grain: a fresh pattern every frame defeats inter-frame compression (one test film went from
-  // 9 MB to 85 MB; after product-launch-motion's trap 25, MIT)
+  // 9 MB to 85 MB)
   const GRAIN = num('grain', 0)
   const grain = (seed) => `format=yuv444p,split[m][g0];[g0]fps=12,lutyuv=y=128:u=128:v=128,noise=c0_seed=${seed}:c0s=${Math.round(GRAIN * 255)}:c0f=t,fps=${FPS}[g];[m][g]blend=all_mode=grainmerge,`
   const vf = (seed = 7) => `${blur}${GRAIN > 0 ? grain(seed) : ''}scale=out_color_matrix=bt709:out_range=tv,format=${pix},setsar=1,setparams=colorspace=bt709:color_primaries=bt709:color_trc=bt709:range=tv`
@@ -231,7 +231,8 @@ async function renderFull(browser, format) {
 
 // --gpu: the real GPU through ANGLE (Metal on macOS, Vulkan elsewhere); default is software WebGL (SwiftShader)
 const gpuArgs = process.platform === 'darwin' ? ['--use-gl=angle', '--use-angle=metal'] : ['--use-gl=angle', '--use-angle=vulkan', '--enable-gpu', '--ignore-gpu-blocklist']
-const browser = await chromium.launch(opt.gpu ? { args: gpuArgs } : {})
+// WebGPU is off in headless Chromium unless asked for: on, it runs in software (SwiftShader), or on the real GPU with --gpu
+const browser = await chromium.launch({ args: ['--enable-unsafe-webgpu', ...(opt.gpu ? gpuArgs : [])] })
 try {
   const format = opt.format && opt.format !== 'all' ? opt.format : null
   const cols = num('cols', 6), tileW = num('w', 320)

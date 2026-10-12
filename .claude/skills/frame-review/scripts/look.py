@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""look.py (from motionmaxxing by Tejas Makwana, Apache-2.0; see LICENSE-motionmaxxing.txt) - make a finished film inspectable: contact sheet, cuts, frozen stretches, end hold, pre-cut frames, loudness. stdlib + ffmpeg.
+"""look.py (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - make a finished film inspectable: contact sheet, cuts, frozen stretches, end hold, pre-cut frames, loudness. stdlib + ffmpeg.
 
 Usage:
   python3 look.py film.mp4 [--out look] [--frames 16] [--scene 0.3] [--scene-low 0.12] [--freeze-min 0.6]

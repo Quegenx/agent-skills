@@ -105,7 +105,7 @@ def sounds():
     s["rise"] = (norm(rise, 0.18), "a reversed whoosh that peaks on the hit it leads into (fills a gap before a drop)")
     t = t_axis(0.7)
     s["impact"] = (norm(np.sin(2 * np.pi * (95 - 55 * t) * t) * env(t, 0.002, 0.16) + 0.3 * band(rng.standard_normal(len(t)), hi=900) * env(t, 0.001, 0.03), 0.8), "the hero hit (one per film)")
-    # character and story sounds, after claude-animation's sound.mjs (MIT, Hanif): for films with characters,
+    # character and story sounds: for films with characters,
     # nature and action rather than an interface
     t = t_axis(0.04)
     s["step"] = (norm((np.sin(2 * np.pi * 900 * t) * 0.6 + rng.standard_normal(len(t)) * 0.3) * np.exp(-t * 140), 0.22), "a footfall: one every ~0.1 s of walking sells a small character")

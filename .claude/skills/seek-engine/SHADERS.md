@@ -1,14 +1,32 @@
 # Shaders: per-pixel looks in WebGL
 
-For looks that are a function of each pixel: noise fields and moving gradients, glows, lens and liquid distortion, tunnels and kaleidoscopes, signed-distance shapes that melt into each other, feedback trails, GPU particles by the hundred thousand, and post passes (aberration, vignette, grain) over a whole frame. Shapes, type and UI stay in the DOM and SVG; a 3D scene with models and lights is three.js (`templates/hero3d/`, `DEPTH-AND-FOOTAGE.md`); fire or light inside an isometric drawing is anatomy's `gl.mjs` (`ISOMETRIC.md`).
+For looks that are a function of each pixel: noise fields and moving gradients, glows, lens and liquid distortion, tunnels and kaleidoscopes, signed-distance shapes that melt into each other, feedback trails, GPU particles by the hundred thousand, and post passes (aberration, vignette, grain) over a whole frame. Shapes, type and UI stay in the DOM and SVG; a 3D scene with models and lights is three.js (`templates/hero3d/`, `DEPTH-AND-FOOTAGE.md`); fire or light inside an isometric drawing is the isometric kit's `gl.mjs` (`ISOMETRIC.md`).
 
 Write raw WebGL through **twgl.js** (`npm i twgl.js`): it only removes boilerplate (compiling programs and finding their locations, building buffers, setting uniforms by name, making framebuffers and textures), so the GLSL and the draw order stay yours. It also ships primitive builders (plane, cube, sphere, torus) and `m4` matrix maths, enough for simple 3D without three.js.
+
+## Ready-made effects: the `shaders` package
+
+When a stock effect fits, use it before writing GLSL: `npm i shaders` gives 200+ WebGPU effects as layers (mesh and flowing gradients, aurora, plasma, noise fields, god rays, glass and fluted glass, film grain, halftone, distortions, transitions, blurs), composed as a preset of components and children, or exported as a preset from its visual editor. For film, never mount its framework components (they run on the wall clock); use its offline renderer:
+
+```js
+import { createRendererFromJSON } from 'shaders/core'
+const preset = { components: [{ type: 'MeshGradient', props: { /* from the brand tokens */ } }] }
+let r, T = 0
+async function fresh() { r?.dispose(); r = createRendererFromJSON(preset); await r.initialize(canvas); await r.renderFrame({ deltaSeconds: 0 }); T = 0 }
+const ready = fresh()
+window.seek = async (t) => { await ready; if (t < T) await fresh(); await r.renderFrame({ deltaSeconds: t - T }); T = t }
+```
+
+- `renderFrame({ deltaSeconds })` is frame-locked: every clock is the exact sum of the deltas passed, and from the first locked call the renderer ignores its own repaints (resize, pointer, asset loads). Seeking backwards rebuilds it and steps forward from 0.
+- Simulation effects (ripples under a cursor, datamosh, voxels and other ping-pong passes) depend on the step sequence: step them one film frame at a time, never in one jump.
+- Cursor effects have no pointer in a render: drive their position props from `t`, or choose another effect.
+- **WebGPU needs the real GPU.** Headless Chromium has WebGPU only with `--enable-unsafe-webgpu` (`render.mjs` and `smoke.mjs` pass it), and in software it draws black; render and smoke with `--gpu`. Measured here: black without it; with it, a MeshGradient renders under DOM text at 1920×1080 with every smoke counter at 0, including nondeterministic.
 
 ## Setup
 
 ```bash
 npm i twgl.js esbuild
-node scripts/bundle.mjs src.html index.html # after every edit: the page imports a module
+node scripts/bundle.mjs src.html index.html     # after every edit: the page imports a module
 ```
 
 ```js
@@ -16,12 +34,12 @@ import * as twgl from 'twgl.js'
 const gl = canvas.getContext('webgl2', { preserveDrawingBuffer: true, antialias: false })
 const quad = twgl.createBufferInfoFromArrays(gl, { position: { numComponents: 2, data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1] } })
 const prog = twgl.createProgramInfo(gl, [vertexSource, fragmentSource])
-function pass(program, target, uniforms) { // target: a framebuffer info, or null for the canvas
- twgl.bindFramebufferInfo(gl, target)
- gl.useProgram(program.program)
- twgl.setBuffersAndAttributes(gl, program, quad)
- twgl.setUniforms(program, uniforms)
- twgl.drawBufferInfo(gl, quad)
+function pass(program, target, uniforms) {             // target: a framebuffer info, or null for the canvas
+  twgl.bindFramebufferInfo(gl, target)
+  gl.useProgram(program.program)
+  twgl.setBuffersAndAttributes(gl, program, quad)
+  twgl.setUniforms(program, uniforms)
+  twgl.drawBufferInfo(gl, quad)
 }
 window.seek = (t) => pass(prog, null, { t, res: [W, H] })
 ```

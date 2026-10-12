@@ -23,18 +23,18 @@ Never fetch or use music the brief can't license.
 ## Measure
 
 ```bash
-uv run scripts/analyze_audio.py scan audio/candidates/*.mp3 # tempo + confidence per file
-uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 # loudest, steadiest 8 bars
-uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --start 41.2 # pin the section (e.g. start before the drop)
-uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --bpm 128 # when scan locks onto half or double time
-uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --drop-at 0.4 # window placed so the drop lands ~40% in, on a bar line
+uv run scripts/analyze_audio.py scan audio/candidates/*.mp3          # tempo + confidence per file
+uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8          # loudest, steadiest 8 bars
+uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --start 41.2   # pin the section (e.g. start before the drop)
+uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --bpm 128      # when scan locks onto half or double time
+uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --drop-at 0.4  # window placed so the drop lands ~40% in, on a bar line
 ```
 
 `grid` fits tempo and phase across the whole song, chooses a section that starts on a downbeat (skipping quiet intros unless `--start` pins one), refines on that section, and writes:
 
 ```json
 { "source": "audio/song.mp3", "bpm": 123.46, "beat": 0.48598, "bars": 8,
- "start": 26.336, "duration": 15.551, "beats": [0, 0.486,...], "downbeats": [0, 1.944,...] }
+  "start": 26.336, "duration": 15.551, "beats": [0, 0.486, ...], "downbeats": [0, 1.944, ...] }
 ```
 
 `start` is where the film's frame 0 sits in the song. `beats` are relative to frame 0. Tested on a synthetic track: start within 1 ms, drift under 2 ms over 8 bars.
@@ -56,14 +56,14 @@ uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --drop-at 0.4 # win
 For a music video or visualizer, beats are not enough: the picture should breathe with the bass and flicker with the hats. `bands` writes a per-frame table, so the film stays a pure function of time:
 
 ```bash
-uv run scripts/analyze_audio.py bands audio/song.mp3 # -> audio/bands.js, aligned to beats.json's start
+uv run scripts/analyze_audio.py bands audio/song.mp3          # -> audio/bands.js, aligned to beats.json's start
 ```
 
 ```html
-<script src="audio/bands.js"></script> <!-- window.BANDS = { fps, start, frames, low, mid, high, onset } -->
+<script src="audio/bands.js"></script>   <!-- window.BANDS = { fps, start, frames, low, mid, high, onset } -->
 <script>
 const band = (name, t) => { const a = BANDS[name], x = clamp(t * BANDS.fps, 0, a.length - 1), i = Math.floor(x)
- return lerp(a[i], a[Math.min(i + 1, a.length - 1)], x - i) } // 0..1, fast attack, ~120 ms release
+  return lerp(a[i], a[Math.min(i + 1, a.length - 1)], x - i) }   // 0..1, fast attack, ~120 ms release
 </script>
 ```
 
@@ -76,9 +76,9 @@ The music gives timing and intensity; the picture still comes from the story. Un
 A lyric video needs each word's time in the song, not just the beats. Separate the vocal, transcribe it with word timestamps, then correct the words against the real lyrics (never against the transcript) and keep the times:
 
 ```bash
-uvx demucs --two-stems vocals audio/song.mp3 # -> separated/htdemucs/song/vocals.wav
+uvx demucs --two-stems vocals audio/song.mp3                     # -> separated/htdemucs/song/vocals.wav
 uvx --from openai-whisper whisper separated/htdemucs/song/vocals.wav --model small \
- --word_timestamps True --output_format json --output_dir audio/
+    --word_timestamps True --output_format json --output_dir audio/
 ```
 
 Both download models on first use (hundreds of MB): say so first. Subtract `beats.json`'s `start` from every time so frame 0 is 0, write the corrected lines to `audio/lyrics.json` (`[{ "t": 12.48, "end": 12.9, "word": "never" }]`), and check a strip at every line start: a word must not appear before it is sung. Lines go huge on the hook and sit like subtitles elsewhere (call the Skill tool with "shotlist").

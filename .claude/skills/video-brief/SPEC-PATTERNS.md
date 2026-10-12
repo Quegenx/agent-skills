@@ -3,12 +3,12 @@
 The prompt structures behind the films people copied. Each is a skeleton: fill the brackets from `brief.md`, keep the sections. All of them share one shape, and it is the useful part:
 
 ```
-<inputs> what to ask the user for, with defaults if they skip
-<direction> the look in concrete terms, plus a Banned line
-<structure> the beat map: tempo, bars, what happens on which beat
-<build> the render contract, numbered
-<gotchas> the failures this kind of film always hits
-<start> ask for inputs, then show the plan (beat map, stills) before code
+<inputs>     what to ask the user for, with defaults if they skip
+<direction>  the look in concrete terms, plus a Banned line
+<structure>  the beat map: tempo, bars, what happens on which beat
+<build>      the render contract, numbered
+<gotchas>    the failures this kind of film always hits
+<start>      ask for inputs, then show the plan (beat map, stills) before code
 ```
 
 ## 1. One shape, never cut (UI morph loop)
@@ -40,7 +40,7 @@ time, anything that looks like a template.
 
 <build>
 1. One HTML file. Every style is computed from time inside seek(t): no CSS transitions, no timers,
- no state carried between frames.
+   no state carried between frames.
 2. Closed-form springs. A value that changes target many times is the sum of one spring per change.
 3. Content enters after its container starts morphing and leaves before the next morph.
 4. Tab indicators and toggle knobs: the leading and trailing edges ride different springs, so they stretch.
@@ -105,18 +105,18 @@ default (300 ms, ease-in-out, a 20 px slide, a bounce on everything); numbers ge
 
 ```
 MOTION BRIEF
-target [seek-engine HTML | GSAP 3 | Remotion]
-canvas [1440 × 900, 60 fps]
-beats 0.00 card group enters from +24px
- 0.28 cards settled, title begins
- 0.46 title settled, meta fades in
- 0.60 rest state
-duration cards 280ms · title 220ms · meta 160ms
-easing cards cubic-bezier(0.05, 0.7, 0.1, 1) · title (0.2, 0, 0, 1) · meta (0, 0, 0, 1)
-overshoot 0% (these carry information)
-stagger 60ms between cards, total under 400ms
-properties transform and opacity only
-reduced cross-fade 120ms, no translation
+target        [seek-engine HTML | GSAP 3 | Remotion]
+canvas        [1440 × 900, 60 fps]
+beats         0.00  card group enters from +24px
+              0.28  cards settled, title begins
+              0.46  title settled, meta fades in
+              0.60  rest state
+duration      cards 280ms · title 220ms · meta 160ms
+easing        cards cubic-bezier(0.05, 0.7, 0.1, 1) · title (0.2, 0, 0, 1) · meta (0, 0, 0, 1)
+overshoot     0% (these carry information)
+stagger       60ms between cards, total under 400ms
+properties    transform and opacity only
+reduced       cross-fade 120ms, no translation
 ```
 
 Beats are a timeline, not a list: sequence relative to labels (`"<0.28"`), never as recomputed absolute
@@ -139,7 +139,7 @@ Treat this as a multi-session production. Don't rush to a final render.
 ## References and inputs
 - assets/refs/: [video / frames / image library]. Take the grammar, never the content.
 - audio/track.wav: use it unchanged. Measure beats first.
-- APIs in.env: [ELEVENLABS_API_KEY, FAL_KEY]. Budget: [$X]. Be economical.
+- APIs in .env: [ELEVENLABS_API_KEY, FAL_KEY]. Budget: [$X]. Be economical.
 
 ## Look
 [3-5 lines: palette, type, texture, camera language. Banned looks.]
@@ -148,22 +148,22 @@ Treat this as a multi-session production. Don't rush to a final render.
 [proportions, palette sampled from a sheet, expressions, an identity lock that survives every style change]
 
 ## Beat sheet
-0:00-0:02 hook: [the single most striking image]
-0:02-0:10 [act 1]
-... a new visual payoff every 3-5 seconds
-[END] the last frame sets up the first
+0:00-0:02  hook: [the single most striking image]
+0:02-0:10  [act 1]
+...        a new visual payoff every 3-5 seconds
+[END]      the last frame sets up the first
 
 ## Text on screen
 [where captions or lyrics go huge and where they sit like subtitles; composition leaves room for them]
 
 ## Workflow, with gates
 1. style-guide.md and shotlist.md (every shot: frames, camera, text, sound). Show me the shot list;
- continue without waiting if I don't answer in 10 minutes.
+   continue without waiting if I don't answer in 10 minutes.
 2. A still for every shot. Contact sheet. Critique.
 3. Animatic at 960x540. Fix pacing before polish.
 4. Full animation, polish pass, sound pass, final render.
 5. Splitting work across subagents per chapter: write ANIMATION_GUIDE.md first so every subagent
- codes in the same style, and STORYBOARD.md as the shared map.
+   codes in the same style, and STORYBOARD.md as the shared map.
 
 ## Critique loop (every shot, at least 3 rounds)
 Score hook, readability at 360 px wide, motion, composition, depth, sound sync, polish, 1-10. Log the
@@ -203,12 +203,12 @@ tests the setup; it never tests an idea, because it contains none. Hundreds of i
 reels that rhyme with each other. Variants that shipped:
 
 - longer, with a sound bar: "16:9, 60 s, S-tier sound design, no generic synth pads, compose an original
- score and sync every cut to it"
+  score and sync every cut to it"
 - anti-slop: "avoid frames and text in the corners, the usual giveaways of AI-made video"
 - a story instead of techniques: "the history of [TOPIC] from [START] to today, surprise me with the
- storyboard, 45 s, 9:16"
+  storyboard, 45 s, 9:16"
 - a persona: "a 30 s showreel as a niche branding studio for [audience]; every graphic from scratch; one
- accent colour; every shot a different technique"
+  accent colour; every shot a different technique"
 - pointed at a product: add the URL, "use the actual product screenshots, logo and assets", and "must have music"
 
 ## 6. Voiceover-led launch film
@@ -264,7 +264,7 @@ Banned: any feature the site doesn't have, invented numbers, paraphrased tagline
 <build>
 1. Scrape first: copy, handles, avatars, preview media, one full entry. Quote all of it verbatim.
 2. Lay the site out once in world coordinates; drive the camera as (x, y, log-scale) tracks. A tile's corner
- radius goes to 0 as it reaches full-bleed, so pull-backs, whip-ins and match cuts are exact.
+   radius goes to 0 as it reaches full-bleed, so pull-backs, whip-ins and match cuts are exact.
 3. Real clips: detect their internal cuts, loop only cut-free windows with a 12-frame dissolve, stagger phases.
 4. One cursor that homes on the live button position, because the camera keeps creeping during holds.
 5. Stills at every cut before the full render; then a fresh critic who didn't build it reviews the render.
@@ -285,7 +285,7 @@ values, and keep the cut frames exact even where they don't sit on a beat.
 Frame numbers at [fps] (f0-f[N]); master rendered at 2x that rate.
 S1 f0-71, [what]: [element] rises y932 (f0) -> 776 (f2) -> 683 (f5) -> 608 (f10) -> 546 (f24), drifting 1 px/frame
 after. Name appears f2 blurred; pill f4-5 heavily blurred, sliding 15 px left as it sharpens. Camera 1.0 f46 ->
-1.2 f60 ease-in-out... (one line per shot, every value with its frame)
+1.2 f60 ease-in-out ... (one line per shot, every value with its frame)
 Rules: every value continuous in the frame number (keyframe tables, no Math.floor on motion); every shot enters
 already moving and leaves accelerating or on a blur ramp; blur follows speed and direction; nothing freezes
 except one named hold. Then 4 stills at named frames before the full render.
@@ -325,7 +325,7 @@ language, remaining compromises, commands to reproduce. Don't deploy, merge or t
 A spoken-word film staged entirely in type: words get structural roles and the layout itself carries the emotion.
 
 ```
-EXACT WORDS, EXACT ORDER: "[line 1]" "[line 2]"... (understandable without audio)
+EXACT WORDS, EXACT ORDER: "[line 1]" "[line 2]" ... (understandable without audio)
 CENTRAL RULE: words have roles ([WORD] is a lintel, [WORD] a support, [WORD] a platform), built from the actual
 glyph paths, never from illustrations behind the text.
 STORYBOARD: one row per line with its time range and what it does to the architecture of the frame.
@@ -385,10 +385,10 @@ Variants that shipped:
 - **Documentary shot types**, one per line of script: a kinetic statement (three short lines of bold condensed type on a torn paper strip); paper cards dropping in for several things at once; a before and after (same card, the date chip flips); a label call-out (a marker circle draws itself, then the label); a counter; a grid of identical tiles where one breaks the pattern. Cards and objects that move in depth, never a lone bar or line crossing an empty frame. Say "looks like" when the research shows only a similarity, and "one reason", never "the reason".
 - **History recap:** a timeline device (a line that draws on, years as big numerals) carries every era; one image per era, never a slideshow of facts.
 - **The hidden-in-plain-sight collage**. The film makes the viewer recognise the thing first, then pays it off with a causal history. Pick topics with four tests, used to choose, never to refuse one the user names: the viewer meets it daily and has never looked at it (or everyone dates it wrong); the story lands on a person and a date within one beat; one beat lets the eye verify the claim unaided; the receipts exist as free archival material. Spine for 60 s: the familiar thing and more instances of it 15%, the dig ("and it comes back to [person], [year]") 5%, the story with its why 15%, the one physical artifact held on screen 10%, the mechanism the viewer verifies 20%, a later technology removing a constraint 15%, the thesis in two plain sentences 10%, a close that mirrors the open with a fact the viewer doesn't have 10%. About 150 words a minute; ~225 words is the ceiling for 90 s, and a beat that can't be filled honestly is cut, never faked.
- - **From a supplied document** (a memo, report, paper or link), the source is ore, not an outline: never film it section by section. Pull out the recognition its intended audience already has, the claim that contradicts what they assume, the turn the story pivots on, the one claim the viewer can verify on screen (build the demonstration if the source only asserts it) and the receipts. One storyline per film; everything else becomes a receipt. The narration never mentions the source ("the memo says", "according to the doc"): if a line only parses for someone who read the original, cut it.
- - **The look is a collage of printed objects on a pale ground:** photos as cards, history as clippings, data as specimens, one recurring shape as the carrier. Every beat names its layout and its motion before the build, so the film can't drift into a slideshow: at least one push into a photograph that isolates its subject, at least one pull-back arrival on a payoff, a subject lifted off its photo doing what a flat card can't, static cards or side-by-sides in at most a third of the beats, and no two beats in a row with the same layout or the same move. Elements move on 12 fps steps over a smooth camera.
- - **Words on screen have one of three jobs or are cut:** a ≤3-word anchor with a drawn arrow whose tip touches the subject; one promoted sentence per act, staircased over 2-3 lines; or a name (a credit, a label) in the same slot every time. Every highlight, underline or circled word animates on (a bar sweeping left to right behind the words in ~0.4 s, a circle drawing itself); a highlight that simply appears reads as pre-printed. The caption rail stays clear of every other element.
- - **Frame rules for the contact sheet:** no lone element drifting on empty ground (every element relates to the grid or to another element); labels sit within one gap of what they name; a grid has no empty cell; a circle or arrow drawn on a photo is checked against the feature's actual pixels; text in a shape sits optically centred within ~70% of it; nothing spills out of its container. Real photographs are never recreated (a missing photo turns the beat typographic); a recreated document says so on the frame.
+  - **From a supplied document** (a memo, report, paper or link), the source is ore, not an outline: never film it section by section. Pull out the recognition its intended audience already has, the claim that contradicts what they assume, the turn the story pivots on, the one claim the viewer can verify on screen (build the demonstration if the source only asserts it) and the receipts. One storyline per film; everything else becomes a receipt. The narration never mentions the source ("the memo says", "according to the doc"): if a line only parses for someone who read the original, cut it.
+  - **The look is a collage of printed objects on a pale ground:** photos as cards, history as clippings, data as specimens, one recurring shape as the carrier. Every beat names its layout and its motion before the build, so the film can't drift into a slideshow: at least one push into a photograph that isolates its subject, at least one pull-back arrival on a payoff, a subject lifted off its photo doing what a flat card can't, static cards or side-by-sides in at most a third of the beats, and no two beats in a row with the same layout or the same move. Elements move on 12 fps steps over a smooth camera.
+  - **Words on screen have one of three jobs or are cut:** a ≤3-word anchor with a drawn arrow whose tip touches the subject; one promoted sentence per act, staircased over 2-3 lines; or a name (a credit, a label) in the same slot every time. Every highlight, underline or circled word animates on (a bar sweeping left to right behind the words in ~0.4 s, a circle drawing itself); a highlight that simply appears reads as pre-printed. The caption rail stays clear of every other element.
+  - **Frame rules for the contact sheet:** no lone element drifting on empty ground (every element relates to the grid or to another element); labels sit within one gap of what they name; a grid has no empty cell; a circle or arrow drawn on a photo is checked against the feature's actual pixels; text in a shape sits optically centred within ~70% of it; nothing spills out of its container. Real photographs are never recreated (a missing photo turns the beat typographic); a recreated document says so on the frame.
 
 **A film built from someone's real words**: ask before reading any history; quote verbatim as a contiguous span of what they wrote (cutting to a shorter span is fine, rewording, merging or fixing spelling is not), and record each line's source (session, timestamp). Pick the typical session or day, not the most dramatic one, in the order it happened, and leave out a kind of moment their history doesn't show. Before any design pass, show the person one table of every line that will appear on screen with its kind and source, ask which name goes on screen, and strip anything naming another person, a client or company, a product under NDA, a file path, a URL, an email, an identifying number or a secret (automated flags miss a lowercase name: read every line). Take their edits, get an explicit yes, and until then stamp every frame DRAFT. The film holds their words: it is theirs to share, never posted or uploaded by you.
 

@@ -1,6 +1,6 @@
 // bundle.mjs: turn a page that imports modules (three.js, its addons, your own files) into one self-contained
 // page. Pages render from file://, where Chromium blocks module imports, and three.js now ships only as ES
-// modules; an inline module has nothing to fetch, so it runs. (After sims/build.mjs in claude-motion, MIT.)
+// modules; an inline module has nothing to fetch, so it runs.
 //
 //   npm i three esbuild                              once per film that needs them
 //   node scripts/bundle.mjs src.html index.html      every <script type="module" src="..."> in src.html is

@@ -26,28 +26,28 @@ Unanswered items get a stated default, written into the brief as an assumption, 
 
 ```
 FILM
-One sentence: [what the viewer should remember]
-Audience: [who] Shown on: [X feed muted / landing page / keynote]
-Duration: [s] Formats: [16:9, 9:16, 1:1]
-Engine: seek-engine | remotion | hyperframes (and why)
-Type: [launch / feature / loop / sting / walkthrough / explainer / trailer...]
-Personality: [three adjectives] Look: [family + look] Motion: [language]
+One sentence:  [what the viewer should remember]
+Audience:      [who]            Shown on: [X feed muted / landing page / keynote]
+Duration:      [s]              Formats:  [16:9, 9:16, 1:1]
+Engine:        seek-engine | remotion | hyperframes (and why)
+Type:          [launch / feature / loop / sting / walkthrough / explainer / trailer ...]
+Personality:   [three adjectives]   Look: [family + look]   Motion: [language]
 
 ASSETS (facts: never invented)
-Logo, colours, fonts: [paths, tokens]
-Screens / footage: [paths]
-Data and copy: [the real numbers and approved lines]
-Audio: [track + licence | synthesized | narration]
+Logo, colours, fonts:  [paths, tokens]
+Screens / footage:     [paths]
+Data and copy:         [the real numbers and approved lines]
+Audio:                 [track + licence | synthesized | narration]
 
 VISUAL RULES
-Keep: [specific traits from the reference]
-Avoid: [the banned list below, plus the user's]
+Keep:   [specific traits from the reference]
+Avoid:  [the banned list below, plus the user's]
 Never invent product screens, metrics or quotes.
 
 CLAIMS (facts, numbers, science, history; N/A for a pure illustration)
-Claim as it will appear: [ ] Source: [document, data, version, units]
-Check and who did it: [ ] If unchecked: label it an illustration, not a validated explanation
-Kind: [measured result / target / sample] Before launch (nothing shipped, no customers): the proof beat shows the mechanism working in full, never a stat Never show a target as a result; sample numbers carry "Illustrative data" on every frame; a real number is never rounded up or given a "+"
+Claim as it will appear:  [ ]      Source:  [document, data, version, units]
+Check and who did it:     [ ]      If unchecked: label it an illustration, not a validated explanation
+Kind:                     [measured result / target / sample]   Before launch (nothing shipped, no customers): the proof beat shows the mechanism working in full, never a stat   Never show a target as a result; sample numbers carry "Illustrative data" on every frame; a real number is never rounded up or given a "+"
 
 DELIVERABLES
 [formats], poster frame, contact sheet, source, notes for human review, production log
@@ -82,14 +82,14 @@ Naming a style beats describing one, and a reference beats both. Without one the
 
 ```
 REFERENCE ANALYSIS
-Palette: [hex values, not "premium"]
-Typography: [family, width, weight, tracking, scale]
-Composition: [where the eye goes first]
-Pacing: [seconds between meaningful changes, shot lengths]
-Motion: [snap / glide / overshoot / cut / hold; how text enters and exits]
-Transitions: [types used] Texture: [grain, paper, glass, none]
-Sound: [what is sounded and what is left to the music, density, where it drops to silence]
-DO NOT COPY: subjects, logos, copy, characters, product imagery
+Palette:      [hex values, not "premium"]
+Typography:   [family, width, weight, tracking, scale]
+Composition:  [where the eye goes first]
+Pacing:       [seconds between meaningful changes, shot lengths]
+Motion:       [snap / glide / overshoot / cut / hold; how text enters and exits]
+Transitions:  [types used]       Texture: [grain, paper, glass, none]
+Sound:        [what is sounded and what is left to the music, density, where it drops to silence]
+DO NOT COPY:  subjects, logos, copy, characters, product imagery
 ```
 
 When a reference is given, specify the look and the constraints, not the library: let the technique follow from the look.

@@ -29,7 +29,7 @@ Most work travels this route. Start it with **`/make-video`**, which runs the ga
 | posters or images to bring to life | `/asset-prep` (cutouts, layers, textures), then `/make-video` |
 | a song and a rough idea | `/beat-grid`, then `/shotlist` |
 | a music video or visualizer that should react to the song, or a lyric video | `/beat-grid` (`bands` for reactivity, word-by-word lyric timing), then `/shotlist` |
-| explain how something works as a crafted machine (isometric, anatomy style, 2D or 3D) | `/make-video`; the build is `/seek-engine`'s `ISOMETRIC.md` |
+| explain how something works as a crafted machine (isometric, 2D or 3D) | `/make-video`; the build is `/seek-engine`'s `ISOMETRIC.md` |
 | a script to narrate | `/voiceover` |
 | a film that feels rushed or confusing | `/shotlist` (the reads), then `/frame-review` |
 | a render that flickers, differs between runs or jumps at the loop | `/seek-engine` (the contract), then `/frame-review` (the smoke test) |

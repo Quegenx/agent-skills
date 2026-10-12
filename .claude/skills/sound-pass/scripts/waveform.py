@@ -5,7 +5,7 @@
 
 Draws the waveform 1800 px wide with a 1 s grid, every cue from out/cues.json as a coral line and every beat
 from audio/beats.json as a faint blue line. Each transient should sit on a coral line or a hair after it; a hit
-between lines means a hand-typed time or a stale mix. Needs only ffmpeg. (After wave.mjs in claude-motion, MIT.)
+between lines means a hand-typed time or a stale mix. Needs only ffmpeg.
 """
 import json
 import os

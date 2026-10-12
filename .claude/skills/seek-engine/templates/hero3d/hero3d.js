@@ -1,9 +1,9 @@
-// hero3d.js (from motionmaxxing by Tejas Makwana, Apache-2.0, LICENSE-motionmaxxing.txt in templates/; ported from motion-unslop v2).
+// hero3d.js (Apache-2.0, see LICENSE-motionmaxxing.txt in templates/; modified).
 // Changed here: imports point at npm three ("three", "three/addons/...") so seek-engine's bundle.mjs inlines it into one page;
 // pass the font as opts.font (a data: URL or an http URL), since a page rendered from file:// cannot fetch ./fonts/ itself.
-// hero3d.js: one seek-safe hero 3D object for a motionmaxxing film (ported from motion-unslop v2 + the gen-1 SVG-logo extrusion).
+// hero3d.js: one seek-safe hero 3D object for a film.
 //
-// Runs INSIDE the renderer (plain HTML + Motion runtime, or HyperFrames) on Three.js r186. No Blender, no DCC, no network at render time.
+// Runs inside the page on Three.js r186. No Blender, no DCC, no network at render time.
 // Normal use is through the Motion runtime: M.hero3d(canvas, { objects | build, state }) loads this module for you (see runtime/README.md "3D").
 // Direct use:
 //   const hero = await createHero3D(canvas, { objects: [{ id: 'mark', kind: 'logo', svg: 'M0 0 ...' }], state: (t, objs, ctx) => ({ ... }) });
@@ -12,7 +12,7 @@
 // Seek-safety contract (why this file looks the way it does):
 //   * renderAt() RESETS every transform, light and uniform from options + state on every call.
 //     Nothing accumulates between frames, so frame 75 is identical whether you jumped to it or
-//     played through 0..74 (HyperFrames renders in parallel workers that seek out of order).
+//     played through 0..74 (the renderer runs parallel workers that seek out of order).
 //   * No clocks, no requestAnimationFrame, no Math.random(). Use rng(seed) for scatter.
 //   * All assets (font, env image, glTF, screen image) load inside createHero3D(); await it
 //     before the first render. No fetch happens in renderAt().

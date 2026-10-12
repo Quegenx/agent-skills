@@ -11,7 +11,7 @@ Writes `window.MOUTH = {"fps": 60, "lead": 0.04, "poses": "0011223332110..."}`: 
 1 soft (lips parted), 2 round ("oh"), 3 open ("eh/ah"). Load it with <script src="audio/mouth.js"></script> and read
 `+MOUTH.poses[Math.round(t * MOUTH.fps)]` in seek(t): the mouth stays a pure function of time.
 
-The envelope is the one talking-avatar tuned for live voice chat (after talking-avatar by BuildFast, MIT): fast
+The envelope is the one talking-avatar tuned for live voice chat: fast
 attack, slow decay, normalised against a rolling peak, a new pose at most every ~96 ms, never jumping more than one
 pose at a time, closing after short silence. Offline we can also look ahead: --lead shifts the poses earlier, because
 a mouth that opens a frame or two before the sound reads as speaking it (animators lead the mouth); 0 disables it.

@@ -19,9 +19,9 @@ The agent can check levels, timing and word times, never how a line sounds. Say 
 
 ```json
 [
- { "id": "hook", "text": "It all started with one prompt.", "gap": 0.4 },
- { "id": "steps", "text": "Step one: take it apart.", "say": "Step one... take it apart." },
- { "id": "he", "text": "שלום עולם", "say": "שָׁלוֹם עוֹלָם" }
+  { "id": "hook", "text": "It all started with one prompt.", "gap": 0.4 },
+  { "id": "steps", "text": "Step one: take it apart.", "say": "Step one... take it apart." },
+  { "id": "he", "text": "שלום עולם", "say": "שָׁלוֹם עוֹלָם" }
 ]
 ```
 
@@ -34,7 +34,7 @@ The agent can check levels, timing and word times, never how a line sounds. Say 
 ## Generate
 
 ```bash
-uv run scripts/tts.py --voice <voice_id> # model eleven_v3 by default
+uv run scripts/tts.py --voice <voice_id>                  # model eleven_v3 by default
 uv run scripts/tts.py --voice <voice_id> --max-pause 0.3 --speed 1.15
 ```
 
@@ -50,8 +50,8 @@ uv run scripts/tts.py --voice <voice_id> --max-pause 0.3 --speed 1.15
 Voices vary between generations, so pick, don't settle:
 
 ```bash
-uv run scripts/tts.py --voice <voice_id> --takes 4 # 4 takes of every line into audio/vo/takes/
-uv run scripts/tts.py --voice <voice_id> --takes 4 --only steps # a line that sounds wrong: 4 new tries of just it
+uv run scripts/tts.py --voice <voice_id> --takes 4                 # 4 takes of every line into audio/vo/takes/
+uv run scripts/tts.py --voice <voice_id> --takes 4 --only steps    # a line that sounds wrong: 4 new tries of just it
 ```
 
 Listen (or let the user listen), set `"take": k` on each line in `vo-script.json`, and run without `--takes` to assemble the chosen takes. Everything stays cached, so switching takes costs nothing.
@@ -60,7 +60,7 @@ Writes `audio/vo.wav` and `audio/vo.json`:
 
 ```json
 { "duration": 41.3, "lines": [ { "id": "hook", "text": "...", "start": 0.0, "end": 2.1,
- "words": [ { "word": "It", "start": 0.03, "end": 0.12 },... ] } ] }
+  "words": [ { "word": "It", "start": 0.03, "end": 0.12 }, ... ] } ] }
 ```
 
 ## Subtitles

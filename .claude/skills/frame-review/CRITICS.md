@@ -16,8 +16,8 @@ Prompt rules that pay off: say what changed since the last round so it gets chec
 
 ```json
 {"issues": [{"id": "short-kebab-id", "priority": "P0|P1|P2", "t": "12.40-12.60",
- "problem": "TELL-ID: what is wrong, what the viewer sees", "fix": {"file": "index.html", "change": "the concrete edit, with values"}}],
- "overall": "3-6 sentences.\nrubric: idea=4 hook=3...", "score": 7.5}
+             "problem": "TELL-ID: what is wrong, what the viewer sees", "fix": {"file": "index.html", "change": "the concrete edit, with values"}}],
+ "overall": "3-6 sentences.\nrubric: idea=4 hook=3 ...", "score": 7.5}
 ```
 
 At most 12 issues, every fix concrete and code-level (a constant, a curve, a time in beats, never "improve the pacing"), the tell ID from `TELLS.md` at the start of the problem when one matches.

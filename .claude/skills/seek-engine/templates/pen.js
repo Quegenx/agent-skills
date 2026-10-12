@@ -1,7 +1,6 @@
 (() => {
 // pen.js: the hand. Brush ink, pencil, watercolour and self-writing lettering on a Canvas 2D context, as
-// pure functions of time. Adapted for the browser and the seek(t) contract from pen.mjs in claude-animation
-// by Hanif (@hanifproduktif), MIT licence (see LICENSE-pen.txt beside this file).
+// pure functions of time. MIT licence, see LICENSE-pen.txt beside this file; modified for the browser and seek(t).
 //
 //   <script src="pen.js"></script>   (a classic script: pages render from file://, where ES modules are blocked)
 //   const pen = new Pen(ctx)

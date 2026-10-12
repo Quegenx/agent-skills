@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""precedent.py (from motionmaxxing by Tejas Makwana, Apache-2.0; see LICENSE-motionmaxxing.txt) - rule-only precedent retrieval: "what did human motion designers do at this kind of beat?" Python 3.8+, stdlib only.
+"""precedent.py (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - rule-only precedent retrieval: "what did human motion designers do at this kind of beat?" Python 3.8+, stdlib only.
 
 Usage:
   python3 precedent.py query --beat hook|turn|proof|cta [--content ui|type|logo|number|3d] [--text "selection becomes result"]
@@ -11,7 +11,7 @@ Usage:
 
 Library: ../library/moments.jsonl (override with --lib FILE). 716 rows of three kinds, all our own words, none carrying third-party
 copy, frames or brand names:
-  PR-Xnn   156 designer rules (WHEN / DO / BECAUSE, with frame and pixel numbers) distilled from the 53 measured HyperFrames recreations;
+  PR-Xnn   156 designer rules (WHEN / DO / BECAUSE, with frame and pixel numbers) distilled from the 53 measured recreations;
            the evidence moments (M913..M974) are listed: the same ids as in references/*.md.
   PM###    the 53 study moments themselves: role, mechanic, and why it works (what the viewer is bought).
   PL####   507 rules decoded from 39 human-made reference films; "film" is an opaque id f-xxxxxxxx = sha1(original name)[:8].

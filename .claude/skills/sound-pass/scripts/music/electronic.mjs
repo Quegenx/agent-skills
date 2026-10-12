@@ -8,7 +8,7 @@
 // snare roll; the next section starts with an impact), gate (stuttered kicks, bass an octave up), drop (an impact,
 // then drive), halftime (an impact, kick every two beats, long bass notes), outro (pad only, fading), silence.
 // --root is the MIDI note of the key's root (45 = A2; the key is minor). Section times are seconds: put them on the
-// film's beat grid. After claude-remotion-skill's gen-track.mjs (haidrrrry, MIT).
+// film's beat grid.
 import fs from 'node:fs'
 
 const A = process.argv, opt = (k, d) => (A.includes(k) ? A[A.indexOf(k) + 1] : d)

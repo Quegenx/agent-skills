@@ -2,7 +2,7 @@
 
 Thirteen references measured frame by frame from 53 professional motion moments (about 4,300 moves, cited as M913-M974), 52 ranked human films and a blind autopsy of AI films: what professionals actually do, with the numbers. Rules are written WHEN situation, DO decision, *because* what it buys the viewer. Times are in frames at 30 fps (`f@30`: 3 f = 0.1 s, 10 f = 0.33 s); in a seek-engine film write them as seconds (`f / 30`).
 
-From [motionmaxxing](https://github.com/Tejashmakwana/motionmaxxing) by Tejas Makwana, Apache License 2.0 (`LICENSE-motionmaxxing.txt` beside this file). Changes made here: the copy keeps their text as written except that tool names point at this skill set (`lint.mjs` became `chrome_lint.mjs`, `M.ease.<name>` became `MEASURED.<name>`); the study corpus itself (the films) is not included in either repository.
+Licence notice for these files: `LICENSE-motionmaxxing.txt` beside this file (Apache License 2.0). Modified here: tool names point at this skill set (`lint.mjs` became `chrome_lint.mjs`, `M.ease.<name>` became `MEASURED.<name>`).
 
 | File | Read it when |
 |---|---|

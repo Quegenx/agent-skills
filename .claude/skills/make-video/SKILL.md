@@ -8,11 +8,11 @@ description: Direct and render a video, animation or motion graphic entirely fro
 The model writes a program; the program draws frames; a renderer turns frames into a film; a review loop decides whether anyone should see it. The prompt is the smallest part. This skill is the **studio** around it: five layers, each a file another session can read, and **gates** between them.
 
 ```
-DIRECTOR what is the film saying? brief.md
-REFERENCE what should it look and feel like? style-guide.md
-TIMELINE what changes at each beat? audio/beats.json, shotlist.md
-RENDERER how is every frame produced? index.html (seek(t)), scripts/render.mjs
-CRITIC what failed, where, and why? out/qa/, reviews/, review-log.md
+DIRECTOR    what is the film saying?           brief.md
+REFERENCE   what should it look and feel like? style-guide.md
+TIMELINE    what changes at each beat?         audio/beats.json, shotlist.md
+RENDERER    how is every frame produced?       index.html (seek(t)), scripts/render.mjs
+CRITIC      what failed, where, and why?       out/qa/, reviews/, review-log.md
 ```
 
 Never collapse the layers into one uninspected step. The generic look (a centred title on a gradient, everything fading in, a logo at the end) is what the model fills in when a layer's decisions are missing.
@@ -22,18 +22,18 @@ Never collapse the layers into one uninspected step. The generic look (a centred
 1. Scaffold the film's studio folder from the project root: `bash <this skill>/scripts/new-film.sh <slug>`, then `npm install` inside `films/<slug>/`. If tools are missing, tell the user to run `/video-setup`. The scaffold writes the film's house rules (`AGENTS.md`, which Claude Code reads through `CLAUDE.md`): the render contract, the banned looks and the review loop, read on every run so they never need repeating. When the film lives inside an existing product repo, build it beside what is there and never regress an existing composition.
 2. Size the run from the format:
 
- | Format | Length, fps | Grid | Beats | Words | Sound | Review |
- |---|---|---|---|---|---|---|
- | Launch film | 20-45 s, 60 | 120 BPM, a 2 s bar | 8-10 per 30 s | 15-25, cap 35 | full score, drop on the turn | ≥ 2 critic rounds, ship gate |
- | Teaser | 10-20 s, 60 | 120 BPM | 4-6 | 6-10 | a rise and a hit | 1-2 rounds |
- | Feature video | 8-30 s, 60 | 120 BPM | 4-7 | ≤ 15 | light, discrete UI events | 1-2 rounds |
- | Feature loop | 4-15 s, 60, whole bars | 100-120 BPM | 3-5 | ≤ 8 | usually muted | 1 round + seam check |
- | Logo sting | 3-8 s, 60 | 1 bar per beat | 3-4 | the name | one tuned hit | 1 round |
- | Walkthrough | 20-90 s, 60 | per chapter | 3-5 a chapter | ≤ 6 a caption | bed + clicks | ≥ 2 rounds |
- | Explainer | 30 s-10 min, 30-60 | the narration (voiceover) | one concept per sentence | the script | voice, a light bed | ≥ 2 rounds + a fact check |
- | Vertical social | 10-30 s, 60 | a change every ~0.7 s | dense | ≤ 5 a screen | a hook on frame 0 | 1-2 rounds |
+   | Format | Length, fps | Grid | Beats | Words | Sound | Review |
+   |---|---|---|---|---|---|---|
+   | Launch film | 20-45 s, 60 | 120 BPM, a 2 s bar | 8-10 per 30 s | 15-25, cap 35 | full score, drop on the turn | ≥ 2 critic rounds, ship gate |
+   | Teaser | 10-20 s, 60 | 120 BPM | 4-6 | 6-10 | a rise and a hit | 1-2 rounds |
+   | Feature video | 8-30 s, 60 | 120 BPM | 4-7 | ≤ 15 | light, discrete UI events | 1-2 rounds |
+   | Feature loop | 4-15 s, 60, whole bars | 100-120 BPM | 3-5 | ≤ 8 | usually muted | 1 round + seam check |
+   | Logo sting | 3-8 s, 60 | 1 bar per beat | 3-4 | the name | one tuned hit | 1 round |
+   | Walkthrough | 20-90 s, 60 | per chapter | 3-5 a chapter | ≤ 6 a caption | bed + clicks | ≥ 2 rounds |
+   | Explainer | 30 s-10 min, 30-60 | the narration (voiceover) | one concept per sentence | the script | voice, a light bed | ≥ 2 rounds + a fact check |
+   | Vertical social | 10-30 s, 60 | a change every ~0.7 s | dense | ≤ 5 a screen | a hook on frame 0 | 1-2 rounds |
 
- Deliverables per format are in `shotlist/FORMATS.md`. A one-line request ("a 15 s showreel") still gets every gate, but each gate is one short file. A long brief with assets, a song and a voice gets the full treatment. Keep one session per brand where you can: the second film for the same product reuses the renderer, the tokens and the sound, and comes out faster.
+   Deliverables per format are in `shotlist/FORMATS.md`. A one-line request ("a 15 s showreel") still gets every gate, but each gate is one short file. A long brief with assets, a song and a voice gets the full treatment. Keep one session per brand where you can: the second film for the same product reuses the renderer, the tokens and the sound, and comes out faster.
 
 ## The gates
 
@@ -68,7 +68,7 @@ Keep the delivery folder clean: deliverables at the top, QA material (sheets, cr
 1. `out/<format>.mp4` for every format, rendered from the same timeline
 1b. For feeds, encode H.264 High profile at roughly 8-15 Mbps; much under 5 Mbps and the platform's re-encode visibly degrades it (render.mjs's CRF 16 at 1080p usually lands there; check the bitrate with ffprobe).
 2. `out/poster.png`: the strongest frame, usually the last (`render.mjs still <t> --out out/poster.png`)
- For a landing page add a muted file (`render.mjs full --audio none`) and a VP9 WebM of it (`ffmpeg -i out/16x9.mp4 -c:v libvpx-vp9 -b:v 0 -crf 32 -row-mt 1 -an out/16x9.webm`), then decode both with frame-review's `verify_delivery.py --bg <ground> --loop`: the ground must come back as the token and the last frame must equal the first.
+   For a landing page add a muted file (`render.mjs full --audio none`) and a VP9 WebM of it (`ffmpeg -i out/16x9.mp4 -c:v libvpx-vp9 -b:v 0 -crf 32 -row-mt 1 -an out/16x9.webm`), then decode both with frame-review's `verify_delivery.py --bg <ground> --loop`: the ground must come back as the token and the last frame must equal the first.
 3. the contact sheet of the decoded master
 4. the final shot list and the exact runtime
 5. the source folder and the commands that reproduce the render
@@ -76,7 +76,7 @@ Keep the delivery folder clean: deliverables at the top, QA material (sheets, cr
 7. two lines on the motion language (the carrier, the curves, the camera)
 8. what still needs a human eye, and any compromise you made
 9. optional extras from the same timeline: a cover still at another size (2000×800 article cover, 1280×720 thumbnail) as a format of the same scene, and a GIF preview for a README or a post: `ffmpeg -i out/16x9.mp4 -vf "fps=12,scale=420:-1:flags=lanczos,hqdn3d=4:4:6:6,split[a][b];[a]palettegen=max_colors=64:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle" out/preview.gif` (keep it under ~4 MB)
- **A looping cover GIF** (a newsletter or post cover that moves): animate only the one element the user named, nothing else; rotate the loop so the first frame shows the finished picture (inboxes and link previews show frame 1 as a still); encode a flat image with no dithering (`palettegen=max_colors=128:stats_mode=full` then `paletteuse=dither=none`), which otherwise adds flicker to every frame; then measure, don't eyeball: the seam (mean difference between the last and first frame, target 0.0-0.3 on 0-255 grey at 216 px) and the excursion (the largest difference of any frame from frame 0, about 0.7-2.8; near 0 means nothing visible moves; never measure at the halfway frame, where a sine is back at zero). Look at it at 240 px wide, the inbox size, and check the uploaded link still ends in `.gif`. Animating a still image: mask the named element by colour, soften the mask's edge, change only those pixels (a video model asked to hold the camera still pushes in anyway; code is the only way to lock it). In ffmpeg's `eq` filter add `eval=frame`, or the expression is evaluated once and nothing moves.
+   **A looping cover GIF** (a newsletter or post cover that moves): animate only the one element the user named, nothing else; rotate the loop so the first frame shows the finished picture (inboxes and link previews show frame 1 as a still); encode a flat image with no dithering (`palettegen=max_colors=128:stats_mode=full` then `paletteuse=dither=none`), which otherwise adds flicker to every frame; then measure, don't eyeball: the seam (mean difference between the last and first frame, target 0.0-0.3 on 0-255 grey at 216 px) and the excursion (the largest difference of any frame from frame 0, about 0.7-2.8; near 0 means nothing visible moves; never measure at the halfway frame, where a sine is back at zero). Look at it at 240 px wide, the inbox size, and check the uploaded link still ends in `.gif`. Animating a still image: mask the named element by colour, soften the mask's edge, change only those pixels (a video model asked to hold the camera still pushes in anyway; code is the only way to lock it). In ffmpeg's `eq` filter add `eval=frame`, or the expression is evaluated once and nothing moves.
 10. the production log: every input and its source and licence; what made the pixels and the sound for each shot (code, supplied footage, which external model and version); model and service usage and cost, render time, revision count; the human decisions; claims still unverified
 
 Credit honestly. "One prompt", "all code", "no external assets" and "no human edits" are four separate claims: state only the ones that are true, and say what the audio is (synthesized, supplied, generated, voiced).
@@ -93,7 +93,7 @@ The user directs; you engineer. Turn every note into a change you can point at, 
 
 ## Not a video
 
-An interactive page (an engine you take apart in the browser, a playable scene, an explorable lab) is a different deliverable: these skills make films. When the user wants both, build the page so its state is a function of `t` too, then render a guided tour of it as the film. A page that must export a video in the viewer's own browser (no server) can encode with ffmpeg.wasm (`@ffmpeg/ffmpeg`, its wrapper MIT, its core under FFmpeg's and x264's GPL): browser only (it no longer runs in Node), about 12-25x slower than native ffmpeg in its own benchmark, inputs capped at 2 GB, and its faster multithread core needs a cross-origin-isolated page (COOP and COEP headers) for `SharedArrayBuffer`. Our own renders always use native ffmpeg.
+An interactive page (an engine you take apart in the browser, a playable scene, an explorable lab) is a different deliverable: these skills make films. When the user wants both, build the page so its state is a function of `t` too, then render a guided tour of it as the film. A page that must export a video in the viewer's own browser (no server) can encode with ffmpeg.wasm (`@ffmpeg/ffmpeg`; its core is GPL): browser only (it no longer runs in Node), about 12-25x slower than native ffmpeg in its own benchmark, inputs capped at 2 GB, and its faster multithread core needs a cross-origin-isolated page (COOP and COEP headers) for `SharedArrayBuffer`. Our own renders always use native ffmpeg.
 
 ## When to use a framework instead
 
@@ -103,7 +103,7 @@ The default engine is one HTML file with `window.seek(t)`, rendered by Playwrigh
 |---|---|
 | a series of data-driven videos from one template, React components reused from the product | Remotion (`npx skills add remotion-dev/skills`); its licence is free for individuals, non-profits and companies of up to three employees, and a for-profit company of four or more needs a paid Company License: say so before choosing it. It also ships a large library of ready-made WebGL effects (`@remotion/effects`: light leaks, halftone, progressive blur and pixelate, pixel dissolve, glow, chromatic aberration and more) and map techniques, a reason to pick it when a brief leans on those |
 | an existing HyperFrames project, its registry blocks (code diffs and morphs, flowcharts, charts, shader transitions), calibrated media treatments (VHS, 8 mm, print, CRT, ASCII), captions or audio-mixing tools | HyperFrames (`npx skills add heygen-com/hyperframes`) |
-| how something works (an algorithm, a protocol, a mechanism) shown as an invented machine in isometric line art, anatomy style, 2D or turning in 3D, with WebGL fire, water or light | `seek-engine` with its `ISOMETRIC.md` and the vendored anatomy toolset (`templates/anatomy/`); size it first (a 40-80 part figure is 30-90 min, a dense one hours) |
+| how something works (an algorithm, a protocol, a mechanism) shown as an invented machine in isometric line art, 2D or turning in 3D, with WebGL fire, water or light | `seek-engine` with its `ISOMETRIC.md` and the isometric toolset (`templates/isokit/`); size it first (a 40-80 part figure is 30-90 min, a dense one hours) |
 | a math or physics explainer built from equations and graphs | Manim (the `manim-video` skill in browser-use/video-use), voiced with the voiceover skill |
 | a layered editor the agent drives (video layers, keyframes, shaders and audio in one local project) | Tesseract by Mirage (`npx skills add mirage-hq/Tesseract`); proprietary terms, its CLI is a downloaded binary |
 | editing existing footage: cutting a talking-head clip, adding subtitles, graphics and music to it | a footage editor: HyperFrames `talking-head-recut` / `embedded-captions`, or browser-use/video-use |

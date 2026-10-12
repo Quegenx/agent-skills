@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// chrome_lint.mjs (lint.mjs in motionmaxxing by Tejas Makwana, Apache-2.0; see LICENSE-motionmaxxing.txt) - gate G5 "no page chrome": a DOM-level lint for HUD / slide-deck / vibe-coded-UI patterns in a film's index.html.
+// chrome_lint.mjs (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - gate G5 "no page chrome": a DOM-level lint for HUD / slide-deck / vibe-coded-UI patterns in a film's index.html.
 //
 // Usage:  node scripts/chrome_lint.mjs <index.html> [--times 0.5,2,4.2] [--samples N] [--json] [--width W --height H] [--duration S]
 //

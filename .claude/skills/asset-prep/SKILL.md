@@ -53,9 +53,9 @@ The posters-to-layers pipeline: take a flat image apart so each piece can move o
 
 | Job | Tool | Command sketch |
 |---|---|---|
-| Ink or line art off paper | OpenCV threshold / adaptive threshold | `uv run --with opencv-python-headless python...` |
+| Ink or line art off paper | OpenCV threshold / adaptive threshold | `uv run --with opencv-python-headless python ...` |
 | Cut a subject out | rembg (BiRefNet models) | `uvx rembg i -m birefnet-general in.png out.png` |
-| Fill the hole it leaves | LaMa inpainting (e.g. `uvx --from lama-cleaner...` or an API) | mask = the cutout's alpha |
+| Fill the hole it leaves | LaMa inpainting (e.g. `uvx --from lama-cleaner ...` or an API) | mask = the cutout's alpha |
 | Paper, cardboard, grain textures | crop patches from the source with OpenCV, feather edges, tile to cover the frame | |
 | Upscale a final or an asset | Real-ESRGAN (`realesrgan-ncnn-vulkan`) | 2x or 4x |
 | Colour and size facts | `ffprobe`, a quick numpy read of pixels | measure, never guess |

@@ -5,7 +5,7 @@ A film cut automatically to a track: stages, captions, flashes and glitches plac
 ## Editing to the music: the director
 
 A simulation can be cut to a track automatically, every rule a pure function of time and the beat grid (`audio/beats.json`, `bands.js` for kick strength):
-- **Shots change on bar lines:** a table of crops (wide 1.0, tight 1.75 on focus 0, medium 1.3 on focus 1, very tight 2.2...), cutting every 4 beats before the drop and every 2 after; the first beats of the drop always open wide. The sim returns its focus points (screen coordinates of what matters) each frame so tight shots frame them.
+- **Shots change on bar lines:** a table of crops (wide 1.0, tight 1.75 on focus 0, medium 1.3 on focus 1, very tight 2.2 ...), cutting every 4 beats before the drop and every 2 after; the first beats of the drop always open wide. The sim returns its focus points (screen coordinates of what matters) each frame so tight shots frame them.
 - **Punch-ins on kicks:** scale +3% before the drop, +7% after, decaying in ~0.11 s; a slow push of +3.5% across each bar in tight shots.
 - **The drop:** a shake decaying over ~0.25 s, a white flash, accent flashes on later downbeats.
 - **Land the hero on the drop:** warp the simulation's own time piecewise linearly so its hero moment (the 256th agent, the ignition) happens exactly on the drop, while cuts and captions run on music time.

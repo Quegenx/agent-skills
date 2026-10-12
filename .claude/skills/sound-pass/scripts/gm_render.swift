@@ -3,7 +3,7 @@
 // Events: { t (s), p (GM program 0-127, or -1 for drums), n (MIDI note), v (velocity), d (duration s) }, optional pan
 // (-1..1) and gain (0..1) per program from the first event that sets them, and { t, p, cc, val } for expression swells.
 //   swift gm_render.swift audio/score.json audio/score-raw.wav
-// From hyperframes-community-skills' session-story render.swift (HeyGen, Apache-2.0; LICENSE-hyperframes-community.txt).
+// Apache-2.0, see LICENSE-hyperframes-community.txt; modified.
 // Changed here: the header only.
 import AVFoundation
 import AudioToolbox
