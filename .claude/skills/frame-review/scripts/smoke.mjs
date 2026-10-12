@@ -162,6 +162,7 @@ for (let i = 0; i <= n; i++) {
   const img = await shot(t)
   const boxes = await textBoxes()
   for (const b of boxes) {
+    if (b.drawn) continue   // text drawn into an object (a tile's engraving) may leave the frame with it on a camera move
     if (b.x < 0 || b.y < 0 || b.x + b.w > W || b.y + b.h > H) note('text out of stage', t, b.text)
     else if (b.x < mx || b.y < my || b.x + b.w > W - mx || b.y + b.h > H - my) note('text in margin', t, b.text)
   }
@@ -171,7 +172,7 @@ for (let i = 0; i <= n; i++) {
     if (text === undefined) { endRead(r, t); shown.delete(id) }
     else if (text !== r.text) { if (sameRead(r.text, text)) r.text = text; else { endRead(r, t); shown.set(id, { text, from: t }) } }
   }
-  for (const b of boxes) if (!shown.has(b.id)) shown.set(b.id, { text: b.text, from: t })
+  for (const b of boxes) if (!b.drawn && !shown.has(b.id)) shown.set(b.id, { text: b.text, from: t })
   for (const b of boxes) if (/\bNaN\b|\bundefined\b|\[object |\bInfinity\b/.test(b.text)) note('broken text', t, `"${b.text}"`)
   const seen = new Set()
   for (const b of boxes) {
