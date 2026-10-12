@@ -1,0 +1,5 @@
+interface:
+  display_name: "Video Help"
+  short_description: "Which video skill or flow fits"
+policy:
+  allow_implicit_invocation: false

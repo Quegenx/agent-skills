@@ -1,0 +1,3 @@
+interface:
+  display_name: "Voiceover"
+  short_description: "Narration with word timings that drive the picture"

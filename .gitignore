@@ -1,0 +1,14 @@
+# This folder is a working studio full of cloned reference repos. Publish only the skill set:
+/*
+!/.gitignore
+!/.claude/
+!/.agents/
+!/docs/
+!/README.md
+!/CHANGELOG.md
+!/AGENTS.md
+!/CLAUDE.md
+/.claude/settings.local.json
+.env
+node_modules/
+.frames/

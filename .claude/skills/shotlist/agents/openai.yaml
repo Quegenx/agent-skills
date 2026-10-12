@@ -1,0 +1,3 @@
+interface:
+  display_name: "Shot List"
+  short_description: "States, beats and timed reads on the grid"

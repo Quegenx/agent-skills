@@ -1,0 +1,5 @@
+interface:
+  display_name: "Video Setup"
+  short_description: "Check and install the video toolchain"
+policy:
+  allow_implicit_invocation: false

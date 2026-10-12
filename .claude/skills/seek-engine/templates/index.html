@@ -1,0 +1,428 @@
+<!doctype html>
+<!--
+  Starter film for the seek-engine render contract.
+  Every frame is a pure function of time: window.seek(t) paints the exact frame for t.
+  No CSS transitions, no timers, no Math.random, no state carried between frames.
+  Open directly in a browser to preview (?t=2.5 freezes a time, ?format=9:16 switches layout).
+  scripts/render.mjs drives seek(t) for stills, contact sheets and the final render.
+
+  The demo scene below exists to show the kit working. It is one idea, not a template:
+  replace SCENE, TOKENS and the cue list with your own film.
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<title>film</title>
+<style>
+  /* Fonts: vendor woff2 files into assets/fonts and declare them here. Never load fonts from the network at render time. */
+  html, body { margin: 0; background: #0d0d0c; }
+  body.preview { display: grid; place-items: center; min-height: 100vh; }
+  body.preview #stage { transform: scale(var(--fit, 0.5)); transform-origin: center; }
+  #stage { position: relative; overflow: hidden; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; font-feature-settings: 'tnum' 1; }
+  /* Never put will-change on #world: the camera scales it and text would rasterize blurry. */
+  #world { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  .abs { position: absolute; left: 0; top: 0; }
+  #fx { position: absolute; inset: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx"></canvas>
+  <div id="world">
+    <div class="abs" id="shape" style="overflow:hidden"><div class="abs" id="flood" style="border-radius:50%"></div></div>
+    <div class="abs" id="label"></div>
+    <div class="abs" id="label2"></div>
+  </div>
+  <svg class="abs" id="cursor" viewBox="0 0 34 34"><path d="M4 2.5 L4 26.5 L10.2 20.6 L14.3 30 L18.6 28.1 L14.6 19 L23 19 Z" stroke-width="2" stroke-linejoin="round"/></svg>
+</div>
+
+<script>
+// ============================================================================
+// FILM: the facts of this render. Everything else derives from these.
+// ============================================================================
+const FILM = {
+  beats: 12,              // length in beats; duration follows the measured beat (set beats: 0 to use a fixed duration)
+  duration: 6,            // seconds; recomputed as beats * B whenever the beat changes
+  bpm: 120,               // overridden by configure({ beat }) from audio/beats.json
+  fps: 60,
+  loop: true,             // the last frame equals the first; frame-review checks the seam
+  formats: { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080] },
+  format: '16:9',
+}
+let B = 60 / FILM.bpm                       // seconds per beat
+const beat = (n) => n * B                   // beat number -> seconds
+
+// ============================================================================
+// MOTION LIBRARY: pure functions of time. Take every number from MOTION-NUMBERS.md.
+// ============================================================================
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x))
+const lerp = (a, b, p) => a + (b - a) * p
+const lmix = (a, b, p) => Math.exp(lerp(Math.log(a), Math.log(b), p))  // scale and zoom interpolate in log space
+
+// Closed-form damped spring step response 0 -> 1. f = frequency in Hz, z = damping ratio (1 = critical, no overshoot).
+function spring(t, f = 2, z = 1) {
+  if (t <= 0) return 0
+  const w = 2 * Math.PI * f
+  if (z >= 1) return 1 - Math.exp(-w * t) * (1 + w * t)
+  const wd = w * Math.sqrt(1 - z * z)
+  return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t))
+}
+// The one envelope for punches, ticks and beat pulses: a quarter-sine rise to 1 over `attack` s, then an exponential
+// decay with time constant `tau`. Default peaks 2 frames (at 60 fps) after its cue, which reads as caused by the sound.
+// A half-sine on a hard window instead clunks at both ends and peaks late.
+function hitPulse(t, attack = 2 / 60, tau = 5 / 60) {
+  if (t <= 0 || t > attack + 6 * tau) return 0
+  return t < attack ? Math.sin((t / attack) * (Math.PI / 2)) : Math.exp(-(t - attack) / tau)
+}
+// Contact squash on impact, anchored at the edge that hit: wider along it, flatter across it.
+const squash = (t) => { const q = hitPulse(t, 1 / 60, 4 / 60); return { across: 1 + 0.08 * q, along: 1 - 0.1 * q } }
+// Named springs: frequency (Hz) and damping ratio. Overshoot only on true landings.
+const SPR = {
+  ui: { f: 3.2, z: 0.86 },     // small controls, tiny overshoot
+  shape: { f: 1.9, z: 0.82 },  // a container morphing between states
+  enter: { f: 3.6, z: 1 },     // content arriving
+  exit: { f: 8, z: 1 },        // content leaving: faster than it arrived
+  cam: { f: 1.1, z: 1 },       // camera: smooth, almost invisible
+  cursor: { f: 2.3, z: 1 },
+  lead: { f: 3.4, z: 0.78 },   // leading edge of a stretching indicator
+  trail: { f: 1.7, z: 0.92 },  // trailing edge
+  heavy: { f: 1.2, z: 1 },     // big type, logo lockups
+}
+// A value that changes target many times is the sum of one spring per change, so it stays a pure function of t.
+// keys: [[seconds, value, spr?], ...]. With FILM.loop the keys wrap so frame 0 equals frame `duration`.
+function track(keys, def = SPR.shape) {
+  const ks = keys.map(([t, v, s]) => [t, v, s || def]).sort((a, b) => a[0] - b[0])
+  const loop = FILM.loop
+  const deltas = ks.map((k, i) => (i === 0 ? (loop ? k[1] - ks[ks.length - 1][1] : 0) : k[1] - ks[i - 1][1]))
+  const base = loop ? ks[ks.length - 1][1] : ks[0][1]
+  return (t) => {
+    let v = base
+    const cycles = loop ? [-2, -1, 0] : [0]
+    for (const c of cycles) for (let i = 0; i < ks.length; i++) {
+      if (deltas[i] !== 0) v += deltas[i] * spring(t - ks[i][0] - c * FILM.duration, ks[i][2].f, ks[i][2].z)
+    }
+    return v
+  }
+}
+// A colour that changes target: one track per RGB channel, so it never snaps in a single frame.
+const hexToRgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
+function colorTrack(keys, def = SPR.enter) {
+  const ch = [0, 1, 2].map((c) => track(keys.map(([t, hex, s]) => [t, hexToRgb(hex)[c], s]), def))
+  return (t) => `rgb(${ch.map((f) => Math.round(clamp(f(t), 0, 255))).join(',')})`
+}
+// Cubic-bezier easing (same maths as CSS). Curves from the number sheet, never ad hoc.
+function bez(x1, y1, x2, y2) {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx
+  const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by
+  const X = (s) => ((ax * s + bx) * s + cx) * s, Y = (s) => ((ay * s + by) * s + cy) * s
+  return (p) => {
+    if (p <= 0) return 0
+    if (p >= 1) return 1
+    let s = p
+    for (let i = 0; i < 8; i++) { const d = (3 * ax * s + 2 * bx) * s + cx; if (Math.abs(d) < 1e-6) break; s -= (X(s) - p) / d }
+    return Y(clamp(s))
+  }
+}
+// A film uses about three of these characters; each has one job. Linear is for drift, clocks and data only.
+const EASE = {
+  out: bez(0.16, 1, 0.3, 1),            // arrivals, reveals, word entrances (never a fade-out)
+  in: bez(0.7, 0, 0.84, 0),             // implosions, hard snaps out
+  exit: bez(0.55, 0.055, 0.675, 0.19),  // exits into a cut: accelerates to the cut frame
+  smooth: bez(0.65, 0, 0.35, 1),        // fades (10-14 frames), drifts, holds
+  inOut: bez(0.87, 0, 0.13, 1),         // whips, lockup slides, morphs
+  ui: bez(0.4, 0, 0.2, 1),              // small UI changes: toggles, chips, rows
+  cam: bez(0.48, 0.1, 0, 0.9),          // camera pushes: slow start, early peak, long settle
+  glide: bez(0.47, 0.2, 0.15, 1),       // 150-350 px element moves with a soft landing
+  rest: bez(0.45, 0, 0.1, 1),           // anything that must end at rest, or start after another move
+  contact: bez(0.55, 0, 0.9, 0.55),     // accelerating into an impact: arrives with velocity
+  whip: bez(0.6, 0, 0.15, 1),           // feature-to-feature whips
+  dolly: bez(0.35, 0, 0.65, 1),         // slow push through a hold
+  standard: bez(0.2, 0, 0, 1),          // Material standard: moves between two states
+  emphasized: bez(0.05, 0.7, 0.1, 1),   // hero arrivals, modals
+  overshoot: bez(0.3, 0, 0, 1.25),      // a value that lands (sparingly)
+}
+// The 12 eases measured on 53 professional motion moments (seek-engine/measured/motion.md; from motionmaxxing by Tejas Makwana,
+// Apache-2.0): landing decelerates (softLand, glide, snapSettle), leaving accelerates (accelExit, crashOut, gentleIn), overshoot is rare
+// and late (popOver peaks 1.08 at t 0.72), drifts and fades run linear (cruise). MEASURED_FRAMES: typical length in frames at 30 fps.
+const MEASURED = (() => {
+  const powerOut = (p) => (t) => 1 - Math.pow(1 - t, p), powerIn = (p) => (t) => Math.pow(t, p)
+  const expoOut = (k) => { const d = 1 - Math.exp(-k); return (t) => (1 - Math.exp(-k * t)) / d }
+  const snapRamp = (w, tau) => { const n = w * (1 - Math.exp(-1 / tau)) + (1 - w); return (t) => (w * (1 - Math.exp(-t / tau)) + (1 - w) * t) / n }
+  const snapOver = (A, ta, td) => { const f = (t) => (1 + A * Math.exp(-t / td)) * (1 - Math.exp(-t / ta)); const n = f(1); return (t) => f(t) / n }
+  const ring = (c, om) => { const f = (t) => 1 - Math.exp(-c * t) * (Math.cos(om * t) + (c / om) * Math.sin(om * t)); const n = f(1); return (t) => f(t) / n }
+  const smoothP = (p) => (t) => { const a = Math.pow(t, p), b = Math.pow(1 - t, p); return a / (a + b) }
+  const guard = (f) => (t) => (t <= 0 ? 0 : t >= 1 ? 1 : f(t))
+  return {
+    crashIn: guard(snapOver(2.0, 0.19, 0.218)),   // hits and passes its mark at once (peak 1.18 at t 0.27): slams
+    popOver: guard(ring(2.67, 4.36)),             // the late lean past the mark (1.08 at t 0.72): the rare overshoot
+    bounceHard: guard(ring(1.34, 5.07)),          // the big overshoot (1.48): once, if ever
+    snapSettle: guard(snapRamp(0.942, 0.118)),    // hero and CTA entries: 54% of travel in the first 10% of the time
+    softLand: guard(expoOut(3.41)),               // the workhorse landing for text and panels
+    whip: guard(powerOut(2.52)),                  // big fast decelerating moves
+    glide: guard(powerOut(1.7)),                  // gentle landing for medium moves
+    cruise: guard((t) => t),                      // linear: fades, drifts, counters
+    softInOut: guard(smoothP(1.42)),              // symmetric S for opacity, blur, colour ramps
+    gentleIn: guard(powerIn(2.07)),               // mild acceleration: fade-out starts, pushes into a cut
+    accelExit: guard(powerIn(2.6)),               // the leaving curve
+    crashOut: guard(powerIn(3.97)),               // hard acceleration into a cut
+  }
+})()
+const MEASURED_FRAMES = { crashIn: 10, popOver: 15, bounceHard: 22, snapSettle: 11, softLand: 12, whip: 7, glide: 10, cruise: 9, softInOut: 9, gentleIn: 9, accelExit: 13, crashOut: 17 }
+// A vertical text rise snaps to whole pixels in headless Chromium, so its slow tail ticks: finish the move while it
+// still travels ~1 px/frame. arrive(p) completes at 94% of the eased curve; use it on the translate, not the opacity.
+const arrive = (p, k = 0.94) => Math.min(1, p / k)
+// Duration grows with distance: 0.35 s + 1.35 ms/px, camera moves clamped to 0.6-2.4 s.
+const durFor = (px, camera = false) => { const s = 0.35 + 0.00135 * px; return camera ? clamp(s, 0.6, 2.4) : s }
+// Discrete state (typed characters, counters, labels, layout switches) reads whole frames, so every motion-blur
+// sub-frame of one output frame agrees: no doubled carets, no half-typed letters.
+const whole = (t) => Math.round(t * FILM.fps) / FILM.fps
+// Exposure: the moment the DRAWINGS show. On twos (12 drawings/s at 24 fps) reads hand-made; fast moves and
+// anything the camera tracks stay on ones; a read gets a hold. Pass exposure(t) to drawing code and the raw t
+// to the camera, so the camera stays smooth while the drawing steps.
+//   const drawT = exposure(t, [{ at: 0, on: 2 }, { at: 4.5, on: 1 }, { at: 8, hold: true }])
+function exposure(t, track, fps = FILM.fps) {
+  let cur = track[0]; for (const e of track) if (t >= e.at) cur = e
+  if (cur.hold) return cur.at
+  const n = cur.on || 1, f = Math.floor((t - cur.at) * fps + 1e-6)
+  return cur.at + Math.floor(f / n) * n / fps
+}
+// Hit-stop: game time freezes on each contact while sparks, rings and shake keep running in real time.
+// stops: [[gameTime, seconds], ...] (2-3 frames on a hit, ~0.125 s on a big one, ~0.3 s on a finisher).
+// Choreograph in game time: g = tw.game(t). Place sound cues with tw.real(g) so they land on the freeze.
+// (After timeWarp in claude-animation's fx.mjs, MIT.)
+function timeWarp(stops) {
+  const S = [...stops].sort((a, b) => a[0] - b[0])
+  return {
+    game(t) { let acc = 0; for (const [s, d] of S) { if (t < s + acc) break; if (t < s + acc + d) return s; acc += d } return t - acc },
+    real(g) { let acc = 0; for (const [s, d] of S) { if (s >= g) break; acc += d } return g + acc },
+    frozen(t) { let acc = 0; for (const [s, d] of S) { if (t < s + acc) break; if (t < s + acc + d) return true; acc += d } return false },
+  }
+}
+// Keyframe table: kf(t, [[t, value], ...], ease) interpolates between keys, eased per segment; values may be arrays.
+// Continuous in t (no Math.floor on motion), so sub-frame and half-frame renders stay smooth.
+function kf(t, keys, ease = EASE.standard) {
+  if (t <= keys[0][0]) return keys[0][1]
+  for (let i = 1; i < keys.length; i++) {
+    const [t1, v1] = keys[i], [t0, v0] = keys[i - 1]
+    if (t <= t1) {
+      const p = ease((t - t0) / (t1 - t0))
+      return Array.isArray(v0) ? v0.map((a, j) => lerp(a, v1[j], p)) : lerp(v0, v1, p)
+    }
+  }
+  return keys[keys.length - 1][1]
+}
+// 0..1 progress through [t0, t0 + dur], eased.
+const tween = (t, t0, dur, ease = EASE.standard) => ease(clamp((t - t0) / dur))
+// Sync helpers: where a sound belongs, computed from the motion itself. Never type a sync time by hand.
+// The velocity peak of a tween (a whoosh apex goes here):
+function peakOf(t0, dur, ease) {
+  let best = t0, v = -1
+  for (let i = 0; i < 400; i++) { const a = i / 400, d = ease(Math.min(1, a + 1 / 400)) - ease(a); if (d > v) { v = d; best = t0 + (a + 0.5 / 400) * dur } }
+  return best
+}
+// The frame a tween is visibly settled (97%): a landing or settle sound goes here, not on the tween's last frame.
+function settleOf(t0, dur, ease, thr = 0.97) { for (let a = 0; a <= 1; a += 1 / 600) if (ease(a) >= thr) return t0 + a * dur; return t0 + dur }
+// Seconds after its start until a spring first reaches `thr` of its travel: 0.5 = a pop-in, 1 = contact, 0.92 = a soft snap.
+function springReach(spr, thr = 1) { for (let t = 0; t < 4; t += 1 / 600) if (spring(t, spr.f, spr.z) >= thr - 5e-4) return t; return 4 }
+// Convention: comment every tween with its duration, curve and overshoot, in that order (e.g. // 280ms emphasized 0%),
+// so a review can check the code against the beat table without re-deriving the numbers.
+// Content inside a morphing container: enters after the morph starts, leaves before the next one, so text never overlaps.
+const swap = (t, tIn, tOut) => Math.min(spring(t - tIn - 0.08, SPR.enter.f, 1), 1 - spring(t - tOut + 0.12, SPR.exit.f, 1))
+// Seeded randomness. Never Math.random: the render must be identical every run.
+function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296 } }
+const hash = (i) => rng(i * 9973 + 17)()
+// Opacity, blur and visibility from one 0..1 value. Text lands sharp: blur only while it is mostly invisible.
+function vis(el, v, blurMax = 8) {
+  const k = clamp(v)
+  el.style.opacity = k.toFixed(4)
+  const b = (1 - k) * blurMax
+  el.style.filter = b > 0.05 ? `blur(${b.toFixed(2)}px)` : 'none'
+  el.style.visibility = k < 0.002 ? 'hidden' : 'visible'
+}
+
+// ============================================================================
+// LOOK: tokens only. No hex value outside this block.
+// ============================================================================
+// Several looks of one film: the same timing, layout and story, different tokens (?style=night, render --style night).
+// Each fill has a matching text colour (onX), so a restyle never strands text on a surface of its own colour.
+const STYLES = {
+  paper: { bg: '#F2F0EA', dots: '#141413', ink: '#141413', onInk: '#FFFFFF', surface: '#FFFFFF', onSurface: '#141413',
+    accent: '#2F6BFF', onAccent: '#FFFFFF', cursor: '#141413', cursorEdge: '#FFFFFF', display: '600', tracking: '-0.02em' },
+  night: { bg: '#101113', dots: '#F2F0EA', ink: '#F2F0EA', onInk: '#101113', surface: '#24262A', onSurface: '#F2F0EA',
+    accent: '#5B8CFF', onAccent: '#101113', cursor: '#F2F0EA', cursorEdge: '#101113', display: '600', tracking: '-0.02em' },
+}
+let TOKENS = STYLES.paper
+
+// ============================================================================
+// LAYOUT: every position derives from the format, so 16:9, 9:16 and 1:1 are re-laid out, never cropped.
+// ============================================================================
+let W = 1920, H = 1080, U = 10.8                    // U = 1% of the short side
+function setFormat(name) {
+  FILM.format = FILM.formats[name] ? name : '16:9'
+  ;[W, H] = FILM.formats[FILM.format]
+  U = Math.min(W, H) / 100
+  const stage = document.getElementById('stage')
+  stage.style.width = W + 'px'; stage.style.height = H + 'px'
+  const fx = document.getElementById('fx')
+  fx.width = W; fx.height = H
+  fitPreview()
+}
+
+// ============================================================================
+// SCENE: the demo. One shape, never cut: pill -> card -> circle -> pill, a cursor drives it, and it loops.
+// Replace from here down to the API block with your own film.
+// ============================================================================
+const $ = (id) => document.getElementById(id)
+const age = (t, b) => (((t - beat(b)) % FILM.duration) + FILM.duration) % FILM.duration  // seconds since beat b, cyclic
+const STATES = [                                    // [beat, width, height, radius, fill] in U units
+  [10, 52, 14, 7, 'ink'],                           // starts before the loop point so frame 0 is a composed hold
+  [2, 80, 50, 4, 'surface'],
+  [6, 30, 30, 15, 'accent'],
+]
+const CLICKS = [1.6, 5.6, 9.6]                      // beats: the cursor clicks just before each morph
+const CURSOR = [[0.2, 22, 4], [2.6, 34, 22], [4.4, 30, 18], [6.8, 24, 22], [8.4, 10, 8], [10.6, 40, 30]]
+const COPY = [                                      // [text, in beat, out beat, size in U]: one line at a time
+  ['Start here', 10, 14, 6],
+  ['A function of time', 2, 6, 5.6],
+  ['seek(t)', 6, 10, 5.4],
+]
+// Tracks hold seconds, so they are rebuilt whenever the beat changes (configure calls build()).
+let shapeW, shapeH, shapeR, cam, press, curX, curY
+function build() {
+  shapeW = track(STATES.map(([b, w]) => [beat(b), w]))
+  shapeH = track(STATES.map(([b, , h]) => [beat(b), h]))
+  shapeR = track(STATES.map(([b, , , r]) => [beat(b), r]))
+  cam = track([[beat(10), 1.25], [beat(2), 1], [beat(6), 1.35]], SPR.cam)
+  press = track(CLICKS.flatMap((b) => [[beat(b) - 0.12, 1, { f: 10, z: 1 }], [beat(b) + 0.04, 0, SPR.enter]]))
+  curX = track(CURSOR.map(([b, x]) => [beat(b), x]), SPR.cursor)
+  curY = track(CURSOR.map(([b, , y]) => [beat(b), y]), SPR.cursor)
+}
+// a cyclic swap: the line wraps across the loop point like everything else
+const swapLoop = (t, bIn, bOut) => Math.max(...[-1, 0, 1].map((c) => swap(t + c * FILM.duration, beat(bIn), beat(bOut))))
+
+function stateAt(t) {                               // the newest state whose beat has passed (cyclic)
+  let best = STATES[0]
+  for (const s of STATES) if (age(t, s[0]) < age(t, best[0])) best = s
+  return best
+}
+
+function drawFx(t) {                                // canvas layer: background texture, drawn from t only
+  const g = $('fx').getContext('2d')
+  g.clearRect(0, 0, W, H)
+  if (!window.__ALPHA__) { g.fillStyle = TOKENS.bg; g.fillRect(0, 0, W, H) }   // render --alpha: no background
+  const r = rng(7)
+  const drift = 2 * U * Math.sin((2 * Math.PI * t) / FILM.duration)   // periodic, so the loop seam matches
+  g.fillStyle = TOKENS.dots
+  g.globalAlpha = 0.07
+  for (let i = 0; i < 120; i++) {
+    g.beginPath(); g.arc(r() * W + drift, r() * H, 0.18 * U, 0, Math.PI * 2); g.fill()
+  }
+  g.globalAlpha = 1
+}
+
+function seek(tIn) {
+  const t = FILM.loop ? ((tIn % FILM.duration) + FILM.duration) % FILM.duration : clamp(tIn, 0, FILM.duration)
+  drawFx(t)
+  const c = cam(t)
+  $('world').style.transform = `translate(${W / 2}px, ${H / 2}px) scale(${c.toFixed(5)})`
+
+  const w = shapeW(t) * U, h = shapeH(t) * U, r = Math.min(shapeR(t) * U, w / 2, h / 2)
+  const p = 1 - 0.04 * clamp(press(t))
+  // colour floods from the click point, so ink -> white never passes through grey
+  const cur = stateAt(t), prev = STATES[(STATES.indexOf(cur) + STATES.length - 1) % STATES.length]
+  const a = age(t, cur[0]), t0 = t - a
+  const fx = clamp(curX(t0) * U + w / 2, 0, w), fy = clamp(curY(t0) * U + h / 2, 0, h)
+  const fr = Math.hypot(w, h) * spring(a, 1.7, 1)
+  Object.assign($('flood').style, { width: 2 * fr + 'px', height: 2 * fr + 'px', background: TOKENS[cur[4]], transform: `translate(${fx - fr}px, ${fy - fr}px)` })
+  Object.assign($('shape').style, {
+    width: w + 'px', height: h + 'px', borderRadius: r + 'px', background: TOKENS[prev[4]],
+    transform: `translate(${-w / 2}px, ${-h / 2}px) scale(${p})`,
+    boxShadow: '0 20px 60px rgba(0,0,0,0.16)',
+  })
+
+  const els = [$('label'), $('label2')]
+  els.forEach((el) => vis(el, 0))
+  COPY.forEach(([text, bIn, bOut, size], i) => {
+    const el = els[i % 2], v = swapLoop(t, bIn, bOut)
+    if (v <= 0.002) return
+    el.textContent = text
+    Object.assign(el.style, {
+      font: `${TOKENS.display} ${size * U}px/1 -apple-system, 'Helvetica Neue', Arial, sans-serif`,
+      letterSpacing: TOKENS.tracking, color: TOKENS['on' + stateAt(beat(bIn) + 0.01)[4][0].toUpperCase() + stateAt(beat(bIn) + 0.01)[4].slice(1)], whiteSpace: 'nowrap',
+    })
+    const bw = el.offsetWidth, bh = el.offsetHeight
+    el.style.transform = `translate(${-bw / 2}px, ${-bh / 2 + (1 - clamp(v)) * 2 * U}px)`
+    vis(el, v)
+  })
+
+  const arrow = $('cursor').firstElementChild
+  arrow.setAttribute('fill', TOKENS.cursor); arrow.setAttribute('stroke', TOKENS.cursorEdge)
+  const sx = W / 2 + curX(t) * U * c, sy = H / 2 + curY(t) * U * c
+  Object.assign($('cursor').style, { width: 6 * U + 'px', height: 6 * U + 'px',
+    transform: `translate(${sx - 0.7 * U}px, ${sy - 0.5 * U}px) scale(${1 - 0.14 * clamp(press(t))})`, transformOrigin: '12% 8%' })
+}
+
+// Designed hard cuts (seconds). The smoke test's pop scan skips these frames; an undeclared jump is a defect.
+function cuts() { return [] }
+
+// Sound cues: exported to the mixer so each sound's measured peak lands on its event.
+function cues() {
+  return [
+    ...CLICKS.map((b) => ({ t: beat(b), kind: 'click' })),
+    ...STATES.map(([b]) => ({ t: beat(b), kind: 'swish' })),
+    { t: beat(6), kind: 'pop' },
+  ]
+}
+
+// ============================================================================
+// API: what scripts/render.mjs and scripts/smoke.mjs call. Keep these names.
+// ============================================================================
+window.seek = seek
+window.configure = ({ beat: b, format, style } = {}) => {
+  if (b) { B = b; if (FILM.beats) FILM.duration = FILM.beats * B; build() }
+  if (format) setFormat(format)
+  if (style && STYLES[style]) TOKENS = STYLES[style]
+}
+window.timeline = () => ({ duration: FILM.duration, fps: FILM.fps, loop: FILM.loop, beat: B, bpm: 60 / B, format: FILM.format, formats: FILM.formats, styles: Object.keys(STYLES), size: [W, H], cues: cues(), cuts: cuts() })
+
+function fitPreview() {
+  if (window.__RENDER__) return
+  document.body.style.setProperty('--fit', Math.min(innerWidth / W, innerHeight / H) * 0.95)
+}
+build()
+const params = new URLSearchParams(location.search)
+setFormat(params.get('format') || FILM.format)
+if (params.get('style') && STYLES[params.get('style')]) TOKENS = STYLES[params.get('style')]
+if (!window.__RENDER__) {
+  document.body.classList.add('preview')
+  addEventListener('resize', fitPreview)
+  if (params.has('t')) document.fonts.ready.then(() => seek(+params.get('t')))
+  else {
+    // Preview only; the render never runs this clock. Click to hear audio/mix.wav in sync: while it plays, its
+    // currentTime is the clock, so picture and sound are judged together (browsers block sound until a click).
+    let t0 = performance.now()
+    const sound = new Audio('audio/mix.wav')
+    sound.loop = !!FILM.loop
+    addEventListener('click', () => {
+      if (sound.paused) { sound.currentTime = ((performance.now() - t0) / 1000) % FILM.duration; sound.play().catch(() => {}) }
+      else { sound.pause(); t0 = performance.now() - sound.currentTime * 1000 }
+    })
+    // Keys: space pauses, ←/→ seek 2 s, r restarts (preview only)
+    let held = null
+    const now = () => held ?? (!sound.paused && sound.readyState >= 2 ? sound.currentTime : (performance.now() - t0) / 1000)
+    const jump = (t) => { t = ((t % FILM.duration) + FILM.duration) % FILM.duration; t0 = performance.now() - t * 1000; if (held !== null) held = t; if (!sound.paused) sound.currentTime = t }
+    addEventListener('keydown', (e) => {
+      if (e.key === ' ') { if (held === null) { held = now(); sound.pause() } else { const t = held; held = null; jump(t) } }
+      else if (e.key === 'ArrowRight') jump(now() + 2)
+      else if (e.key === 'ArrowLeft') jump(now() - 2)
+      else if (e.key === 'r') jump(0)
+      else return
+      e.preventDefault()
+    })
+    const loop = () => { seek(now() % FILM.duration); requestAnimationFrame(loop) }
+    document.fonts.ready.then(loop)
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Make Video"
+  short_description: "Direct and render a video from code, gate by gate"

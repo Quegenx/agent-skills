@@ -1,0 +1,3 @@
+interface:
+  display_name: "Sound Pass"
+  short_description: "Caused SFX on measured peaks, mixed and mastered"
