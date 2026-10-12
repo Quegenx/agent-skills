@@ -12,10 +12,10 @@ The whole trick is one rule: **a frame is a pure function of its time.** `window
 From the film folder (`make-video` scaffolds it):
 
 ```bash
-cp <this skill>/templates/index.html .
+cp <this skill>/templates/index.html.
 cp <this skill>/scripts/render.mjs <this skill>/scripts/add-font.mjs <this skill>/scripts/gradient.py scripts/
-npm install                       # playwright, from the scaffolded package.json
-open index.html                   # live preview: click for sound in sync, space pauses, arrows seek 2 s, r restarts; ?t=2.5 ?format=9:16 ?style=night
+npm install # playwright, from the scaffolded package.json
+open index.html # live preview: click for sound in sync, space pauses, arrows seek 2 s, r restarts; ?t=2.5 ?format=9:16 ?style=night
 ```
 
 The template's demo (a pill that morphs to a card and a circle, driven by a cursor, looping) exists to show the kit working. It is one idea, not a template: keep the FILM, MOTION LIBRARY, LOOK, LAYOUT and API blocks, and replace the SCENE block with your film.
@@ -25,7 +25,7 @@ The template's demo (a pill that morphs to a card and a circle, driven by a curs
 - **No clock.** No CSS `transition`, `animation` or `@keyframes`, no `setTimeout`, no `requestAnimationFrame` in render mode, no `Date.now()` or `performance.now()`. The preview loop in the template is the only clock, and it is off when `window.__RENDER__` is set.
 - **No carried state.** Nothing accumulates between frames: no counters, no physics stepped frame by frame, no "previous value". Compute everything from `t` in closed form. A simulation that must integrate is precomputed once, deterministically, into an array indexed by time.
 - **No unseeded randomness.** `rng(seed)` and `hash(i)` only, never `Math.random()`.
-- **Values with many targets are sums of springs.** `track([[t, value, spring], ...])` adds one closed-form spring per change, so frame 812 renders without simulating frames 0-811. Colours use `colorTrack`.
+- **Values with many targets are sums of springs.** `track([[t, value, spring],...])` adds one closed-form spring per change, so frame 812 renders without simulating frames 0-811. Colours use `colorTrack`.
 - **The page exposes the API**: `seek(t)` (it may be `async`, for real footage; the renderer awaits it), `configure({ beat, format, style })` (rebuild every timed thing when the beat changes), and `timeline()` returning `{ duration, fps, loop, beat, bpm, format, formats, styles, size, cues, cuts }`. `cuts` lists designed hard cuts in seconds, so the pop scan doesn't flag them.
 - **Comment every tween with its duration, curve and overshoot**, in that order, so the code can be checked against the beat table.
 - **Readable text lives in the DOM**, so the smoke test can find overlaps and edges. Canvas, SVG and WebGL are for everything else, all drawn from `t`.
@@ -43,13 +43,13 @@ Techniques live in one reference per kind of film. Read only the one the shot li
 - [KINETIC-TYPE.md](KINETIC-TYPE.md): words in motion. Reading time as arithmetic, reveals with their numbers, letters with mass, motion that means what the words mean, writing that builds itself, letters that morph into shapes, exits in each device's own voice, the five composition models (fixed anchor, accretion, growing line, world-space, annotation) and the speed-read device.
 - [ILLUSTRATION.md](ILLUSTRATION.md): hand-drawn, ink, watercolour, characters (rigs, walk cycles, IK, acting), game feel and hit-stop, pixel art. Copy `templates/pen.js` (brush, pencil, watercolour, self-writing text, stable seeds, opt-in boil) and `templates/drawkit.js` (paper, textures, low-poly worlds, action effects, plants, and five ready rigs); both MIT, from claude-animation.
 - [DEPTH-AND-FOOTAGE.md](DEPTH-AND-FOOTAGE.md): real footage and clips, green-screen keying, stills in 2.5D, infinite zoom, 3D, faceted low-poly and extruded type, physics and data-slot numbers.
-- [SHADERS.md](SHADERS.md): per-pixel looks in WebGL with twgl.js (MIT, `npm i twgl.js`): moving noise gradients, glows, tunnels, kaleidoscopes, melting distance-field shapes, post passes, and feedback trails or GPU particles made deterministic by a fixed-step replay.
-- [ISOMETRIC.md](ISOMETRIC.md): how something works, explained by an invented machine whose moving parts do the idea (a queue as a marble run, a cache as a bookcase): the object-is-the-explanation rule, parts lists, four-tone solids, one lit part, painter's order, exploded views, and an anatomy figure driven by `seek(t)`. Its full toolset is in `templates/anatomy/` (MIT): the solids kit, round parts and pipes, the geometry audit, WebGL inside the drawing, the 3D mode, eight examples and their manuals; `examples/turning-dial/film.js` is a 3D figure driven by `seek(t)`.
+- [SHADERS.md](SHADERS.md): per-pixel looks in WebGL with twgl.js (`npm i twgl.js`): moving noise gradients, glows, tunnels, kaleidoscopes, melting distance-field shapes, post passes, and feedback trails or GPU particles made deterministic by a fixed-step replay.
+- [ISOMETRIC.md](ISOMETRIC.md): how something works, explained by an invented machine whose moving parts do the idea (a queue as a marble run, a cache as a bookcase): the object-is-the-explanation rule, parts lists, four-tone solids, one lit part, painter's order, exploded views, and an anatomy figure driven by `seek(t)`. Its full toolset is in `templates/anatomy/`: the solids kit, round parts and pipes, the geometry audit, WebGL inside the drawing, the 3D mode, eight examples and their manuals; `examples/turning-dial/film.js` is a 3D figure driven by `seek(t)`.
 - [SIMULATIONS.md](SIMULATIONS.md): swarms, agents, creatures with legs, machines to fly through, evidence walls, maps, terrain, crowds and light.
 - [DIRECTOR.md](DIRECTOR.md): a film cut automatically to a track, with captions on the beat, flashes and glitches.
 - [EFFECTS.md](EFFECTS.md): sixteen product and type effects, each one object becoming another (button to player, search to results, chart morph, dashboard zoom, masked and elastic type, glass focus, flowing paths, a particle logo or number), on an 8 s loop clock or held under narration.
 
-**The measured corpus.** [measured/](measured/README.md) holds thirteen references measured frame by frame from 53 professional motion moments (about 4,300 moves): durations by property, the 12 measured eases, twenty transition types with their numbers, type cadence, UI demos, endings, layout, world-building and a slop review (from motionmaxxing, Apache-2.0). The template carries the 12 eases as `MEASURED.<name>` (`softLand` for landings, `accelExit` and `crashOut` for leaving, `snapSettle` for hero and CTA entries, `popOver` for the rare late overshoot, `cruise` for fades and drift) with their typical lengths in `MEASURED_FRAMES`. Use those numbers for short moments and effects; `MOTION-NUMBERS.md` for whole films.
+**The measured corpus.** [measured/](measured/README.md) holds thirteen references measured frame by frame from 53 professional motion moments (about 4,300 moves): durations by property, the 12 measured eases, twenty transition types with their numbers, type cadence, UI demos, endings, layout, world-building and a slop review. The template carries the 12 eases as `MEASURED.<name>` (`softLand` for landings, `accelExit` and `crashOut` for leaving, `snapSettle` for hero and CTA entries, `popOver` for the rare late overshoot, `cruise` for fades and drift) with their typical lengths in `MEASURED_FRAMES`. Use those numbers for short moments and effects; `MOTION-NUMBERS.md` for whole films.
 
 **A 3D hero and phone UI.** `templates/hero3d/hero3d.js` is one seekable Three.js hero object (extruded text, an SVG logo with bevels, a coin, a glass slab, a phone, a glTF) with studio light, a moving softbox sweep, bloom and depth of field, every property a pure function of `t` through `renderAt(t)`: import it from `src/*.js`, `npm i three esbuild`, pass the font as a data URL (`opts.font`; Inter Bold is in `hero3d/fonts/`, `fontconv.py` turns a woff2 into a static ttf), bundle with `bundle.mjs`. Tested: chrome type with a sweep and a coin, bundled and rendered, every smoke counter 0. `templates/native-ui/` builds iOS UI at true proportions as HTML (`NativeUI.phone`, `lockScreen`, `notification`, `banner`, `appScreen`, `list`, `tabBar`, `appIcon`, `statusBar`); animate it with the template's own library (its `arrive` and `macro` helpers need motionmaxxing's GSAP runtime and are not used here). Every notification needs an icon, a title, a time and a real sentence, or it throws.
 
@@ -66,21 +66,21 @@ All colour lives in `TOKENS`, chosen from the named sets in `STYLES`. A second l
 ## Render
 
 ```bash
-node scripts/render.mjs still 0 2.5 7.9          # full-resolution stills -> out/stills/
-node scripts/render.mjs sheet --every 0.5        # labelled contact sheet -> out/sheets/sheet.png
-node scripts/render.mjs sheet --at 1,1.2,4.05    # exact moments
-node scripts/render.mjs beats                    # one settled frame per beat
-node scripts/render.mjs strip 3.9 4.3            # every frame of a stretch: pops, overlaps, ghosting
-node scripts/render.mjs full                     # out/16x9.mp4: 60 fps, 4 sub-frames blended, audio/mix.wav muxed
-node scripts/render.mjs full --format all        # every format in FILM.formats
+node scripts/render.mjs still 0 2.5 7.9 # full-resolution stills -> out/stills/
+node scripts/render.mjs sheet --every 0.5 # labelled contact sheet -> out/sheets/sheet.png
+node scripts/render.mjs sheet --at 1,1.2,4.05 # exact moments
+node scripts/render.mjs beats # one settled frame per beat
+node scripts/render.mjs strip 3.9 4.3 # every frame of a stretch: pops, overlaps, ghosting
+node scripts/render.mjs full # out/16x9.mp4: 60 fps, 4 sub-frames blended, audio/mix.wav muxed
+node scripts/render.mjs full --format all # every format in FILM.formats
 node scripts/render.mjs full --scale 0.5 --sub 1 # fast draft, and the animatic before polish
-node scripts/render.mjs full --range 4:7         # re-render only the affected seconds
-node scripts/render.mjs full --chunk 10          # long film: 10 s segments, a stopped render resumes where it left off
-node scripts/render.mjs full --gpu               # 3D or shader-heavy film: the real GPU (Metal on macOS), ~9x faster
-node scripts/bundle.mjs src.html index.html      # a film with module imports (three.js): bundle into one page first
-node scripts/render.mjs full --shutter 180 --sub 8 --grain 0.03   # a lens finish for a smooth film: shutter blur and seeded grain (grain encodes large: plan the file size)
-node scripts/render.mjs full --alpha             # transparent intro, outro or overlay: ProRes 4444 .mov (--alpha webm for the web)
-node scripts/render.mjs full --data data/acme.json --out out/acme.mp4   # one film per record: the page reads window.__DATA__
+node scripts/render.mjs full --range 4:7 # re-render only the affected seconds
+node scripts/render.mjs full --chunk 10 # long film: 10 s segments, a stopped render resumes where it left off
+node scripts/render.mjs full --gpu # 3D or shader-heavy film: the real GPU (Metal on macOS), ~9x faster
+node scripts/bundle.mjs src.html index.html # a film with module imports (three.js): bundle into one page first
+node scripts/render.mjs full --shutter 180 --sub 8 --grain 0.03 # a lens finish for a smooth film: shutter blur and seeded grain (grain encodes large: plan the file size)
+node scripts/render.mjs full --alpha # transparent intro, outro or overlay: ProRes 4444.mov (--alpha webm for the web)
+node scripts/render.mjs full --data data/acme.json --out out/acme.mp4 # one film per record: the page reads window.__DATA__
 ```
 
 **A film made of several scene pages** (one HTML file per scene, each with its own `seek`): render each with `--page`, then join them with no re-encode, scenes listed in order in `out/scenes.txt` as `file '01.mp4'` lines:
@@ -90,7 +90,7 @@ node scripts/render.mjs full --page scenes/01.html --out out/01.mp4 --audio none
 node scripts/render.mjs full --page scenes/02.html --out out/02.mp4 --audio none
 ffmpeg -f concat -safe 0 -i out/scenes.txt -c copy out/picture.mp4
 ffmpeg -i out/picture.mp4 -i audio/mix.wav -map 0:v -map 1:a -c:v copy -af apad -c:a aac -b:a 256k -ar 48000 \
-  -t "$(ffprobe -v error -show_entries format=duration -of csv=p=0 out/picture.mp4)" -movflags +faststart out/film.mp4
+ -t "$(ffprobe -v error -show_entries format=duration -of csv=p=0 out/picture.mp4)" -movflags +faststart out/film.mp4
 ```
 
 Cut each scene on a beat: give each page's duration in whole beats so the joins land on the grid. The sound is mixed once for the whole film, never per scene.

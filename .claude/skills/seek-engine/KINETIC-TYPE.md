@@ -1,6 +1,6 @@
 # Kinetic type
 
-Words in motion: how long a line must hold, how words arrive and leave, letters with mass, writing that builds itself, and where copy lives across a sequence. Every rule here stays a pure function of `t`. (Reading-time arithmetic, the inertia model, the composition models and the speed-read grammar after the klik motion skills, measured from reference films; written here in our own words.)
+Words in motion: how long a line must hold, how words arrive and leave, letters with mass, writing that builds itself, and where copy lives across a sequence. Every rule here stays a pure function of `t`.
 
 ## Reading time is arithmetic
 
@@ -29,7 +29,7 @@ Not as a primary reveal: a bare opacity fade, per-letter twinkling, anything mov
 - **Line replace:** the old line exits up and out in ~60% of the new line's entrance time, gone before the new line occupies its space; better still, the next line enters from the departing line's own place or through the same mask.
 - **The reveal-misspell check:** every frame of a partial reveal spells nothing or a real prefix of the word. A wipe through "Launch" may read "Lau"; a mask that clips letter tops can make "clear" read "dear". Check strips of every reveal at 4x zoom.
 - **Kerned big type:** statements at 88-128 px with `letter-spacing` −0.01 to −0.03 em; a single-line statement never wraps in any format (scale it to fit).
-- **Every word keeps its slot from the start.** A centred line that builds word by word is laid out whole on its first frame and each word is revealed in place (opacity, blur, a small rise), never added to the line, which would re-centre everything already standing on every word. A brand or partner name arrives with its logo inline, at about 0.8 of the text size. (After product-film-skill, MIT.)
+- **Every word keeps its slot from the start.** A centred line that builds word by word is laid out whole on its first frame and each word is revealed in place (opacity, blur, a small rise), never added to the line, which would re-centre everything already standing on every word. A brand or partner name arrives with its logo inline, at about 0.8 of the text size.
 - **Keep reading order and relationships:** letters may arrive playfully, but running copy assembles in reading order, and the letters of a line move as one system relative to each other, not as loose sprites. A small move can cue a bigger one (a signal before the event).
 
 ## Letters with mass

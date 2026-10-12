@@ -51,17 +51,17 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 
 ## Precedent per beat
 
-`python3 <this skill>/scripts/precedent.py query --beat proof --content ui --text "selection becomes result" --k 6` returns what professional motion designers did at that kind of beat: 156 measured rules (WHEN, DO, BECAUSE, with frame numbers and the moment ids they come from), the 53 study moments and 507 rules decoded from 39 reference films (`library/moments.jsonl`; beats hook, turn, proof, cta; content ui, type, logo, number, 3d). Run one query per beat, adopt one rule, and write its id beside the beat (`PR-A01: crop to one object at 3.3x, reveal the product by pulling back`). The rows are model-decoded and unverified: the measured numbers in seek-engine's `measured/` outrank them. (From motionmaxxing by Tejas Makwana, Apache-2.0, `library/LICENSE-motionmaxxing.txt`.)
+`python3 <this skill>/scripts/precedent.py query --beat proof --content ui --text "selection becomes result" --k 6` returns what professional motion designers did at that kind of beat: 156 measured rules (WHEN, DO, BECAUSE, with frame numbers and the moment ids they come from), the 53 study moments and 507 rules decoded from 39 reference films (`library/moments.jsonl`; beats hook, turn, proof, cta; content ui, type, logo, number, 3d). Run one query per beat, adopt one rule, and write its id beside the beat (`PR-A01: crop to one object at 3.3x, reveal the product by pulling back`). The rows are model-decoded and unverified: the measured numbers in seek-engine's `measured/` outrank them.
 
 ## Draw the techniques
 
 Left to choose, every agent picks the same fade-up, push-in and end card. Before designing shots, draw the film's techniques at random from the library, weighted to the format and energy:
 
 ```bash
-python3 <this skill>/scripts/draw_techniques.py --format launch --energy high --seconds 30     # a whole-film plan, seed printed
-python3 <this skill>/scripts/draw_techniques.py --category transition --n 3 --format launch     # three seams
-python3 <this skill>/scripts/draw_techniques.py --category camera --exclude ca-orbit-hero         # reroll one slot
-python3 <this skill>/scripts/draw_techniques.py --show tr-mask-wipe-swap                         # one entry in full
+python3 <this skill>/scripts/draw_techniques.py --format launch --energy high --seconds 30 # a whole-film plan, seed printed
+python3 <this skill>/scripts/draw_techniques.py --category transition --n 3 --format launch # three seams
+python3 <this skill>/scripts/draw_techniques.py --category camera --exclude ca-orbit-hero # reroll one slot
+python3 <this skill>/scripts/draw_techniques.py --show tr-mask-wipe-swap # one entry in full
 ```
 
 Formats: launch, feature, loop, sting, walkthrough, vertical; energy: calm, medium, high. Write the seed and the picks into `shotlist.md`. Build each pick the concept can carry, retold in the film's own objects; reroll a pick that fights the concept at most twice, or drop it with a written reason; never add a technique the draw did not give you (draw one with `--category`). A draw is a starting point, not a quota. The recipes were written for another engine: translate them to the seek-engine template's `tween`, `EASE`, `SPR`, `beat()` and `TOKENS`.
@@ -88,16 +88,16 @@ The test for a transition: the viewer thinks "of course the next scene came from
 ## shotlist.md
 
 ```
-Logline:  [≤ 15 words]
-Carrier:  [the object and its path through the shots]
-Grid:     [BPM, beat length, bars, where frame 0 sits in the track]
-Hero:     [the one hero moment and its time]
+Logline: [≤ 15 words]
+Carrier: [the object and its path through the shots]
+Grid: [BPM, beat length, bars, where frame 0 sits in the track]
+Hero: [the one hero moment and its time]
 
-#  time         state in → state out        purpose
-   reads        [t0-t1] first thing the viewer must understand (where is the eye?)
-                [t1-t2] next one
-   camera       [push 1.0 → 1.3, cam spring] · text "[exact words]" · sound [kind on beat]
-   transition   [how this shot hands its carrier to the next]
+# time state in → state out purpose
+ reads [t0-t1] first thing the viewer must understand (where is the eye?)
+ [t1-t2] next one
+ camera [push 1.0 → 1.3, cam spring] · text "[exact words]" · sound [kind on beat]
+ transition [how this shot hands its carrier to the next]
 ```
 
 Put the same times into the composition's data (state arrays, cue lists): the shot list and the code must not drift apart. When a retime happens, update the list first.
@@ -108,7 +108,7 @@ When the brief leaves the direction open, write three short storyboard variants 
 
 ## Audit the plan before building
 
-A plan that will read as a slideshow can be caught before any pixel (after OpenMontage's slideshow-risk and variation checks, AGPL-3.0, in our own words). Revise when most shots share one layout or one shot size, when descriptions repeat, when a shot has no purpose a viewer would name, when a camera move has no reason, when most shots are text first, or when a shot is described in stock words ("modern", "sleek", "dynamic", "stunning", "a person", "seamless"). Name the film's delivery promise in the brief (motion led, source footage led, data explainer, screen demo, presenter) and never quietly downgrade it: a film promised as motion that has to fall back to still images stops and asks.
+A plan that will read as a slideshow can be caught before any pixel. Revise when most shots share one layout or one shot size, when descriptions repeat, when a shot has no purpose a viewer would name, when a camera move has no reason, when most shots are text first, or when a shot is described in stock words ("modern", "sleek", "dynamic", "stunning", "a person", "seamless"). Name the film's delivery promise in the brief (motion led, source footage led, data explainer, screen demo, presenter) and never quietly downgrade it: a film promised as motion that has to fall back to still images stops and asks.
 
 ## Done when
 

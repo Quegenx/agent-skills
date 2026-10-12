@@ -3,12 +3,12 @@
 The prompt structures behind the films people copied. Each is a skeleton: fill the brackets from `brief.md`, keep the sections. All of them share one shape, and it is the useful part:
 
 ```
-<inputs>     what to ask the user for, with defaults if they skip
-<direction>  the look in concrete terms, plus a Banned line
-<structure>  the beat map: tempo, bars, what happens on which beat
-<build>      the render contract, numbered
-<gotchas>    the failures this kind of film always hits
-<start>      ask for inputs, then show the plan (beat map, stills) before code
+<inputs> what to ask the user for, with defaults if they skip
+<direction> the look in concrete terms, plus a Banned line
+<structure> the beat map: tempo, bars, what happens on which beat
+<build> the render contract, numbered
+<gotchas> the failures this kind of film always hits
+<start> ask for inputs, then show the plan (beat map, stills) before code
 ```
 
 ## 1. One shape, never cut (UI morph loop)
@@ -40,7 +40,7 @@ time, anything that looks like a template.
 
 <build>
 1. One HTML file. Every style is computed from time inside seek(t): no CSS transitions, no timers,
-   no state carried between frames.
+ no state carried between frames.
 2. Closed-form springs. A value that changes target many times is the sum of one spring per change.
 3. Content enters after its container starts morphing and leaves before the next morph.
 4. Tab indicators and toggle knobs: the leading and trailing edges ride different springs, so they stretch.
@@ -105,18 +105,18 @@ default (300 ms, ease-in-out, a 20 px slide, a bounce on everything); numbers ge
 
 ```
 MOTION BRIEF
-target        [seek-engine HTML | GSAP 3 | Remotion]
-canvas        [1440 × 900, 60 fps]
-beats         0.00  card group enters from +24px
-              0.28  cards settled, title begins
-              0.46  title settled, meta fades in
-              0.60  rest state
-duration      cards 280ms · title 220ms · meta 160ms
-easing        cards cubic-bezier(0.05, 0.7, 0.1, 1) · title (0.2, 0, 0, 1) · meta (0, 0, 0, 1)
-overshoot     0% (these carry information)
-stagger       60ms between cards, total under 400ms
-properties    transform and opacity only
-reduced       cross-fade 120ms, no translation
+target [seek-engine HTML | GSAP 3 | Remotion]
+canvas [1440 × 900, 60 fps]
+beats 0.00 card group enters from +24px
+ 0.28 cards settled, title begins
+ 0.46 title settled, meta fades in
+ 0.60 rest state
+duration cards 280ms · title 220ms · meta 160ms
+easing cards cubic-bezier(0.05, 0.7, 0.1, 1) · title (0.2, 0, 0, 1) · meta (0, 0, 0, 1)
+overshoot 0% (these carry information)
+stagger 60ms between cards, total under 400ms
+properties transform and opacity only
+reduced cross-fade 120ms, no translation
 ```
 
 Beats are a timeline, not a list: sequence relative to labels (`"<0.28"`), never as recomputed absolute
@@ -139,7 +139,7 @@ Treat this as a multi-session production. Don't rush to a final render.
 ## References and inputs
 - assets/refs/: [video / frames / image library]. Take the grammar, never the content.
 - audio/track.wav: use it unchanged. Measure beats first.
-- APIs in .env: [ELEVENLABS_API_KEY, FAL_KEY]. Budget: [$X]. Be economical.
+- APIs in.env: [ELEVENLABS_API_KEY, FAL_KEY]. Budget: [$X]. Be economical.
 
 ## Look
 [3-5 lines: palette, type, texture, camera language. Banned looks.]
@@ -148,22 +148,22 @@ Treat this as a multi-session production. Don't rush to a final render.
 [proportions, palette sampled from a sheet, expressions, an identity lock that survives every style change]
 
 ## Beat sheet
-0:00-0:02  hook: [the single most striking image]
-0:02-0:10  [act 1]
-...        a new visual payoff every 3-5 seconds
-[END]      the last frame sets up the first
+0:00-0:02 hook: [the single most striking image]
+0:02-0:10 [act 1]
+... a new visual payoff every 3-5 seconds
+[END] the last frame sets up the first
 
 ## Text on screen
 [where captions or lyrics go huge and where they sit like subtitles; composition leaves room for them]
 
 ## Workflow, with gates
 1. style-guide.md and shotlist.md (every shot: frames, camera, text, sound). Show me the shot list;
-   continue without waiting if I don't answer in 10 minutes.
+ continue without waiting if I don't answer in 10 minutes.
 2. A still for every shot. Contact sheet. Critique.
 3. Animatic at 960x540. Fix pacing before polish.
 4. Full animation, polish pass, sound pass, final render.
 5. Splitting work across subagents per chapter: write ANIMATION_GUIDE.md first so every subagent
-   codes in the same style, and STORYBOARD.md as the shared map.
+ codes in the same style, and STORYBOARD.md as the shared map.
 
 ## Critique loop (every shot, at least 3 rounds)
 Score hook, readability at 360 px wide, motion, composition, depth, sound sync, polish, 1-10. Log the
@@ -179,16 +179,16 @@ redraw the whole film in code on top of them, so the viewer only sees the code-d
 model supplies motion; the code supplies a consistent, ownable look. Build a verification loop for any
 generated asset that must sync to audio (lip-sync, lyric timing) before spending budget on the rest.
 
-**A song turned into a music video** (after the P(doom) music video, ideas only, in our words):
+**A song turned into a music video**:
 - Give every lyric line one gag that reads instantly in a 1.4-4 s shot with one focal action, told with pictures and acting, not text: the lyric is already on screen, so no labels or signs repeat it, and a handful of big sound words (one per big hit) is the whole text budget.
 - Build the arc into the world: chapters each have one set the camera moves through; every chorus returns to the same stage and escalates it (a party, then pyro, then a flood, then an alarm); one prop on that stage measures the song's argument and climbs each chorus, a thing the characters act on rather than an overlay; the hero grows across the film (a doodle on a screen, then person-sized, building-sized, planet-sized) and shrinks back at the reveal; the palette moves chapter by chapter; the last scene answers the first (the same curtain).
 - Inside a chapter the action carries the cut (a mouth closing on the lens to black, a fall, a push through an eye, a bubble popping); a wipe only at chapter breaks.
 - Lyrics in a karaoke bar along the bottom with the sung part filling word by word; keep faces and the action above that band.
 - Splitting chapters across subagents: each chapter is one file with private helpers that registers its shots as `shot(t, localT, dur)` functions painting the whole frame, pure functions of `t` (frames render out of order); a subagent edits only its own file and reports a bug in a shared file instead of fixing it; the guide names a per-frame render budget (for example 2.5 s) and the check every subagent runs (a sheet of the first, middle and last frame of each shot, frames every 0.1 s around each hit, the transitions in and out).
 
-**"Show the edit" hook** (after video-use's own launch film): when the story is "we removed something", make the removal visible. Each spoken word pops in on its timestamp with bars under it drawn from the real audio envelope; a filler grows letter by letter while it is spoken, turns to the accent and is cut out on screen on the same frame the audio cuts, and the next line lands at once. It works because the picture is driven by the same word and envelope data as the sound, so nothing can drift.
+**"Show the edit" hook**: when the story is "we removed something", make the removal visible. Each spoken word pops in on its timestamp with bars under it drawn from the real audio envelope; a filler grows letter by letter while it is spoken, turns to the accent and is cut out on screen on the same frame the audio cuts, and the next line lands at once. It works because the picture is driven by the same word and envelope data as the sound, so nothing can drift.
 
-**A changelog or release-notes film** (after HyperFrames' changelog-video, Apache-2.0, in our words). Visualize, don't list: route every item before writing the script, strongest first: recreate the real surface that changed and let a mock act out the change; else an honest analog whose behaviour *is* the change; else type the command and show its result; a checklist only for genuinely non-visual items (fixes, dependency bumps), at most six rows with a tick landing on each item's spoken word. An analog shows a behaviour, never a screen that doesn't exist: faster is a counter and bar running slow then fast; caching is two identical request rows where the second short-circuits to done; batching is ticks drawing into brackets; dedupe is parallel rows collapsing onto one lane and a count dropping; a concurrency cap is a queue of chips at a gate where the first few pass; an error is the surface failing quietly and a toast sliding in with the reason. The edit is the job: 45-60 s, each theme one hero visual and at most three spoken items (a 30-item changelog still yields about 14 spoken beats), themes ordered marquee feature, product surface, performance, reliability, and everything else lives behind the outro's link to the full notes. Record each new surface you mock (its anatomy and the choreography that worked) so next week's film reuses it.
+**A changelog or release-notes film**. Visualize, don't list: route every item before writing the script, strongest first: recreate the real surface that changed and let a mock act out the change; else an honest analog whose behaviour *is* the change; else type the command and show its result; a checklist only for genuinely non-visual items (fixes, dependency bumps), at most six rows with a tick landing on each item's spoken word. An analog shows a behaviour, never a screen that doesn't exist: faster is a counter and bar running slow then fast; caching is two identical request rows where the second short-circuits to done; batching is ticks drawing into brackets; dedupe is parallel rows collapsing onto one lane and a count dropping; a concurrency cap is a queue of chips at a gate where the first few pass; an error is the surface failing quietly and a toast sliding in with the reason. The edit is the job: 45-60 s, each theme one hero visual and at most three spoken items (a 30-item changelog still yields about 14 spoken beats), themes ordered marquee feature, product surface, performance, reliability, and everything else lives behind the outro's link to the full notes. Record each new surface you mock (its anatomy and the choreography that worked) so next week's film reuses it.
 
 ## 5. The showreel one-liner
 
@@ -203,12 +203,12 @@ tests the setup; it never tests an idea, because it contains none. Hundreds of i
 reels that rhyme with each other. Variants that shipped:
 
 - longer, with a sound bar: "16:9, 60 s, S-tier sound design, no generic synth pads, compose an original
-  score and sync every cut to it"
+ score and sync every cut to it"
 - anti-slop: "avoid frames and text in the corners, the usual giveaways of AI-made video"
 - a story instead of techniques: "the history of [TOPIC] from [START] to today, surprise me with the
-  storyboard, 45 s, 9:16"
+ storyboard, 45 s, 9:16"
 - a persona: "a 30 s showreel as a niche branding studio for [audience]; every graphic from scratch; one
-  accent colour; every shot a different technique"
+ accent colour; every shot a different technique"
 - pointed at a product: add the URL, "use the actual product screenshots, logo and assets", and "must have music"
 
 ## 6. Voiceover-led launch film
@@ -264,7 +264,7 @@ Banned: any feature the site doesn't have, invented numbers, paraphrased tagline
 <build>
 1. Scrape first: copy, handles, avatars, preview media, one full entry. Quote all of it verbatim.
 2. Lay the site out once in world coordinates; drive the camera as (x, y, log-scale) tracks. A tile's corner
-   radius goes to 0 as it reaches full-bleed, so pull-backs, whip-ins and match cuts are exact.
+ radius goes to 0 as it reaches full-bleed, so pull-backs, whip-ins and match cuts are exact.
 3. Real clips: detect their internal cuts, loop only cut-free windows with a 12-frame dissolve, stagger phases.
 4. One cursor that homes on the live button position, because the camera keeps creeping during holds.
 5. Stills at every cut before the full render; then a fresh critic who didn't build it reviews the render.
@@ -285,7 +285,7 @@ values, and keep the cut frames exact even where they don't sit on a beat.
 Frame numbers at [fps] (f0-f[N]); master rendered at 2x that rate.
 S1 f0-71, [what]: [element] rises y932 (f0) -> 776 (f2) -> 683 (f5) -> 608 (f10) -> 546 (f24), drifting 1 px/frame
 after. Name appears f2 blurred; pill f4-5 heavily blurred, sliding 15 px left as it sharpens. Camera 1.0 f46 ->
-1.2 f60 ease-in-out ... (one line per shot, every value with its frame)
+1.2 f60 ease-in-out... (one line per shot, every value with its frame)
 Rules: every value continuous in the frame number (keyframe tables, no Math.floor on motion); every shot enters
 already moving and leaves accelerating or on a blur ramp; blur follows speed and direction; nothing freezes
 except one named hold. Then 4 stills at named frames before the full render.
@@ -325,7 +325,7 @@ language, remaining compromises, commands to reproduce. Don't deploy, merge or t
 A spoken-word film staged entirely in type: words get structural roles and the layout itself carries the emotion.
 
 ```
-EXACT WORDS, EXACT ORDER: "[line 1]" "[line 2]" ... (understandable without audio)
+EXACT WORDS, EXACT ORDER: "[line 1]" "[line 2]"... (understandable without audio)
 CENTRAL RULE: words have roles ([WORD] is a lintel, [WORD] a support, [WORD] a platform), built from the actual
 glyph paths, never from illustrations behind the text.
 STORYBOARD: one row per line with its time range and what it does to the architecture of the frame.
@@ -374,23 +374,23 @@ Show a preview to someone in the audience before polish, and check terms, formul
 You cannot hear the narration: say so, and have a person listen to the whole track (names, terms, numbers) before it ships.
 ```
 
-Shaping an explainer (after HyperFrames' faceless-explainer story design, Apache-2.0, in our words). Pick one structure, never a splice: a concept explainer (name the idea, reveal its mechanism layer by layer, land the implication) for one idea the audience half-knows; a how-to (3-6 ordered steps on one consistent stage, the object being worked on carried from step to step); a listicle (a hook, N co-equal items, rule of three strongest, a wrap); a story explainer (setup, tension, turn, resolution, a lesson that generalises). Open with one hook strategy that opens a gap or names stakes, never a definition: a credible shocking number, a rhetorical question, a counterintuitive claim, validating a confusion the viewer already has, a visceral metaphor, naming the concept as a memorable term, direct address, an "imagine" scenario, or a real cost of getting it wrong. Every beat names the technique that makes it land, not "explain the idea": an analogy, a worked example with real numbers, progressive disclosure, a before and after, common belief against reality, a counterexample, frame-then-fill, a causal chain, a demonstration of the mechanism running, a callback to the hook, a distillation into one line. When the idea is a mechanism (an algorithm, a protocol, a system), the stage can be an invented machine whose moving parts do the idea, never boxes and arrows: a queue as a marble run, an LRU cache as a bookcase that pushes its oldest book off the end, a bloom filter as a fruit machine (seek-engine `ISOMETRIC.md`, after the anatomy skill, MIT). The body is 3-6 frames on one stage that keeps growing (the same diagram, the same number line) with one repeated seam between them; an element that transforms from one idea into the next does it inside one shot, not across a cut. Animate what you would explain as "first this, then that" (a sequence, a transformation, an assembly, a comparison of states, change over time) and show static what you would explain by pointing at one picture (a labelled diagram, a dense table). Build a hard equation by showing it whole and dimmed to ~20% so the viewer sees where it is going, then lighting each term as it is explained. Teaching needs more time than promos: a new equation about 2 s to appear and 2 s held, a new label 1 s and 1 s, the key insight 2.5 s and 3 s, with a deliberate pause before it. (These after video-use's manim-video references, MIT.) Teaching follows Mayer's multimedia-learning principles: one new concept every 30-45 s at most (a 3-minute film carries 4-6); a spoken signpost about as often; picture and narration at the same moment, never seconds apart; cut the interesting but irrelevant detail, which lowers what is learned; narration with pictures beats written text with pictures, so don't print what the voice is saying. Link sections with "but" and "therefore", never "and then"; give working memory a short breather (a pause, a visual joke) every 45-60 s; hold 1-3 s of quiet after the key insight. A 3-minute shape: hook to 0:08, the gap or misconception to 0:30, the foundation, the complication, a breather, the key insight (the most polished shot), a proof in one concrete case, the implications, a close that calls back to the hook; for 1 minute keep 1-2 concepts and a 5 s hook. (Arc after OpenMontage's storytelling guide, AGPL-3.0, in our own words.)
+Shaping an explainer. Pick one structure, never a splice: a concept explainer (name the idea, reveal its mechanism layer by layer, land the implication) for one idea the audience half-knows; a how-to (3-6 ordered steps on one consistent stage, the object being worked on carried from step to step); a listicle (a hook, N co-equal items, rule of three strongest, a wrap); a story explainer (setup, tension, turn, resolution, a lesson that generalises). Open with one hook strategy that opens a gap or names stakes, never a definition: a credible shocking number, a rhetorical question, a counterintuitive claim, validating a confusion the viewer already has, a visceral metaphor, naming the concept as a memorable term, direct address, an "imagine" scenario, or a real cost of getting it wrong. Every beat names the technique that makes it land, not "explain the idea": an analogy, a worked example with real numbers, progressive disclosure, a before and after, common belief against reality, a counterexample, frame-then-fill, a causal chain, a demonstration of the mechanism running, a callback to the hook, a distillation into one line. When the idea is a mechanism (an algorithm, a protocol, a system), the stage can be an invented machine whose moving parts do the idea, never boxes and arrows: a queue as a marble run, an LRU cache as a bookcase that pushes its oldest book off the end, a bloom filter as a fruit machine (seek-engine `ISOMETRIC.md`). The body is 3-6 frames on one stage that keeps growing (the same diagram, the same number line) with one repeated seam between them; an element that transforms from one idea into the next does it inside one shot, not across a cut. Animate what you would explain as "first this, then that" (a sequence, a transformation, an assembly, a comparison of states, change over time) and show static what you would explain by pointing at one picture (a labelled diagram, a dense table). Build a hard equation by showing it whole and dimmed to ~20% so the viewer sees where it is going, then lighting each term as it is explained. Teaching needs more time than promos: a new equation about 2 s to appear and 2 s held, a new label 1 s and 1 s, the key insight 2.5 s and 3 s, with a deliberate pause before it. Teaching follows Mayer's multimedia-learning principles: one new concept every 30-45 s at most (a 3-minute film carries 4-6); a spoken signpost about as often; picture and narration at the same moment, never seconds apart; cut the interesting but irrelevant detail, which lowers what is learned; narration with pictures beats written text with pictures, so don't print what the voice is saying. Link sections with "but" and "therefore", never "and then"; give working memory a short breather (a pause, a visual joke) every 45-60 s; hold 1-3 s of quiet after the key insight. A 3-minute shape: hook to 0:08, the gap or misconception to 0:30, the foundation, the complication, a breather, the key insight (the most polished shot), a proof in one concrete case, the implications, a close that calls back to the hook; for 1 minute keep 1-2 concepts and a 5 s hook.
 
 Variants that shipped:
 - **Talking head into explainer:** keep the speaker's audio, captions and duration untouched; shrink the speaker into a round picture-in-picture in a lower corner (clear of the captions) and draw each concept in the main frame as it is spoken.
-- **Talking head with designed cards** (after HyperFrames' talking-head-recut, Apache-2.0): the clip plays untouched and timed cards (a title, a lower third, a data callout, a quote, a side panel) arrive when the transcript reaches them. Four ways the speaker and a card share the frame, chosen per moment: side by side (equal weight, speaker and data), stacked (the speaker on top, a summary card below), the card full frame with the speaker in a corner (a content-heavy moment), or the speaker full frame with a card floating over the bottom (a dramatic moment). Move between them by tweening the video's own box, and pick the card style by the talk's tone, not its topic.
+- **Talking head with designed cards**: the clip plays untouched and timed cards (a title, a lower third, a data callout, a quote, a side panel) arrive when the transcript reaches them. Four ways the speaker and a card share the frame, chosen per moment: side by side (equal weight, speaker and data), stacked (the speaker on top, a summary card below), the card full frame with the speaker in a corner (a content-heavy moment), or the speaker full frame with a card floating over the bottom (a dramatic moment). Move between them by tweening the video's own box, and pick the card style by the talk's tone, not its topic.
 - **Split-screen lesson:** the lesson on one half, a calm looping gameplay-style motion on the other, for vertical feeds; the lesson half still obeys every reading rule.
 - **Maths and physics:** Manim instead of the seek engine, voiced by the voiceover skill.
 - **A "why" film, briefed in one line:** the question people half understand, then the visual turn nobody expects, then the metaphor that carries the idea ("Why do we dream? Then someone wakes up, zooms out of the eye and into outer space; neural networks of interconnection stand for the brain."). The opening line has to promise what's coming: say the question big, show the first surprise inside 5 s.
 - **Documentary shot types**, one per line of script: a kinetic statement (three short lines of bold condensed type on a torn paper strip); paper cards dropping in for several things at once; a before and after (same card, the date chip flips); a label call-out (a marker circle draws itself, then the label); a counter; a grid of identical tiles where one breaks the pattern. Cards and objects that move in depth, never a lone bar or line crossing an empty frame. Say "looks like" when the research shows only a similarity, and "one reason", never "the reason".
 - **History recap:** a timeline device (a line that draws on, years as big numerals) carries every era; one image per era, never a slideshow of facts.
-- **The hidden-in-plain-sight collage** (a font, a road sign, a word everyone uses; after hyperframes-community-skills' vox-explainer, Apache-2.0, in our words). The film makes the viewer recognise the thing first, then pays it off with a causal history. Pick topics with four tests, used to choose, never to refuse one the user names: the viewer meets it daily and has never looked at it (or everyone dates it wrong); the story lands on a person and a date within one beat; one beat lets the eye verify the claim unaided; the receipts exist as free archival material. Spine for 60 s: the familiar thing and more instances of it 15%, the dig ("and it comes back to [person], [year]") 5%, the story with its why 15%, the one physical artifact held on screen 10%, the mechanism the viewer verifies 20%, a later technology removing a constraint 15%, the thesis in two plain sentences 10%, a close that mirrors the open with a fact the viewer doesn't have 10%. About 150 words a minute; ~225 words is the ceiling for 90 s, and a beat that can't be filled honestly is cut, never faked.
-  - **From a supplied document** (a memo, report, paper or link), the source is ore, not an outline: never film it section by section. Pull out the recognition its intended audience already has, the claim that contradicts what they assume, the turn the story pivots on, the one claim the viewer can verify on screen (build the demonstration if the source only asserts it) and the receipts. One storyline per film; everything else becomes a receipt. The narration never mentions the source ("the memo says", "according to the doc"): if a line only parses for someone who read the original, cut it.
-  - **The look is a collage of printed objects on a pale ground:** photos as cards, history as clippings, data as specimens, one recurring shape as the carrier. Every beat names its layout and its motion before the build, so the film can't drift into a slideshow: at least one push into a photograph that isolates its subject, at least one pull-back arrival on a payoff, a subject lifted off its photo doing what a flat card can't, static cards or side-by-sides in at most a third of the beats, and no two beats in a row with the same layout or the same move. Elements move on 12 fps steps over a smooth camera.
-  - **Words on screen have one of three jobs or are cut:** a ≤3-word anchor with a drawn arrow whose tip touches the subject; one promoted sentence per act, staircased over 2-3 lines; or a name (a credit, a label) in the same slot every time. Every highlight, underline or circled word animates on (a bar sweeping left to right behind the words in ~0.4 s, a circle drawing itself); a highlight that simply appears reads as pre-printed. The caption rail stays clear of every other element.
-  - **Frame rules for the contact sheet:** no lone element drifting on empty ground (every element relates to the grid or to another element); labels sit within one gap of what they name; a grid has no empty cell; a circle or arrow drawn on a photo is checked against the feature's actual pixels; text in a shape sits optically centred within ~70% of it; nothing spills out of its container. Real photographs are never recreated (a missing photo turns the beat typographic); a recreated document says so on the frame.
+- **The hidden-in-plain-sight collage**. The film makes the viewer recognise the thing first, then pays it off with a causal history. Pick topics with four tests, used to choose, never to refuse one the user names: the viewer meets it daily and has never looked at it (or everyone dates it wrong); the story lands on a person and a date within one beat; one beat lets the eye verify the claim unaided; the receipts exist as free archival material. Spine for 60 s: the familiar thing and more instances of it 15%, the dig ("and it comes back to [person], [year]") 5%, the story with its why 15%, the one physical artifact held on screen 10%, the mechanism the viewer verifies 20%, a later technology removing a constraint 15%, the thesis in two plain sentences 10%, a close that mirrors the open with a fact the viewer doesn't have 10%. About 150 words a minute; ~225 words is the ceiling for 90 s, and a beat that can't be filled honestly is cut, never faked.
+ - **From a supplied document** (a memo, report, paper or link), the source is ore, not an outline: never film it section by section. Pull out the recognition its intended audience already has, the claim that contradicts what they assume, the turn the story pivots on, the one claim the viewer can verify on screen (build the demonstration if the source only asserts it) and the receipts. One storyline per film; everything else becomes a receipt. The narration never mentions the source ("the memo says", "according to the doc"): if a line only parses for someone who read the original, cut it.
+ - **The look is a collage of printed objects on a pale ground:** photos as cards, history as clippings, data as specimens, one recurring shape as the carrier. Every beat names its layout and its motion before the build, so the film can't drift into a slideshow: at least one push into a photograph that isolates its subject, at least one pull-back arrival on a payoff, a subject lifted off its photo doing what a flat card can't, static cards or side-by-sides in at most a third of the beats, and no two beats in a row with the same layout or the same move. Elements move on 12 fps steps over a smooth camera.
+ - **Words on screen have one of three jobs or are cut:** a ≤3-word anchor with a drawn arrow whose tip touches the subject; one promoted sentence per act, staircased over 2-3 lines; or a name (a credit, a label) in the same slot every time. Every highlight, underline or circled word animates on (a bar sweeping left to right behind the words in ~0.4 s, a circle drawing itself); a highlight that simply appears reads as pre-printed. The caption rail stays clear of every other element.
+ - **Frame rules for the contact sheet:** no lone element drifting on empty ground (every element relates to the grid or to another element); labels sit within one gap of what they name; a grid has no empty cell; a circle or arrow drawn on a photo is checked against the feature's actual pixels; text in a shape sits optically centred within ~70% of it; nothing spills out of its container. Real photographs are never recreated (a missing photo turns the beat typographic); a recreated document says so on the frame.
 
-**A film built from someone's real words** (their sessions, messages, commits, reviews; after session-story, MIT): ask before reading any history; quote verbatim as a contiguous span of what they wrote (cutting to a shorter span is fine, rewording, merging or fixing spelling is not), and record each line's source (session, timestamp). Pick the typical session or day, not the most dramatic one, in the order it happened, and leave out a kind of moment their history doesn't show. Before any design pass, show the person one table of every line that will appear on screen with its kind and source, ask which name goes on screen, and strip anything naming another person, a client or company, a product under NDA, a file path, a URL, an email, an identifying number or a secret (automated flags miss a lowercase name: read every line). Take their edits, get an explicit yes, and until then stamp every frame DRAFT. The film holds their words: it is theirs to share, never posted or uploaded by you.
+**A film built from someone's real words**: ask before reading any history; quote verbatim as a contiguous span of what they wrote (cutting to a shorter span is fine, rewording, merging or fixing spelling is not), and record each line's source (session, timestamp). Pick the typical session or day, not the most dramatic one, in the order it happened, and leave out a kind of moment their history doesn't show. Before any design pass, show the person one table of every line that will appear on screen with its kind and source, ask which name goes on screen, and strip anything naming another person, a client or company, a product under NDA, a file path, a URL, an email, an identifying number or a secret (automated flags miss a lowercase name: read every line). Take their edits, get an explicit yes, and until then stamp every frame DRAFT. The film holds their words: it is theirs to share, never posted or uploaded by you.
 
 ## 14. Illustrated short from generated stills
 
@@ -410,7 +410,7 @@ per shot; -16 LUFS. Render previews per shot as sheets and fix before the master
 
 ## 15. Model showdown (one brief, several AI models)
 
-A fair test people can check: the same brief word for word to each model, the first try only (no re-rolls, no fixes, no "one more go" for the one you hoped would win), each model delivering one self-contained `seek(t)` page that one shared renderer exports at identical settings. A model that fails or returns broken HTML keeps its panel, saying so. Label each panel with the full model name and version on its own dark tile (a logo over footage vanishes on light frames). 16:9 side by side for a newsletter, three 1080×360 panels stacked inside the 9:16 safe band for a feed. (After model-showdown in motion-graphics-skills, MIT.)
+A fair test people can check: the same brief word for word to each model, the first try only (no re-rolls, no fixes, no "one more go" for the one you hoped would win), each model delivering one self-contained `seek(t)` page that one shared renderer exports at identical settings. A model that fails or returns broken HTML keeps its panel, saying so. Label each panel with the full model name and version on its own dark tile (a logo over footage vanishes on light frames). 16:9 side by side for a newsletter, three 1080×360 panels stacked inside the 9:16 safe band for a feed.
 
 ## One-line starters by kind of film
 

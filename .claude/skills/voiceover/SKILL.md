@@ -19,14 +19,14 @@ The agent can check levels, timing and word times, never how a line sounds. Say 
 
 ```json
 [
-  { "id": "hook", "text": "It all started with one prompt.", "gap": 0.4 },
-  { "id": "steps", "text": "Step one: take it apart.", "say": "Step one... take it apart." },
-  { "id": "he", "text": "שלום עולם", "say": "שָׁלוֹם עוֹלָם" }
+ { "id": "hook", "text": "It all started with one prompt.", "gap": 0.4 },
+ { "id": "steps", "text": "Step one: take it apart.", "say": "Step one... take it apart." },
+ { "id": "he", "text": "שלום עולם", "say": "שָׁלוֹם עוֹלָם" }
 ]
 ```
 
 - `text` is what captions show; `say` is what the voice reads. Fix pronunciation in `say` only (spell out numbers and acronyms, add nikud to Hebrew, punctuation for pacing, v3 audio tags) so captions stay clean.
-- Respelling rules for `say` (after HyperFrames' changelog-video, Apache-2.0): an initialism read letter by letter gets spaced or hyphenated letters (`C L I`, `A P I`); an acronym said as a word gets a phonetic respelling (`JSON` as `jay-sawn`, `GSAP` as `jee-sap`); a mixed compound gets hyphenated lowercase in one run (`ffmpeg` as `ff-mpeg`, `OAuth` as `oh-auth`), never spaced capitals, which the voice reads as isolated letters with hard stops; a URL says its dots (`hyperframes dot hey-jen dot com`); versions, hashes and issue numbers are not spoken at all; emphasis and pauses come from commas and dashes, never capitals, and an ellipsis is unreliable. A slash command is said as "slash figma" and captioned `/figma`. When two respellings are close, generate both takes of the real sentence and pick by ear. Keep the respellings in one lexicon file so every film says a term the same way.
+- Respelling rules for `say`: an initialism read letter by letter gets spaced or hyphenated letters (`C L I`, `A P I`); an acronym said as a word gets a phonetic respelling (`JSON` as `jay-sawn`, `GSAP` as `jee-sap`); a mixed compound gets hyphenated lowercase in one run (`ffmpeg` as `ff-mpeg`, `OAuth` as `oh-auth`), never spaced capitals, which the voice reads as isolated letters with hard stops; a URL says its dots (`hyperframes dot hey-jen dot com`); versions, hashes and issue numbers are not spoken at all; emphasis and pauses come from commas and dashes, never capitals, and an ellipsis is unreliable. A slash command is said as "slash figma" and captioned `/figma`. When two respellings are close, generate both takes of the real sentence and pick by ear. Keep the respellings in one lexicon file so every film says a term the same way.
 - Write for the ear: short sentences, one idea each, in the pace the brief asks for ("a cool tutorial pace" is a direction the voice model can follow in `say`).
 - Emotion tags (v3) sparingly: `[softly]` on quiet lines, `[excited]` on the one line that peaks. An opener tagged `[warmly]` can sound whispered and `[excited]` everywhere sounds fake. Leave the opener untagged and end it on a plain full stop.
 - A launch voiceover that works: "This is [name]. A [category]… built for [value]. [Verb] in any style. Give it a [input], and it just… understands. … [Name]. Out now." Adapt every line to the product.
@@ -34,7 +34,7 @@ The agent can check levels, timing and word times, never how a line sounds. Say 
 ## Generate
 
 ```bash
-uv run scripts/tts.py --voice <voice_id>                  # model eleven_v3 by default
+uv run scripts/tts.py --voice <voice_id> # model eleven_v3 by default
 uv run scripts/tts.py --voice <voice_id> --max-pause 0.3 --speed 1.15
 ```
 
@@ -45,13 +45,13 @@ uv run scripts/tts.py --voice <voice_id> --max-pause 0.3 --speed 1.15
 
 ## Takes
 
-**Direct the read before generating it** (after OpenMontage's voice performance director, AGPL-3.0, in our own words). "Read naturally" or "expressive" directs nothing: give the whole script one performance intent and an energy curve (a measured hook, a warmer middle, a deliberate close), and each line its pace, energy, the one or two words to stress, and pauses (short after a setup, longer before a reversal, a surprising claim or the takeaway); one delivery idea per line, so a line with three emotional turns is split. With ElevenLabs, a lower `stability` gives more variation, a moderate `style` more expression, `speed` stays within 0.7-1.2, and `similarity_boost` stays high enough to keep the voice. Generate the most performance-sensitive line first, not the first line, and approve it before the batch; a change of voice, model or settings after that needs a new sample.
+**Direct the read before generating it**. "Read naturally" or "expressive" directs nothing: give the whole script one performance intent and an energy curve (a measured hook, a warmer middle, a deliberate close), and each line its pace, energy, the one or two words to stress, and pauses; one delivery idea per line, so a line with three emotional turns is split. With ElevenLabs, a lower `stability` gives more variation, a moderate `style` more expression, `speed` stays within 0.7-1.2, and `similarity_boost` stays high enough to keep the voice. Generate the most performance-sensitive line first, not the first line, and approve it before the batch; a change of voice, model or settings after that needs a new sample.
 
 Voices vary between generations, so pick, don't settle:
 
 ```bash
-uv run scripts/tts.py --voice <voice_id> --takes 4                 # 4 takes of every line into audio/vo/takes/
-uv run scripts/tts.py --voice <voice_id> --takes 4 --only steps    # a line that sounds wrong: 4 new tries of just it
+uv run scripts/tts.py --voice <voice_id> --takes 4 # 4 takes of every line into audio/vo/takes/
+uv run scripts/tts.py --voice <voice_id> --takes 4 --only steps # a line that sounds wrong: 4 new tries of just it
 ```
 
 Listen (or let the user listen), set `"take": k` on each line in `vo-script.json`, and run without `--takes` to assemble the chosen takes. Everything stays cached, so switching takes costs nothing.
@@ -60,7 +60,7 @@ Writes `audio/vo.wav` and `audio/vo.json`:
 
 ```json
 { "duration": 41.3, "lines": [ { "id": "hook", "text": "...", "start": 0.0, "end": 2.1,
-  "words": [ { "word": "It", "start": 0.03, "end": 0.12 }, ... ] } ] }
+ "words": [ { "word": "It", "start": 0.03, "end": 0.12 },... ] } ] }
 ```
 
 ## Subtitles

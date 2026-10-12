@@ -8,11 +8,11 @@ A film is three separate choices, and keeping them apart is what makes a brief b
 
 "Cyberpunk + cinematic" is a look and a motion language. "A SaaS demo, but snappy" is a type and a motion language. When a request names two looks, the first owns layout, type and texture and the second lends palette and mood; with two motion languages the first owns curves and timing and the second adds its one signature trait (a glitch's displacement, an elastic's landing squash). Write all three into `brief.md`, plus any defaults you applied.
 
-**Three dials before any concept** (after OpenMontage's taste direction, AGPL-3.0, in our own words): visual variance (one tight grammar, a few scene families, or a new mode per beat), motion intensity (calm holds, clear accents, fast kinetic changes) and information density (one idea a frame, an idea with support, dense diagrams), each 1-10, with a one-line design read that names the audience and the reason ("investor-facing AI launch: precise, restrained, credible; no hype visuals", never just "modern and clean"). The dials constrain each other: high motion with low density means short kinetic beats, not dense diagrams; low motion with high density means stable frames, builds and long holds; high variance needs stronger anchors (recurring type, palette, framing or a sound motif).
+**Three dials before any concept**: visual variance (one tight grammar, a few scene families, or a new mode per beat), motion intensity (calm holds, clear accents, fast kinetic changes) and information density (one idea a frame, an idea with support, dense diagrams), each 1-10, with a one-line design read that names the audience and the reason ("investor-facing AI launch: precise, restrained, credible; no hype visuals", never just "modern and clean"). The dials constrain each other: high motion with low density means short kinetic beats, not dense diagrams; low motion with high density means stable frames, builds and long holds; high variance needs stronger anchors (recurring type, palette, framing or a sound motif).
 
 ## Sameness hides in structure
 
-Two films can share no colour and still be the same film. Before building, write this film's structure beside the last one's and change at least two of: the rhetorical device (many into one, before and after, a day in the life, testimony, pure demonstration, contradiction, the work that no longer happens, one object examined); the arc and where the turn lands (40% is everyone's default: try 15%, a cold open on the answer, or 75%, a long patient problem); the climax mechanic (one hero element swallowing the frame is one option); the opening state (empty ground that fills is the default: start full and subtract, or mid-action); the ending (a quiet lockup is the default: end loud, mid-motion, on the product still in use, or on the problem now absent); human presence (a hand, a face, a real photograph differs more than any grade); and the sound's shape (sparse hits then a late sustained tone is the default resolution). Breaking a category's cliché the same way twice is a house style too. Let the claim's feeling pick the look: relief from drudgery feels like weight lifting (crowded to clean, loud to quiet), precision feels like an instrument, speed is kinetic, craft is slow and tactile, scale is wide and deep, play overshoots. A look that argues against the script is the commonest reason a clean film feels wrong. (After product-launch-motion's creative direction, MIT, in our words.)
+Two films can share no colour and still be the same film. Before building, write this film's structure beside the last one's and change at least two of: the rhetorical device (many into one, before and after, a day in the life, testimony, pure demonstration, contradiction, the work that no longer happens, one object examined); the arc and where the turn lands (40% is everyone's default: try 15%, a cold open on the answer, or 75%, a long patient problem); the climax mechanic (one hero element swallowing the frame is one option); the opening state (empty ground that fills is the default: start full and subtract, or mid-action); the ending (a quiet lockup is the default: end loud, mid-motion, on the product still in use, or on the problem now absent); human presence (a hand, a face, a real photograph differs more than any grade); and the sound's shape (sparse hits then a late sustained tone is the default resolution). Breaking a category's cliché the same way twice is a house style too. Let the claim's feeling pick the look: relief from drudgery feels like weight lifting (crowded to clean, loud to quiet), precision feels like an instrument, speed is kinetic, craft is slow and tactile, scale is wide and deep, play overshoots. A look that argues against the script is the commonest reason a clean film feels wrong.
 
 ## Start from the brand's personality
 
@@ -47,7 +47,7 @@ Pick a family, then a look inside it. Each line is a starting descriptor, not a 
 
 Glow, gradients, glass, neon and serif "elegance" are what generated work reaches for: use them when the chosen look truly calls for them (a cyberpunk film owns its neon), never as decoration on a look that doesn't. Every look still obeys the frame-review tells and the finish gate.
 
-**Looks named after a designer** (after HyperFrames' visual styles, Apache-2.0, in our words): naming a reference gives the look a point of view. Starters, not presets; the brand's own tokens win.
+**Looks named after a designer**: naming a reference gives the look a point of view. Starters, not presets; the brand's own tokens win.
 
 | Look | After | Feels | Defining moves |
 |---|---|---|---|
@@ -86,8 +86,8 @@ When the user asks for "the same video in three styles", or to compare looks: bu
 ```bash
 for s in paper night brass; do node scripts/render.mjs full --style $s --out out/16x9-$s.mp4; done
 ffmpeg -i out/16x9-paper.mp4 -i out/16x9-night.mp4 -i out/16x9-brass.mp4 \
-  -filter_complex "[0:v]scale=640:-2[a];[1:v]scale=640:-2[b];[2:v]scale=640:-2[c];[a][b][c]hstack=inputs=3[v]" \
-  -map "[v]" -map 0:a? -c:v libx264 -crf 20 -pix_fmt yuv420p out/compare.mp4
+ -filter_complex "[0:v]scale=640:-2[a];[1:v]scale=640:-2[b];[2:v]scale=640:-2[c];[a][b][c]hstack=inputs=3[v]" \
+ -map "[v]" -map 0:a? -c:v libx264 -crf 20 -pix_fmt yuv420p out/compare.mp4
 ```
 
 For four looks use `xstack=inputs=4:layout=0_0|w0_0|0_h0|w0_h0` (a 2×2 grid). Check the comparison: the same beats at the same moments, each clearly its own look. When an asset must change with the look (a photo texture in a pixel-art look), branch on the style name, but never on timing.

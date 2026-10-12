@@ -16,8 +16,8 @@ Prompt rules that pay off: say what changed since the last round so it gets chec
 
 ```json
 {"issues": [{"id": "short-kebab-id", "priority": "P0|P1|P2", "t": "12.40-12.60",
-             "problem": "TELL-ID: what is wrong, what the viewer sees", "fix": {"file": "index.html", "change": "the concrete edit, with values"}}],
- "overall": "3-6 sentences.\nrubric: idea=4 hook=3 ...", "score": 7.5}
+ "problem": "TELL-ID: what is wrong, what the viewer sees", "fix": {"file": "index.html", "change": "the concrete edit, with values"}}],
+ "overall": "3-6 sentences.\nrubric: idea=4 hook=3...", "score": 7.5}
 ```
 
 At most 12 issues, every fix concrete and code-level (a constant, a curve, a time in beats, never "improve the pacing"), the tell ID from `TELLS.md` at the start of the problem when one matches.
@@ -35,7 +35,7 @@ At most 12 issues, every fix concrete and code-level (a constant, a curve, a tim
 - transitions: 6-8 types, none more than twice, one signature move at open, middle and close.
 Owns: idea, hook, composition, motion, transitions, pacing.
 
-**Art, copy and UI.** Judge every frame literally, as a paused still. Copy: spelling, casing, plurals, placeholders, reveals that spell other words mid-way, the word budget (≤ 5 words a line, ≤ 2 lines, one line at a time), stock phrasing, the end card's fact. Type: one family on one token set, emphasis from size or motion, tabular figures, sizes (statements 88-128 px, readable UI ≥ 22 px after camera scale, ≥ 32 px in 9:16). Brand: do the choices follow from the brand's three adjectives; is the mark ownable and does it pass the 64 px misread test. Colour: one accent with one meaning, ≤ 8% of pixels outside one flood, no muddy washes or banding. Composition: no SaaS layout, one focal action, safe margins, no text covered by a mover, vertical frames that use their height. Product truth: the smart part shown, data that agrees with itself and the story, counters that change on their cause's landing frame, the feature named once, no cursor once the product acts alone. Run it in round 1 and whenever copy, type, colour or UI changed. Owns: copy, colour, composition, product.
+**Art, copy and UI.** Judge every frame literally, as a paused still. Copy: spelling, casing, plurals, placeholders, reveals that spell other words mid-way, the word budget (≤ 5 words a line, ≤ 2 lines, one line at a time), stock phrasing, the end card's fact. Type: one family on one token set, emphasis from size or motion, tabular figures, sizes. Brand: do the choices follow from the brand's three adjectives; is the mark ownable and does it pass the 64 px misread test. Colour: one accent with one meaning, ≤ 8% of pixels outside one flood, no muddy washes or banding. Composition: no SaaS layout, one focal action, safe margins, no text covered by a mover, vertical frames that use their height. Product truth: the smart part shown, data that agrees with itself and the story, counters that change on their cause's landing frame, the feature named once, no cursor once the product acts alone. Run it in round 1 and whenever copy, type, colour or UI changed. Owns: copy, colour, composition, product.
 
 **Sound and sync.** You can't listen, so you measure: `check_sync.py` (lag, true peak, loudness, range, where the loudest moment sits), the mix report (each phrase's voice-over-music ratio, warnings), and strips around the key hits. Check that every sound has a visible cause and every instance of a sounded action is sounded at one level; whooshes peak on the visual peak; impacts sit on the contact frame; the payoff is the loudest moment and the ending subtracts; the hook has a sound with a reason on frame 0; the score's energy matches the brand's personality. When a hit belongs on the beat, move the picture, not the sound. Owns: sound.
 

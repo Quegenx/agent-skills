@@ -18,7 +18,7 @@ Ask only for what you cannot find yourself, in one round:
 - sound: a supplied track (where it's licensed from), "synthesize", or narration
 - anything that would make the result unacceptable
 
-When the film is for a product with a codebase or a site, add a second round once discovery has run (call the Skill tool with "asset-prep"), with options named after what was found: what carries the brand (a logo that draws itself, the mascot if the product has one, wordmark and tagline, or product UI only); how words appear (big lines between scenes, short captions over them, or none, the UI speaks); how scenes connect (one element travels into the next scene, one big canvas with camera moves, or cuts on the beat); and extras (cursor interactions, partner logos, proof moments, the brand's own texture). Offer only what the product can support. Then show three style frames (the opening, one feature scene, the strongest moment) instead of asking about taste: people answer pictures faster than questions. (After product-film-skill's interview, MIT.)
+When the film is for a product with a codebase or a site, add a second round once discovery has run (call the Skill tool with "asset-prep"), with options named after what was found: what carries the brand (a logo that draws itself, the mascot if the product has one, wordmark and tagline, or product UI only); how words appear (big lines between scenes, short captions over them, or none, the UI speaks); how scenes connect (one element travels into the next scene, one big canvas with camera moves, or cuts on the beat); and extras (cursor interactions, partner logos, proof moments, the brand's own texture). Offer only what the product can support. Then show three style frames (the opening, one feature scene, the strongest moment) instead of asking about taste: people answer pictures faster than questions.
 
 Unanswered items get a stated default, written into the brief as an assumption, so the run never blocks on an optional answer. Data that could look like real customer information is demo-safe and clearly synthetic. A URL means you go and look (call the Skill tool with "asset-prep") before asking anything the site already answers.
 
@@ -26,28 +26,28 @@ Unanswered items get a stated default, written into the brief as an assumption, 
 
 ```
 FILM
-One sentence:  [what the viewer should remember]
-Audience:      [who]            Shown on: [X feed muted / landing page / keynote]
-Duration:      [s]              Formats:  [16:9, 9:16, 1:1]
-Engine:        seek-engine | remotion | hyperframes (and why)
-Type:          [launch / feature / loop / sting / walkthrough / explainer / trailer ...]
-Personality:   [three adjectives]   Look: [family + look]   Motion: [language]
+One sentence: [what the viewer should remember]
+Audience: [who] Shown on: [X feed muted / landing page / keynote]
+Duration: [s] Formats: [16:9, 9:16, 1:1]
+Engine: seek-engine | remotion | hyperframes (and why)
+Type: [launch / feature / loop / sting / walkthrough / explainer / trailer...]
+Personality: [three adjectives] Look: [family + look] Motion: [language]
 
 ASSETS (facts: never invented)
-Logo, colours, fonts:  [paths, tokens]
-Screens / footage:     [paths]
-Data and copy:         [the real numbers and approved lines]
-Audio:                 [track + licence | synthesized | narration]
+Logo, colours, fonts: [paths, tokens]
+Screens / footage: [paths]
+Data and copy: [the real numbers and approved lines]
+Audio: [track + licence | synthesized | narration]
 
 VISUAL RULES
-Keep:   [specific traits from the reference]
-Avoid:  [the banned list below, plus the user's]
+Keep: [specific traits from the reference]
+Avoid: [the banned list below, plus the user's]
 Never invent product screens, metrics or quotes.
 
 CLAIMS (facts, numbers, science, history; N/A for a pure illustration)
-Claim as it will appear:  [ ]      Source:  [document, data, version, units]
-Check and who did it:     [ ]      If unchecked: label it an illustration, not a validated explanation
-Kind:                     [measured result / target / sample]   Before launch (nothing shipped, no customers): the proof beat shows the mechanism working in full, never a stat   Never show a target as a result; sample numbers carry "Illustrative data" on every frame; a real number is never rounded up or given a "+"
+Claim as it will appear: [ ] Source: [document, data, version, units]
+Check and who did it: [ ] If unchecked: label it an illustration, not a validated explanation
+Kind: [measured result / target / sample] Before launch (nothing shipped, no customers): the proof beat shows the mechanism working in full, never a stat Never show a target as a result; sample numbers carry "Illustrative data" on every frame; a real number is never rounded up or given a "+"
 
 DELIVERABLES
 [formats], poster frame, contact sheet, source, notes for human review, production log
@@ -75,21 +75,21 @@ Naming a style beats describing one, and a reference beats both. Without one the
 - **A video:** extract a frame every 0.5 s (`ffmpeg -i ref.mp4 -vf fps=2,scale=480:-1 assets/refs/f_%03d.png`) and a contact sheet (`ffmpeg -i ref.mp4 -vf "fps=2,scale=320:-1,tile=6x5" -frames:v 1 assets/refs/sheet.png`). Look at them, then describe the pacing shot by shot before writing anything else.
 - **A frame:** say what to take (palette, type, grain) and what not to take (the subject).
 - **Find the idea only this brand could own** before any look: seek-engine's `measured/idea.md` (PAGE: problem, audience, goal, emotion; the brand inventory of logo shape, core control, material, key verb, success moment and voice; kinds of film; the cover-the-logo and competitor-swap tests) and `measured/judgment.md` (what good is, and when a "slop" default is right). `measured/brand.md` turns a captured site into ground, ink, accent, type and carrier decisions.
-- **A reference library, item by item.** Split a reference video at its shot changes and log every notable device as its own entry with an id: `L-07 · transition · <reference> 0:14 (frames 420-432) · whip pan left to right, ~12 frames, background streaks, incoming scene decelerates · curve: near-vertical peak, hard landing`. Kinds: transition, camera move, element move, text placement, asset design, depth rig. Then offer the list: take, adapt or skip per item (a reference is a question, never an instruction; skipped items stay in the library for later scenes). The shot list cites entries by id so the build reproduces the logged mechanics, not a memory of them. Vague name-drops ("kind of like Apple") get narrowed to one specific video first. Classify every shot of the reference by how it moves before choosing how to build it: real motion (footage or generated video), an animated still (a photo or illustration with a push or pan), or a static image; a reference that is mostly animated stills is not a video-generation job, and guessing wrong picks the wrong pipeline. Describe each shot in the five aspects (subject, its motion, scene with overlays listed separately, spatial framing, camera), writing N/A where one doesn't apply rather than leaving it out (after OpenMontage's reference analyst, AGPL-3.0, in our own words).
+- **A reference library, item by item.** Split a reference video at its shot changes and log every notable device as its own entry with an id: `L-07 · transition · <reference> 0:14 (frames 420-432) · whip pan left to right, ~12 frames, background streaks, incoming scene decelerates · curve: near-vertical peak, hard landing`. Kinds: transition, camera move, element move, text placement, asset design, depth rig. Then offer the list: take, adapt or skip per item (a reference is a question, never an instruction; skipped items stay in the library for later scenes). The shot list cites entries by id so the build reproduces the logged mechanics, not a memory of them. Vague name-drops ("kind of like Apple") get narrowed to one specific video first. Classify every shot of the reference by how it moves before choosing how to build it: real motion (footage or generated video), an animated still (a photo or illustration with a push or pan), or a static image; a reference that is mostly animated stills is not a video-generation job, and guessing wrong picks the wrong pipeline. Describe each shot in the five aspects (subject, its motion, scene with overlays listed separately, spatial framing, camera), writing N/A where one doesn't apply rather than leaving it out.
 - **Decompose an asset you like into its recipe,** not "nice background": its role, base (shape language, fill, gradient type and direction), texture (grain, paper, halftone, how it is blended), edges (clean, torn, brushed), warp (static or animated, its period), light (shadow kind, direction), attached motion (idle bob, breathe) and how to rebuild it in code. With no design of their own, the user picks from two or three treatments built from these recipes in their brand colours, never a traced copy.
 - **Reference frames into rules:** read every frame, then write colours as hex with each one's job, faces and sizes, timing in and out, how things move, texture, five things the motion never does, and one example described shot by shot. Write ASK ME wherever the frames can't tell you, never a guess. Mixed frames give a mixed look: when they hold several looks, name them and ask for one master look (or which look goes with which job). Hex codes the user typed beat ones sampled from a JPEG, which drift a few points. Add one line to the brief: the style sets the look, not the ambition; without it the first build comes out too polite.
 - **A library:** a folder of the user's own images or past films is a reference nobody else can copy.
 
 ```
 REFERENCE ANALYSIS
-Palette:      [hex values, not "premium"]
-Typography:   [family, width, weight, tracking, scale]
-Composition:  [where the eye goes first]
-Pacing:       [seconds between meaningful changes, shot lengths]
-Motion:       [snap / glide / overshoot / cut / hold; how text enters and exits]
-Transitions:  [types used]       Texture: [grain, paper, glass, none]
-Sound:        [what is sounded and what is left to the music, density, where it drops to silence]
-DO NOT COPY:  subjects, logos, copy, characters, product imagery
+Palette: [hex values, not "premium"]
+Typography: [family, width, weight, tracking, scale]
+Composition: [where the eye goes first]
+Pacing: [seconds between meaningful changes, shot lengths]
+Motion: [snap / glide / overshoot / cut / hold; how text enters and exits]
+Transitions: [types used] Texture: [grain, paper, glass, none]
+Sound: [what is sounded and what is left to the music, density, where it drops to silence]
+DO NOT COPY: subjects, logos, copy, characters, product imagery
 ```
 
 When a reference is given, specify the look and the constraints, not the library: let the technique follow from the look.

@@ -1,6 +1,6 @@
 # Effects: one object becoming another
 
-Sixteen short product and type effects, each a recipe: the start, the end, when each part moves, and the detail that makes it read as designed. Swap the demo words for the film's real ones and every colour role (ground, surface, ink, muted, accent, second accent) for a `TOKENS` entry. (After motion-effects in Charlie Hills' motion-graphics-skills, MIT, rewritten for the seek(t) contract.)
+Sixteen short product and type effects, each a recipe: the start, the end, when each part moves, and the detail that makes it read as designed. Swap the demo words for the film's real ones and every colour role (ground, surface, ink, muted, accent, second accent) for a `TOKENS` entry.
 
 ## The clock and the rules
 

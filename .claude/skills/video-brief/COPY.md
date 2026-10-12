@@ -42,7 +42,7 @@ Plant a phrase early and pay it off later, changed by what the film has shown.
 | Grammar rhyme | "18%. Water now." / "42%. Leave it." |
 | Tautology as proof | "Spending money stays spending money." |
 
-The payoff reuses at least one content word from the setup, lands on the payoff beat (the loudest sound), and the setup holds long enough to be remembered (36 frames + 6 per word after it resolves). Never explain the callback on screen. One main chain per film, plus at most one echo.
+The payoff reuses at least one content word from the setup, lands on the payoff beat (the loudest sound), and the setup holds long enough to be remembered. Never explain the callback on screen. One main chain per film, plus at most one echo.
 
 ## Stock phrasing to cut
 
@@ -58,7 +58,7 @@ The payoff reuses at least one content word from the setup, lands on the payoff 
 
 ## Several languages, one film
 
-Keep every on-screen string in one copy table keyed by language (`COPY.en`, `COPY.ja`), never in the shots, and pick the language with a parameter (`?lang=ja`, the same way `?style=` picks a look), so every language shares one timeline. Per language, re-check what changes: line breaks and widths (Japanese and German break differently), reading time (hold per line, not per word, for scripts without spaces), right-to-left order, and the font's coverage (vendor a family with the script's subset). Render each language as its own file and run the smoke test on each. The same split lets one motion template carry a series (one article or episode after another): swap the copy table, then check every seam for overlaps again.
+Keep every on-screen string in one copy table keyed by language (`COPY.en`, `COPY.ja`), never in the shots, and pick the language with a parameter (`?lang=ja`, the same way `?style=` picks a look), so every language shares one timeline. Per language, re-check what changes: line breaks and widths (Japanese and German break differently), reading time (hold per line, not per word, for scripts without spaces), right-to-left order, and the font's coverage (vendor a family with the script's subset). Render each language as its own file and run the smoke test on each. The same split lets one motion template carry a series: swap the copy table, then check every seam for overlaps again.
 
 ## String audit
 
