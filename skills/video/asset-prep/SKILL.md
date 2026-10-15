@@ -1,6 +1,6 @@
 ---
 name: asset-prep
-description: Collect and prepare the real material a video animates - screenshots and brand facts (colours, fonts, logo, headings) captured from a live site, cutouts and layer separation of supplied images, clean backgrounds, textures, upscaling, and generated base footage to trace over. Use when a video features a real product or website, when the user supplies images or posters to animate, or when assets need cutting out, cleaning or upscaling.
+description: "Captures and prepares what a video animates: site screenshots, brand colours, fonts and logos, cutouts, cleanup and upscaling. Use when a video shows a real product or site, or supplied images need preparing."
 ---
 
 # Asset prep

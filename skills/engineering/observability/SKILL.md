@@ -1,6 +1,6 @@
 ---
 name: observability
-description: Makes a running system explain itself with OpenTelemetry - traces that follow one request across services, queues and database calls (W3C traceparent propagation, context carried through message headers), custom spans for business operations, metrics with bounded label cardinality, structured logs that carry the trace ID, request context (user, tenant, feature flags) on spans and logs without leaking personal data, error recording, parent-based sampling so traces stay whole, the Collector (one collector, or agent on every box plus a gateway that fans out to Tempo, Loki and Prometheus, memory limits, sending queues, no silent defaults), local and hosted backends (Jaeger, the Grafana LGTM image, Grafana Cloud over OTLP), and health endpoints that separate liveness from readiness. TypeScript and Node, Next.js on Vercel. Use when adding tracing, metrics or logging, wiring OpenTelemetry, debugging a slow or failing request across services, setting up Grafana, Jaeger or a collector, adding health checks, or asked why nobody can tell what production is doing.
+description: "Instruments services with OpenTelemetry traces, metrics and logs, the collector, and liveness and readiness checks. Use when adding tracing or metrics, debugging across services, or defining health checks."
 ---
 
 # Observability

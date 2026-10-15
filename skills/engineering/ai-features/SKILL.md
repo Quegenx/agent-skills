@@ -1,6 +1,6 @@
 ---
 name: ai-features
-description: Builds AI features that hold up in production - vector and semantic search (pgvector on Supabase/Postgres, Convex vector indexes), hybrid keyword plus vector search, RAG with chunking, citations and refusal of unsupported questions, structured data extraction from images and documents with validated, uncertainty-aware output, and background jobs against paid AI APIs (transcription, generation) that never double-charge - and judges each with measured retrieval and extraction quality rather than how convincing the output sounds. Also covers build-versus-buy decisions for replacing a subscription with your own app. Use when adding search by meaning, "chat with your docs", RAG, embeddings, OCR or image-to-JSON extraction, an LLM or speech-to-text call in a job, or when evaluating whether an AI feature actually works.
+description: "Builds LLM features: vector and hybrid search, RAG with citations, structured extraction and AI background jobs. Use when adding or reviewing embeddings, semantic search, RAG or LLM calls in an app."
 ---
 
 # AI features

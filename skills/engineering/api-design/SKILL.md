@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Designs and reviews HTTP APIs that clients can rely on - resource contracts, naming, pagination and bounded responses, additive changes over versioning, deprecation, status codes that mean one thing, Problem Details error bodies, idempotency keys for safe retries, request deadlines and cancellation propagated to every dependency, retry/timeout/circuit-breaker budgets, rate limits keyed on trusted identity, feature flags and experiments with stable assignment, and server-sent event streams with auth, reconnection and replay. TypeScript-first (route handlers, edge functions, Convex HTTP actions, Effect). Use when building or reviewing an endpoint or API, choosing status codes or an error format, making a POST safe to retry, adding timeouts or retries, rate limiting, rolling out behind a flag, streaming updates to a client, or changing a contract that clients already use.
+description: "Designs HTTP API contracts: pagination, errors, idempotency keys, versioning, feature flags, streaming, timeouts and rate limits. Use when adding or changing an endpoint, or reviewing an API."
 ---
 
 # API design

@@ -1,6 +1,6 @@
 ---
 name: sound-pass
-description: Sound design for code-made video - synthesized UI and motion sound effects placed by their measured peak on cues exported from the picture, mixed over the music and voiceover with the music carved under speech, mastered to -14 LUFS, then checked for sync. Use when adding, changing or checking sound effects, music beds, voiceover mixing, loudness or audio sync for any video.
+description: "Places synthesized sound effects on picture cues, mixes music and voice, and masters to -14 LUFS. Use when adding or checking a video's sound effects, mix, loudness or sync."
 ---
 
 # Sound pass

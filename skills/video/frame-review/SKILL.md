@@ -1,6 +1,6 @@
 ---
 name: frame-review
-description: The critic loop for code-made video - a smoke test whose counters must read zero (errors, text off-frame, overlapping, clipped, broken or too short to read, nondeterminism, stalls, a slow hook, dead stretches, single-frame pops, loop seam), contact sheets, frame strips and phone-size checks against a catalogue of AI-video tells, independent critic lenses with a verify pass, an 11-dimension rubric and ship gate, and final sync and loudness checks on the delivered MP4. Use after any change to a video's visuals or timing, before showing a render, and before calling a video done.
+description: "Reviews a code-made video with zero-count smoke checks, contact sheets and a rubric. Use after changing a video's visuals or timing, and before calling a video done."
 ---
 
 # Frame review

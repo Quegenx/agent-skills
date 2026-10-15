@@ -1,6 +1,6 @@
 ---
 name: anti-slop-code
-description: Finds and removes AI-generated code slop without changing behavior - narrating and decorative comments, generic or bloated names, single-use interfaces and wrappers, try/catch and null checks in the wrong places while real defenses (timeouts, retries, idempotency, locking) are missing, tests that can't fail, `any` casts, debug leftovers, placeholder code passed off as done - and runs a strict structural review that looks for the simplification that deletes complexity. Any language. Use when reviewing an AI-assisted diff or PR, cleaning a branch before merge, auditing a repo for maintainability, or when the user says "deslop", "clean this up", "too much AI code", or asks for a harsh code-quality review.
+description: "Removes AI code slop (narrating comments, bloated names, needless wrappers, misplaced error handling) without changing behavior. Use when cleaning up or reviewing agent-written code."
 ---
 
 # Anti-slop code

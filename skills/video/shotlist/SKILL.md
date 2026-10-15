@@ -1,6 +1,6 @@
 ---
 name: shotlist
-description: Turn a video's story into a shot list of states and beats on the beat grid - a concept (idea, carrier, grammar) that passes ownership and specificity tests, a beat structure for the video type, timed "reads" for the viewer, one carrier object, techniques drawn at random from a 273-entry library so films stop converging, and three storyboard variants to choose from. Use after the brief and the beat grid exist, when planning or re-timing a video, when a film feels rushed or confusing, or when the user asks for a storyboard.
+description: "Turns a video's story into a shot list and storyboard on the beat grid. Use after the brief and beat grid exist, or when a film feels rushed or confusing."
 ---
 
 # Shot list

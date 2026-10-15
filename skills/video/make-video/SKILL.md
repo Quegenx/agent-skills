@@ -1,6 +1,6 @@
 ---
 name: "make-video"
-description: "Direct and render a video, animation or motion graphic entirely from code, as a gated production (brief, reference, beat grid, shot list, stills, build, review, sound, render). Use when the user wants any video made: a launch film, product promo, showreel, explainer, UI morph loop, kinetic type, logo sting, music or lyric video, data story, or says \"make a video about X\" or \"animate this\"."
+description: "Directs a video, animation or motion graphic made entirely from code, as gated stages from brief to final render. Use when the user asks for a video to be made: a launch film, promo, explainer, logo sting or lyric video."
 ---
 
 # Make a video

@@ -1,6 +1,6 @@
 ---
 name: beat-grid
-description: Find, measure or choose a video's musical clock - scan candidate tracks for tempo, measure a song's beat grid and best section with numpy, write audio/beats.json that drives both picture and sound, export per-frame band energy for audio-reactive visuals, and time lyrics word by word. Use when a video has music, when cutting to a beat, when the user supplies a song or asks for music, or when sound and picture drift out of sync.
+description: "Measures or chooses a video's music and writes audio/beats.json, the clock that picture and sound follow. Use when a video has music, cuts to a beat, or its sound and picture drift."
 ---
 
 # Beat grid

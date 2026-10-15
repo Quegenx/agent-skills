@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: Models business domains so the rules live in one trustworthy place - deciding whether a domain model is worth it at all (transaction script vs rich model), strategic design first (bounded contexts, subdomains, ubiquitous language and a glossary, context maps, anti-corruption layers, EventStorming), then the tactical model inside a context (entities vs value objects, branded IDs, always-valid objects with private constructors and factories, guarded state transitions returning results, business rule objects, encapsulated collections, small aggregates referenced by ID, domain vs application services), and the event side (domain vs integration events, dispatch after commit through an outbox, idempotent consumers, sagas vs process managers, event sourcing with expected versions and projections, CQRS without a mediator library). TypeScript with Convex, Supabase/Postgres and Effect. Use when designing or reviewing business logic, splitting a system into modules, naming things with domain experts, fixing rules scattered across handlers, choosing aggregate boundaries, raising or handling domain events, coordinating multi-step workflows, or considering CQRS or event sourcing.
+description: "Models business rules: bounded contexts, ubiquitous language, aggregates and invariants, domain events, sagas, CQRS. Use when designing business logic or choosing aggregate and context boundaries."
 ---
 
 # Domain modeling

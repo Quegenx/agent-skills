@@ -1,6 +1,6 @@
 ---
 name: deployment
-description: Ships and moves applications without surprises - container images built once and run the same everywhere (multi-stage builds, layer order for caching, .dockerignore, small non-root runtime images, configuration from the environment, health endpoints), a one-command local stack with Docker Compose that waits for healthy dependencies and runs migrations as a one-shot step, zero-downtime host migrations (one CI build deployed to old and new hosts, verify the new copy on its own URL, move DNS hosting first, flip one record, keep the old host warm for rollback, inventory email DNS records, port every redirect), nightly database backups shipped off the server, and verifiable releases (artifacts by digest, build provenance, keyless Sigstore signing bound to the release workflow, verification at every promotion gate and offline). Use when writing a Dockerfile or compose file, containerizing a Node or TypeScript service, setting up local development dependencies, moving a site or app to a new host or DNS provider, cutting over a domain, setting up database backups, or signing and verifying release artifacts.
+description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups and signed releases. Use when writing a Dockerfile or compose file, moving hosts, setting up backups or verifying release artifacts."
 ---
 
 # Deployment

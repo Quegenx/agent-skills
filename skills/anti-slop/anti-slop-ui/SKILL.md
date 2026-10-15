@@ -1,6 +1,6 @@
 ---
 name: anti-slop-ui
-description: Keeps websites and app interfaces from looking AI-generated or template-built while making them actually work - the purpose test for every visual technique (gradients, glass, glow, shadows, badges, bento grids, icons, animation), real content or honest placeholders, working controls and states, WCAG contrast and keyboard access with a contrast-check script, mobile that holds, the three design dials, and a delivery gate with evidence. Use when building, redesigning or reviewing a landing page, marketing site, dashboard or app UI, when the user says it looks generic, "like AI made it", template-y or lifeless, or before delivering any front-end.
+description: "Keeps websites and app screens from looking template-built while making them work. Use when designing or reviewing an interface's visual design."
 ---
 
 # Anti-slop UI

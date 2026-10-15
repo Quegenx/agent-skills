@@ -1,6 +1,6 @@
 ---
 name: video-brief
-description: Write a video's director's brief (the facts, the one sentence, formats, assets, banned looks, the copy budget) and a style guide - the look, motion language and video type chosen as separate layers from the brand's personality or extracted from a reference video, frame or image folder - plus the same film in several styles side by side and restyles without a rebuild. Use when starting any video or motion graphic, when the user gives a reference to match ("make it look like this"), names a style, asks for a video in several styles or to make one "more cinematic", or a request is too vague to build ("make it insane").
+description: "Writes a video's director's brief and style guide, including matching a reference video, frame or image. Use at the start of a video, or when the user gives a reference or names a style."
 ---
 
 # Video brief

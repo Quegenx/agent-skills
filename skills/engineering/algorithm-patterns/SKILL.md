@@ -1,6 +1,6 @@
 ---
 name: algorithm-patterns
-description: Turns a slow or wrong loop into the right algorithm by recognizing the shape of the problem - a recognition table from cue to pattern (hash map or set, counting table, two pointers, fixed and variable sliding windows, prefix sums with a map of earlier states, monotonic stack and deque, binary search on a sorted array or on the answer, sort plus greedy, merge-time counting, BFS and DFS on grids and graphs, topological sort, cycle detection, one- and two-dimensional dynamic programming) with the invariant that makes each one correct, plus the budgets that break naive code (quadratic copies, per-token allocation, overflow past Number.MAX_SAFE_INTEGER, truncation versus floor, signed shifts, modulo of negatives, floating-point drift). TypeScript. Use when code is too slow on large input, when a nested loop rescans data, when choosing a data structure, when a solution passes small cases but times out or allocates too much, or when asked for an algorithm, a complexity, or an interview-style problem.
+description: "Picks the right algorithm by recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming. Use when a loop is too slow or a task looks like a classic algorithm problem."
 ---
 
 # Algorithm patterns

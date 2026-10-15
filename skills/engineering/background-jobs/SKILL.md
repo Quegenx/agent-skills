@@ -1,6 +1,6 @@
 ---
 name: background-jobs
-description: Builds background work and concurrency control that survive restarts, retries and multiple instances - async APIs that accept durable work and return a status resource (202 plus a job location), job state machines with progress and failure, workers that claim work safely (Postgres SKIP LOCKED, Supabase Queues/pgmq visibility timeouts, Convex scheduler and crons), at-least-once handlers made idempotent, retries with backoff and dead-lettering, in-process races between awaits fixed with per-key locks or semaphores, Postgres row locks (for update, for no key update, nowait, lock_timeout, isolation levels, deadlock-free lock order), and coordination across instances with database constraints, transactions, transaction or session advisory locks, or leases with fencing. Use when an operation is too slow for a request, adding a queue, cron or worker, scheduling work, fixing duplicate or lost jobs, race conditions, double processing, "only one instance should run this", or choosing a lock.
+description: "Builds work outside the request and controls concurrency: async APIs with job status, workers and queues, retries, locks across instances. Use when adding a job, queue, cron or worker, or fixing races and duplicate processing."
 ---
 
 # Background jobs and concurrency

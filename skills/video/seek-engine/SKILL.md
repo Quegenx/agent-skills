@@ -1,6 +1,6 @@
 ---
 name: seek-engine
-description: The render contract and starter kit for code-made video - one HTML file whose window.seek(t) paints any frame as a pure function of time, closed-form springs, per-format layout, and a Playwright + ffmpeg renderer for stills, contact sheets, beat sheets, frame strips and the final motion-blurred MP4. Use when building, animating, retiming or rendering any video or animation in HTML/canvas/SVG/WebGL, including full-frame fragment shaders (noise gradients, tunnels, feedback trails) and isometric machine explainers in isometric line art (an idea shown as a crafted object, 2D or turning in 3D), or when a render flickers, drifts or differs between runs.
+description: "The render contract and renderer for code-made video: one HTML file whose seek(t) paints any frame, rendered to stills and MP4. Use when building, retiming or rendering a video's frames, or when a render flickers or differs between runs."
 ---
 
 # Seek engine

@@ -1,6 +1,6 @@
 ---
 name: anti-slop-copy
-description: Writes, rewrites and reviews website, marketing and product copy that converts without reading as AI - homepages, landing pages, pricing, feature and about pages, heroes, headlines, CTAs, ads, emails, and interface text (buttons, errors, empty states, confirmations, toggles, status messages) - built from a product context file of real facts, customer language and proof. Any language, Hebrew included. Use when the user asks to write or improve copy for a site, page, product or app, says "rewrite this page", "headline", "CTA", "value proposition", "landing page copy", "microcopy", "error messages", or wants product positioning or a marketing context document.
+description: "Writes and reviews website, marketing and product copy, including interface text. Use when writing landing pages, headlines, CTAs, emails or UI strings."
 ---
 
 # Anti-slop copy

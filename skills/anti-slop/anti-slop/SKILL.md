@@ -1,6 +1,6 @@
 ---
 name: anti-slop
-description: Keeps everything the agent produces from reading as generic AI output - prose, website and product copy, interface text, page design, code, and the agent's own plans, reports and replies. Holds the shared rules (real over invented, specific over generic, every choice has a reason, clusters not single tells, never sterile) and how the agent works and reports without slop, and routes to anti-slop-writing, anti-slop-copy, anti-slop-ui and anti-slop-code. Use whenever the user asks for something to sound or look less like AI, more human, less generic, or "not slop", in any language including Hebrew, and before delivering any written, designed or coded work meant for real people.
+description: "Shared rules that keep the agent's work from reading as generic AI output, routing to the writing, copy, UI and code skills. Use when asked to make output less generic or AI-sounding."
 ---
 
 # Anti-slop

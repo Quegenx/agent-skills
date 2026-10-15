@@ -1,6 +1,6 @@
 ---
 name: anti-slop-writing
-description: Edits prose so it reads like a sharp human wrote it while keeping the writer's own voice, or audits a text and names the AI-writing patterns in it without rewriting. Any language; a Hebrew file covers Hebrew-specific tells, register, gender and calques. Covers inflated vocabulary, contrast reveals, negation lists, fake-profound endings, puffery, weasel sources, invented specifics, synonym cycling, uniform rhythm and formatting slop, plus what not to flag. Use when the user wants a draft clearer, more direct, more human or less AI-sounding, asks whether a text reads as AI, or when writing any article, post, email, bio, announcement or README.
+description: "Edits prose to read like a sharp human wrote it, in the writer's own voice, or audits a text for AI-writing patterns. Any language, including Hebrew. Use when editing, rewriting or auditing prose."
 ---
 
 # Anti-slop writing

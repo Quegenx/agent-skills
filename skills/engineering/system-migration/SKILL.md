@@ -1,6 +1,6 @@
 ---
 name: system-migration
-description: Moves a running system to new code, a new language or runtime, or away from a dependency without stopping the business - incremental ports where each change replaces one slice behind a thin shim and deletes the old code (no long-lived rewrite branch), unchanged end-to-end tests as the contract, layered review when agents write most of the code, honest benchmarks and total cost; legacy rewrites that start with the core domain, run old and new side by side with the legacy system as source of truth for what hasn't moved, sync data both ways without loops, reconcile before switching traffic, and capture the old team's knowledge; and replacing a library whose license or support changed (inventory the usage, then pay, stay, switch or rebuild). Use when planning a rewrite or port, migrating off a legacy system, modernizing a module, evaluating an agent-assisted migration, or deciding what to do when a dependency goes commercial or unmaintained.
+description: "Moves a running system to new code or off a dependency without stopping the business. Use when planning a rewrite, a port or a legacy migration, or when a dependency's license or support changes."
 ---
 
 # System migration

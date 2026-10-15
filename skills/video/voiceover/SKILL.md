@@ -1,6 +1,6 @@
 ---
 name: voiceover
-description: Narration for code-made video via ElevenLabs text-to-speech with word timestamps - a per-line cache so only changed lines are re-requested, a separate spoken form for pronunciation fixes (spelled numbers, Hebrew nikud), long pauses trimmed, optional speed-up, and audio/vo.json word timings that animations and captions sync to. Use when a video needs a voiceover, narration, a cloned voice, captions timed to speech, or a mispronounced word fixed.
+description: "Generates ElevenLabs narration with word timings and pronunciation fixes. Use when a video needs a voiceover, captions timed to speech, or a mispronounced word fixed."
 ---
 
 # Voiceover

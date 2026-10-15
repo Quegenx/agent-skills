@@ -1,6 +1,6 @@
 ---
 name: messaging
-description: Makes messages between services and processes reliable without pretending delivery is exactly once - classifying every side effect of a use case (transactional, external and reversible, external and irreversible) and committing or deferring each accordingly, choosing a transport by what the messages are (work for a queue, facts for a log, advisory signals for Redis pub/sub, often just a Postgres table), the transactional outbox in Postgres (schema, partial covering index, SKIP LOCKED claims, batched publishes and one batched UPDATE, publisher confirms, retention), the inbox and idempotent consumers keyed per message and per consumer, idempotency keys for external calls, per-aggregate ordering instead of global ordering, and when a workflow needs a saga. TypeScript with Supabase/Postgres, Convex, RabbitMQ (amqplib) and Kafka. Use when publishing events or commands between services, adding a queue or broker, choosing RabbitMQ vs Kafka vs Redis, fixing lost or duplicate messages, double charges after retries, out-of-order handling, a use case that half-succeeds, or scaling an outbox.
+description: "Makes messages between services reliable: transactional outbox and inbox in Postgres, idempotent consumers, ordering, choosing a broker. Use when publishing events across services or fixing lost or duplicate messages."
 ---
 
 # Messaging
