@@ -59,3 +59,13 @@ Check contrast at the worst spot under the text (`scripts/contrast.py`), not at 
 - **Rank them:** rest, then hover, then pressed, each step stronger than the last (a darker tone, a smaller scale). A press that looks like the hover feels like nothing happened.
 - **Match the brand:** a playful product can move (scale down slightly); a professional tool shifts tone instead. Either way it is subtle and fast, because some buttons are pressed hundreds of times a day.
 - Test on a real phone: some mobile browsers show `:active` only when the element (or the page) has a touch listener.
+
+## Show the product in use
+
+Software doesn't wear, it fills up: content is its patina. An empty or pristine screen looks unused, and unused reads as unproven. The marketing version of good software is always the used version.
+
+- **Screenshots, landing pages, onboarding previews and demos show the product mid-use:** a list with a few half-done items, some unread, entries of uneven length, a chart with real-looking ups and downs, a project halfway through. Never an empty state, and never identical mock rows in perfect alignment (three "Task name" rows with the same length read as a design file, not a product).
+- **Write the sample content for one believable person** doing the thing the product is for, so a visitor can picture their own use. Specific and slightly messy beats tidy and generic.
+- **The honesty line:** sample content inside a product screenshot is illustration; claims are not. Metrics, testimonials, customer logos and "used by" numbers stay real (or are left out). In the live product, sample data is clearly marked as sample and removable.
+- **Design for accumulated use.** The most personal thing software can show is what the user has already done: a history, a streak, an activity heatmap, a progress ring, a year-in-review. A view that starts empty and gets better with every use gives people a reason to come back; make its first state preview what it will become ("your first run will appear here").
+

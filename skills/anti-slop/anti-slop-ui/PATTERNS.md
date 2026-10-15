@@ -27,6 +27,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Bento by default | A mosaic of mixed-size cards as the go-to section layout |
 | Fake terminal | A styled terminal with typed commands as the hero visual |
 | Skeleton as product | Grey placeholder bars passed off as a product screenshot |
+| Pristine demo | The product shown empty, or filled with identical mock rows in perfect alignment, instead of mid-use with uneven, believable content |
 | Same section, every section | Centered title, subtitle, card grid, repeated; only the background color alternates |
 | Three steps, always | "How it works" with round numbered icons, always three |
 | Logo bar | A row of company logos under the hero that nobody can name |
