@@ -1,12 +1,13 @@
 # Agent skills
 
-34 skills for coding agents, in three sets:
+34 skills for coding agents, in four sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/video/`](./skills/video) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-slop/`](./skills/anti-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation, AI decision layers. 18 skills. |
+| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation. 17 skills. |
+| [`skills/jev/`](./skills/jev) | Decision layers on Jev: questions answered as probabilities, gates that turn them into actions, agent hooks and evals. 1 skill. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -120,10 +121,15 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [performance-and-caching](./skills/engineering/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, full-text search, caching and invalidation, media and long lists in the browser |
 | [ui-animation](./skills/engineering/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion |
 | [ai-features](./skills/engineering/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |
-| [jev-decisions](./skills/engineering/jev-decisions/SKILL.md) | Decision layers on Jev: yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals |
 | [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
 | [testing](./skills/engineering/testing/SKILL.md) | Tests that catch real bugs, integration tests with real Postgres, architecture and contract tests |
 | [algorithm-patterns](./skills/engineering/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets |
+
+## Jev
+
+Jev answers questions with probabilities instead of text; code turns them into actions.
+
+- **[jev-decisions](./skills/jev/jev-decisions/SKILL.md)**: Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals. TypeScript with `@typesafe-ai/sdk`.
 
 ## Licences
 
