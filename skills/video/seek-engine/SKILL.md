@@ -61,6 +61,8 @@ A finished example film that passes every smoke counter in every format is in [e
 
 ## Looks
 
+The *Cinematic UI* look (oblique macro shots of real UI on black, optical depth of field, a light pool on the plane, stipple reveals) has its own rules and tested code in [CINEMATIC-UI.md](CINEMATIC-UI.md).
+
 All colour lives in `TOKENS`, chosen from the named sets in `STYLES`. A second look of the same film is a new entry in `STYLES`, never a fork: `render.mjs full --style night` renders it with identical timing. Gradient stages are baked PNGs from `scripts/gradient.py`, never CSS gradients (they band).
 
 ## Render
