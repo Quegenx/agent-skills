@@ -129,6 +129,47 @@ Code alone doesn't show what the change does. For any change with a visible beha
 
 - **Paper confetti, closed form**. Only when a celebration is the story and an event on screen fires it: confetti as decoration is a borrowed prop (frame-review `TELLS.md` A3). The library steps each piece once per animation frame with `Math.random` and re-rolls a flicker value every tick, so it can't be filmed as it is; its model solves exactly. Per piece `i`, from a seeded `rng`: speed `v0` between 0.5 and 1.5 of the start velocity (45), launch angle within the spread (45° around the aim), wobble phase 0-10 and wobble speed 0.05-0.11 per tick, tilt 0.25-0.75π. At tick `n = (t - t0) * 60` (whole ticks through `whole(t)`, or fractional for smooth blur), with decay `d = 0.9`: travel `s = v0 * (1 - d^n) / (1 - d)`, so `x = x0 + cos(a) * s + drift * n` and `y = y0 + sin(a) * s + 3 * gravity * n`; wobble `w = w0 + speed * n`, tilt `= tilt0 + 0.1 * n`; opacity `1 - n / 200`. Draw each piece as a quad from `(x, y)` to its wobble point `(x + 10 cos w, y + 10 sin w)`, both offset by a factor times the tilt's cos and sin; make that factor a seeded hash of `(i, n)` in 2-3, never a fresh random. Its seven default colours are a stock rainbow: take the brand's two or three. Pieces scale with `scalar`; the burst reads at about 50-150 pieces, one burst, timed to the hit's sound.
 
+## Collections: arrangements and poses
+
+A gallery, a card fan, a carousel, a ring of screens or a helix of products is one function: each item's pose from its offset to the focus. Store the pose as separate numbers and blend them one by one; never interpolate transform matrices or composed `transform` strings, which take unpredictable paths when an item goes from a curve to flat.
+
+```js
+const lerp = (a, b, p) => a + (b - a) * p;
+const lerpAngle = (a, b, p) => a + ((((b - a) % 360) + 540) % 360 - 180) * p;   // the short way round: 350 to 10 passes 0
+const pose = (o = {}) => ({ x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0, s: 1, o: 1, ...o });
+const blendPose = (A, B, p) => ({
+  x: lerp(A.x, B.x, p), y: lerp(A.y, B.y, p), z: lerp(A.z, B.z, p),
+  rx: lerpAngle(A.rx, B.rx, p), ry: lerpAngle(A.ry, B.ry, p), rz: lerpAngle(A.rz, B.rz, p),
+  s: lerp(A.s, B.s, p), o: lerp(A.o, B.o, p),
+});
+const toTransform = (P) =>
+  `translate3d(${P.x}px, ${P.y}px, ${P.z}px) rotateY(${P.ry}deg) rotateX(${P.rx}deg) rotateZ(${P.rz}deg) scale(${P.s})`;
+
+// d = index - focus(t): fractional while the collection moves
+const arrange = {
+  list: (d) => pose({ x: d * 260 }),
+  coverflow: (d) => {
+    const near = clamp(d, -1, 1);                                  // the neighbours turn, the rest stack flat behind
+    return pose({ x: near * 200 + (d - near) * 90, z: -Math.abs(near) * 180, ry: -near * 55 });
+  },
+  ring: (d, n, radius = 600) => {
+    const a = (d / n) * 2 * Math.PI;
+    return pose({ x: radius * Math.sin(a), z: radius * (Math.cos(a) - 1), ry: (a * 180) / Math.PI });
+  },
+};
+
+// changing shape: both arrangements at the same d, blended by one eased progress
+const itemPose = (i, t) => blendPose(arrange.coverflow(i - focus(t)), arrange.list(i - focus(t)), ease(progress(t)));
+```
+
+- **Change shape from wherever the items are.** Both shapes are evaluated at the item's current offset, so a shape change can start mid-scroll or mid-way through another change and nothing jumps. Chained changes blend the pose of the previous blend, not the previous shape's rest pose.
+- **The group moves as one.** Keep every arrangement ordered along the offset (an item further along is further along in x or angle), and a change of shape never makes paths cross: the collection turns, spreads or gathers in one direction. Items flying past each other read as chaos, not as one state becoming another.
+- **An endless strip from a dozen items:** wrap the offset into a half-open window, `d = ((((i - focus) % n) + n + n / 2) % n) - n / 2`, and fade opacity to zero over the last unit before the edge (`clamp((n / 2 - Math.abs(d)) / 1, 0, 1)`), so the item that jumps from one end to the other is invisible when it jumps.
+- **Speed shapes the items.** The collection's velocity is a function of time too: `v = (focus(t) - focus(t - 1 / fps)) * fps`, in items per second. Tilt each item by `clamp(v * 14, -40, 40)` degrees, or offset it in a ripple by its index; it leans into a fast throw and straightens as the throw settles. Clamp it, or a fast scroll folds the items edge-on.
+- **From the curve into a flat detail view:** blend the item's pose toward a flat target pose (every rotation 0, the detail box's position and scale). Let the rotations finish in the first half of the move and lift the item toward the camera early (z up, then over), so it untwists clear of its neighbours instead of slicing through them. Closing runs the same blend backwards to the item's current slot pose, which may have moved.
+- **The sharp version arrives after the move.** For a detail view, swap the thumbnail for the full-resolution image only after it has decoded (`await img.decode()` during setup, never during a frame), and crossfade it over the thumbnail: no flash and no layout jump.
+- **Enter and exit as part of the shape:** a new item enters at the offset where it belongs (fading or growing from its slot, or sliding along the curve), not from the centre of the screen.
+
 ## Loops
 
 - **A loop is a cycle, not a clip.** Every periodic motion divides the loop length, the last state equals the first, and `track` keys wrap (the template does this when `FILM.loop` is set). The seam test in `smoke.mjs` compares the last frame with the first.
