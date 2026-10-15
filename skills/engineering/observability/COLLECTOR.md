@@ -1,0 +1,73 @@
+# Where telemetry goes
+
+## Three shapes, by size
+
+| Setup | When | Trade-off |
+|---|---|---|
+| App exports straight to the backend | Getting started, one small service, a hosted backend | No buffer: a backend or network blip drops telemetry; every app holds backend addresses and credentials |
+| One Collector next to the apps | One machine, a monolith, a single compose file | One place to batch, filter, redact and fan out; apps know one OTLP address |
+| An agent Collector on every box plus one gateway | Two or more machines, boxes whose memory is budgeted for real work, browser telemetry, several teams | Local buffering on each box, a single controlled ingest point, backends known only to the gateway |
+
+Moving between them is invisible to the application: it keeps exporting to whatever `OTEL_EXPORTER_OTLP_ENDPOINT` says; only that address changes.
+
+## Agent and gateway
+
+Each application box runs a small Collector on its private compose network. The app exports to it by a local name; the agent batches and forwards to the gateway over a private network; the gateway routes each signal to its store (traces to Tempo, logs to Loki, metrics to a Prometheus scrape endpoint) and Grafana reads them all.
+
+```yaml
+# agent: one per box
+receivers:
+  otlp:
+    protocols:
+      grpc: { endpoint: 0.0.0.0:4317 }
+processors:
+  memory_limiter:            # first in every pipeline: a hard ceiling, sheds spikes instead of growing
+    check_interval: 1s
+    limit_mib: 96
+    spike_limit_mib: 32
+  batch:
+exporters:
+  otlp/gateway:
+    endpoint: ${env:OTEL_GATEWAY_ENDPOINT}   # no default: a missing value fails at startup
+    retry_on_failure: { enabled: true }
+    sending_queue: { enabled: true, queue_size: 5000 }
+service:
+  pipelines:
+    traces:  { receivers: [otlp], processors: [memory_limiter, batch], exporters: [otlp/gateway] }
+    metrics: { receivers: [otlp], processors: [memory_limiter, batch], exporters: [otlp/gateway] }
+    logs:    { receivers: [otlp], processors: [memory_limiter, batch], exporters: [otlp/gateway] }
+```
+
+```yaml
+# gateway: one, on the monitoring box (receivers and processors as in the agent)
+exporters:
+  otlp/tempo:   { endpoint: tempo:4317 }
+  otlphttp/loki: { endpoint: http://loki:3100/otlp }    # Loki ingests OTLP natively
+  prometheus:   { endpoint: 0.0.0.0:8889 }              # Prometheus scrapes this
+service:
+  pipelines:
+    traces:  { receivers: [otlp], processors: [memory_limiter, batch], exporters: [otlp/tempo] }
+    metrics: { receivers: [otlp], processors: [memory_limiter, batch], exporters: [prometheus] }
+    logs:    { receivers: [otlp], processors: [memory_limiter, batch], exporters: [otlphttp/loki] }
+```
+
+The decisions that matter:
+
+- **The app knows only a local address.** Moving the monitoring stack doesn't touch application deployments.
+- **Sending queue plus retry** ride out a gateway restart or network blip. Size the queue for how long an outage you want to survive (spans per second times seconds), and know what happens past it: telemetry is dropped, the app is unaffected.
+- **`memory_limiter` first, with real numbers.** On a box whose memory belongs to the workload, the agent must shed load rather than compete with the app or trigger the out-of-memory killer.
+- **No defaults for endpoints.** A Collector that starts with a wrong or empty endpoint swallows telemetry silently until the next incident shows nothing.
+- **Agents publish no host ports;** only the app on the same network can reach them. Nothing exposes an ingest surface it doesn't need.
+- **Encrypt the agent-to-gateway hop,** with TLS or a private network that already encrypts (a WireGuard mesh such as Tailscale); then plaintext OTLP inside it is acceptable.
+- **New boxes need no monitoring config:** telemetry is pushed, `service.instance.id` tells instances apart, and the agent needs only the gateway address.
+- **The gateway is the place** for tail sampling, redaction (drop attributes that may carry personal data), and per-signal routing.
+
+**Browser telemetry** (JavaScript errors, Web Vitals, fetch spans) can go through the same gateway, for example with Grafana Faro, so a browser fetch and the API span it triggered land in one trace through the propagated `traceparent`. That receiver is the one ingest point that must be public; rate-limit it and accept only what browsers send.
+
+## Backends
+
+- **Local development:** the `grafana/otel-lgtm` image runs a Collector, Tempo, Loki, Prometheus and Grafana in one container; Jaeger's all-in-one image is enough for traces alone (UI on 16686, OTLP on 4317).
+- **A self-hosted stack:** the Collector with Tempo for traces, Loki for logs, Prometheus (or Mimir) for metrics, and Grafana for dashboards and alerting.
+- **Hosted (Grafana Cloud, Honeycomb, Datadog and others):** point the exporter or the gateway at the vendor's OTLP endpoint with three settings: `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf`, and `OTEL_EXPORTER_OTLP_HEADERS` carrying the authorization token. Keep the token out of logs and source control.
+
+A working exporter isn't working monitoring. Check that service names and environments are right, that the sampling rate is what you meant, that logs open from traces, and that you have alerts on the few numbers that matter (error rate, latency percentiles, queue age, saturation) before the first incident needs them.

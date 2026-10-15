@@ -1,0 +1,52 @@
+---
+name: anti-slop-writing
+description: Edits prose so it reads like a sharp human wrote it while keeping the writer's own voice, or audits a text and names the AI-writing patterns in it without rewriting. Any language; a Hebrew file covers Hebrew-specific tells, register, gender and calques. Covers inflated vocabulary, contrast reveals, negation lists, fake-profound endings, puffery, weasel sources, invented specifics, synonym cycling, uniform rhythm and formatting slop, plus what not to flag. Use when the user wants a draft clearer, more direct, more human or less AI-sounding, asks whether a text reads as AI, or when writing any article, post, email, bio, announcement or README.
+---
+
+# Anti-slop writing
+
+A sharp human editor, not a humanizer. The job is to make the writing clearer and more alive while it still sounds like the same person. Load `anti-slop` for the shared rules; this skill holds the prose depth. The pattern catalogue is [TELLS.md](TELLS.md); Hebrew is [HEBREW.md](HEBREW.md); the final check is [CHECK.md](CHECK.md).
+
+## Two jobs
+
+**Edit (the default).** The user gives a draft to improve. Make the minimum effective edit and return the full edited text plus a short **What changed**.
+
+**Detect.** The user asks whether a text reads as AI, or asks to audit or flag it without rewriting. Name each pattern from [TELLS.md](TELLS.md) that appears, quote the line, give the fix in a few words. Don't rewrite, don't score, and never claim a text was or wasn't written by AI: detectors guess, named patterns are evidence the user can check. Offer to edit afterwards.
+
+**Write from scratch.** Same rules, applied while drafting: know the reader and the point first, then write from the facts you have, then run [CHECK.md](CHECK.md).
+
+## Before touching the text
+
+- If there is no draft, ask for it. If the audience or the outlet is unclear and it matters, ask one question: who reads this, and where?
+- Find the core point. If you can't state it in one sentence, ask.
+- List the voice traits to keep: vocabulary, sentence length, bluntness, humor, uncertainty, digressions, swearing, level of polish, recurring phrases. If the user gives a sample of their writing, match it; it outranks this skill's style preferences.
+- Note the language and register. For Hebrew, read [HEBREW.md](HEBREW.md) first.
+
+## Editing principles
+
+- **Minimum effective edit.** Fix the patterns, errors and tangles. Leave strong human sentences alone. A rough draft with a real voice should still sound like its writer.
+- **Keep the meaning.** Add no claim, example, number, quote or opinion. If a sentence needs a fact to work, ask for it or mark `[NEED: ...]`.
+- **Lead with the point when the setup adds nothing.** Keep a personal aside or story when it gives context, tension or character.
+- **Concrete over abstract.** Names, numbers, dates, mechanisms, examples. "The integration improved efficiency" becomes "Deploys went from 40 minutes to 4", but only if the 40 and the 4 are real.
+- **Portability test.** A sentence that could move unchanged to another company, person or topic is filler. Cut it, or replace it with something true of this subject.
+- **Show, don't label.** Cut lines that tell the reader something is important, surprising or key. If the facts show it, the label is noise.
+- **Direct verbs, human subjects.** "Decided", not "made a decision". "We rewrote the page", not "the page was updated". No abstraction doing a human verb ("the data wants", "the platform understands").
+- **Repeat the right word.** Don't rotate synonyms for the same thing.
+- **Untangle without flattening.** Split sentences that are genuinely hard to follow; keep the long spoken ones and the fragments that carry the writer's rhythm.
+- **Keep the edge.** Strong opinions, bluntness, humor, admissions, mixed feelings. Don't sand them into professional neutrality.
+- **Keep the structure unless it hurts.** If you reorder, say why in What changed.
+- **Don't trade one tic for another.** If every contrast reveal becomes ", because..." and every negation list becomes "There's nothing to X", those are the new tells. Fix each from its own facts.
+
+## What not to flag
+
+These are not evidence on their own (details in [TELLS.md](TELLS.md#what-is-not-a-tell)): polished grammar, formal vocabulary, one transition word, one em dash, one short emphatic sentence, curly quotes, an unsourced claim, dry writing. Phrases inside quotes, titles, names, or a sentence that discusses the phrase are not being used and stay untouched.
+
+## Signs of a human, to protect
+
+Odd, hard-to-invent specifics. Mixed feelings left unresolved. Era-bound references and slang. Uneven sentence lengths. Real asides and self-corrections. When you see these, edit less.
+
+## Output
+
+- **Edit:** the full edited text, then **What changed**: a few lines naming the patterns fixed and anything restructured or flagged `[NEED: ...]`.
+- **Detect:** a list of findings, each `pattern: "quoted line" -> fix`, grouped by pattern, most damaging first. End with whether the text reads as slop overall (a cluster) or has isolated devices only.
+- Run [CHECK.md](CHECK.md) before returning either.

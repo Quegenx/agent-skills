@@ -1,4 +1,12 @@
-# video-skills
+# agent-skills
+
+## 0.11.0
+
+### Minor Changes
+
+- The repository is now `agent-skills`, with the skills grouped by set: `skills/video/` (11), `skills/anti-slop/` (5) and `skills/engineering/` (16). `.claude/skills/` and `.agents/skills/` hold flat symlinks into those folders, so every skill still loads under its own name.
+- New anti-slop set: `anti-slop` (shared rules and routing), `anti-slop-writing`, `anti-slop-copy`, `anti-slop-ui`, `anti-slop-code`.
+- New engineering set: `software-architecture`, `domain-modeling`, `system-design`, `system-migration`, `refactoring`, `api-design`, `background-jobs`, `messaging`, `observability`, `deployment`, `sql-patterns`, `performance-and-caching`, `ai-features`, `secure-coding`, `testing`, `algorithm-patterns`. Code and SQL examples were run before publishing.
 
 ## 0.10.0
 

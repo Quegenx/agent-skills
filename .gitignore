@@ -3,6 +3,7 @@
 !/.gitignore
 !/.claude/
 !/.agents/
+!/skills/
 !/docs/
 !/README.md
 !/CHANGELOG.md
@@ -12,3 +13,5 @@
 .env
 node_modules/
 .frames/
+
+.DS_Store
