@@ -56,6 +56,27 @@ export async function upgradeImage(img: HTMLImageElement, largeSrc: string): Pro
 }
 ```
 
+- **Encode video for the web as a ladder, best codec first:** AV1 is the smallest for the same quality, VP9 in WebM next, H.264 in MP4 last as the file every browser plays. List them as `<source>` elements with the codec in `type`; the browser takes the first it can play, so each visitor gets the smallest file their device decodes:
+
+```html
+<video muted playsinline loop autoplay poster="hero.jpg" width="1920" height="1080">
+  <source src="hero.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
+  <source src="hero.vp9.webm" type='video/webm; codecs="vp09.00.40.08"'>
+  <source src="hero.h264.mp4" type='video/mp4; codecs="avc1.640028"'>
+</video>
+```
+
+```bash
+ffmpeg -i master.mov -c:v libsvtav1 -crf 35 -preset 6 -pix_fmt yuv420p -movflags +faststart -an hero.av1.mp4
+ffmpeg -i master.mov -c:v libvpx-vp9 -b:v 0 -crf 32 -row-mt 1 -deadline good -cpu-used 2 -pix_fmt yuv420p -an hero.vp9.webm
+ffmpeg -i master.mov -c:v libx264 -crf 23 -preset slow -profile:v high -pix_fmt yuv420p -movflags +faststart -an hero.h264.mp4
+```
+
+  - **Why all three, not WebM alone:** Safari plays AV1 only on devices with a hardware decoder (iPhone 15 Pro and later, M3 Macs and later), and WebM only from Safari 14.1 / iOS 15, with VP9 decoded in software on older iPhones (battery). The H.264 file is what an older iPhone or Mac falls back to; never ship without it.
+  - **Settings that bite:** 8-bit `yuv420p` everywhere (4:4:4 VP9 fails in Safari, and 10-bit isn't decoded everywhere); `-movflags +faststart` on MP4 so playback starts before the whole file arrives; no audio track (`-an`) for muted loops; the codec string in `type` must match the file (`av01.0.08M.08` is AV1 Main, level 4.0, 8-bit; `avc1.640028` is H.264 High 4.0), or the browser may pick a file it can't play.
+  - **Pick the CRF by eye per clip,** and compare sizes at equal quality, not equal CRF; the CRF scales differ between encoders. AV1 encodes are the slowest by far; encode once at upload, never on request.
+  - **Transparent video:** VP9 WebM with alpha for Chrome and Firefox, HEVC with alpha (a `.mov`, `hevc_videotoolbox` with `-alpha_quality`) listed first with `type='video/mp4; codecs="hvc1"'` for Safari; check both on a real device.
+  - **Longer than a short loop** (product videos, anything with a scrubber): adaptive streaming (HLS with several renditions, or a video host that does it), so the first frame arrives fast and quality rises with the connection, instead of one large file.
 - **Play only what's on screen, and only a few:** `preload="none"` (or `metadata`) with a `poster`, and an `IntersectionObserver` that plays videos entering the viewport and pauses those leaving, with a cap on how many play at once:
 
 ```ts

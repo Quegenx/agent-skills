@@ -68,7 +68,7 @@ Keep the delivery folder clean: deliverables at the top, QA material (sheets, cr
 1. `out/<format>.mp4` for every format, rendered from the same timeline
 1b. For feeds, encode H.264 High profile at roughly 8-15 Mbps; much under 5 Mbps and the platform's re-encode visibly degrades it (render.mjs's CRF 16 at 1080p usually lands there; check the bitrate with ffprobe).
 2. `out/poster.png`: the strongest frame, usually the last (`render.mjs still <t> --out out/poster.png`)
-   For a landing page add a muted file (`render.mjs full --audio none`) and a VP9 WebM of it (`ffmpeg -i out/16x9.mp4 -c:v libvpx-vp9 -b:v 0 -crf 32 -row-mt 1 -an out/16x9.webm`), then decode both with frame-review's `verify_delivery.py --bg <ground> --loop`: the ground must come back as the token and the last frame must equal the first.
+   For a landing page add a muted file (`render.mjs full --audio none`) and web encodes of it, best codec first: AV1 (`ffmpeg -i out/16x9.mp4 -c:v libsvtav1 -crf 35 -preset 6 -pix_fmt yuv420p -movflags +faststart -an out/16x9.av1.mp4`), a VP9 WebM (`ffmpeg -i out/16x9.mp4 -c:v libvpx-vp9 -b:v 0 -crf 32 -row-mt 1 -an out/16x9.webm`), and the H.264 MP4 as the fallback every browser plays (the `<source>` order and why all three: the `performance-and-caching` skill's BROWSER.md). Decode each with frame-review's `verify_delivery.py --bg <ground> --loop`: the ground must come back as the token and the last frame must equal the first.
 3. the contact sheet of the decoded master
 4. the final shot list and the exact runtime
 5. the source folder and the commands that reproduce the render
