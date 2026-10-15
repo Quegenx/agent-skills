@@ -35,6 +35,7 @@ Slop is not only in the deliverable. It is also in how the work is done and repo
 
 - Do what was asked. No unrequested features, sections, refactors, "improvements" to adjacent text or code, extra files, or rewrites of what already works. If something nearby needs attention, mention it in one line.
 - Read before writing: the existing copy, the code around the change, the brand's real material. Use the terms and patterns already there.
+- Extend before adding. Before building a new feature, screen, setting or flow, look for the one that already does part of it and grow that. Shipping more is not the measure; every new surface is something every user must learn and someone must maintain.
 - Ask when a missing fact would change the result (the audience, the real numbers, the brand, an irreversible step). Ask one decisive question, not a questionnaire. Decide routine details yourself and say what you assumed.
 - Never ship something that only looks finished: dead buttons, mock data presented as real, a `// TODO` where the logic should be, a test that can't fail, a placeholder dressed as final.
 - Verify before claiming. Run it, click it, read the output, check the source. If you couldn't verify something, say exactly what wasn't checked.
