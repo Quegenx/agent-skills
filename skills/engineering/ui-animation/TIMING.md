@@ -14,7 +14,7 @@
 | page or route transition | 400-600 ms | standard | 0% |
 | hero reveal (once per page) | 600-1200 ms | emphasized | 0-3% |
 | error shake | 300-400 ms | inOut | 0%, never a bounce |
-| skeleton shimmer | 1.2-1.6 s loop | linear | |
+| skeleton shimmer | 0.6-1 s per pass | linear | reads as working hard; a slow, calm shimmer makes the wait feel longer |
 
 Fades shorter than about 100 ms read as a pop; for a deliberate instant change, change it instantly and ease what follows.
 

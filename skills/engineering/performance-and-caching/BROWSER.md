@@ -1,10 +1,40 @@
 # Media, lists and rendering in the browser
 
-A page feels slow when media arrives late or shifts the layout, long lists render everything, or the main thread is busy when someone taps. Measure first (the Performance panel's frames and long tasks, INP for interactions, LCP and CLS for loading; [MEASURE.md](MEASURE.md)), then fix in this order.
+A page feels slow when it makes you wait for content it could have had ready, when media arrives late or shifts the layout, long lists render everything, or the main thread is busy when someone taps. Measure first (the Performance panel's frames and long tasks, INP for interactions, LCP and CLS for loading; [MEASURE.md](MEASURE.md)), then fix in this order.
 
 ## Animation
 
 Which properties to animate, GPU versus main thread, motion values instead of React state, interruptible and shared-element transitions, and reduced motion are in the `ui-animation` skill (PERFORMANCE.md and PATTERNS.md).
+
+## Loading states
+
+The first visit is the one wait you can't avoid: the content comes from the server, in the first paint (server rendering) or right after. Everything after that should be already there. Audit in this order:
+
+1. **The shell renders on the first frame.** Navigation, header and layout are static; they never wait for data. A root-level loading state, if you keep one, must not block navigation. Put the data boundary (`<Suspense>`, a route's pending component) around the content area, not around the app.
+2. **Fetch before the click.** Between the pointer landing on a link and the click there are roughly 300-500 ms, enough to load most route data. Prefetch on hover and focus (and on touch start), not on click:
+
+```tsx
+// TanStack Router + Query: preload a route's loader on hover/focus; Query owns freshness.
+const router = createRouter({
+  routeTree,
+  context: { queryClient },
+  defaultPreload: "intent",          // hover, focus, touch start; preloadDelay defaults to 50 ms
+  defaultPreloadStaleTime: 0,        // let Query decide what is fresh, not the router's own 30 s cache
+});
+
+// Outside a router: warm the cache yourself, then the click renders from it.
+const warm = () => void queryClient.query(dayQuery(day)).catch(() => {});   // already fresh in cache: no request
+<a href={`/calendar/${day}`} onPointerEnter={warm} onFocus={warm} onTouchStart={warm}>Today</a>
+```
+
+   In Next.js, `<Link>` prefetches routes in the viewport in production; for client-fetched data, warm the query on hover the same way.
+3. **Visited stays visited.** Keep every viewed page's data in the cache with a `staleTime` that matches how fast it really changes, so going back renders instantly and refreshes in the background. When the key changes (next page, another filter), keep the previous data on screen (`placeholderData: keepPreviousData`) instead of dropping to a placeholder. A placeholder is shown only after checking the cache came up empty.
+4. **Parts resolve on their own.** Split the page into independently loading regions, each with its own boundary, so the fast parts render as their data arrives and the slow one doesn't hold the rest hostage.
+5. **Kill waterfalls.** List which component waits on which query. A request that can't start until another finishes (a child fetching after its parent rendered) belongs in the route loader or in one combined query, started together. Slow queries leave the critical path: fetch them after the first paint, page them, or ask for one list instead of the whole table. Some of this is a backend change (an endpoint that returns what one screen needs, an index); list those separately.
+6. **No spinners for data.** Replace each with prefetched content, a skeleton shaped like the real layout (so nothing moves when content arrives), or nothing at all for waits under about 300 ms. A placeholder that does appear should feel urgent, not calm: short cycles, under a second per pass ([the `ui-animation` skill's TIMING.md](../ui-animation/TIMING.md)). A user-triggered action is different: update optimistically, and show progress only when the outcome can't be predicted.
+7. **Media without the wait spinner:** a soft frame first and sharper as it arrives (`srcset`, and adaptive streaming such as HLS with several renditions for video, not one 4K file sent whole), self-hosted or lightweight players instead of heavy third-party iframes, and the poster in place from the first frame.
+
+Report what you changed and, separately, what needs a backend change.
 
 ## Images and video
 
@@ -63,4 +93,4 @@ Load heavy, rarely used components with a dynamic `import()` on the route that n
 
 ## Prove it
 
-Record the page load and the main interactions in the Performance panel with 4x CPU slowdown: the largest image arrives early, no layout shift when media loads, only visible videos play, and long lists render only what's on screen.
+Record the page load and the main interactions in the Performance panel with 4x CPU slowdown and network throttling: the shell paints before any data, hovering a link then clicking shows the next page with no placeholder, going back shows the previous page instantly, no spinner appears for data, the largest image arrives early, no layout shift when media loads, only visible videos play, and long lists render only what's on screen.

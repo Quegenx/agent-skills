@@ -100,7 +100,7 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
 ## Buttons, presses and feedback
 
 - Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size.
-- **Feedback is instant, results can follow:** the press responds in the same frame; a spinner appears only after about 300 ms (a fast response never flashes one), and a skeleton matches the final layout so nothing shifts when content arrives.
+- **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in the `performance-and-caching` skill's BROWSER.md.
 - Success lands once (a check that draws in 200-300 ms), errors shake horizontally 2-3 times over 300-400 ms with no bounce, and the message stays.
 
 ## Numbers
