@@ -8,7 +8,7 @@
 | [`skills/anti-slop/`](./skills/anti-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/engineering/`](./skills/engineering) | Backend and architecture practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing. 16 skills. |
 
-Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`. In this repository, `.claude/skills/` and `.agents/skills/` hold flat symlinks into the category folders, so the skills load when you open the repo itself.
+Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
 ## Install
 
