@@ -129,7 +129,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 
 Jev answers questions with probabilities instead of text; code turns them into actions.
 
-- **[jev-decisions](./skills/jev/jev-decisions/SKILL.md)**: Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals. TypeScript with `@typesafe-ai/sdk`.
+- **[jev-decisions](./skills/jev/jev-decisions/SKILL.md)**: Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals, plus worked recipes (value and date extraction, search, re-ranking, taxonomies, record matching, guardrails, memory, tool suggestion). TypeScript with `@typesafe-ai/sdk`.
 
 ## Licences
 

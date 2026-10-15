@@ -21,6 +21,7 @@ An LLM may think and draft, Jev decides, code acts. Nothing consequential happen
 | Calling `systemOne`, the four question types and their answers, writing instructions and criteria, building the state | [QUESTIONS.md](QUESTIONS.md) |
 | Turning probabilities into actions: thresholds, bands, score tails, ordered rules, ladders, profiles and tiers, staged nodes | [GATES.md](GATES.md) |
 | Agents: gating tool calls, Claude Code hooks, routing function calls, judging finished runs, checking citations | [AGENTS.md](AGENTS.md) |
+| Worked shapes: picking a value from candidates, dates, finding a line, re-ranking, taxonomies, record matching, structure recovery, extraction checks, citations, retrieval filters, guardrails, memory, tool suggestion, moderation, features for a model | [RECIPES.md](RECIPES.md) |
 | Running it: errors and retries, pinning, caching and replay, calibrating thresholds, shadow mode, evals, cost | [PRODUCTION.md](PRODUCTION.md) |
 
 ## The rules

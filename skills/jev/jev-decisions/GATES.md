@@ -17,7 +17,7 @@ export const scoreTail = (a: ScoreResponse, k: number) =>
 export const scoreHead = (a: ScoreResponse, k: number) =>
   Object.entries(a.probabilities).reduce((sum, [level, p]) => (Number(level) <= k ? sum + p : sum), 0);
 
-/** The yes side of a yes/no; a "yes" gate is only meaningful at 0.5 or above. */
+/** A yes/no read as true above a threshold you choose per action. */
 export const isYes = (a: NoulResponse, t = 0.5) => a.noul > t;
 
 /** Sure enough of one label to act on it. */
@@ -39,7 +39,10 @@ The sixth input is a **fact**: a boolean code computed from the record (`refund.
 
 - Use `scoreTail` for risk ("a third of the mass at angry or above hands off"), `score` (the expectation) only together with a confidence floor.
 - Use `choiceIs` to act on one label, `choiceMass` to enter a branch that several labels share.
-- A yes/no below 0.5 is "not established", not "no". Its opposite is a separate threshold on the other side (`a.noul < 0.15`), and the space between is the middle band.
+- A yes/no threshold follows the cost of each mistake: 0.5 when both errors cost the same, higher when a false yes is expensive (paging someone, paying out), lower when a missed yes is (a safety flag). Below the act threshold is "not established", not "no"; "no" is its own threshold on the other side (`a.noul < 0.15`), and the space between is the middle band. A starting band of no below 0.3, yes above 0.7 and a person between absorbs the run-to-run wobble around 0.5.
+- **Don't read magnitudes off a score.** The expected level says which side of a cut a case falls; it is not calibrated enough to interpolate an exact number between two levels.
+- **A runner-up with real mass is information.** A ticket that is 0.61 returns and 0.35 billing goes to returns and sends billing a copy; gate the copy on the runner-up's probability (above about 0.25).
+- **Thresholds can depend on facts code reads.** Merging two wrapped lines takes a lower bar after a line with no closing punctuation than after one that ends a sentence; a high-risk asset gets a stricter bar than a test box. Compute the fact, pick the bar, then compare.
 
 ## Bands: act, middle, close
 
@@ -56,6 +59,7 @@ export function alertBand(t: { trueAlarm: NoulResponse; contextExplains: NoulRes
 
 - **Close needs two signals,** low probability of the bad thing and a positive reason it's fine ("a ticket covers this exact activity"); silence is not an explanation.
 - **Some things never auto-close** whatever the probability: the domain controller, the payroll account, a regulated complaint. Make that a fact, checked first.
+- **Let the levels be the bands.** When the outcomes are ordered and the middle one has a meaning of its own ("related, possibly the same: a curator decides"), make them the levels of one score and round to the nearest level. The wording of the middle level, not a fitted number, decides what reaches a person.
 - **The middle is a product decision.** It can ask the user a clarifying question, notify, queue for a person, or run a second, more focused call. It must never silently default to either end.
 
 ## Ordered rules
@@ -150,11 +154,14 @@ const [fraud, money] = await Promise.all([
 
 Store the raw judgments (every probability, keyed by case and question version), not only the decision. Then:
 
+- **Normalise before you weight.** Divide each score by its top level (`score / (levels - 1)`) so a four-level and a three-level question sit on the same 0-to-1 scale and a weight of 0.6 against 0.3 means twice as much.
 - **Weights, filters, rankings and views are code.** A composite score (`0.5 * fit + 0.3 * urgency + 0.2 * quality`), a user's slider, a different cut-off: none needs a new call while the evidence and the question wording are unchanged.
 - **Weighted means are for qualities that can compensate** (a strong lead with a weak message). "Any serious violation blocks" is a separate condition per violation, checked before any average; a high mean must never hide one failed hard requirement.
 - **Ranking uses comparable per-item scores:** the same score question on each candidate against the same query, then sort in code. With labelled outcomes, the stored judgments also become features for an ordinary model.
 
 ## Cascades
+
+Aggregate a battery of "is something wrong here?" checks with **any** (the max), not the mean: one confident red flag escalates instead of being averaged into silence. Frame each so true is the bad case.
 
 Put the cheap judgment in front and the expensive one behind it, on the slice that needs it: certain spam is hidden by code, the clear how-to gets the macro, and the gray zone (confidence under about 0.85, or signals that disagree, such as "not spam" with high toxicity) goes to a reasoning model or a person. One confident false positive that hides a real customer costs more than the whole gray zone.
 

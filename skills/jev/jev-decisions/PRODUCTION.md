@@ -20,6 +20,7 @@ const result = await jev
 ```
 
 - **A failed decision is a middle-band decision.** No answer means ask, queue for a person or keep the old path, never act and never auto-close. Write that fallback next to the gate.
+- **429 and 529** mean rate limited (per organisation, in tokens and requests per second) and overloaded; both are retried with backoff by the client. Keep concurrency modest on a shared key (about eight in flight) and raise it slowly.
 - **4xx other than 429 is your bug** (bad key, bad request, unknown model): don't retry it, alert on it.
 - **`APIUserAbortError`** means your own signal fired; it is not an outage.
 - Logging: `logLevel: "info"` logs request summaries; `"debug"` adds headers and bodies (credential headers are redacted, bodies are not, so never in production with personal data).
@@ -28,11 +29,16 @@ const result = await jev
 
 `jev-latest` is a moving target and every threshold is tuned against one model's probabilities. Pin a version in configuration (`defaultModel: "jev-1.13.0"`), store the `model` string returned with every decision, and treat an upgrade like a migration: replay the labelled set on the new version, compare per gate, retune, then switch.
 
+As of October 2026: `jev-1.13.0` is the stable release behind `jev-latest`, `jev-1.14.0` (from October 14, needed for box questions) sits behind `jev-preview`. `models.list()` returns the aliases; versioned IDs are accepted whether listed or not. The same weights serve every account and are not trained on customer requests; zero data retention is an enterprise option.
+
+**Questions and thresholds live in one module.** They are the part a reviewer must read, so keep every question, criterion and threshold constant in one file, not scattered through handlers. Coding agents write mediocre questions; expect to edit them by hand.
+
 ## Record and replay
 
 Store, for every call: the model, a hash of the state, a hash of the questions (so a reworded criterion is a new version), the answers, and per decision the rules that fired with the inputs they read. Then:
 
 - **Replay is free.** A changed threshold or rule is re-decided over stored answers without calling the model; only a changed state or question needs new calls.
+- **Replays are not reruns.** A cached answer reproduces the decision exactly; a live rerun of the same request can differ slightly on close calls. Key the cache on the model, the state and the full question set (a reworded criterion is a new key), record the model version each answer came from, and price from stored token counts so a price change needs no new calls.
 - **Cache identical calls** by `hash(model, canonical JSON of state, canonical JSON of questions)`. Retries, re-runs and evals then cost nothing, and tests run against recorded answers offline.
 
 ```ts
@@ -134,7 +140,7 @@ The weights say in code what matters most; the reason is built from the answers,
 
 ## Cost and latency
 
-Input tokens only, about $0.042 per million; output is free. One call holds about 64K tokens of state; a choice can have up to 255 labels and a score 2 to 10 levels. Cost scales with state size times calls, so one call with twelve questions over a 4,000-token state costs about a twelfth of twelve calls. Bodies of 1 KiB or more are zstd-compressed by default on Node 22.15+.
+Input tokens only, about $0.042 per million; output is free. A request holds about 64K tokens (the state plus any one question about 32K); a choice can have up to 255 labels and a score 2 to 10 levels. Cost scales with state size times calls, so one call with twelve questions over a 4,000-token state costs about a twelfth of twelve calls. Bodies of 1 KiB or more are zstd-compressed by default on Node 22.15+.
 
 Measure the bill per completed task, not per call: a cheap wrong decision that sends a good change back, books the wrong thing or hides a real customer costs a person's time, which is more than any call. Speed and cost multiples published by the vendor are the favourable end of its own evaluations; measure yours.
 

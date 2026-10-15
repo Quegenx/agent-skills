@@ -30,7 +30,7 @@ The loop, not the model, decides how far a wrong answer can travel. Whatever Jev
 Before a consequential call runs, ask whether it is allowed. Exact rules first, in code; then Jev on what needs reading; then a decision with three outcomes.
 
 ```ts
-// .claude/hooks/jev-gate.ts: a Claude Code PreToolUse hook (matcher "Bash"). Node 23.6+ runs .ts directly.
+// .claude/hooks/jev-gate.ts: a Claude Code PreToolUse hook (matcher "Bash"). Node 22.18+ runs .ts directly.
 import { TypeSafeClient, choice } from "@typesafe-ai/sdk";
 
 type HookInput = { tool_name: string; tool_input: { command?: string }; cwd: string };
@@ -142,6 +142,8 @@ const { answers } = await jev.systemOne({
 
 The same choice sits at the front of a multi-agent system (research, code, support, sales) or a model fleet: describe what each worker or model is good for and when it is overkill, let Jev pick the cheapest one likely to finish the task, and send the low-confidence ones to the strongest. The expensive model wakes only for work that needs it.
 
+The handler need not be a model at all. An intent of "order status" goes to a database lookup; product questions and returns go to specialist LLMs loaded with their own context; a complaint goes to an LLM only when a complexity score is low and its confidence is high, otherwise to a person; anything under the intent confidence floor goes to a person. When a yes/no says the request holds several distinct actions, let an LLM split it into single commands and route each one; when the intent is open conversation, fall back to a generative model, which Jev's 100 ms adds nothing noticeable to.
+
 ## Scoring the last step instead of asking a model
 
 Replace "evaluate the previous output" calls with scores the loop branches on: relevance below the bar retries the search, quality below the bar sends the draft back once, risk above the bar goes to a person. Write those bars in code; the model never decides both the verdict and what happens next.
@@ -177,6 +179,6 @@ Exact checks stay in code next to the judge: "the agent must look up the order b
 - **Multi-turn behaviour** needs the whole conversation in the state: did the assistant keep a constraint stated early, verify identity before acting, resolve the request, stay inside its role.
 - **Rerun the same traces** a few times when setting up a judge, and keep only questions whose answers are stable.
 
-## Citations
+## Citations, retrieval, memory, guardrails, tool suggestion
 
-To check an answer against its sources, ask per claim and per cited passage: does the passage support the claim, contradict it, or not address it; is the claim stated as fact when the source hedges. Code enforces the structure (every claim has a citation, every citation exists); Jev reads the support. A passage that tells the model what to conclude is evidence of injection, not support.
+The LLM-side recipes (checking citations against the source, filtering retrieved passages before the answer, deciding what to remember, screening input and output, suggesting one tool from a large roster, verifying an extraction before escalating) are in [RECIPES.md](RECIPES.md).
