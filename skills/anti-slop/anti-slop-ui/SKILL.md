@@ -5,7 +5,7 @@ description: "Keeps websites and app screens from looking template-built while m
 
 # Anti-slop UI
 
-A filter, not a style. It doesn't prescribe colors, fonts or layouts and doesn't ban techniques. It rejects technique without a purpose, and it requires the result to be alive and to work. Load `anti-slop` for the shared rules and `anti-slop-copy` for the words on the page. The pattern scan is [PATTERNS.md](PATTERNS.md); the contrast checker is [scripts/contrast.py](scripts/contrast.py). For motion that stays smooth and reads as one change (compositor-only properties, interruptible and shared-element transitions, reduced motion, media loading), see the `performance-and-caching` skill's BROWSER.md.
+A filter, not a style. It doesn't prescribe colors, fonts or layouts and doesn't ban techniques. It rejects technique without a purpose, and it requires the result to be alive and to work. Load `anti-slop` for the shared rules and `anti-slop-copy` for the words on the page. The pattern scan is [PATTERNS.md](PATTERNS.md); the contrast checker is [scripts/contrast.py](scripts/contrast.py). For the motion itself (durations, curves, springs, transitions, smooth performance, reduced motion), see the `ui-animation` skill.
 
 ## 1. Direction first
 

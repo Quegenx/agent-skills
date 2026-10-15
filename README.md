@@ -1,12 +1,12 @@
 # Agent skills
 
-32 skills for coding agents, in three sets:
+33 skills for coding agents, in three sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/video/`](./skills/video) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-slop/`](./skills/anti-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/engineering/`](./skills/engineering) | Backend and architecture practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing. 16 skills. |
+| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation. 17 skills. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -117,7 +117,8 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [observability](./skills/engineering/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness |
 | [deployment](./skills/engineering/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |
 | [sql-patterns](./skills/engineering/sql-patterns/SKILL.md) | SQL that returns the right answer: joins that multiply, NULLs, ties, time zones, streaks, ranges, hierarchies, JSON |
-| [performance-and-caching](./skills/engineering/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, full-text search, caching and invalidation |
+| [performance-and-caching](./skills/engineering/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, full-text search, caching and invalidation, media and long lists in the browser |
+| [ui-animation](./skills/engineering/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion |
 | [ai-features](./skills/engineering/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |
 | [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
 | [testing](./skills/engineering/testing/SKILL.md) | Tests that catch real bugs, integration tests with real Postgres, architecture and contract tests |

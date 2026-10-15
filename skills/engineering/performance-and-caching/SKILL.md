@@ -1,6 +1,6 @@
 ---
 name: "performance-and-caching"
-description: "Makes slow endpoints, pages and queries fast: measure first, then N+1s, indexes and query plans, full-text search, caching with invalidation, and smooth animation and media loading in the browser. Use when something is slow, an index isn't used, a cache misbehaves, or an animation or page load janks."
+description: "Makes slow endpoints, pages and queries fast: measure first, then N+1s, indexes and query plans, full-text search, caching with invalidation, and media and long lists in the browser. Use when something is slow, an index isn't used, a cache misbehaves, or a page loads slowly."
 ---
 
 # Performance and caching
@@ -12,7 +12,7 @@ Speed comes from doing less work, then from doing it at the same time, and only 
 | Find where the time goes; cut round trips; parallelize; index | [MEASURE.md](MEASURE.md) |
 | Push filtering, aggregation, ordering and limits into SQL; anti-joins, top N, window functions, sargable predicates, keyset pagination, index design and index regressions, full-text search | [QUERIES.md](QUERIES.md) |
 | Add, fix or remove a cache at any layer | [CACHING.md](CACHING.md) |
-| Janky animations, interruptible and shared-element motion, reduced motion, images and video that load late or shift the layout, long lists, DOM vs canvas, animation bundle size | [BROWSER.md](BROWSER.md) |
+| Images and video that load late or shift the layout, playing only visible video, long lists, DOM vs canvas (animation itself: the `ui-animation` skill) | [BROWSER.md](BROWSER.md) |
 
 ## The rules
 
