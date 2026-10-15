@@ -107,6 +107,53 @@ sub.on("ready", () => localCache.clear());                     // after a reconn
 - **Pub/sub is fire-and-forget:** an instance that is disconnected or restarting misses messages. Always keep a short local expiry that bounds how long a missed invalidation can last, and on reconnect, clear the local cache or reconcile it.
 - Prefer deleting the entry on write and letting the next read refill it over writing the new value into the cache from several places.
 
+## Lookup data: how much to fetch per miss
+
+Large read-mostly lookup data (routes, redirects, a product catalogue, feature flags per tenant, translations) is cached by fetching it. The unit you fetch decides most of the miss cost.
+
+- **One entry per item makes every item its own miss.** With hundreds of thousands of keys, most first lookups miss, and each miss is a round trip. Fetch a **bounded group** (a shard) instead: one miss fills the cache for every item in it, so the next lookups for its neighbours hit.
+- **The group size is a trade-off you measure, not guess.** Too big and each miss transfers and parses more than it needs; too small and misses come back. Try a few sizes on production traffic and watch latency at P99, not only the average. (In one large CDN, multi-megabyte shards lost to roughly 200 KB ones.)
+- **Assign items to groups deterministically** (sorted ranges, or a hash of the key) and record the mapping in data you already fetch, so finding the right group costs no extra round trip.
+- **Versioned keys start cold.** A key that includes the deployment, release or schema version is correct, and every new version begins with an empty cache. Price that in for things that release often; grouping is what makes the cold start cheap.
+- **Measure each cache tier on its own.** A small in-memory cache per process in front of a shared regional one (Redis, a CDN tier) has two hit rates. Traffic spread over many processes or serverless instances keeps the per-process hit rate low even when the shared one is high, so "large entries are fine, they'll stay in memory" often fails. Size entries for the cost of a miss at the tier that actually misses.
+- **Rule out before looking up.** When most lookups are for keys that don't exist (probing several candidate paths, checking a blocklist), put a Bloom filter in front: "definitely not present" is answered locally with no fetch, and only "maybe present" goes to the exact lookup. Size it for an acceptable false-positive rate; false positives cost a lookup, never a wrong answer.
+
+### Find one record without parsing the group
+
+A bigger group only costs transfer if a lookup doesn't decode all of it. Store the records sorted by key with an index of byte offsets, binary-search the keys in place, and parse only the value that matches:
+
+```ts
+// Build time: sorted, one JSON value per line, alternating key and value; offsets point at key lines.
+export function buildShard(entries: Map<string, unknown>) {
+  const keys = [...entries.keys()].sort();
+  const offsets: number[] = [];
+  let body = "";
+  for (const key of keys) {
+    offsets.push(Buffer.byteLength(body));
+    body += `${JSON.stringify(key)}\n${JSON.stringify(entries.get(key))}\n`;
+  }
+  return { index: offsets, data: Buffer.from(body) };
+}
+
+// Request time: O(log n) key reads, one JSON.parse for the match; the rest of the shard stays bytes.
+export function lookupInShard(shard: { index: number[]; data: Buffer }, key: string): unknown {
+  const lineAt = (start: number) => shard.data.toString("utf8", start, shard.data.indexOf(10, start));
+  let lo = 0, hi = shard.index.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    const start = shard.index[mid]!;
+    const found = JSON.parse(lineAt(start)) as string;
+    if (found === key) return JSON.parse(lineAt(shard.data.indexOf(10, start) + 1));
+    if (found < key) lo = mid + 1; else hi = mid - 1;
+  }
+  return undefined;
+}
+```
+
+- The format stays inspectable: `head` shows real records, and line-based tools work on it. To ship the index inside the same file, store the offsets as fixed-width fields so any one can be read without parsing the whole index.
+- Compare keys the way you sorted them (here UTF-16 code-unit order, both sides). Store keys as plain UTF-8; packing text into a legacy encoding is where rare characters break.
+- Before going further (front-coding the sorted keys, deduplicating values, a custom binary format), simulate the lookup cost offline. Smaller files don't always mean meaningfully faster lookups, and each format change is a migration of its own.
+
 ## Layers in a TypeScript stack
 
 - **HTTP and CDN:** `Cache-Control` for responses (`private` for anything per-user, `public` with `s-maxage` for shared ones, `stale-while-revalidate` where a slightly old value is fine), `ETag` with `If-None-Match` for cheap revalidation. Never cache authenticated responses in a shared cache unless the key includes the user.
@@ -127,6 +174,7 @@ Order matters: here timing wraps the cache, so it records hits and misses; rever
 
 ## Prove it
 
+- For grouped lookup data: P99 lookup latency before and after on production traffic, the hit rate of each tier separately, and the latency of a cold version (first requests after a release).
 - Send 50 concurrent misses for one key: the source is called once. Make the refresh fail: later requests recover and no key stays locked.
 - Cache a rendered reading-list page by content, template version and locale: change each one and confirm the key changes; confirm old entries expire.
 - Warm a key on two instances, disconnect one instance's invalidation listener, update the source: show that its staleness ends at the local expiry or on reconnect.

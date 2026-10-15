@@ -11,7 +11,7 @@ Speed comes from doing less work, then from doing it at the same time, and only 
 |---|---|
 | Find where the time goes; cut round trips; parallelize; index | [MEASURE.md](MEASURE.md) |
 | Push filtering, aggregation, ordering and limits into SQL; anti-joins, top N, window functions, sargable predicates, keyset pagination, index design and index regressions, full-text search | [QUERIES.md](QUERIES.md) |
-| Add, fix or remove a cache at any layer | [CACHING.md](CACHING.md) |
+| Add, fix or remove a cache at any layer; large lookup data: fetch granularity, cache tiers, Bloom filters, indexed shards | [CACHING.md](CACHING.md) |
 | Images and video that load late or shift the layout, playing only visible video, long lists, DOM vs canvas (animation itself: the `ui-animation` skill) | [BROWSER.md](BROWSER.md) |
 
 ## The rules

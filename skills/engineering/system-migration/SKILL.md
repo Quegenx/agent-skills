@@ -35,6 +35,17 @@ Change what runs underneath while the business keeps running. A rewrite fails wh
 
 **Manage the people as deliberately as the code.** Product needs visible progress, developers need time to do it right, the business needs to keep running, the legacy team needs to transfer what it knows. What helped: regular meetings where each group raises concerns, tracking visible to everyone, explaining technical decisions in terms of business impact, and celebrating both technical and business milestones.
 
+## Switching a hot path to a new implementation
+
+When the new code answers the same question as the old (a new storage format, a new index, a rewritten lookup), prove they agree before the new one serves anyone:
+
+1. **Offline:** build realistic fixtures and run every input through both implementations, comparing every answer. This finds the bulk of the bugs, cheaply.
+2. **Shadow in production:** behind a flag, on a random sample of requests, run both, serve the old result, compare in the background (off the request path, so the user never waits for the new one), and log every mismatch with its input. Keep it on long enough to see rare inputs: weeks, not hours. Expect some mismatches to be bugs in the old implementation; each one explained raises confidence in the comparison.
+3. **Switch** by flag, with the old path still deployable, then watch the same metrics.
+4. **Delete what the switch made redundant.** Once the new path serves, the build steps, uploads and writes that only fed the old one are pure cost; removing them is often a second win (faster deploys) the migration paid for.
+
+Before adding a further optimization to the new path, simulate its benefit offline. A change that makes the data much smaller but the lookup only slightly faster isn't worth another rollout; leave it for a workload that needs it.
+
 ## When a dependency's license or support changes
 
 A library you rely on goes commercial, changes its license, or stops being maintained. Open source is paid for by someone, in time or money; plan for it as maintenance, not as a surprise.
@@ -52,5 +63,6 @@ Whatever you choose, learn what the library did for you (what a mediator is, how
 
 ## Prove it
 
+- For a hot-path switch: the offline comparison over every fixture input, the shadow mismatch log over the full sampling period with each mismatch explained, and the metric that must hold after the flag flips.
 - Plan the migration of one capability: name the source of truth at each stage, how changes synchronize and how loops are prevented, and the reconciliation check that must pass before traffic switches.
 - For a dependency: list every place it's used and the features each place needs, then estimate the work to replace those features before choosing to pay, stay, switch or rebuild.
