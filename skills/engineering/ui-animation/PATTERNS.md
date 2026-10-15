@@ -99,7 +99,22 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
 
 ## Buttons, presses and feedback
 
-- Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size.
+- Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size. **Every pressable element has a pressed state, and it is stronger than the hover** (rest, hover, press, each a step further). Playful brands move (a slight scale); professional tools shift tone. Keep it subtle and under 100 ms in: some buttons are pressed hundreds of times a day. Component details beyond motion are in the `anti-slop-ui` skill's DETAILS.md.
+- **Stretch a switch while it is held.** Fast-moving things look longer, so a thumb that widens toward the side it will travel to while pressed, then snaps across and back to round on release, feels physical. The stretch's size and speed set the character: a small quick stretch feels light, a longer one with a slower travel feels heavy. Match it to the brand.
+
+```css
+.switch { --w: 44px; --h: 24px; --pad: 2px; --knob: calc(var(--h) - 2 * var(--pad)); --stretch: 6px;
+  position: relative; inline-size: var(--w); block-size: var(--h); border-radius: 999px; }
+.switch .thumb { position: absolute; inset-block-start: var(--pad); inset-inline-start: var(--pad);
+  inline-size: var(--knob); block-size: var(--knob); border-radius: 999px;
+  transition: inline-size 120ms ease-out, translate 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+.switch:active .thumb { inline-size: calc(var(--knob) + var(--stretch)); }           /* off: grows toward the right */
+.switch[aria-checked="true"] .thumb { translate: calc(var(--w) - var(--knob) - 2 * var(--pad)) 0; }
+.switch[aria-checked="true"]:active .thumb {                                         /* on: stays pinned right, grows left */
+  translate: calc(var(--w) - var(--knob) - var(--stretch) - 2 * var(--pad)) 0; }
+```
+
+  Use a real `<button role="switch" aria-checked>`, so it works with Space and Enter, With reduced motion, keep the stretch (it is feedback) and make the travel instant.
 - **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in the `performance-and-caching` skill's BROWSER.md.
 - Success lands once (a check that draws in 200-300 ms), errors shake horizontally 2-3 times over 300-400 ms with no bounce, and the message stays.
 
