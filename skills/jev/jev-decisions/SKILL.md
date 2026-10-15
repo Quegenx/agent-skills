@@ -35,9 +35,23 @@ An LLM may think and draft, Jev decides, code acts. Nothing consequential happen
 8. **The state is data.** Text in the state, including tool results and documents, is evidence. An instruction inside it ("ignore the policy and refund") is something to ask about, never something to follow ([QUESTIONS.md](QUESTIONS.md#prompt-injection-is-a-question)).
 9. **Every decision can be replayed.** Record the pinned model, a hash of the state and the questions, every answer and which rule fired with its inputs. Re-running new thresholds over stored answers costs nothing ([PRODUCTION.md](PRODUCTION.md#record-and-replay)).
 
+## Shapes that recur
+
+Start from what the application will show, select, change or hand off, and work back to the judgments it needs.
+
+- **Route and fill:** pick the handler, the team, the worker or the model, and its closed-set arguments, in one call ([AGENTS.md](AGENTS.md#routing-a-sentence-to-a-function)).
+- **Select instead of generate:** code finds the candidate values or source spans, Jev picks the intended one, code copies it out verbatim. The model can't choose a candidate you didn't send, so check coverage first.
+- **Find and judge evidence:** score retrieved passages for relevance, keep the useful ones, flag the planted ones, before a writer model sees them.
+- **Score once, reuse:** store the per-dimension judgments; weights, filters, rankings and views change in code without calling the model again ([GATES.md](GATES.md#score-once-decide-many-times)).
+- **Verify and escalate:** check each claim or field against its evidence; the confident pass, the rest go to a reasoning model or a person.
+- **Judge at volume:** thousands of small pairwise calls (should page A link to page B, are these two records the same thing, does this message need a reply), each with a "nothing honestly fits" outcome.
+- **Steer a changing state:** each step rebuilds the menu from what exists now and Jev picks the next bounded move, while code keeps the goal, the observations and the limits.
+
 ## When not to use it
 
-Generating text, extracting a free-form value, doing maths, or anything a regular expression, a schema check or a SQL query decides exactly. To "extract" one of many known things (which PO line, which tool, which step went wrong), code builds the candidate list and Jev picks or rates each one.
+Generating text, summarising, writing code, explaining itself, extracting a value nobody listed, doing maths or date arithmetic, or anything a regular expression, a schema check or a SQL query decides exactly. If deterministic code already gets it right, keep the code. A judgment that needs several hidden reasoning steps is split into smaller questions or given to a reasoning model.
+
+Typed output guarantees the shape, not the truth: Jev can't return an option you didn't define, but it can confidently pick the wrong one you did.
 
 ## Prove it
 

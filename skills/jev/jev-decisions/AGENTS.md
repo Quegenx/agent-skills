@@ -2,6 +2,29 @@
 
 An agent loop is full of small decisions that don't need a frontier model: is this command safe, which tool next, is the work done, did that run go well. Each becomes a typed Jev call that returns in a fraction of a second, and the big model keeps the work that needs words.
 
+```
+user -> LLM (plan) -> Jev (route) -> tool -> Jev (worked? relevant? risky?) -> continue? -> tool ... or -> LLM (final answer)
+```
+
+Find them by reading a trace: count the calls whose output nobody reads as text and that end in a branch. In a coding loop, each kind of loop hides one:
+
+| Loop | The decision inside it | Question |
+|---|---|---|
+| Turn-based: the agent checks itself against a rubric | Is this step good enough to hand back | Score on the rubric |
+| Goal-based: run until the goal holds | Is the goal met yet | Yes/no over the evidence |
+| Time-based: check every few minutes | Did anything change that needs the agent | Choice |
+| Proactive: pick up work, fix it, review it | Which item, how risky, ship or hold | Choice and yes/no |
+
+## The harness around it
+
+The loop, not the model, decides how far a wrong answer can travel. Whatever Jev says:
+
+- **Hard limits in code:** a cap on actions and on money per run, checked before every step.
+- **Progress saved after every action**, so a retry never repeats a side effect; after an interruption, inspect the last completed action before doing anything again. A confident answer can't prove a file was written or a payment went through.
+- **An outcome check after "done":** verify independently that the thing happened (the record exists, the page shows it), never take the decision's word for it.
+- **A person on everything irreversible:** publishing, deleting, paying, sending outside, posting in the user's name.
+- **Observed facts apart from inferred ones** in the agent's memory, and a freshness check before applying an old judgment to a state that has since changed.
+
 ## Gating a tool call
 
 Before a consequential call runs, ask whether it is allowed. Exact rules first, in code; then Jev on what needs reading; then a decision with three outcomes.
@@ -101,7 +124,31 @@ A scheduled loop that starts a full model turn every tick pays for every empty t
 
 ## Choosing the next step
 
-Browser, desktop and tool-using agents pick from a menu that changes every step. Rebuild the menu from live state each time (the elements on the page now, the tools that apply now), add an exit (`ask_user`, `none`), and let Jev pick; the big model or code does the step.
+Browser, desktop and tool-using agents pick from a menu that changes every step. Rebuild the menu from live state each time (the controls visible on the page now, the reviewers online now, the passages held now, never last run's list), add an exit (`ask_user`, `stop`), and let Jev pick; code clicks, and a small model types only when a field needs text.
+
+```ts
+const { answers } = await jev.systemOne({
+  state: { goal, url: page.url(), visible_actions: actions.map((a) => a.id), last_error: lastError ?? null },
+  questions: {
+    next: choice("Which action moves `goal` forward from this page?", {
+      ...Object.fromEntries(actions.map((a) => [a.id, a.description])),
+      stop: "The goal is reached, or no visible action can move it forward",
+    }),
+  },
+});
+```
+
+## Routing work to an agent or a model
+
+The same choice sits at the front of a multi-agent system (research, code, support, sales) or a model fleet: describe what each worker or model is good for and when it is overkill, let Jev pick the cheapest one likely to finish the task, and send the low-confidence ones to the strongest. The expensive model wakes only for work that needs it.
+
+## Scoring the last step instead of asking a model
+
+Replace "evaluate the previous output" calls with scores the loop branches on: relevance below the bar retries the search, quality below the bar sends the draft back once, risk above the bar goes to a person. Write those bars in code; the model never decides both the verdict and what happens next.
+
+## Trimming a long session
+
+Long sessions fill with tool output that no longer matters. Ask, per tool call, whether its result is still relevant to the current goal, and drop or collapse the ones that aren't before the next model turn. It is a relevance filter at decision speed, not a summary.
 
 ## Routing a sentence to a function
 
@@ -123,7 +170,12 @@ Score agent traces after the fact with the same machinery, so a fleet of runs tr
 4. **Four states** from worked x unhappy: healthy (close, unless claims are unsupported), **silent failure** (failed, user didn't complain: the most valuable find, it becomes a regression case), overt failure (route by attribution), expectation gap (worked, user unhappy: was the request clear and in scope?).
 5. **Attribution, only when something failed:** a choice over `tool_or_service`, `infrastructure`, `agent_misuse`, `agent_reasoning`, `nothing_wrong`, and a choice over this run's steps for "where it first went wrong". Cross-check with code: infrastructure error codes (timeouts, rate limits) count only, while caller error codes (unknown tool, bad arguments) say the agent called wrongly.
 
-Exact checks stay in code next to the judge: "the agent must look up the order before issuing the refund" is one line over the trace, not a question.
+Exact checks stay in code next to the judge: "the agent must look up the order before issuing the refund" is one line over the trace, not a question. Even reading the whole trace, a judge can rate a run that skipped the lookup as very likely correct (about 0.86 in one test), because the reply sounds right; the code check catches what the judge misses.
+
+- **Judge the trajectory, not the reply:** the request, the rules, every tool call and result (errors and timeouts included) and the final message. The same reply passes or fails depending only on the tool results.
+- **A correct escalation is not a failure:** "I couldn't confirm the refund, so I passed it to the team" follows a policy that says to escalate unknown outcomes; give the judge that policy, or it scores the run as unsure.
+- **Multi-turn behaviour** needs the whole conversation in the state: did the assistant keep a constraint stated early, verify identity before acting, resolve the request, stay inside its role.
+- **Rerun the same traces** a few times when setting up a judge, and keep only questions whose answers are stable.
 
 ## Citations
 

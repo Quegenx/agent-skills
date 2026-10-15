@@ -144,6 +144,19 @@ const [fraud, money] = await Promise.all([
 - **Break near ties with a narrower question.** When the top two intents are within 0.25, ask a second choice between just those two, with descriptions that contrast them, and renormalise the pair's mass by its answer.
 - **Combine probabilities explicitly.** "Worked" = fulfilled, or not fulfilled but correctly handed off: `f + (1 - f) * handedOff * handoffRequired`. "Any of these claims is false" = `1 - Π(1 - p_i)`. Write the formula where the gate is, not inside a question.
 - **Fan out per item.** One safety node per consequential tool call, one set of yes/no questions per invoice line or prior invoice, built from the record; each item's answers stay keyed to it.
+- **Block before you pair.** Matching records across two lists (same product, same company, should page A link to page B) is a yes/no per candidate pair; code first discards the pairs that can't match (different category, no shared token, outside the date window), so the model judges hundreds of pairs, not the full cross product.
+
+## Score once, decide many times
+
+Store the raw judgments (every probability, keyed by case and question version), not only the decision. Then:
+
+- **Weights, filters, rankings and views are code.** A composite score (`0.5 * fit + 0.3 * urgency + 0.2 * quality`), a user's slider, a different cut-off: none needs a new call while the evidence and the question wording are unchanged.
+- **Weighted means are for qualities that can compensate** (a strong lead with a weak message). "Any serious violation blocks" is a separate condition per violation, checked before any average; a high mean must never hide one failed hard requirement.
+- **Ranking uses comparable per-item scores:** the same score question on each candidate against the same query, then sort in code. With labelled outcomes, the stored judgments also become features for an ordinary model.
+
+## Cascades
+
+Put the cheap judgment in front and the expensive one behind it, on the slice that needs it: certain spam is hidden by code, the clear how-to gets the macro, and the gray zone (confidence under about 0.85, or signals that disagree, such as "not spam" with high toxicity) goes to a reasoning model or a person. One confident false positive that hides a real customer costs more than the whole gray zone.
 
 ## Precedence
 
