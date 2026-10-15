@@ -16,8 +16,8 @@ Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is
 <summary><strong>Any agent</strong> (skills.sh)</summary>
 
 ```bash
-npx skills@latest add Quegenx/agent-skills                          # choose skills and agents interactively
-npx skills@latest add Quegenx/agent-skills --skill sql-patterns     # one skill
+bunx skills@latest add Quegenx/agent-skills                          # choose skills and agents interactively
+bunx skills@latest add Quegenx/agent-skills --skill sql-patterns     # one skill
 ```
 
 </details>
