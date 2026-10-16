@@ -111,7 +111,7 @@ The **history builder** is a pure function of the stored messages: same input, s
 ## Memory (`memory/`)
 
 - **Short-term** returns exactly the messages the model reads: the stored summary, the user context that held when the fold happened, playbooks loaded only in the folded part, then the recent messages.
-- **Long-term** holds the storage functions and the rules text the instructions import, so when to remember and how it is stored change together.
+- **Long-term** holds the storage functions and the rules text the instructions import, so when to remember and how it is stored change together. Background extraction and consolidation live here too, started by a job after the turn ends, never from the reply path (the `agent-memory` skill).
 
 ## Skills (`skills/`)
 
