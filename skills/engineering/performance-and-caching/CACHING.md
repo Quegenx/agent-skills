@@ -78,6 +78,7 @@ async function getOrLoad<T>(key: string, load: () => Promise<T>, ttlMs: number):
 
 - A concurrent map protects each operation, not the lookup-then-refresh sequence; that's what the in-flight map is for.
 - Clean up on failure (the `finally`), so a failed refresh doesn't block the key and later requests can recover. Decide whether to briefly cache the failure to protect a struggling source.
+- **Run the shared refresh detached** from any one caller (a separate task or fiber), so a caller that is cancelled doesn't cancel the refresh the others are waiting on.
 - Bound the memory: an LRU or maximum entry count for the cache and for the in-flight map.
 - **Coordinate per key, never globally.** One lock or queue for the whole cache makes a refresh of one key block requests for every other key.
 - **Prefer a maintained library over this snippet in production.** `lru-cache` with a `fetchMethod` coalesces concurrent `fetch` calls for the same key, bounds size with `max`, expires with `ttl`, and can serve the stale value while refreshing or when the refresh fails (`allowStaleOnFetchRejection`, `allowStaleOnFetchAbort`). Write your own only when you understand which of those edge cases you're taking on.

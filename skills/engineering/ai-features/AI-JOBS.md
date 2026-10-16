@@ -68,6 +68,8 @@ When one call scores or labels many items (posts, rows, messages):
 - **Require an answer for every input id.** A response that skips some must not mark the skipped ones as done; retry them or leave them for the next run.
 - **Reject values outside the declared range** per item, and keep the rest of the batch.
 - **When the cheap screening step fails, keep the items** for the full step instead of dropping them.
+- **Finding repeats** (the same request posted in several places): narrow the pairs first in code (the same author, a recent window, the last few texts), match identical text after normalizing spacing and punctuation in code, and ask a model only whether the remaining pairs are the same request in other words. In one sample, one author wrote 667 cross-group pairs, 381 of them word for word.
+- **Choose the failure direction by cost:** when the model call fails, keep the item if a missed one costs more than an extra one (an extra alert beats a lost lead).
 
 ## Cost and limits
 

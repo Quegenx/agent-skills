@@ -41,6 +41,10 @@ Before trusting a reworded judge question:
 3. **Run the judge ten times on each, twice.**
 4. **Keep the wording only if every must-pass passed and every must-fail failed, every time.**
 
+**Name what doesn't count, in the question.** A gender question failed every chat whose only first-person forms were gender-neutral (0 of 10); listing those forms, past tense included, passed 30 of 30 and still failed both real mistakes. A fixed paragraph the product always sends is called an explanation in the question; quoting it alone let real repeats through 2 to 6 times in 10.
+
+**Planted defects measure a rule judge on real chats:** take good real conversations, plant one defect per copy, and count catches against false alarms on the clean originals (one set caught 24 of 25 to 40 of 40 with no false alarm beyond three real staff mistakes).
+
 ## Calibrating a new judge
 
 A judge for production (scoring live traffic, gating a release) is calibrated before it counts:

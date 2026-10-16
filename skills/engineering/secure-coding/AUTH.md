@@ -36,6 +36,8 @@ export async function verifyAccessToken(token: string) {
 - **Detect reuse:** a revoked token presented again means someone replayed it; revoke the whole family and force a new login.
 - **Revoke all of a user's tokens** on password change, MFA reset or "sign out everywhere".
 
+**An auth check that fires while the session is still loading** signs people out: right after a page load, a client can report "not authenticated" until its token arrives, and a save in that window redirected to login. On an unauthorized response, ask the server whether a session exists; redirect only when it doesn't, otherwise fail the action and let the user retry.
+
 ## API keys (server-to-server)
 
 For machine callers, not browsers. A key identifies a calling application; it isn't a user session.

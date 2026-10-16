@@ -118,6 +118,8 @@ app.use((req, res, next) => {                                   // register afte
 
 ## Tracing through queues and jobs
 
+**Don't send trace headers to third parties.** Automatic propagation adds `traceparent` to every outbound request, including model APIs and sites you scrape; turn propagation off on clients that call outside services, so they get only the headers they ask for.
+
 HTTP propagation is automatic; a message is just bytes until you carry the context in its headers. The amqplib and kafkajs instrumentations do it for those clients; for anything else (a Postgres outbox row, a pgmq message, a job table) do it yourself:
 
 ```ts
