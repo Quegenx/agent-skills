@@ -10,7 +10,7 @@ Each case is a conversation: the customer's messages, the data it starts from (a
 
 **Say what a case grades,** since each catches a different failure: the **end result** (did the task get done, judged on the final state, not on the agent's account of it), the **path** (which tools, with which inputs, in which order, how many steps), or **one part** (the planner, the retriever, one tool's input) in isolation. Path checks name their strictness: the right tools in any order, the exact order, or the exact inputs too. A plan can be good and not followed, or followed and bad: check both when the agent plans.
 
-**A fresh data store per case,** seeded with the real catalogue and settings as of a fixed date and no customer data. **Only the clock is faked:** each case's first message arrives at a fixed time (say Tuesday 12:00 local), each later one a minute after; timers and timeouts stay real.
+**A fresh data store per case,** seeded with the real catalogue and settings as of a fixed date and no customer data. A fake store is code too, so test it: one whose filter parsed numbers as dates (a score of 88 read as the year 1988) returned no rows, and two cases failed for that reason since before the first baseline. A good fake is the real database client with its `fetch` answering from the case's rows: writes apply to later reads and turns, a missing row comes back missing, pagination and embedded counts behave as the real API does, and every write is recorded for the checks. **Times the judges can check:** when tools return UTC, show the judge each time followed by its local time; a judge can't confirm the agent's own conversion and fails correct answers. **Only the clock is faked:** each case's first message arrives at a fixed time (say Tuesday 12:00 local), each later one a minute after; timers and timeouts stay real.
 
 ## The cases
 
@@ -30,6 +30,8 @@ A multi-turn case can't be replayed from an old conversation: the user's next me
 - **A model plays the user against the real agent** until the outcome is reached or a turn limit hits (4 to 8 turns to start, longer for long workflows, 3 to 5 for a smoke run). Hitting the limit is a result to grade, not a harness error.
 - **Each simulated conversation gets its own id,** so state the agent keeps by conversation (orders, memory) stays apart; give fixed opening turns when the product always opens the same way.
 - **Return what each turn did** (tools called, context retrieved) with the reply, so per-turn checks can grade it; a conversation of text alone only supports conversation-level judges.
+- **Run the conversation step by step:** each step is a user message or the user's decisions on the approval cards the last answer stopped at, so the persona can deny an approval, change a budget or change its mind; check the end state in code (what was saved, created and sent, what must not have gone out).
+- **Trace the simulated user's calls too,** or their cost can't be counted later.
 - The simulated user is a model too: read a few simulated conversations before trusting the suite, and drop a persona that keeps breaking character.
 
 ## Fixtures and the network guard
@@ -52,6 +54,9 @@ export function guardNetwork(passThrough: readonly string[], fixtures: Record<st
 ```
 
 - Fixtures answer in the shape the app's own clients parse, and a test runs those clients against the fixtures, so a fixture can't drift from reality unnoticed.
+- **Give every source the agent may legitimately use an answer,** even an empty one: a source the request excludes answers "nothing found", so calling it fails the case's check instead of ending as a harness error, and a case where carrying on correctly reaches another source isn't failed by the harness.
+- **A tool error the SDK would hand the agent** (AI SDK 7 turns an unanswered call into a `tool-error` the agent answers around) fails the case as a harness error, so a missing fixture is never graded as the agent's mistake. Malformed tool arguments from the model are recorded as the agent's, not a harness crash, and a call that returned a tool error counts as not made.
+- **Fixtures must agree with the case's user:** a group fixture called "no agents" given to a user who is an agent made the agent rightly skip it, and the case looked like a failure.
 - **A "down" case per outside service:** the fixture answers 503 and the case checks the agent hands off and promises nothing.
 - **Seeded faults:** a run can inject tool failures and slow answers from a fixed seed, to score recovery the same way every time.
 - Tests never message real people, charge cards or send campaigns; the guard is what enforces it.
@@ -67,7 +72,7 @@ Per run: a manifest (fingerprint, variant, models, versions), one result line pe
 
 ## Fingerprints, variants, resume
 
-A **variant** is one version of the code. Its fingerprint hashes the commit, the uncommitted and untracked changes (outside the records folder), the case index and the repetitions. A run directory with another fingerprint is refused (`EVAL_RUN_CHANGED`): changed code is a new variant. Filters (by file or case name) narrow a run without changing its fingerprint, and a rerun of the same variant skips the slots already finished.
+A **variant** is one version of the code. Its fingerprint hashes the commit, the uncommitted and untracked changes (outside the records folder), the case index and the repetitions. A run directory with another fingerprint is refused (`EVAL_RUN_CHANGED`): changed code is a new variant. Sort the case index before hashing it: a test runner lists files in its own cache order (failed and slow first), and an unsorted index refused the resume of a finished run. Filters (by file or case name) narrow a run without changing its fingerprint, and a rerun of the same variant skips the slots already finished.
 
 Run full suites from a **separate checkout or worktree** pinned to a commit, in the background, so you can keep editing; never change the code a recorded run is using.
 
@@ -91,6 +96,7 @@ Compare runs case by case, not only by the headline: list the cases that fell fr
 - **Repetitions measure variability on fixed cases;** they are not extra cases. When a variant builds something random (an index, a summary), add a no-change control run to see that variance.
 - **Name the primary metric before looking at results.** Comparing once at a planned size is a plain test; checking as results arrive needs a sequential test made for peeking; three or more variants need a correction for multiple comparisons. A comparison informs a person's choice; it is not a merge gate.
 - **Recompute the headline from the raw rows** before quoting it.
+- **When a case drifts with no change to blame,** bisect it: each suspect change switched off in turn, then a clean checkout of the old commit. A case that falls on the old commit too is the model drifting, not your change.
 
 ## Snapshots and the real entry path
 

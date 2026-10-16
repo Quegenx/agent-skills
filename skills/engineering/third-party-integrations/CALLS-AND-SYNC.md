@@ -5,7 +5,9 @@
 - **Go through one client per provider** (yours or a platform proxy) that resolves the connection, attaches credentials, sets timeouts and logs the call without bodies or auth headers.
 - **Rate limits:** back off on 429 with jitter, and better, read the provider's rate-limit headers and resume when the window resets. Your calls to a platform have their own limit too.
 - **Reads retry; writes don't.** Retry a read on timeouts, 408, 429 and 5xx. A write (send, create, charge, post) is sent once by your client; on an ambiguous failure, look at the destination or the provider's log first, then retry with the same idempotency key where the provider supports one.
+- **Payment links and states:** return the stored unpaid link when the amount hasn't changed instead of creating a second payment page; no later path sets a paid record back to unpaid; a second successful payment on a paid order alerts a person.
 - **Check the result's status field,** not only its error: a failed call can come back with an empty error.
+- **Stop a paging loop:** reject a cursor the provider returned before; one that repeats pages forever. Stop at a page limit too, and say whether the list ended or was cut.
 - **Bound what comes back:** ask for the fields you use, page large lists, and cap the size you pass on (to the user, the database or a model).
 - **Map the response strictly:** a missing field you expected throws, rather than turning into zero, an empty list or a wrong bill. Use explicit optional reads for fields that may be absent.
 - **Paid APIs:** count usage from the raw response before you reshape it, so a change to your mapping can never change what you bill; a provider error is a zero-cost outcome, recorded as data.
@@ -35,6 +37,8 @@
 - **Verify the provider's signature** over the raw body (the `secure-coding` skill). A provider that doesn't sign gets a per-connection secret in the URL or a header, so a stranger who learns the endpoint can't post. An event you couldn't verify is flagged and treated as untrusted.
 - **Route to the tenant before any work:** map the event to its connection (an account, team or installation id in the payload, or your connection id embedded in the registered URL). An event you can't attribute does no connection-scoped work.
 - **Acknowledge fast, process in the background;** expect duplicates, bursts and any order. Key processing by the provider's event id.
+- **Fail so the provider retries:** when the event's object can't be fetched from the provider's API, answer with a 5xx, so the provider sends it again. A 4xx tells it to give up, and the order is lost.
+- **Trust the provider's state field, not the event's name:** an order counts as paid only when the provider's payment status says paid; any other value is unpaid and alerts someone, and a payload with no status is logged.
 - **Webhooks miss events.** Keep a periodic sync as reconciliation, and when both write the same record, never let older polled data overwrite a newer webhook update (compare modification times).
 - **Some providers need one subscription per connection:** register it after connecting, renew it before it expires, remove it before deleting the connection.
 

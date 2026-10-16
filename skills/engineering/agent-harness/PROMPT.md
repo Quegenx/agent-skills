@@ -8,6 +8,14 @@ There is no universal right size. A small prompt with heavy tool schemas and a l
 
 Pin the rendered prompt and the tool list as snapshot files in the repo, so every change to what the model sees shows up as a diff in review.
 
+**Give the prompt and the tools sent up front their own budgets,** each held by a test (around 15,000 characters each is a good aim; one agent went from 31,554 characters of tools to 17,805 and its prompt to 17,064, with no drop in its evals). What gets them there:
+
+- **A rule said in both the prompt and a tool description keeps one place,** usually the tool's; a rule about a group of tools loads with those tools.
+- **Rare tools load through tool search,** and the prompt names every deferred tool with its namespace, built from the tool registry, so the model knows what it can find. A tool the user asks for in words that don't match its search terms stays up front: deferred, "forget what I told you" found no memory tool.
+- **Schemas say formats in words:** a validation pattern compiled into the schema (an id's 240-character regular expression) is sent on every request; "a UUID" says the same.
+
+**Splitting a tool by job** (create, then set its schedule with a second tool) keeps each schema small and each call simpler for the model.
+
 ## A stable prefix, changing context appended
 
 The base prompt stays byte-identical for the whole session, so the provider's prompt cache keeps hitting; anything that changes goes in as a message.
@@ -40,6 +48,8 @@ A rule about what to do with a tool's result goes in as a **step note** right af
 - **A skill with several flows is a short router:** the main text says which file covers which case and the agent opens only that one. Keep each file one link away from the main text, short (around 100 lines is a good ceiling), with a contents list at the top of anything longer.
 - **Leave out what the agent can fetch:** a skill holds what the agent couldn't work out from the live data, the tools and the docs; code samples and copied facts go stale, so point to the source instead.
 - **Match the freedom to the risk:** plain guidance where several ways are fine, exact steps or a script where one wrong move breaks something.
+- **A playbook says when to skip its own steps:** a search-everywhere playbook loaded for "only on Marketplace" searched every source anyway, and a research playbook loaded for one narrow question ran its whole sequence. Name the narrow requests it answers directly.
+- **Write a playbook as a goal, the sources and when it's done,** not a numbered recipe; keep the tool names only where the model needed them to act at all.
 
 ## The base prompt
 
@@ -52,5 +62,15 @@ What remains: voice, language, scope, what the agent never does, and the flows n
 3. **Fix the class, not the example:** write the rule at the level of the mistake, in your own words, never the failing message itself. If the general rule doesn't work, say so; narrowing it until it fits one case is overfitting.
 4. **Keep what works:** before changing a sentence, name the behaviour it protects, and rerun the cases that depend on it.
 5. **One cause per attempt,** each saved as its own version, so a result can be traced and rolled back. No added emphasis or capitals as a fix.
+
+**Cutting a prompt breaks things quietly.** What went wrong when one was cut, and the guard for each:
+
+- **A section dropped whole:** the cut replaced a section from its first mention, which sat inside another section, and took the end of that one and two more with it. A test names every section the prompt must contain.
+- **Named tools folded into a group name** ("the analysis tools"): the agent stopped calling them. Keep one line naming each tool the prompt routes to.
+- **A short hint read as the whole recipe:** "answer from the knowledge tool" made the agent skip the follow-ups every answer offers. A hint says what still applies.
+- **A detail cut from the prompt** must already live in its tool's description; check each one before the cut lands.
+- **Gate a cut with the full suite,** and compare on the cases both runs share.
+
+When a call waits for the user's approval, it ends the turn: the prompt says to write the whole answer first and put that call last.
 
 **Write for the model that will read it.** Instructions accumulate for the weaknesses of older models and then hold back newer ones: step-by-step recipes where the model now plans well, "always run the tests" where it already does, and hard "never without asking" language that makes a careful model stop early. When the model changes, reread every instruction: keep boundaries that protect something real, give explicit permission for work you know is safe ("these tests use throwaway data: run them and fix what fails without asking"), and state what done means, so the model neither stops at a first draft nor runs past the goal. Check the model's own prompting guide: newer reasoning models want goals over micromanaged steps and less shouted emphasis. A prompt that serves several model families is tested on each.

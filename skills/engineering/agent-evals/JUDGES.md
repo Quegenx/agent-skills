@@ -6,6 +6,8 @@ Everything exact is checked in code, per turn and over the case: tools called an
 
 Avoid whole-sentence assertions: a correct reply worded differently fails them. Check a short required stem in code, or the meaning with a judge. Keep exact phrases only for lines that must be exact.
 
+**Grade the agent's own words.** Text the app adds around the answer (follow-up buttons written by a separate call in the user's voice) goes to judges in its own block labelled as the app's, and code checks read only the answer: unlabelled, a judge read a button saying "can you find more from today?" as the agent claiming it searched again, and the buttons' wording tripped the voice and length checks.
+
 For an agent that acts, check the **state this run produced** (the file, the row, the sent message in the fixture's log), in a disposable fixture, and keep a case where the agent claims success but changes nothing.
 
 ## One shape for every grader

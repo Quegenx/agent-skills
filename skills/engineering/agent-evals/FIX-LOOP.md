@@ -73,6 +73,14 @@ The details of each are in the `agent-harness` skill's CHECKS.md.
 - Never print secrets in logs, reports or test files.
 - No fallbacks added to pass, no lint suppressions, no loosening of the grader.
 
+## A long improvement goal
+
+For work spanning many phases and sessions, write a **goal file** and a **handoff file**:
+
+- **The goal:** outcomes in priority order, ground rules (which paid runs are allowed, no new dependencies, one commit per green phase, what the agent may decide alone), the design per outcome with the files to read first, and phases each ending in a named eval gate (`--variant <name> --reps 3 --compare <baseline>`).
+- **The handoff:** read first at every turn and after every compaction. The current phase and next step, a phase table with one result line each (run name, pass rate, interval), the owner's decisions with dates, open questions, blockers, a cost row per paid run, and a log newest first. When the goal and the handoff disagree on what is done, the handoff and the repository win.
+- **A side check earns its place:** a question asked of every message (which flow is this?) stays only if its gate shows a gain; one that misrouted twice and showed none was removed.
+
 ## Handing it to an agent
 
 Give it this skill, the project's own eval docs and its coding rules, and say: *Run the loop until a full run has zero failures. Fix root causes. Do not loosen checks; clarify a judge question only with calibration. Report each round's numbers.*

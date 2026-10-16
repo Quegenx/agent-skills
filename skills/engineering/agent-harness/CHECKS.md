@@ -46,6 +46,17 @@ Rules for every gate:
 - **A unit test with the real failing reply and a correct neighbour that must not trigger it,** and a test that it fires with the production prompt and tools: a gate that depends on a prompt block can silently stop firing when the block is removed.
 - Skip gates after an API error, so error, block and retry can't loop.
 
+Gates that kept paying for themselves:
+
+- **An empty answer:** sent back to answer, twice at most, with the note as a system message, never in the user's role. A step that holds only the provider's own hosted tool search and no text is empty too: the gates look only at the calls your side runs.
+- **Work prepared and never offered:** a join or a send prepared, then an answer that doesn't offer it.
+- **A repeated question,** checked against the customer's own words: a code asked for after she wrote it, or after she said there is none.
+- **Plan-only steps** don't count against the step budget for work (up to a few per pass), or a planning agent runs out of steps before it acts.
+
+## Fields a model must not set
+
+A tool that writes a record accepts only what the agent may change. A model echoed `paymentStatus: "unpaid"` onto an order already paid on the website; the update tool now never changes a paid order's payment status. The same for totals: write or charge only what code priced from the catalog, refuse an unknown add-on with the catalog's names (`ORDER_ADDON_UNKNOWN`), and fail an order code can't price (`ORDER_TOTAL_UNPRICED`) instead of falling back to the model's sum. A tool that reports a change reports the rows it actually changed, not the ones it was asked to.
+
 ## The reply check
 
 A classifier reads the draft and says **what it claims** (a handoff, a payment link, a discount, a confirmed payment, an internal term); code says **whether that is true** (did the handoff tool run this turn? is there a link in the reply? is it paid?). A claim with no evidence earns **one** rewrite. The classifier never sees the order, so it never guesses it. Exact rules run beside it in code: every amount explained by the catalogue or a tool, the booked day and time, URLs, foreign scripts.

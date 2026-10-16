@@ -61,6 +61,14 @@ queued -> submitting -> submitted(provider_job_id) -> processing -> completed
 - **Every transition is a conditional update** (`update ... where id = $1 and state = 'submitting'`), so two workers can't both submit.
 - **Retries are bounded,** with backoff and jitter, and a terminal `failed` state with the reason shown to the person.
 
+## Model calls over a batch
+
+When one call scores or labels many items (posts, rows, messages):
+
+- **Require an answer for every input id.** A response that skips some must not mark the skipped ones as done; retry them or leave them for the next run.
+- **Reject values outside the declared range** per item, and keep the rest of the batch.
+- **When the cheap screening step fails, keep the items** for the full step instead of dropping them.
+
 ## Cost and limits
 
 - Estimate cost before submitting (duration, tokens, pages) and enforce a per-user and global budget; show the budget in the UI.

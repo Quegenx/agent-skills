@@ -30,6 +30,8 @@ returning id;
 - **Renew the lease while the answer runs** (every minute), matching the exact expiry the database returned, so a lost lease is never silently reclaimed; losing it aborts the stream, and the release clears only the holder's own value.
 - **At the door:** origin and content-type checks, the session's user must match the request's user, a cap on the body size, the input decoded with a schema.
 - **Store the user's message before the run starts,** under its own id with a unique constraint per conversation, so a failed run keeps what was asked (and can be retried) and a replayed request can't store it twice. Save only the run's new messages at the end.
+- **A message written while the agent answers** is queued on the page, shown as waiting, and sent as one message (in order, attachments with it) once the answer ends and no approval is waiting; the server's busy refusal stays as the guard for a second tab. A queued message can be removed, and the waiting chip says that closing the page drops it.
+- **An account switch mid-flight:** a delayed send, a search still paging or a background job started under one account must not finish under the next. Each carries the owner it started with, the server rejects a mismatch, client work checks the owner before publishing a result, and the signed-in app remounts when the owner changes.
 - **A cap per user or tenant** on runs at once (and on background runs queued), so one account can't starve the rest.
 - **Quiet hours** for a business channel: batches wait until morning instead of replying at 3 a.m.
 - **Show it is working:** a read receipt and typing indicator, or streamed parts.
@@ -114,9 +116,21 @@ Fit it to who the user is.
 
 - **A customer** gets no approval cards. A handoff tool opens a ticket, marks the conversation as needing a person and alerts the team; a second handoff in the same conversation sends no second alert. Staff take over in their dashboard.
 - **An account owner** approves outside actions (send a message, join, delete) with a click each time. A question with two to four buttons ends the turn; a live checklist shows the plan.
-- **"Try again"** is refused when the earlier answer acted: rerunning would act twice.
+- **"Try again"** is refused when the earlier answer acted: rerunning would act twice. An approval from an earlier answer never runs again on a replay; a continuation must answer the approval pending on the newest message.
 - **A person who answers later** (a teammate's reply in another channel, hours after) needs a durable run: the turn waits on an event matched to its own id, with a timeout, and an expired wait comes back to the agent as "no reply", never as silence.
 - **A denial reaches the model in words:** with the user's note, "call it again with this change, and the user approves again"; without one, "it did not happen; do not call it again unless asked".
+
+### Launching with people approving every message
+
+For a first week with real customers, hold everything the agent writes as a draft that staff send, edit (with an optional reason) or drop, and keep each decision:
+
+- **Hold only the agent's own text** (replies, captions, messages to third parties, reminders it writes); fixed system cards (a paid receipt, a delivery card) still go out at once.
+- **Draft states:** pending, sending, approved, edited, discarded, replaced by staff (staff typed their own reply instead, kept with what they wrote) and superseded (a newer customer message produced a newer draft).
+- **A send the channel didn't confirm** keeps the draft waiting with the error; staff check the chat before sending again, and each approval attempt gets its own request key.
+- **An inbox filter for waiting drafts,** since nothing alerts per draft, and a report: sent as written, edited, replaced, dropped, the median wait.
+- **Turning the mode off** sends nothing already waiting.
+- **The corrections become eval cases:** each edited or replaced reply is exported with the customer's messages, replayed through the real agent and judged against what staff sent. Read each one first; a reference judge is a model too.
+- **Keep run logs longer for the pilot,** and write the removal steps when you build it: send sites back to direct sends, then data, then schema.
 
 ## More than one agent
 
@@ -163,6 +177,9 @@ An agent that works for minutes or hours (research, an import, a coding task) ou
 - **Each span typed for what it is:** model calls as generations, a lookup as retrieval, a subagent as its own agent node under the step that called it, each subagent named after its task, never all called "assistant".
 - **Set a span's input on purpose** (the user's message, the tool's arguments), not every argument of the wrapped function, which drags in clients, settings and keys.
 - **Read a real trace after instrumenting:** run the path, fetch the trace, check that someone could see from it exactly what the agent knew at each decision, fix the gaps, repeat.
+- **Mask after parsing:** a tracing SDK may hand the masking hook objects, not strings, so a mask that only matches strings lets phones and emails in tool inputs through; walk the parsed JSON.
+- **Ask for an alias, log the answer:** a classifier on a "latest" model alias logs the version that actually answered, and its evals rerun when that version changes.
+- **With provider storage off** (the privacy setting above, `store: false`), check that reasoning still carries across steps (the AI SDK's OpenAI provider adds the encrypted reasoning include itself) and that the cached share holds; put it on every call, the title and summary calls included.
 - **Signals from users** (an edited draft, a retry, a thumbs down, a task finished) are scores named after what was observed (`draft_edited`), not the quality hoped for (`quality`).
 
 ## Building a new agent: the order

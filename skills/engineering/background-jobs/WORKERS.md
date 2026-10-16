@@ -25,6 +25,10 @@ returning *;
 
 `for update skip locked` lets each worker take different rows. A job whose `locked_until` passed without completing is considered abandoned and can be reclaimed (only if the handler is idempotent).
 
+- **A worker's late write is fenced:** a renewal or a finish checks that the claim is still its own (the same run id, not expired, not superseded) after locking the row, and commits results, progress and notifications in one transaction. A reclaimed job's old worker then can't write or clear the new claim.
+- **Claim one at a time and renew before each slow step** (a read, a model call) when steps run long.
+- **Rotate shared budgets:** pick the next group or account by when it was last served, and persist cursors with the original look-back window, or the same busy sources take every run and their newest pages hide the rest.
+
 ## Supabase Queues (pgmq)
 
 - Send with `pgmq_public.send(queue_name, message, sleep_seconds)` (the delay before the message becomes visible), or `pgmq.send` inside your own transaction alongside the job row.

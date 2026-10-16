@@ -36,6 +36,9 @@ Report each finding as blocking, important or an improvement, with the artifact,
 ## Production
 
 - **Sample live conversations two ways,** tracked apart: a random share of normal traffic, and every conversation a complaint or a low rating points to.
+- **One production judge per failure you have seen** (an answer that ends with no result, a count that doesn't match the tool, a source read twice, a tool error left unexplained), code where code can tell, each score written back to the trace (1 means the failure is there) so flagged traces can be filtered. Labels a person hasn't checked keep a judge provisional; write the flagged answers to a file for the owner to mark.
+- **Real conversations become cases** through a mining script that masks before writing anything (phones, emails, names from tool output, ids as stable fakes), writes outside git, and adds a case only after the owner reviews it, with the user's wording kept and the case marked as an incident with its date.
+- **Map the workflows before writing cases:** each user goal against each source, what the agent should do end to end, what it does today (measured, with the path) and what the data store lacks for it. The map shows which goals have no end-to-end case.
 - **Grade a conversation only once it is over,** by a stated rule (closed, or quiet for a set time).
 - **Alerts need a minimum sample,** carry the failing cases, and group repeats. Tell an incomplete window from a real drop, and a provider outage from a drift in quality.
 - **Refresh the cases and recalibrate** after a change of model, prompt, tool, retrieval or audience.
