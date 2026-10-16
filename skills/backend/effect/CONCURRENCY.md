@@ -2,7 +2,7 @@
 
 **Contents:** [The model](#the-model) · [Running many effects](#running-many-effects) · [Forking fibers](#forking-fibers) · [Observing fibers](#observing-fibers) · [Interruption](#interruption) · [Racing](#racing) · [Timeouts and sleeping](#timeouts-and-sleeping) · [FiberSet, FiberMap, FiberHandle](#fiberset-fibermap-fiberhandle) · [Process keep-alive and running](#process-keep-alive-and-running) · [Anti-patterns](#anti-patterns) · [Prove it](#prove-it)
 
-Everything here targets Effect v4. Where a v3 name differs, it is given as "v3 called it X" so ported code is recognisable. Semaphore, Latch, Deferred, Queue and PubSub are in [SCHEDULING-AND-STATE.md](SCHEDULING-AND-STATE.md); concurrency inside streams is in [STREAMS.md](STREAMS.md).
+Everything here targets Effect v4. Where a v3 name differs, it is given as "v3 called it X" so ported code is recognisable. Semaphore, Latch, Deferred, Queue and PubSub are in [STATE-AND-COORDINATION.md](STATE-AND-COORDINATION.md); concurrency inside streams is in [STREAMS.md](STREAMS.md).
 
 ## The model
 
@@ -77,7 +77,7 @@ const parent = Effect.gen(function* () {
 ### When a forked fiber starts
 
 - **Forked fibers begin after the current fiber completes or yields.** A `SubscriptionRef.changes` stream forked with `Effect.forkChild`, followed by two `set`s, captures only `2`; an `Effect.sleep` or `Effect.yieldNow` after the fork lets it start first.
-- **Don't rely on timing:** fiber execution order is not deterministic, and a single yield does not guarantee a fiber begins at a particular time. Synchronise with a `Deferred` or `Latch` (SCHEDULING-AND-STATE.md) when order matters.
+- **Don't rely on timing:** fiber execution order is not deterministic, and a single yield does not guarantee a fiber begins at a particular time. Synchronise with a `Deferred` or `Latch` (STATE-AND-COORDINATION.md) when order matters.
 
 ## Observing fibers
 
@@ -137,7 +137,7 @@ Effect.catchCause(Fiber.join(fiber1), () => Fiber.join(fiber2))
 - **`Effect.timeoutOrElse({ duration, orElse: () => Effect })`** (new in 4.0) interrupts the source, then lazily runs the fallback. v3 `timeoutFail`, `timeoutFailCause` and `timeoutTo` map to it.
 - **Reserve a defect on timeout** (`Effect.die` in the fallback) for when timing out violates an invariant.
 - **Uninterruptible work stretches a timeout:** the region defers the interruption until it becomes interruptible again, so the caller may wait longer than the configured duration.
-- **Retry deadlines:** where `Effect.timeout` sits relative to `Effect.retry` decides what it bounds; see SCHEDULING-AND-STATE.md.
+- **Retry deadlines:** where `Effect.timeout` sits relative to `Effect.retry` decides what it bounds; see SCHEDULING.md.
 - **`Effect.sleep(duration)`** suspends without blocking a JS thread; also `Effect.delay`, and `Effect.timed`, which pairs the duration with the result.
 - **`Effect.never`** never completes; **`Effect.yieldNow`** yields to other fibers.
 
