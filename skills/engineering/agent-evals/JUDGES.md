@@ -43,6 +43,10 @@ Before trusting a reworded judge question:
 
 **Name what doesn't count, in the question.** A gender question failed every chat whose only first-person forms were gender-neutral (0 of 10); listing those forms, past tense included, passed 30 of 30 and still failed both real mistakes. A fixed paragraph the product always sends is called an explanation in the question; quoting it alone let real repeats through 2 to 6 times in 10.
 
+**A reference reply is an example, not a checklist:** tell the judge the approved reply is one good answer for the same moment, so a correct reply worded differently passes, and that staff notes inside it aren't customer text.
+
+**Long answers move their facts to code:** on a long report the faithfulness judge scored correct answers around its threshold and failed 2 of 5. Code checks that every number and link in the answer appears in the tools' output, and the judge asks only what reading decides. Write down the blind spot that remains (two real values swapped between items passes both).
+
 **Planted defects measure a rule judge on real chats:** take good real conversations, plant one defect per copy, and count catches against false alarms on the clean originals (one set caught 24 of 25 to 40 of 40 with no false alarm beyond three real staff mistakes).
 
 ## Calibrating a new judge

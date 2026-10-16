@@ -66,6 +66,7 @@ export function guardNetwork(passThrough: readonly string[], fixtures: Record<st
 Per run: a manifest (fingerprint, variant, models, versions), one result line per case and repetition (`case_id`, `rep`, `passed_all`, each check's pass, reason and, for judges, probability and confidence, the output, the tools called, the trace steps), errors kept apart from failures, and a summary. Store them locally (out of git) with a small report page; track the case index and where each case came from.
 
 - **Every slot ends with one status:** `ok`, `app_error`, `grader_error`, `timeout` or `truncated`. Only `ok` slots carry quality grades; the summary reports the error counts and both denominators (all slots, graded slots). An undecidable grade is a grader error, never a fail.
+- **Never record a guess:** a value the runner always passes (the repetition, the fingerprint) that is missing fails the run, and a turn with no model call is a harness error, not a row with a guessed model.
 - **Retry only transient errors,** keep every attempt, and never pick the best one. A case has a deadline; a timed-out call may still be billed.
 - **Token counts come from the leaf model calls,** never added again from a parent's total; an unknown count is empty, not zero. A cost names its price source and date and says whether every call was counted.
 - **Pilot one case first:** check that every recorded field is filled for real (an unknown silently written as 0 looks like a cheap run) and that the setting you are testing actually reached the agent and its subagents.
