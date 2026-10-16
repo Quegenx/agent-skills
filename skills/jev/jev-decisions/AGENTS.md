@@ -17,7 +17,7 @@ Find them by reading a trace: count the calls whose output nobody reads as text 
 
 ## The harness around it
 
-The loop, not the model, decides how far a wrong answer can travel. Whatever Jev says:
+The full method for building the agent around these checks (where each rule lives, a cache-stable prompt, gates with caps, tools, history, compaction, memory) is the `agent-harness` skill; measuring it and the fix loop to a clean run are the `agent-evals` skill. The minimum, whatever Jev says:
 
 - **Hard limits in code:** a cap on actions and on money per run, checked before every step.
 - **Progress saved after every action**, so a retry never repeats a side effect; after an interruption, inspect the last completed action before doing anything again. A confident answer can't prove a file was written or a payment went through.

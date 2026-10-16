@@ -1,0 +1,69 @@
+---
+name: agent-harness
+description: "Builds LLM agents that stay reliable: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction and memory. Use when building or fixing an agent, a tool-using chatbot or its system prompt."
+---
+
+# Agent harness
+
+A model is a probability, not code: the same conversation can go another way on the next run, and a rule it must remember to follow, it will sometimes forget. The harness is everything around the model that makes the critical path near-certain anyway: code that checks the facts that matter, context that arrives only when it applies, tools that refuse the wrong state, and a history the agent can trust. 100% is not reachable with a model; near 100% on the path that costs money or trust is, by backing each rule there with code.
+
+| The job | Read |
+|---|---|
+| The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their descriptions | [PROMPT.md](PROMPT.md) |
+| Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
+| Tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
+| Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |
+| Classifier decisions inside the loop (typed yes/no, choice and score answers) | the `jev-decisions` skill |
+
+## Why agents fail
+
+1. **The run is a sample.** A case that passes 2 of 3 runs has a real, occasional problem.
+2. **Rules compete.** One message touching several rules (an office order, a dietary question and the word "gift") lets the model follow the wrong one; the more rules on every message, the likelier.
+3. **Rules that live only in the prompt** get forgotten: validate before sending a payment link, never invent an order number.
+4. **Rules that contradict** ("always X" here, "never X when Y" there) resolve differently each run.
+5. **Wrong signals:** a mislabelled error ("service unavailable" for "no results") sends the model down the wrong path.
+6. **Tests that grade wording, and judges that are models too:** some failures are correct replies worded differently, or a judge wrong at low confidence.
+
+## Where each rule lives
+
+For every sentence in the prompt, ask in order:
+
+| If it... | It goes to | Example |
+|---|---|---|
+| costs money or trust when broken | **code**: a gate, a check, a tool that refuses | validate the address before a payment link; an order number must be one of the customer's |
+| matters only in a situation code can detect | **a reminder message** code adds that turn | delivery-report rules only after a delivery report arrives |
+| is a multi-step procedure some conversations need | **a skill**, with a description saying when to load it and when not | the gift order flow, subscriptions |
+| is a fact to look up | **a knowledge tool** | opening hours, product weight, certificates |
+| is what a tool returns, or its next step | **the tool**: its result or its error | `ADDRESS_CHECK_UNAVAILABLE: hand off and say ...` |
+| is voice, scope, or needed on every message | **the base prompt** | tone, language, what the agent never does |
+
+- **Prefer what code decides over what the model decides.** A reminder code adds can't be "forgotten"; a skill the model must choose to load can.
+- **A flow nearly every conversation runs stays in the prompt;** as a skill it costs a load on most turns and can be skipped.
+- **One rule, one definition.** A reminder may restate it at the moment it is broken.
+
+## The method
+
+1. **Baseline:** an eval suite from real conversations, every case run 3 times, the pass rate recorded with its 95% interval (`agent-evals`).
+2. **Measure what is actually sent:** the rendered prompt and the tool schemas, per section, not the files on disk.
+3. **Critical rules to code first:** list what is costly when wrong (payment, closing an order, handoff, quantities, invented ids, side effects); give each a gate or check ([CHECKS.md](CHECKS.md)) and a unit test, exceptions included.
+4. **Situational rules to reminders,** triggered by code.
+5. **Facts to a knowledge tool, procedures to skills,** with a budgeted list.
+6. **Tools:** short descriptions, bounded results, errors that say what to do next, rare tools deferred.
+7. **After each step,** rerun the cases it touches 3 times; fix what regressed before the next step.
+8. **Full run at the end:** not below the baseline's interval, and every case that dropped from 3/3 fixed or explained in writing.
+9. **After launch:** read the first real conversations; each new failure becomes an eval case, then a fix.
+
+## Prove it
+
+- [ ] Eval suite from real conversations, 3 runs per case, baseline recorded
+- [ ] Rendered prompt and tool schemas measured and pinned as reviewed snapshot files
+- [ ] Stable base prompt; changing context sent as appended messages; the prefix pinned by a test
+- [ ] Every rule placed (code, reminder, skill, knowledge, tool, prompt)
+- [ ] Tool calls and results kept in the history; long chats summarised with fixed sections; lasting facts in memory; current state added each turn from the database
+- [ ] Each critical-path gate: a cap, a reachable stop, a next-step message, exceptions in code, a test that it fires with the production prompt and tools
+- [ ] Skills: a budgeted list, each saying when to load it and when not
+- [ ] Tools: short descriptions, bounded results, errors naming the next step, rare tools deferred; outside actions idempotent; retries bounded
+- [ ] A reply check that fails open; authorization classifiers that fail closed, see only trusted input, and started in shadow mode
+- [ ] Every model pinned, or tracked with its evals as the release check; every classifier with a named field, a calibrated threshold, its own cases, a time bound and a kill switch
+- [ ] Untrusted content marked as data, with an injection case; each outside service with a "down" case
+- [ ] One test through the real entry path that needs no key; one trace per turn with personal data masked

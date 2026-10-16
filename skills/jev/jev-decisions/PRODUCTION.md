@@ -29,7 +29,21 @@ const result = await jev
 
 `jev-latest` is a moving target and every threshold is tuned against one model's probabilities. Pin a version in configuration (`defaultModel: "jev-1.13.0"`), store the `model` string returned with every decision, and treat an upgrade like a migration: replay the labelled set on the new version, compare per gate, retune, then switch.
 
+If a project deliberately tracks the newest release instead, it needs two things in exchange: every answer logs the model it asked for next to the one that answered (so a drift traces to a release), and each Jev use has its own eval that is rerun as the check after every release. An unknown model ID is a 400 that is never retried.
+
 As of October 2026: `jev-1.13.0` is the stable release behind `jev-latest`, `jev-1.14.0` (from October 14, needed for box questions) sits behind `jev-preview`. `models.list()` returns the aliases; versioned IDs are accepted whether listed or not. The same weights serve every account and are not trained on customer requests; zero data retention is an enterprise option.
+
+## Jev inside a product
+
+- **Jev only adds safety or hints.** When it is off, slow or failing, the product does exactly what it would do without it: a vendor outage never stops a reply. Each use says in code what happens without Jev.
+- **Budgets per use, not per request:** a whole-ask budget on the reply path (a few seconds, interrupting the request), a longer one off it; inside it, a per-request timeout and retries only when the service is busy (429, 529) or timed out. The SDK's own defaults (10 s per attempt, 2 retries, backoff) can reach about 30 s in the worst case, so the caller's budget is what bounds the turn.
+- **A kill switch** (an environment flag, or no key) stops all asks without a redeploy.
+- **Parse answers strictly** with a schema per question type, and give failures typed kinds (missing key, timeout, rejected with status, invalid shape).
+- **Privacy:** send only the state and the questions; don't propagate your tracing headers to the vendor. Trace each use under its own name, and log its answers as an event the product's run records keep, so a reviewer can see why a reminder fired.
+- **Few questions per turn.** Questions that duplicate what the prompt or a skill already does add latency on every turn and earn nothing; delete them. A handful per turn is normal.
+- **A narrow code rule where Jev misreads,** and never over its safer verdict: a written entry code sometimes reads as "not mentioned", so code may upgrade that to "given", but never override "needs a call".
+- **Fall back below the confidence bar** to the rule the product used before (keywords, a default). In one measurement on labelled courier notes, Jev with a keyword fallback under it was right on 161 of 165 runs; keywords alone on 32 of 55 notes.
+- **Every threshold names the eval that set it,** and the eval stays in the full run.
 
 **Questions and thresholds live in one module.** They are the part a reviewer must read, so keep every question, criterion and threshold constant in one file, not scattered through handlers. Coding agents write mediocre questions; expect to edit them by hand.
 
