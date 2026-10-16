@@ -4,10 +4,10 @@ Measured from a production agent chat. Match a value by what the motion does. "S
 
 | Motion | Value |
 |---|---|
-| Status line label shimmer | a mask band sweeping in the reading direction: black, then 35% at the middle, then black, the band widening 2px per letter; mask 250% wide, moved 100% to 0%, 0.9 s a pass, linear, infinite; muted tone (a pending search query shimmers in the default tone) |
+| Status line label shimmer | a mask band sweeping left to right in both directions: black, then 35% at the middle, then black, the band widening 2px per letter; mask 250% wide, moved 100% to 0%, 0.9 s a pass, linear, infinite; muted tone (a pending search query shimmers in the default tone) |
 | Status icon and label change | morph (icon paths morph, label letters morph), never a swap |
 | Work row enters | from blur 4px, opacity 0, scale 0.96; spring, no bounce, 0.35 s |
-| Streamed character | opacity 0 and blur 5px to clear, fixed 600 ms, cubic-bezier(0.23, 1, 0.32, 1), no stagger; one constant for the CSS, the renderer setting and the settle time |
+| Streamed character | opacity 0 and blur 5px to clear, 600 ms fixed in CSS, cubic-bezier(0.23, 1, 0.32, 1), no stagger; the renderer setting is 450 ms (list markers fade with it); the settle time matches the CSS 600 ms |
 | Text buffer | rate = waiting / 0.6 s, at least 30 characters a second; finish within 0.4 s; frames capped at 0.1 s |
 | Follow-up buttons | from y 6px, blur 4px; 0.1 s apart, only the delay set (the library's default transition) |
 | Suggestion chips | from y 3px, blur 4px; 0.1 s apart, only the delay set |
@@ -76,8 +76,8 @@ Measured from a production agent chat. Match a value by what the motion does. "S
 | Side panel | 30rem by default, dragged between 320 and 720px, 8px padding, corner toward the chat 1.5rem; rail grip a 10 by 32px pill; phone drawer at most 85dvh, top corners 10px, handle 100 by 8px, 16px above |
 | Empty state | heading `clamp(1.5rem, 0.25rem + 6.25cqi, 2.25rem)` weight 400, tracking -0.025em, the mark 1em (36px image) nudged up 0.3em; chips row at most 42rem, chip text 14px weight 500, icon in primary |
 
-Fluid sizes use container-query units (`cqi`) of the chat, not the viewport: the chat shares the screen with a sidebar and a side panel, so a `clamp()` against the chat's own width (8px padding in a 20rem chat to 12px at 32rem) keeps it right at every layout. A clamp can also shrink with the width (`clamp(0.5rem, 2rem - 6.25cqi, 0.75rem)`: 12px at 20rem down to 8px at 24rem). Only a surface that fills the screen (the image viewer) sizes by the viewport (`vi`). The 32rem step is the viewport breakpoint minus the 16rem sidebar. One linear line height, `calc(0.6667em + 1rem)`, fits every type step. Keep the CSS reveal length and the renderer's animation setting at the same value.
+Fluid sizes use container-query units (`cqi`) of the chat, not the viewport: the chat shares the screen with a sidebar and a side panel, so a `clamp()` against the chat's own width (8px padding in a 20rem chat to 12px at 32rem) keeps it right at every layout. A clamp can also shrink with the width (`clamp(0.5rem, 2rem - 6.25cqi, 0.75rem)`: 12px at 20rem down to 8px at 24rem). Only a surface that fills the screen (the image viewer) sizes by the viewport (`vi`). The 32rem step is the viewport breakpoint minus the 16rem sidebar. One linear line height, `calc(0.6667em + 1rem)`, fits every type step.
 
 Put every hover style inside `@media (hover: hover)`, not only the press, and reveal on focus with `:focus-within`.
 
-Under reduced motion: drop movement (`MotionConfig reducedMotion="user"`) and every CSS transition and animation, pure fades included, so popups, hover cards, actions and chips appear at once; stop the text buffer, the shimmer (its band rests off the text) and the waveform; and where code waits for an end event (`animationend`, an unmount after an exit), use a near-instant 1ms instead of none so it still fires.
+Under reduced motion: Motion components drop movement and keep their opacity and blur fades (`MotionConfig reducedMotion="user"`); every CSS transition and animation is dropped, pure fades included, so popups, hover cards, actions and chips appear at once; stop the text buffer, the shimmer (its band rests off the text) and the waveform; and where code waits for an end event (`animationend`, an unmount after an exit), use a near-instant 1ms instead of none so it still fires.

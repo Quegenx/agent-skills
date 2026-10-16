@@ -23,14 +23,14 @@ An agent's answer is not a message; it is work happening. The interface has thre
 
 1. **One live line, not a log in motion.** While the agent works, a single status line under the answer names the current step; it stays mounted and morphs from step to step. Finished steps become quiet rows; when the answer ends they fold into one line ("worked for 12 seconds").
 2. **Never show the model's raw thinking.** Reasoning summaries come in the wrong language, are often empty and quote the instructions. Show the step it is on instead.
-3. **No raw tool name ever reaches the screen.** Every tool has a title and an icon in a table typed against the tool list, so a new tool fails the type check until it has both. Plumbing (the agent finding its own tools) shows nowhere.
+3. **Every tool has a title and an icon** in a table typed against the tool list, so a new tool fails the type check until it has both and a known tool never shows its raw name. A name outside the table (one that only exists at runtime) shows as itself. Plumbing (the agent finding its own tools) shows nowhere.
 4. **An approval card shows what will really happen,** built from the call's actual input and the records it names, never from the agent's prose about it. Confirm, revise and deny; no "always allow". A question with options is a card of the same kind, its options numbered rows inside it.
 5. **Results are the product's own components,** read live: a task the agent created is the real task card, and changing its status in the chat changes the task.
 6. **Pace the stream.** Tokens arrive in bursts; release characters at a steady, adaptive rate and fade them in, so the text flows instead of jumping.
 7. **Treat everything the agent quotes as untrusted.** Links and images are hardened; an outside link opens only after its full address is shown.
 8. **Nothing moves under the reader.** No blank frame before the answer, no scroll jump when the status line gives way to text, no layout shift from a late image.
-9. **Respect reduced motion everywhere:** drop movement and every CSS transition, pure fades too (things appear at once), and stop the text buffer, the shimmer and the waveform. Where code waits for an end event, use a near-instant 1ms instead of none so it still fires.
-10. **Right-to-left is a first-class case:** logical properties, per-block direction from the first letter, `bdi` around anything a user or a site wrote, chevrons and arrows mirrored.
+9. **Respect reduced motion everywhere:** Motion components keep their fades and drop the movement (its `reducedMotion="user"` still runs opacity and blur); every CSS transition and animation is dropped, pure fades too, so those things appear at once; the text buffer, the shimmer and the waveform stop. Where code waits for an end event, use a near-instant 1ms instead of none so it still fires.
+10. **Right-to-left is a first-class case:** logical properties, per-block direction from the first letter, `bdi` around anything a user or a site wrote, chevron and arrow icons mirrored. The shimmer band, the waveform and the image viewer's arrow keys keep one physical direction in both.
 
 ## Prove it
 
