@@ -1,0 +1,63 @@
+# Calling, syncing and webhooks
+
+## Calling the API
+
+- **Go through one client per provider** (yours or a platform proxy) that resolves the connection, attaches credentials, sets timeouts and logs the call without bodies or auth headers.
+- **Rate limits:** back off on 429 with jitter, and better, read the provider's rate-limit headers and resume when the window resets. Your calls to a platform have their own limit too.
+- **Reads retry; writes don't.** Retry a read on timeouts, 408, 429 and 5xx. A write (send, create, charge, post) is sent once by your client; on an ambiguous failure, look at the destination or the provider's log first, then retry with the same idempotency key where the provider supports one.
+- **Check the result's status field,** not only its error: a failed call can come back with an empty error.
+- **Bound what comes back:** ask for the fields you use, page large lists, and cap the size you pass on (to the user, the database or a model).
+- **Map the response strictly:** a missing field you expected throws, rather than turning into zero, an empty list or a wrong bill. Use explicit optional reads for fields that may be absent.
+- **Paid APIs:** count usage from the raw response before you reshape it, so a change to your mapping can never change what you bill; a provider error is a zero-cost outcome, recorded as data.
+- **Choosing between providers** for the same job (search, enrichment, scraping) by fit, price, current health and observed latency, at call time, beats hard-coding the first one integrated.
+
+## Syncing their data into yours
+
+- **Incremental when you can:** fetch only what changed since a saved checkpoint (an `updated_since` time, a cursor, a sequence id). A full fetch every run is fine for small sets and turns impossible as data grows.
+- **Large data, no incremental filter and a need for freshness** is a design that won't hold: use the provider's webhooks, partition the data, sync less of it, or relax the freshness.
+- **Save page by page, then checkpoint.** Never collect the whole dataset in memory first. A run that is cut off (and long runs are) resumes from the last checkpoint; without checkpoints a long sync restarts forever.
+- **Limit the first backfill** (the last three months) when older data matters little.
+- **Keep records small and stable:** only the fields you use, and nothing that changes on every fetch (a fetched-at time), or every run reports every record changed.
+- **Filter at the provider** (selected folders, pipelines, accounts from the customer's settings) rather than after downloading.
+- **Partition a big connection** into independent syncs (one per mailbox, folder or channel), each with its own checkpoint, so a slow one doesn't hold the rest. Not one per record.
+- **Change detection** by the provider's record id plus a hash of the stored fields; deletes are soft, with the last payload kept.
+- **Consume promptly:** read changes after each run (pages of around a hundred), store them, and keep your own cursor per connection and sync. Any intermediate cache is a delivery path with its own retention.
+- **Re-syncing:** refetch everything while keeping change detection when you suspect gaps; wipe and start over only after a breaking change to your model, knowing every record arrives as new.
+
+### Deletes
+
+- **Incremental syncs only see deletes the provider reports** (a deleted-items endpoint, an archived flag); without one, you can't detect them incrementally.
+- **A full sync can diff** what existed before against what it saw this run, but only if the run completed. A swallowed error that cut the run short marks live records deleted. Let incomplete runs fail.
+- **Never hard-delete in your system on a reported delete alone:** soft-delete, and let a later full sync restore what was wrong.
+
+## Webhooks from providers
+
+- **Verify the provider's signature** over the raw body (the `secure-coding` skill). A provider that doesn't sign gets a per-connection secret in the URL or a header, so a stranger who learns the endpoint can't post. An event you couldn't verify is flagged and treated as untrusted.
+- **Route to the tenant before any work:** map the event to its connection (an account, team or installation id in the payload, or your connection id embedded in the registered URL). An event you can't attribute does no connection-scoped work.
+- **Acknowledge fast, process in the background;** expect duplicates, bursts and any order. Key processing by the provider's event id.
+- **Webhooks miss events.** Keep a periodic sync as reconciliation, and when both write the same record, never let older polled data overwrite a newer webhook update (compare modification times).
+- **Some providers need one subscription per connection:** register it after connecting, renew it before it expires, remove it before deleting the connection.
+
+## Webhooks and events you send on
+
+Forwarding a user's events to another URL (theirs, or a tool they use) is a standing outflow of their data, not a one-off call:
+
+- created only when the user asked for that URL, which they control, after seeing what data flows there;
+- the minimum fields, not the whole payload; no credential of yours or the provider's in its headers;
+- signed with a secret the receiver checks, rotatable with an overlap where both keys verify;
+- listed where the user can see and delete it. Never to a request-inspection service or a URL found in a payload.
+
+## A unified model across providers
+
+When customers use different tools for the same thing (CRMs, ATSs, accounting):
+
+- **Model it on your product,** not on the providers' common denominator. Expect optional fields and say how each provider fills them.
+- **Keep provider-specific extensions explicit,** plus the raw provider record for debugging; some concepts (a document's block tree, custom hiring stages) stay provider-specific operations.
+- **Use one shape for reads and writes,** and validate it at the provider boundary, so a provider's change fails there, not deep in your app.
+- **Customer custom fields** come from the customer's mapping, stored with the connection: fetch the available fields, let them choose, save it, and start the sync only once it exists.
+
+## Testing
+
+- **Recorded fixtures** of real responses (trimmed, no personal data) replayed in CI with no network; live tests run only where credentials are present.
+- **Fail on purpose:** 401 (revoked), 403 (scope), 429, 500, a timeout after sending, a duplicate webhook, a webhook before the API response, a sync cut off halfway.
+- **Two tenants in every isolation test.**

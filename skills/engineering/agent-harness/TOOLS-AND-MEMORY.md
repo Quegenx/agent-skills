@@ -15,6 +15,9 @@
 
 ## Tools from outside (MCP and plugins)
 
+Acting through a user's connected accounts (their mailbox, their CRM): scoped sessions, approvals by effect, connecting mid-chat and error wording are in the `third-party-integrations` skill, AGENT-ACCESS.md.
+
+
 - **Your own tools for the product's core paths** (exact types, descriptions you control, no extra hop, versioned with the code); MCP for what users bring and for trying things out.
 - **Treat what a server says about its tools as untrusted:** a "read only" or "not destructive" hint is the server's claim. Run a tool without asking only when it says read-only and your own allowlist agrees; everything else asks the user.
 - **Pin the approved tool list:** store a fingerprint of each tool's name, description and schema when a person approves the server, and block (or ask again) when one changes or a new one appears. A changed description is a new instruction to the model.

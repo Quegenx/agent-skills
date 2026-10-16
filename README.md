@@ -1,12 +1,12 @@
 # Agent skills
 
-38 skills for coding agents, in four sets:
+39 skills for coding agents, in four sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/video/`](./skills/video) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-slop/`](./skills/anti-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation, AI agents, their codebase, memory and evals. 21 skills. |
+| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation, AI agents, their codebase, memory and evals, third-party integrations. 22 skills. |
 | [`skills/jev/`](./skills/jev) | Decision layers on Jev: questions answered as probabilities, gates that turn them into actions, agent hooks and evals. 1 skill. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
@@ -125,6 +125,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [agent-codebase](./skills/engineering/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
 | [agent-evals](./skills/engineering/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, and the fix loop to a clean run |
 | [agent-memory](./skills/engineering/agent-memory/SKILL.md) | Long-term agent memory: what to remember and where, background extraction, consolidation, an always-on profile plus search, staying current, forgetting, user controls and memory evals |
+| [third-party-integrations](./skills/engineering/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
 | [testing](./skills/engineering/testing/SKILL.md) | Tests that catch real bugs, integration tests with real Postgres, architecture and contract tests |
 | [algorithm-patterns](./skills/engineering/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets |
