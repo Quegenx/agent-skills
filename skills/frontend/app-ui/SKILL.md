@@ -9,10 +9,11 @@ A design system is not a palette and a button. It is a few hundred small decisio
 
 | The job | Read |
 |---|---|
-| Tokens: color, surfaces, type roles, motion, units, cursors, hit areas, direction | [TOKENS.md](TOKENS.md) |
-| Buttons, icons, text that morphs, fields, number inputs, search, checkboxes, switches, segmented tabs, tooltips, badges, avatars | [CONTROLS.md](CONTROLS.md) |
+| Tokens: color, surfaces, type roles, the fluid scale, motion, focus, cursors, hit areas, direction, theme | [TOKENS.md](TOKENS.md) |
+| Buttons, icons, text that morphs, fields and form layout, number inputs, search, checkboxes, switches, segmented tabs, tooltips, badges, avatars, formatting numbers, dates and user text | [CONTROLS.md](CONTROLS.md) |
 | The app shell, menus and selects whose trigger becomes the menu, date ranges, the sidebar and its sliding highlight | [MENUS.md](MENUS.md) |
 | Dialogs that grow from their button, sheets, in-place confirms, disclosure panels, step slides, settings | [OVERLAYS.md](OVERLAYS.md) |
+| Sign-in, sign-up and recovery pages, the session guards, connecting an outside account in steps | [AUTH.md](AUTH.md) |
 | Filters and chips, tables, selection bars, boards and lists, drag and drop, feeds and cards, media | [DATA-VIEWS.md](DATA-VIEWS.md) |
 | Pending labels, optimistic changes, unknown outcomes, progress and stop, errors, empty and loading | [STATES.md](STATES.md) |
 | A checker that blocks drift: the rules, the allowlist, the ratchet | [CHECKS.md](CHECKS.md) |
@@ -26,9 +27,9 @@ Durations, curves and springs in general are in the `ui-animation` skill; how mu
 3. **Layout never jumps.** A label that changes keeps its width moving smoothly (morphing text); two texts that swap share one grid cell sized by the taller; a closing panel keeps its last content until it is closed; a column that gains a button never widens. If something has to move, it animates.
 4. **The thing the user touched is where the result appears.** A dialog grows out of the button that opened it and shrinks back into it; a menu is its trigger, grown; a confirm happens on the button itself; an error sits in the column or row it is about.
 5. **Every state is designed:** rest, hover, pressed, focus, open, disabled, pending, failed, empty, loading, filtered-to-nothing, partial. Pending says what is happening in words; failed says what to do next; empty offers the one next action.
-6. **Keyboard, screen reader and touch are the same product.** Real buttons and links, headless primitives for focus and dismissal, labels that name the thing (`Remove "Weekly report"`, not `Remove`), meaning never carried by color alone, hover-only reveals that also show on focus and on touch.
-7. **Logical properties and both directions.** `inline-start` not `left`; motion, arcs and slide directions mirror in right-to-left; user text is isolated (`<bdi>`, `dir="auto"`).
-8. **Motion is part of the component,** with its reduced-motion fallback in the same file. Nothing animates on first render that the user didn't cause.
+6. **Keyboard, screen reader and touch are the same product.** Real buttons and links, headless primitives for focus and dismissal, a visible focus indicator on every focusable element (WCAG 2.4.7; never `outline: none` without a replacement), labels that name the thing (`Remove "Weekly report"`, not `Remove`), meaning never carried by color alone, hover-only reveals that also show on focus and on touch.
+7. **Logical properties and both directions.** `inline-start` not `left`; motion, arcs and slide directions mirror in right-to-left; user text is isolated (`<bdi>`, `dir="auto"`). The one exception is a position measured with `getBoundingClientRect`, which is physical: place it with `left: 0` plus `translate` (a sliding highlight), since `inset-inline-start` would misplace it in right-to-left.
+8. **Motion is part of the component,** with its reduced-motion fallback in the same file, and finishes within 1s. Nothing animates on first render that the user didn't cause.
 
 ## Prove it
 

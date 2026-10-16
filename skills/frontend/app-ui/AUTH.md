@@ -1,0 +1,45 @@
+# Sign-in pages and multi-step flows
+
+## The frame
+
+- **The frame renders once** (by the layout route), so moving between sign-in, sign-up and recovery slides only the card's content ([OVERLAYS.md](OVERLAYS.md), step slides); links between them keep `?redirect=`. On first load each block rises out of an 8px blur and 12px over about .9s on `cubic-bezier(.19, 1, .22, 1)`, the card 80ms after the logo; reduced motion: no animation.
+- **The pages may live in the marketing site's document** with their own token set (an `--auth-*` set, with a dark override) rather than the app's. Then reset the app's heading and control fonts inside them (`.auth-page :is(h1, h2, p, a, label, span, input, button) { font-family: inherit }`). The logo above the card is a plain `<a>` to the site's home, a full document load, since each side has its own document and stylesheet.
+- **The page:** a vertical wash (`linear-gradient(180deg, page 20%, brand at 40% alpha)`), `min-block-size: 100dvh`, `3rem 1rem` padding. The stage `min(100%, 30rem)` wide, 2rem between logo and card.
+- **The card:** 2rem radius, a 1px border at ink 5%, 2.5rem padding (`2rem 1.5rem` below 34rem), `overflow: clip` so sliding steps are cut at its edge.
+- **The text:** a two-line title, the second line in the brand color (`display: block`), 2.25rem / 600 / 1.15 with `text-wrap: balance` (1.875rem below 34rem); a subtitle .75rem under it at 1.0625rem / 450 / 1.5, `text-wrap: pretty`. The footer: 1.5rem margin, a 1px divider, 1.5rem padding, centered and wrapping with a .75rem gap, holding a prompt and the other step's link. From sign-in, "Create an account" is a soft pill button; from sign-up, "Log in" is a text link.
+
+## The form
+
+- **`method="post"` and `noValidate`:** parse it in the browser with the same schema the server validates and show only the first issue. Never reset the form after an error, so fields stay filled. Own the pending state with `useTransition`, so it clears however the action ends; a network failure becomes the code `connection_failed`.
+- **Spacing:** the form 3rem under the subtitle, fields 1.5rem apart, .375rem from label to box. Labels .9375rem / 500; a label row can hold a link at its far end ("Forgot password?" beside the password label: `.5rem` inline padding, `space-between`). Field boxes 3rem tall, .75rem radius, `0 1rem` padding.
+- **Focus is visible** on every field and button (WCAG 2.4.7): a ring or a tinted field on `:focus-visible`, never `outline: 0` alone.
+- **Submit:** a 48px full-width pill (`0 2rem` padding, 1rem / 500, .5rem extra above), filled with ink, not the brand. Hover: opacity .88 for the filled one, a brand tint from 10% to 18% for the soft one. Disabled: opacity .6 with `not-allowed`. Background and opacity transition `150ms ease`. While it submits, the whole form shows the busy cursor (`.auth-form:has(.auth-button[aria-busy=true]) :is(.field-box, input, button) { cursor: progress }`).
+- **Notices:** .75rem radius, `.75rem 1rem` padding, .9375rem; info on a 10% brand tint, errors on an 8% red tint (12% in dark).
+- **The password toggle:** a 2rem round button inset .75rem from the end, a 1.25rem icon that morphs on a snappy spring (stroke 1.75, reduced motion from the user's setting) and a tooltip. It tracks "has text" with `onInput` on the uncontrolled input.
+- **Field rules:** name `autoComplete="name"`, trimmed, 1 to 120 characters; email a practical pattern (not RFC 5322), up to 320; password 6 to 72 on sign-up and reset, with the label stating the minimum, while sign-in only checks it isn't empty.
+- **Errors by code:** map the provider's codes to the app's messages (invalid credentials, an existing user or email, a weak password, the same password, an invalid address, too many emails sent as distinct from too many requests, and a missing session, which on reset means the link expired), plus the schema's own (email invalid, password short, long or missing, name missing). Anything else becomes "failed", with a generic message.
+
+## Routing and the session
+
+- **Slide direction from depth:** sign-in 0, sign-up and recovery 1. Reverse when the router's history index goes down (the browser Back button) or the depth gets shallower, derived during render from the last shown `{pathname, historyIndex}`. The outgoing step reads search params non-strictly: while it slides out it is no longer the matched route.
+- **Guards:** a signed-in visitor on sign-in, sign-up or recovery goes to `?redirect` or the dashboard. After a successful sign-in or sign-up, drop the cached user, then `router.invalidate()`: the guard runs again and forwards the user, with no explicit navigate. Redirect helpers are typed `never` and throw a coded error after the router's redirect, so the signed-in context stays non-null.
+- **`?redirect=` is followed only for same-origin paths.** Reject `//host` and `/\host` (browsers treat them as other origins); an invalid redirect is dropped, never followed.
+- **The cached session user** keeps navigation from waiting on a session check: re-read in the background once a minute old, with no revalidate on focus. It only gates navigation; every server call checks the session itself. A session epoch counts sign-ins, sign-ups and sign-outs; each starts a fresh, empty user cache, and work started under an earlier one stops writing. With email confirmation off, sign-up starts a session at once.
+
+## Recovery
+
+- The reset request carries the page's locale, so the email and the page its link opens are in the user's language.
+- **The email link's callback** exchanges the PKCE code for a session (it works only in the browser that asked for the link) and answers with a hand-built `303` and a `Location` header, because `Response.redirect()` headers are immutable and the session's `Set-Cookie` must be appended. Sanitize `next` (the dashboard by default). On failure go to recovery with `?expired=1`, keeping the locale prefix the link had; the recovery route's search schema maps exactly `expired === 1` to `{ expired: true }` and anything else to nothing.
+- **The new-password page** sits outside the auth layout, in its own frame, because its guard is the opposite one: it needs a session and sends visitors without one to recovery. On success the form gives way to an info notice and a full-width primary "Continue" link to the dashboard.
+
+## Connecting an outside account in steps
+
+- **A step per answer the other side asks for:** credentials, a choice of method, a code, waiting for approval elsewhere, or a live window for what only the user can do. Each stage shows its error at the top and offers Start over. Key the flow by the item, so each opening starts fresh, and close the drawer by itself once the goal state is reached (derive it: show the drawer only while the item is not yet connected).
+- **The drawer** says in its description what is kept (nothing, if so). Its body scrolls on its own. A manual step comes with an info alert, not a destructive one, saying why it appears.
+- **Trust the real state, not the click:** after a manual step, "Done" checks the account and shows an "incomplete" error if it isn't finished. A denied or expired approval returns to the first step with an error; poll an approval every 4000ms. Resubmitting restarts the remote sign-in, so the flow always restarts at credentials. Match the other side's free text only to pick among the app's own messages (wrong credentials, incomplete); an empty message counts as wrong credentials.
+- **Fields:** identifier up to 320 characters, password up to 200, code up to 16, all `required`.
+- **Order choices practical first** (no code needed, then a message sent, then a code the user already has), unknown ones last in the source's order. Show them as rows with a title, a hint and a chevron pointing to the reading end, not a stack of identical gray buttons. Masked values (a phone, an email) are stripped of stray direction marks and isolated in `<bdi>` outside the sentence, so digits keep their order; drop one that repeats the title.
+- **A live view of a remote screen** (frames streamed, the user's input sent back): queue input and send it in order, one at a time, dropping the rest if one fails; map a click to the remote page's pixels; ignore a keyboard press of the screen button (`event.detail === 0`); batch wheel scrolls over about 80ms, clamped to ±5000; take typing through a visible text field focused within the tap itself, so phone keyboards and paste work, sending only special keys from `keydown`.
+  - The text field: cleared after each input, chunks cut to 500 characters, `autoComplete="off"`, `autoCorrect="off"`, `spellCheck={false}`, one row, no resize.
+  - The frame image: `draggable={false}`, `user-select: none`, `alt=""`; the screen button keeps `cursor: default`. Drop frames of the wrong shape at the schema decode.
+  - `aria-busy` until the first frame, with a shimmer label in a box at least 20rem tall. Reopening goes back to the first step and mounts a new stream.
