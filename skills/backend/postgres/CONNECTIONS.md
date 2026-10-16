@@ -32,13 +32,15 @@ In transaction mode the next transaction may run on a different backend, so thes
 | `statement_timeout` | 30 s for the application role, lower for user-facing paths | Runaway queries |
 | `idle_in_transaction_session_timeout` | 30 s to 5 min | A transaction left open by a crashed or careless client: it holds locks and blocks vacuum everywhere |
 | `idle_session_timeout` | about 10 min, for interactive sessions only (a pooler may not react well to the closed connection) | Clients that connect and forget |
-| `lock_timeout` | a few seconds in migrations (`5s`) | A statement waiting too long to acquire a lock |
+| `lock_timeout` | a few seconds in migrations (`5s`); a ceiling such as `2s` per role, session or transaction elsewhere, so nothing queues forever | A statement waiting too long to acquire a lock |
 
 Set them per role (`alter role app set statement_timeout = '30s'`) or per transaction (`set local`), rather than globally; poolers have their own idle timeouts (`server_idle_timeout`, `client_idle_timeout`).
 
 ## Transactions
 
-- **Read committed** (the default) takes a new snapshot per statement, so two statements in one transaction can see different data. **Repeatable read** keeps one snapshot from the first query; **serializable** makes concurrent transactions behave as if run one at a time. Both raise `could not serialize access` on conflicts, and the application **must retry** the whole transaction. Read uncommitted behaves as read committed.
+- **A transaction is all or nothing:** if the connection drops between two statements, Postgres rolls back the first. Without `begin`, each statement is its own transaction and commits immediately; `begin` stretches that boundary across several statements.
+- **Read committed** (the default) takes a new snapshot per statement, so two statements in one transaction can see different data (a non-repeatable read). **Repeatable read** keeps one snapshot from the first query; **serializable** makes concurrent transactions behave as if run one at a time, catching write patterns the lower levels miss. Both raise `could not serialize access` (SQLSTATE `40001`) on conflicts, and the application **must retry** the whole transaction. At these levels retries are not an edge case but the contract: wrap the transaction in a retry loop. Read uncommitted behaves as read committed; no level ever shows another transaction's uncommitted data.
+- **Pick the level by the job:** read committed for most OLTP writes; repeatable read for multi-statement reads that must agree (a report across many tables); serializable for invariants that span several rows or tables.
 - **Readers never block writers and writers never block readers;** only two writers on the same row wait. Row locks never escalate to table locks.
 - **Keep them short:** call external APIs, validate input and do computation before `begin`; inside, only the statements that must be atomic.
 
@@ -51,7 +53,10 @@ returning *;
 
 ## Locks and deadlocks
 
-- **Deadlocks come from taking the same locks in different orders.** Lock rows in one order everywhere (`select ... where id = any($1) order by id for update`), or change them in one statement. Postgres checks for a deadlock after waiting `deadlock_timeout` (default 1 s) and aborts one of the transactions; log them with `log_lock_waits = on` and count them in `pg_stat_database.deadlocks`.
+- **Slow every time is a plan problem; usually instant but sometimes hanging is a lock problem.** A hung statement is not slow, it is waiting. The usual shape: a transaction updates a row, then does something long (an API call, user input) before committing, and every other writer of that row queues behind it. Find the blocker with the query in MONITORING.md.
+- **Plain `insert`, `update` and `delete` take light table locks plus row locks** on the rows they change, held until commit or rollback. DDL is the dangerous kind (MIGRATIONS.md).
+- **Read then write as one step with `select ... for update`:** it locks the rows you are about to change, so no other transaction can change or lock them before your `update`.
+- **Deadlocks come from taking the same locks in different orders.** Lock rows in one order everywhere (`select ... where id = any($1) order by id for update`), or change them in one statement. Postgres checks for a deadlock after waiting `deadlock_timeout` (default 1 s) and aborts one of the transactions with SQLSTATE `40P01`; log them with `log_lock_waits = on` and count them in `pg_stat_database.deadlocks`.
 - **Work queues: `for update skip locked`** lets each worker take a different row without waiting; claim and mark in one statement (the `background-jobs` skill has the full pattern).
 - **Advisory locks** coordinate work that has no row to lock (one report generator at a time): `pg_advisory_xact_lock(hashtext('daily_report'))` releases at commit; `pg_try_advisory_lock` returns false instead of waiting. Session-level advisory locks don't work through a transaction pooler. Don't create dummy rows just to lock them.
 

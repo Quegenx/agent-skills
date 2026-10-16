@@ -92,7 +92,15 @@ select id,
 from docs order by id;
 ```
 
-`doc ->> 'k'` returns SQL NULL for both an absent key and a JSON null; test with `?` when the difference matters (a PATCH that means "clear this field" versus "leave it alone"). For searching inside documents, containment (`doc @> '{"status":"failed"}'`) can use a GIN index (`using gin (doc jsonb_path_ops)`); a function on `doc ->> 'status'` needs an expression index.
+```sql
+select payload ->> 'type'           as type,       -- text
+       payload -> 'user' ->> 'plan' as plan,       -- navigate with ->, read the last step with ->>
+       payload #>> '{user,id}'      as user_id     -- the same by path
+from events
+where payload @> '{"user": {"plan": "pro"}}';      -- containment matches a nested shape
+```
+
+`->` returns `jsonb`, `->>` returns `text`: chain `->` while navigating and end with `->>` for the value. `doc ->> 'k'` returns SQL NULL for both an absent key and a JSON null; test with `?` when the difference matters (a PATCH that means "clear this field" versus "leave it alone"). For searching inside documents, containment (`doc @> '{"status":"failed"}'`) can use a GIN index (`using gin (doc jsonb_path_ops)`); a function on `doc ->> 'status'` needs an expression index.
 
 ## Ordered lists
 

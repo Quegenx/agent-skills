@@ -31,7 +31,7 @@ from pg_stat_statements order by total_exec_time desc limit 10;
 
 Sort by `mean_exec_time` for the slowest, by `calls` for the chattiest (an N+1 shows as one cheap statement with enormous calls). A rising `temp_blks_written` means sorts spilling past `work_mem`.
 
-**Reading a plan** (`explain (analyze, buffers)`): a `Seq Scan` on a large table with a big `Rows Removed by Filter` wants an index; `read` far above `hit` means the data isn't cached; a `Nested Loop` with huge `loops` wants a different join; `Sort Method: external merge` means `work_mem` is too small for that query.
+**Reading a plan** (`explain (analyze, buffers)`): a `Seq Scan` on a large table with a big `Rows Removed by Filter` wants an index; `read` far above `hit` means the data isn't cached; a `Nested Loop` with huge `loops` wants a different join; `Sort Method: external merge` means `work_mem` is too small for that query. Under `Gather`, a `Parallel Seq Scan` with `loops=3` is the leader plus two workers each reading a third, and its `rows` are per loop.
 
 **Unused indexes** (excluding unique, constraint and expression indexes):
 
@@ -46,7 +46,7 @@ where s.idx_scan = 0
 order by pg_relation_size(s.indexrelid) desc;
 ```
 
-Check how long stats have been collecting before calling one unused.
+Check how long stats have been collecting before calling one unused. Primary key and unique indexes are left out on purpose: they enforce rules about the data, not just speed, so never drop one because of this number.
 
 **Duplicate indexes:**
 
@@ -112,6 +112,17 @@ select pid, state, now() - xact_start as age, left(query, 80)
 from pg_stat_activity where xact_start is not null order by xact_start;
 ```
 
+**Who blocks whom:**
+
+```sql
+select blocked.pid as blocked_pid, blocked.query as blocked_query,
+       blocking.pid as blocking_pid, blocking.query as blocking_query, blocking.state as blocking_state
+from pg_stat_activity blocked
+join pg_stat_activity blocking on blocking.pid = any (pg_blocking_pids(blocked.pid));
+```
+
+A blocker in state `idle in transaction` holds locks while running nothing: end it with `pg_terminate_backend(pid)` (below), after confirming.
+
 **Connections:**
 
 ```sql
@@ -127,6 +138,14 @@ where backend_type = 'client backend';
 ```sql
 select application_name, pg_wal_lsn_diff(pg_current_wal_lsn(), replay_lsn) / 1048576 as lag_mb from pg_stat_replication;
 select slot_name, active, pg_wal_lsn_diff(pg_current_wal_lsn(), restart_lsn) / 1048576 as retained_mb from pg_replication_slots;
+select client_addr, state, pg_wal_lsn_diff(sent_lsn, replay_lsn) as replay_lag_bytes from pg_stat_replication;   -- sent but not yet replayed
+```
+
+On the replica itself:
+
+```sql
+select pg_is_in_recovery();                                      -- true on a replica
+select now() - pg_last_xact_replay_timestamp() as replication_lag;
 ```
 
 **WAL on disk:** `select count(*), pg_size_pretty(sum(size)) from pg_ls_waldir();`

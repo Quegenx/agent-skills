@@ -4,6 +4,7 @@ A migration is a program that runs against live traffic. What decides whether it
 
 ## Locks first
 
+- **`alter table` takes an `access exclusive` lock,** which conflicts with everything, `select` included; the `not valid` and `validate constraint` steps below are the lighter exceptions.
 - **Set a `lock_timeout` in every migration** (`set local lock_timeout = '5s'`). On a busy table even a brief `access exclusive` lock can queue behind long-running queries; with a timeout the statement is aborted instead of waiting indefinitely, and you retry during a quieter period.
 - **Run migrations on a direct connection, not through a transaction pooler** (CONNECTIONS.md).
 - **Statements that rewrite the whole table** and its indexes: changing a column's type (normally; not when the old type is binary coercible to the new one and `using` doesn't change the contents), adding a column with a volatile default (`default clock_timestamp()`), `vacuum full` and `cluster` (both under an `access exclusive` lock).

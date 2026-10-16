@@ -95,10 +95,13 @@ An index on `created_at` can't help `where date_trunc('month', created_at) = $1`
 where created_at >= $1 and created_at < $2      -- half-open: no gap or overlap at midnight
 ```
 
-For "orders this month in the user's time zone", compute the month's start and next month's start in that zone once, convert both to UTC instants, and pass them as the bounds. Converting every row's timestamp to local time is the same unusable function on the column. The same applies to `lower(email) = $1` (store normalized and compare the bare column, index the expression `lower(email)`, or use the `citext` type), to casts on the column (`id::text like $1`), to arithmetic on it (`price * 1.2 > $1` becomes `price > $1 / 1.2`) and to `like '%term'` (a leading wildcard can't use a B-tree index).
+For "orders this month in the user's time zone", compute the month's start and next month's start in that zone once, convert both to UTC instants, and pass them as the bounds. Converting every row's timestamp to local time is the same unusable function on the column. The same applies to `lower(email) = $1` (store normalized and compare the bare column, index the expression `lower(email)`, or use the `citext` type), to casts on the column (`id::text like $1`), to arithmetic on it (`price * 1.2 > $1` becomes `price > $1 / 1.2`) and to `like '%term'` (a leading wildcard can't use a B-tree index). A wrapped column is worse than no index: still a full scan, plus one function call per row. When the function must stay, index the expression itself (`create index users_lower_email_idx on users (lower(email))`); the plan may then show a `Bitmap Index Scan` instead of an `Index Scan`, which also reads through the index instead of the whole table.
+
+**A prefix `like 'abc%'` uses a B-tree only** when the index uses the `text_pattern_ops` operator class or the database collation is `C`. Under any other collation it's a sequential scan; check with `explain`.
 
 ## Indexes that serve the query
 
+- **An index pays only for a selective condition,** one that picks out a small fraction of the rows so most of the table is skipped. A condition matching a fifth of the table (`country = 'DE'`) gets a `Seq Scan`, or a `Bitmap Heap Scan` whose `Heap Blocks` show it still visited nearly every page, because matching rows sit on every page; either way it runs no faster than without the index. Before adding one, ask: is the condition selective, and does the query use the column bare?
 - **Design from the queries, not the table.** List the access paths a table serves (by user, by issue, by issue and user newest first) and give each important one an index whose order matches it.
 - **Equality columns first, then the sort column:** `create index on orders (customer_id, created_at desc)` serves `where customer_id = $1 order by created_at desc limit 20` by reading 20 index entries, with no sort step.
 - **The leading columns decide.** A multicolumn index helps queries that constrain its first column (and then the next); the same `(customer_id, created_at)` index does little for a filter on `created_at` alone. Postgres 18 can skip-scan an index for a later column when the leading column has few distinct values; check the plan before dropping a dedicated index on that column.
@@ -107,8 +110,15 @@ For "orders this month in the user's time zone", compute the month's start and n
 - **Index-only scans still visit the table** for rows changed since the last vacuum (the plan's `Heap Fetches`), to check visibility. A busy table may need more frequent vacuuming for the index-only plan to pay off.
 - **Include the selected columns** (`include (total_cents)`) when an index-only scan is worth it on a hot path.
 - **Partial indexes** for a common filter: `create index on jobs (run_at) where status = 'pending'`.
-- **Pick the index type by operator:** B-tree (the default) for `=`, ranges, `in`, `is null` and sorting; GIN for arrays, `jsonb` containment (`@>`, `?`) and full-text (`jsonb_path_ops` is two to three times smaller but serves only `@>`; a single key is an expression index, `((attributes->>'brand'))`); GiST for geometry, range types and nearest-neighbour; BRIN for huge append-only tables whose rows are physically in time order (a tiny index); hash for equality only.
-- Every index slows writes and takes space; add one for a measured slow query, and drop the ones nothing uses. An index whose columns are a prefix of another (`(issue_id)` next to `(issue_id, created_at)`) is usually redundant. Updates that change no indexed column and fit on the same page (HOT updates) skip index maintenance, so indexing a frequently updated column costs more than it looks. Sizes: `select indexrelname, pg_size_pretty(pg_relation_size(indexrelid)) from pg_stat_user_indexes where relname = 'comments';` (a three-column index on a million rows can be four times a single-column one).
+- **Pick the index type by operator:** B-tree (the default, every value in sorted order under a small tree, so one value in a million takes about 20 comparisons) for `=`, ranges, `in`, `is null`, sorting (`order by created_at desc limit 10` with no sort step) and prefixes (with the collation caveat above); GIN for arrays, `jsonb` containment (`@>`, `?`) and full-text (`jsonb_path_ops` is two to three times smaller but serves only `@>`; a single key is an expression index, `((attributes->>'brand'))`); GiST for geometry, range types and nearest-neighbour; BRIN for huge append-only tables whose rows are physically in time order (a tiny index); hash for equality only.
+- Every index slows writes and takes space; add one for a measured slow query, and drop the ones nothing uses. An index whose columns are a prefix of another (`(issue_id)` next to `(issue_id, created_at)`) is usually redundant. Updates that change no indexed column and fit on the same page (HOT updates) skip index maintenance, so indexing a frequently updated column costs more than it looks. Sizes: `select indexrelname, pg_size_pretty(pg_relation_size(indexrelid)) from pg_stat_user_indexes where relname = 'comments';` (a three-column index on a million rows can be four times a single-column one). Each index is a second sorted copy of its columns, and two indexes on one text column can together outweigh the table; compare the table with its indexes:
+
+```sql
+select relname, pg_size_pretty(pg_relation_size(oid)) as size
+from pg_class
+where relname like 'users%' and relkind in ('r', 'i')                -- r: the table, i: its indexes
+order by pg_relation_size(oid) desc;
+```
 
 ## When a new index makes a query slower
 
@@ -145,3 +155,22 @@ Query with the same configuration (`'english'`) that built the vector, or stems 
 ## Prove it
 
 For the changed query: the SQL actually sent, the plan before and after on realistic row counts, the query count for 1 and for 100 parents, and a test that pins the ordering with ties (two rows with equal sort values come back in the tie-breaker's order).
+
+**Prove an index on a throwaway table,** never on real data: a scratch Postgres (`docker run --rm -d --name pg-lab -e POSTGRES_PASSWORD=lab -p 5432:5432 postgres:17`, gone when stopped), `\timing on` in `psql`, and a million generated rows:
+
+```sql
+create table users (
+  id bigint generated always as identity primary key,
+  email text not null, country text not null, created_at timestamptz not null
+);
+insert into users (email, country, created_at)
+select 'user' || n || '@example.com', (array['US', 'DE', 'BR', 'IN', 'JP'])[1 + n % 5], now() - n * interval '1 second'
+from generate_series(1, 1000000) as n;
+analyze users;                                                       -- fresh statistics now, instead of waiting for autovacuum
+
+explain analyze select * from users where email = 'user424242@example.com';   -- before: Seq Scan, Rows Removed by Filter
+create index users_email_idx on users (email);
+explain analyze select * from users where email = 'user424242@example.com';   -- after: Index Scan using users_email_idx
+```
+
+Run each query twice (the first run may read from disk), compare `Execution Time` before and after, then try the cases that defeat it (a function on the column, a leading wildcard, a condition matching a fifth of the rows). Time a 200,000-row insert with every index in place and again after dropping the ones you don't need: fewer indexes, cheaper writes. Drop the table when done.

@@ -22,6 +22,8 @@ create policy tenant_isolation on invoices
   with check (tenant_id = nullif(current_setting('app.tenant_id', true), '')::uuid);  -- which rows inserts and updates may write
 ```
 
+- **RLS fails closed:** with RLS enabled and no policy that applies, the table is empty for everyone who isn't exempt.
+- **`using` guards what is read, `with check` what is written.** `using` decides which existing rows `select`, `update` and `delete` see; `with check` decides which new row versions `insert` and `update` may write. An `insert` policy has only `with check` (`create policy tenant_writes on invoices for insert with check (...)`), so a tenant can't plant rows in another tenant's data that it could never read back.
 - **`nullif(..., '')` fails closed:** a request that never set the tenant matches no rows, instead of erroring in a way someone "fixes" by matching everything.
 - **The application must not connect as an exempt role.** Superusers, roles with `bypassrls` and (without `force`) the table owner skip policies. Run migrations as an owner role and serve requests as a role that owns nothing and has only the grants it needs; that also keeps `drop policy` out of the application's reach.
 - **Set the tenant per transaction, on the connection actually used.** With a connection pool, a value set at the start of a request may land on a different connection than the next query, and a session-level value left on a pooled connection leaks into the next request. Set it inside each transaction with the transaction-local form:

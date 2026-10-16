@@ -28,4 +28,4 @@ Most production Postgres trouble is not a slow query but the machinery around it
 
 ## Prove it
 
-For a schema change: the migration on a copy of production-sized data, its lock taken and its duration, and a rollback. For a performance change: before and after numbers from `pg_stat_statements` or the plan. For operations: a restore from the latest backup into a scratch database, and the audit queries in MONITORING.md run with their results read.
+For a schema change: the migration on a copy of production-sized data, its lock taken and its duration, and a rollback. For a performance change: before and after numbers from `pg_stat_statements` or the plan; for an index, the throwaway million-row table in the `performance-and-caching` skill's QUERIES.md (Prove it). For operations: a restore from the latest backup into a scratch database, and the audit queries in MONITORING.md run with their results read.

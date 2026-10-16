@@ -11,6 +11,8 @@ window w as (partition by customer_id order by created_at, id)
 order by customer_id, created_at;
 ```
 
+A window function computes an aggregate but, unlike `group by`, keeps every row: no self-join, no subquery. `over` has three parts: `partition by` restarts the calculation per group (leave it out to span the whole result), `order by` sets the order rows accumulate in (leave it out and every row gets the whole partition's aggregate), and an optional frame picks which neighbouring rows are visible. The `window` clause names a definition so you write it once. `lag` reads the previous row of the partition, `lead` the next.
+
 "The order immediately before this one" is `lag` with a tie-breaker in the window order; "the last event that isn't this event" excludes the current row by construction. "Back after a real quiet period" is `since_previous > interval '90 days'`.
 
 **Growth against the previous month** needs every month present, or `lag` compares March with January when February had no rows:

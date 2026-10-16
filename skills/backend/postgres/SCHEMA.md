@@ -15,7 +15,7 @@
 | `timestamptz` | `timestamp` | Stores an instant; `timestamp` drops the zone and lies across zones and DST |
 | `numeric(p, s)` | `float`, `real` | Recommended for money and other quantities where exactness is required |
 | `boolean` | `'yes'`/`'Y'`/`varchar(5)` | One byte, one meaning |
-| `jsonb` | `json`, text holding JSON | Supports indexing, needs no reparsing, keeps only the last of duplicate keys |
+| `jsonb` | `json`, text holding JSON | Supports indexing and containment queries, needs no reparsing, drops insignificant whitespace and keeps only the last of duplicate keys (`json` stores the exact text) |
 | `text` with a `check (status in (...))` | `create type ... as enum` | A check is easier to modify; an enum's values can be added and renamed, but not removed or reordered short of dropping and re-creating the type |
 
 Avoid types tied to one extension or host when the schema may move.
@@ -36,6 +36,8 @@ Avoid types tied to one extension or host when the schema may move.
 ## Wide and large values
 
 - **Rows over about 2 KB are TOASTed:** large values are compressed and moved to a side table. `select *` drags every one back. Select only the columns you use, and move large, rarely read columns to their own table.
+- **`jsonb` is for genuinely variable data:** webhook payloads, user-defined attributes, API responses. Keys every row has and that you filter or join on are columns.
+- **A `jsonb` value is stored whole:** updating one key rewrites the entire document and every index on it. High-churn counters don't belong inside a big document.
 - **Already compressed data** (images, archives) goes in columns set to `storage external`, which stores them out of line without compressing.
 
 ## Normalize first

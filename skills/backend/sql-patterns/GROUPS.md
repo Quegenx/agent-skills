@@ -163,7 +163,7 @@ select corr(extract(epoch from created_at), total_cents) as correlation from ord
 
 Correlation says whether two measures move together, not that one drives the other ("is spend still moving conversion" needs a comparison over time or an experiment).
 
-Per-group comparisons use a window, not a second query: `total_cents > avg(total_cents) over (partition by country)` finds orders above their country's average (wrap it in a subquery to filter on it). `avg` of an empty set is NULL, and `avg` over integers returns `numeric`, but `sum(int) / count(*)` is integer division.
+Per-group comparisons use a window, not a second query: `total_cents > avg(total_cents) over (partition by country)` finds orders above their country's average (wrap it in a subquery to filter on it). Window functions run after `where` and `group by`, so a `where` on a window result in the same query is an error: number the rows in a subquery or CTE (`row_number() over (partition by customer_id order by created_at desc, id) as rn`) and filter `where rn = 1` outside it, the usual latest-row-per-group. `avg` of an empty set is NULL, and `avg` over integers returns `numeric`, but `sum(int) / count(*)` is integer division.
 
 ## Ties
 
