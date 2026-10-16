@@ -123,7 +123,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [ai-features](./skills/engineering/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |
 | [agent-harness](./skills/engineering/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks |
 | [agent-codebase](./skills/engineering/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
-| [agent-evals](./skills/engineering/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, and the fix loop to a clean run |
+| [agent-evals](./skills/engineering/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, simulated users, the fix loop to a clean run, and release gates |
 | [agent-memory](./skills/engineering/agent-memory/SKILL.md) | Long-term agent memory: what to remember and where, background extraction, consolidation, an always-on profile plus search, staying current, forgetting, user controls and memory evals |
 | [third-party-integrations](./skills/engineering/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |

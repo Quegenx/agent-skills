@@ -1,6 +1,6 @@
 ---
 name: agent-evals
-description: "Builds eval suites that run the real agent with outside services faked, code checks first and calibrated judges second, and the fix loop to a clean run. Use when testing an LLM agent or raising its pass rate."
+description: "Builds eval suites that run the real agent with outside services faked, code checks first and calibrated judges second, the fix loop to a clean run, and release gates. Use when testing an LLM agent, raising its pass rate or gating a release."
 ---
 
 # Agent evals
@@ -9,9 +9,10 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 
 | The job | Read |
 |---|---|
-| The harness: fixtures and the network guard, fake time, fresh data per case, run records, fingerprints, repetitions, intervals, snapshots | [HARNESS.md](HARNESS.md) |
-| Grading: code checks, judge questions asked as failures, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
-| Finding unnamed failures in real traffic, then taking it to a clean run: the loop, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
+| The harness: what a case grades, the case set and its splits, simulated users, fixtures and the network guard, fake time, run records and statuses, fingerprints, repetitions, intervals, comparisons, snapshots | [HARNESS.md](HARNESS.md) |
+| Grading: code checks, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
+| Auditing an eval, release gates and the baseline, gates that lie, production sampling and alerts | [GATES.md](GATES.md) |
+| Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
 | What to fix in the agent once a failure is understood | the `agent-harness` skill |
 | Judges and classifiers built on typed probabilities | the `jev-decisions` skill |
 
@@ -24,7 +25,7 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 5. **A low-confidence judge fail is a hint, not a verdict.** Read the conversation before fixing anything.
 6. **One code version, one run.** Fingerprint each run (commit, uncommitted changes, case set, repetitions) and refuse to mix results from changed code.
 7. **Never buy the number.** Don't delete a check, lower a threshold or reword a judge without calibration to get a pass.
-8. **Cases come from real conversations,** and every real failure after launch becomes a case.
+8. **Cases come from real conversations,** and every real failure after launch becomes a case. Written cases only fill gaps, and are marked.
 
 ## What "100%" means
 

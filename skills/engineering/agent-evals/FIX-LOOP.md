@@ -12,6 +12,17 @@
 8. **Ship:** commit, deploy, health-check, knowing which deployment is production.
 9. **Next full run,** compared case by case with the previous one. Repeat until a full run has no failures.
 
+## Before the loop starts, and inside each round
+
+- **Agree on the frame first:** the metric to raise and the ones that must not drop, what may be edited and what is off-limits, the spend budget, a maximum number of rounds (three by default), and when a plateau ends it.
+- **One hypothesis per round:** the cases that support it, the gain it predicts and what it could break. Save the diff and the run fingerprint with it.
+- **Check the lever engaged** before reading the score: did retrieval fetch the context the change was meant to supply, did the new tool get called. A change that never ran can't have helped.
+- **Distrust a sudden big jump;** look for a leak or a broken check first. Don't keep a win that sits inside the noise.
+- **When rounds stall, name the bottleneck:** a missing capability or missing content, a grader that disagrees with people, infrastructure errors, information the agent can't reach, or plain variance. Fix that, not more prompt paragraphs.
+- **What the loop never does:** lower a threshold, delete a hard case, switch the provider or model without asking, or merge and deploy by itself. When a failure isn't understood, add trace detail before making broad changes. A change to the runner or a grader is a measurement change, reviewed as one; fixing a grader keeps the old grades and regrades every output being compared.
+- **To finish:** restore the best variant, confirm it once on the untouched test split, and report the deltas with their uncertainty and the spend.
+- **Working on one part at a time:** open its lowest sub-score (an empty one means not measured, not low), read 5 to 10 failing cases, write the cause in one sentence, change one thing (the prompt, the code or a setting), check no other part fell, and log one line: version, change, before and after, proof.
+
 ## Finding failures nobody has named yet
 
 Before writing checks for a new agent, or when the suite passes and users still complain, find the failures in real traffic:
@@ -19,7 +30,9 @@ Before writing checks for a new agent, or when the suite passes and users still 
 1. **A sample** of real conversations (around 50), spread across the kinds of users and requests.
 2. **Open notes by a person:** for each, what happened, described as behaviour ("asked for the address twice"), not as a cause, and pass or fail. The person who knows the product writes these; an agent can prepare the sample and the review queue, not the judgment.
 3. **Group the notes** into a short list of failure kinds, and count each.
-4. **Decide per kind:** a fix (most), a code check, or a judge. Fix the frequent and costly kinds first; a kind seen once waits for a second sighting.
+4. **Decide per kind:** a fix (most), a code check, or a judge. Fix the frequent and costly kinds first; a kind seen once waits for a second sighting, unless it is severe, which stays visible however rare.
+
+Count distinct cases per kind over the number of cases reviewed; keep what was seen (the symptom) apart from what you think caused it. Renaming a kind keeps its id, and a merge or split keeps the mapping, so old counts still line up. Embedding search only proposes candidates for a kind; a person assigns them.
 
 A first case set is small: 5 to 12 cases that each test something, reviewed by a person. Expected outputs an AI wrote are a draft, not ground truth. Keep each case's input, expected result and notes in separate fields.
 
