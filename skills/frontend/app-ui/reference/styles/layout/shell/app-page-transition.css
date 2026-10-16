@@ -1,0 +1,54 @@
+/* Moving between app pages (appPageTransitionTypes): the incoming page
+   comes into focus as the website's sections do when scrolled to
+   (ScrollReveal: from an 8px blur and transparent, 0.8s ease-out), while
+   the outgoing one fades away quickly. The sidebar and header stay put:
+   only .app-content is named, and the rest of the page swaps at once
+   instead of crossfading. */
+html:active-view-transition-type(app-page) .app-content {
+  view-transition-name: app-page;
+}
+html:active-view-transition-type(app-page)::view-transition-old(root) {
+  display: none;
+}
+html:active-view-transition-type(app-page)::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(app-page),
+::view-transition-new(app-page) {
+  block-size: auto;
+  animation-fill-mode: both;
+  mix-blend-mode: normal;
+}
+::view-transition-group(app-page) {
+  animation-duration: 0s;
+}
+::view-transition-old(app-page) {
+  animation: app-page-fade-out 150ms ease-out both;
+}
+::view-transition-new(app-page) {
+  animation: app-page-reveal 800ms ease-out both;
+}
+
+@keyframes app-page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes app-page-reveal {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(app-page) {
+    animation-name: app-page-fade-in;
+  }
+  @keyframes app-page-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}

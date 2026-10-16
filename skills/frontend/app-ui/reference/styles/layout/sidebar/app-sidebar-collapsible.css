@@ -1,0 +1,251 @@
+/* A sidebar row that opens a menu beneath it, with the motion of
+   amichai-all's course chapters (course-chapter-collapse.tsx,
+   course-sidebar-motion.ts). The menu grows over 350ms ease-in-out while it
+   fades in, rises 20px into place and is unmasked from the top. The row's
+   chevron turns down on courseSidebarLayoutSpring (stiffness 360, damping
+   32, mass 0.6), and rows dip to 98% when pressed on courseSidebarRowSpring
+   (500, 30, 0.6). CSS has no springs, so each spring is sampled into a
+   linear() curve over the time it takes to settle. Height uses grid rows
+   0fr to 1fr instead of measuring. */
+@property --app-sidebar-collapsible-mask {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
+@layer utilities {
+  /* On the sidebar itself too: on phones it opens in a sheet portaled
+     outside .app-shell, which would not inherit these. The settings
+     dialog's tabs, also portaled, share its hover highlight. */
+  .app-shell,
+  [data-sidebar="sidebar"],
+  .settings-dialog-tabs {
+    --app-sidebar-layout-spring: linear(
+      0,
+      0.098,
+      0.271,
+      0.433,
+      0.577,
+      0.689,
+      0.774,
+      0.836,
+      0.88,
+      0.914,
+      0.938,
+      0.955,
+      0.968,
+      0.977,
+      0.983,
+      0.988,
+      0.991,
+      0.994,
+      0.995,
+      0.997,
+      0.998,
+      0.998,
+      0.999,
+      0.999,
+      1
+    );
+    --app-sidebar-layout-spring-duration: 500ms;
+    --app-sidebar-row-spring: linear(
+      0,
+      0.07,
+      0.214,
+      0.377,
+      0.54,
+      0.668,
+      0.77,
+      0.846,
+      0.902,
+      0.941,
+      0.968,
+      0.984,
+      0.994,
+      0.999,
+      1.002,
+      1.003,
+      1.003,
+      1.003,
+      1.002,
+      1.002,
+      1.001,
+      1.001,
+      1.001,
+      1,
+      1
+    );
+    --app-sidebar-row-spring-duration: 340ms;
+    /* courseSidebarTreeSpring (stiffness 500, damping 40, mass 1). */
+    --app-sidebar-tree-spring: linear(
+      0,
+      0.082,
+      0.248,
+      0.428,
+      0.587,
+      0.715,
+      0.814,
+      0.882,
+      0.928,
+      0.959,
+      0.978,
+      0.989,
+      0.996,
+      0.999,
+      1.001,
+      1.002,
+      1.002,
+      1.001,
+      1.001,
+      1.001,
+      1
+    );
+    --app-sidebar-tree-spring-duration: 410ms;
+  }
+
+  [data-sidebar="sidebar"] [data-collapsible-row],
+  .app-sidebar-collapsible-link {
+    transition: scale var(--app-sidebar-row-spring-duration)
+      var(--app-sidebar-row-spring);
+  }
+  [data-sidebar="sidebar"] [data-collapsible-row]:active,
+  .app-sidebar-collapsible-link:active {
+    scale: 0.96;
+  }
+  .app-sidebar-collapsible-chevron {
+    display: flex;
+    margin-inline-start: auto;
+    transition: rotate var(--app-sidebar-layout-spring-duration)
+      var(--app-sidebar-layout-spring);
+  }
+  .app-sidebar-collapsible-chevron [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+  [data-collapsible-row][aria-expanded="true"]
+    .app-sidebar-collapsible-chevron {
+    rotate: -90deg;
+  }
+  /* Left to right, the chevron points the other way and turns down the
+     other way. */
+  .app-sidebar-collapsible-chevron:dir(ltr) {
+    scale: -1 1;
+  }
+  [data-collapsible-row][aria-expanded="true"]
+    .app-sidebar-collapsible-chevron:dir(ltr) {
+    rotate: 90deg;
+  }
+
+  .app-sidebar-collapsible-panel {
+    --app-sidebar-collapsible-mask: 0%;
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    translate: 0 1.25rem;
+    mask-image: linear-gradient(
+      black var(--app-sidebar-collapsible-mask),
+      transparent var(--app-sidebar-collapsible-mask)
+    );
+    transition:
+      grid-template-rows 350ms ease-in-out,
+      opacity 350ms ease-in-out,
+      translate 350ms ease-in-out,
+      --app-sidebar-collapsible-mask 350ms ease-in-out;
+  }
+  .app-sidebar-collapsible-panel[data-open] {
+    --app-sidebar-collapsible-mask: 100%;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    translate: 0 0;
+  }
+  .app-sidebar-collapsible-content {
+    min-block-size: 0;
+    overflow: hidden;
+  }
+  .app-sidebar-collapsible-body {
+    padding-block-start: 0.5rem;
+  }
+
+  .app-sidebar-collapsible-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+  /* The gap between rows is each row's top margin, so a new row can grow
+     its gap along with itself. */
+  .app-sidebar-collapsible-list > li + li {
+    margin-block-start: 0.5rem;
+  }
+  /* A chat added to the list grows in with the menu's own motion: its row
+     opens from nothing over 350ms ease-in-out while it fades in and rises
+     20px, pushing the chats below down smoothly. */
+  .app-sidebar-collapsible-list > li[data-entering] {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition:
+      grid-template-rows 350ms ease-in-out,
+      margin-block-start 350ms ease-in-out,
+      opacity 350ms ease-in-out,
+      translate 350ms ease-in-out;
+    @starting-style {
+      grid-template-rows: 0fr;
+      margin-block-start: 0;
+      opacity: 0;
+      translate: 0 1.25rem;
+    }
+  }
+  .app-sidebar-collapsible-list > li[data-entering] > * {
+    min-block-size: 0;
+    overflow: hidden;
+  }
+  .app-sidebar-collapsible-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    inline-size: 100%;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: start;
+    block-size: 2.75rem;
+    min-inline-size: 0;
+    border-radius: 0.75rem;
+    padding-inline: 0.75rem;
+    color: var(--sidebar-foreground);
+    font-size: var(--text-base);
+    outline: none;
+  }
+  .app-sidebar-collapsible-link [data-slot="app-icon"] {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    flex-shrink: 0;
+  }
+  .app-sidebar-collapsible-link > span,
+  .app-sidebar-collapsible-link-content > span {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* A link's icon and label in one element (חיפוש בשיחות, which its dialog
+     grows out of), laid out as the link lays them out. */
+  .app-sidebar-collapsible-link > .app-sidebar-collapsible-link-content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-sidebar="sidebar"] [data-collapsible-row],
+  .app-sidebar-collapsible-link,
+  .app-sidebar-collapsible-chevron,
+  .app-sidebar-collapsible-panel,
+  .app-sidebar-collapsible-list > li[data-entering] {
+    transition: none;
+  }
+  .app-sidebar-collapsible-panel {
+    translate: none;
+  }
+}

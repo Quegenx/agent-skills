@@ -1,0 +1,139 @@
+/* משימות, reverse-engineered from a reference tasks page (board, list,
+   toolbar, create dialog). Its Tailwind theme is resolved to pixels
+   (radius sm 6, md 8, lg 10, xl 14; text xs 12/16, sm 14/20) because our
+   theme redefines those steps; colors are ours. Logical properties mirror it
+   for right-to-left. */
+@layer components {
+  .tracking-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-inline-size: 0;
+    container-type: inline-size;
+  }
+
+  /* Status and priority icons: every status the same size, colored by
+     what it means. A suggestion and a paused task are not running, so they
+     stay muted (the dashed circle and the plain one tell them apart); a
+     running one takes the warning tone, and a finished one the members'
+     green, as the group badges use it. */
+  .tracking-task-status-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1rem;
+    block-size: 1rem;
+    color: var(--muted-foreground);
+  }
+  .tracking-task-status-icon [data-slot="app-icon"] {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+  .tracking-task-status-icon[data-status="active"] {
+    color: var(--tone-warning);
+  }
+  .tracking-task-status-icon[data-status="finished"] {
+    color: var(--group-member-foreground);
+  }
+  .tracking-task-priority-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+    color: var(--foreground);
+  }
+  .tracking-task-priority-icon[data-priority="none"] {
+    color: var(--muted-foreground);
+  }
+
+  /* The status and priority pickers: 28px ghost icon buttons. */
+  .tracking-task-picker,
+  .tracking-task-icon-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    padding: 0;
+    color: var(--foreground);
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-background);
+  }
+  .tracking-task-picker {
+    margin-block: -0.25rem;
+  }
+  .tracking-task-picker[data-popup-open],
+  .tracking-task-icon-button[data-popup-open] {
+    background: var(--accent);
+  }
+  @media (hover: hover) {
+    .tracking-task-picker:hover,
+    .tracking-task-icon-button:hover {
+      background: var(--accent);
+    }
+  }
+  .tracking-task-icon-button [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  /* Toolbar: filters first; then the columns, sort and view, which move
+     beside the filters once the page is 42rem wide. */
+  .tracking-task-toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .tracking-task-toolbar-filters {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .tracking-task-toolbar-view {
+    display: flex;
+    inline-size: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .tracking-task-columns-button {
+    display: none;
+  }
+  .tracking-task-sort-chevrons {
+    display: flex;
+    flex-direction: column;
+  }
+  .tracking-task-sort-chevrons [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+  .tracking-task-sort-chevrons [data-slot="app-icon"]:first-child {
+    margin-block-end: -0.1875rem;
+  }
+  .tracking-task-sort-chevrons [data-slot="app-icon"]:last-child {
+    margin-block-start: -0.1875rem;
+  }
+}
+
+/* .tracking-tasks width at a 64rem viewport: minus the sidebar and the page
+   padding. */
+@container (inline-size >= 44rem) {
+  .tracking-task-columns-button {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tracking-task-picker,
+  .tracking-task-icon-button {
+    transition: none;
+  }
+}

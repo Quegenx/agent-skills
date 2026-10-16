@@ -1,0 +1,254 @@
+{
+  "src/components/ads/results/ad-library-card.tsx": {
+    "trap/link-as-button": {
+      "<a> sets a background and padding": 1
+    }
+  },
+  "src/components/ads/results/ad-library-preview.tsx": {
+    "trap/button-clone": {
+      "<span> uses the app-CSS button class .ad-cta": 1
+    }
+  },
+  "src/components/agent-chat/message/agent-chat-message-files.tsx": {
+    "trap/button-div": {
+      "<m.button onClick>": 1
+    }
+  },
+  "src/components/agent-chat/cards/agent-chat-suggested-tasks.tsx": {
+    "trap/loading-label-swap": {
+      "<button> label swaps on isAdded: \"נוספה\" / \"הוספת משימה\"": 1
+    }
+  },
+  "src/components/groups/details/group-details-sheet.tsx": {
+    "trap/loading-label-swap": {
+      "<Button> label swaps on detailsLoading: \"מרענן פרטים…\" / \"רענון פרטים\"": 1
+    }
+  },
+  "src/components/groups/membership/joined-group-leave-dialog.tsx": {
+    "trap/loading-label-swap": {
+      "<Button> label swaps on sending: \"עוזב…\" / \"עזיבת הקבוצה\"": 1
+    }
+  },
+  "src/components/groups/membership/joined-groups-panel.tsx": {
+    "trap/loading-label-swap": {
+      "<button> label swaps on sync.isPending: \"מרענן…\" / \"רענון\"": 1
+    }
+  },
+  "src/components/layout/shell/app-shell.tsx": {
+    "trap/link-as-button": {
+      "<a> sets a background and padding (bg-card px-4)": 1
+    }
+  },
+  "src/components/opportunities/task-opportunities-page.tsx": {
+    "trap/loading-label-swap": {
+      "<Button> label swaps on loading: \"טוען…\" / \"טעינת עוד\"": 1
+    }
+  },
+  "src/components/posts/collection/group-post-collection-page.tsx": {
+    "trap/loading-label-swap": {
+      "<Button> label swaps on saved.loading: \"טוען פוסטים…\" / \"הצגת כל הפוסטים השמורים\"": 1
+    }
+  },
+  "src/components/tasks/editor/tracking-task-labels-field.tsx": {
+    "trap/button-clone": {
+      "<span> uses the app-CSS button class .tracking-task-label-pill": 1
+    }
+  },
+  "src/components/ui/display/card.tsx": {
+    "rule/arbitrary-value": {
+      "grid-cols-[1fr_auto]": 1,
+      "grid-rows-[auto_auto]": 1
+    }
+  },
+  "src/components/ui/display/tooltip.tsx": {
+    "rule/arbitrary-value": {
+      "duration-[50ms]": 1,
+      "rounded-[2px]": 1,
+      "translate-x-[-1.5px]": 2,
+      "translate-x-[1.5px]": 2,
+      "translate-y-[calc(-50%-2px)]": 1
+    }
+  },
+  "src/components/ui/feedback/status/alert.tsx": {
+    "rule/arbitrary-value": {
+      "grid-cols-[auto_1fr]": 1
+    }
+  },
+  "src/components/ui/feedback/dialog/sheet.tsx": {
+    "rule/arbitrary-value": {
+      "max-w-[36rem]": 3,
+      "max-w-[64rem]": 3
+    }
+  },
+  "src/components/ui/forms/fields/field.tsx": {
+    "rule/arbitrary-value": {
+      "has-[>[data-slot=checkbox-group]": 1,
+      "has-[>[data-slot=field-content]": 4,
+      "has-[>[data-slot=field]": 5,
+      "has-[>[data-slot=radio-group]": 1,
+      "not-has-[:disabled,[data-disabled]": 1
+    }
+  },
+  "src/components/ui/general/morph-text.tsx": {
+    "rule/arbitrary-value": {
+      "[direction:ltr]": 1
+    }
+  },
+  "src/components/ui/navigation/sidebar/sidebar-menu.tsx": {
+    "rule/arbitrary-value": {
+      "shadow-[0_0_0_1px_var(--sidebar-accent)]": 1,
+      "shadow-[0_0_0_1px_var(--sidebar-border)]": 1
+    }
+  },
+  "src/components/ui/navigation/sidebar/sidebar.tsx": {
+    "rule/arbitrary-value": {
+      "w-[2px]": 1,
+      "w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]": 1,
+      "w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]": 1
+    }
+  },
+  "src/routes/__root.tsx": {
+    "rule/raw-value": {
+      "#0866ff": 1
+    }
+  },
+  "src/styles/ads/ad-library-preview.css": {
+    "rule/raw-value": {
+      "rgba(0, 0, 0, 0.05)": 1,
+      "rgba(0, 0, 0, 0.1)": 1,
+      "rgba(0, 0, 0, 0.3)": 1,
+      "rgba(0, 0, 0, 0.55)": 1,
+      "rgba(0, 0, 0, 0.65)": 1,
+      "rgba(0, 0, 0, 0.85)": 3
+    }
+  },
+  "src/styles/ads/ad-library.css": {
+    "rule/raw-value": {
+      "rgb(0, 107, 78)": 1,
+      "rgb(218, 221, 225)": 1,
+      "rgb(23, 113, 237)": 1,
+      "rgb(235, 242, 230)": 1,
+      "rgb(242, 242, 242)": 1,
+      "rgb(28, 30, 33)": 1,
+      "rgba(0, 0, 0, 0.05)": 1,
+      "rgba(0, 0, 0, 0.1)": 3,
+      "rgba(0, 0, 0, 0.15)": 1,
+      "rgba(0, 0, 0, 0.75)": 2,
+      "rgba(0, 0, 0, 0.85)": 4
+    }
+  },
+  "src/styles/agent-chat/composer/agent-chat-attachment-chip.css": {
+    "rule/raw-value": {
+      "#0000001a": 2
+    }
+  },
+  "src/styles/agent-chat/message/agent-chat-image-viewer.css": {
+    "rule/raw-value": {
+      "rgb(0 0 0 / 0.1)": 1
+    }
+  },
+  "src/styles/agent-chat/work/agent-chat-tool-rows.css": {
+    "rule/raw-value": {
+      "#0000001a": 2
+    }
+  },
+  "src/styles/agent-chat/page/agent-tasks-panel.css": {
+    "rule/raw-value": {
+      "rgb(0 0 0 / 0.1)": 1
+    }
+  },
+  "src/styles/auth/auth-form.css": {
+    "rule/raw-value": {
+      "#a3141e": 1,
+      "#ffebe9": 1,
+      "rgba(255, 255, 255, 0.1)": 1,
+      "rgba(255, 255, 255, 0.2)": 2
+    }
+  },
+  "src/styles/base/motion-tokens.css": {
+    "trap/motion-overshoot": {
+      "cubic-bezier(0.34,1.36,0.64,1)": 1,
+      "cubic-bezier(0.34,3.85,0.64,1)": 1
+    }
+  },
+  "src/styles/base/tokens.css": {
+    "rule/raw-value": {
+      "rgba(0, 0, 0, 0.1)": 1,
+      "rgba(0, 0, 0, 0.2)": 1
+    }
+  },
+  "src/styles/layout/shell/app-shell.css": {
+    "rule/raw-value": {
+      "#0064d1": 1,
+      "#080809": 1,
+      "#e2e5e9": 1,
+      "#e7f3ff": 1,
+      "rgba(0, 0, 0, 0.08)": 1
+    }
+  },
+  "src/styles/tasks/tracking-task-board.css": {
+    "rule/raw-value": {
+      "#0000001a": 2
+    }
+  },
+  "src/styles/tasks/tracking-tasks.css": {
+    "rule/raw-value": {
+      "#eab308": 1
+    }
+  },
+  "src/styles/ui/display/badge.css": {
+    "rule/raw-value": {
+      "#0064d1": 2,
+      "#5c5e62": 1,
+      "#dd2334": 1,
+      "#fff": 1
+    }
+  },
+  "src/styles/ui/general/button.css": {
+    "rule/raw-value": {
+      "#0064d1": 1,
+      "#ddedfe": 1
+    }
+  },
+  "src/styles/ui/forms/checkbox.css": {
+    "rule/raw-value": {
+      "#000": 2,
+      "#fff": 1
+    }
+  },
+  "src/styles/ui/feedback/dialog.css": {
+    "rule/raw-value": {
+      "rgb(8 8 9 / 0.3)": 1,
+      "rgba(0, 0, 0, 0.1)": 2,
+      "rgba(0, 0, 0, 0.2)": 1,
+      "rgba(255, 255, 255, 0.5)": 1
+    }
+  },
+  "src/styles/ui/forms/form-controls.css": {
+    "rule/raw-value": {
+      "#606770": 1,
+      "#b0b3b8": 2,
+      "#f0f2f5": 1
+    }
+  },
+  "src/styles/ui/forms/search.css": {
+    "rule/raw-value": {
+      "#f0f2f5": 1
+    }
+  },
+  "src/styles/ui/forms/switch.css": {
+    "rule/raw-value": {
+      "#1876f2": 1,
+      "#8f9297": 1,
+      "#fff": 1,
+      "rgba(0, 0, 0, 0.1)": 1,
+      "rgba(0, 0, 0, 0.5)": 1
+    }
+  },
+  "src/styles/ui/display/table.css": {
+    "rule/raw-value": {
+      "#e7f3ff": 1,
+      "#f0f2f5": 2
+    }
+  }
+}

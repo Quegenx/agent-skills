@@ -1,0 +1,83 @@
+/* AppIcon (app-icon.tsx): a Hugeicons SVG, 16px unless a
+   component sizes it, drawn in the text's color. */
+@layer components {
+  .app-icon {
+    display: inline-block;
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+}
+
+/* AppMorphIcon: an icon that morphs into the next one. As the
+   pulse dot (data-dot), its 1.5-unit circle takes a 9-unit stroke (8px at
+   16px) in the text's own color and pulses as PulseDotLoader does (1.2s,
+   to 1.5x); morphing into an icon, the stroke thins back to 1.5 and the
+   color settles, so only the path itself morphs. */
+@layer components {
+  .app-morph-icon {
+    transition: color 0.3s ease-out;
+  }
+  .app-morph-icon path {
+    transition: stroke-width 0.35s ease-out;
+  }
+  .app-morph-icon[data-dot] {
+    color: var(--foreground);
+    animation: app-pulse-dot 1.2s ease-in-out infinite;
+  }
+  .app-morph-icon[data-dot] path {
+    stroke-width: 9;
+  }
+}
+
+@keyframes app-pulse-dot {
+  0%,
+  100% {
+    opacity: 0.8;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-morph-icon,
+  .app-morph-icon path {
+    transition: none;
+  }
+  .app-morph-icon[data-dot] {
+    animation: none;
+  }
+}
+
+/* Optical padding for buttons with an icon and a label: the icon's side gets
+   2px less than the label's side, so the content looks centered. The icon is
+   found by shadcn's data-icon="inline-start" / "inline-end", or as an icon
+   element beside a label element. A button with only an icon (its label in
+   .sr-only) is left alone. */
+@layer components {
+  :is(.app-button, .agent-chat-button, .filter-chip):has(
+    > [data-icon="inline-start"],
+    > [data-slot="app-icon"]:first-child + :not(.sr-only)
+  ) {
+    padding-inline-start: calc(var(--icon-side-padding) - 0.125rem);
+  }
+  :is(.app-button, .agent-chat-button, .filter-chip):has(
+    > [data-icon="inline-end"],
+    > :not(.sr-only) + [data-slot="app-icon"]:last-child
+  ) {
+    padding-inline-end: calc(var(--icon-side-padding) - 0.125rem);
+  }
+  .app-button {
+    --icon-side-padding: var(--app-button-padding-inline);
+  }
+  .agent-chat-button {
+    --icon-side-padding: var(--space-4);
+  }
+  .filter-chip {
+    --icon-side-padding: var(--space-3);
+  }
+}

@@ -1,0 +1,254 @@
+/* The tasks board: columns, cards and dragging, reverse-engineered from a reference tasks page. Sizes resolve
+   their Tailwind theme to pixels, as in tracking-tasks.css; colors are ours. */
+@layer components {
+  /* Board: columns side by side (at least 14rem each, so all four fit a
+     laptop screen beside the sidebar), scrolling sideways only when they
+     do not; each a faint well open at the bottom. */
+  /* The board's and the list's colors: a gray well (a column, a status
+     group) holding white tasks. Opaque, so a sticky head can cover what
+     scrolls under it. */
+  .tracking-task-board,
+  .tracking-task-list {
+    --tracking-task-well: color-mix(
+      in srgb,
+      rgb(var(--ink)) 5%,
+      var(--background)
+    );
+    --tracking-task-item-hover: color-mix(
+      in srgb,
+      rgb(var(--ink)) 3%,
+      var(--background)
+    );
+    --tracking-task-item-selected: color-mix(
+      in srgb,
+      rgb(var(--ink)) 7%,
+      var(--background)
+    );
+  }
+  .tracking-task-board {
+    display: flex;
+    gap: var(--space-3);
+    min-block-size: max(24rem, calc(100svh - 17rem));
+    overflow-x: auto;
+  }
+  .tracking-task-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    /* On a narrow board the next column peeks in, so the hidden columns
+       past the scroll edge are visible as more to scroll to. */
+    min-inline-size: min(14rem, calc(100% - 2.5rem));
+    border-radius: 0.875rem 0.875rem 0 0;
+    background: var(--tracking-task-well);
+  }
+  .tracking-task-column-head {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.5rem;
+    padding-block: var(--space-3);
+    padding-inline: var(--space-4) var(--space-3);
+  }
+  .tracking-task-column-title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--foreground);
+    @apply type-label-sm;
+  }
+  .tracking-task-column-title > span {
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .tracking-task-column-actions {
+    display: flex;
+    align-items: center;
+    margin-inline-start: auto;
+  }
+  .tracking-task-column-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-block-size: 0;
+    overflow-y: auto;
+    padding: 0 0.5rem var(--space-3);
+  }
+  .tracking-task-column-add {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    inline-size: 100%;
+    block-size: 2.25rem;
+    border: 0;
+    border-radius: 0.875rem;
+    /* The app's secondary tint, a shade deeper than the column's gray, so it
+       reads as a button and not as one more white card. */
+    background: var(--secondary);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    outline: none;
+    transition: var(--transition-control);
+  }
+  .tracking-task-column-add:focus-visible {
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .tracking-task-column:hover .tracking-task-column-add {
+      opacity: 1;
+    }
+  }
+  @media (hover: hover) {
+    /* Hovered, a deeper gray of the same tint: one color, not two. */
+    .tracking-task-column-add:hover {
+      background: rgb(var(--ink) / 0.09);
+    }
+  }
+  .tracking-task-column-add [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  /* Card: white in its gray column, no shadow. (The agent chat shows it
+     on its own white page, in the page's gray card color.) */
+  .tracking-task-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-radius: 0.625rem;
+    background: var(--background);
+    padding: var(--space-3);
+    transition: var(--transition-background);
+  }
+  .agent-chat-task-cards .tracking-task-card {
+    background: var(--card);
+  }
+  @media (hover: hover) {
+    .tracking-task-card:hover {
+      background: var(--tracking-task-item-hover, var(--accent));
+    }
+  }
+  .tracking-task-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .tracking-task-card-head .tracking-task-picker {
+    margin-inline: -0.25rem -0.375rem;
+  }
+  .tracking-task-card-head .tracking-task-status-icon {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+  .tracking-task-title {
+    min-inline-size: 0;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2857;
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+  }
+  .tracking-task-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .tracking-task-label {
+    background: var(--secondary);
+  }
+  .tracking-task-scan-error {
+    margin: 0;
+    color: var(--destructive);
+    @apply type-label-xs;
+  }
+  .tracking-task-scan-runs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+  .tracking-task-scan-runs li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    border-radius: var(--radius);
+    background: var(--secondary);
+    padding: 0.375rem 0.625rem;
+    color: var(--muted-foreground);
+  }
+  .tracking-task-scan-run-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--foreground);
+  }
+  .tracking-task-scan-runs li[data-status="failed"] strong,
+  .tracking-task-scan-run-error {
+    color: var(--destructive);
+  }
+  .tracking-task-card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline-start: 0.25rem;
+  }
+  .tracking-task-created {
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.3333;
+  }
+
+  /* Dragging: the task moves aside to make room, stays at half opacity,
+     and a dashed outline follows the pointer. */
+  .tracking-task-draggable {
+    position: relative;
+    transform: var(--tracking-task-drag-transform);
+    transition: var(--tracking-task-drag-transition);
+    cursor: grab;
+    touch-action: manipulation;
+  }
+  .tracking-task-draggable[data-drag-disabled] {
+    cursor: default;
+  }
+  .tracking-task-draggable[data-dragging] {
+    z-index: 50;
+    opacity: 0.5;
+  }
+  .tracking-task-drag-overlay {
+    border: 2px dashed var(--border);
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--muted) 10%, transparent);
+    cursor: grabbing;
+  }
+}
+
+@media (pointer: coarse) {
+  .tracking-task-column-add {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tracking-task-column-add,
+  .tracking-task-card,
+  .tracking-task-draggable {
+    transition: none;
+  }
+}

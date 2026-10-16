@@ -18,6 +18,9 @@ An agent's answer is not a message; it is work happening. The interface has thre
 | General animation rules (durations, springs, reduced motion) | the `ui-animation` skill |
 | The rest of the app's components (menus, dialogs, tables, states) | the `app-ui` skill |
 | Marketing pages and their motion | the `landing-page-ui` skill |
+| The production source of every piece above, to copy as is | [reference/REFERENCE.md](reference/REFERENCE.md) |
+
+To build it exactly, copy from reference/ rather than writing it from the description.
 
 ## The rules
 

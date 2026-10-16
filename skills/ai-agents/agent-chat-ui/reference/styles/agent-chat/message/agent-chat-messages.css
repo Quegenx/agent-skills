@@ -1,0 +1,332 @@
+/* The agent chat's conversation and messages (AI Elements Conversation and
+   Message), reverse-engineered from a reference chat. Sizes resolve their
+   Tailwind theme to pixels, as in agent-chat.css; colors are ours. */
+@layer components {
+  /* Conversation (AI Elements Conversation on use-stick-to-bottom). */
+  .agent-chat-conversation {
+    --agent-chat-conversation-inset: 1rem;
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    inline-size: 100%;
+    min-block-size: 0;
+    margin-block-end: calc(var(--agent-chat-conversation-inset) * -1);
+    overflow-y: hidden;
+  }
+  /* The chat's scrollbar (thin, as every scrollbar, document.css) sits on
+     the right in both languages. A right-to-left scroller draws its bar on
+     the left, so the scroller itself runs left to right and its content
+     takes the page's direction back. */
+  .agent-chat-conversation-scroller {
+    direction: ltr;
+    scrollbar-gutter: stable both-edges;
+  }
+  :root[dir="rtl"] .agent-chat-conversation-scroller > * {
+    direction: rtl;
+  }
+  .agent-chat-conversation-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    inline-size: 100%;
+    max-inline-size: 48rem;
+    margin-inline: auto;
+    padding: 0 var(--space-5) var(--agent-chat-conversation-inset);
+  }
+  /* The spacer's room, less the breathing space kept at the end: 20px in
+     a 20rem chat, growing with the chat to 80px at 32rem. */
+  .agent-chat-conversation {
+    --agent-chat-conversation-breathing: clamp(1.25rem, -5rem + 31.25cqi, 5rem);
+  }
+  .agent-chat-conversation-spacer {
+    block-size: max(
+      0,
+      calc(
+        var(--agent-chat-spacer-room) - var(--agent-chat-conversation-breathing)
+      )
+    );
+  }
+  .agent-chat-conversation-breathing {
+    block-size: var(--agent-chat-conversation-breathing);
+  }
+  .agent-chat-scroll-button {
+    position: absolute;
+    inset-block-end: calc(var(--agent-chat-conversation-inset) + 1rem);
+    left: 50%;
+    border-radius: var(--radius-full);
+    translate: -50% 0;
+    transition-property:
+      background-color, border-color, color, box-shadow, opacity, scale,
+      translate;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
+  .agent-chat-scroll-button[data-hidden] {
+    opacity: 0;
+    pointer-events: none;
+    scale: 0.95;
+    translate: -50% 1rem;
+  }
+  .agent-chat-bottom-composer {
+    position: sticky;
+    inset-block-end: 0;
+    z-index: 5;
+    inline-size: calc(100% - 1.5rem);
+    /* The agent page drops .app-content's padding, so the composer keeps
+       clear of the home indicator itself. */
+    /* 12px under the composer in a 20rem chat, 16px from 48rem. */
+    margin: 0 var(--space-3)
+      max(
+        clamp(0.75rem, 0.3333rem + 1.4583cqi, 1rem),
+        env(safe-area-inset-bottom, 0rem)
+      );
+  }
+
+  /* Messages (AI Elements Message). */
+  .agent-chat-message {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    inline-size: 100%;
+  }
+  .agent-chat-message[data-from="user"] {
+    align-items: flex-end;
+    max-inline-size: min(75ch, 85%);
+    margin-inline-start: auto;
+    padding: var(--space-4) 0 0.25rem;
+  }
+  .agent-chat-message-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-inline-size: 0;
+    color: var(--foreground);
+  }
+  .agent-chat-message[data-from="user"] .agent-chat-message-content {
+    margin-inline-start: auto;
+    border-radius: 1.125rem;
+    background: var(--secondary);
+    padding: var(--space-3) var(--space-4);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  /* No padding under the answer: with the 4px gap and the actions' own
+     padding, the copy button sat about 23px under the text, too far from
+     it (the owner, 2026-10-16); now about 15px. */
+  .agent-chat-message[data-from="assistant"] .agent-chat-message-content {
+    padding-block-end: 0;
+  }
+  /* MessageActions: shown while the message is hovered or focused, the
+     user's and the agent's alike. */
+  .agent-chat-message-actions {
+    display: flex;
+    align-items: center;
+    color: var(--muted-foreground);
+    opacity: 0;
+    transition: opacity var(--duration-quick) var(--ease-standard);
+  }
+  .agent-chat-message:focus-within .agent-chat-message-actions {
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .agent-chat-message:hover .agent-chat-message-actions {
+      opacity: 1;
+    }
+  }
+  .agent-chat-message-actions [data-slot="app-icon"] {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    transition: color var(--duration-quick) var(--ease-standard);
+  }
+  @media (hover: hover) {
+    .agent-chat-message-actions .agent-chat-button:hover {
+      color: var(--foreground);
+    }
+  }
+  /* The answer's row starts 6px out; like and dislike each sit 4px closer
+     and fill in the primary color once chosen. */
+  .agent-chat-message[data-from="assistant"] .agent-chat-message-actions {
+    margin-inline: -0.375rem;
+    padding-block: 0.125rem;
+  }
+  .agent-chat-message[data-from="assistant"]
+    .agent-chat-button
+    + .agent-chat-button {
+    margin-inline-start: -0.25rem;
+  }
+  .agent-chat-message[data-from="user"]
+    .agent-chat-message-actions
+    .agent-chat-button {
+    margin-inline-end: 0.25rem;
+  }
+  .agent-chat-message-time {
+    margin-inline-end: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  /* Under an answer the time follows the copy button. */
+  .agent-chat-message[data-from="assistant"] .agent-chat-message-time {
+    margin-inline: 0.125rem 0;
+  }
+  .agent-chat-message-files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    inline-size: fit-content;
+    margin-block-end: 0.25rem;
+    margin-inline-start: auto;
+  }
+  /* An image tile is a button opening the viewer; hovering it rings it in
+     the primary color, 2px out from a 2px gap. */
+  .agent-chat-message-image {
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0.625rem;
+    background: color-mix(in srgb, var(--primary) 5%, transparent);
+    padding: 0;
+    box-shadow: var(--shadow-xs);
+    cursor: pointer;
+    outline: none;
+    transition-property:
+      background-color, border-color, color, box-shadow, opacity, scale,
+      translate;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (hover: hover) {
+    .agent-chat-message-image:hover {
+      box-shadow:
+        0 0 0 2px var(--background),
+        0 0 0 4px var(--primary),
+        var(--shadow-xs);
+    }
+  }
+  .agent-chat-message-file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* A square that grows from 6rem to 8rem as the chat widens. */
+    inline-size: clamp(6rem, 2.6667rem + 16.6667cqmin, 8rem);
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 0.625rem;
+    background: var(--muted);
+    padding-inline: var(--space-3);
+    color: var(--muted-foreground);
+    @apply type-label-xs;
+  }
+  .agent-chat-message-file:has(img) {
+    padding: 0;
+  }
+  .agent-chat-message-file [data-slot="app-icon"] {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+  }
+  .agent-chat-message-file-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    inline-size: 100%;
+    text-align: center;
+  }
+  .agent-chat-message-file-name > * {
+    max-inline-size: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .agent-chat-message-file-name bdi {
+    color: var(--foreground);
+  }
+  .agent-chat-message-file-name span {
+    font-weight: 400;
+  }
+
+  /* Follow-up questions (Suggestions in a column). */
+  .agent-chat-follow-ups {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    inline-size: 100%;
+    margin-block-start: 0.5rem;
+    padding-block-end: 0.25rem;
+  }
+  .agent-chat-follow-ups > div {
+    max-inline-size: 100%;
+  }
+  .agent-chat-follow-up.agent-chat-button {
+    block-size: auto;
+    max-inline-size: 100%;
+    color: var(--muted-foreground);
+    text-align: start;
+    white-space: normal;
+  }
+
+  /* Approving every pending action of an answer at once. */
+  .agent-chat-approve-all {
+    display: flex;
+    justify-content: flex-start;
+    margin-block-start: 0.5rem;
+  }
+
+  /* The agent's plan (updatePlan): a checklist with a ring per step, filled
+     once done. */
+  .agent-chat-plan {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-block: 0.5rem;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+  .agent-chat-plan-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    color: var(--muted-foreground);
+  }
+  .agent-chat-plan-step::before {
+    content: "";
+    flex: none;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    margin-block-start: 0.25rem;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+  }
+  .agent-chat-plan-step[data-status="in_progress"] {
+    color: var(--foreground);
+    font-weight: 500;
+  }
+  .agent-chat-plan-step[data-status="in_progress"]::before {
+    border-color: var(--primary);
+  }
+  .agent-chat-plan-step[data-status="completed"]::before {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+  .agent-chat-plan-step:is(
+    [data-status="completed"],
+    [data-status="cancelled"]
+  ) {
+    text-decoration: line-through;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-scroll-button,
+  .agent-chat-message-actions,
+  .agent-chat-message-actions [data-slot="app-icon"],
+  .agent-chat-message-image {
+    transition: none;
+  }
+}

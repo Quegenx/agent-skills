@@ -1,0 +1,40 @@
+/* ShimmerText (shimmer-text.tsx): the text in its own color with a band at
+   35% sweeping across it. Under one second a pass, so waiting feels fast.
+   The band is a mask, not background-clip: text, so it also covers text
+   in positioned children: a morphing label (MorphText, torph) renders each
+   letter as its own relative span, which background-clip: text left
+   transparent (invisible). */
+@layer components {
+  .shimmer-text {
+    display: inline-block;
+    mask-image: linear-gradient(
+      90deg,
+      #000 calc(50% - var(--shimmer-spread)),
+      rgb(0 0 0 / 35%) 50%,
+      #000 calc(50% + var(--shimmer-spread))
+    );
+    mask-position: 100% center;
+    mask-repeat: no-repeat;
+    mask-size: 250% 100%;
+    animation: shimmer-text-sweep 0.9s linear infinite;
+  }
+  .shimmer-text[data-tone="muted"] {
+    color: var(--muted-foreground);
+  }
+}
+
+@keyframes shimmer-text-sweep {
+  from {
+    mask-position: 100% center;
+  }
+  to {
+    mask-position: 0% center;
+  }
+}
+
+/* Reduced motion: the band rests off the text, which reads as plain text. */
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-text {
+    animation: none;
+  }
+}

@@ -1,0 +1,181 @@
+/* The fluid scale: spacing and display type that shrink smoothly on narrow
+   screens and stop at today's measured desktop size. Every value is
+   clamp(min-rem, rem + cqi, max-rem): the max is the measured Facebook or
+   size, the min is 75% of it for space and 85% for type (85% for
+   space of 14px and below), and the ramp runs from a 22.5rem to a 60rem wide
+   page area. Body and control text stays fixed in rem (WCAG 1.4.4 resize).
+
+   Each token is registered as a <length>, so it is computed once where it is
+   set and inherited as a length: on :root against the viewport (overlays
+   portaled to <body>), and again on .app-content against the page area (the
+   @container/shell in app-shell.tsx). Components therefore scale with the
+   page, not with their own small containers; a component that should scale
+   with itself uses cqi or cqmin directly.
+
+   Space steps use Tailwind's 4px step numbers, so --space-4 is the fluid
+   twin of p-4 (1rem). Values of 10px and below stay plain rem. To add a
+   step: max = px / 16, min = max * r, slope b = 100 * (max - min) / 37.5,
+   intercept a = min - (max - min) * 22.5 / 37.5. */
+
+@property --space-3 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-3-5 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-4 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-4-5 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-5 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-6 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-7 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-8 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-9 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-10 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-12 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-13 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-15 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --space-19 {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --fluid-text-headline-md {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --fluid-text-headline-lg {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --fluid-text-display-sm {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --fluid-text-display {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+@property --fluid-text-display-lg {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0rem;
+}
+
+:root,
+.app-content {
+  --space-3: clamp(0.6375rem, 0.57rem + 0.3cqi, 0.75rem); /* 12px at desktop */
+  --space-3-5: clamp(
+    0.7438rem,
+    0.665rem + 0.35cqi,
+    0.875rem
+  ); /* 14px at desktop */
+  --space-4: clamp(0.75rem, 0.6rem + 0.6667cqi, 1rem); /* 16px at desktop */
+  --space-4-5: clamp(
+    0.8438rem,
+    0.675rem + 0.75cqi,
+    1.125rem
+  ); /* 18px at desktop */
+  --space-5: clamp(
+    0.9375rem,
+    0.75rem + 0.8333cqi,
+    1.25rem
+  ); /* 20px at desktop */
+  --space-6: clamp(1.125rem, 0.9rem + 1cqi, 1.5rem); /* 24px at desktop */
+  --space-7: clamp(
+    1.3125rem,
+    1.05rem + 1.1667cqi,
+    1.75rem
+  ); /* 28px at desktop */
+  --space-8: clamp(1.5rem, 1.2rem + 1.3333cqi, 2rem); /* 32px at desktop */
+  --space-9: clamp(1.6875rem, 1.35rem + 1.5cqi, 2.25rem); /* 36px at desktop */
+  --space-10: clamp(1.875rem, 1.5rem + 1.6667cqi, 2.5rem); /* 40px at desktop */
+  --space-12: clamp(2.25rem, 1.8rem + 2cqi, 3rem); /* 48px at desktop */
+  --space-13: clamp(
+    2.4375rem,
+    1.95rem + 2.1667cqi,
+    3.25rem
+  ); /* 52px at desktop */
+  --space-15: clamp(2.8125rem, 2.25rem + 2.5cqi, 3.75rem); /* 60px at desktop */
+  --space-19: clamp(
+    3.5625rem,
+    2.85rem + 3.1667cqi,
+    4.75rem
+  ); /* 76px at desktop */
+  --fluid-text-headline-md: clamp(
+    1.0625rem,
+    0.95rem + 0.5cqi,
+    1.25rem
+  ); /* 20px, section titles */
+  --fluid-text-headline-lg: clamp(
+    1.275rem,
+    1.14rem + 0.6cqi,
+    1.5rem
+  ); /* 24px, page and dialog titles */
+  --fluid-text-display-sm: clamp(
+    1.5938rem,
+    1.425rem + 0.75cqi,
+    1.875rem
+  ); /* 30px, large figures and auth headings */
+  --fluid-text-display: clamp(
+    1.7rem,
+    1.52rem + 0.8cqi,
+    2rem
+  ); /* 32px, the page heading */
+  --fluid-text-display-lg: clamp(
+    1.9125rem,
+    1.71rem + 0.9cqi,
+    2.25rem
+  ); /* 36px, hero headings */
+}

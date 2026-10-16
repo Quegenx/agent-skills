@@ -1,0 +1,74 @@
+/* transitions.dev accordion expand: grid rows 0fr → 1fr animate the height with
+   no measuring. Padding belongs on the inner element only, never on the track,
+   or a strip stays visible when closed. Closed panels also get `inert`.
+   Opening, it unrolls smoothly and slowly while its content fades in out of
+   a slight blur, the content staying in place (moved, it slid under the
+   panel's edge and hid its last row for a moment); closing, it folds away
+   quicker, as exits are. */
+@layer components {
+  .disclosure-panel {
+    --disclosure-panel-open-duration: 450ms;
+    --disclosure-panel-open-easing: cubic-bezier(0.32, 0.72, 0, 1);
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration-fast) var(--ease-smooth-out);
+  }
+  .disclosure-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+    transition: grid-template-rows var(--disclosure-panel-open-duration)
+      var(--disclosure-panel-open-easing);
+  }
+  /* Once closed it is hidden outright, not only collapsed and transparent,
+     so find-in-page and tests no longer see its text: visibility switches
+     after the close finishes, and at once on opening. */
+  .disclosure-panel-inner {
+    min-block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    filter: blur(var(--blur-small));
+    visibility: hidden;
+    transition:
+      opacity var(--duration-fast) var(--ease-smooth-out),
+      filter var(--duration-fast) var(--ease-smooth-out),
+      visibility 0s linear var(--duration-fast);
+  }
+  /* The content fades in behind the unrolling edge, a beat after it starts,
+     so it appears as the room for it opens. */
+  .disclosure-panel[data-open="true"] .disclosure-panel-inner {
+    opacity: 1;
+    filter: blur(0);
+    visibility: visible;
+    transition:
+      opacity 350ms var(--ease-smooth-out) 100ms,
+      filter 350ms var(--ease-smooth-out) 100ms,
+      visibility 0s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disclosure-panel,
+  .disclosure-panel[data-open="true"],
+  .disclosure-panel-inner,
+  .disclosure-panel[data-open="true"] .disclosure-panel-inner {
+    transition: none;
+  }
+}
+
+/* Base UI's Collapsible panel: slides open to its content's height
+   (--collapsible-panel-height) and shut again. */
+@layer components {
+  .collapsible-panel {
+    block-size: var(--collapsible-panel-height);
+    overflow-y: hidden;
+    transition: block-size 200ms ease-out;
+  }
+  .collapsible-panel:is([data-starting-style], [data-ending-style]) {
+    block-size: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapsible-panel {
+    transition: none;
+  }
+}

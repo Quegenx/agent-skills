@@ -1,0 +1,159 @@
+/* The tasks panel: a second sidebar on the page's end side that
+   pushes the chat aside (its width slides over 200ms, linear) with a
+   draggable edge rail, and on phones a bottom drawer over a blurred
+   backdrop with vaul's motion (500ms, cubic-bezier(0.32, 0.72, 0, 1)).
+   Colors are ours: the page's gray card, not the dark app sidebar's, and
+   no edge line. */
+@layer components {
+  .agent-tasks-panel {
+    --agent-tasks-panel-width: 30rem;
+    position: relative;
+    flex-shrink: 0;
+    inline-size: 0;
+    /* Its top corner toward the chat is rounded as the page's own corners
+       (1.5rem, app-shell.css); the outer ones are the page's. */
+    border-start-start-radius: 1.5rem;
+    background: var(--card);
+    transition: inline-size 200ms linear;
+  }
+  .agent-tasks-panel[data-open] {
+    inline-size: var(--agent-tasks-panel-width);
+  }
+  .agent-tasks-panel[data-resizing] {
+    transition: none;
+  }
+  .agent-tasks-panel-clip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-start-start-radius: inherit;
+  }
+  /* The content keeps its full width at the outer edge, so it slides in
+     from that edge as the panel opens. */
+  .agent-tasks-panel-inner {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    display: flex;
+    flex-direction: column;
+    inline-size: var(--agent-tasks-panel-width);
+    overflow: hidden;
+    padding: 0.5rem 0.5rem 0;
+  }
+  .agent-tasks-panel-rail {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 20;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1rem;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: ew-resize;
+    translate: 50% 0;
+  }
+  .agent-tasks-panel[data-open] .agent-tasks-panel-rail {
+    display: flex;
+  }
+  /* A 44px hit area around the 16px rail, for touch and imprecise pointers. */
+  .agent-tasks-panel-rail::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: -0.875rem;
+  }
+  /* The hover line runs the panel's whole edge and bends with its rounded
+     top corner: a box from the edge into the panel, as wide as the corner,
+     drawing only its start border with the panel's radius. */
+  .agent-tasks-panel-rail::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 50%;
+    inline-size: 1.5rem;
+    margin-inline-start: -0.0625rem;
+    border-inline-start: 0.125rem solid transparent;
+    border-start-start-radius: 1.5rem;
+    pointer-events: none;
+    transition: border-color 150ms linear;
+  }
+  @media (hover: hover) {
+    .agent-tasks-panel-rail:hover::after {
+      border-inline-start-color: var(--border);
+    }
+  }
+  .agent-tasks-panel-rail > span {
+    position: relative;
+    z-index: 1;
+    inline-size: 0.625rem;
+    block-size: 2rem;
+    border-radius: var(--radius-full);
+    background: var(--background);
+    box-shadow: inset 0 0 0 10px var(--border);
+    pointer-events: none;
+  }
+
+  .agent-tasks-board {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 0.25rem var(--space-4);
+  }
+  .agent-tasks-trigger {
+    color: var(--muted-foreground);
+  }
+
+  /* Phones: the bottom drawer. */
+  .agent-tasks-drawer-viewport {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: flex-end;
+  }
+  .agent-tasks-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    inline-size: 100%;
+    max-block-size: 85dvh;
+    border-radius: 0.625rem 0.625rem 0 0;
+    background: var(--background);
+    /* Clear of the home indicator and the side insets of a landscape phone. */
+    padding-block: 0 max(var(--space-4), env(safe-area-inset-bottom, 0rem));
+    padding-inline: max(0.5rem, var(--safe-area-inline-start))
+      max(0.5rem, var(--safe-area-inline-end));
+    outline: none;
+    transform: translateY(var(--drawer-swipe-movement-y, 0));
+    transition: transform 500ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .agent-tasks-drawer:is([data-starting-style], [data-ending-style]) {
+    transform: translateY(100%);
+  }
+  .agent-tasks-drawer[data-swiping] {
+    transition-duration: 0ms;
+  }
+  .agent-tasks-drawer-handle {
+    display: block;
+    flex-shrink: 0;
+    inline-size: 6.25rem;
+    block-size: 0.5rem;
+    margin: var(--space-4) auto 0;
+    border-radius: var(--radius-full);
+    background: var(--muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-tasks-panel,
+  .agent-tasks-drawer {
+    transition-duration: var(--duration-instant);
+  }
+}

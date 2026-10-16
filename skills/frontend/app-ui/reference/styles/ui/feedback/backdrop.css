@@ -1,0 +1,37 @@
+/* The backdrop behind every overlay: dialogs, sheets, the image viewer, the
+   chat search and the tasks drawer. It is the mobile tasks drawer's: a 10%
+   black tint blurred 4px, fading with vaul's motion (500ms,
+   cubic-bezier(0.32, 0.72, 0, 1)). Base UI sets the starting and ending
+   states on every Backdrop. */
+@layer components {
+  .app-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--backdrop);
+    backdrop-filter: blur(4px);
+    transition: opacity 500ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .app-backdrop:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+  }
+  /* Behind a dialog that morphs out of its button (useDialogMorph), the fade
+     keeps Blendy's own timing: 450ms easeOutCubic, its "dynamic" curve. */
+  .app-backdrop:has(~ [data-morph]) {
+    transition-duration: 450ms;
+    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-backdrop {
+    transition-duration: var(--duration-instant);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .app-backdrop {
+    background: color-mix(in srgb, var(--foreground) 40%, transparent);
+    backdrop-filter: none;
+  }
+}

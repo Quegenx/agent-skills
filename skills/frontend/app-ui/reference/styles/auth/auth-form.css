@@ -1,0 +1,185 @@
+/* Auth form controls, from the marketing site's contact form and buttons
+   (src/website: contact-form.styles.ts, button.styles.ts). Colors are the
+   --auth-* tokens in auth-page.css. No focus rings: a focused field tints
+   blue instead. */
+@layer components {
+  .auth-form,
+  .auth-form > fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .auth-form {
+    margin-block-start: 3rem;
+  }
+  .auth-form > fieldset {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    min-inline-size: 0;
+  }
+
+  .auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .auth-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-inline: 0.5rem;
+  }
+  .auth-field-label {
+    color: var(--auth-text);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .auth-field-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 0.75rem;
+    background: var(--auth-field);
+  }
+  .auth-field-input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 3rem;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    padding: 0 1rem;
+    color: var(--auth-text);
+    /* dir="auto" may make the text LTR; it still starts at the label's edge,
+       the page's start. */
+    text-align: right;
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    outline: 0;
+  }
+  [dir="ltr"] .auth-field-input {
+    text-align: left;
+  }
+  .auth-field-input:disabled {
+    color: var(--auth-text-secondary);
+  }
+  /* Keep browser autofill from painting the field yellow or blue. */
+  .auth-field-input:autofill {
+    -webkit-text-fill-color: var(--auth-text);
+    transition: background-color 600000s 0s;
+  }
+  .auth-field-toggle {
+    display: grid;
+    flex: none;
+    place-items: center;
+    margin-inline-end: 0.75rem;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    padding: 0;
+    color: var(--auth-text-secondary);
+    cursor: pointer;
+  }
+  .auth-field-toggle-icon {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  /* amichai-all's SquishyButton: a hint of growth on hover, a squash on
+     press (wider and shorter for 70ms), back in 120ms. */
+  .auth-field-toggle {
+    transform-origin: center;
+    transition: transform 120ms ease-out;
+  }
+  @media (hover: hover) {
+    .auth-field-toggle:hover {
+      transform: scale(1.012);
+    }
+  }
+  .auth-field-toggle:active {
+    transform: scale(1.07, 0.91);
+    transition-duration: 70ms;
+  }
+
+  /* The site's 48px pill buttons: ink for the main action, soft blue for
+     the other. */
+  .auth-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    block-size: 3rem;
+    border: 0;
+    border-radius: 999px;
+    padding: 0 2rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 150ms ease,
+      opacity 150ms ease;
+  }
+  .auth-button[data-variant="primary"] {
+    margin-block-start: 0.5rem;
+    inline-size: 100%;
+    background: var(--auth-ink);
+    color: var(--auth-ink-text);
+  }
+  .auth-button[data-variant="soft"] {
+    background: var(--auth-accent-soft);
+    color: var(--auth-accent);
+  }
+  @media (hover: hover) {
+    .auth-button[data-variant="primary"]:hover {
+      opacity: 0.88;
+    }
+    .auth-button[data-variant="soft"]:hover {
+      background: var(--auth-accent-soft-hover);
+    }
+  }
+  .auth-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  /* While a form submits, its fields and button show the busy cursor. */
+  .auth-form:has(.auth-button[aria-busy="true"])
+    :is(.auth-field-box, .auth-field-input, .auth-button) {
+    cursor: progress;
+  }
+
+  .auth-link {
+    color: var(--auth-accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+  /* Its hover is the shared animated underline (ui/animated-link.css). */
+
+  .auth-notice {
+    border-radius: 0.75rem;
+    background: var(--auth-accent-soft);
+    padding: 0.75rem 1rem;
+    color: var(--auth-text);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .auth-notice[data-tone="error"] {
+    background: var(--auth-error-soft);
+    color: var(--auth-error);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-field-toggle,
+  .auth-field-toggle:hover,
+  .auth-field-toggle:active {
+    transform: none;
+    transition: none;
+  }
+}

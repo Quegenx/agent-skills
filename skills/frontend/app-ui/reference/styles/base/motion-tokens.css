@@ -1,0 +1,110 @@
+/* Motion-token scale from transitions.dev (.claude/skills/transitions-dev/_root.css).
+   Match a token by what the motion does, not by the nearest number. */
+:root {
+  /* Durations */
+  --duration-stagger: 40ms; /* per-item stagger offset */
+  --duration-micro: 80ms; /* tooltip/path delay, shake segment, large stagger */
+  --duration-quick: 150ms; /* modal/dropdown close, text swap, tooltip appear */
+  --duration-fast: 250ms; /* icon swap, dropdown/modal open, tabs sliding, page slide */
+  --duration-medium: 350ms; /* panel close, toast close */
+  --duration-slow: 400ms; /* panel open, input clear */
+  --duration-very-slow: 500ms; /* emphasis moments, badge appear, text reveal, success check */
+  /* Easings */
+  --ease-smooth-out: cubic-bezier(
+    0.22,
+    1,
+    0.36,
+    1
+  ); /* modal/dropdown/panel open + close, page slide, resize, position change */
+  --ease-in-out: ease-in-out; /* icon swap, text swap, text reveal */
+  --ease-out: ease-out; /* tooltip open / close */
+  --ease-linear: linear; /* shimmer */
+  --ease-bounce: cubic-bezier(0.34, 1.36, 0.64, 1); /* badge pop open */
+  --ease-bounce-strong: cubic-bezier(
+    0.34,
+    3.85,
+    0.64,
+    1
+  ); /* bouncy hover-out (avatar return) */
+  /* A spring with a slight overshoot (stiffness 260, damping 20: 8% past its
+     mark, settled in 600ms), the source chip's page preview spring
+     (AgentChatLinkPreview), as a CSS curve for popovers that pop open. */
+  --duration-spring-pop: 600ms;
+  --ease-spring-pop: linear(
+    0,
+    0.0274,
+    0.0983,
+    0.1976,
+    0.3126,
+    0.4331,
+    0.5514,
+    0.6619,
+    0.761,
+    0.8464,
+    0.9173,
+    0.9738,
+    1.0168,
+    1.0476,
+    1.0677,
+    1.0791,
+    1.0833,
+    1.0821,
+    1.0769,
+    1.069,
+    1.0597,
+    1.0497,
+    1.0397,
+    1.0303,
+    1.0218,
+    1.0144,
+    1.0082,
+    1.0032,
+    0.9993,
+    0.9965,
+    0.9947,
+    0.9936,
+    0.9931,
+    0.9935,
+    0.9948,
+    0.9965,
+    1
+  );
+  /* Reduced motion: near-instant instead of none, so transitionend still
+     fires. */
+  --duration-instant: 0.01ms;
+  /* Tailwind's default curve and a hover's background change on it. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-background: background-color var(--duration-quick)
+    var(--ease-standard);
+  /* A popup (dialog, viewer, search) fading and scaling in and out. */
+  --transition-popup:
+    opacity var(--duration-fast) var(--ease-smooth-out),
+    scale var(--duration-fast) var(--ease-smooth-out);
+  --transition-popup-instant:
+    opacity 100ms var(--ease-smooth-out), scale 100ms var(--ease-smooth-out);
+  /* Tailwind's default transition: a small control's hover and press color
+     and state changes. */
+  --transition-control:
+    background-color var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1),
+    border-color var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1),
+    color var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1),
+    scale var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1),
+    translate var(--duration-quick) cubic-bezier(0.4, 0, 0.2, 1);
+  /* Distances */
+  --distance-micro: 0.25rem; /* text swap */
+  --distance-small: 0.375rem; /* error shake (small segment) */
+  --distance-base: 0.5rem; /* badge diagonal reveal, page slide, error shake (large segment) */
+  --distance-medium: 0.75rem; /* text reveal */
+  --distance-large: 1.875rem; /* check badge appear */
+  /* Scales */
+  --scale-large: 0.96; /* modal open / close */
+  --scale-medium: 0.97; /* dropdown open */
+  --scale-small: 0.98; /* tooltip open */
+  --scale-tiny: 0.99; /* dropdown close */
+  /* Blur */
+  --blur-small: 2px; /* panel reveal, icon swap, text swap, number pop-in */
+  --blur-medium: 3px; /* page slide, text reveal */
+  --blur-large: 8px; /* success check open */
+}

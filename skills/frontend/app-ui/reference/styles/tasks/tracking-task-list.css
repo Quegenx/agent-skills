@@ -1,0 +1,160 @@
+/* The tasks list, a group per status, reverse-engineered from a reference tasks page. Sizes resolve
+   their Tailwind theme to pixels, as in tracking-tasks.css; colors are ours. */
+@layer components {
+  /* List: a group per status, one gray card (the board column's gray)
+     holding its head and its white rows, so the rows read as part of the
+     group's accordion; no shadows, no borders. */
+  .tracking-task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .tracking-task-group {
+    border-radius: 0.875rem;
+    background: var(--tracking-task-well);
+  }
+  /* Opaque in the card's gray, so rows scrolling under the sticky head stay
+     hidden. */
+  .tracking-task-group-head {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.875rem;
+    background: var(--tracking-task-well);
+    padding: 0.25rem var(--space-3);
+  }
+  /* A group's fold button and a row's open button: bare, filling the row. */
+  .tracking-task-group-trigger,
+  .tracking-task-row-open {
+    display: flex;
+    flex: 1;
+    min-inline-size: 0;
+    align-items: center;
+    gap: var(--space-3);
+    border: 0;
+    background: transparent;
+    color: var(--foreground);
+    cursor: pointer;
+    outline: none;
+  }
+  .tracking-task-group-trigger {
+    padding: 0.375rem 0;
+  }
+  .tracking-task-group-chevron {
+    display: flex;
+    rotate: 90deg;
+    transition: rotate 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .tracking-task-group-trigger[data-panel-open] .tracking-task-group-chevron {
+    rotate: 0deg;
+  }
+  .tracking-task-group-chevron [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+  .tracking-task-group-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0 0.375rem 0.375rem;
+  }
+  .tracking-task-group-rows:empty {
+    padding-block-end: 0;
+  }
+  .tracking-task-row {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.625rem;
+    background: var(--background);
+    padding: 0.625rem var(--space-3);
+    container-type: inline-size;
+    transition: var(--transition-background);
+  }
+  @media (hover: hover) {
+    .tracking-task-row:hover {
+      background: var(--tracking-task-item-hover);
+    }
+  }
+  .tracking-task-row[data-selected] {
+    background: var(--tracking-task-item-selected);
+  }
+  .tracking-task-row-check {
+    opacity: 0;
+    transition: opacity var(--duration-quick) var(--ease-standard);
+  }
+  .tracking-task-row:is(:focus-within, [data-selected])
+    .tracking-task-row-check {
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .tracking-task-row:hover .tracking-task-row-check {
+      opacity: 1;
+    }
+  }
+  .tracking-task-row-status {
+    display: none;
+  }
+  .tracking-task-row-open {
+    padding: 0;
+    text-align: start;
+  }
+  /* Keyboard focus scrolls a row clear of its group's sticky header. */
+  .tracking-task-row :is(button, [role="checkbox"]) {
+    scroll-margin-block-start: 3rem;
+  }
+  .tracking-task-row-title {
+    flex: 1;
+    min-inline-size: 0;
+    margin-inline-start: 0.25rem;
+    overflow: hidden;
+    @apply type-label-sm;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tracking-task-row .tracking-task-labels {
+    display: none;
+    flex-wrap: nowrap;
+    margin-inline-end: 0.5rem;
+  }
+
+  @container (inline-size >= 28rem) {
+    .tracking-task-row-status {
+      display: flex;
+    }
+  }
+  @container (inline-size >= 36rem) {
+    .tracking-task-row .tracking-task-labels {
+      display: flex;
+    }
+  }
+  @container (inline-size >= 42rem) {
+    .tracking-task-toolbar {
+      flex-direction: row;
+    }
+  }
+  @container (inline-size >= 32rem) {
+    .tracking-task-toolbar-view {
+      inline-size: fit-content;
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+@media (pointer: coarse) {
+  .tracking-task-row-check {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tracking-task-group-chevron,
+  .tracking-task-row,
+  .tracking-task-row-check {
+    transition: none;
+  }
+}

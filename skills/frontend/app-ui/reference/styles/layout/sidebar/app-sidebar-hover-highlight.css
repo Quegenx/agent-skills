@@ -1,0 +1,63 @@
+/* The sidebar menu's sliding hover highlight (app-sidebar-collapsible.css
+   defines its spring). */
+@layer utilities {
+  /* One hover highlight for the whole sidebar menu, as in amichai-all: it
+     slides and resizes to the hovered row on the tree spring and fades in
+     and out. Rows drop their own hover fill and sit above it. Arriving from
+     nowhere it appears in place; over the selected row it fades away. The
+     footer (dark mode, language, log out) has its own. */
+  [data-sidebar="sidebar"]
+    :is([data-slot="sidebar-content"], [data-slot="sidebar-footer"]) {
+    position: relative;
+    isolation: isolate;
+  }
+  .app-sidebar-hover-highlight {
+    position: absolute;
+    inset-block-start: 0;
+    left: 0;
+    z-index: 0;
+    inline-size: var(--app-sidebar-hover-width, 0);
+    block-size: var(--app-sidebar-hover-height, 0);
+    border-radius: 0.75rem;
+    background: var(--sidebar-accent);
+    opacity: 0;
+    pointer-events: none;
+    translate: var(--app-sidebar-hover-x, 0) var(--app-sidebar-hover-y, 0);
+    transition:
+      translate var(--app-sidebar-tree-spring-duration)
+        var(--app-sidebar-tree-spring),
+      inline-size var(--app-sidebar-tree-spring-duration)
+        var(--app-sidebar-tree-spring),
+      block-size var(--app-sidebar-tree-spring-duration)
+        var(--app-sidebar-tree-spring),
+      opacity var(--app-sidebar-tree-spring-duration)
+        var(--app-sidebar-tree-spring);
+  }
+  .app-sidebar-hover-highlight[data-visible] {
+    opacity: 1;
+  }
+  .app-sidebar-hover-highlight[data-instant] {
+    transition-property: opacity;
+  }
+  [data-sidebar="sidebar"]
+    :is([data-slot="sidebar-content"], [data-slot="sidebar-footer"])
+    [data-slot="sidebar-menu-button"],
+  .app-sidebar-collapsible-link {
+    position: relative;
+    z-index: 1;
+  }
+  @media (hover: hover) {
+    [data-sidebar="sidebar"]
+      :is([data-slot="sidebar-content"], [data-slot="sidebar-footer"])
+      [data-slot="sidebar-menu-button"]:hover:not([data-active]),
+    .app-sidebar-collapsible-link:hover:not([aria-current="page"]) {
+      background: transparent;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar-hover-highlight {
+    transition: none;
+  }
+}

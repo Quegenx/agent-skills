@@ -1,0 +1,316 @@
+/* The workspace shell, as vibe-code-resources draws it (app-shell.tsx,
+   sidebar-navigation.tsx): an ink sidebar canvas whose rows read muted and
+   brighten on hover under one sliding highlight, around a rounded content
+   panel on the page canvas. */
+@layer utilities {
+  .app-shell {
+    background: var(--sidebar);
+  }
+  .app-shell [data-slot="sidebar-inset"] {
+    overflow: clip;
+    margin-block: 0.75rem;
+    margin-inline-end: 0.75rem;
+    border-radius: 1.5rem;
+    border: 0;
+    box-shadow: none;
+  }
+  /* The sidebar's own rules use [data-sidebar="sidebar"], which marks both
+     the desktop sidebar and the phone sheet (portaled outside .app-shell).
+     [data-slot] keeps this rule as specific as the .app-shell one it
+     replaced, above the sidebar's own utility classes. */
+  [data-slot][data-sidebar="sidebar"] {
+    padding: 1.5rem 0.75rem;
+    gap: 1.25rem;
+    color: var(--sidebar-foreground);
+  }
+  [data-sidebar="sidebar"] [data-slot="sidebar-group-label"] {
+    block-size: 1.75rem;
+    padding-inline: 0.75rem;
+    color: var(--sidebar-foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  [data-sidebar="sidebar"] [data-slot="sidebar-menu"] {
+    gap: 0.25rem;
+  }
+  [data-sidebar="sidebar"] [data-slot="sidebar-menu-button"] {
+    gap: 0.75rem;
+    min-block-size: 2.75rem;
+    border-radius: 0.75rem;
+    color: var(--sidebar-muted);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition:
+      color 150ms ease,
+      scale var(--app-sidebar-row-spring-duration) var(--app-sidebar-row-spring);
+  }
+  [data-sidebar="sidebar"] [data-slot="sidebar-menu-button"]:active {
+    scale: 0.98;
+  }
+  @media (hover: hover) {
+    [data-sidebar="sidebar"] [data-slot="sidebar-menu-button"]:hover {
+      color: var(--sidebar-foreground);
+    }
+  }
+  [data-sidebar="sidebar"]
+    [data-slot="sidebar-menu-button"]
+    :is(svg, [data-slot="app-icon"]) {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  [data-sidebar="sidebar"] [data-slot="sidebar-menu-button"][data-active],
+  .app-sidebar-collapsible-link[aria-current="page"] {
+    background: var(--sidebar-accent);
+    color: var(--sidebar-foreground);
+  }
+  [data-sidebar="sidebar"] [data-slot="sidebar-footer"] {
+    border-block-start: 1px solid var(--sidebar-border);
+    padding-block-start: 1rem;
+  }
+  /* The brand is a mark, not a row: no fill on hover, press or the focus
+     the phone drawer gives it when it opens. */
+  [data-sidebar="sidebar"]
+    [data-slot="sidebar-header"]
+    [data-slot="sidebar-menu-button"] {
+    background: transparent;
+  }
+  /* The logo on a white chip, as the vibe-code brand mark. */
+  .app-sidebar-brand-logo {
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    flex-shrink: 0;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    padding: 0.125rem;
+    object-fit: contain;
+  }
+  .app-sidebar-brand-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .app-sidebar-brand-label strong {
+    color: var(--sidebar-foreground);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .app-sidebar-brand-label > span {
+    color: var(--sidebar-muted);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+  }
+  .app-shell [data-collapsible="icon"] .app-sidebar-brand-label {
+    display: none;
+  }
+  /* The user's avatar (UserAvatar) beside their name and email. */
+  .app-sidebar-account {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding-inline: 0.75rem;
+    min-inline-size: 0;
+  }
+  .app-sidebar-avatar {
+    flex-shrink: 0;
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+  }
+  /* The avatar is a button that opens it enlarged (app-avatar-viewer), with
+     the app's squishy press (button.css). */
+  .app-sidebar-avatar-button {
+    display: flex;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+  /* The avatar enlarged in the middle of the screen, over the backdrop: it
+     flies out of the sidebar's avatar and back into it (useFlightMorph,
+     data-flight), with the dialogs' round X on its corner, which comes in
+     once it has landed. Without the flight (reduced motion) it fades in. */
+  .app-avatar-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    margin: auto;
+    inline-size: min(16rem, calc(100vi - 4rem));
+    block-size: fit-content;
+    border-radius: var(--radius-full);
+    outline: none;
+    @apply popup-fade-scale;
+  }
+  /* The flight moves it; its own fade and scale stay off. */
+  .app-avatar-viewer[data-flight]:is(
+      [data-starting-style],
+      [data-ending-style]
+    ) {
+    opacity: 1;
+    scale: 1;
+  }
+  /* Under the viewer, so it outranks the dialogs' own placement of their X
+     (dialog.css loads after this file). */
+  .app-avatar-viewer .app-avatar-viewer-close {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    /* A solid round button with a shadow: the dialogs' gray one sank into
+       the blurred backdrop. */
+    background: var(--popover);
+    color: var(--foreground);
+    box-shadow:
+      0 4px 14px rgb(var(--ink) / 0.18),
+      inset 0 0 0 1px var(--dialog-edge);
+    animation: app-avatar-viewer-close-in var(--duration-fast)
+      var(--ease-smooth-out) both;
+  }
+  /* After the 950ms flight has landed. */
+  .app-avatar-viewer[data-flight] .app-avatar-viewer-close {
+    animation-delay: 950ms;
+  }
+  /* Gone as soon as the viewer closes, so it does not fly back with the
+     avatar (its entrance animation would otherwise keep it shown). */
+  .app-avatar-viewer[data-ending-style] .app-avatar-viewer-close {
+    animation: none;
+    opacity: 0;
+    transition: opacity 100ms var(--ease-out);
+  }
+  @keyframes app-avatar-viewer-close-in {
+    from {
+      opacity: 0;
+      scale: 0.6;
+    }
+  }
+  .app-avatar-viewer-image {
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-full);
+    box-shadow: 0 24px 48px rgb(var(--ink) / 0.16);
+  }
+  .app-sidebar-account-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+    min-inline-size: 0;
+  }
+  .app-sidebar-account-text > * {
+    max-inline-size: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .app-sidebar-account strong {
+    color: var(--sidebar-foreground);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .app-sidebar-account bdi {
+    color: var(--sidebar-muted);
+    font-size: 0.8125rem;
+  }
+  /* The footer rows' icons (settings, log out), sized as the
+     page rows' icons, with no fill of their own. */
+  /* A row's icon and label in one element (הגדרות, התנתקות, which their
+     dialogs grow out of), laid out as the row lays them out. */
+  .app-sidebar-row-content {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.5rem;
+    min-inline-size: 0;
+  }
+  .app-sidebar-row-content > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .app-sidebar-row-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  .app-sidebar-row-icon :is(.app-icon, svg) {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    color: currentColor;
+  }
+  .app-shell [data-collapsible="icon"] .app-sidebar-account {
+    display: none;
+  }
+  .app-shell [data-collapsible="icon"] .app-sidebar-brand-logo {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  .app-shell .app-content {
+    inline-size: min(100%, 90rem);
+    margin-inline: auto;
+  }
+}
+@media (width < 48rem) {
+  .app-shell [data-slot="sidebar-inset"] {
+    margin: 0;
+    border-radius: 1.5rem 1.5rem 0 0;
+  }
+}
+
+/* The language switch's stairs (AppLocaleTransition), as the website draws
+   them (site-header-locale-transition.styles.ts): five blue columns that
+   cover the page with the logo, hidden until a switch starts or the page
+   that follows it reveals itself. */
+@layer components {
+  .app-locale-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .app-locale-transition[data-active],
+  html[data-locale-transition="reveal"] .app-locale-transition {
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .app-locale-transition-stairs {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    display: flex;
+    inline-size: 100%;
+    block-size: 100vh;
+    pointer-events: none;
+  }
+  .app-locale-transition-stairs > [data-locale-stair] {
+    inline-size: 20vw;
+    block-size: 0;
+    background: #0866ff;
+  }
+  html[data-locale-transition="reveal"]
+    .app-locale-transition-stairs
+    > [data-locale-stair] {
+    block-size: 100%;
+  }
+  .app-locale-transition-logo {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0;
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+  }
+  html[data-locale-transition="reveal"] .app-locale-transition-logo {
+    opacity: 1;
+  }
+}

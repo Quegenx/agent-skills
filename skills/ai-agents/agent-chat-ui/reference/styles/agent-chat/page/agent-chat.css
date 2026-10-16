@@ -1,0 +1,243 @@
+/* Agent chat page, reverse-engineered from a reference chat (AI Elements on
+   Base UI, Tailwind). Geometry, type sizes and motion are the reference's, with
+   their theme resolved to pixels (radius base 10px: sm 6, md 8, lg 10,
+   xl 14, 2xl 18, 3xl 22; text xs 12/16, sm 14/20, base 16/24) because our
+   theme redefines those steps. Colors are ours: their card, secondary,
+   accent, muted, border and primary map to the same tokens here. Logical
+   properties mirror it for right-to-left. */
+@layer components {
+  /* The agent page fills the viewport: the conversation scrolls inside it
+     and the composer stays pinned below; the tasks panel sits beside. */
+  .app-shell:has(.agent-chat) [data-slot="sidebar-inset"] {
+    block-size: calc(100svh - 1.5rem);
+  }
+  .app-shell:has(.agent-chat) .app-content {
+    min-block-size: 0;
+    padding: 0;
+    gap: 0;
+  }
+  .agent-chat {
+    display: flex;
+    flex: 1;
+    min-block-size: 0;
+    color: var(--foreground);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .agent-chat-main {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    min-inline-size: 0;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .agent-chat-save-error {
+    margin: 0.5rem var(--space-3) 0;
+    color: var(--destructive);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+
+  /* A failed answer: the error in the destructive color with a way to try
+     again beside it. */
+  .agent-chat-answer-error {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--destructive);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+
+  /* The chat's Button: 14px corners, 14px semibold label, dips to 97% while
+     pressed; outline and ghost take the hover fill. */
+  .agent-chat-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    block-size: 2.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.875rem;
+    background-clip: padding-box;
+    padding: 0.5rem var(--space-4);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4286;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition-property:
+      background-color, border-color, color, box-shadow, opacity, scale;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .agent-chat-button [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    .agent-chat-button:active:hover {
+      scale: 0.96;
+    }
+  }
+  .agent-chat-button:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .agent-chat-button[data-variant="primary"] {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+  @media (hover: hover) {
+    .agent-chat-button[data-variant="primary"]:hover {
+      background-color: color-mix(in srgb, var(--primary) 80%, transparent);
+    }
+  }
+  /* The outline button: a gray fill, no ring, as the app's buttons have no
+     border. */
+  .agent-chat-button[data-variant="outline"] {
+    background-clip: border-box;
+    background-color: var(--secondary);
+  }
+  .agent-chat-button[data-variant="secondary"] {
+    border-color: var(--secondary);
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+  @media (hover: hover) {
+    .agent-chat-button[data-variant="secondary"]:hover {
+      background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+    }
+  }
+  .agent-chat-button[data-variant="ghost"] {
+    background-color: transparent;
+  }
+  @media (hover: hover) {
+    .agent-chat-button:is(
+        [data-variant="outline"],
+        [data-variant="ghost"]
+      ):hover {
+      background-color: var(--accent);
+      color: var(--accent-foreground);
+    }
+  }
+  .agent-chat-button[data-size="sm"] {
+    block-size: 2.25rem;
+    padding: 0 var(--space-3-5);
+  }
+  .agent-chat-button[data-size="icon"] {
+    inline-size: 2.5rem;
+    padding: 0;
+  }
+  .agent-chat-button[data-size="icon"] [data-slot="app-icon"] {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  .agent-chat-button[data-size="icon-md"] {
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    border-radius: 0.625rem;
+    padding: 0;
+  }
+  .agent-chat-button[data-size="icon-xs"] {
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: 0.5rem;
+    padding: 0;
+  }
+  .agent-chat-button[data-size="icon-xs"] [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+
+  /* The chat's Badge, "secondary" as the group search uses it. */
+  .agent-chat-badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    overflow: hidden;
+    border: 1px solid transparent;
+    background: var(--muted);
+  }
+  .agent-chat-badge:is([data-variant="count"], [data-variant="query"])
+    [data-slot="app-icon"] {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+  }
+  /* A group search query: a pill, muted until its results are in. */
+  .agent-chat-badge[data-variant="query"] {
+    border-radius: var(--radius-full);
+    padding: 0.375rem var(--space-3);
+    color: var(--muted-foreground);
+  }
+  .agent-chat-badge[data-variant="query"][data-done] {
+    color: var(--secondary-foreground);
+  }
+  .agent-chat-badge[data-variant="outline"] {
+    background: var(--secondary);
+    color: var(--foreground);
+  }
+  .agent-chat-badge[data-variant="high"] {
+    background: var(--group-member-background);
+    color: var(--group-member-foreground);
+  }
+  .agent-chat-badge[data-variant="medium"] {
+    background: var(--group-pending-background);
+    color: var(--group-pending-foreground);
+  }
+
+  /* Base UI Collapsible: the chevron turns a quarter
+     over 200ms, and the panel grows to its height over 200ms ease-out
+     (tw-animate's collapsible keyframes). The chevron points left in this
+     right-to-left page and turns down when open. */
+  .agent-chat-collapsible-chevron {
+    display: inline-flex;
+    inline-size: 1em;
+    block-size: 1em;
+    flex-shrink: 0;
+    pointer-events: none;
+    transform: scaleX(-1);
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .agent-chat-collapsible-chevron [data-slot="app-icon"] {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+  [data-panel-open] .agent-chat-collapsible-chevron {
+    transform: scaleX(-1) rotate(90deg);
+  }
+  /* Left to right, the chevron keeps its own direction. */
+  .agent-chat-collapsible-chevron:dir(ltr) {
+    transform: none;
+  }
+  [data-panel-open] .agent-chat-collapsible-chevron:dir(ltr) {
+    transform: rotate(90deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-button,
+  .agent-chat-collapsible-chevron {
+    transition: none;
+  }
+}
+
+/* The shell caps page content at 90rem (app-shell.css, utilities layer);
+   the chat runs edge to edge, so it lifts the cap. */
+@layer utilities {
+  .app-shell:has(.agent-chat) .app-content {
+    inline-size: 100%;
+  }
+}

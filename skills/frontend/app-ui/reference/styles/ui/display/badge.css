@@ -1,0 +1,97 @@
+@layer components {
+  /* A small rounded tag (a chat badge, a task's label): the feature's rule
+     sets its fill. */
+  .app-tag {
+    border-radius: 0.5rem;
+    padding: 0.125rem 0.5rem;
+    color: var(--secondary-foreground);
+    @apply type-label-xs;
+    white-space: nowrap;
+  }
+  /* FDSNumberedBadge geometry; text metadata retains the existing variant API. */
+  .app-badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 1.1875rem;
+    block-size: 1.1875rem;
+    border: 0;
+    border-radius: 62.4375rem;
+    padding: 0;
+    color: #fff;
+    font-family: var(--app-button-font);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .app-badge [data-slot="badge-label"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    block-size: 100%;
+    padding-inline: 0.3125rem;
+    gap: 0.25rem;
+    text-align: center;
+  }
+  .app-badge [data-slot="badge-label"] > svg {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    pointer-events: none;
+  }
+  .app-badge-blue {
+    background: #0064d1;
+  }
+  .app-badge-gray {
+    background: #5c5e62;
+  }
+  .app-badge-red {
+    background: #dd2334;
+  }
+  .app-badge-outline {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--foreground);
+  }
+  .app-badge-ghost {
+    background: transparent;
+    color: var(--foreground);
+  }
+  .app-badge-link {
+    background: transparent;
+    color: var(--primary-soft-foreground);
+  }
+  .group-status-badge {
+    block-size: 1.5rem;
+    background: var(--secondary);
+    color: var(--muted-foreground);
+    font-weight: 600;
+  }
+  .group-status-badge [data-slot="badge-label"] {
+    padding-inline: 0.625rem;
+  }
+  .group-status-badge[data-status="public"] {
+    background: var(--group-public-background);
+    color: var(--group-public-foreground);
+  }
+  .group-status-badge[data-status="private"] {
+    background: var(--group-private-background);
+    color: var(--group-private-foreground);
+  }
+  .group-status-badge:is(
+    [data-status="requested"],
+    [data-status="needs_answers"],
+    [data-status="verification_required"],
+    [data-status="unconfirmed"]
+  ) {
+    background: var(--group-pending-background);
+    color: var(--group-pending-foreground);
+  }
+  .group-status-badge[data-status="member"] {
+    background: var(--group-member-background);
+    color: var(--group-member-foreground);
+  }
+}

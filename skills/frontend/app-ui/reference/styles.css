@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@import "./styles/base/document.css";
+@import "./styles/base/tokens.css";
+@import "./styles/base/fluid-scale.css";
+@import "./styles/base/motion-tokens.css";
+@import "./styles/base/cursor.css";
+@import "./styles/base/typography.css";
+@import "./styles/base/hit-area.css";
+@import "./styles/layout/shell/page-layout.css";
+@import "./styles/ui/general/button.css";
+@import "./styles/ui/forms/search.css";
+@import "./styles/ui/forms/form-controls.css";
+@import "./styles/ui/forms/checkbox.css";
+@import "./styles/ui/display/badge.css";
+@import "./styles/ui/display/table.css";
+@import "./styles/groups/group-result-filters.css";
+@import "./styles/layout/shell/app-shell.css";
+@import "./styles/layout/sidebar/app-sidebar-collapsible.css";
+@import "./styles/layout/sidebar/app-sidebar-hover-highlight.css";
+@import "./styles/layout/sidebar/app-sidebar-agent-chats.css";
+@import "./styles/ui/general/icon.css";
+@import "./styles/groups/group-details-sheet.css";
+@import "./styles/groups/group-profile-avatar.css";
+@import "./styles/groups/joined-groups.css";
+@import "./styles/ui/forms/switch.css";
+@import "./styles/ui/display/disclosure-panel.css";
+@import "./styles/ui/feedback/backdrop.css";
+@import "./styles/ui/feedback/dialog.css";
+@import "./styles/ui/forms/filter-chip.css";
+@import "./styles/ui/navigation/segmented-tabs.css";
+@import "./styles/ui/feedback/shimmer-text.css";
+@import "./styles/ui/display/tooltip.css";
+@import "./styles/ui/navigation/animated-link.css";
+@import "./styles/ui/display/media-carousel.css";
+@import "./styles/groups/saved-group-picker.css";
+@import "./styles/auth/auth-page.css";
+@import "./styles/auth/auth-form.css";
+@import "./styles/posts/group-posts.css";
+@import "./styles/posts/group-post-comments.css";
+@import "./styles/ads/ad-library.css";
+@import "./styles/ads/ad-library-preview.css";
+@import "./styles/agent-chat/page/agent-chat.css";
+@import "./styles/agent-chat/message/agent-chat-messages.css";
+@import "./styles/agent-chat/work/agent-chat-tool-rows.css";
+@import "./styles/agent-chat/page/agent-chat-empty.css";
+@import "./styles/agent-chat/composer/agent-chat-composer.css";
+@import "./styles/agent-chat/composer/agent-chat-attachment-chip.css";
+@import "./styles/agent-chat/work/agent-chat-tools.css";
+@import "./styles/agent-chat/message/agent-chat-markdown.css";
+@import "./styles/agent-chat/message/agent-chat-image-viewer.css";
+@import "./styles/agent-chat/page/agent-chat-conversation-menu.css";
+@import "./styles/agent-chat/page/agent-tasks-panel.css";
+@import "./styles/tasks/tracking-tasks.css";
+@import "./styles/tasks/tracking-task-board.css";
+@import "./styles/tasks/tracking-task-view-transition.css";
+@import "./styles/tasks/tracking-task-list.css";
+@import "./styles/tasks/tracking-task-create-dialog.css";
+@import "./styles/opportunities/task-opportunities.css";
+@import "./styles/layout/shell/app-notifications.css";
+@import "./styles/settings/agent-memory-settings.css";
+@import "./styles/settings/facebook-accounts.css";
+@import "./styles/settings/settings-dialog.css";
+/* Streamdown: its word fade-in keyframes (last: the project linter stops
+   reading imports after a package stylesheet), and its utility classes
+   (code and table controls) generated from its build. */
+@import "streamdown/styles.css";
+/* Last on purpose: @shadcn/lint reads at most 65 stylesheets for its class
+   checks, and this one declares no classes the components use. */
+@import "./styles/base/theme-transition.css";
+@import "./styles/layout/shell/app-page-transition.css";
+@source "../node_modules/streamdown/dist/*.js";
+@source "../node_modules/@streamdown/code/dist/*.js";
+/* The website's classes belong to website/document/website.css. */
+@source not "./website";
+
+@custom-variant dark (&:is(.dark *));

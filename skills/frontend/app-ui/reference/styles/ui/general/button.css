@@ -1,0 +1,235 @@
+@layer components {
+  .app-button {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--app-button-icon-gap);
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    border-radius: var(--app-button-radius);
+    max-inline-size: 100%;
+    padding-block: 0.375rem;
+    padding-inline: var(--app-button-padding-inline);
+    font-family: var(--app-button-font);
+    font-size: var(--app-button-font-size);
+    font-weight: var(--app-button-font-weight);
+    line-height: var(--app-button-line-height);
+    letter-spacing: normal;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+    user-select: none;
+  }
+  /* The hover overlay of every control: a faint ink layer that fades in on
+     hover. */
+  .app-button::after,
+  .app-menu-row::after,
+  .app-dialog-close::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--app-button-hover-overlay);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--app-button-fade-duration)
+      var(--app-button-fade-easing);
+  }
+  @media (hover: hover) {
+    .app-button:hover::after {
+      opacity: 1;
+      transition-duration: 0s;
+    }
+  }
+  .app-button:active::after {
+    background: var(--app-button-press-overlay);
+    opacity: 1;
+    transition-duration: 0s;
+  }
+  /* tor-app's pills: the main action in the brand color (btnPrimary), the
+     soft brand wash for joining, a 5% tint (btnSecondary) for the rest. */
+  .app-button-primary {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  .app-button-primary::after {
+    background: rgb(255 255 255 / 0.14);
+  }
+  .facebook-group-join-button {
+    background: var(--primary-soft);
+    color: var(--primary-soft-foreground);
+    block-size: 2.25rem;
+    padding-block: 0;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+  .app-button-secondary {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+  /* A secondary action placed on a gray (--secondary) surface, where the gray
+     secondary button would disappear. */
+  .app-button-surface {
+    background: var(--card);
+    color: var(--secondary-foreground);
+  }
+  .app-button-ghost {
+    background: transparent;
+    color: var(--foreground);
+  }
+  /* A button on the sidebar, in its accent: the mobile sidebar's close
+     button. */
+  .app-button-sidebar {
+    background: var(--sidebar-accent);
+    color: var(--sidebar-foreground);
+  }
+  .app-button-destructive {
+    background: var(--destructive);
+    color: var(--destructive-foreground);
+  }
+  /* A destructive action at rest, such as התנתקות in a row: red text on a
+     red tint, turning solid red once it asks to confirm. One red for both,
+     the solid button's --destructive (not the Alert's darker
+     --destructive-on-tint): chosen over the darker one's contrast. */
+  .app-button-destructive-soft {
+    background: color-mix(in srgb, var(--destructive) 10%, transparent);
+    color: var(--destructive);
+  }
+  .app-button-table-link {
+    background: transparent;
+    color: var(--primary-soft-foreground);
+    white-space: nowrap;
+  }
+  .app-button-link {
+    background: transparent;
+    color: var(--muted-foreground);
+    text-decoration: underline;
+  }
+  .app-button-medium {
+    min-block-size: var(--app-button-height);
+  }
+  .app-button-small {
+    min-block-size: 2.25rem;
+    padding-inline: 0.875rem;
+    font-size: 0.875rem;
+  }
+  .app-button-large {
+    min-block-size: var(--app-button-height-large);
+    font-size: 1.0625rem;
+    line-height: 1.1765;
+  }
+  .app-button-icon {
+    inline-size: var(--app-button-height);
+    block-size: var(--app-button-height);
+    border-radius: var(--radius-full);
+    padding: 0;
+  }
+  .app-button-icon :is(svg, [data-slot="app-icon"]) {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  .app-button-link-size {
+    block-size: auto;
+    min-block-size: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+  .app-button :is(svg, [data-slot="app-icon"]) {
+    display: block;
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+    pointer-events: none;
+    transition:
+      color var(--app-button-icon-transition),
+      fill var(--app-button-icon-transition),
+      stroke var(--app-button-icon-transition);
+  }
+  .app-button:disabled,
+  .app-button[data-disabled],
+  .app-button[aria-disabled="true"] {
+    background: var(--app-button-disabled-background);
+    color: var(--app-button-disabled-text);
+    cursor: not-allowed;
+  }
+  /* The main action stays its blue while unavailable, faded, so it still
+     reads as the main action (חיפוש before anything is typed). */
+  .app-button-primary:is(
+    :disabled,
+    [data-disabled],
+    [aria-disabled="true"]
+  ) {
+    background: color-mix(in srgb, var(--primary) 40%, var(--background));
+    color: var(--primary-foreground);
+  }
+  /* A native disabled button ignores clicks but still shows its cursor; a
+     disabled link would still navigate, so only links drop pointer events. */
+  a.app-button:is([data-disabled], [aria-disabled="true"]) {
+    pointer-events: none;
+  }
+  .app-button:disabled::after,
+  .app-button[data-disabled]::after,
+  .app-button[aria-disabled="true"]::after {
+    opacity: 0;
+  }
+}
+
+/* amichai-all's squishy press (components/motion/button/squishy-button.tsx):
+   a 1.2% grow on hover, and pressed it stretches wide and squashes flat
+   (107% by 91%) in 70ms, settling back over 120ms. Filter chips, the
+   dialogs' round close button and the sidebar's avatar share it. */
+@layer components {
+  :is(
+    .app-button,
+    .filter-chip,
+    .app-dialog-close,
+    .app-sidebar-avatar-button
+  ) {
+    transition-property: scale, background-color;
+    transition-duration: 120ms;
+    transition-timing-function: ease-out;
+  }
+  @media (hover: hover) {
+    :is(
+        .app-button,
+        .filter-chip,
+        .app-dialog-close,
+        .app-sidebar-avatar-button
+      ):hover:not(:disabled, [data-disabled], [aria-disabled="true"]) {
+      scale: 1.012;
+    }
+  }
+  :is(
+      .app-button,
+      .filter-chip,
+      .app-dialog-close,
+      .app-sidebar-avatar-button
+    ):active:not(:disabled, [data-disabled], [aria-disabled="true"]) {
+    scale: 1.07 0.91;
+    transition-duration: 70ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .app-button,
+    .filter-chip,
+    .app-dialog-close,
+    .app-sidebar-avatar-button
+  ),
+  :is(
+    .app-button,
+    .filter-chip,
+    .app-dialog-close,
+    .app-sidebar-avatar-button
+  ):is(:hover, :active) {
+    scale: none;
+    transition: none;
+  }
+}

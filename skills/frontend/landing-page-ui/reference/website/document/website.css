@@ -1,0 +1,493 @@
+/* The website's Tailwind: theme and utilities only. Its own reset (@layer
+   reset below) replaces Tailwind's preflight, and it scans src/website only,
+   so the app's classes stay in styles.css. */
+@layer theme, reset, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@import "../../styles/base/theme-transition.css";
+
+@source "../";
+
+@theme static {
+  /* Colors: the light theme; html[data-theme="dark"] below swaps them. */
+  --color-accent: #0866ff;
+  --color-accent-heading: #0866ff;
+  --color-accent-hover: #0866ff;
+  --color-accent-link: #0866ff;
+  --color-accent-soft: rgba(8, 102, 255, 0.1);
+  --color-accent-soft-hover: rgba(8, 102, 255, 0.18);
+  --color-accent-text: #0866ff;
+  --color-accent-text-hover: #0866ff;
+  --color-background-canvas: #f7f7f7;
+  --color-background-elevated: #f7f7f7;
+  --color-background-glass: rgba(255, 255, 255, 0.5);
+  --color-background-glass-control: rgba(255, 255, 255, 0.6);
+  --color-background-glass-hover: rgba(255, 255, 255, 0.85);
+  --color-background-glass-muted: rgba(255, 255, 255, 0.2);
+  --color-background-glass-strong: rgba(255, 255, 255, 0.58);
+  --color-background-glass-subtle: rgba(255, 255, 255, 0.23);
+  --color-background-menu: #ffffff;
+  --color-background-panel: #f7f7f7;
+  --color-background-primary: #ffffff;
+  --color-background-product-card: #ffffff;
+  --color-background-product-hover: rgba(33, 29, 29, 0.08);
+  --color-background-product-illustration: rgba(33, 29, 29, 0.02);
+  --color-background-product-subtle: rgba(33, 29, 29, 0.05);
+  --color-background-recessed: #f7f7f7;
+  --color-background-recessed-half: rgba(247, 247, 247, 0.5);
+  --color-background-secondary: #ffffff;
+  --color-background-vault-illustration: #f7f7f7;
+  --color-border-primary: #f7f7f7;
+  --color-border-secondary: #f7f7f7;
+  --color-border-subtle: rgba(33, 29, 29, 0.05);
+  --color-border-translucent: rgba(33, 29, 29, 0.1);
+  --color-brand-white: #ffffff;
+  --color-brand-white-faint: rgba(255, 255, 255, 0.05);
+  --color-brand-white-faintest: rgba(255, 255, 255, 0.03);
+  --color-brand-white-hover: rgba(255, 255, 255, 0.15);
+  --color-brand-white-muted: rgba(255, 255, 255, 0.7);
+  --color-brand-white-subtle: rgba(255, 255, 255, 0.1);
+  --color-button-brand: #0866ff;
+  --color-button-brand-hover: #0866ff;
+  --color-button-ink: #211d1d;
+  --color-button-ink-hover: #211d1d;
+  --color-button-text-on-brand: #ffffff;
+  --color-button-text-on-color: #ffffff;
+  --color-button-text-on-ink: #ffffff;
+  --color-button-text-on-success: #211d1d;
+  --color-button-text-on-white: #211d1d;
+  --color-button-white-hover: #f7f7f7;
+  --color-caption-surface: #211d1d;
+  --color-control-hover: color-mix(in srgb, #211d1d 4.5%, transparent);
+  --color-control-selected: rgba(33, 29, 29, 0.06);
+  --color-control-subtle: rgba(33, 29, 29, 0.03);
+  --color-error: #b93800;
+  --color-focus: #0866ff;
+  --color-foreground-disabled: #747272;
+  --color-foreground-faint: #747272;
+  --color-foreground-ink-badge: rgba(33, 29, 29, 0.56);
+  --color-foreground-ink-description: rgba(33, 29, 29, 0.7);
+  --color-foreground-ink-faint: rgba(33, 29, 29, 0.4);
+  --color-foreground-ink-muted: rgba(33, 29, 29, 0.5);
+  --color-foreground-muted: #747272;
+  --color-foreground-placeholder: #747272;
+  --color-foreground-primary: #211d1d;
+  --color-foreground-product-emphasis: rgba(33, 29, 29, 0.9);
+  --color-foreground-product-faint: rgba(33, 29, 29, 0.4);
+  --color-foreground-product-muted: rgba(33, 29, 29, 0.5);
+  --color-foreground-product-secondary: rgba(33, 29, 29, 0.65);
+  --color-foreground-product-subtle: rgba(33, 29, 29, 0.3);
+  --color-foreground-secondary: #747272;
+  --color-foreground-slate: #747272;
+  --color-foreground-strong: #211d1d;
+  --color-foreground-tertiary: #747272;
+  --color-media-outline: rgba(33, 29, 29, 0.1);
+  --color-overlay-dim: rgba(33, 29, 29, 0.58);
+  --color-overlay-scrim: rgba(255, 255, 255, 0.9);
+  --color-product-glass: rgba(33, 29, 29, 0.56);
+  --color-product-title: #f7f7f7;
+  --color-scrollbar-thumb: rgba(33, 29, 29, 0.15);
+  --color-scrollbar-thumb-hover: rgba(33, 29, 29, 0.25);
+  --color-shadow-ambient: rgba(33, 29, 29, 0.08);
+  --color-shadow-deep: rgba(33, 29, 29, 0.28);
+  --color-shadow-raised: rgba(33, 29, 29, 0.12);
+  --color-success: #4fcb68;
+  --color-timeline-track: #f7f7f7;
+  --color-transition-curtain: #211d1d;
+  --color-trust-savings: #211d1d;
+  --color-trust-tbills: #747272;
+
+  --font-hebrew:
+    "Ploni", "Geist", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans Hebrew", "Noto Sans", sans-serif;
+  --font-marketing:
+    "Geist", "Ploni", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif;
+
+  --spacing-anchor-scroll-offset: 7rem;
+  --spacing-content-max: 67.625rem;
+  --spacing-control-height-large: 3rem;
+  --spacing-control-height-medium: 2.625rem;
+  --spacing-control-height-small: 2rem;
+  --spacing-header-height: 5.125rem;
+  --spacing-header-height-compact: 4rem;
+  --spacing-page-header-block-start: 11.5rem;
+  --spacing-page-header-block-start-compact: 7rem;
+  --spacing-page-inline: clamp(1.25rem, 4vw, 3rem);
+  --spacing-page-inline-compact: 1.25rem;
+  --spacing-scrollbar-width: 0.375rem;
+  --spacing-section-block: clamp(3rem, 8vw, 6.25rem);
+  --spacing-section-block-wide: 6.25rem;
+
+  --radius-control: 0.75rem;
+  --radius-large: 1.5rem;
+  --radius-medium: 1rem;
+  --radius-pill: 6.1875rem;
+  --radius-small: 0.5rem;
+  --radius-xlarge: 2rem;
+  --radius-xsmall: 0.25rem;
+}
+
+/* Gradients and whole shadows: not colors, so outside the theme's color namespace. */
+:root {
+  --site-appointment-timeline-glow: radial-gradient(
+    40% 100% at var(--timeline-glow-x) 50%,
+    #0866ff,
+    #0866ff,
+    #0866ff
+  );
+  --site-background-hero-wash: linear-gradient(#f7f7f7, #f7f7f7, transparent);
+  --site-background-product-cta: linear-gradient(135deg, #f7f7f7, #f7f7f7);
+  --site-background-product-kit: linear-gradient(
+    180deg,
+    #ffffff 20%,
+    rgba(8, 102, 255, 0.4)
+  );
+  --site-background-product-trust: linear-gradient(
+    180deg,
+    #ffffff 20%,
+    #f7f7f7
+  );
+  --site-shadow-product-card:
+    0 0 0 1px rgba(33, 29, 29, 0.05), 0 1px 2px rgba(33, 29, 29, 0.05);
+  --site-shadow-product-inset: inset 0 0 0 1px rgba(33, 29, 29, 0.05);
+  --site-shadow-product-outline: 0 0 0 1px rgba(33, 29, 29, 0.05);
+}
+
+/* The dark theme: the whole site, or one forced-dark section (site-dark-theme). */
+html[data-theme="dark"],
+.site-dark-theme {
+  --color-accent: #4c93ff;
+  --color-accent-heading: #4c93ff;
+  --color-accent-hover: #4c93ff;
+  --color-accent-link: #4c93ff;
+  --color-accent-soft: rgba(76, 147, 255, 0.1);
+  --color-accent-soft-hover: rgba(76, 147, 255, 0.18);
+  --color-accent-text: #4c93ff;
+  --color-accent-text-hover: #4c93ff;
+  --color-background-canvas: #0f0f10;
+  --color-background-elevated: #1b1b1c;
+  --color-background-glass: rgba(255, 255, 255, 0.03);
+  --color-background-glass-control: rgba(255, 255, 255, 0.1);
+  --color-background-glass-hover: rgba(255, 255, 255, 0.08);
+  --color-background-glass-muted: rgba(255, 255, 255, 0.03);
+  --color-background-glass-strong: rgba(255, 255, 255, 0.1);
+  --color-background-glass-subtle: rgba(255, 255, 255, 0.05);
+  --site-background-hero-wash: linear-gradient(
+    180deg,
+    transparent 0 640px,
+    #0f0f10 832px
+  );
+  --color-background-menu: #1b1b1c;
+  --color-background-panel: #1b1b1c;
+  --color-background-primary: #0f0f10;
+  --color-background-product-card: rgba(255, 255, 255, 0.03);
+  --site-background-product-cta: linear-gradient(#1b1b1c, #1b1b1c);
+  --color-background-product-hover: rgba(255, 255, 255, 0.08);
+  --color-background-product-illustration: #1b1b1c;
+  --site-background-product-kit: linear-gradient(
+    180deg,
+    #0f0f10 20%,
+    #1b1b1c 100%
+  );
+  --color-background-product-subtle: rgba(255, 255, 255, 0.05);
+  --site-background-product-trust: linear-gradient(
+    180deg,
+    #0f0f10 20%,
+    #1b1b1c
+  );
+  --color-background-recessed: #1b1b1c;
+  --color-background-recessed-half: rgba(255, 255, 255, 0.03);
+  --color-background-secondary: #1b1b1c;
+  --color-background-vault-illustration: #1b1b1c;
+  --color-border-primary: #1b1b1c;
+  --color-border-secondary: #1b1b1c;
+  --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-border-translucent: rgba(255, 255, 255, 0.1);
+  --color-brand-white-faint: rgba(255, 255, 255, 0.08);
+  --color-brand-white-faintest: rgba(255, 255, 255, 0.04);
+  --color-brand-white-hover: rgba(255, 255, 255, 0.15);
+  --color-button-brand: #0866ff;
+  --color-button-brand-hover: #0866ff;
+  --color-button-ink: #ffffff;
+  --color-button-ink-hover: #b8b6b8;
+  --color-button-text-on-color: #0f0f10;
+  --color-button-text-on-ink: #1b1b1c;
+  --color-button-white-hover: #b8b6b8;
+  --color-caption-surface: #1b1b1c;
+  --color-control-hover: rgba(255, 255, 255, 0.08);
+  --color-control-selected: rgba(255, 255, 255, 0.08);
+  --color-control-subtle: rgba(255, 255, 255, 0.06);
+  --color-error: #f24900;
+  --color-focus: #4c93ff;
+  --color-foreground-disabled: #b8b6b8;
+  --color-foreground-faint: #b8b6b8;
+  --color-foreground-ink-badge: rgba(255, 255, 255, 0.56);
+  --color-foreground-ink-description: rgba(255, 255, 255, 0.7);
+  --color-foreground-ink-faint: rgba(255, 255, 255, 0.4);
+  --color-foreground-ink-muted: rgba(255, 255, 255, 0.5);
+  --color-foreground-muted: #b8b6b8;
+  --color-foreground-placeholder: #b8b6b8;
+  --color-foreground-primary: #ffffff;
+  --color-foreground-product-emphasis: #ffffff;
+  --color-foreground-product-faint: rgba(255, 255, 255, 0.4);
+  --color-foreground-product-muted: rgba(255, 255, 255, 0.5);
+  --color-foreground-product-secondary: rgba(255, 255, 255, 0.7);
+  --color-foreground-product-subtle: rgba(255, 255, 255, 0.3);
+  --color-foreground-secondary: #b8b6b8;
+  --color-foreground-strong: #ffffff;
+  --color-foreground-tertiary: #b8b6b8;
+  --color-media-outline: rgba(255, 255, 255, 0.1);
+  --color-overlay-dim: rgba(15, 15, 16, 0.72);
+  --color-overlay-scrim: rgba(15, 15, 16, 0.92);
+  --color-product-glass: rgba(255, 255, 255, 0.08);
+  --color-product-title: #ffffff;
+  --color-scrollbar-thumb: rgba(255, 255, 255, 0.18);
+  --color-scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+  --color-shadow-ambient: rgba(15, 15, 16, 0.38);
+  --color-shadow-deep: rgba(15, 15, 16, 0.62);
+  --site-shadow-product-card:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(15, 15, 16, 0.03);
+  --site-shadow-product-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --site-shadow-product-outline: 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --color-shadow-raised: rgba(15, 15, 16, 0.5);
+  --color-success: #4fcb68;
+  --color-timeline-track: #1b1b1c;
+  --color-transition-curtain: #0f0f10;
+  --color-trust-savings: #ffffff;
+  --color-trust-tbills: #b8b6b8;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 100;
+  src: url("/fonts/ploni/ploni-ultralight-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/fonts/ploni/ploni-light-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/ploni/ploni-regular-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/fonts/ploni/ploni-medium-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/fonts/ploni/ploni-demibold-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/fonts/ploni/ploni-bold-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 800;
+  src: url("/fonts/ploni/ploni-ultrabold-aaa.woff2") format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 900;
+  src: url("/fonts/ploni/ploni-black-aaa.woff2") format("woff2");
+}
+
+:root {
+  --theme-dark-asset-display: none;
+  --theme-light-asset-display: block;
+  --theme-monochrome-logo-filter: none;
+  --theme-product-blend-mode: multiply;
+}
+
+html[data-theme="dark"] {
+  --theme-dark-asset-display: block;
+  --theme-light-asset-display: none;
+  --theme-monochrome-logo-filter: invert(1);
+  --theme-product-blend-mode: normal;
+}
+
+html[data-locale-transition="reveal"] [data-locale-transition-overlay] {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+html[data-locale-transition="reveal"] [data-locale-stair] {
+  height: 100%;
+}
+
+html[data-locale-transition="reveal"] [data-locale-logo] {
+  opacity: 1;
+}
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-feature-settings: "cv11" on;
+    border: 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.375rem;
+    height: 0.375rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 6.25rem;
+  }
+
+  :hover::-webkit-scrollbar-thumb {
+    background-color: var(--site-scrollbar-thumb);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--site-scrollbar-thumb-hover);
+  }
+
+  html {
+    min-height: 100%;
+    overscroll-behavior-y: none;
+  }
+
+  body {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Radix Select adds a right-side scrollbar gap; keep the reserved scrollbar instead. */
+  html body[data-scroll-locked] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    overflow-y: scroll !important;
+  }
+
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  input,
+  select,
+  textarea {
+    cursor: auto;
+  }
+
+  img,
+  svg {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+
+  picture,
+  video {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+}
+
+@keyframes help-search-scrim-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes help-search-root-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(1.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes blog-category-select-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes blog-category-select-exit {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

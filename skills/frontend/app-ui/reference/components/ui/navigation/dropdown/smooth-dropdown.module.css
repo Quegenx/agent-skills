@@ -1,0 +1,308 @@
+/* amichai-all's course-smooth-dropdown.module.css in our colors: the closed
+   surface is a field (tinted, 16px corners), the open one the popover, with
+   no border, like every control here. Rows read muted and brighten when
+   highlighted or chosen. */
+.anchor {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  align-self: flex-start;
+  max-width: 100%;
+  isolation: isolate;
+}
+.anchor[data-present="true"] {
+  z-index: 60;
+}
+.anchor[data-full-width="true"] {
+  width: 100%;
+  align-self: stretch;
+}
+.anchor[data-full-width="true"] .trigger {
+  width: 100%;
+}
+.trigger {
+  position: relative;
+  z-index: 1;
+  min-height: 44px;
+  max-width: 100%;
+  border: 0;
+  padding: 0.5rem 0.85rem;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  border-radius: 16px;
+}
+.trigger:disabled {
+  color: var(--disabled-foreground);
+  cursor: not-allowed;
+}
+.triggerLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  text-align: start;
+}
+.triggerLabel > svg,
+.triggerLabel > [data-slot="app-icon"] {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+.shell {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: var(--menu-width);
+  height: var(--menu-height);
+  background: var(--field);
+  color: var(--foreground);
+  overflow: hidden;
+  pointer-events: none;
+  transition: background-color 200ms ease-out;
+}
+.shell[data-open="true"] {
+  background: var(--popover);
+}
+.shell[data-present="true"] {
+  z-index: 2;
+}
+/* Closed, the surface is its trigger's size from the first frame. Its
+   measured size (--menu-width) lands a frame or more after mounting and
+   sprang from a 100px guess, poking past a scrolling board: a sideways
+   scrollbar the board ⇄ list switch captured. */
+.shell[data-present="false"] {
+  width: 100%;
+  height: 100%;
+}
+.shell[data-open="true"] {
+  pointer-events: auto;
+}
+.anchor[data-open="false"] .trigger {
+  z-index: 3;
+}
+.shell[data-upward="true"] {
+  top: auto;
+  bottom: 0;
+}
+/* The menu shares its trigger's morphing surface; Radix still owns focus and dismissal. */
+.shell > [data-radix-popper-content-wrapper] {
+  position: static !important;
+  transform: none !important;
+  min-width: 0 !important;
+}
+/* The closed trigger's choice: its icon, if any, then its label. */
+.chosen {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chosen > bdi {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .returnLabel {
+    animation-duration: 0.01ms;
+  }
+  .shell {
+    transition: none;
+  }
+}
+
+.shell[data-align-start="false"] {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* Keep one painted surface. Only its positioning changes while it escapes
+   the table scrollport: its left edge (--menu-left) springs with its size,
+   from the trigger's to the menu's. */
+.shell[data-floating="true"][data-present="true"],
+.shell[data-floating="true"][data-present="true"][data-align-start="false"] {
+  position: fixed;
+  z-index: 60;
+  inset-inline: auto;
+  top: var(--trigger-top);
+  bottom: auto;
+  left: var(--menu-left);
+}
+.shell[data-floating="true"][data-present="true"][data-upward="true"] {
+  top: auto;
+  bottom: var(--trigger-bottom);
+}
+
+/* The portal covers the trigger while shrinking; keep its label visible on
+   that surface, over the trigger, returning as the trigger's own label does. */
+.returnLabel {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: calc(var(--trigger-left) - var(--menu-left));
+  width: var(--trigger-width);
+  height: 100%;
+  max-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.5rem 0.85rem;
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.shell[data-floating="true"][data-open="false"][data-present="true"]
+  .returnLabel {
+  display: flex;
+  animation: smooth-dropdown-return 150ms 120ms both;
+}
+/* Only one label at a time: while the floating surface covers the trigger,
+   the trigger's own label would draw under the return label, doubled. */
+.anchor[data-floating="true"][data-present="true"] .triggerLabel {
+  visibility: hidden;
+}
+@keyframes smooth-dropdown-return {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+.shell[data-upward="true"] .returnLabel {
+  top: auto;
+  bottom: 0;
+}
+
+/* A form field: the same 1rem sides as a text input (.app-input),
+   so its text and its chevron line up with the fields around it. */
+.anchor[data-appearance="field"] .trigger,
+.shell[data-appearance="field"] .returnLabel {
+  padding-inline: 1rem;
+}
+
+/* A toolbar's pill chip (filter-chip.css): 32px tall, tinted, smaller text. */
+.anchor[data-appearance="chip"] .trigger {
+  min-height: 32px;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+/* Like every toolbar chip (filter-chip.css), it keeps its label whole
+   instead of shrinking it to an ellipsis in a crowded toolbar. */
+.anchor[data-appearance="chip"] {
+  flex-shrink: 0;
+  align-self: center;
+}
+.anchor[data-appearance="chip"] .triggerLabel,
+.shell[data-appearance="chip"] .returnLabel {
+  gap: 0.375rem;
+}
+.shell[data-appearance="chip"] .returnLabel {
+  max-height: 32px;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+.shell[data-appearance="chip"] {
+  background: var(--secondary);
+}
+/* A small icon on a card (amichai-all's "player" trigger): no fill until it
+   opens. */
+.anchor[data-appearance="icon"] {
+  align-self: center;
+}
+.anchor[data-appearance="icon"] .trigger {
+  min-height: 28px;
+  height: 28px;
+  padding: 0 4px;
+  border-radius: 8px;
+}
+.anchor[data-appearance="icon"] .triggerLabel {
+  justify-content: center;
+  gap: 0;
+}
+.anchor[data-appearance="icon"]
+  .triggerLabel
+  > [data-slot="app-icon"]:last-child,
+.shell[data-appearance="icon"]
+  .returnLabel
+  > [data-slot="app-icon"]:last-child {
+  display: none;
+}
+.anchor[data-appearance="icon"] .chosen > bdi,
+.shell[data-appearance="icon"] .chosen > bdi {
+  display: none;
+}
+.shell[data-appearance="icon"] .returnLabel {
+  max-height: 28px;
+  padding: 0 4px;
+  justify-content: center;
+}
+.anchor[data-appearance="icon"][data-present="false"] .shell {
+  background: transparent;
+}
+@media (hover: hover) {
+  .anchor[data-appearance="icon"] .trigger:hover {
+    background: rgb(var(--ink) / 0.05);
+  }
+}
+/* A round icon button (the header's bell): the app's 40px gray icon button
+   (secondary), no chevron, and the app buttons' squishy press (button.css:
+   107% by 91% in 70ms, back over 120ms) on the whole closed surface. */
+.anchor[data-appearance="round"] {
+  align-self: center;
+  transition: scale 120ms ease-out;
+}
+.anchor[data-appearance="round"] .trigger {
+  width: var(--app-button-height);
+  min-height: var(--app-button-height);
+  height: var(--app-button-height);
+  padding: 0;
+  border-radius: var(--radius-full);
+}
+.anchor[data-appearance="round"] .triggerLabel,
+.shell[data-appearance="round"] .returnLabel {
+  justify-content: center;
+  gap: 0;
+}
+.anchor[data-appearance="round"]
+  .triggerLabel
+  > [data-slot="app-icon"]:last-child,
+.shell[data-appearance="round"]
+  .returnLabel
+  > [data-slot="app-icon"]:last-child {
+  display: none;
+}
+.shell[data-appearance="round"] .returnLabel {
+  max-height: var(--app-button-height);
+  padding: 0;
+}
+.shell[data-appearance="round"] {
+  background: var(--secondary);
+}
+@media (hover: hover) {
+  .anchor[data-appearance="round"][data-open="false"]:hover {
+    scale: 1.012;
+  }
+}
+.anchor[data-appearance="round"][data-open="false"]:has(.trigger:active) {
+  scale: 1.07 0.91;
+  transition-duration: 70ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anchor[data-appearance="round"] {
+    scale: none !important;
+    transition: none;
+  }
+}
+.shell[data-open="true"][data-appearance] {
+  background: var(--popover);
+}
+/* A round trigger's panel is a gray card (the notifications' white rows sit
+   on it, as white cards on the app's gray wells). */
+.shell[data-open="true"][data-appearance="round"] {
+  background: var(--card);
+}

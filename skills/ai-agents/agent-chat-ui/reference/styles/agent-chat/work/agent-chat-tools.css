@@ -1,0 +1,271 @@
+/* The agent's tool calls in a message, reverse-engineered from a reference
+   tool components (AI Elements Tool, their web search and suggested-task
+   views). Sizes resolve their Tailwind theme to pixels, as in
+   agent-chat.css; colors are ours. */
+@layer components {
+  /* The details a tool opens to (Tool content: 12px above, 12px apart). */
+  .agent-chat-tool-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-block-start: var(--space-3);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+
+  /* Group search: the query pills in one scrolling row, then the groups in
+     a bordered list up to 360px tall. */
+  .agent-chat-group-search-queries {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+  }
+  .agent-chat-group-search-results,
+  .agent-chat-ad-results {
+    max-block-size: 22.5rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 0.875rem;
+    background: var(--card);
+  }
+  /* A right-to-left box draws its scrollbar on the left; the list's box
+     runs left-to-right so the scrollbar sits on the right, and its rows stay
+     right-to-left. */
+  .agent-chat-group-search-results:dir(rtl),
+  .agent-chat-ad-results:dir(rtl) {
+    direction: ltr;
+  }
+  .agent-chat-group-search-results:dir(rtl) > *,
+  .agent-chat-ad-results:dir(rtl) > * {
+    direction: rtl;
+  }
+  /* A group in the results, laid out as the groups pages lay one out: its
+     photo, the name (opening the group on Facebook) with privacy and
+     members below, and the save button, all inside the row. */
+  .agent-chat-group-result,
+  .agent-chat-ad-result {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    background: var(--card);
+    padding: var(--space-3) var(--space-4);
+  }
+  .agent-chat-group-result:not(:last-child),
+  .agent-chat-ad-result:not(:last-child) {
+    border-block-end: 1px solid var(--border);
+  }
+  .agent-chat-group-result-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-inline-size: 0;
+  }
+  .agent-chat-group-result-name {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-inline-size: 0;
+    color: var(--foreground);
+    @apply type-label-sm;
+    text-decoration: none;
+  }
+  .agent-chat-group-result-name bdi {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .agent-chat-group-result-name [data-slot="app-icon"] {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+    transform: scaleX(-1);
+  }
+  .agent-chat-group-result-name [data-slot="app-icon"]:dir(ltr) {
+    transform: none;
+  }
+  .agent-chat-group-result-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.3333;
+  }
+  /* Lines break between the parts, never inside one. */
+  .agent-chat-group-result-meta > span {
+    white-space: nowrap;
+  }
+
+  /* Group posts search: under each group's name, its state; once read,
+     its post count opens to the posts (DESIGN.md metadata: 13px/16px). The
+     panel's box is padded, not margined, so its height animates from 0 as
+     AgentChatToolBody's does. */
+  .agent-chat-group-posts-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-block-size: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted-foreground);
+    font: inherit;
+    cursor: pointer;
+  }
+  .agent-chat-group-posts-toggle .agent-chat-collapsible-chevron {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+  }
+  .agent-chat-group-posts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-block-start: var(--space-2);
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    line-height: 1.2308;
+  }
+  .agent-chat-group-post-text {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .agent-chat-group-posts strong {
+    color: var(--foreground);
+    font-weight: 500;
+  }
+  .agent-chat-group-post a {
+    color: var(--foreground);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* An ad the agent found: a 56px picture (the kind's icon until it
+     loads, and when Facebook's link has expired), and two lines of its
+     text under the advertiser. */
+  .agent-chat-ad-thumb {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    overflow: hidden;
+    inline-size: 3.5rem;
+    block-size: 3.5rem;
+    border-radius: 0.625rem;
+    background: var(--muted);
+    color: var(--muted-foreground);
+  }
+  .agent-chat-ad-thumb > * {
+    grid-area: 1 / 1;
+  }
+  .agent-chat-ad-thumb img {
+    z-index: 1;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+  .agent-chat-ad-thumb [data-slot="app-icon"] {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+  .agent-chat-ad-text {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.8125rem;
+    line-height: 1.3846;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  /* The tasks and opportunities an answer worked on, in the chat: the
+     tasks board's cards and the opportunities page's items, stacked with
+     the same gap as the chat's other cards. */
+  .agent-chat-task-cards,
+  .agent-chat-opportunity-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .agent-chat-task-cards > .agent-chat-button {
+    align-self: flex-start;
+  }
+
+  /* Suggested tasks: one card each, 12px apart; on wider screens the add
+     button moves beside the text. */
+  .agent-chat-suggested-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    inline-size: 100%;
+    padding-block: 0.5rem;
+  }
+  /* Text and button side by side while the text keeps 16rem; narrower,
+     the button wraps under it. */
+  .agent-chat-suggested-task {
+    flex-flow: row wrap;
+    align-items: flex-start;
+    column-gap: calc(var(--space-3) + 0.5rem);
+  }
+  .agent-chat-suggested-task .agent-chat-card-body {
+    flex: calc(infinity) 1 16rem;
+  }
+  .agent-chat-suggested-task-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .agent-chat-suggested-task-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-inline-size: 0;
+    padding-inline: 0.125rem;
+  }
+  .agent-chat-suggested-task .agent-chat-card-title {
+    line-height: 1.25;
+  }
+  .agent-chat-suggested-task-disclosures {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .agent-chat-suggested-task-signals {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0.375rem 0;
+    list-style: none;
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+  .agent-chat-suggested-task-signals li {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .agent-chat-suggested-task-signals [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+    flex-shrink: 0;
+  }
+  .agent-chat-suggested-task-evidence {
+    margin: 0;
+    padding-block-start: 0.375rem;
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+  .agent-chat-suggested-task .agent-chat-button {
+    align-self: flex-start;
+  }
+  .agent-chat-suggested-task .agent-chat-button[data-added] {
+    color: var(--muted-foreground);
+  }
+}

@@ -1,0 +1,174 @@
+/* Cards, the content panel's padding, the shared page grids and image
+   fills. */
+@layer components {
+  /* tor-app's SurfaceCard: a sunken bg4 surface with 20px corners and no
+     shadow. Fields inside it sit on the page color, so they stay distinct
+     (tor-app's fields are bg4 on the page). */
+  .app-card {
+    --field: var(--background);
+    border: 0;
+    border-radius: var(--app-card-radius);
+    box-shadow: var(--app-card-shadow);
+    font-family: var(--app-button-font);
+    font-size: 0.9375rem;
+    line-height: 1.3333;
+  }
+  .app-card [data-slot="card-title"] :is(h2, h3) {
+    font-family: inherit;
+  }
+  .app-content {
+    --content-padding: clamp(1rem, 0.75rem + 1.5cqi, 2.25rem);
+    gap: clamp(1.5rem, 1.25rem + 1cqi, 2.25rem);
+    padding-block-start: var(--content-padding);
+    padding-block-end: max(
+      var(--content-padding),
+      env(safe-area-inset-bottom, 0rem)
+    );
+    padding-inline-start: max(
+      var(--content-padding),
+      var(--safe-area-inline-start)
+    );
+    padding-inline-end: max(
+      var(--content-padding),
+      var(--safe-area-inline-end)
+    );
+  }
+  .app-header {
+    padding-block: max(0.625rem, env(safe-area-inset-top, 0rem)) 0.625rem;
+    padding-inline-start: max(
+      clamp(1rem, 0.75rem + 1.5cqi, 2.25rem),
+      var(--safe-area-inline-start)
+    );
+    padding-inline-end: max(
+      clamp(1rem, 0.75rem + 1.5cqi, 2.25rem),
+      var(--safe-area-inline-end)
+    );
+  }
+  .group-summary-grid,
+  .group-results-filter-grid,
+  .group-details-grid {
+    display: grid;
+    gap: var(--spacing-ui-md);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  }
+  /* Four numbers: two by two, then one row once each gets 11rem, never
+     three and an orphan as auto-fill would leave. */
+  .group-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .group-details-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  }
+  .group-summary-grid > *,
+  .group-results-filter-grid > *,
+  .group-details-grid > * {
+    min-inline-size: 0;
+  }
+  .group-summary-grid [data-slot="card-footer"] {
+    margin-block-start: auto;
+  }
+  /* What each number counts, at a glance: its icon leads its label, in
+     the label's color, as one line, not a tile apart from it. */
+  .group-summary-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .group-summary-label svg {
+    flex-shrink: 0;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+  }
+  .group-search-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  .group-search-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+  .city-search-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  /* Pairs side by side once each field gets 18rem, one column below.
+     auto-fill keeps the empty column, so a field without a partner (the
+     scan frequency) takes half the row instead of stretching across it. */
+  .field-pairs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    align-items: end;
+  }
+  .readable-copy {
+    inline-size: min(100%, 65ch);
+    overflow-wrap: anywhere;
+  }
+  [data-slot="sheet-content"] {
+    container-type: inline-size;
+    max-block-size: 100dvh;
+    padding-block-start: env(safe-area-inset-top, 0rem);
+    padding-block-end: env(safe-area-inset-bottom, 0rem);
+    padding-inline-start: var(--safe-area-inline-start);
+    padding-inline-end: var(--safe-area-inline-end);
+  }
+  [data-slot="sheet-content"][data-size="wide"] {
+    inline-size: min(100%, 36rem);
+    max-inline-size: 100%;
+    block-size: 100dvh;
+  }
+  [data-slot="sheet-header"] {
+    flex-shrink: 0;
+  }
+  [data-slot="empty-header"],
+  [data-slot="empty-content"] {
+    inline-size: min(100%, 45ch);
+  }
+  [data-slot="table-container"] {
+    overscroll-behavior-inline: contain;
+  }
+  /* The Ad Library's grid, shared by the posts page: a column per 21.25rem
+     of width, Facebook's 24px row and 12px column gaps. */
+  .card-feed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 21.25rem), 1fr));
+    align-items: start;
+    gap: var(--space-6) var(--space-3);
+  }
+  /* A photo covering its frame, corners included, with the neutral 1px edge
+     every remote image gets. */
+  .image-cover-fill {
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+    outline: 1px solid var(--image-outline);
+    outline-offset: -1px;
+  }
+}
+
+@container main (inline-size >= 48rem) {
+  .group-summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@container main (inline-size >= 40rem) {
+  .group-search-grid {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+  .group-search-grid > :first-child {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-button::after,
+  .app-button svg,
+  .app-menu-row::after,
+  .app-checkbox::after,
+  [data-slot="sheet-content"],
+  [data-slot="sidebar-container"],
+  [data-slot="sidebar-gap"] {
+    transition: none;
+  }
+}

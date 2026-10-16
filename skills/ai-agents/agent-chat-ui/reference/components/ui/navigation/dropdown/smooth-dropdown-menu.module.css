@@ -1,0 +1,223 @@
+/* The smooth dropdown's menu (smooth-dropdown-rows.tsx,
+   smooth-dropdown-search.tsx): the scrolling list or panel inside the
+   morphing surface (smooth-dropdown.module.css), its rows and a long list's
+   search field. */
+.items {
+  width: var(--menu-open-width);
+  max-height: min(var(--menu-max-height), calc(100dvh - 24px));
+  overflow: auto;
+  padding: 8px;
+  color: var(--foreground);
+  outline: none;
+}
+/* A list of rows (not a panel such as the date picker) shows five and a half
+   rows and scrolls for the rest, the half row showing there is more; a long
+   one adds its search field's height (menuVisibleRows, menuSearchHeight in
+   smooth-dropdown.tsx). */
+.items[data-list="true"],
+.items[data-searchable="true"] {
+  max-height: min(
+    var(--menu-max-height),
+    calc(100dvh - 24px),
+    calc(44px * 5.5 + 16px + var(--menu-search-height, 0px))
+  );
+}
+.items[data-list="true"] {
+  scroll-timeline: --menu-scroll block;
+}
+.items[data-searchable="true"] {
+  --menu-search-height: 52px;
+}
+/* iOS's edge blur: while there is more above or below, a strip at that edge
+   blurs and fades the rows passing under it. Each strip shows only once the
+   list has scrolled from its end (a scroll-driven animation), so a list that
+   does not scroll never shows them. */
+.items[data-list="true"]::before,
+.items[data-list="true"]::after {
+  content: "";
+  position: sticky;
+  z-index: 2;
+  display: block;
+  height: 28px;
+  margin-inline: -8px;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: --menu-scroll;
+}
+/* Sticky offsets count from inside the list's 8px padding, so -8px puts
+   each strip flush with the menu's real edge (at 0 the last 8px showed the
+   rows in full color). */
+.items[data-list="true"]::before {
+  top: -8px;
+  margin-block: -8px -20px;
+  background: linear-gradient(to bottom, var(--popover), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+  mask-image: linear-gradient(to bottom, black, transparent);
+  animation-name: smooth-dropdown-edge-top;
+}
+/* Below the search field, which stays at the top. */
+.items[data-searchable="true"]::before {
+  top: 44px;
+}
+.items[data-list="true"]::after {
+  bottom: -8px;
+  margin-block: -20px -8px;
+  background: linear-gradient(to top, var(--popover), transparent);
+  -webkit-mask-image: linear-gradient(to top, black, transparent);
+  mask-image: linear-gradient(to top, black, transparent);
+  animation-name: smooth-dropdown-edge-bottom;
+}
+@keyframes smooth-dropdown-edge-top {
+  0% {
+    opacity: 0;
+  }
+  8%,
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes smooth-dropdown-edge-bottom {
+  0%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* A long list's search: a field at the top that stays while the rows
+   scroll under it. */
+.search {
+  position: sticky;
+  top: -8px;
+  z-index: 3;
+  margin: -8px -8px 0;
+  padding: 8px 8px 4px;
+  background: var(--popover);
+}
+.searchInput {
+  display: block;
+  width: 100%;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: rgb(var(--ink) / 0.05);
+  padding-inline: 12px;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.9375rem;
+  outline: none;
+}
+.searchInput::placeholder {
+  color: var(--muted-foreground);
+}
+.searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+.empty {
+  margin: 0;
+  padding: 12px;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .items[data-list="true"]::before,
+  .items[data-list="true"]::after {
+    animation: none;
+  }
+}
+/* Radix Presence keeps the content mounted until this exit animation finishes. */
+.items[data-state="closed"] {
+  pointer-events: none;
+  animation: smooth-dropdown-exit 150ms ease-out both;
+}
+@keyframes smooth-dropdown-exit {
+  to {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 40px;
+  padding: 8px 12px;
+  margin-block: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  outline: none;
+  user-select: none;
+}
+.item[data-state="checked"],
+.item[data-highlighted] {
+  color: var(--foreground);
+}
+.item[data-destructive="true"] {
+  color: var(--destructive);
+}
+/* A destructive row's hover is soft red, as the destructive-soft button. */
+.item[data-destructive="true"] > .highlight {
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+}
+.item[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.item > [data-slot="app-icon"] {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+.highlight {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: rgb(var(--ink) / 0.05);
+  pointer-events: none;
+}
+.checkBox {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: 2px solid rgb(var(--ink) / 0.4);
+  border-radius: 6px;
+  color: var(--primary-foreground);
+  transition:
+    background-color 500ms,
+    color 500ms,
+    border-color 500ms;
+}
+.checkBox[data-checked="true"] {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.label {
+  position: relative;
+}
+.detail {
+  position: relative;
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .items[data-state="closed"] {
+    animation-duration: 0.01ms;
+  }
+  .checkBox {
+    transition: none;
+  }
+}

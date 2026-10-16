@@ -1,0 +1,83 @@
+/* MediaCarousel (media-carousel.tsx): items side by side in a sideways
+   scroller that snaps to each, with the app's small gray previous and next
+   buttons over its edges. The Ad Library's carousel ads ("ad") keep
+   Facebook's 188px cards and its button height; a post's photos ("post")
+   take most of the card's width, the next one peeking in. */
+@layer components {
+  .media-carousel {
+    position: relative;
+  }
+  .media-carousel-track {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .media-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+  .media-carousel-item {
+    flex: 0 0 auto;
+    min-inline-size: 0;
+    scroll-snap-align: start;
+  }
+  .media-carousel[data-variant="ad"] {
+    margin-block-end: 0.5rem;
+  }
+  .media-carousel[data-variant="ad"] .media-carousel-track {
+    padding-inline: 0.5rem;
+    scroll-padding-inline: 0.5rem;
+  }
+  .media-carousel[data-variant="ad"] .media-carousel-item {
+    flex-basis: 11.75rem;
+  }
+  .media-carousel[data-variant="post"] .media-carousel-item {
+    flex-basis: 85%;
+  }
+  /* The previous and next buttons: the app's gray icon buttons (surface),
+     32px and without a shadow, in a strip across the media halfway down,
+     each 0.5rem in from its edge; on an ad, at the height of Facebook's
+     button. The strip lets the pointer through between them. */
+  .media-carousel-steps {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    translate: 0 -50%;
+  }
+  .media-carousel[data-variant="ad"] .media-carousel-steps {
+    inset-block-start: var(--space-19);
+    translate: none;
+  }
+  .media-carousel-steps [data-slot="button"] {
+    inline-size: 2rem;
+    block-size: 2rem;
+    pointer-events: auto;
+  }
+  /* A video's play button over its poster (a post's, an ad's): the app's
+     round surface button, as the carousel's steps are, at the large button
+     size. Physical centering, so it sits in the middle in either direction;
+     the triangle nudged 1px right, where it looks centered. */
+  .media-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    inline-size: var(--app-button-height-large);
+    block-size: var(--app-button-height-large);
+    border-radius: var(--radius-full);
+    background: var(--card);
+    color: var(--secondary-foreground);
+    translate: -50% -50%;
+    pointer-events: none;
+  }
+  .media-play [data-slot="app-icon"] {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    translate: 1px 0;
+  }
+}

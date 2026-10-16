@@ -1,0 +1,37 @@
+{
+  "include": ["src"],
+  "tokenSources": [
+    "src/styles/auth/auth-page.css",
+    "src/styles/base/fluid-scale.css",
+    "src/styles/base/motion-tokens.css",
+    "src/styles/base/tokens.css"
+  ],
+  "uiDir": "src/components/ui",
+  "registry": "registry.json",
+  "driftList": "scripts/design-system/ui-drift.tsv",
+  "allowlist": "scripts/design-system/check-allowlist.json",
+  "bans": [
+    {
+      "id": "rule/ban-layout-px",
+      "pattern": "(?<![-\\w])(padding|margin|gap|row-gap|column-gap|inset|top|bottom|left|right|font-size|line-height|inline-size|block-size|width|height|min-inline-size|max-inline-size|min-block-size|max-block-size|border-radius|translate|--(space|distance|spacing|size|gap)[-\\w]*)[-\\w]*\\s*:[^;]*(?<![\\w.-])([3-9]|[1-9]\\d+)(\\.\\d+)?px\\b",
+      "why": "px — only thin borders and shadows; everything else is rem or the fluid scale"
+    },
+    {
+      "id": "rule/ban-viewport-width",
+      "pattern": "(?<![\\w.-])\\d+(\\.\\d+)?vw\\b",
+      "why": "vw only when it truly belongs to the whole screen; inside a component always cqi"
+    },
+    {
+      "id": "rule/ban-legacy-vh",
+      "pattern": "(?<![\\w.-])\\d+(\\.\\d+)?vh\\b",
+      "why": "dvh / svh — mobile height: svh without the jump, dvh if it follows the address bar"
+    },
+    {
+      "id": "rule/ban-physical-property",
+      "pattern": "^\\s*((margin|padding)-(left|right|top|bottom)|(min-|max-)?(width|height))\\s*:(?!\\s*(number|string)\\b)\\s*[^,{]*;\\s*$",
+      "why": "logical properties — margin-inline, padding-block, vi/vb"
+    }
+  ],
+  "rulesOff": ["rule/css-px"],
+  "_why_rulesOff": "rule/css-px: the person's unit rules allow plain rem for fonts, spacing and global sizes; the bans enforce the rest."
+}

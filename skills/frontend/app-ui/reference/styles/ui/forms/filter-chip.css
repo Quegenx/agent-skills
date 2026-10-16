@@ -1,0 +1,67 @@
+@layer components {
+  /* A page toolbar's pill button, without a border like every button, such
+     as a filters reset. The filters themselves are smooth dropdown chips
+     (filter-chip.tsx) with the divider and chosen summary below. */
+  .filter-chip {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.375rem;
+    block-size: 2rem;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: var(--secondary);
+    padding: 0 var(--space-3);
+    color: var(--foreground);
+    @apply type-label-sm;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+  }
+  .filter-chip[data-popup-open] {
+    background: rgb(var(--ink) / 0.1);
+  }
+  @media (hover: hover) {
+    .filter-chip:hover {
+      background: rgb(var(--ink) / 0.1);
+    }
+  }
+  /* Clearing the filters (איפוס): the soft red of every clear and remove,
+     as ניקוי הסינון and ניקוי הבחירה. */
+  .filter-chip[data-variant="reset"] {
+    background: color-mix(in srgb, var(--destructive) 10%, transparent);
+    color: var(--destructive);
+  }
+  @media (hover: hover) {
+    .filter-chip[data-variant="reset"]:hover {
+      background: color-mix(in srgb, var(--destructive) 16%, transparent);
+    }
+  }
+  .filter-chip [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+  .filter-chip-divider {
+    inline-size: 1px;
+    block-size: 1rem;
+    margin-inline: 0.125rem;
+    background: var(--border);
+  }
+  .filter-chip-chosen {
+    max-inline-size: 12rem;
+    overflow: hidden;
+    /* Concentric with the chip: its 14px corner minus the 6px around it. */
+    border-radius: 0.5rem;
+    background: var(--secondary);
+    padding: 0 0.375rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-chip {
+    transition: none;
+  }
+}

@@ -1,0 +1,78 @@
+/* tor-app's switch: Flutter's Material 3 Switch under its theme
+   (lib/ui/core/theme/app_theme.dart _switchTheme), at our 44×24 size: a pill
+   with no outline, off a 14% ink track (28% in dark mode), on the brand
+   color. The white thumb keeps tor-app's steps scaled to this track: a 12px
+   dot off, 18px on and 21px while pressed. */
+@layer components {
+  .app-switch {
+    position: relative;
+    display: inline-flex;
+    inline-size: 2.75rem;
+    block-size: 1.5rem;
+    flex-shrink: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    padding: 0;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+  }
+  .app-switch-track,
+  .app-switch-surface {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .app-switch-track {
+    background: var(--switch-off-track);
+  }
+  /* The thumb lives inside the surface, so the surface fades its color, not
+     its opacity: ease-out over the toggle's 300ms, as Flutter's track. */
+  .app-switch-surface {
+    background: transparent;
+    transition: background-color 300ms ease-out;
+  }
+  .app-switch[data-checked] .app-switch-surface {
+    background: var(--primary);
+  }
+  /* Placed by its center (12px from the start edge off, 32px on), so it
+     grows and shrinks in place. The slide overshoots and settles, Flutter's
+     easeOutBack over 300ms; its stretch while sliding is
+     playSwitchThumbStretch (switch.tsx). Pressing swells it to 21px. */
+  .app-switch-thumb {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0.75rem;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    border-radius: var(--radius-full);
+    background: #ffffff;
+    translate: -50% -50%;
+    transition:
+      inset-inline-start 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      inline-size 100ms ease-out,
+      block-size 100ms ease-out;
+  }
+  .app-switch:dir(rtl) .app-switch-thumb {
+    translate: 50% -50%;
+  }
+  .app-switch[data-checked] .app-switch-thumb {
+    inset-inline-start: 2rem;
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+  }
+  .app-switch:active:not([data-disabled]) .app-switch-thumb {
+    inline-size: 1.3125rem;
+    block-size: 1.3125rem;
+  }
+  .app-switch[data-disabled] {
+    opacity: 0.28;
+    cursor: not-allowed;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-switch-surface,
+  .app-switch-thumb {
+    transition: none;
+  }
+}

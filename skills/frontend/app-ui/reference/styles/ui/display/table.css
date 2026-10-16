@@ -1,0 +1,122 @@
+/* The results table adapts Facebook's measured surfaces to the app's data view. */
+@layer components {
+  .app-table-frame {
+    overflow: hidden;
+    border: 0;
+    border-radius: var(--app-card-radius);
+    background: var(--card);
+  }
+  /* Every table's scroller rounds its corners, as tor-app's surfaces do
+     (16px, its input and image radius), so the header row's fill and the
+     table's own never show square corners. */
+  [data-slot="table-container"] {
+    border-radius: var(--app-input-radius);
+  }
+  .app-table {
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    background: var(--card);
+    color: var(--foreground);
+    font-family: var(--app-button-font);
+    font-size: 0.9375rem;
+    line-height: 1.3333;
+  }
+  .app-table-header {
+    background: var(--field);
+    color: var(--muted-foreground);
+  }
+  /* On a gray card the table's gray body vanished into it: there it is a
+     white panel (the card's --field), its header set off by the row line. */
+  .app-card .app-table {
+    background: var(--field);
+  }
+  .app-table-row {
+    border-block-end: 1px solid var(--border);
+  }
+  .app-table-body > .app-table-row:last-child {
+    border-block-end: 0;
+  }
+  .app-table-body
+    > .app-table-row:is(:has([aria-expanded="true"])) {
+    background: var(--app-button-hover-overlay);
+  }
+  @media (hover: hover) {
+    .app-table-body > .app-table-row:hover {
+      background: var(--app-button-hover-overlay);
+    }
+  }
+  .app-table-body > .app-table-row[data-state="selected"] {
+    background: var(--primary-soft);
+  }
+  .app-table-head {
+    block-size: 3.25rem;
+    padding-block: 0.5rem;
+    padding-inline: 1rem;
+    font-weight: 600;
+  }
+  .app-table-cell {
+    padding-block: 0.75rem;
+    padding-inline: 1rem;
+  }
+  .app-table
+    :is(.app-table-head, .app-table-cell):has(
+      [role="checkbox"]
+    ) {
+    inline-size: 3.5rem;
+    padding-inline: 1rem;
+  }
+  /* A sortable header: its hover fill reaches 0.625rem past the text and
+     icon on each side (with no padding it touched them), the negative
+     margin keeping the text where it was. */
+  .app-table-head .app-button {
+    justify-content: center;
+    max-inline-size: none;
+    margin-inline: -0.625rem;
+    padding-inline: 0.625rem;
+    color: inherit;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+  .app-table-cell .app-button {
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+  .app-table-cell
+    .app-button:not(.app-button-table-link) {
+    min-inline-size: max-content;
+    max-inline-size: none;
+  }
+  .app-table-footer {
+    border-block-start: 1px solid var(--border);
+    background: var(--field);
+    font-weight: 500;
+  }
+  .app-table-frame > [data-slot="empty"] {
+    min-block-size: 12rem;
+    background: var(--card);
+  }
+}
+
+@layer utilities {
+  .app-table :is(.app-table-head, .app-table-cell) {
+    text-align: center;
+  }
+  .app-table
+    :is(.app-table-head, .app-table-cell)
+    .app-button {
+    justify-content: center;
+  }
+  /* Opt-in per column, so a column's rows share one starting edge. */
+  .app-table
+    :is(
+      .app-table-head,
+      .app-table-cell
+    )[data-align="start"] {
+    text-align: start;
+  }
+  .app-table
+    :is(.app-table-head, .app-table-cell)[data-align="start"]
+    .app-button {
+    justify-content: flex-start;
+  }
+}

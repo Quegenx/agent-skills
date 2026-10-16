@@ -1,0 +1,354 @@
+/* The agent chat's tool rows and its approval card, reverse-engineered
+   from a reference chat. Sizes resolve their Tailwind theme to pixels, as in
+   agent-chat.css; colors are ours. */
+@layer components {
+  /* Tool rows. */
+  .agent-chat-tool {
+    inline-size: 100%;
+  }
+  .agent-chat-tool-trigger {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    inline-size: 100%;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--muted-foreground);
+    @apply type-label-sm;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-control);
+  }
+  @media (hover: hover) {
+    .agent-chat-tool-trigger:hover {
+      color: var(--foreground);
+    }
+  }
+  .agent-chat-tool-summary {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .agent-chat-tool-summary > [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+    flex-shrink: 0;
+  }
+  /* A finished answer's work log (AgentChatWorkedFor) and sources
+     (AgentChatSources), under their lines. */
+  .agent-chat-work-log {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-block-start: 0.5rem;
+  }
+  .agent-chat-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-block-start: 0.5rem;
+  }
+  .agent-chat-sources .agent-chat-source {
+    margin-inline: 0;
+  }
+  /* Up to three favicons, each overlapping the one before it. */
+  .agent-chat-favicon-stack {
+    display: flex;
+    flex-shrink: 0;
+  }
+  .agent-chat-favicon-stack img {
+    inline-size: 1rem;
+    block-size: 1rem;
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 0 2px var(--background);
+  }
+  .agent-chat-favicon-stack img + img {
+    margin-inline-start: -0.375rem;
+  }
+  .agent-chat-tool-label {
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Card (the suggested-task card), for approvals. */
+  .agent-chat-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    border-radius: 0.875rem;
+    background: var(--card);
+    padding: var(--space-4);
+    color: var(--card-foreground);
+  }
+  .agent-chat-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-inline-size: 0;
+  }
+  .agent-chat-card-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .agent-chat-card-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--muted-foreground);
+    @apply type-label-xs;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-control);
+  }
+  @media (hover: hover) {
+    .agent-chat-card-toggle:hover {
+      color: var(--foreground);
+    }
+  }
+  /* What the action will do, always shown under its title. */
+  .agent-chat-card-details {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+  .agent-chat-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  /* The revise note (app_chat_revise): the input takes the row, its send
+     and cancel buttons sit after it. */
+  .agent-chat-card-revise {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-block-start: 0.5rem;
+  }
+  /* The card is the field color, so the note takes the page background
+     to stand out from it. */
+  .agent-chat-card-revise [data-slot="input"] {
+    flex: 1;
+    background: var(--background);
+  }
+  /* Cards and their rows come into a live answer instead of appearing at
+     once, in the text reveal's curve (agent-chat-markdown.tsx's
+     agentChatTextReveal): a card from a light blur, 4px low; its rows rise
+     one after another 30ms apart, without blur. Only while the answer is
+     written (data-live), so an answer read again later shows still; with
+     reduced motion, a plain fade, all at once. */
+  @keyframes agent-chat-enter {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(4px) scale(0.98);
+    }
+  }
+  /* A row moves less than its card: no blur, which costs most per element. */
+  @keyframes agent-chat-row-enter {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+  }
+  .agent-chat-message[data-live]
+    .agent-chat-message-content
+    > :is(
+      .agent-chat-tool,
+      .agent-chat-card,
+      .agent-chat-ad-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-suggested-tasks,
+      .agent-chat-group-search-results
+    ) {
+    animation: agent-chat-enter 350ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+  .agent-chat-message[data-live]
+    :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > * {
+    animation: agent-chat-row-enter 300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: calc(var(--agent-chat-enter-index, 0) * 30ms);
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(2) {
+    --agent-chat-enter-index: 1;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(3) {
+    --agent-chat-enter-index: 2;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(4) {
+    --agent-chat-enter-index: 3;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(5) {
+    --agent-chat-enter-index: 4;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(6) {
+    --agent-chat-enter-index: 5;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(7) {
+    --agent-chat-enter-index: 6;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(8) {
+    --agent-chat-enter-index: 7;
+  }
+  :is(
+      .agent-chat-group-search-results,
+      .agent-chat-opportunity-cards,
+      .agent-chat-task-cards,
+      .agent-chat-ad-results,
+      .agent-chat-question-options
+    )
+    > :nth-child(n + 9) {
+    --agent-chat-enter-index: 8;
+  }
+  /* Reduced motion: a plain fade, all at once. */
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes agent-chat-enter {
+      from {
+        opacity: 0;
+      }
+    }
+    @keyframes agent-chat-row-enter {
+      from {
+        opacity: 0;
+      }
+    }
+    .agent-chat-message[data-live]
+      :is(
+        .agent-chat-group-search-results,
+        .agent-chat-opportunity-cards,
+        .agent-chat-task-cards,
+        .agent-chat-ad-results,
+        .agent-chat-question-options
+      )
+      > * {
+      animation-delay: 0ms;
+    }
+  }
+
+  /* The agent's question (AgentChatQuestionCard): its answers as full-width
+     rows in the card, gray fills as the app's secondary buttons, each with
+     its number. */
+  .agent-chat-question-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .agent-chat-question-option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    inline-size: 100%;
+    min-block-size: 2.75rem;
+    padding-block: 0.5rem;
+    padding-inline: 0.75rem;
+    border: none;
+    border-radius: 0.625rem;
+    background-color: var(--secondary);
+    color: var(--foreground);
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.4286;
+    text-align: start;
+    cursor: pointer;
+    transition: background-color 150ms ease-out;
+  }
+  @media (hover: hover) {
+    .agent-chat-question-option:hover {
+      background-color: var(--primary-soft);
+    }
+  }
+  .agent-chat-question-option-index {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: 999px;
+    background-color: var(--card);
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .agent-chat-card-outcome {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+}
+
+/* PulseDotLoader's pulse (prompt-kit's pulse-dot). */
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-tool-trigger,
+  .agent-chat-card-toggle {
+    transition: none;
+  }
+}

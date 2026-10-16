@@ -1,0 +1,39 @@
+/* Tooltip (tooltip.tsx): it pops open the way a source chip's page preview
+   does (AgentChatLinkPreview): from 60% and 8px toward its trigger, it
+   springs into place with a slight overshoot (--ease-spring-pop) while it
+   fades in over --duration-quick. It closes with a short fade and a slight
+   shrink. Base UI marks the open and close frames (data-starting-style,
+   data-ending-style), so the close plays before the tooltip leaves. */
+@layer components {
+  .app-tooltip {
+    --tooltip-rise: 0;
+    transition:
+      opacity var(--duration-quick) var(--ease-out),
+      scale var(--duration-spring-pop) var(--ease-spring-pop),
+      translate var(--duration-spring-pop) var(--ease-spring-pop);
+  }
+  .app-tooltip[data-side="top"] {
+    --tooltip-rise: 0.5rem;
+  }
+  .app-tooltip[data-side="bottom"] {
+    --tooltip-rise: -0.5rem;
+  }
+  .app-tooltip[data-starting-style] {
+    opacity: 0;
+    scale: 0.6;
+    translate: 0 var(--tooltip-rise);
+  }
+  .app-tooltip[data-ending-style] {
+    opacity: 0;
+    scale: 0.9;
+    transition:
+      opacity 100ms var(--ease-out),
+      scale 100ms var(--ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-tooltip {
+    transition: none;
+  }
+}

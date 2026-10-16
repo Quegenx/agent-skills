@@ -1,0 +1,82 @@
+/* Animated link hover, from amichai-all's AnimatedLinkText
+   (src/components/motion/link/animated-link-text.module.css): on hover the
+   text turns the brand blue and a 2px line grows across it from the reading
+   start, then leaves toward the far side on hover-out, in 300ms. It replaces
+   the plain hover underline on every link that had one.
+
+   The line is a background gradient, not an ::after, so names that truncate
+   with an ellipsis (overflow: hidden) still show it. The background
+   longhands, at :is()'s 0,1,1 specificity, override each element's own
+   `background: transparent`. */
+@layer components {
+  :is(
+    .auth-link,
+    a.ad-advertiser-name,
+    .app-badge-link:is(a, button),
+    .post-comments-more,
+    .tracking-task-title,
+    a.post-author-name,
+    .post-meta a,
+    .post-see-more,
+    .post-link-title,
+    .agent-chat-group-result-name bdi,
+    .agent-chat-text-link-label,
+    .empty-description-link
+  ) {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 0% 2px;
+    text-decoration: none;
+    transition:
+      color 300ms ease-out,
+      background-size 300ms ease-out;
+
+    /* RTL mirrors it: the line grows from the right and leaves to the left. */
+    &:dir(rtl) {
+      background-position: left bottom;
+    }
+
+    /* The title and the group name also answer their row's hover (below). */
+    @media (hover: hover) {
+      &:hover {
+        background-position: left bottom;
+        background-size: 100% 2px;
+        color: var(--primary);
+      }
+      &:hover:dir(rtl) {
+        background-position: right bottom;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+  /* A link or action in an empty state's gray text (EmptyDescription):
+     darker and semibold at rest, as it has no underline until hovered. */
+  .empty-description-link {
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    color: var(--foreground);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  @media (hover: hover) {
+    .post-link-preview:hover .post-link-title,
+    .agent-chat-group-result-name:hover bdi,
+    .agent-chat-text-link:hover .agent-chat-text-link-label {
+      background-position: left bottom;
+      background-size: 100% 2px;
+      color: var(--primary);
+    }
+    .post-link-preview:hover .post-link-title:dir(rtl),
+    .agent-chat-group-result-name:hover bdi:dir(rtl),
+    .agent-chat-text-link:hover .agent-chat-text-link-label:dir(rtl) {
+      background-position: right bottom;
+    }
+  }
+}

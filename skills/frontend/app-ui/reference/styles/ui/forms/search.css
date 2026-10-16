@@ -1,0 +1,134 @@
+/* Facebook's Search Facebook label: source classes xal68kn/x51dqfy/x1w4cqa3/x1byqp33. */
+@layer components {
+  .app-search {
+    position: relative;
+    display: flex;
+    inline-size: 100%;
+    min-block-size: 2.5rem;
+    border: 0;
+    border-radius: 3.125rem;
+    padding: 0;
+    background: var(--field);
+    outline: 0;
+    box-shadow: none;
+  }
+  .app-search-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    block-size: 2.5rem;
+    padding-inline-start: 0.75rem;
+    color: var(--muted-foreground);
+  }
+  .app-search-icon :is(svg, [data-slot="app-icon"]) {
+    display: block;
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+  .app-search-control {
+    display: block;
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 2.5rem;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0;
+    border-radius: 3.125rem;
+    padding-block: 0.4375rem 0.5625rem;
+    padding-inline: 0.5rem;
+    background: transparent;
+    color: var(--foreground);
+    font-family: var(--app-button-font);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: normal;
+    outline: 0;
+    box-shadow: none;
+  }
+  .app-search-control::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+  .app-search-control:focus {
+    outline: 0;
+    box-shadow: none;
+  }
+  .app-search:has(:disabled) {
+    opacity: 0.5;
+  }
+  /* The browser's own clear button of type="search" stays hidden:
+     SearchInput draws its own (app-search-clear), which springs in
+     and out and has a tint. */
+  .app-search-control::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+  /* A round × with the secondary tint at the field's end, darker on hover. */
+  .app-search-clear {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    margin-inline-end: 0.5rem;
+    @apply round-dismiss-button;
+    color: var(--muted-foreground);
+    transition:
+      background-color var(--duration-quick) var(--ease-standard),
+      color var(--duration-quick) var(--ease-standard);
+  }
+  @media (hover: hover) {
+    .app-search-clear:hover {
+      color: var(--foreground);
+    }
+  }
+  .app-search-clear [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+}
+
+/* Browsers tint autofilled fields (blue in Chrome) with a UA style pages cannot
+   override; delaying the background change indefinitely keeps the field's own
+   surface, and the text keeps the app's color. */
+@layer components {
+  :is(.app-search-control, .app-input):is(
+    :autofill,
+    :-webkit-autofill
+  ) {
+    transition:
+      background-color 600000s 0s,
+      color 600000s 0s;
+    -webkit-text-fill-color: var(--foreground);
+    caret-color: var(--foreground);
+  }
+}
+
+@layer components {
+  /* The search card's מסננים count (FilterableSearchForm): the button's
+     gap is inside the badge's growing width, so it opens with it. */
+  .filter-count-badge {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    margin-inline-start: calc(var(--app-button-icon-gap) * -1);
+    padding-inline-start: var(--app-button-icon-gap);
+  }
+}
+
+@layer components {
+  /* A page toolbar's search beside its filter buttons (tasks, my groups):
+     the same borderless tint as those buttons. */
+  .toolbar-search {
+    flex-grow: 1;
+    /* 13rem, growing with the toolbar's container to 18rem at 44rem. */
+    inline-size: clamp(13rem, 41cqi, 18rem);
+    max-inline-size: 18rem;
+  }
+  .toolbar-search .app-search {
+    background: var(--secondary);
+  }
+}

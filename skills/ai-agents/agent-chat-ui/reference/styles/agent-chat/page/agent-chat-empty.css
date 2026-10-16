@@ -1,0 +1,107 @@
+/* The agent chat's new-chat screen, reverse-engineered from a reference
+   chat. Sizes resolve their Tailwind theme to pixels, as in agent-chat.css;
+   colors are ours. */
+@layer components {
+  /* New chat. Container sizes are Tailwind's @sm
+     24rem and @md 28rem; md is the 768px viewport breakpoint. */
+  .agent-chat-empty {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    inline-size: 100%;
+    overflow: hidden;
+  }
+  .agent-chat-empty-headline {
+    display: flex;
+    flex-grow: 1;
+    align-items: flex-end;
+    inline-size: 100%;
+  }
+  .agent-chat-empty-headline h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    inline-size: 100%;
+    margin: 0;
+    padding-inline: var(--space-4);
+    color: var(--foreground);
+    /* 24px in a 20rem chat, growing with the chat to 36px at 32rem (was
+       stepped at Tailwind's @sm 24rem and @md 28rem). The line follows
+       the three original steps on one linear rule: 32/24, 36/30, 40/36. */
+    font-size: clamp(1.5rem, 0.25rem + 6.25cqi, 2.25rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: calc(0.6667em + 1rem);
+    text-align: center;
+  }
+  .agent-chat-empty-question {
+    color: var(--muted-foreground);
+  }
+  .agent-chat-empty-logo {
+    display: inline-block;
+    inline-size: 1em;
+    block-size: 1em;
+    margin-block-start: -0.3em;
+    margin-inline-end: 0.25em;
+    vertical-align: middle;
+  }
+  .agent-chat-empty-body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    inline-size: 100%;
+  }
+  .agent-chat-empty-composer {
+    position: relative;
+    inline-size: 100%;
+    padding: 0 var(--space-3) var(--space-3);
+  }
+  .agent-chat-suggestions {
+    inline-size: 100%;
+    overflow: auto hidden;
+    white-space: nowrap;
+  }
+  .agent-chat-suggestions-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    inline-size: 100%;
+    max-inline-size: 42rem;
+    margin-inline: auto;
+    /* 12px in a 20rem chat, 8px from 24rem. */
+    padding: 0 clamp(0.5rem, 2rem - 6.25cqi, 0.75rem) 0.25rem;
+  }
+  .agent-chat-suggestion {
+    color: var(--muted-foreground);
+  }
+  .agent-chat-suggestion [data-slot="app-icon"] {
+    color: var(--primary);
+  }
+  .agent-chat-suggestion span {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.375;
+  }
+}
+
+/* The viewport breakpoint minus the 16rem sidebar. */
+@container (inline-size >= 32rem) {
+  .agent-chat-empty {
+    justify-content: center;
+    gap: var(--space-9);
+    padding: 0.5rem;
+  }
+  .agent-chat-empty-body {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: var(--space-5);
+  }
+}

@@ -1,0 +1,123 @@
+/* Role names stay distinct from text color utilities when cn merges classes. */
+@utility type-display {
+  text-wrap: balance;
+  font-size: var(--text-display);
+  line-height: var(--text-display--line-height);
+  font-weight: var(--text-display--font-weight);
+}
+@utility type-headline-lg {
+  text-wrap: balance;
+  font-size: var(--text-headline-lg);
+  line-height: var(--text-headline-lg--line-height);
+  font-weight: var(--text-headline-lg--font-weight);
+}
+@utility type-headline-md {
+  text-wrap: balance;
+  font-size: var(--text-headline-md);
+  line-height: var(--text-headline-md--line-height);
+  font-weight: var(--text-headline-md--font-weight);
+}
+@utility type-card-title {
+  text-wrap: balance;
+  font-size: var(--text-card-title);
+  line-height: var(--text-card-title--line-height);
+  font-weight: var(--text-card-title--font-weight);
+}
+/* The small label type of chips, badges, labels and menu headings. */
+@utility type-label-xs {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3333;
+}
+@utility type-label-sm {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4286;
+}
+/* A dialog's or panel's title. */
+@utility type-panel-title {
+  color: var(--heading);
+  font-size: var(--fluid-text-headline-md);
+  font-weight: 700;
+}
+@utility type-card-meta {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  /* No focus rings anywhere, the browser's default included: the person's
+     standing decision (docs/system/decisions.md, D11). */
+  :focus,
+  :focus-visible {
+    outline: none;
+  }
+  body {
+    @apply bg-background font-sans text-base font-normal text-foreground;
+    letter-spacing: 0;
+    min-block-size: 100svh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--heading);
+    font-family: var(--font-heading);
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+  p,
+  li,
+  dd,
+  figcaption {
+    text-wrap: pretty;
+  }
+  /* Page and section headings sit flush: no font ascent above the capitals or
+     descent below the baseline (Baseline 2026). Older browsers keep the
+     normal line box. */
+  @supports (text-box: trim-both cap alphabetic) {
+    h1,
+    h2 {
+      text-box: trim-both cap alphabetic;
+    }
+  }
+  /* Enhancement: transitions to and from height: auto animate where
+     supported, and jump elsewhere. Nothing depends on it. */
+  @supports (interpolate-size: allow-keywords) {
+    :root {
+      interpolate-size: allow-keywords;
+    }
+  }
+  :dir(ltr) {
+    --safe-area-inline-start: env(safe-area-inset-left, 0rem);
+    --safe-area-inline-end: env(safe-area-inset-right, 0rem);
+  }
+}
+
+/* A round gray × (close, clear): tinted at rest, darker on hover. */
+@utility round-dismiss-button {
+  border: 0;
+  border-radius: var(--radius-full);
+  background: rgb(var(--ink) / 0.08);
+  padding: 0;
+  cursor: pointer;
+  @media (hover: hover) {
+    &:hover {
+      background: rgb(var(--ink) / 0.14);
+    }
+  }
+}
+
+/* A popup (dialog, viewer) that fades and scales in and out. */
+@utility popup-fade-scale {
+  transition: var(--transition-popup);
+  &:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    scale: var(--scale-large);
+  }
+}

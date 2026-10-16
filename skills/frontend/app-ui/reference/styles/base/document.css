@@ -1,0 +1,82 @@
+/* tor-app's faces (lib/ui/core/theme/app_typography.dart): Geist Sans for
+   Latin, with Ploni for Hebrew, both hosted with the project. Geist is the
+   variable font (100-900), which the website's lighter weights use too. */
+@font-face {
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/ploni/ploni-regular-aaa.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/ploni/ploni-medium-aaa.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/ploni/ploni-demibold-aaa.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Ploni";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/ploni/ploni-bold-aaa.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/geist/geist-variable.woff2") format("woff2");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Every scrollbar, the page's included: thin, a soft ink-tinted thumb on no
+   track, darker on hover. In the base layer, so a scroller that hides its
+   bar on purpose (a carousel, a row of tabs) overrides it with
+   scrollbar-width: none in its own component styles. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--ink) / 0.18) transparent;
+  }
+  /* Safari, which draws no scrollbar-color: the same thin rounded thumb.
+     width and height, not logical sizes: the scrollbar pseudo-elements read
+     only the physical ones. */
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 0.125rem solid transparent;
+    border-radius: var(--radius-full);
+    background: rgb(var(--ink) / 0.18) padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--ink) / 0.3);
+  }
+}
+
+html,
+body,
+#app {
+  min-block-size: 100%;
+}
+
+body {
+  margin: 0;
+}

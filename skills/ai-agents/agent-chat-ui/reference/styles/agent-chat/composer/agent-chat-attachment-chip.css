@@ -1,0 +1,178 @@
+/* The inline attachment chips in the composer (agent-chat-composer.css)
+   and the hover card that previews one. Values resolved from their Tailwind
+   theme; colors are ours. */
+@layer components {
+  /* Inline attachment chip: 32px tall, 10px corners; on hover the preview
+     fades out and the remove button fades in on the same spot. */
+  .agent-chat-attachment-chip {
+    position: relative;
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: 0.25rem;
+    block-size: 2rem;
+    border-radius: 0.625rem;
+    background: var(--secondary);
+    padding-inline: 0.375rem 0.5rem;
+    color: var(--foreground);
+    @apply type-label-sm;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: var(--transition-control);
+  }
+  @media (hover: hover) {
+    .agent-chat-attachment-chip:hover {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+  }
+  .agent-chat-attachment-chip-media {
+    position: relative;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    flex-shrink: 0;
+  }
+  .agent-chat-attachment-chip-preview {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 0.375rem;
+    background: var(--background);
+    color: var(--muted-foreground);
+    transition: opacity var(--duration-quick) var(--ease-standard);
+  }
+  .agent-chat-attachment-chip-preview img {
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: 0.375rem;
+    object-fit: cover;
+  }
+  .agent-chat-attachment-chip-preview [data-slot="app-icon"] {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+  .agent-chat-attachment-chip-remove {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--duration-quick) var(--ease-standard);
+  }
+  .agent-chat-attachment-chip-remove [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+  .agent-chat-attachment-chip:is(:focus-within)
+    .agent-chat-attachment-chip-preview {
+    opacity: 0;
+  }
+  @media (hover: hover) {
+    .agent-chat-attachment-chip:hover .agent-chat-attachment-chip-preview {
+      opacity: 0;
+    }
+  }
+  .agent-chat-attachment-chip:is(:focus-within)
+    .agent-chat-attachment-chip-remove {
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .agent-chat-attachment-chip:hover .agent-chat-attachment-chip-remove {
+      opacity: 1;
+    }
+  }
+  .agent-chat-attachment-chip-name {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Hover card (Base UI PreviewCard), opened below its chip: fades and zooms
+     in from 95% while rising 8px into place, 100ms. */
+  .agent-chat-hover-card-positioner {
+    z-index: 50;
+    isolation: isolate;
+  }
+  .agent-chat-hover-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    border-radius: 0.625rem;
+    background: var(--popover);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--foreground) 10%, transparent),
+      0 4px 6px -1px #0000001a,
+      0 2px 4px -2px #0000001a;
+    padding: 0.5rem;
+    color: var(--popover-foreground);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+    outline: none;
+    transform-origin: var(--transform-origin);
+    transition:
+      opacity 100ms,
+      transform 100ms;
+  }
+  .agent-chat-hover-card[data-starting-style] {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.95);
+  }
+  .agent-chat-hover-card[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.95);
+    transition-duration: var(--duration-micro);
+  }
+  .agent-chat-hover-card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 20rem;
+    max-block-size: 24rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.625rem;
+  }
+  .agent-chat-hover-card-image img {
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    object-fit: contain;
+  }
+  .agent-chat-hover-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-inline: 0.125rem;
+  }
+  .agent-chat-hover-card-text strong {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .agent-chat-hover-card-text code {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.3333;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-attachment-chip,
+  .agent-chat-attachment-chip-preview,
+  .agent-chat-attachment-chip-remove,
+  .agent-chat-hover-card {
+    transition: none;
+  }
+}

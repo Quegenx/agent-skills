@@ -1,0 +1,76 @@
+/* The agent's chats in the sidebar (app-sidebar-agent-chats.tsx), on the
+   collapsible rows of app-sidebar-collapsible.css. */
+@layer utilities {
+  /* The agent's chats, grouped (pinned,
+     then recent), each with a "more" button at its end that shows while the
+     row is hovered or focused, or while its menu is open. */
+  .app-sidebar-agent-chat-heading {
+    margin: 0;
+    padding: 1rem 0.75rem 0.5rem;
+    color: var(--sidebar-muted);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .app-sidebar-agent-chat {
+    position: relative;
+  }
+  .app-sidebar-agent-chat .app-sidebar-collapsible-link {
+    padding-inline-end: 2.5rem;
+  }
+  /* The row's "…": the chat menu's SmoothDropdown trigger, at the row's
+     end. */
+  .app-sidebar-agent-chat-more {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: 0.375rem;
+    z-index: 2;
+    display: flex;
+    opacity: 0;
+    translate: 0 -50%;
+    transition: opacity var(--duration-quick) var(--ease-standard);
+  }
+  .app-sidebar-agent-chat:is(:focus-within, [data-menu-open])
+    .app-sidebar-agent-chat-more {
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .app-sidebar-agent-chat:hover .app-sidebar-agent-chat-more {
+      opacity: 1;
+    }
+  }
+}
+
+/* The "…" trigger in the sidebar's colors. Unlayered and more specific than
+   SmoothDropdown's own (unlayered) module rules, which paint it for a light
+   card. */
+.app-sidebar-agent-chat
+  .app-sidebar-agent-chat-more
+  [data-appearance]
+  > button {
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  border-radius: var(--radius-full);
+  color: var(--sidebar-muted);
+}
+.app-sidebar-agent-chat-more [data-slot="app-icon"] {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}
+.app-sidebar-agent-chat[data-menu-open]
+  .app-sidebar-agent-chat-more
+  [data-appearance]
+  > button,
+.app-sidebar-agent-chat
+  .app-sidebar-agent-chat-more
+  [data-appearance]
+  > button:hover {
+  background: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-sidebar-agent-chat-more {
+    transition: none;
+  }
+}

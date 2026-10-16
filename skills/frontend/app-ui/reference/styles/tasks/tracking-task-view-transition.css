@@ -1,0 +1,133 @@
+/* The board ⇄ list switch, after ln-dev7's "unique transition between grid
+   and list views", rebuilt on the browser's view transitions instead of
+   GSAP with fixed positions: it measures the real layout, so it works for
+   any number of tasks, any width and right-to-left. Each task's card flies
+   to its row's place and shape (and back) in one smooth glide, not three
+   steps, its content visible the whole way: the old content rides the
+   first part of the glide, crossfades into the new content midway, and
+   the new content rides it in, so the shapes never move empty and text
+   never stretches. The status heads glide with them,
+   the tasks at the top of a status leave first (a wave, 24ms a step), and
+   the rest of the page crossfades underneath (the browser's own root
+   crossfade). The names and classes come
+   from TrackingTaskMorph, under the switch's transition type only.
+   Unlayered: view transition pseudo-elements live outside the page's
+   layers. */
+
+:root {
+  /* An even ease in and out, so the glide is seen, not over in its first
+     frames. */
+  --tracking-task-morph-ease: cubic-bezier(0.45, 0, 0.2, 1);
+  --tracking-task-morph-duration: 600ms;
+}
+
+::view-transition-group(.tracking-task-wave-1) {
+  --tracking-task-wave: 1;
+}
+::view-transition-group(.tracking-task-wave-2) {
+  --tracking-task-wave: 2;
+}
+::view-transition-group(.tracking-task-wave-3) {
+  --tracking-task-wave: 3;
+}
+::view-transition-group(.tracking-task-wave-4) {
+  --tracking-task-wave: 4;
+}
+::view-transition-group(.tracking-task-wave-5) {
+  --tracking-task-wave: 5;
+}
+::view-transition-group(.tracking-task-wave-6) {
+  --tracking-task-wave: 6;
+}
+::view-transition-group(.tracking-task-wave-7) {
+  --tracking-task-wave: 7;
+}
+::view-transition-group(.tracking-task-wave-8) {
+  --tracking-task-wave: 8;
+}
+::view-transition-group(.tracking-task-wave-9) {
+  --tracking-task-wave: 9;
+}
+
+/* React keeps the rest of the page live instead of crossfading it: when
+   nothing outside the named tasks changes, it shrinks ::view-transition to
+   0x0 with a filled animation. Chrome then paints none of the named
+   groups, so the tasks vanished for the whole switch and popped in at the
+   end. !important outranks the animation and gives the overlay back the
+   viewport; it stays see-through and lets the pointer through. */
+::view-transition {
+  inline-size: 100vw !important;
+  block-size: 100vh !important;
+  pointer-events: none;
+}
+
+/* The glide: place and size together. */
+::view-transition-group(.tracking-task-morph) {
+  --tracking-task-morph-delay: calc(var(--tracking-task-wave, 0) * 24ms);
+  animation-duration: var(--tracking-task-morph-duration);
+  animation-timing-function: var(--tracking-task-morph-ease);
+  animation-delay: var(--tracking-task-morph-delay);
+}
+
+/* The card's and the row's pictures keep their own size, pinned to the
+   reading start and clipped to the gliding shape, instead of being
+   stretched into each other. */
+::view-transition-image-pair(.tracking-task-morph) {
+  isolation: isolate;
+  overflow: clip;
+  border-radius: 0.625rem;
+}
+::view-transition-old(.tracking-task-morph),
+::view-transition-new(.tracking-task-morph) {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: auto;
+  block-size: auto;
+}
+/* Over the glide's middle, 20% to 70%, the old content fades out exactly as
+   the new fades in: with the browser's plus-lighter blend the two always
+   add up to a whole card, so a white card stays white and never turns
+   see-through on the way. */
+::view-transition-old(.tracking-task-morph),
+::view-transition-new(.tracking-task-morph) {
+  animation-duration: var(--tracking-task-morph-duration);
+  animation-timing-function: linear;
+  animation-delay: var(--tracking-task-morph-delay);
+  animation-fill-mode: both;
+  mix-blend-mode: plus-lighter;
+}
+::view-transition-old(.tracking-task-morph) {
+  animation-name: tracking-task-morph-out;
+}
+::view-transition-new(.tracking-task-morph) {
+  animation-name: tracking-task-morph-in;
+}
+
+@keyframes tracking-task-morph-out {
+  0%,
+  20% {
+    opacity: 1;
+  }
+  70%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes tracking-task-morph-in {
+  0%,
+  20% {
+    opacity: 0;
+  }
+  70%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(.tracking-task-morph),
+  ::view-transition-old(.tracking-task-morph),
+  ::view-transition-new(.tracking-task-morph) {
+    animation: none;
+  }
+}

@@ -1,0 +1,385 @@
+/* The agent's markdown (Streamdown), styled as .streamdown with
+   Streamdown's default element classes resolved to pixels. Tailwind does
+   not scan Streamdown, so every element is styled here, by its
+   data-streamdown name. Logical properties mirror it for right-to-left. */
+@layer components {
+  .agent-chat-markdown {
+    inline-size: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  /* Streamdown's space-y-4 between blocks. */
+  .agent-chat-markdown > :where(:not(:last-child)) {
+    margin-block-end: var(--space-4);
+  }
+  .agent-chat-markdown p {
+    margin: 0;
+  }
+  .agent-chat-markdown [data-streamdown^="heading-"] {
+    margin: var(--space-6) 0 0.5rem;
+    font-weight: 600;
+  }
+  .agent-chat-markdown [data-streamdown="heading-1"] {
+    font-size: var(--fluid-text-display-sm);
+    line-height: 1.2;
+  }
+  .agent-chat-markdown [data-streamdown="heading-2"] {
+    font-size: var(--fluid-text-headline-lg);
+    line-height: 1.3333;
+  }
+  .agent-chat-markdown [data-streamdown="heading-3"] {
+    font-size: var(--fluid-text-headline-md);
+    line-height: 1.4;
+  }
+  .agent-chat-markdown [data-streamdown="heading-4"] {
+    font-size: 1.125rem;
+    line-height: 1.5556;
+  }
+  .agent-chat-markdown [data-streamdown="heading-5"] {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .agent-chat-markdown [data-streamdown="heading-6"] {
+    font-size: 0.875rem;
+    line-height: 1.4286;
+  }
+  .agent-chat-markdown [data-streamdown="strong"] {
+    font-weight: 600;
+  }
+  /* A link in the answer looks as the cards' links do
+     (.agent-chat-group-result-name): its words at rest, then on hover blue
+     with the animated line growing under them (animated-link.css), and the
+     arrow after them that marks it a link. */
+  .agent-chat-markdown [data-streamdown="link"] {
+    color: var(--foreground);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  /* The label is one box, as the cards' link text is (a flex item there):
+     the hover line runs under it whole, numbers and words as one, at the
+     bottom of its line box, so it sits as far below the text as on the
+     cards. Inline, the browser split it into a box per direction run, each
+     with its own line. */
+  .agent-chat-text-link-label {
+    display: inline-block;
+  }
+  .agent-chat-markdown
+    [data-streamdown="link"]
+    [data-slot="app-icon"] {
+    display: inline-block;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    margin-inline-start: 0.25rem;
+    color: var(--muted-foreground);
+    vertical-align: middle;
+    transform: scaleX(-1);
+  }
+  .agent-chat-markdown
+    [data-streamdown="link"]
+    [data-slot="app-icon"]:dir(ltr) {
+    transform: none;
+  }
+  .agent-chat-markdown
+    :is([data-streamdown="unordered-list"], [data-streamdown="ordered-list"]) {
+    margin: 0;
+    padding-inline-start: var(--space-3-5);
+    list-style-position: inside;
+  }
+  .agent-chat-markdown [data-streamdown="unordered-list"] {
+    list-style-type: disc;
+  }
+  .agent-chat-markdown [data-streamdown="ordered-list"] {
+    list-style-type: decimal;
+  }
+  .agent-chat-markdown
+    [data-streamdown="list-item"]
+    :is([data-streamdown="unordered-list"], [data-streamdown="ordered-list"]) {
+    padding-inline-start: var(--space-6);
+  }
+  .agent-chat-markdown [data-streamdown="list-item"] {
+    padding-block: 0.25rem;
+  }
+  .agent-chat-markdown
+    [data-streamdown="unordered-list"]
+    > [data-streamdown="list-item"] {
+    padding-block: 0.125rem;
+  }
+  .agent-chat-markdown
+    [data-streamdown="unordered-list"]
+    > [data-streamdown="list-item"]::marker {
+    color: color-mix(in oklab, var(--muted-foreground) 30%, transparent);
+  }
+  .agent-chat-markdown [data-streamdown="list-item"] > p {
+    display: inline;
+  }
+  .agent-chat-markdown [data-streamdown="inline-code"] {
+    border-radius: 0.25rem;
+    background: var(--muted);
+    padding: 0.125rem 0.375rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.875rem;
+  }
+  .agent-chat-markdown [data-streamdown="blockquote"] {
+    margin-block: var(--space-4);
+    border-inline-start: 4px solid
+      color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+    padding-inline-start: var(--space-4);
+    color: var(--muted-foreground);
+    font-style: italic;
+  }
+  .agent-chat-markdown [data-streamdown="horizontal-rule"] {
+    margin-block: var(--space-6);
+    border: 0;
+    border-block-start: 1px solid var(--border);
+  }
+  .agent-chat-markdown [data-streamdown="table-wrapper"] {
+    overflow-x: auto;
+    color: var(--foreground);
+  }
+  .agent-chat-markdown [data-streamdown="table"] {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+  .agent-chat-markdown [data-streamdown="table-header"] {
+    background: color-mix(in srgb, var(--muted) 80%, transparent);
+  }
+  .agent-chat-markdown [data-streamdown="table-row"] {
+    border-block-end: 1px solid var(--border);
+    transition: var(--transition-background);
+  }
+  .agent-chat-markdown [data-streamdown="table-row"]:last-child {
+    border-block-end: 0;
+  }
+  @media (hover: hover) {
+    .agent-chat-markdown
+      [data-streamdown="table-body"]
+      [data-streamdown="table-row"]:hover {
+      background: color-mix(in oklab, var(--accent) 50%, transparent);
+    }
+  }
+  .agent-chat-markdown [data-streamdown="table-header-cell"] {
+    padding: 0.625rem var(--space-4);
+    @apply type-label-sm;
+    text-align: start;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .agent-chat-markdown [data-streamdown="table-cell"] {
+    padding: var(--space-3) var(--space-4);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .agent-chat-markdown pre {
+    margin: 0;
+    overflow-x: auto;
+    border-radius: 0.625rem;
+    background: var(--card);
+    padding: var(--space-3) var(--space-5);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+    text-align: left;
+  }
+
+  /* The first and last blocks sit flush, headings included. */
+  .agent-chat-markdown > :first-child {
+    margin-block-start: 0;
+  }
+  .agent-chat-markdown > :last-child {
+    margin-block-end: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-markdown [data-streamdown="link"],
+  .agent-chat-markdown [data-streamdown="table-row"] {
+    transition: none;
+  }
+}
+
+/* No outline around code blocks and tables: Streamdown's own classes draw
+   one on the card, its action bar, its body and the table's scroll box. The
+   rows keep their dividers. Unlayered, to win over Tailwind's utilities. */
+.agent-chat-markdown
+  :is(
+    [data-streamdown="code-block"],
+    [data-streamdown="code-block-actions"],
+    [data-streamdown="code-block-body"],
+    [data-streamdown="table-wrapper"],
+    [data-streamdown="table-wrapper"] > div
+  ) {
+  border-width: 0;
+}
+
+/* Streamdown paints a code block's frame and its action bar with the
+   sidebar color, which is dark in this app (--sidebar); they take the card
+   surface the chat's other blocks use, so the label and the copy and
+   download buttons read on a light frame. */
+.agent-chat-markdown
+  :is([data-streamdown="code-block"], [data-streamdown="code-block-actions"]) {
+  background-color: var(--card);
+}
+
+/* The answer's reveal while it streams (agentChatTextReveal in
+   agent-chat-markdown.tsx; Streamdown names it sd-<animation>): each
+   character fades in out of a light blur, and the overlapping fades read
+   as one soft trailing edge. No rise: the character spans are inline, and
+   a transform does nothing on an inline box. Opacity and filter only, so
+   it stays off layout. */
+@keyframes sd-agentChatReveal {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* One fixed length for every revealed character. Streamdown re-renders the
+   answer as each character arrives and sets the characters it had already
+   shown to a 0ms animation, which cut each fade off after one frame (the
+   blur never showed). With the length fixed here the span keeps its
+   running animation through those re-renders. Matches
+   agentChatSmoothSettleMs (agent-chat-smooth-text.ts). */
+.agent-chat-markdown [data-sd-animate] {
+  animation-duration: 600ms;
+}
+
+/* A source chip (AgentChatSourceChip): the site's favicon and domain, after
+   the words it backs in an answer and in the "מקורות" panel, fading in as it
+   arrives. */
+.agent-chat-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-inline: 0.25rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  padding-block: 0.0625rem;
+  padding-inline: 0.25rem 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  /* Centers the chip on the text line (measured: the chip's middle on the
+     line's middle). */
+  vertical-align: -0.125em;
+  cursor: pointer;
+  transition: var(--transition-control);
+  animation: agent-chat-source-in 300ms ease-out;
+}
+@media (hover: hover) {
+  .agent-chat-source:hover {
+    color: var(--foreground);
+  }
+}
+.agent-chat-source img {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border-radius: var(--radius-full);
+}
+@keyframes agent-chat-source-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* A source chip's page preview (AgentChatLinkPreview), the Amichai site's
+   LinkPreview on the app's surfaces: a popover card with the page's
+   screenshot and its domain, above the chip. It portals out of the answer,
+   so these rules are not scoped to .agent-chat-markdown. */
+.agent-chat-link-preview-positioner {
+  z-index: 100;
+}
+.agent-chat-link-preview {
+  inline-size: min(12.5rem, calc(100vw - 3rem));
+  transform-origin: var(--transform-origin);
+}
+.agent-chat-link-preview-card {
+  overflow: hidden;
+  border-radius: 0.875rem;
+  background: var(--popover);
+  padding: 0.25rem;
+  color: var(--foreground);
+  box-shadow: 0 12px 36px rgb(var(--ink) / 0.2);
+  translate: var(--preview-x, 0px) 0;
+}
+.agent-chat-link-preview-image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 200 / 125;
+  border-radius: 0.625rem;
+  background: var(--muted);
+}
+.agent-chat-link-preview-image img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.agent-chat-link-preview-image img[data-ready="true"] {
+  opacity: 1;
+}
+.agent-chat-link-preview-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  text-align: center;
+}
+.agent-chat-link-preview-host {
+  display: block;
+  overflow: hidden;
+  padding: 0.5rem 0.375rem 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* What a found item's preview says under its photo: its title, two lines
+   at most, then its price and place. */
+.agent-chat-link-preview-found {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0.375rem 0.25rem;
+  text-align: start;
+}
+.agent-chat-link-preview-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3333;
+}
+.agent-chat-link-preview-detail {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.3333;
+}
+
+/* Streamdown's reveal while an answer streams: none under reduced
+   motion, where the words simply appear. */
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-markdown [data-sd-animate],
+  .agent-chat-markdown [data-sd-animate-marker]::marker,
+  .agent-chat-source {
+    animation: none;
+  }
+  .agent-chat-link-preview-image img {
+    transition: none;
+  }
+}

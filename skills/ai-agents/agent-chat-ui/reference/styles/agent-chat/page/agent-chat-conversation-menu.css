@@ -1,0 +1,241 @@
+/* The chat's title in the header, its menu, and the chat search, after
+   a chat header and ⌘K chat search; colors are ours. */
+@layer components {
+  /* Title: the name and a chevron, 1px apart, each lit only by its own
+     hover. The open menu stands in for the chevron's fill. */
+  .agent-chat-title {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: 1px;
+  }
+  .agent-chat-title-name,
+  .agent-chat-title-menu {
+    display: inline-flex;
+    align-items: center;
+    block-size: 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-background);
+  }
+  .agent-chat-title-name {
+    min-inline-size: 0;
+    padding-inline: 0.5rem;
+    cursor: text;
+  }
+  .agent-chat-title-name bdi {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .agent-chat-title-menu {
+    justify-content: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    flex-shrink: 0;
+  }
+  .agent-chat-title-menu [data-slot="app-icon"] {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+  @media (hover: hover) {
+    :is(.agent-chat-title-name, .agent-chat-title-menu):hover {
+      background: var(--accent);
+      color: var(--accent-foreground);
+    }
+  }
+  /* While its menu is open (SmoothDropdown's shell, data-open), the chevron
+     keeps no fill of its own: it showed gray behind the white menu. */
+  .agent-chat-title-menu:has([data-open="true"]) {
+    background: transparent;
+  }
+  /* The name being renamed: a field exactly as wide as its text, growing
+     and shrinking with it. A hidden copy of the text (data-value) shares
+     its grid cell and sets the width. */
+  .agent-chat-title-field {
+    display: inline-grid;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+  .agent-chat-title-field::after {
+    grid-area: 1 / 1;
+    block-size: 0;
+    overflow: hidden;
+    padding-inline: 0.5rem;
+    font: inherit;
+    white-space: pre;
+    visibility: hidden;
+    content: attr(data-value) " ";
+  }
+  .agent-chat-title-input {
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    min-inline-size: 3rem;
+    block-size: 2rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: var(--field);
+    padding-inline: 0.5rem;
+    color: var(--foreground);
+    font: inherit;
+    outline: none;
+  }
+
+  /* Chat search: a CommandDialog, 36rem wide, over the shared
+     backdrop (backdrop.css); the dialog fades and zooms from 95% over
+     100ms. */
+  .agent-chat-search {
+    position: fixed;
+    inset-block-start: 50%;
+    left: 50%;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    inline-size: calc(100% - 2rem);
+    max-inline-size: 36rem;
+    max-block-size: calc(
+      100dvh - 2rem - env(safe-area-inset-top, 0rem) -
+        env(safe-area-inset-bottom, 0rem)
+    );
+    overflow: hidden;
+    border-radius: 0.875rem;
+    background: var(--card);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--foreground) 10%, transparent),
+      var(--app-popover-shadow);
+    color: var(--card-foreground);
+    outline: none;
+    translate: -50% -50%;
+    transition: var(--transition-popup-instant);
+  }
+  .agent-chat-search:is([data-starting-style], [data-ending-style]) {
+    opacity: 0;
+    scale: 0.95;
+  }
+  .agent-chat-search[data-ending-style] {
+    transition-duration: var(--duration-micro);
+  }
+  /* useDialogMorph grows it out of the sidebar's button and shrinks it back,
+     so its own fade and scale stay off, as for app-dialog. */
+  .agent-chat-search[data-morph][data-starting-style] {
+    scale: 1;
+  }
+  .agent-chat-search[data-morph][data-ending-style] {
+    opacity: 1;
+    scale: 1;
+  }
+  /* The morph's one wrapper, laid out as the popup was. */
+  .agent-chat-search-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+  .agent-chat-search-field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    block-size: 3.25rem;
+    flex-shrink: 0;
+    border-block-end: 1px solid var(--border);
+    padding-inline: var(--space-3-5);
+    color: var(--muted-foreground);
+  }
+  .agent-chat-search-field [data-slot="app-icon"] {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    flex-shrink: 0;
+  }
+  .agent-chat-search-field input {
+    flex: 1;
+    min-inline-size: 0;
+    border: 0;
+    background: transparent;
+    color: var(--foreground);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+    outline: none;
+  }
+  .agent-chat-search-field input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .agent-chat-search-list {
+    block-size: 26.25rem;
+    max-block-size: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .agent-chat-search-group {
+    padding: 0.5rem;
+  }
+  .agent-chat-search-group + .agent-chat-search-group {
+    border-block-start: 1px solid var(--border);
+  }
+  .agent-chat-search-heading {
+    padding: 0.375rem 0.5rem;
+    color: var(--muted-foreground);
+    @apply type-label-xs;
+  }
+  .agent-chat-search-option {
+    display: flex;
+    min-inline-size: 0;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0.625rem;
+    padding: var(--space-3);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    line-height: 1.4286;
+    cursor: pointer;
+    user-select: none;
+  }
+  .agent-chat-search-option[data-highlighted] {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .agent-chat-search-option [data-slot="app-icon"] {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+  }
+  .agent-chat-search-option-title {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .agent-chat-search-option-time {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+
+/* The chevron is the chat menu's SmoothDropdown trigger, inside the lit
+   group: unlayered and more specific than SmoothDropdown's own (unlayered)
+   module rules, so the group, not the trigger, takes the hover fill. */
+.agent-chat-title .agent-chat-title-menu [data-appearance] > button,
+.agent-chat-title .agent-chat-title-menu [data-appearance] > button:hover {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  min-block-size: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-title-name,
+  .agent-chat-title-menu,
+  .agent-chat-search {
+    transition: none;
+  }
+}

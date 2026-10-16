@@ -1,0 +1,149 @@
+/* Auth pages (login, sign-up, recovery, new password) in the marketing
+   website's design system (src/website): its hero wash, Ploni, the contact form's
+   card and fields, its pill buttons and its blur-and-rise reveal. Values
+   come from the website's theme in src/website/document/website.css. */
+
+:root {
+  --auth-font: var(--app-button-font);
+  --auth-wash: linear-gradient(180deg, #ffffff 20%, rgba(8, 102, 255, 0.4));
+  --auth-card: #ffffff;
+  --auth-card-border: rgba(33, 29, 29, 0.05);
+  --auth-text: #211d1d;
+  --auth-text-secondary: #747272;
+  --auth-accent: #0866ff;
+  --auth-accent-soft: rgba(8, 102, 255, 0.1);
+  --auth-accent-soft-hover: rgba(8, 102, 255, 0.18);
+  --auth-ink: #211d1d;
+  --auth-ink-text: #ffffff;
+  --auth-field: rgba(33, 29, 29, 0.05);
+  --auth-error: #b93800;
+  --auth-error-soft: rgba(185, 56, 0, 0.08);
+  --auth-reveal-easing: cubic-bezier(0.19, 1, 0.22, 1);
+}
+.dark {
+  --auth-wash: linear-gradient(180deg, #0f0f10 20%, #1b1b1c);
+  --auth-card: #1b1b1c;
+  --auth-card-border: rgba(255, 255, 255, 0.1);
+  --auth-text: #ffffff;
+  --auth-text-secondary: #b8b6b8;
+  --auth-accent: #4c93ff;
+  --auth-accent-soft: rgba(76, 147, 255, 0.1);
+  --auth-accent-soft-hover: rgba(76, 147, 255, 0.18);
+  --auth-ink: #ffffff;
+  --auth-ink-text: #1b1b1c;
+  --auth-field: rgba(255, 255, 255, 0.06);
+  --auth-error: #f24900;
+  --auth-error-soft: rgba(242, 73, 0, 0.12);
+}
+
+@layer components {
+  .auth-page {
+    display: grid;
+    place-items: center;
+    min-block-size: 100dvh;
+    background: var(--auth-wash);
+    padding: 3rem 1rem;
+    color: var(--auth-text);
+    font-family: var(--auth-font);
+  }
+  /* The app's base styles give headings and controls their own family. */
+  .auth-page :is(h1, h2, p, a, label, span, input, button) {
+    font-family: inherit;
+  }
+  .auth-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    inline-size: min(100%, 30rem);
+  }
+
+  /* The logo and name above the card, like the site's hero eyebrow. */
+  .auth-brand {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .auth-brand img {
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+  }
+
+  /* The contact form's card: white, 2rem radius, a hairline border. */
+  .auth-card {
+    overflow: clip;
+    inline-size: 100%;
+    border: 1px solid var(--auth-card-border);
+    border-radius: 2rem;
+    background: var(--auth-card);
+    padding: 2.5rem;
+  }
+
+  /* The site's display title: the second line in the brand blue. */
+  .auth-title {
+    color: var(--auth-text);
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .auth-title-accent {
+    display: block;
+    color: var(--auth-accent);
+  }
+  .auth-subtitle {
+    margin-block-start: 0.75rem;
+    color: var(--auth-text-secondary);
+    font-size: 1.0625rem;
+    font-weight: 450;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .auth-footer {
+    margin-block-start: 1.5rem;
+    border-block-start: 1px solid var(--auth-card-border);
+    padding-block-start: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: var(--auth-text-secondary);
+    font-size: 1rem;
+  }
+
+  /* Load reveal: each block rises out of an 8px blur, one after another. */
+  .auth-reveal {
+    animation: auth-reveal 0.9s var(--auth-reveal-easing) both;
+  }
+  .auth-card.auth-reveal {
+    animation-delay: 80ms;
+  }
+
+  @media (max-width: 34rem) {
+    .auth-card {
+      padding: 2rem 1.5rem;
+    }
+    .auth-title {
+      font-size: 1.875rem;
+    }
+  }
+}
+
+@keyframes auth-reveal {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-reveal {
+    animation: none;
+  }
+}

@@ -1,0 +1,63 @@
+/* The theme switch's circle reveal (setSiteThemeWithCircleTransition): the
+   new theme grows from the top start corner. The website (website.css) and
+   the app (styles.css) both import it. */
+@keyframes reveal-dark {
+  from {
+    clip-path: circle(0% at var(--theme-transition-origin));
+  }
+
+  to {
+    clip-path: circle(150% at var(--theme-transition-origin));
+  }
+}
+
+@keyframes conceal-dark {
+  from {
+    clip-path: circle(150% at var(--theme-transition-origin));
+  }
+
+  to {
+    clip-path: circle(0% at var(--theme-transition-origin));
+  }
+}
+
+html[data-theme-transition="circle-top-start"] {
+  --theme-transition-origin: 0% 0%;
+}
+
+html:dir(rtl)[data-theme-transition="circle-top-start"] {
+  --theme-transition-origin: 100% 0%;
+}
+
+html[data-theme-transition="circle-top-start"]::view-transition-group(root) {
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+html[data-theme-transition="circle-top-start"]::view-transition-new(root) {
+  z-index: -1;
+  animation-name: none;
+}
+
+html[data-theme-transition="circle-top-start"]::view-transition-old(root) {
+  z-index: 1;
+  animation-name: conceal-dark;
+}
+
+html[data-theme="dark"][data-theme-transition="circle-top-start"]::view-transition-new(root) {
+  z-index: 1;
+  animation-name: reveal-dark;
+}
+
+html[data-theme="dark"][data-theme-transition="circle-top-start"]::view-transition-old(root) {
+  z-index: -1;
+  animation-name: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme-transition="circle-top-start"]::view-transition-group(root),
+  html[data-theme-transition="circle-top-start"]::view-transition-new(root),
+  html[data-theme-transition="circle-top-start"]::view-transition-old(root) {
+    animation-duration: 0s;
+  }
+}

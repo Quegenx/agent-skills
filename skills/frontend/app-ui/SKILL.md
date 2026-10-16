@@ -17,8 +17,11 @@ A design system is not a palette and a button. It is a few hundred small decisio
 | Filters and chips, tables, selection bars, boards and lists, drag and drop, feeds and cards, media | [DATA-VIEWS.md](DATA-VIEWS.md) |
 | Pending labels, optimistic changes, unknown outcomes, progress and stop, errors, empty and loading | [STATES.md](STATES.md) |
 | A checker that blocks drift: the rules, the allowlist, the ratchet | [CHECKS.md](CHECKS.md) |
+| The production source of every piece above, to copy as is | [reference/REFERENCE.md](reference/REFERENCE.md) |
 
 Durations, curves and springs in general are in the `ui-animation` skill; how much decoration a product should have is in `anti-slop-ui`; the chat surface of an agent is `agent-chat-ui`; the marketing site is `landing-page-ui`. Those two own their own motion: the app's is calm and quick, the site's expressive, the agent's built around waiting.
+
+To build it exactly, copy from reference/ rather than writing it from the description.
 
 ## The rules
 

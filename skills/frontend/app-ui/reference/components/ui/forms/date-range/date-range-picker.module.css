@@ -1,0 +1,299 @@
+/* amichai-all's course-date-range-picker.module.css in our colors: the range
+   is a brand-blue band with solid ends, hovers an ink tint, and the actions
+   pills (Apply in blue, Cancel tinted). Logical properties follow the page's
+   direction. */
+.trigger {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+.trigger > [data-slot="app-icon"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.picker {
+  color: var(--foreground);
+  outline: none;
+}
+.main {
+  display: flex;
+  gap: 12px;
+  padding: 8px;
+}
+.presets {
+  display: flex;
+  width: 126px;
+  min-width: 0;
+  flex-shrink: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+.preset {
+  min-height: 36px;
+  border: 0;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--foreground);
+  text-align: start;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+.preset:hover,
+.preset[aria-pressed="true"] {
+  background: rgb(var(--ink) / 0.06);
+}
+.months {
+  display: flex;
+  min-width: 0;
+  gap: 8px;
+}
+.month {
+  width: 326px;
+  flex-shrink: 0;
+  padding: 15px;
+  border-radius: 16px;
+  background: rgb(var(--ink) / 0.02);
+}
+.monthHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.monthTitle {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+.navigation {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  place-items: center;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.navigation:hover {
+  background: rgb(var(--ink) / 0.06);
+}
+.navigation > [data-slot="app-icon"] {
+  width: 16px;
+  height: 16px;
+}
+.navigationSpacer {
+  width: 32px;
+  height: 32px;
+}
+.grid {
+  border-collapse: separate;
+  border-spacing: 12px;
+  margin: -12px;
+  table-layout: fixed;
+}
+.weekday {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+.cell {
+  padding: 0;
+  outline: none;
+}
+.day {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+.dayFace {
+  position: relative;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background-color 100ms;
+  cursor: pointer;
+}
+.dayNumber {
+  position: relative;
+}
+.dayFace[data-hovered="true"] {
+  background: rgb(var(--ink) / 0.06);
+}
+.dayFace[data-disabled="true"] {
+  opacity: 0.35;
+  cursor: default;
+}
+.band,
+.edge {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition:
+    opacity 100ms,
+    border-radius 100ms;
+  pointer-events: none;
+}
+.band {
+  background: color-mix(in srgb, var(--primary) 25%, transparent);
+}
+.band[data-visible="true"],
+.edge[data-visible="true"] {
+  opacity: 1;
+}
+.band[data-extend-start="true"] {
+  inset-inline-start: -6px;
+}
+.band[data-extend-end="true"] {
+  inset-inline-end: -6px;
+}
+.band[data-band-start="true"] {
+  inset-inline-start: 50%;
+}
+.band[data-band-end="true"] {
+  inset-inline-end: 50%;
+}
+.edge {
+  background: var(--primary);
+}
+.edge[data-visible="true"] + .dayNumber {
+  color: var(--primary-foreground);
+}
+.edge[data-start="true"] {
+  border-start-start-radius: 8px;
+  border-end-start-radius: 8px;
+}
+.edge[data-end="true"] {
+  border-start-end-radius: 8px;
+  border-end-end-radius: 8px;
+}
+.footer {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px 16px;
+}
+.chips,
+.actions {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+}
+.dateLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.dateChip {
+  width: 112px;
+  border: 0;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: var(--field);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+.dateChip[aria-invalid="true"] {
+  color: var(--destructive);
+}
+.days {
+  padding: 10px 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.apply,
+.cancel,
+.clear {
+  min-height: 40px;
+  border: 0;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.apply {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.apply:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.cancel {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+/* Clearing the range: the soft red of every clear (destructive-soft). */
+.clear {
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+  color: var(--destructive);
+}
+.error {
+  margin: 0;
+  padding: 0 16px 12px;
+  color: var(--destructive);
+  font-size: 14px;
+}
+@media (max-width: 850px) {
+  .main {
+    flex-direction: column;
+  }
+  .presets {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .months {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .month {
+    width: min(326px, 100%);
+  }
+  .grid {
+    width: calc(100% + 24px);
+    border-spacing: 4px 10px;
+  }
+  .footer {
+    flex-wrap: wrap;
+    padding-inline: 8px;
+  }
+  .chips {
+    flex-wrap: wrap;
+  }
+  .actions {
+    margin-inline-start: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .band,
+  .edge,
+  .dayFace,
+  .preset {
+    transition: none;
+  }
+}

@@ -1,0 +1,52 @@
+/* Minimum hit area: 40×40px, 44×44px on touch screens. A transparent
+   ::before grows each small control's clickable box without changing how it
+   looks. The inset is negative half of what the control lacks, so a control
+   already that big gets no extension. A control whose neighbor sits closer
+   than the extension narrows it (below) so two hit areas never overlap. */
+@layer base {
+  :root {
+    --hit-area-min: 2.5rem;
+  }
+  @media (pointer: coarse) {
+    :root {
+      --hit-area-min: 2.75rem;
+    }
+  }
+  :where(
+    .app-button,
+    .app-switch,
+    .app-dialog-close,
+    .filter-chip,
+    .segmented-tabs [role="tab"],
+    .post-action,
+    .auth-field-toggle,
+    .agent-chat-button,
+    .agent-chat-attachment-chip,
+    .agent-chat-title-name,
+    .agent-chat-title-menu,
+    .agent-chat-viewer-close,
+    .tracking-task-icon-button,
+    .tracking-task-column-add
+  ) {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block: calc((100% - max(100%, var(--hit-area-min))) / 2);
+      inset-inline: calc((100% - max(100%, var(--hit-area-min))) / 2);
+    }
+  }
+  /* Neighbors closer than the extension (the chat title's two buttons, a
+     column's icon buttons, tabs and chips side by side): grow only in
+     height. */
+  :where(
+    .agent-chat-title-name,
+    .agent-chat-title-menu,
+    .tracking-task-icon-button,
+    .segmented-tabs [role="tab"],
+    .filter-chip
+  )::before {
+    inset-inline: 0;
+  }
+}
