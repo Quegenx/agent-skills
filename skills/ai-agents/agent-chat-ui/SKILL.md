@@ -29,7 +29,7 @@ An agent's answer is not a message; it is work happening. The interface has thre
 6. **Pace the stream.** Tokens arrive in bursts; release characters at a steady, adaptive rate and fade them in, so the text flows instead of jumping.
 7. **Treat everything the agent quotes as untrusted.** Links and images are hardened; an outside link opens only after its full address is shown.
 8. **Nothing moves under the reader.** No blank frame before the answer, no scroll jump when the status line gives way to text, no layout shift from a late image.
-9. **Respect reduced motion everywhere:** keep fades, drop movement, stop the text buffer and the waveform; near-instant durations rather than none, so end events still fire.
+9. **Respect reduced motion everywhere:** drop movement and every CSS transition, pure fades too (things appear at once), and stop the text buffer, the shimmer and the waveform. Where code waits for an end event, use a near-instant 1ms instead of none so it still fires.
 10. **Right-to-left is a first-class case:** logical properties, per-block direction from the first letter, `bdi` around anything a user or a site wrote, chevrons and arrows mirrored.
 
 ## Prove it
