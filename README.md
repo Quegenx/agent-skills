@@ -1,10 +1,10 @@
 # Agent skills
 
-39 skills for coding agents, in six sets:
+40 skills for coding agents, in six sets:
 
 | Folder | What it's for |
 |---|---|
-| [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the agent's codebase, Jev classifiers, search, RAG and extraction. 6 skills. |
+| [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the chat interface, the agent's codebase, Jev classifiers, search, RAG and extraction. 7 skills. |
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security. 9 skills. |
@@ -112,6 +112,7 @@ Building agents that stay reliable, and the AI features around them. Start with 
 | [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks |
 | [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, simulated users, the fix loop to a clean run, and release gates |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Long-term agent memory: what to remember and where, background extraction, consolidation, an always-on profile plus search, staying current, forgetting, user controls and memory evals |
+| [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, and every timing |
 | [agent-codebase](./skills/ai-agents/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
 | [jev-decisions](./skills/ai-agents/jev-decisions/SKILL.md) | Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals, plus worked recipes (value and date extraction, search, re-ranking, taxonomies, record matching, guardrails, memory, tool suggestion). TypeScript with `@typesafe-ai/sdk`. |
 | [ai-features](./skills/ai-agents/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |

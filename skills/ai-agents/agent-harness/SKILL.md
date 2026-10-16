@@ -16,6 +16,7 @@ A model is a probability, not code: the same conversation can go another way on 
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Long-term memory across conversations: extraction, profile and search, staying current, forgetting | the `agent-memory` skill |
 | Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |
+| The chat interface the user sees: status line, streaming, approval cards, composer | the `agent-chat-ui` skill |
 | Classifier decisions inside the loop (typed yes/no, choice and score answers) | the `jev-decisions` skill |
 
 **Your own loop or an existing agent runtime.** A runtime that brings its own workspace, coding tools, history, compaction and permissions (a coding agent you drive through an SDK) fits work that looks like what it was built for; send it only the newest message, since it keeps its own history. Write your own loop when you need the model call, the tools, the settings and the structured output under your control, which is the case for a product's agent and the rest of this skill.
