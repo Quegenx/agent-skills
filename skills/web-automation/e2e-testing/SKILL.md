@@ -1,6 +1,6 @@
 ---
 name: e2e-testing
-description: "Writes, runs and debugs end-to-end tests for web and mobile apps: agentic test runners that mix model-driven goals with exact checks, locators and assertions that don't flake, sign-in sessions and secrets, CI, bug bashes and adversarial UI QA with sub-agents, migrating an existing suite slice by slice, generating a project verification skill, React Native and Expo with Maestro, and Flutter with Patrol. Use when writing or fixing an end-to-end or UI test, a test is flaky, testing a change in the browser or on a device, running a bug bash, porting Playwright, Cypress, Selenium, Detox or Maestro tests, or setting up Maestro or Patrol."
+description: "Writes, runs and debugs end-to-end tests for web and mobile apps: agentic test runners that mix model-driven goals with exact checks, locators and assertions that don't flake, sign-in sessions and secrets, CI, bug bashes and adversarial UI QA with sub-agents, migrating an existing suite slice by slice, generating a project verification skill, React Native and Expo with Maestro, and Flutter with Patrol, Maestro or the e2e runner. Use when writing or fixing an end-to-end or UI test, a test is flaky, testing a change in the browser or on a device, running a bug bash, porting Playwright, Cypress, Selenium, Detox or Maestro tests, or setting up Maestro or Patrol."
 ---
 
 # End-to-end testing
