@@ -78,6 +78,10 @@ Rules that keep it that way:
 
 Each constant or rule says why it exists, what it was measured on and when, and which established pattern it follows: "calibrated on 149 stored answers, 0 false alarms", "the model left the follow-ups out of 11 of 28 answers". A deliberate shortcut names its ceiling and upgrade path ("cut results kept in this process's memory, the newest 100; upgrade: a table"). A rule that was tried and removed says so where someone would add it again.
 
+## The SDK it is written against
+
+Write SDK calls from the documentation and type definitions that ship inside the installed package (for the AI SDK, `node_modules/ai/docs` and its `.d.ts`), never from memory: option names move between major versions (instructions for system, `toolApproval` for a per-tool flag, renamed callbacks), and an old name can still type-check in a loose spot. Run the type check after each change, and set every loop option explicitly rather than relying on a default you haven't read.
+
 ## Prove it
 
 - [ ] Every file sits in the folder the table above gives it; no `utils`, `helpers` or `types` files

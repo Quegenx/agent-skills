@@ -59,7 +59,8 @@ It **fails open**: if the check is slow or down, the reply goes out on the code 
 A model that decides whether an action may run (a shell command, a payment, a destructive tool) **fails closed:** deny on timeout or unparseable output, and tell the agent it was a review failure, not a safety verdict. After a few denials in a turn (three in a row, or twenty in total), stop retrying and ask the user. Fast-path in code first (an allowlist, edits, provably routine actions) so the model only sees what code can't decide.
 
 - **Feed it only trusted input:** what the user wrote and the pending action, never the agent's own prose, its plan or tool results, which can be fabricated or injected.
-- **Roll it out in shadow mode:** run, log, allow; enforce once its decisions are measured.
+- **Roll it out in shadow mode:** run, log, allow; enforce once its decisions are measured. Log both the verdict and what actually happened, so the switch to enforcing is a measured step.
+- **A provider's own safety verdict on a tool call** is another input of this kind: its "flagged" blocks, and its "unavailable" or "skipped" counts as a denial for tools that pay, send or delete.
 
 ## Loop breakers and goal loops
 

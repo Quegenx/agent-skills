@@ -5,9 +5,13 @@
 Built **per request**, never shared: one function takes everything the turn needs and returns the loop.
 
 - **Input:** the conversation id, the user id, the model, a database client scoped to the signed-in user, their settings, the locale, the turn signals, trace integrations, and every outside action as an optional interface (the real one by default, fixed answers in evals).
-- **It builds the tool context once** (ids, client, settings, actions, page data) and hands the same object to every tool.
+- **It builds the tool context once** (ids, client, settings, actions, page data) and hands the same object to every tool. Where the SDK separates them, keep two kinds apart: run-wide state every hook may read (request id, flags) and per-tool context validated by each tool's own schema (its client, its secrets), so a tool receives only what it declares. Neither belongs in telemetry unless a field is allowlisted, and a context validation error the model sees says only that the call could not run.
 - **It composes the tool wrappers in one line,** innermost first: errors explained, then exclusive tools queued, then rare tools deferred.
 - **It sets the loop:** the step limit, the stop conditions (a question card ends the turn), approval from the traits table, step preparation, provider options (base effort, cache key, privacy), telemetry with a function id.
+
+**The message type comes from the agent:** derive the UI message type from the built agent (its tools give every tool part its exact input and output), and let the page, the storage and the history builder share that one type. A tool's own part type is exported beside the tool, so a UI component imports the type and never the tool.
+
+**Model names live in one place:** the model service maps the agent's roles (the main model, the fast side-call model, the summariser) to provider model ids and their default settings, so changing a model is one edit and evals pin the same table.
 
 Next to it: **the static instructions** as tagged sections, the same for every user (only a session-wide choice such as the locale varies), and **the user context** builder (settings, missing profile details, memories) that becomes a message, never part of the instructions.
 

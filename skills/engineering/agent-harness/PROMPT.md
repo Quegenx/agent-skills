@@ -17,6 +17,7 @@ The base prompt stays byte-identical for the whole session, so the provider's pr
 - **Pin the prefix with a test:** render it for two different sessions and assert the bytes match. A section that truly must change every turn is declared as such, with the reason next to it.
 - The measured cost of getting this wrong: one per-turn policy line inside the prompt can drop the cached share from most of the request to almost nothing. Done right, 90-99% of input is cached.
 - **The order:** tools first, then the static instructions, then rarely changing stable data (the customer, the settings) as a second system message, then the history, and the turn's reminders, memories and record state as one note just before the newest message. Stamp each user message with its own time (weekday, date, time, time zone).
+- **The tools in a fixed order,** set explicitly where the SDK allows it, so adding a tool or a discovered one doesn't reshuffle the cached start.
 - **A cache key per conversation** (`<app>-chat:<conversationId>`), so one conversation's turns land on the same cache.
 
 ## Untrusted text in tagged sections
@@ -25,7 +26,7 @@ When sections are tagged (`<voice>`, `<scope>`, `<customer>`), escape or quote w
 
 ## Reminders code adds
 
-A situational rule arrives only in its situation, as a short message code appends to the turn ("her way in needs a call: keep the order open, no payment link yet"). Code detects the situation from facts (a delivery report arrived, the order is missing a field), so the reminder can't be forgotten and the base prompt stays short. Reminders that keep firing on every turn belong in the prompt instead.
+A situational rule arrives only in its situation, as a short message code appends to the turn ("her way in needs a call: keep the order open, no payment link yet"). Code detects the situation from facts (a delivery report arrived, the order is missing a field), so the reminder can't be forgotten and the base prompt stays short. Reminders that keep firing on every turn belong in the prompt instead. Some providers offer a reminder that expires by itself at the next user message; it does the same job without your code removing it.
 
 A rule about what to do with a tool's result goes in as a **step note** right after that result, not in the base prompt. Moving every rule to its reminder, step note or tool description can halve a base prompt (19,000 characters to under 10,000).
 

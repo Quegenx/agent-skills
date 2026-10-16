@@ -11,11 +11,13 @@ A model is a probability, not code: the same conversation can go another way on 
 |---|---|
 | The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their descriptions | [PROMPT.md](PROMPT.md) |
 | Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
-| Tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
-| The runtime: one answer at a time, loop settings, tool traits, stop hook order, human in the loop, observability, the build order | [RUNTIME.md](RUNTIME.md) |
+| Tools, picking tools by search, outside (MCP) tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
+| The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, observability, the build order | [RUNTIME.md](RUNTIME.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |
 | Classifier decisions inside the loop (typed yes/no, choice and score answers) | the `jev-decisions` skill |
+
+**Your own loop or an existing agent runtime.** A runtime that brings its own workspace, coding tools, history, compaction and permissions (a coding agent you drive through an SDK) fits work that looks like what it was built for; send it only the newest message, since it keeps its own history. Write your own loop when you need the model call, the tools, the settings and the structured output under your control, which is the case for a product's agent and the rest of this skill.
 
 ## Why agents fail
 
@@ -58,8 +60,9 @@ For every sentence in the prompt, ask in order:
 ## Prove it
 
 - [ ] Eval suite from real conversations, 3 runs per case, baseline recorded
-- [ ] One lease per conversation, longer than the worst-case run; a step limit above the measured maximum, a last step with tools off, step and pass timeouts, visible retries
-- [ ] One tool traits table that parallelism, approval and system-started turns derive from; an unknown tool treated as the most dangerous
+- [ ] One lease per conversation, longer than the worst-case run; an explicit step limit above the measured maximum, a last step with tools off, pass, step, stream and tool timeouts, visible retries; a stopped run saved from the abort callback
+- [ ] One tool traits table that parallelism, approval and system-started turns derive from; an unknown tool treated as the most dangerous; dispatcher tools judged by the action inside them; approvals accepted only for pending calls in server-held history, or signed
+- [ ] Outside tools (MCP, plugins): their hints not trusted, the approved list fingerprinted, a change blocked until approved again
 - [ ] Metrics without content, one masked trace per turn, a run record with events, flushed before the function returns
 - [ ] Rendered prompt and tool schemas measured and pinned as reviewed snapshot files
 - [ ] Stable base prompt; changing context sent as appended messages; the prefix pinned by a test

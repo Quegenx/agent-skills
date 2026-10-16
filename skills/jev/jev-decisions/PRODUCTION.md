@@ -45,6 +45,23 @@ As of October 2026: `jev-1.13.0` is the stable release behind `jev-latest`, `jev
 - **Fall back below the confidence bar** to the rule the product used before (keywords, a default). In one measurement on labelled courier notes, Jev with a keyword fallback under it was right on 161 of 165 runs; keywords alone on 32 of 55 notes.
 - **Every threshold names the eval that set it,** and the eval stays in the full run.
 
+**Through the AI SDK.** A project already on the AI SDK can ask the same questions through its experimental decisions call with a Jev decision model, which keeps one provider setup and one test double. The shapes match: a boolean answer is P(true), choice and score answers may carry their distributions, and Jev's separate confidence statistic sits in the provider metadata, keyed by question id (it is not the chosen option's probability). Its limits: text and JSON state only through that provider, a question type the model doesn't support fails the whole call, a refusal of any question fails the call and is not retried, and the default retries (2) need the same budget as above. Pin the model id there too.
+
+```ts
+import { experimental_decide, type Experimental_DecisionModel } from "ai";
+
+export async function routeRefundMessage(model: Experimental_DecisionModel, message: string) {
+  const { answers } = await experimental_decide({
+    model,
+    state: { message },
+    questions: { requestsRefund: { type: "boolean", instructions: "Does the customer ask for money back for an order?" } },
+  });
+  const p = answers.requestsRefund.probability;
+  return p >= 0.8 ? "refunds_queue" : p <= 0.2 ? "normal_reply" : "staff_review";
+}
+// Tests pass a mock decision model from "ai/test" whose doDecide returns { answers: { requestsRefund: { type: "boolean", probability: 0.5 } }, warnings: [] }.
+```
+
 **Questions and thresholds live in one module.** They are the part a reviewer must read, so keep every question, criterion and threshold constant in one file, not scattered through handlers. Coding agents write mediocre questions; expect to edit them by hand.
 
 ## Record and replay

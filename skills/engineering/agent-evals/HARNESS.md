@@ -65,3 +65,33 @@ Compare runs case by case, not only by the headline: list the cases that fell fr
 - **Re-recording a baseline produces fixtures, not correctness:** a refresh can commit errors as the expected output. Assert error counts separately.
 - **At least one test drives the real entry path and needs no key** (a scripted fake model). A feature can be dead in production behind hundreds of green tests that mounted it by hand while the one end-to-end test was skipped for lack of a key.
 - **A regression test must be able to fail for the reported mechanism,** not pass on a timeout.
+
+## Scripted model tests
+
+Below the eval suite sits a layer of fast, free, exact tests: the real agent object with a model that replays a script, one reply per step. They prove the loop's own rules (what stops it, what the policy does, which tools run in which order) on every commit, where an eval can only sample them.
+
+```ts
+import { isStepCount, ToolLoopAgent } from "ai";
+import { MockLanguageModelV4 } from "ai/test";
+
+const usage = { inputTokens: { total: 10, noCache: 10, cacheRead: undefined, cacheWrite: undefined }, outputTokens: { total: 5, text: 5, reasoning: undefined } };
+const callStep = (id: string, toolName: string, input: object) => ({
+  content: [{ type: "tool-call" as const, toolCallId: id, toolName, input: JSON.stringify(input) }],
+  finishReason: { unified: "tool-calls" as const, raw: undefined }, usage, warnings: [],
+});
+
+test("a cancel waits for the user after the lookup", async () => {
+  const model = new MockLanguageModelV4({
+    doGenerate: [callStep("c1", "findOrder", { orderNumber: "1042" }), callStep("c2", "cancelOrder", { orderNumber: "1042" })],
+  });
+  const agent = new ToolLoopAgent({ model, tools: orderTools, stopWhen: isStepCount(6), toolApproval: { findOrder: "approved", cancelOrder: "user-approval" } });
+
+  const result = await agent.generate({ prompt: "Cancel order 1042" });
+
+  expect(result.steps.map((step) => step.toolCalls.map((call) => call.toolName))).toEqual([["findOrder"], ["cancelOrder"]]);
+  expect(result.steps[1].content.map((part) => part.type)).toContain("tool-approval-request");
+  expect(model.doGenerateCalls).toHaveLength(2); // stopped for the user; no third model call
+});
+```
+
+`model.doGenerateCalls` holds every request the agent sent, so the same test can assert what the model was shown: a policy denial's reason in the next prompt, a note added by step preparation, the tool list unchanged between steps.
