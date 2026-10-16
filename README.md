@@ -1,12 +1,12 @@
 # Agent skills
 
-36 skills for coding agents, in four sets:
+37 skills for coding agents, in four sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/video/`](./skills/video) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-slop/`](./skills/anti-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation, AI agents and their evals. 19 skills. |
+| [`skills/engineering/`](./skills/engineering) | Practice for TypeScript with Supabase, Convex and Effect: architecture, APIs, data, jobs, messaging, security, testing, UI animation, AI agents, their codebase and their evals. 20 skills. |
 | [`skills/jev/`](./skills/jev) | Decision layers on Jev: questions answered as probabilities, gates that turn them into actions, agent hooks and evals. 1 skill. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
@@ -122,6 +122,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [ui-animation](./skills/engineering/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion |
 | [ai-features](./skills/engineering/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |
 | [agent-harness](./skills/engineering/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks |
+| [agent-codebase](./skills/engineering/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
 | [agent-evals](./skills/engineering/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, and the fix loop to a clean run |
 | [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
 | [testing](./skills/engineering/testing/SKILL.md) | Tests that catch real bugs, integration tests with real Postgres, architecture and contract tests |

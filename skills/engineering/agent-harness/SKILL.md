@@ -13,6 +13,7 @@ A model is a probability, not code: the same conversation can go another way on 
 | Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
 | Tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
 | The runtime: one answer at a time, loop settings, tool traits, stop hook order, human in the loop, observability, the build order | [RUNTIME.md](RUNTIME.md) |
+| Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |
 | Classifier decisions inside the loop (typed yes/no, choice and score answers) | the `jev-decisions` skill |
 

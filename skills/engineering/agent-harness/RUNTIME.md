@@ -27,9 +27,11 @@ where id = $1 and (answering_until is null or answering_until < now())
 returning id;
 ```
 
+- **Renew the lease while the answer runs** (every minute), matching the exact expiry the database returned, so a lost lease is never silently reclaimed; losing it aborts the stream, and the release clears only the holder's own value.
 - **At the door:** origin and content-type checks, the session's user must match the request's user, a cap on the body size, the input decoded with a schema.
 - **Quiet hours** for a business channel: batches wait until morning instead of replying at 3 a.m.
 - **Show it is working:** a read receipt and typing indicator, or streamed parts.
+- **The client sends only text and files.** Every trusted part (the user context, a gate's note, a tool receipt) is written by the server, and the page can't forge one.
 - **Another bot on the line:** let the agent mark an automated reply and send nothing, or two bots answer each other forever.
 
 ## Preparing the turn
@@ -46,7 +48,7 @@ A side classifier that reads the newest message (is it simple, does it need a hi
 | Last step | Tools off, plus "answer now with what you found and what is still open" | Never end silently |
 | Repeated calls | The same call with the same input: a reminder on the 3rd, a stop on the 5th | Loops |
 | Reasoning effort | Start low for simple turns; raise it with an appended message (a long message, step 3+, a tool error, a loaded skill); it never falls within a turn | Pay for thinking only when the turn needs it, without editing the cached prefix |
-| Retries | Turn the SDK's silent retries off; wrap the model so a retryable error is retried a few times (1, 2, 4 s) and each retry is logged, and shown to the user in a live UI | Silent retries hide outages |
+| Retries | Turn the SDK's silent retries off; wrap the model so a retryable error is retried a few times (1, 2, 4 s) and each retry is logged, and shown to the user in a live UI. Retry only before anything streamed, and never a stopped answer | Silent retries hide outages |
 | Timeouts | One per step (30 s) and one per pass (90 s); the request's abort signal reaches every tool | A stalled call otherwise never ends |
 | Output | A token cap per reply | Bounded cost and length |
 | Privacy | Provider-side storage off; a hashed user id for abuse tracking | No raw identifiers at the provider |
@@ -106,6 +108,12 @@ Fit it to who the user is.
 - **A customer** gets no approval cards. A handoff tool opens a ticket, marks the conversation as needing a person and alerts the team; a second handoff in the same conversation sends no second alert. Staff take over in their dashboard.
 - **An account owner** approves outside actions (send a message, join, delete) with a click each time. A question with two to four buttons ends the turn; a live checklist shows the plan.
 - **"Try again"** is refused when the earlier answer acted: rerunning would act twice.
+- **A denial reaches the model in words:** with the user's note, "call it again with this change, and the user approves again"; without one, "it did not happen; do not call it again unless asked".
+
+## After the answer
+
+- **Follow-up suggestions** come from a short call of their own after the answer ends, inside a time budget; none when the answer asks the user something. Asked to write them itself, the agent left them out of 11 of 28 answers.
+- **A chat title** is written once an answer names what the user wants, and saved only while the chat has no name, so a name the user gave always wins.
 
 ## Observability
 

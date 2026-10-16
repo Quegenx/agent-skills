@@ -5,6 +5,7 @@
 ## Fix patterns, strongest first
 
 1. **Put the exact data in the tool output.** When the reply must contain exact facts (items, totals, dates, links), one function builds the finished phrase, every tool that needs it returns it, and the prompt says to copy it. Models drop and rephrase details they assemble themselves (a payment summary that loses the add-ons).
+   The same goes for the next step: a `next` field in the result of the call it follows lands where the same sentence in the prompt did not (an agent that kept stopping after preparing a join, 2 runs in 3, stopped doing it).
 2. **A tool that refuses the wrong state.** Closing an order with details missing, opening a second order after a failure: the tool returns a refusal with a distinctive code and what to do instead (`ORDER_DRAFT_AFTER_FAILURE: continue the open draft`). The model can't skip it.
 3. **A gate on the finished reply** for a mistake the model keeps making (below).
 4. **A reply check** for hard rules (below).
@@ -48,6 +49,8 @@ Rules for every gate:
 ## The reply check
 
 A classifier reads the draft and says **what it claims** (a handoff, a payment link, a discount, a confirmed payment, an internal term); code says **whether that is true** (did the handoff tool run this turn? is there a link in the reply? is it paid?). A claim with no evidence earns **one** rewrite. The classifier never sees the order, so it never guesses it. Exact rules run beside it in code: every amount explained by the catalogue or a tool, the booked day and time, URLs, foreign scripts.
+
+A **cut result never read on** gets its own claim: code finds the cut no paging call followed, the classifier says whether the reply speaks about the whole result (the cheapest, how many, none match), and the agent is sent back to read the rest. The cheapest listing was item 96 of 100 and the agent named the first.
 
 It **fails open**: if the check is slow or down, the reply goes out on the code rules alone, inside a fixed time budget. When correct new behaviour trips it, change the behaviour to satisfy it (actually call the handoff tool the reply mentions), never the check. When a fix keeps failing, look for a second check fighting it.
 

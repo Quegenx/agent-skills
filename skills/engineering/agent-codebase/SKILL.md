@@ -1,0 +1,84 @@
+---
+name: agent-codebase
+description: "Lays out an LLM agent's codebase: the folder tree (transport, core, memory, skills, tools), file and symbol names, dependency direction, the test mirror and the seams evals plug into. Use when starting an agent's code, adding a tool or module to one, or reorganising it."
+---
+
+# Agent codebase
+
+An agent grows fast: tools, gates, notes, memory, playbooks. Without a fixed place for each, the factory turns into a 2,000-line file and every fix lands somewhere new. This layout gives every piece one home, decided by one question, and keeps the parts that change often (tools, playbooks) away from the parts that must stay stable (the loop, the prompt, the history).
+
+| The job | Read |
+|---|---|
+| What each module owns and its contract: the factory, step preparation, the tool runtime, a tool file, turn modules, the transport pipeline, memory, skills, seams | [MODULES.md](MODULES.md) |
+| What the agent does inside these modules (gates, prompt, tools, runtime) | the `agent-harness` skill |
+| The eval suite that drives the agent through these seams | the `agent-evals` skill |
+
+## The tree
+
+```
+src/agent/
+  chat/                    the transport: one request in, one streamed answer out
+    conversations/         open or create, list, rename, delete, the title
+    messages/              prepare the new message, storage, the history as the model reads it, attachments to text
+    turn/                  the endpoint, request decoding, the lease, approvals, retry, error wording, page data, the stream
+  core/                    the agent itself, the same whatever transport reaches it
+    agent/                 the static instructions, the per-user context message, the agent factory
+    model/                 the model service, cache key, provider privacy, reasoning effort, visible retry, telemetry, usage
+    tool-runtime/          the tool registry, the traits table, the tool context, the wrappers every tool passes through
+    turn/                  around one turn: signals, stop hooks, gates, plan gate, answer check, follow-ups, situational notes
+  memory/                  short-term (compaction) and long-term (saved facts and their rules)
+  skills/
+    playbooks/             one playbook per file
+    registry/              the list, the name type, the list message
+  tools/
+    conversation/          tools about the chat itself: memory, plan, ask, load a skill, attached files, paging a cut result, settings, product help
+    <domain>/              one folder per outside domain; each file a few related tools
+src/lib/agent-chat/        message and part schemas the page and the server share
+tests/src/agent/           mirrors src/agent file for file; prompt snapshots next to the prompt tests
+```
+
+Where a new piece goes, by the question it answers:
+
+| It is about... | Folder |
+|---|---|
+| how a request arrives, is checked, streamed back, stored | `chat/` |
+| how the agent thinks and acts in one turn | `core/` |
+| what it remembers within a chat or across chats | `memory/` |
+| a multi-step procedure loaded on demand | `skills/playbooks/` |
+| something it can do in the world | `tools/<domain>/` |
+| a rule that wraps every tool (errors, queue, output cap, deferral) | `core/tool-runtime/` |
+
+## Dependency direction
+
+Measured from a working agent of 77 files, by import:
+
+- **Domain tool folders import only the tool runtime** (the context, the output cap, error helpers) and their own server functions. The registry in `core/tool-runtime/` is the one file that imports every tool.
+- **The transport imports the core;** the core imports memory and the skill registry.
+- **Playbooks import only the registry's type;** the registry imports the playbooks.
+
+Rules that keep it that way:
+
+1. **No domain imports another domain.** A helper two tool folders share (an optional-input schema, an id pattern) lives in the tool runtime. In the measured code one input helper sat in a domain folder and a second folder imported it: move it.
+2. **The core defines the ports it needs from the transport** (what a tool may show on the page, how a retry is shown), with a no-op default; the transport implements them. In the measured code the page-data interface sat in the transport folder, so core and transport imported each other: the interface belongs in the core.
+3. **Orchestration stays thin.** The endpoint reads in parallel and wires modules together; every decision lives in a named module with its own test.
+4. **One registry per kind:** tools, traits, skills, error next steps, deferred namespaces. Each is a table other code derives from, never a list repeated in a second place.
+
+## Names
+
+- **Every exported symbol carries the domain word,** so a plain-text search finds it: `agentToolNeedsApproval`, `agentChatModelHistory`, `createAgentStopHooks`; never `needsApproval` or `history`.
+- **Verbs by kind:** storage `readStored*`, `writeStored*`, `insertStored*`, `updateStored*`, `deleteStored*`; factories `create*`; tool wrappers verb-first on the set (`addAgentToolErrorNextSteps`, `queueExclusiveAgentTools`, `deferRareAgentTools`); a tool constant ends in `Tool` and its registry key drops it (`cancelOrder: cancelOrderTool`).
+- **Files** are named after the concept with the domain prefix (`agent-tool-traits.ts`, `agent-chat-answer-lease.server.ts`). `.server.ts` marks anything that touches the database, the network or a secret. Several related tools: `<domain>-tools.ts`; one: `<name>-tool.ts`; a playbook: `<name>-skill.ts`.
+- **Error codes and log events are complete literals with a family prefix:** `AGENT_CHAT_BUSY`, `AGENT_CHAT_LEASE_FAILED`, `AGENT_MEMORY_FULL`, `AGENT_ANSWER_CHECK_FAILED`. A tool error's message starts with its code, `<CODE>: detail`, so code can map it to a next step.
+- **Metrics:** snake case with the agent prefix (`agent_model_calls`, `agent_tool_seconds`, `agent_turn_gates`), names, counts and timings only.
+
+## Comments at the definition
+
+Each constant or rule says why it exists, what it was measured on and when, and which established pattern it follows: "calibrated on 149 stored answers, 0 false alarms", "the model left the follow-ups out of 11 of 28 answers". A deliberate shortcut names its ceiling and upgrade path ("cut results kept in this process's memory, the newest 100; upgrade: a table"). A rule that was tried and removed says so where someone would add it again.
+
+## Prove it
+
+- [ ] Every file sits in the folder the table above gives it; no `utils`, `helpers` or `types` files
+- [ ] Imports checked mechanically: no domain-to-domain edge, no core-to-transport edge
+- [ ] Tool names, traits, deferred namespaces and error next steps each defined once, the others derived or checked by type (a tool with no trait fails to compile)
+- [ ] Every outside action reaches tools through an injected interface with the real one as default
+- [ ] Tests mirror the source tree; the prompt, tool schemas and rebuilt histories pinned as snapshot files

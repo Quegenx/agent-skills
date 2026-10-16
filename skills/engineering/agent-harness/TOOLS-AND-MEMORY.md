@@ -3,7 +3,7 @@
 ## Tools
 
 - **Short descriptions:** one or two sentences of what the tool does; usage rules live in the prompt or a skill. Leave out what the model learns from the result. Where the output format must be exact, fix it in the schema (an enum, a grammar), not in prose.
-- **Defer rare tools** behind a search, and make the error for calling an unloaded one say how to load it. Keep the tool set stable across modes: reject at execute time rather than removing the tool, so the cached prefix holds.
+- **Defer rare tools** behind a search, and make the error for calling an unloaded one say how to load it. List each deferred group with its tool names in the instructions, built from the same table, so a tool the prompt names is found. A hosted search that returns only tools not loaded yet comes back empty for a loaded one, and the model reads that as "missing": say so in the instructions, and send back a turn that ends on an empty search. A group's usage rules arrive as a note once it is in use, not in the base prompt. Keep the tool set stable across modes: reject at execute time rather than removing the tool, so the cached prefix holds.
 - **Bound every result:** cut long output to a budget (around 10,000 tokens) keeping head and tail with "... N tokens cut ...", or spill the rest to a file the agent can read on request. For a long list, cut items from the end with a "cut" note, keep the full result stored, and give a paging tool to read the rest. Cap error text too.
 - **Effects and policies** come from one traits table ([RUNTIME.md](RUNTIME.md)).
 - **Errors carry the next step:** "File has not been read yet. Read it first." Keep error codes precise; a code that collapses "no matches" into "unavailable" misleads the model. Give a policy refusal its own wording ("policy: do not retry another way").
@@ -13,6 +13,8 @@
 
 - **Store the turn's tool calls and results and replay them** in later turns: the order it created, the address it checked, the link it sent. "Did you send me the link?" is then answered from what happened.
 - **Rebuild the history every turn the same way** from stored rows, so the cached prefix keeps matching.
+- **Keep a gate's note in the stored answer** where it came, so later turns read it too. Leave out per-step notes and reasoning-effort updates: an old effort update read again would hold a later turn at that effort.
+- **Attachments:** convert a document to text once, store the whole text, put its start in the message and give a tool to search or page the rest. Store a file's name and type, never its contents; a later turn reads "an image was sent" in its place.
 - **Every tool call has a result.** A call cut by the stop button reads "aborted, did not happen"; one with no stored output reads "interrupted: outcome unknown". A call without a result breaks providers and leaves the model guessing.
 - **The current state comes from the database each turn** (the open order, what is missing, paid or not), added as a message, never from the model's memory.
 - **A stored result that encodes an old mistake** makes the agent repeat it; fix the tool so the mistake can't happen, not only the prompt.
