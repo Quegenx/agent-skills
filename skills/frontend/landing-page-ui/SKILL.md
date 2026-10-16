@@ -21,7 +21,7 @@ The product's own screens are `app-ui`; its agent's chat is `agent-chat-ui`; dur
 
 1. **The site is not the app.** It has its own stylesheet, tokens, reset and chrome (header, footer, cookie banner, smooth scroll, analytics), and the app's pages load none of it. Links from the site into the app are plain links, so the app arrives as a fresh document with its own styles.
 2. **One page template.** Hero, then the story (the problem, what it does, how it fits, the steps, more), then the questions, then the closing call. A new page is new words and new screens in the same blocks.
-3. **Show the real product.** Every claim sits beside a screen of the real app with demo data, registered once with its size so every image has width and height.
+3. **Show the real product.** Every claim sits beside a screen of the real app with demo data, registered once with its size so every image has width and height. Every image ships compressed as WebP and every video compressed as WebM (VP9 or AV1) with an H.264 fallback; the encoding settings are in the `performance-and-caching` skill's BROWSER.md.
 4. **Every heading has two tones:** a statement and a muted part in the same sentence (or an accent line in the hero). It is the site's voice; keep it on every section.
 5. **Motion is generous but finite.** The hero assembles once; sections clear from a blur as they arrive; nothing loops except one decorative background, and nothing moves under the reader's eyes while they read.
 6. **Hover is a bonus, never the path.** Every hover detail (arrows that fly, icons that tilt, tiles that light) also responds to focus or has no meaning lost on touch, and runs only under `(hover: hover)`.

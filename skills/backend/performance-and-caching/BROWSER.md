@@ -42,6 +42,17 @@ Report what you changed and, separately, what needs a backend change.
 
 - **Reserve the space:** `width` and `height` attributes (or `aspect-ratio`) on every image and video, so nothing shifts when it loads.
 - **Load what's visible:** `loading="lazy"` below the fold, `fetchpriority="high"` and no lazy loading on the largest image above the fold, `srcset` and `sizes` so a phone doesn't download the desktop file, and `decoding="async"`.
+- **Every image compressed, as WebP:** never ship the original export or camera file. Resize to the widths `srcset` lists (the largest at about twice its biggest display size), strip metadata, and encode WebP at quality 75 to 82 for photos; screenshots and UI with text or sharp edges as lossless (or near-lossless) WebP, which also keeps transparency and is usually far smaller than the PNG. Every current browser decodes WebP, so no JPEG or PNG fallback is needed. Encode once at build or upload, never on request; check the result by eye at 100% on a high-density screen.
+
+```bash
+cwebp -q 80 -m 6 -metadata none photo.jpg -o photo.webp
+cwebp -lossless -z 9 -metadata none screen.png -o screen.webp
+```
+
+```ts
+await sharp(input).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80, effort: 6 }).toFile("photo-1600.webp");
+```
+
 - **Sharp after small:** show the small image first; load the large one when it's wanted (start on `pointerdown` or hover intent, before the click completes), wait for it to decode, then crossfade it over the small one:
 
 ```ts
@@ -58,10 +69,10 @@ export async function upgradeImage(img: HTMLImageElement, largeSrc: string): Pro
 }
 ```
 
-- **Encode video for the web as a ladder, best codec first:** AV1 is the smallest for the same quality, VP9 in WebM next, H.264 in MP4 last as the file every browser plays. List them as `<source>` elements with the codec in `type`; the browser takes the first it can play, so each visitor gets the smallest file their device decodes:
+- **Every video compressed, as WebM with VP9 or AV1,** never the raw export; keep H.264 MP4 only as the last fallback. **Encode it as a ladder, best codec first:** AV1 is the smallest for the same quality, VP9 in WebM next, H.264 in MP4 last as the file every browser plays. List them as `<source>` elements with the codec in `type`; the browser takes the first it can play, so each visitor gets the smallest file their device decodes:
 
 ```html
-<video muted playsinline loop autoplay poster="hero.jpg" width="1920" height="1080">
+<video muted playsinline loop autoplay poster="hero.webp" width="1920" height="1080">
   <source src="hero.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
   <source src="hero.vp9.webm" type='video/webm; codecs="vp09.00.40.08"'>
   <source src="hero.h264.mp4" type='video/mp4; codecs="avc1.640028"'>
