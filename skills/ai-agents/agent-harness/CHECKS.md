@@ -53,9 +53,22 @@ Gates that kept paying for themselves:
 - **A repeated question,** checked against the customer's own words: a code asked for after she wrote it, or after she said there is none.
 - **Plan-only steps** don't count against the step budget for work (up to a few per pass), or a planning agent runs out of steps before it acts.
 
+Small code fixes for what the model keeps doing in replies:
+
+- **Characters the brand never writes** (an em dash) are replaced in code before the check and the send.
+- **Its own planning note** ("pickup 3 bottles: pay at store, no link") leaking into a reply in another language: a line of the wrong language's prose is a violation.
+- **A fixed line the shop always sends exactly,** padded with the model's own words, is a violation.
+- **A promise before the fact:** "we'll come tomorrow with 2 bottles" while the order isn't closed yet; a day the reply names that isn't the stored delivery day.
+- **A price written in the same step as the catalogue read** (a caption saying 45 for a 50 product) is checked against the catalogue before it goes out.
+- **A refusal by the provider's content filter** is never sent.
+
 ## Fields a model must not set
 
 A tool that writes a record accepts only what the agent may change. A model echoed `paymentStatus: "unpaid"` onto an order already paid on the website; the update tool now never changes a paid order's payment status. The same for totals: write or charge only what code priced from the catalog, refuse an unknown add-on with the catalog's names (`ORDER_ADDON_UNKNOWN`), and fail an order code can't price (`ORDER_TOTAL_UNPRICED`) instead of falling back to the model's sum. A tool that reports a change reports the rows it actually changed, not the ones it was asked to.
+
+The same for values the model works out: a date it resolved from a weekday can land in the wrong year, so code moves a past date forward to the next such weekday, onto a day the delivery area is served, and never past the cutoff. A note it saves to memory can't hold an order detail or an entry code. Contacting a third party (a gift's recipient) needs the shop's consent question in the recent messages; the model's own "consent confirmed" flag is not evidence. A place the service can't reach (a hospital at night) never closes, whatever the agent decided.
+
+**Outside failures point the right way:** a map service that is down is a tool error the agent explains; an address it can't find closes anyway, marked for the team to review, since that isn't the customer's problem. A handoff whose notification fails is still a handoff: the ticket is the team's queue.
 
 ## The reply check
 

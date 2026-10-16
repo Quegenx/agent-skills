@@ -14,6 +14,7 @@
 
 ## Keep the profile small and current
 
+- **Oldest first,** so a new fact joins the end and the earlier ones keep their place in the cached part of the note.
 - **Cap it:** a fixed number of facts of bounded length, or a token budget (a few hundred tokens). A fact costs about ten tokens; fifty distinctive ones are cheap, and distinctive details are what make a reply feel personal.
 - **Split by lifetime:** stable facts change rarely; current context expires (a project ends, a trip happens).
 - **Topic groups** (preferences, work, goals) with precise descriptions ("explicit first-person preferences only, not inferred traits") keep each group clean.

@@ -37,7 +37,9 @@ export const choiceGap = (a: ChoiceResponse) => {
 
 The sixth input is a **fact**: a boolean code computed from the record (`refund.amount <= 50`, `card.status === "active"`, `grant.requiresConfirmation`). Rules combine readings and facts with `&&`, `||`, `!`; facts are free and exact, so put them first.
 
-- Use `scoreTail` for risk ("a third of the mass at angry or above hands off"), `score` (the expectation) only together with a confidence floor.
+- Decide on `confidence`, not `probabilities[choice]` (it usually runs a little lower); every threshold was calibrated on one of them, so switching fields means recalibrating.
+
+Use `scoreTail` for risk ("a third of the mass at angry or above hands off"), `score` (the expectation) only together with a confidence floor.
 - Use `choiceIs` to act on one label, `choiceMass` to enter a branch that several labels share.
 - A yes/no threshold follows the cost of each mistake: 0.5 when both errors cost the same, higher when a false yes is expensive (paging someone, paying out), lower when a missed yes is (a safety flag). Below the act threshold is "not established", not "no"; "no" is its own threshold on the other side (`a.noul < 0.15`), and the space between is the middle band. A starting band of no below 0.3, yes above 0.7 and a person between absorbs the run-to-run wobble around 0.5.
 - **Don't read magnitudes off a score.** The expected level says which side of a cut a case falls; it is not calibrated enough to interpolate an exact number between two levels.

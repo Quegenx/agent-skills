@@ -171,12 +171,16 @@ An agent that works for minutes or hours (research, an import, a coding task) ou
 | Traces with content | One trace per turn, each side call under it with its own name, personal data masked; content goes only here |
 | Run records | One row per run: events (signals, gate reminders, retries, the route taken), usage, timings |
 | Run analysis | Classify each finished run (truncated, empty, too long, too many calls, unexplained tool errors); some classes stop the reply |
-| Alerts | A failed turn alerts the team |
+| Alerts | A failed turn means someone got no reply: alert the team within minutes, throttled to one alert per window during an outage |
 | Flushing | Flush traces before a serverless function returns; it ends abruptly |
 
 - **Each span typed for what it is:** model calls as generations, a lookup as retrieval, a subagent as its own agent node under the step that called it, each subagent named after its task, never all called "assistant".
 - **Set a span's input on purpose** (the user's message, the tool's arguments), not every argument of the wrapped function, which drags in clients, settings and keys.
 - **Read a real trace after instrumenting:** run the path, fetch the trace, check that someone could see from it exactly what the agent knew at each decision, fix the gaps, repeat.
+- **Mask every span attribute, not only the tracing SDK's own:** one SDK masked only its input, output and metadata fields, while the AI SDK wrote the prompt, messages and tool calls under its own attribute names, which went out unmasked (an eval's model calls carried a phone number). A span processor masks every string attribute before the exporter reads it. Write the phone pattern with each separator optional before a single digit, so it never backtracks, and find emails by scanning out from each `@`.
+- **Keep usage numbers visible through redaction:** a substring rule that hides anything named like "input" or "token" also hides `inputTokens` and `cacheReadTokens`; allowlist the numeric usage fields. Store request and response bodies only behind a debug flag; they dominate log storage and are rarely read.
+- **Time journeys on the monotonic clock,** so a frozen date in the evals doesn't stop the stopwatch.
+- **Count only crashes and unknown outcomes** toward a tool-error circuit breaker; a coded error with a next step is an answer the model acts on.
 - **Mask after parsing:** a tracing SDK may hand the masking hook objects, not strings, so a mask that only matches strings lets phones and emails in tool inputs through; walk the parsed JSON.
 - **Ask for an alias, log the answer:** a classifier on a "latest" model alias logs the version that actually answered, and its evals rerun when that version changes.
 - **With provider storage off** (the privacy setting above, `store: false`), check that reasoning still carries across steps (the AI SDK's OpenAI provider adds the encrypted reasoning include itself) and that the cached share holds; put it on every call, the title and summary calls included.

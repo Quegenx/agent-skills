@@ -14,6 +14,11 @@
 - **Errors carry the next step:** "File has not been read yet. Read it first." Keep error codes precise; a code that collapses "no matches" into "unavailable" misleads the model. Give a policy refusal its own wording ("policy: do not retry another way").
 - **Outside actions are idempotent:** derive the request id from the conversation and the tool call, so a retry or a replayed turn never sends two messages or two charges.
 - **A tool that keeps getting bad input** is a schema problem first: log the raw arguments, then fix the name, the description or the field descriptions before touching the prompt. Optional fields as nullable rather than absent, for providers with strict tool schemas. A tool that changes something returns what it did ("draft 1042 saved"), never nothing.
+- **Answer a read once per turn:** a memo shared by every call of the turn returns the first result of a catalogue or zones read; a turn sends its product photos once.
+- **Reads always called together become one,** and the turn's preload calls the same function the tool does, so both return the same read. A failed preload drops only that entry; the model calls the tool instead.
+- **Inputs as models write them:** a nullable text field also takes "", "null" and "undefined" as null; a tool with no input still needs an object schema (`type: "object"`), which an empty struct's schema isn't, or the provider rejects the tool.
+- **Error codes checked by the type system:** each tool family's error type takes only codes that have a next step in the table, so a code without one doesn't compile.
+- **Show the model what it should copy:** a customer's Latin profile name goes to the model transliterated (or empty when that fails), so the agent never echoes letters the shop wouldn't write.
 - **Caching a tool's result** is for reads whose answer doesn't depend on time, with a key that holds the tool, the input and the user and tenant, so one account never sees another's cached answer.
 - **Never parse the model's text as JSON by hand:** ask for structured output, and read anything stored back through a safe parse with a schema.
 
@@ -37,6 +42,7 @@ Acting through a user's connected accounts (their mailbox, their CRM): scoped se
 - **Keep a gate's note in the stored answer** where it came, so later turns read it too. Leave out per-step notes and reasoning-effort updates: an old effort update read again would hold a later turn at that effort.
 - **Attachments:** convert a document to text once, store the whole text, put its start in the message and give a tool to search or page the rest. Store a file's name and type, never its contents; a later turn reads "an image was sent" in its place.
 - **Every tool call has a result.** A call cut by the stop button reads "aborted, did not happen"; one with no stored output reads "interrupted: outcome unknown". A call without a result breaks providers and leaves the model guessing.
+- **Store only what a replay needs:** a turn's tool calls and results, with only the provider fields the replay reads. With provider storage off, those are the hosted tool search's item id (without it the call and its result replay under one id) and a deferred tool's namespace; replay the hosted search's call and result both, so the tools it loaded stay loaded. Reasoning isn't kept.
 - **Validate stored messages on every load** against the current tool and part schemas; a tool whose input or output shape changed since the message was stored otherwise breaks the history. Migrate or drop what fails, and say which.
 - **The current state comes from the database each turn** (the open order, what is missing, paid or not), added as a message, never from the model's memory.
 - **A stored result that encodes an old mistake** makes the agent repeat it; fix the tool so the mistake can't happen, not only the prompt.
@@ -47,7 +53,8 @@ When the conversation nears the window (for example at 85-90%, or the window min
 
 - **Fixed sections,** the same every time: intent, decisions and corrections, what the user declined, open tasks, current state, next step, plus every identifier that matters (the order number). Keep the user's own words where they carry meaning.
 - **Restore what the agent was using:** the files, the loaded skills, the plan.
-- **Never split a tool call from its result.** Keep the most recent messages verbatim.
+- **Never split a tool call from its result,** nor a reply from the message it answers: fold at a user message, before everything at that moment. Keep the most recent messages verbatim.
+- **Word the summary message the same until the next fold,** so the cache keeps matching; a playbook loaded before the fold is not re-attached, so the instructions say to load it again when its text is gone.
 - Send the summary as a message so the cached prefix survives; reject a summary that isn't smaller than what it replaces, retry one that came back too short.
 - **Stop after three consecutive failures:** a compaction that fails on every turn burns calls at scale. A summary below a minimum length (a few hundred characters) counts as a failure.
 - Chain each summary on the previous one, at low reasoning effort, keeping the newest few items out of the fold.
