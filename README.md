@@ -1,13 +1,13 @@
 # Agent skills
 
-49 skills for coding agents, in seven sets:
+50 skills for coding agents, in seven sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the chat interface, the agent's codebase, Jev classifiers, search, RAG and extraction. 7 skills. |
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres and Supabase. 11 skills. |
+| [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase and Effect. 12 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
@@ -130,6 +130,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | SQL that returns the right answer: joins that multiply, NULLs, ties, window functions, time zones, streaks, ranges, hierarchies, JSON and JSONB operators |
 | [postgres](./skills/backend/postgres/SKILL.md) | Running Postgres in production: schema and types, migrations that don't lock, pooling and its limits, transactions and isolation, locks and deadlocks, vacuum and wraparound, memory, WAL, backups, replication and failover, audit queries |
 | [supabase](./skills/backend/supabase/SKILL.md) | Building on Supabase, from the official docs: the security checklist (Data API grants, RLS that authorizes, views and security definer functions, keys), Auth (sign-in methods, SSR, sessions, JWTs, MFA, hooks), the Data API and database, Realtime, Edge Functions, Storage, Cron, Queues and pg_net, vectors, the CLI and MCP, migrations, debugging. Conflicting doc statements shown both ways, breaking changes dated |
+| [effect](./skills/backend/effect/SKILL.md) | Setting up Effect so agents learn it from the installed guide and source, and migrating v3 to v4 from the generated migration reference: checkouts, search recipes, package consolidation, sub-agents, prohibitions, the type-check as the done condition |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness |
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |
