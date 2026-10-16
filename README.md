@@ -113,7 +113,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [system-migration](./skills/engineering/system-migration/SKILL.md) | Incremental ports, legacy rewrites, replacing a dependency whose license changed |
 | [refactoring](./skills/engineering/refactoring/SKILL.md) | Small verified steps, typed errors, a functional core, design principles as moves, dependency direction |
 | [api-design](./skills/engineering/api-design/SKILL.md) | Contracts, pagination, errors, idempotency, feature flags, streaming, timeouts and rate limits |
-| [background-jobs](./skills/engineering/background-jobs/SKILL.md) | Async APIs, workers and queues, retries, row and advisory locks, concurrency across instances |
+| [background-jobs](./skills/engineering/background-jobs/SKILL.md) | Async APIs, workers and queues, retries, durable multi-step workflows with waits and flow control, row and advisory locks, concurrency across instances |
 | [messaging](./skills/engineering/messaging/SKILL.md) | Outbox and inbox in Postgres, idempotent consumers, ordering, choosing a broker |
 | [observability](./skills/engineering/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness |
 | [deployment](./skills/engineering/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |

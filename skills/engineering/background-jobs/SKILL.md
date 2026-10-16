@@ -1,6 +1,6 @@
 ---
 name: background-jobs
-description: "Builds work outside the request and controls concurrency: async APIs with job status, workers and queues, retries, locks across instances. Use when adding a job, queue, cron or worker, or fixing races and duplicate processing."
+description: "Builds work outside the request and controls concurrency: async APIs with job status, workers and queues, retries, durable multi-step workflows, locks across instances. Use when adding a job, queue, cron, worker or long-running workflow, or fixing races and duplicate processing."
 ---
 
 # Background jobs and concurrency
@@ -11,6 +11,7 @@ Work that leaves the request, and state that more than one thing touches at once
 |---|---|
 | An endpoint that starts long work and lets the client track it | [ASYNC-APIS.md](ASYNC-APIS.md) |
 | Queues, workers, schedulers, crons, retries, dead letters | [WORKERS.md](WORKERS.md) |
+| Multi-step work that runs for minutes to days: durable steps, replay rules, waits for events and people, compensation, flow control per tenant, progress streaming | [DURABLE-WORKFLOWS.md](DURABLE-WORKFLOWS.md) |
 | Races, row locks, isolation, deadlocks, "only one at a time", across one process or many | [CONCURRENCY.md](CONCURRENCY.md) |
 
 For jobs that call paid AI APIs, also read the `ai-features` skill's AI-JOBS.md; for idempotency keys and status codes, the `api-design` skill.

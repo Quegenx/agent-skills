@@ -12,7 +12,7 @@ A model is a probability, not code: the same conversation can go another way on 
 | The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their routing, changing a prompt, writing for the model that reads it | [PROMPT.md](PROMPT.md) |
 | Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
 | Tools, picking tools by search, outside (MCP) tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
-| The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, observability, the build order | [RUNTIME.md](RUNTIME.md) |
+| The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, long runs, observability, the build order | [RUNTIME.md](RUNTIME.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Long-term memory across conversations: extraction, profile and search, staying current, forgetting | the `agent-memory` skill |
 | Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |

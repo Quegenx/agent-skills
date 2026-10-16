@@ -133,6 +133,22 @@ One agent with good tools is the default; split only when the work has distinct 
 - **Follow-up suggestions** come from a short call of their own after the answer ends, inside a time budget; none when the answer asks the user something. Asked to write them itself, the agent left them out of 11 of 28 answers. Each is a short, specific next action on what was just shown ("compare with last month"), never a generic "tell me more".
 - **A chat title** is written once an answer names what the user wants, and saved only while the chat has no name, so a name the user gave always wins.
 
+## Long runs
+
+An agent that works for minutes or hours (research, an import, a coding task) outlives a request and will meet a crash, a deploy or a timeout.
+
+- **Run it as a durable workflow** (the `background-jobs` skill, DURABLE-WORKFLOWS.md): each model call and each tool call is a step, so a resumed run replays saved results instead of paying for them, or acting, twice. Side effects live inside steps and carry idempotency keys derived from the run and the call.
+- **Keep the run's context serialisable:** ids and settings, never clients or open connections; rebuild those inside each step. Derive anything long-lived (a sandbox, a working directory) from the run's id, and never tear it down at a step boundary.
+- **Slice long loops:** one step per model turn, or a time slice per step (a few minutes), with the history saved after each, so no single step outlives its own timeout.
+- **A deadline for the whole run** that holds across suspensions, plus a step budget; a run that hits either stops, reports what it finished and what is left.
+- **Waits for a person are durable waits** keyed by the run, with a timeout and an explicit "no answer" branch ([Human in the loop](#human-in-the-loop)).
+- **Stopping cancels future steps and undoes nothing:** say so in the UI, and list what already happened.
+- **Progress:** frequent updates (tokens, "reading source 3 of 8") by plain publish; state changes (waiting for approval, done) from a step, once. The page reads the stored run state on reload, then resumes the stream.
+- **Define done as saved results plus evidence:** the deliverable written where it belongs, a check of it (a claims table, test output, counts reconciled), and the open issues. A run that only says it finished hasn't proven it; check the evidence in code where you can.
+- **A reviewer that returns evidence:** give a second agent read-only tools, the deliverable and its sources, and require a table (claim, verdict, source, correction; verdicts verified, incorrect, unresolved, with what evidence is missing). The main agent applies the corrections.
+- **A progress record a new run can resume from:** task, outputs and their paths, finished stages and checks, decisions with their sources, open issues, and one concrete next action. Update it after each stage; a resumed run reads it first.
+- **One run per conversation or record at a time** (a per-key concurrency limit or singleton), and a per-tenant cap on runs at once.
+
 ## Observability
 
 | Layer | What it holds |
