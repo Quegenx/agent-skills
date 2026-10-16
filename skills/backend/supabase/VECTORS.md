@@ -2,6 +2,8 @@
 
 Supabase does vector search inside Postgres with the pgvector extension (`vector`), so embeddings live next to the rows they describe, RLS filters similarity searches like any other select, and the SQL function you write decides whether the index is used. Most outcomes come down to three matches: the same embedding model for stored and query vectors, the index operator class matching the query's distance operator, and the `order by` sorting on that operator directly. Vector buckets (Storage, public alpha) are a separate, slower store for large volumes; the last sections cover them.
 
+**Contents:** [How search works](#how-search-works) · [Setup: extension, types, operators](#setup-extension-types-operators) · [Querying from a client: wrap it in a function](#querying-from-a-client-wrap-it-in-a-function) · [Indexes](#indexes) · [Hybrid search (full-text plus vectors)](#hybrid-search-full-text-plus-vectors) · [Generating embeddings](#generating-embeddings) · [Automatic embeddings (keep vectors in sync)](#automatic-embeddings-keep-vectors-in-sync) · [RAG with permissions](#rag-with-permissions) · [Production and compute sizing](#production-and-compute-sizing) · [Vecs (Python client)](#vecs-python-client) · [Vector buckets (Storage, public alpha)](#vector-buckets-storage-public-alpha) · [Debugging](#debugging) · [Prove it](#prove-it)
+
 ## How search works
 
 - **The flow:** split the knowledge base into pages and embed each one, store the embeddings, embed the user's input once at query time, run a similarity search, return the most similar pages.

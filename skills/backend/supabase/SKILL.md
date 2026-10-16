@@ -11,8 +11,11 @@ Supabase puts Postgres directly behind an HTTP API the browser can call. That ma
 |---|---|
 | Data API exposure, grants, RLS policies, views, functions, keys, auth sessions, storage, dependencies: the security checklist | [SECURITY.md](SECURITY.md) |
 | The CLI, the MCP server, docs, schema changes and migrations, advisors, debugging | [WORKFLOW.md](WORKFLOW.md) |
-| Database functions, triggers, webhooks, extensions, the Data API and its error codes, roles, timeouts, connection strings and poolers, advisor lints, read replicas, backups, type generation | [DATABASE.md](DATABASE.md) |
-| Auth: sign-in methods, PKCE, SSR with cookies, getClaims and getUser, JWTs and signing keys, sessions, MFA, hooks, custom claims, user management, email, rate limits, error codes | [AUTH.md](AUTH.md) |
+| The Data API: exposure and grants, requests, keys and roles, its error codes | [DATA-API.md](DATA-API.md) |
+| Database functions, triggers, webhooks, extensions, roles, timeouts, connection strings and poolers, advisor lints, read replicas, backups, type generation | [DATABASE.md](DATABASE.md) |
+| Auth keys, sessions, JWTs and signing keys, getClaims and getUser, SSR with cookies | [AUTH-SESSIONS.md](AUTH-SESSIONS.md) |
+| Auth sign-in methods, PKCE, redirect URLs, identity linking, email, rate limits and CAPTCHA | [AUTH-SIGN-IN.md](AUTH-SIGN-IN.md) |
+| Auth MFA, roles and custom claims in RLS, hooks, your user tables and the admin API, the auth schema, local dev, production, error codes | [AUTH-USERS.md](AUTH-USERS.md) |
 | Realtime: Broadcast, Presence, Postgres Changes, private channels, limits, reconnects, error codes | [REALTIME.md](REALTIME.md) |
 | Edge Functions: runtime limits, dependencies, secrets, auth, CORS, background tasks, calling from the database, local dev, deploy, error codes | [EDGE-FUNCTIONS.md](EDGE-FUNCTIONS.md) |
 | Storage: buckets, uploads (standard, resumable, S3), access control, signed URLs, image transformations, CDN, analytics and vector buckets, error codes | [STORAGE.md](STORAGE.md) |

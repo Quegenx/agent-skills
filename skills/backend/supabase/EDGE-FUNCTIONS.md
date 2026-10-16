@@ -2,6 +2,8 @@
 
 Edge Functions are server-side TypeScript handlers (webhook receivers, low-latency HTTP endpoints, image or OG generation, small AI calls, transactional email, chat bots) run by the Supabase Edge Runtime, a Deno-compatible runtime. Most outcomes are decided by two things: the gateway in front of your code, which checks the `Authorization` header (`verify_jwt`) and can reject a request before your code runs, and the isolate that runs it, which is short-lived, stateless and killed at fixed CPU, memory and wall-clock limits. Design for short, idempotent work; move heavy long-running jobs to background workers.
 
+**Contents:** [How a request flows](#how-a-request-flows) · [Limits](#limits) · [Project layout and config](#project-layout-and-config) · [Dependencies](#dependencies) · [Secrets and environment](#secrets-and-environment) · [Auth](#auth) · [CORS](#cors) · [Calling a function](#calling-a-function) · [From the database: cron, pg_net, webhooks](#from-the-database-cron-pg_net-webhooks) · [Long work: background tasks, streams, WebSockets](#long-work-background-tasks-streams-websockets) · [Data, storage and AI](#data-storage-and-ai) · [Local development](#local-development) · [Testing](#testing) · [Deploying](#deploying) · [Debugging](#debugging) · [Prove it](#prove-it)
+
 ## How a request flows
 
 - **Gateway, then runtime.** The edge gateway routes the request by the caller's IP to the nearest edge location, applies the JWT check and policies, then the Edge Runtime runs the function on a node near the user. The function calls Supabase APIs or third parties, logs are emitted, and the response returns through the gateway, which records request metadata.

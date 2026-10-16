@@ -4,7 +4,7 @@ Run through it for any change that touches auth, policies, views, functions, sto
 
 ## Exposure: which tables the API can reach
 
-- **The Data API reaches a table only through grants.** New tables in `public` are no longer granted to `anon`, `authenticated` and `service_role` automatically: the default for new projects from 2026-05-30, enforced on all existing projects on 2026-10-30. Existing tables keep their grants; every new table needs explicit grants (DATABASE.md has the per-table unit). A table "unexpectedly inaccessible" from the client returns `42501` with a hint naming the missing `GRANT`: check the Data API settings and the grants first, not RLS.
+- **The Data API reaches a table only through grants.** New tables in `public` are no longer granted to `anon`, `authenticated` and `service_role` automatically: the default for new projects from 2026-05-30, enforced on all existing projects on 2026-10-30. Existing tables keep their grants; every new table needs explicit grants (DATA-API.md has the per-table unit). A table "unexpectedly inaccessible" from the client returns `42501` with a hint naming the missing `GRANT`: check the Data API settings and the grants first, not RLS.
 - **Grants decide whether a table is reachable; RLS decides which rows.** Whenever you grant `anon` or `authenticated` anything, enable RLS on that table in the same migration.
 
 ```sql
@@ -68,7 +68,7 @@ revoke execute on function private.is_team_member(bigint) from public, anon, aut
 - **`user_metadata` (`raw_user_meta_data`) is editable by the user** and appears in `auth.jwt()`: never authorize on it. Roles, plans and tenant IDs go in `app_metadata` (`raw_app_meta_data`), written only by the server.
 - **JWT claims are only as fresh as the token.** A role or `app_metadata` change takes effect at the next refresh; an admin update doesn't fire the client's `onAuthStateChange`, so the client calls `refreshSession()` to pick it up.
 - **Deleting a user or signing them out doesn't invalidate access tokens already issued;** they stay valid until they expire. Deleting a user removes their sessions and refresh tokens. Keep token lifetime short for sensitive apps, and for strict guarantees check the token's `session_id` against `auth.sessions` on sensitive operations.
-- **On the server, verify the user with `getClaims()` or `getUser()`.** `getClaims()` verifies the token locally only with asymmetric signing keys (with a symmetric secret it calls the Auth server), and it doesn't detect a session revoked before its token expired; `getUser()` asks the Auth server and does. The JS reference recommends `getUser()` for authorization checks on the server (AUTH.md has the details). Never trust `getSession()` in server code: it reads the session out of the cookie without revalidating it, and anyone can forge the cookie. Check the current docs for the recommended call for your SSR setup.
+- **On the server, verify the user with `getClaims()` or `getUser()`.** `getClaims()` verifies the token locally only with asymmetric signing keys (with a symmetric secret it calls the Auth server), and it doesn't detect a session revoked before its token expired; `getUser()` asks the Auth server and does. The JS reference recommends `getUser()` for authorization checks on the server (AUTH-SESSIONS.md has the details). Never trust `getSession()` in server code: it reads the session out of the cookie without revalidating it, and anyone can forge the cookie. Check the current docs for the recommended call for your SSR setup.
 
 ## Keys and tokens
 

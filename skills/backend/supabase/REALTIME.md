@@ -2,6 +2,8 @@
 
 Realtime sends messages between clients over WebSockets in three forms: Broadcast (low-latency messages, including database changes sent from triggers), Presence (shared, synchronized user state) and Postgres Changes (rows streamed from the database's replication slot). Delivery is best effort: the server does not guarantee every message reaches every client, and a client that disconnects for 30 seconds loses what happened in those 30 seconds. Most outcomes come down to three things: whether the channel is private and RLS on `realtime.messages` allows it, whether the table is in the `supabase_realtime` publication and readable by the subscriber's role, and whether the client cleans up and reconnects properly.
 
+**Contents:** [Pick the feature](#pick-the-feature) · [How it works](#how-it-works) · [Client setup](#client-setup) · [Channels and their lifecycle](#channels-and-their-lifecycle) · [Broadcast](#broadcast) · [Presence](#presence) · [Postgres Changes](#postgres-changes) · [Authorization and private channels](#authorization-and-private-channels) · [Connections, heartbeats and reconnects](#connections-heartbeats-and-reconnects) · [Limits](#limits) · [Settings (Dashboard Realtime > Settings)](#settings-dashboard-realtime-settings) · [Local development and self-hosting](#local-development-and-self-hosting) · [The wire protocol](#the-wire-protocol) · [Debugging](#debugging) · [Changes by date](#changes-by-date) · [Prove it](#prove-it)
+
 ## Pick the feature
 
 | Feature | Use for | Status |

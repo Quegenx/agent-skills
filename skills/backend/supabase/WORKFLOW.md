@@ -40,7 +40,7 @@ When a request fails (a REST or PostgREST error code, a Postgres error, an empty
 - **Empty result, no error:** RLS filtered everything; run the query as that role (SECURITY.md) and read the policies. An update that "worked" with zero rows is a missing `select` policy.
 - **Permission denied for table (`42501`):** the role lacks a grant (Data API exposure; new tables get none by default), not a policy. The response's `hint` names the `GRANT` to run.
 - **A new column, table, view or function missing from the API:** the PostgREST schema cache is stale; reload it (`notify pgrst, 'reload schema'`) and check the grants.
-- **Find the failing request:** error codes are in the response body, not the logs. In Logs Explorer filter Postgres errors by `log_attributes['parsed.user_name'] = 'authenticator'` and gateway errors in `edge_logs`. Codes, connection errors and log queries are in DATABASE.md.
+- **Find the failing request:** error codes are in the response body, not the logs. In Logs Explorer filter Postgres errors by `log_attributes['parsed.user_name'] = 'authenticator'` and gateway errors in `edge_logs`. Codes are in DATA-API.md; connection errors and log queries in DATABASE.md.
 - **Slow requests or timeouts:** the slow query and missing-index advice in the same guide, and the `postgres` skill's MONITORING.md.
 
 ## Prove it
