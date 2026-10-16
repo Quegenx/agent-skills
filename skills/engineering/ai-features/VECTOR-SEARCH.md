@@ -93,6 +93,53 @@ Filters can only use the declared `filterFields` with equality and `or`. Range c
 
 Managed vector stores (a vector database service, or a vector bucket type in object storage) follow the same rules: the index fixes dimensions and metric at creation, so one index per model; metadata stored with each vector is what you filter on; a query takes the vector, a `topK`, and flags for returning metadata and distance. Large text that is only displayed, never filtered on, can be marked non-filterable where the store supports it. Write vectors in batches, not one call per item. If a working vector store is already in place, a cheaper one rarely justifies the migration on its own. Vendor claims about cost and latency are tied to the announcement date and preview status; check current pricing and measure query latency against your own target before choosing one over Postgres.
 
+## Memory and compression
+
+Vectors are big: rows × dimensions × 4 bytes as float32. Ten million 768-dimension vectors are about 31 GB before any index; at 1,536 dimensions, 100,000 rows are about 600 MB. Work the number out before choosing where the index lives.
+
+| Representation | Size per value | Loss | Notes |
+|---|---|---|---|
+| float32 | 4 bytes | none | the reference to measure the others against |
+| half precision (`halfvec` in pgvector) | 2 bytes | barely measurable for search | also lifts the indexed dimension limit (to 4,000) |
+| 4-bit codes | half a byte | small; check on your data | 8× smaller than float32 |
+| 2-bit codes | a quarter byte | larger, worse on low-dimension vectors | 16× smaller |
+| 1 bit (sign only, binary quantization) | an eighth of a byte | large on its own | only as a first pass, rescored (below) |
+
+- **Search the compressed form first, then rescore exactly:** take a generous shortlist from the cheap codes (a few hundred, or a multiple of `k`), then order that shortlist by the full-precision distance. The returned scores are exact; what can change is which items made the shortlist, so measure it.
+
+```sql
+-- pgvector: a bit index for the first pass, the original vectors to rescore
+create index on documents using hnsw ((binary_quantize(embedding)::bit(1536)) bit_hamming_ops);
+
+select * from (
+  select id, content, embedding from documents
+  order by binary_quantize(embedding)::bit(1536) <~> binary_quantize($1)
+  limit 200
+) shortlist
+order by embedding <=> $1
+limit 10;
+```
+
+- **Quantizers that need no training** (a fixed random rotation of every vector, then a codebook derived from the resulting known distribution) take new vectors at once and delete them in microseconds; codebooks trained on your data (product quantization) need a representative sample up front and drift as the data changes.
+- **When a quantizer offers a calibration fit,** run it once on a random, representative sample (about a thousand rows) before loading. Calibrating after a large ingest re-quantizes what was already quantized and costs recall; a fit on a biased sample clipped values that no later fit recovers. Keep the original vectors (or the source text) so you can rebuild.
+- **Normalise for cosine** when the index scores by inner product, and store the length separately if magnitude matters.
+- **Measure recall against exact search on your own vectors,** at the `k` you serve, with the bit width you plan to ship. Published numbers come from other embeddings; low-dimension and tightly bunched corpora (where most vectors point the same way) lose more.
+
+### A flat scan of compressed codes or a graph index
+
+A scan of compressed codes reads every vector, so its cost grows in a straight line with the corpus: well under a millisecond per query at a hundred thousand vectors on a few cores, still fine at a few million, and with no index to build or tune. For hundreds of millions of vectors behind a strict latency target, a graph (HNSW) or cluster (IVF) index belongs in front.
+
+### An index file inside your process
+
+An in-process index (a library with a file format, no server) suits a local or single-writer service. Make sure it has:
+
+- **Stable ids:** a positional index that moves the last item into a deleted slot renumbers everything after it; key the index by your own ids, and treat any slot-based filter or mask as invalid after every change.
+- **Filtering inside the search** (an allowlist of ids, or a mask), so you get `k` allowed results rather than `k` minus whatever a post-filter dropped. The same filter carries access control and tenancy.
+- **Crash-safe saves:** write a temporary file, flush it to disk, rename it over the old one, flush the directory. An incremental save that writes only the changes since the last one is a big win for large indexes.
+- **One writer per file.** Detect a file replaced underneath you rather than writing over someone else's commits.
+- **Your own checksum** if the format has none: atomic saves prevent torn files, not bit rot afterwards.
+- **Strict input:** reject the wrong dtype or dimension instead of converting it quietly.
+
 ## Keeping the index current
 
 Re-embed when content changes, not on a nightly guess. For content that ships through a deploy (docs, a blog), run the indexing step in CI on publish; for user content, enqueue an embed job on write (see [AI-JOBS.md](AI-JOBS.md)). Skip unchanged items by storing a content hash with the vector. Deleting content deletes its vectors.

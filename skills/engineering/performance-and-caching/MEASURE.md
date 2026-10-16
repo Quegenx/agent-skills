@@ -47,6 +47,21 @@ Only after the above. A cache adds stale data and a second source of truth. Good
 
 Apply one change, re-measure the same way, record the result, then the next change. Keep a small table: change, before, after, conditions. Revert changes that didn't help; they're only complexity.
 
+## An optimization loop (run by you or by an agent)
+
+For a sustained push on one hot path, write the goal down before the first change, so neither you nor an agent can move it later:
+
+- **One score over several cells:** the cases that matter (each platform, single and multi-threaded, one request and a batch, small and large inputs), combined as a harmonic mean of the per-cell speedups, so one big win can't hide a loss elsewhere. Weight the cells by how much they matter.
+- **What counts as a win:** the score up by a set margin (say 1%) and no cell worse beyond noise (say 1%). A change that trades one cell for another is a failed hypothesis, not a trade-off.
+- **Correctness gates that never bend:** identical outputs (bit for bit where the result is deterministic, or "at least 99.9% of queries return the same results" where it is approximate), the test suite green, the file format and memory per item unchanged.
+- **A cell with no weight to catch cost-shifting:** time the next step too (load and then the first query), so a "faster load" that moves the work into the first query doesn't count.
+- **Fixed, dedicated machines,** never a laptop or a shared box; a clean build before each measurement; a sanity check that the measurements aren't contaminated (a ratio between two cells that should stay constant across runs).
+- **Two stages per hypothesis:** a quick screen of a few minutes, and only a passing screen gets the long confirmation run.
+- **Log every hypothesis with its numbers and verdict, wins and failures alike,** with the baseline it was scored against. A tried-and-failed idea is listed as such; reopening it needs a reason (what new measurement no longer covers it), not a bare retry.
+- **Stop at a run of failures** (say 20 in a row without a win); every win resets the count.
+
+The loop suits an agent well: a written goal, a harness that scores a candidate in one command, and a log the next session can read are what keep it from declaring victory early or re-running last week's dead ends.
+
 ## Prove it
 
 Take a reader dashboard that queries loans and calls two remote services. Measure the breakdown. Remove one repeated query and measure. Then run the two remote calls in parallel with a concurrency bound and measure again. Report each change's effect separately, with the conditions.

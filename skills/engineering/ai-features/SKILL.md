@@ -9,7 +9,7 @@ An AI feature is done when it is measured, not when the output reads well. Every
 
 | The job | Read |
 |---|---|
-| Search by meaning, embeddings, pgvector, Convex vector search, hybrid search | [VECTOR-SEARCH.md](VECTOR-SEARCH.md) |
+| Search by meaning, embeddings, pgvector, Convex vector search, hybrid search, memory and compression (quantization, coarse-then-exact search, in-process index files) | [VECTOR-SEARCH.md](VECTOR-SEARCH.md) |
 | Answering questions from your own documents (RAG) | [RAG.md](RAG.md) |
 | Turning images or documents into structured data | [EXTRACTION.md](EXTRACTION.md) |
 | Calling a paid AI API from a job (transcription, generation, extraction) | [AI-JOBS.md](AI-JOBS.md) |
