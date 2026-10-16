@@ -37,9 +37,9 @@ First find out which workflow the project uses.
 
 When a request fails (a REST or PostgREST error code, a Postgres error, an empty result, an unexpected RLS block, permission denied, a schema cache error, a timeout, or an Auth, Realtime, Edge Functions or Storage error), read the platform's monitoring and debugging guide (`https://supabase.com/docs/guides/monitoring-and-debugging.md`) before diagnosing, and read the logs (Logs Explorer). Common first checks:
 
-- **Empty result, no error:** RLS filtered everything; run the query as that role (SECURITY.md) and read the policies. An update that "worked" with zero rows is a missing `select` or `with check` policy.
-- **Permission denied for table:** the role lacks a grant (Data API exposure), not a policy.
-- **A new column or table missing from the API:** the schema cache is stale; reload it (`notify pgrst, 'reload schema'`) and check the grants.
+- **Empty result, no error:** RLS filtered everything; run the query as that role (SECURITY.md) and read the policies. An update that "worked" with zero rows is a missing `select` policy.
+- **Permission denied for table (`42501`):** the role lacks a grant (Data API exposure), not a policy.
+- **A new column, table, view or function missing from the API:** the PostgREST schema cache is stale; reload it (`notify pgrst, 'reload schema'`) and check the grants.
 - **Slow requests or timeouts:** the slow query and missing-index advice in the same guide, and the `postgres` skill's MONITORING.md.
 
 ## Prove it

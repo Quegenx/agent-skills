@@ -3,44 +3,44 @@
 ## Keys
 
 - **`bigint generated always as identity`** for a table that lives in one database. Eight bytes, sequential (inserts land at the end of the index), the SQL standard. `serial` works but is the older form; prefer identity in new tables.
-- **UUIDs only when IDs are made outside the database or must not be guessable, and then time-ordered (UUIDv7).** Random UUIDv4 keys scatter every insert across the index (page splits, a bigger, colder index, slower joins) and take 16 bytes. Postgres 18 has `uuidv7()` built in; earlier versions need an extension or the application to generate them. A ULID gives the same ordering.
-- **`bigint` for every key and foreign key,** even on small tables: `int` stops at about 2.1 billion, and changing a key's type later rewrites the table and everything that references it.
+- **UUIDs only when IDs are made outside the database or must not be guessable, and then time-ordered (UUIDv7).** Random UUIDv4 keys scatter every insert across the index (page splits, a bigger, colder index, slower joins) and take 16 bytes. Postgres 18 has `uuidv7()` built in; earlier versions need an extension, or the values are generated outside the database. A ULID gives the same ordering.
+- **`bigint` for every key and foreign key,** even on small tables: `int` stops at about 2.1 billion, and changing a key's type later normally rewrites the table and its indexes.
 - **Partitioned tables put the partition key in the primary key** and in every unique constraint; uniqueness across partitions on any other column isn't possible.
 
 ## Column types
 
 | Use | Instead of | Why |
 |---|---|---|
-| `text` | `varchar(n)` | Same storage and speed; add a `check (char_length(x) <= n)` when the limit is a real rule |
+| `text` | `varchar(n)` | No performance difference, apart from a few CPU cycles to check the length |
 | `timestamptz` | `timestamp` | Stores an instant; `timestamp` drops the zone and lies across zones and DST |
-| `numeric(p, s)` or integer cents | `float`, `real` | Money and exact quantities can't round |
+| `numeric(p, s)` | `float`, `real` | Recommended for money and other quantities where exactness is required |
 | `boolean` | `'yes'`/`'Y'`/`varchar(5)` | One byte, one meaning |
-| `jsonb` | `json`, text holding JSON | Indexable, deduplicated keys; keep queried, joined or constrained fields as real columns |
-| `text` with a `check (status in (...))` | `create type ... as enum` | A check is changed in one statement; removing or reordering enum values is not. An enum is fine for a set that only ever grows |
+| `jsonb` | `json`, text holding JSON | Supports indexing, needs no reparsing, keeps only the last of duplicate keys |
+| `text` with a `check (status in (...))` | `create type ... as enum` | A check is easier to modify; an enum's values can be added and renamed, but not removed or reordered short of dropping and re-creating the type |
 
 Avoid types tied to one extension or host when the schema may move.
 
 ## Constraints
 
-- **`not null` on every column that always has a value,** which is most of them. A nullable column is a third state every query has to handle.
+- **`not null` on every column that always has a value,** which is most of them.
 - **Let the database enforce invariants:** `unique` (single or multi-column), `check`, foreign keys, and exclusion constraints for non-overlapping ranges. A check-then-insert in application code races.
-- **Index every foreign key column.** Postgres indexes the referenced side (it's a primary or unique key) but not the referencing one; without it, joins scan, and every delete or key update on the parent scans the child table while holding a lock. The query that lists unindexed foreign keys is in MONITORING.md.
-- **Choose `on delete` on purpose** (`cascade`, `set null`, `restrict`) and write it out. Avoid circular foreign keys: they make inserts, deletes and restores order-dependent.
-- **`created_at timestamptz not null default now()`** on every table; it costs nothing and answers "since when" later.
+- **Index every foreign key column.** The referenced side always has an index (it must be a primary key, a unique constraint or a non-partial unique index), but the referencing side doesn't get one; without it, joins scan, and every delete or key update on the parent scans the child table while holding a lock. The query that lists unindexed foreign keys is in MONITORING.md.
+- **Choose `on delete` on purpose** (`cascade`, `set null`, `restrict`) and write it out. Avoid circular foreign keys.
+- **`created_at timestamptz not null default now()`** on every table.
 
 ## Names
 
 - **Lowercase `snake_case`, unquoted,** for every table, column, index and constraint. Postgres folds unquoted names to lowercase, so `"userId"` must be quoted forever and `select userId` fails; tools, ORMs and agents trip on it. Configure ORMs to emit snake_case. If a schema is stuck with mixed case, a view with snake_case aliases is the compatibility layer.
-- **One convention, everywhere:** tables singular or plural but consistent; indexes `{table}_{columns}_idx`; constraints `{table}_{columns}_{kind}` (`orders_status_check`, `orders_customer_id_fkey`). A predictable name is what lets a migration check whether a constraint exists.
+- **One convention, everywhere:** tables singular; indexes `{table}_{columns}_idx`; constraints `{table}_{columns}_{kind}` (`orders_status_check`, `orders_customer_id_fkey`). A predictable name is what lets a migration check whether a constraint exists.
 
 ## Wide and large values
 
 - **Rows over about 2 KB are TOASTed:** large values are compressed and moved to a side table. `select *` drags every one back. Select only the columns you use, and move large, rarely read columns to their own table.
-- **Already compressed data** (images, archives) goes in columns set to `storage external`, which skips a useless compression pass. Better: keep files in object storage and store the key.
+- **Already compressed data** (images, archives) goes in columns set to `storage external`, which stores them out of line without compressing.
 
 ## Normalize first
 
-Keep tables normalized; denormalize (a copied column, a summary table, a materialized view) only for a read path measured to be hot, and write down who keeps the copy in sync.
+Keep tables normalized; denormalize only for a read path proven to be hot.
 
 ## Partitioning
 

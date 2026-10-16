@@ -41,7 +41,7 @@ create policy "owners update their notes" on public.notes
 
 ## Views and functions that bypass RLS
 
-- **Views run with their owner's rights and skip RLS by default.** On Postgres 15+ create them `with (security_invoker = true)`; on older versions revoke access from `anon` and `authenticated` or keep them in a schema the API doesn't expose.
+- **Views apply their owner's permissions and policies by default, and the owner is usually `postgres`, so they bypass RLS.** On Postgres 15+ create them `with (security_invoker = true)`; on older versions revoke access from `anon` and `authenticated` or keep them in a schema the API doesn't expose.
 - **`security definer` functions run as their creator,** usually a role that bypasses RLS. Never add it to make a permission error go away: it removes the check instead of fixing the cause. Default to `security invoker`.
 - **Every new function is executable by `PUBLIC`,** so a `security definer` function in `public` is an open API endpoint for `anon` and `authenticated` with no grant needed. When one is genuinely needed (an internal lookup across RLS):
 
@@ -66,19 +66,19 @@ revoke execute on function private.is_team_member(bigint) from public, anon, aut
 ## Auth and sessions
 
 - **`user_metadata` (`raw_user_meta_data`) is editable by the user** and appears in `auth.jwt()`: never authorize on it. Roles, plans and tenant IDs go in `app_metadata` (`raw_app_meta_data`), written only by the server.
-- **JWT claims are only as fresh as the token.** A role or `app_metadata` change takes effect at the next refresh; for a revocation that must be immediate, check the database, not the claim.
+- **JWT claims are only as fresh as the token.** A role or `app_metadata` change takes effect at the next refresh.
 - **Deleting a user doesn't invalidate their access tokens.** Sign the user out or revoke their sessions first, keep token lifetime short for sensitive apps, and for strict guarantees check the token's `session_id` against `auth.sessions` on sensitive operations.
-- **On the server, verify the user** (`getUser()` or `getClaims()`, which validate the token) rather than trusting a session read from cookies (`getSession()`), which the client could have tampered with. Check the current docs for the recommended call for your SSR setup.
+- **On the server, verify the user with `getClaims()`,** which verifies the token's signature (`getUser()` when you need the up-to-date user record from the Auth server). Never trust `getSession()` in server code: it reads the session out of the cookie without revalidating it, and anyone can forge the cookie. Check the current docs for the recommended call for your SSR setup.
 
 ## Keys and tokens
 
-- **Publishable key in front ends; the service-role or secret key only on servers.** The secret key bypasses RLS entirely. Any environment variable with a public prefix (`NEXT_PUBLIC_`, `VITE_`, `PUBLIC_`) is shipped to the browser. Legacy `anon` keys exist only for compatibility.
+- **Publishable key in front ends; the service-role or secret key only on servers.** The secret key bypasses RLS entirely (`service_role` has `bypassrls`). In Next.js any `NEXT_PUBLIC_` environment variable is shipped to the browser. Legacy `anon` keys exist only for compatibility.
 - **Scripts, CI and agents use a scoped personal access token,** limited to the organizations, projects and permissions the task needs. A classic token (what the browser `supabase login` flow creates) carries the whole account. The personal access tokens guide lists the permission each Management API endpoint and MCP tool needs: look it up there, don't guess. In CI set `SUPABASE_ACCESS_TOKEN` to the scoped token; it takes precedence over a saved login. Commands that connect with the database password (`--password`, `SUPABASE_DB_PASSWORD`, as in `supabase db push`) are not limited by the token's scope.
 
 ## Storage
 
 - **Storage access is RLS on `storage.objects`.** An upsert (replacing a file) needs `insert`, `select` and `update` policies; with `insert` alone new uploads work and replacements fail silently.
-- **Scope storage policies by path** (a folder per user or tenant, checked against `auth.uid()`), the same way as table policies.
+- **Scope storage policies by path** (a folder per user, `(storage.foldername(name))[1]` checked against `auth.uid()`), the same way as table policies.
 
 ## Dependencies
 
@@ -86,12 +86,12 @@ Pin package versions and commit the lockfile for every Supabase package (`@supab
 
 ## Prove it
 
-Test policies as each role, not as the dashboard's superuser. In SQL:
+Test policies as each role, not as `postgres`, which has `bypassrls`. In SQL:
 
 ```sql
 begin;
 set local role authenticated;
-set local request.jwt.claims = '{"sub": "<user-a-uuid>", "role": "authenticated"}';
+set local request.jwt.claim.sub = '<user-a-uuid>';
 select count(*) from public.notes;                                    -- only user A's rows
 update public.notes set body = 'x' where user_id = '<user-b-uuid>';   -- UPDATE 0
 rollback;

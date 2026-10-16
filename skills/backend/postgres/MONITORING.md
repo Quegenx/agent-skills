@@ -46,7 +46,7 @@ where s.idx_scan = 0
 order by pg_relation_size(s.indexrelid) desc;
 ```
 
-Check replicas too (stats are per server) and how long stats have been collecting before calling one unused.
+Check how long stats have been collecting before calling one unused.
 
 **Duplicate indexes:**
 
@@ -138,7 +138,7 @@ select table_name, column_name from information_schema.columns
 where table_schema = 'public' and (table_name <> lower(table_name) or column_name <> lower(column_name));
 ```
 
-**A stuck query:** `select pg_cancel_backend(pid)` cancels the statement; `pg_terminate_backend(pid)` kills the session and rolls back its transaction. Confirm before either.
+**A stuck query:** `select pg_cancel_backend(pid)` cancels the session's current query; `pg_terminate_backend(pid)` terminates the session, which can abort its in-flight transaction. Confirm before either.
 
 ## Outside the database
 
