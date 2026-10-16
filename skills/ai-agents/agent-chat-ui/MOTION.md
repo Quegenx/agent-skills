@@ -25,6 +25,11 @@ Measured from a production agent chat. Match a value by what the motion does.
 | Phone drawer | 500 ms cubic-bezier(0.32, 0.72, 0, 1); no transition while swiping |
 | Drop overlay | fade 150 ms |
 | Source chip | fade in 300 ms ease-out |
+| Waveform | bars 4px wide every 8px, crossing the strip in 5 s; edges fade over 28px; level is the RMS of the time-domain samples (FFT size 1024) sampled every 50 ms, input gain 3.2, noise floor 0.03, curve level^0.55, smoothing 0.35, one bar at most 50% of the height from the last |
+| Question option row | fill to a soft accent on hover, 150 ms ease-out |
+| Attached image tiles | fade and scale from 0.95, 100 ms apart |
+| Copy confirmation | check icon for 1.5 s |
+| Image viewer controls | full-height side strips whose backdrop blur goes from 4px to 12px on hover; on a zoom close they fade at once (150 ms) while the image carries the motion |
 
 ## Sizes
 
@@ -38,5 +43,11 @@ Measured from a production agent chat. Match a value by what the motion does.
 | Minimum hit area | 40 by 40px, 44 by 44px on coarse pointers, grown with a transparent `::before` that never overlaps a neighbour's |
 | Result lists | at most 22.5rem tall, scrolling, overscroll contained |
 | Breathing room under the last exchange | 20px on a narrow chat, 80px from 32rem |
+| Question option row | full width, at least 44px tall, corners 10px, a 24px round number |
+| Side panel | 30rem by default, dragged between 320 and 720px; phone drawer at most 85dvh |
+| Chat search | at most 36rem wide, list 26.25rem tall, field 52px |
+| Link preview card | min(12.5rem, 100vw - 3rem), screenshot 200:125 |
+
+Fluid sizes use container-query units (`cqi`) of the chat, not the viewport: the chat shares the screen with a sidebar and a side panel, so a `clamp()` against the chat's own width (8px padding in a 20rem chat to 12px at 32rem) keeps it right at every layout. Keep the CSS reveal length and the renderer's animation setting at the same value.
 
 Under reduced motion: keep fades, drop movement (`MotionConfig reducedMotion="user"`), stop the text buffer, the shimmer and the waveform, and use near-instant durations (0.01 ms) instead of none so end events still fire.

@@ -1,6 +1,6 @@
 # Agent skills
 
-41 skills for coding agents, in six sets:
+42 skills for coding agents, in six sets:
 
 | Folder | What it's for |
 |---|---|
@@ -9,7 +9,7 @@
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security. 9 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
-| [`skills/frontend/`](./skills/frontend) | How app and website UI is built and behaves: components and the design system, animation. 2 skills. |
+| [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -112,7 +112,7 @@ Building agents that stay reliable, and the AI features around them. Start with 
 | [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks |
 | [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, simulated users, the fix loop to a clean run, and release gates |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Long-term agent memory: what to remember and where, background extraction, consolidation, an always-on profile plus search, staying current, forgetting, user controls and memory evals |
-| [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, and every timing |
+| [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, and every timing |
 | [agent-codebase](./skills/ai-agents/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
 | [jev-decisions](./skills/ai-agents/jev-decisions/SKILL.md) | Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals, plus worked recipes (value and date extraction, search, re-ranking, taxonomies, record matching, guardrails, memory, tool suggestion). TypeScript with `@typesafe-ai/sdk`. |
 | [ai-features](./skills/ai-agents/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |
@@ -150,7 +150,8 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | Skill | Covers |
 |---|---|
 | [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion |
-| [ui-components](./skills/frontend/ui-components/SKILL.md) | An app's component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker |
+| [app-ui](./skills/frontend/app-ui/SKILL.md) | The product's own UI (the signed-in app), its component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker |
+| [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | A product's marketing site, apart from the app: its own tokens and stylesheet, a hero that assembles letter by letter, two-tone headings, story sections built from real product screens, carousels, FAQ with structured data, a floating header that grows into a menu, a revealed footer, language and theme transitions, contact, help, blog and legal pages, head tags and consent |
 
 ## Licences
 

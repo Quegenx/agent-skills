@@ -1,6 +1,6 @@
 ---
 name: agent-chat-ui
-description: "Designs and builds the chat interface of an AI agent: showing its work while it runs, streaming text that reads smoothly, approval cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, and the conversation list. Use when building or polishing an agent's chat UI."
+description: "Designs and builds the chat interface of an AI agent: showing its work while it runs, streaming text that reads smoothly, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, and the conversation list. Use when building or polishing an agent's chat UI."
 ---
 
 # Agent chat UI
@@ -16,14 +16,15 @@ An agent's answer is not a message; it is work happening. The interface has thre
 | Every timing, curve and size in one table | [MOTION.md](MOTION.md) |
 | The server side the UI depends on (stop hooks, approvals, follow-up call, data parts) | the `agent-harness` skill |
 | General animation rules (durations, springs, reduced motion) | the `ui-animation` skill |
-| The rest of the app's components (menus, dialogs, tables, states) | the `ui-components` skill |
+| The rest of the app's components (menus, dialogs, tables, states) | the `app-ui` skill |
+| Marketing pages and their motion | the `landing-page-ui` skill |
 
 ## The rules
 
 1. **One live line, not a log in motion.** While the agent works, a single status line under the answer names the current step; it stays mounted and morphs from step to step. Finished steps become quiet rows; when the answer ends they fold into one line ("worked for 12 seconds").
 2. **Never show the model's raw thinking.** Reasoning summaries come in the wrong language, are often empty and quote the instructions. Show the step it is on instead.
 3. **No raw tool name ever reaches the screen.** Every tool has a title and an icon in a table typed against the tool list, so a new tool fails the type check until it has both. Plumbing (the agent finding its own tools) shows nowhere.
-4. **An approval card shows what will really happen,** built from the call's actual input and the records it names, never from the agent's prose about it. Confirm, revise and deny; no "always allow".
+4. **An approval card shows what will really happen,** built from the call's actual input and the records it names, never from the agent's prose about it. Confirm, revise and deny; no "always allow". A question with options is a card of the same kind, its options numbered rows inside it.
 5. **Results are the product's own components,** read live: a task the agent created is the real task card, and changing its status in the chat changes the task.
 6. **Pace the stream.** Tokens arrive in bursts; release characters at a steady, adaptive rate and fade them in, so the text flows instead of jumping.
 7. **Treat everything the agent quotes as untrusted.** Links and images are hardened; an outside link opens only after its full address is shown.

@@ -13,7 +13,7 @@ The model knows what a card entrance is. It doesn't know this card should take 2
 | Enter and exit, layout and shared-element transitions, lists, modals, toasts, numbers, gestures, scroll, galleries and carousels | [PATTERNS.md](PATTERNS.md) |
 | Smooth on a slow phone: which properties, GPU vs main thread, React re-renders, reduced motion, measuring | [PERFORMANCE.md](PERFORMANCE.md) |
 
-Images and video loading, long lists and bundle splitting are in the `performance-and-caching` skill's BROWSER.md; how much motion a page should have at all is the MOTION dial in `anti-slop-ui`; how each component (menus, dialogs, confirms, tables, boards) moves and behaves is in `ui-components`.
+Images and video loading, long lists and bundle splitting are in the `performance-and-caching` skill's BROWSER.md; how much motion a page should have at all is the MOTION dial in `anti-slop-ui`; how each app component (menus, dialogs, confirms, tables, boards) moves and behaves is in `app-ui`; a marketing site's hero, reveals and page transitions are in `landing-page-ui`; an agent chat's status line, streaming and cards are in `agent-chat-ui`.
 
 ## The rules
 

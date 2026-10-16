@@ -1,9 +1,9 @@
 ---
-name: ui-components
-description: "Builds an app's component layer so every control, menu, dialog, table and data view feels made by one hand: tokens, buttons, fields, morphing menus, dialogs that grow from their trigger, in-place confirms, filters, tables, boards, pending and empty states, right-to-left, and a checker that keeps it that way. React with Motion and headless primitives, CSS first. Use when building or reviewing UI components, a design system, or a screen made of them."
+name: app-ui
+description: "Builds the UI of the product itself, the signed-in app (not its marketing site or its agent chat), so every control, menu, dialog, table and data view feels made by one hand. Tokens, buttons, fields, morphing menus, dialogs that grow from their trigger, in-place confirms, filters, tables, boards, pending and empty states, right-to-left, and a checker that keeps it that way. React with Motion and headless primitives, CSS first. Use when building or reviewing app screens, UI components or a design system."
 ---
 
-# UI components
+# App UI
 
 A design system is not a palette and a button. It is a few hundred small decisions (how a menu grows, what a button says while it waits, where an error appears, what stays on screen while a panel closes) made once and reused everywhere, so no screen has to invent them. The numbers here are tested ones; change one on purpose, in the token, never on one screen.
 
@@ -17,7 +17,7 @@ A design system is not a palette and a button. It is a few hundred small decisio
 | Pending labels, optimistic changes, unknown outcomes, progress and stop, errors, empty and loading | [STATES.md](STATES.md) |
 | A checker that blocks drift: the rules, the allowlist, the ratchet | [CHECKS.md](CHECKS.md) |
 
-Durations, curves and springs in general are in the `ui-animation` skill; how much decoration a product should have is in `anti-slop-ui`; the chat surface of an agent is `agent-chat-ui`.
+Durations, curves and springs in general are in the `ui-animation` skill; how much decoration a product should have is in `anti-slop-ui`; the chat surface of an agent is `agent-chat-ui`; the marketing site is `landing-page-ui`. Those two own their own motion: the app's is calm and quick, the site's expressive, the agent's built around waiting.
 
 ## The rules
 
