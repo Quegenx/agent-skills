@@ -21,7 +21,7 @@ Keep the text color as an RGB triplet and derive everything neutral from it, so 
 
 - **Text at a few fixed strengths** (100, 50, 40, 30%), not a new gray per screen. Give headings their own `--heading` token so they can part from body text without a new gray.
 - **Dark mode raises the alphas:** white at 5% on a dark surface reads weaker than black at 5% on white, so hover is 8%, press 12%, disabled fill 12% and border 12% (light: 5, 8, 5, 8). Borders and field edges may use a warm near-black (`rgb(32 29 29 / .08)`) instead of pure ink.
-- **Status colors come as pairs:** a tinted fill and the text that reads on it, for light and dark. Red text on a 10% red tint fails contrast at the plain red (about 3.9:1); `--destructive-on-tint` mixes the red 85% with black in light (holds 5:1) and 75% with white in dark. Every solid fill (a blue, gray or red badge) needs its dark value too.
+- **Status colors come as pairs:** a tinted fill and the text that reads on it, for light and dark. An alert's red text, `--destructive-on-tint`, mixes the red 85% with black in light (holds 5:1) and 75% with white in dark. The soft destructive button keeps the plain `--destructive` on its 10% tint, one red with the solid destructive button, chosen over the darker red's contrast. The solid badge fills (blue, gray, red under white text) hold one value in both themes.
 - **A soft brand tint** (`--primary-soft`) marks the selected row and the active sidebar item: a light brand tint in light mode, the brand at 30% with a lighter brand text in dark.
 - **Status by `data-status`,** one set of tones for the whole app (done, running, waiting, not confirmed), so a badge on an account and a badge on a task mean the same thing. Statuses that are not running (suggested, paused) stay muted and differ by glyph only; running takes the warning tone, done the green. A status built from several sources follows one precedence: the user's own local outcome first (needs verification, not confirmed), then the source's state, then derived states (needs answers), else "unknown".
 - **Every remote image gets a 1px inner outline at 10%** (`outline: 1px solid rgb(0 0 0 / 0.1); outline-offset: -1px`; white at 10% in dark mode, never tinted), so a white photo on a white card still has an edge.
@@ -74,30 +74,30 @@ Pick the token by what the motion does, not the nearest number:
 | `--duration-very-slow` | 500ms | emphasis, a badge appearing, a text reveal, a success check |
 | `--duration-stagger` | 40ms | between siblings entering |
 | `--ease-smooth-out` | cubic-bezier(.22, 1, .36, 1) | open, close, resize, reposition |
-| `--ease-unroll` | cubic-bezier(.32, .72, 0, 1) | drawers, backdrops, disclosure panels opening (a token, never a hard-coded curve) |
+| unroll | cubic-bezier(.32, .72, 0, 1) | backdrops and disclosure panels opening: written in the backdrop's rule and held in the panel's own `--disclosure-panel-open-easing`, not a global token |
 | `--ease-standard` | cubic-bezier(.4, 0, .2, 1) | chevrons, small state changes |
 | `--ease-in-out`, `--ease-out`, `--ease-linear` | | icon and text swaps; tooltips; shimmer |
-| `--ease-pop` | cubic-bezier(.34, 1.36, .64, 1) | a badge or count landing |
-| `--ease-bounce-strong` | cubic-bezier(.34, 3.85, .64, 1) | a bouncy hover-out |
-| `--ease-spring-pop` | `linear()` sampled from stiffness 260, damping 20 (8% overshoot, settles in 600ms) | popovers |
+| `--ease-bounce` | cubic-bezier(.34, 1.36, .64, 1) | a badge popping open |
+| `--ease-bounce-strong` | cubic-bezier(.34, 3.85, .64, 1) | a bouncy hover-out (an avatar returning) |
+| `--ease-spring-pop`, `--duration-spring-pop` | `linear()` sampled from stiffness 260, damping 20 (8% overshoot), 600ms | popovers that pop open |
 | `--duration-instant` | 0.01ms | what every duration becomes under reduced motion (not `none`, so `transitionend` still fires) |
 
 - **Composite tokens** for the common pairs: `--transition-background` (background 150ms standard), `--transition-popup` (opacity and scale 250ms smooth-out), `--transition-popup-instant` (100ms), `--transition-control` (background, border, color, shadow, opacity, scale and translate at 150ms standard).
 - **Scales:** modal from .96, menu open from .97, menu close to .99, tooltip from .6 ([CONTROLS.md](CONTROLS.md)). **Blurs:** 2, 3 and 8 px. **Named distances:** micro .25rem (text swap), small .375rem (error shake), base .5rem, medium .75rem (text reveal), large 1.875rem (check badge).
-- **Overshoot is sanctioned only in named tokens** (pop, bounce-strong, spring-pop, the switch's slide); the checker allowlists those and fails any other ([CHECKS.md](CHECKS.md)).
+- **Overshoot lives in named tokens** (`--ease-bounce`, `--ease-bounce-strong`, the sampled `--ease-spring-pop`) and in the switch's slide curve. The allowlist records the two cubic tokens by their literal in the motion-tokens file, so the checker reports an overshooting `cubic-bezier` written anywhere else ([CHECKS.md](CHECKS.md)).
 - **App motion finishes within 1s.** Trim a looped illustration to fit (1.25s to .95s). The theme reveal (1.2s, once, on a deliberate switch that covers the page) is the stated exception.
 - **Utilities:** `popup-fade-scale` (`[data-starting-style]` and `[data-ending-style]` at opacity 0, scale .96) for any headless popup; `round-dismiss-button` (ink 8% at rest, 14% on guarded hover); `interpolate-size: allow-keywords` on `:root` as an enhancement, so `height: auto` animates where supported.
-- **Motion setup once at the root:** `LazyMotion features={domAnimation} strict`, `MotionConfig reducedMotion="user"`, and `AnimatePresence initial={false}` wherever a list must not animate on first render.
+- **Each animated component carries its own motion setup,** so it works wherever it mounts: `LazyMotion features={domAnimation} strict` (`domMax` where it uses `layout`: the morphing menu, the tag pills), `MotionConfig reducedMotion="user"`, and `AnimatePresence initial={false}` wherever a list must not animate on first render.
 
 **Springs in CSS:** sample a spring (stiffness, damping, mass) into a `linear()` curve over its settle time, so a CSS transition (a chevron turning, a row pressing, a highlight sliding) moves on the same spring as the Motion components beside it. One spring family per job: rows press on one, the sidebar highlight slides on another, both named.
 
 ## Focus
 
-Every focusable element shows a visible focus indicator on `:focus-visible` (WCAG 2.4.7), fields included: one `--focus-ring` token (for example a 2px brand ring at 2px offset) set in the base layer. Never `outline: none` without a replacement. Focus also reveals what hover reveals.
+No control shows a focus ring, outline or focus border, the browser default included: a standing decision recorded in the design doc, set once in the base layer (`:focus, :focus-visible { outline: none }`) and repeated on fields (`border: 0; outline: 0; box-shadow: none` on `:focus` and `:focus-visible`). Focus still reveals what hover reveals (a row's "more" button, a card's add button) and floats labels.
 
 ## Cursors, scrollbars, hit areas
 
-- **Cursors in one base layer:** `pointer` for anything that acts (buttons, `[role=button|tab|option|menuitem]`, `summary`, `select`, `::file-selector-button`, checkbox, radio, range and color inputs, the label of a checkbox or switch); `not-allowed` when disabled, including the label of a disabled checkbox or switch field; `progress` for `[aria-busy=true]`, a button whose label shimmers (`:is(button, [role=button]):has(.shimmer-text)`) and every field and button of a form whose submit is busy (`form:has([aria-busy=true]) :is(input, button)`): working beats unavailable. Drag: `grab` on draggable items, `grabbing` on the drag overlay, `default` while dragging is off, plus `touch-action: manipulation`.
+- **Cursors in one base layer:** `pointer` for anything that acts (buttons, `[role=button|tab|option|menuitem]`, `summary`, `select`, `::file-selector-button`, checkbox, radio, range and color inputs, the label of a checkbox or switch); `not-allowed` when disabled, including the label of a disabled checkbox or switch field (a disabled choice row in a connect flow keeps `cursor: default`); `progress` for `[aria-busy=true]`, a button whose label shimmers (`:is(button, [role=button]):has(.shimmer-text)`) and every field and button of a form whose submit is busy (`form:has([aria-busy=true]) :is(input, button)`): working beats unavailable. Drag: `grab` on draggable items, `grabbing` on the drag overlay, `default` while dragging is off, plus `touch-action: manipulation`.
 - **Thin scrollbars everywhere:** a thumb at ink 18% (30% on hover) on no track; the WebKit fallback is .5rem with a transparent border and `background-clip: padding-box` for inset. Keep it in the base layer so a carousel or tab row can hide its bar with `scrollbar-width: none`.
 - **Hit area bigger than the drawing:** a `::before` that extends the control to 40px (44px on `pointer: coarse`), inset by `calc((100% - max(100%, var(--hit-area-min))) / 2)`, so a control already big enough gets nothing; where neighbours are close, extend height only.
 - **Scrollbar side in right-to-left:** a scroller with `dir="ltr"` keeps its bar on the right edge, and its content sets `dir` back to the page's.

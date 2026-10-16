@@ -2,7 +2,7 @@
 
 ## Pending
 
-- **The button says what it is doing, and its width moves smoothly.** The label morphs to the running label ("Save" to "Saving…", "Leave" to "Leaving…") with the morphing-text component, the button is disabled and `aria-busy`, and the cursor shows progress. A plain ternary that swaps the text snaps the width and everything beside it; that is the bug, not the words. A toggle's running label follows its direction ("Saving…" or "Removing…").
+- **The button says what it is doing, and its width moves smoothly.** The label morphs to the running label ("Save" to "Saving…", "Leave" to "Leaving…") with the morphing-text component, the button is disabled and `aria-busy`, and the cursor shows progress. A plain ternary that swaps the text snaps the width and everything beside it, so the ternary sits inside the morphing-text component (`<MorphText>{loading ? "Loading…" : "Load more"}</MorphText>`). A toggle's running label follows its direction ("Saving…" or "Removing…").
 - **Words instead of spinners:** a shimmer over text that names the step ("Opening the page…", "Waiting for approval…"). Shimmer with a mask, not `background-clip: text` (which hides letters positioned by a morph), and keep the text's own color so it works on a primary button. The mask is black at `50% - spread`, 35% alpha at 50%, black at `50% + spread` (spread 2px per character), `mask-size: 250% 100%`, its position moving 100% to 0% in `0.9s linear infinite` (under a second a pass, so waiting feels fast), on an `inline-block`. A muted tone exists. Under reduced motion the band rests off the text.
 - **A form in flight disables its `fieldset`,** so every field and button waits together; the server's error comes first in the form, then the step's notices, then the fields. Own pending with a transition (`useTransition`), so it clears however the action ends.
 - **Prepare, then confirm.** When the question depends on the server (what leaving will change), the row's action first fetches it: the row is busy meanwhile, and a failure goes to the page alert. The confirm then opens with that text. Create the request id at prepare time and key the confirm by it.
@@ -12,7 +12,7 @@
 
 ## Optimistic, then honest
 
-- **Show the change at once** (a pick in segmented tabs, a status set, a memory deleted); on failure put it back and say so where it happened. A picker stays enabled while it saves: disabling it until the save returns throws the optimism away.
+- **Show the change at once** (a pick in segmented tabs, a status set, a memory deleted); on failure put it back and say so where it happened. Board and list pickers stay enabled while they save. An item's status chip shows the new value at once from the override map and is disabled until its save returns, so one item never has two status saves in flight.
 - **A picked value shows until the stored one matches it,** then the stored one takes over (`if (picked === stored) setPicked(null)` during render), so a slow save never flickers back.
 - **Each change saves in its own request,** concurrently; the list is read again once all have saved. Any failure puts back the stored list and reads it again, so the page never shows unsaved changes as saved.
 - **A save outlives the component that started it.** Keep the optimistic change and its rollback alive (`keepAlive`) and never abort the request when the component goes away: closing a sheet or leaving the page must not cancel either.
@@ -64,7 +64,7 @@
 </div>
 ```
 
-**A closing panel keeps its last content.** A selection bar collapsing keeps the last count, not zero; a confirm note keeps its text while it folds; a dialog keeps the last section and the form as filled; a details sheet keeps its item. Hold the shown value in state and update it only while open:
+**A closing panel keeps its last content.** A selection bar collapsing keeps the last count, not zero; a confirm note keeps its text while it folds; a dialog keeps the last section and the form as filled. Hold the shown value in state and update it only while open:
 
 ```tsx
 const [shown, setShown] = useState(count);
@@ -75,7 +75,7 @@ if (open && shown !== count) setShown(count);       // during render; no effect,
 
 ## Empty, loading, filtered, partial
 
-- **Three different empties:** still loading ("Checking results…"); filtered to nothing ("No match for these filters", with Clear filters in soft red, or a reset link inside the sentence); truly empty ("No results", with the one next action: search again, which focuses and selects the search field, or a link to where items are made). A list that has never been synced says so and gives no count ("Syncing…" until then), separate from one known to be empty.
+- **Three different empties** (a catalog with only a search and chips uses two: loading, and none with Search again): still loading ("Checking results…"); filtered to nothing ("No match for these filters", with Clear filters in soft red, or a reset link inside the sentence); truly empty ("No results", with the one next action: search again, which focuses and selects the search field, or a link to where items are made). A list that has never been synced says so and gives no count ("Syncing…" until then), separate from one known to be empty.
 - **Filtered to nothing shows only once settled** (not busy, not loading); until then the loading empty shows, so a filter is never blamed while data is still arriving. "Reached the end" likewise shows only when nothing runs, nothing more is available, and the count is above 0 and below what was asked for.
 - **Before the first search there is no results card;** offer the one next step instead ("Browse saved"). The card appears once there are results, progress or an error.
 - **Empty states sit on a card,** the icon in a tile (40px, `rounded-lg`, a 24px glyph; gray on the page, white inside a gray card), a title (headline-md), one line on what to do (`text-sm`, relaxed, the header at most `max-w-sm`), the action beneath; gap 1rem.

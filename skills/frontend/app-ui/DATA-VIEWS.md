@@ -101,8 +101,8 @@ Account rows, memory rows, settings rows: a grid of avatar, text and actions. Wh
 - **The header** is a grid: the avatar spanning two rows beside a title (1.25rem / 1.2 / 700, `overflow-wrap: anywhere`, `text-wrap: pretty`) and the description (.8125rem / 1.2308). Body padding and gap 1rem.
 - **Facts are a `<dl>` grid,** each `<dd>` value in `<bdi>`: `dt` .8125rem muted, `dd` weight 500, gap 1rem.
 - **A list of people** is titled with its count ("Admins · 3"). Without the list: "None" when the count is 0, "Unavailable" otherwise, plus "Partial list" when the source marks it incomplete.
-- **The sheet looks its item up by id in the live list,** so details that load while it is open appear in it. Keep the last item while the sheet closes, so the title never falls back to generic text mid-exit.
-- **One failure at two depths:** a short line with the full error in a tooltip on the card (on a focusable element, so keyboard users can read it), the full alert at the top of the editor.
+- **The sheet looks its item up by id in the live list,** so details that load while it is open appear in it. It is open while an id is selected; closing clears the id, and the title reads the generic "details" text while the sheet slides out.
+- **One failure at two depths:** a short line on the card (a `<p>` with the full error in its tooltip), the full alert at the top of the editor.
 
 ## Selection bars
 
@@ -124,13 +124,13 @@ Bulk actions beside the selection they act on, in a disclosure panel that opens 
 | Add at the foot | after the items, full width, 2.25rem, radius .875rem, 600 |
 | Item | radius .625rem, padding space-3, gap .5rem; title 14px / 500 / 1.2857, `text-align: start` |
 
-- **An item card:** a head with the status picker and the title button; labels (readable by screen readers, outside the open button); a short failure line (destructive, xs); a foot with the created date (12px, muted) and the priority picker.
+- **An item card:** a head with the status picker and the title button; labels as tags, `aria-hidden` on the card; a short failure line (destructive, xs); a foot with the created date (12px, muted) and the priority picker.
 - **A list:** a group per status as one gray card holding its sticky head and white rows; the chevron turns, the rows fold. Row checkboxes appear on hover, focus or selection (always on touch). Container queries add the status at 28rem, labels at 36rem. `scroll-margin-block-start` on rows' controls so keyboard focus clears the sticky head.
 
 | Part | Value |
 |---|---|
 | Groups | .5rem apart, open at first; head sticky, `z-index: 10`, radius .875rem |
-| Chevron | turns 90deg over 200ms `cubic-bezier(.4, 0, .2, 1)`; the closed one points to the reading end, mirrored by direction |
+| Chevron | a down chevron turned 90deg while closed, 0 when open, over 200ms `cubic-bezier(.4, 0, .2, 1)`; the same turn in both directions; no transition under reduced motion |
 | Rows | .25rem apart, radius .625rem, padding .625rem space-3; title ellipsized, labels on one line; an empty group drops its bottom padding |
 
 - **The shown items run filter, then sort, then group;** grouping returns every column in a fixed order, empty ones included. Selection exists only in the list. Hidden columns hide a board column or a list group and are part of the view state.
@@ -165,7 +165,7 @@ Bulk actions beside the selection they act on, in a disclosure panel that opens 
 
 ## Feeds and cards
 
-- Render the first 50 and reveal the next 50 locally before fetching another page; reset on filter change; `aria-busy` on the grid while loading; a "Load more" button that stays (its label morphing) while it loads. Its promise resolves to the number of items added, so the caller can move focus or announce them.
+- Render the first 50 and reveal the next 50 locally before fetching another page; reset on filter change; `aria-busy` on the grid while loading; a "Load more" button that stays (its label morphing) while it loads; a catalog's Load more keeps its plain label and is only disabled while the next page loads. Its promise resolves to the number of items added, so the caller can move focus or announce them.
 - **Merge pages by item id** (a composite `${parentId}:${id}` when ids are unique only within a parent), so an item that moved to the next page while paging shows once. `hasMore` comes from the total (`items.length < total`) or from the last page.
 - **Each card is an `<article>`** named for screen readers ("Post by <name>").
 - **A card's facts line** joins the parts it has with ` · `, and renders nothing when it has none. Each fact shows once known. The separator is an `aria-hidden` span with `white-space: pre`, so its spaces survive inside flex. Icons that carry meaning (a platform, a public globe) get screen-reader text and a tooltip; an unknown one is left out rather than drawn blank.
@@ -197,7 +197,7 @@ Bulk actions beside the selection they act on, in a disclosure panel that opens 
 | Details link | a full-width secondary button link (`flex: 1`) |
 
 - **Classify an item's content with the same function the card renders with,** so the kind filter and the card never disagree: withheld first, then several attachments (a carousel), then video, image, link (a URL plus a title or description), text, empty. An unknown type falls back to the most common kind. A compact row's one thumbnail falls back from the video poster to the image, the first attachment's image, the owner's photo, then none.
-- **Authors:** their name, "Anonymous participant", or a generic "Author"; a link only when a profile exists, the name `inline-size: fit-content` so its underline spans only the name. The avatar falls back to the first grapheme (`Intl.Segmenter`, never `slice(0, 1)`) or "?". People avatars are round, group or brand avatars take the button radius; 2.5rem in tables and posts, 3rem in a sheet header, 2rem on comments.
+- **Authors:** their name, "Anonymous participant", or a generic "Author"; a link only when a profile exists, the name `inline-size: fit-content` so its underline spans only the name. The avatar falls back to the name's first character (`name?.slice(0, 1)`) or "?". People avatars are round, group or brand avatars take the button radius; 2.5rem in tables and posts, 3rem in a sheet header, 2rem on comments.
 - A reproduction of another product's card (an ad, a post as the source shows it) keeps the source's look inside the app's card, but raises any text under 12px to 12px.
 - **Expired media links in a cached result:** read the expiry from the signed URL and treat it as expired 10 minutes early, so it never expires while shown; an item is expired when any of its links is. Refresh in two stages: the shared cache first (another viewer may have refreshed it), then the source for the rest in batches of 30; swap each card to the fresh copy when it arrives, and keep the cached copy of one the source can't refresh.
 - **Comments** as bubbles (radius 1.125rem, ink 5%, `justify-self: start`) with the name inside, time and reactions below (.75rem), replies indented 2.375rem; "More comments on the source" when the list is partial. The action bar is at least 2.75rem tall, its buttons 2.75rem by 2rem, radius .375rem, ink 5% hover under `(hover: hover)`; a toggle that is expanded takes the primary color. Counts beside icons hide at 0, while the `aria-label` always carries the count.
