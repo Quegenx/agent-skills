@@ -10,8 +10,8 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 | The job | Read |
 |---|---|
 | The harness: fixtures and the network guard, fake time, fresh data per case, run records, fingerprints, repetitions, intervals, snapshots | [HARNESS.md](HARNESS.md) |
-| Grading: code checks, judge questions asked as failures, strict and mean rules, judge self-tests and calibration | [JUDGES.md](JUDGES.md) |
-| Taking it to a clean run: the loop, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
+| Grading: code checks, judge questions asked as failures, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
+| Finding unnamed failures in real traffic, then taking it to a clean run: the loop, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
 | What to fix in the agent once a failure is understood | the `agent-harness` skill |
 | Judges and classifiers built on typed probabilities | the `jev-decisions` skill |
 

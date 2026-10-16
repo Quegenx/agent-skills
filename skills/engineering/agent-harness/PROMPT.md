@@ -35,8 +35,22 @@ A rule about what to do with a tool's result goes in as a **step note** right af
 - **The list is a message, with a budget:** a small share of the context window (one or two percent) and a cap per description (a few hundred characters). The model reads the descriptions and loads the full text itself. Don't route skill choice through a classifier unless you have measured it in shadow mode first.
 - **Code decides what is visible:** a skill tied to certain files appears once such a file is touched; a skill the model must never choose is hidden; integrations the user hasn't connected stay out of the list.
 - **A description is a classifier:** say when it applies, with the signal that marks it ("only after she says it is a gift"). Say when not to use it. Never put an example that looks like the common case into a rare skill's description: one count-and-street example made plain orders load the gift flow one time in three. Tell the agent not to load a skill "to check whether it applies".
-- **Keep a routing eval:** each typical opening message mapped to the skill it must load, or none; rerun it after any description, prompt or gate change.
+- **Keep a routing eval:** each typical opening message mapped to the skill it must load, or none; rerun it after any description, prompt or gate change. A new skill gets two or three cases that must load it, and the existing cases show it doesn't take messages that belong elsewhere. Write descriptions as general rules; one tuned to the eval's exact messages scores well and routes real messages badly.
+- **Routing lives in two places only:** the skill's line in the list and its description. The body is read after the choice is made, so a "when to use this" section inside it is dead weight.
+- **A skill with several flows is a short router:** the main text says which file covers which case and the agent opens only that one. Keep each file one link away from the main text, short (around 100 lines is a good ceiling), with a contents list at the top of anything longer.
+- **Leave out what the agent can fetch:** a skill holds what the agent couldn't work out from the live data, the tools and the docs; code samples and copied facts go stale, so point to the source instead.
+- **Match the freedom to the risk:** plain guidance where several ways are fine, exact steps or a script where one wrong move breaks something.
 
 ## The base prompt
 
-What remains: voice, language, scope, what the agent never does, and the flows nearly every conversation runs. Write each rule once, short, as what to do. Align two rules that contradict rather than tuning both, and never let instructions be cut silently by a size limit: fail loudly or test the size.
+What remains: voice, language, scope, what the agent never does, and the flows nearly every conversation runs. Write each rule once, short, as what to do, with the reason when it isn't obvious: a model that knows why applies the rule to the neighbouring case. Align two rules that contradict rather than tuning both, and never let instructions be cut silently by a size limit: fail loudly or test the size.
+
+## Changing the prompt
+
+1. **Start from an observed failure:** real replies that went wrong, named as a failure (wrong format, an ignored rule, an invented fact). What could go wrong is not a reason to add a rule.
+2. **Find where the prompt causes it:** a missing, vague or contradicting instruction.
+3. **Fix the class, not the example:** write the rule at the level of the mistake, in your own words, never the failing message itself. If the general rule doesn't work, say so; narrowing it until it fits one case is overfitting.
+4. **Keep what works:** before changing a sentence, name the behaviour it protects, and rerun the cases that depend on it.
+5. **One cause per attempt,** each saved as its own version, so a result can be traced and rolled back. No added emphasis or capitals as a fix.
+
+**Write for the model that will read it.** Instructions accumulate for the weaknesses of older models and then hold back newer ones: step-by-step recipes where the model now plans well, "always run the tests" where it already does, and hard "never without asking" language that makes a careful model stop early. When the model changes, reread every instruction: keep boundaries that protect something real, give explicit permission for work you know is safe ("these tests use throwaway data: run them and fix what fails without asking"), and state what done means, so the model neither stops at a first draft nor runs past the goal. Check the model's own prompting guide: newer reasoning models want goals over micromanaged steps and less shouted emphasis. A prompt that serves several model families is tested on each.

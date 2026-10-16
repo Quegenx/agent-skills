@@ -29,4 +29,16 @@ Before trusting a reworded judge question:
 3. **Run the judge ten times on each, twice.**
 4. **Keep the wording only if every must-pass passed and every must-fail failed, every time.**
 
+## Calibrating a new judge
+
+A judge for production (scoring live traffic, gating a release) is calibrated before it counts:
+
+- **Labelled examples in the exact shape the judge will see live,** spread over every possible verdict, plus the cases that prompted the judge. Labels use the judge's own output vocabulary and are never shown to it.
+- **Run the candidate wording on all of them with the judge's real model,** and score it by exact match with the label.
+- **Read every mismatch,** in a table of input, expected and actual. Group the debatable labels first, since the label may be what's wrong, then the rest by the verdict the judge gave.
+- **Accuracy per verdict, not only overall:** around 85% overall is about what people agree with each other, but only if no single verdict is far worse.
+- **A person approves the wording;** only then does it go live, with the same model, inputs and filters it was calibrated with.
+
+Name a score after what it measures (`refusal`), never after the judge.
+
 Rewordings that fix a false fail often let a real mistake through two to six times in ten; calibration is how you see it. A rejected wording is worth writing down next to the kept one. A wording that fixes the false fail but lets a real defect through is worse than the original.

@@ -12,6 +12,17 @@
 8. **Ship:** commit, deploy, health-check, knowing which deployment is production.
 9. **Next full run,** compared case by case with the previous one. Repeat until a full run has no failures.
 
+## Finding failures nobody has named yet
+
+Before writing checks for a new agent, or when the suite passes and users still complain, find the failures in real traffic:
+
+1. **A sample** of real conversations (around 50), spread across the kinds of users and requests.
+2. **Open notes by a person:** for each, what happened, described as behaviour ("asked for the address twice"), not as a cause, and pass or fail. The person who knows the product writes these; an agent can prepare the sample and the review queue, not the judgment.
+3. **Group the notes** into a short list of failure kinds, and count each.
+4. **Decide per kind:** a fix (most), a code check, or a judge. Fix the frequent and costly kinds first; a kind seen once waits for a second sighting.
+
+A first case set is small: 5 to 12 cases that each test something, reviewed by a person. Expected outputs an AI wrote are a draft, not ground truth. Keep each case's input, expected result and notes in separate fields.
+
 ## Triage: whose mistake is it?
 
 | Kind | How to tell | What to do |

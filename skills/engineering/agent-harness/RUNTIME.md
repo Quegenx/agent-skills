@@ -144,6 +144,11 @@ One agent with good tools is the default; split only when the work has distinct 
 | Alerts | A failed turn alerts the team |
 | Flushing | Flush traces before a serverless function returns; it ends abruptly |
 
+- **Each span typed for what it is:** model calls as generations, a lookup as retrieval, a subagent as its own agent node under the step that called it, each subagent named after its task, never all called "assistant".
+- **Set a span's input on purpose** (the user's message, the tool's arguments), not every argument of the wrapped function, which drags in clients, settings and keys.
+- **Read a real trace after instrumenting:** run the path, fetch the trace, check that someone could see from it exactly what the agent knew at each decision, fix the gaps, repeat.
+- **Signals from users** (an edited draft, a retry, a thumbs down, a task finished) are scores named after what was observed (`draft_edited`), not the quality hoped for (`quality`).
+
 ## Building a new agent: the order
 
 1. Entry, lease, one model call and one tool, end to end, with validated input and a trace.
