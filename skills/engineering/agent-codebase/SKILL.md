@@ -53,15 +53,18 @@ Where a new piece goes, by the question it answers:
 Measured from a working agent of 77 files, by import:
 
 - **Domain tool folders import only the tool runtime** (the context, the output cap, error helpers) and their own server functions. The registry in `core/tool-runtime/` is the one file that imports every tool.
-- **The transport imports the core;** the core imports memory and the skill registry.
+- **The transport imports the core; the core never imports the transport.**
+- **Memory sits beside the core:** it uses the model service and the user-context reader, and the instructions import its rules.
 - **Playbooks import only the registry's type;** the registry imports the playbooks.
+- **Back edges are type-only:** the traits table and the deferred-tools table import the tool-name type from the registry that imports every tool. `import type` is erased at runtime, so the value graph has no cycle. Check both graphs, values and types, mechanically.
 
 Rules that keep it that way:
 
-1. **No domain imports another domain.** A helper two tool folders share (an optional-input schema, an id pattern) lives in the tool runtime. In the measured code one input helper sat in a domain folder and a second folder imported it: move it.
-2. **The core defines the ports it needs from the transport** (what a tool may show on the page, how a retry is shown), with a no-op default; the transport implements them. In the measured code the page-data interface sat in the transport folder, so core and transport imported each other: the interface belongs in the core.
-3. **Orchestration stays thin.** The endpoint reads in parallel and wires modules together; every decision lives in a named module with its own test.
-4. **One registry per kind:** tools, traits, skills, error next steps, deferred namespaces. Each is a table other code derives from, never a list repeated in a second place.
+1. **No domain imports another domain.** A helper two tool folders share (an optional-input schema, an id pattern) lives in the tool runtime, never in the first domain that needed it.
+2. **The core defines the ports it needs from the transport** (what a tool may show on the page, how a retry is shown), with a no-op default; the transport implements them. A port left in the transport folder makes core and transport import each other.
+3. **Every outside-action port lives in the tool runtime,** with the checks its real implementation needs (a plan check, a pace read), so the factory and the tool context name no domain folder. A domain's port left in its tool folder makes the core import a domain.
+4. **Orchestration stays thin.** The endpoint reads in parallel and wires modules together; every decision lives in a named module with its own test.
+5. **One registry per kind:** tools, traits, skills, error next steps, deferred namespaces. Each is a table other code derives from, never a list repeated in a second place.
 
 ## Names
 
@@ -78,7 +81,7 @@ Each constant or rule says why it exists, what it was measured on and when, and 
 ## Prove it
 
 - [ ] Every file sits in the folder the table above gives it; no `utils`, `helpers` or `types` files
-- [ ] Imports checked mechanically: no domain-to-domain edge, no core-to-transport edge
+- [ ] Imports checked mechanically: no domain-to-domain edge, no core-to-transport edge, no core import of a `tools/<domain>/` folder outside the registry (a gate may read the input schema of the agent's own conversation tool it checks, such as the plan), no cycle among value imports
 - [ ] Tool names, traits, deferred namespaces and error next steps each defined once, the others derived or checked by type (a tool with no trait fails to compile)
 - [ ] Every outside action reaches tools through an injected interface with the real one as default
 - [ ] Tests mirror the source tree; the prompt, tool schemas and rebuilt histories pinned as snapshot files
