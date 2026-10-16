@@ -10,7 +10,7 @@ A test is worth what it would catch. Imagine the plausible broken versions of th
 | The code under test | Read |
 |---|---|
 | Thresholds, formulas, parsers, text, dates, money, comparators, state machines, time-based and stateful code, delays and timeouts, orchestration | [CATALOG.md](CATALOG.md) |
-| The shape of the suite, integration tests against real Postgres in containers, data isolation, async workflows across modules, architecture and contract tests, end-to-end tests | [INTEGRATION.md](INTEGRATION.md) |
+| The shape of the suite, integration tests against real Postgres in containers, data isolation, async workflows across modules, architecture and contract tests, end-to-end tests (writing and running them in a browser or on a device is the `e2e-testing` skill) | [INTEGRATION.md](INTEGRATION.md) |
 
 ## The rules
 

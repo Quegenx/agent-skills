@@ -1,0 +1,141 @@
+# Adversarial UI QA with sub-agents
+
+QA of a change in a real browser: try to break things, not confirm they work. The main agent coordinates and sub-agents test; every step emits one marker backed by evidence, with a screenshot taken at the moment of failure. The browser commands below use the Browserbase `browse` CLI.
+
+**Contents:** [Coordinator and workers](#coordinator-and-workers) · [The assertion protocol](#the-assertion-protocol) · [Testing a diff](#testing-a-diff) · [Deterministic checks](#deterministic-checks) · [Adversarial patterns](#adversarial-patterns) · [Test categories](#test-categories) · [Design consistency](#design-consistency) · [UX heuristics](#ux-heuristics) · [The report](#the-report) · [The browse CLI](#the-browse-cli) · [Prove it](#prove-it)
+
+## Coordinator and workers
+
+- **The main agent coordinates:** it plans, delegates and merges. Sub-agents execute their assigned tests only. The main agent does not drive the browser itself except to check the dev server is up.
+- **Three planning rounds, done and output before launching any sub-agent:**
+  1. **Functional:** action, then expected result.
+  2. **Adversarial:** roles, error paths, empty states, races, edge inputs (empty, huge, special characters, rapid clicks).
+  3. **Coverage gaps:** accessibility (axe-core plus keyboard-only), mobile viewports, console errors, visual consistency.
+  Deduplicate into one numbered list, assign groups, execute once.
+- **Splitting:** sub-agents run assigned tests, not exploration. The slowest agent is the bottleneck, so many small groups beat a few large ones. Size the effort to the change. No early stopping on failures.
+- **Sub-agents get the full test steps and the assertion protocol;** they don't have the skill's context.
+- **Every sub-agent prompt states a step budget,** because sub-agents do not limit themselves: about 25 steps for a few targeted checks, about 40 for a full page (functional, adversarial and accessibility), about 75 for several pages or a broad category. On hitting the budget, accept partial results, do not re-run, and list the rest as SKIPPED.
+
+```
+You have a budget of N browse steps (each `browse` command = 1 step). Count your steps as you go. When you reach N, stop immediately and report:
+- STEP_PASS/STEP_FAIL for every test you completed
+- STEP_SKIP|<test-id>|budget reached for every test you didn't get to
+
+Do not retry or continue after hitting the budget.
+Run only these tests: [numbered list from the merged plan]
+Do not explore beyond the assigned tests.
+Do NOT generate an HTML report or write any files. Return only step markers and your findings as text.
+```
+
+- **Summary lines:** per sub-agent `Tests: 8 | Passed: 5 | Failed: 2 | Skipped: 1 | Pages visited: 2`; final `Tests: 20 | Passed: 14 | Failed: 4 | Skipped: 2 | Agents: 3 | Pass rate: 70%`. Do not report steps used; that is plumbing.
+
+## The assertion protocol
+
+- **One marker per step:** `STEP_PASS|<step-id>|<evidence>` or `STEP_FAIL|<step-id>|<expected> → <actual>|<screenshot-path>`. Step ids read like `homepage-cta`, `form-validation-error`, `modal-cancel`. No freeform "this looks good".
+- **Never report PASS without concrete evidence** from the accessibility tree or a deterministic check.
+- **Evidence, strongest first:**
+  1. **A deterministic check:** an eval returning structured data (axe violation count, `document.title`, a field value, the console error array, an element count).
+  2. **A snapshot element match by ref** (`@0-12 button "Save"`).
+  3. **A before and after comparison.**
+  4. **A screenshot and visual judgment,** weakest, only for color, spacing and layout, always saying what is being evaluated.
+- **Core loop:** snapshot BEFORE, act, snapshot AFTER, compare, write the marker.
+- **Screenshot every failure at the moment it happens** (the broken state, not after recovery) to `.context/ui-test-screenshots/<step-id>.png`; in parallel runs `<session>-<step-id>.png`; layout bugs also get `<step-id>-baseline.png`. Run `mkdir -p .context/ui-test-screenshots` at the start.
+- **A failure report** gives the exact action, expected, actual, the screenshot path and a suggested fix.
+
+## Testing a diff
+
+1. **Read the change:** `git diff --name-only HEAD~1` (or `main...HEAD`), then categorize:
+
+| Pattern | Impact | Test |
+|---|---|---|
+| `*.tsx/jsx/vue/svelte` | component | render, interaction, state, edge cases |
+| `pages/**`, `app/**`, `src/routes/**` | route | navigation, load, content, 404 |
+| `*.css/scss/module.css` | style | screenshot, responsive |
+| `*form*`, `*input*`, `*field*` | form | validation, submission, empty, long and special input |
+| `*modal*`, `*dialog*`, `*dropdown*` | interactive | open and close, Escape, focus trap, cancel vs confirm |
+| `*nav*`, `*menu*`, `*header*` | navigation | links, active states, routing, keyboard |
+| non-UI only | none | report "no UI tests needed" |
+
+2. **Map files to URLs:** Next.js App Router on 3000 (`app/dashboard/page.tsx` is `/dashboard`), Next.js Pages on 3000, Vite on 5173 (read the router config), Nuxt on 3000, SvelteKit on 5173 (`src/routes/+page.svelte` is `/`), Angular on 4200.
+3. **Make sure the right code runs:** check the branch, check out the PR branch, reinstall dependencies (the lockfile may differ), restart the dev server. Probe ports 3000 3001 5173 4200 8080 8000 5000 with curl. **Check that it renders:** Next.js dev can return HTTP 200 while showing a full-screen build error dialog; if the snapshot is empty or dominated by an error dialog, fix the build first.
+4. **Plan happy and adversarial tests per changed area** (for an email field: valid email, invalid email, empty submit, XSS, a rapid double submit, keyboard-only).
+5. **Execute with before and after snapshots,** then write the text report and, if wanted, the HTML report.
+
+## Deterministic checks
+
+- **`browse eval` has no top-level `await`:** use `.then()` or split the calls.
+- **Accessibility:** inject `https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js`, `browse wait timeout 3000`, then:
+
+```js
+axe.run().then(r => JSON.stringify({ violations: r.violations.map(v => ({ id: v.id, impact: v.impact, description: v.description, nodes: v.nodes.length, help: v.helpUrl })), passes: r.passes.length, incomplete: r.incomplete.length }))
+```
+
+  Assert `violations.length === 0`. Critical and serious must be fixed; moderate and minor should be.
+- **Performance:** read the navigation and paint entries (`domContentLoaded`, `loadComplete`, `firstPaint`, `firstContentfulPaint`, `transferSize`, `domInteractive`). FCP under 1.8 s is good, under 3 s needs improvement, over 3 s is poor; load under 3 s is good for SaaS; DOM interactive under 400 ms feels instant (Doherty).
+- **Broken images:** `img` elements where `!i.complete || i.naturalWidth === 0`.
+- **Console errors:** injecting a capture on `about:blank` and then navigating wipes it. Either read failed resources with `performance.getEntries().filter(e => e.entryType === 'resource' && e.responseStatus >= 400)`, or inject on the page itself, wrapping `console.error` / `console.warn` and adding `error` and `unhandledrejection` listeners that push into `window.__logs`, then interact, then read.
+- **Keyboard navigation:** `press Tab`, then eval `document.activeElement` (tag, text, role, aria-label, and a visible focus from computed `outlineStyle !== 'none' || boxShadow !== 'none'`); stop when the active element returns to BODY. Every interactive element is reachable, the order follows the visual layout, and the focus ring is visible.
+- **Focus trap:** Tab repeatedly inside an open dialog and eval the active element; focus must cycle within the dialog.
+- **Responsive sweep:** 375x812 (iPhone SE), 768x1024 (iPad), 1440x900 (desktop), `wait timeout 1000`, full-page screenshots, then look at them. Overflow: `document.documentElement.scrollWidth > document.documentElement.clientWidth` is a FAIL. Touch targets: buttons, links and `[role=button]` with width or height under 44 px.
+- **Links and forms:** list `a[href]` with `isExternal` and `opensNewTab`; list inputs with `required`, `hasLabel` (labels, aria-label, aria-labelledby) and placeholder; every input has a label or an aria-label.
+- **Empty state:** screenshot and snapshot, then look for a message, an illustration and a call to action.
+- **XSS:** the payload shows in the snapshot as StaticText inside the input, which is only its value. The real checks are whether validation rejects it and whether it renders as HTML outside the input.
+
+## Adversarial patterns
+
+- **Forms:** empty submit; 500+ characters; `<script>alert('xss')</script>` and `'; DROP TABLE users;--`; a double submit.
+- **Modals, the full lifecycle:** open (a dialog role appears), Escape closes, cancel closes with no side effects, confirm closes with the side effect.
+- **Navigation:** click a link and check the URL changed and the destination content shows; back returns the URL and content.
+- **Error states:** a page with empty data, a nonexistent route, invalid data (is the error helpful, is the input preserved).
+- **Keyboard:** Tab through until BODY; Enter activates.
+- **Stress:** click twice rapidly, submit empty, paste 500 characters, press Escape mid-flow.
+
+## Test categories
+
+| Category | Method |
+|---|---|
+| Accessibility | axe plus keyboard; deterministic |
+| Visual quality | screenshot plus heuristics; weakest |
+| Responsive | the sweep plus the overflow check |
+| Console health | deterministic |
+| UX heuristics | cite the specific heuristic |
+| Error states | before and after |
+| Data display | element match |
+| Design consistency | cite the property |
+| Exploratory | BUG-BASH.md |
+
+## Design consistency
+
+- **If the project has a design system document, it is ground truth;** a deviation is a `STEP_FAIL` (`design system specifies 8px grid → new modal uses 6px gap`). A template lists colors, typefaces, radius tiers, a spacing unit, button sizes, focus and disabled styles; copy it and replace the values with the project's.
+- **Otherwise learn from the app:** screenshot 2 or 3 unchanged pages as a baseline, then the changed page, and compare spacing rhythm, border radius, button styles, typography, color usage and component patterns (inline confirm vs modal).
+- **Always name the page, the element and the property.**
+
+## UX heuristics
+
+- **Laws of UX:** Fitts (the primary CTA is largest; destructive no larger than constructive; tap targets 44x44 Apple, 48x48 Material; full-width submit on mobile); Hick (more than 7±2 nav items get grouped; a dropdown of 15+ needs search; one clear action per modal); Miller (chunks of 5 to 9; 3 to 5 key metrics; wizards of no more than 5 to 7 steps); Jakob (conventional placement: logo goes home, avatar top right, sidebar left); aesthetic-usability (consistent radius, 3 to 4 primary colors at most, a 4 or 8 px rhythm); Doherty (under 400 ms; a loading indicator past 1 s; optimistic UI; skeletons); Von Restorff; Zeigarnik (progress indicators).
+- **Nielsen H1 to H10 with concrete checks,** for example H3: a modal closes with Escape and with an outside click; H5: destructive actions confirm, and unsaved changes prompt "Leave page?"; H9: errors sit next to the field, input is preserved, no stack traces or raw JSON, a 404 suggests alternatives.
+- **Error states and edge cases:** designed empty states with a CTA; "No results match your filters"; error boundaries; an offline indicator; an expired session redirects with a message and returns the user to where they were; form edge cases (paste, negatives, decimals, zero, time zone in date pickers); loading states; actions the user can't perform are hidden.
+- **Data display:** tables (numbers right-aligned, sort indicators, "Showing 1-25 of 142", a mobile scroll or cards); charts (axis labels, a legend, a zero-data message, bar y-axis from zero, not color alone); metrics (1.2K, direction arrows); filters (removable, clear all, persisted, start before end); pagination (the URL holds the page, back preserves scroll); formatting (no `null` or `undefined`, no 33.333333%, "2h 15m").
+- **Visual:** body text 16 px desktop and 14 px mobile at least; line height 1.4 to 1.6; lines of 60 to 80 characters; 2 to 3 font families at most; WCAG AA contrast 4.5:1 for normal text and 3:1 for large (18 px+, or 14 px+ bold); semantic status colors; hover, focus and disabled states; loading buttons prevent double clicks.
+- **Accessibility:** Tab reach and order, a visible custom focus, Escape closes, Enter and Space activate, arrow keys within groups, a skip link, focus trapped in modals and returned to the trigger; alt text, labels rather than placeholders, heading hierarchy, landmarks, live regions; `prefers-reduced-motion`, no more than 3 flashes per second; information never by color alone.
+
+## The report
+
+- **Text first:** the markers and the summary line. An optional HTML report goes to `.context/ui-test-report.html`.
+- **HTML report rules:** `<details>` cards with failures `open` and listed first, passes collapsed; every failure card embeds its screenshot as base64 (`base64 -i <png> | tr -d '\n'`) or says it is missing, and carries a fix suggestion; the pass-rate class is good at 90% or more, warn at 70 to 89%, bad below 70%; the file works offline and stays under 5 MB.
+- **The sources disagree on two points:** the rule says no CDN links or external assets, while the shipped template links Google Fonts (falling back to system fonts offline); and one description says the workflow writes no artifacts, while it does write the HTML report and screenshots.
+
+## The browse CLI
+
+- **Install:** `which browse || npm install -g browse`.
+- **Commands:** `browse open <url> [--local|--remote|--auto-connect|--cdp <port|url>]`, `wait load`, `wait selector "<css>"`, `wait timeout <ms>`, `snapshot`, `click @ref`, `fill "<selector>" "<value>"`, `type`, `press <key>`, `eval "<js>"`, `screenshot [--path p] [--full-page]`, `viewport W H`, `get url`, `back`, `stop`; cloud sessions with `cloud sessions create --context-id <id> --persist --keep-alive` and `cloud sessions update <id> --status REQUEST_RELEASE`.
+- **Mode:** a `localhost` or `127.0.0.1` URL opens with `--local` (a clean isolated browser); `--auto-connect` only when an existing local login or cookies are needed; `--cdp` to attach explicitly; deployed sites go to a remote Browserbase browser. Never send localhost traffic through Browserbase.
+- **Remote auth:** sync the domain's cookies into a Browserbase context (a separate cookie-sync script with `--domains`, `--context`, `--verified`, `--proxy "City,ST,US"`) and use the returned context id; it needs `BROWSERBASE_API_KEY`.
+- **Parallel sessions:** prefix every command with `BROWSE_SESSION=<name>`; each name gets its own browser. Named sessions work locally as well as on remote Browserbase browsers. Tests within a group run in sequence and groups run in parallel: parallel for different pages or independent audits, sequential for dependent steps or an ordered before and after.
+- **Avoid permission prompts:** allow `"Bash(browse:*)"` and `"Bash(BROWSE_SESSION=*)"` in `.claude/settings.json`.
+- **Troubleshooting:** "No active page": `browse stop`, and for zombies `pkill -f "browse.*daemon"`; ref not found: re-snapshot (refs change when the page updates); blank snapshot: `wait load` or `wait selector`; SPA deep links 404: open `/` and click through; remote auth fails: re-run the cookie sync with `--context`, or try `--verified`; session conflicts: a missing `BROWSE_SESSION`.
+- **Always `browse stop` when done,** for every named session.
+
+## Prove it
+
+Every planned test ends in exactly one marker; every `STEP_PASS` carries evidence from a deterministic check, a ref match or a before and after comparison; every `STEP_FAIL` has a screenshot of the broken state; skipped tests are listed as SKIPPED; and the summary's counts add up.

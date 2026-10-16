@@ -13,6 +13,7 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 | Grading: code checks, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
 | Auditing an eval, release gates and the baseline, gates that lie, production sampling and alerts | [GATES.md](GATES.md) |
 | Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
+| Auditing a product's docs, SDK or a SKILL.md by having several subagents attempt one task: goal, personas, credentials, traces, URL provenance, scoring, the write-up | [DX-AUDIT.md](DX-AUDIT.md) |
 | What to fix in the agent once a failure is understood | the `agent-harness` skill |
 | Judges and classifiers built on typed probabilities | the `jev-decisions` skill |
 
