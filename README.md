@@ -1,6 +1,6 @@
 # Agent skills
 
-40 skills for coding agents, in six sets:
+41 skills for coding agents, in six sets:
 
 | Folder | What it's for |
 |---|---|
@@ -9,7 +9,7 @@
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security. 9 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
-| [`skills/frontend/`](./skills/frontend) | How app and website UI behaves: animation. 1 skill. |
+| [`skills/frontend/`](./skills/frontend) | How app and website UI is built and behaves: components and the design system, animation. 2 skills. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -150,6 +150,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | Skill | Covers |
 |---|---|
 | [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion |
+| [ui-components](./skills/frontend/ui-components/SKILL.md) | An app's component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker |
 
 ## Licences
 

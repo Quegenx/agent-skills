@@ -16,6 +16,7 @@ An agent's answer is not a message; it is work happening. The interface has thre
 | Every timing, curve and size in one table | [MOTION.md](MOTION.md) |
 | The server side the UI depends on (stop hooks, approvals, follow-up call, data parts) | the `agent-harness` skill |
 | General animation rules (durations, springs, reduced motion) | the `ui-animation` skill |
+| The rest of the app's components (menus, dialogs, tables, states) | the `ui-components` skill |
 
 ## The rules
 
