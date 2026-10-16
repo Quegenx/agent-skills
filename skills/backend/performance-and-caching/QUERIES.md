@@ -1,6 +1,6 @@
 # Queries that let the database do the work
 
-For queries that must return the right answer (joins that multiply, NULLs, ties, time zones, streaks, ranges, recursive data), see the `sql-patterns` skill.
+For queries that must return the right answer (joins that multiply, NULLs, ties, time zones, streaks, ranges, recursive data), see the `sql-patterns` skill. For pooling, vacuum, memory settings and the audit queries (unused indexes, bloat, `pg_stat_statements`), see the `postgres` skill.
 
 The database filters, joins, aggregates, sorts and limits next to the data and the indexes. Code that fetches rows and does that work in the application moves the whole table over the network, holds it in memory, and issues one more query per row. The examples are Postgres SQL; the same shapes apply through supabase-js, Drizzle, Prisma or any query builder, and the check is the same: read the SQL it actually sends.
 
@@ -107,6 +107,7 @@ For "orders this month in the user's time zone", compute the month's start and n
 - **Index-only scans still visit the table** for rows changed since the last vacuum (the plan's `Heap Fetches`), to check visibility. A busy table may need more frequent vacuuming for the index-only plan to pay off.
 - **Include the selected columns** (`include (total_cents)`) when an index-only scan is worth it on a hot path.
 - **Partial indexes** for a common filter: `create index on jobs (run_at) where status = 'pending'`.
+- **Pick the index type by operator:** B-tree (the default) for `=`, ranges, `in`, `is null` and sorting; GIN for arrays, `jsonb` containment (`@>`, `?`) and full-text (`jsonb_path_ops` is two to three times smaller but serves only `@>`; a single key is an expression index, `((attributes->>'brand'))`); GiST for geometry, range types and nearest-neighbour; BRIN for huge append-only tables whose rows are physically in time order (a tiny index); hash for equality only.
 - Every index slows writes and takes space; add one for a measured slow query, and drop the ones nothing uses. An index whose columns are a prefix of another (`(issue_id)` next to `(issue_id, created_at)`) is usually redundant. Updates that change no indexed column and fit on the same page (HOT updates) skip index maintenance, so indexing a frequently updated column costs more than it looks. Sizes: `select indexrelname, pg_size_pretty(pg_relation_size(indexrelid)) from pg_stat_user_indexes where relname = 'comments';` (a three-column index on a million rows can be four times a single-column one).
 
 ## When a new index makes a query slower

@@ -44,6 +44,8 @@ export async function withTenant<T>(tenantId: string, work: (tx: Tx) => Promise<
 
 ## Supabase
 
+The full platform checklist (Data API grants, views and `security definer` functions that bypass RLS, update policies, storage, keys) is the `supabase` skill's SECURITY.md.
+
 Every table exposed through the API needs RLS enabled with policies, because the browser talks to the database through it (the anonymous and authenticated roles are subject to policies; the service-role key bypasses them and stays on servers).
 
 ```sql

@@ -5,7 +5,7 @@ description: "Writes SQL that returns the correct answer: joins that multiply to
 
 # SQL patterns
 
-Most wrong query results come from a few mistakes: a row that means something other than you think, a NULL that makes a comparison unknown, a tie that the question didn't mention, a time boundary in the wrong zone. Speed is the `performance-and-caching` skill's QUERIES.md; this skill is about correctness. Pick the file:
+Most wrong query results come from a few mistakes: a row that means something other than you think, a NULL that makes a comparison unknown, a tie that the question didn't mention, a time boundary in the wrong zone. Speed is the `performance-and-caching` skill's QUERIES.md, and schema, migrations and operations are the `postgres` skill; this skill is about correctness. Pick the file:
 
 | The question | Read |
 |---|---|

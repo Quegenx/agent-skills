@@ -1,13 +1,13 @@
 # Agent skills
 
-42 skills for coding agents, in six sets:
+44 skills for coding agents, in six sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the chat interface, the agent's codebase, Jev classifiers, search, RAG and extraction. 7 skills. |
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security. 9 skills. |
+| [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres and Supabase. 11 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
 
@@ -127,6 +127,8 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [background-jobs](./skills/backend/background-jobs/SKILL.md) | Async APIs, workers and queues, retries, durable multi-step workflows with waits and flow control, row and advisory locks, concurrency across instances |
 | [messaging](./skills/backend/messaging/SKILL.md) | Outbox and inbox in Postgres, idempotent consumers, ordering, choosing a broker |
 | [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | SQL that returns the right answer: joins that multiply, NULLs, ties, time zones, streaks, ranges, hierarchies, JSON |
+| [postgres](./skills/backend/postgres/SKILL.md) | Running Postgres in production: schema and types, migrations that don't lock, pooling and its limits, transactions and deadlocks, vacuum and wraparound, memory, WAL, backups, replication, audit queries |
+| [supabase](./skills/backend/supabase/SKILL.md) | Supabase without silent traps: Data API exposure and grants, RLS that authorizes, views and security definer functions, keys and scoped tokens, sessions, storage, the CLI and MCP, migrations, debugging |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness |
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |
