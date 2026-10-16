@@ -112,7 +112,7 @@ Building agents that stay reliable, and the AI features around them. Start with 
 | [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks |
 | [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, simulated users, the fix loop to a clean run, and release gates |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Long-term agent memory: what to remember and where, background extraction, consolidation, an always-on profile plus search, staying current, forgetting, user controls and memory evals |
-| [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, and every timing |
+| [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, every timing and size. Ships the production source in `reference/` |
 | [agent-codebase](./skills/ai-agents/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
 | [jev-decisions](./skills/ai-agents/jev-decisions/SKILL.md) | Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals, plus worked recipes (value and date extraction, search, re-ranking, taxonomies, record matching, guardrails, memory, tool suggestion). TypeScript with `@typesafe-ai/sdk`. |
 | [ai-features](./skills/ai-agents/ai-features/SKILL.md) | Vector and hybrid search, RAG with citations, structured extraction, AI jobs |
@@ -126,13 +126,13 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [api-design](./skills/backend/api-design/SKILL.md) | Contracts, pagination, errors, idempotency, feature flags, streaming, timeouts and rate limits |
 | [background-jobs](./skills/backend/background-jobs/SKILL.md) | Async APIs, workers and queues, retries, durable multi-step workflows with waits and flow control, row and advisory locks, concurrency across instances |
 | [messaging](./skills/backend/messaging/SKILL.md) | Outbox and inbox in Postgres, idempotent consumers, ordering, choosing a broker |
-| [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | SQL that returns the right answer: joins that multiply, NULLs, ties, time zones, streaks, ranges, hierarchies, JSON |
-| [postgres](./skills/backend/postgres/SKILL.md) | Running Postgres in production: schema and types, migrations that don't lock, pooling and its limits, transactions and deadlocks, vacuum and wraparound, memory, WAL, backups, replication, audit queries |
-| [supabase](./skills/backend/supabase/SKILL.md) | Supabase without silent traps: Data API exposure and grants, RLS that authorizes, views and security definer functions, keys and scoped tokens, sessions, storage, the CLI and MCP, migrations, debugging |
+| [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | SQL that returns the right answer: joins that multiply, NULLs, ties, window functions, time zones, streaks, ranges, hierarchies, JSON and JSONB operators |
+| [postgres](./skills/backend/postgres/SKILL.md) | Running Postgres in production: schema and types, migrations that don't lock, pooling and its limits, transactions and isolation, locks and deadlocks, vacuum and wraparound, memory, WAL, backups, replication and failover, audit queries |
+| [supabase](./skills/backend/supabase/SKILL.md) | Building on Supabase, from the official docs: the security checklist (Data API grants, RLS that authorizes, views and security definer functions, keys), Auth (sign-in methods, SSR, sessions, JWTs, MFA, hooks), the Data API and database, Realtime, Edge Functions, Storage, Cron, Queues and pg_net, vectors, the CLI and MCP, migrations, debugging. Conflicting doc statements shown both ways, breaking changes dated |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness |
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |
-| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, full-text search, caching and invalidation, media and long lists in the browser |
+| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, index types and when an index doesn't help, full-text search, caching and invalidation, images (WebP) and video (WebM), long lists in the browser |
 | [secure-coding](./skills/backend/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
 
 ## Architecture
@@ -152,8 +152,12 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | Skill | Covers |
 |---|---|
 | [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion |
-| [app-ui](./skills/frontend/app-ui/SKILL.md) | The product's own UI (the signed-in app), its component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker |
-| [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | A product's marketing site, apart from the app: its own tokens and stylesheet, a hero that assembles letter by letter, two-tone headings, story sections built from real product screens, carousels, FAQ with structured data, a floating header that grows into a menu, a revealed footer, language and theme transitions, contact, help, blog and legal pages, head tags and consent |
+| [app-ui](./skills/frontend/app-ui/SKILL.md) | The product's own UI (the signed-in app), its component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, sign-in and sign-up, the shell and sidebar, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker. Ships the production source in `reference/` |
+| [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | A product's marketing site, apart from the app: its own tokens and stylesheet, a hero that assembles letter by letter, two-tone headings, story sections built from real product screens, carousels, FAQ with structured data, a floating header that grows into a menu, a revealed footer, language and theme transitions, contact, help, blog and legal pages, head tags and consent. Ships the production source in `reference/` |
+
+## Reference code
+
+`app-ui`, `landing-page-ui` and `agent-chat-ui` carry the production source they describe in `reference/`, with a `REFERENCE.md` index naming each file, the skill file that describes it, and the packages it needs. Copy from there to build it exactly.
 
 ## Licences
 
