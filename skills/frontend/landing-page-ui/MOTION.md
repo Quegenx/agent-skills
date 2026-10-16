@@ -2,7 +2,7 @@
 
 One ease runs the site's reveals: `cubic-bezier(.19, 1, .22, 1)` (fast out of the gate, long settle), around .9s for text and .8s for panels.
 
-**Load the motion library's features once:** one lazy feature wrapper at the document level around header, main, footer and banner, or one around `<main>` plus one around the chrome outside it (header, banner), since a wrapper only covers what it encloses. Never one per component or per section. Layout ids (the rail indicator, the image preview's grow, lists that refilter) and drag need the larger feature bundle; the smaller one silently skips them, so a page that uses either gets the larger bundle. **Read reduced motion reactively** (the library's hook or a media-query store), never once inside an effect.
+**Lazy feature wrappers, in strict mode, sit where the motion is:** a page's `<main>` wrapper loads the smaller bundle once for the page; the header and the cookie banner, outside `<main>`, each wrap themselves; every scroll reveal and separator carries its own wrapper; the home page's hero, showcases and questions each wrap their own section. Layout ids and drag need the larger bundle, so the on-this-page rail, the blog post page and the legal page wrap in it (the rail indicator, the image preview's grow and drag). **Reduced motion** is read through the library's hook everywhere except the title letters, which check the media query once on mount.
 
 ## The hero assembles once
 
@@ -22,16 +22,16 @@ Each rise takes .937s on the site ease and sits inside a scroll reveal, so its b
 |---|---|
 | Start | opacity 0, `scaleY(.72)`, 18px lower, a random tilt per letter in -8 to 8 degrees, origin bottom center |
 | Land | `elastic.out(1, .62)`, .72s; each line its own tween in parallel, staggered over .48s from the start |
-| Hover in (only under `(hover: hover)`) | `scaleX(1.08) scaleY(.82)`, 6px down, .22s `back.out(2.8)` |
+| Hover in (pointer enter on each letter, any pointer, motion setting not checked) | `scaleX(1.08) scaleY(.82)`, 6px down, .22s `back.out(2.8)` |
 | Hover out | .42s `elastic.out(1, .48)` |
 
 ## Headings that rise word by word
 
-A section heading is a statement with a muted part (`text` and the `muted` substring, which must exist in it; throw if not, so a translation that drops it fails loudly). The muted words take the faint ink role (.4); both tones are `inline-block relative`. Once the heading enters view (once), each word rises from `rotateX(-45deg)` and 50% of its height, .937s on the site ease, starting at .3s (.5s for a page header's description) plus 50ms per word, counting words across both parts. An option plays the words back to hidden when they leave view. **Whitespace between words is kept as typed:** split with a capturing group on whitespace and render each run as it was (a non-breaking space or a newline stays one), never a single plain space between words. For dynamic titles (blog `h2`s and post titles) compute the muted part as `min(max(1, ceil(n × .35)), max(1, n - 1))` of the last words: at least one, never all unless the heading is one word.
+A section heading is a statement with a muted part (`text` and the `muted` substring, which must exist in it; throw if not, so a translation that drops it fails loudly). The muted words take the faint ink role (.4); both tones are `inline-block relative`. Once the heading enters view (once), each word rises from `rotateX(-45deg)` and 50% of its height, .937s on the site ease, starting at .3s (.5s for a page header's description) plus 50ms per word, counting words across both parts. An option plays the words back to hidden when they leave view. **Words are the non-space runs** (`/\S+/gu`), keyed by text and position, with one plain space between them; the heading's parts are trimmed and joined by a single space where the source text had whitespace. For dynamic titles (blog `h2`s and post titles) compute the muted part as `min(max(1, ceil(n × .35)), max(1, n - 1))` of the last words: at least one, never all unless the heading is one word.
 
 ## Scroll reveals
 
-Content clears from an 8px blur and transparency over .8s ease-out as it enters the viewport (30% visible), and again each time it re-enters: a section scrolled past and back still feels alive. Separators draw in the same way. Use 1% for items in a horizontal track, where little of each is visible at first, and 10% for the on-this-page rail and the pagination. A heading and its description each get their own reveal. **The reveal checks reduced motion itself:** with it on, content renders in place with no blur and no fade. On pages that must render identically on the server (legal documents), render the reveal wrappers on the server too and, after hydration, drop them only when reduced motion is set, so the hydrated tree matches the server's and the change happens after hydration.
+Content clears from an 8px blur and transparency over .8s ease-out as it enters the viewport (30% visible), and again each time it re-enters: a section scrolled past and back still feels alive. Separators draw in the same way. Use 1% for items in a horizontal track, where little of each is visible at first, and 10% for the on-this-page rail and the pagination. A heading and its description each get their own reveal. **The reveal runs the same under reduced motion:** the blur and fade play whatever the setting. Legal documents are the one place that drops it: the reveal wrappers render on the server and stay through hydration, and only after hydration, when reduced motion is set, are they removed, so hydration never removes the server's wrappers.
 
 ## Smooth scrolling
 
@@ -72,12 +72,12 @@ The logo is forced left-to-right so the wordmark keeps its mark on the left in b
 
 ## Hover details
 
-Every one below follows the hover rule in [SKILL.md](SKILL.md): pointer handlers only under `(hover: hover)`, plus the same start on focus.
+Each follows the hover rule in [SKILL.md](SKILL.md): the trigger for each is stated below.
 
-- **Arrow in a circle on cards:** a 40px circle with a 1px translucent border that, on hover or focus, takes the accent fill, a 2px accent border and a white icon (colors over 180ms). Inside, the 20px arrow (stroke 1.75) flies out up and forward while a second copy flies in from the opposite corner (a 20px diagonal on a spring, bounce .35, .35s), then the track resets with a zero-duration jump on completion, even while still hovered. The whole circle mirrors in right-to-left. Start the flight on pointer enter and on focus. Reduced motion skips the flight and keeps the fill.
-- **Link with a circled arrow:** a 24px circle whose 20px tint (`color-mix(in srgb, currentColor 10%, transparent)`) scales to 1.2 while the arrow (stroke 1.5) nudges .09375rem forward (diagonally for external links; in right-to-left compose `scaleX(-1)` with the translate), both over 200ms ease, on `:hover` under the media query and on `:focus-visible`.
-- **Tilting icon:** on a topic card the 46px icon follows the pointer: position normalized to ±.5, times 6 for both offset and rotation, scale 1.1, on a lively spring (stiffness 400, damping 16, mass 1), all reset on leave; still under reduced motion. Its color turns to the accent through a CSS variable, the card takes the elevated fill and a `0 1px 2px` shadow over .2s, and a 40px arrow circle at top end 1rem fades in from a .25rem inline offset (in right-to-left rotated 180 degrees and offset the other way) over .2s; the arrow is hidden under 48rem.
-- **Carousel card:** text goes from secondary to primary on a .15s ease-in tween (the name's color over 200ms); its arrow flies on pointer enter and leave and on focus and blur.
+- **Arrow in a circle on cards:** a 40px circle with a 1px translucent border that, on hover or focus, takes the accent fill, a 2px accent border and a white icon (colors over 180ms). Inside, the 20px arrow (stroke 1.75) flies out up and forward while a second copy flies in from the opposite corner (a 20px diagonal on a spring, bounce .35, .35s), then the track resets with a zero-duration jump on completion, even while still hovered. The whole circle mirrors in right-to-left. The flight starts on `mouseenter`; focus and hover both turn on the fill. Reduced motion skips the flight and keeps the fill.
+- **Link with a circled arrow:** a 24px circle whose 20px tint (`color-mix(in srgb, currentColor 10%, transparent)`) scales to 1.2 while the arrow (stroke 1.5) nudges .09375rem forward (diagonally for external links; in right-to-left compose `scaleX(-1)` with the translate), both over 200ms ease, while a hovered state set by `pointerenter` and cleared by `pointerleave` is on.
+- **Tilting icon:** on a topic card the 46px icon follows the pointer: position normalized to ±.5, times 6 for both offset and rotation, scale 1.1, on a lively spring (stiffness 400, damping 16, mass 1), all reset on leave, from `pointermove` on any pointer and whatever the motion setting. On plain `:hover` its color turns to the accent through a CSS variable and the card takes the elevated fill and a `0 1px 2px` shadow over .2s; on `pointerenter` a 40px arrow circle at top end 1rem fades in from a .25rem inline offset (in right-to-left rotated 180 degrees and offset the other way) over .2s; the arrow is hidden under 48rem.
+- **Carousel card:** text goes from secondary to primary on a .15s ease-in tween (the name's color over 200ms); its arrow flies on mouse enter, and its fill follows mouse enter and leave and focus and blur.
 - **Back link:** tertiary to primary over 200ms; its arrow nudges 2px backward on a stiff spring (stiffness 450, damping 24; +2px in right-to-left, -2px in left-to-right), none with reduced motion.
 - **Post cards dim on hover instead of lifting:** .76 opacity for the featured card, .72 for recent ones, over 300ms with motion allowed (0s otherwise), fine pointers only.
 
@@ -98,7 +98,7 @@ Every one below follows the hover rule in [SKILL.md](SKILL.md): pointer handlers
 | Closing panel | rises 24px over .8s on the site ease, in view with a -80px margin, once |
 | Cookie banner | after 1s, rises 20px over .5s on the site ease (opacity only over .2s with reduced motion); leaves with a fade and `scale(.94)` over .2s |
 
-Showcase pieces use the library's default ease and layer on top of their scroll-blur reveal; every one waits for the section to be in view (`once`), and reduced motion makes each duration 0.
+Showcase pieces use the library's default ease and layer on top of their scroll-blur reveal; the badge and description wait for the section to be in view (`once`), the actions play from mount, and reduced motion makes each duration 0.
 
 ## Questions
 
@@ -107,7 +107,7 @@ Showcase pieces use the library's default ease and layer on top of their scroll-
 | Plus to minus icon | stiffness 220, damping 20, mass .5: the horizontal stroke turns 180 degrees, the vertical one goes to `rotate(80deg) scale(0)` |
 | Panel height | stiffness 280, damping 18, mass .2 |
 | Answer fade | stiffness 200, damping 18, mass .5, .1s after opening starts (open only) |
-| List height (show more, show less) | 600ms on the site ease, ended by a 600ms timer; at rest duration 0 and `height: auto`, so a row opening inside it is never clipped; instant with reduced motion |
+| List height (show more, show less) | 600ms on the site ease, ended by a 600ms timer, the same under reduced motion; at rest duration 0 and `height: auto`, so a row opening inside it is never clipped |
 
 The icon is a 52px SVG pulled in with negative block margins so it doesn't grow the row, with `backface-visibility: hidden` and `translateZ(0)` against jitter.
 
@@ -118,7 +118,7 @@ A 20px bar, centred on its item and offset -0.09375rem so it sits on the rail's 
 ## Forms that celebrate
 
 - **The contact form rises** from `scale(.95)` and 20px on a no-bounce spring (.7s) after .25s; duration 0 with reduced motion.
-- **On success each field's text turns into particles and blows away:** draw the text into a half-scale canvas (at least 800px tall, 16px in from the start) with the field's exact font, alignment and wrapping (wrap a textarea by measuring and breaking at the last space or tab; centre each line at `(paddingTop + lineHeight × (i + .5)) / scale`; in right-to-left set the origin top right, `direction: rtl` and right alignment), and show the canvas with `filter: invert(1)`. Read its pixels into particles: **count a pixel when its alpha is non-zero**, never when all of R, G and B are, or a color with a zero channel leaves no particles. Sweep a threshold from the end toward the start 8px a frame; particles past it drift up to 1px at random on each axis and shrink by .05 times a random number a frame. Count each field's finish once (a set) and, when every field has reported, unfold the success card (height from 0 and top margin from -24px, .28s on the site ease). Reduced motion: clear at once.
+- **On success each field's text turns into particles and blows away:** draw the text into a half-scale canvas (at least 800px tall, 16px in from the start) with the field's exact font, alignment and wrapping (wrap a textarea by measuring and breaking at the last space or tab; centre each line at `(paddingTop + lineHeight × (i + .5)) / scale`; in right-to-left set the origin top right, `direction: rtl` and right alignment), and show the canvas with `filter: invert(1)`. Read its pixels into particles: **one particle per pixel whose red, green and blue are all non-zero**, in that pixel's color (the text is drawn in the field's own color). Sweep a threshold from the end toward the start 8px a frame; particles past it drift up to 1px at random on each axis and shrink by .05 times a random number a frame. Count each field's finish once (a set) and, when every field has reported, unfold the success card (height from 0 and top margin from -24px, .28s on the site ease). Reduced motion: clear at once.
 - **The submit button:** its label morphs from Send to Sending to Sent (a text-morph library, 400ms on the site ease); fill and text animate from brand to success and white over .3s on `cubic-bezier(.22, 1, .36, 1)` (a matching 300ms CSS transition); a check slot grows to 18px wide with an 8px start margin over .15s while the check pops in from scale .6 and opacity 0 on a heavy spring (stiffness 800, damping 80, mass 4, rest delta .0001, after .1s) and leaves on the same spring. Its hover fill switches off once sent.
 - **Field errors** fade over .2s ease-out in a presence group that pops their layout and skips the initial render.
 - **The clear button** enters and leaves over .22s ease-in-out with a 4px blur (a .12s fade without blur under reduced motion), in a presence group that skips the initial render, so a pre-filled field doesn't animate it in.
