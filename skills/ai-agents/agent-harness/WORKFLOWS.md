@@ -6,7 +6,7 @@ One agent that plans and executes in one context window is highly effective for 
 
 - **Agentic laziness:** the agent stops before a long multi-part task is finished and declares it done after partial progress (35 of the 50 items in a security review).
 - **Self-preferential bias:** an agent prefers its own results, most of all when asked to verify or judge them against a rubric.
-- **Goal drift:** fidelity to the objective fades across many turns, most of all after compaction; each summary is lossy, and edge-case requirements and "don't do X" constraints are the details that get lost.
+- **Goal drift:** fidelity to the objective fades across many turns, most of all after compaction; each summary is lossy, and edge-case requirements and "don't do X" constraints are the details that get lost. The same in a coding session: "Beyond a few hours, the context fills up with old tool calls and stale state. Start a fresh session for each meaningful task instead of one mega-session per day" ([ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude-code/)).
 
 The remedy for all three: separate subagents, each with its own context window and a focused, isolated goal.
 

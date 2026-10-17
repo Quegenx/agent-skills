@@ -296,6 +296,8 @@ await Posthog().setup(config);
 | `captureNativeExceptions` | Android Java/Kotlin and Apple iOS/macOS/tvOS exceptions | SDK 5.22.0+ |
 | `captureSilentFlutterErrors` | Silent Flutter errors | Default `false` |
 
+- **What users see when a widget fails to build** (the red screen in debug, an empty grey box in release) and replacing it with `ErrorWidget.builder`: [../../mobile/flutter-ux/APP-LIFECYCLE.md](../../mobile/flutter-ux/APP-LIFECYCLE.md#replace-the-default-error-view).
+
 - **Manual capture:**
 
 ```dart

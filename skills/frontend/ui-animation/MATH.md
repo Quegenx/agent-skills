@@ -45,6 +45,8 @@ current += velocity * dt;
 
 Higher stiffness is "taut and quick to respond"; lower damping oscillates for longer (kciter's demo shows an underdamped spring at a damping ratio of 0.46). "A spring has no duration": easing has a fixed time, a spring keeps running until it converges. Motion's `visualDuration` is how [TIMING.md](TIMING.md#springs) gives a spring a place on the duration scale.
 
+Flutter community view: FlutterPro's spring bottom sheet writes "SwiftUI's .smooth spring as plain numbers: critically damped, stiffness 4pi^2 / duration^2, at 300ms in and 200ms out" ([FlutterPro](https://flutterpro.design/details/smooth-draggable-bottom-sheets); [../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md](../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md#spring-bottom-sheet)).
+
 ## Physics: forces, integrate, constrain
 
 Three steps per frame: **compute forces** (gravity, springs, friction, user input); **integrate** (force gives acceleration, acceleration updates velocity, velocity updates position); **apply constraints** (collision, boundaries, joints).

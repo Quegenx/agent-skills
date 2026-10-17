@@ -71,7 +71,7 @@ Gradients, glassmorphism, glow, big shadows, pill shapes, badges, arrows on butt
 
 Removing slop leaves a sterile page unless life is added on purpose. Benji Taylor's "Family Values" puts the same from the motion side: "A lifeless product feels like a dead product, and a dead product feels uncared for."
 - one clear focal point per screen;
-- contrast of size, weight and color used deliberately;
+- contrast of size, weight and color used deliberately (ApparenceKit: "only 2 or 3 different font sizes on any given page"; bolder weights or distinct colors for what matters, lower opacity or lighter colors for descriptions [ApparenceKit](https://apparencekit.dev/flutter-tips/app-design-tips/));
 - whitespace that structures, not leftovers;
 - one deliberate accent (not zero, not everywhere);
 - one identity motif repeated (a shape, a gesture, a typographic voice) that makes it belong to this product (Honk commissioned two faces, one for the app UI and one used only in the message bubbles: "These fonts gave Honk a personality you couldn't find anywhere else");

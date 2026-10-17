@@ -2,6 +2,8 @@
 
 The browser reaches the database through the Data API (PostgREST), which turns each request into a single SQL statement run as `anon`, `authenticated` or `service_role`. Most outcomes are decided by which role a request runs as and what that role was granted. Functions, triggers, connections and operations are DATABASE.md; the security checklist is SECURITY.md.
 
+**Contents:** [Dated changes to check first](#dated-changes-to-check-first) · [Data API: exposure and grants](#data-api-exposure-and-grants) · [Data API: requests, keys and roles](#data-api-requests-keys-and-roles) · [Data API error codes](#data-api-error-codes) · [Debugging](#debugging) · [Prove it](#prove-it)
+
 ## Dated changes to check first
 
 | Date | Change |
@@ -120,6 +122,49 @@ raise sqlstate 'PGRST' using message = json_build_object('code','123','message',
 - **Long URLs fail with Cloudflare 520,** most often at 16+ KB in headers or URL (long `in` lists): move the data into an RPC body.
 - **`or()` bug:** 400 `column ... does not exist` on PATCH/POST/DELETE with `or()` filters in PostgREST before 14.4; upgrade (14.5+) or add `&select=id,example_column`.
 - **Async Supabase calls inside `onAuthStateChange` deadlock** the next call on that client (known bug).
+
+### Querying with supabase_flutter (Dart)
+
+The same builder in Dart, from [ApparenceKit's cheat sheet](https://apparencekit.dev/flutter-tips/supabase-query-cheat-sheet/) (the rules above still apply):
+
+- **Insert:** drop the generated `id` first; `.select().single()` returns the inserted row (skip it if unneeded):
+
+```dart
+Future<TaskEntity> create(TaskEntity task) async {
+  try {
+    final res = await _client
+      .from(_kTasksTable)
+      .insert(task.toJson()..remove('id'))
+      .select()
+      .single();
+    return TaskEntity.fromJson(res);
+  } catch (e) {
+    _logger.e(e);
+    throw ApiError(
+      code: 0,
+      message: '$e',
+    );
+  }
+}
+```
+
+- **Batch insert** takes a list; the article passes `defaultToNull: false` without explaining it:
+
+```dart
+Future<void> createBatch(List<TaskEntity> tasks) {
+  return _client
+    .from(_kTasksTable)
+    .insert(
+      tasks.map((e) => e.toJson()..remove('id')).toList(),
+      defaultToNull: false,
+    );
+}
+```
+
+- **Null filters:** `.filter('date', 'is', null)` for null. For not null use `.not('date', 'is', null)` (line above). The article's `.neq('date', null)` is wrong: `neq` is `<>`, ([PostgREST operators](https://docs.postgrest.org/en/v12/references/api/tables_views.html)), and `7 <> NULL` yields null, not true ([Postgres](https://www.postgresql.org/docs/current/functions-comparison.html)), so it matches no rows.
+- **Pages:** `.order('creation_date', ascending: false).range(page * itemPerPage, (page + 1) * itemPerPage - 1)` (0-based, inclusive).
+- **Embeds:** the article calls `.select('*, goals(*)')` an inner join that "only returns rows when there's a match in all tables". That is wrong: embeds are left joins (Embedding related tables, below); write `goals!inner(*)` for an inner join. Its `goals!left(*)` spells out the default.
+- **Live rows:** `.stream(primaryKey: ['id']).eq('user_id', userId)` streams rows (the article declares it `Stream<int>`; it emits `Stream<List<Map<String, dynamic>>>`, the rows ([reference](https://supabase.com/docs/reference/dart/stream)), so copy the call chain, not the signature). Enable Realtime on the table first: the article's path is Table editor > your table; see REALTIME.md, Turn it on per table.
 
 ### Retries
 

@@ -30,6 +30,37 @@ try {
 ```
 
 - **Iterable form:** `await [delete(), copy(), errorResult()].wait;`, catching `ParallelWaitError<List<bool?>, List<AsyncError?>>` and reading `e.values[i]` / `e.errors[i]`.
+- **`Future.any` returns the first future to complete:** start several futures at once (multiple servers, different caches, or a mix of local and remote sources) and continue with whichever finishes first; they can be of different kinds ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-future-any-first-response/)):
+
+```dart
+import 'dart:async';
+import 'package:http/http.dart' as http;
+
+void main() async {
+  try {
+    // We're racing to get a post from SERVER_1 or SERVER_2
+    String postContent = await Future.any([
+      getPost('https://api.server1.com/post/1'), // Imagine SERVER_1 URL
+      getPost('https://api.server2.com/post/1'), // Imagine SERVER_2 URL
+    ]);
+    print('Received post content: $postContent');
+  } catch (e) {
+    print('Failed to get any post: $e');
+  }
+}
+
+Future<String> getPost(String url) async {
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return response.body; // Success!
+  } else {
+    // If a server responds with an error, we throw an Exception
+    throw Exception('Failed to load post from $url with status ${response.statusCode}');
+  }
+}
+```
+
+- **The first future to finish wins, error or not.** The API reference: "The returned future is completed with the result of the first future in `futures` to report that it is complete, whether it's with a value or an error. The results of all the other futures are discarded. If `futures` is empty, or if none of its futures complete, the returned future never completes." (https://api.dart.dev/dart-async/Future/any.html). ApparenceKit says the same about errors ("It won't wait for other Futures that might succeed later"), then suggests catching errors inside each future and returning `Future.value(null)` so that `Future.any` can "potentially wait for another Future to succeed". Per the reference, that is wrong: a future that completes with `null` is still the first to complete, and `null` becomes the result. To get the first *success*, the failing futures must not complete at all.
 - **Version conflict:** the third-party RandalSchwartz changelog skill lists `ParallelWaitError` and `(f1, f2).wait` at 3.0.0 in one file and "`ParallelWaitError` metadata" in its 3.4 notes. Check https://dart.dev/libraries/dart-async before relying on a specific minimum.
 
 ## The Future API
@@ -39,6 +70,53 @@ You do not need this API if the code uses `async`, `await` and `try` / `catch`. 
 - **`then` is try, `catchError` is catch, `whenComplete` is finally:** `myFunc().then(processValue).catchError(handleError);`, `.whenComplete(server.close)`.
 - **Signatures:** `Future<R> then<R>(FutureOr<R> Function(T value) onValue, {Function? onError});` and `Future<T> catchError(Function onError, {bool Function(Object error)? test});`. Use `test` to catch specific errors: `test: (e) => e is FormatException`.
 - **Do not register both `onError` and `catchError`** without a compelling reason. An error in the middle of a chain propagates to the next `catchError`.
+- **A `catchError` that does not rethrow ends the error, and the chain reports success** ([ApparenceKit](https://apparencekit.dev/flutter-tips/handling-errors-with-futures/)): "The `.then`'s `onError` won't be called, and you might get unexpected 'success' results." With `Future<void> functionInError() async { throw "I am failing"; }`:
+
+```dart
+functionInError()
+  .catchError((err) => print("error catched"))
+  .then(
+    (value) => print("success"),
+    onError: (err) => print("I failed"),
+  );
+// Result: ------\n// error catched \n// success
+```
+
+- **Rethrow inside `catchError` to keep the error going;** use `catchError` "only when you intend to stop the error propagation or transform it", otherwise handle errors in `then`'s `onError` (same source). The source rethrows with `throw err` inside the callback:
+
+```dart
+functionInError()
+  .catchError((err) {
+    print("error catched");
+    throw err;
+  })
+  .then(
+    (value) => print("success"),
+    onError: (err) => print("I failed"),
+  );
+// Result: ------\n// error catched \n// I failed
+```
+
+- **An error skips the rest of the chain until a handler:** here `workingFuture()` never runs and the `onError` two links down catches the error from `functionInError()` (same source):
+
+```dart
+void main() {
+  functionInError()
+  .then((res) => workingFuture())
+  .then((res) => print("ended"),
+  onError: (err) => print("error catched") // This catches the error from functionInError()
+  );
+}
+
+Future<void> workingFuture() async {
+  print("working future");
+}
+
+Future<void> functionInError() async {
+  throw "I am failing";
+}
+// Result:\n// error catched
+```
 - **`whenComplete()`'s future completes like its receiver** unless its callback throws.
 - **Register error handlers before the future completes.** Registering `catchError` 500 ms later inside `Future.delayed` leaves the error unhandled.
 - **Do not mix sync and async errors.** A function that returns a Future should report errors through the future: wrap the body in `Future.sync(() { ... })`.
@@ -46,6 +124,7 @@ You do not need this API if the code uses `async`, `await` and `try` / `catch`. 
 ## Using streams
 
 - **Two kinds.** Single subscription: listen once (files, web requests). Broadcast: listen at any time, many listeners, re-listen after cancel (for example mouse events).
+- **A broadcast stream drops events nobody is listening to.** Broadcast streams "do not buffer events when there is no listener", and "if there are no listeners at the time the event or error is added, it will just be dropped"; a paused listener "will buffer events internally until unpaused or canceled" (https://api.dart.dev/dart-async/StreamController/StreamController.broadcast.html). [ApparenceKit](https://apparencekit.dev/flutter-tips/pause-stream-no-subscriber/) says only that events with no listener "might just disappear", without naming the stream kind; that matches broadcast streams, while a single-subscription controller buffers ([Creating streams](#creating-streams)). Its fix: pause the stream when the last listener unsubscribes and resume it when the first one subscribes, so a new listener gets every event emitted during the pause. The article has no code.
 - **Consume with `await for` or `listen()`.** With `await for`, an error event is thrown by the loop and ends it: catch it with `try` / `catch`; code after the loop runs after the stream closes. Most streams stop after the first error. With the Stream API, pass `onError` and `onDone` to `listen`.
 - **`listen`'s signature:** `StreamSubscription<T> listen(void Function(T event)? onData, {Function? onError, void Function()? onDone, bool? cancelOnError});`. The subscription can pause, resume and cancel.
 - **Methods that return a Future:** `first`, `isEmpty`, `last`, `length`, `single`, `any`, `contains`, `drain`, `elementAt`, `every`, `firstWhere`, `fold`, `forEach`, `join`, `lastWhere`, `pipe`, `reduce`, `singleWhere`, `toList`, `toSet` (all except `drain()` and `pipe()` mirror `Iterable`).
@@ -69,6 +148,7 @@ Stream<int> sumStream(Stream<int> stream) async* {
 ```
 
 - **Periodic values:** `Stream.periodic(const Duration(seconds: 1), (i) => i * i)`.
+- **A countdown comes from a stored end time, not from counting ticks** ([ApparenceKit](https://apparencekit.dev/flutter-tips/create-accurate-flutter-timer/)). "Standard timer ticks can be delayed", especially under heavy CPU load. Record the start time, set end time = start + total duration, and on each tick (for example every second) compute remaining = `endTime - currentTime` and update the UI from it; the tick only refreshes the display. After the user leaves the app and comes back, the remaining time is still right: "No lost seconds!" The article has no code.
 - **A `StreamController` must wait for a subscriber before starting work** (it buffers events with no subscriber, which risks a memory leak) **and must honor pause** (otherwise the buffer grows without limit). Implement all of `onListen`, `onPause`, `onResume` and `onCancel`:
 
 ```dart
@@ -144,6 +224,7 @@ void fib40() async {
   - Tag each request with an id in a record `(id, message)` and track `Map<int, Completer<Object?>> _activeRequests`, so out-of-order responses reach the right caller.
   - On failure, the worker sends `RemoteError(e.toString(), '')` and the caller runs `completer.completeError(response)`.
   - `close()` sends `'shutdown'` and closes the responses port once no requests are active; calls after close throw `StateError('Closed')`.
+  - Close the channels and stop the isolate when its task finishes "or if the user leaves the page", to save resources ([ApparenceKit](https://apparencekit.dev/flutter-tips/isolates-communication-flutter-guide/), which names no API for it).
   - The complete example is under "Robust ports example" at https://dart.dev/language/isolates.
 
 ```dart
@@ -185,6 +266,8 @@ static Future<Worker> spawn() async {
 
 - **No dropped futures:** `unawaited_futures` and `discarded_futures` are enabled and `dart analyze` reports nothing for them.
 - **Errors reach a handler:** every `await` that can fail sits in a `try` / `catch`, every `listen` passes `onError`, and no `catchError` is registered after the future may already have completed.
+- **`catchError` is deliberate:** each `catchError` either rethrows or is meant to end the error; no `Future.any` relies on a `null` result to wait for a later success.
+- **Timers survive delay:** a countdown test that delays ticks or advances the clock still shows the remaining time computed from the stored end time.
 - **Parallel waits:** code that awaits a record or list with `.wait` catches `ParallelWaitError` and handles `e.errors` and `e.values`.
 - **Controllers behave:** a test listens late, pauses and cancels a custom `StreamController` stream and checks that no work starts before `onListen` and that work stops on `onPause` and `onCancel`.
 - **Main isolate stays free:** large JSON parsing and media work run through `Isolate.run` (or `compute` in Flutter), and nothing unsendable (a `Socket`, a `ReceivePort`, a `Pointer`) is captured in the closure.

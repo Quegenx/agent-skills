@@ -2,7 +2,7 @@
 
 How a Flutter app fetches data over HTTP, turns JSON into typed models, and keeps data on the device. The rules the sources repeat: every request goes through a service and fails loudly (throw or return an error `Result`, never `null`), JSON is decoded into typed classes with explicit casts, heavy parsing leaves the main isolate, and a repository decides whether the local copy or the network wins. Where these classes sit in the app is in [ARCHITECTURE.md](ARCHITECTURE.md); the Dart language (records, patterns, async) is in [../dart/SKILL.md](../dart/SKILL.md).
 
-**Contents:** [Setup for http](#setup-for-http) · [Making requests](#making-requests) · [Showing a request in the UI](#showing-a-request-in-the-ui) · [JSON by hand](#json-by-hand) · [Parsing off the main isolate](#parsing-off-the-main-isolate) · [Generated models](#generated-models) · [Choosing local storage](#choosing-local-storage) · [Key-value data](#key-value-data) · [SQL](#sql) · [Offline first](#offline-first) · [Prove it](#prove-it)
+**Contents:** [Setup for http](#setup-for-http) · [Making requests](#making-requests) · [Showing a request in the UI](#showing-a-request-in-the-ui) · [JSON by hand](#json-by-hand) · [Parsing off the main isolate](#parsing-off-the-main-isolate) · [Generated models](#generated-models) · [Choosing local storage](#choosing-local-storage) · [Key-value data](#key-value-data) · [SQL](#sql) · [Offline first](#offline-first) · [Server reachability](#server-reachability) · [Prove it](#prove-it)
 
 ## Setup for http
 
@@ -50,6 +50,7 @@ Future<User> fetchUser(http.Client client, int userId) async {
 
 - **Use `FutureBuilder`.** Handle `snapshot.hasData` and `snapshot.hasError`; default to a `CircularProgressIndicator`.
 - **Create the Future once in `initState`,** so rebuilds do not fetch again.
+- **A different fix, same problem:** ApparenceKit says `FutureBuilder` is "designed to run the `future` function every single time the widget is rebuilt", which "can lead to unnecessary requests and costs", and wraps it in a custom `SingleExecutionFutureBuilder` that holds the first result ("useful for implementing retry logic or manual refreshes") ([ApparenceKit](https://apparencekit.dev/flutter-tips/single-execution-future-builder-flutter/); the code is only in an image). The API docs place the cause elsewhere: "If the future is created at the same time as the FutureBuilder, then every time the FutureBuilder's parent is rebuilt, the asynchronous task will be restarted"; "The future must have been obtained earlier, e.g. during State.initState, State.didUpdateWidget, or State.didChangeDependencies" (https://api.flutter.dev/flutter/widgets/FutureBuilder-class.html). The article's description is wrong on that point; the docs' rule above fixes it without a custom widget.
 
 The `flutter-use-http-package` skill's full example, from request to list:
 
@@ -151,6 +152,8 @@ class _PhotoGalleryState extends State<PhotoGallery> {
 }
 ```
 
+`Image.network` here caches only in memory: "Restart the app and every image downloads again" ([FlutterPro](https://flutterpro.design/details/cache-network-images); disk caching in [../flutter-ux/IMAGES-AND-TYPOGRAPHY.md](../flutter-ux/IMAGES-AND-TYPOGRAPHY.md#cache-network-images-on-disk)).
+
 The Compass app's views instead listen to a view model command with `ListenableBuilder`; see [ARCHITECTURE.md](ARCHITECTURE.md#commands).
 
 ## JSON by hand
@@ -239,7 +242,14 @@ Future<List<User>> fetchUsers(http.Client client) async {
 ## Generated models
 
 - **`freezed` or `built_value`** generate immutable models with JSON serialization, deep equality and copy methods. They can add significant build time if you have a lot of models. Compass uses `freezed` (its `@freezed class User` with `factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json)` is in [ARCHITECTURE.md](ARCHITECTURE.md#building-a-feature-in-order)).
+- **`json_serializable`** "can make this decoding much simpler, especially for complex data" ([ApparenceKit](https://apparencekit.dev/flutter-tips/fetching-data-http-client/)).
 - **Separate API models from domain models in large apps:** the service returns the API model, the repository converts it to the domain model the rest of the app uses.
+
+### Code generation
+
+- **Rerun the generator** with `dart run build_runner build` "whenever you make changes to your database or tables" ([ApparenceKit](https://apparencekit.dev/flutter-tips/local-database-flutter-drift-guide/), for Drift).
+- **Scope it in a root `build.yaml`** to speed it up: tell the generators which folders to include and which files or folders to skip (tests, already generated `.g.dart` and `.freezed.dart`), "especially helpful in larger projects" ([ApparenceKit](https://apparencekit.dev/flutter-tips/optimize-flutter-code-generation/); the article shows no `build.yaml` content).
+- **The article's command** is `flutter packages pub run build_runner build --delete-conflicting-outputs`; build_runner's package page runs a build with `dart run build_runner build` (https://pub.dev/packages/build_runner), as [../dart/TESTING.md](../dart/TESTING.md) does.
 
 ## Choosing local storage
 
@@ -249,6 +259,8 @@ Future<List<User>> fetchUsers(http.Client client) async {
 | Cloud PostgreSQL with generated type-safe Dart SDKs | Firebase SQL Connect (recommended default) |
 | On-device SQL | `sqflite`, `drift` (also `sqlite3`, `firebase_database` as a `DatabaseService` backend) |
 | Key-value | `shared_preferences`, `flutter_secure_storage` |
+
+- **Files to share** (an invoice to send on) go in the app cache from `getTemporaryDirectory()` (`path_provider`), which needs no permission on any platform ([FlutterPro](https://flutterpro.design/details/share-instead-of-download); the share sheet recipe is in [../flutter-ux/WEB.md](../flutter-ux/WEB.md#share-instead-of-download)).
 
 The data layer case study fetches any data the app does not create itself from within service classes, and the key-value recipe's service wraps the plugin, "hiding this third-party dependency from the rest of the application".
 
@@ -273,6 +285,9 @@ class SharedPreferencesService {
 ```
 
 - **App-level listeners clean up:** `MainAppViewModel` subscribes to `observeDarkMode()` and cancels the `StreamSubscription` in `dispose()`.
+- **What `shared_preferences` is not for** [ApparenceKit](https://apparencekit.dev/flutter-tips/store-user-preferences-flutter/): it holds simple key-value pairs, is "not built for complex data like lists of objects" and "not designed for fast reading and writing many items"; "don't store sensitive information here". The package page agrees: "there is no guarantee that writes will be persisted to disk after returning," and "this plugin must not be used for storing critical data" (https://pub.dev/packages/shared_preferences).
+- **The API in the recipe above is the legacy one.** The package page: "SharedPreferences is a legacy API that will be deprecated in the future", and new users should use `SharedPreferencesAsync` (no local cache, "should always provide the latest data stored on the native platform") or `SharedPreferencesWithCache` (https://pub.dev/packages/shared_preferences). ApparenceKit also names them as the suggested alternatives.
+- **Load before the first screen:** `SharedPreferences.getInstance()` is a future, so await it "early in your app before showing your main screen"; with Provider or Riverpod, initialize it in a service class so it is ready before the app shows anything [ApparenceKit](https://apparencekit.dev/flutter-tips/store-user-preferences-flutter/).
 
 ## SQL
 
@@ -299,6 +314,87 @@ Future<void> open() async {
 ```
 
 - **Pick the factory in `main()`:** on the web, `if (kIsWeb) throw UnsupportedError(...)`; on desktop, `sqfliteFfiInit(); DatabaseService(databaseFactory: databaseFactoryFfi)`; otherwise `databaseFactory`.
+
+### Drift
+
+Drift (named in the storage table above) set up for offline use, from [ApparenceKit](https://apparencekit.dev/flutter-tips/local-database-flutter-drift-guide/).
+
+- **Packages:** the article adds the main package, the Flutter integration and the code-generation tools as plain dependencies:
+
+```bash
+dart pub add drift
+dart pub add drift_flutter
+dart pub add drift_dev
+```
+
+  Drift's setup page (https://drift.simonbinder.eu/setup/) makes `drift_dev` and `build_runner` dev dependencies and adds `path_provider`: `dart pub add drift drift_flutter path_provider dev:drift_dev dev:build_runner`.
+- **The database class** extends `_$Database`, lists its tables in `@DriftDatabase`, takes an optional `QueryExecutor`, and sets `schemaVersion` and a `MigrationStrategy`:
+
+```dart
+@DriftDatabase(tables: [
+  TaskTable,
+])
+class Database extends _$Database {
+  Database([QueryExecutor? e]) : super(
+    e ??
+      DriftDatabase(
+        name: 'todo-app',
+        native: const DriftNativeOptions(
+          databaseDirectory: getApplicationSupportDirectory,
+        ),
+      ),
+  );
+
+  @override
+  int get schemaVersion => 2; // Your database version
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (m) async {
+        await m.createAll();
+      },
+      // Push any migration here if version is new
+    );
+  }
+}
+```
+
+- **Tables** extend `Table`; `@DataClassName('TaskEntry')` names the generated row class; static query methods can live on the table, and `.watch()` returns a `Stream`:
+
+```dart
+@DataClassName('TaskEntry')
+class TaskTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get description => text()();
+
+  // Add your queries like this
+  static Stream<List<TaskEntry>> getAllItems(Database database) =>
+      database.select(database.taskTable).watch();
+}
+```
+
+- **`build.yaml`** at the project root points `drift_dev` at the database and sets SQL options:
+
+```yaml
+targets:
+  $default:
+    builders:
+      ## Add this
+      drift_dev:
+        # These options change how drift generates code
+        options:
+          databases:
+            default: lib/modules/drift/database.dart
+            sql:
+              dialect: sqlite
+              options:
+                version: "3.38"
+                modules: [fts5]
+```
+
+  Drift's setup page puts `sql:` directly under `options:`, not inside `databases:` (its example: `options: sql: dialects: [...]`, https://drift.simonbinder.eu/setup/); check the builder options page for your drift version before copying the nesting.
+- **Regenerate** with `dart run build_runner build` after every change to the database or tables ([Code generation](#code-generation)).
 
 ## Offline first
 
@@ -338,6 +434,86 @@ Stream<UserProfile> getUserProfile() async* {
 - **Sync task:** `Timer.periodic(const Duration(minutes: 5), (timer) => sync());` with a freezed flag `@Default(false) bool synchronized`. Send only records where `synchronized == false`, then store `copyWith(synchronized: true)`.
 - **Background sync** with the `workmanager` plugin. Running background work continuously can drain the battery dramatically, and some devices limit background processing: sync only when the network is available (`connectivity_plus`) and the battery is not low (`battery_plus`). Push-based sync uses Firebase Cloud Messaging background messages; you can combine both.
 
+## Server reachability
+
+Device connectivity (`connectivity_plus`: Wi-Fi or mobile data on) only says the device has internet access, not that your backend is reachable. For apps like multiplayer games or chatbots, check the backend itself. All from [ApparenceKit](https://apparencekit.dev/flutter-tips/continuous-network-monitoring-flutter/).
+
+- **Model the status as a sealed class** and poll the backend with a `HEAD` request in an `async*` loop; `HEAD` asks only for the headers, so it "is super fast and uses less data". Status 200 to 299 means reachable.
+
+```dart
+sealed class NetworkStatus {}
+class NetworkStatusOk extends NetworkStatus {}
+class NetworkStatusError extends NetworkStatus {}
+```
+
+```dart
+class NetworkChecker {
+  final String url;
+  final Duration interval;
+
+  const NetworkChecker({
+    required this.url,
+    required this.interval,
+  });
+
+  Stream<NetworkStatus> start() async* {
+    while (true) {
+      final status = await hasConnection();
+      yield switch (status) {
+        true => NetworkStatusOk(),
+        false => NetworkStatusError(),
+      };
+      await Future.delayed(interval);
+    }
+  }
+
+  Future<bool> hasConnection() async {
+    final client = HttpClient();
+    try {
+      final res = await client.headUrl(Uri.parse(url));
+      return res.statusCode >= 200 && res.statusCode < 300;
+    } catch (e) {
+      return false;
+    } finally {
+      client.close();
+    }
+  }
+}
+```
+
+  As published, `hasConnection()` doesn't compile: `headUrl` returns `Future<HttpClientRequest>` (https://api.dart.dev/dart-io/HttpClient/headUrl.html), which has no `statusCode`; the request's `close()` returns the `Future<HttpClientResponse>` (https://api.dart.dev/dart-io/HttpClientRequest-class.html). Corrected lines:
+
+```dart
+      final req = await client.headUrl(Uri.parse(url));
+      final res = await req.close();
+      return res.statusCode >= 200 && res.statusCode < 300;
+```
+
+- **One instance:** "use only one instance of `NetworkChecker` to avoid unnecessary resource usage." The article's example polls every 30 seconds:
+
+```dart
+void testIt() async {
+  const networkChecker = NetworkChecker(
+    url: "https://yourbackend.com",
+    interval: Duration(seconds: 30),
+  );
+
+  networkChecker.start().listen((status) {
+    switch (status) {
+      case NetworkStatusOk():
+        print('Network is up!');
+        break;
+      case NetworkStatusError():
+        // Handle network down: maybe show a message or lock the app.
+        print('Network is down');
+        break;
+    }
+  });
+}
+```
+
+- **`HttpClient` is `dart:io`,** so this checker doesn't run on the web as written ([PLATFORM-INTEGRATION.md](PLATFORM-INTEGRATION.md#pick-the-mechanism)).
+
 ## Prove it
 
 - **No silent failures:** a request against a URL that returns 404 or 500 ends in the error state (error text, or `load.error`), never an endless spinner.
@@ -347,4 +523,6 @@ Stream<UserProfile> getUserProfile() async* {
 - **Bad JSON fails fast:** feeding `fromJson` a map with a missing or mistyped key throws `FormatException` (or a cast error) in a unit test, and `toJson` round-trips a model.
 - **Heavy parsing is off the main isolate:** parsing that takes over 16 ms runs through `compute()` with a top-level or static function.
 - **Offline read works:** with the network off, a screen backed by an offline-first repository shows the stored data; turning it back on yields fresh data.
+- **Backend down is not network down:** with Wi-Fi on and the backend stopped, the app shows its network-down state within one polling interval, and recovers within one interval after the backend returns.
+- **Drift is regenerated:** `dart run build_runner build` after the last table change leaves `git diff` empty.
 - **Sync is idempotent:** after a sync, every sent record has `synchronized == true` and the next sync sends nothing.

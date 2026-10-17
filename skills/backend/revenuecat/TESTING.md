@@ -15,6 +15,7 @@ You cannot charge real money during development, so every store has its own test
 | Production | Real money | Do not use for testing | Production |
 
 - **Start with the lowest fidelity that answers the question, then move up.** Paywall and UI iteration belong in the Test Store; entitlement flips, renewals, grace periods and pending purchases belong in a store sandbox.
+- **Without any key in debug** [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/): a starter kit shows paywalls from mock product data in debug mode and warns to configure RevenueCat for production. The Test Store covers the same need with real SDK calls; either way, release builds use the platform key.
 - **Workflow:** Test Store in development, then the platform sandbox with the platform key before review, then production with the platform key, never the Test Store key. RevenueCat detects sandbox versus production itself.
 - **Store sandboxes are required before launch.** "If the app ships subscriptions, keep one Sandbox pass in the pre-ship checklist even if the Test Store covers daily iteration."
 - **In sandboxes, test the purchase flow** (start, complete, verify the unlock), not prices, names or descriptions.

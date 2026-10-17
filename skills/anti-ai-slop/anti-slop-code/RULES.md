@@ -65,6 +65,27 @@ Add the one the code path needs, not all of them everywhere.
 
 **Duplicate helpers.** A new `formatCurrency` beside the existing one. Search by name and behavior first; reuse the canonical one.
 
+A tool for the search step: [Deslop](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) (https://github.com/Nimblesite/Deslop) parses code into a tree-sitter AST for Dart, C#, Rust, Python, JavaScript, TypeScript/TSX, PHP, F# and Go, "No source-level regex touches this pipeline", so renamed copies match:
+
+```dart
+String formatUserLabel(User u) => '${u.firstName} ${u.lastName}';
+
+String buildAuthorName(Author a) => '${a.firstName} ${a.lastName}';
+```
+
+Three scores fuse into one; pairs must cross `FUSED_THRESHOLD` 0.85 and group by transitive closure; clusters rank by `weight = clone_node_count × (cluster_size − 1) × log2(1 + spanned_bytes)`. Run `deslop .` (install `brew install nimblesite/tap/deslop`); reports land in `.deslop/` (git-ignore it). Exclude generated code in `.deslop.toml` (`exclude` skips files, `report_hide` counts them but hides them):
+
+```toml
+[defaults]
+exclude = ["**/build/**", "**/.dart_tool/**"]
+report_hide = ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart"]
+
+[threshold]
+max_duplication_percent = 5.0
+```
+
+For an agent, its MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in the `code-review` skill's LAYERS.md.
+
 **Deep nesting.** Four levels of `if`. Guard clauses and early returns.
 
 **Size.** A change that pushes a file past about 1,000 lines, or a function past what fits on a screen, usually hides a missing split. Decompose by responsibility, not by line count.

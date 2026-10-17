@@ -1,8 +1,8 @@
 # Dart 3 language
 
-Dart 3 types are non-nullable by default, class hierarchies can be opened or closed per library with class modifiers, `sealed` families give exhaustive switches, extension types wrap a value in a static-only interface at no run-time cost, and dot shorthands drop a type name the context already knows. What decides most outcomes is the package's language version: the lower bound of `environment.sdk` in `pubspec.yaml` picks which of these features compile, per package. This file covers class modifiers and sealed types, extension types, dot shorthands and null safety. Records and patterns are in [RECORDS-AND-PATTERNS.md](RECORDS-AND-PATTERNS.md), primary and concise constructors in [CONSTRUCTORS.md](CONSTRUCTORS.md), futures, streams and isolates in [ASYNC.md](ASYNC.md), and which version shipped what in [VERSIONS.md](VERSIONS.md). Style and naming rules are in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md) and [USAGE-AND-DESIGN.md](USAGE-AND-DESIGN.md); lints in [ANALYSIS-AND-LINTS.md](ANALYSIS-AND-LINTS.md).
+Dart 3 types are non-nullable by default, class hierarchies can be opened or closed per library with class modifiers, `sealed` families give exhaustive switches, extension types wrap a value in a static-only interface at no run-time cost, and dot shorthands drop a type name the context already knows. What decides most outcomes is the package's language version: the lower bound of `environment.sdk` in `pubspec.yaml` picks which of these features compile, per package. This file covers class modifiers and sealed types, extension methods, extension types, dot shorthands and null safety. Records and patterns are in [RECORDS-AND-PATTERNS.md](RECORDS-AND-PATTERNS.md), primary and concise constructors in [CONSTRUCTORS.md](CONSTRUCTORS.md), futures, streams and isolates in [ASYNC.md](ASYNC.md), and which version shipped what in [VERSIONS.md](VERSIONS.md). Style and naming rules are in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md) and [USAGE-AND-DESIGN.md](USAGE-AND-DESIGN.md); lints in [ANALYSIS-AND-LINTS.md](ANALYSIS-AND-LINTS.md).
 
-**Contents:** [Feature minimums](#feature-minimums) · [Class modifiers](#class-modifiers) · [Sealed types](#sealed-types) · [Modifiers in a published API](#modifiers-in-a-published-api) · [Extension types](#extension-types) · [Dot shorthands](#dot-shorthands) · [Null safety](#null-safety) · [Prove it](#prove-it)
+**Contents:** [Feature minimums](#feature-minimums) · [Class modifiers](#class-modifiers) · [Sealed types](#sealed-types) · [Modifiers in a published API](#modifiers-in-a-published-api) · [Extension methods](#extension-methods) · [Extension types](#extension-types) · [Dot shorthands](#dot-shorthands) · [Null safety](#null-safety) · [Prove it](#prove-it)
 
 ## Feature minimums
 
@@ -83,6 +83,47 @@ String lastName(Amigo amigo) => switch (amigo) {
 - **To avoid breaking users, put `mixin` before every class that could be used as a mixin.** Leaving it a plain class or turning it into a pure mixin is a breaking API change (bump the major version).
 - **Adding `interface`, `base`, `final` or `sealed` is potentially breaking:** increment the major version.
 - **Summary:** `interface` prevents code reuse while allowing re-implementation; `base` requires reuse; `final` prevents extension entirely; `sealed` opts into exhaustiveness. dart.dev adds that "since these features are new, we still don't know what the best practices will be."
+
+## Extension methods
+
+- **"Extension methods add functionality to existing libraries"** (https://dart.dev/language/extension-methods): methods on classes you don't own, such as `DateTime`, so a long condition becomes one named call ([ApparenceKit](https://apparencekit.dev/flutter-tips/refactor-with-dart-extensions/)). Before: `if (!activities.hasActivity(date) && date.day == today.day && date.month == today.month && date.year == today.year) {`. After: `if (!activities.hasActivity(date) && date.isToday()) {`.
+
+```dart
+extension DateExtension on DateTime {
+    // Checks if this date is the current day
+    bool isToday() => isSameDay(DateTime.now());
+
+    // Checks if this date is the same day as another date
+    bool isSameDay(DateTime other) {
+        return day == other.day && month == other.month && year == other.year;
+    }
+
+    // Other useful methods you can add:
+    // DateTime get firstDayOfWeek { /* ... */ }
+    // DateTime get lastDayOfWeek { /* ... */ }
+    // bool isSameWeek(DateTime other) { /* ... */ }
+    // bool isAfterDayOrEqual(DateTime other) { /* ... */ }
+}
+```
+
+  What changed: the article's export has a stray markdown heading `##### Other useful methods you can add:` inside the code, which does not compile; it is a `//` comment here. [ApparenceKit's date extension list](https://apparencekit.dev/flutter-tips/useful-date-extension/) also names `firstDayOfMonth`. Adding a day across a DST change is in [CORE-LIBRARIES.md](CORE-LIBRARIES.md#dates-across-daylight-saving).
+- **Static members are called through the extension's name.** "Extensions can also have static fields and static helper methods"; invoke them "through the declaration name", and an unnamed extension's static members only within the extension declaration (https://dart.dev/language/extension-methods). So the hex-color helper below is `HexColor.fromHex('#FF0000')`, not `Color.fromHex(...)`. [ApparenceKit](https://apparencekit.dev/flutter-tips/hexa-string-color-extension/) accepts `"RRGGBB"` or `"#RRGGBB"`, prepends `ff` (fully opaque) for 6- or 7-character input, strips `#` and parses with `radix: 16`:
+
+```dart
+extension HexColor on Color {
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) {
+      buffer.write('ff');
+    }
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+}
+```
+
+  What changed: the article's `if` has no braces and spans two lines, which `curly_braces_in_flow_control_structures` (in `core.yaml`) flags; braces added ([STYLE-AND-DOCS.md](STYLE-AND-DOCS.md)).
+- **An extension method is not an extension type:** an extension method adds members to every instance of the underlying type; an extension type's interface applies only where the static type is the extension type (below).
 
 ## Extension types
 
@@ -166,6 +207,23 @@ Point origin = .origin(); // Instead of Point.origin()
 - **Flow analysis** handles reachability (`if (object is! List) return false; return object.isEmpty;` is OK), definite assignment (`final int result;` assigned on each path) and promotion on `== null` / `!= null`, `as`, assignments and `!`. Promotion works on locals and parameters, and on private final fields since 3.2; since 3.3, abstract getters promote under the same private final field rules. Since 3.9, with `sdk: ^3.9.0`, flow analysis assumes null safety for promotion, reachability and definite assignment, which can surface new `dead_code` warnings.
 - **Unnecessary null checks warn:** null-aware operators or `== null` / `!= null` on a non-nullable type.
 - **Null-aware chains short-circuit:** `thing?.doohickey.gizmo` (a second `?.` would mean `doohickey` itself is nullable). Null-aware cascade `receiver?..method();`, null-aware index `receiver?[index];`, nullable function call `function?.call(arg1, arg2);`.
+- **Parenthesize a chain to call something on its result even when it is null** ([FlutterPro](https://flutterpro.design/details/never-show-null)): `(state.cartInfo?.totalPrice?.toString()).orPlaceholder()`, where `orPlaceholder` is an extension on `String?`. Without the parentheses, a null `cartInfo` short-circuits the whole expression and `orPlaceholder()` never runs; with them, it always runs.
+- **Null-aware elements (3.8):** `?expr` in a collection literal adds the element only when it is non-null, replacing `if (x != null) x` ([ApparenceKit](https://apparencekit.dev/flutter-tips/null-aware-elements-dart-flutter-simplify-code/); the recommended lint `use_null_aware_elements` asks for it):
+
+```dart
+children: [
+  if (title != null)
+    title,
+  // ... other widgets
+]
+```
+
+```dart
+children: [
+  ?title, // So much cleaner!
+  // ... other widgets
+]
+```
 - **`!` casts to the non-nullable type,** checked at run time; it may throw.
 - **`late`** means "enforce this variable's constraints at runtime instead of at compile time". Reading before assignment throws. `late` with an initializer is lazy and may access `this`. `late final` is assignable once; a second assignment throws. It covers Kotlin's `lateinit` and Swift's `lazy`, and works on locals.
 - **`required` is independent of nullability:** `function({int? a, required int? b, int? c, required int? d}) {}`. It replaces `@required` from `package:meta`, which Dart 3.10 no longer supports.
@@ -191,5 +249,6 @@ Point origin = .origin(); // Instead of Point.origin()
 - **Published API changes:** a release that adds `interface`, `base`, `final` or `sealed`, or adds a subtype to a sealed type, bumps the major version.
 - **Extension types that need validation** are built through their constructor, never by `as` or a pattern match.
 - **Redeclared members** carry `@redeclare`; `annotate_redeclares` reports nothing.
+- **Extension statics** are called as `ExtensionName.member`, and conditions repeated across files have become named extension methods.
 - **Dot shorthands** appear only on the right of `==` / `!=` and never start an expression statement.
 - **Null safety:** no `!` on a generic `T?` where `as T` is meant; nullable non-private or non-final fields are copied to a local before null checks.

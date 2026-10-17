@@ -1,6 +1,6 @@
 # Agent skills
 
-69 skills for coding agents, in nine sets:
+71 skills for coding agents, in nine sets:
 
 | Folder | What it's for |
 |---|---|
@@ -12,7 +12,7 @@
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, animation in general, and SVG. 4 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy) and k6 load tests. 4 skills. |
-| [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention). 6 skills. |
+| [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -132,7 +132,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [messaging](./skills/backend/messaging/SKILL.md) | Outbox and inbox in Postgres, idempotent consumers, ordering, choosing a broker |
 | [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | SQL that returns the right answer: joins that multiply, NULLs, ties, window functions, time zones, streaks, ranges, hierarchies, JSON and JSONB operators |
 | [postgres](./skills/backend/postgres/SKILL.md) | Running Postgres in production: schema and types, migrations that don't lock, pooling and its limits, transactions and isolation, locks and deadlocks, vacuum and wraparound, memory, WAL, backups, replication and failover, audit queries |
-| [supabase](./skills/backend/supabase/SKILL.md) | Building on Supabase, from the official docs: the security checklist (Data API grants, RLS that authorizes, views and security definer functions, keys), Auth (sign-in methods, SSR, sessions, JWTs, MFA, hooks), the Data API and database, Realtime, Edge Functions, Storage, Cron, Queues and pg_net, vectors, the CLI and MCP, migrations, debugging. Conflicting doc statements shown both ways, breaking changes dated |
+| [supabase](./skills/backend/supabase/SKILL.md) | Building on Supabase, from the official docs: the security checklist (Data API grants, RLS that authorizes, views and security definer functions, keys), Auth (sign-in methods, Sign in with Apple from Flutter, SSO, passkeys and other providers, SSR, sessions, JWTs, MFA, hooks), the Data API and database, Realtime, Edge Functions, Storage, Cron, Queues and pg_net, vectors, the CLI and MCP, migrations, debugging. Conflicting doc statements shown both ways, breaking changes dated |
 | [effect](./skills/backend/effect/SKILL.md) | Effect v4 as its own guide prescribes, from the official repo and docs: setup, code style, errors and Cause, services and layers, resources and Config, concurrency, scheduling, state, caching, streams, Schema, HTTP, SQL, RPC, AI, CLI, the platform packages, testing and observability |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness, reading graphs and diagnosing incidents (symptoms first, CPU and memory patterns, pools, bottlenecks, the first 30 minutes after a deploy, postmortems) |
@@ -191,12 +191,14 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 
 | Skill | Covers |
 |---|---|
-| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter from the official docs and the Flutter team's skills: architecture (layers, MVVM, commands), routing and deep links, networking and JSON, localization, responsive and adaptive layout, flutter_scale_kit, performance, accessibility, testing, platform channels and Pigeon, building and releasing for iOS and Android, versions and breaking changes, the MCP server and agent tooling |
-| [dart](./skills/mobile/dart/SKILL.md) | Dart from dart.dev and the Dart team's skills: Effective Dart style, docs, usage and design, the Dart 3 language (records, patterns, class modifiers, extension types, primary constructors), async and isolates, versions, analysis and lints, packages and pub, testing, CLI apps, FFI |
+| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter from the official docs and the Flutter team's skills: architecture (layers, MVVM, commands), routing and deep links, networking and JSON, localization, responsive and adaptive layout, flutter_scale_kit, performance, accessibility, testing, platform channels and Pigeon, building and releasing for iOS and Android, versions and breaking changes, the MCP server and agent tooling; plus community Riverpod, testing recipes, fastlane, Drift, Slang and plugin authoring, marked as such |
+| [dart](./skills/mobile/dart/SKILL.md) | Dart from dart.dev and the Dart team's skills: Effective Dart style, docs, usage and design, the Dart 3 language (records, patterns, class modifiers, extension types, primary constructors), async and isolates, core libraries (dates across daylight saving, maps, copying collections, JSON), versions, analysis and lints, packages and pub, testing, CLI apps, FFI |
 | [app-store-connect](./skills/mobile/app-store-connect/SKILL.md) | Shipping to the App Store: the asc CLI, builds and signing, TestFlight and release, ad hoc distribution, the App Review Guidelines, a preflight checklist by app type, privacy manifests, ATT and account deletion, metadata and screenshots, pricing and subscriptions, in-app events, analytics and crashes |
 | [google-play](./skills/mobile/google-play/SKILL.md) | Shipping to Google Play: the gplay CLI, builds, signing and target API deadlines, testing tracks and the 12-tester rule, staged rollouts, policy and Data safety, Android vitals, billing and purchase verification, pricing, the store listing, reviews and reports |
 | [aso](./skills/mobile/aso/SKILL.md) | App store optimization for both stores: audits, keywords and metadata, icons, screenshots and previews, custom product pages and experiments, in-app events, competitors and the market, ratings and reviews, Google Play specifics |
-| [app-growth](./skills/mobile/app-growth/SKILL.md) | Growing an app: launch, PR and referrals, analytics and attribution (ATT, AdAttributionKit, SKAdNetwork), onboarding, paywalls, retention and subscription offers, Apple Ads and its APIs, Google App campaigns, Meta and TikTok app ads, ad creatives, budgets and ROAS |
+| [app-growth](./skills/mobile/app-growth/SKILL.md) | Growing an app: launch, PR and referrals, analytics and attribution (ATT, AdAttributionKit, SKAdNetwork), onboarding, paywalls, retention and subscription offers, the Facebook SDK in Flutter with RevenueCat events, Apple Ads and its APIs, Google App campaigns, Meta and TikTok app ads, ad creatives, budgets and ROAS |
+| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community Flutter UX and app polish from FlutterPro (Kamran Bekirov) and ApparenceKit, checked against the official docs: forms, keyboard and focus, navigation, sheets and route guards, scrolling and layout, images and typography, motion and haptics, painting and media, notifications and permissions, device features, forced updates and maintenance mode, Flutter web, formatting, theming and widget patterns, plus a find, pick, plan design review with a 42-rule catalog |
+| [flutter-render-objects](./skills/mobile/flutter-render-objects/SKILL.md) | Custom RenderObjects from renderobjects.com (Matt Carroll), corrected against api.flutter.dev: layout, intrinsics and baselines, child models and parent data, painting, compositing and layers, hit testing and mouse cursors, semantics, show-on-screen, diagnostics, custom Elements, and three worked examples |
 
 ## Reference code
 

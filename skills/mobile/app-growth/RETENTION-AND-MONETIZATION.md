@@ -1,8 +1,8 @@
 # Retention and monetization
 
-Turning installs into active, paying, returning users: onboarding to the activation event, the paywall and pricing, the subscription lifecycle from trial to win-back, retention loops, web-to-app funnels, and asking for ratings. What decides most outcomes is timing against the user's first value moment: permissions, the paywall, the ATT prompt and the rating prompt all convert better after it and do damage before it. Apple's and Google's docs are the authority for every offer type, limit and guideline here; bullets tagged [eronred] are a third-party playbook whose benchmarks and percentages are its author's claims, and where the two differ both are given. Purchase code, entitlements, paywalls, webhooks and dunning tooling are in [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md); event names for these funnels are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#event-tracking-plan-eronred); store-side rating strategy and review replies are in [../aso/SKILL.md](../aso/SKILL.md).
+Turning installs into active, paying, returning users: onboarding to the activation event, the paywall and pricing, the subscription lifecycle from trial to win-back, retention loops, web-to-app funnels, and asking for ratings. What decides most outcomes is timing against the user's first value moment: permissions, the paywall, the ATT prompt and the rating prompt all convert better after it and do damage before it. Apple's and Google's docs are the authority for every offer type, limit and guideline here; bullets tagged [eronred] are a third-party playbook whose benchmarks and percentages are its author's claims, and where the two differ both are given. Bullets tagged [ApparenceKit] come from apparencekit.dev, a Flutter starter-kit author's posts about his own apps; its numbers are his claims. Offer types and their limits per store are in [SUBSCRIPTION-OFFERS.md](SUBSCRIPTION-OFFERS.md); purchase code, entitlements, paywalls, webhooks and dunning tooling are in [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md); event names for these funnels are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#event-tracking-plan-eronred); store-side rating strategy and review replies are in [../aso/SKILL.md](../aso/SKILL.md).
 
-**Contents:** [Onboarding and activation](#onboarding-and-activation-eronred) · [Monetization model and pricing](#monetization-model-and-pricing-eronred) · [Paywalls](#paywalls-eronred) · [Trials](#trials) · [Subscription lifecycle](#subscription-lifecycle-eronred) · [Apple subscription offers](#apple-subscription-offers) · [Google Play subscription offers](#google-play-subscription-offers) · [Retention and engagement](#retention-and-engagement-eronred) · [Web-to-app funnels](#web-to-app-funnels-eronred) · [Rating prompts](#rating-prompts) · [Prove it](#prove-it)
+**Contents:** [Onboarding and activation](#onboarding-and-activation-eronred) · [Monetization model and pricing](#monetization-model-and-pricing-eronred) · [Paywalls](#paywalls-eronred) · [Trials](#trials) · [Subscription lifecycle](#subscription-lifecycle-eronred) · [Retention and engagement](#retention-and-engagement-eronred) · [Web-to-app funnels](#web-to-app-funnels-eronred) · [Rating prompts](#rating-prompts) · [Prove it](#prove-it)
 
 ## Onboarding and activation [eronred]
 
@@ -20,8 +20,12 @@ Turning installs into active, paying, returning users: onboarding to the activat
 
 - **Audit every screen:** flag it Required, Value-adding or Friction only; remove or defer friction-only screens. Score each on Necessity (can the user reach activation without it? if so, skip it), Timing (the right moment for this ask?), Value exchange (does the user understand why it benefits them?) and Cognitive load (how many decisions?).
 - **Ask for permissions in context; they are the #1 drop-off point.** Push after activation, never on cold open; location when needed, never during sign-up; camera and mic contextually; contacts when a social feature is used, never in onboarding; ATT after the user is invested, never on first open. Always show a native-looking pre-permission screen before the system prompt: users who understand why grant at 2-3x the rate. Apple allows a transparent pre-prompt for ATT but forbids gating features on it ([ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#app-tracking-transparency-att)).
+- **Permission timing: the sources differ.** [eronred] (above): push after activation, ATT never on first open. [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/) moved the notification request off app start onto "a permission request page during onboarding to increase acceptance rate", and asks for ATT "within onboarding" (both agree: never on cold open). The ATT side of this conflict is in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#app-tracking-transparency-att).
+- **Plan the denied state** [ApparenceKit](https://apparencekit.dev/blog/app-showcase-uly/): wrap a permission-dependent screen (a camera view) in a widget that asks first; "If the user refused the permissions we shows a nice message to explain why we need it, and a button to go to the settings. That way you don't show a black screen where you could lose people." Flutter code for permission pages is in [../flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md](../flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md).
 - **Pre-permission copy template:** icon; benefit headline ("Get notified when your goal is complete"); one line ("We'll only send you reminders you set, no spam."); [Allow] [Not now].
+- **Tie the ask to a concrete moment** [FlutterPro](https://flutterpro.design/details/notification-permission-priming): after an order is placed, "Get order status updates"; in a prayer-times app, when the user configures prayer times, showing the daily reminders for the 5 prayers.
 - **Cut sign-up friction:** defer required sign-up until after activation; add Sign in with Apple and Google next to email and password; at most 1 profile question; make email verification deferred or optional. Guest mode converts guest to registered at typically 40-60%, against 15-30% for a hard gate.
+- **Login screen** [ApparenceKit](https://apparencekit.dev/blog/flutter-login-page/): "When you provide social logins, you should always provide a way to log in without it. (Most of the time with email authentication)", since some people refuse social login because social networks track which apps they use. Keep only necessary inputs (email, password and confirm is hard to fill on a phone), split into several pages if needed, make sure the keyboard doesn't hide the fields, and consider a "Contact support" button. Magic links have a downside: the user must open the mail app, can get distracted by other mail and never click.
 - **Pick a flow:**
 
 | Pattern | Order | For |
@@ -30,6 +34,8 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Personalization-First | 3-5 questions with a progress bar, "Your plan is ready", sign-up gate, activation | Health, fitness, AI |
 | Social-First | Sign in with Apple/Google, find friends, first feed, activation | Social |
 
+- **An onboarding module** [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/): feature pages (present the features), permission pages ("ATT consent, notifications, location") and question pages (single or multiple choice, "to personalize their experience"), with an analytics event per answer, then a loading step and the paywall.
+- **Show, don't tell** [ApparenceKit](https://apparencekit.dev/blog/how-to-monetize-mobile-app/): the funnel is login, onboarding, paywall, where "each step builds enough trust for the next one"; on onboarding, "Don't tell them, show them" (attributed to ex-Apple designer Mike Stern): let users experience the one or two core benefits in the first session instead of explaining every feature.
 - **Personalization questions:** 3-5 max; each visibly changes the experience; show progress; visual selections, not text inputs; never ask for data you don't use immediately.
 
 | Funnel step | Benchmark | Poor |
@@ -41,6 +47,7 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | D1 retention | Over 30% | Under 15% |
 
 - **Paywall placement in onboarding (show value before the paywall):** before activation, almost never (the user has no reference for value); at activation, strong; after activation on D1, the strongest for subscription apps; a contextual feature gate, good.
+- **Onboarding paywall: the sources differ.** [ApparenceKit](https://apparencekit.dev/blog/how-to-monetize-mobile-app/) [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/): "**Most of your paid users will come from the first session.** Users who never see your paywall never convert. So show it during onboarding, right after you demonstrated value" (Onboarding, Value, Paywall), not on day 3 or 7. [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/): "a great onboarding is also the best opportunity to show your paywall." [eronred] (line above): before activation, almost never; after activation on D1, the strongest. RevenueCat also says onboarding paywalls tend to be very successful ([../../backend/revenuecat/PAYWALLS.md](../../backend/revenuecat/PAYWALLS.md#paywall-design-rules)).
 
 ## Monetization model and pricing [eronred]
 
@@ -52,8 +59,11 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Free + Ads | Content, casual games; low ARPU, hurts UX |
 | Hybrid | Most apps |
 
+- **The models, per [ApparenceKit](https://apparencekit.dev/blog/how-to-monetize-mobile-app/):** paid upfront "is dying for most categories" ($4.99 once earns far less over a lifetime than $4.99/month) and still fits utilities used once or occasionally; consumables (credits, tokens, coins) suit AI apps, games and content apps ("Users pay for what they use. No commitment. Low friction."); ads fit "high volume and low engagement" apps (utilities, games, content aggregators), rewarded ads complement IAP or freemium, and never build on ad revenue alone. Freemium gates features, usage limits ("free users get 5 exports per month, paid get unlimited"), content (previews vs full) or ads removal; hard paywalls convert better but can raise churn when value is unclear, so test (the author prefers freemium). "B2B pays more than B2C. Health pays more than entertainment. Niche pays more than generic." Pick the model before writing code, build the paywall into the MVP, and track events from day one.
+
 - **Tiers:** Free (core value with limits); Monthly at $X.99 (the anchor for annual); Annual at a 40-60% discount vs monthly; Lifetime at 2-3x the annual price; Family at 1.5-2x the individual price.
 - **Price psychology:** end in .99; anchor on monthly and push annual ("Save 50%"); state expensive subscriptions as a weekly price ("Just $1.99/week"); offer 3 tiers Good/Better/Best, since most users pick the middle.
+- **Weekly vs monthly: the sources differ.** [eronred] (above) anchors on monthly and offers weekly only as the category norm. [ApparenceKit](https://apparencekit.dev/blog/how-to-monetize-mobile-app/): "**Monthly** not the best in 2026. All report show a drop in conversion compared to weekly. Users prefer shorter commitments"; weekly suits daily-use, high-engagement apps (fitness, AI assistants) but churns more; yearly works "when users trust the value: offer a discount to push them here"; "$4.99/week vs $9.99/month can make a 3x difference in revenue." The reports it cites are not named.
 
 | Category | Monthly | Annual |
 |---|---|---|
@@ -65,7 +75,7 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Finance | $4.99-$14.99 | $29.99-$79.99 |
 
 - **In-app purchases:** consumables: anchor with the expensive option first, "Best Value" bundles, limited-time offers, starter packs. Non-consumables: unlock features individually, bundles, a one-time "Pro Upgrade" as an alternative to subscription.
-- **Revenue targets:** ARPPU 3-10x ARPU; paying conversion (Paying / Total) 2-10%; trial-to-paid 40-60%; LTV over CAC; Payback Period = CAC / Monthly ARPU under 6 months. Levers: conversion, price (often works better than expected), churn, extra revenue streams, pushing annual. ROAS and payback against ad spend are in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md).
+- **Revenue targets:** ARPPU 3-10x ARPU; paying conversion (Paying / Total) 2-10%; trial-to-paid 40-60%; LTV over CAC; freemium conversion "Typical ... is 2-5%. Good is 5-10%. If you're above 10% you're doing great" [ApparenceKit](https://apparencekit.dev/blog/how-to-monetize-mobile-app/); Payback Period = CAC / Monthly ARPU under 6 months. Levers: conversion, price (often works better than expected), churn, extra revenue streams, pushing annual. ROAS and payback against ad spend are in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md).
 - **The playbooks disagree on trial-to-paid:** 40-60% (monetization), 25-40% is strong (subscription lifecycle), 25-60% healthy and under 15% a red flag (paywall). They also disagree on LTV: ARPU x Avg Lifetime (analytics, monetization) vs ARPU / Monthly churn rate (subscription lifecycle).
 
 ## Paywalls [eronred]
@@ -82,11 +92,11 @@ Turning installs into active, paying, returning users: onboarding to the activat
 - **Fix only the weakest stage.** Trial-to-paid problems belong to the lifecycle section below.
 - **Audit seven elements, scoring each 1-5** (2 or below is a quick win, 3 an A/B candidate):
   - **Headline:** an outcome ("Unlock unlimited workouts" beats "Pro Plan"; "Unlock [specific benefit]" beats "Go Premium").
-  - **Value props:** 3-5, benefits not features, scannable in under 3 seconds; show what's missing (blurred or locked), a before/after or with/without comparison.
+  - **Value props:** 3-5, benefits not features, scannable in under 3 seconds ("Try to list the 3 main benefits of your app. Showing too much will just confuse your users. Showing too little will not convince them", pairing benefit and feature: not "Access exercices" but "Transform yourself in 30 days: Access 300+ premium exercices" [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/)); show what's missing (blurred or locked), a before/after or with/without comparison.
   - **Social proof:** rating, review count, user count or named testimonials; required above the fold.
   - **Plan picker:** annual selected by default with its savings %; monthly labelled "billed monthly"; weekly only if it is the category norm.
-  - **Price anchoring:** annual as a monthly equivalent ("$3.33/mo, billed annually") plus the total ("$39.99/yr").
-  - **Trust:** "Cancel anytime", "No charge until X date", no-commitment trial messaging, restore purchases visible; display the annual savings % prominently.
+  - **Price anchoring:** annual as a monthly equivalent ("$3.33/mo, billed annually") plus the total ("$39.99/yr"). [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/) suggests showing the monthly or daily price instead of only the yearly one (daily when the app has daily usage); Apple requires the opposite weighting: "the amount that will be billed must be the most prominent pricing element in the layout"; a breakdown price "should be displayed in a subordinate position and size to the annual price" (https://developer.apple.com/app-store/subscriptions/, [../app-store-connect/PREFLIGHT.md](../app-store-connect/PREFLIGHT.md#rules-subscriptions)). The article (undated) omits this rule; keep any calculated price smaller than the billed amount.
+  - **Trust:** "Cancel anytime", "No charge until X date", no-commitment trial messaging, restore purchases visible; display the annual savings % prominently. [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/): show the trial days and what the user pays after them, a "Restore" button inlined at the bottom with the legal links (purchases belong to the store account, so restore covers a new phone or several devices), and the subscription name as entered in App Store Connect ("Apple will reject your app if that is not the case").
   - **CTA:** one primary, an action verb ("Start Free Trial", not "Subscribe"), high contrast.
 - **Always ship a restore-purchases button and a visible close button.** The playbooks call a missing restore button a guaranteed Apple rejection (Guideline 3.1.2), and a hidden close button causes rejection and bad reviews. Apple's Guideline 3.1.2(c): before asking someone to subscribe, clearly describe what they get for the price.
 
@@ -106,9 +116,31 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Usage limit (after N uses) | 5-8% (content, tools) |
 | Time-based trial | 5-10% (complex apps) |
 
-- **Display patterns:** annual default with savings % ("Save 67%"); trial CTA primary; single plan; 3 tiers with the middle as the anchor; lifetime as a decoy; localized currency (Apple localizes the price automatically, but the display copy must match). The display matters more than the price itself.
+- **Display patterns:** annual default with savings % ("Save 67%"); trial CTA primary; single plan; 3 tiers with the middle as the anchor; lifetime as a decoy; localized currency (Apple localizes the price automatically, but the display copy must match). The display matters more than the price itself. [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/) adds a two-offer pattern, one plan with a trial and one without, "a new classic pattern that is proven to increase conversion rate" (no figure given).
+- **Offer or design: the sources differ.** [eronred] (line above): the display matters more than the price. [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/): "Changing the UI of your paywall can triple your conversion rate" (no data). [ApparenceKit](https://apparencekit.dev/blog/how-to-monetize-mobile-app/), "After testing a lot of apps and paywalls": "copy is less important than your offer"; "the price and billing interval are the main levers to increase conversion and revenue"; "the design of your paywall matters less than showing it at the right time ... But you can't sell high prices if your paywall looks cheap."
 - **A/B test one element at a time.** Sample floors to detect about a 10% lift: baseline 5% needs about 6,000 users per variant; 15% about 2,000; 30% about 1,000. Priority: 1 headline, 2 trial offer (3-day vs 7-day vs none), 3 plan default, 4 CTA copy ("Start free trial" vs "Try free for 7 days" vs "Continue"), 5 social proof element (rating vs user count vs testimonial), 6 visual style, 7 number of plans. Tools: Superwall (no-deploy paywall tests, recommended), RevenueCat Experiments, Adapty A/B, Firebase Remote Config with your own logic.
+- **Remote config as the switch** [ApparenceKit](https://apparencekit.dev/blog/flutter-template-advantages/): "I always use remote config to test some titles, texts, or trigger delay to my paywalls." [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/) picks the paywall variant with a Dart switch whose `_` arm falls back to a known paywall (`remoteConfigApiProvider` and `PaywallFactory` are ApparenceKit's Riverpod names), verbatim:
+
+```dart
+/// ===============================================
+/// This is an example of how to get the paywall from the remote config
+/// You can use this to test different paywalls
+/// ===============================================
+final configuredPaywall = ref
+     .read(remoteConfigApiProvider) //
+     .subscription
+     .paywall;
+
+ final paywallFactory = switch (configuredPaywall) {
+   'withSwitch' => PaywallFactory.withSwitch,
+   _ => PaywallFactory.basic,
+ };
+ ...
+```
+
+- **Only significant data counts** [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/): "Improving conversion on one day with 30 people means nothing"; "Data needs to be significant to be relevant."
 - **Anti-patterns:** testing 5 things at once; optimizing trial starts while ignoring trial-to-paid; stopping tests at p=0.05 without a sample size; weekly pricing where users expect annual; no restore-purchase button; hiding "cancel anytime".
+- **After the paywall** [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/): once a user subscribes, put a link in the app to the store's subscription management page, to "prevent getting some bad reviews when people doesn't know how to unsubscribe"; "ask for feedback after a user has subscribed"; "When users leave the paywall, show a popup that ask them why they didn't subscribe." Keep it free of offers: Apple disallows a second offer on dismiss or cancel ([../../backend/revenuecat/PAYWALLS.md](../../backend/revenuecat/PAYWALLS.md#paywall-design-rules)).
 
 ## Trials
 
@@ -124,7 +156,7 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Enterprise or high price | 30 days (risk of trial abuse) | |
 
 - **Test a 7-day vs a 14-day trial on monthly apps:** conversion may drop slightly, but LTV often rises.
-- **Platform limits:** Apple free trials come in 3 Days, 1 or 2 Weeks, 1, 2, 3 or 6 Months, or 1 Year; Google Play free trials run 3 days to 3 years. Details are in the offer sections below.
+- **Platform limits:** Apple free trials come in 3 Days, 1 or 2 Weeks, 1, 2, 3 or 6 Months, or 1 Year; Google Play free trials run 3 days to 3 years. Details are in [SUBSCRIPTION-OFFERS.md](SUBSCRIPTION-OFFERS.md).
 - **Run the trial [eronred]:** value reminders on days 1, 3 and 5; a trial countdown ("3 days left"); a discounted first period at trial end; easy cancellation (builds trust, reduces refund requests). Nurture schedule for a 7-day trial: day 0 welcome; day 1 core feature; day 3 progress or social proof; day 5 "2 days left"; day 6 value recap; day 7 "Your trial ends today". Show value, not just pressure. The trial-end paywall recaps achievements and the most-used premium features, shows 3 plans and the annual saving ("Save 40%").
 
 ## Subscription lifecycle [eronred]
@@ -153,66 +185,11 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Seasonal | Pause |
 
 - **Cancellation flow** (iOS `ManagedSubscriptionGroup`, as the playbook writes it): offer a 1-3 month pause; recap value; a discount only as a last resort (20-30% off for 3 months); a 1-tap exit survey (Too expensive, Not using it enough, Missing a feature I need, Switching to a competitor, Technical issues, Just taking a break). Offers by reason: too expensive, a discount or downgrade; not using enough, usage stats; missing a feature, the roadmap; found an alternative, the unique value. Make cancelling easy: forced retention backfires.
-- **Churn-risk signals:** sessions under 1 per week (down from baseline); core feature unused for 14+ days; push disabled; last session over 7 days ago. Trigger a re-engagement push or in-app message before they cancel.
+- **Churn-risk signals:** sessions under 1 per week (down from baseline); core feature unused for 14+ days; push disabled; last session over 7 days ago. Trigger a re-engagement push or in-app message before they cancel. A subscription with renewal off (`willRenew == false`) is the moment to "reach out and maybe show them a special deal before they leave" [ApparenceKit](https://apparencekit.dev/flutter-tips/check-user-subscription-renewal-status/); the Dart check is in [../../backend/revenuecat/FLUTTER.md](../../backend/revenuecat/FLUTTER.md#customer-info-and-entitlement-gates).
 - **Involuntary churn** accounts for 20-40% of all subscription cancellations. Dunning schedule: day 0 payment fails and the store retries; day 3 retry #2; day 7 retry #3 plus an in-app "Update payment method" banner; day 10 push; day 14 grace period ends, access suspended; day 15 final in-app "Reactivate".
 - **Grace period:** the playbook gives iOS 6 days (configurable up to 16 in App Store Connect) and Android 3 days (configurable); set it to the maximum, since every extra day recovers more subscribers. Apple's and Google's docs quoted here don't state these values: confirm them in App Store Connect and Play Console.
 - **With RevenueCat:** it handles dunning automatically; enable Billing Retry (iOS) and Account Hold (Android); set the grace period to the maximum; use webhooks to trigger in-app messaging at each failure event ([../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md)).
-- **Win-back ladder** for subscribers who cancelled or expired in the last 30-90 days; start with the softest offer and escalate only if there is no response: week 1 "We miss you" plus new features; week 3 30% off the first month back; week 6 3 months at 50% off; week 12+ archive. Channels: push, email, Apple win-back offers, paid retargeting to the lapsed list.
-
-## Apple subscription offers
-
-- **Three StoreKit offer types:** `Product.SubscriptionOffer.OfferType` is `introductory`, `promotional` or `winBack` (iOS 15+). Offer codes are a fourth way in. Setting up introductory offers in App Store Connect needs the Account Holder, Admin, App Manager or Marketing role.
-
-| | Introductory | Promotional | Win-back | Offer codes |
-|---|---|---|---|---|
-| Who | New subscribers; lapsed subscribers who never used an intro offer in the group | Existing and previously subscribed customers, even after an intro offer | Churned subscribers (`expirationDate` in the past, `willAutoRenew` false) | New, existing (includes billing retry and grace with auto-renew on), or expired subscribers |
-| Not eligible | Existing subscribers (upgrade, downgrade, crossgrade) | | Only the most recently lapsed product in each group | |
-| Limit | One per customer per subscription group; one current and one future per storefront | Up to 10 active per subscription; all storefronts (can't limit by country) | 350 per subscription, 5 running per storefront per subscription | 10 active offers; 1,000,000 codes per app per quarter |
-| After creation | Can't be edited: delete and recreate; overlapping dates, the latest action wins | Only price editable | Price can't change; overlapping offers, Apple picks one | |
-| Shown | Automatically on the product page to eligible users | In your app to eligible subscribers | Manage Subscriptions (iOS 14.3+ / macOS 14+), in-app sheet (iOS 18+ / macOS 15+), App Store promotion (iOS 18+ / macOS 15+) | Redemption sheet |
-| Needs | | An In-App Purchase key and a server signature; iOS 12.2+, macOS 10.14.4+, tvOS 12.2+ | Subscription approved by App Review | Subscription codes iOS 14.2+, other IAP types iOS 16.3+ |
-
-- **Introductory payment modes:** free trial (the subscription begins immediately, billing after the trial), pay as you go (for example $1.99/month for 3 months), pay up front (for example $1.99 for 2 months).
-
-| Standard duration | Pay as you go |
-|---|---|
-| 1 Week | 1 to 12 Weeks |
-| 1 Month | 1 to 12 Months |
-| 2 Months | 2, 4, 6, 8, 10 or 12 Months |
-| 3 Months | 3, 6, 9 or 12 Months |
-| 6 Months | 6 or 12 Months |
-| 1 Year | 1 Year |
-
-  Pay Up Front (1, 2, 3 or 6 Months, 1 Year) and Free Trial (3 Days, 1 or 2 Weeks, 1, 2, 3 or 6 Months, 1 Year) are the same for every standard duration.
-- **Promotional offers:** your server generates a signature (time sensitive, unique per offer, redeemable once) from `applicationUsername`, `productIdentifier` and the offer `identifier`, and returns `nonce`, `timestamp`, `keyIdentifier`; the app passes them in `SKPaymentDiscount`, and `applicationUsername` on the payment must match. On failure, generate a new signature. The offer period starts at the next billing event. A suggested eligibility signal is `DID_CHANGE_RENEWAL_STATUS`.
-- **Win-back offers** (announced September 10, 2024; WWDC24 session 10110) are configured per subscription product, not per group. Earliest start is one day after today; minimum run 3 days; priority Normal or High. Eligibility: Minimum Paid Duration (1-24 months, or 3, 4 or 5 years) and Time Since Last Subscribed (1 to 24 months), both required; Wait Between Offers (2-24 months) optional. App Store promotion (product page, editorial, personalized recommendations) needs an approved subscription image (not the app icon or a screenshot) and replaces In-App Purchase promotions in that storefront.
-- **Win-back in code:** link directly with `https://apps.apple.com/win-back/<win-back offer Apple ID>`, after checking eligibility server-side through Get All Subscription Statuses and `JWSRenewalInfoDecodedPayload.eligibleWinBackOfferIds` (best offer first). With Streamlined Purchasing on (the default) a completed transaction arrives in `Transaction.updates` / `all` / `currentEntitlements`; with it off a `PurchaseIntent` arrives in `intents` (the latest approved binary must handle `PurchaseIntent` before you turn it off). In-app, `Transaction.offer` has type `winBack`; on the server `offerType` is `4`.
-
-```swift
-// Prepare the purchase options.
-var purchaseOptions: Set<Product.PurchaseOption> = []
-
-// Add the win-back offer to the purchase.
-if let offer = purchaseIntent.offer, offer.type == .winBack {
-    purchaseOptions.insert(.winBackOffer(offer))
-}
-
-// Present the purchase.
-let result = try await purchaseIntent.product.purchase(options: purchaseOptions)
-```
-
-- **Conflict on win-back code:** the playbook says StoreKit 2 win-back offers (iOS 18+, App Store Connect > Subscriptions > Win-Back Offers) are presented automatically in the App Store and need no code beyond a StoreKit 2 integration. Apple's docs: with Streamlined Purchasing on (the default) the completed transaction is delivered in `Transaction.updates` / `all` / `currentEntitlements`, and turning it off delivers a `PurchaseIntent` that the latest approved binary must handle. Apple also shows win-back offers in Manage Subscriptions from iOS 14.3, not only iOS 18.
-- **Offer codes:** one-time-use codes (expire after at most six months, batches of 500 to 25,000), custom codes (for example SPRINGPROMO, no expiration needed) and sandbox codes (10 to 10,000 per batch, up to 10,000 per quarter). Choose whether codes stack with the introductory offer. Redeem with `offerCodeRedemption(options:isPresented:onCompletion:)` (SwiftUI), `presentOfferCodeRedeemSheet(from:options:)` (UIKit/AppKit), or `presentCodeRedemptionSheet()` on iOS 16 and earlier. Server `offerType` is `3`; notifications `OFFER_REDEEMED`, `SUBSCRIBED`, `ONE_TIME_CHARGE`.
-- **Guideline 3.1.2(a):** auto-renewable subscriptions must provide ongoing value, and "the subscription period must last at least seven days and be available across all of the user's devices."
-
-## Google Play subscription offers
-
-- **Model:** subscription, then base plans (auto-renewing, prepaid, installments), then offers. Installments exist only in Brazil, France, Italy and Spain, paid monthly. Up to 250 base plans and offers per subscription, 50 active at once. Offers attach only to auto-renewing base plans.
-- **Offer phases:** free trial (3 days to 3 years); introductory pricing (absolute amount, fixed discount or percentage, at or below the base price); single payment; multiple payments (a discount for 1 to 52 recurrences of the billing period).
-- **Eligibility:** New customer acquisition (never had this subscription, or never had any subscription in the app); Upgrade (a current subscription and optional billing period, with a redemption cap); Developer determined (you decide the business logic; it can't be purchased outside the app; for example limited to past subscribers who canceled, to win them back). Up to 20 offer tags, invisible to users; offers return their own tags and their base plan's.
-- **Select the offer in code:** pass `productDetails.getSubscriptionOfferDetails(selectedOfferIndex).getOfferToken()` to `ProductDetailsParams.setOfferToken(...)` in `BillingFlowParams`.
-- **Win-back on Play:** Google's support and developer docs, as searched, show no separate win-back offer type; the documented routes are developer-determined offers and a winback SKU. Resubscribe from the Play Store subscriptions center is on by default for up to one year after expiration. For a free trial or intro price on a winback SKU, uncheck "Allow one free trial per app"; resubscribing to the same SKU loses trial and intro eligibility. Free trials verify a valid payment method with a temporary hold; cancelling during the trial keeps access to its end. Promo codes can grant extended free trials.
-- **Deadline:** by Aug 31, 2026 all new apps and updates must use Billing Library version 8 or later, with an extension available until Nov 1, 2026. Store-side setup is in [../google-play/SKILL.md](../google-play/SKILL.md).
+- **Win-back ladder** for subscribers who cancelled or expired in the last 30-90 days; start with the softest offer and escalate only if there is no response: week 1 "We miss you" plus new features; week 3 30% off the first month back; week 6 3 months at 50% off; week 12+ archive. Channels: push, email, Apple win-back offers, paid retargeting to the lapsed list. [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/) adds discounts and promotions "for users that use your app and not pay".
 
 ## Retention and engagement [eronred]
 
@@ -237,6 +214,8 @@ let result = try await purchaseIntent.product.purchase(options: purchaseOptions)
 
 - **Push schedule:** day 1 welcome plus a tip; day 3 value reminder; day 5 social proof; day 7 streak; day 14 feature discovery; day 30 milestone. At most 3-5 notifications per week; always deliver value, never just "Come back!"; personalize; offer granular preferences; A/B test timing and copy.
 - **Win back users inactive 7+ days** with email (if you have it), push, and an in-app message on return ("Welcome back! Here's what's new").
+- **Show what's new once per version** [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/): an "update log bottom sheet" shown once to every user after an update. Building the in-app changelog in Flutter is in [../flutter-ux/APP-LIFECYCLE.md](../flutter-ux/APP-LIFECYCLE.md#changelog-after-update); the store's What's New field is a different thing ([../aso/KEYWORDS-AND-METADATA.md](../aso/KEYWORDS-AND-METADATA.md#description-promotional-text-whats-new)).
+- **In-app feature voting** [ApparenceKit](https://apparencekit.dev/blog/flutter-feedback-template-release/): "One vote per user, per feature is allowed"; requested features "won't be displayed on the vote page directly. As we don't want someone showing up crazy things on your vote page. You want to filter first." In-app beats a web form because "users don't want to open a browser" (the author claims "more than 300% increase in feature requests" in his own apps), and users "feel like they are part of the app".
 
 ## Web-to-app funnels [eronred]
 
@@ -271,9 +250,11 @@ let result = try await purchaseIntent.product.purchase(options: purchaseOptions)
 | Feedback | | The API doesn't say whether the user reviewed or whether the dialog showed; on errors, don't tell the user or change the flow |
 | Devices | | Android 5.0 (API 21)+ phones, tablets, Google TV and ChromeOS with the Play Store; Play Core 1.8.0+ |
 
+- **ApparenceKit's quota numbers are wrong.** [ApparenceKit](https://apparencekit.dev/flutter-tips/get-app-reviews-smart-way/) says "Apple stores limit asking with the native popup to 2 times a year" and Play "nearly 2 times every 3 months"; the same author elsewhere says 3 a year. Apple's number is the one in the table (3 in 365 days); Google publishes no number, so treat 2 per 3 months as unverified.
 - **Persistent review link (Apple):** append `action=write-review` to the product page URL: `https://apps.apple.com/app/idYOURAPPSTOREID?action=write-review`.
 - **When to ask:** after demonstrated engagement, at the end of a completed sequence (a level or significant task done); never on first launch, during onboarding, mid-task, or as the result of a user action. Apple's HIG suggests at least a week or two between requests; people can turn review requests off. Google: don't ask any question before or while showing the card ("Do you like the app?", "Would you rate this app 5 stars"), show the card as-is with no overlays on the topmost layer, and never remove it programmatically.
-- **Apple's sample gating:** not already prompted for the current bundle version; the process completed at least four times (Apple calls the number arbitrary); pause a few seconds on the completion scene, with a 2-second delay before `await requestReview()`; store `processCompletedCount` and `lastVersionPromptedForReview` in `@AppStorage`.
+- **Apple's sample gating:** not already prompted for the current bundle version; the process completed at least four times (Apple calls the number arbitrary); pause a few seconds on the completion scene, with a 2-second delay before `await requestReview()`; store `processCompletedCount` and `lastVersionPromptedForReview` in `@AppStorage`. The same throttle in [ApparenceKit](https://apparencekit.dev/blog/apparencekit-cli-3-update/)'s rating helper: save "the last request time and user answer", don't show again after a recent request (a configurable delay) or once the user said "Yes".
+- **Pre-prompt questions:** [eronred] and ApparenceKit ask ("if he has 10 seconds to give your app a rating") before the system prompt; Google forbids any question before the Play card. Both sides are in [../aso/RATINGS-AND-REVIEWS.md](../aso/RATINGS-AND-REVIEWS.md#pre-prompt-questions-a-conflict); on Play, follow Google.
 - **Version resets (Apple HIG):** weigh resetting the summary rating on a new version against showing fewer ratings.
 - **Play setup:** `implementation("com.google.android.play:review:2.0.2")` and `implementation("com.google.android.play:review-ktx:2.0.2")`. `ReviewInfo` is valid only for a limited time: pre-cache it only when you are certain to launch the flow.
 - **Testing:** Apple always shows the prompt in development and never in TestFlight. Play needs the app on at least the internal test track or internal app sharing, with the tester's account in the track, the primary account selected in the Play Store, the app in their Play library and no existing review; use `FakeReviewManager(context)` in unit and integration tests. Play troubleshooting: quota reached, use the internal test track or internal app sharing; enterprise accounts, use a Gmail account; already reviewed, delete the review.
@@ -283,9 +264,7 @@ let result = try await purchaseIntent.product.purchase(options: purchaseOptions)
 
 - **Activation:** the activation event is named and tracked, and the funnel from open to activation on day 0 is measured against the benchmark table.
 - **Permissions:** no system permission prompt (push, location, contacts, ATT) fires on cold open; each is preceded by a pre-permission screen with [Allow] [Not now].
-- **Paywall:** a restore-purchases button and a visible close button exist on every paywall; annual is default-selected with its savings % and monthly equivalent; the paywall says what the user gets for the price before asking to subscribe.
-- **Offers (Apple):** in sandbox, an introductory offer shows only to an eligible user; a promotional offer purchase succeeds with a fresh server signature and fails with a reused one; an offer code redeems through the redemption sheet and the server receives `OFFER_REDEEMED`; a win-back purchase arrives in `Transaction.updates` with offer type `winBack`.
-- **Offers (Play):** the purchase flow passes the selected offer's `getOfferToken()` to `setOfferToken(...)`, and the app is on Billing Library 8 or later.
+- **Paywall:** a restore-purchases button and a visible close button exist on every paywall; no calculated price is larger than the billed amount; annual is default-selected with its savings % and monthly equivalent; the paywall says what the user gets for the price before asking to subscribe.
 - **Lifecycle:** dunning messages fire from billing-failure events (for example RevenueCat webhooks) on the scheduled days, and the grace period is set to the maximum the store allows.
 - **Web-to-app:** a user who paid on the web, installs through the deferred deep link and signs in skips the in-app paywall on every paywall surface; the app contains no link to web checkout unless the entitlement is granted.
 - **Rating prompts:** no button calls the review API; the prompt is gated on completed engagement and the current version; Play's flow is verified on the internal test track and in tests with `FakeReviewManager`.

@@ -48,6 +48,18 @@ List only immediate dependencies; pub handles transitive ones.
 - **Regular or dev:** imported from `lib` or `bin` means a regular dependency; imported only from `test`, `example` and the like means a dev dependency. Dev dependencies of your dependencies are ignored. Hook dependencies (`hook/`) must be regular dependencies.
 - **Dev dependency lower bounds:** set each one to the version in use (the docs say tighten to the latest, for example `build_runner: ^2.15.1`, `lints: ^6.1.0`, `test: ^1.31.1`).
 - **`dependency_overrides`** (a path or an exact version such as `'3.2.1'`) is risky. Only the root package's overrides count, so they are ignored for users of your published package. In a workspace each package may have overrides, but a package can be overridden only once.
+- **What an override does** ([ApparenceKit](https://apparencekit.dev/flutter-tips/pubspec-use-dependencies/)): when "different packages in your project might need different versions of the *same* underlying library", it means "temporarily forcing all references to use a specific version". Here, "even if `otherlib` normally uses `transmogrify` version `2.0.0`, the `dependency_overrides` makes sure the project uses version `3.2.1` for `transmogrify` everywhere":
+
+```yaml
+name: my_app
+dependencies:
+  transmogrify: 3.2.1
+  otherlib: ^1.0.2
+dependency_overrides:
+  transmogrify: 3.2.1
+```
+
+  The source pins `transmogrify: 3.2.1` under `dependencies` too; the caret rule above still applies there.
 - **`pubspec_overrides.yaml`** next to `pubspec.yaml` overrides `dependency_overrides`, `workspace` and `resolution` without committing temporary overrides. Usually don't commit it.
 
 ## pubspec.yaml fields
@@ -101,7 +113,7 @@ dev_dependencies:
 - **Scripts:** `bin/` for public scripts, `tool/` for private dev scripts.
 - **Tests:** in `test/`, named `*_test.dart`. `integration_test/` isn't run by `dart test` by default (`dart test integration_test`). See [TESTING.md](TESTING.md).
 - **Examples:** in `example/` with `package:` imports. The pub.dev Example tab picks the first of `example/example[.md]`, `example[/lib]/main.dart`, `example[/lib]/<package_name>.dart`, `example[/lib]/<package_name>_example.dart`, `example[/lib]/example.dart`, `example/README[.md]`.
-- **CHANGELOG.md:** one heading per version, all level 1 or all level 2, the heading text containing the version (optionally prefixed with "v"). It fills the Changelog tab.
+- **CHANGELOG.md:** one heading per version, all level 1 or all level 2, the heading text containing the version (optionally prefixed with "v"). It fills the Changelog tab. "The first heading must match the version you're publishing (`## 1.0.0`), or pana will complain" ([ApparenceKit](https://apparencekit.dev/blog/flutter-create-plugin/)).
 - **Tool caches:** `.dart_tool/<tool_package_name>/` is reserved for that package (package:build uses `.dart_tool/build/`). A CLI's transient cache goes there, never in the project root.
 
 ## Upgrading and resolving conflicts
@@ -115,7 +127,7 @@ dev_dependencies:
 | Resolvable | The latest that resolves with all other dependencies. Needs a constraint change |
 | Latest | The latest published version, excluding prereleases |
 
-Also look for retracted or discontinued packages in the output.
+Also look for retracted or discontinued packages in the output. "An asterisk `[*]` next to a package name means the version you have is not the newest one" ([ApparenceKit](https://apparencekit.dev/flutter-tips/check-outdated-flutter-packages/)); in its own sample the `*` sits before the Current version, as in `adaptive_dialog      *1.3.0   1.4.0       1.4.0       1.4.0`. The same source runs `flutter pub outdated` in CI (for example weekly on the main branch), extracts the output as JSON and sends a notification (such as an email) when updates exist; it names no flag.
 
 **Upgrade:**
 
@@ -162,7 +174,16 @@ workspace:
 - **"Publishing is forever."** pub.dev disallows unpublishing except in very few cases. Mark abandoned packages *discontinued* instead (Admin tab, optional "Suggested replacement"; reversible).
 - **Requirements:** a `LICENSE` file (BSD 3-clause recommended); the legal right to redistribute; size under 100 MB gzipped and 256 MB uncompressed recommended (split, `.pubignore`, fewer resources); only hosted dependencies from the default server and SDK dependencies (`sdk: flutter`); a Google Account. The page comes from `README.md`, `CHANGELOG.md` (own tab) and `pubspec.yaml`.
 - **Files published:** everything under the root except hidden (dot) files and directories and those ignored by `.pubignore` or `.gitignore`. A `.pubignore` in a directory makes pub ignore that directory's `.gitignore`.
-- **Check first:** `dart pub publish --dry-run` validates the pubspec and layout and lists the files ("Package has 0 warnings."). `dart pub publish` also checks that `git status` is clean (warns on uncommitted tracked changes).
+- **Check first:** `dart pub publish --dry-run` validates the pubspec and layout and lists the files ("Package has 0 warnings."). `dart pub publish` also checks that `git status` is clean (warns on uncommitted tracked changes). `flutter pub publish` "works too: it's the same command routed through the Flutter CLI" ([ApparenceKit](https://apparencekit.dev/blog/flutter-create-plugin/)).
+- **Score it with pana before publishing.** pub.dev says pub points "are awarded in six categories" but heads five: Follow Dart file conventions, Provide documentation, Platform support (with "Support modern toolchains (SwiftPM and Wasm)": web packages get more points if they are Wasm ready, and iOS or macOS plugins "will only receive full score if they support Swift Package Manager"), Pass static analysis, and Support up-to-date dependencies (https://pub.dev/help/scoring). pana computes the same score locally ([ApparenceKit](https://apparencekit.dev/blog/flutter-create-plugin/): "the same analyzer"). It modifies the directory it runs on, so the scoring page runs it on a copy:
+
+```
+cp ~/dev/mypkg ~/tmp/mypkg
+dart pub global activate pana
+dart pub global run pana ~/tmp/mypkg
+```
+
+  Re-run the `activate` command now and then, since pana changes frequently (same page). [ApparenceKit](https://apparencekit.dev/blog/flutter-create-plugin/) runs `dart pub global run pana .` in the project root after committing or stashing ("pana can modify files (e.g. format Dart code)"), calls it "a **160-point scale**" and lists a sixth category, "Support sound null safety ... with a Dart 2.12+ lower bound". The scoring page states no total and has no null-safety category, and Dart 3 enforces null safety anyway ([LANGUAGE.md](LANGUAGE.md#null-safety)), so that article (no Dart version stated) is out of date there.
 - **Verified publisher (recommended):** a verified domain, hides your personal email, shows a badge. Create one from the pub.dev user menu "Create Publisher" with Google Search Console DNS verification, then invite org members. `dart pub publish` can't publish a *new* package straight to a publisher: publish to a Google Account, then transfer (irreversible; you must be uploader and publisher admin; Admin tab "Transfer to Publisher").
 - **Uploaders:** the first publisher is the only uploader; manage them at `https://pub.dev/packages/<package>/admin` or transfer to a verified publisher.
 - **Prereleases:** `2.0.0-dev.1`; `2.0.0` takes precedence; users opt in with `^2.1.0-dev.1`; a prerelease doesn't affect score, search or README. A preview version is a stable package version depending on a prerelease SDK (`sdk: '^3.0.0-417.1.beta'`).
@@ -323,6 +344,6 @@ The 3.12 blog post is dated 2026-05-20 while What's new says May 18, 2026.
 - **`dart pub get --enforce-lockfile`** succeeds in CI, and `pubspec.lock` is committed for applications only.
 - **`dart pub outdated`** shows no retracted or discontinued packages, and every constraint uses caret syntax.
 - **Before a release:** `dart pub downgrade`, `dart analyze` and `dart test` pass; then bump with `dart pub upgrade --tighten`.
-- **Before publishing:** `dart pub publish --dry-run` ends with "Package has 0 warnings.", the package has a `LICENSE`, and no git or path dependencies remain.
+- **Before publishing:** `dart pub publish --dry-run` ends with "Package has 0 warnings.", the package has a `LICENSE`, no git or path dependencies remain, and pana run on a copy of the package reports no lost points you can fix.
 - **In a workspace:** there is exactly one `pubspec.lock`, at the root, and `dart pub workspace list` names every member.
 - **Path code:** no `'$dir/$file'`, `.replaceAll(r'\', '/')` or `.endsWith('.ext')` on paths remains, and tests with `MemoryFileSystem(style: FileSystemStyle.windows)` pass on Linux or macOS.

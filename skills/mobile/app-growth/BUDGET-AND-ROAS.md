@@ -56,6 +56,7 @@ rc_overview
 ## Channels and planning
 
 - **Start with:** monthly budget, target CPI or ROAS, LTV, audience, countries, category. [eronred]
+- **iOS first for subscriptions** [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/): iOS users spend 2 to 3 times more than Android users on in-app purchases and subscriptions, and in most markets the top revenue apps make 60-70% of their income from iOS even where Android has more downloads.
 
 | Channel | Avg CPI | Intent | Complexity / notes [eronred] |
 |---|---|---|---|
@@ -113,7 +114,7 @@ rc_overview
 
 ## MMP setup
 
-Run it before any paid social spend: "Do not proceed to campaign setup until MMP + event mapping is verified." App install campaigns optimize toward down-funnel events (Purchase, Subscribe, Start Trial); without an MMP TikTok and Meta can't learn who converts, CPA stays high, and "The first $500 to 1000 is often wasted on untargeted installs". "Without MMP, social channels can only optimize to installs: CPA for subscriptions will be 3 to 5× too high." [appeeky]
+Run it before any paid social spend: "Do not proceed to campaign setup until MMP + event mapping is verified." App install campaigns optimize toward down-funnel events (Purchase, Subscribe, Start Trial); without an MMP TikTok and Meta can't learn who converts, CPA stays high, and "The first $500 to 1000 is often wasted on untargeted installs". "Without MMP, social channels can only optimize to installs: CPA for subscriptions will be 3 to 5× too high." [appeeky] [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/) disagrees when Meta is the primary ad channel: the Facebook SDK with AEM plus the Conversions API, no MMP ([META-ADS.md](META-ADS.md#prerequisites)).
 
 - **Ask:** platform; MMP (AppsFlyer, Adjust, Singular, Branch, Kochava or none); monetization; primary optimization event; ad channels; whether RevenueCat is in use (confirm the MMP to RevenueCat path). [appeeky]
 

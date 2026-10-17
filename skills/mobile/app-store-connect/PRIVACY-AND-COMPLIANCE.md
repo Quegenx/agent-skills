@@ -162,13 +162,20 @@ grep -rnE "aiConsent|AIConsent|ai_consent|hasAcceptedAI|aiDataSharing|ai_data_sh
   - `grep -rn "privaterelay.appleid.com\|@privaterelay\|private.icloud.com\|email.*validation\|isValid.*email" --include="*.swift" --include="*.dart" .`
 - **Visual check:** sign in choosing "Hide My Email"; a form for name or email is a violation, landing in the main app is correct.
 - **Human Interface Guidelines:**
-  - Offer it on all platforms "including non-Apple platforms". Ask to sign in only in exchange for value, delay sign-in as long as possible, in commerce apps wait until after purchase, welcome people right after sign-in, and show "Using Sign in with Apple" in settings.
+  - Offer it on all platforms "including non-Apple platforms". [ApparenceKit](https://apparencekit.dev/blog/flutter-supabase-apple-sign-in/) holds the opposite opinion for Android (Apple has no native SDK there, so it falls back to an OAuth redirect with a webview login: the author doesn't recommend offering it, and if you do, also offer Google Sign-In); that is the author's opinion, the HIG line is Apple's recommendation. Ask to sign in only in exchange for value, delay sign-in as long as possible, in commerce apps wait until after purchase, welcome people right after sign-in, and show "Using Sign in with Apple" in settings.
   - "Don't ask people to supply a password." "Avoid asking for a personal email address when people supply a private relay address." Say whether extra data is required or optional, and don't block features when optional data is declined.
   - "Make a Sign in with Apple button no smaller than other sign-in buttons, and avoid making people scroll to see the button."
   - Titles: "Sign in with Apple", "Sign up with Apple", "Continue with Apple" (watchOS: "Sign in"). Styles: white, white with outline (iOS, macOS, web), black; corner radius adjustable. APIs: `ASAuthorizationAppleIDButton` (iOS, macOS, tvOS), `WKInterfaceAuthorizationAppleIDButton` (watchOS), web button generator https://appleid.apple.com/signinwithapple/button.
   - Minimum size: width 140pt (280px @2x), height 30pt (60px @2x), margin 1/10 of the button height.
   - Custom buttons: App Review evaluates every custom button. Use only the Apple Design Resources logo artwork; only the three titles; logo and title black or white; title font size 43% of button height; title-to-right-edge margin at least 8% of the width; PNG logo files only for 44pt-tall buttons (44x44 pt for logo-only).
-- **Entitlement:** Sign in with Apple maps to `com.apple.developer.applesignin`; remove it if unused ([PREFLIGHT.md](PREFLIGHT.md#rules-entitlements)).
+- **Entitlement:** Sign in with Apple maps to `com.apple.developer.applesignin`; remove it if unused ([PREFLIGHT.md](PREFLIGHT.md#rules-entitlements)). In a Flutter project [ApparenceKit](https://apparencekit.dev/blog/flutter-supabase-apple-sign-in/): Runner target > Signing & Capabilities > + Capability > Sign In with Apple (Xcode writes the entitlement, no `Info.plist` change); on macOS add the same capability and check that `macos/Runner/DebugProfile.entitlements` and `Release.entitlements` contain:
+
+```xml
+<key>com.apple.developer.applesignin</key>
+<array>
+  <string>Default</string>
+</array>
+```
 
 ## Review notes
 

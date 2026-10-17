@@ -1,6 +1,6 @@
 # Layout and responsive design
 
-How a Flutter screen fits the space it gets and stays usable there: measuring the window, branching layouts at breakpoints, large screens and foldables, platform adaptations, fixing the layout exceptions Flutter throws, and previewing widgets while you build them. One rule decides most outcomes: "Constraints go down. Sizes go up. Parent sets position." Every layout decision is based on the available window space, never on the device type or its orientation. Layering and widget structure are in [ARCHITECTURE.md](ARCHITECTURE.md), rebuild cost in [PERFORMANCE.md](PERFORMANCE.md), tap targets and text scaling in [ACCESSIBILITY.md](ACCESSIBILITY.md), widget and golden tests in [TESTING.md](TESTING.md), and animation in [../../frontend/ui-animation/SKILL.md](../../frontend/ui-animation/SKILL.md). The third-party `flutter_scale_kit` package is in [SCALE-KIT.md](SCALE-KIT.md).
+How a Flutter screen fits the space it gets and stays usable there: measuring the window, branching layouts at breakpoints, large screens and foldables, platform adaptations, fixing the layout exceptions Flutter throws, and previewing widgets while you build them. One rule decides most outcomes: "Constraints go down. Sizes go up. Parent sets position." Every layout decision is based on the available window space, never on the device type or its orientation. Layering and widget structure are in [ARCHITECTURE.md](ARCHITECTURE.md), rebuild cost in [PERFORMANCE.md](PERFORMANCE.md), tap targets and text scaling in [ACCESSIBILITY.md](ACCESSIBILITY.md), widget and golden tests in [TESTING.md](TESTING.md), and animation in [../../frontend/ui-animation/SKILL.md](../../frontend/ui-animation/SKILL.md). The third-party `flutter_scale_kit` package is in [SCALE-KIT.md](SCALE-KIT.md). Community scrolling and layout polish (bottom padding instead of `SafeArea` on scrollables, scrollbars, edge fades, hit areas) is in [../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md), small widget mechanics (flex, `OverflowBar`, clipping, window-size listeners) in [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md), and custom `RenderObject` layout in [../flutter-render-objects/LAYOUT.md](../flutter-render-objects/LAYOUT.md).
 
 **Contents:** [Responsive and adaptive](#responsive-and-adaptive) · [Measure the window](#measure-the-window) · [Branch at a breakpoint](#branch-at-a-breakpoint) · [Large screens and foldables](#large-screens-and-foldables) · [Orientation](#orientation) · [SafeArea and MediaQuery](#safearea-and-mediaquery) · [Input and state](#input-and-state) · [Capabilities and policies](#capabilities-and-policies) · [Platform adaptations](#platform-adaptations) · [Material and Cupertino as packages](#material-and-cupertino-as-packages) · [Fix layout errors](#fix-layout-errors) · [Widget previews](#widget-previews) · [Prove it](#prove-it)
 
@@ -19,8 +19,10 @@ How a Flutter screen fits the space it gets and stays usable there: measuring th
 
 - **Measure the app window, not the physical device.**
   - `MediaQuery.sizeOf(context)` gives the whole app window.
-  - `LayoutBuilder` gives the space the parent allocated (`BoxConstraints` min and max). Use it for custom widgets and branch on `constraints.maxWidth`.
+  - `LayoutBuilder` gives the space the parent allocated (`BoxConstraints` min and max). Use it for custom widgets and branch on `constraints.maxWidth`. ApparenceKit's sidebar reads its full height from `constraints.maxHeight` rather than `MediaQuery.of(context).size.height`: "For performance reasons, it is better to use LayoutBuilder" ([ApparenceKit](https://apparencekit.dev/blog/how-to-build-flutter-sidebar-menu/)).
+  - Not `View.of(context).physicalSize.width`: an ApparenceKit code comment notes "it returns the complete screen width on Web" ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-responsive-devicesizebuilder/)).
 - **Use `MediaQuery.sizeOf`, not `MediaQuery.of`,** "for performance reasons": `sizeOf` rebuilds the context only when the size changes.
+- **Listening instead of rebuilding** ([ApparenceKit](https://apparencekit.dev/flutter-tips/listen-to-window-size-changes/)): mix `WidgetsBindingObserver` into a `State`, call `WidgetsBinding.instance.addObserver(this)` in `initState`, and `didChangeMetrics` "is automatically called whenever the screen size, device orientation, or other related things change"; remove the observer in `dispose` ("If you don't, your app might have problems or use too much memory"). ApparenceKit's `DeviceSizeBuilder` uses it to `setState` only when a width bucket changes, with buckets at 768, 1024 and 1280 rather than the Material 600 below, and reads `MediaQuery.of(context).size.width`, which the rule above replaces with `sizeOf` ([../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#react-to-window-size-changes)).
 - **Sizes are logical pixels.**
 - **Never branch on hardware type** ("phone" vs "tablet"). Apps run in resizable windows (ChromeOS), multi-window and picture-in-picture. Flutter's official skill and docs both say this. The third-party `flutter_scale_kit` skill says the opposite for device-class branches; see [SCALE-KIT.md](SCALE-KIT.md#device-classification).
 
@@ -70,7 +72,11 @@ class AdaptiveLayout extends StatelessWidget {
 }
 ```
 
-- **`Expanded` vs `Flexible`.** `Expanded` makes a child fill all remaining space; it equals `Flexible` with `fit: FlexFit.tight` and a `flex` of 1.0. `Flexible` lets a child size itself up to a limit. `flex` sets the ratio between siblings.
+- **`Expanded` vs `Flexible`.** `Expanded` makes a child fill all remaining space; it equals `Flexible` with `fit: FlexFit.tight` and a `flex` of 1. `Flexible` lets a child size itself up to a limit. `flex` sets the ratio between siblings. (`flex` is an `int`, `final int flex;` in `Flexible`: https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/basic.dart; this line said "1.0" before, which is the wrong type.)
+  - ApparenceKit: "By default Flexible element are set to flex 1. Flex 0 mean that the child determines his own size", and each child's share is "`(item flex / total flex) * height`" ([ApparenceKit](https://apparencekit.dev/blog/flutter-flex/)).
+  - A community view: for a `Row` inside a `Column` whose children "struggle when they receive infinite constraints in the cross-axis", ApparenceKit wraps the `Row` in `IntrinsicHeight` ([ApparenceKit](https://apparencekit.dev/flutter-tips/size-row-height-in-column/)); the Flutter performance docs say "Avoid intrinsics" (a second layout pass, [PERFORMANCE.md](PERFORMANCE.md)). Both: [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#flex-and-row-height).
+- **`OverflowBar` vs `Wrap`.** `OverflowBar` "lays out its children in a row unless they "overflow" the available horizontal space, in which case it lays them out in a column instead" (https://api.flutter.dev/flutter/widgets/OverflowBar-class.html); `Wrap` moves children to the next line one by one ([ApparenceKit](https://apparencekit.dev/flutter-tips/discovering-overflowbar-flutter-responsive-layout/)). ApparenceKit's "OverflowBar or Wrap?" tip ([ApparenceKit](https://apparencekit.dev/flutter-tips/overflowbar-vs-wrap-flutter-difference/), no version stated) says children "extend beyond the available area" instead; that contradicts the API doc and is wrong.
+- **`Stack` clips by default.** `Stack.clipBehavior` defaults to `Clip.hardEdge` (https://api.flutter.dev/flutter/widgets/Stack/clipBehavior.html); set `clipBehavior: Clip.none` to let a badge peek out of a card ([ApparenceKit](https://apparencekit.dev/flutter-tips/render-widget-outside-parent-bounds/), code and the hit-test catch in [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#draw-outside-a-stack)).
 
 ## Large screens and foldables
 
@@ -114,21 +120,22 @@ class ConstrainedContent extends StatelessWidget {
 
 - **Do not lock the orientation.** "The Material Guidelines encourage you to never _portrait lock_ your app". Locked screens can be an accessibility issue. "Android large format tiers require both portrait and landscape support" (at the lowest tier). Android can override a locked screen. Apple says aim to support both orientations.
 - **Foldables:** a portrait lock with `setPreferredOrientations` puts Android into portrait compatibility mode, which letterboxes the app (centered with black borders), and `MediaQuery` never sees the larger window.
-- **If business rules truly require a lock,** read the physical screen from the `Display` API (`View.maybeOf(context)?.display`) instead of `MediaQuery`.
+- **If business rules truly require a lock,** read the physical screen from the `Display` API (`View.maybeOf(context)?.display`) instead of `MediaQuery`. Set the lock in `main()` after `WidgetsFlutterBinding.ensureInitialized()` and before `runApp()` ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-force-portrait-mode/)). That article presents the lock as a general choice, which the rule above contradicts, and states no version; the Android 17 rule below limits it ([../flutter-ux/DEVICE-FEATURES.md](../flutter-ux/DEVICE-FEATURES.md#portrait-lock)).
 - **Android 17:** for apps targeting Android 17+, orientation, resizability and aspect-ratio restrictions do not apply on displays of 600dp or more, and `SystemChrome.setPreferredOrientations` is ignored there (details in [VERSIONS.md](VERSIONS.md)).
 - **Do not switch layouts on orientation** with `MediaQuery.orientationOf` or `OrientationBuilder` near the top of the tree. "Device orientation does not accurately reflect the available app window space." Use `sizeOf` or `LayoutBuilder` with the Material breakpoints.
 
 ## SafeArea and MediaQuery
 
-- **`SafeArea` insets for notches, cutouts, the status bar and rounded corners.** All four sides are on by default.
-- **Wrap the `Scaffold` body, not the `Scaffold`.** The `AppBar` already goes under the status bar.
+- **`SafeArea` insets for notches, cutouts, the status bar and rounded corners.** All four sides are on by default. `SafeArea(minimum: ...)` with `MediaQuery.of(context).viewInsets.bottom` ("zero when the keyboard is hidden and non-zero when it's visible") also clears the software keyboard ([ApparenceKit](https://apparencekit.dev/blog/bottom-sheet-flutter-keyboard-fix/), [../flutter-ux/KEYBOARD-AND-FOCUS.md](../flutter-ux/KEYBOARD-AND-FOCUS.md#forms-in-a-bottom-sheet)).
+- **Wrap the `Scaffold` body, not the `Scaffold`.** The `AppBar` already goes under the status bar. For full-bleed media that goes behind the app bar, ApparenceKit's fullscreen video uses `Scaffold(extendBodyBehindAppBar: true)` ([ApparenceKit](https://apparencekit.dev/flutter-tips/play-video-fullscreen-flutter-aspect-ratio/)).
+- **A community view on scrollable bodies** ([FlutterPro](https://flutterpro.design/details/safe-area-replacement)): "Don't use SafeArea with scrollable widgets"; it "shrinks the viewport", so list items get cut off. Pad the bottom inside the scroll view from `MediaQuery.viewPaddingOf(context).bottom` instead. The Flutter docs above give `SafeArea` around the body with no scrollable exception; both are kept ([../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#bottom-padding-instead-of-safearea)).
 - **Nested `SafeArea`s apply padding once.** Only the topmost applies it, because it rewrites the `MediaQuery` for its children. Reading `MediaQueryData.padding` directly does not behave this way.
 - **`MediaQuery` also exposes** high contrast, text scaling, whether TalkBack or VoiceOver is on, and hinge or fold information.
 
 ## Input and state
 
-- **Support mice, trackpads and keyboard shortcuts.** Keep common flows keyboard-navigable and size touch targets appropriately (see [ACCESSIBILITY.md](ACCESSIBILITY.md)).
-- **Keep state across rotate, resize and fold or unfold.** Restore list scroll position across rotation with `PageStorageKey`. Some native extensions lose state.
+- **Support mice, trackpads and keyboard shortcuts.** Keep common flows keyboard-navigable and size touch targets appropriately (see [ACCESSIBILITY.md](ACCESSIBILITY.md)). The widgets: `Shortcuts` maps key combinations to actions, `Actions` lets children trigger actions defined higher up (and works without `Shortcuts`), an `Intent` is the intention and an `Action` holds the logic ([ApparenceKit](https://apparencekit.dev/flutter-tips/handle-keyboard-shortcuts/)).
+- **Keep state across rotate, resize and fold or unfold.** Restore list scroll position across rotation with `PageStorageKey`. Some native extensions lose state. For hand-rolled page switching (not go_router's `StatefulShellRoute.indexedStack`, which keeps it already), hold one `PageStorageBucket` in a field, wrap the swapped area in `PageStorage(bucket: _bucket, ...)` and give each widget a unique `PageStorageKey` ([ApparenceKit](https://apparencekit.dev/flutter-tips/preserve-page-scroll-position/), code in [../flutter-ux/NAVIGATION-AND-SHEETS.md](../flutter-ux/NAVIGATION-AND-SHEETS.md#keep-scroll-position-across-tabs)).
 
 ## Capabilities and policies
 
@@ -148,6 +155,8 @@ class Policy {
 }
 ```
 
+- **`defaultTargetPlatform` for features, not layout.** ApparenceKit's `PlatformUtils` (`isDesktop` / `isMobile` from `defaultTargetPlatform`, `isWeb` from `kIsWeb`, all in `package:flutter/foundation.dart`) is offered for "a different layout for desktop or a feature only for mobile" ([ApparenceKit](https://apparencekit.dev/flutter-tips/detect-flutter-running-platform/)); the rule above rules out the layout use, while feature and policy checks fit. Its exported code (`static bool isDesktop =>` without `get`) does not compile ([../flutter-ux/DEVICE-FEATURES.md](../flutter-ux/DEVICE-FEATURES.md#detect-the-platform)).
+
 ### Context-aware layouts (optional)
 
 Community practice from one Flutter Community post (Rudraksh Shukla, "The Death of the Static UI"), whose author calls its code "illustrative and simplified". In a context-aware screen "the interface has conditional branches, and an on-device model decides which branch to render", fed by sensors, system state and usage history. The reactive plumbing stays the same (`StreamBuilder`, `ValueListenableBuilder`, Riverpod, Bloc pointed at a stream of context).
@@ -163,9 +172,9 @@ Community practice from one Flutter Community post (Rudraksh Shukla, "The Death 
 ## Platform adaptations
 
 - **Automatic, no code needed:**
-  - Page transitions: the platform-adaptations page says Android push uses `ZoomPageTransitionsBuilder`, while the 3.38 breaking change makes `PredictiveBackPageTransitionsBuilder` the Android default (see [VERSIONS.md](VERSIONS.md)); confirm in the current docs. iOS push is a slide with parallax, and `PageRoute.fullscreenDialog` gives a bottom-up modal.
+  - Page transitions: the platform-adaptations page says Android push uses `ZoomPageTransitionsBuilder`, while the 3.38 breaking change makes `PredictiveBackPageTransitionsBuilder` the Android default (see [VERSIONS.md](VERSIONS.md)); confirm in the current docs. iOS push is a slide with parallax, and `PageRoute.fullscreenDialog` gives a bottom-up modal. A community view: no page transition at all on web and desktop, set once in `ThemeData.pageTransitionsTheme` with a zero-duration builder ([FlutterPro](https://flutterpro.design/details/web-page-transitions)); its map names `ZoomPageTransitionsBuilder` for Android, which on 3.38+ pins the old transition, and its `kIsWeb` branch gives mobile browsers no transition either, though the text says native ones ([../flutter-ux/NAVIGATION-AND-SHEETS.md](../flutter-ux/NAVIGATION-AND-SHEETS.md#page-transitions)).
   - Back: the Android back button pops the top route; the iOS edge swipe pops.
-  - Scroll physics, overscroll, momentum stacking (iOS) and status-bar tap to scroll to top (iOS).
+  - Scroll physics, overscroll, momentum stacking (iOS) and status-bar tap to scroll to top (iOS). The status-bar tap is automatic "when you use `Scaffold` and `CupertinoPageScaffold`"; "If you have a custom `ScrollController`, you must wrap the `Scaffold` (or `CupertinoPageScaffold`) with a `PrimaryScrollController` and provide that controller down the widget tree" ([FlutterPro](https://flutterpro.design/details/statusbar-tap-scroll), code in [../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#status-bar-tap-to-scroll-to-top)). Tab reselect is the other scroll-to-top convention, and it is not automatic ([ROUTING-AND-DEEP-LINKS.md](ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)).
   - Typography: Roboto on Android, San Francisco on iOS (the SF license limits it to Apple platforms).
 - **`Icons.adaptive`** gives platform icons.
 - **`.adaptive()` constructors substitute Cupertino on iOS.** Follow platform conventions for these:
@@ -180,8 +189,12 @@ Community practice from one Flutter Community post (Rudraksh Shukla, "The Death 
 | `Radio.adaptive()` | `CupertinoRadio` |
 | `AlertDialog.adaptive()` | `CupertinoAlertDialog` |
 
+- **`RefreshIndicator.adaptive`** can wrap a `CustomScrollView` directly; "Flutter will automatically display the refresh indicator when the user pulls down the list" ([ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/)). `onRefresh` is a `RefreshCallback` (`Future<void> Function()`) whose "returned [Future] must complete when the refresh operation is finished" (https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/refresh_indicator.dart); the article's `onRefresh` body returns nothing, so return the refresh work's `Future`.
+- **Date pickers have no row above.** FlutterPro branches by hand: `CupertinoDatePicker` (scroll wheel) on iOS, `showDatePicker` on Android, keeping the Material picker on Android even in a custom design ([FlutterPro](https://flutterpro.design/details/adaptive-date-picker), code in [../flutter-ux/WEB.md](../flutter-ux/WEB.md#date-picker-that-matches-the-platform)).
 - **Bottom navigation per platform:** `NavigationBar` on Android, `CupertinoTabBar` on iOS.
 - **Platform idioms:** matching them reduces cognitive load and builds trust ("better app store ratings"). Assign a platform advocate per platform. Examples: `Scrollbar(thumbVisibility: DeviceType.isDesktop, ...)`, `SelectableText` / `SelectableText.rich` on web, tooltips after 200 to 400 ms of hover.
+  - Scrollbars: "Flutter automatically adds a scrollbar to most vertically scrollable widgets on desktop platforms (including web when opened via a desktop browser)"; on mobile it is your job, and one added by hand on desktop "clashes with the automatic desktop scrollbar on the same page, and both stop working right" ([FlutterPro](https://flutterpro.design/details/scrollbars)). A community view: FlutterPro adds scrollbars on mobile too, by hand where needed or app-wide through `MaterialApp.scrollBehavior` ([../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#scrollbars)).
+  - Selection: "By default, text in Flutter apps isn't selectable." Use `SelectionArea` "if you need to enable selection on multiple text widgets or other selectable widgets within a specific area" (placed high, around the `Scaffold` or `MaterialApp`), and `SelectableText` for a single `Text` ([ApparenceKit](https://apparencekit.dev/flutter-tips/make-text-selectable-in-flutter/), [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#selectable-text)).
 
 ## Material and Cupertino as packages
 
@@ -199,7 +212,9 @@ Community practice from one Flutter Community post (Rudraksh Shukla, "The Death 
 | "Incorrect use of ParentData widget" | A `ParentDataWidget` that is not a direct child of its required ancestor (`Expanded` outside a `Flex`, `Positioned` outside a `Stack`) | Make `Expanded`/`Flexible` direct children of `Row`/`Column`/`Flex`, and `Positioned` a direct child of `Stack` |
 | "RenderBox was not laid out" | A cascading side effect | Ignore it and look further up the stack trace for the primary violation, usually unbounded height or width |
 
-- **Workflow:** run in debug mode to capture the exception, find the primary error, apply the fix from the table, hot reload, then confirm the red or grey error screen or the stripes are gone. Repeat if new errors appear.
+- **Workflow:** run in debug mode to capture the exception, find the primary error, apply the fix from the table, hot reload, then confirm the red or grey error screen or the stripes are gone. Repeat if new errors appear. "Flutter shows a red screen (debug mode) or a grey screen (production mode) by default when there's a rendering error" ([ApparenceKit](https://apparencekit.dev/flutter-tips/create-custom-flutter-error-screen/)); replacing it with `ErrorWidget.builder` is in [../flutter-ux/APP-LIFECYCLE.md](../flutter-ux/APP-LIFECYCLE.md#replace-the-default-error-view).
+- **Why the ParentData error happens:** each `ParentDataWidget` declares `debugTypicalAncestorWidgetClass`, which this error names, and writes one parent data type (`Positioned` to `StackParentData`, `Expanded` and `Flexible` to `FlexParentData`, `LayoutId` to `MultiChildLayoutParentData`) ([renderobjects](https://renderobjects.com/guides/children/parent-data/), [../flutter-render-objects/PARENT-DATA.md](../flutter-render-objects/PARENT-DATA.md)).
+- **A list nested in another scrollable:** "Using `shrinkWrap: true` on your `ListView` is a good practice if this list is nested inside another scrollable view" ([ApparenceKit](https://apparencekit.dev/flutter-tips/how-to-create-checkbox-list-using-checkboxlisttile-flutter/)). The table's fix for a list in a plain `Column` stays `Expanded` or a fixed-height `SizedBox`.
 
 ```dart
 // Throws "Vertical viewport was given unbounded height"
@@ -294,7 +309,8 @@ Row(
 
 - **IDE:** in Android Studio, IntelliJ, or VS Code with Flutter 3.38+, the Widget Previewer starts automatically. Open the "Flutter Widget Preview" tab in the sidebar. To see previews outside the active file, toggle "Filter previews by selected file" at the bottom left.
 - **Command line:** run `flutter widget-preview start` in the project root. Chrome opens automatically.
-- **Status:** Widget Previews are stable as of Flutter 3.47, with a `.widget_preview/` cache.
+- **Status:** Widget Previews are stable as of Flutter 3.47, with a `.widget_preview/` cache. They first shipped in 3.35: "Flutter 3.35 brought us ... the Widget Previewer" ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)).
+- **Theme caveat** ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)): the `theme` option "might not work perfectly with all custom themes right away, a great workaround is to directly embed your widget inside a `MaterialApp` with your chosen theme."
 - **Iterating:** after changing global state (such as static initializers), click the global hot restart button at the bottom right. To reset one widget's local state, click the hot restart button on that preview card.
 
 ### Code
@@ -373,6 +389,15 @@ final class MultiBrightnessPreview extends MultiPreview {
 Widget cardPreview() => const Card(child: Padding(padding: EdgeInsets.all(8.0), child: Text('Content')));
 ```
 
+A factory constructor as the preview target ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)):
+
+```dart
+@Preview(name: 'Primary Button Large')
+factory PrimaryButton.largePreview() {
+  return PrimaryButton(text: "text", onTap: () {});
+}
+```
+
 ## Prove it
 
 - **No device-type or orientation branching:** search the code for `OrientationBuilder`, `MediaQuery.orientationOf`, `Platform.isAndroid` / `Platform.isIOS` used for layout, and phone or tablet checks. Each layout branch reads `MediaQuery.sizeOf` or `LayoutBuilder` constraints.
@@ -380,5 +405,7 @@ Widget cardPreview() => const Card(child: Padding(padding: EdgeInsets.all(8.0), 
 - **Resize test:** run the app in a resizable window and drag it across 600 logical pixels. The navigation switches between bottom bar and rail, no yellow and black overflow stripes appear, and wide screens show a capped content width or a grid.
 - **Orientation:** no `setPreferredOrientations` portrait lock, unless business rules require it and the code reads `View.maybeOf(context)?.display`.
 - **Rotation keeps state:** rotate with a scrolled list; the position survives (`PageStorageKey`).
+- **Status-bar tap (iOS):** on every screen with a custom `ScrollController`, tapping the status bar scrolls to the top (the `Scaffold` sits under a `PrimaryScrollController` with that controller).
+- **Window listeners clean up:** every `WidgetsBinding.instance.addObserver(this)` has a matching `removeObserver(this)` in `dispose`.
 - **Layout errors:** a debug run shows no red or grey error screen; for each exception, the fix matches the table above, and "RenderBox was not laid out" was traced to its primary violation.
 - **Previews:** `flutter widget-preview start` opens Chrome and every `@Preview` renders; previewed widgets have no transitive `dart:io` or `dart:ffi` dependency.

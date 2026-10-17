@@ -15,6 +15,7 @@ Supabase puts Postgres directly behind an HTTP API the browser can call. That ma
 | Database functions, triggers, webhooks, extensions, roles, timeouts, connection strings and poolers, advisor lints, read replicas, backups, type generation | [DATABASE.md](DATABASE.md) |
 | Auth keys, sessions, JWTs and signing keys, getClaims and getUser, SSR with cookies | [AUTH-SESSIONS.md](AUTH-SESSIONS.md) |
 | Auth sign-in methods, PKCE, redirect URLs, identity linking, email, rate limits and CAPTCHA | [AUTH-SIGN-IN.md](AUTH-SIGN-IN.md) |
+| Custom OAuth and OIDC providers, enterprise SSO (SAML), Web3, passkeys, third-party auth (Clerk, Auth0, Cognito, WorkOS), Supabase as an OAuth 2.1 provider | [AUTH-PROVIDERS.md](AUTH-PROVIDERS.md) |
 | Auth MFA, roles and custom claims in RLS, hooks, your user tables and the admin API, the auth schema, local dev, production, error codes | [AUTH-USERS.md](AUTH-USERS.md) |
 | Realtime: Broadcast, Presence, Postgres Changes, private channels, limits, reconnects, error codes | [REALTIME.md](REALTIME.md) |
 | Edge Functions: runtime limits, dependencies, secrets, auth, CORS, background tasks, calling from the database, local dev, deploy, error codes | [EDGE-FUNCTIONS.md](EDGE-FUNCTIONS.md) |

@@ -199,6 +199,7 @@ transition={{
 - **Build it as a pipeline:** kciter's notification is three pieces: the background dims (opacity 0 to 0.5, 200 ms), the card slides up into place (300 ms, ease-out), the content fades in (opacity 0 to 1, 200 ms). Each can be tuned alone ([TIMING.md](TIMING.md#composing-a-sequence)).
 - **A popup in CSS alone:** the Base UI select popup on Florian Kiem's "Tips to improve your product" page is `origin-[var(--transform-origin)] transition-all duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0`, the origin taken from the anchor.
 - **A sheet swiped away on native scroll** (scroll snap and view timelines, no JavaScript touch handling) is in [SHEETS.md](SHEETS.md).
+- **Flutter sheets** (the spring sheet, swipe down at the top to close, the iOS 26 sheet) are in [../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md](../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md#pick-the-sheet).
 
 ## Trays: a flow in steps over the current screen
 
@@ -261,6 +262,7 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
 - Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size. **Every pressable element has a pressed state, and it is stronger than the hover** (rest, hover, press, each a step further). Playful brands move (a slight scale); professional tools shift tone. Keep it subtle and under 100 ms in: some buttons are pressed hundreds of times a day. Component details beyond motion are in the `anti-slop-ui` skill's DETAILS.md. A like button's heart "shrinks for an instant and then springs back"; the overshoot "gives the press a tactile sense of feedback" (kciter). The RNDR Realm dropdown trigger also grows on hover (`whileHover={{ scale: 1.03 }}`); this line keeps hover to colour or shadow.
 - **Press in faster than release.** Kiem's demos press in quicker than they let go: a tone-only press goes darker in 90ms and back over 240ms (`[transition:background-color_240ms_ease-out]`, `active:[transition:background-color_90ms_ease-out]`), a playful one scales in over 240ms and back over 420ms. With reduced motion the press keeps its colour change and drops the scale (`motion-reduce:[transition:background-color_180ms_ease-out] motion-reduce:active:scale-100`).
 - **Playful press, both ways:** Kiem's playful press goes to `active:scale-[0.94]` over 240ms on a `linear()` spring that overshoots about 16%; the line above says 0.97 and under 100 ms in, and [TIMING.md](TIMING.md#duration-by-element) gives a press 120-180 ms and 5-10% overshoot. Neither wins.
+  - Flutter community view: FlutterPro presses to scale 0.96 on `CupertinoMotion.smooth()` from the `motor` package, the same spring in and out, with no faster press-in ([FlutterPro](https://flutterpro.design/details/pressable-spring)). See ../../mobile/flutter-ux/MOTION-AND-FEEDBACK.md.
 
 ```
 [--press-spring:linear(0,0.09,0.298,0.547,0.779,0.963,1.085,1.148,1.163,1.145,1.11,1.069,1.032,1.003,0.985,0.975,0.974,0.977,0.983,0.989,1)]

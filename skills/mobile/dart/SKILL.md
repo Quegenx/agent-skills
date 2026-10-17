@@ -1,6 +1,6 @@
 ---
 name: dart
-description: "Writes Dart 3 the way dart.dev and the Dart team's skills prescribe: language versions, class modifiers, sealed types, extension types, dot shorthands and null safety, records and pattern matching, primary and concise constructors, futures, streams and isolates, Effective Dart style, documentation, usage and API design, analysis_options.yaml, lints, dart fix and dart format, the Dart and Flutter MCP server, unit tests, mockito, package:checks and coverage, pub dependencies, workspaces and publishing, package:path, CLI apps with package:args, exit codes and compiled binaries, FFI with build hooks and ffigen, and the release history with breaking changes. Use when writing, reviewing or upgrading Dart code, setting up lints or tests for a Dart or Flutter package, resolving pub conflicts, publishing to pub.dev, building a command-line tool, or calling C code from Dart."
+description: "Writes Dart 3 the way dart.dev and the Dart team's skills prescribe: language versions, class modifiers, sealed types, extension types, dot shorthands and null safety, records and pattern matching, primary and concise constructors, futures, streams and isolates, core library APIs (DateTime across daylight saving, map kinds, copying collections, JSON pretty-printing, Function.apply), Effective Dart style, documentation, usage and API design, analysis_options.yaml, lints, dart fix and dart format, the Dart and Flutter MCP server, unit tests, mockito, package:checks and coverage, pub dependencies, workspaces and publishing, package:path, CLI apps with package:args, exit codes and compiled binaries, FFI with build hooks and ffigen, and the release history with breaking changes. Use when writing, reviewing or upgrading Dart code, setting up lints or tests for a Dart or Flutter package, resolving pub conflicts, publishing to pub.dev, building a command-line tool, or calling C code from Dart."
 ---
 
 # Dart
@@ -9,10 +9,11 @@ Dart code, its tools and its packages, for pure Dart and for the Dart inside a F
 
 | The job | Read |
 |---|---|
-| Feature minimums per language version, class modifiers, `sealed` and exhaustive switches, modifiers in a published API, extension types, dot shorthands, null safety and `late` | [LANGUAGE.md](LANGUAGE.md) |
+| Feature minimums per language version, class modifiers, `sealed` and exhaustive switches, modifiers in a published API, extension methods, extension types, dot shorthands, null safety and `late` | [LANGUAGE.md](LANGUAGE.md) |
 | Records, where patterns appear, switch statement or expression, every pattern type, picking a pattern, anti-patterns, JSON validation | [RECORDS-AND-PATTERNS.md](RECORDS-AND-PATTERNS.md) |
 | Primary constructors (3.13), concise `new` / `factory` syntax, private named parameters (3.12), the 3.13 `extraneous_modifier` break, migration and diagnostics | [CONSTRUCTORS.md](CONSTRUCTORS.md) |
-| `async` / `await`, `Future.wait` and `.wait` with `ParallelWaitError`, the Future API, using and creating streams, `StreamController`, `Isolate.run`, long-lived isolates and ports | [ASYNC.md](ASYNC.md) |
+| `async` / `await`, `Future.wait` and `.wait` with `ParallelWaitError`, `Future.any`, the Future API and `catchError` chains, using and creating streams, `StreamController`, `Isolate.run`, long-lived isolates and ports | [ASYNC.md](ASYNC.md) |
+| Adding days across daylight saving, `HashMap` / `LinkedHashMap` / `SplayTreeMap` and map operations, shallow and deep copies of lists and maps, immutable collection packages, `JsonEncoder.withIndent`, `Function.apply` | [CORE-LIBRARIES.md](CORE-LIBRARIES.md) |
 | Effective Dart Style and Documentation: identifier casing, import ordering, `dart format`, comments, `///` doc comments, references, `{@example}` | [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md) |
 | Effective Dart Usage and Design: imports, null, strings, collections, functions, members, constructors, error handling, async, naming APIs, privacy, classes, types, parameters, equality | [USAGE-AND-DESIGN.md](USAGE-AND-DESIGN.md) |
 | `analysis_options.yaml`, strict modes, lint sets and their rules, severities and suppression, formatter settings, analyzer plugins, `dart analyze`, `dart fix`, `dart format`, fixing errors, the Dart and Flutter MCP server | [ANALYSIS-AND-LINTS.md](ANALYSIS-AND-LINTS.md) |

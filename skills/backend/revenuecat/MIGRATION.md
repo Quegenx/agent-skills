@@ -2,6 +2,8 @@
 
 Two different jobs share this file. **Adoption** (Path A) adds RevenueCat to an app that already sells through StoreKit or Google Play Billing directly, or through a Flutter or React Native IAP library. **Version upgrade** (Path B) moves an app across a RevenueCat SDK major. If you need both, run Path A first, then Path B. Exactly one side, your code or RevenueCat, may finish (iOS) and acknowledge (Android) each purchase. SDK setup is in [FLUTTER.md](FLUTTER.md) and [REACT-NATIVE.md](REACT-NATIVE.md), store credentials in [STORE-SETUP.md](STORE-SETUP.md), sandbox checks in [TESTING.md](TESTING.md).
 
+- **Stale note: Glassfy.** ApparenceKit's Supabase Flutter template once paid through Glassfy (Apple) and Play Billing ([ApparenceKit](https://apparencekit.dev/blog/supabase-flutter-template-released/)); its CLI 3.0.0 moved to RevenueCat entirely ("we are migrating to this solution completely", [ApparenceKit](https://apparencekit.dev/blog/apparencekit-cli-3-update/)). This skill does not cover Glassfy.
+
 ## Adoption: observer mode
 
 The configuration option is "Purchases Completed By" (optional, only if you have your own purchase code); the SDKs call it `purchasesAreCompletedBy`, and the docs once called it Observer Mode. It is "the key lever for adopting RevenueCat without rewriting purchase code": the SDK observes the transactions your StoreKit or Billing code processes, sends them to RevenueCat for validation and updates subscriber state, but does **not** start or finish them. Your purchase UI, receipt validation and finishing stay as they are.

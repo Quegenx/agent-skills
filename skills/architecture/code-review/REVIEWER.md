@@ -89,6 +89,7 @@ A long security review in one context can stop early and declare the job done af
 - **Fix, then adversarial review, per unit.** For migrations and refactors, break the task into units (callsites, failing tests, modules), spin off a subagent for every fix in a worktree, have another agent adversarially review it, and merge.
 - **A rubric for taste.** Give a review agent a rubric for what a good solution looks like (for example, what good API design looks like); the task is complete when the review agent judges the criteria met.
 - **Old code too.** Review agents also run nightly over existing code, catching old bugs before they show up somewhere else.
+- **A whole-app audit is a different mode** ([improve-design](https://github.com/kamranbekirovyz/skills/tree/main/flutter-improve-design)): find, let the developer pick, then plan. Review stops at the first hit per rule; findings carry no locations, counts or tables, in catalog order, because "the developer is choosing whether the app deserves that fix, not reviewing a location"; the reviewer never edits, and each picked finding becomes a self-contained plan (with "Don't touch" and "STOP if") for a fresh session with zero context, possibly a less capable model. That differs from the diff review above (a count, file and line on every finding, an agent may fix). The Flutter version: ../../mobile/flutter-ux/REVIEW.md.
 
 ## Anti-patterns
 

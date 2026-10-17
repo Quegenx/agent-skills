@@ -45,6 +45,21 @@ Every PR gets an AI review before a person looks, and security gets its own auto
 The usual: lint, type checks, tests on every platform, and a build. A typical CLI pull request may run dozens of checks before anyone looks at it.
 
 - **The PR template asks how the change was tested and how to undo it,** under the headings "Testing", "Risk" and "How to revert". The agent can fill it in, but the person who asked for the change signs off on it.
+- **A duplication gate** ([ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)): Deslop (the tool is in the `anti-slop-code` skill's RULES.md) fails the step with exit code 3 above the ceiling, naming the measured percentage and the ceiling. `only-changed` reports only clusters the diff touches, so legacy duplication doesn't block every PR; `upload-artifact` keeps the HTML report. It posts no PR comment: read the `duplication-percent` step output and post it yourself. "Pin the version. Do not float on a tag."
+
+```yaml
+name: deslop
+on: [push, pull_request]
+
+jobs:
+  duplication-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Nimblesite/Deslop@v0.32.0
+        with:
+          fail-over: "5.0"
+```
 
 ### 5. Human approval, scaled by risk
 

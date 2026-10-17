@@ -1,0 +1,67 @@
+---
+name: flutter-render-objects
+description: "Writes custom Flutter RenderObjects the way renderobjects.com (Matt Carroll) teaches, checked against api.flutter.dev: the widget, element and render trees, when a custom render object is worth it, choosing a child model (single, list, slotted, custom element, built during layout), parent data and ParentDataWidget, performLayout, dry layout, baselines and intrinsics, painting, layers and compositing, hit testing and mouse cursors, semantics, showOnScreen, diagnostics and debug paint, element lookups and GlobalKey reparenting, and three worked examples. Use when writing or reviewing a RenderBox, RenderObjectWidget or custom RenderObjectElement, or when a layout, paint or hit test needs more control than composing widgets gives."
+---
+
+# Flutter render objects
+
+This skill is the renderobjects.com guides, API pages and examples by Matt Carroll (https://renderobjects.com/), with every API claim checked against api.flutter.dev and the Flutter framework source. The site states no Flutter version, and some of its code does not compile or contradicts the framework; wherever that happens the files give the official form first and then one line saying what renderobjects.com has. What decides most outcomes: the element tree owns the children and the render tree only reacts, every property setter marks exactly the right thing dirty, and whatever a render object reports without laying out (dry size, baselines, intrinsics) matches what its real layout produces. App-level frame budget and the advice to avoid intrinsic passes are in [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md); tap targets, the `Semantics` widget and screen-reader checks are in [../flutter/ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md); everything else about building the app is [../flutter/SKILL.md](../flutter/SKILL.md).
+
+| The job | Read |
+|---|---|
+| `performLayout`, `parentUsesSize`, sizing inside the constraints, child offsets, relayout boundaries, `sizedByParent`, dry layout, actual and dry baselines, intrinsic sizes, text direction, building during layout | [LAYOUT.md](LAYOUT.md) |
+| How elements reconcile children, keys, and the five child models with their widget, element and render object code: single, list, slotted, custom structure, virtualized | [CHILD-MODELS.md](CHILD-MODELS.md) |
+| Parent data subclasses and which base class to extend, `setupParentData`, `ParentDataWidget` and `applyParentData`, parent data written by layout | [PARENT-DATA.md](PARENT-DATA.md) |
+| `paint` and its `offset`, canvas drawing, reusing `Paint`, painting children, `defaultPaint`, repaint boundaries, `markNeedsPaint`, the `push*` helpers, clips, `paintBounds` | [PAINTING.md](PAINTING.md) |
+| Pictures versus layers, `needsCompositing`, `alwaysNeedsCompositing`, `pushLayer`, the `layer` slot and `LayerHandle`, reusing layers, layer-only updates with `updateCompositedLayer`, `applyPaintTransform` | [COMPOSITING.md](COMPOSITING.md) |
+| `hitTest`, `hitTestSelf`, `hitTestChildren` in reverse paint order, non-rectangular shapes, transforms, oversized targets, and mouse cursors and hover through `MouseTrackerAnnotation` | [HIT-TESTING.md](HIT-TESTING.md) |
+| When to go below the `Semantics` widget, `describeSemanticsConfiguration`, labels, values, flags and actions, merging, boundaries, blocking and hiding, `markNeedsSemanticsUpdate`, `semanticBounds` | [SEMANTICS.md](SEMANTICS.md) |
+| What `showOnScreen` does and who calls it, the bubble-up to scrollables, when to override it, the reveal rectangle | [SHOW-ON-SCREEN.md](SHOW-ON-SCREEN.md) |
+| `debugFillProperties` and property types, default values and levels, `debugDescribeChildren`, `toStringShort`, debug-only asserts and state, `debugPaint` | [DIAGNOSTICS.md](DIAGNOSTICS.md) |
+| Inherited widgets read from elements and render objects, ancestor and descendant lookups, element diagnostics, GlobalKey reparenting in a custom element | [ELEMENTS.md](ELEMENTS.md) |
+| Worked example: an Apple Watch app grid whose custom element builds only the visible children during layout, with gestures and scroll semantics | [EXAMPLE-WATCH-GRID.md](EXAMPLE-WATCH-GRID.md) |
+| Worked example: a message attachment thumbnail with a circle cut out of its corner for an "x" remove button | [EXAMPLE-MESSAGE-ATTACHMENT.md](EXAMPLE-MESSAGE-ATTACHMENT.md) |
+| Worked example: a Nest-style thermostat drawn by one leaf `RenderBox`: canvas painting, baselines, hit testing, gestures, adjustable semantics | [EXAMPLE-THERMOSTAT.md](EXAMPLE-THERMOSTAT.md) |
+
+## The three trees
+
+- Widget: immutable, lightweight configuration, "recreated on every rebuild" ([renderobjects](https://renderobjects.com/guides/children/intro-to-children/)); "the blueprint" ([ApparenceKit](https://apparencekit.dev/flutter-tips/what-are-render-objects-flutter/)).
+- Element: "the running instance of your widget tree". Elements persist across rebuilds and are reused when the new widget has "the same type and key in the same position"; on a rebuild an element usually just updates its render object's properties from the new widget's fields. Without elements, every rebuild would mean "recreating render objects from scratch, losing layout caches, scroll positions, and animation state". [renderobjects](https://renderobjects.com/guides/children/intro-to-children/)
+- Render object: does layout, paint, hit tests and semantics. "Not every widget corresponds to a render object ... but every render object is owned by some element above it." [renderobjects](https://renderobjects.com/guides/children/intro-to-children/)
+- Widget to element is one to one; element to render object is not. Component elements (`Builder`, every `StatelessWidget`) own no render object, so the render tree is the element tree with component elements skipped: `RenderPadding`'s child is the render object of a `Text` element "three levels down in the element tree, but one level down in the render tree". [renderobjects](https://renderobjects.com/guides/children/intro-to-children/)
+- "The element tree is *authoritative* ... The render tree is *reactive*." Render children change only through `RenderObjectElement.insertRenderObjectChild`, `moveRenderObjectChild` and `removeRenderObjectChild`, each given a render object and a *slot*: "an opaque identifier that tells the parent element where in the render tree's child structure this render object belongs" (a list index, a named slot, an index plus a previous sibling). "The slot is the bridge between the two trees." [renderobjects](https://renderobjects.com/guides/children/intro-to-children/) Official: a slot is "an identifier whose meaning is private to this RenderObjectElement node", set by `updateChild` and changed with `updateSlotForChild` (https://api.flutter.dev/flutter/widgets/RenderObjectElement-class.html).
+
+## When to write a render object
+
+- Custom render objects are "for advanced drawing or unique layout needs, not for everyday UI pieces like buttons or text fields"; they "control layout, handle gestures, and paint exactly what you need directly". [ApparenceKit](https://apparencekit.dev/flutter-tips/what-are-render-objects-flutter/)
+- A UI is "a good candidate for a custom render object" when it has child widgets, the "layout of child size and position is nuanced", or "only visible children should be built, therefore build happens during layout" (long or unbounded lists, scrollable tables and spreadsheets, an infinite canvas). [renderobjects](https://renderobjects.com/examples/apple-watch-app-grid/)
+- "even simple widgets can sometimes benefit from a custom render object": a thumbnail with a circle cut out for an "x" button "could be built with a widget tree", but "that widget tree would be rather confusing". [renderobjects](https://renderobjects.com/examples/message-attachment/)
+- A full interactive control can be "nothing but a custom `RenderBox`: no nested widgets, just direct `Canvas` painting, layout, hit-testing, and gesture handling"; the same approach suits charts such as a candlestick stock chart. [renderobjects](https://renderobjects.com/examples/nest-thermostat/)
+- On the performance side, Flutter's guidance that the ideal build is "a single widget, and that widget would be a RenderObjectWidget", and the custom "anchor" cell that avoids an intrinsic pass, are in [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md).
+
+## Choosing a child model
+
+From the "When ... fits" sections of the children guides ([list](https://renderobjects.com/guides/children/list-of-children/), [slotted](https://renderobjects.com/guides/children/slotted-children/), [custom](https://renderobjects.com/guides/children/custom-child-model/), [virtualized](https://renderobjects.com/guides/children/virtualized-children/)); code for each is in [CHILD-MODELS.md](CHILD-MODELS.md).
+
+| The children | Widget | Render object | Element |
+|---|---|---|---|
+| One optional `child` | `SingleChildRenderObjectWidget` | `RenderObjectWithChildMixin` | framework's |
+| A flat `List<Widget> children` (Row, Column, Stack, Wrap, Flow, ListBody) | `MultiChildRenderObjectWidget` | `ContainerRenderObjectMixin` + `RenderBoxContainerDefaultsMixin` | framework's |
+| A fixed set of named roles, "fixed at compile time" (`header`, `body`, `footer`) | `SlottedMultiChildRenderObjectWidget` | `SlottedContainerRenderObjectMixin` | framework's |
+| `List<List<Widget>>`, `Map<GridCoord, Widget>`, a domain structure, or mixed models (a `header` plus a list) | `RenderObjectWidget` | your own child storage, `adoptChild`/`dropChild` | custom `RenderObjectElement` |
+| Known only at layout time (a builder plus a count) | `RenderObjectWidget` | container mixins, calling back into the element from `performLayout` | custom element with `updateChild` inside `BuildOwner.buildScope` (reference: `SliverMultiBoxAdaptorElement`) |
+
+## The rules
+
+1. **Never add or remove render children yourself.** The element decides; the render tree changes only through `insertRenderObjectChild`, `moveRenderObjectChild` and `removeRenderObjectChild` with a slot ([renderobjects](https://renderobjects.com/guides/children/intro-to-children/)). A custom element skips forgotten children in `visitChildren` and clears them once per `update`, or GlobalKey reparenting loses state ([CHILD-MODELS.md](CHILD-MODELS.md#custom-child-model)).
+2. **Every property setter returns early on an equal value, then marks the right thing dirty:** `markNeedsLayout()` when layout changes (it implies a repaint), `markNeedsPaint()` when only appearance changes, never both. A missing `markNeedsLayout()` is "the single most common bug in custom render objects" ([renderobjects](https://renderobjects.com/guides/layout/), [renderobjects](https://renderobjects.com/guides/painting/)).
+3. **Read a child's size only after `child.layout(..., parentUsesSize: true)`, and always set your own `size` inside the incoming constraints** with `constraints.constrain(...)` or its relatives ([LAYOUT.md](LAYOUT.md#measuring-children)).
+4. **Forward every non-child field in `updateRenderObject`,** and read inherited values such as `Directionality.of(context)` in the widget and push them down; render objects never see `BuildContext` ([renderobjects](https://renderobjects.com/guides/children/single-child/), [renderobjects](https://renderobjects.com/guides/layout/)).
+5. **What you report without laying out must match your real layout,** and children are asked through the public getters: `getDryLayout`, `getDryBaseline`, `getDistanceToActualBaseline`, `getMinIntrinsicWidth` and the rest, never `compute*` on a child and never `child.layout` inside them (https://api.flutter.dev/flutter/rendering/RenderBox/computeDryLayout.html, [LAYOUT.md](LAYOUT.md#dry-layout)).
+6. **Parent data: guard `setupParentData` with `is!`, extend `ContainerBoxParentData<RenderBox>` with the container mixins (`BoxParentData` without them), and have `applyParentData` mark the parent only when a value changed** (https://api.flutter.dev/flutter/rendering/ContainerRenderObjectMixin-mixin.html, [PARENT-DATA.md](PARENT-DATA.md)).
+7. **Mutate a child list during layout only inside `invokeLayoutCallback`, with the building inside `BuildOwner.buildScope`;** use `RenderObjectWithLayoutCallbackMixin` for a builder that runs from layout (https://api.flutter.dev/flutter/widgets/RenderObjectElement-class.html, https://api.flutter.dev/flutter/rendering/RenderObjectWithLayoutCallbackMixin-mixin.html).
+8. **Where renderobjects.com and api.flutter.dev disagree, follow api.flutter.dev.** Each file marks the disagreements; the site's snippets are not runnable as a whole (helpers are elided).
+
+## Prove it
+
+`flutter analyze` is clean (no mixin type-bound errors, no `BoxParentData.nextSibling`, no shadowed `IndexedWidgetBuilder`); every setter has the equality early return and the matching `markNeeds*` call; a widget test changes each widget field and sees the render object update; the widget inside `IntrinsicHeight` and inside a baseline-aligned `Row` throws no dry-layout assertion; a reorderable child list keeps child state across a reorder, and a custom element keeps a `GlobalKey` child's state when it moves in and out; and every file's own Prove it checks pass for the parts you touched.

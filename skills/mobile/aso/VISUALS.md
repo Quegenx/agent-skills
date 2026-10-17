@@ -1,6 +1,6 @@
 # Visuals: icon, screenshots and preview videos
 
-Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
+Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
 
 **Contents:** [Rules for every asset](#rules-for-every-asset) · [App icon](#app-icon) · [Screenshot specs](#screenshot-specs-app-store) · [Screenshot strategy](#screenshot-strategy-eronred) · [App preview specs](#app-preview-specs-app-store) · [Preview strategy](#preview-strategy-eronred) · [Product page header and search assets](#product-page-header-and-search-assets-fall-2026) · [Prove it](#prove-it)
 
@@ -14,8 +14,8 @@ Visuals turn a search impression into an install. The icon is the first thing se
 
 ## App icon
 
-- **Why it matters** [eronred]: it's the first thing seen in search and "can lift TTR by 20 to 40% with no other changes".
-- **Design** [eronred]: icons render at 60×60 pt in iPhone search; at most 2 elements; no text ("Apple discourages it"); a strong silhouette; test at 60×60 px; high contrast in light and dark mode (avoid white and very dark icons). Look at the top 20 competitors' icons, then be distinguishable; check that someone can describe it in 3 words. Category conventions to break: Productivity is blue and clean (stand out with warmer colors); Meditation is purple and blue (use an unexpected contrast color).
+- **Why it matters** [eronred]: it's the first thing seen in search and "can lift TTR by 20 to 40% with no other changes". [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/) [ApparenceKit](https://apparencekit.dev/flutter-tips/ab-test-apple-app-icons/): "your app icon can double your conversion rate"; "I have seen icon changes alone increase conversion by 30-100%"; for a developer-made icon it is "probably your single highest-ROI optimization".
+- **Design** [eronred]: icons render at 60×60 pt in iPhone search; at most 2 elements; no text ("Apple discourages it"); a strong silhouette; test at 60×60 px; high contrast in light and dark mode (avoid white and very dark icons). Look at the top 20 competitors' icons, then be distinguishable; check that someone can describe it in 3 words. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): simple, distinctive, relevant, high contrast, no text, "recognizable at 29x29 pixels" (a smaller test size than [eronred]'s 60×60). Category conventions to break: Productivity is blue and clean (stand out with warmer colors); Meditation is purple and blue (use an unexpected contrast color).
 - **Sizes** [eronred]: App Store master 1024×1024 px, a single PNG with no transparency and no rounded corners (Apple applies the mask); home screen 60×60 pt @1x/@2x/@3x; iPad 76×76 pt @1x/@2x; Watch 40×40 pt to 44×44 pt; Android adaptive icon 108×108 dp with a 66×66 dp safe zone. The Play listing icon is 512 x 512 px (see [ANDROID.md](ANDROID.md)).
 - **Audit** [eronred]: clarity at 60×60, color contrast, category differentiation, simplicity, brand alignment, each 1 to 10, out of 50.
 - **Designer brief** [eronred]: 3 concepts at 1024×1024 px, each mocked at 60×60 px in a search-results context; final PNG, no alpha, no rounded corners.
@@ -42,12 +42,12 @@ Visuals turn a search impression into an install. The icon is the first thing se
 | Apple TV / Vision Pro | 1920 x 1080, 3840 x 2160 / 3840 x 2160 |
 | Apple Watch (one size across all localizations) | e.g. 422 x 514 (Ultra 4, Ultra 3), 416 x 496 (Series 12, 11, 10), 396 x 484 (Series 9, 8, 7) |
 
-- **Apple's advice:** up to 10 screenshots; the first one to three appear in search results when there's no preview; consider at least one Dark Mode screenshot; localize screenshots per market.
+- **Apple's advice:** up to 10 screenshots; the first one to three appear in search results when there's no preview; consider at least one Dark Mode screenshot; localize screenshots per market. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Apple gives you 10. Use at least 6"; avoid "Dark screenshots that look the same at thumbnail size", stock-photo backgrounds and too much text; design for small size with large text and high contrast.
 - Resizing and the automated capture pipeline are in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
 
 ## Screenshot strategy [eronred]
 
-- **The first three decide:** users spend 3 to 6 seconds on a product page, and the first 3 screenshots (visible without scrolling) "determine 80% of the conversion decision".
+- **The first three decide:** users spend 3 to 6 seconds on a product page, and the first 3 screenshots (visible without scrolling) "determine 80% of the conversion decision". [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Most users decide in under 2 seconds whether to download based on the first 2-3 screenshots", and the first 3 "are the only ones visible in search results and category listings".
 - **Slot plan:**
 
 | Slot | Content |
@@ -61,7 +61,7 @@ Visuals turn a search impression into an install. The icon is the first thing se
 - **Overlays:** benefit headlines of 4 to 6 words, at least 60 px font, high contrast, consistent fonts. Not feature names ("Push Notifications"), paragraphs or busy backgrounds.
 - **Visual:** real content (no lorem ipsum), modern device frames or frameless, dark mode if the app supports it. Portrait for most apps; landscape for games, video and productivity.
 - **Localize:** translate overlays, consider right-to-left layouts for Arabic and Hebrew, show local currency on pricing screenshots.
-- **Deliverable:** per slot `Slot [N]: [Headline] / Caption / Screen / Layout / Key element`, a design brief, and an audit table of competitors' screenshots.
+- **Deliverable:** per slot `Slot [N]: [Headline] / Caption / Screen / Layout / Key element`, a design brief, and an audit table of competitors' screenshots ("Look at the top 10 apps in your category. Note what their first screenshot shows" [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/)).
 - **Counts across stores:** up to 10 per language on iOS; 2 to 8 on Play (Google: at least two to publish, up to 8 per device type).
 
 ## App preview specs (App Store)
@@ -97,6 +97,7 @@ Visuals turn a search impression into an install. The icon is the first thing se
 - **Checklist:** right resolution; no download CTA, store badge or app-icon overlay; no marketing intro card; audio with captions, or no audio; poster frame not mid-typing; checked both in the search result card and on the product page; top 3 markets localized.
 - **Rejections and fixes:** real people or hands: strip them; logo or intro card: cut the first 1 to 2 s; "Download" CTA: replace with the outcome state; footage doesn't match the current version: re-record after a major UI change; narration without captions: burn in captions or remove the audio.
 - **Localization tiers:** Tier 1 (English, Japanese, German, French, Spanish, Chinese) localize overlays and re-record with localized in-app strings; Tier 2 overlays only; Tier 3 skip. "A localized video typically lifts conversion 8 to 15% in that market vs the default English video."
+- **Capturing Android footage:** `adb shell screenrecord` and the show-touches setting are in [../google-play/LISTING-AND-METADATA.md](../google-play/LISTING-AND-METADATA.md#screenshots-capture-and-upload).
 - **Testing:** through Product Page Optimization ([PRODUCT-PAGES.md](PRODUCT-PAGES.md)); primary metric product page conversion rate, secondary video play-through rate.
 
 ## Product page header and search assets (fall 2026)

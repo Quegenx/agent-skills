@@ -12,6 +12,7 @@ Effective Dart's Usage guide (how to use language features in statements and exp
 - **DON'T import libraries inside the `src` directory of another package** (lint `implementation_imports`). Code under `lib/src` is private implementation; a minor release may break you.
 - **DON'T allow an import path to reach into or out of `lib`** (lint `avoid_relative_lib_imports`). Don't use `/lib/` in import paths and don't use `../` to escape `lib`. `import 'package:my_package/api.dart';` and `import '../lib/api.dart';` are treated as two unrelated libraries. From `test/`, use `package:` imports.
 - **PREFER relative import paths when not crossing `lib`** (lint `prefer_relative_imports`): `lib/api.dart` imports `'src/stuff.dart'`; `lib/src/utils.dart` imports `'../api.dart'`; `test/api_test.dart` imports `'package:my_package/api.dart'` plus `'test_utils.dart'`.
+- **Where sources differ, package imports everywhere:** [ApparenceKit](https://apparencekit.dev/blog/flutter-cursor-ai-setup/) tells its coding agents "always use package import even for our project files" and to "Comply to the always_use_package_imports rule", claiming "Dart and Flutter team pushes for package import". Effective Dart (above) says PREFER relative paths inside `lib`. The lint page for `always_use_package_imports` ("Avoid relative imports for files in `lib/`") lists `prefer_relative_imports` as incompatible (https://dart.dev/tools/linter-rules/always_use_package_imports), so a project picks one. Either is a project choice; the Dart team's written guidance is Effective Dart's. ApparenceKit puts its choice in the agent rules file because "Without this agent will create relative imports."
 
 ## Null
 
@@ -29,7 +30,7 @@ Effective Dart's Usage guide (how to use language features in statements and exp
 
 ## Collections
 
-Dart supports lists, maps, queues and sets.
+Dart supports lists, maps, queues and sets. The APIs themselves (map kinds, copying, JSON encoding) are in [CORE-LIBRARIES.md](CORE-LIBRARIES.md).
 
 - **DO use collection literals when possible** (lint `prefer_collection_literals`): `<Point>[]`, `<String, Address>{}`, `<int>{}`, not `Map<String, Address>()` or `Set<int>()`. Named constructors (`List.from()`, `Map.fromIterable()`) still have uses; the unnamed `List` constructor is prohibited in null-safe Dart. Use spread `...`, `...?`, and collection `if` and `for`:
   ```dart
@@ -86,6 +87,7 @@ Dart supports lists, maps, queues and sets.
   ```
 - **DON'T use `new` in invocations** (lint `unnecessary_new`). It is optional, and its meaning is unclear because a factory constructor may not return a new object; consider it deprecated.
 - **DON'T use `const` redundantly** (lint `unnecessary_const`). `const` is implicit inside a const collection literal, a const constructor call, a metadata annotation, the initializer of a const variable and a switch case expression. Default values are not in this list (a future Dart may allow non-const defaults). Anywhere writing `new` instead of `const` would be an error, you may omit `const`.
+- **Keep generative constructors to assignment; put setup in a factory** ([ApparenceKit](https://apparencekit.dev/flutter-tips/dumb-constructor-smarter-factory-flutter/)). A constructor only takes the data it is given and assigns it to fields: no calculations, no fetching, no other logic. Work needed before the object can exist (the article's example is reading device info) goes in a `factory` constructor, which does that work and then returns an instance, "often using a standard constructor *after* the data is ready". A factory "doesn't necessarily create a *new* instance every time". The article's code is an image only.
 - **CONSIDER making your constructor `const` if the class supports it** (all fields final, the constructor only initializes them). That lets users create instances inside larger constants, switch cases and default parameter values. A `const` constructor is a public-API commitment: changing it to non-const breaks users. In practice it is most useful for simple, immutable value-like types.
 
 ## Error handling
@@ -142,6 +144,31 @@ Identifier casing is in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md#identifiers).
 - **PREFER naming a method `to___()` if it copies the object's state to a new object** (lint `use_to_and_as_if_applicable`): `list.toSet()`, `stackTrace.toString()`, `dateTime.toLocal()`.
 - **PREFER naming a method `as___()` if it returns a different representation backed by the original object** (a view): `table.asMap()`, `bytes.asFloat32List()`, `subscription.asFuture()`.
 - **AVOID describing the parameters in the name:** `list.add(element)`, not `addElement`, except to disambiguate (`containsKey`, `containsValue`).
+- **Name a class after what it is, not what it does** ([ApparenceKit](https://apparencekit.dev/flutter-tips/name-your-class-properly/)). `EmailValidator` covers one job; once formatting or parsing arrives, the name is wrong. Name the thing (`Email`) and make the jobs its methods (`validate()`, `format()`, `parse()`):
+
+  ```dart
+  class EmailValidator {
+    EmailValidator();
+
+    void validate(String email) {
+      // code to check if email is valid
+      // ... throws an error if not valid
+    }
+  }
+  ```
+
+  ```dart
+  class Email {
+    final String _value;
+
+    Email(String email) : _value = email.trim(); // Represents an email
+
+    void validate() {
+      // code to check if *this* email is valid
+      // ... throws an error if not valid
+    }
+  }
+  ```
 - **DO follow mnemonic conventions for type parameters:** `E` for element (`List<E>`), `K` and `V` for key and value (`Map<K, V>`), `R` for return type (visitors, `ExpressionVisitor<R>`), otherwise `T`, `S`, `U` (`Future<S> then<S>(...)` uses `S` to avoid shadowing `T`). Otherwise use another mnemonic or a descriptive name: `Graph<N, E>` or `Graph<Node, Edge>`.
 
 ## Library privacy
@@ -172,6 +199,27 @@ Class modifier semantics are in [LANGUAGE.md](LANGUAGE.md).
 - **AVOID using runtime type tests to fake overloading.** Dart has no overloading; prefer separate method names unless callers have unknown types.
 - **AVOID public `late final` fields without initializers.** They define a public setter. Alternatives: don't use `late`; use a factory constructor; initialize at the declaration; or use a private `late` field with a public getter.
 - **AVOID returning `this` just to enable a fluent interface** (lint `avoid_returning_this`). Use cascades: `StringBuffer()..write('one')..write('two')`.
+- **Overload an operator when it has a clear meaning for the type** ([ApparenceKit](https://apparencekit.dev/flutter-tips/overloading-operators-dart-flutter-readability/)), for example mathematical concepts: `v1 + v2` instead of `Vector(vector1.x + vector2.x, vector1.y + vector2.y)`. "You can overload many other operators in Dart."
+
+  ```dart
+  class Vector {
+    final int x, y;
+    Vector(this.x, this.y);
+
+    // Define what '+' does for Vector objects
+    Vector operator +(Vector other) => Vector(x + other.x, y + other.y);
+  }
+
+  void main() {
+    final v1 = Vector(1, 2);
+    final v2 = Vector(3, 4);
+
+    // Now we can use '+' directly
+    final result = v1 + v2;
+
+    print('${result.x}, ${result.y}'); // Output: 4, 6
+  }
+  ```
 
 ## Types
 
@@ -191,7 +239,7 @@ Terminology: a declaration is type annotated, inferred, or `dynamic`. In short: 
 - **PREFER signatures in function type annotations:** `bool Function(String) test`, not a bare `Function`. Exception: a union of function arities, where you take `Function` and check `is Function(Object)` or `is Function(Object, StackTrace)`.
 - **DON'T specify a return type for a setter** (lint `avoid_return_types_on_setters`); the same goes for `operator []=`.
 - **DON'T use the legacy typedef syntax** (lint `prefer_generic_function_type_aliases`): `typedef Comparison<T> = int Function(T, T);`, not `typedef int Comparison<T>(T a, T b);`. In `typedef bool TestNumber(num);`, `num` is the parameter name and its type is `dynamic`. The old syntax is deprecated but supported.
-- **PREFER inline function types over typedefs** (lint `avoid_private_typedef_functions`): `final bool Function(Event) _predicate;`. A typedef may still be worthwhile if the type is long or used often.
+- **PREFER inline function types over typedefs** (lint `avoid_private_typedef_functions`): `final bool Function(Event) _predicate;`. A typedef may still be worthwhile if the type is long or used often. [ApparenceKit](https://apparencekit.dev/flutter-tips/dart-typedef-alias-types/)'s examples: a callback type `typedef OnClickEvent = void Function(int index);` for a widget's `final OnClickEvent onClick;`, a non-function alias `typedef ComplexMap = Map<String, Map<String, num>>;` used as `final ComplexMap myMap = {};`, and a generic one, `typedef ComplexMap<T> = Map<String, Map<String, T>>;`. The article's widget still uses `const MyButton({Key? key, required this.onClick}) : super(key: key);`; write `{super.key, required this.onClick}` (lint `use_super_parameters`).
 - **PREFER function type syntax for parameters** (lint `use_function_type_syntax_for_parameters`): `Iterable<T> where(bool Function(T) predicate)`, not `bool predicate(T element)`.
 - **AVOID using `dynamic` unless you want to disable static checking.** `dynamic` permits every member access at compile time, which may throw at runtime. Otherwise use `Object?` (all objects) or `Object` (all but null) with `is` checks. Exception: existing APIs such as JSON's `Map<String, dynamic>`; cast to precise types before accessing.
 
@@ -212,6 +260,27 @@ Optional parameters are either positional or named, not both.
 - **DO make `==` reflexive, symmetric and transitive.**
 - **AVOID defining custom equality for mutable classes** (lint `avoid_equals_and_hash_code_on_mutable_classes`).
 - **DON'T make the parameter to `==` nullable** (lint `avoid_null_checks_in_equality_operators`): `bool operator ==(Object other) => other is Person && name == other.name;`. `==` is only called when the right side is not null.
+- **A full override** with an `identical` fast path and a `runtimeType` check ([ApparenceKit](https://apparencekit.dev/flutter-tips/compare-dart-object-equals-hashcode/)); with several fields, "combine the hash codes of the relevant properties" ([ApparenceKit](https://apparencekit.dev/flutter-tips/object-equality-in-dart-flutter/)):
+
+  ```dart
+  class Person {
+    const Person(this.name);
+
+    final String name;
+
+    @override
+    bool operator ==(Object other) =>
+        identical(this, other) ||
+        other is Person &&
+        runtimeType == other.runtimeType &&
+        name == other.name;
+
+    @override
+    int get hashCode => name.hashCode;
+  }
+  ```
+- **Or generate it:** extend `Equatable` from `package:equatable` and override the `props` getter with the fields that count; Equatable then provides `==` and `hashCode` ([ApparenceKit](https://apparencekit.dev/flutter-tips/object-equality-in-dart-flutter/), no version stated). IntelliJ and Android Studio can also generate `==` and `hashCode` from the fields you select, and `package:freezed` generates them too ([ApparenceKit](https://apparencekit.dev/flutter-tips/compare-dart-object-equals-hashcode/); freezed is in [../flutter/ARCHITECTURE.md](../flutter/ARCHITECTURE.md)).
+- **Why models need it in Flutter:** value equality "ensures that your UI updates correctly when an object's data changes, even if the object itself is a new instance", and it matters when comparing lists, filtering and using objects as map keys ([ApparenceKit](https://apparencekit.dev/flutter-tips/object-equality-in-dart-flutter/)). This is about model classes; never override `operator ==` on `Widget` objects ([../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md)).
 
 ## Prove it
 

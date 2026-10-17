@@ -1,6 +1,6 @@
 # Meta Ads
 
-Meta app ads buy installs and in-app events across Facebook, Instagram, Messenger and Audience Network. The app must be registered and linked to the ad account, the optimization event (Purchase or Subscribe) must reach Meta from the SDK, the Conversions API or a mobile measurement partner (MMP), and the campaign must use the app promotion objective with an app destination; without registration or linking, Meta optimizes for link clicks. Bullets tagged [appeeky] come from third-party UA skills built on the Appeeky MCP and REST API (a paid service that needs an Appeeky API key); untagged facts come from Meta's own docs. Where the two disagree, both are stated. Creatives and their upload to Meta live in [AD-CREATIVES.md](AD-CREATIVES.md); cross-channel spend and payback in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); MMPs, SKAdNetwork and AdAttributionKit in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); Apple's own ads in [APPLE-ADS.md](APPLE-ADS.md).
+Meta app ads buy installs and in-app events across Facebook, Instagram, Messenger and Audience Network. The app must be registered and linked to the ad account, the optimization event (Purchase or Subscribe) must reach Meta from the SDK, the Conversions API or a mobile measurement partner (MMP), and the campaign must use the app promotion objective with an app destination; without registration or linking, Meta optimizes for link clicks. Bullets tagged [appeeky] come from third-party UA skills built on the Appeeky MCP and REST API (a paid service that needs an Appeeky API key); bullets tagged [ApparenceKit] come from a Flutter starter-kit author who publishes his own fork of the Flutter Facebook plugin; untagged facts come from Meta's own docs. Where the two disagree, both are stated. Creatives and their upload to Meta live in [AD-CREATIVES.md](AD-CREATIVES.md); cross-channel spend and payback in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); MMPs, SKAdNetwork and AdAttributionKit in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); Apple's own ads in [APPLE-ADS.md](APPLE-ADS.md).
 
 **Contents:** [Prerequisites](#prerequisites) · [Objectives](#objectives) · [Campaign setup](#campaign-setup) · [Advantage+ app campaigns](#advantage-app-campaigns) · [Audiences and placements](#audiences-and-placements) · [Measurement: SDK, Conversions API, MMP](#measurement-sdk-conversions-api-mmp) · [iOS 14+: SKAdNetwork and AEM](#ios-14-skadnetwork-and-aem) · [Audits](#audits) · [Budget optimization](#budget-optimization) · [Appeeky MCP tools](#appeeky-mcp-tools) · [Prove it](#prove-it)
 
@@ -8,7 +8,7 @@ Meta app ads buy installs and in-app events across Facebook, Instagram, Messenge
 
 - **Register and link the app.** Register the app on Meta for Developers, link the ad account to it (App Dashboard > App settings > Advanced) and integrate the Facebook SDK with App Events to optimize for installs, events or value. Without registration or linking, ads "automatically optimize for link clicks ... instead of app installs". A Facebook Page is a prerequisite to advertise.
 - **Events before optimization.** On first app setup you can only optimize for `LINK_CLICK`; add events (codeless setup in Events Manager, or manual code) to optimize for installs, purchases, or D2/D7 retention. Measurement requires a promoted object containing the app ID.
-- **SDK versus MMP.** Meta: "We recommend that all advertisers use Facebook's SDK to measure mobile installs"; MMPs are supported, and Meta's older best-practice page (updated Feb 27, 2024) also recommends working with an MMP. [appeeky] requires the MMP live before spend ("App → MMP (AppsFlyer/Adjust/Singular) → Meta partner integration"), or "optimization degrades to installs or link clicks", and treats the MMP as the source of truth for revenue events. See [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md).
+- **SDK versus MMP.** Meta: "We recommend that all advertisers use Facebook's SDK to measure mobile installs"; MMPs are supported, and Meta's older best-practice page (updated Feb 27, 2024) also recommends working with an MMP. [appeeky] requires the MMP live before spend ("App → MMP (AppsFlyer/Adjust/Singular) → Meta partner integration"), or "optimization degrades to installs or link clicks", and treats the MMP as the source of truth for revenue events. [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/) disagrees: "if Meta is your primary ad channel, you don't need one"; the Facebook SDK plus the Conversions API gives AEM tracking, deduplication, advanced matching and data control, and MMPs make sense with "5+ ad networks simultaneously". It puts Adjust, AppsFlyer and Branch at "$500 to $2,000+ per month after 10k monthly active users" and calls them "really hard to set up correctly". See [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md).
 - **Start from the app's ads context.** Know target CPA, LTV, geo, monthly budget and cap, and the angles that already win before touching a campaign; compare results to those targets, not to generic benchmarks. [appeeky]
 - **Setup gate.** Purchase or Subscribe firing in Meta Events Manager in the last 7 days; Meta OAuth connected (`meta_ads_credentials_status`), then `meta_ads_list_advertisable_applications` and `meta_ads_list_pages`; at least 3 creatives. [appeeky]
 - **Never auto-activate.** Create every entity `PAUSED`; activate only on the user's explicit approval and with MMP events verified. [appeeky]
@@ -154,6 +154,150 @@ meta_ads_create_adset
 - **ATT flag:** "Starting with iOS 14.5, you will need to set `isAdvertiserTrackingEnabled`": `Settings.shared.isAdvertiserTrackingEnabled = true` if the device consents, `false` otherwise.
 - **SKAN campaigns:** configure event priority (conversion value). Meta Business SDK v8.0+ is required for iOS 14+ campaigns, and 16.2.1+ for SKAN 4.0; update MMP SDKs too.
 
+### Facebook SDK in Flutter
+
+All [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/) unless marked. Why iOS matters: iOS users spend 2 to 3 times more than Android users on in-app purchases and subscriptions; the problem: "On average, only 20-30% of iOS users opt in" to tracking (compare [eronred]'s "about a 25% opt-in rate" in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#the-ios-attribution-stack)).
+
+- **Pick the package.** `flutter_facebook_app_events` "works well for basic event tracking. But it does not support AEM." The author forked it as `facebook_flutter_sdk` (https://pub.dev/packages/facebook_flutter_sdk) with AEM built in; "The API is compatible. Switching is a one-line change in your pubspec." Use the original if you don't run Meta ads or need AEM. The fork is the article author's own package and the article states no version: check its pub.dev page for maintenance before adopting it.
+- **Install** and take the **App ID** (Meta for Developers > Settings > Basic) and the **Client Token** (Settings > Advanced):
+
+```bash
+flutter pub add facebook_flutter_sdk
+```
+
+- **Android:** `android/app/src/main/res/values/strings.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">YOUR_APP_ID</string>
+    <string name="facebook_client_token">YOUR_CLIENT_TOKEN</string>
+</resources>
+```
+
+  and in `AndroidManifest.xml`, inside `<application>`:
+
+```xml
+<meta-data
+    android:name="com.facebook.sdk.ApplicationId"
+    android:value="@string/facebook_app_id" />
+<meta-data
+    android:name="com.facebook.sdk.ClientToken"
+    android:value="@string/facebook_client_token" />
+```
+
+- **iOS:** `ios/Runner/Info.plist`; the `fb` prefix on the URL scheme "is required by the Facebook SDK":
+
+```xml
+<key>FacebookAppID</key>
+<string>YOUR_APP_ID</string>
+<key>FacebookClientToken</key>
+<string>YOUR_CLIENT_TOKEN</string>
+<key>FacebookDisplayName</key>
+<string>Your App Name</string>
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>fbYOUR_APP_ID</string>
+    </array>
+  </dict>
+</array>
+```
+
+- **ATT through `permission_handler`,** which "supports ATT out of the box", then tell the SDK the answer (the plugin documents `setAdvertiserTracking` as "Sets advertiser tracking / advertiser ID collection flags", https://pub.dev/documentation/facebook_flutter_sdk/latest/facebook_flutter_sdk/FacebookAppEvents/setAdvertiserTracking.html):
+
+```bash
+flutter pub add permission_handler
+```
+
+```xml
+<key>NSUserTrackingUsageDescription</key>
+<string>This identifier will be used to deliver personalized ads to you.</string>
+```
+
+```dart
+import 'package:permission_handler/permission_handler.dart';
+import 'package:facebook_flutter_sdk/facebook_flutter_sdk.dart';
+
+Future<void> requestTracking() async {
+  final status = await Permission.appTrackingTransparency.request();
+  final facebookAppEvents = FacebookAppEvents();
+
+  // Tell Facebook SDK whether the user opted in
+  await facebookAppEvents.setAdvertiserTracking(
+    enabled: status.isGranted,
+  );
+}
+```
+
+- **When to ask:** the article says early, "typically after onboarding", and not too late: "If you request ATT after the user has already triggered events, those early events are sent without tracking authorization. Request it during onboarding, before any purchase flow." [eronred] says after a value moment and never on first open; both are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#app-tracking-transparency-att). Apple's rules apply either way: ask only while the app is active, and gate nothing on the answer.
+- **Events.** Create the client once (`final facebookAppEvents = FacebookAppEvents();`), then log custom events, purchases ("the most important event for ad optimization") with an `eventId` for deduplication, and add-to-cart:
+
+```dart
+await facebookAppEvents.logEvent(
+  name: 'level_completed',
+  parameters: {
+    'level': '5',
+    'score': '1200',
+  },
+);
+```
+
+```dart
+await facebookAppEvents.logPurchase(
+  amount: 9.99,
+  currency: 'USD',
+  eventId: transactionId, // unique ID for deduplication
+);
+```
+
+```dart
+await facebookAppEvents.logAddToCart(
+  id: 'premium_yearly',
+  type: 'product',
+  price: 49.99,
+  currency: 'USD',
+);
+```
+
+- **Advanced matching** "improves attribution accuracy by letting Meta match events to users across devices"; Meta "also accepts pre-hashed values":
+
+```dart
+await facebookAppEvents.setUserData(
+  email: user.email,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  country: user.country,
+);
+```
+
+  The article puts no ATT condition on this, and that is wrong for iOS: asked whether an app without ATT permission can use "a hashed email address or hashed phone number" to track a user, Apple answers "No. You will need to receive the user's permission through the App Tracking Transparency framework to track that user" (https://developer.apple.com/app-store/user-privacy-and-data-use/; see also [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#app-tracking-transparency-att)). Call `setUserData` on iOS only when the ATT status is authorized; hashing does not change that.
+- **After a RevenueCat purchase,** log it with `transactionIdentifier` as the `eventId`. The article's block, verbatim (its leading `...` and the helper `logMetaPurchase` are not defined in it):
+
+```dart
+...
+final facebookAppEvents = FacebookAppEvents();
+
+final purchaseParams = PurchaseParams.package(package);
+final res = await Purchases.purchase(purchaseParams);
+if (res.purchaserInfo.entitlements.all.isNotEmpty) {
+  final transactionId = res.storeTransaction.transactionIdentifier;
+
+  await logMetaPurchase(transactionId, package.storeProduct.price, package.storeProduct.currencyCode);
+}
+```
+
+  It does not compile against purchases_flutter 9.0.0+: `PurchaseResult` has `customerInfo` and `storeTransaction`, no `purchaserInfo` (https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/purchase_result.dart, and [../../backend/revenuecat/FLUTTER.md](../../backend/revenuecat/FLUTTER.md#purchase-flow)). `entitlements.all.isNotEmpty` is also true for an expired entitlement; RevenueCat gates on `isActive`. The check from RevenueCat's docs (https://www.revenuecat.com/docs/getting-started/making-purchases), where `result` is the `PurchaseResult` (the article's `res`; it states no SDK version):
+
+```dart
+if (result.customerInfo.entitlements.all["my_entitlement_identifier"]?.isActive ?? false) {
+```
+
+- **Client plus server, one event.** The app sends the event through the SDK with an `eventId`; the backend sends the same event through the Conversions API with the same id; Meta keeps one. With RevenueCat, forward its purchase webhooks to the Conversions API with the same transaction ID ([../../backend/revenuecat/BACKEND-AND-WEBHOOKS.md](../../backend/revenuecat/BACKEND-AND-WEBHOOKS.md)). Reason: "Some events get lost due to network issues, app crashes, or ad blockers." Without `eventId`, "You either miss events or double-count them."
+- **Events Manager error "Volume of Advertiser Tracking Enabled parameter out of range".** The article says it appears "when plugin is not properly implementing AEM protocol", and that with it "you can't start a campaign to optimize for purchases. You can only optimize for install or user SKAdNetwork events." Its fix is to switch to the author's own `facebook_flutter_sdk`.
+
 ### Conversions API for app events
 
 - **Dataset.** App events sent via the Conversions API must be associated with a dataset linked to the app (one application per dataset). Check with `GET https://graph.facebook.com/v16.0/{ads-pixel-id}/is_consolidated_container`.
@@ -172,7 +316,7 @@ Framework-level SKAN and AdAttributionKit rules are in [ANALYTICS-AND-ATTRIBUTIO
 - **Promotion rules.** The promoted app must be an iTunes app; promoted object required; the ad account must have permission to advertise the app; you can't promote an app already promoted in another ad account; you can't edit the promoted object or the SKAN flag once live.
 - **Unavailable or restricted.** `buying_type` auction only; `TARGET_COST` unavailable (CBO and ad sets); deferred deep linking not available for new iOS 14+ SKAN campaigns; `user_os` must specify at least iOS 14; `billing_event` and `optimization_goal` can't both be `APP_INSTALLS`.
 - **Insights.** Non-inline conversion metrics can't be aggregated across iOS 14 and non-iOS 14 campaigns.
-- **Aggregated Event Measurement (iOS 14.5+)** limits apps and domains to 8 conversion events. If SKAN can't be used, use AEM (no SKAN reporting).
+- **Aggregated Event Measurement (iOS 14.5+)** limits apps and domains to 8 conversion events. If SKAN can't be used, use AEM (no SKAN reporting). [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/) adds that "only the highest-priority event per user gets reported", opted-out data is delayed 24 to 72 hours and filled by Meta's modeling, AEM works alongside SKAdNetwork postbacks, and it "does not magically bypass ATT. It does not send individual conversion data for users who opted out." Its delay figures for opted-in purchases: 24 to 48 hours without AEM, "only 30 mn to 24 hours delay" with it; without AEM you rely on SKAdNetwork, "which only reports app installs and a few post-install events with heavy limitations".
 - **SKAN configuration in Events Manager:** Use recommendations (Facebook SDK, Conversions API or App Events API), Import from a partner app (the MMP's schema, refreshed hourly), or Customise. Requirements: ad account access to the business portfolio permitted to advertise the app; the app active in Events Manager with events received in the past 90 days; Facebook SDK 16.2.1+ for SKAN 4.0.
 - **SKAN schema limits.** Fine values: up to 63 individual or bundled events. Coarse values: up to 3 per postback window (high, medium, low), with an option to apply the same setup to all three windows. "Maximise value of conversions" (purchase only) uses at least four event slots. Events without conversion values become inactive for reporting.
 - **Switching SKAN 4.0 on or off** may take at least 24 hours; frequent switching may affect performance.
@@ -298,7 +442,7 @@ meta_ads_insights
 - Events Manager shows the app, linked to the ad account, with Purchase or Subscribe received in the last 7 days; without that, ads are optimizing for link clicks.
 - The ad set has `destination_type: "APP"`, `optimization_goal: "OFFSITE_CONVERSIONS"` and a `promoted_object` whose `application_id`, `object_store_url` and `custom_event_type` (`PURCHASE` or `SUBSCRIBE`) are all set.
 - Every entity was created `PAUSED` and moved to `ACTIVE` only after the user approved.
-- On iOS 14.5+, the SDK sets `isAdvertiserTrackingEnabled` from the ATT result, the SKAN schema is configured in Events Manager, and no more than 9 campaigns and 5 ad sets exist per App ID.
+- On iOS 14.5+, the SDK sets `isAdvertiserTrackingEnabled` (Flutter: `setAdvertiserTracking`) from the ATT result, `setUserData` runs on iOS only after ATT is authorized, purchase events carry an `eventId` shared with the Conversions API, the SKAN schema is configured in Events Manager, and no more than 9 campaigns and 5 ad sets exist per App ID.
 - Conversions API payloads carry `action_source: "app"`, `event_id`, `advertiser_tracking_enabled` and a 16-value `extinfo`, and pass in the Test Events tool.
 - No ad was deleted, no ad set budget moved more than 20% in a day while under 50 conversions, and no kill happened in the first 24 hours (48 on iOS) without spend > 2× target CPA and zero conversions.
 - Advantage+ app campaign API code does not use `smart_promotion_type=SMART_APP_PROMOTION` on Marketing API v25.0+.

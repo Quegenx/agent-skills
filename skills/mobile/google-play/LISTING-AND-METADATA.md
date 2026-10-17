@@ -76,6 +76,28 @@ fastlane/metadata/android/<locale>/{title.txt, short_description.txt, full_descr
 ## Screenshots: capture and upload
 
 - **Capture is not gplay-specific:** `adb shell screencap` then `adb pull`, or Espresso / UI Automator, switching the emulator locale with `setprop persist.sys.locale`.
+- **Screen recording for a preview video or a bug repro** [ApparenceKit](https://apparencekit.dev/flutter-tips/android-adb-cheat-sheet/): record with the command below, and turn the touch indicator on and off. The article's show-touches commands end their lines with a backslash followed by a space, which breaks shell line continuation; here they are with the trailing spaces removed:
+
+```bash
+adb shell screenrecord /sdcard/demo.mp4
+```
+
+  Fix: the article writes `screenrecord -p /sdcard/video.mp4`; `screenrecord` has no `-p` option (its options are `--help`, `--size`, `--bit-rate`, `--time-limit`, `--rotate`, `--verbose`). The command above is the official one; stop with Control+C, or it stops at three minutes, and audio is not recorded (https://developer.android.com/tools/adb#screenrecord).
+
+```bash
+adb shell content insert \
+--uri content://settings/system \
+--bind name:s:show_touches \
+--bind value:i:1
+```
+
+```bash
+adb shell content insert \
+--uri content://settings/system \
+--bind name:s:show_touches \
+--bind value:i:0
+```
+
 - **Order by filename:** screenshots upload in filename order, so prefix `1_`, `2_`.
 - **Validate:** `gplay validate screenshots --dir ./metadata --output table` (add `--locale en-US`).
 - **Every image write goes through an edit:** create, then upload or import, then validate, then commit.

@@ -251,6 +251,17 @@ ChangeNotifierProvider(
 - **Empty is normal before any purchase.** CustomerInfo has no entitlements until a purchase is made or transactions are synced, even if entitlements exist in the dashboard.
 - **Cache timings.** The SDK refreshes after 5 minutes in the foreground, 25 hours in the background, and after a purchase or restore. Customer info and the App User ID persist between launches; an entitlement active when the user went offline stays active for up to three days. Force a refetch with `invalidateCustomerInfoCache()` (for example after a dashboard grant). Offline Entitlements grant access temporarily when RevenueCat is unreachable (not for one-time purchases, and not when your app completes transactions).
 - **Repeated auth error at launch** means a wrong API key or an SDK that was never configured.
+- **Will it renew?** [ApparenceKit](https://apparencekit.dev/flutter-tips/check-user-subscription-renewal-status/) reads `willRenew` to "reach out and maybe show them a special deal before they leave" (the messaging order is in [CONCEPTS.md](CONCEPTS.md#subscription-states-and-access)). Verbatim:
+
+```dart
+Future<bool> hasRenewal() async {
+  final customerInfo = await Purchases.getCustomerInfo();
+  final entitlements = customerInfo.entitlements.active.values.firstOrNull;
+  return entitlements?.willRenew ?? false; // Added null check for safety
+}
+```
+
+  `active.values.firstOrNull` reads whichever active entitlement comes first; with more than one entitlement, read the one that gates the feature: `customerInfo.entitlements.active['premium']?.willRenew ?? false`.
 
 ## Offerings and packages
 
@@ -266,6 +277,67 @@ Future<List<Package>> currentPackages() async {
 ```
 
 - **Package access.** `.availablePackages`, `.monthly` (and the other duration types), `.getPackage("<package_id>")`; the product is `package.storeProduct` (`StoreProduct`), price text `package.storeProduct.priceString`. An offering by identifier: `offerings.getOffering("experiment_group")`. Placements: `await Purchases.getCurrentOfferingForPlacement(placementIdentifier: "your-placement-identifier")`.
+- **Paywall helpers on a package** [ApparenceKit](https://apparencekit.dev/flutter-tips/revenuecat-flutter-boilerplate-tips/) (the article calls them extension methods; the `revenueCatPackage` and `revenueCatOffer` they read are not defined in it). The subscription period as a `Duration`, verbatim:
+
+```dart
+duration get duration => switch(revenueCatPackage.storeProduct.subscriptionPeriod) {
+  'P1W' => const Duration(days: 7),
+  'P1M' => const Duration(days: 30),
+  'P3M' => const Duration(days: 90),
+  'P6M' => const Duration(days: 180),
+  'P1Y' => const Duration(days: 365),
+  _ => Duration.zero,
+};
+```
+
+  It does not compile: the return type is the class `Duration` (https://api.dart.dev/dart-core/Duration-class.html), not `duration`. Corrected first line:
+
+```dart
+Duration get duration => switch(revenueCatPackage.storeProduct.subscriptionPeriod) {
+```
+
+  Months count as 30 days and years as 365; any other period (`P2M`, `P1D`) and one-time products (period `null`) give `Duration.zero`. For labels, build from value and unit instead ([CONCEPTS.md](CONCEPTS.md#products)).
+- **Free-trial days** from the introductory price, so trial text is computed, not hard-coded [ApparenceKit](https://apparencekit.dev/flutter-tips/revenuecat-flutter-boilerplate-tips/) (`IntroductoryPrice` has `price`, `periodUnit` and `periodNumberOfUnits`: https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/introductory_price.dart). Verbatim:
+
+```dart
+int? get trialDays {
+  final introductory = revenueCatPackage.storeProduct.introductoryPrice;
+  if (introductory == null) {
+    return null;
+  }
+  if (introductory.price == 0) {
+    final unit = introductory.periodUnit;
+    switch (unit) {
+      case PeriodUnit.day:
+        return introductory.periodNumberOfUnits;
+      case PeriodUnit.week:
+        return introductory.periodNumberOfUnits * 7;
+      case PeriodUnit.month:
+        return introductory.periodNumberOfUnits * 30;
+      case PeriodUnit.year:
+        return introductory.periodNumberOfUnits * 365;
+      default:
+        return null;
+    }
+  }
+  return null;
+}
+```
+
+- **Localized paywall features from Offering metadata** [ApparenceKit](https://apparencekit.dev/flutter-tips/revenuecat-flutter-boilerplate-tips/): store `{ "<languageCode>": { "features": ["...", "..."] } }` in the offering's metadata and read the current language's list. Verbatim, including the source's `featuersObj` spelling; `LocaleSettings.currentLocale` comes from the article's localization package, which it doesn't name, `data["features"]!` throws when a locale entry has no `features`, and `e!` throws on a null item:
+
+```dart
+List<String>? get features {
+  final locale = LocaleSettings.currentLocale.languageCode;
+  if (revenueCatOffer.metadata[locale] == null) {
+    return null;
+  }
+  final data = revenueCatOffer.metadata[locale] as Map<Object?, Object?>;
+  final featuersObj = data["features"]! as List<Object?>;
+  return featuersObj.map((e) => e! as String).toList();
+}
+```
+
 - **Offerings don't persist between launches.** They are cached at configure and refreshed after 5 minutes; cache them yourself if you must show them offline.
 - **Empty offerings** usually mean a store configuration mismatch: see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
@@ -325,6 +397,7 @@ try {
 ```
 
 - **One purchase at a time.** Disable buy buttons while a purchase is in flight to prevent double charges.
+- **Meta purchase event.** To send the purchase to Meta, use `result.storeTransaction.transactionIdentifier` as the `eventId`; a third-party snippet that reads `res.purchaserInfo` does not compile on 9.0.0+, where `PurchaseResult` has only `customerInfo` and `storeTransaction` (https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/purchase_result.dart) ([../../mobile/app-growth/META-ADS.md](../../mobile/app-growth/META-ADS.md#facebook-sdk-in-flutter)).
 
 ```dart
 class BuyButton extends StatefulWidget {

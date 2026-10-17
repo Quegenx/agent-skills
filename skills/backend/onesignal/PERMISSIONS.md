@@ -10,6 +10,7 @@ Nobody receives push until the system prompt is shown and accepted, and that pro
 - **Start iOS on provisional notifications** (the default starting point), then convert with a soft prompt.
 - **Explain value with a soft prompt** before the system prompt. Soft prompts never subscribe anyone by themselves; they also keep browsers from auto-blocking you.
 - **Re-ask users who declined the soft prompt on a cadence** (e.g. every 2 weeks).
+  - Flutter community view (opinion), on re-asking and timing: [FlutterPro](https://flutterpro.design/details/notification-permission-priming): "If the user skips twice, stop asking"; the settings page turns them on later. [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/) asks on an onboarding permission page, and [another ApparenceKit post](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/) "right after app launches or after he has signed in", against the value-moment rule above. The plugin-level Flutter version: ../../mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md.
 - **Iterate copy and timing, one variable at a time.** On web, start with the native prompt for a few months to get a baseline, then experiment.
 - **Offer opt-in controls in a preference center,** and topic choices through categories.
 - **The native system prompt cannot be customized** on any platform.

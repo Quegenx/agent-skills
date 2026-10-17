@@ -58,12 +58,13 @@ switch (obj) {
 - **Destructure in a for-in:** `for (var MapEntry(key: key, value: count) in hist.entries)`, or the shorthand `for (var MapEntry(:key, value: count) in hist.entries)`.
 - **Destructure a class instance:** `var Foo(:one, :two) = myFoo;`.
 - **Algebraic data types:** use a `sealed` family with an exhaustive switch when you have related types, an operation that needs per-type behavior, and want that behavior in one place (see [Examples](#examples)).
+- **The smell that calls for one** ([ApparenceKit](https://apparencekit.dev/flutter-tips/replace-type-code-union-type-flutter-dart/)): a class with an `enum` type field (`Document` with `DocumentType { pdf, doc, markdown }`) and `switch` or `if` chains on `document.type` spread through the code. Replace it with a sealed `DocumentSealed` whose subclasses `PdfDocument`, `DocDocument` and `MarkdownDocument` each implement `write`; exhaustive switch expressions then point to every place a new type needs handling. It also fits "if certain operations are only possible for some document types (like you can't 'write' to a PDF in your system)", and each type's behavior can be tested in isolation. The article has no code.
 - **Validate incoming JSON with one if-case.** `if (data case {'user': [String name, int age]}) { print('User $name is $age years old.'); }` checks that `data` is a non-null map with key `user` whose value is a list of exactly a `String` and an `int`, and binds `name` and `age`. It replaces a verbose `is` / `containsKey` / `length` / `as` chain.
 
 ## Switch statement or expression
 
 - **To produce a value, use a switch expression:** `switch (value) { pattern => expression, }`. One expression per case, no fallthrough, and it must be exhaustive.
-- **For side effects, use a switch statement:** `switch (value) { case pattern: statements; }`. Empty cases fall through; non-empty cases break implicitly (no `break`).
+- **For side effects, use a switch statement:** `switch (value) { case pattern: statements; }`. Empty cases fall through; non-empty cases break implicitly (no `break`). [ApparenceKit](https://apparencekit.dev/flutter-tips/run-animation-property-change/)'s old/new record switch `switch ((wasUploading, isUploading)) { case (false, true): ... break; ... }` ends each case with `break;`. "Dart does not support fallthrough execution for non-empty cases, so `break`s at the end of non-empty switch case statements are unnecessary" (lint `unnecessary_breaks`, reported only at language version 3.0 or later; https://dart.dev/tools/linter-rules/unnecessary_breaks), so drop the `break;` after `_controller.forward(from: 0);` and `_controller.reverse(from: 1);` when copying; the `default:` case holds only a comment and `break;`, which the lint page still allows (`case 1: break;`).
 - **Unmatched values:** end with `_` or `default`, unless the switch is over a `sealed` type and covers every subtype.
 
 ## Pattern types

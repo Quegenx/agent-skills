@@ -316,7 +316,16 @@ return myNewResponse
 ### Mobile deep links
 
 - **Expo:** register `"scheme": "com.supabase"` in the app config, add a redirect URL such as `com.supabase://**`, build the redirect with `makeRedirectUri()` from `expo-auth-session`. For OAuth: `signInWithOAuth({ provider, options: { redirectTo, skipBrowserRedirect: true } })`, then `WebBrowser.openAuthSessionAsync(data.url, redirectTo)`, parse `access_token` and `refresh_token` from the returned URL and call `setSession({ access_token, refresh_token })`. `WebBrowser.maybeCompleteAuthSession()` is required on web.
-- **Flutter:** a callback such as `io.supabase.flutterquickstart://login-callback` (`[YOUR_SCHEME]://[YOUR_HOSTNAME]`) in Additional Redirect URLs, plus an Android intent filter and iOS `CFBundleURLSchemes`.
+- **Flutter:** a callback such as `io.supabase.flutterquickstart://login-callback` (`[YOUR_SCHEME]://[YOUR_HOSTNAME]`) in Additional Redirect URLs, plus an Android intent filter and iOS `CFBundleURLSchemes`. The intent filter for a `your-scheme://callback` redirect, as [ApparenceKit](https://apparencekit.dev/blog/flutter-supabase-apple-sign-in/) uses for Apple OAuth on Android:
+
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="your-scheme" android:host="callback" />
+</intent-filter>
+```
 - **Redirect URLs for apps:** for example Site URL `com.supabase://login-callback/` and `com.supabase.staging://login-callback/` as an extra.
 
 ## Dated changes

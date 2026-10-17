@@ -52,7 +52,7 @@ Strong: always do it in a new app, consider refactoring existing apps. Recommend
 
 - **Hybrid layout.** Group the UI by feature (one view plus one view model each); group the data layer by type, since it is shared across features.
 - **Shared widgets go in `ui/core/`,** not a directory called `/widgets`, so names do not clash with Flutter SDK objects.
-- **The two sources draw the tree differently.** The `flutter-apply-architecture-best-practices` skill uses `ui/features/<feature>/views/` and `data/models/`; the Compass case study uses `ui/<feature>/widgets/` and `data/model/`. Both put API models in `data/` and clean models in `domain/models/`.
+- **The two sources draw the tree differently.** The `flutter-apply-architecture-best-practices` skill uses `ui/features/<feature>/views/` and `data/models/`; the Compass case study uses `ui/<feature>/widgets/` and `data/model/`. Both put API models in `data/` and clean models in `domain/models/`. A third-party layout, ApparenceKit's template [community]: a `core` folder for shared code plus "a module folder for each module of your app", in "an hexagonal architecture so your business logic is totally decoupled from your UI"; "Take the module you don't want to use and delete it" ([ApparenceKit](https://apparencekit.dev/blog/flutter-template-advantages/)).
 
 The skill's tree:
 
@@ -120,7 +120,7 @@ testing/   // Contains mocks that other classes need to execute tests.
 - **Views and view models are one to one.** A view model maps to a collection of widgets, not to one widget.
 - **The only logic a view may contain:** simple if-statements that show or hide widgets based on a flag or nullable field in the view model; animation logic (that relies on the widget to calculate); layout logic based on device information (screen size, orientation); simple routing logic. All logic related to data belongs in the view model.
 - **A view's inputs are a `key` and its view model.** All data comes from the view model.
-- **Listen with `ListenableBuilder`** (or `AnimatedBuilder`) on the view model. Key list items with `ValueKey(viewModel.bookings[index].id)`.
+- **Listen with `ListenableBuilder`** (or `AnimatedBuilder`) on the view model. Key list items with `ValueKey(viewModel.bookings[index].id)`: without keys an insert in the middle "shifts" every later child so stateful children "lose their state"; with keys they keep "State, animation progress, scroll position" ([renderobjects](https://renderobjects.com/guides/children/list-of-children/)).
 
 ## View models
 
@@ -146,7 +146,7 @@ class HomeViewModel {
 
 - **UI state is an immutable snapshot** of the data needed to fully render a view. Expose lists as `UnmodifiableListView<BookingSummary> get bookings => UnmodifiableListView(_bookings);`. For complex state you might create a `HomeUiState` class.
 - **Extend `ChangeNotifier`** (or use `Listenable`) and call `notifyListeners()` when new data arrives (the Compass `_load` example calls it in a `finally` block). The flow: repository provides state, view model updates, `notifyListeners`, view re-renders.
-- **Combine data from two repositories in the view model** (or the domain layer). Repositories never know about each other.
+- **Combine data from two repositories in the view model** (or the domain layer). Repositories never know about each other. A community alternative for one action that many services react to: a global `AppEventsDispatcher` stream each service listens to, tested by publishing events ([../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#global-app-events)).
 
 The skill's service, repository, view model and view, end to end:
 
@@ -333,6 +333,7 @@ runApp(
 - **`Command0`, `Command1`:** the number is the argument count.
 - **Create commands in the view model constructor:** `load = Command0(_load)..execute(); deleteBooking = Command1(_deleteBooking);` with `late Command0 load; late Command1<void, int> deleteBooking;`. The view calls `viewModel.deleteBooking.execute(id)` (for example from a `Dismissible`).
 - **Package option:** `command_it` provides command types that track running, completed and error.
+- **Repeated taps, a community alternative:** ApparenceKit debounces taps with RxDart, a `BehaviorSubject` of taps, `.debounceTime()` (example 1000 ms), `.listen()` for the action, and the subscription cancelled in `dispose()` ([ApparenceKit](https://apparencekit.dev/flutter-tips/prevent-button-spam-flutter-rxdart/)). It adds `rxdart` and runs the action only after the pause; the command's `running` flag [official] needs no package and runs the first tap at once.
 
 The Compass `Command`, verbatim:
 
@@ -550,7 +551,7 @@ Future<void> subscribe() async {
 }
 ```
 
-- **Show the error from a listener** added in `initState` and removed in `dispose` (call `removeListener()` on dispose to avoid errors). Reset `error = false` before `ScaffoldMessenger.of(context).showSnackBar(...)` so it is not shown more than once.
+- **Show the error from a listener** added in `initState` and removed in `dispose` (call `removeListener()` on dispose to avoid errors). Reset `error = false` before `ScaffoldMessenger.of(context).showSnackBar(...)` so it is not shown more than once. ApparenceKit instead shows toasts from Riverpod notifiers through a navigator `GlobalKey` ([RIVERPOD.md](RIVERPOD.md#toasts-from-notifiers)).
 - **A third pending state** (for example a chat message with a pending icon) can come from the command's running state.
 - **The recipe's button styles** for the two states:
 
@@ -578,7 +579,10 @@ class SubscribeButtonStyle {
 | `InheritedWidget`, `InheritedModel` | Low level, ancestors to children; what `provider` and many others use under the hood |
 | `ChangeNotifier` | Part of `flutter:foundation`; what the architecture guide's view models extend |
 
-- **Community packages.** The state management options page no longer names packages; it points to the pub.dev `state-management` topic and says the best choice depends on the app's complexity, the team's preferences and the problem. The architecture pages name `riverpod`, `flutter_bloc` and `signals` as alternatives to `ChangeNotifier`, and the Compass UI could have used streams or those libraries.
+- **Depend or read once.** `.of(context)` built on `dependOnInheritedWidgetOfExactType` rebuilds the caller when the value changes; `getInheritedWidgetOfExactType` does not. Use the dependent form when the value decides what `build` renders and the one-shot form in callbacks; `InheritedModel.inheritFrom(context, aspect: ...)` rebuilds a dependent only for the part it reads. `Scaffold.of`, `Form.of` and `Scrollable.of` use `findAncestorStateOfType` to call methods on an ancestor's `State` without depending on it; never cache lookup results across builds ([renderobjects](https://renderobjects.com/guides/elements/accessing-ancestors/), https://api.flutter.dev/flutter/widgets/InheritedModel-class.html). Costs are in [PERFORMANCE.md](PERFORMANCE.md#build-cost).
+- **An `InheritedNotifier` in practice:** a `ThemeProvider` above `MaterialApp` switches the theme mode without a restart ([../flutter-ux/THEMING.md](../flutter-ux/THEMING.md)).
+
+- **Community packages.** The state management options page no longer names packages; it points to the pub.dev `state-management` topic and says the best choice depends on the app's complexity, the team's preferences and the problem. The architecture pages name `riverpod`, `flutter_bloc` and `signals` as alternatives to `ChangeNotifier`, and the Compass UI could have used streams or those libraries. One third-party Riverpod architecture, and where it departs from this file, is [RIVERPOD.md](RIVERPOD.md).
 - **Start with `provider`** if you are new to Flutter and have no strong reason for another approach (Redux, Rx, hooks). Install with `flutter pub add provider`, import `package:provider/provider.dart`. Three concepts: `ChangeNotifier`, `ChangeNotifierProvider`, `Consumer`.
 - **Call `notifyListeners()`** whenever the model changes in a way that might change the UI. A `ChangeNotifier` is unit-testable without widget tests:
 

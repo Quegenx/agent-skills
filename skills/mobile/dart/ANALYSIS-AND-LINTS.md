@@ -118,6 +118,7 @@ All three default to `false`; the dart-lang skills turn all three on under `anal
 - **Suppress one line:** `// ignore: invalid_assignment` on the line above or appended to the line.
 - **Suppress in pubspec.yaml:** `# ignore: sort_pub_dependencies` above the line (Dart 3.3+).
 - **Plugin diagnostics** take the plugin name as prefix: `// ignore: some_plugin/some_code`.
+- **Some rules exclude each other.** `always_use_package_imports` ("Avoid relative imports for files in `lib/`", not in the core or recommended sets on its page) is incompatible with `prefer_relative_imports` (https://dart.dev/tools/linter-rules/always_use_package_imports). Enable one; which one is a project choice, covered in [USAGE-AND-DESIGN.md](USAGE-AND-DESIGN.md#libraries-and-imports).
 
 ```dart
 // Suppress for the entire file
@@ -169,6 +170,15 @@ void processData() {
 - **Language-versioned style:** since 3.7 `dart format` is tied to the language version (the tall style); at 3.8 it automates trailing commas; 3.13 adds block-formatted parameter lists and `as`/`is`/`is!`, blank lines between import sections (it doesn't sort them), and prefers splitting call chains for single-element targets. `dart format --version --verbose` shows the supported language versions.
 - **Removed and renamed:** `dart format --fix` was removed in 3.7, and `--line-length` deprecated for `--page-width`.
 - **Editors:** VS Code format on save: `"[dart]": { "editor.formatOnSave": true }`. Options: `dart help format`; formatter FAQ: https://github.com/dart-lang/dart_style/wiki/FAQ.
+- **Where sources differ, format on save off for Dart:** [ApparenceKit](https://apparencekit.dev/flutter-tips/usefull-vscode-configurations-to-save-time/) sets `"editor.formatOnSave": true` globally but `"editor.formatOnSave": false` inside `[dart]`, "if you prefer formatting Dart using other methods or specific save actions". That is a preference; either way CI should run `dart format --set-exit-if-changed`.
+- **VS Code save actions for Dart** (same source): `source.fixAll` "automatically applies suggested fixes", which "can include adding missing `const` keywords"; `source.organizeImports` "sorts your import statements and removes any imports that aren't being used" (which `dart format` does not do). `"explicit"` runs them on an explicit save (Ctrl+S / Cmd+S). `"editor.inlayHints.enabled": "off"` inside `[dart]` hides inline type hints. Open the file with `Ctrl+,` / `Cmd+,` and search "settings json".
+
+```json
+"editor.codeActionsOnSave": {
+  "source.fixAll": "explicit",
+  "source.organizeImports": "explicit"
+}
+```
 
 ## Fixing analysis errors
 

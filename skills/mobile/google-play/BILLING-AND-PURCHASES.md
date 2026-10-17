@@ -87,6 +87,7 @@ gplay subscriptions list --package "$PACKAGE" --paginate \
 - **Offers:** `gplay offers list|create|activate|deactivate --product-id --base-plan-id [--offer-id]`. Free trial body: `{"offerId":"trial_7day","state":"ACTIVE","phases":[{"duration":"P7D","pricingType":"FREE_TRIAL"}],"regionalConfigs":[{"regionCode":"US"}]}`. Intro price body: `pricingType: "SINGLE_PAYMENT"`, `duration "P1M"`, `price {"priceMicros":"2490000","currency":"USD"}`.
 - **Price format conflict:** the CLI author's intro-offer example uses `priceMicros`/`currency`, while the same author says subscriptions use `units`/`nanos`/`currencyCode` and not to mix formats. Check the current API reference before sending offer prices.
 - **Billing Library 7.0.0** added installment subscriptions; 8.1.0 added `SubscriptionProductReplacementParams` with `KEEP_EXISTING` ("lets you keep the existing payment schedule unchanged for an item"); 9.0.0 added in-app messaging for opt-in price increases (shown "a maximum of once every 7 days").
+- **Terms on the paywall:** for Google Play "you have to show your own terms of services" (on iOS, Apple's EULA from App Store Connect serves) [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/).
 
 ## Testing purchases
 

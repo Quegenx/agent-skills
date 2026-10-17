@@ -71,6 +71,7 @@ curl -H "Authorization: Bearer $RC_SECRET_API_KEY" \
 
 - **Win-back campaigns need no SDK code.** Configure them in Play Console or the RevenueCat dashboard (`/projects/{projectId}/lifecycle/winback`; retention offers at `/lifecycle/retention`).
 - **An accepted Play win-back offer** surfaces as a normal subscription.
+- **Before they lapse:** with `willRenew == false` (or `unsubscribeDetectedAt` set) while access is still active, show a promotion before losing the user [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/); the Dart check is in [FLUTTER.md](FLUTTER.md#customer-info-and-entitlement-gates).
 - **Segment win-back on the backend** with the `CANCELLATION` webhook's `cancel_reason`: `UNSUBSCRIBE`, `BILLING_ERROR`, `DEVELOPER_INITIATED`, `PRICE_INCREASE`.
 
 ## Refunds

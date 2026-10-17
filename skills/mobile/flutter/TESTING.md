@@ -16,6 +16,9 @@ Flutter has three kinds of test: a unit test covers one function, method or clas
 - **Sources differ on the mix:** one community reference app (Emin Şahin's 100% coverage post) ran about 80% unit, 15% widget and 5% integration tests, "invest heavily in unit tests"; [../../architecture/testing/INTEGRATION.md](../../architecture/testing/INTEGRATION.md) puts integration tests first for services, with unit tests at roughly 15 to 25%.
 - **Unit tests mock their dependencies** and generally don't read from or write to disk, render to screen, or receive user actions from outside the process. For plugin code in unit tests see https://docs.flutter.dev/testing/plugins-in-tests; for testing plugins themselves, https://docs.flutter.dev/testing/testing-plugins.
 - **Integration tests with native interaction need `patrol`** (third party): it adds permission dialogs, notifications and platform views. First test: https://patrol.leancode.co/documentation/write-your-first-test. Setup: https://patrol.leancode.co/getting-started.
+- **Real devices:** ApparenceKit reports "Real-device bugs we hit on a Samsung Galaxy A12 that don't show up on emulators" ([ApparenceKit](https://apparencekit.dev/blog/buy-flutter-template-or-build-from-scratch/)).
+- **Test first on small features** (community practice): "When you are writing your tests before writing your code, you are forced to think about the API of your code"; "You don't have to do this all the time. Start to do it on small features" ([ApparenceKit](https://apparencekit.dev/blog/write-efficient-flutter-unit-tests/)).
+- **Tell a coding agent the strategy:** an agent rule file should say which test style the project uses (ApparenceKit's: fakes over mocks) and how to handle APIs, "as unit tests don't have access to network" ([ApparenceKit](https://apparencekit.dev/blog/flutter-cursor-ai-setup/); agent setup in [AGENT-TOOLING.md](AGENT-TOOLING.md)).
 - **CI services** listed for Flutter: fastlane, Appcircle, Travis, Cirrus, Codemagic (Flutter and Patrol), Bitrise. CI release lanes are in [BUILD-AND-RELEASE.md](BUILD-AND-RELEASE.md).
 
 ## Unit tests
@@ -23,6 +26,8 @@ Flutter has three kinds of test: a unit test covers one function, method or clas
 - **Packages:** `test` is the core; `flutter_test` adds widget utilities. Add `test` with `flutter pub add dev:test`, the best approach when writing packages consumed by web, server and Flutter apps.
 - **Location and names:** test files live in `test/` at the project root and always end with `_test.dart`; the test runner relies on that convention.
 - **Run:** `flutter test test/counter_test.dart`; one group with `flutter test --plain-name "Test start, increment, decrement"`; options with `flutter test --help`.
+- **Sources differ on what a unit is.** The Flutter docs [official]: "a unit test covers one function, method or class" (above). ApparenceKit [community]: "A unit test is NOT a test for a single function. ... We want to test scenarios, not functions"; "You have an input and you want to make sure that you have the expected output. That's it"; it "should not be coupled to the implementation details" ([ApparenceKit](https://apparencekit.dev/blog/write-efficient-flutter-unit-tests/), "based on our own experience").
+- **Name the scenario** in the `state, action => result` shape the same source uses: `test('calculator is empty, add 1 then add 2 => result equals 3', ...)` (general naming rule: [../../architecture/testing/SKILL.md](../../architecture/testing/SKILL.md)).
 
 ```dart
 import 'package:counter_app/counter.dart';
@@ -88,7 +93,57 @@ when(() => mockRepo.login(any(), any()))
     .thenAnswer((_) async => Right(user));
 ```
 
-- **Sources differ on how much to mock:** that post mocks every layer (use cases against a mocked repository, BLoCs against a mocked use case) and verifies calls on reads; [../../architecture/testing/SKILL.md](../../architecture/testing/SKILL.md) mocks only boundaries you don't own and records commands, not queries.
+- **Stubbing an HTTP client with mocktail** ([ApparenceKit](https://apparencekit.dev/flutter-tips/mocking-rest-api-calls/)), to test "different API responses without needing a real network connection ... including error cases":
+
+```dart
+import 'package:mocktail/mocktail.dart';
+
+class HttpClientMock extends Mock implements HttpClient {}
+```
+
+```dart
+final httpClientMock = HttpClientMock();
+```
+
+```dart
+when(() => httpClientMock.get(Uri.parse('myapi/ ...')))
+    .thenAnswer((_) async => Response(
+      '''
+      {"id":"testId","route":"myPage"}
+      ''',
+      200,
+    ));
+```
+
+  The tip does not say which `HttpClient` it means; `Response(body, 200)` matches `package:http`'s `Response(String body, int statusCode, ...)` (https://pub.dev/documentation/http/latest/http/Response/Response.html), whose client is `http.Client` (the Mockito recipe above). The same tip warns "Mocking can be tricky and reflect implementations details when testing".
+- **Sources differ on how much to mock:** that post mocks every layer (use cases against a mocked repository, BLoCs against a mocked use case) and verifies calls on reads; [../../architecture/testing/SKILL.md](../../architecture/testing/SKILL.md) mocks only boundaries you don't own and records commands, not queries. ApparenceKit sits on the fewer-mocks side: "Instead of checking if certain functions were called on a mock object, focus on the *outcome* or *behavior* of your code", for example assert the notification arrived and its content "rather than checking if a specific 'send' method was called on a mocked object" ([ApparenceKit](https://apparencekit.dev/flutter-tips/avoid-testing-using-mocks/)).
+- **Sources differ on mocking libraries at all.** The Flutter docs [official] recipe mocks with Mockito (above), and unit tests "mock their dependencies". ApparenceKit [community]: "Don't use mockito or any other mocking library", because "you are coupling your tests to the implementation details of your code" and "As your application grows, you will have more and more "when" mocking calls" ([ApparenceKit](https://apparencekit.dev/blog/write-efficient-flutter-unit-tests/)). The Flutter architecture guide's "Fakes for testing" (Strong, [ARCHITECTURE.md](ARCHITECTURE.md#recommendations-by-priority)) agrees with the fakes side. ApparenceKit writes its choice into its agent rules (above).
+- **Hand-written fakes, the same source's way:**
+
+```dart
+class FakeCalculatorApi implements CalculatorApi {
+  @override
+  Future<int> add(int a, int b) async {
+    return a + b;
+  }
+}
+```
+
+```dart
+test('calculator is empty, add 1 then add 2 => result equals 3', () {
+  final calculator = Calculator(api: FakeCalculatorApi());
+  calculator.add(1);
+  calculator.add(2);
+  expect(calculator.result(), 3);
+});
+```
+
+  - Keep fakes "in the `test` folder", in one place, since one fake serves many tests.
+  - They stay in sync because they implement the real interface: "When you add a method to your real implementation, you will have to add it to your fake implementation".
+  - For failures, "write another implementation of your fake API that will throw an exception." A fake can hold state (a fake auth API returns a token only after a login with the right credentials).
+  - "'Test only what you own' is a good rule to follow."
+  - The blog's test calls `add` without `await` although the fake is async; it is verbatim as published.
+- **Seed state into fakes before the app starts** so route guards behave as in production: ApparenceKit's tests "inject a user state / subscription before app start so Guards will work as expected" ([ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/)).
 - **BLoC tests with `bloc_test`** (bloclibrary.dev, community practice in the same post): `blocTest` builds the bloc, acts on it and lists the states it must emit, in order.
 
 ```dart
@@ -124,7 +179,7 @@ blocTest<AuthBloc, AuthState>(
 | Text input | `await tester.enterText(textFieldFinder, 'Input string')` |
 | Long or dynamic lists | `await tester.scrollUntilVisible(itemFinder, 500.0, scrollable: listFinder)` |
 
-- **What each pump does:** `tester.pumpWidget()` builds and renders. `tester.pump(Duration)` schedules one frame; it does not schedule multiple frames even for a long duration. Call `pump()` once with no duration to start an animation ticker. `tester.pumpAndSettle()` repeats `pump()` until no more frames are scheduled.
+- **What each pump does:** `tester.pumpWidget()` builds and renders. `tester.pump(Duration)` schedules one frame; it does not schedule multiple frames even for a long duration. Call `pump()` once with no duration to start an animation ticker. `tester.pumpAndSettle()` repeats `pump()` until no more frames are scheduled. A custom render object that animates by itself must obey `TickerMode`, "especially important in a widget test environment" ([renderobjects](https://renderobjects.com/examples/apple-watch-app-grid/); [../flutter-render-objects/EXAMPLE-WATCH-GRID.md](../flutter-render-objects/EXAMPLE-WATCH-GRID.md)).
 - **Sources differ on taps:** the Flutter team's widget-test skill says a standard tap needs `pump()` and only animations need `pumpAndSettle()`; its integration-test skill uses `pumpAndSettle()` after interactions like `tester.tap()`.
 - **Page transitions on Android:** since 3.38 the default transition lasts 450 ms instead of 300 ms. Use `TransitionDurationObserver` (`observer.pumpPastTransition(tester)`, `observer.transitionDuration ~/ 2`) instead of hardcoded durations. See [VERSIONS.md](VERSIONS.md).
 
@@ -259,14 +314,17 @@ testWidgets('moving commuter gets the quick action', (tester) async {
 });
 ```
 
-More widget-test recipes (finders, scrolling, tap, drag and enter text, orientation) are under https://docs.flutter.dev/cookbook/testing/widget/finders.
+More widget-test recipes (finders, scrolling, tap, drag and enter text, orientation) are under https://docs.flutter.dev/cookbook/testing/widget/finders. Community recipes (isolate work with `tester.runAsync()`, `ValueVariant`, every screen size, typed finders, expected errors with `FlutterError.onError`, testing go_router with the real router) are in [TESTING-RECIPES.md](TESTING-RECIPES.md#widget-test-recipes); sources differ on the router: that recipe pumps a real `MaterialApp.router`, the Compass case study mocks it (`MockGoRouter`).
 
 ## Golden tests
 
 - **Signature:** `AsyncMatcher matchesGoldenFile(Object key, {int? version})`. It asserts that a `Finder`, `Future<ui.Image>` or `ui.Image` matches the golden file.
 - **What gets captured:** for a `Finder` it must match exactly one widget, and the rendered image of the first `RepaintBoundary` ancestor of the widget is the image. Wrap the widget in a `RepaintBoundary` to focus the capture.
+- **A parent golden catches child changes:** "if you have a complex card widget and you change something in a smaller widget inside it (like an avatar), the golden test for the card will fail, showing you the difference" ([ApparenceKit](https://apparencekit.dev/flutter-tips/test-flutter-widget-design-golden-files/)).
 - **It is async:** use `expectLater` and await it.
-- **Create or update goldens:** `flutter test --update-goldens`.
+- **Create or update goldens:** `flutter test --update-goldens`. ApparenceKit has a coding agent write goldens at the end of a feature across devices ("iPhone 15, Pixel 8, and a small device"), run them with `--update-goldens` and commit the baselines ([ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude-code/)).
+- **Consistency, not device fidelity:** "The image created during the test is an internal rendering. It might not look exactly like it does when you run your app normally. This is okay, as the test's job is to ensure *consistency* in the rendering" (same golden tip).
+- **Scope, two views from one publisher:** the golden tip calls goldens a safety net for the design; the same site's unit-test post says "I don't like to test design details ... If you test your UI, be sure to test details that really matters" and "You should be able to change UI often and easily" ([ApparenceKit](https://apparencekit.dev/blog/write-efficient-flutter-unit-tests/)).
 
 ```dart
 await expectLater(
@@ -354,12 +412,29 @@ Future<void> main() => integrationDriver();
 ```
 
 - **Android locally with drive:** `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart`
+- **Pre-grant Android permissions from the driver** so no dialog appears, without Patrol ([ApparenceKit](https://apparencekit.dev/flutter-tips/grant-permissions-android-integration-tests-adb/); the article's code is an image only). The commands are `adb shell pm grant <package_name> <permission>` and `adb shell pm revoke <package_name> <permission>`. In the driver script (where `integrationDriver()` is called), run them with `Process.runSync` from `dart:io` (it "runs a command line process and waits for it to finish"): command `'adb'`, args `['shell', 'pm', 'grant', ...]`. Loop `grant` over a `List<String>` of permissions (the example is `'android.permission.WRITE_EXTERNAL_STORAGE'`) for your package id (example `'com.apparence.example'`, "Make sure this matches your app's package ID") before `await integrationDriver();`, then loop `revoke` after "to ensure tests are independent". Maestro and Patrol permission settings are in [../../web-automation/e2e-testing/SKILL.md](../../web-automation/e2e-testing/SKILL.md).
 - **Web (Chrome):** install ChromeDriver (`npx @puppeteer/browsers install chromedriver@stable`), start `chromedriver --port=4444` in a separate terminal, then `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart -d chrome`. Headless: `-d web-server`.
 - **Linux CI needs an X server:** run under `xvfb-run` (GitHub Actions example: `run: flutter test integration_test -d linux -r github`). Without it you get `Error waiting for a debug connection: The log reader stopped unexpectedly, or never started.`
 - **Firebase Test Lab (Android):** `pushd android`; `flutter build apk --debug` (a standard `--release` build does not include `package:integration_test`); `./gradlew app:assembleAndroidTest`; `./gradlew app:assembleDebug -Ptarget=integration_test/<name>_test.dart`. Pass dart-defines base64-encoded as `-Pdart-defines=...`. Upload the app APK `build/app/outputs/apk/debug/<file>.apk` and the test APK `build/app/outputs/apk/androidTest/debug/<file>.apk` in the Firebase Test Lab console as an Instrumentation test.
+- **Plugins:** four test layers (platform-interface mock, method channel, `example/integration_test/`, native) are in [TESTING-RECIPES.md](TESTING-RECIPES.md#plugin-tests).
 - **iOS devices:** follow https://github.com/flutter/flutter/tree/main/packages/integration_test#ios-device-testing.
 
 ## Performance integration tests
+
+- **A `Stopwatch` budget in a widget test** (ApparenceKit, [ApparenceKit](https://apparencekit.dev/flutter-tips/benchmark-function-test/)): "Small optimizations needs numbers to prove they work"; "If a code change makes something unexpectedly slow, your test will fail."
+
+```dart
+testWidgets('check huge function performance', (
+  WidgetTester tester,
+) async {
+  final sw = Stopwatch()..start();
+  await tester.tap(find.byKey(const ValueKey('btn')));
+  await tester.pumpAndSettle(const Duration(milliseconds: 100));
+  expect(sw.elapsedMilliseconds, lessThan(500));
+});
+```
+
+  The article says `pumpAndSettle` "waits for any animations or rebuilds triggered by the tap to finish"; its `Duration` argument is the step per pump ("Repeatedly calls pump with the given `duration` until there are no longer any frames scheduled", https://api.flutter.dev/flutter/flutter_test/WidgetTester/pumpAndSettle.html). Sources differ on what this proves: it runs in the test environment, while the Flutter docs measure frame times only in profile mode on a device ([PERFORMANCE.md](PERFORMANCE.md#profiling), and the timeline recipe below). Use it as a regression tripwire.
 
 - **Record a timeline:** wrap actions in `binding.traceAction(() async { await tester.scrollUntilVisible(itemFinder, 500.0, scrollable: listFinder); }, reportKey: 'scrolling_timeline');` (default key `timeline`). Not supported on web.
 - **Driver:** `test_driver/perf_driver.dart` summarizes the timeline (default output `integration_response_data.json` otherwise):
@@ -404,6 +479,9 @@ Future<void> main() {
 | Firebase Test Lab APK built with `--release` | A standard release build doesn't include `package:integration_test`; build with `flutter build apk --debug` |
 | Next device test fails | The previous run left the app installed |
 | Code matching a class name fails in an obfuscated build | Obfuscation renames symbols; see [BUILD-AND-RELEASE.md](BUILD-AND-RELEASE.md) |
+| Test hangs on `compute` or other isolate work | Wrap the work in `tester.runAsync()` ([TESTING-RECIPES.md](TESTING-RECIPES.md#widget-test-recipes)) |
+| Later tests fail after one that expected an error | Reset `FlutterError.onError` after the check |
+| A custom render object shows only its class name in a failure | Implement `debugFillProperties`; dump the tree with `debugDumpRenderTree()` ([../flutter-render-objects/DIAGNOSTICS.md](../flutter-render-objects/DIAGNOSTICS.md)) |
 
 ## Prove it
 
@@ -413,3 +491,4 @@ Future<void> main() {
 - Every integration test file calls `IntegrationTestWidgetsFlutterBinding.ensureInitialized()`, targets widgets by `ValueKey`, and passes with `flutter test integration_test/app_test.dart` on a real device or emulator.
 - Flows that hit permission dialogs, notifications or platform views use Patrol, not `integration_test`.
 - Performance tests ran with `--profile` and produced `build/scrolling_summary.timeline_summary.json`.
+- The project's choice between mocks and fakes is written down once (test README or agent rules), and new tests follow it.

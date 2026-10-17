@@ -18,6 +18,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 | Feature graphic | required (1024×500 px) | none |
 | Algorithm signals | installs, engagement, ratings, keywords | keyword match, ratings, conversions |
 
+- **Backlinks** [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "links to your Play Store listing from websites influence ranking." Google's docs read for this skill don't say so.
 - **App quality counts:** "Your app's core vitals affect your app's visibility on Google Play." The vitals and their thresholds are in [../google-play/SKILL.md](../google-play/SKILL.md).
 
 ## Listing fields
@@ -34,7 +35,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 - **Title:** unique and accurately describing what the app does; no pricing or ranking claims. [eronred] pattern `Brand: Keyword Descriptor`, e.g. "Headspace: Meditation & Sleep", not "Best Meditation App for You".
 - **Short description:** a summary of the biggest benefits, not repeated in the full description. Avoid line breaks, emojis, symbols and repeated punctuation, and don't capitalize for emphasis. [eronred]: pack the 2 to 3 most important keywords into one sentence without repeating the title's primary keyword, e.g. "Guided meditation, sleep sounds & breathing exercises for stress relief".
 - **Full description** [eronred]: a hook paragraph of 2 to 3 sentences with the primary keyword in the first 167 characters ("shown above the fold"); 5 to 8 `• [Feature]: [Benefit]` bullets; social proof; a CTA; a closing paragraph using keyword variants naturally. Long-tail phrases work because the full description is indexed, and "Google's algorithm understands synonyms".
-- **Keyword density conflict** [eronred]: its metadata skill says 2 to 3% density, front-loaded in the first paragraph; its Android skill says the target keyword 3 to 5 times across the full description (exact plus variants). Either way, repetitive or irrelevant keywords in the app name, description or promotional description can get the app suspended.
+- **Keyword density conflict** [eronred]: its metadata skill says 2 to 3% density, front-loaded in the first paragraph; its Android skill says the target keyword 3 to 5 times across the full description (exact plus variants). [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/) gives a third figure: "Aim for 3-5 keyword mentions per 1,000 characters". Either way, repetitive or irrelevant keywords in the app name, description or promotional description can get the app suspended.
 - **Play audit** [eronred]: Title, Short description, Full description, Screenshots, Feature graphic and Ratings 1 to 10 each, out of 60, plus the top 3 improvements (see [AUDIT.md](AUDIT.md)).
 
 ## Graphic assets

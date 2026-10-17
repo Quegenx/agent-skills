@@ -1,6 +1,6 @@
 # Accessibility
 
-Making a Flutter app usable with screen readers, large text, switch and voice control, and low vision. "Flutter's standard widgets generate an accessibility tree automatically", so most of the work is keeping standard widgets, labeling what is custom with `Semantics`, giving every control a real action and a large enough target, and leaving room for large fonts. "We strongly encourage you to include an accessibility checklist as a key criteria before shipping your app." Layout and orientation rules are in [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md), widget tests in [TESTING.md](TESTING.md), reduced motion in [../../frontend/ui-animation/SKILL.md](../../frontend/ui-animation/SKILL.md).
+Making a Flutter app usable with screen readers, large text, switch and voice control, and low vision. "Flutter's standard widgets generate an accessibility tree automatically", so most of the work is keeping standard widgets, labeling what is custom with `Semantics`, giving every control a real action and a large enough target, and leaving room for large fonts. "We strongly encourage you to include an accessibility checklist as a key criteria before shipping your app." Layout and orientation rules are in [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md), widget tests in [TESTING.md](TESTING.md), reduced motion in [../../frontend/ui-animation/SKILL.md](../../frontend/ui-animation/SKILL.md). Semantics for a custom `RenderObject` (`describeSemanticsConfiguration`, `semanticBounds`) is in [../flutter-render-objects/SEMANTICS.md](../flutter-render-objects/SEMANTICS.md); the community text-scale cap and `GestureDetector` hit areas are in [../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#text-scale-cap).
 
 ## Regulations
 
@@ -8,11 +8,11 @@ Making a Flutter app usable with screen readers, large text, switch and voice co
 
 ## Release checklist
 
-- **Active interactions:** no no-op `onPressed`. Every control does something, for example shows a `SnackBar`.
+- **Active interactions:** no no-op `onPressed`. Every control does something, for example shows a `SnackBar`. The same holds for semantics: "if you set a role flag, provide the corresponding action" ([renderobjects](https://renderobjects.com/guides/semantics/)).
 - **Screen reader testing:** with TalkBack (Android) and VoiceOver (iOS), all controls are described intelligibly.
 - **Contrast ratios:** "at least 4.5:1 between controls or text and the background, with the exception of disabled components".
 - **Context switching:** nothing changes context automatically while the user is typing.
-- **Tappable targets:** "at least 48x48 pixels".
+- **Tappable targets:** "at least 48x48 pixels". Padding only counts if it takes taps: a `GestureDetector` by default "only takes taps on its child", so for a padded icon-and-text row set `behavior: HitTestBehavior.opaque` ([FlutterPro](https://flutterpro.design/details/gesture-detector-hit-area), [../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#gesturedetector-hit-area)). A custom render object can grow its accessibility rect with `semanticBounds` ([../flutter-render-objects/SEMANTICS.md](../flutter-render-objects/SEMANTICS.md#semanticbounds)).
 - **Errors:** important actions can be undone; suggest corrections.
 - **Color vision deficiency testing:** check in colorblind and grayscale modes.
 - **Scale factors:** the UI stays legible at very large text and display scaling.
@@ -28,16 +28,21 @@ Making a Flutter app usable with screen readers, large text, switch and voice co
 | Tap target, W3C | 44x44 CSS pixels |
 
 - **Large fonts:** Flutter text widgets respect the OS font-size setting. "Make sure your layout has enough room to render all its contents when the font sizes are increased." Test on a small-screen device at the largest font. iOS: Settings > Accessibility > Display & Text Size. Android: Settings > Font size.
+- **A community view: cap the text scale.** FlutterPro clamps `MediaQuery.textScaler` app-wide to 1.1 ("don't ignore user's preference completely, just it limit to x1.1 at max", [FlutterPro](https://flutterpro.design/details/text-scale-factor)), and the flutter-improve-design catalog counts "no clamp and no fixed override like x1.0 or x1.1" as a failure [improve-design]. Flutter's docs give the opposite instruction (the quote above: make room for larger fonts). Both sides and the code: [../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#text-scale-cap).
 - **Other platform settings** come through `AccessibilityFeatures` (bold text, high contrast, inverted colors). `MediaQuery` also exposes high contrast, text scaling and whether TalkBack or VoiceOver is on.
 - **Recent additions:** Flutter 3.47 detects Android high contrast and color inversion automatically (`MediaQueryData.highContrast`, `MediaQueryData.invertColors`). Flutter 3.44 added iOS motion accessibility features via `AccessibilityFeatures`, percentage `SemanticsValue` for progress indicators, and on web honors `prefers-reduced-motion` and announces form validation errors via `aria-description`.
 - **Adaptive layouts:** a community post on context-aware UI says real-time touch-target enlargement and automatic WCAG-compliant contrast are natural fits for adaptive systems "only if you make it an explicit adaptation rule rather than hoping it falls out" ([LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)).
 - **Orientation:** locked screens can be an accessibility issue; see [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#orientation).
-- **Keyboard:** keep common flows keyboard-navigable and support mice, trackpads and keyboard shortcuts.
+- **Keyboard:** keep common flows keyboard-navigable and support mice, trackpads and keyboard shortcuts (`Shortcuts`, `Actions`, `Intent`, `Action`; see [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#input-and-state)).
 
 ## Semantics and screen readers
 
-- **Customize the tree with the `Semantics` widget** where standard widgets do not describe a control.
-- **Headings (Flutter 3.47):** `header` is a no-op on iOS and Android. Use `Semantics(headingLevel: 1, child: Text('Section Title'))`; details in [VERSIONS.md](VERSIONS.md).
+- **Customize the tree with the `Semantics` widget** where standard widgets do not describe a control. Its relatives are `MergeSemantics`, `ExcludeSemantics` and `BlockSemantics`, for example `Semantics(button: true, label: 'Submit', onTap: ..., child: ...)`. Composed custom widgets get semantics at this widget layer; only a custom render object describes itself in `describeSemanticsConfiguration` and calls `markNeedsSemanticsUpdate()` when what it reports changes ([renderobjects](https://renderobjects.com/guides/semantics/), [../flutter-render-objects/SEMANTICS.md](../flutter-render-objects/SEMANTICS.md#widget-layer-first)).
+- **Label, value, hint** ([renderobjects](https://renderobjects.com/guides/semantics/)): the label says what it is, and every interactive element needs one; the value is its current state; the hint is supplementary, read after a delay and often turned off by users, so essential information goes in the label. Labels are spoken verbatim, so localize them ([LOCALIZATION.md](LOCALIZATION.md)).
+- **Merge composites, not regions** ([renderobjects](https://renderobjects.com/guides/semantics/)): an icon-plus-label button or a list tile is one node ("If your composite has a single interaction, it's a single semantic node"), but merging a large region can absorb inner interactive elements that should stay focusable, so protect them with a semantic boundary or merge more granularly. Status messages that change while focus is elsewhere are live regions (`isLiveRegion`); blocking (`BlockSemantics` at the widget layer) keeps a screen reader off what is behind a modal.
+- **Say the state in the label** ([FlutterPro](https://flutterpro.design/details/switch-thumb-icons)): a switch tile's title "must be true when the switch is on. 'Dark theme', not 'Theme'. Screen readers read only the title, never the icons." A custom spinner wraps itself in `Semantics(label: 'Loading', ...)` ([FlutterPro](https://flutterpro.design/details/neutral-loading-spinner)). Both widgets are in [../flutter-ux/MOTION-AND-FEEDBACK.md](../flutter-ux/MOTION-AND-FEEDBACK.md#switch-thumb-icons) ([neutral spinner](../flutter-ux/MOTION-AND-FEEDBACK.md#neutral-spinner)).
+- **One announcement for a composed view** ([FlutterPro](https://flutterpro.design/details/friendly-error-view)): `Semantics(container: true, label: 'Something went wrong. Restarting the app should fix it.', child: ExcludeSemantics(...))` reads one sentence instead of each child.
+- **Headings (Flutter 3.47):** `header` is a no-op on iOS and Android. Use `Semantics(headingLevel: 1, child: Text('Section Title'))`; details in [VERSIONS.md](VERSIONS.md#breaking-change-details). The `SemanticsConfiguration.headingLevel` API page still says web only; the breaking-change page and the engine source say otherwise (checked in VERSIONS.md).
 - **Screen reader voice:** set a specific voice with `TextSpan.locale`. "`MaterialApp.locale` and `Localizations.override` will affect screen reader voices starting from flutter 3.38 release."
 - **Assistive technologies to test:**
   - Screen readers: TalkBack (Settings > Accessibility > TalkBack), VoiceOver (Settings > Accessibility > VoiceOver). Web: VoiceOver and TalkBack on mobile browsers; VoiceOver, JAWS and NVDA on desktop. Windows: Narrator, NVDA. Linux: Orca.
@@ -107,4 +112,5 @@ void main() {
 - **Largest font:** on a small-screen device at the largest OS font size, no text is cut off and no overflow stripes appear.
 - **Color:** contrast meets 4.5:1 for small text and 3.0:1 for large text, and the screens still work in grayscale and colorblind modes.
 - **No no-op handlers:** search for empty `onPressed: () {}` callbacks; there are none.
+- **One stop per control:** with TalkBack or VoiceOver, an icon-plus-label button or list tile is a single focus stop, and its label names its state ("Dark theme").
 - **Web builds:** `SemanticsBinding.instance.ensureSemantics()` runs when `kIsWeb`, or the "Enable accessibility" button is documented for users; the semantics debug run shows labeled nodes.
