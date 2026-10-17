@@ -18,6 +18,10 @@
 
 Fades shorter than about 100 ms read as a pop; for a deliberate instant change, change it instantly and ease what follows.
 
+**Some articles run longer on purpose.** The RNDR Realm gooey dropdown opens in about 700 ms (a 500 ms move, then a 600 ms resize from 100 ms in), against 150-220 ms here; Benji Taylor's morphing icons run 300 ms on `[0.32, 0.72, 0, 1]`, a curve not in the table below, against 150-250 ms for an icon swap. The table keeps frequent controls quick. Neither wins.
+
+**Frequency sets flourish, not only duration:** the rarer the feature, the more delight it can carry (Family's delight-impact curve, [PATTERNS.md](PATTERNS.md#delight-where-flourish-goes)).
+
 ## Curves
 
 Use about three, each with one job. `linear` only for progress bars, spinners and continuous drift.
@@ -42,6 +46,10 @@ Use about three, each with one job. `linear` only for progress bars, spinners an
 }
 ```
 
+- **Read a curve as a graph:** start (0,0) and end (1,1) are fixed, so only (x1,y1) and (x2,y2) move; the curve doesn't pass through them, each one pulls it toward itself. For a curve that "pops out quickly and then settles gently", give the first control point a large y value and put the second near (1, 1). Draw the shape first, then find the control points (kciter). The math is in [MATH.md](MATH.md).
+- **Choose by purpose:** a curve fast at the start draws the eye quickly; one fast at the end lets something disappear quietly; `linear` rises at a constant speed and stops abruptly, which feels mechanical.
+- **Entrance curve, both ways:** kciter treats an `ease-in` entrance as a valid "more relaxed and less noticeable" choice and says an element that appeared with ease-in "should disappear with ease-out". This table eases arrivals out and exits in. Both agree the two directions need different curves ("using the same easing graph for appearing and disappearing makes the motion feel awkward"); they disagree on which way round.
+
 ## Springs
 
 Springs for things that feel physical (controls, cards, dragged objects); eased tweens for type and fades. In Motion, write springs as `visualDuration` and `bounce` (the time to visually reach the target, and how much it overshoots), so they sit in the same scale as the duration table:
@@ -56,19 +64,33 @@ Springs for things that feel physical (controls, cards, dragged objects); eased 
 
 - Motion's physics default (`stiffness: 100, damping: 10, mass: 1`) wobbles visibly; set a transition on purpose instead of inheriting it.
 - If everything bounces, nothing feels precise: overshoot is for true landings (a toggle knob, a dropped card), a couple per screen at most. Errors, prices and numbers never bounce.
+- **What the physics knobs do:** stiffness sets how tight the spring is ("Higher values make it snap faster"), damping how much it bounces ("Higher values reduce oscillation"). The RNDR Realm list-to-detail morph uses `{ type: "spring", stiffness: 250, damping: 30 }`. A physics spring has no duration: it runs until it converges, and `visualDuration` is Motion's way of giving it one (the force math is in [MATH.md](MATH.md#a-spring-by-hand)).
 - Don't mix parameterisations in one codebase (stiffness and damping in one file, duration and bounce in the next); pick one and keep the presets in one module.
 - Springs keep their velocity when interrupted; that's why a dragged or retargeted element should be a spring, not a tween.
 
 ## Staggers and sequencing
 
 - **Total stagger under about 500 ms,** whatever the count: list items 30-60 ms apart (a dense grid 20-40 ms), words about 90 ms. With many items, stagger by distance from a focal point (the clicked card, the top left) so the feel stays the same at any count, and cap how many items animate at all (the first visible 8-12; the rest just appear).
-- **Entrances run 30-50% longer than exits.**
+- **Entrances run 30-50% longer than exits.** The RNDR Realm gooey dropdown doesn't: its exit takes about 750 ms (the size shrinks over 500 ms, the move follows after 150 ms over 600 ms) against 700 ms in, with the stages reversed.
 - **Distance scales duration:** about 350 ms plus 1.35 ms per pixel travelled (200 px is about 620 ms), clamped to the element's range. A long slide at a short duration reads as a jump; a short nudge at a long one reads as lag.
-- **A follow-up move starts 55-75% into the move before it,** so both settle together instead of stop-then-lurch.
-- **One element, two moves** (slides in, then lifts): start the second stage about 60% through the first, so the speed never reaches zero at the corner; under about 25% overlap the corner reads as a stop, over about 50% the two moves merge into one diagonal.
-- **Content inside a morphing container** appears about 80 ms after the morph starts and disappears about 120 ms before the next one.
-- **Overlap transitions:** the next view starts arriving before the last has fully left; a gap reads as loading.
-- **Derive, don't schedule:** when several things depend on one value (a slider, a scroll position, upload progress), drive them all from that value instead of giving each its own timer.
+- **A follow-up move starts 55-75% into the move before it,** so both settle together instead of stop-then-lurch. kciter's "overlapping" placement starts B at A's 80% mark instead, later than this range, which "reduces the sense of a gap between pieces".
+- **One element, two moves** (slides in, then lifts): start the second stage about 60% through the first, so the speed never reaches zero at the corner; under about 25% overlap the corner reads as a stop, over about 50% the two moves merge into one diagonal. A counter case: the RNDR Realm dropdown starts its resize 100 ms into a 500 ms move (20% through, a heavy overlap) and still reads to its author as "slides down and then opens up"; "If you animate all the properties at the same time it feels stiff".
+- **Content inside a morphing container** appears about 80 ms after the morph starts and disappears about 120 ms before the next one. The RNDR Realm dropdown waits 150 ms (a 300 ms ease-out fade, "so it doesn't show up while the container is still a tiny circle"), fades out over 150 ms ease-in, and staggers its rows at 200 ms plus 50 ms each, behind the content fade.
+- **Overlap transitions:** the next view starts arriving before the last has fully left; a gap reads as loading. Mutually exclusive indicators are the exception: Liveline's momentum arrows "fade out fully before the new direction fades in".
+- **Derive, don't schedule:** when several things depend on one value (a slider, a scroll position, upload progress), drive them all from that value instead of giving each its own timer. Liveline's line, Y-axis range, badge and grid labels share one lerp, so the chart moves as one thing.
+
+## Composing a sequence
+
+- **Four placements** (kciter): sequential (B starts when A ends); overlapping (B starts before A ends); simultaneous (A and B start together on different properties); staggered (the same animation on several elements, offset in time). Built as separate pieces, each can be changed alone: "If the card rises too quickly, you fix just that piece."
+- **Split properties into tracks:** when several properties change at once, give each "an independent track"; "the tracks don't need to know about each other". kciter's pricing card on select: border 150 ms ease-out, scale on a spring, details reveal 400 ms ease-out. In Motion, a `transition` object keyed by property does it, as in [the button-to-panel morph](PATTERNS.md#a-button-that-grows-into-a-panel).
+- **State transitions for staged motion:** when one element passes through stages whose character changes completely, move on "when a condition is met" ("explode when velocity reaches 0", "remove when opacity reaches 0"), so the emphasis shifts from when to under what condition and the animation reads as a state machine. It fits physics and user interaction, where the outcome is hard to predict:
+
+| State | What changes | Graph | Transition condition |
+|---|---|---|---|
+| Launch | height ↑ | acceleration (ease-in) | velocity = 0 → explode |
+| Explode | particles split | instant switch | immediately → spread |
+| Spread | radius ↑, speed ↓ | deceleration + gravity | time elapsed → fade |
+| Fade | opacity ↓ | linear decrease | opacity = 0 → remove |
 
 ## Direction and weight
 
@@ -81,4 +103,4 @@ Springs for things that feel physical (controls, cards, dragged objects); eased 
 
 - Text being read moves at most a few pixels per frame; it lands sharp, never still drifting.
 - Nothing flashes full-screen in under 300 ms.
-- On 120 Hz screens, durations stay the same (time, not frames): never animate by frame counts.
+- On 120 Hz screens, durations stay the same (time, not frames): never animate by frame counts. Liveline (8% per frame) and kciter's exponential approach ease by a fixed fraction per frame instead; both positions are in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).

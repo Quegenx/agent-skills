@@ -17,6 +17,7 @@ A filter, not a style. It doesn't prescribe colors, fonts or layouts and doesn't
   Don't use a cream or off-white background, italic accent words in headings, numbered "01 / 02 / 03" section labels, monospace labels, or pill-shaped buttons.
   ```
   Then look at what it chose instead. If you don't like that either, add it to the list and ask again.
+- **Feedback on a built screen: point, don't describe.** Precision drops as feedback moves from the thing itself to a description of it. In words, "the agent has to guess which element you mean, search for it in the codebase, and hope it found the right one"; "screenshots are only somewhat better because the agent still has to infer which part you're referring to." Benji Taylor's "Annotating for agents" points at the element instead: an overlay on localhost where you click any element (or pause an animation to catch a mid-transition state) and leave a note, which captures "class names, selectors, positions, and element context" and generates "agent-agnostic markdown" to paste into whatever agent you use. "The agent can `grep` for the exact selector instead of guessing which 'blue button' I meant", and the notes get short: "Slow this down." "Make this more rounded." His tool is Agentation (https://agentation.com); others in the same direction are Vercel's toolbar (annotate previews), React Grab (element selection) and Figma MCP (connects designs to code). Style guidelines (the `.md` files of design preferences) give agents a baseline, "but guidelines describe principles; feedback addresses instances."
 - Never clone a well-known product's look unless asked. References inform; they aren't templates.
 
 ## 2. Declare the read and the dials
@@ -46,16 +47,22 @@ Then hold the page to them: RHYTHM 3 with identical sections fails; MOTION 1 wit
 
 ## 4. Allowed with a written reason
 
-Gradients, glassmorphism, glow, big shadows, pill shapes, badges, arrows on buttons, background grids and dots, monospace or wide-tracked caps, icon sets, illustrations, card grids, scroll animation and dark-by-default are all tools. Each fails only when it appears as a default with no stated purpose (a hierarchy level, the brand's identity, readability, guiding attention). Write the reason in one line per major decision. Dose limits where the default is "everywhere": glass or blur on at most one or two elements; glow on at most one or two focal elements; one accent color used at the key moments, not on every icon and border; two or three core colors plus one accent.
+Gradients, glassmorphism, glow, big shadows, pill shapes, badges, arrows on buttons, background grids and dots, monospace or wide-tracked caps, icon sets, illustrations, card grids, scroll animation and dark-by-default are all tools. Each fails only when it appears as a default with no stated purpose (a hierarchy level, the brand's identity, readability, guiding attention). Write the reason in one line per major decision. Dose limits where the default is "everywhere": glass or blur on at most one or two elements (Aave's "Building Glass for the Web" instead builds "a family of components that use the glass as a core part of their experience"; where glass has that purpose, set the refraction by what must stay readable underneath: their slider uses "a gentler bend than the switch, a fraction of the refraction strength, since the fill underneath has to stay readable as a value", and controls over moving video "lean on their highlight and rim light to stay crisp against whatever frame happens to be behind them"); glow on at most one or two focal elements; one accent color used at the key moments, not on every icon and border; two or three core colors plus one accent.
 
 ## 5. Alive, not just clean
 
-Removing slop leaves a sterile page unless life is added on purpose:
+Removing slop leaves a sterile page unless life is added on purpose. Benji Taylor's "Family Values" puts the same from the motion side: "A lifeless product feels like a dead product, and a dead product feels uncared for."
 - one clear focal point per screen;
 - contrast of size, weight and color used deliberately;
 - whitespace that structures, not leftovers;
 - one deliberate accent (not zero, not everywhere);
-- one identity motif repeated (a shape, a gesture, a typographic voice) that makes it belong to this product.
+- one identity motif repeated (a shape, a gesture, a typographic voice) that makes it belong to this product (Honk commissioned two faces, one for the app UI and one used only in the message bubbles: "These fonts gave Honk a personality you couldn't find anywhere else");
+- the same polish on rarely used features as on frequent ones (Family Values): "our ability to introduce delight anywhere depends on achieving a consistent level of polish everywhere", or it's "like going to a fancy restaurant but finding it has a dirty bathroom";
+- complexity kept out of sight until it's needed: the fundamentals stay at hand and "everything else would appear as it became most relevant" (Family Values).
+
+**Where to spend delight** (Family Values): "the potential for delight increases as the frequency of feature usage decreases", so rare, significant moments get marked and frequent flows get small touches only; the examples are in [where flourish goes](../../frontend/ui-animation/PATTERNS.md#delight-where-flourish-goes). "Delight is of course subjective... The important part is the deliberate effort to try and make something special at all."
+
+**Play without a purpose is contested.** This skill rejects technique without a purpose; Benji Taylor's "Honkish" says of Honk, "Not everything needed a purpose. Sometimes, the fun was in just seeing what would happen," and notes that some saw its playful interactions "as a waste of time, while others loved them. Both takes are valid."
 
 The question before calling it done: **if you swapped the logo and name, would this still feel like its own thing?** If not, it's generic. Rework the composition, not the decoration.
 

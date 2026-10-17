@@ -33,7 +33,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Three steps, always | "How it works" with round numbered icons, always three |
 | Logo bar | A row of company logos under the hero that nobody can name |
 | Three tiers, middle highlighted | Whatever the real pricing is |
-| Template motion | Everything fades up, floats, scales or bounces |
+| Template motion | Everything fades up, floats, scales or bounces (floating is contested: kciter's "How to Design an Animation" builds the landing-page floating background from one `sin`, each element with "a different amplitude, frequency, and phase", and calls it "natural-looking"; this scan counts floating as a sign) |
 | Uniform spacing | Identical padding and gaps in every section |
 
 ## Decoration and type

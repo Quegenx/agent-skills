@@ -12,7 +12,8 @@ Speed comes from doing less work, then from doing it at the same time, and only 
 | Find where the time goes; cut round trips; parallelize; index; deterministic counts and CI ratchets; steering an agent's perf push | [MEASURE.md](MEASURE.md) |
 | Push filtering, aggregation, ordering and limits into SQL; anti-joins, top N, window functions, sargable predicates, keyset pagination, index design and index regressions, full-text search | [QUERIES.md](QUERIES.md) |
 | Add, fix or remove a cache at any layer; large lookup data: fetch granularity, cache tiers, Bloom filters, indexed shards | [CACHING.md](CACHING.md) |
-| Loading states: static shell, prefetch on hover, cached visited pages, waterfalls, no spinners; a static input that takes typing before hydration; layout shift per named region; images and video that load late or shift the layout, playing only visible video, long lists, DOM vs canvas (animation itself: the `ui-animation` skill) | [BROWSER.md](BROWSER.md) |
+| Loading states: static shell, prefetch on hover, cached visited pages, waterfalls, no spinners; a static input that takes typing before hydration; layout shift per named region; images and video that load late or shift the layout, playing only visible video, long lists, DOM vs canvas, WASM and WebGPU; the tab icon in background tabs (animation itself: the `ui-animation` skill) | [BROWSER.md](BROWSER.md) |
+| JavaScript holding the main thread: long tasks, splitting and yielding, batching and backpressure, priority queues, Web Workers and transfers, dropping or merging what the screen can't use | [MAIN-THREAD.md](MAIN-THREAD.md) |
 
 ## The rules
 

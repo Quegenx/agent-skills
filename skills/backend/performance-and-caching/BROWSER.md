@@ -1,6 +1,6 @@
 # Media, lists and rendering in the browser
 
-A page feels slow when it makes you wait for content it could have had ready, when media arrives late or shifts the layout, long lists render everything, or the main thread is busy when someone taps. Measure first (the Performance panel's frames and long tasks, INP for interactions, LCP and CLS for loading; [MEASURE.md](MEASURE.md)), then fix in this order.
+A page feels slow when it makes you wait for content it could have had ready, when media arrives late or shifts the layout, long lists render everything, or the main thread is busy when someone taps. Measure first (the Performance panel's frames and long tasks, INP for interactions, LCP and CLS for loading; [MEASURE.md](MEASURE.md)), then fix in this order. A long task is anything over 50 ms holding the main thread; INP and TBT (total blocked time during load) both express how long it was blocked. Splitting, batching, prioritizing and moving JavaScript work to a worker are in [MAIN-THREAD.md](MAIN-THREAD.md).
 
 ## Animation
 
@@ -41,7 +41,7 @@ const warm = () => void queryClient.query(dayQuery(day)).catch(() => {});   // a
 3. **Visited stays visited.** Keep every viewed page's data in the cache with a `staleTime` that matches how fast it really changes, so going back renders instantly from the cache with no new request while it is fresh, and at most a silent background refresh after that, never a placeholder. When the key changes (next page, another filter), keep the previous data on screen (`placeholderData: keepPreviousData`) instead of dropping to a placeholder. A placeholder is shown only after checking the cache came up empty.
 4. **Parts resolve on their own.** Split the page into independently loading regions, each with its own boundary, so the fast parts render as their data arrives and the slow one doesn't hold the rest hostage.
 5. **Kill waterfalls.** List which component waits on which query. A request that can't start until another finishes (a child fetching after its parent rendered) belongs in the route loader or in one combined query, started together. Slow queries leave the critical path: fetch them after the first paint, page them, or ask for one list instead of the whole table. Some of this is a backend change (an endpoint that returns what one screen needs, an index); list those separately. A component that walks every page of a list to compute totals or a chart (one `fetchNextPage` after another) shows numbers that keep moving while the tail loads: compute them on the server, and give pickers a search query with a limit instead of the whole table.
-6. **No spinners for data.** Find every one first (search the code for spinner and loader components, `isLoading` and `isPending` branches, and pending fallbacks), then replace each with prefetched content, a skeleton shaped like the real layout (so nothing moves when content arrives), or nothing at all for waits under about 300 ms. A placeholder that does appear should feel urgent, not calm: short cycles, under a second per pass ([the `ui-animation` skill's TIMING.md](../../frontend/ui-animation/TIMING.md)). A user-triggered action is different: update optimistically, and show progress only when the outcome can't be predicted. The one place a working indicator is arguably fair is an agent's live reasoning or tool steps, and even there streamed status text (what it is doing now) says more than a spinner ([the `api-design` skill's STREAMING.md](../api-design/STREAMING.md)).
+6. **No spinners for data.** Find every one first (search the code for spinner and loader components, `isLoading` and `isPending` branches, and pending fallbacks), then replace each with prefetched content, a skeleton shaped like the real layout (so nothing moves when content arrives), or nothing at all for waits under about 300 ms. A live chart's skeleton can be its own flat line: Liveline (a live line chart for React) shows a breathing line while it waits for a connection, morphs that line into the chart when data arrives, and falls back to a quiet empty state if data never comes. A placeholder that does appear should feel urgent, not calm: short cycles, under a second per pass ([the `ui-animation` skill's TIMING.md](../../frontend/ui-animation/TIMING.md)). A user-triggered action is different: update optimistically, and show progress only when the outcome can't be predicted. The one place a working indicator is arguably fair is an agent's live reasoning or tool steps, and even there streamed status text (what it is doing now) says more than a spinner ([the `api-design` skill's STREAMING.md](../api-design/STREAMING.md)).
 7. **Media without the wait spinner:** a soft frame first and sharper as it arrives (`srcset`, and adaptive streaming such as HLS with several renditions for video, not one 4K file sent whole), self-hosted or lightweight players instead of heavy third-party iframes, and the poster in place from the first frame.
 
 Report what you changed and, separately, what needs a backend change.
@@ -120,6 +120,7 @@ export function playVisibleVideos(videos: HTMLVideoElement[], maxPlaying = 3): (
 ```
 
   A video that scrolls in while the cap is full waits for its next visibility change; if a freed slot should start it at once, keep a queue of visible-but-waiting videos and start the first when one pauses.
+- **The same goes for anything that runs continuously:** carousels, animated promo banners and live charts are pure waste while off screen. Run them while visible and stop them when they leave; a heavy widget's initialization can wait until it nears the screen.
 
 ## Layout shift
 
@@ -129,16 +130,100 @@ export function playVisibleVideos(videos: HTMLVideoElement[], maxPlaying = 3): (
 
 ## Long lists
 
-Render what's visible: virtualize long lists (TanStack Virtual), or let the browser skip off-screen sections with `content-visibility: auto` plus `contain-intrinsic-size`. Endless carousels from a few items are in the `ui-animation` skill's PATTERNS.md.
+Render what's visible: virtualize long lists (TanStack Virtual), or let the browser skip off-screen sections with `content-visibility: auto` plus `contain-intrinsic-size`. A third way: keep off-screen items as empty shells that hold their height, fill them through an `IntersectionObserver` as they approach, and empty them when they leave. It matters for a kept-alive feed, where returning to it otherwise recomputes style and layout for every post, including far-off ones (in a demo with 1,500 posts, stacked that high on purpose, rendering everything froze for hundreds of ms on every return; rendering only the visible ones was instant):
+
+```js
+const io = new IntersectionObserver(
+  (entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) fill(entry.target); // fill as it approaches
+      else empty(entry.target); // empty it when it leaves, keeping its place
+    }
+  },
+  { rootMargin: '400px' } // headroom to fill before the scroll arrives
+);
+
+feed.querySelectorAll('.feed-item').forEach((el) => io.observe(el));
+```
+
+The two readings of `content-visibility`: this file recommends it as above; the article "The Browser's Main Thread Is Expensive" (kciter.so) prefers the observer, "the option that behaves predictably everywhere", because as of its writing (July 2026) "implementations vary between engines, and Safari has a performance bug that makes returning to the page slower rather than faster". It names no Safari version and links no bug. WebKit's own notes say Safari supports `content-visibility` from 18.0, and the Safari 26.0 notes list `content-visibility` fixes (skipped content made findable, repaint when changing to `hidden`); no WebKit or MDN source found describes the slower-return bug, so treat it as the article's unverified claim and measure in Safari before choosing.
+
+Endless carousels from a few items are in the `ui-animation` skill's PATTERNS.md.
 
 ## Real DOM or canvas
 
 Real elements keep accessibility, text selection, find-in-page, SEO, CSS styling and native lazy loading; CSS 3D transforms on real elements go further than most expect (rings, coverflow, a helix of cards). Reach for canvas or WebGL when the count is in the thousands, when every pixel is computed (particles, shaders), or when the DOM's layout cost is the measured bottleneck, and then rebuild what you gave up (an accessible list, focus handling, alt text).
 
+- **A chart redrawn every frame** is a canvas case: Liveline is one `<canvas>` and one `requestAnimationFrame` loop, built because "every charting library I tried was either too heavy for a simple live feed, or too rigid to feel alive."
+- **An effect on live content stays on live DOM.** An SVG filter keeps the content underneath selectable, scrollable and clickable "on the same compositor as the rest of the page"; Aave's glass drops to WebGL only where there is no live DOM (a canvas-drawn QR code) or the browser won't filter it (Safari won't apply an SVG filter to a live `<video>`), with the same displacement map driving both renderers. The filter details are in the `svg` skill's [FILTERS.md](../../frontend/svg/FILTERS.md).
+- **Past canvas, only when the profile shows compute, not transfer:** lagging UI, dropped frames or a main thread busy for too long are the sign; then profile which part is expensive. "In many apps it's still the network, too much data or too many requests, and in that case these tools won't help." WASM fits CPU-heavy data processing and transformations; WebGPU fits massively parallel work (physics, graphics, large-scale computation). In one demo, plain JS with Canvas 2D started struggling at around 40k particles on the author's machine, WebGPU ran more than 500,000 with their own physics, and WASM was roughly 2 to 3 times faster than an optimized JS equivalent for a mapping step that ran once per rebuild; a reader noted the Canvas 2D version was a software rasterizer using Canvas 2D only for the final `putImageData` blit, not the best possible Canvas 2D, so the numbers describe that workload.
+- **Push Canvas 2D further before leaving it:** pre-render a sprite once on an `OffscreenCanvas`, reuse it, and move the rest to workers so the main thread only issues draw calls.
+- **WebGPU needs a fallback:** it is not yet universally supported, with gaps especially on mobile devices and in environments like Linux. Rust compiled to WASM and WebGPU shaders fit into an ordinary React app, added incrementally when needed.
+
 ## Bundle
 
-Load heavy, rarely used components with a dynamic `import()` on the route that needs them; animation-library bundle size is in the `ui-animation` skill's PERFORMANCE.md.
+Load heavy, rarely used components with a dynamic `import()` on the route that needs them, and check that the build actually produced the split chunks: often everything still ends up in one big bundle even though on paper there's code splitting. Animation-library bundle size is in the `ui-animation` skill's PERFORMANCE.md.
+
+## The tab icon and background tabs
+
+- **Most sites shouldn't animate the favicon:** a spinning icon in every tab gets annoying fast, and it eats CPU. It fits real state the user cares about in a page that lives in a background tab: loading or processing (long uploads, exports, builds: users switch tabs while they wait), notification badges (a subtly pulsing red dot gets noticed faster than a static one), live data feeds (trading dashboards, monitoring, sports scores), and brand moments, sparingly. It's a bad fit when it is just decoration, runs the entire time the tab is open, or targets Safari and mobile, where it barely works.
+- **Static first:** for "1 unread message", swap to a static red-dot version of the favicon. A tab title change or a static badge often says the same thing.
+- **The technique:** draw a frame to a hidden canvas, export it as a PNG data URL, and assign it to the icon link:
+
+```js
+// 1. Get or create the favicon link element
+let link = document.querySelector('link[rel~="icon"]');
+if (!link) {
+  link = document.createElement('link');
+  link.rel = 'icon';
+  document.head.appendChild(link);
+}
+// 2. Draw a frame to a hidden canvas
+const canvas = document.createElement('canvas');
+canvas.width = 32;
+canvas.height = 32;
+const ctx = canvas.getContext('2d');
+function drawFrame(t) {
+  const scale = 0.5 + 0.5 * Math.abs(Math.sin(t / 400));
+  ctx.clearRect(0, 0, 32, 32);
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath();
+  ctx.arc(16, 16, 14 * scale, 0, Math.PI * 2);
+  ctx.fill();
+  // 3. Export the canvas to a data URL and assign it to the favicon
+  link.href = canvas.toDataURL('image/png');
+  requestAnimationFrame(drawFrame);
+}
+requestAnimationFrame(drawFrame);
+```
+
+- **16x16 or 32x32, as PNG:** the icon renders tiny anyway, and a bigger canvas means larger data URLs and more CPU per frame. `canvas.toDataURL('image/png')` is the only thing that works reliably; don't encode ICO yourself. To judge detail, mirror the same canvas at 8x with nearest-neighbor scaling.
+- **Background tabs throttle it.** Firefox animates smoothly even when the tab isn't focused. Chrome and Edge animate while the tab is active; when you switch away, `requestAnimationFrame` throttles to roughly once per second. Safari sometimes updates the icon only at slow intervals even while focused. That is fine for dots and progress states, which only need to update every second or so.
+- **A worker keeps it moving in a background tab,** by the article's claim (it measures nothing): workers aren't throttled in the background, and `OffscreenCanvas` renders frames without the DOM. The demo draws every 20 ms, exports with `convertToBlob` and `FileReader`, and the main thread only assigns the string to the link's `href`. Worth it for apps users park in a background tab (chat clients, build dashboards, monitoring tools); otherwise the main-thread version is simpler and good enough.
+
+```js
+// In your page
+const worker = new Worker('favicon-worker.js');
+worker.onmessage = (e) => {
+  if (e.data.type === 'updateFavicon') {
+    document.querySelector('link[rel~="icon"]').href = e.data.dataUrl;
+  }
+};
+worker.postMessage({ type: 'init', images: ['icon-a.png', 'icon-b.png'] });
+
+// In favicon-worker.js
+const canvas = new OffscreenCanvas(16, 16);
+const ctx = canvas.getContext('2d');
+// ...draw a frame...
+const blob = await canvas.convertToBlob();
+const reader = new FileReader();
+reader.onloadend = () => self.postMessage({ type: 'updateFavicon', dataUrl: reader.result });
+reader.readAsDataURL(blob);
+```
+
+- **A flip between two icons:** hold icon A for 3 seconds, compress its width to zero along a cosine, swap to icon B and expand it back: `width = canvas.width * Math.abs(Math.cos(progress * Math.PI))`, with the second image taking over once `progress` crosses 0.5 (from Aymkdn/animated-favicon's `favicon_worker.js`).
+- **Stop it, and put the original back:** even a subtle pulse drains battery on mobile. Stop when the loading state ends, when the user reads the notification, or when the tab loses focus. Save `link.href` before animating and restore it on `beforeunload` or when the operation completes; a tab that keeps showing a half-broken animation after navigation looks buggy.
 
 ## Prove it
 
-Record the page load and the main interactions in the Performance panel with 4x CPU slowdown and network throttling: the shell paints before any data, hovering a link then clicking shows the next page with no placeholder, going back shows the previous page instantly, no spinner appears for data, the largest image arrives early, no layout shift when media loads, no shift in any named region after first paint, only visible videos play, and long lists render only what's on screen.
+Record the page load and the main interactions in the Performance panel with 4x CPU slowdown and network throttling: the shell paints before any data, hovering a link then clicking shows the next page with no placeholder, going back shows the previous page instantly, no spinner appears for data, the largest image arrives early, no layout shift when media loads, no shift in any named region after first paint, only visible videos play, long lists render only what's on screen, and an animated tab icon stops and returns to the original when its state ends.

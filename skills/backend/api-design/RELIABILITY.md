@@ -82,6 +82,7 @@ const { data } = await supabase.from("loans").select().abortSignal(signal); // s
 - In the database, also set a server-side limit (`statement_timeout`) so a runaway query stops even if the client can't cancel it.
 - With Effect, `Effect.timeout("2 seconds")` interrupts the effect; make sure the underlying calls honor interruption (pass the provided signal to `fetch`).
 - The application deadline is separate from transport limits (platform function max duration, proxy and load balancer idle timeouts). Set the application deadline below them so you return a clean 504 instead of being cut off.
+- **Each inner timeout sits below the outer one** (a timeout budget: gateway 3s, backend DB timeout about 2.5s). With a gateway timeout of 3s over a 5s query, the user gets a 504 while the backend finishes and "proudly records a success": "the backend metrics show no failures, and the gateway metrics show no successes", and under overload the wasted work delays recovery.
 
 **Prove it:** call a slow report with a short budget and confirm the database query is gone from the running queries after the deadline (`pg_stat_activity`, or a trace span that ends at the deadline), not just that the client got an error. A 504 proves the cancellation reached the top of the stack, not that the work below stopped.
 
@@ -133,5 +134,6 @@ function rateLimitKey(req: Request, user: { id: string } | null): string {
 - A reasonable starting point for a public API is around 1,000 requests per hour per key, then per-endpoint limits, higher tiers for paying customers, and a lower one for a client that misbehaves.
 - Keep counters in a shared store (Redis, the database) when there is more than one instance; an in-memory limiter gives each instance its own budget, so the real limit is the limit times the instance count. In a distributed system, enforce limits at the gateway or reverse proxy, before requests reach the services.
 - Respond 429 with `Retry-After`, and document the limits.
+- **Shed load when overloaded.** A queue in front of a saturated server is "debt that lengthens everyone's wait". Cap it and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly", instead of "everyone dies slowly and fairly, together" ([DIAGNOSE.md](../observability/DIAGNOSE.md#queues-backpressure-load-shedding)).
 
 **Prove it:** two users each get their own budget; repeated requests hit 429 at the documented point; a request with a forged `X-Forwarded-For` lands in the same bucket as the real address.

@@ -3,7 +3,7 @@
 ## Get a breakdown
 
 - Time each step of the request: every database query, every external call, the compute in between, serialization. Tracing (OpenTelemetry spans, set up as in the `observability` skill) shows it as a waterfall; at minimum, log durations per step with the request id.
-- Measure on realistic data sizes and concurrency, several runs, and look at the slow end (p95, p99), not just the average.
+- Measure on realistic data sizes and concurrency, several runs, and look at the slow end (p95, p99), not just the average: an average erases the shape of the distribution. A server where every request takes about 100 ms and one where most take 30 ms but some take 900 ms can both average 100 ms.
 - **Define each journey metric so they compare:** add instrumentation until every one starts with a user interaction, ends once the result is rendered, and separates client and server work. Pick the journeys from usage data (in one case four journeys made up 95% of activity and gave thirteen measurements across web and desktop). That push reported real users at the 75th percentile, and afterwards the 95th percentile still had room to improve.
 - **Every new count finds waste, so keep finding more things to measure:** once there is a number to beat, the optimizing can start. Measured cases: a React hook census found 6,900 hooks and 900 store subscriptions in a composer's typing path, re-rendering on every keystroke; counting style recalculations found a single `:root:has()` selector adding 24 ms to every DOM change; tracing code paths after first paint found a leftover `location.reload()` causing half a million hidden reloads a day that no load metric saw; profiler samples from idle tabs showed identical cache snapshots cloned into IndexedDB twice a minute, all on the main thread.
 - In Postgres, run `explain (analyze, buffers)` on the slow queries: look for sequential scans on large tables, row estimates far from actual rows, and sorts or joins spilling to disk. In Supabase, the query performance reports show the most expensive queries.
@@ -13,7 +13,7 @@ Write the baseline: total time and each step, with the data size and environment
 
 ## Remove work
 
-- **Round trips add up.** Each trip to the database or another service costs milliseconds (often 5 to 10 or more) before any work happens, so ten trips in a loop are visible.
+- **Round trips add up.** Each trip to the database or another service costs milliseconds (often 5 to 10 or more) before any work happens, so ten trips in a loop are visible. Look for hidden ones in the Network panel too: in one second-hand report, adding a custom header made a difference because every GET triggered a preflight.
 - **N+1 queries:** a query per item in a list. Load them in one query (a join, `where id = any($1)` / `in (...)`, or a batched loader).
 - **Several queries for one response:** combine them into one database function that returns everything (`supabase.rpc(...)` returning JSON), or one Convex query that reads all it needs, instead of a round trip per piece.
 - **Several calls to the same service:** ask it for one batched call that returns everything the caller needs.

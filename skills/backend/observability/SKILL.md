@@ -12,6 +12,7 @@ When a request fails halfway through three services and a queue, the question is
 | Wire the Node SDK, custom spans and metrics, log correlation, request context, errors, sampling, tracing through queues | [INSTRUMENT.md](INSTRUMENT.md) |
 | Where telemetry goes: direct export, one collector, agent plus gateway, local stacks, Grafana Cloud | [COLLECTOR.md](COLLECTOR.md) |
 | Liveness and readiness endpoints and what they check | [HEALTH.md](HEALTH.md) |
+| Read a dashboard, diagnose an incident, check a deploy, write the postmortem | [DIAGNOSE.md](DIAGNOSE.md) |
 
 ## The rules
 

@@ -8,20 +8,37 @@ At 60 Hz a frame is 16.7 ms and the browser keeps part of it: budget about 10 ms
 - **Compositor animations survive a busy main thread.** CSS transitions and animations and the Web Animations API on transform and opacity keep running during a long task; JavaScript that writes styles every frame stutters the moment the page does other work. Motion (14.2 and later) runs independent transforms (x, y, scale and rotate animated separately, started at different times or with springs) hardware accelerated through `animate` and `motion` components.
 - **Independent transforms:** the CSS `translate`, `rotate` and `scale` properties animate separately from each other but not per axis; animating x and y on different timings in plain CSS needs composite animations, which compose in start order. A library that keeps each value separate avoids that.
 - **Keep the transform function list identical across keyframes** (`translate(...) rotate(...) scale(...)` everywhere). When the lists differ, the browser interpolates through matrices, and a turned card swings along an unexpected path.
+- **A filter is cheap to move; regenerate its map only when the shape changes:** a glass lens slider shifts only the filter's region as it moves and keeps its displacement map, "so the motion holds a steady frame rate even on a phone. The map is regenerated only when the glass changes shape, never when it simply changes place." The filter itself is in [the `svg` skill](../svg/SKILL.md).
 - **`will-change: transform` only for a measured problem,** on elements about to animate, removed afterwards; every promoted layer costs memory, and promoting everything makes scrolling worse.
 
 ## React: animate without re-rendering
 
-- A value that changes every frame lives in a motion value (`useMotionValue`, `useTransform`, `useSpring`, `useScroll`) or a ref that writes the style, never in state: state re-renders the component tree on every frame.
-- Don't animate by toggling classes in a loop or reading layout (`getBoundingClientRect`, `offsetHeight`) inside an animation frame after writing styles: a read after a write forces layout. Read everything first, then write.
+- A value that changes every frame lives in a motion value (`useMotionValue`, `useTransform`, `useSpring`, `useScroll`) or a ref that writes the style, never in state: state re-renders the component tree on every frame. The same goes for text: Liveline's value overlay "updates at 60fps through direct DOM manipulation, not React re-renders".
+- Don't animate by toggling classes in a loop or reading layout (`getBoundingClientRect`, `offsetHeight`) inside an animation frame after writing styles: a read after a write forces layout. Read everything first, then write. That is layout thrashing: inside a loop, "layout runs dozens of times in a single frame" (kciter):
+
+```js
+// Reads and writes interleaved: forces a layout recalculation every iteration
+for (const el of elements) {
+  const width = el.offsetWidth; // read (needs layout)
+  el.style.width = width + 10 + 'px'; // write (invalidates layout)
+}
+
+// Finish all the reads, then do the writes together
+const widths = elements.map((el) => el.offsetWidth); // gather reads
+elements.forEach((el, i) => {
+  el.style.width = widths[i] + 10 + 'px'; // gather writes
+});
+```
+
 - Hundreds of animated items: animate a container, or only the visible ones; virtualize the rest.
+- **Dragging many items:** don't render an update every time the move event fires, and render only what changed (one developer's account of dragging 100,000 transformed rectangles; no numbers).
 
 ## Reduced motion
 
 - Respect `prefers-reduced-motion: reduce`: slides, zooms, parallax and large movements become 100-150 ms opacity cross-fades; colour and state changes stay; nothing becomes unreachable or invisible.
 - In Motion, wrap the app in `<MotionConfig reducedMotion="user">`, which turns off transform and layout animations while keeping opacity and colour. The default is `"never"`, so the user's setting is ignored until you set it.
 - In CSS: `@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms; transition-duration: 150ms; } }` is a blunt fallback; better, write the reduced version of each animation deliberately.
-- Autoplaying motion that lasts more than five seconds (carousels, background video, looping animations) needs a pause control.
+- Autoplaying motion that lasts more than five seconds (carousels, background video, looping animations) needs a pause control. A loop with no place for one, such as an animated tab icon, stops when the loading state ends, when the user reads the notification, or when the tab loses focus: "Even a subtle pulse drains battery on mobile."
 
 ## Bundle
 
@@ -29,7 +46,7 @@ Motion's `LazyMotion` with `domAnimation` and the `m` component starts at about 
 
 ## Measuring
 
-The Performance panel with 4x CPU slowdown: record the interaction and look at the animation frames for long tasks, Layout and Paint entries. The Rendering tab's "Paint flashing" and "Layer borders" show what repaints and what got its own layer. Interaction responsiveness is INP: an animation that starts late because a click handler did heavy work first is an INP problem, not an animation one; respond visually first, then do the work.
+The Performance panel with 4x CPU slowdown: record the interaction and look at the animation frames for long tasks, Layout and Paint entries. The Rendering tab's "Paint flashing" and "Layer borders" show what repaints and what got its own layer. Interaction responsiveness is INP: an animation that starts late because a click handler did heavy work first is an INP problem, not an animation one; respond visually first, then do the work. INP and TBT are "essentially ways of expressing how long the main thread was blocked" (kciter).
 
 - **Headless Chromium ticks at 60 Hz by default,** so a lab rig is capped at 60 fps. Deterministic 120 Hz frame stepping in headless Chrome via DevTools begin-frame control gives exactly 240 frames for 240 begin-frames at 8.33 ms, so "did this frame fit the 120 Hz budget" becomes an exact read rather than a noisy one. Add a frame-rate readout computed in the page from animation-frame timestamps, step through the slow interaction frame by frame timing each one, and run the rig as a nightly job to catch regressions.
 - **Price an effect in frame budget:** a word-by-word fade on streamed text costs a fifth of the frame budget; whether that is worth it is a taste call for a human, with before-and-after recordings.

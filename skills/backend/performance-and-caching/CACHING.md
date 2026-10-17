@@ -83,6 +83,7 @@ async function getOrLoad<T>(key: string, load: () => Promise<T>, ttlMs: number):
 - **Coordinate per key, never globally.** One lock or queue for the whole cache makes a refresh of one key block requests for every other key.
 - **Prefer a maintained library over this snippet in production.** `lru-cache` with a `fetchMethod` coalesces concurrent `fetch` calls for the same key, bounds size with `max`, expires with `ttl`, and can serve the stale value while refreshing or when the refresh fails (`allowStaleOnFetchRejection`, `allowStaleOnFetchAbort`). Write your own only when you understand which of those edge cases you're taking on.
 - This coordinates one process. Across instances, either accept one refresh per instance, or serve slightly stale data while one instance refreshes (stale-while-revalidate), or use a short shared lock in Redis.
+- **Put a cache hit-rate graph on the dashboard:** a 97% hit rate means the database carries only 3% of total traffic and is sized for that 3%, so when database load suddenly jumps, check the hit rate first. If the drop in hit rate and the database spike line up, the culprit is the cache side (classically a popular key's TTL expiring), not the database.
 
 ## Invalidation across instances
 

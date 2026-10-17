@@ -1,0 +1,156 @@
+# JavaScript on the main thread
+
+In most cases the speed of the code is not the problem: the code is holding the main thread, and that alone is enough to cause trouble. Ask of every piece of work: does it have to happen, now, here, at all? Measure first ([MEASURE.md](MEASURE.md)); which properties animate on the compositor is in the `ui-animation` skill's PERFORMANCE.md.
+
+## What the main thread does
+
+- **It runs all JavaScript in queue order:** your code, event handlers, timers, network response callbacks, framework internals, unrelated to the refresh cycle. It also runs the front of the rendering pipeline: `requestAnimationFrame` callbacks, style calculation, layout (reflow) and paint. Only compositing goes to the compositor thread. Steps are skipped when nothing changed.
+- **One task at a time, and nothing else happens while it runs.** "If one JavaScript function runs for 200 milliseconds, then for those 200 milliseconds the browser can't repaint the screen or receive a click from the user." Rendering can only run between tasks.
+- **A frame is about 16.6 ms at 60 Hz,** and once the browser's own processing cost is subtracted the practical budget is around 10 ms; on a 120 Hz device the budget itself is cut in half. Against that, a 200 ms task is fatal.
+- **A long task holds the main thread; anything over 50 milliseconds is generally considered a problem.** INP and TBT (total main-thread blocked time during load) are essentially ways of expressing how long the main thread was blocked.
+- **The other threads:** the compositor composites layers and handles scrolling and certain animations; raster turns paint commands into pixels; workers are created explicitly and have no DOM access. You can't give work to the compositor or raster threads directly, so "not using" the main thread means reshaping work into a form another thread can take.
+- **Four moves while staying on the thread:** splitting and batching shape task size; prioritizing and deferring decide timing. Splitting comes first, because tasks need boundaries before you can decide what to slot in between them and what to push back.
+
+## Split long tasks
+
+- **Cut a burst into pieces and hand the thread back between them.** Hundreds of chat messages arriving as one clump and rendered in one task run DOM creation, style, layout and paint hundreds of times back to back; input stutters and animations hitch. The messages themselves appear more slowly too, because the callback that receives them is also a task waiting in the main thread's line.
+
+```js
+// A batch of chat messages arrives at once
+socket.on('messages', (chats) => {
+  renderChats(chats);
+});
+
+// Draw the messages, yielding the main thread after every 20
+async function renderChats(chats) {
+  let count = 0;
+  for (const chat of chats) {
+    appendChatNode(chat); // draw one message
+
+    if (++count % 20 === 0) {
+      await new Promise((resolve) => setTimeout(resolve, 0)); // yield here
+    }
+  }
+}
+```
+
+- **Yielding does not make the work faster.** The total work is unchanged and each yield adds overhead, so wall-clock time gets longer; responsiveness improves because input and frames get the gaps. Splitting too finely backfires: the cost of yielding and resuming can exceed the work.
+- **Split by time, not count, while an animation runs or the user scrolls:** work until 5 ms after the frame started, then resume on the next frame. Anchor to the frame's start timestamp, so callbacks earlier in the frame shrink your share.
+
+```js
+async function processDuringAnimation(items) {
+  let i = 0;
+  let frameStart = performance.now();
+  while (i < items.length) {
+    // Work only until 5ms have passed since the frame started
+    while (i < items.length && performance.now() - frameStart < 5) {
+      doWork(items[i++]);
+    }
+    frameStart = await new Promise(requestAnimationFrame); // resume with the next frame's start time
+  }
+}
+```
+
+  "Why 5 milliseconds? There's nothing special about the number." It gives roughly half of the practical budget of about 10 ms to background work and leaves the rest for animation callbacks, style, layout and paint; shrink it if the animations are heavy. A demo: 4,000 particles with pairwise repulsion are about 16 million distance calculations per pass; recomputing all of it every frame blows through the frame budget on its own; at 5 ms per frame the work and the animation run smoothly side by side.
+- **`setTimeout(..., 0)` waits at least 4 ms per piece in a yield loop:** the HTML spec mandates a 4 ms minimum once `setTimeout` calls nest more than 5 levels deep, and a yield loop trips this almost immediately. Usually this doesn't matter, but where very high responsiveness is demanded the delay can become a problem.
+- **The yield tools resume at different times.** That's why some code posts a message through `MessageChannel` instead (React's scheduler uses this method). `scheduler.yield()` resumes the original work ahead of other queued tasks instead of at the back, but browser support is still uneven. `setTimeout` and `scheduler.yield()` ignore the rendering cycle; `requestAnimationFrame` resumes just before a frame, so it fits work that must keep rhythm with screen updates. For finer priority control, build your own queue on `MessageChannel`.
+- **Some work can't be split:** `JSON.parse` of a multi-megabyte response is one atomic synchronous call. That work has to leave the main thread ([Workers](#workers)).
+
+## Batch frequent work
+
+- **Backpressure:** yielding lowers throughput, so when arrivals outpace processing the backlog grows and what reaches the screen gets older. Batching raises throughput by paying the fixed cost per item once per batch. Splitting fixes tasks too long for rendering to squeeze in; batching fixes tasks so frequent that the pipeline's fixed cost repeats.
+- **Debounce and throttle scroll, resize and input handlers:** debounce runs once after things quiet down; throttle runs at most once per interval. A demo: a markdown preview of about 2,000 lines rebuilt on every keystroke lags the input; debounced at 300 ms it renders once after typing stops and typing is smooth.
+- **Draw once per frame and keep every data point.** Calling a chart library's `update()` on every message is a common mistake. A demo: 60 tickers, over 1,000 messages per second.
+
+```js
+let scheduled = false;
+
+socket.on('tick', (tick) => {
+  chart.push(tick); // keep every data point: nothing is thrown away
+  if (scheduled) return; // this frame's draw is already booked
+  scheduled = true;
+  requestAnimationFrame(() => {
+    renderBoard(); // draw once per frame
+    scheduled = false;
+  });
+});
+```
+
+- **Batch DOM writes:** append many nodes in one operation, toggle one class instead of several style properties, or build an HTML string and assign `innerHTML` once. React's virtual DOM, merged state updates in one handler, and analytics events queued into one request are the same idea.
+
+## Prioritize and defer
+
+- **A job queue on `MessageChannel`,** one message per task: jobs run FIFO, and urgent jobs cut to the front. On a main thread nothing can interrupt, order is the responsiveness the user feels:
+
+```js
+const queue = [];
+const channel = new MessageChannel();
+
+// One message = one task. Process a piece, then book the next one
+channel.port1.onmessage = () => {
+  const job = queue.shift(); // take whatever is at the front right now
+  if (!job) return; // guard against duplicate bookings
+  job();
+  if (queue.length > 0) channel.port2.postMessage(null);
+};
+
+function postJob(job, urgent = false) {
+  if (urgent) queue.unshift(job); // urgent jobs cut to the front
+  else queue.push(job);
+  if (queue.length === 1) channel.port2.postMessage(null);
+}
+```
+
+- **Idle until urgent** ([Philip Walton](https://philipwalton.com/articles/idle-until-urgent/)): do the work in order while idle, and bump a job to the front when the user needs it. Resizing attached photos before upload: clicking a photo that isn't ready pulls its preview job to the front. A demo with 60 photos and per-pixel filtering: the same total work, only the order changed.
+
+```js
+// Build previews for the attached photos, in order
+files.forEach((file, i) => {
+  const job = () => createPreview(file, i);
+  job.photoId = i; // tag it so we can find it in the queue later
+  postJob(job);
+});
+
+// Clicking a photo that isn't ready pulls its job to the front → priority bump
+onClickPhoto((i) => {
+  const idx = queue.findIndex((job) => job.photoId === i);
+  if (idx > 0) queue.unshift(queue.splice(idx, 1)[0]);
+});
+```
+
+- **In React, `startTransition` and `useDeferredValue`** engage a scheduler that yields through `MessageChannel` and orders work with its own priority queue (plus starvation protection, batching and continuations). The Scheduler API and `TaskController` are standards, but support is still incomplete, so in practice people pair them with polyfills or build their own queues.
+- **Defer what isn't on screen:** off-screen lists in [BROWSER.md](BROWSER.md#long-lists), off-screen video and widgets in [BROWSER.md](BROWSER.md#images-and-video), heavy routes with a dynamic `import()` ([BROWSER.md](BROWSER.md#bundle)).
+
+## Workers
+
+- **Pure, DOM-free heavy work goes to a Web Worker:** parsing a large payload, image processing, complex computation. The result comes back by `postMessage`.
+
+```js
+// Main thread
+const worker = new Worker('parser.js');
+worker.postMessage(hugeRawData);
+worker.onmessage = (e) => {
+  render(e.data); // receive only the result and put it on screen
+};
+```
+
+- **Workers aren't free:** no DOM access, and `postMessage` copies (serializes) the data, which is costly when it is large; a short, light job sent to a worker loses to the communication cost. Use one when the computation outweighs the communication and has nothing to do with the DOM. A demo: seam carving about 250 seams (hundreds of millions of operations) freezes the page for 1 to 2 s on the main thread with no intermediate frames; in a worker the image narrows live.
+- **Transfer instead of copy:** Transferable objects like `ArrayBuffer` move by reference, at a cost close to zero regardless of size; the sender can no longer use the buffer.
+
+```js
+// Hand the pixel buffer to the worker without copying
+// After the transfer, this side can no longer use it
+worker.postMessage({ buf: pixels.buffer, width, height }, [pixels.buffer]);
+```
+
+## Remove work the screen can't use
+
+The biggest gains usually come from removing work. Once the inflow exceeds the maximum throughput, the backlog grows without limit however well you batch, and the browser has no good way to tell the server to slow down. Three ways out:
+
+- **Drop:** live logs discard the oldest entries when behind; keeping up with the present matters more than showing everything.
+- **Merge:** a ranking applies only the latest value, so the work is pinned to what the screen can digest.
+- **Skip:** a computation that gives the same result for the same input needn't run twice; memoize it. Debouncing and rendering only visible items are skipping too.
+
+## Prove it
+
+Flood the screen the way the article's demos do (a burst of incoming data, typing while it arrives, an animation running) and check: no task over 50 ms, typing and animation stay smooth during the burst, and under sustained inflow the backlog stays bounded and what reaches the screen doesn't keep getting older.

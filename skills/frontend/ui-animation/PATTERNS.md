@@ -1,5 +1,7 @@
 # Patterns
 
+**Contents:** [Enter and exit](#enter-and-exit) · [Lists](#lists-that-stagger-reorder-and-remove) · [Shared elements](#shared-elements-a-thumbnail-becomes-the-detail) · [A card that opens a modal and owns the URL](#a-card-that-opens-a-modal-and-owns-the-url) · [Modals, sheets, popovers](#modals-sheets-popovers) · [Trays](#trays-a-flow-in-steps-over-the-current-screen) · [A button that grows into a panel](#a-button-that-grows-into-a-panel) · [Height and accordions](#height-and-accordions) · [Buttons](#buttons-presses-and-feedback) · [Feedback where it happened](#feedback-where-it-happened) · [Icons that turn into each other](#icons-that-turn-into-each-other) · [Numbers](#numbers) · [Live values and charts](#live-values-and-charts) · [Gestures](#gestures-drag-throw-snap) · [Scroll](#scroll-linked-motion) · [Galleries](#galleries-carousels-and-rings) · [Delight](#delight-where-flourish-goes) · [Tells](#tells-of-template-motion)
+
 React with Motion (`motion/react`), and CSS where it's enough. Keep the transition presets from [TIMING.md](TIMING.md) in one module:
 
 ```tsx
@@ -50,6 +52,8 @@ export function Panel({ open, children }: { open: boolean; children: React.React
 - `mode="wait"` when one view replaces another (a step in a wizard): the old leaves before the new arrives. Keep the exit short, or the user waits.
 - `mode="popLayout"` when removing an item from a list whose neighbours should close the gap immediately; the parent needs a non-static `position` (for example `relative`).
 - Entrances start close to the final state: 4-12 px of travel and opacity from 0, or scale from 0.96. A card flying in from 100 px reads as a template.
+- **Point to where it went.** When a result moves somewhere else, animate it there: in Family, after a transaction is confirmed "a spinner moves into the bottom navigation to indicate where the user can now find their pending transaction", and speeding one up moves the speed-up spinner onto the original pending tray.
+- **Map the journey at the start:** Family's onboarding moves a stack of cards to show where the user is heading and how a different choice would lead somewhere else.
 
 ## Lists that stagger, reorder and remove
 
@@ -66,6 +70,24 @@ export function Panel({ open, children }: { open: boolean; children: React.React
 
 `layout` on each item animates reordering and the gap left by a removal through transforms, so the neighbours glide instead of jumping. Keys must be stable IDs, never array indexes, or items animate into each other's places.
 
+Without Motion, the same thing is FLIP (First, Last, Invert, Play): one layout change, the whole movement on transform. "Vue's `TransitionGroup` and Framer Motion's layout animations are FLIP under the hood"; a list reordered with a `top` transition stutters under main-thread load where FLIP stays smooth (kciter):
+
+```js
+const first = el.getBoundingClientRect(); // First: where it is now
+
+list.prepend(el); // the one and only layout change
+
+const last = el.getBoundingClientRect(); // Last: where it ended up
+const dx = first.left - last.left;
+const dy = first.top - last.top;
+
+// Invert: make it look like it's back at the old position → Play: release it
+el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], {
+  duration: 300,
+  easing: 'ease-in-out',
+});
+```
+
 ## Shared elements: a thumbnail becomes the detail
 
 ```tsx
@@ -77,12 +99,147 @@ export function Panel({ open, children }: { open: boolean; children: React.React
 - Text inside a growing container distorts while it scales; give the text its own `layout="position"`, or fade it in after the box arrives.
 - **Across routes,** the View Transitions API does the same with no library: `document.startViewTransition(() => navigate(to))`, with matching `view-transition-name` on the two elements. Frameworks expose it (TanStack Router's `viewTransition` option, React's `<ViewTransition>`); without support, the change simply happens.
 - Close to where it came from: the detail returns to the item's current position (it may have scrolled), not to a stale one.
+- **What persists, travels.** "If a component occupies a space and will persist in the next phase of the user's journey, it should remain consistent": it moves into the next screen and never "unnecessarily duplicates itself during an animation" (Family's wallet cards).
+- **High-stakes values travel.** In Family's send flow the amount moves visibly from the entry screen to the confirm screen, so users get "confidence that the amount entered is indeed the amount being sent".
+
+## A card that opens a modal and owns the URL
+
+A grid of cards morphs into a full-screen detail on the same page, and the URL follows, so Back closes it and a shared link works (RNDR Realm, "Building Smooth Page Transitions in React"). "Decouple your animations from your routing": keep both views mounted, change state to trigger the morph, update the URL yourself.
+
+- **The card is a link** with a real `href`, since it navigates; the click handler takes only a plain click and lets Cmd or Ctrl-click open a new tab (the article checks only those two keys):
+
+```tsx
+const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  if (!e.metaKey && !e.ctrlKey) {
+    e.preventDefault();
+    onClick();
+  }
+};
+```
+
+- **Same `layoutId` on both:** the card is a `motion.a` and the detail sits in a `createPortal` full-screen overlay (`fixed inset-0 z-50`); "When one unmounts and the other mounts, Motion creates a smooth transition between them."
+
+```tsx
+<motion.a href={href} onClick={handleClick} layoutId={layoutId}
+  style={{ background: color }} className="w-full aspect-[4/3] rounded-lg block" />
+// detail:
+<motion.div layoutId={selectedItem?.color} style={{ background: selectedItem?.color }}
+  className="max-w-[600px] w-full aspect-[4/3] rounded-lg"
+  transition={{ type: "spring", stiffness: 250, damping: 30 }} />
+```
+
+- **`pushState` for the URL, `popstate` back to state,** "because we want the animation to happen immediately without any page reload or navigation delay". Back then animates the detail closed; Forward reopens it:
+
+```tsx
+const handleClick = (data) => {
+  setSelectedItem(data);                                              // trigger animation
+  window.history.pushState({ id: data.id }, "", `/page-transition/${data.id}`);
+};
+const handleClose = () => {
+  setSelectedItem(null);
+  window.history.pushState({}, "", `/page-transition`);
+};
+useEffect(() => {
+  const handlePopState = () => {
+    if (window.location.pathname === "/page-transition") {
+      setSelectedItem(null);
+    } else {
+      const slug = window.location.pathname.split("/page-transition/")[1];
+      const parsed = parseInt(slug);
+      const found = colors.find((color) => color.id === parsed);
+      if (found) setSelectedItem(found);
+    }
+  };
+  window.addEventListener("popstate", handlePopState);
+  return () => window.removeEventListener("popstate", handlePopState);
+}, []);
+```
+
+- **Closing, both ways:** the article pushes an entry on close too, so Back after open and close goes into the detail again; the `app-ui` skill's [OVERLAYS.md](../app-ui/OVERLAYS.md#a-settings-dialog) pushes on open and replaces on close, "so Back never reopens a closed dialog".
+- **A real route for refresh and shared links,** rendering the same `Content`; an unknown id redirects to the list. Arriving there has no shared element, so no morph: "Animations work best for in-app transitions, not initial page loads."
+
+```tsx
+"use client";
+import { colors, Content } from "../page";
+import { redirect, useParams, useRouter } from "next/navigation";
+
+export default function Page() {
+  const params = useParams();
+  const router = useRouter();
+  const selectedItem = colors.find((color) => color.id === Number(params.id));
+  if (!selectedItem) {
+    redirect("/page-transition");
+  }
+  return (
+    <div className="h-screen w-full flex justify-center items-center">
+      <Content selectedItem={selectedItem} handleGoBack={() => router.push("/page-transition")} />
+    </div>
+  );
+}
+```
+
+- **The other cards yield:** they fade out at once, which "helps focus attention on the animating element", and on close wait for the morph, or "you'd see the cards pop back in while the element is still animating". Opacity gets its own sub-transition inside the spring:
+
+```tsx
+animate={{ opacity: isItemSelected ? 0 : 1 }}
+transition={{
+  type: "spring", stiffness: 250, damping: 30,
+  opacity: { duration: 0.1, delay: isItemSelected ? 0 : 0.225 },
+}}
+```
+
+- **When not to:** the approach "deliberately bypass[es] Next.js's routing system"; "If you need server-side rendering for every route change or rely heavily on Next.js's data fetching patterns, this might not be the right solution." The View Transitions route above is the alternative.
+- The article's modal sends focus to its container and handles no Escape; the focus and dismiss rules in the next section still apply.
 
 ## Modals, sheets, popovers
 
 - **Grow from the trigger:** a popover scales from 0.96 to 1 with its `transform-origin` at the anchor side; a modal fades its backdrop (200 ms) and lifts the panel 8-16 px with `emphasized`; a sheet slides in from its edge with the `enter` spring and closes faster.
 - **Focus moves with it:** into the dialog when it opens, back to the trigger when it closes; motion never delays focus or input.
 - **Dismiss mid-animation:** Escape or a backdrop click during the entrance reverses from where it is.
+- **Build it as a pipeline:** kciter's notification is three pieces: the background dims (opacity 0 to 0.5, 200 ms), the card slides up into place (300 ms, ease-out), the content fades in (opacity 0 to 1, 200 ms). Each can be tuned alone ([TIMING.md](TIMING.md#composing-a-sequence)).
+
+## Trays: a flow in steps over the current screen
+
+Family's "dynamic tray system" (inspired by Craft): components "that can effortlessly expand, contract, and adapt in response to a user's actions", a condensed version of the app "with a specific set of constraints and capabilities". A tray opens from a button, icon or notification, stands alone over any content or emerges from within a component.
+
+- **Each next tray has a different height,** which "makes the progression or change unmistakably clear"; sometimes that means rewriting content or tweaking the design so the transition shows.
+- **A title and an icon on every tray:** the icon dismisses the first tray and goes back on the ones after it.
+- **One thing per tray:** a single piece of content (educational text explaining a feature) or a primary action.
+- **The tray takes the flow's theme:** "within a dark-themed flow, trays adopt a darker colour scheme."
+- **Tray or full screen:** trays for transient actions that don't need to stay on screen, "especially helpful for confirmation steps and warnings"; a longer flow can start in a tray and transition to full screen.
+- **It keeps context:** "Unlike full screen transitions that can displace users from where they just were, trays overlay content directly onto the current interface"; a swap approval "unfolds from the swap interface itself".
+- **Compact lowers the commitment:** "The compact nature of trays signals to users that each task is approachable."
+- **Reveal gradually:** the fundamentals stay at hand and "everything else would appear as it became most relevant".
+- **The motion:** "trays morphing into full screen views, buttons gliding across trays, buttons morphing into trays and back again".
+
+Family is an iOS app; the `app-ui` skill's web dialogs and side sheets are in [OVERLAYS.md](../app-ui/OVERLAYS.md).
+
+## A button that grows into a panel
+
+The RNDR Realm gooey dropdown: the panel "starts as a small circle, the same size and position as the button, and then expands into the full panel", sliding down first and then opening up. The exit equals the initial state, and on the way out the size shrinks first and the move follows.
+
+```tsx
+initial={{ width: 52, height: 52, borderRadius: 26, y: 0, x: "-50%" }}
+animate={{ width: 340, height: 310, borderRadius: 24, y: 70, x: "-50%" }}
+transition={{
+ y: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+ width: { duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] },
+ height: { duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] },
+ borderRadius: { duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] },
+}}
+exit={{ width: 52, height: 52, borderRadius: 26, y: 0, x: "-50%",
+  transition: {
+    y: { duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] },
+    width: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    height: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    borderRadius: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  } }}
+```
+
+- **Stagger the properties:** "That stagger is what gives it that organic feel where it slides down and then opens up ... If you animate all the properties at the same time it feels stiff." The `app-ui` skill's morphing menu ([MENUS.md](../app-ui/MENUS.md)) does the opposite: width, height, radius and shadow on one spring.
+- **Content waits for the shape:** `initial={{ opacity: 0 }} animate={{ opacity: 1 }}` with `transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}`, out with `opacity: 0, transition: { duration: 0.15, ease: "easeIn" }`; rows rise after it with `initial={{ opacity: 0, y: 8 }}`, `animate={{ opacity: 1, y: 0 }}`, `transition={{ duration: 0.25, delay: 0.2 + i * 0.05, ease: [0.4, 0, 0.2, 1] }}`.
+- **Layout properties, both ways:** the article animates `width`, `height` and `borderRadius` directly and says nothing about cost; rule 7 and [PERFORMANCE.md](PERFORMANCE.md) move only transform and opacity and resize with `scale` or Motion's `layout`. Its timing also runs past this skill's dropdown row and exit rule ([TIMING.md](TIMING.md)).
+- **The goo:** the button and the panel overlap inside one wrapper with an SVG filter that blends their edges while the shape changes. The filter is in [the `svg` skill](../svg/SKILL.md).
 
 ## Height and accordions
 
@@ -99,7 +256,7 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
 
 ## Buttons, presses and feedback
 
-- Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size. **Every pressable element has a pressed state, and it is stronger than the hover** (rest, hover, press, each a step further). Playful brands move (a slight scale); professional tools shift tone. Keep it subtle and under 100 ms in: some buttons are pressed hundreds of times a day. Component details beyond motion are in the `anti-slop-ui` skill's DETAILS.md.
+- Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size. **Every pressable element has a pressed state, and it is stronger than the hover** (rest, hover, press, each a step further). Playful brands move (a slight scale); professional tools shift tone. Keep it subtle and under 100 ms in: some buttons are pressed hundreds of times a day. Component details beyond motion are in the `anti-slop-ui` skill's DETAILS.md. A like button's heart "shrinks for an instant and then springs back"; the overshoot "gives the press a tactile sense of feedback" (kciter). The RNDR Realm dropdown trigger also grows on hover (`whileHover={{ scale: 1.03 }}`); this line keeps hover to colour or shadow.
 - **Stretch a switch while it is held.** Fast-moving things look longer, so a thumb that widens toward the side it will travel to while pressed, then snaps across and back to round on release, feels physical. The stretch's size and speed set the character: a small quick stretch feels light, a longer one with a slower travel feels heavy. Match it to the brand.
 
 ```css
@@ -117,6 +274,38 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
   Use a real `<button role="switch" aria-checked>`, so it works with Space and Enter, With reduced motion, keep the stretch (it is feedback) and make the travel instant.
 - **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in the `performance-and-caching` skill's BROWSER.md.
 - Success lands once (a check that draws in 200-300 ms), errors shake horizontally 2-3 times over 300-400 ms with no bounce, and the message stays.
+
+## Feedback where it happened
+
+From Honk, a real-time chat app (Benji Taylor's "Honkish"); no durations given.
+
+- **Put the reaction at the point of input:** a double tap on a friend's bubble put a heart exactly where you tapped, with a faint animated circle and a haptic both users felt at the same moment, "pinpoint[ing] precisely what you were reacting to and when".
+- **Share positions as relative coordinates** ("10% X, 20% Y") so placement holds across screen sizes.
+- **A self-dismissing notification shows its time left:** an animated border visibly counts down how long it stays.
+- **Show progress on the control that resolves it:** as you typed, a small trash can filled, shook when the bubble was full and emptied when cleared.
+
+## Icons that turn into each other
+
+- **Same shape at another angle: rotate, don't morph.** Arrows (four directions, 90° apart), chevrons, and plus and cross (45° apart) share coordinates and differ only by a rotation. Morphing arrow-right into arrow-down "looked janky… the lines bend and warp. When you rotate, it just works." (Benji Taylor, "Morphing icons with Claude").
+- **Keep the angle in a ref and never unwind it:** add the change taken the short way round; when the next icon is a different shape, settle the rotation on the nearest whole turn and morph the lines to coordinates with the target's rotation already baked in, so a turned arrow becomes a check without spinning back. From the shipped component (de-minified; the names are ours):
+
+```js
+if (prev && prev.group === next.group) {
+  let delta = next.rotation - prev.rotation;
+  if (delta > 180) delta -= 360; else if (delta < -180) delta += 360;   // shortest way round
+  rotate = rotationRef.current + delta;                                   // accumulate, never unwind
+  lines = next.lines;                                                     // shared base coordinates
+} else {
+  rotate = 360 * Math.round(rotationRef.current / 360);                   // settle on the nearest whole turn
+  lines = rotateLines(next.lines, next.rotation);                         // rotation baked into the endpoints
+}
+rotationRef.current = rotate; prevIcon.current = name;
+// <motion.svg initial={false} animate={{ rotate }} transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}>
+```
+
+- The three-line icon geometry, the collapsed lines and `rotateLines` are in [the `svg` skill](../svg/SKILL.md).
+- **Not every pair takes the ideal path:** "Some morphs have slightly awkward intermediate states, and some rotations overshoot." Play the pairs ([SKILL.md](SKILL.md#prove-it)).
+- **Pair an icon morph with the view transition:** in Family's multi-step flow a chevron, "something that would typically be static", morphs while the view moves, which "clarifies the navigation action taken".
 
 ## Numbers
 
@@ -137,7 +326,41 @@ export function Count({ value }: { value: number }) {
 }
 ```
 
-`tabular-nums` keeps the width steady while digits change. Digit-by-digit rolling counters exist as paid components (Motion+ `AnimateNumber`) and free ones (NumberFlow).
+`tabular-nums` keeps the width steady while digits change. Digit-by-digit rolling counters exist as paid components (Motion+ `AnimateNumber`) and free ones (NumberFlow). A counter or progress bar that chases a value arriving in chunks is in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).
+
+- **A label that marks a step in commitment morphs:** Family's "Continue" becomes "Confirm" through the shared "Con", because an instant change "could leave the user unaware of the significant step they're about to take". The text-morph component is in the `app-ui` skill's [CONTROLS.md](../app-ui/CONTROLS.md).
+
+## Live values and charts
+
+Liveline, a real-time line chart for React: "One `<canvas>`, one `requestAnimationFrame` loop. When a new value arrives, nothing jumps."
+
+- **One easing for every part:** the line lerps toward the new state at 8% per frame (`lerpSpeed`), and "The Y-axis range, the badge, the grid labels all use the same lerp", so it "feels like one thing breathing rather than a bunch of parts updating independently". The per-frame form against TIMING's per-second rule is in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).
+- **Interpolate between updates:** "Feed it data however you like. WebSocket, polling, random walk. Liveline interpolates between updates so even infrequent data looks smooth."
+- **What would be clipped jumps; the rest eases:** "The range snaps outward instantly when data exceeds it, so the line is never clipped."
+- **Tiny movements fill the height:** `exaggerate` tightens the Y range for values that move in tiny increments (a heart rate).
+- **Direction:** `momentum` adds arrows to the live dot, green up, red down, grey flat, and they fade out fully before the new direction fades in; `valueMomentumColor` tints the number by direction. In Family, scrubbing a price chart flips the arrow alongside the changing numbers.
+- **A 60fps number stays out of React:** `showValue` "updates at 60fps through direct DOM manipulation, not React re-renders" ([PERFORMANCE.md](PERFORMANCE.md#react-animate-without-re-rendering)).
+- **Loading, empty, paused:** `loading` shows "a breathing line animation"; "When data arrives, the flat line morphs smoothly into the actual chart". If data never arrives it falls back to a quiet empty state, with your own text through `emptyText`. `paused` "freezes the chart in place while data continues arriving in the background. When you resume, it catches up to real time."
+- **Same data, another view:** a toggle morphs between line and candlestick, and "The live candle keeps updating in real time, growing its wicks as new ticks arrive."
+- **Ambient motion that carries data:** orderbook labels "spawn at the bottom, drift upward, and fade out", bigger orders brighter, and the stream speed reacts to price momentum and orderbook churn: "Calm markets drift slowly, volatile ones rush."
+- **Loud motion is opt-in:** `degen` adds burst particles and chart shake on momentum swings, "For when subtlety is not the goal"; everything else "is off by default or has sensible defaults".
+- **One colour in, a palette out:** `color` takes any CSS colour, converted to HSL, and every variant (line, fill gradient, glow, badge, grid labels) is derived from it.
+- **Moving beats jumping:** Family holds that price charts that move instead of jumping "could make the app feel faster" (an opinion, no measurement).
+- **Test it on hostile data:** "A chart that only looks good on calm data isn't much use." Liveline's demos: wild swings at 100 ms updates; near-flat with `exaggerate` at 150 ms; chaotic huge spikes at 80 ms; frequent sharp reversals at 60 ms ("Sharp reversals are the classic breaking point"); near-flat with massive isolated spikes at 120 ms; rapid zigzag at 50 ms; and irregular arrival, "long quiet stretches of 1-3 seconds between points, then sudden bursts at 40-80ms", because "WebSocket connections drop, batch updates land all at once, mobile networks stall."
+
+```tsx
+import { Liveline } from 'liveline'
+
+function Chart({ data, value }) {
+  return (
+    <div style={{ height: 200 }}>
+      <Liveline data={data} value={value} />
+    </div>
+  )
+}
+```
+
+`npm install liveline`; it fills its parent, so set a height on the wrapper. Defaults include `lerpSpeed` 0.08, `theme` `'dark'`, `color` `'#3b82f6'` and `window` 30, with `windows={[{ label: '1m', secs: 60 }, { label: '5m', secs: 300 }]}` for switchable ranges.
 
 ## Gestures: drag, throw, snap
 
@@ -197,6 +420,18 @@ const layouts = {
 - **Opening one item:** blend its pose toward the flat detail box, rotations finishing in the first half and the item lifting toward the viewer early, so it untwists clear of its neighbours; load the full-size image on press, swap it in after it decodes.
 - Drive the poses with motion values (`useMotionValue` for focus, `useTransform` per item), not React state; keep items real `img` and `li` elements with alt text and keyboard focus.
 
+## Delight: where flourish goes
+
+Family's delight-impact curve: "the potential for delight increases as the frequency of feature usage decreases", and "the 'specialness of a moment' generally decreases with repeated encounters". "Mastering delight is mastering selective emphasis": where, when and how intensely.
+
+- **Rare, significant moments get marked:** creating a new wallet gets "an interactive animation that marks the occasion"; confetti briefly fills the screen after a successful backup, rewarding "an essential security task".
+- **Easter eggs go where a feature is used just enough** to be "enjoyable rather than annoying", hidden in plain sight: a tap on the QR code sends "a gentle ripple", a swipe turns its dots into sequins.
+- **Frequent flows get small touches only,** "efficient and enjoyable, without being overbearing": the commas shift place as an amount is typed; an easter egg appears when it exceeds the balance.
+- **Delight can carry information:** stealth mode's "gentle shimmer effect" says the hidden values "continue to update discreetly in the background".
+- **A first-use empty state can point:** Family's in-app browser greets users with an animated arrow toward creating a new tab.
+- **Completion can be physical and heard:** deleted tokens "visually tumble into a skeuomorphic trash can", and finishing plays a sound. Honk's team often designed a feature first, then had the sound designer "compose audio to precisely match the timing of each interaction".
+- **Both ways on decoration:** [SKILL.md](SKILL.md) rule 1 calls motion with no change to explain decoration, to cut or keep subliminal. Family adds motion whose purpose is surprise, placed by frequency; Honk went further: "Not everything needed a purpose. Sometimes, the fun was in just seeing what would happen", and its own footnote records that some saw the playful interactions "as a waste of time, while others loved them. Both takes are valid."
+
 ## Tells of template motion
 
-Everything fading up on scroll; a uniform 0.5 s ease on every element; the same entrance for a toast, a modal and a page; bouncy springs on serious content; staggers that make the last item wait over a second; a spinner on every action; hover states that move layout. Each is a missing decision about what changed.
+Everything fading up on scroll; a uniform 0.5 s ease on every element; the same entrance for a toast, a modal and a page; bouncy springs on serious content; staggers that make the last item wait over a second; a spinner on every action; hover states that move layout; an icon change done as a crossfade of two SVGs when the shapes could transform ("There's no sense of transformation"); particles with machine-perfect speeds and angles ([MATH.md](MATH.md#controlled-randomness)). Each is a missing decision about what changed.

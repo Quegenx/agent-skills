@@ -7,6 +7,7 @@ Postgres forks one operating system process per connection: a few MB of base mem
 - **Pool, then size:** a pooler (PgBouncer, the platform's pooler, or the driver's pool in a long-lived server) multiplexes many application connections onto a few backends. 1,000 clients often fit in 20 to 50 backends. A starting point is about two connections per CPU core; then size from observed concurrency and query memory, not from cores alone.
 - **Serverless and edge functions** open many short-lived connections, which a driver's pool can't cover: always go through a server-side pooler there.
 - **Alert at 80% of `max_connections`, page at 95%.** `too many clients already` means a leak or a missing pooler, not a limit to raise.
+- **A client-side `connection timeout` is not a reason to enlarge the pool.** "Adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow first: put the connection wait time metric next to the DB's slow query log ([DIAGNOSE.md](../observability/DIAGNOSE.md#pools-and-queueing)).
 
 ## Pool modes and what they forbid
 
