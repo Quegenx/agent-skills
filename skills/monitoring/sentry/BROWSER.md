@@ -1,0 +1,434 @@
+# Browser
+
+`@sentry/browser` monitors plain JavaScript pages: vanilla JS, jQuery, static sites, WordPress, Shopify, Squarespace, and any JS project without a framework SDK. It installs three ways (npm, the Loader Script, or a CDN bundle), and the install path decides most of what works: npm gets every feature, source maps and tree-shaking; the Loader needs no build but has no logs and only traces fetches made after it loads. This file covers choosing the SDK, the three setups, configuration, errors and user feedback. Tracing, Replay, logs and profiling are in [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md). The APIs reflect `@sentry/browser` ≥10.0.0; verify against https://docs.sentry.io/platforms/javascript/ before implementing.
+
+**Contents:** [Check for a framework first](#check-for-a-framework-first) · [Versions](#versions) · [Pick the install path](#pick-the-install-path) · [Path A: npm](#path-a-npm) · [Path B: Loader Script](#path-b-loader-script) · [Path C: CDN bundles](#path-c-cdn-bundles) · [Source maps](#source-maps) · [Init options](#init-options) · [dataCollection](#datacollection) · [What is captured automatically](#what-is-captured-automatically) · [Capture APIs](#capture-apis) · [Scopes and enrichment](#scopes-and-enrichment) · [Breadcrumbs](#breadcrumbs) · [Hooks and event processors](#hooks-and-event-processors) · [Filtering and grouping](#filtering-and-grouping) · [Default integrations](#default-integrations) · [Transport, offline and tunnel](#transport-offline-and-tunnel) · [User feedback](#user-feedback) · [Debugging](#debugging) · [Prove it](#prove-it)
+
+## Check for a framework first
+
+Framework SDKs add router-aware transactions, error boundaries, component tracking and often SSR coverage. `@sentry/browser` in a React or Next.js app loses all of that.
+
+```bash
+cat package.json 2>/dev/null | grep -E '"react"'
+cat package.json 2>/dev/null | grep '"next"'
+cat package.json 2>/dev/null | grep -E '"@remix-run/react"|"@remix-run/node"'
+cat package.json 2>/dev/null | grep -E '"express"|"fastify"|"@nestjs/core"|"koa"'
+ls package.json 2>/dev/null
+ls package-lock.json yarn.lock pnpm-lock.yaml bun.lockb 2>/dev/null
+ls vite.config.ts vite.config.js webpack.config.js rollup.config.js esbuild.config.js 2>/dev/null
+cat package.json 2>/dev/null | grep -E '"vite"|"webpack"|"rollup"|"esbuild"'
+ls wp-config.php wp-content/ 2>/dev/null   # WordPress
+ls _config.yml _config.yaml 2>/dev/null    # Jekyll
+ls config.toml 2>/dev/null                 # Hugo
+ls .eleventy.js 2>/dev/null                # Eleventy
+cat package.json 2>/dev/null | grep '"@sentry/'
+grep -r "sentry-cdn.com\|js.sentry-cdn.com" . --include="*.html" -l 2>/dev/null | head -3
+```
+
+| Found | Use |
+|---|---|
+| `next` | `@sentry/nextjs`: [../sentry/NEXTJS.md](../sentry/NEXTJS.md). Don't use the browser SDK |
+| `react` without Next.js | `@sentry/react`: [REACT.md](REACT.md) |
+| `@remix-run` | `@sentry/remix` (https://docs.sentry.io/platforms/javascript/guides/remix/) |
+| `express`, `fastify`, `@nestjs/core` | A Node.js server: [../sentry/NODE.md](../sentry/NODE.md) |
+
+- **Recommend, don't ask:** "I recommend setting up Error Monitoring + Tracing + Session Replay using Path A (npm). Want me to also add Logging or User Feedback?" Error Monitoring always (the baseline); Tracing always for interactive pages; Replay for user-facing apps, support flows and checkout pages; User Feedback optional (support-focused apps); Logging optional (npm or the CDN logs bundle, not the Loader; the same guide's recommendation table says "npm path only"); Profiling optional (Beta, Chromium only, needs `Document-Policy: js-profiling`).
+
+## Versions
+
+| Feature | Minimum `@sentry/browser` |
+|---|---|
+| Error monitoring, tracing | ≥7.0.0 |
+| `makeBrowserOfflineTransport` | ≥7.48.0 |
+| `feedbackIntegration()` | ≥7.85.0 |
+| Feedback screenshots | ≥8.0.0 |
+| `dataCollection` | v10.54+ |
+| Self-hosted Sentry for feedback | ≥24.4.2 |
+
+- **`linkedErrorsIntegration`'s cause chain** needs `Error.cause` (Chrome 93+, Firefox 91+).
+- **`sendDefaultPii` is on its way out:** one setup guide says it "will be deprecated in v11", another says it is deprecated and removed in v11. Use `dataCollection`.
+- **`configureScope is not a function`:** deprecated in SDK v8; use `getIsolationScope()` or `withScope()`.
+- Tracing, Replay, logs and profiling versions are in [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md#versions).
+
+## Pick the install path
+
+| Project | Path |
+|---|---|
+| `package.json` plus a bundler | **A: npm** (all features, source maps, tree-shaking) |
+| WordPress, Shopify, static HTML, no npm | **B: Loader Script** (no build tooling, always up to date) |
+| Script tags only, no Loader access | **C: CDN bundle** |
+
+- **Already has `@sentry/browser`:** skip the install and go straight to feature config. A Vite, webpack, Rollup or esbuild build means a source maps plugin to configure.
+
+## Path A: npm
+
+- **Install:** `npm install @sentry/browser --save` (or `yarn add @sentry/browser`, `pnpm add @sentry/browser`).
+- **Init before any other code runs:** `Sentry.init()` in its own `src/instrument.ts`, imported as the very first import of the entry file (`import "./instrument";  // ← MUST be first`).
+
+```typescript
+import * as Sentry from "@sentry/browser";
+
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_DSN, // Adjust per build tool (see table below)
+  environment: import.meta.env.MODE,
+  release: import.meta.env.VITE_APP_VERSION, // inject at build time
+
+  dataCollection: {
+    // To disable sending user data and HTTP bodies, uncomment the lines below. For more info visit:
+    // https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection
+    // userInfo: false,
+    // httpBodies: [],
+  },
+
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration({
+      maskAllText: true,
+      blockAllMedia: true,
+    }),
+  ],
+
+  // Tracing
+  tracesSampleRate: 1.0, // lower to 0.1-0.2 in production
+  tracePropagationTargets: ["localhost", /^https:\/\/yourapi\.io/],
+
+  // Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+
+  enableLogs: true,
+});
+```
+
+| Build tool | Variable | Access |
+|---|---|---|
+| Vite | `VITE_SENTRY_DSN` | `import.meta.env.VITE_SENTRY_DSN` |
+| Custom webpack, esbuild, Rollup | `SENTRY_DSN` | `process.env.SENTRY_DSN` |
+
+## Path B: Loader Script
+
+- **One `<script>` tag lazily loads the full SDK,** stays current through Sentry's CDN and buffers errors until the SDK loads. Find it in Sentry under Settings > Projects > (project) > SDK Setup > Loader Script. It must be the first script on every page.
+- **Define `window.sentryOnLoad` before the loader tag.** The DSN is already in the loader URL.
+
+```html
+<script>
+  window.sentryOnLoad = function () {
+    Sentry.init({
+      // DSN is already configured in the loader URL
+      tracesSampleRate: 1.0,
+      replaysSessionSampleRate: 0.1,
+      replaysOnErrorSampleRate: 1.0,
+    });
+  };
+</script>
+<script
+  src="https://js.sentry-cdn.com/YOUR_PUBLIC_KEY.min.js"
+  crossorigin="anonymous"
+></script>
+```
+
+| Mode | Loads the SDK |
+|---|---|
+| Lazy (default) | On the first error or manual Sentry call |
+| Eager (`data-lazy="no"` on the script) | After all page scripts finish |
+| Manual | When you call `Sentry.forceLoad()` |
+
+- **Safe before the SDK loads (buffered):** `Sentry.captureException()`, `captureMessage()`, `captureEvent()`, `addBreadcrumb()`, `withScope()`. For anything else: `window.Sentry && Sentry.onLoad(function () { Sentry.setUser({ id: "123" }); });`.
+- **Release:** `window.SENTRY_RELEASE = { id: "my-app@1.0.0" };`.
+- **Limits:** no `Sentry.logger.*`; no framework features; tracing headers only on fetches made after the SDK loads; version changes take a few minutes to propagate through the CDN cache; put `defer` (not `async`) on all other scripts.
+- **Lazy-load integrations:** `Sentry.lazyLoadIntegration("replayIntegration")` or `Sentry.lazyLoadIntegration("feedbackIntegration")`, then `.then(i => Sentry.addIntegration(i()))`, with a `.catch` for network errors.
+- **CSP:** `script-src: https://browser.sentry-cdn.com https://js.sentry-cdn.com`, `connect-src: *.sentry.io`.
+
+## Path C: CDN bundles
+
+- **For synchronous loading without the Loader.** Put the bundle before all other scripts, with `crossorigin="anonymous"` and the integrity hash. Version `10.42.0`:
+
+| Bundle (`https://browser.sentry-cdn.com/10.42.0/...`) | Contains | `integrity` |
+|---|---|---|
+| `bundle.min.js` | Errors | `sha384-L/HYBH2QCeLyXhcZ0hPTxWMnyMJburPJyVoBmRk4OoilqrOWq5kU4PNTLFYrCYPr` |
+| `bundle.tracing.min.js` | + tracing | `sha384-DIqcfVcfIewrWiNWfVZcGWExO5v673hkkC5ixJnmAprAfJajpUDEAL35QgkOB5gw` |
+| `bundle.replay.min.js` | + replay | `sha384-sbojwIJFpv9duIzsI9FRm87g7pB15s4QwJS1m1xMSOdV1CF3pwgrPPEu38Em7M9+` |
+| `bundle.tracing.replay.min.js` | Recommended full setup | `sha384-oo2U4zsTxaHSPXJEnXtaQPeS4Z/qbTqoBL9xFgGxvjJHKQjIrB+VRlu97/iXBtzw` |
+| `bundle.tracing.replay.feedback.min.js` | + feedback | `sha384-SmHU39Qs9cua0KLtq3A6gis1/cqM1nZ6fnGzlvWAPiwhBDO5SmwFQV65BBpJnB3n` |
+| `bundle.tracing.replay.feedback.logs.metrics.min.js` | All features | `sha384-gOjSzRxwpXpy0FlT6lg/AVhagqrsUrOWUO7jm6TJwuZ9YVHtYK0MBA2hW2FGrIGl` |
+| `bundle.logs.metrics.min.js` | Logs and Metrics | not given |
+| `bundle.feedback.min.js` | Feedback only, the lightest | not given |
+
+- **Init after the tag:**
+
+```html
+<script>
+  Sentry.init({
+    dsn: "https://YOUR_KEY@o0.ingest.sentry.io/YOUR_PROJECT",
+    environment: "production",
+    release: "my-app@1.0.0",
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration({
+        maskAllText: true,
+        blockAllMedia: true,
+      }),
+    ],
+    tracesSampleRate: 1.0,
+    tracePropagationTargets: ["localhost", /^https:\/\/yourapi\.io/],
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
+</script>
+```
+
+- **Logging needs a bundle with `.logs.` in its name.**
+- **CSP** is the same as for the Loader: `script-src: https://browser.sentry-cdn.com https://js.sentry-cdn.com`, `connect-src: *.sentry.io`.
+
+## Source maps
+
+Without source maps, stack traces show minified code. The general upload and release story is in [../sentry/RELEASES-AND-SOURCEMAPS.md](../sentry/RELEASES-AND-SOURCEMAPS.md).
+
+- **There is no browser wizard** (`npx @sentry/wizard -i browser` doesn't exist). `npx @sentry/wizard@latest -i sourcemaps` configures source map upload only, for an SDK that's already initialized.
+
+| Bundler | Source map setting | Plugin |
+|---|---|---|
+| Vite | `build: { sourcemap: "hidden" }` | `sentryVitePlugin` from `@sentry/vite-plugin`, last in the plugin list |
+| webpack | `devtool: "hidden-source-map"` | `sentryWebpackPlugin` from `@sentry/webpack-plugin` |
+| Rollup | `output: { sourcemap: "hidden" }` | `sentryRollupPlugin` from `@sentry/rollup-plugin` |
+| esbuild | `sourcemap: "hidden"` | `sentryEsbuildPlugin` from `@sentry/esbuild-plugin`; doesn't fully support `splitting: true`, so use `sentry-cli` with code splitting |
+
+- **Plugins read** `org`, `project` and `authToken` from `process.env.SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN`, kept in an uncommitted `.env`: `SENTRY_AUTH_TOKEN=sntrys_...`, `SENTRY_ORG=my-org-slug`, `SENTRY_PROJECT=my-project-slug`.
+- **Any toolchain or CI:**
+
+```bash
+npx @sentry/cli sourcemaps inject ./dist
+npx @sentry/cli sourcemaps upload ./dist
+```
+
+- **Upload before errors occur:** make it part of CI/CD, build in production mode (`npm run build`) and verify `SENTRY_AUTH_TOKEN`.
+
+## Init options
+
+| Option | Default | Notes |
+|---|---|---|
+| `dsn` | none | Required; the SDK is disabled when empty |
+| `environment` | `"production"` | |
+| `release` | none | e.g. `"my-app@1.0.0"` or a git SHA |
+| `sendDefaultPii` | `false` | Includes IPs and request headers; replaced by `dataCollection` |
+| `dataCollection` | | v10.54+ |
+| `tracesSampleRate` | | 0 to 1; `1.0` dev, `0.1` to `0.2` prod |
+| `tracesSampler` | | Overrides the rate |
+| `tracePropagationTargets` | see [tracing](BROWSER-TRACING-REPLAY-LOGS.md#distributed-tracing) | |
+| `replaysSessionSampleRate` / `replaysOnErrorSampleRate` | `0` | |
+| `enableLogs` | `false` | |
+| `attachStacktrace` | `false` | Stack traces on `captureMessage`. Spelling differs: the setup guide's table writes `attachStackTrace`, the error-monitoring reference writes `attachStacktrace: true` |
+| `maxBreadcrumbs` | `100` | |
+| `debug` | `false` | |
+| `tunnel` | | |
+| `ignoreErrors` / `denyUrls` / `allowUrls` | `[]` | |
+| `spotlight` | `false` | `boolean\|string`; forwards events to the Spotlight local dev overlay |
+| `cdnBaseUrl` | | Base URL for lazy-loading integrations |
+| `skipBrowserExtensionCheck` | `false` | |
+| `sampleRate` | | Errors, e.g. `0.25` = 25% |
+| `normalizeDepth` | 3 levels | Context depth |
+| `initialScope` | | Object or callback |
+| `beforeSend` / `beforeSendTransaction` / `beforeBreadcrumb` | | Hooks |
+| `beforeSendLog` | | Logs hook |
+| `defaultIntegrations` | | `false` starts from scratch |
+| `transport` | fetch | |
+
+## dataCollection
+
+- **The fine-grained replacement for `sendDefaultPii`.** When omitted, the SDK falls back to `sendDefaultPii` (default `false`). Passing the object, even `{}`, flips unset categories to their permissive defaults; opt out per category.
+
+| Field | Default | Notes |
+|---|---|---|
+| `userInfo` | `true` | Auto-populates `user.*` fields from instrumentation (the React Router guide: includes IP-derived user context) |
+| `cookies` | `true` | `boolean \| { allow: string[] } \| { deny: string[] }`; `true` = all (filtered), `false` = none, `allow`/`deny` = specific keys |
+| `httpHeaders` | `{ request: true, response: true }` | Each can be `boolean` or an `allow`/`deny` object |
+| `httpBodies` | `["incomingRequest","outgoingRequest","incomingResponse","outgoingResponse"]` | When `dataCollection` is explicitly set |
+| `queryParams` | `true` | `boolean \| { allow } \| { deny }`, with sensitive value filtering |
+| `genAI` | `{ inputs: true, outputs: true }` | Generative AI input and output recording |
+| `stackFrameVariables` | `true` | Local variable values in stack frames |
+| `frameContextLines` | `5` | Source lines around stack frames |
+
+```typescript
+Sentry.init({
+  dsn: "...",
+  dataCollection: {
+    userInfo: true,
+    cookies: { deny: ["session_id", "auth_token"] },
+    httpHeaders: {
+      request: { deny: ["authorization", "cookie"] },
+      response: true,
+    },
+    queryParams: { allow: ["utm_source", "utm_campaign"] },
+  },
+});
+```
+
+## What is captured automatically
+
+- **Uncaught exceptions and unhandled rejections:** `window.onerror` and `window.onunhandledrejection` through `globalHandlersIntegration` (on by default).
+- **Errors in `setTimeout`, `setInterval`, `requestAnimationFrame`, `addEventListener`:** `browserApiErrorsIntegration` (on by default) patches them.
+- **Console errors:** only with the opt-in `captureConsoleIntegration`.
+- **Capture these yourself:** errors caught in your own try/catch, business-logic failures, `.then()` chains with a `.catch()`, and conditions that aren't exceptions (`captureMessage`).
+
+## Capture APIs
+
+- **`Sentry.captureException(error, captureContext?)`:** pass `Error` objects (they carry stack traces). Returns the event id, which feeds `showReportDialog` and `captureFeedback`. Context: `level` (`"fatal" | "error" | "warning" | "log" | "info" | "debug"`), `tags` (`Record<string,string>`), `extra`, `user` (`{ id?, email?, username?, ip_address? }`), `contexts`, `fingerprint` (`string[]`).
+
+```javascript
+Sentry.captureException(err, {
+  level: "fatal",
+  tags: { module: "checkout", payment_provider: "stripe" },
+  extra: { orderId: order.id, amount: order.total },
+  user: { id: "u_123", email: "user@example.com" },
+  fingerprint: ["checkout-payment-fail"],
+  contexts: {
+    payment: { provider: "stripe", amount: 9999, currency: "usd" },
+  },
+});
+```
+
+- **`Sentry.captureMessage(message, levelOrContext?)`:** e.g. `Sentry.captureMessage("Something went wrong", "warning");`; also takes a full context.
+- **`Sentry.captureEvent(event)`:** for custom integrations and forwarding legacy loggers; `timestamp` in Unix seconds (`Date.now() / 1000`).
+- **Utilities:** `Sentry.lastEventId()`; `await Sentry.flush(2000)` waits up to 2 s; `await Sentry.close(2000)` flushes and disables the SDK permanently; `Sentry.isEnabled()`.
+
+## Scopes and enrichment
+
+- **Merge order: Global, Isolation, Current, then the event's own context.** `getGlobalScope()` lives for the whole app (app-wide constants: version, build ID, region), `getIsolationScope()` per page load (user info, session data, tags from top-level `setTag()`), `withScope()` per event (one API call, one form submit). A browser has no per-request isolation, so the isolation scope effectively behaves like the global one (the distinction matters in Node.js, Deno and Cloudflare Workers). Top-level `Sentry.setTag` / `setTags` write to the isolation scope.
+- **`withScope` is the way to attach per-event data;** it forks the scope and discards it after the callback:
+
+```javascript
+Sentry.withScope((scope) => {
+  scope.setTag("transaction_id", "txn_abc123");
+  scope.setExtra("requestPayload", { amount: 50, currency: "USD" });
+  scope.setLevel("warning");
+  scope.setUser({ id: "u_789" });
+  scope.setFingerprint(["payment-error", "stripe"]);
+  Sentry.captureException(new Error("Payment failed"));
+  // scope is discarded after this callback
+});
+```
+
+- **Scope methods:** `setUser({ id, email, username, ip_address })` (`null` clears), `setTag`, `setTags`, `setExtra`, `setExtras`, `setContext(name, obj)` (`null` removes), `setLevel`, `setFingerprint`, `addBreadcrumb`, `addEventProcessor`, `clear()`.
+- **Tags for data you filter on, context for debugging data:** tags are indexed, context is not.
+- **Tags** (searchable): keys ≤32 chars from `a-zA-Z0-9_.:-`, no spaces; values ≤200 chars, no newlines. Built-in tags (`browser`, `os`, `url`, `environment`, `release`) overwrite yours of the same name.
+- **Context** isn't indexed or searchable but shows in full on the event page; normalized to 3 levels deep (change `normalizeDepth`).
+- **User:** `Sentry.setUser({...})` accepts extra fields; call it after login, not in init, and `Sentry.setUser(null)` on logout. `Sentry.setUser({ ip_address: "{{auto}}" })` infers the IP; collection follows `dataCollection.userInfo`.
+- **`initialScope`:** an object (`{ tags, user }`) or a callback `(scope) => { ...; return scope; }`.
+- **Never send emails, card numbers or passwords as tags or extra;** scrub PII in `beforeSend`. Always set `release` and `environment`: source maps and environment-aware alerts need them.
+- **Avoid capturing in render paths:** put Sentry calls in event handlers or `try/catch` blocks.
+
+## Breadcrumbs
+
+- **Buffered locally** and attached to the next event sent to Sentry.
+- **Manual:** `Sentry.addBreadcrumb({ category: "auth", message: "User authenticated", level: "info", data: { userId: user.id, method: "oauth2", provider: "google" } })`.
+- **Automatic:** `console` (log, warn, error, debug), `dom` (click, keypress), `fetch`, `xhr`, `history` (pushState, replaceState, navigations), `sentry` (SDK sends).
+- **Shape:** `message`, `type` (`"default"|"debug"|"error"|"info"|"navigation"|"http"|"query"|"ui"|"user"`), `level`, `category` (dot-namespaced), `data`, `timestamp`.
+- **`beforeBreadcrumb(breadcrumb, hint)`** returns `null` to drop; `hint?.xhr` exists for http breadcrumbs. `maxBreadcrumbs` defaults to 100.
+- **Configure sources:** `Sentry.breadcrumbsIntegration({ console, dom: { serializeAttribute: ["data-testid", "aria-label"] }, fetch, history, xhr, sentry })`.
+
+## Hooks and event processors
+
+- **`beforeSend(event, hint)` runs last,** after scope data is applied; return `null` to drop. Hint: `originalException`, `syntheticException`, `event_id`, `data`. Uses: drop ResizeObserver errors, drop errors with `extension://` frames, delete `event.user.email`, set fingerprints.
+- **`beforeSendTransaction(event)`** is the separate hook for transactions, e.g. drop `/health` and `/ping`, normalize `/users/\d+` to `/users/:id`.
+- **`Sentry.addEventProcessor((event, hint) => ...)` against `beforeSend`:** processor order is unspecified while `beforeSend` always runs last; any number of processors but one `beforeSend`; processors can be scope-level while `beforeSend` is init-only; both may be async (slower).
+
+## Filtering and grouping
+
+- **`ignoreErrors`:** strings (partial match) and regexes, e.g. `"ResizeObserver loop limit exceeded"`, `"fb_xd_fragment"`, `"Non-Error exception captured"`, `/^Network Error$/`, `/ChunkLoadError/`, `/Loading chunk \d+ failed/`, `/^Script error\.?$/`.
+- **`allowUrls` / `denyUrls` match stack frame URLs, not the page URL,** e.g. `denyUrls`: `/extensions\//i`, `/^chrome:\/\//i`, `/^moz-extension:\/\//i`, `/^safari-extension:\/\//i`, `/ads\.doubleclick\.net/`. For extension noise, `denyUrls: [/chrome-extension:\/\//]`.
+- **"Script error."** is a cross-origin script without CORS headers: add CORS headers or use `allowUrls`.
+- **Fingerprints:** `["{{ default }}", err.functionName, String(err.errorCode)]` extends default grouping (prefer this); leaving `{{ default }}` out replaces it, e.g. `["network-timeout"]` or `["chunk-load-failure"]` for `ChunkLoadError`. Variables: `{{ default }}`, `{{ transaction }}`, `{{ function }}`, `{{ type }}`, `{{ module }}`, `{{ value }}`.
+- **Volume:** filter early with `ignoreErrors` and `denyUrls`; lower `sampleRate` and `tracesSampleRate` from 1.0.
+
+## Default integrations
+
+| Integration | Does | Options |
+|---|---|---|
+| `breadcrumbsIntegration` | Breadcrumbs from console, DOM, fetch, XHR, history | `console`, `dom`, `fetch`, `history`, `xhr` |
+| `browserApiErrorsIntegration` | Wraps `setTimeout`, `setInterval`, `requestAnimationFrame`, `addEventListener` in try/catch | `setTimeout`, `setInterval`, `requestAnimationFrame`, `eventTarget` |
+| `browserSessionIntegration` | Release health (session per page load or route change) | `lifecycle: "route" \| "page"` |
+| `dedupeIntegration` | Prevents duplicate events from rapid-succession throws | |
+| `functionToStringIntegration` | Preserves original function names in wrapped stack traces | |
+| `globalHandlersIntegration` | `onerror`, `onunhandledrejection` | `onerror`, `onunhandledrejection` |
+| `httpContextIntegration` | Page URL, User-Agent, Referer | |
+| `inboundFiltersIntegration` | `ignoreErrors`, `denyUrls`, `allowUrls` | |
+| `linkedErrorsIntegration` | Cause chains | `key: "cause"`, `limit: 5` |
+
+- **Remove by name:** `integrations: (defaults) => defaults.filter((i) => i.name !== "Breadcrumbs")`. **Reconfigure:** `Sentry.linkedErrorsIntegration({ limit: 10 })`, `Sentry.globalHandlersIntegration({ onunhandledrejection: false })`, `Sentry.browserSessionIntegration({ lifecycle: "page" })`. `defaultIntegrations: false` starts from scratch.
+- **Add after init:** `Sentry.addIntegration(Sentry.reportingObserverIntegration())`, or dynamically: `const { captureConsoleIntegration } = await import("@sentry/browser"); Sentry.addIntegration(captureConsoleIntegration({ levels: ["error", "warn"] }));`.
+
+## Transport, offline and tunnel
+
+- **Default:** a fetch-based transport that POSTs to ingest.
+- **Offline queue (IndexedDB):** `transport: makeBrowserOfflineTransport(makeFetchTransport)`, both from `@sentry/browser` (≥7.48.0).
+- **Ad blockers:** `tunnel: "https://myapp.com/sentry-tunnel"` (or `"/sentry-tunnel"`) plus a server-side relay endpoint; the DSN is still required for header generation. See https://docs.sentry.io/platforms/javascript/troubleshooting/#dealing-with-ad-blockers.
+- **Custom transport:** `createTransport(options, makeRequest)` from `@sentry/core`; `makeRequest` returns `{ statusCode, headers: { "x-sentry-rate-limits", "retry-after" } }` and uses `referrerPolicy: "origin"`.
+
+## User feedback
+
+| Approach | Use |
+|---|---|
+| `feedbackIntegration()` | A widget; needs no error |
+| `captureFeedback()` | Programmatic, for your own UI |
+| `showReportDialog()` | The crash modal after an error |
+
+- **Widget:** `Sentry.feedbackIntegration({ colorScheme: "system" })` shows a "Report a Bug" button bottom-right; clicking it opens a modal form. Use it for proactive collection: a persistent button catches issues that never throw. The widget and the crash modal can be used together.
+
+| Option | Default |
+|---|---|
+| `colorScheme` | `'system'` (`'light'`, `'dark'` or `'system'`) |
+| `buttonLabel` | `"Report a Bug"` |
+| `submitButtonLabel` | `"Send Bug Report"` |
+| `cancelButtonLabel` | `"Cancel"` |
+| `formTitle` | `"Report a Bug"` |
+| `showBranding` ("Powered by Sentry") / `showName` / `showEmail` | `true` |
+| `isNameRequired` / `isEmailRequired` | `false` |
+| `namePlaceholder` | `"Your Name"` |
+| `emailPlaceholder` | `"your.email@example.org"` |
+| `messagePlaceholder` | `"What's the bug? ..."` |
+| `position` | `'bottom-right'` (or `bottom-left`, `top-right`, `top-left`) |
+| `autoInject` | `true` |
+| `enableScreenshot` | `true` (≥8.0.0) |
+| `tags` | `{}` |
+
+- **The trigger-label option name differs between sources:** the browser reference uses `buttonLabel`; the React Router and TanStack references use `triggerLabel: "Report a bug"` and `successMessageText: "Thanks for the report."` (and `formTitle: "Report a bug"`, `submitButtonLabel: "Send report"` in their examples).
+- **Pre-fill:** `Sentry.setUser({ email, name })`.
+- **Your own button:** `autoInject: false`, then `Sentry.getFeedback()?.openDialog()`. The widget uses Shadow DOM; for z-index conflicts, place it yourself this way.
+- **`captureFeedback`:** `Sentry.captureFeedback({ name?, email?, message, associatedEventId? }, { captureContext: { tags }, attachments: [{ filename, data: Uint8Array }] })`; only `message` is required. Link to an error with `associatedEventId` set to the return value of `Sentry.captureException(err)` or `Sentry.lastEventId()`.
+- **`showReportDialog`:** collects name, email and a description, paired with the captured error event. Options `eventId` (required), `user.name`, `user.email`, `lang` (e.g. `"de"`, `"fr"`), `title`, `subtitle`, `subtitle2`, `labelSubmit`. Call it from `beforeSend` when `event.exception && event.event_id`, on a 500 page with the server-side event id (the primary use case), or after a manual `captureException`.
+- **Screenshots** are hidden on mobile and count against the attachment quota (1 GB standard).
+- **With Replay,** feedback links to the replay: the SDK buffers up to 30 seconds when the widget opens, and needs `replaysOnErrorSampleRate > 0`.
+
+## Debugging
+
+| Symptom | Fix |
+|---|---|
+| Events missing | `debug: true`, check the DSN |
+| Events sent twice | Only the first `Sentry.init()` takes effect; look for duplicate SDK instances |
+| Tags don't appear | A built-in tag of the same name overwrote them |
+| "Script error." | Cross-origin script without CORS headers |
+| Minified traces | `npx @sentry/wizard@latest -i sourcemaps`; upload in CI before errors occur |
+| Loader not firing | It must be the first `<script>`; look for CSP errors |
+| `sentryOnLoad` not called | It wasn't defined before the loader tag |
+| Early fetches not traced (Loader) | Fetches before the SDK loads aren't traced; wrap early calls in `Sentry.onLoad()` |
+| CDN bundle not found | Check the version at https://browser.sentry-cdn.com/ |
+| SRI integrity error | Re-copy the full tag including `integrity` |
+| `ResizeObserver loop` floods issues | Add `"ResizeObserver loop limit exceeded"` to `ignoreErrors` |
+| `beforeSend` returns `null` but events still sent | Those are transactions: `beforeSendTransaction` is a separate hook |
+| User context missing | Call `Sentry.setUser()` after authentication completes, not before |
+| Unhandled rejections not captured | Check `globalHandlersIntegration({ onunhandledrejection: true })` is active (it is by default) |
+| No cause chain from `linkedErrorsIntegration` | Needs `Error.cause` (Chrome 93+, Firefox 91+) and SDK ≥7.0.0 |
+| Feedback widget doesn't appear | `feedbackIntegration()` in `integrations` and SDK ≥7.85.0 |
+| Feedback form won't submit | Check the DSN and the network tab |
+| Feedback screenshots missing | SDK ≥8.0.0 and `enableScreenshot` not `false` |
+| Crash modal doesn't appear | `showReportDialog` needs a valid `eventId`; check the `beforeSend` hook runs |
+| Feedback form not pre-filled | Call `Sentry.setUser({ name, email })` before the widget opens |
+| Replay not linked to feedback | `replaysOnErrorSampleRate > 0`; replay must be active when feedback is submitted |
+| Feedback missing | Check the attachment quota; self-hosted needs ≥24.4.2 |
+| Ad blockers drop events | `tunnel` plus a relay endpoint |
+
+Shared habits are in [../sentry/PRACTICES.md](../sentry/PRACTICES.md).
+
+## Prove it
+
+Add a temporary `<button onclick="throw new Error('Sentry Browser Test Error')">`, click it, and run `Sentry.captureException(new Error("Manual test"))`, `Sentry.captureMessage("Manual test message", "info")` and (npm path) `Sentry.startSpan({ name: "Test Span", op: "test" }, () => {})`. In Sentry: Issues shows the error within seconds, Traces shows the page load transaction, Replays shows a recording after page interaction, and Logs shows entries if logging is enabled (npm or the CDN logs bundle). If nothing appears, set `debug: true` and check the browser console.

@@ -1,6 +1,6 @@
 # Agent skills
 
-50 skills for coding agents, in seven sets:
+54 skills for coding agents, in eight sets:
 
 | Folder | What it's for |
 |---|---|
@@ -11,6 +11,7 @@
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
+| [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy) and k6 load tests. 4 skills. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -166,6 +167,15 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [web-scraping](./skills/web-automation/web-scraping/SKILL.md) | Data from the web with the lightest tool: fetch, browser or crawler, search without a browser, fetched content as untrusted input, parsing, polite crawling with checkpoints, an MCP scraping server, captured traffic turned into an OpenAPI spec |
 | [webmcp](./skills/web-automation/webmcp/SKILL.md) | A web app's actions as WebMCP tools for agents: from source code or from a live URL, task-level tools, closed schemas, risk classes and confirmations, validation and probing, an audit rubric |
 | [web-research](./skills/web-automation/web-research/SKILL.md) | Company research, competitor analysis and event prospecting with parallel research subagents: call caps, one file per entity, rules against invented facts, confirmation gates, matrices and battle cards from verified evidence, HTML and CSV reports |
+
+## Monitoring
+
+| Skill | Covers |
+|---|---|
+| [sentry](./skills/monitoring/sentry/SKILL.md) | Sentry for React, the browser, React Router, TanStack Start, Next.js, Node, NestJS, Cloudflare, React Native and Flutter: setup per platform, errors, tracing, Session Replay, logs, metrics, profiling, crons, user feedback, sampling and quotas, PII scrubbing, releases and source maps, issue grouping and alerts, debugging with the MCP server and Seer, AI monitoring, OpenTelemetry, Supabase, SDK upgrades |
+| [posthog](./skills/monitoring/posthog/SKILL.md) | PostHog for web, Next.js, Node, React Native and Flutter: setup, the reverse proxy, consent and cookieless mode, events and identity, feature flags, experiments and their health, surveys, web analytics, session replay and Replay Vision, error tracking, logs and metrics, LLM and MCP analytics, HogQL with examples and tables, insights and dashboards, metric modeling, the data warehouse, endpoints, workflows, ingestion warnings and costs, the MCP server |
+| [grafana](./skills/monitoring/grafana/SKILL.md) | The Grafana stack: dashboards, alerting and OnCall, provisioning and Grafana as code, Prometheus, PromQL and Mimir, cardinality and cost, Loki and LogQL, Tempo and TraceQL, Pyroscope, Alloy, OpenTelemetry and Beyla, application and database observability, Faro, infrastructure, synthetic monitoring, the Grafana MCP server |
+| [k6](./skills/monitoring/k6/SKILL.md) | Load and performance tests with k6: test types, executors, scenarios, thresholds and checks, browser tests, a website performance suite with CI templates, Grafana Cloud k6 runs and results, test maintenance and trend analysis |
 
 ## Reference code
 
