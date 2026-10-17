@@ -2,7 +2,7 @@
 
 Text fields, formatters, autofill and password managers, the clipboard, edit forms with Save and Discard, tappable links inside translated sentences, checkbox lists and repeated taps. The keyboard itself (action key, focus, dismissing it, watching it, forms under it and in bottom sheets, shortcuts) is in [KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md). Sources are community material, not docs.flutter.dev: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips (apparencekit.dev), checked against api.flutter.dev and dart.dev where a line is wrong. No article states a Flutter, Dart or package version. Several FlutterPro blocks use dot shorthands, which need Dart 3.10 ([LANGUAGE.md](../dart/LANGUAGE.md#dot-shorthands)); write the full type names on older SDKs. Official layout rules are in [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md); dialogs, sheets and their results in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
 
-**Contents:** [Formatters see paste and autofill](#formatters-see-paste-and-autofill) · [Amount limits](#amount-limits) · [Autofill and password managers](#autofill-and-password-managers) · [Clipboard](#clipboard) · [Edit forms: Save](#edit-forms-save) · [Edit forms: Discard changes](#edit-forms-discard-changes) · [Links inside a translated sentence](#links-inside-a-translated-sentence) · [Checkbox lists](#checkbox-lists) · [Repeated taps](#repeated-taps) · [Prove it](#prove-it)
+**Contents:** [Formatters see paste and autofill](#formatters-see-paste-and-autofill) · [Amount limits](#amount-limits) · [Autofill and password managers](#autofill-and-password-managers) · [Clipboard](#clipboard) · [Edit forms: Save](#edit-forms-save) · [Edit forms: Discard changes](#edit-forms-discard-changes) · [Links inside a translated sentence](#links-inside-a-translated-sentence) · [Fields that grow with their content](#fields-that-grow-with-their-content) · [Checkbox lists](#checkbox-lists) · [Repeated taps](#repeated-taps) · [Prove it](#prove-it)
 
 ## Formatters see paste and autofill
 
@@ -645,6 +645,13 @@ class _LinkedTextState extends State<LinkedText> {
 ```
 
 - **Not shown by the article:** the tagged string inside an ARB file through gen-l10n. Check it against [LOCALIZATION.md](../flutter/LOCALIZATION.md#escaping) (`use-escaping`) before relying on "as is".
+
+## Fields that grow with their content
+
+Owner's rule: CSS `field-sizing: content` maps to `IntrinsicWidth` / `IntrinsicHeight`; use them carefully, and prefer `minLines` / `maxLines` in `TextField` ([RESPONSIVE-UNITS.md](../flutter/RESPONSIVE-UNITS.md#the-parallel-list)).
+
+- **Height:** `TextField(maxLines: null)`, or `minLines` with a higher `maxLines`, grows the field line by line with no intrinsics. The return key then inserts a line break ([KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md)).
+- **Width:** only growing sideways needs `IntrinsicWidth`, which is "relatively expensive, because it adds a speculative layout pass" and can be O(N²) in the depth of the tree ([IntrinsicWidth](https://api.flutter.dev/flutter/widgets/IntrinsicWidth-class.html)); keep it off list items ([PERFORMANCE.md](../flutter/PERFORMANCE.md)).
 
 ## Checkbox lists
 

@@ -390,7 +390,7 @@ Status now: MDN says "CSS mixins are not currently supported in any browser" and
 
 ## Custom functions and if()
 
-`@function` and `if()` are both not Baseline, experimental ([MDN @function](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@function), [MDN if()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/if)); MDN's guide says "only CSS custom functions have browser support" of the two families.
+`@function` and `if()` are both not Baseline, experimental, and Chromium only (Chrome and Edge 139 for `@function`, 137 for `if()`; [MDN @function](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@function), [MDN if()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/if)); MDN's guide says "only CSS custom functions have browser support" of the two families.
 
 - **Shape:** the name is a case-sensitive `<dashed-ident>`, and the `result` descriptor holds the returned value. MDN's example:
   ```css
@@ -567,7 +567,7 @@ Both are Baseline 2026, newly available since August 2026 ([MDN sibling-index()]
 
 - `sibling-index()`, `sibling-count()`: Baseline 2026 (above).
 - `progress()`: Baseline 2026, newly available since September 2026 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/progress)). The posts give no code for it.
-- `random()`: limited availability; `random(seed, min, max, step)` takes two to four comma-separated expressions, as in `random(0, 100)` or `random(0deg, 360deg)` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/random)).
+- `random()`: limited availability, Safari 26.2 only; `random(seed, min, max, step)` takes two to four comma-separated expressions, as in `random(0, 100)` or `random(0deg, 360deg)` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/random)).
 - `calc-size()`: limited availability, experimental ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/calc-size)).
 - The rest were not checked; treat them as drafts, not rules.
 

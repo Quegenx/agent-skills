@@ -8,6 +8,7 @@
 
 - **Phone vs tablet branching.** Flutter's official skill and docs: "Do not check for hardware types (e.g., 'phone' vs. 'tablet')"; base layout "strictly on available window space". This package's skill tells agents to use `context.isMobilePlatform` / `isResponsiveMobile` / `isTypeOfMobile()` for device-class branches. Both warn against orientation or width-only checks: Flutter against `MediaQuery.orientationOf` / `OrientationBuilder`, this package against `context.isMobile`.
 - **MediaQuery.** Flutter recommends `MediaQuery.sizeOf(context)` for the window size. This package's skill: "Don't subscribe to full `MediaQuery` for scaling; the builder already handles size/orientation."
+- **Screen-proportional scaling.** Owner's rule: putting `.w` / `.h` / `.sp` on every value is the web's `vw` mistake and breaks tablets and accessibility; size with `Theme` tokens, `LayoutBuilder` and clamped values instead ([RESPONSIVE-UNITS.md](RESPONSIVE-UNITS.md#dont-build-a-system-on-them)). Flutter's docs point the same way: base layout "strictly on available window space" (above) and "Make sure your layout has enough room to render all its contents when the font sizes are increased" ([ACCESSIBILITY.md](ACCESSIBILITY.md#design-values)). This package's `extensions` style scales with `.w` / `.sp` / `.rSafe` like ScreenUtil; its own table below also says not to put `.w` on every number. The owner's rule wins.
 - **Choose per project and confirm in the current docs** of each before mixing them.
 
 ## Project style file

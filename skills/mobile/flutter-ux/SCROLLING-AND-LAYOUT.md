@@ -596,6 +596,7 @@ Scaffold(
 
 - **[Flutter docs, via flutter skill]:** Flutter text widgets respect the OS font-size setting; "Make sure your layout has enough room to render all its contents when the font sizes are increased." Test on a small-screen device at the largest font ([ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values)). The flutter skill states no cap.
 - **[FlutterPro](https://flutterpro.design/details/text-scale-factor):** override `MediaQuery.textScaler` and clamp to 1.1: "don't ignore user's preference completely, just it limit to x1.1 at max". "Most apps can handle x1.1 scaling without layout breaks. It's not a magical number. So test for your app and either adapt to it, or limit to x1.0 **only** if you have to." The article shows overflow at x1.8 against x1.0.
+- **Owner's rule (wins over the cap):** never lock or cap text scaling app-wide, at x1.0, x1.1 or any value. When a row breaks at large text, change the structure (`Row` to `Column`), don't shrink the font; `MediaQuery.withClampedTextScaling` belongs only around one region that truly can't grow ([ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values), [RESPONSIVE-UNITS.md](../flutter/RESPONSIVE-UNITS.md#enhancement-not-the-base)).
 
 ```dart
 MaterialApp(

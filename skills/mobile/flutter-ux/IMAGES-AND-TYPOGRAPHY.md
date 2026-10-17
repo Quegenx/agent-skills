@@ -2,7 +2,7 @@
 
 How images and text arrive on screen without popping, jumping or looking off-brand in Flutter: a disk cache for network images, placeholders and cross-fades, preloading icons and Google Fonts during the splash screen, tabular figures, the yellow-underline default text style, and selection colors. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice that leans on pub packages (`extended_image`, `image_fade`, `flutter_svg`, `google_fonts`), not Flutter team docs. Where a tip differs from the official-docs [flutter](../flutter/SKILL.md) skill, both sides are stated and tagged. Reserving an image's box so the layout does not jump is in [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md#reserve-image-space).
 
-**Contents:** [Version notes](#version-notes) · [Cache network images on disk](#cache-network-images-on-disk) · [Cross-fade images in](#cross-fade-images-in) · [Preload icons during the splash](#preload-icons-during-the-splash) · [Preload Google Fonts](#preload-google-fonts) · [Tabular figures](#tabular-figures) · [Yellow underlines](#yellow-underlines) · [Selection color](#selection-color) · [Prove it](#prove-it)
+**Contents:** [Version notes](#version-notes) · [Cache network images on disk](#cache-network-images-on-disk) · [Cross-fade images in](#cross-fade-images-in) · [Preload icons during the splash](#preload-icons-during-the-splash) · [Preload Google Fonts](#preload-google-fonts) · [Tabular figures](#tabular-figures) · [Yellow underlines](#yellow-underlines) · [Selection color](#selection-color) · [Line height, wrapping and trim](#line-height-wrapping-and-trim) · [Prove it](#prove-it)
 
 ## Version notes
 
@@ -260,6 +260,14 @@ ThemeData(
 ```
 
 "Your accent or brand color works best here. Selection sits behind text, so contrast matters. Light brand colors usually work as is. Dark ones can clash with the text, so add some opacity until it reads cleanly. Cursor and handles can stay at full color, they're small enough." The article gives no contrast ratio; the flutter skill's ratios are in [ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values). [FlutterPro](https://flutterpro.design/details/selection-color)
+
+## Line height, wrapping and trim
+
+Owner's rules, checked against api.flutter.dev; the full CSS-to-Flutter list is [RESPONSIVE-UNITS.md](../flutter/RESPONSIVE-UNITS.md#the-parallel-list).
+
+- **Space by the line, not magic numbers** (CSS `lh`). A line is `fontSize * TextStyle.height` tall; `StrutStyle` fixes the line height for a whole paragraph ([StrutStyle](https://api.flutter.dev/flutter/painting/StrutStyle-class.html)); `leadingDistribution: TextLeadingDistribution.even` splits the extra leading above and below like CSS, where the default `proportional` does not ([TextLeadingDistribution](https://api.flutter.dev/flutter/dart-ui/TextLeadingDistribution.html)). `TextStyle` has no `cap` unit.
+- **No `text-wrap: balance` or `pretty`.** Don't truncate headings without a reason: wrapping is already the default (`DefaultTextStyle.softWrap` is `true`, [softWrap](https://api.flutter.dev/flutter/widgets/DefaultTextStyle/softWrap.html)), so leave `maxLines` and `TextOverflow.ellipsis` off headings. For chat bubbles and tags that should hug their text, `textWidthBasis: TextWidthBasis.longestLine`: "The width will be exactly enough to contain the longest line" ([TextWidthBasis](https://api.flutter.dev/flutter/painting/TextWidthBasis.html)).
+- **No `text-box-trim`.** `TextHeightBehavior(applyHeightToFirstAscent: false)` uses the font's default ascent for the first line, so it only drops the extra line height above line one, and "only has effect if a non-null TextStyle.height is specified" ([applyHeightToFirstAscent](https://api.flutter.dev/flutter/dart-ui/TextHeightBehavior/applyHeightToFirstAscent.html)). Closer to CSS: `applyHeightToFirstAscent: false` with `applyHeightToLastDescent: false` and `TextLeadingDistribution.even`, then manual padding for the cap-height part.
 
 ## Prove it
 

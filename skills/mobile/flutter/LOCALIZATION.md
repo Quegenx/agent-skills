@@ -120,7 +120,7 @@ return MaterialApp(
 ```
 
 - **Or use the generated list:** `supportedLocales: AppLocalizations.supportedLocales`.
-- **The individual delegates** are `AppLocalizations.delegate`, `GlobalMaterialLocalizations.delegate`, `GlobalWidgetsLocalizations.delegate` and `GlobalCupertinoLocalizations.delegate` (the skill lists all four). `GlobalWidgetsLocalizations.delegate` defines the LTR or RTL text direction. Cupertino apps use `GlobalCupertinoLocalizations.delegates`; a plain `WidgetsApp` uses `GlobalWidgetsLocalizations.delegate`.
+- **The individual delegates** are `AppLocalizations.delegate`, `GlobalMaterialLocalizations.delegate`, `GlobalWidgetsLocalizations.delegate` and `GlobalCupertinoLocalizations.delegate` (the skill lists all four). `GlobalWidgetsLocalizations.delegate` defines the LTR or RTL text direction. Owner's rule: write `EdgeInsetsDirectional`, `AlignmentDirectional` and `start` / `end` (CSS logical properties); they are mandatory in Hebrew, and a physical `left` / `right` there does not mirror ([RESPONSIVE-UNITS.md](RESPONSIVE-UNITS.md#the-parallel-list)). Cupertino apps use `GlobalCupertinoLocalizations.delegates`; a plain `WidgetsApp` uses `GlobalWidgetsLocalizations.delegate`.
 - **Read strings** with `AppLocalizations.of(context)!.helloWorld`. The widget calling it must be a descendant of `MaterialApp`: the app has to have started to initialize `AppLocalizations`, otherwise you get a null exception.
 - **Localize the app title** the OS shows with `MaterialApp.onGenerateTitle: (context) => DemoLocalizations.of(context).title`. It reruns only when the app rebuilds, not on navigation, so it cannot track routes; a per-route browser tab title needs a `Title` widget ([FlutterPro](https://flutterpro.design/details/browser-tab-title), [../flutter-ux/WEB.md](../flutter-ux/WEB.md#browser-tab-title-per-page)).
 - **A subtree in another locale:** `Localizations.override(context: context, locale: const Locale('es'), child: Builder(...))`.
@@ -339,7 +339,7 @@ Text(t.home.no_tasks.title);
 - **Every locale renders:** switching the device language to each entry in `supportedLocales` shows translated strings, and an unsupported language falls back to the first supported locale.
 - **Plurals and select cover `other`:** `nWombats(0)`, `nWombats(1)` and `nWombats(5)` give "no wombats", "1 wombat" and "5 wombats"; `pronoun('Male')` gives the `other` text.
 - **Formats match the locale:** a `yMd` date shows "7/9/1959" in en_US and "9.07.1959" in ru.
-- **Right-to-left works:** in an RTL locale the layout mirrors (requires `GlobalWidgetsLocalizations` among the delegates).
+- **Right-to-left works:** in an RTL locale the layout mirrors (requires `GlobalWidgetsLocalizations` among the delegates), and no padding or alignment uses a physical `left` / `right` where `Directional` is meant.
 - **Slang projects:** `dart run slang analyze --split-missing=false --split=false` reports no missing keys, and no `*.g.dart` file under `lib/i18n/` has hand edits (regenerating with `dart run slang` leaves `git diff` empty).
 - **No flutter_gen import** remains on Flutter 3.32 or later; the generated `app_localizations.dart` is imported from source.
 - **The App Store lists the languages:** Xcode's Runner project > Info > Localizations contains every shipped locale.
