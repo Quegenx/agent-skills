@@ -5,9 +5,9 @@
 Built **per request**, never shared: one function takes everything the turn needs and returns the loop.
 
 - **Input:** the conversation id, the user id, the model, a database client scoped to the signed-in user, their settings, the locale, the turn signals, trace integrations, and every outside action as an optional interface (the real one by default, fixed answers in evals).
-- **It builds the tool context once** (ids, client, settings, actions, page data) and hands the same object to every tool. Where the SDK separates them, keep two kinds apart: run-wide state every hook may read (request id, flags) and per-tool context validated by each tool's own schema (its client, its secrets), so a tool receives only what it declares. Neither belongs in telemetry unless a field is allowlisted, and a context validation error the model sees says only that the call could not run.
+- **It builds the tool context once** (ids, client, settings, actions, page data) and hands the same object to every tool. Where the SDK separates them, keep two kinds apart: run-wide state every hook may read (request id, flags) and per-tool context validated by each tool's own schema (its client, its secrets), so a tool receives only what it declares (in AI SDK 7, `runtimeContext`, and each tool's `contextSchema` with its entry in `toolsContext`, which is required once one tool declares a schema; step preparation can return an updated `runtimeContext`). Neither belongs in telemetry unless a field is allowlisted, and a context validation error the model sees says only that the call could not run.
 - **It composes the tool wrappers in one line,** innermost first: errors explained, then exclusive tools queued, then rare tools deferred.
-- **It sets the loop:** the step limit, the stop conditions (a question card ends the turn), approval from the traits table, step preparation, provider options (base effort, cache key, privacy), telemetry with a function id.
+- **It sets the loop:** the step limit, the stop conditions (a question card ends the turn), approval from the traits table, step preparation, provider options (base effort, cache key, privacy), telemetry with a function id. AI SDK 7 also has a top-level `reasoning` option; when both are set, the provider options win and "can silently bypass" it, so the v7 migration guide says to remove the overlapping reasoning settings from the provider options.
 
 **The message type comes from the agent:** derive the UI message type from the built agent (its tools give every tool part its exact input and output), and let the page, the storage and the history builder share that one type. A tool's own part type is exported beside the tool, so a UI component imports the type and never the tool.
 
@@ -26,6 +26,8 @@ One exported function per agent decides each step's messages and tool choice; th
 - a reasoning-effort update when the work calls for more.
 
 Each note comes from its own module; step preparation only orders them.
+
+In AI SDK 7 what step preparation returns carries forward: returned instructions stay until another override, and returned messages become the base of later steps (in v6 both lasted one step). A one-step note (the repeated-call reminder, the last-step note) is dropped by rebuilding the next step from `[...initialMessages, ...responseMessages]`, or it repeats on every later step.
 
 ## The tool runtime (`core/tool-runtime/`)
 
@@ -103,7 +105,7 @@ The endpoint is one function that runs these in order and holds no logic of its 
 3. Read in parallel: history, whether the message id is already stored, settings, memories.
 4. Prepare the messages: a retry (only the last user message, refused when the answer after it acted), approval decisions (applied only to parts still pending), or a new message (decoded parts only, the server's time).
 5. Attach the user context when it changed; then in parallel: compaction, saving the user's message, the turn signals.
-6. Build the agent, stream the turn with the stop hooks, save the answer and its usage when it ends.
+6. Build the agent, stream the turn with the stop hooks, save the answer and its usage when it ends (in AI SDK 7, `result.usage` is the total of every step).
 7. Release the lease and flush telemetry, whatever happened.
 
 The **history builder** is a pure function of the stored messages: same input, same bytes, so the provider's cache keeps matching.

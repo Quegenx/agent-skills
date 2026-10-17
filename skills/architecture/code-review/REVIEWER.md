@@ -1,6 +1,6 @@
 # The AI reviewer
 
-Every pull request gets an AI review before a person looks. It reads the diff against the whole repo and the PR's stated intent, and asks: does the change solve its problem, fit the system, or break something else? On a bug fix, it looks for the root cause. What it should look for inside the diff is [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md); this file is how the reviewer is set up, run and answered.
+Every pull request gets an AI review before a person looks. It reads the diff against the whole repo and the PR's stated intent, and asks: does the change solve its problem, fit the system, or break something else? On a bug fix, it looks for the root cause. On a new feature it can also estimate how far the feature is needed against refactoring something that already exists (Florian Kiem's "The art of not shipping everything" wants these checks automated), as input to the human's "should we build this at all?" call in [APPROVAL.md](APPROVAL.md). What it should look for inside the diff is [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md); this file is how the reviewer is set up, run and answered.
 
 ## What the reviewer reads
 
@@ -43,6 +43,11 @@ Findings get verified by other agents before humans review them.
 - **Flag the class of bug,** so the author fixes every instance, not one line.
 - **The summary starts with a count** and says plainly when there's nothing to fix.
 - **For a per-file verdict** (clean, minor, inflated, unneeded, blocker), use the output table in [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md).
+- **A UI review ranks by user impact instead.** Vercel's product-design skill: "Lead with findings, ordered by user impact." "For each finding include: file/line or rendered location, verification status, canonical source, user consequence, and smallest concrete fix." Its scale:
+  - "**P0:** blocks the primary task, creates severe accessibility failure, or can cause unrecoverable user harm."
+  - "**P1:** likely task failure, misleading consequence, missing critical state, or major responsive/accessibility defect."
+  - "**P2:** meaningful friction, inconsistency, weak hierarchy, or recoverability issue."
+  - "**P3:** minor craft or consistency improvement."
 
 A review prompt to run locally or in a subagent:
 
@@ -62,7 +67,7 @@ Help me review this PR by creating an HTML artifact that describes it. I'm not v
 - **Fix it or resolve the thread with a reason.** That's also how you clear a false positive: close the thread with a short reason.
 - **No merge with an open finding.** A PR can't merge while any finding from the bug review or the security review is still open. Require every review thread resolved before merge.
 - **A later commit that fixes the issue clears the finding on its own.**
-- **An agent can pick up the fixes.** Often one picks them up overnight, so the author comes back to a PR that's already been through another round. A fixing agent pushes clear fixes for failing checks and review comments, explains what it changed, and asks about anything ambiguous or architectural.
+- **An agent can pick up the fixes.** Often one picks them up overnight, so the author comes back to a PR that's already been through another round. A fixing agent pushes clear fixes for failing checks and review comments, explains what it changed, and asks about anything ambiguous or architectural. Run the fix before posting it: "When Vercel Agent proposes a patch, it validates the change in a secure Vercel Sandbox with the repository's builds, tests, and linters before posting the suggestion."
 - **Every round costs a round.** A person can wave off a nit in seconds; an agent author fixes it, which means another commit and another round, so noise and round caps matter ([TUNING-THE-REVIEWER.md](TUNING-THE-REVIEWER.md)).
 
 ## Security review

@@ -124,7 +124,7 @@ A scheduled loop that starts a full model turn every tick pays for every empty t
 
 ## Choosing the next step
 
-Browser, desktop and tool-using agents pick from a menu that changes every step. Rebuild the menu from live state each time (the controls visible on the page now, the reviewers online now, the passages held now, never last run's list), add an exit (`ask_user`, `stop`), and let Jev pick; code clicks, and a small model types only when a field needs text.
+Browser, desktop and tool-using agents pick from a menu that changes every step. Rebuild the menu from live state each time (the controls visible on the page now, the reviewers online now, the passages held now, never last run's list), add an exit (`ask_user`, `stop`; a workflow step's menu is continue, retry, ask the user or stop), and let Jev pick; code clicks, and a small model types only when a field needs text.
 
 ```ts
 const { answers } = await jev.systemOne({
@@ -137,6 +137,9 @@ const { answers } = await jev.systemOne({
   },
 });
 ```
+
+- **Offer only the moves legal here.** Filter the menu in code by the rules of the current position (no `return` outside a function, no `break` outside a loop), and offer existing entities as whole options (`use:<name>` for a name already defined) so the model reuses them instead of respelling them.
+- **Describe each option by its result.** Put the state as it would be after that choice in the label's description (`{ meaning, replacement, resulting_python }` per label, the whole program rendered as if chosen), so the model compares outcomes rather than names. An exit says exactly what it closes: "Finish this call's positional argument list; the call expression is complete".
 
 ## Routing work to an agent or a model
 

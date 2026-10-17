@@ -1,6 +1,6 @@
 # Sharing and composing skills
 
-One of the biggest benefits of skills is sharing them with the rest of your team. There are two ways: check them into the repo, or publish them as plugins in a Claude Code plugin marketplace. The right one depends on team size and how much context the checked-in skills cost; skills can then build on each other by name.
+One of the biggest benefits of skills is sharing them with the rest of your team. Within a team there are two ways: check them into the repo, or publish them as plugins in a Claude Code plugin marketplace. The right one depends on team size and how much context the checked-in skills cost; skills can then build on each other by name.
 
 ## Repo or marketplace
 
@@ -8,6 +8,12 @@ One of the biggest benefits of skills is sharing them with the rest of your team
 - **Every checked-in skill costs context:** each one adds a little to the context of the model.
 - **A plugin marketplace at scale:** make a **plugin** and run a Claude Code [plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces) where users upload and install plugins. It lets the team decide which skills to install, and can include a setup flow.
 - **Repo skills travel to cloud sessions; personal ones don't:** in a cloud session, `CLAUDE.md`, rules, skills, agents and commands come along with the repository, while your `~/.claude` stays on your laptop. Move what the team needs into the repository: commit skills and commands under `.claude/`.
+
+## Beyond the team
+
+- **A public registry:** with skills.sh, "once a skill is written, it can be distributed and installed without being rewritten for each agent." Installs concentrate: "375 skills, or 0.04% of the registry, account for 62% of installs", while nearly half of all skills were installed exactly once ([State of agent skills](https://vercel.com/blog/state-of-agent-skills)).
+- **One public URL for agents that can't read the repo:** for reports, proposals and one-off pages Vercel needed "a single public URL that anyone can point their agents at, regardless of the environment they run in." [vercel.com/design.md](https://vercel.com/design.md) is an Agent Skill with a trigger-style description, and its assets resolve from wherever it was opened: "Resolve assets/vercel-brand.css from this skill's location. If the skill was opened from a URL, resolve the asset against that original URL."
+- **Carry the context the repo gave it:** a skill moved out of its repo loses the components and shipped examples around it; see [WRITING.md](WRITING.md).
 
 ## Running a marketplace
 

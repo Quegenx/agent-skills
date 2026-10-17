@@ -14,7 +14,7 @@ gather (code, or an LLM that reads and writes)  ->  compute exact facts (code)
   ->  judge (Jev, one call, many questions)  ->  gate the probabilities (code)  ->  act (code)
 ```
 
-An LLM may think and draft, Jev decides, code acts. Nothing consequential happens because a model said so in text.
+An LLM may think and draft, Jev decides, code acts. Nothing consequential happens because a model said so in text. When an LLM writes the plan Jev's choices follow, the plan names exact values and steps and only what the menus can express; without a detailed plan Jev struggles with even elementary tasks.
 
 | The job | Read |
 |---|---|
@@ -40,7 +40,7 @@ An LLM may think and draft, Jev decides, code acts. Nothing consequential happen
 
 Start from what the application will show, select, change or hand off, and work back to the judgments it needs.
 
-- **Route and fill:** pick the handler, the team, the worker or the model, and its closed-set arguments, in one call ([AGENTS.md](AGENTS.md#routing-a-sentence-to-a-function)).
+- **Route and fill:** pick the handler, the team, the worker, the subagent or the model, and its closed-set arguments, in one call ([AGENTS.md](AGENTS.md#routing-a-sentence-to-a-function)).
 - **Select instead of generate:** code finds the candidate values or source spans, Jev picks the intended one, code copies it out verbatim. The model can't choose a candidate you didn't send, so check coverage first.
 - **Find and judge evidence:** score retrieved passages for relevance, keep the useful ones, flag the planted ones, before a writer model sees them.
 - **Score once, reuse:** store the per-dimension judgments; weights, filters, rankings and views change in code without calling the model again ([GATES.md](GATES.md#score-once-decide-many-times)).
@@ -50,7 +50,7 @@ Start from what the application will show, select, change or hand off, and work 
 
 ## When not to use it
 
-Generating text, summarising, writing code, explaining itself, extracting a value nobody listed, doing maths or date arithmetic, or anything a regular expression, a schema check or a SQL query decides exactly. If deterministic code already gets it right, keep the code. A judgment that needs several hidden reasoning steps is split into smaller questions or given to a reasoning model.
+Generating text, summarising, writing code, explaining itself, extracting a value nobody listed, doing maths or date arithmetic, or anything a regular expression, a schema check or a SQL query decides exactly. If deterministic code already gets it right, keep the code. A judgment that needs several hidden reasoning steps is split into smaller questions or given to a reasoning model. Generating by a chain of choices (one character or syntax node per call) is possible but poor: letter-by-letter code barely produced an `if`, and choosing AST nodes gave valid but mostly incorrect programs, with misspelt names (`fibonacio` for a plan that named `fibonacci`), after 42 choices for a recursive Fibonacci.
 
 Typed output guarantees the shape, not the truth: Jev can't return an option you didn't define, but it can confidently pick the wrong one you did.
 

@@ -2908,7 +2908,10 @@ function t3Order(layer, frames, cams, previous, stats, scene) {
       memo.margin = hit.margin;
       memo.fresh = true;
     }
-    if (memo.margin < -0.08) unseparated++;
+    if (memo.margin < -0.08) {
+      unseparated++;
+      if (globalThis.__t3unsep) globalThis.__t3unsep.push([ri.part?.name ?? ri.name ?? i, rj.part?.name ?? rj.name ?? j, memo.margin]);
+    }
     const V = cams.world.V;
     return nx * V[0] + ny * V[1] + nz * V[2];
   };
@@ -3057,6 +3060,7 @@ function t3Order(layer, frames, cams, previous, stats, scene) {
       let pick = -1;
       for (let v = 0; v < count; v++) if (!done[v] && (pick < 0 || indeg[v] < indeg[pick] || (indeg[v] === indeg[pick] && rank[v] < rank[pick]))) pick = v;
       forced++;
+      if (globalThis.__t3forced) globalThis.__t3forced.push(parts[pick]);
       indeg[pick] = 0;
       push(pick);
     }
@@ -3726,6 +3730,8 @@ function t3PoseUniforms(controller, group, prefix = "uGroup") {
 const T3_MAT_KEYS = ["paper", "face", "top", "shade-0", "shade-1", "shade-2", "shade-3", "lit-top", "lit-shade", "hi", "mid", "lo", "faint", "dot", "lit"];
 const T3_MAT_TUBE = ["body", "shine", "shade", "edge"];
 
+// glass, pcb, sensor, signal, coffee, bean, milk, smoke, porcelain, lavender and knit are from anatomy-reveal (MIT, Ann Nguyen,
+// see LICENSE-anatomy-reveal.txt beside this file), as are the __t3unsep and __t3forced debug collectors in t3Order.
 const T3_MATERIALS = {
   gold: {
     light: ["#d3bb88", "#e4d2a8", "#f1e5c6", "#a1844f", "#bc9f69", "#d3bb88", "#e4d2a8", "#f8efd8", "#dfcb9c", "#4b3920", "#86693f", "#a98c5b", "#c1a676", "#4a381f", "#2a1d0c", "#cdb07a", "#f3e8cc", "#8e7044", "#4b3920"],
@@ -3754,6 +3760,50 @@ const T3_MATERIALS = {
   copper: {
     light: ["#b3633e", "#c9784f", "#df9670", "#7c4128", "#9a5132", "#b3633e", "#c9784f", "#eaa985", "#be6d46", "#3a1a0c", "#6e3820", "#925037", "#a65d3f", "#3a1a0c", "#1c0b04", "#ad5f3b", "#f0b896", "#6e3720", "#3a1a0c"],
     dark: ["#3d1f13", "#492617", "#582e1c", "#2a160d", "#331a10", "#3d1f13", "#492617", "#673722", "#432215", "#eaa985", "#8f5236", "#5f3624", "#45271a", "#eaa985", "#ffe0cc", "#42221a", "#8a4c31", "#1f0f08", "#eaa985"],
+  },
+  glass: {
+    light: ["#e3eff2", "#eef7f9", "#f7fcfd", "#b9d2d8", "#c8dde2", "#d6e7eb", "#e3eff2", "#ffffff", "#e0eef1", "#1f4954", "#5f8e99", "#97bcc5", "#c3dbe0", "#2a5b66", "#000000", "#d3e6ea", "#ffffff", "#9fbfc7", "#1f4954"],
+    dark: ["#0a1519", "#0e1c21", "#1a3640", "#08161b", "#0c1f25", "#112a32", "#17363f", "#2b5a66", "#1b4652", "#9ad7e3", "#4f8b97", "#2a5560", "#173a43", "#c8f0f8", "#ffffff", "#0e2026", "#2b5a66", "#071216", "#9ad7e3"],
+  },
+  pcb: {
+    light: ["#cfe6d5", "#dcefe0", "#e9f6ec", "#9cc7a6", "#acd3b5", "#bddcc4", "#cfe6d5", "#f2fbf4", "#d6ecdb", "#17432a", "#4a8a5d", "#86b994", "#b5d8bd", "#7a6420", "#000000", "#c3e0ca", "#f2fbf4", "#8fbf9b", "#17432a"],
+    dark: ["#0c1d12", "#0f2618", "#1b4a2a", "#0a1a0f", "#0d2415", "#12301c", "#173c23", "#2c6a3c", "#1e5230", "#8fe0a5", "#3f8f56", "#2a5c38", "#1a3d25", "#e8d17a", "#ffffff", "#0f2618", "#2c6a3c", "#071209", "#8fe0a5"],
+  },
+  sensor: {
+    light: ["#e4dcf2", "#efe9f8", "#f7f3fc", "#c2b2e0", "#cfc1e8", "#dacfee", "#e4dcf2", "#ffffff", "#e8e1f5", "#3b2366", "#7458a8", "#a893cf", "#cdbfe6", "#3b2366", "#000000", "#dcd2ee", "#ffffff", "#ad9ad1", "#3b2366"],
+    dark: ["#170d22", "#1e122d", "#3d2560", "#140b1e", "#1c1029", "#251537", "#2f1b46", "#5a3a8c", "#43296b", "#d2b8ff", "#8a68c4", "#553d80", "#33244f", "#f0e0ff", "#ffffff", "#1e122d", "#5a3a8c", "#0d0614", "#d2b8ff"],
+  },
+  signal: {
+    light: ["#e45a52", "#ec7067", "#f48a80", "#b8352f", "#c9423b", "#d84d46", "#e45a52", "#ff9d94", "#ec7067", "#5e0f0c", "#9e2a25", "#c4524b", "#e08a83", "#5e0f0c", "#000000", "#d84d46", "#ff9d94", "#a3302a", "#5e0f0c"],
+    dark: ["#3a0a0c", "#4a0d10", "#7a1a1c", "#2e0709", "#3c0a0c", "#4d0e11", "#5e1316", "#a3282b", "#7a1a1d", "#ff9a96", "#c2484a", "#7a2224", "#4d1214", "#ffd0cc", "#ffffff", "#4a0d10", "#a3282b", "#240405", "#ff9a96"],
+  },
+  coffee: {
+    light: ["#ad784e", "#b47d51", "#b98154", "#936541", "#9d6d46", "#a7734b", "#af7a4f", "#b98154", "#a8754c", "#3b2415", "#65432a", "#855b3a", "#9b6b45", "#442b1a", "#1e0f07", "#a8754c", "#b98154", "#8a5e3d", "#3b2415"],
+    dark: ["#765033", "#7d5537", "#8b5f3d", "#4d3320", "#5c3e27", "#6b482e", "#795234", "#926540", "#724d31", "#24160d", "#3c2618", "#523622", "#65442b", "#1e110a", "#9a6a44", "#724d31", "#90633f", "#4d3320", "#24160d"],
+  },
+  bean: {
+    light: ["#66442f", "#6a4731", "#6e4a33", "#543827", "#5b3d2a", "#61412d", "#674530", "#6e4a33", "#62422d", "#1c110c", "#352318", "#4a3122", "#593c29", "#21150e", "#0d0705", "#62422d", "#6e4a33", "#4e3424", "#1c110c"],
+    dark: ["#422c1e", "#472f20", "#503524", "#281a12", "#312116", "#3b271a", "#442d1f", "#553927", "#3f2a1d", "#110b07", "#1e130d", "#2b1c13", "#372419", "#0e0906", "#5a3c29", "#3f2a1d", "#533726", "#281a12", "#110b07"],
+  },
+  milk: {
+    light: ["#eee4d5", "#f4eadb", "#f8efe0", "#d7ccbd", "#e0d5c6", "#e8decf", "#f0e6d7", "#f8efe0", "#eae0d0", "#7c695a", "#ab9c8d", "#cabdae", "#ded3c4", "#867565", "#4a3424", "#eae0d0", "#f8efe0", "#cfc3b3", "#7c695a"],
+    dark: ["#bdaf9b", "#c6b8a3", "#d5c7b2", "#8d7e6d", "#9f907e", "#b0a28f", "#c0b29e", "#ded0ba", "#b9aa97", "#564739", "#766758", "#938473", "#a99b88", "#4d3d30", "#e6d8c2", "#b9aa97", "#daccb7", "#8d7e6d", "#564739"],
+  },
+  smoke: {
+    light: ["#8f969c", "#959da3", "#9aa2a8", "#767d82", "#80878c", "#899095", "#91989e", "#9aa2a8", "#8a9197", "#272a2c", "#4c5054", "#696f73", "#7e858a", "#2e3134", "#0f1113", "#8a9197", "#9aa2a8", "#6e7478", "#272a2c"],
+    dark: ["#4f565b", "#555c61", "#60686e", "#303437", "#3b4144", "#474d51", "#51585d", "#666f74", "#4c5357", "#121416", "#232629", "#34383b", "#42484c", "#0e1011", "#6c757b", "#4c5357", "#646c72", "#303437", "#121416"],
+  },
+  porcelain: {
+    light: ["#f4f3f1", "#fbfaf8", "#ffffff", "#d9d7d3", "#e4e2de", "#eeece9", "#f6f5f3", "#ffffff", "#efeeeb", "#5d5a56", "#a19d98", "#c9c6c1", "#e2e0dc", "#6d6a66", "#000000", "#efeeeb", "#ffffff", "#cfccc7", "#5d5a56"],
+    dark: ["#cfccc8", "#dad7d3", "#ecebe8", "#8e8b87", "#a7a4a0", "#bebbb7", "#d3d0cc", "#f6f5f3", "#c9c6c2", "#3b3936", "#6e6b67", "#97938f", "#b5b2ae", "#2a2826", "#ffffff", "#c9c6c2", "#f2f1ef", "#8e8b87", "#3b3936"],
+  },
+  lavender: {
+    light: ["#d9d4e6", "#e3dfee", "#eeebf5", "#a59cc0", "#b5adcc", "#c5bed8", "#d4cee3", "#f4f1fa", "#ddd8eb", "#3b3550", "#7d7596", "#aaa3c2", "#cbc6dc", "#4a4360", "#000000", "#ccc6dc", "#f1eef8", "#a199bd", "#3b3550"],
+    dark: ["#8a83a0", "#9690ac", "#c3bdd6", "#5b5470", "#6c6582", "#7e7795", "#9089a8", "#d6d0e6", "#a8a1bf", "#2c2740", "#4f4866", "#6f6888", "#7e7795", "#ffffff", "#ffffff", "#8a83a0", "#c3bdd6", "#4a4360", "#2c2740"],
+  },
+  knit: {
+    light: ["#cfccd6", "#dad7e0", "#e6e4eb", "#a29eae", "#b2aebd", "#c1bdcb", "#cfccd8", "#ece9f0", "#d4d1dc", "#4a4656", "#8b8798", "#b1adbd", "#cac6d3", "#5a5666", "#000000", "#c6c2cf", "#e6e4eb", "#a29eae", "#4a4656"],
+    dark: ["#7d7988", "#888494", "#aeaabb", "#55515f", "#64606f", "#736f7f", "#827e8f", "#c1bdcd", "#8f8b9c", "#2e2b38", "#4a4656", "#5d5969", "#6c6878", "#ffffff", "#ffffff", "#7d7988", "#aeaabb", "#4a4656", "#2e2b38"],
   },
 };
 

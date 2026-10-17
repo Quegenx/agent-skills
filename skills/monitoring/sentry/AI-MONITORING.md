@@ -42,7 +42,7 @@ grep -E 'tracesSampleRate|tracesSampler' sentry.*.config.* instrument.* src/inst
 |---|---|---|
 | `openai` | `openAIIntegration()` | Yes |
 | `@anthropic-ai/sdk` | `anthropicAIIntegration()` | Yes |
-| `ai` (Vercel AI SDK) | `vercelAIIntegration()` | Yes, but requires `experimental_telemetry` per call |
+| `ai` (Vercel AI SDK) | `vercelAIIntegration()` | Yes, but requires `experimental_telemetry` per call before Sentry SDK 11 ([below](#vercel-ai-sdk)) |
 | `@langchain/*` | `langChainIntegration()` | Yes |
 | `@langchain/langgraph` | `langGraphIntegration()` | Yes |
 | `@google/genai` | `googleGenAIIntegration()` | Yes |
@@ -111,7 +111,7 @@ const openai = Sentry.instrumentOpenAiClient(new OpenAI());
 
 ## Vercel AI SDK
 
-- **Edge runtime:** add `Sentry.vercelAIIntegration()` to `sentry.edge.config.ts`.
+- **Edge runtime:** before Sentry SDK 11, add `Sentry.vercelAIIntegration()` to `sentry.edge.config.ts`. From SDK 11, Sentry's Vercel AI page says the Edge runtime isn't instrumented (see below); confirm in the current docs.
 - **Enable telemetry per call:**
 
 ```javascript
@@ -125,6 +125,9 @@ await generateText({
   },
 });
 ```
+
+- **From Sentry SDK 11.0.0** (the setup above is for earlier versions), Sentry's Vercel AI page supports `ai` `>=3.0.0 <=7`, sets no per-call telemetry and records inputs and outputs through the integration's own `recordInputs` / `recordOutputs`. It doesn't instrument the Edge runtime (the instrumentation relies on diagnostics channels); run AI calls in Node. Don't use the AI SDK's `registerTelemetry` (AI SDK 7) with `vercelAIIntegration`: the integration already instruments the SDK, and both produce duplicate spans. On AI SDK 7, `generateObject()` and `streamObject()` produce no spans; use `generateText()` or `streamText()` with an `output` setting. `experimental_decide()` is traced from Sentry SDK 11.7.0 with AI SDK 7.0.128.
+- **AI SDK 7 renamed `experimental_telemetry` to `telemetry`** (the old name is a deprecated alias) and made telemetry opt-out once an integration is registered (AI SDK 7.0 migration guide).
 
 ## Manual instrumentation
 
@@ -254,7 +257,7 @@ Sentry.init({
 | Token counts missing | Some providers don't return tokens for streaming |
 | Negative costs | A cached or reasoning subset exceeds its total |
 | Prompts not captured (JS) | Make sure it isn't `dataCollection: { genAI: { inputs: false } }`, or pass `recordInputs: true` |
-| Vercel AI SDK not recorded | Add `experimental_telemetry` to each call |
+| Vercel AI SDK not recorded | Before Sentry SDK 11, add `experimental_telemetry` to each call; from 11, run the call in Node, and on AI SDK 7 use `generateText`/`streamText` rather than `generateObject` |
 | Conversations empty | Span streaming on, input/output capture on, a conversation ID set |
 | User column "Unknown" | Call `Sentry.setUser(...)` before the AI calls |
 

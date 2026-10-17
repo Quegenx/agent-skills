@@ -359,7 +359,7 @@ registerTelemetry(
 ```
 
 ```typescript
-import { generateText, tool, stepCountIs } from 'ai'
+import { generateText, tool, isStepCount } from 'ai' // v7 renamed stepCountIs (migration guide 7.0)
 import { openai } from '@ai-sdk/openai'
 import { z } from 'zod'
 import { posthogSpanProcessor } from './instrumentation'
@@ -375,7 +375,7 @@ async function runWeatherAgent(): Promise<string> {
         execute: async ({ city }) => `It's always sunny in ${city}!`,
       }),
     },
-    stopWhen: stepCountIs(5), // let the model see the tool result and respond
+    stopWhen: isStepCount(5), // let the model see the tool result and respond
     runtimeContext: {
       distinctId: 'user_123',
       sessionId: 'conversation-abc',

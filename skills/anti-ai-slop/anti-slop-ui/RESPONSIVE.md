@@ -14,7 +14,7 @@ Layout reads its content and its container, not the screen. These rules keep des
 | `min()`, `max()` | caps beside `clamp()`: `inline-size: min(100%, 42.5rem)` | |
 | `ch` | text measure: `inline-size: min(100%, 65ch)` | |
 | `lh`, `cap` | spacing by line (a textarea starting at `4lh`), aligning an icon to capitals | |
-| `dvh`, `svh` | mobile heights: `svh` when nothing may jump, `dvh` to follow the address bar | `vh` |
+| `dvh`, `svh` | mobile heights: `svh` when nothing may jump, `dvh` to follow the address bar (it does not adjust when the keyboard opens) | `vh` |
 | `env(safe-area-inset-*)` | anything fixed to a screen edge | |
 | `px` | hairlines, outlines, shadows, blur, and values measured at runtime | spacing, type, sizes |
 | `vw` | only what belongs to the whole screen | anything inside a component (use `cqi`) |
@@ -38,7 +38,7 @@ Layout reads its content and its container, not the screen. These rules keep des
 
 ## Direction
 
-Write logical properties (`margin-inline`, `padding-block`, `inset-inline-start`, `inline-size`, `block-size`). In a right-to-left app a physical `left` or `right` is a bug, except: centring with `left: 50%` and a translate, code blocks (they read left to right), and parts measured in physical pixels at runtime. Script media queries use `rem` like the CSS.
+Write logical properties (`margin-inline`, `padding-block`, `inset-inline-start`, `inline-size`, `block-size`). In a right-to-left app a physical `left` or `right` is a bug, except: centring with `left: 50%` and a translate, code blocks (they read left to right), and parts measured in physical pixels at runtime. Don't mirror numeric dates and times either: in Arabic and Hebrew numbers are written left to right, so React Aria dropped `display: flex` on its date segments for normal flow and lets the Unicode Bidirectional Algorithm order them ("Improving Internationalization Support in Our Date and Time Components"). Script media queries use `rem` like the CSS.
 
 ## Enhancements, not the base
 

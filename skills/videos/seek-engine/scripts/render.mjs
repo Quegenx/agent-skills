@@ -8,9 +8,11 @@
 //   node scripts/render.mjs full [--sub 4]            out/<format>.mp4           the film, sub-frame motion blur, audio muxed
 //
 // Options for every mode:
-//   --format 16:9|9:16|1:1   (full also takes --format all)      --scale 0.5 (draft) | 2 (supersampled master)
+//   --format 16:9|9:16|1:1|4:5   (full also takes --format all)      --scale 0.5 (draft) | 2 (supersampled master)
 //   --page index.html        --out <path>      --cols 6      --w 320 (tile width)      --style night (a look from STYLES)
 // Options for full: --sub 4 (sub-frames per frame; 8 for fast moves), --shutter 240 (degrees, centred on the frame),
+//   --step 4 --most 40 (adaptive blur: when the page exposes window.speed(t, dt) and no --sub is given, each frame gets
+//   ceil(travel / step) sub-frames, 1 to most, the travel in output pixels over the open shutter; --sub N overrides it),
 //   --workers 6, --range 2:5 (seconds), --fps 60, --audio audio/mix.wav (default: used when it exists), --crf 16,
 //   --chunk 10 (render in 10 s segments kept in out/segments/: a crashed or stopped long render resumes where it
 //   left off; segments are keyed by a hash of the page and the options, so any edit starts fresh; --fresh forces it)
@@ -126,23 +128,44 @@ async function renderFull(browser, format) {
   const probe = await openPage(browser, format)
   const tl = probe.tl
   writeCues(tl)
+  const hasSpeed = await probe.page.evaluate(() => typeof window.speed === 'function')
   await probe.page.close()
-  const FPS = fps || tl.fps || 60, SUB = Math.max(1, num('sub', 4)), WORKERS = Math.max(1, num('workers', 6))
+  const FPS = fps || tl.fps || 60, WORKERS = Math.max(1, num('workers', 6))
+  // adaptive motion blur (after anatomy-reveal's motion/render.mjs blur mode, MIT, see LICENSE-anatomy-reveal.txt):
+  // when the page exposes window.speed(t, dt) and --sub is not given, each frame gets ceil(speed / step) sub-frames,
+  // at most --most; --sub N is a fixed override for every frame
+  const ADAPTIVE = opt.sub === undefined && hasSpeed
+  const SUB = ADAPTIVE ? 0 : Math.max(1, num('sub', 4)), STEP = num('step', 4), MOST = Math.max(1, num('most', 40))
   const SHUTTER = num('shutter', 240) / 360, CUTS = (tl.cuts || []).slice().sort((x, y) => x - y)
-  // sample k of output frame fi: spread over the shutter, centred on the frame, never across a declared cut
-  const sampleTime = (fi, k) => {
-    const c = fi / FPS
-    let t = SUB > 1 ? c + ((k + 0.5) / SUB - 0.5) * SHUTTER / FPS : c
+  // keep t on frame c's side of every declared cut
+  const inShot = (c, t) => {
     for (const cut of CUTS) {
       if (c < cut && t >= cut) t = cut - 1e-4
       if (c >= cut && t < cut) t = cut
     }
     return t
   }
+  // sample k of n in output frame fi: spread over the shutter, centred on the frame, never across a declared cut
+  const sampleTime = (fi, k, n = SUB) => {
+    const c = fi / FPS
+    return inShot(c, n > 1 ? c + ((k + 0.5) / n - 0.5) * SHUTTER / FPS : c)
+  }
+  // sub-frames per output frame for [f0, f0 + n): the page's travel over the open shutter, in output pixels
+  const planSubs = async (page, f0, n) => {
+    if (!ADAPTIVE) return Array(n).fill(SUB)
+    const spans = Array.from({ length: n }, (_, i) => {
+      const c = (f0 + i) / FPS, lo = inShot(c, c - 0.5 * SHUTTER / FPS), hi = inShot(c, c + 0.5 * SHUTTER / FPS)
+      return [lo, hi - lo]
+    })
+    const px = await page.evaluate((list) => list.map(([t, dt]) => window.speed(t, dt)), spans)
+    // a speed() that returns NaN or a non-number falls back to the fixed default of 4 sub-frames
+    return px.map((v) => Number.isFinite(v) ? Math.max(1, Math.min(MOST, Math.ceil((v * scale) / STEP))) : Math.min(MOST, 4))
+  }
   const [a, b] = opt.range ? String(opt.range).split(':').map(Number) : [0, tl.duration]
   const first = Math.round(a * FPS), frames = Math.round(b * FPS) - first
   const tag = tl.format.replace(':', 'x') + (opt.style ? '-' + opt.style : '')
-  console.log(`full ${tl.format}${opt.style ? ' ' + opt.style : ''} ${tl.size.join('x')} @${FPS}fps x${SUB} sub-frames (${Math.round(SHUTTER * 360)}° shutter), ${frames} frames, ${WORKERS} workers${opt.gpu ? ', gpu' : ''}`)
+  console.log(`full ${tl.format}${opt.style ? ' ' + opt.style : ''} ${tl.size.join('x')} @${FPS}fps x${ADAPTIVE ? `1-${MOST} sub-frames by speed (step ${STEP} px)` : `${SUB} sub-frames`} (${Math.round(SHUTTER * 360)}° shutter), ${frames} frames, ${WORKERS} workers${opt.gpu ? ', gpu' : ''}`)
+  // adaptive frames arrive already averaged, one PNG per output frame
   const blur = SUB > 1 ? `tmix=frames=${SUB},select='eq(mod(n\\,${SUB})\\,${SUB - 1})',setpts=N/(${FPS}*TB),` : ''
   const ALPHA = opt.alpha ? (opt.alpha === 'webm' ? 'webm' : 'mov') : null
   if (ALPHA && opt.chunk) fail('render: --alpha renders in one pass; drop --chunk')
@@ -160,24 +183,43 @@ async function renderFull(browser, format) {
   const venc = ['-r', String(FPS), ...codec, '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv']
   const pages = await Promise.all(Array.from({ length: WORKERS }, (_, w) => openPage(browser, format, ` #${w}`)))
   const started = Date.now()
-  // render frames [f0, f0 + n) as sub-frame PNGs into dir
+  // render frames [f0, f0 + n) into dir: fixed, as sub-frame PNGs that the encode blends with tmix; adaptive, as
+  // sub-frames in dir/sub averaged per frame (ffmpeg tmix over that frame's count) into one PNG per output frame
   const renderFrames = async (f0, n, dir) => {
     fs.rmSync(dir, { recursive: true, force: true })
     fs.mkdirSync(dir, { recursive: true })
-    const total = n * SUB
+    const plan = await planSubs(pages[0].page, f0, n)
+    const jobs = plan.flatMap((s, i) => Array.from({ length: s }, (_, k) => [i, k, s]))
+    const total = jobs.length
+    if (ADAPTIVE) console.log(`  ${n} frames, ${total} sub-frames, up to ${Math.max(...plan)} per frame`)
+    const subDir = path.join(dir, 'sub')
+    if (ADAPTIVE) fs.mkdirSync(subDir)
+    const name = ([i, k]) => ADAPTIVE ? path.join(subDir, `${String(i).padStart(7, '0')}_${String(k).padStart(3, '0')}.png`) : path.join(dir, `${String(i * SUB + k).padStart(7, '0')}.png`)
+    const every = ADAPTIVE ? Math.max(1, Math.round(total / 20)) : FPS * SUB
     let done = 0
     await Promise.all(pages.map(async ({ page }, w) => {
-      for (let i = w; i < total; i += WORKERS) {
-        const t = sampleTime(f0 + Math.floor(i / SUB), i % SUB)
-        fs.writeFileSync(path.join(dir, `${String(i).padStart(7, '0')}.png`), await frameAt(page, t))
-        if (++done % (FPS * SUB) === 0) {
+      for (let j = w; j < total; j += WORKERS) {
+        const [i, k, s] = jobs[j]
+        fs.writeFileSync(name(jobs[j]), await frameAt(page, sampleTime(f0 + i, k, s)))
+        if (++done % every === 0) {
           const el = (Date.now() - started) / 1000
           console.log(`  ${done}/${total} sub-frames  ${(el / done * 1000).toFixed(0)} ms each`)
         }
       }
     }))
+    if (!ADAPTIVE) return
+    let next = 0
+    await Promise.all(pages.map(async () => {
+      while (next < n) {
+        const i = next++, s = plan[i], target = path.join(dir, `${String(i).padStart(7, '0')}.png`)
+        if (s === 1) fs.renameSync(name([i, 0]), target)
+        else await run('ffmpeg', ['-v', 'error', '-y', '-framerate', String(s), '-i', path.join(subDir, `${String(i).padStart(7, '0')}_%03d.png`),
+          '-vf', `tmix=frames=${s},select='eq(n\\,${s - 1})'`, '-frames:v', '1', '-update', '1', target])
+      }
+    }))
+    fs.rmSync(subDir, { recursive: true, force: true })
   }
-  const encode = (dir, n, out, extra = [], seed = 7) => run('ffmpeg', ['-v', 'error', '-y', '-framerate', String(FPS * SUB), '-i', path.join(dir, '%07d.png'),
+  const encode = (dir, n, out, extra = [], seed = 7) => run('ffmpeg', ['-v', 'error', '-y', '-framerate', String(FPS * Math.max(1, SUB)), '-i', path.join(dir, '%07d.png'),
     ...extra.slice(0, extra.indexOf('--')), '-vf', vf(seed), ...venc, ...extra.slice(extra.indexOf('--') + 1), '-frames:v', String(n), ...(ALPHA === 'webm' ? [] : ['-movflags', '+faststart']), out])
   const audio = opt.audio ? path.resolve(root, opt.audio) : path.join(root, 'audio', 'mix.wav')
   const withAudio = !ALPHA && opt.audio !== 'none' && fs.existsSync(audio)
@@ -198,7 +240,7 @@ async function renderFull(browser, format) {
     fs.rmSync(dir, { recursive: true, force: true })
   } else {
     // segments keyed by everything that changes their pixels: page source, options, measured beat
-    const key = crypto.createHash('sha1').update(fs.readFileSync(pagePath)).update(JSON.stringify([format, opt.style, scale, FPS, SUB, SHUTTER, num('crf', 16), CHUNK, measured?.beat ?? null, dataText, GRAIN])).digest('hex').slice(0, 10)
+    const key = crypto.createHash('sha1').update(fs.readFileSync(pagePath)).update(JSON.stringify([format, opt.style, scale, FPS, ADAPTIVE ? ['speed', STEP, MOST] : SUB, SHUTTER, num('crf', 16), CHUNK, measured?.beat ?? null, dataText, GRAIN])).digest('hex').slice(0, 10)
     const segDir = path.join(outDir, 'segments', `${tag}-${key}`)
     if (opt.fresh) fs.rmSync(segDir, { recursive: true, force: true })
     fs.mkdirSync(segDir, { recursive: true })
@@ -232,7 +274,8 @@ async function renderFull(browser, format) {
 // --gpu: the real GPU through ANGLE (Metal on macOS, Vulkan elsewhere); default is software WebGL (SwiftShader)
 const gpuArgs = process.platform === 'darwin' ? ['--use-gl=angle', '--use-angle=metal'] : ['--use-gl=angle', '--use-angle=vulkan', '--enable-gpu', '--ignore-gpu-blocklist']
 // WebGPU is off in headless Chromium unless asked for: on, it runs in software (SwiftShader), or on the real GPU with --gpu
-const browser = await chromium.launch({ args: ['--enable-unsafe-webgpu', ...(opt.gpu ? gpuArgs : [])] })
+// --force-color-profile=srgb: pixels in sRGB whatever the display profile, as the frame-review and asset-prep _cdp.mjs do
+const browser = await chromium.launch({ args: ['--force-color-profile=srgb', '--enable-unsafe-webgpu', ...(opt.gpu ? gpuArgs : [])] })
 try {
   const format = opt.format && opt.format !== 'all' ? opt.format : null
   const cols = num('cols', 6), tileW = num('w', 320)

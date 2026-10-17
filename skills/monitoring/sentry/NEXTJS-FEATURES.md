@@ -271,11 +271,11 @@ await Sentry.withMonitor(
 | Provider | Integration | Manual wrapper or Edge | Supported package versions |
 |---|---|---|---|
 | OpenAI | `Sentry.openAIIntegration()` in `sentry.server.config.ts`, enabled by default on the server | Browser: `Sentry.instrumentOpenAiClient(openai)`, wrapped once at module level | `openai` 4.0.0 up to (not including) 7 |
-| Vercel AI SDK | `Sentry.vercelAIIntegration()`, auto-enabled in Node | Add it manually in the Edge config | `ai` 3.0.0 to 6 |
+| Vercel AI SDK | `Sentry.vercelAIIntegration()`, auto-enabled in Node | Before Sentry SDK 11, add it manually in the Edge config; from SDK 11 the Edge runtime isn't instrumented ([AI-MONITORING.md](AI-MONITORING.md)) | `ai` 3.0.0 to 7 (Sentry SDK 11 and later) |
 | Anthropic | `Sentry.anthropicAIIntegration()`, auto-enabled on the Node server | Manual wrapping: `Sentry.instrumentAnthropicAiClient(anthropic)` | `@anthropic-ai/sdk` 0.19.2 up to (not including) 1.0.0 |
 
 - **OpenAI streaming needs `stream_options: { include_usage: true }`** for token counts.
-- **Vercel AI SDK calls need telemetry per call:** `experimental_telemetry: { isEnabled: true, functionId: "...", recordInputs: true, recordOutputs: true }` on `generateText`, `generateObject` and `streamText`.
+- **Vercel AI SDK calls need telemetry per call:** `experimental_telemetry: { isEnabled: true, functionId: "...", recordInputs: true, recordOutputs: true }` on `generateText`, `generateObject` and `streamText`, before Sentry SDK 11; from 11 there is no per-call setting ([AI-MONITORING.md](AI-MONITORING.md#vercel-ai-sdk)).
 - **On Vercel production use `vercelAIIntegration({ force: true })` in `sentry.server.config.ts`:** bundling prevents module detection, and spans then get raw names (`ai.toolCall`, `ai.streamText`) instead of `gen_ai.execute_tool`, `gen_ai.stream_text`. Options: `force` (default `false`, listed at SDK 9.29.0), `recordInputs` / `recordOutputs` (default `true`, listed at SDK 9.27.0). The same reference lists the integration itself at 10.53.0; confirm in the current docs.
 - **Anthropic operations covered:** `messages.create`, `messages.stream`, `messages.countTokens`, `completions.create`, `beta.messages.create`.
 - **Prompts may contain personal data.** `recordInputs` / `recordOutputs` default to `true` and are governed by `dataCollection.genAI`. Turn them off SDK-wide with `dataCollection: { genAI: { inputs: false, outputs: false } }`, or per integration, e.g. `openAIIntegration({ recordInputs: false, recordOutputs: false })`.

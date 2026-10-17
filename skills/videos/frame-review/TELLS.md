@@ -94,7 +94,7 @@ One line each, with its fix. Search it during every review round (`grep -n -i 'g
 - **H1 Floating screenshots.** Tilted screenshot cards in a void, a device orbiting nothing. **Fix:** real 3D on real components, perspective 1800-2600 px, one camera axis per act.
 - **H2 Locked-off shots.** Nothing changes for more than 1.5 s. **Fix:** a 2-3%/s push plus ~16 px of drift with parallax.
 - **H3 Invisible drift.** 1 → 1.05 over 2 s on a logo reads as dead. **Fix:** keep a still logo hold short, or push 10-20% over a longer one.
-- **H4 Strobing fast moves.** Unblurred motion above 20 px/f. **Fix:** render with sub-frames (`--sub 4`, 8 for whips).
+- **H4 Strobing fast moves.** Unblurred motion above 20 px/f. **Fix:** render with sub-frames (`--sub 4`, 8 for whips), or give the page `speed(t, dt)` so each frame gets as many as its motion needs (up to 40).
 - **H5 Moves too fast to blur.** An element crossing 150+ px in a frame: blur turns it into a smear with stepped copies. **Fix:** keep any element under ~60-80 px/f; redesign faster moves as a cut on the beat, a match cut or a mask wipe.
 
 ## I. UI depiction

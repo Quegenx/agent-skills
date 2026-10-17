@@ -2,6 +2,8 @@
 
 Cataloging the Claude Code team's internal skills showed they cluster into nine categories. The best skills fit cleanly into one; the ones that try to do too much straddle several and confuse the agent. It isn't a definitive list, but it is a useful framework for finding gaps in your own skills library.
 
+Vercel's [State of agent skills](https://vercel.com/blog/state-of-agent-skills) classified skills.sh skills by the kind of work and by industry. Cross-industry skills are "66% of classified skills and 87.5% of installs", with 3.6 times the installs per listing of industry-specific ones. Agent workflow skills ("how to plan, route work, use tools, and automate browsers") took 14.8% of installs, second to software engineering at 18%, because "a planning skill applies to any job the agent takes on." And "Skills compete within jobs and accumulate across them."
+
 ## The nine categories
 
 - **1. Library and API reference:** how to use a library, CLI or SDK correctly, either an internal one or a common one Claude sometimes struggles with. These often include a folder of reference code snippets and a list of gotchas for Claude to avoid when writing a script. Examples: `billing-lib` (your internal billing library: edge cases, footguns, etc.), `internal-platform-cli` (every subcommand of your internal CLI wrapper with examples on when to use them), `sandbox-proxy` (configuring your org's egress gateway for dev work: which hosts are reachable, how to debug "connection refused" errors, how to add an allowlist entry).

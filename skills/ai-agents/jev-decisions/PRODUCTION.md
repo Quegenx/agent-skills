@@ -45,7 +45,7 @@ As of October 2026: `jev-1.13.0` is the stable release behind `jev-latest`, `jev
 - **Fall back below the confidence bar** to the rule the product used before (keywords, a default). In one measurement on labelled courier notes, Jev with a keyword fallback under it was right on 161 of 165 runs; keywords alone on 32 of 55 notes.
 - **Every threshold names the eval that set it,** and the eval stays in the full run.
 
-**Through the AI SDK.** A project already on the AI SDK can ask the same questions through its experimental decisions call with a Jev decision model, which keeps one provider setup and one test double. The shapes match: a boolean answer is P(true), choice and score answers may carry their distributions, and Jev's separate confidence statistic sits in the provider metadata, keyed by question id (it is not the chosen option's probability). Its limits: text and JSON state only through that provider, a question type the model doesn't support fails the whole call, a refusal of any question fails the call and is not retried, and the default retries (2) need the same budget as above. Pin the model id there too.
+**Through the AI SDK.** A project already on the AI SDK can ask the same questions through its experimental decisions call (`experimental_decide`, from AI SDK 7.0.128; 7.0.105 to 7.0.127 named it `experimental_evaluate`, which Vercel's Jev guide still uses and later versions keep as a deprecated alias) with a Jev decision model, which keeps one provider setup and one test double. The shapes match: a boolean answer is P(true), choice and score answers may carry their distributions, and Jev's separate confidence statistic sits in the provider metadata, keyed by question id (it is not the chosen option's probability). Through Vercel AI Gateway the model is the plain string `typesafe-ai/jev`; the AI SDK then authenticates with `AI_GATEWAY_API_KEY` or a Vercel OIDC token. Its limits: text and JSON state only through that provider, a question type the model doesn't support fails the whole call, a refusal of any question fails the call and is not retried, and the default retries (2) need the same budget as above. Pin the model id there too.
 
 ```ts
 import { experimental_decide, type Experimental_DecisionModel } from "ai";
@@ -98,7 +98,7 @@ Jev's probabilities are trained to be calibrated (answers at 0.9 right about nin
 
 1. **One bounded, low-risk decision** whose possible answers you can name, already made today by code, a person or a chat model.
 2. **Write the rubric before calling the model:** the options and what belongs in each.
-3. **Try it by hand first.** Run one question on one real state, then change one field (tests fail, a migration appears) and watch the distribution move. A question that doesn't move when the deciding fact flips is badly worded or missing evidence.
+3. **Try it by hand first.** A loop that reads input line by line and prints the choice, probabilities, confidence and latency for each is enough. Run one question on one real state, then change one field (tests fail, a migration appears) and watch the distribution move. A question that doesn't move when the deciding fact flips is badly worded or missing evidence.
 4. **Collect real examples with expected answers,** the ambiguous and adversarial ones included (a request no option fits, a planted instruction).
 5. **Shadow, calibrate, then automate the safest branch first;** keep a person or a stronger model on the rest.
 6. **Questions are program code:** version them, review changes in pull requests, and rerun the evaluation set whenever the model, a question or a threshold changes.
@@ -173,8 +173,8 @@ The weights say in code what matters most; the reason is built from the answers,
 
 Input tokens only, about $0.042 per million; output is free. A request holds about 64K tokens (the state plus any one question about 32K); a choice can have up to 255 labels and a score 2 to 10 levels. Cost scales with state size times calls, so one call with twelve questions over a 4,000-token state costs about a twelfth of twelve calls. Bodies of 1 KiB or more are zstd-compressed by default on Node 22.15+.
 
-Measure the bill per completed task, not per call: a cheap wrong decision that sends a good change back, books the wrong thing or hides a real customer costs a person's time, which is more than any call. Speed and cost multiples published by the vendor are the favourable end of its own evaluations; measure yours.
+Measure the bill per completed task, not per call: a cheap wrong decision that sends a good change back, books the wrong thing or hides a real customer costs a person's time, which is more than any call. Speed and cost multiples published by the vendor are the favourable end of its own evaluations (TypeSafe AI reports Jev "up to 194 times faster and 445 times cheaper than language models" in its own workflow evaluations); measure yours.
 
-Besides the TypeSafe API, the model has been offered through gateways (Vercel AI Gateway lists it as `typesafe-ai/jev`); check the current options and the data-retention terms before routing personal data through any of them.
+Besides the TypeSafe API, the model has been offered through gateways (Vercel AI Gateway lists it as `typesafe-ai/jev`, with an AI Gateway key in `AI_GATEWAY_API_KEY`); check the current options and the data-retention terms before routing personal data through any of them.
 
 The habit that cuts the bill most is not a cheaper model but fewer, focused states: the node that judges consent sends the proposal and the reply, not the transcript.

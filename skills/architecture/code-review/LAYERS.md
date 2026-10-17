@@ -9,6 +9,7 @@ Human time covers both sides of review's cost: the time people spend reviewing, 
 - **The goal:** most pull requests merge with at most one human in the loop, who can be the author, with no increase in reverts or incidents.
 - **Measure human time:** human approvals per PR (median and 95th percentile), human comments, and how long a PR waits on a person.
 - **Revert and incident rates are the guardrail.** If they rise, you haven't saved human time, you've only moved it.
+- **Output is not efficiency.** Florian Kiem's "The art of not shipping everything": "most companies measure their efficiency by lines of code changed, average PRs, net new features shipped per week", and "Shipping a lot of features is not the benchmark. Knowing what to ship is."
 
 ## The layers
 
@@ -30,6 +31,7 @@ Most review now happens before a PR exists.
 
 - **Give the agent something it can run** (tests, a build or a screenshot to compare against the design) and ask it to show the output instead of saying it's done. Boris Cherny, who created Claude Code, estimates this makes the final result two to three times better: "Verification looks different for each domain. It might be as simple as running a bash command, or running a test suite, or testing the app in a browser or phone simulator."
 - **A session that can run your tests checks its own work before it hands the work back.** Without that, you review changes nobody has run.
+- **UI proof travels with the PR.** In Vercel's Rillet story, agents "spin up a browser in a sandbox to test the change and attach screenshots as proof", while the engineer reviews the pull request and merges it.
 - **Then a subagent reviews the diff with fresh context.**
 - **Pre-PR skills:** one hunts for bugs, one simplifies the diff, and one checks the behavior end to end. UI changes also get checked against the design guidelines.
 - **List the checks it can run in a short CLAUDE.md,** plus hooks that run formatters and linters.

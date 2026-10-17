@@ -18,6 +18,8 @@ For a film that explains how something works (an algorithm, a protocol, a system
 
 Open the closest example before starting; the build scripts write a page beside themselves, which never belongs in the skill folder.
 
+**A real product instead of an invented machine** (an exploded view, a teardown, an anatomy figure or a reveal film of an object the user names or shows): [REAL-OBJECTS.md](REAL-OBJECTS.md). It replaces "invent the object" with "rebuild the real one from its real dimensions": the photo-or-name research, the spec, how each kind of object comes apart, and the product-reveal shot sequence. Every other rule here still applies.
+
 ## Ready-made figures
 
 About 50 finished figures already exist as an npm package, `anatomy-figures` (MIT): a turbofan ground run, a watch movement, seasons, a tokamak, a power station, a forge, a glass furnace, and software ideas as machines (hash map, bloom filter, LRU cache, B-tree, binary search, mutex, message queue, rate limiter, TCP handshake, DNS, git merge, merge sort, debounce, gradient descent, sampling temperature, flex-grow, box model). Each is a React component (`import Turbofan from "anatomy-figures/turbofan"`) or a custom element (`anatomy-figures/element/<name>`, then `define()`), themed with `theme` (dark, light, paper, blueprint, sepia) and `--anatomy-*` tokens. When the idea has a figure, start from it instead of drawing a new one.
@@ -46,7 +48,7 @@ Two failures, both common: **too abstract** (floating plates, slabs and labelled
 1. **Truth first.** Collect the real numbers and behaviour and write them as one small pure model. The motion, the on-screen readout and the narration all read from it, so they can never disagree. A phase word and the number beside it come from the same instant of the same source ("end of stroke" from the model and "85 bar" from a needle lagging behind it is a contradiction on screen).
 2. **Invent the object** and write its one sentence.
 3. **List the parts, at least 40,** grouped: base (plate, feet, groove, corner screws, label plate, ruler strip), structure (posts, rails, frame, end stops), mechanism (carriage, bushings, springs, plunger, needle), controls (knurled knob, thumb screw, crown) and the subject, the one lit part. Every part sits on another part and has a job. Density comes from structure, not texture.
-4. **Plan the world** in units of roughly a millimetre: x and y on the floor, z up, plans as rounded rectangles `{ x, y, w, d, r }` and circles. Camera: azimuth 45° (35-60° to show a long side), elevation 30° (higher, about 44°, to look into something open). Fit with `fitProjection(points, W, H, { pad, azimuth })` so the object fills 55-65% of the frame.
+4. **Plan the world** in units of roughly a millimetre: x and y on the floor, z up (right-handed: x × y = z, or every view is mirrored), plans as rounded rectangles `{ x, y, w, d, r }` and circles. Camera: azimuth 45° (35-60° to show a long side), elevation 30° (higher, about 44°, to look into something open). Fit with `fitProjection(points, W, H, { pad, azimuth })` so the object fills 55-65% of the frame.
 
 Budget honestly: figures built with it take 30-90 minutes for a 40-80 part figure and hours for a dense one. A film shot needs the same care at the moment it is watched, so a 20 s explainer usually carries one machine, not five.
 
@@ -55,11 +57,11 @@ Budget honestly: figures built with it take 30-90 minutes for a 40-80 part figur
 - **One camera, no perspective.** Parallel edges stay parallel; that is what makes it read as a drawing of a made thing.
 - **Solids, painted back to front.** Every part is filled with the paper colour and drawn in depth order, so the near part hides the far one. No see-through edges, no dashed hidden lines.
 - **Four tones by facing plus a lighter top.** The kit's `extrude` assigns them; keep it for anything with height.
-- **Tone hierarchy:** base and feet `lo`, structure `mid`, the subject `hi`, grooves `faint`, minor ticks `lo`, major ticks `mid`, the zero mark `hi`, screws as small dots. **Exactly one part is `lit`:** the one the viewer should watch now. In a film the lit part may change between beats, never two at once (frame-review's one-hero rule).
+- **Tone hierarchy:** base and feet `lo`, structure `mid`, the subject `hi`, grooves `faint`, big soft parts drawn in many segments (a long panel) `mid` or `faint` so they don't read as a cage of edges, minor ticks `lo`, major ticks `mid`, the zero mark `hi`, screws as small dots. **Exactly one part is `lit`:** the one the viewer should watch now. In a film the lit part may change between beats, never two at once (frame-review's one-hero rule).
 - **Lines resolve.** Every line ends on a face, another line or a dot: no leader lines, balloons, dimension arrows or labels in the air. A texture (ribs, bolt circles, seams, ticks) ends on a real edge or fades out, never stops mid-surface; ticks hang from a ruler strip's edge; a seam on a box wraps its visible corners (`sideSeam`).
 - **No words in the drawing.** Titles, captions and the readout sit around it in the DOM (where smoke can read them). Text the machine itself displays (a counter, a typed line) lives in the plane of its face (`sideMatrix`, `topMatrix`) and fits its window at the widest string it will ever show.
 - **Colour only when colour is the subject** (RGB channels, a red error state). A fluid is a tint of the figure's own inks.
-- **Two looks.** At 1x it reads as one machine; zoomed 4x every region still has something true to find. A bare face or an empty corner is unfinished.
+- **Two looks.** At 1x it reads as one machine; zoomed 4x every region still has something true to find. A bare face or an empty corner is unfinished. Spend that detail (screw heads, knurls, numerals, stitching, mesh weave, engraving) where the shots go, each piece on a real part.
 
 ## Painter's order
 
@@ -77,7 +79,7 @@ Figures built the kit's way are live pages: a frame loop steps springs, the poin
 - **Springs in closed form.** Their stepped spring integrator carries state between frames; use the template's `spring`/`track` (one closed-form spring per target change), or precompute the stepped model once at a fixed `dt` into an array indexed by time.
 - **The idle tour becomes the shot list**, and pointer moves become targets on beats. The readout and the narration read the same model at the same `t`.
 - **Never use `data-flow` or `data-pulse`.** They are CSS animations on their own clock. Drive `stroke-dashoffset` (a flow along a wire) and opacity (a pulsing grid) from `t`.
-- **Line weight is in screen pixels** (`vector-effect: non-scaling-stroke`), and the kit's 0.6 px is for a 650 px card: set `--anatomy-weight` to about 1.2-1.6 px at 1080p.
+- **Line weight is in screen pixels** (`vector-effect: non-scaling-stroke`), and the kit's 0.6 px is for a 650 px card: set `--anatomy-weight` to about 1.2-1.6 px at 1080p. The value is in CSS px, so it multiplies with the device pixel ratio: anatomy-reveal's `.62px` on a 540×960 page rendered at DPR 2 is about 1.24 px at 1080×1920.
 - **Camera moves stay 2D.** An isometric camera has no perspective, so a push-in or a pan is a scale and translate of the whole drawing (the template's `#world`), and it holds the line weight. Turning the object means re-projecting at a new azimuth every frame: rebuild the moving subject only, keep the rest static, and keep its painter's order valid at every angle.
 - **Two ways to build the page.** For a film written in the seek-engine template, import the kit from a module (`import * as k from './isokit/kit/iso-kit.mjs'`) and bundle with `scripts/bundle.mjs`, like the 3D hero. For a figure built the kit's way (a Node `build.mjs` that writes the page, with the audit and the 3D build), keep its build and give it a film script in place of its `live.js`: `examples/turning-dial/film.js` is the pattern (`node build.mjs --film`).
 - **3D in a film.** The 3D controller never runs a clock of its own: `TURN.mount(stage, DATA.turn, { follow, onFrame })` once, then `controller.set({ group: value, ... })` inside `seek(t)` with every value a function of `t`. Write each motion as a pure function of time (the turning dial's `tapAt` and `breakAt` already are). WebGL layers draw with `layer.draw(uniforms, t)` from the controller's `onFrame`, so the shader's clock is `t`. Their spring `settle()` steps state: use its closed form, `1 - (1 + t/s)·e^(-t/s)` for `settle(…, s)` from rest. Particles (sparks) fly ballistically from seeded starts, `p0 + v·age - ½g·age²`, never stepped.
@@ -86,7 +88,7 @@ Figures built the kit's way are live pages: a frame loop steps springs, the poin
 
 ## Exploded views
 
-An explode earns its place when the parts are the explanation (what feeds what). Move the assemblies the real thing comes apart into, not single solids, each along its real direction (down along the axis for stacked stages, out radially for side units), far enough that its silhouette clears its neighbours. Stagger them so nothing passes through anything in any frame. Every part keeps a home: something bridging two assemblies goes with the one it stays fixed to, and its loose end still lands on a flange or connector of its own.
+An explode earns its place when the parts are the explanation (what feeds what). Move the assemblies the real thing comes apart into, not single solids, each along its real direction (down along the axis for stacked stages, out radially for side units), far enough that its silhouette clears its neighbours. Stagger them so nothing passes through anything in any frame. Every part keeps a home: something bridging two assemblies goes with the one it stays fixed to, and its loose end still lands on a flange or connector of its own. A closed-form explode for the 3D mode, with travel numbers, is in `templates/isokit/references/3d.md` section 7; the inward and sideways exit cases are in [REAL-OBJECTS.md](REAL-OBJECTS.md).
 
 ## Effects inside the drawing
 

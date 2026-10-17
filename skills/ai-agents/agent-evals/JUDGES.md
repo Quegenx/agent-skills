@@ -10,6 +10,8 @@ Avoid whole-sentence assertions: a correct reply worded differently fails them. 
 
 For an agent that acts, check the **state this run produced** (the file, the row, the sent message in the fixture's log), in a disposable fixture, and keep a case where the agent claims success but changes nothing.
 
+**A code check catches only failures already seen and written down.** Vercel's design.md test: three scenarios generated with and without the file, first attempts only, 39 known failures over the pages with it and 91 without; the checks can't say whether a page is well designed overall, six pages is far too small a sample for quality or reliability claims, and every page still had at least one failure serious enough to block shipping. What it does show is that a failure once named and encoded tends to stay gone.
+
 ## One shape for every grader
 
 Code checks and judges share one function shape: they take the case and the run's result (the replies, the tools called, the retrieved context, the trace id) and return `passed`, a `reason` someone can check against the trace, and optionally a score and a confidence. A grader that can't decide (the output is empty, the trace is missing, the judge's answer didn't parse) **throws**, so the slot becomes a grader error, never a quiet fail.
@@ -25,7 +27,7 @@ A judge is a model too, so ask it narrow questions with answers that code turns 
 - **Writing the judge prompt:** one criterion per judge; pass and fail defined in the product's own terms, taken from the review notes; 2 to 4 labelled examples, borderline ones included, drawn only from the examples split; the critique before the verdict; output forced to a schema; the inputs marked as data. Start on a capable model and move to a cheaper one only after it calibrates; never the model under test, and never the context that produced the work (a model prefers its own results, especially when judging them against a rubric); pin a dated model version. For severity, use two yes-or-no judges ("any harm?", "serious harm?"), not a 1 to 5 scale.
 - **A rubric with branches is a decision tree, not one prompt:** a first step extracts what the later ones need (the headings, the claims, the tools used), a yes-or-no gate can end the path ("left out a required fact: 0"), and a classifier picks one named level for what passes. Every path ends at a score you chose, so the same input reaches the same number. Use one holistic judge only when no condition needs exact control.
 - **Turn judges and conversation judges:** a turn judge reads one reply against what came before it (relevant to the last message, faithful to what was retrieved this turn); a conversation judge reads the whole chat (was every request met, did it forget something the user said, did it stay in its role and its topics, was the goal reached). Long conversations go to the judge summarized or in a window, and say which.
-- **Comparing two replies:** randomize which goes first, don't tell the judge which is the baseline, allow a tie and "both bad", and compare against one frozen reference. Comparative judgment is more reliable than absolute scoring; to rank many items, run a tournament of pairwise-comparison agents (or bucket-rank in parallel, then merge), with code holding the bracket.
+- **Comparing two replies:** randomize which goes first, don't tell the judge which is the baseline, allow a tie and "both bad", and compare against one frozen reference. Comparative judgment is more reliable than absolute scoring; to rank many items, run a tournament of pairwise-comparison agents (or bucket-rank in parallel, then merge), with code holding the bracket. People compare blind the same way: shuffle the two outputs, score both against the rubric without knowing which is which, and use multiple blind reviewers.
 - **Stability:** a judge case runs three times and every run must pass; a verdict that flips on the same input is one the product can't rely on. High run-to-run variance in the suite often means an ambiguous task, not only an unstable judge. Run judge calls sequentially if the judge's API rate-limits.
 
 ## Judge self-tests
@@ -46,6 +48,8 @@ Before trusting a reworded judge question:
 **Name what doesn't count, in the question.** A gender question failed every chat whose only first-person forms were gender-neutral (0 of 10); listing those forms, past tense included, passed 30 of 30 and still failed both real mistakes. A fixed paragraph the product always sends is called an explanation in the question; quoting it alone let real repeats through 2 to 6 times in 10.
 
 **A reference reply is an example, not a checklist:** tell the judge the approved reply is one good answer for the same moment, so a correct reply worded differently passes, and that staff notes inside it aren't customer text.
+
+**Score rule correctness apart from similarity to the shipped result:** two scores, not one, because shipped code can contain a flaw that the agent should improve instead of reproduce.
 
 **Long answers move their facts to code:** on a long report the faithfulness judge scored correct answers around its threshold and failed 2 of 5. Code checks that every number and link in the answer appears in the tools' output, and the judge asks only what reading decides. Write down the blind spot that remains (two real values swapped between items passes both).
 

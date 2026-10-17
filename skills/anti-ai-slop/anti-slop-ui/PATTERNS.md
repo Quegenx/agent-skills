@@ -65,6 +65,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Dead controls | Buttons that do nothing, dropdowns that don't open, forms that don't submit |
 | Links to nowhere | Nav items for pages or sections that don't exist |
 | Happy path only | No empty, loading or error states |
+| Spinner as the loading state | A spinner around conditionally rendered data, where prefetched content, a skeleton or nothing would do (Florian Kiem's "The perfect app has no loading states": "Agents love them. A simple spinner - done."; the audit is in performance-and-caching [BROWSER.md](../../backend/performance-and-caching/BROWSER.md#loading-states)) |
 | Invented assets | A logo, avatars or team photos made up without being asked |
 | Product never shown | A product sold with no real screen, demo, terms or privacy page |
 
@@ -78,3 +79,26 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Mouse only | Hover-only menus, click-only dropdowns, drag with no keyboard path |
 | Color-only status | Red border or green tint with no text or icon |
 | Clipped zoom | Fixed pixel text or hidden overflow that breaks at 200% |
+
+## Report and evidence pages
+
+Vercel's design.md lists these as "recognizable defaults" to never ship on its formal report pages (customer reports, proposals, briefs, benchmarks, comparisons, calculators), and bans them there outright. The ban is scoped to those pages: on a marketing site or in the app, `landing-page-ui` and `app-ui` decide, and the rest of this scan still treats one item with a purpose as fine. The same list also names tracked eyebrows and decorative numbered labels, decorative gradients, glows and glass, a centered hero over a card grid, stock imagery and fake screenshots (rows above), and em dashes.
+
+| Pattern | Signs |
+|---|---|
+| Metric boxes | "Repeated metric boxes when one composed relationship would be clearer" |
+| Capsule metadata | "A badge, pill, or rounded capsule for ordinary metadata, chart annotations, or editorial labels" |
+| Nested cards | "Cards nested inside cards, or borders used to repair weak hierarchy" |
+| Boxed charts | "A dark rounded rectangle around every chart or calculator" |
+| Icon tiles | "Arbitrary icon tiles, oversized icons, or mixed icon styles"; "Do not use icons as decoration or place them in colored tiles" |
+| Uneven type | "Tiny muted prose, arbitrary font sizes, inconsistent peer values, or misaligned baselines" |
+| Misfit tables | "A narrow table floating inside a wide section, or a wide table compressed into broken words" |
+| Decorative data | "Decorative charts, redundant visualizations, legends that replace direct labels, or color without meaning" |
+| Unscaled bars | "Repeated full-width bars that do not share a scale or encode a visible difference" |
+| Same silhouette | "Identical section silhouettes across unrelated reader questions" |
+| Said four times | "Repeated recommendation, summary, rationale, and conclusion sections that say the same thing" |
+| Process narration | "Authoring-process narration such as how the page was organized, why a representation was chosen, or how source fields were renamed" (it keeps "concise interpretive captions that state an evidence-led takeaway or limitation") |
+| Page chrome | "Visible theme controls, print-only UI, stock imagery, fake screenshots, or decorative brand marks" |
+| Motion on a report | From its motion rules, not the list: "Default to stillness. Never add auto-scrolling marquees, simulated typing cursors, or decorative pulsing status indicators... Never gate reading behind animation, reveal every section on scroll, move imagery on hover, or add bounce, parallax, cinematic transitions, sound, or spectacle." |
+
+Avoiding these is not the goal by itself: "Do not compensate for avoiding these defaults by producing a sterile anti-design template" (the Sterile default row).

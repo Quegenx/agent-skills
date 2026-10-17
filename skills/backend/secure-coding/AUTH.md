@@ -68,6 +68,7 @@ app.post("/orders/:id/refund", requirePermission(Permission.OrdersRefund), refun
 - **A permission isn't ownership.** "Can refund orders" doesn't mean "can refund this tenant's order": also check that the resource belongs to the caller's tenant or user, in the query itself (see [TENANCY.md](TENANCY.md)).
 - **Default deny:** a route without an explicit policy should fail a test, not be public by accident.
 - **Supabase:** keep roles and permissions in tables and check them in RLS policies or in a custom access token hook that adds them as claims. Authorization data goes in `app_metadata` (only the server can write it), never `user_metadata`, which the user can edit.
+- **Builder access to the deploy platform comes from the company directory** once non-engineers deploy agents: company-managed accounts through single sign-on rather than personal ones, access added and removed by directory sync from the identity provider's assignments, and internal tools private by default (Rillet on Vercel, in Vercel's write-up).
 
 ## Passwords
 

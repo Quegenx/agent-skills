@@ -7,6 +7,7 @@ The agent decides what to do; your server decides what it may touch. Everything 
 - **Your backend builds the scope before the run:** which user or workspace it acts for, which connections (exactly one per app; ambiguous matches are an error, not a guess), which apps and which tools. The agent can't widen its own scope.
 - **Mix owners deliberately:** a sales agent with the rep's own mailbox and the company's read-only CRM is two connections with two owners, both named.
 - **Short-lived and revocable:** a session token that expires with the run, revoked when it ends; an in-flight call may still complete.
+- **One connection, attached where needed:** define each provider connection (Slack, Linear) once and attach it to the agent projects that need it, rather than a credential per app. The platform supplies short-lived tokens at runtime and handles refresh, so no app holds the long-lived provider secret, and a leaked token is usable only until it expires (Vercel Connect, in Vercel's Rillet write-up).
 - **Reuse the session across the turns of one conversation,** so discovered tools and context carry over; a new one for a different user or task.
 
 ## Which tools it sees

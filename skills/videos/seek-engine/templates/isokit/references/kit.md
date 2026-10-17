@@ -376,7 +376,7 @@ A value for `fixed`, `set` or `draw` can be a number (float), an array of length
 | `scripts/inline-kit.mjs` | `kitScript()`, `glScript()` and `turnScript()` return the kit, the WebGL layer and the 3D runtime as plain script, to inline into a standalone page. |
 | `scripts/drive.mjs` `["turn", value, group?]` | 3D figures: sets the first turn group (or `group`, or a values object) through `window.__isoTurn` and waits two frames. |
 | `scripts/drive.mjs` `["orbit", out.png, from, to, step, sel?, scale?, [x,y,w,h]?, columns?]` | 3D figures: a contact sheet across angles, each frame labelled θ°. 15° over a full turn; 0.1° across an order change; 1° across a fold-prone bend. |
-| `scripts/turn-check.mjs` | 3D figures. `build.mjs --fidelity` (Node: prisms, rounds, lathes and tubes against the kit builders at P′(θ)); `page.html --order` (needs a `--verify` build), `--pops`, `--lines`, `--perf`, `--states file.json`, `--part name`, `--out dir`. Every check runs its planted control first. `references/3d.md`, section 14. |
+| `scripts/turn-check.mjs` | 3D figures. `build.mjs --fidelity` (Node: prisms, rounds, lathes and tubes against the kit builders at P′(θ)); `page.html --order` (needs a `--verify` build), `--pops`, `--lines`, `--perf`, `--passes` (pass-throughs and forced picks named by the runtime's debug collectors, over `--states` or a film's `seek(t)` with `--film`), `--states file.json`, `--part name`, `--out dir`. Every check runs its planted control first; `--passes` instead fails when `stats()` counts what the collectors missed. `references/3d.md`, section 14. |
 | `scripts/turn-bench.mjs` | 3D figures: `emit` and `order` CPU time in Node over 360 angles, per part kind (median of 7). |
 
 ## 15. Turning groups (`kit/turn.mjs`, `turn-build.mjs`, `turn-audit.mjs`)
@@ -396,7 +396,7 @@ import * as TA from "../../kit/turn-audit.mjs";
 | `T.build({ statics, poses, verify, strict })` | `{ svg, data, css, report, layerSvg(name, { width, height }), verify, planesByName }`. |
 | `T.parts`, `T.groups`, `T.layers`, `T.routes`, `T.data`, `T.built` | The scene, for the audit and the checks. |
 
-`details`: `seams`, `ribs: { s0, s1, count, phase, twist, fade, seams, tone }`, `bolts: [{ s, r, count, phase, size, tone, fade }]`, `dots: [{ at, normal, size, tone }]`, `rings: [{ at, normal, r, tone }]`, `rules: [{ points, tone, free }]`, `bevel`. Each constructor takes its own subset in its own frame (a ball's `s` runs along its first flat's normal; a prism takes dots, seams and bevel only): the table in `3d.md`, section 4. Materials: `gold`, `chrome`, `steel`, `gunmetal`, `rubber`, `brass`, `copper`.
+`details`: `seams`, `ribs: { s0, s1, count, phase, twist, fade, seams, tone }`, `bolts: [{ s, r, count, phase, size, tone, fade }]`, `dots: [{ at, normal, size, tone }]`, `rings: [{ at, normal, r, tone }]`, `rules: [{ points, tone, free }]`, `bevel`. Each constructor takes its own subset in its own frame (a ball's `s` runs along its first flat's normal; a prism takes dots, seams and bevel only): the table in `3d.md`, section 4. Materials: `gold`, `chrome`, `steel`, `gunmetal`, `rubber`, `brass`, `copper`, and from anatomy-reveal `glass`, `pcb`, `sensor`, `signal`, `coffee`, `bean`, `milk`, `smoke`, `porcelain`, `lavender`, `knit` (`3d.md`, section 6).
 
 `separate(A, B, hints)` and `gjk(A, B, warm)` return `{ n, d, margin }` for two point sets (the build's plane solver).
 
@@ -409,6 +409,7 @@ import * as TA from "../../kit/turn-audit.mjs";
 | `TURN.anchor(scene, cams, group, point, dir)`, `TURN.floorOf(scene, group, R)` | Anchors outside a controller; the lowest z of a group under a rotation. |
 | `TURN.rotation(axis, deg)`, `TURN.quat(q)`, `TURN.compose(A, B)` | Rotations as `[9]`, for free poses. |
 | `TURN.materials`, `TURN.materialCss()`, `TURN.css()`, `TURN_CSS` | Material names; the CSS. |
+| `globalThis.__t3unsep = []`, `globalThis.__t3forced = []` | Optional debug collectors `t3Order` fills while set: `[nameA, nameB, margin]` per pair passing through another, and the global index of each forced pick (`scene().runs[i].name`). Unset, nothing changes. From anatomy-reveal (`kit/LICENSE-anatomy-reveal.txt`). |
 | `TURN.camera`, `TURN.poses`, `TURN.cams`, `TURN.prepare`, `TURN.emit`, `TURN.order`, `TURN.frame`, `TURN.gjk`, `TURN.disjoint`, `TURN.q`, `TURN.levels` | The pipeline, for tools: cameras per group, a prepared scene, one part's frame, a layer's order. |
 
 ### Orbit audit (`kit/turn-audit.mjs`)

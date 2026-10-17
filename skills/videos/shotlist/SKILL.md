@@ -9,7 +9,7 @@ A list of effects is not a storyboard. "Zoom in, then morph, then add particles"
 
 Read `brief.md`, `style-guide.md` and `audio/beats.json` (or `audio/vo.json`) first. Every time in the list sits on that grid.
 
-When the brief leaves the idea open, find the concept first with [CONCEPT.md](CONCEPT.md): the inventory, three lenses, the tests that kill weak ideas, the carrier's path, the beats and the end card. For the structure, budgets, transitions by intent and per-aspect layouts of each kind of film (launch, feature, loop, sting, walkthrough, vertical, explainer, trailer and more), read [FORMATS.md](FORMATS.md).
+When the brief leaves the idea open, find the concept first with [CONCEPT.md](CONCEPT.md): the inventory, three lenses, the tests that kill weak ideas, the carrier's path, the beats and the end card. For the structure, budgets, transitions by intent and per-aspect layouts of each kind of film (launch, feature, loop, sting, walkthrough, vertical, explainer, trailer and more), read [FORMATS.md](FORMATS.md). A product reveal of a real physical object (tumble in, macro details, one feature, explode and snap back, hero) takes its beats from seek-engine's `REAL-OBJECTS.md`.
 
 ## States, not effects
 

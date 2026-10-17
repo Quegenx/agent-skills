@@ -58,7 +58,7 @@ export function guardNetwork(passThrough: readonly string[], fixtures: Record<st
 
 - Fixtures answer in the shape the app's own clients parse, and a test runs those clients against the fixtures, so a fixture can't drift from reality unnoticed.
 - **Give every source the agent may legitimately use an answer,** even an empty one: a source the request excludes answers "nothing found", so calling it fails the case's check instead of ending as a harness error, and a case where carrying on correctly reaches another source isn't failed by the harness.
-- **A tool error the SDK would hand the agent** (AI SDK 7 turns an unanswered call into a `tool-error` the agent answers around) fails the case as a harness error, so a missing fixture is never graded as the agent's mistake. Malformed tool arguments from the model are recorded as the agent's, not a harness crash, and a call that returned a tool error counts as not made.
+- **A tool error the SDK would hand the agent** (AI SDK 7 turns an unanswered call into a `tool-error` the agent answers around) fails the case as a harness error, so a missing fixture is never graded as the agent's mistake. Malformed tool arguments from the model are recorded as the agent's, not a harness crash (AI SDK 7 preserves invalid tool calls without executing the invalid tools), and a call that returned a tool error counts as not made.
 - **Fixtures must agree with the case's user:** a group fixture called "no agents" given to a user who is an agent made the agent rightly skip it, and the case looked like a failure.
 - **A "down" case per outside service:** the fixture answers 503 and the case checks the agent hands off and promises nothing.
 - **Seeded faults:** a run can inject tool failures and slow answers from a fixed seed, to score recovery the same way every time.
@@ -66,12 +66,12 @@ export function guardNetwork(passThrough: readonly string[], fixtures: Record<st
 
 ## Run records
 
-Per run: a manifest (fingerprint, variant, models, versions), one result line per case and repetition (`case_id`, `rep`, `passed_all`, each check's pass, reason and, for judges, probability and confidence, the output, the tools called, the trace steps), errors kept apart from failures, and a summary. Store them locally (out of git) with a small report page; track the case index and where each case came from.
+Per run: a manifest (fingerprint, variant, models, versions), one result line per case and repetition (`case_id`, `rep`, `passed_all`, each check's pass, reason and, for judges, probability and confidence, the output, the tools called, the trace steps), errors kept apart from failures, and a summary. Store them locally (out of git) with a small report page; track the case index and where each case came from. A run people review keeps what they reviewed with it (the prompt, inputs, model configuration, the guidance file's version, the screenshots and the reviewer's feedback), and every correction is recorded against the exact run that produced it.
 
 - **Every slot ends with one status:** `ok`, `app_error`, `grader_error`, `timeout` or `truncated`. Only `ok` slots carry quality grades; the summary reports the error counts and both denominators (all slots, graded slots). An undecidable grade is a grader error, never a fail.
 - **Never record a guess:** a value the runner always passes (the repetition, the fingerprint) that is missing fails the run, and a turn with no model call is a harness error, not a row with a guessed model.
 - **Retry only transient errors,** keep every attempt, and never pick the best one. A case has a deadline; a timed-out call may still be billed.
-- **Token counts come from the leaf model calls,** never added again from a parent's total; an unknown count is empty, not zero. A cost names its price source and date and says whether every call was counted.
+- **Token counts come from the leaf model calls,** never added again from a parent's total; an unknown count is empty, not zero. In AI SDK 7, `result.usage` is already a parent's total, across all steps (`totalUsage` is deprecated; `finalStep.usage` is the last step only, per the v7 migration guide). A cost names its price source and date and says whether every call was counted.
 - **Pilot one case first:** check that every recorded field is filled for real (an unknown silently written as 0 looks like a cheap run) and that the setting you are testing actually reached the agent and its subagents (variance hides in configuration: effort, for one, may not be applied consistently).
 - **State the size before the baseline:** cases x repetitions x models, and roughly how long it will take.
 - **Batch what can wait:** the Message Batches API is half price on input and output tokens.
@@ -81,6 +81,8 @@ Per run: a manifest (fingerprint, variant, models, versions), one result line pe
 A **variant** is one version of the code. Its fingerprint hashes the commit, the uncommitted and untracked changes (outside the records folder), the case index and the repetitions. A run directory with another fingerprint is refused (`EVAL_RUN_CHANGED`): changed code is a new variant. Sort the case index before hashing it: a test runner lists files in its own cache order (failed and slow first), and an unsorted index refused the resume of a finished run. Filters (by file or case name) narrow a run without changing its fingerprint, and a rerun of the same variant skips the slots already finished.
 
 Run full suites from a **separate checkout or worktree** pinned to a commit, in the background, so you can keep editing; never change the code a recorded run is using. A lightweight eval for one task works the same way: separate agents produce outputs, each in its own worktree, and comparison agents grade them against a rubric (evaluating and refining a skill, for one).
+
+**Evaluating a skill:** an agent edits a before state, then a judge checks the result against a rubric. Training fixtures come from the examples the skill documents; holdouts come from interfaces whose expected edits do not appear in the skill, so they test whether the guidance generalizes. Also run the fixtures without the skill, to measure whether it changed the agent's behavior at all.
 
 ## Repetitions and intervals
 

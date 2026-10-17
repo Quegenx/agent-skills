@@ -46,7 +46,7 @@ const FILM = {
   bpm: 120,               // overridden by configure({ beat }) from audio/beats.json
   fps: 60,
   loop: true,             // the last frame equals the first; frame-review checks the seam
-  formats: { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080] },
+  formats: { '16:9': [1920, 1080], '9:16': [1080, 1920], '1:1': [1080, 1080], '4:5': [1080, 1350] },
   format: '16:9',
 }
 let B = 60 / FILM.bpm                       // seconds per beat
@@ -252,7 +252,7 @@ const STYLES = {
 let TOKENS = STYLES.paper
 
 // ============================================================================
-// LAYOUT: every position derives from the format, so 16:9, 9:16 and 1:1 are re-laid out, never cropped.
+// LAYOUT: every position derives from the format, so 16:9, 9:16, 1:1 and 4:5 are re-laid out, never cropped.
 // ============================================================================
 let W = 1920, H = 1080, U = 10.8                    // U = 1% of the short side
 function setFormat(name) {

@@ -226,13 +226,13 @@ Tracing must be on. Concepts, sampling that keeps whole agent runs, and the dash
 |---|---|---|
 | OpenAI | `openai` 4.0+ | Streaming needs `stream_options: { include_usage: true }` for token counts |
 | Anthropic | `@anthropic-ai/sdk` 0.19.2+ | Streaming token counts automatic |
-| Vercel AI SDK | `ai` 3.0+ | Requires `experimental_telemetry: { isEnabled: true }` on every call |
+| Vercel AI SDK | `ai` 3.0+ | Requires `experimental_telemetry: { isEnabled: true }` on every call before Sentry SDK 11 ([AI-MONITORING.md](AI-MONITORING.md#vercel-ai-sdk)) |
 | LangChain | `@langchain/core` 0.1.0+ | |
 | LangGraph | `@langchain/langgraph` 0.1.0+ | |
 | Google GenAI | `@google/genai` 1.0+ | |
 
 - **All auto-enabled and stable** (available since 10.53.0; the reference sets the minimum at `@sentry/node` 10.61.0). Add them explicitly only to customize: `integrations: [Sentry.openAIIntegration(), Sentry.vercelAIIntegration()]`. Auto-instrumentation is server-only; in the browser or a Next.js client wrap the client: `Sentry.instrumentOpenAiClient(new OpenAI())`.
-- **Vercel AI SDK inputs and outputs:** `experimental_telemetry: { isEnabled: true, recordInputs: true, recordOutputs: true }`.
+- **Vercel AI SDK inputs and outputs:** `experimental_telemetry: { isEnabled: true, recordInputs: true, recordOutputs: true }` before Sentry SDK 11; from 11, the integration's `recordInputs` / `recordOutputs`.
 - **Prompt and output capture:** with `dataCollection`, genAI input and output capture is on by default (`recordInputs` and `recordOutputs` default `true`). Turn it off with `dataCollection: { genAI: { inputs: false, outputs: false } }`.
 - **Unsupported (use manual spans):** Cohere, AWS Bedrock, Mistral, Groq.
 - **Manual spans** use ops `gen_ai.request` (name `"chat <model>"`), `gen_ai.invoke_agent` (name `"invoke_agent <Agent>"`, attribute `gen_ai.agent.name`) and `gen_ai.execute_tool` (`gen_ai.tool.name`, `gen_ai.tool.type: "function"`, `gen_ai.tool.input`, `gen_ai.tool.output`). The tracing reference names the AI op `ai.pipeline.*` instead; confirm in the current docs.
@@ -271,7 +271,7 @@ await Sentry.startSpan({
 | `Cannot find module '@sentry/profiling-node'` | Install it and keep it in `dependencies`, not `devDependencies` |
 | Profiler binary fails to load | Node 18 to 24 on a supported platform; set `SENTRY_PROFILER_BINARY_PATH` |
 | High idle CPU from profiling | `SENTRY_PROFILER_LOGGING_MODE=lazy` or a lower rate |
-| No AI spans | `tracesSampleRate > 0`; SDK >=10.61.0; Vercel AI SDK call missing `experimental_telemetry` |
+| No AI spans | `tracesSampleRate > 0`; SDK >=10.61.0; Vercel AI SDK call missing `experimental_telemetry` (before Sentry SDK 11) |
 | Conversations view empty | `streamGenAiSpans` on, genAI capture on, and `Sentry.setConversationId()` called |
 | No AI token counts on OpenAI streams | `stream_options: { include_usage: true }` |
 

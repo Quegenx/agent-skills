@@ -44,9 +44,11 @@ Before writing checks for a new agent, or when the suite passes and users still 
 1. **A sample** of real conversations (around 50), spread across the kinds of users and requests.
 2. **Open notes by a person:** for each, what happened, described as behaviour ("asked for the address twice"), not as a cause, and pass or fail. The person who knows the product writes these; an agent can prepare the sample and the review queue, not the judgment.
 3. **Group the notes** into a short list of failure kinds, and count each.
-4. **Decide per kind:** a fix (most), a code check, or a judge. Fix the frequent and costly kinds first; a kind seen once waits for a second sighting, unless it is severe, which stays visible however rare.
+4. **Decide per kind:** a fix (most), a code check, or a judge. Fix the frequent and costly kinds first; a kind seen once waits for a second sighting, unless it is severe, which stays visible however rare. When the agent runs on several models, a failure one model makes and the others don't stays out of the rules until it repeats.
 
 Count distinct cases per kind over the number of cases reviewed; keep what was seen (the symptom) apart from what you think caused it. Renaming a kind keeps its id, and a merge or split keeps the mapping, so old counts still line up. Embedding search only proposes candidates for a kind; a person assigns them.
+
+**After a fix, watch its kind's count** in similar work over time: it should start falling. When it does not, something about the fix is wrong: the rule is unclear, it isn't loading when it is needed, the stylesheet lacks a primitive that can express it, or it needs a deterministic check instead of prose.
 
 A first case set is small: 5 to 12 cases that each test something, reviewed by a person. Expected outputs an AI wrote are a draft, not ground truth. Keep each case's input, expected result and notes in separate fields.
 

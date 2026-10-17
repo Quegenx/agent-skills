@@ -12,8 +12,8 @@ function usage() {
   node turn-check.mjs build.mjs --fidelity [--angles 7,37,…]
       Node: every live prism against k.extrude / G.prismOf, every round and lathe against G.lathe(smooth) and every tube
       against tubePieces, at P'(θ). Control: one prism drawn 2° off must fail.
-  node turn-check.mjs page.html [--order] [--pops] [--lines] [--perf] [--step 1] [--states states.json]
-                                [--width 1440] [--height 1100] [--scale 2] [--throttle 1] [--no-webgl] [--out dir]
+  node turn-check.mjs page.html [--order] [--pops] [--lines] [--perf] [--passes] [--step 1] [--states states.json]
+                                [--film] [--fps 60] [--width 1440] [--height 1100] [--scale 2] [--throttle 1] [--no-webgl] [--out dir]
       --order   needs a --verify build: the recorded shapes in a WebGL z-buffer (part-ID colours, 2x) against the live
                 layers' fills in DOM order. Fails on any live pair with 4 or more interior pixels. Static × live mismatches
                 are listed (the layer proofs and the orbit audit own them). Control: each live layer's order reversed at
@@ -23,7 +23,12 @@ function usage() {
       --lines   LINE_ENDS at 24 angles (run it on the light and the dark page); control: a planted floating line must fail.
       --perf    240 frames at 1.1° per frame driven through the controller inside requestAnimationFrame: script, task,
                 style and layout per frame, frame interval median and p95, live elements, writes and moves per frame.
-      --states  a JSON list of value objects to visit instead of angles (gestures, a break-apart).
+      --passes  the runtime's own pass check, beside the orbit audit: every state through the controller with the kit's debug collectors
+                (globalThis.__t3unsep, globalThis.__t3forced) armed. Fails on any pair that passes through another (separating
+                plane margin below -0.08, listed with its worst margin and where) and on any forced pick (listed by part).
+                Fails too when stats() counts some but the collectors stay empty: the page inlines a kit without them.
+                With --film it walks a seek(t) page instead: window.seek(n / fps) for every step of window.timeline().duration.
+      --states  a JSON list of value objects to visit instead of angles (gestures, a break-apart, an explode path).
   The angle is the figure's first turn group (window.__isoTurn.set(θ)).`);
 }
 
@@ -429,6 +434,36 @@ const POPS = String.raw`(() => {
   return { w, h };
 })()`;
 
+// --passes is ported from anatomy-reveal's object/scan-apart.mjs and motion/scan.mjs (MIT, Ann Nguyen; see
+// ../kit/LICENSE-anatomy-reveal.txt).
+const PASSES = String.raw`((sweep, film) => {
+  const { C, setState } = window.__tc;
+  const runs = C.scene().runs;
+  const nameOf = (p) => (typeof p === "number" ? runs[p]?.name ?? String(p) : p?.name ?? p?.id ?? String(p));
+  const pairs = new Map();
+  const steps = [];
+  let hookless = 0;
+  for (let index = 0; index < sweep.length; index++) {
+    globalThis.__t3unsep = [];
+    globalThis.__t3forced = [];
+    if (film) window.seek(sweep[index]);
+    else setState(sweep[index]);
+    const s = (film ? window.__isoTurn.controller : C).stats();
+    const unsep = globalThis.__t3unsep;
+    const forced = globalThis.__t3forced;
+    if ((s.unseparated && !unsep.length) || (s.forced && !forced.length)) hookless++;
+    for (const [a, b, margin] of unsep) {
+      const key = a + " × " + b;
+      const prev = pairs.get(key);
+      if (!prev || margin < prev.margin) pairs.set(key, { margin, index });
+    }
+    if (forced.length || unsep.length) steps.push({ index, forced: forced.length, unseparated: unsep.length, names: [...new Set(forced.map(nameOf))].slice(0, 6) });
+  }
+  delete globalThis.__t3unsep;
+  delete globalThis.__t3forced;
+  return { hookless, steps, pairs: [...pairs].map(([key, v]) => ({ key, ...v })).sort((x, y) => x.margin - y.margin) };
+})`;
+
 const PERF = String.raw`(async (frames, step, group) => {
   const { C, stage } = window.__tc;
   const name = group || C.scene().groups.find((g) => g.kind === "turn")?.name;
@@ -544,6 +579,29 @@ async function main() {
         if (layerNotes.size) console.log(`  static × live (recorded static shapes are stand-ins; the layer proofs own these): ${[...layerNotes].slice(0, 8).map(([k, v]) => `${k} ${v}px`).join(" · ")}`);
         if (bad) failed++;
       }
+    }
+    if (argv.includes("--passes")) {
+      const film = argv.includes("--film");
+      let walk = sweep;
+      let labelAt = (index) => labelOf(sweep[index], index);
+      if (film) {
+        const tl = await page.evaluate("typeof window.seek === 'function' && typeof window.timeline === 'function' ? window.timeline() : null");
+        if (!tl) throw new Error("passes: --film needs a page with window.seek and window.timeline");
+        const fps = Number(value("--fps", 60));
+        if (!Number.isFinite(fps) || fps <= 0) throw new Error("--fps must be a finite number greater than 0");
+        walk = Array.from({ length: Math.ceil(tl.duration * fps) }, (_, n) => n / fps);
+        labelAt = (index) => `t=${walk[index].toFixed(3)} s`;
+      }
+      const r = await page.evaluate(`(${PASSES})(${JSON.stringify(walk)}, ${film})`);
+      if (r.hookless) {
+        console.log(`passes: stats() counted forced or unseparated in ${r.hookless} states but the collectors stayed empty: this page inlines a kit without __t3unsep and __t3forced; rebuild it`);
+        failed++;
+      }
+      for (const p of r.pairs.slice(0, 30)) console.log(`  ${p.key}  margin ${p.margin.toFixed(2)} at ${labelAt(p.index)}`);
+      for (const step of r.steps.filter((x) => x.forced).slice(0, 30)) console.log(`  ${labelAt(step.index)}: forced ${step.forced}${step.names.length ? ` (${step.names.join(", ")})` : ""}`);
+      const forcedSteps = r.steps.filter((x) => x.forced).length;
+      console.log(`passes: ${walk.length} ${film ? "frames" : "states"} · ${r.pairs.length} pairs pass through each other · ${forcedSteps} with forced picks`);
+      if (r.pairs.length || forcedSteps) failed++;
     }
     if (argv.includes("--pops")) {
       await page.evaluate(POPS);

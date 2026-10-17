@@ -37,6 +37,8 @@ src/lib/agent-chat/        message and part schemas the page and the server shar
 tests/src/agent/           mirrors src/agent file for file; prompt snapshots next to the prompt tests
 ```
 
+A framework with a directory convention lays an agent out its own way. Rillet's agents on eve are each a directory (`agent.ts`, `instructions.md`, `tools/`, `skills/`, `subagents/`, `channels/`, `schedules/`), with instructions and skills in markdown so people who don't write TypeScript can shape them, as agent building spread beyond engineering. This tree keeps the instructions and playbooks in code.
+
 Where a new piece goes, by the question it answers:
 
 | It is about... | Folder |
@@ -81,6 +83,8 @@ Each constant or rule says why it exists, what it was measured on and when, and 
 ## The SDK it is written against
 
 Write SDK calls from the documentation and type definitions that ship inside the installed package (for the AI SDK, `node_modules/ai/docs` and its `.d.ts`), never from memory: option names move between major versions (instructions for system, `toolApproval` for a per-tool flag, renamed callbacks), and an old name can still type-check in a loose spot. Run the type check after each change, and set every loop option explicitly rather than relying on a default you haven't read.
+
+AI SDK 7 needs Node.js 22 or later ("for production workloads, prefer Node.js 24 (LTS) or Node.js 26") and every package is ESM-only; `npx @ai-sdk/codemod v7` migrates v6 code. Its v7 migration guide also deprecates the result's stream response helpers (`result.toUIMessageStreamResponse` and its siblings) for the top-level `toUIMessageStream({ stream: result.stream, ... })` with `createUIMessageStreamResponse({ stream })`, and renames `fullStream` to `stream`.
 
 ## Prove it
 

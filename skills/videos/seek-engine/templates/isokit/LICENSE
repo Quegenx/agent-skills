@@ -19,3 +19,11 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+Modified here: kit/turn.mjs and kit/turn-fixed.mjs carry eleven material ramps (glass, pcb, sensor, signal, coffee,
+bean, milk, smoke, porcelain, lavender, knit) and two optional debug collectors in t3Order (globalThis.__t3unsep,
+globalThis.__t3forced), copied from anatomy-reveal, MIT licensed, copyright (c) 2026 Ann Nguyen. The --passes mode of
+scripts/turn-check.mjs is ported from its object/scan-apart.mjs and motion/scan.mjs. Its licence is in
+kit/LICENSE-anatomy-reveal.txt.
