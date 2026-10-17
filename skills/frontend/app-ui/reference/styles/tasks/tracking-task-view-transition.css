@@ -56,8 +56,8 @@
    end. !important outranks the animation and gives the overlay back the
    viewport; it stays see-through and lets the pointer through. */
 ::view-transition {
-  inline-size: 100vw !important;
-  block-size: 100vh !important;
+  inline-size: 100vw !important; /* whole screen */
+  block-size: 100dvh !important;
   pointer-events: none;
 }
 

@@ -282,11 +282,11 @@
     inset-inline-start: 0;
     display: flex;
     inline-size: 100%;
-    block-size: 100vh;
+    block-size: 100dvh;
     pointer-events: none;
   }
   .app-locale-transition-stairs > [data-locale-stair] {
-    inline-size: 20vw;
+    inline-size: 20vw; /* whole screen: five stairs across the viewport */
     block-size: 0;
     background: #0866ff;
   }
