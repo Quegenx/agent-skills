@@ -102,6 +102,7 @@ Referenced as an image file, with `xmlns`:
 - **User units.** The unitless numbers in `x`, `y`, `width`, `height` are user units. When a viewport is first created one user unit equals one CSS pixel; `viewBox` changes that mapping. For the outermost `svg`, one unit of the initial coordinate system must equal one CSS px.
 - **Two systems per viewport.** All content is drawn inside SVG viewports (distinct from the CSS "viewport"). Each one generates a viewport coordinate system and a user coordinate system, initially identical; `viewBox` transforms the user system relative to the viewport system, and children can change it further with `transform`.
 - **Absolute units are converted.** `cm`, `mm`, `pt` resolve into the user coordinate system before rendering. CSS defines 1 inch = 96 px. `em` resolves against `font-size` (with `font-size="150"`, 1em = 150 user units).
+- **A print sheet in millimeters.** [Jakub Krehel, technical-drawing] "Use one SVG user unit per millimeter of paper. A landscape A3 sheet starts with `width="420mm" height="297mm" viewBox="0 0 420 297"`." Every coordinate and stroke width is then paper millimeters. "For a print PNG, compute pixels as `millimeters / 25.4 * dpi`. At 300 dpi, landscape A3 rounds to 4961 by 3508 pixels" (420 / 25.4 * 300 = 4960.6, 297 / 25.4 * 300 = 3507.9). Margins, line weights and dimensions for such a sheet are in [../technical-drawing/sheet-and-svg.md](../technical-drawing/sheet-and-svg.md).
 - **Percentages:** x and width percentages resolve against the `viewBox` width (or the viewport width without a viewBox), y and height against the `viewBox` height, and any other length against the normalized diagonal `sqrt(width² + height²)/sqrt(2)`.
 - **Path coordinates have no units.** Values in `d` are always in the user coordinate system.
 
@@ -258,3 +259,4 @@ The nine align values are `xMinYMin`, `xMidYMin`, `xMaxYMin`, `xMinYMid`, `xMidY
 - Resize the outer box: with the default `xMidYMid meet` the whole drawing stays visible and centered; with `slice` it covers and crops; with `none` it stretches.
 - Elements meant to be on top come later in the markup; nothing depends on `z-index`.
 - Two `text` elements meant as separate lines have different `y` values.
+- A millimeter sheet has `width` and `height` in `mm` matching its `viewBox` numbers, and its PNG export measures `mm / 25.4 * dpi` pixels on each side.

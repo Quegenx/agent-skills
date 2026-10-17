@@ -50,6 +50,7 @@ export default {
 - **removeHiddenElems:** removes hidden or invisible elements (zero width or height, hidden with CSS); leaves non-rendering elements like `<clipPath>` and `<linearGradient>` alone unless they are unused.
 - **convertShapeToPath, mergePaths, collapseGroups, convertPathData:** turn shapes into `<path>`, merge paths, flatten groups that do nothing (removeEmptyContainers removes empty ones), and rewrite path data (relative or absolute, whichever is shorter; converted and redundant commands removed; delimiters trimmed; numbers rounded).
 - **inlineStyles:** merges `<style>` declarations into `style` attributes.
+- **removeMetadata:** removes `<metadata>`. An export that stores data there, such as [technical-drawing](../technical-drawing/SKILL.md)'s JSON record of the drawing's concept status, parameters and colors [Jakub Krehel, technical-drawing], loses it silently when run through `preset-default`; disable the plugin for those files.
 - **removeDesc:** removes `<desc>` only if it is empty or seems to hold only editor attribution, never indiscriminately, because it is a crucial part of accessibility.
 
 ## Risky plugins
@@ -169,3 +170,4 @@ const clean = DOMPurify.sanitize(dirty, { NAMESPACE: 'http://www.w3.org/2000/svg
 - **Scripts can't run:** a test upload containing `<script>`, an `onload` attribute and a `javascript:` link is clean after sanitizing (DOMPurify output has no event attributes), and opening its URL directly downloads it (`Content-Disposition: attachment`) or runs nothing under the CSP.
 - **Headers:** the response for an SVG carries `Content-Type: image/svg+xml`; on an uploaded one also the CSP and `Content-Disposition` you set.
 - **Type check ignores the client:** an upload with a spoofed `Content-Type` is rejected by your own file-type validation.
+- **Metadata kept where needed:** an SVG whose `<metadata>` carries data still has it after the SVGO run.

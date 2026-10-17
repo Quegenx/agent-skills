@@ -1,6 +1,8 @@
 # Patterns
 
-**Contents:** [Enter and exit](#enter-and-exit) · [Lists](#lists-that-stagger-reorder-and-remove) · [Shared elements](#shared-elements-a-thumbnail-becomes-the-detail) · [A card that opens a modal and owns the URL](#a-card-that-opens-a-modal-and-owns-the-url) · [Modals, sheets, popovers](#modals-sheets-popovers) · [Trays](#trays-a-flow-in-steps-over-the-current-screen) · [A button that grows into a panel](#a-button-that-grows-into-a-panel) · [Height and accordions](#height-and-accordions) · [Buttons](#buttons-presses-and-feedback) · [Feedback where it happened](#feedback-where-it-happened) · [Icons that turn into each other](#icons-that-turn-into-each-other) · [Numbers](#numbers) · [Live values and charts](#live-values-and-charts) · [Gestures](#gestures-drag-throw-snap) · [Scroll](#scroll-linked-motion) · [Galleries](#galleries-carousels-and-rings) · [Delight](#delight-where-flourish-goes) · [Tells](#tells-of-template-motion)
+**Contents:** [Enter and exit](#enter-and-exit) · [Lists](#lists-that-stagger-reorder-and-remove) · [Shared elements](#shared-elements-a-thumbnail-becomes-the-detail) · [A card that opens a modal and owns the URL](CARD-TO-MODAL.md) · [Modals, sheets, popovers](#modals-sheets-popovers) · [Trays](#trays-a-flow-in-steps-over-the-current-screen) · [A button that grows into a panel](#a-button-that-grows-into-a-panel) · [Height and accordions](#height-and-accordions) · [Buttons](#buttons-presses-and-feedback) · [Feedback where it happened](#feedback-where-it-happened) · [Icons that turn into each other](#icons-that-turn-into-each-other) · [Numbers](#numbers) · [Live values and charts](#live-values-and-charts) · [Gestures](#gestures-drag-throw-snap) · [Scroll](#scroll-linked-motion) · [Galleries](#galleries-carousels-and-rings) · [Delight](#delight-where-flourish-goes) · [Tells](#tells-of-template-motion)
+
+**More in their own files:** [hold to confirm, clip-path and blur reveals, the generation reveal](REVEALS.md) · [drag details and the release velocity](GESTURES.md) · [toasts and tooltips](TOASTS-AND-TOOLTIPS.md) · [one highlight per list, weight that changes, merged selection](HIGHLIGHTS-AND-SELECTION.md)
 
 React with Motion (`motion/react`), and CSS where it's enough. Keep the transition presets from [TIMING.md](TIMING.md) in one module:
 
@@ -52,6 +54,11 @@ export function Panel({ open, children }: { open: boolean; children: React.React
 - `mode="wait"` when one view replaces another (a step in a wizard): the old leaves before the new arrives. Keep the exit short, or the user waits.
 - `mode="popLayout"` when removing an item from a list whose neighbours should close the gap immediately; the parent needs a non-static `position` (for example `relative`).
 - Entrances start close to the final state: 4-12 px of travel and opacity from 0, or scale from 0.96. A card flying in from 100 px reads as a template.
+- **Never from `scale(0)`:** "Nothing in the real world appears from nothing." Start from `scale(0.9-0.97)` + `opacity: 0` [Emil Kowalski, animate].
+  - The owner's site does otherwise on purpose: landing tiles "spring in from scale 0" ([landing-page-ui MOTION.md](../landing-page-ui/MOTION.md#decorative-motion)).
+- **`initial={false}` only around a swap:** set it on an `AnimatePresence` that wraps a state swap, "Never set it around an intentional entrance such as a staggered hero" [Jakub Krehel, better-ui].
+- **A target that flips instead of unmounting picks its transition from state:** `transition={isOpen ? spring.fast : spring.fast.exit}` (its own tokens) [fluid-functionalism].
+- **Hand-rolled presence reads `safeToRemove` through a ref:** "AnimatePresence hands out a new one on every render while a child leaves, so depending on it would restart the close on every parent re-render" [fluid-functionalism].
 - **Point to where it went.** When a result moves somewhere else, animate it there: in Family, after a transaction is confirmed "a spinner moves into the bottom navigation to indicate where the user can now find their pending transaction", and speeding one up moves the speed-up spinner onto the original pending tray.
 - **Map the journey at the start:** Family's onboarding moves a stack of cards to show where the user is heading and how a different choice would lead somewhere else.
 
@@ -102,102 +109,17 @@ el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }]
 - **What persists, travels.** "If a component occupies a space and will persist in the next phase of the user's journey, it should remain consistent": it moves into the next screen and never "unnecessarily duplicates itself during an animation" (Family's wallet cards).
 - **High-stakes values travel.** In Family's send flow the amount moves visibly from the entry screen to the confirm screen, so users get "confidence that the amount entered is indeed the amount being sent".
 
-## A card that opens a modal and owns the URL
-
-A grid of cards morphs into a full-screen detail on the same page, and the URL follows, so Back closes it and a shared link works (RNDR Realm, "Building Smooth Page Transitions in React"). "Decouple your animations from your routing": keep both views mounted, change state to trigger the morph, update the URL yourself.
-
-- **The card is a link** with a real `href`, since it navigates; the click handler takes only a plain click and lets Cmd or Ctrl-click open a new tab (the article checks only those two keys):
-
-```tsx
-const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-  if (!e.metaKey && !e.ctrlKey) {
-    e.preventDefault();
-    onClick();
-  }
-};
-```
-
-- **Same `layoutId` on both:** the card is a `motion.a` and the detail sits in a `createPortal` full-screen overlay (`fixed inset-0 z-50`); "When one unmounts and the other mounts, Motion creates a smooth transition between them."
-
-```tsx
-<motion.a href={href} onClick={handleClick} layoutId={layoutId}
-  style={{ background: color }} className="w-full aspect-[4/3] rounded-lg block" />
-// detail:
-<motion.div layoutId={selectedItem?.color} style={{ background: selectedItem?.color }}
-  className="max-w-[600px] w-full aspect-[4/3] rounded-lg"
-  transition={{ type: "spring", stiffness: 250, damping: 30 }} />
-```
-
-- **`pushState` for the URL, `popstate` back to state,** "because we want the animation to happen immediately without any page reload or navigation delay". Back then animates the detail closed; Forward reopens it:
-
-```tsx
-const handleClick = (data) => {
-  setSelectedItem(data);                                              // trigger animation
-  window.history.pushState({ id: data.id }, "", `/page-transition/${data.id}`);
-};
-const handleClose = () => {
-  setSelectedItem(null);
-  window.history.pushState({}, "", `/page-transition`);
-};
-useEffect(() => {
-  const handlePopState = () => {
-    if (window.location.pathname === "/page-transition") {
-      setSelectedItem(null);
-    } else {
-      const slug = window.location.pathname.split("/page-transition/")[1];
-      const parsed = parseInt(slug);
-      const found = colors.find((color) => color.id === parsed);
-      if (found) setSelectedItem(found);
-    }
-  };
-  window.addEventListener("popstate", handlePopState);
-  return () => window.removeEventListener("popstate", handlePopState);
-}, []);
-```
-
-- **Closing, both ways:** the article pushes an entry on close too, so Back after open and close goes into the detail again; the `app-ui` skill's [OVERLAYS.md](../app-ui/OVERLAYS.md#a-settings-dialog) pushes on open and replaces on close, "so Back never reopens a closed dialog".
-- **A real route for refresh and shared links,** rendering the same `Content`; an unknown id redirects to the list. Arriving there has no shared element, so no morph: "Animations work best for in-app transitions, not initial page loads."
-
-```tsx
-"use client";
-import { colors, Content } from "../page";
-import { redirect, useParams, useRouter } from "next/navigation";
-
-export default function Page() {
-  const params = useParams();
-  const router = useRouter();
-  const selectedItem = colors.find((color) => color.id === Number(params.id));
-  if (!selectedItem) {
-    redirect("/page-transition");
-  }
-  return (
-    <div className="h-screen w-full flex justify-center items-center">
-      <Content selectedItem={selectedItem} handleGoBack={() => router.push("/page-transition")} />
-    </div>
-  );
-}
-```
-
-- **The other cards yield:** they fade out at once, which "helps focus attention on the animating element", and on close wait for the morph, or "you'd see the cards pop back in while the element is still animating". Opacity gets its own sub-transition inside the spring:
-
-```tsx
-animate={{ opacity: isItemSelected ? 0 : 1 }}
-transition={{
-  type: "spring", stiffness: 250, damping: 30,
-  opacity: { duration: 0.1, delay: isItemSelected ? 0 : 0.225 },
-}}
-```
-
-- **When not to:** the approach "deliberately bypass[es] Next.js's routing system"; "If you need server-side rendering for every route change or rely heavily on Next.js's data fetching patterns, this might not be the right solution." The View Transitions route above is the alternative.
-- The article's modal sends focus to its container and handles no Escape; the focus and dismiss rules in the next section still apply.
-
 ## Modals, sheets, popovers
 
 - **Grow from the trigger:** a popover scales from 0.96 to 1 with its `transform-origin` at the anchor side; a modal fades its backdrop (200 ms) and lifts the panel 8-16 px with `emphasized`; a sheet slides in from its edge with the `enter` spring and closes faster.
+- **Modals keep a centred origin:** "Modals should keep `transform-origin: center` because they are not anchored to a specific trigger" [Emil Kowalski, emil-design-eng].
+  - app-ui does otherwise: "A dialog that opens something new (create, search, settings) grows out of the button just pressed and shrinks back into it" ([OVERLAYS.md](../app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)).
+- **Offsets in percent for edge-anchored surfaces:** `translateY(100%)` moves an element by its own height; "This is how Sonner positions toasts and how Vaul hides the drawer" [Emil Kowalski, emil-design-eng]. Toasts and tooltips have their own file: [TOASTS-AND-TOOLTIPS.md](TOASTS-AND-TOOLTIPS.md).
 - **Focus moves with it:** into the dialog when it opens, back to the trigger when it closes; motion never delays focus or input.
 - **Dismiss mid-animation:** Escape or a backdrop click during the entrance reverses from where it is.
 - **Build it as a pipeline:** kciter's notification is three pieces: the background dims (opacity 0 to 0.5, 200 ms), the card slides up into place (300 ms, ease-out), the content fades in (opacity 0 to 1, 200 ms). Each can be tuned alone ([TIMING.md](TIMING.md#composing-a-sequence)).
 - **A popup in CSS alone:** the Base UI select popup on Florian Kiem's "Tips to improve your product" page is `origin-[var(--transform-origin)] transition-all duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0`, the origin taken from the anchor. Native `@starting-style`, `allow-discrete` and `overlay`: [NATIVE-CSS.md](NATIVE-CSS.md#top-layer-enter-and-exit).
+  - Name the properties instead of `transition-all` ([PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move)).
 - **A sheet swiped away on native scroll** (scroll snap and view timelines, no JavaScript touch handling) is in [SHEETS.md](SHEETS.md).
 - **Flutter sheets** (the spring sheet, swipe down at the top to close, the iOS 26 sheet) are in [../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md](../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md#pick-the-sheet).
 
@@ -257,6 +179,11 @@ Animating `height` runs layout every frame; fine for a small accordion, costly f
 
 Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `layout` on the surrounding blocks so what's below moves with transforms.
 
+- **Not to `"auto"` under a scaled ancestor:** "framer measures 'auto' visually, so under a scaled ancestor the open would overshoot to scale× the real height and snap back"; animate to a self-measured `offsetHeight` [fluid-functionalism] (the author's measurement, not in Motion's docs).
+  - app-ui measures differently: "Size from a `ResizeObserver` border box, which is fractional. `offsetWidth` rounds down half a pixel and ellipsizes the label" ([MENUS.md](../app-ui/MENUS.md#a-menu-that-is-its-trigger-grown)).
+- **Never stack two measured-height collapses:** "a wrapper animating to a ResizeObserver-measured height springs only when it itself toggles and snaps (`{duration: 0}`) when a child's collapse changed the measurement"; before that guard "the sub-menu landed in 218ms while its group wrapper took 326ms, diverging ~80px mid-flight" [fluid-functionalism].
+- **Opacity runs ahead of height** (0.06s in, 0.04s out) "so the body dissolves rather than being sliced by the clip edge"; a growing item opens its height first and fades its content in 0.08s later: "space opens first, then content appears" [fluid-functionalism].
+
 ## Buttons, presses and feedback
 
 - Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size. **Every pressable element has a pressed state, and it is stronger than the hover** (rest, hover, press, each a step further). Playful brands move (a slight scale); professional tools shift tone. Keep it subtle and under 100 ms in: some buttons are pressed hundreds of times a day. Component details beyond motion are in the `anti-slop-ui` skill's DETAILS.md. A like button's heart "shrinks for an instant and then springs back"; the overshoot "gives the press a tactile sense of feedback" (kciter). The RNDR Realm dropdown trigger also grows on hover (`whileHover={{ scale: 1.03 }}`); this line keeps hover to colour or shadow.
@@ -270,6 +197,7 @@ playful: [transition:background-color_180ms_ease-out,scale_420ms_var(--press-spr
          active:[transition:background-color_180ms_ease-out,scale_240ms_var(--press-spring)]
          active:scale-[0.94]
 ```
+- **More press voices, the disabled rule, a press without scale, a tap that shows the whole press:** [GESTURES.md](GESTURES.md#presses). Hold to confirm: [REVEALS.md](REVEALS.md#hold-to-confirm).
 - **Stretch a switch while it is held.** Fast-moving things look longer, so a thumb that widens toward the side it will travel to while pressed, then snaps across and back to round on release, feels physical. The stretch's size and speed set the character: a small quick stretch feels light, a longer one with a slower travel feels heavy. Match it to the brand.
 
 ```css
@@ -318,6 +246,8 @@ rotationRef.current = rotate; prevIcon.current = name;
 ```
 
 - The three-line icon geometry, the collapsed lines and `rotateLines` are in [the `svg` skill](../svg/SKILL.md).
+- **Which icons animate, both ways:** animate "Infrequent state swaps such as play to pause, like to liked or copy to copied", not "Hover-revealed actions in list rows" or "Tab and navigation icon swaps" [Jakub Krehel, better-ui].
+  - The same author's other skill animates "Icons that appear on hover (action buttons)" [Jakub Krehel, make-interfaces-feel-better].
 - **Not every pair takes the ideal path:** "Some morphs have slightly awkward intermediate states, and some rotations overshoot." Play the pairs ([SKILL.md](SKILL.md#prove-it)).
 - **Pair an icon morph with the view transition:** in Family's multi-step flow a chevron, "something that would typically be static", morphs while the view moves, which "clarifies the navigation action taken".
 
@@ -388,13 +318,17 @@ const x = useMotionValue(0);                                  // slideWidth, max
   onDragEnd={(_, info) => {
     const projected = x.get() + info.velocity.x * 0.2;        // where the throw would carry it
     const snapped = Math.round(projected / slideWidth) * slideWidth;
-    animate(x, clamp(snapped, -maxOffset, 0), spring.shape); // the spring starts with the release velocity
+    animate(x, clamp(snapped, -maxOffset, 0),
+      { type: "spring", stiffness: 300, damping: 30, velocity: info.velocity.x }); // physics spring: keeps the throw
   }}
   style={{ x }}
 />
 ```
 
 Snap to where the throw was heading (position plus velocity), not to the nearest slide from the release point, or a flick lands back where it started. Keep keyboard and buttons working for the same moves.
+
+- **Corrected: the settle is a physics spring.** This snippet used `spring.shape`, a duration-based spring, and by motion.dev duration-based springs don't take the throw's velocity ([motion.dev](https://motion.dev/docs/animate); quoted in [GESTURES.md](GESTURES.md#hand-the-release-velocity-to-a-physics-spring)). The 300/30 values are Craft's sheet spring.
+- Pointer capture, the second finger, the 0.11 px/ms flick, hysteresis and the release spring in full: [GESTURES.md](GESTURES.md).
 
 - **A scroll that starts on a row doesn't toggle it:** Kiem's list-row toggles record the pointer position on `pointerdown` (primary pointer only), count the click as a tap only if `Math.hypot(dx, dy) <= 12` px at `pointerup`, cancel on `pointercancel`, and in `onClick` ignore non-taps but always accept keyboard clicks (`e.detail === 0`):
 

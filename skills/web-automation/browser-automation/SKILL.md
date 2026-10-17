@@ -1,6 +1,6 @@
 ---
 name: browser-automation
-description: "Lets an agent drive a real browser and keeps the run reliable and safe: the snapshot and act loop with element refs, local versus cloud browsers and when to escalate, signed-in sessions with cookies treated as credentials, a constrained browser tool with a domain allowlist, recording a run with a second CDP connection and diagnosing it, self-improving task loops and judging their results, turning a converged run into a deterministic script, serverless browser functions, and migrating browser-use scripts to Stagehand. Use when an agent must open pages, click, fill forms or log in, when a browser run fails or hangs, or when an agentic browser script must become cheap and repeatable."
+description: "Lets an agent drive a real browser and keeps the run reliable and safe: the snapshot and act loop with element refs, local versus cloud browsers and when to escalate, signed-in sessions with cookies treated as credentials, a constrained browser tool with a domain allowlist, recording a run with a second CDP connection and diagnosing it, self-improving task loops and judging their results, turning a converged run into a deterministic script, serverless browser functions, reading how a page or effect was built with evaluate recipes, and migrating browser-use scripts to Stagehand. Use when an agent must open pages, click, fill forms or log in, when a browser run fails or hangs, when an agentic browser script must become cheap and repeatable, or when asked how a site or visual effect was built."
 ---
 
 # Browser automation
@@ -16,6 +16,7 @@ An agent reads the page as an accessibility-tree snapshot with element refs, act
 | Recording a run with a second CDP client, slicing it per page, and diagnosing failures | [RUN-TRACING.md](RUN-TRACING.md) |
 | Self-improving task loops, tuning an agent's prompt, oracles and judging results | [TASK-LOOPS.md](TASK-LOOPS.md) |
 | Turning a converged run into a deterministic Playwright or Stagehand script | [SCRIPT-CODEGEN.md](SCRIPT-CODEGEN.md) |
+| Reading how someone else's page or one effect was built: the stack, tokens, type, spacing, motion and breakpoint recipes, the layer stack behind an effect, `getAnimations()`, measured, derived and inferred claims, from a screenshot, without a browser | [INSPECT-A-PAGE.md](INSPECT-A-PAGE.md) |
 | Deploying a browser task as a serverless function | [BROWSER-FUNCTIONS.md](BROWSER-FUNCTIONS.md) |
 | The determinism spectrum and migrating browser-use to Stagehand | [STAGEHAND-MIGRATION.md](STAGEHAND-MIGRATION.md) |
 

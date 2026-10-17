@@ -1,6 +1,6 @@
 ---
 name: skill-authoring
-description: "Writes Claude Code and Agent Skills skills the way the Claude Code team builds them: picking one of nine skill categories, a description written as a trigger, a Gotchas section grown from real failures, a folder with progressive disclosure, goals instead of railroaded steps, setup config, skill memory, bundled scripts and helper libraries, on-demand hooks, workflows shipped as templates, sharing through the repo or a plugin marketplace, composing skills, observable decisions and rule records, linter or guidance, and measuring and hillclimbing how often a skill triggers and how well it works, with and without the skill, and keeping it current from real use. Use when creating, reviewing or improving a skill or SKILL.md, a skill under-triggers or misfires, or deciding how to share skills with a team."
+description: "Writes Claude Code and Agent Skills skills the way the Claude Code team builds them: picking one of nine skill categories, a description written as a trigger, a Gotchas section grown from real failures, a folder with progressive disclosure, goals instead of railroaded steps, manual-only and model-only invocation, setup config, skill memory, skills that audit a project without leaving state, bundled scripts and helper libraries, on-demand hooks, workflows shipped as templates, sharing through the repo or a plugin marketplace, composing skills, observable decisions and rule records, linter or guidance, and measuring and hillclimbing how often a skill triggers and how well it works, with and without the skill, and keeping it current from real use. Use when creating, reviewing or improving a skill or SKILL.md, a skill under-triggers or misfires, or deciding how to share skills with a team."
 ---
 
 # Skill authoring
@@ -10,8 +10,9 @@ A skill is a folder of instructions, scripts and resources that an agent discove
 | The job | Read |
 |---|---|
 | Choosing what the skill is: the nine categories, examples of each, finding gaps in a library | [CATEGORIES.md](CATEGORIES.md) |
-| Writing it: what to leave out, observable decisions, the Gotchas section and decision records, the description and persistent triggers, the folder, request modes and rule ids, goals over steps, decision authority, linter or guidance, simplifying | [WRITING.md](WRITING.md) |
+| Writing it: what to leave out, observable decisions, the Gotchas section and decision records, the description and persistent triggers, who may invoke it (`disable-model-invocation`, `user-invocable`) and namespaced commands, the folder, request modes and rule ids, goals over steps, decision authority, linter or guidance, simplifying | [WRITING.md](WRITING.md) |
 | Giving it code and state: scripts and helper libraries, published primitives kept out of context, lint rules, setup config, memory, on-demand hooks, workflow files | [SCRIPTS-AND-HOOKS.md](SCRIPTS-AND-HOOKS.md) |
+| A skill that inspects a user's project: facts re-read by a script every session, measuring before advising, the evidence gate and its falsification pass, a 2 to 5 item shortlist written from the interface, decisions kept only with consent in existing agent notes, symlink-safe scripts | [PROJECT-AUDITS.md](PROJECT-AUDITS.md) |
 | Sharing it: checked into the repo or a plugin marketplace, a public registry or a single public URL, running a marketplace, composing skills | [DISTRIBUTION.md](DISTRIBUTION.md) |
 | Knowing how it does: logging skill usage, under-triggering, evals with and without the skill, frozen scenarios, blind A/B and hillclimbing, keeping it current from real use | [MEASURING.md](MEASURING.md) |
 

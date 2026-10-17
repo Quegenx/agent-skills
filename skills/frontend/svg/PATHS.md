@@ -2,7 +2,7 @@
 
 `<path>` is the generic shape element and the most powerful one in SVG: its `d` attribute can mold it into every other shape and everything in between. What decides most outcomes: `d` is a string of 20 single-letter commands where uppercase means absolute coordinates and lowercase means relative to the current point, a parse error silently cuts the path short at that command, and two `d` values only animate smoothly when they have the same command structure. Drawing a complex path by hand in an editor is not recommended, but knowing the commands lets you find and repair display problems. Basic shapes are in [SHAPES-AND-TEXT.md](SHAPES-AND-TEXT.md), path morphing in [CSS-ANIMATION.md](CSS-ANIMATION.md) and [SMIL.md](SMIL.md), path data compaction by tools in [OPTIMIZING-AND-SECURITY.md](OPTIMIZING-AND-SECURITY.md).
 
-**Contents:** [The path element](#the-path-element) · [The commands](#the-commands) · [MoveTo](#moveto-m-m) · [LineTo](#lineto-l-l-h-h-v-v) · [ClosePath](#closepath-z-z) · [Cubic Bézier](#cubic-bézier-c-c-s-s) · [Quadratic Bézier](#quadratic-bézier-q-q-t-t) · [Elliptical arcs](#elliptical-arcs-a-a) · [Syntax and compaction](#syntax-and-compaction) · [Errors](#errors) · [Animating d](#animating-d) · [pathLength](#pathlength) · [Prove it](#prove-it)
+**Contents:** [The path element](#the-path-element) · [The commands](#the-commands) · [MoveTo](#moveto-m-m) · [LineTo](#lineto-l-l-h-h-v-v) · [ClosePath](#closepath-z-z) · [Cubic Bézier](#cubic-bézier-c-c-s-s) · [Quadratic Bézier](#quadratic-bézier-q-q-t-t) · [Elliptical arcs](#elliptical-arcs-a-a) · [Syntax and compaction](#syntax-and-compaction) · [Errors](#errors) · [Animating d](#animating-d) · [Smoothed corners](#smoothed-corners-squircles-as-a-path) · [pathLength](#pathlength) · [Prove it](#prove-it)
 
 ## The path element
 
@@ -158,6 +158,93 @@ A pie wedge:
 
 Transitions and keyframes are in [CSS-ANIMATION.md](CSS-ANIMATION.md); `<animate>` on `d` or `points` is in [SMIL.md](SMIL.md).
 
+## Smoothed corners (squircles) as a path
+
+[corner-smoothing] (gabrielobholz/corner-smoothing-skill, `references/implementation.md`). "CSS `border-radius` alone cannot express this shape": "Apple-like smoothing keeps the same radius but eases the transition between straight edges and the corner." The skill draws it as path data, usable in SVG, `clip-path: path()` and Canvas `Path2D`. In a CSS box, `corner-shape: squircle` is the native route where it ships ([../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#corner-shape-and-superellipse)); the path covers the other browsers, SVG icons, Canvas and shapes outside a CSS box. Verbatim generator:
+
+```js
+function appleCornerPath({ width, height, radius, smoothing = 60 }) {
+  const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+  const w = Math.max(0, width);
+  const h = Math.max(0, height);
+  const r = clamp(radius, 0, Math.min(w, h) / 2);
+  const s = clamp(smoothing, 0, 100) / 100;
+
+  if (!w || !h) return "";
+  if (!r) return `M0 0H${w}V${h}H0Z`;
+
+  if (s <= 0.001) {
+    const c = r * 0.5522847498307936;
+    return `M${r} 0H${w - r}C${w - r + c} 0 ${w} ${r - c} ${w} ${r}V${h - r}C${w} ${h - r + c} ${w - r + c} ${h} ${w - r} ${h}H${r}C${r - c} ${h} 0 ${h - r + c} 0 ${h - r}V${r}C0 ${r - c} ${r - c} 0 ${r} 0Z`;
+  }
+
+  const exponent = 2 + s * 3.35;
+  const steps = 22;
+  const points = [];
+
+  const corner = (cx, cy, a0, a1) => {
+    for (let i = 0; i <= steps; i += 1) {
+      const a = a0 + (a1 - a0) * (i / steps);
+      const cos = Math.cos(a);
+      const sin = Math.sin(a);
+      const x = cx + r * Math.sign(cos) * Math.abs(cos) ** (2 / exponent);
+      const y = cy + r * Math.sign(sin) * Math.abs(sin) ** (2 / exponent);
+      points.push([+x.toFixed(3), +y.toFixed(3)]);
+    }
+  };
+
+  points.push([r, 0], [w - r, 0]);
+  corner(w - r, r, -Math.PI / 2, 0);
+  points.push([w, h - r]);
+  corner(w - r, h - r, 0, Math.PI / 2);
+  points.push([r, h]);
+  corner(r, h - r, Math.PI / 2, Math.PI);
+  points.push([0, r]);
+  corner(r, r, Math.PI, Math.PI * 1.5);
+
+  const deduped = points.filter((point, index, all) => {
+    if (index === 0) return true;
+    const prev = all[index - 1];
+    return point[0] !== prev[0] || point[1] !== prev[1];
+  });
+
+  return `M${deduped.map(([x, y]) => `${x} ${y}`).join("L")}Z`;
+}
+```
+
+- **Clamp the radius** "to `min(width, height) / 2`. This prevents self-intersecting paths when components become small or responsive." The function does it; keep it if you change the code.
+- **Defaults:** "`smoothing: 0` gives a normal circular rounded rectangle" (the function then returns cubic Béziers with the circle constant `0.5522847498307936`); "`smoothing: 60` is the Apple/iOS-style default"; "`smoothing: 100` is the strongest smoothed/squircle-like treatment." "Increase `steps` for very large rendered shapes; 22 is enough for most UI components."
+- **What it outputs** (measured by running the function, not stated by the source): each corner samples `|x/r|^n + |y/r|^n = 1` with `n = 2 + 3.35 * smoothing`, the superellipse family of CSS `superellipse()`, so smoothing 60 is close to `squircle`. The result is a polyline of straight `L` segments, 22 per corner, not curves.
+- **Its point count changes with geometry:** 93 points at 300 by 300 with radius 52, 89 at radius 150 (the edge points coincide and are deduped), 91 at 300 by 100, and at smoothing 0 it switches to `C` commands. By [Same structure or no tween](#animating-d), a CSS or SMIL morph between two outputs jumps. The skill's rule "When animating smoothing, keep `width`, `height`, and `radius` stable and update only the generated path" works when script rewrites `d` every frame.
+- **Usage, verbatim:**
+
+```html
+<svg width="300" height="300" viewBox="0 0 300 300" aria-hidden="true">
+  <path id="card-shape" fill="#0081f2"></path>
+</svg>
+
+<script>
+  document.querySelector("#card-shape").setAttribute(
+    "d",
+    appleCornerPath({ width: 300, height: 300, radius: 52, smoothing: 60 })
+  );
+</script>
+```
+
+```js
+const d = appleCornerPath({ width: 300, height: 300, radius: 52, smoothing: 60 });
+element.style.clipPath = `path("${d}")`;
+```
+
+```js
+const d = appleCornerPath({ width: 300, height: 300, radius: 52, smoothing: 60 });
+const path = new Path2D(d);
+ctx.fill(path);
+```
+
+- **The clip-path caveat, corrected.** The source says to use `clip-path` "only when browser support is acceptable and the path dimensions match the element". Support is not the issue: `path()` is Baseline widely available, "available across browsers since July 2020". Scaling is: its lengths are pixels only, so regenerate the path whenever the element resizes ([CLIP-AND-MASK.md](CLIP-AND-MASK.md#css-clip-path-values)). `new Path2D(d)` takes "a string consisting of SVG path data", Baseline widely available since August 2016 ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Path2D/Path2D)).
+- **Don't change layout while smoothing changes:** "The smoothing path should affect only drawing/clipping. Do not change element width, height, padding, or layout metrics while animating smoothing."
+
 ## pathLength
 
 - **Declares the path's total length in user units;** the browser scales every distance computation by `pathLength / (computed path length)`.
@@ -198,3 +285,4 @@ Transitions and keyframes are in [CSS-ANIMATION.md](CSS-ANIMATION.md); `<animate
 - Full circles are drawn with `circle`/`ellipse` or two arcs, never one arc back to its own start.
 - Two `d` values meant to morph have the same commands in the same order; check the tween is smooth, not a jump.
 - With `pathLength="100"`, `stroke-dasharray="100"` and `stroke-dashoffset="100"` the stroke is hidden and offset `0` shows it whole.
+- A generated squircle path has its radius clamped to `min(width, height) / 2`, renders without facets at its largest size, and any animated smoothing rewrites `d` from script rather than tweening two outputs.

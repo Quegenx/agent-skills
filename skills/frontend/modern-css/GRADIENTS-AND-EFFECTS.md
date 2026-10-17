@@ -391,12 +391,36 @@ form {
 - **A bouncy focus effect:** `box-shadow` transitioned on a `linear()` bounce easing (CodePen XWOOydB, not exported). app-ui: "No control shows a focus ring, outline or focus border" ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#focus)). [nerdy.dev: Neat Bouncy Focus Effect With Linear And Box Shadow](https://nerdy.dev/neat-bouncy-focus-effect-with-linear-and-box-shadow)
 - **Pitfall: an infinite `box-shadow` spread does not make a backdrop;** the post's warning is in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#calcinfinity). [nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases) (2026-07-25)
 
+### Shadow as border tokens
+
+[Jakub Krehel, make-interfaces-feel-better] The `--shadow-border` recipe (a three-layer light ring, a single white ring in dark mode, dividers, table cells and input outlines kept as borders) is in [../../anti-ai-slop/anti-slop-ui/DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#surfaces-and-image-outlines).
+
 ## Shapes and clipping
 
 - **`shape()` draws clip paths in CSS units:** "Draw complex clipping paths using standard CSS syntax and dynamic units (like `rem` or `calc()`) instead of being locked into rigid SVG pixel coordinates." Support: Baseline newly available since 2026-02-24 (Chrome 135, Firefox 148, Safari 18.4; [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/shape)). More in [../svg/CLIP-AND-MASK.md](../svg/CLIP-AND-MASK.md). [nerdy.dev: CSS Recently In All Browsers](https://nerdy.dev/CSS-recently-in-all-browsers) (2026-04-26)
 - **`shape-outside` with `xywh()` and `rect()`** wraps text around exact geometry "without relying on images or clip-paths". The post listed Chrome 150 (soon), Safari 18, Firefox 149; browser-compat-data now says Chrome 149, Firefox 149, Safari 17.2. `shape-outside` itself is Baseline widely available ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/shape-outside)). Same post.
-- **Squircles:** `clip-path: shape()` now, "while we wait for `corner-shape: squircle`" (CodePen zxGyJgm; a [GUI by Zoran](https://codepen.io/ZoranJambor/pen/xbZxbaR)). Superellipsed pill shapes are another `corner-shape` demo (CodePen PwNEYPK). [nerdy.dev: Squircles](https://nerdy.dev/squircles) (2025-09-26), [nerdy.dev: Superellipsed Pill Shapes Are Cool](https://nerdy.dev/superellipsed-pill-shapes-are-cool)
-- **`corner-shape: superellipse(1.25)`** gives Nice Select its squircle corners "(with fallback)". MDN: `corner-shape` "sets the shape of an element's corners when using `border-radius`", so where it is unsupported the corners are the plain radius. Support: not Baseline, Chromium 139+ only, experimental ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape)). [nerdy.dev: Nice Select](https://nerdy.dev/nice-select) (2026-02-03)
+- **Squircles:** `clip-path: shape()` now, "while we wait for `corner-shape: squircle`" (CodePen zxGyJgm; a [GUI by Zoran](https://codepen.io/ZoranJambor/pen/xbZxbaR)). Superellipsed pill shapes are another `corner-shape` demo (CodePen PwNEYPK). [nerdy.dev: Squircles](https://nerdy.dev/squircles) (2025-09-26), [nerdy.dev: Superellipsed Pill Shapes Are Cool](https://nerdy.dev/superellipsed-pill-shapes-are-cool). The "while we wait" line is stale for Chromium: browser-compat-data (fetched 2026-10-18) lists `corner-shape` with every keyword, `squircle` included, in Chrome 139, and Firefox and Safari only in preview. So `shape()` is the cross-browser squircle and `corner-shape: squircle` the Chromium progressive enhancement ([BCD](https://github.com/mdn/browser-compat-data/blob/main/css/properties/corner-shape.json)).
+- **`corner-shape: superellipse(1.25)`** gives Nice Select its squircle corners "(with fallback)". MDN: `corner-shape` "sets the shape of an element's corners when using `border-radius`", so where it is unsupported the corners are the plain radius. Support: not Baseline, experimental, Chromium 139+; Firefox and Safari in preview only (BCD above) ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape)). [nerdy.dev: Nice Select](https://nerdy.dev/nice-select) (2026-02-03)
+
+### corner-shape and superellipse()
+
+MDN's [corner-shape](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/corner-shape) and [superellipse()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/superellipse) pages, checked 2026-10-18. `corner-shape` "specifies the shape of a box's corners, within the area specified by its `border-radius`"; it takes 1 to 4 values, clockwise from top-left.
+
+| Keyword | Equals |
+|---|---|
+| `square` | `superellipse(infinity)` |
+| `squircle` | `superellipse(2)` |
+| `round` (initial) | `superellipse(1)` |
+| `bevel` | `superellipse(0)` |
+| `scoop` | `superellipse(-1)` |
+| `notch` | `superellipse(-infinity)` |
+
+- **`superellipse(K)`** takes `<number> | infinity | -infinity`, "replacing the `2` exponent in each case with 2<sup>K</sup>" (2 to the power K): `0` is a straight line, `1` an ellipse, above `1` more square, and "values of `10` or more are virtually indistinguishable from a square"; negative values are concave, and "A negative or positive superellipse would appear symmetrical to a superellipse with its inverse value." The same shape can look different "if the box size or `border-radius` values differ."
+- **The decorations follow the shape:** "Borders, outlines, shadows, and background effects applied to the container will follow the defined corner shape" (`background-color`, `background-image`, `border`, `outline`, `box-shadow`, `overflow`, `backdrop-filter`). A clip path cuts shadow and outline off instead, which is the reason to prefer `corner-shape` where it ships.
+- **It needs a radius:** "If a `border-radius` is not applied to a container, or the `border-radius` resolves to `0`, `corner-shape` will have no effect." It also has no effect when `border-shape` is set.
+- **It animates:** "Different `corner-shape` values can be smoothly animated between".
+- **Detect the fallback** with `@supports not (corner-shape: scoop)`, as MDN's examples do; unsupported browsers draw the plain `border-radius`.
+- **A designer's "60% smoothing" is close to `squircle`.** [corner-smoothing] The gabrielobholz corner-smoothing skill defaults to 60% ("Treat 60% as the Apple/iOS-style target"; the Figma and Apple parity is that skill's claim, not checked). Its generator draws the curve with exponent `n = 2 + 3.35 * smoothing`, so 60% gives n 4.01, and since MDN's exponent is 2<sup>K</sup>, K = log2(4.01), about 2.004, which is `squircle` (K 2); 0% gives n 2, K 1, `round`. The path generator for SVG, Canvas and `clip-path: path()` is in [../svg/PATHS.md](../svg/PATHS.md#smoothed-corners-squircles-as-a-path).
 - **A scaling clip-path hover,** "nice, n' simple". `clip-path` is Baseline widely available ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/clip-path)), and `scale` since 2025-02-05 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scale)). [nerdy.dev: Scaley Mask Image Hover](https://nerdy.dev/scaley-mask-image-hover)
 
 ```css
@@ -449,6 +473,7 @@ img:hover {
 - **Noise:** the sub-pixel noise keeps 60fps in the Performance panel on the slowest target device before you ship it.
 - **Mesh or noise background:** it is in the design direction, and the page has no other stacked decorative background (anti-slop-ui's tell).
 - **`corner-shape` and `overflow-clip-margin`:** in Firefox or Safari the element still has acceptable rounded corners (fallback radius, or app-ui's computed inner radius).
+- **`corner-shape` decorations:** in Chrome the element's `box-shadow`, `outline` and border follow the squircle (a clip would cut them); every element with `corner-shape` has a non-zero `border-radius`; the `@supports not (corner-shape: scoop)` branch was viewed in Firefox or Safari.
 - **Adaptive scrim:** the caption scrim appears in both light and dark, with `color-scheme: light dark` set.
 - **Proposals stay out of shipping code:** search for `freeform-gradient`, `motion-blur`, `text-grow` and `loooong`; none ship without a fallback.
 - **No dashes:** a search of GRADIENTS-AND-EFFECTS.md for em and en dash characters finds none.

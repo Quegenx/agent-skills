@@ -2,7 +2,7 @@
 
 There are two ways to put an SVG on a page: inline it (the markup goes straight into the HTML, since SVG code is also valid HTML) or reference it externally (`<img>`, CSS `url()`, or a document embed such as `<object>`). The choice decides almost everything else: inline SVG is part of the page DOM, so page scripts and CSS reach inside it, but it adds DOM nodes (or JavaScript bundle size in React); an external SVG used as an image is cached and keeps the bundle small, but it may not load immediately, runs no scripts, loads no external resources and offers fewer animation options. A standalone file also needs `xmlns`. Accessible names for each method are in [ACCESSIBILITY.md](ACCESSIBILITY.md); styling through `<use>` is in [STYLING.md](STYLING.md).
 
-**Contents:** [Embedding methods](#embedding-methods) · [Compared](#compared) · [Scripting and links per method](#scripting-and-links-per-method) · [xmlns and namespaces](#xmlns-and-namespaces) · [Data URIs](#data-uris) · [Sprites with symbol and use](#sprites-with-symbol-and-use) · [Fragment views](#fragment-views) · [Icon systems with currentColor](#icon-systems-with-currentcolor) · [foreignObject and image](#foreignobject-and-image) · [Markers](#markers) · [Prove it](#prove-it)
+**Contents:** [Embedding methods](#embedding-methods) · [Compared](#compared) · [Scripting and links per method](#scripting-and-links-per-method) · [xmlns and namespaces](#xmlns-and-namespaces) · [Data URIs](#data-uris) · [Sprites with symbol and use](#sprites-with-symbol-and-use) · [Fragment views](#fragment-views) · [Icon systems with currentColor](#icon-systems-with-currentcolor) · [Icons beside text](#icons-beside-text) · [foreignObject and image](#foreignobject-and-image) · [Markers](#markers) · [Prove it](#prove-it)
 
 ## Embedding methods
 
@@ -174,6 +174,50 @@ circle.setAttribute("cx", 50);
 - **Icons that morph into each other** (three-line icons, rotation groups) are in [MORPHING-ICONS.md](MORPHING-ICONS.md).
 - **A static SVG favicon:** favicon.im's animated-favicon article says "A good static SVG favicon already wins on file size, dark mode, and battery life", and gives no markup for it.
 
+## Icons beside text
+
+[Jakub Krehel, better-ui] (`icons.md`); [Jakub Krehel, make-interfaces-feel-better] (`icons.md`) gives the same table and rules. Both are design opinion from third-party skills, not a spec.
+
+- **Stroke follows the weight of the text next to it:**
+
+| Adjacent text | Rendered stroke width |
+|---|---|
+| Regular (400), 14-16px | `1.5px` |
+| Medium or semibold (500-600) | `2px` |
+| Bold (700), or an emphasized standalone icon | `2.5px` |
+
+- **The widths are rendered pixels.** "A 24px-grid icon drawn at 16px scales its stroke by 16/24, so `stroke-width="2"` paints about `1.33px`." Keep the width with `vector-effect: non-scaling-stroke` on the shapes ([SHAPES-AND-TEXT.md](SHAPES-AND-TEXT.md#vector-effect-non-scaling-stroke)) or the icon library's option. The source names Lucide's `absoluteStrokeWidth`; lucide-react now marks it `@deprecated Use nonScalingStroke instead.` (`packages/lucide-react/src/types.ts`), and its docs teach `nonScalingStroke`: "Setting `nonScalingStroke` to `true` will make the stroke width non-scaling" ([lucide.dev](https://lucide.dev/guide/react/basics/stroke-width)). The source's example with that prop changed:
+
+```tsx
+// Good: stroke tuned to the semibold label
+<button className="flex items-center gap-2 font-semibold">
+  <Plus size={16} strokeWidth={2} nonScalingStroke />
+  New project
+</button>
+```
+
+- **One library and one stroke per surface:** "Never mix icon libraries on one toolbar. Where the library has no stroke variants, keep its native stroke and use size or color for emphasis." make-interfaces-feel-better: "Use one stroke weight per icon set on a surface."
+- app-ui keeps one stroke for every label weight: "One stroke set at 1.5px" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)), with button labels at 500, where the table would give 2px. That is the owner's design; the table is the general rule.
+- **Size inline icons from the font:** "Size inline icons at `1em`-`1.25em` of the adjacent font size, so the pair scales together." make-interfaces-feel-better ties it to "the text's cap height". app-ui uses fixed sizes in that range: "a glyph beside a label is 1rem" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)).
+- **Outline by default, fill for active,** "as a state pair, never interchangeably":
+
+| Variant | Use for |
+|---|---|
+| Outline | Default state in toolbars, list rows and inline text |
+| Fill | Selected or active state, such as the active tab, a toggled bookmark or a liked heart |
+
+```tsx
+// Good: variant communicates state
+<TabIcon variant={isActive ? "solid" : "outline"} />
+
+// Bad: filled everywhere, so the active tab has no state signal
+<TabIcon variant="solid" />
+```
+
+  Cross-fade the swap "only where the change is infrequent, such as a bookmark or a like. An active tab swaps instantly." Icon swap timing is in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md).
+- **Design at render size:** "Test every icon at the smallest size it renders, often `16px`." "Prefer a simplified glyph for small contexts over scaling down detailed artwork." "Where the set ships per-size grids such as `16`, `20` and `24`, use the grid that matches the render size. A 24px drawing scaled to 16px lands off the pixel grid and renders soft." "Always SVG, never raster."
+- **Fix lopsided icons in the SVG.** For stars, arrows and carets with uneven visual weight, "The best fix is adjusting the SVG directly so no extra margin/padding is needed in the component code": adjust the `viewBox` or the path, and fall back to a 1px margin on a wrapper [Jakub Krehel, make-interfaces-feel-better] (`surfaces.md`).
+
 ## foreignObject and image
 
 - **`<foreignObject>` holds elements from another XML namespace,** in browsers most likely (X)HTML. Attributes `x`, `y` (default `0`), `width`, `height` (default `auto`), all animatable; since SVG 2 they are geometry properties, also usable as CSS.
@@ -247,3 +291,4 @@ circle.setAttribute("cx", 50);
 - **Data URIs:** each has `image/svg+xml`, a comma before the data, percent-encoded reserved characters or base64, and is quoted inside CSS `url()`.
 - **Icons follow text color:** change `color` on an icon's parent and it recolors.
 - **Markers:** a path with `marker-start` and `marker-end` using one `auto-start-reverse` marker shows arrowheads pointing outward at both ends.
+- **Icons beside text:** at the smallest render size each icon is recognizable and crisp (its grid matches the size); its rendered stroke matches the label weight (or the product's one fixed stroke), with no deprecated `absoluteStrokeWidth`; active states use the filled variant and defaults the outline.

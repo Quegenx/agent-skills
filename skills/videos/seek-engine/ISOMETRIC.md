@@ -88,7 +88,7 @@ Figures built the kit's way are live pages: a frame loop steps springs, the poin
 
 ## Exploded views
 
-An explode earns its place when the parts are the explanation (what feeds what). Move the assemblies the real thing comes apart into, not single solids, each along its real direction (down along the axis for stacked stages, out radially for side units), far enough that its silhouette clears its neighbours. Stagger them so nothing passes through anything in any frame. Every part keeps a home: something bridging two assemblies goes with the one it stays fixed to, and its loose end still lands on a flange or connector of its own. A closed-form explode for the 3D mode, with travel numbers, is in `templates/isokit/references/3d.md` section 7; the inward and sideways exit cases are in [REAL-OBJECTS.md](REAL-OBJECTS.md).
+An explode earns its place when the parts are the explanation (what feeds what). Move the assemblies the real thing comes apart into, not single solids, each along its real direction (down along the axis for stacked stages, out radially for side units), far enough that its silhouette clears its neighbours. Stagger them so nothing passes through anything in any frame. Every part keeps a home: something bridging two assemblies goes with the one it stays fixed to, and its loose end still lands on a flange or connector of its own. A closed-form explode for the 3D mode, with travel numbers, is in `templates/isokit/references/3d.md` section 7; the inward and sideways exit cases are in [REAL-OBJECTS.md](REAL-OBJECTS.md). A static, printable exploded, orthographic or section sheet (balloons, leaders, dimensions in paper millimetres) is the [technical-drawing](../../frontend/technical-drawing/SKILL.md) skill.
 
 ## Effects inside the drawing
 

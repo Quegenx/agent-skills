@@ -4,8 +4,8 @@
   python3 contrast.py "#777777" "#ffffff"          one pair: ratio and pass/fail per use
   python3 contrast.py "#fff" "#1f5bff" "#9aa"       the first color against each of the others
 
-Colors are #rgb or #rrggbb (the # is optional). Thresholds: normal text 4.5, large text (about 24px,
-or 19px bold) 3.0, interface parts and focus rings 3.0, enhanced (AAA) 7.0 and 4.5.
+Colors are #rgb or #rrggbb (the # is optional). Thresholds: normal text 4.5, large text (14pt bold
+or 18pt, "approximately 18.5px and 24px" per W3C Understanding 1.4.3) 3.0, interface parts and focus rings 3.0, enhanced (AAA) 7.0 and 4.5.
 """
 import sys
 
@@ -32,6 +32,7 @@ def contrast_ratio(a, b):
 def report_pair(a, b):
     r = contrast_ratio(a, b)
     verdict = lambda need: "PASS" if r >= need else "FAIL"
+    # Verdicts use the unrounded ratio (W3C: do not round), so 4.499 prints "4.50:1" and still fails 4.5.
     print(f"{a} on {b}: {r:.2f}:1")
     print(f"  normal text (AA 4.5):   {verdict(4.5)}")
     print(f"  large text (AA 3.0):    {verdict(3.0)}")

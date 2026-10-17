@@ -1,5 +1,6 @@
 import { constVoid } from "effect/Function";
 import { gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
 import {
   useEffect,
   useEffectEvent,
@@ -9,6 +10,10 @@ import {
 } from "react";
 import type { RefObject } from "react";
 import { flushSync } from "react-dom";
+
+// GSAP does not parse a "cubic-bezier(...)" string; CustomEase takes the four numbers.
+gsap.registerPlugin(CustomEase);
+const menuEase = CustomEase.create("site-header-menu", "0.23,1,0.32,1");
 
 const readRef = <T>(ref: RefObject<T | null>) => ref.current;
 
@@ -86,14 +91,14 @@ export const useSiteHeaderMenu = (reducedMotion: boolean | null) => {
       .timeline({ paused: true })
       .to(nav, {
         duration: reducedMotion === true ? 0.15 : 0.22,
-        ease: "cubic-bezier(0.23, 1, 0.32, 1)",
+        ease: menuEase,
         height: calculateHeight,
       })
       .to(
         cardsRef.current,
         {
           duration: reducedMotion === true ? 0.15 : 0.18,
-          ease: "cubic-bezier(0.23, 1, 0.32, 1)",
+          ease: menuEase,
           opacity: 1,
           stagger: reducedMotion === true ? 0 : 0.03,
           y: 0,

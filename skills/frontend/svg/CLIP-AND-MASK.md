@@ -172,6 +172,7 @@ document.querySelector("button").addEventListener("click", toggleRadius);
 | `<basic-shape>` | `inset()`, `circle()`, `ellipse()`, `polygon()`, `path()`, `rect()`, `shape()`, `xywh()` |
 | `<geometry-box>` | `margin-box`, `border-box`, `padding-box`, `content-box`, `fill-box` (object bounding box), `stroke-box` (stroke bounding box), `view-box` (nearest SVG viewport) |
 
+- **`path()` is pixels only.** MDN: "all the lengths in the path are implicitly defined in pixel (`px`) units; other units can't be used", so no `rem`, percentages or `var()`, and "The `shape()` function offers more flexibility". A `path()` clip fits one element size; regenerate it from script when the element resizes, or use `shape()` (in [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#shapes-and-clipping)). `path()` itself is Baseline widely available, "available across browsers since July 2020" ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path)). A generated squircle path is in [PATHS.md](PATHS.md#smoothed-corners-squircles-as-a-path).
 - **A basic shape without a box uses `border-box`.** Combine them: `clip-path: padding-box circle(50px at 0 100px);`.
 - **Any value other than `none` creates a new stacking context,** the same way `opacity` below 1 does.
 
@@ -190,3 +191,4 @@ document.querySelector("button").addEventListener("click", toggleRadius);
 - **Units fit:** a clip or mask meant for elements of any size uses `objectBoundingBox` and 0 to 1 coordinates; resize the target and the shape follows.
 - **Hit testing:** click just outside the clip on a clipped element (or clipped link) and nothing fires.
 - **External references:** a `url("file.svg#id")` in CSS `clip-path` or `mask` comes from the same origin as the page, and a `mask-image` loads over HTTP or HTTPS, not `file://`.
+- **`path()` clips follow the size:** resize an element clipped with `clip-path: path()`; the path is regenerated (or the clip uses `shape()`), so the shape never stays at the old pixel size.

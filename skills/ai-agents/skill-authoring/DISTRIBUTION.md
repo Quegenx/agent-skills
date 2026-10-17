@@ -24,6 +24,7 @@ One of the biggest benefits of skills is sharing them with the rest of your team
 ## Composing skills
 
 - **Reference other skills by name:** you may want skills that depend on each other, such as a file upload skill and a CSV generation skill that makes a CSV and uploads it. Dependency management is not built into marketplaces or skills yet, but you can reference other skills by name, and the model invokes them if they are installed.
+- **A missing dependency is a stop, not an improvisation:** Jakub Krehel's `interface-review` owns scope and statuses and hands severity, the cap and the verdict to a sibling skill; "If `better-interface` is unavailable, report the resolved scope and the file inventory, name it as the missing skill and stop. Do not invent a severity scale, a cap or a verdict."
 - **Workflow skills lean on others:** business-process skills may depend on other skills or MCPs, and CI/CD skills may reference other skills to collect data.
 
 ## Prove it

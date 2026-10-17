@@ -247,6 +247,7 @@ Range syntax is Baseline widely available since 2025-09-27 (newly available 2023
 
 - **Answer the query once, high in the stack.** [nerdy.dev: BYO CSS tokens to Tailwind v4's new CSS centric config](https://nerdy.dev/BYO-CSS-tokens-to-tailwind-v4s-new-CSS-centric-config) (2024-03-18): after setting the surface and ink tokens inside one `@media (prefers-color-scheme: dark)` block, "no noise about light or dark, that's configured higher up in the stack and templates don't need to deal with it." The token code is in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md). app-ui instead uses "A class-based dark variant (`@custom-variant dark (&:is(.dark *))`), so the head script's class decides the theme" ([../app-ui/CHECKS.md](../app-ui/CHECKS.md)).
 - **Combine scheme and contrast.** The irradiation post combines `(prefers-color-scheme: dark) and (prefers-contrast: more)` to set a font's `GRAD` axis; that recipe is in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md).
+- **Increased contrast as color tokens,** set separately for light and dark, is in [../color-system/DARK-MODE-AND-GAMUT.md](../color-system/DARK-MODE-AND-GAMUT.md#increased-contrast-per-appearance).
 - **Sections with their own scheme:** the three strategies are in [COLOR.md](COLOR.md#page-and-component-light-and-dark).
 
 ## Forced colors

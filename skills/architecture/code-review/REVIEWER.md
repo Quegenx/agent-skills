@@ -39,6 +39,8 @@ Findings get verified by other agents before humans review them.
 ## Tags and output
 
 - **Each finding is tagged Important, Nit, or Pre-existing,** so a bug the PR didn't introduce doesn't look like the author's fault.
+- **Status is its own axis** beside the tag: `Introduced`, `Regression` or `Pre-existing`, decided "by cause, not by location", with at most three `Pre-existing` findings, a `Before` and `After` on each row and unrendered claims marked **Not verified** [Jakub Krehel, interface-review]. Definitions, the `git blame` check and the report shape are in [CHANGE-SCOPE.md](CHANGE-SCOPE.md#status-by-cause).
+- **One row per root cause:** before posting, re-open what each finding cites and merge findings that share a root cause into one [fluid-functionalism, stack-audit.md].
 - **Sorted by severity,** inline on the line it's about, with the file and line as evidence.
 - **Flag the class of bug,** so the author fixes every instance, not one line.
 - **The summary starts with a count** and says plainly when there's nothing to fix.
@@ -48,6 +50,7 @@ Findings get verified by other agents before humans review them.
   - "**P1:** likely task failure, misleading consequence, missing critical state, or major responsive/accessibility defect."
   - "**P2:** meaningful friction, inconsistency, weak hierarchy, or recoverability issue."
   - "**P3:** minor craft or consistency improvement."
+  - Sources that rate findings `HIGH`, `MEDIUM` and `LOW` are written here as P1, P2 and P3; a finding that blocks the primary task is P0 whatever its source called it.
 
 A review prompt to run locally or in a subagent:
 
@@ -89,7 +92,7 @@ A long security review in one context can stop early and declare the job done af
 - **Fix, then adversarial review, per unit.** For migrations and refactors, break the task into units (callsites, failing tests, modules), spin off a subagent for every fix in a worktree, have another agent adversarially review it, and merge.
 - **A rubric for taste.** Give a review agent a rubric for what a good solution looks like (for example, what good API design looks like); the task is complete when the review agent judges the criteria met.
 - **Old code too.** Review agents also run nightly over existing code, catching old bugs before they show up somewhere else.
-- **A whole-app audit is a different mode** ([improve-design](https://github.com/kamranbekirovyz/skills/tree/main/flutter-improve-design)): find, let the developer pick, then plan. Review stops at the first hit per rule; findings carry no locations, counts or tables, in catalog order, because "the developer is choosing whether the app deserves that fix, not reviewing a location"; the reviewer never edits, and each picked finding becomes a self-contained plan (with "Don't touch" and "STOP if") for a fresh session with zero context, possibly a less capable model. That differs from the diff review above (a count, file and line on every finding, an agent may fix). The Flutter version: ../../mobile/flutter-ux/REVIEW.md.
+- **A whole-app audit is a different mode** ([improve-design](https://github.com/kamranbekirovyz/skills/tree/main/flutter-improve-design)): find, let the developer pick, then plan. Review stops at the first hit per rule; findings carry no locations, counts or tables, in catalog order, because "the developer is choosing whether the app deserves that fix, not reviewing a location"; the reviewer never edits, and each picked finding becomes a self-contained plan (with "Don't touch" and "STOP if") for a fresh session with zero context, possibly a less capable model. That differs from the diff review above (a count, file and line on every finding, an agent may fix). The Flutter version: ../../mobile/flutter-ux/REVIEW.md. The web motion version, with its own output shape (file:line, P0 to P3, numbered plans): [../../frontend/ui-animation/AUDIT.md](../../frontend/ui-animation/AUDIT.md).
 
 ## Anti-patterns
 

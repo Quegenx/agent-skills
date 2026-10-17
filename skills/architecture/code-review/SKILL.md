@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Reviews code at the volume agents write it: the review layers from verified work before the pull request through AI and security review, required CI, risk-tiered human approval, the merge queue, flags and fast rollback; the AI reviewer with CLAUDE.md and REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, a P0 to P3 user-impact scale for UI reviews, round caps and diff-only re-review; evals that score the reviewer on past incidents and measure its noise; and who owns a change once it lands. Use when setting up or tuning code review for a team or repo, adding an AI reviewer or security review, writing risk tiers, approval rules or a REVIEW.md, or reviewing an agent-written pull request."
+description: "Reviews code at the volume agents write it: the review layers from verified work before the pull request through AI and security review, required CI, risk-tiered human approval, the merge queue, flags and fast rollback; the AI reviewer with CLAUDE.md and REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, scoping one change to its merge base and blast radius with Introduced, Regression and Pre-existing statuses and the removed lines read, a P0 to P3 user-impact scale for UI reviews, round caps and diff-only re-review; evals that score the reviewer on past incidents and measure its noise; and who owns a change once it lands. Use when setting up or tuning code review for a team or repo, adding an AI reviewer or security review, writing risk tiers, approval rules or a REVIEW.md, or reviewing an agent-written pull request."
 ---
 
 # Code review
@@ -12,6 +12,7 @@ When agents write the code, the number of changes goes up fast, and manual, line
 | The layers a change passes through (verified work, CI, AI review, security review, approval, merge queue, flags, rollback), the human-time goal and its guardrail, ownership, changing direction, sharing context, and rolling the process out | [LAYERS.md](LAYERS.md) |
 | Risk tiers, who may approve what, approvals tied to a commit, the paths that always need a person, and the decisions humans keep | [APPROVAL.md](APPROVAL.md) |
 | Setting up and running the AI reviewer: what it reads, CLAUDE.md and REVIEW.md, review depth, verifying findings, the Important, Nit and Pre-existing tags, the P0 to P3 user-impact scale for a UI review, the output, review prompts, security review, rule-by-rule and fan-out reviews | [REVIEWER.md](REVIEWER.md) |
+| Reviewing one change: resolving the range and its base, pull request refs, excluded paths, blast radius to consumers, Introduced, Regression and Pre-existing by cause with `git blame`, removed UI signals, absent states, the read-only rule, the scope block and report | [CHANGE-SCOPE.md](CHANGE-SCOPE.md) |
 | Making the reviewer better: incidents as an eval, measuring noise, round caps and convergence, fixing repeated findings at the source | [TUNING-THE-REVIEWER.md](TUNING-THE-REVIEWER.md) |
 
 ## The rules

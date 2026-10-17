@@ -9,6 +9,7 @@
 - **Step up on empty content.** Empty content from a plain fetch means the page probably needs rendering. When unsure, start with plain fetch; if it fails or returns empty, escalate to a browser fetch.
 - **A crawler** when it is many pages from a site (CRAWLING.md).
 - **Check `statusCode` before you process content.**
+- **Style questions need raw bytes:** for how a page was built, "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes" [Jakub Krehel, explain-interface]. That is the "`.html` only to parse structure" case below; the greps for utility classes, inline gradients, tokens, `@layer`, breakpoints and stack fingerprints are in [browser-automation INSPECT-A-PAGE.md](../browser-automation/INSPECT-A-PAGE.md#without-a-browser).
 
 | Use case | Plain fetch | Browser |
 |---|---|---|

@@ -9,7 +9,7 @@ QA of a change in a real browser: try to break things, not confirm they work. Th
 - **The main agent coordinates:** it plans, delegates and merges. Sub-agents execute their assigned tests only. The main agent does not drive the browser itself except to check the dev server is up.
 - **Three planning rounds, done and output before launching any sub-agent:**
   1. **Functional:** action, then expected result.
-  2. **Adversarial:** roles, error paths, empty states, races, edge inputs (empty, huge, special characters, rapid clicks).
+  2. **Adversarial:** roles, error paths, empty states, races, edge inputs (empty, huge, special characters, rapid clicks). Realistic worst-case data for one component is [WORST-CASE-DATA.md](WORST-CASE-DATA.md).
   3. **Coverage gaps:** accessibility (axe-core plus keyboard-only), mobile viewports, console errors, visual consistency.
   Deduplicate into one numbered list, assign groups, execute once.
 - **Splitting:** sub-agents run assigned tests, not exploration. The slowest agent is the bottleneck, so many small groups beat a few large ones. Size the effort to the change. No early stopping on failures.
@@ -44,7 +44,7 @@ Do NOT generate an HTML report or write any files. Return only step markers and 
 
 ## Testing a diff
 
-1. **Read the change:** `git diff --name-only HEAD~1` (or `main...HEAD`), then categorize:
+1. **Read the change:** `git diff --name-only HEAD~1` (or `main...HEAD`), then categorize. A second view [Jakub Krehel, interface-review]: "Never fall back to `HEAD~1..HEAD` on your own. The last commit is whatever happened to land, often a merge or someone else's work"; it reviews the merge-base range plus uncommitted files and asks when there is neither ([code-review CHANGE-SCOPE.md](../../architecture/code-review/CHANGE-SCOPE.md#resolving-the-scope)).
 
 | Pattern | Impact | Test |
 |---|---|---|
@@ -57,7 +57,7 @@ Do NOT generate an HTML report or write any files. Return only step markers and 
 | non-UI only | none | report "no UI tests needed" |
 
 2. **Map files to URLs:** Next.js App Router on 3000 (`app/dashboard/page.tsx` is `/dashboard`), Next.js Pages on 3000, Vite on 5173 (read the router config), Nuxt on 3000, SvelteKit on 5173 (`src/routes/+page.svelte` is `/`), Angular on 4200.
-3. **Make sure the right code runs:** check the branch, check out the PR branch, reinstall dependencies (the lockfile may differ), restart the dev server. Probe ports 3000 3001 5173 4200 8080 8000 5000 with curl. **Check that it renders:** Next.js dev can return HTTP 200 while showing a full-screen build error dialog; if the snapshot is empty or dominated by an error dialog, fix the build first.
+3. **Make sure the right code runs:** check the branch, check out the PR branch, reinstall dependencies (the lockfile may differ), restart the dev server. A second view [Jakub Krehel, interface-review]: "`gh pr checkout`, `git checkout`, `git switch` and `git stash` rewrite the files the author has open"; render a PR in `git worktree add /tmp/review-<n> refs/remotes/pr/<n>` instead and remove it when done ([CHANGE-SCOPE.md](../../architecture/code-review/CHANGE-SCOPE.md#read-only-and-rendered-checks)). Probe ports 3000 3001 5173 4200 8080 8000 5000 with curl. **Check that it renders:** Next.js dev can return HTTP 200 while showing a full-screen build error dialog; if the snapshot is empty or dominated by an error dialog, fix the build first.
 4. **Plan happy and adversarial tests per changed area** (for an email field: valid email, invalid email, empty submit, XSS, a rapid double submit, keyboard-only).
 5. **Execute with before and after snapshots,** then write the text report and, if wanted, the HTML report.
 
@@ -76,7 +76,7 @@ axe.run().then(r => JSON.stringify({ violations: r.violations.map(v => ({ id: v.
 - **Console errors:** injecting a capture on `about:blank` and then navigating wipes it. Either read failed resources with `performance.getEntries().filter(e => e.entryType === 'resource' && e.responseStatus >= 400)`, or inject on the page itself, wrapping `console.error` / `console.warn` and adding `error` and `unhandledrejection` listeners that push into `window.__logs`, then interact, then read.
 - **Keyboard navigation:** `press Tab`, then eval `document.activeElement` (tag, text, role, aria-label, and a visible focus from computed `outlineStyle !== 'none' || boxShadow !== 'none'`); stop when the active element returns to BODY. Every interactive element is reachable, the order follows the visual layout, and the focus ring is visible.
 - **Focus trap:** Tab repeatedly inside an open dialog and eval the active element; focus must cycle within the dialog.
-- **Responsive sweep:** 375x812 (iPhone SE), 768x1024 (iPad), 1440x900 (desktop), `wait timeout 1000`, full-page screenshots, then look at them. Overflow: `document.documentElement.scrollWidth > document.documentElement.clientWidth` is a FAIL. Touch targets: buttons, links and `[role=button]` with width or height under 44 px.
+- **Responsive sweep:** 375x812 (iPhone SE), 768x1024 (iPad), 1440x900 (desktop), `wait timeout 1000`, full-page screenshots, then look at them. Overflow: `document.documentElement.scrollWidth > document.documentElement.clientWidth` is a FAIL. Touch targets: buttons, links and `[role=button]` with width or height under 44 px. Add 320 px wide, the width WCAG 2.2 SC 1.4.10 Reflow names ("a width equivalent to 320 CSS pixels", [Understanding Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html)), and browser zoom at 200% "because text grows and boxes don't" [Emil Kowalski, break-ui]. For one component, check it at its real container width as well, or render fixed-width containers (320 px, squeezed by a sibling, very wide) on one page so a single load shows them all ([WORST-CASE-DATA.md](WORST-CASE-DATA.md#scenario-axes-and-their-cues)).
 - **Links and forms:** list `a[href]` with `isExternal` and `opensNewTab`; list inputs with `required`, `hasLabel` (labels, aria-label, aria-labelledby) and placeholder; every input has a label or an aria-label.
 - **Empty state:** screenshot and snapshot, then look for a message, an illustration and a call to action.
 - **XSS:** the payload shows in the snapshot as StaticText inside the input, which is only its value. The real checks are whether validation rejects it and whether it renders as HTML outside the input.
@@ -89,6 +89,7 @@ axe.run().then(r => JSON.stringify({ violations: r.violations.map(v => ({ id: v.
 - **Error states:** a page with empty data, a nonexistent route, invalid data (is the error helpful, is the input preserved).
 - **Keyboard:** Tab through until BODY; Enter activates.
 - **Stress:** click twice rapidly, submit empty, paste 500 characters, press Escape mid-flow.
+- **Both views on long input:** the lengths above are fixed; `break-ui` uses the field's schema, column or API limit and reports "unbounded" when there is none [Emil Kowalski, break-ui] ([WORST-CASE-DATA.md](WORST-CASE-DATA.md#the-stance)).
 
 ## Test categories
 
@@ -116,7 +117,7 @@ axe.run().then(r => JSON.stringify({ violations: r.violations.map(v => ({ id: v.
 - **Nielsen H1 to H10 with concrete checks,** for example H3: a modal closes with Escape and with an outside click; H5: destructive actions confirm, and unsaved changes prompt "Leave page?"; H9: errors sit next to the field, input is preserved, no stack traces or raw JSON, a 404 suggests alternatives.
 - **Error states and edge cases:** designed empty states with a CTA; "No results match your filters"; error boundaries; an offline indicator; an expired session redirects with a message and returns the user to where they were; form edge cases (paste, negatives, decimals, zero, time zone in date pickers); loading states; actions the user can't perform are hidden.
 - **Data display:** tables (numbers right-aligned, sort indicators, "Showing 1-25 of 142", a mobile scroll or cards); charts (axis labels, a legend, a zero-data message, bar y-axis from zero, not color alone); metrics (1.2K, direction arrows); filters (removable, clear all, persisted, start before end); pagination (the URL holds the page, back preserves scroll); formatting (no `null` or `undefined`, no 33.333333%, "2h 15m").
-- **Visual:** body text 16 px desktop and 14 px mobile at least; line height 1.4 to 1.6; lines of 60 to 80 characters; 2 to 3 font families at most; WCAG AA contrast 4.5:1 for normal text and 3:1 for large (18 px+, or 14 px+ bold); semantic status colors; hover, focus and disabled states; loading buttons prevent double clicks.
+- **Visual:** body text 16 px desktop and 14 px mobile at least; line height 1.4 to 1.6; lines of 60 to 80 characters; 2 to 3 font families at most; WCAG AA contrast 4.5:1 for normal text and 3:1 for large (18 pt+, or 14 pt+ bold; "14pt and 18pt are equivalent to approximately 18.5px and 24px", [Understanding 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)); semantic status colors; hover, focus and disabled states; loading buttons prevent double clicks.
 - **Accessibility:** Tab reach and order, a visible custom focus, Escape closes, Enter and Space activate, arrow keys within groups, a skip link, focus trapped in modals and returned to the trigger; alt text, labels rather than placeholders, heading hierarchy, landmarks, live regions; `prefers-reduced-motion`, no more than 3 flashes per second; information never by color alone.
 
 ## The report

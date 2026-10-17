@@ -66,7 +66,7 @@ const persona = { model: gateway('<provider/model id>'), maxSteps: 40, maxModelC
 | Error paths | `... wrong password, an unknown account, and a locked account; report errors that are missing, misleading, or leak detail` |
 
 - **Give each posture a persona:** a generic agent walks past a stat that contradicts the same stat on another page; the skeptic catches it.
-- **An edge-input charter names its exact matrix** (empty, a 300-character string, unicode, leading spaces, literal special characters), or it spends the whole budget before judging one result.
+- **An edge-input charter names its exact matrix** (empty, a 300-character string, unicode, leading spaces, literal special characters), or it spends the whole budget before judging one result. For realistic values (schema limits, names, emails, counts of 0 and 1, time zones) and for stressing one component on its own, see [WORST-CASE-VALUES.md](WORST-CASE-VALUES.md) and [WORST-CASE-DATA.md](WORST-CASE-DATA.md).
 
 ## Fan out
 

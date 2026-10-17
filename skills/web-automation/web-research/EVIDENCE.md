@@ -25,6 +25,7 @@
 | `low` | Speculative or outdated |
 
 - **In markdown:** `- **[confidence]** fact (source: url)`.
+- **How a value was obtained is a second axis** [Jakub Krehel, explain-interface]: the table above grades the source; claims read off a page also carry Measured, Derived or Inferred, and a stack fingerprint is itself an inference that needs its evidence ("A fingerprint that did not fire is not evidence of absence"). The tiers and fingerprints are defined in [browser-automation INSPECT-A-PAGE.md](../browser-automation/INSPECT-A-PAGE.md#measured-derived-inferred). The stack still never stands in for what the company does (the first rule above).
 
 ## The research loop
 

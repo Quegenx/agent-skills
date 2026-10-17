@@ -1,8 +1,8 @@
 # Scroll
 
-Scrollers, snapping, scroll events, `scroll-state()` queries, scroll-driven and scroll-triggered animation, CSS carousels and scrollbars, from Adam Argyle's [nerdy.dev](https://nerdy.dev). Each fact is tagged with its post and date; each feature's status is from MDN (or MDN's browser-compat-data where MDN has no page), checked October 2026. Code is copied from the posts; where a line differs (an emoji pointer removed, a typo fixed, a stale syntax replaced) the text says so. Motion timing for scroll-linked effects and the Motion (`useScroll`) route are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion); a sheet swiped away on native scroll is in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll).
+Scrollers, snapping, scroll events, `scroll-state()` queries, scroll-driven and scroll-triggered animation, and CSS carousels, from Adam Argyle's [nerdy.dev](https://nerdy.dev). Each fact is tagged with its post and date; each feature's status is from MDN (or MDN's browser-compat-data where MDN has no page), checked October 2026. Code is copied from the posts; where a line differs (an emoji pointer removed, a typo fixed, a stale syntax replaced) the text says so. Motion timing for scroll-linked effects and the Motion (`useScroll`) route are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion); a sheet swiped away on native scroll is in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll).
 
-**Contents:** [Scroller structure and essentials](#scroller-structure-and-essentials) · [Snapping](#snapping) · [Pull to refresh](#pull-to-refresh) · [Scroll events](#scroll-events) · [scroll-state() queries](#scroll-state-queries) · [Scroll-driven animation](#scroll-driven-animation) · [Scroll-triggered animation](#scroll-triggered-animation) · [CSS carousels](#css-carousels) · [Scrollbars](#scrollbars) · [Prove it](#prove-it)
+**Contents:** [Scroller structure and essentials](#scroller-structure-and-essentials) · [Snapping](#snapping) · [Pull to refresh](#pull-to-refresh) · [Scroll events](#scroll-events) · [scroll-state() queries](#scroll-state-queries) · [Scroll-driven animation](#scroll-driven-animation) · [Edge-aware scroll fades](#edge-aware-scroll-fades) · [Scroll-triggered animation](#scroll-triggered-animation) · [CSS carousels](#css-carousels) · [Prove it](#prove-it)
 
 ## Scroller structure and essentials
 
@@ -37,6 +37,22 @@ Scrollers, snapping, scroll events, `scroll-state()` queries, scroll-driven and 
   Status: `scroll-padding` Baseline widely available (since October 2023, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-padding)); `scroll-behavior` Baseline widely available (since September 2024, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-behavior)). MDN marks `overscroll-behavior` Limited availability ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overscroll-behavior)); the `contain` value itself is in Chrome 63, Firefox 59 and Safari 16 (browser-compat-data `css.properties.overscroll-behavior.contain`). MDN on `contain`: "Prevents scrolling from continuing outside the scroll container. "Bounce" effects may still occur." Nice Select uses `overscroll-behavior-block: contain`, which "prevents scroll chaining" in its picker ([nerdy.dev: Nice Select](https://nerdy.dev/nice-select), 2026-02-03).
 - **Where it differs:** the swipeable sheet in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll) sets `overscroll-behavior: auto` on the sheet's inner content on purpose, because scroll chaining is its dismiss gesture.
 - **Nested scrollers bounce everywhere now:** "Chrome 145 joins WebKit and Firefox in supporting **overscroll effects** on nested scrollers. No more bonk UX, get the same soft edge bounce as the main page has always had!" ([nerdy.dev: Overscroll Effects On Nested Scrollers In All Browsers](https://nerdy.dev/overscroll-effects-on-nested-scrollers-in-all-browsers), 2026-01-21).
+- **Never stop overscroll with `touchmove` and `preventDefault()`.** [Emil Kowalski, mobile-native] "Never reach for a `touchmove` + `preventDefault()` listener for this - it blocks scrolling entirely and makes the listener non-passive, which costs frames." Use `overscroll-behavior`: "Use `none` on the root, `contain` on children."
+- **`touch-action` names the axes the browser keeps.** [Emil Kowalski, mobile-native] A horizontal swipe on a carousel "is ambiguous to the browser", so tell it which axes the element owns; "The values name what the *browser* may still do." Verbatim:
+
+```css
+.carousel {
+  touch-action: pan-y; /* the carousel handles horizontal; the browser keeps vertical */
+}
+.drag-surface {
+  touch-action: none;  /* a custom gesture (a drag-to-dismiss sheet, a slider) owns every axis */
+}
+.vertical-sheet-handle {
+  touch-action: pan-x; /* the sheet handles vertical drags; horizontal stays with the browser */
+}
+```
+
+  "`none` means the element handles everything - use it only on elements that really do, or the user won't be able to scroll past them." For a native-scroll carousel, snapping (below) makes `touch-action` unnecessary: "the browser's own physics beat a hand-rolled spring". Status: `touch-action` is Baseline widely available (across browsers since September 2019), and `manipulation` is an alias for `pan-x pan-y pinch-zoom` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action)).
 - **A scroller is a natural container** (Switch post, 2025-06-13): the post's `container` setup for `.scroll--root`, `.scroll--viewport` and the snap items is in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md); the `scroll-state` type is Chrome only, below.
 
 ## Snapping
@@ -411,6 +427,98 @@ h1 {
 - **Demos whose code wasn't exported** (named here so you can open them): a scroll snap plus scroll-driven carousel that "in the mobile size it looks a lot like the iOS app switcher" ([nerdy.dev: Container Query Carousel With Scroll Driven Animation](https://nerdy.dev/container-query-carousel-with-scroll-driven-animation), 2024-08-18); a carousel where scroll-driven animation "changes hue/theme", "toggles next/prev" and "syncs dots", built with subgrid, `oklch()`, `@property` and `@layer` ([nerdy.dev: Scroll Driven Hue Changing Carousel](https://nerdy.dev/scroll-driven-hue-changing-carousel), 2023-08-16; it said "Canary with #experiments enabled", see the status above); grid images with "2 lines of CSS", "a courtesy media query" and "a keyframe" ([nerdy.dev: Subtle Scroll Driven Animation For Grid Images](https://nerdy.dev/subtle-scroll-driven-animation-for-grid-images), 2023-12-11); `view()` with `:nth-of-type(An + B)` and `@keyframes` ([nerdy.dev: Scroll To Bloom](https://nerdy.dev/scroll-to-bloom), 2025-09-20); a `<details>` table-of-contents scroll spy on the CSS Wrapped 2024 site, video only ([nerdy.dev: Pure CSS Scroll Spy Table Of Contents](https://nerdy.dev/pure-css-scroll-spy-table-of-contents), 2025-01-15); orbits with "billboarding, center of mass pivoting, and CSS trig functions" ([nerdy.dev: CSS Scroll Driven Gyro Trig Experiments](https://nerdy.dev/css-scroll-driven-gyro-trig-experiments), 2026-02-27).
 - **Where it differs:** [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion) asks for scroll-in reveals of 8-16 px over 300-500 ms "once, not on every pass", and keeps parallax to a few percent. The effects here are scrubbed by scroll, so they replay on every pass by design (the dimmed game, the pull-to-refresh indicator).
 
+### Edge-aware scroll fades
+
+[Craft] ([Scroll Fades](https://craft.gustavofior.com/scroll-fades), 2026-10-14, following the shadcn/ui Scroll Fade utility). The fade is a `mask-image` gradient, not an overlay: "it works over any background, including images and gradients, and it never blocks clicks." A static two-ended mask "fades the first row when you are at the top ... At the bottom this is actively misleading", so the fade sizes are registered custom properties that a scroll-driven animation moves: "The top fade grows from `0` to its full size over the first `3rem` of scrolling, the bottom fade shrinks back to `0` over the last `3rem`." Horizontal chip or tab rows work the same way, "which also hints at the gesture". Verbatim:
+
+```css
+/* The fade sizes. Registered so they can animate. */
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes fade-start {
+  from {
+    --fade-start: 0px;
+  }
+  to {
+    --fade-start: 2.5rem;
+  }
+}
+
+@keyframes fade-end {
+  from {
+    --fade-end: 2.5rem;
+  }
+  to {
+    --fade-end: 0px;
+  }
+}
+
+.scroll-fade-y,
+.scroll-fade-x {
+  mask-image: linear-gradient(
+    var(--fade-direction),
+    transparent,
+    black var(--fade-start),
+    black calc(100% - var(--fade-end)),
+    transparent
+  );
+}
+
+.scroll-fade-y {
+  --fade-direction: to bottom;
+}
+
+.scroll-fade-x {
+  --fade-direction: to right;
+}
+
+/* Let the scroll position drive both fades. */
+@supports (animation-timeline: scroll()) {
+  .scroll-fade-y,
+  .scroll-fade-x {
+    animation:
+      fade-start 1ms linear both,
+      fade-end 1ms linear both;
+    animation-range:
+      0 3rem,
+      calc(100% - 3rem) 100%;
+  }
+
+  /* After the shorthand, which resets the timeline. */
+  .scroll-fade-y {
+    animation-timeline: scroll(self y);
+  }
+
+  .scroll-fade-x {
+    animation-timeline: scroll(self x);
+  }
+}
+
+/* No scroll timelines: fade both ends all the time. */
+@supports not (animation-timeline: scroll()) {
+  .scroll-fade-y,
+  .scroll-fade-x {
+    --fade-start: 2.5rem;
+    --fade-end: 2.5rem;
+  }
+}
+```
+
+- **Declare `animation-timeline` after the shorthand,** which resets it (the MDN note is under [Pull to refresh](#pull-to-refresh)).
+- **The mask fades the scrollbar too:** "the mask applies to the whole scroll container, scrollbar included ... Either hide it, as above, or move the mask to an inner wrapper and let the outer element scroll." Craft hides it on chip rows ("a horizontal bar under a row of chips is just too much visual noise"); styling a visible one is in [SCROLLBARS.md](SCROLLBARS.md).
+- Status: `mask-image` unprefixed ships in Chrome 120, Firefox 53, Safari 15.4, and `@property` in Chrome 85, Firefox 128, Safari 16.4 (browser-compat-data); `animation-timeline` has the Limited availability status above.
+- **landing-page-ui drives its carousel fades from motion values** instead, asymmetric (3rem start, 6rem end) and flipped in right-to-left: "the fade appears quickly (80ms) when there is more to scroll on that side and disappears slowly (700ms) when the end is reached" ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md)).
+
 ## Scroll-triggered animation
 
 [nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases), 2026-07-25: "Trigger a scroll driven transition in, and never transition out", by ending the trigger's activation range at infinity. The post's code:
@@ -503,83 +611,6 @@ The longhand comes after the shorthand, which resets it. Status: scroll-triggere
 - **Tools:** the [Carousel Configurator](https://chrome.dev/carousel-configurator/) to "directly see the relationship of a feature you want and the related CSS", and the [Carousel Gallery](https://chrome.dev/carousel/) (Chrome 135 post, 2025-03-20; [nerdy.dev: Carousels On Shoptalk](https://nerdy.dev/carousels-on-shoptalk), 2025-04-07).
 - **Other carousels in this repo:** the JS carousels and rings in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#galleries-carousels-and-rings), and landing-page-ui's capability carousel with its own buttons ([../landing-page-ui/SECTIONS.md](../landing-page-ui/SECTIONS.md#carousel-of-capability-cards)). The CSS carousel above is the native route, Chrome only today.
 
-## Scrollbars
-
-- **Colorize with a fallback, and hint on hover and focus** (Switch post, 2025-06-13): integrate the colors into the light, dark and forced-colors themes, and add "hover and focus 'hints and feedback'". "**Transparent borders are your friend!**" The post styles the `::-webkit-*` scrollbar pseudos and provides "a meaningful fallback with `scrollbar-color`", here inside `@supports (-moz-appearance:none)`:
-
-```css
-.scroll--viewport {
-  &:is(:focus-visible, :focus-within) {
-    outline-offset: -2px;
-    outline: none;
-  }
-
-  &::-webkit-scrollbar {
-    height: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #0000;
-    background-clip: padding-box;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb,
-      light-dark(
-        var(--surface-4),
-        var(--surface-2)
-      ),
-      #0000 50%
-    );
-    border-radius: 1e3px;
-    border: 3px solid var(--surface-1);
-  }
-
-  &:is(:focus-visible, :focus-within)::-webkit-scrollbar-thumb {
-    background: var(--link);
-  }
-
-  @media (hover) {
-    &::-webkit-scrollbar-thumb:hover {
-      background: light-dark(var(--surface-4), var(--surface-2));
-    }
-
-    &::-webkit-scrollbar {
-      opacity: .5;
-    }
-
-    &::-webkit-scrollbar:hover {
-      opacity: 1;
-    }
-  }
-
-  @supports (-moz-appearance:none) {
-    scrollbar-width: thin;
-    scrollbar-color: var(--surface-4) #0000;
-    transition: scrollbar-color .3s ease;
-
-    &:is(:focus-visible, :focus-within) {
-      scrollbar-color: var(--link) #0000;
-    }
-
-    @media (hover) {
-      scrollbar-color:
-        color-mix(in srgb, var(--surface-4), #0000 50%)
-        #0000;
-
-      &:hover {
-        scrollbar-color: var(--surface-4) #0000;
-      }
-    }
-  }
-}
-```
-
-  Status: `scrollbar-color` is Baseline 2025, newly available since December 2025 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-color)); `scrollbar-width` (`auto | thin | none`) Baseline 2024, newly available since December 2024 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-width)). MDN: browsers "ignore the non-standard ::-webkit-scrollbar family of pseudo-elements on any element whose computed scrollbar-color value is anything other than auto", so a `scrollbar-color` outside the `@supports` branch would turn off the `::-webkit-scrollbar` rules above. `light-dark()` and `color-mix()` are in [COLOR.md](COLOR.md).
-- **Thin, with a fade on hover-out:** Nice Select's list uses `scrollbar-width: thin` and `scrollbar-color` "with fade on hover-out" (Nice Select post, 2026-02-03; code not in the post).
-- **There is no `scrollbar-size`:** the "scrollbar-color and scrollbar-size" slip in One List To Rule Them All is covered in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md); the property is `scrollbar-width`.
-- app-ui sets thin scrollbars once in its base layer, a thumb at ink 18% on no track ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#cursors-scrollbars-hit-areas)).
-
 ## Prove it
 
 - **Essentials:** the scroller uses a two-value `overflow`, its `overscroll-behavior` names the scrolling axis, its padding and `scroll-padding` are equal, and with reduced motion on, programmatic scrolls jump instead of gliding.
@@ -591,4 +622,5 @@ The longhand comes after the shorthand, which resets it. Status: scroll-triggere
 - **Scroll-driven:** in Firefox (no `animation-timeline`), the items stay fully opaque; in Chrome and Safari 26 they dim only while exiting, and `animation-timeline` is declared after `animation`.
 - **Triggered:** with the corrected trigger, the title plays in once and stays when scrolling back up, in Chrome 146+.
 - **Carousel:** in Chrome 135+, Tab reaches the generated buttons and markers, the snapped item's marker matches `:target-current`, and screen readers announce "Next" and "Previous"; elsewhere it is a plain snapping scroller.
-- **Scrollbars:** in Chrome and Safari the WebKit thumb shows its inset border and turns the link color on keyboard focus; in Firefox the thin `scrollbar-color` thumb does the same; in forced colors the thumb stays visible.
+- **Touch axes:** no `touchmove` listener calls `preventDefault()`; on a phone the page still scrolls vertically past every `pan-y` carousel and every `touch-action: none` surface.
+- **Scroll fades:** at the top of a list only the bottom edge fades, at the end only the top; in a browser without `animation-timeline` both ends fade.

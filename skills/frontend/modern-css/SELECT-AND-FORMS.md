@@ -2,7 +2,7 @@
 
 Native form controls styled and animated with CSS: the customizable `<select>` (`appearance: base-select`, `::picker(select)`, `:open`, `<selectedcontent>`, `::checkmark`, `::picker-icon`) and its open and close transitions, a full "nice select" build, `field-sizing`, revealing a field once the one before it is valid, feeding form state and range values to CSS, a range input with a progress fill, radio and checkbox groups (including a squishy one and a cyclical one laid out with trig functions), and `accent-color`. Source: Adam Argyle's nerdy.dev posts, each tagged where used; support status was checked on MDN (page Baseline banner and browser-compat-data 8.1.6) on 2026-10-17. Code is copied verbatim from the posts unless a line says it was corrected.
 
-**Contents:** [Customizable select](#customizable-select) · [A nice select, part by part](#a-nice-select-part-by-part) · [Fields that size to content](#fields-that-size-to-content) · [Reveal a field once the previous one is valid](#reveal-a-field-once-the-previous-one-is-valid) · [Form state and values into CSS](#form-state-and-values-into-css) · [Range input progress fill](#range-input-progress-fill) · [Radio and checkbox groups](#radio-and-checkbox-groups) · [accent-color](#accent-color) · [Prove it](#prove-it)
+**Contents:** [Customizable select](#customizable-select) · [A nice select, part by part](#a-nice-select-part-by-part) · [Fields that size to content](#fields-that-size-to-content) · [Reveal a field once the previous one is valid](#reveal-a-field-once-the-previous-one-is-valid) · [Form state and values into CSS](#form-state-and-values-into-css) · [Range input progress fill](#range-input-progress-fill) · [Radio and checkbox groups](#radio-and-checkbox-groups) · [accent-color](#accent-color) · [The on-screen keyboard](#the-on-screen-keyboard-inputmode-autocapitalize-enterkeyhint) · [Prove it](#prove-it)
 
 ## Customizable select
 
@@ -172,6 +172,20 @@ Native form controls styled and animated with CSS: the customizable `<select>` (
 - **`AccentColor` and `AccentColorText` are not your accent.** The post wishes they reflected the author's `accent-color` (it was "flagged as a tracking vector"; csswg issues 5900 and 10372). MDN lists both system colors and warns that "some browsers return a fixed value for `AccentColor` and `AccentColorText` unless they are used in certain restricted circumstances" ([MDN system-color](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/system-color)). Do not build on the post's wished-for code (`background: AccentColor; color: AccentColorText;` under `accent-color: light-dark(deeppink, yellow);`).
 - **Support:** MDN shows `accent-color` as Limited availability (not Baseline); browser-compat-data lists Chrome 93, Firefox 92, Safari 26.2, and marks Chrome for Android partial: it "does not maintain minimum contrast for legibility of the control" ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/accent-color)). `light-dark()` needs `color-scheme: light dark` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)). app-ui sets a native radio's `accent-color` to the brand ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)).
 
+## The on-screen keyboard: inputmode, autocapitalize, enterkeyhint
+
+[Emil Kowalski, mobile-native] "While you're in the inputs, set the keyboard: `inputmode="numeric"` for codes, `inputmode="decimal"` for amounts, `type="email"` and `type="tel"` for their fields, `autocapitalize="none"` and `autocorrect="off"` on usernames and codes, `enterkeyhint="send"` / `"search"` / `"done"` so the return key says what it does." The nerdy.dev posts above don't cover these attributes; the values and status are from MDN, checked 2026-10-18.
+
+| Attribute | What MDN says | Status |
+|---|---|---|
+| `inputmode` | `numeric`: "only requires the digits 0-9"; `decimal`: "the digits and decimal separator for the user's locale"; both "may or may not show a minus key" | Baseline widely available since December 2021 ([MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inputmode)) |
+| `enterkeyhint` | `enter`, `done`, `go`, `next`, `previous`, `search`, `send`; example labels "depends on user agent and user language" | Baseline widely available since November 2021 ([MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/enterkeyhint)) |
+| `autocapitalize` | `none` or `off`, `sentences` or `on`, `words`, `characters`; it "doesn't affect behavior when typing on a physical keyboard", and "has no effect on the `url`, `email`, or `password` `<input>` types" | Limited availability, not Baseline ([MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocapitalize)) |
+| `autocorrect` | `on` (or empty) and `off`; the `<input>` types that don't support it (`password`, `email` and `url`) "always have the `off` state" | Baseline 2026, newly available since September 2026 ([MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocorrect)) |
+
+- So `autocapitalize` and `autocorrect` matter on `type="text"` fields such as usernames and codes; an email field ignores `autocapitalize` and is always `autocorrect` off.
+- app-ui records the owner's own fields (one-time codes, URLs) in [../app-ui/CONTROLS.md](../app-ui/CONTROLS.md); the agent composer's return key is in [../../ai-agents/agent-chat-ui/COMPOSER.md](../../ai-agents/agent-chat-ui/COMPOSER.md).
+
 ## Prove it
 
 - **Fallback select:** open the page in Firefox (no `base-select`); every select still opens, picks and submits as a regular select.
@@ -182,3 +196,4 @@ Native form controls styled and animated with CSS: the customizable `<select>` (
 - **Valid-then-reveal:** type an invalid username; the password field stays collapsed. Make it valid; the field appears (animated in Chrome, instant elsewhere).
 - **Radio circle:** tab into the group and hold an arrow key; focus walks around the circle and wraps from the last radio to the first.
 - **Accent:** toggle the OS between light and dark with `color-scheme: light dark` set; checked boxes switch between the two accent colors and the checkmark stays readable.
+- **Keyboard attributes:** on a phone, an amount field opens a keypad with the decimal separator, a code field opens digits, and a username field starts lowercase with no autocorrect; the return key reads "Send", "Search" or "Done" where set.

@@ -1,6 +1,6 @@
 ---
 name: e2e-testing
-description: "Writes, runs and debugs end-to-end tests for web and mobile apps: agentic test runners that mix model-driven goals with exact checks, locators and assertions that don't flake, sign-in sessions and secrets, CI, bug bashes and adversarial UI QA with sub-agents, migrating an existing suite slice by slice, generating a project verification skill, React Native and Expo with Maestro, and Flutter with Patrol, Maestro or the e2e runner. Use when writing or fixing an end-to-end or UI test, a test is flaky, testing a change in the browser or on a device, running a bug bash, porting Playwright, Cypress, Selenium, Detox or Maestro tests, or setting up Maestro or Patrol."
+description: "Writes, runs and debugs end-to-end tests for web and mobile apps: agentic test runners that mix model-driven goals with exact checks, locators and assertions that don't flake, sign-in sessions and secrets, CI, bug bashes and adversarial UI QA with sub-agents, stress-testing a component with worst-case data, measuring a running page's hover, layout and font invariants with Playwright, migrating an existing suite slice by slice, generating a project verification skill, React Native and Expo with Maestro, and Flutter with Patrol, Maestro or the e2e runner. Use when writing or fixing an end-to-end or UI test, a test is flaky, testing a change in the browser or on a device, running a bug bash, trying the worst case on a component, porting Playwright, Cypress, Selenium, Detox or Maestro tests, or setting up Maestro or Patrol."
 ---
 
 # End-to-end testing
@@ -15,6 +15,9 @@ An end-to-end test drives the app the way a user does and proves the outcome on 
 | A red or flaky test: reading the trace, error codes, flake causes, measuring a fix, driving the live app over MCP | [DEBUGGING.md](DEBUGGING.md) |
 | Exploratory testing and a bug bash: charters, personas, parallel explorers, triage, proving each bug with a failing test | [BUG-BASH.md](BUG-BASH.md) |
 | Adversarial UI QA of a change with sub-agents: test plans, the assertion protocol, deterministic browser checks, accessibility, responsive, UX heuristics, reports | [ADVERSARIAL-UI-QA.md](ADVERSARIAL-UI-QA.md) |
+| Stress-testing one component with worst-case data: schema-backed values, a Demo / Worst case toggle or an isolated page of every scenario, failure signatures and their fixes, truncate, wrap or clamp, the report | [WORST-CASE-DATA.md](WORST-CASE-DATA.md) |
+| The worst-case value catalog: names, emails and identifiers, labels from data, numbers and money, collections, time, images, states, environment | [WORST-CASE-VALUES.md](WORST-CASE-VALUES.md) |
+| Measuring a running page with Playwright and a real pointer: hover glide or per-row, tab-select shift, off-token durations and `transition: all`, control heights, variable-font faces, overflow | [UI-INVARIANT-AUDIT.md](UI-INVARIANT-AUDIT.md) |
 | Porting Playwright, Cypress, Selenium, Detox or Maestro tests one proven slice at a time | [SUITE-MIGRATION.md](SUITE-MIGRATION.md) |
 | Generating a `verify-<app>` skill so the next coding agent can prove its change | [VERIFICATION-SKILL.md](VERIFICATION-SKILL.md) |
 | React Native and Expo with Maestro: selectors, auth pre-flight, OTP by email, iOS gotchas, CI | [MAESTRO.md](MAESTRO.md) |

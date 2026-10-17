@@ -127,6 +127,18 @@ circle:hover {
 - **`stroke-dashoffset` direction:** positive values shift the pattern backwards, negative forwards. Percentages are against the viewport diagonal, "_not_ to the overall length of the stroke path". MDN marks the bare `<number>` value non-standard.
 - **The CSS `path-length` property** wins over the attribute, but browser-compat-data shows it only in Chrome 149, not Firefox or Safari.
 
+## Techniques from transitions.dev
+
+[transitions.dev] (Jakubantalik/transitions.dev skills `transitions-dev` and `transitions-ui-generation`). Its license forbids republishing a substantial part of the collection, so these are described in our words with short credited fragments; the snippets themselves are at [transitions.dev](https://transitions.dev).
+
+- **Draw a check with a transition, not keyframes.** Its checkbox transitions `stroke-dashoffset` instead of running a keyframe, so unchecking mid-draw reverses from where the stroke is. That is the interruptible rule in [../ui-animation/SKILL.md](../ui-animation/SKILL.md).
+- **Round a measured length up.** Where it measures the path, it sets the dash from `Math.ceil(path.getTotalLength())` and rounds up by 1px "to absorb sub-pixel float jitter": a dash shorter than the path pre-reveals the stroke before the draw starts. `pathLength="1"` above avoids the measurement.
+- **Flip a chevron instead of morphing it.** Its accordion chevron turns over with `scaleY(-1)`, and `vector-effect: non-scaling-stroke` keeps the stroke width ([SHAPES-AND-TEXT.md](SHAPES-AND-TEXT.md)), rather than animating `d`. Its reason, that CSS `d` "is Chromium-only", is wrong: browser-compat-data lists Chrome 52 and Firefox 97, and only Safari parses `d` without effect ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/d)), as [Animate d with path()](#animate-d-with-path) says. app-ui turns its chevron instead: "a down chevron turned 90deg while closed, 0 when open, over 200ms `cubic-bezier(.4, 0, .2, 1)`" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+- **Blur along one axis.** Its spinning digit counter blurs the moving reels only vertically with an SVG `feGaussianBlur` given two values (`stdDeviation="0 Y"`, x then y), because CSS `blur()` takes one radius and smears sideways too; the blur decays to 0 as each reel settles. The primitive is in [FILTERS.md](FILTERS.md).
+- **Dotted lines that flow while they draw.** `transitions-ui-generation` draws lines as dots: `stroke-linecap: round` with a zero-length dash and a gap (`0 gap`) puts a round dot every gap ([SHAPES-AND-TEXT.md](SHAPES-AND-TEXT.md#stroke-dasharray) has the static form). To draw it in, it rebuilds the dash array each frame so exactly `floor(L * progress / gap) + 1` dots show along the length `L`, then ends with one long gap. Shifting `stroke-dashoffset` by a small negative amount each frame, modulo the gap, makes the dots travel along the line, and a separate head dot sits at `getPointAtLength()` of the last dot ([JS-AND-REACT.md](JS-AND-REACT.md#path-length-and-points)). Its gaps run 3.6 to 6.5 user units with a 2.1px dot.
+- **Redrawing a page's icons in a scaled group.** The same skill re-strokes each inline icon inside a `<g transform="matrix(...)">` taken from `getScreenCTM()`, and divides the stroke width, gap and head radius by `sqrt(|det|)` of that matrix so they render at the same screen size whatever the icon's scale.
+- Source claims not repeated here: that transforming an inline SVG makes Chromium rasterise it at 1x, and that `will-change` freezes an icon's raster at its start scale. MDN doesn't document either.
+
 ## Animate d with path()
 
 - **`path()` takes an SVG path string.** It is used in `offset-path`, `clip-path` and the SVG `d` property. It must be one string (it can't be built from `var()`), and all lengths are implicitly px. MDN says `shape()` "offers more flexibility". An optional `<fill-rule>` first argument is allowed only in `clip-path`; it invalidates `offset-path`.
@@ -171,3 +183,4 @@ svg:hover path {
 - **`d` morph:** the hover morph works in Chrome and Firefox and stays still in Safari; the two `path()` strings have the same commands in the same order.
 - **Paint:** in Chromium 89+, a `transform`/`opacity` SVG animation shows no repaint each frame; path drawing and morphing still paint.
 - **Image context:** the same SVG in `<img>` still runs its CSS and SMIL animation, and its scripts don't run.
+- **Checks that undo:** a checkbox tick drawn with a `stroke-dashoffset` transition, unchecked halfway, retracts from where it was without jumping.

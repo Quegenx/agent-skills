@@ -1,6 +1,6 @@
 # Motion math: values you compute every frame
 
-When a predefined curve can't keep up (a target that changes every frame, particles, a loop that resets), the animation is math you evaluate every frame. Most of this file is from kciter's "How to Design an Animation"; the chart numbers are Liveline's.
+When a predefined curve can't keep up (a target that changes every frame, particles, a loop that resets), the animation is math you evaluate every frame. Most of this file is from kciter's "How to Design an Animation"; the chart numbers are Liveline's; the gesture handoff is Nathan Gitter's sample app.
 
 ## Start from the graph
 
@@ -75,6 +75,55 @@ for (const obj of objects) {
 
 - "You only define the rules, and the motion takes care of itself": confetti from gravity, air resistance and rotation.
 - **Physics fits when many objects interact or the outcome depends on user input.** It is less predictable (the result depends on initial conditions), so it is "often better suited to supporting effects and interactive elements than to a UI's core transitions".
+
+## Gesture handoff: project, normalise, resist
+
+When a drag ends, three numbers decide what happens next: where the throw would stop, how fast the settle spring starts, and how far past an edge the element follows. The code here is Nathan Gitter's sample app recreating WWDC18 *Designing Fluid Interfaces* ([nathangitter/fluid-interfaces](https://github.com/nathangitter/fluid-interfaces), "© 2018 Nathan Gitter", Apache-2.0), not Apple's: the talk describes the projection function but its transcript holds no code and no rubber-band formula ([WWDC18 803](https://developer.apple.com/videos/play/wwdc2018/803/)). [Emil Kowalski, apple-design] calls the projection "Apple's exact projection function (from the *Designing Fluid Interfaces* sample code)"; the sample it matches is Gitter's.
+
+**Project where the throw comes to rest** (Pip.swift):
+
+```swift
+/// Distance traveled after decelerating to zero velocity at a constant rate.
+private func project(initialVelocity: CGFloat, decelerationRate: CGFloat) -> CGFloat {
+    return (initialVelocity / 1000) * decelerationRate / (1 - decelerationRate)
+}
+```
+
+- The rates are `UIScrollView.DecelerationRate`: `normal = 0.998`, `fast = 0.99` (SwiftExtensions.swift). The PiP projects x and y separately with `.normal`, adds each to the current centre, snaps to the corner nearest the projected point, and only then animates.
+- In JavaScript, as [Emil Kowalski, apple-design] writes it: `function project(initialVelocity /* px/s */, decelerationRate = 0.998) { return (initialVelocity / 1000) * decelerationRate / (1 - decelerationRate); }`.
+- At 0.998 the coast is the velocity times 0.499 s; the carousel in [PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap) coasts `info.velocity.x * 0.2`. Both stand. [feel] derives the coast from the body instead (`x + v·m/c`, in [PHYSICS.md](PHYSICS.md)).
+- **Commit or reverse by direction:** [Emil Kowalski, apple-design] pairs "Decide reverse vs. commit" with "Use velocity **sign**, not position", at release. This is not in the talk transcript.
+
+**Normalise the release velocity** for a spring that wants it relative to the remaining distance (Pip.swift):
+
+```swift
+/// Calculates the relative velocity needed for the initial velocity of the animation.
+private func relativeVelocity(forVelocity velocity: CGFloat, from currentValue: CGFloat, to targetValue: CGFloat) -> CGFloat {
+    guard currentValue - targetValue != 0 else { return 0 }
+    return velocity / (targetValue - currentValue)
+}
+```
+
+- The worked example from [Emil Kowalski, apple-design]: an element at `y=50` with its target at `y=150` (100 px to go) and the finger at 50 px/s gets `50 / 100 = 0.5`.
+- Gitter hands it to UIKit as `UISpringTimingParameters(damping: 1, response: 0.4, initialVelocity: relativeInitialVelocity)`. Motion's `velocity` option is "The initial velocity of the spring", with no unit stated (only `restSpeed` is "in units per second"), and only a physics spring uses it: a spring given `duration` or `bounce` and no `stiffness`, `damping` or `mass` sets it to zero (`isTimeDefined`, [motion-dom spring.ts](https://github.com/motiondivision/motion/blob/main/packages/motion-dom/src/animation/generators/spring.ts)) ([TIMING.md](TIMING.md#springs)). [Emil Kowalski, apple-design] says Motion takes "absolute px/s velocity directly"; the docs don't state the unit.
+
+**Rubber-band past the edge** (Rubberbanding.swift), the offset raised to a power while dragging, then a spring home on release:
+
+```swift
+        case .changed:
+            var offset = touchPoint.y - originalTouchPoint.y
+            offset = offset > 0 ? pow(offset, 0.7) : -pow(-offset, 0.7)
+            rubberView.transform = CGAffineTransform(translationX: 0, y: offset)
+        case .ended, .cancelled:
+            let timingParameters = UISpringTimingParameters(damping: 0.6, response: 0.3)
+```
+
+- The other common formula, `rubberband(overshoot, dimension, constant = 0.55) { return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot)); }`, appears in [Emil Kowalski, apple-design] and [Emil Kowalski, animate-expo] with no source named; it is neither in the talk nor in Gitter's sample.
+- Other ways to resist: Motion's `dragElastic` ([PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap)) and feel's walls ([PHYSICS.md](PHYSICS.md)).
+
+Wiring the release velocity into a Motion spring is in [GESTURES.md](GESTURES.md#hand-the-release-velocity-to-a-physics-spring).
+
+**Motion's own coast:** "Inertia animations decelerate a value based on its initial velocity, usually used to implement inertial scrolling" (`type: "inertia"`, [motion.dev: animate](https://motion.dev/docs/animate)). Its generator coasts `power` times the velocity (`let amplitude = power * velocity`, [motion-dom inertia.ts](https://github.com/motiondivision/motion/blob/main/packages/motion-dom/src/animation/generators/inertia.ts)).
 
 ## Split the graph into segments
 

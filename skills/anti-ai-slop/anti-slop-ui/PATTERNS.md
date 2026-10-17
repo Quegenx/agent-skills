@@ -34,19 +34,22 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Logo bar | A row of company logos under the hero that nobody can name |
 | Three tiers, middle highlighted | Whatever the real pricing is |
 | Template motion | Everything fades up, floats, scales or bounces (floating is contested: kciter's "How to Design an Animation" builds the landing-page floating background from one `sin`, each element with "a different amplitude, frequency, and phase", and calls it "natural-looking"; this scan counts floating as a sign) |
-| Uniform spacing | Identical padding and gaps in every section |
+| Uniform spacing | Identical padding and gaps in every section; the same gap inside a group as between groups (better-layout wants "at least 2×", [DETAILS.md](DETAILS.md#spacing-that-groups)) |
+| Text-styled control | "A control styled like the static text beside it does not read as a control" [Jakub Krehel, better-layout]: plain-text "Upgrade now" where a button or underlined link belongs |
+| Button-shaped badge | "A non-clickable badge shaped exactly like the buttons beside it collects dead clicks" [Jakub Krehel, better-layout] |
+| Hidden with no cue | A row of cards that ends exactly at the container edge, or content collapsed behind a bare "More": "A row of cards that ends exactly at the container edge looks complete, and nobody scrolls it." Let the next item peek or name what is hidden ("Show 12 more results") [Jakub Krehel, better-layout] |
 
 ## Decoration and type
 
 | Pattern | Signs |
 |---|---|
 | AI icons | Sparkles, stars, magic wands, lightning, diamonds, orbs, robots as feature icons |
-| Library look | Every icon from one thin-stroke rounded set, chosen for the look not the meaning |
+| Library look | Every icon from one thin-stroke rounded set, chosen for the look not the meaning. The opposite sign is mixing sets: "Never mix icon libraries on one toolbar" [Jakub Krehel, better-ui] |
 | Capsule badges | "AI Powered", "New", "Beta" pills with a dot, thin border, glow and caps |
 | Eyebrow pill | A small pill above the H1 repeating what the headline says |
 | Arrows on everything | → or ↗ on almost every button |
 | Left stripe | A thin colored bar on the left of cards or rows as decoration |
-| Terminal type | Big monospace headings; WIDE-TRACKED UPPERCASE labels |
+| Terminal type | Big monospace headings; WIDE-TRACKED UPPERCASE labels. Contested: transitions.dev's skeleton-text loaders, which it suggests for landing pages and demos, use monospace log-style heads, uppercase labels tracked at about 0.08em, a pulsing step dot and a CSS stream typed out behind a caret [transitions.dev]; this scan counts each of those as a sign; the loader's token count is the character count divided by 3.4 |
 | Italic accent | Italic accent words in headings |
 | Numbered sections | Numbered "01 / 02 / 03" section labels |
 | Default typeface | The model's usual font picked with no reason (a popular font is fine with a reason) |
@@ -78,7 +81,8 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Invisible focus | `outline: none` with no replacement, or a ring the same color as the background |
 | Mouse only | Hover-only menus, click-only dropdowns, drag with no keyboard path |
 | Color-only status | Red border or green tint with no text or icon |
-| Clipped zoom | Fixed pixel text or hidden overflow that breaks at 200% |
+| Clipped zoom | Fixed pixel text or hidden overflow that breaks at 200%; a fixed `height` on a box holding text, where better-layout uses "`min-height`, or `max-height` with `overflow-y: auto`" |
+| Title tooltip | A truncated value whose only way back is a `title` attribute: "A hover-only `title` attribute does not count, because keyboard and touch users never see it" [Jakub Krehel, better-layout]; MDN calls `title` "highly problematic" for people on touch-only devices and keyboards ([title](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/title)) |
 
 ## Report and evidence pages
 

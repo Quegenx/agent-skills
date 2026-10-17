@@ -9,19 +9,19 @@ SVG is markup for images, and it has no layout algorithm: every element sits whe
 
 | The job | Read |
 |---|---|
-| The root `<svg>`, `xmlns`, no layout, the coordinate system, `viewBox`, `width`/`height`, `preserveAspectRatio`, nested `svg`, painting order | [BASICS.md](BASICS.md) |
+| The root `<svg>`, `xmlns`, no layout, the coordinate system, `viewBox`, `width`/`height`, `preserveAspectRatio`, nested `svg`, painting order, a print sheet in millimeters and its PNG size | [BASICS.md](BASICS.md) |
 | Basic shapes, text, `tspan`, `textPath`, multi-line text, fill and stroke, line caps and joins, dashes, `non-scaling-stroke`, `fill-rule`, `paint-order` | [SHAPES-AND-TEXT.md](SHAPES-AND-TEXT.md) |
-| Path data: the 20 commands, Béziers, arcs, compaction, parse errors, animating `d`, `pathLength` | [PATHS.md](PATHS.md) |
+| Path data: the 20 commands, Béziers, arcs, compaction, parse errors, animating `d`, `pathLength`, a smoothed-corner (squircle) path generator | [PATHS.md](PATHS.md) |
 | `g`, `defs`, `symbol`, `use`, `href` vs `xlink:href`, the `transform` attribute and functions, `transform-origin` and `transform-box` | [REUSE-AND-TRANSFORMS.md](REUSE-AND-TRANSFORMS.md) |
 | Presentation attributes and the cascade, geometry properties in CSS, `currentColor`, custom properties through `<use>` | [STYLING.md](STYLING.md) |
 | Linear and radial gradients, stops, `spreadMethod`, gradient units, patterns | [GRADIENTS-AND-PATTERNS.md](GRADIENTS-AND-PATTERNS.md) |
 | `clipPath`, `mask`, luminance vs alpha, units, CSS `clip-path`, `mask-image` and `mask-mode` on HTML | [CLIP-AND-MASK.md](CLIP-AND-MASK.md) |
 | Filter regions, wiring primitives, every `fe*` primitive, `feColorMatrix`, worked shadows, the goo filter, glass refraction with `feDisplacementMap` and its Safari limits, CSS `filter: url()` | [FILTERS.md](FILTERS.md) |
-| CSS transitions and keyframes on SVG, `transform-box: fill-box`, line drawing with dashes, morphing `d` with `path()`, acceleration | [CSS-ANIMATION.md](CSS-ANIMATION.md) |
+| CSS transitions and keyframes on SVG, `transform-box: fill-box`, line drawing with dashes, techniques from transitions.dev (transitioned checks, chevron flips, one-axis blur, flowing dotted lines), morphing `d` with `path()`, acceleration | [CSS-ANIMATION.md](CSS-ANIMATION.md) |
 | SMIL: `animate`, `set`, `animateTransform`, `animateMotion`, pacing, timing and chaining, JavaScript control, support and whether to use it | [SMIL.md](SMIL.md) |
 | WAAPI, `requestAnimationFrame`, path length and points, React and SVGR, Motion, Next.js setup, reduced motion and WCAG pause rules | [JS-AND-REACT.md](JS-AND-REACT.md) |
 | Three-line icons that morph into any other: collapsed lines, rotation groups, the icon table, the transition algorithm, the starter prompt | [MORPHING-ICONS.md](MORPHING-ICONS.md) |
-| Inline vs `<img>` vs CSS vs `<object>`, image-mode restrictions, namespaces, data URIs, sprites with `symbol` and `use`, fragment views, `currentColor` icons, a static SVG favicon, `foreignObject`, markers | [EMBEDDING-AND-ICONS.md](EMBEDDING-AND-ICONS.md) |
+| Inline vs `<img>` vs CSS vs `<object>`, image-mode restrictions, namespaces, data URIs, sprites with `symbol` and `use`, fragment views, `currentColor` icons, icons beside text (stroke by weight, size, outline and fill), a static SVG favicon, `foreignObject`, markers | [EMBEDDING-AND-ICONS.md](EMBEDDING-AND-ICONS.md) |
 | Informative vs decorative SVG, `role="img"`, `title` and `desc`, icon buttons, links, tooling that strips names | [ACCESSIBILITY.md](ACCESSIBILITY.md) |
 | SVGO presets and risky plugins, SVGR's defaults, rendering cost, where scripts hide, serving headers, user uploads, DOMPurify | [OPTIMIZING-AND-SECURITY.md](OPTIMIZING-AND-SECURITY.md) |
 

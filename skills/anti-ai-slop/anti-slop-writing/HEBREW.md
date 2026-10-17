@@ -66,6 +66,7 @@ Pick one approach per text and keep it:
 - **Gershayim and geresh** are not quotation marks: צה"ל, מנכ"ל, דו"ח for acronyms; ג'ירפה, צ'יפס, ד"ר, עמ' for sounds and abbreviations. Don't replace them with English quotes or strip them.
 - **Exclamation marks:** Hebrew marketing overuses them. At most one, at a real peak.
 - **Numbers and dates:** digits in body copy (3 ימים, תוך 24 שעות), DD/MM/YYYY, 24-hour time, ₪ placed consistently across the site.
+- **Plurals in ICU messages:** Hebrew's plural categories are `one`, `two` and `other` (`new Intl.PluralRules("he").resolvedOptions().pluralCategories`; `select(2)` is `two`, `select(0)` is `other`), so a Hebrew message can carry a `two` branch beside `one` and `other`, and a "no items" string needs `=0`. better-writing's note that "a translator adds `few` or `many`" doesn't cover Hebrew's `two` ([MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#build-strings-whole-for-every-language)).
 - **Nikud:** only for children's text, poetry, or one ambiguous word or foreign name. Pointing body copy makes it read like a textbook.
 
 ## 6. English inside Hebrew
