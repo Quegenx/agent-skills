@@ -1,13 +1,13 @@
 # Agent skills
 
-54 skills for coding agents, in eight sets:
+60 skills for coding agents, in eight sets:
 
 | Folder | What it's for |
 |---|---|
 | [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the chat interface, the agent's codebase, Jev classifiers, search, RAG and extraction. 7 skills. |
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
-| [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase and Effect. 12 skills. |
+| [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal). 18 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
@@ -137,6 +137,12 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |
 | [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, index types and when an index doesn't help, full-text search, caching and invalidation, images (WebP) and video (WebM), long lists in the browser |
 | [secure-coding](./skills/backend/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
+| [stripe](./skills/backend/stripe/SKILL.md) | Stripe from its own skills and docs: choosing an integration, Checkout Sessions with Next.js, PaymentIntents, mobile (React Native, Flutter) and the app store rules for digital goods, keys and security, Radar and 3DS, Billing (subscriptions, trials, proration, the portal, dunning), usage-based billing and Metronome, Tax, revenue metrics, webhooks with raw-body verification, idempotency and errors, API versions and upgrades, testing and the CLI, Supabase, Connect (choosing, charge patterns, verification), Stripe Apps, agent tools, operations |
+| [revenuecat](./skills/backend/revenuecat/SKILL.md) | In-app subscriptions with RevenueCat for Flutter and React Native: offerings, entitlements and customer info, App Store Connect and Play Console setup, purchases, restores and user IDs, paywalls and Customer Center, backend and webhooks, errors and security, billing issues, cancellations and win-back, testing, troubleshooting, migration, charts, experiments, audiences, forecasting |
+| [resend](./skills/backend/resend/SKILL.md) | Email with Resend: setup in Next.js, Node and Supabase, sending (batch, scheduling, idempotency), domains and DNS, webhooks, limits and errors, contacts, segments, topics and broadcasts, templates, automations, receiving email, inboxes, an AI agent's inbox, the CLI |
+| [react-email](./skills/backend/react-email/SKILL.md) | Email templates in React: setup and the preview server, every component, Tailwind and dark mode with client caveats, rendering and plain text, sending, patterns, i18n, the editor, ready-made templates |
+| [email-practices](./skills/backend/email-practices/SKILL.md) | Email that arrives and stays legal: SPF, DKIM and DMARC, Gmail, Yahoo and Microsoft sender requirements with dates and thresholds, consent and one-click unsubscribe, transactional versus marketing, list management, sending reliability and events, accessibility |
+| [onesignal](./skills/backend/onesignal/SKILL.md) | Push, in-app, email and SMS with OneSignal: the user model and External ID, setup for web, React Native, Expo and Flutter, permission prompts, the REST API, sending from Node and Supabase, migrating from the player model, segments, Journeys, in-app messages and HTML, personalization, messaging practice, Live Activities, analytics and privacy |
 
 ## Architecture
 
