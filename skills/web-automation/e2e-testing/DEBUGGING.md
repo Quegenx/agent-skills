@@ -41,7 +41,7 @@ jq '.run.results[] | select(.selected and .status != "passed") | {titlePath, fil
 
 ## Measure a fix
 
-- **Repeat with retries off:** `npx e2e run <file> --repeat-each 10 --retries 0` (plus `--no-cache` with agent steps). The `Repeats` line reads `0 of 1 test passed all 10 runs` before the fix and `1 of 1 ...` after.
+- **Repeat with retries off:** `npx e2e run <file> --repeat-each 10 --retries 0` (plus `--no-cache` with agent steps). The `Repeats` line reads `0 of 1 test passed all 10 runs` before the fix and `1 of 1 ...` after. Name the repeat count in the task as the proof ("prove it by running the suite at least 30 times in a row").
 
 ## Error codes
 

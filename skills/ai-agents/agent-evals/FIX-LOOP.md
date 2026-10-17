@@ -20,8 +20,22 @@
 - **Distrust a sudden big jump;** look for a leak or a broken check first. Don't keep a win that sits inside the noise.
 - **When rounds stall, name the bottleneck:** a missing capability or missing content, a grader that disagrees with people, infrastructure errors, information the agent can't reach, or plain variance. Fix that, not more prompt paragraphs.
 - **What the loop never does:** lower a threshold, delete a hard case, switch the provider or model without asking, or merge and deploy by itself. When a failure isn't understood, add trace detail before making broad changes. A change to the runner or a grader is a measurement change, reviewed as one; fixing a grader keeps the old grades and regrades every output being compared.
-- **To finish:** restore the best variant, confirm it once on the untouched test split, and report the deltas with their uncertainty and the spend.
+- **To finish:** restore the best variant, confirm it once on the untouched test split, and report the deltas with their uncertainty and the spend. If the gain is within noise, say so and recommend against merging.
+- **Effort fixes missed edge cases, not a wrong approach:** raising effort tends to reduce failures from missing edge cases, but does not fix a run where the model took the wrong approach.
 - **Working on one part at a time:** open its lowest sub-score (an empty one means not measured, not low), read 5 to 10 failing cases, write the cause in one sentence, change one thing (the prompt, the code or a setting), check no other part fell, and log one line: version, change, before and after, proof.
+
+## Hillclimbing
+
+Improving a score one change at a time against a fixed eval:
+
+- **What may change,** chosen by the owner: the system prompt, skills or instruction files, tool descriptions, the model, effort and other API parameters, the harness code. Prefer a surface that is cheap to change and revert (text such as prompts and skills) over open-ended harness edits, and one whose score is attributable to it: a skill's trigger rate is coupled to its description.
+- **Name the goal first:** performance, or cost while performance holds. Open-ended "improve performance" on an eval near saturation tends to stall; on a saturated eval, cost is a strong goal (prompt caching, a prompt audit for the selected model, the model and effort setting).
+- **Check the noise before the first round:** if how far the score can move by chance alone isn't smaller than the smallest improvement you'd act on, say so and add repetitions or cases.
+- **One change per round, as a patch,** read from the previous round's train transcripts and aimed above the noise: fix the failing behaviour at its root (rewrite the section that causes it, add a missing rule) rather than reword a line.
+- **Keep or revert:** train up and test flat, suspect overfitting and revert; any regression, revert; train and test both up, keep. The splits are in [HARNESS.md](HARNESS.md).
+- **When the score stalls for two or three rounds,** run a round that makes no edit and sorts every remaining train failure by cause; do the same early if no single fix could gain more than the noise, and add repetitions or cases. It catches ambiguous cases, harness errors and run-to-run variance; only legitimate failures go into later rounds.
+- **Once a model clears the bar, step down a tier** to see if a cheaper one clears it too. On a 44-ticket support benchmark (30 searched, 14 held out), a prompt audit that removed mandatory tool-call rituals, a scratchpad step and contradictory rules, then a newer model at low effort, then a cheaper tier and prompt fixes took accuracy on the searched tickets from 74.4% to 98.9% and cost from 4.6 to about 1 cent per ticket; on the held-out tickets, 90.5% against 78.6%, at about a fifth of the cost.
+- **Give the hillclimber the primary sources** (the docs, the SDKs), so it can find errors and correct them itself.
 
 ## Finding failures nobody has named yet
 
@@ -42,7 +56,7 @@ A first case set is small: 5 to 12 cases that each test something, reviewed by a
 |---|---|---|
 | **The agent was wrong** | A code check failed, or the judge failed it confidently and a person reading the chat agrees | Fix the agent. Usually most of the work. |
 | **The judge was wrong** | The reply reads as correct; the judge was unsure (probability near 0.5, low confidence) and flips between repetitions | Clarify the question, only after calibration ([JUDGES.md](JUDGES.md)) |
-| **The test was wrong** | A missing fixture, an unexpected service called, or the case expects something wrong | Fix the harness or the case, and say why. Not the agent's failure. |
+| **The test was wrong** | A missing fixture, an unexpected service called, or the case expects something wrong; a case that never improves after the obvious content gaps are fixed (a task asked for one error type caught while its grader wanted a chain of three) | Fix the harness or the case, and say why. Not the agent's failure. |
 
 Some low-confidence "noise" turns out to be real (an entry code asked for again after she wrote it). Read first, label second.
 
@@ -56,11 +70,14 @@ Some low-confidence "noise" turns out to be real (an entry code asked for again 
 
 The details of each are in the `agent-harness` skill's CHECKS.md.
 
+**When a skill has the content but the model writes from memory** (older API shapes from its trained priors), put a table near the top of the skill that maps the forms it remembers to the current ones, and move warnings above the examples they apply to.
+
 ## Mistakes that cost rounds
 
 - **Fixing the sentence, not the cause.** Patching the one reply the case shows leaves a sibling path broken; find the shared function and fix it once.
 - **A gate or rule that is too broad:** it fixes one case and breaks five; one opener gate that also fired on gift openers made the agent load playbooks twice. Narrow it and rerun the neighbours.
 - **Two checks that disagree:** a reply one rule asks for gets rewritten by another. When a fix keeps failing, look for the second check.
+- **Leaking the eval into the harness:** a tool added because the eval's mix needs it though production rarely does (OCR), a rule that fits where the eval's tasks live ("always cd /app, run pytest"), a prompt tuned to distinctive phrasings, one patch per failure read. They raise the score and do nothing in production.
 - **An example in a skill description** that looks like the common case pulls the common case into the skill.
 - **Exact-sentence assertions** failing correct replies.
 - **Trusting one repetition,** and **mixing results from changed code.**

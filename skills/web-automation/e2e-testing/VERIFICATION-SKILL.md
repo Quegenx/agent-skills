@@ -1,6 +1,6 @@
 # Generating a project verification skill
 
-A coding agent that changes an app should prove the change the way a user would see it. A verification skill (`.agents/skills/verify-<app>/`) tells the next agent, reading it cold mid-task, exactly how to launch, check, drive and clean up this app. It is generated from observation of the repo, and it is a deliverable only once it has been executed end to end. The commands use the `e2e` runner.
+A coding agent that changes an app should prove the change the way a user would see it. A verification skill (`.agents/skills/verify-<app>/`) tells the next agent, reading it cold mid-task, exactly how to launch, check, drive and clean up this app. Verification skills have had the most measurable impact on Claude's output quality inside the Claude Code team; it can be worth an engineer spending a week making them excellent. It is generated from observation of the repo, and it is a deliverable only once it has been executed end to end. The commands use the `e2e` runner.
 
 ## Interview the repo, not the user
 
@@ -30,6 +30,7 @@ YAML frontmatter with `name: verify-<app>` and a `description` naming the app, t
 
 - **Exercise the real user path,** not internal setters or test-only endpoints.
 - **Capture the action and the resulting state,** not only the final screen.
+- **Assert state at each step in code,** not only at the end (signup, then email verify, then onboarding, each with its own check), and record a video so a reader can see exactly what was tested.
 - **Verify side effects in the stores you found** (for example `localStorage` via `browser.evaluate`, a session cookie via `browser.cookies()`).
 - **Mock only where a production boundary already isolates the external system.**
 - **When the safe path is a dry run or test mode,** verify what it skips by watching files, network and refs rather than trusting its name.

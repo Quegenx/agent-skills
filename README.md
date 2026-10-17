@@ -1,14 +1,14 @@
 # Agent skills
 
-66 skills for coding agents, in nine sets:
+68 skills for coding agents, in nine sets:
 
 | Folder | What it's for |
 |---|---|
-| [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the chat interface, the agent's codebase, Jev classifiers, search, RAG and extraction. 7 skills. |
+| [`skills/ai-agents/`](./skills/ai-agents) | Build AI agents and AI features: the loop, prompt, tools and checks, evals, memory, the chat interface, the agent's codebase, writing skills, Jev classifiers, search, RAG and extraction. 8 skills. |
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal). 18 skills. |
-| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing. 7 skills. |
+| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review. 8 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy) and k6 load tests. 4 skills. |
@@ -112,8 +112,9 @@ Building agents that stay reliable, and the AI features around them. Start with 
 
 | Skill | Covers |
 |---|---|
-| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks |
-| [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, simulated users, the fix loop to a clean run, release gates, and auditing docs or a SKILL.md with subagents |
+| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Reliable LLM agents: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory, classifier checks, multi-agent workflows (author and reviewer loops, verifiers, panels), scheduled agents that run unattended |
+| [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Eval suites that run the real agent with outside services faked, code checks and calibrated judges, simulated users, the fix loop to a clean run, hillclimbing with keep-or-revert rounds and a noise check, checks that the eval itself is sound, release gates, and auditing docs or a SKILL.md with subagents |
+| [skill-authoring](./skills/ai-agents/skill-authoring/SKILL.md) | Writing skills the way the Claude Code team does: nine skill categories, descriptions written as triggers, Gotchas sections, progressive disclosure, setup config and skill memory, scripts and on-demand hooks, sharing through a repo or marketplace, measuring how often a skill triggers and hillclimbing it |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Long-term agent memory: what to remember and where, background extraction, consolidation, an always-on profile plus search, staying current, forgetting, user controls and memory evals |
 | [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, every timing and size. Ships the production source in `reference/` |
 | [agent-codebase](./skills/ai-agents/agent-codebase/SKILL.md) | An agent's code layout: transport, core, memory, skills and tools folders, names, dependency direction, test mirror and eval seams |
@@ -136,7 +137,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Integrations with the apps users connect: connection ownership, OAuth apps and scopes, refresh and reconnect, calling and syncing their APIs, provider webhooks, agents acting through those accounts |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics and logs, the collector, liveness and readiness |
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, zero-downtime host moves, backups, verifiable releases |
-| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, index types and when an index doesn't help, full-text search, caching and invalidation, images (WebP) and video (WebM), long lists in the browser |
+| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Measuring first, N+1, indexes and plans, index types and when an index doesn't help, full-text search, caching and invalidation, images (WebP) and video (WebM), long lists in the browser, deterministic benchmarks and CI ratchets, layout shift by page region |
 | [secure-coding](./skills/backend/secure-coding/SKILL.md) | Untrusted input, auth and 2FA, tenant isolation with RLS, secrets at rest, parser disagreements |
 | [stripe](./skills/backend/stripe/SKILL.md) | Stripe from its own skills and docs: choosing an integration, Checkout Sessions with Next.js, PaymentIntents, mobile (React Native, Flutter) and the app store rules for digital goods, keys and security, Radar and 3DS, Billing (subscriptions, trials, proration, the portal, dunning), usage-based billing and Metronome, Tax, revenue metrics, webhooks with raw-body verification, idempotency and errors, API versions and upgrades, testing and the CLI, Supabase, Connect (choosing, charge patterns, verification), Stripe Apps, agent tools, operations |
 | [revenuecat](./skills/backend/revenuecat/SKILL.md) | In-app subscriptions with RevenueCat for Flutter and React Native: offerings, entitlements and customer info, App Store Connect and Play Console setup, purchases, restores and user IDs, paywalls and Customer Center, backend and webhooks, errors and security, billing issues, cancellations and win-back, testing, troubleshooting, migration, charts, experiments, audiences, forecasting |
@@ -156,6 +157,7 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [refactoring](./skills/architecture/refactoring/SKILL.md) | Small verified steps, typed errors, a functional core, design principles as moves, dependency direction |
 | [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets |
 | [testing](./skills/architecture/testing/SKILL.md) | Tests that catch real bugs, integration tests with real Postgres, architecture and contract tests |
+| [code-review](./skills/architecture/code-review/SKILL.md) | Code review at the volume agents write it: review layers from verified work to the merge queue, risk tiers and approval rules, the AI reviewer with REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, round caps, evals for the reviewer on past incidents, ownership after landing |
 
 ## Frontend
 

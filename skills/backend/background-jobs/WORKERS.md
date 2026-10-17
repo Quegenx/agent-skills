@@ -28,6 +28,7 @@ returning *;
 - **A worker's late write is fenced:** a renewal or a finish checks that the claim is still its own (the same run id, not expired, not superseded) after locking the row, and commits results, progress and notifications in one transaction. A reclaimed job's old worker then can't write or clear the new claim.
 - **Claim one at a time and renew before each slow step** (a read, a model call) when steps run long.
 - **Rotate shared budgets:** pick the next group or account by when it was last served, and persist cursors with the original look-back window, or the same busy sources take every run and their newest pages hide the rest.
+- **Read from where you left off, not a fixed window.** "The last 24 hours" leaves a gap after a late run and repeats items after an early one. Keep a bookmark per source (the timestamp of the newest item read, written at the end of the run) so the next window stretches or shrinks to cover everything since.
 
 ## Supabase Queues (pgmq)
 

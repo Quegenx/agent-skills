@@ -76,6 +76,7 @@ When one call scores or labels many items (posts, rows, messages):
 - Estimate cost before submitting (duration, tokens, pages) and enforce a per-user and global budget; show the budget in the UI.
 - Do the yearly arithmetic from the provider's unit price and your real volume (hours of audio, pages, tokens), and write down what it excludes: retries, re-processing, translation, add-ons, hosting, tax. Prices change; date the number.
 - Respect provider rate limits; queue instead of hammering.
+- Work that can wait can go through the provider's batch API: Anthropic's Message Batches API is half price on input and output tokens ([batch processing docs](https://platform.claude.com/docs/en/build-with-claude/batch-processing)).
 - Log the provider, model, request size and actual billed amount per job, so the real cost is known, not guessed.
 
 ## Testing it

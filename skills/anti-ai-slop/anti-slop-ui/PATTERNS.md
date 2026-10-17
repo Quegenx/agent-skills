@@ -17,6 +17,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Dark because "tech" | Dark by default with no brand or user reason |
 | Decorative backgrounds | Grids, dot patterns, blueprint lines, noise, blobs and mesh gradients stacked |
 | Sterile default | Near-white, thin grey borders, small radius, generic font, no identity: over-filtering with no direction |
+| Cream default | A cream or off-white background as the fallback when no direction was given |
 
 ## Layout and components
 
@@ -46,6 +47,8 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Arrows on everything | → or ↗ on almost every button |
 | Left stripe | A thin colored bar on the left of cards or rows as decoration |
 | Terminal type | Big monospace headings; WIDE-TRACKED UPPERCASE labels |
+| Italic accent | Italic accent words in headings |
+| Numbered sections | Numbered "01 / 02 / 03" section labels |
 | Default typeface | The model's usual font picked with no reason (a popular font is fine with a reason) |
 | Generic illustration | Stock vector people or 3D blobs unrelated to the product |
 

@@ -76,7 +76,7 @@ Rules that keep it that way:
 
 ## Comments at the definition
 
-Each constant or rule says why it exists, what it was measured on and when, and which established pattern it follows: "calibrated on 149 stored answers, 0 false alarms", "the model left the follow-ups out of 11 of 28 answers". A deliberate shortcut names its ceiling and upgrade path ("cut results kept in this process's memory, the newest 100; upgrade: a table"). A rule that was tried and removed says so where someone would add it again.
+Each constant or rule says why it exists, what it was measured on and when, and which established pattern it follows: "calibrated on 149 stored answers, 0 false alarms", "the model left the follow-ups out of 11 of 28 answers". A deliberate shortcut names its ceiling and upgrade path ("cut results kept in this process's memory, the newest 100; upgrade: a table"). A rule that was tried and removed says so where someone would add it again. A helper library the agent composes into one-off scripts records its data gotchas in the docstrings (`user_id` is null until after signup), so the agent spends its turns on composition, not on reconstructing boilerplate.
 
 ## The SDK it is written against
 

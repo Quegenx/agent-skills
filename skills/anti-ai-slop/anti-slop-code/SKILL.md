@@ -43,11 +43,18 @@ The fundamentals are the review checklist, whoever typed the code: does this rul
 - **What it touches:** open the change running (a preview deployment of the branch), use it, and walk the screens and shared components it changed, not only the new one. Check it matches the patterns around it.
 - **The verdict can be "don't ship":** not needed, or fold it into what exists. Saying so is part of the review, not a failure of it.
 
+**Asking a model for a bug review,** keep it to blockers with evidence:
+```
+Review the diff on this branch against main.
+List only problems you'd block the merge for. For each one, give the file and line, why it's wrong, and how to show it fails.
+```
+Review instructions for a repo (a `REVIEW.md` written by its code owners) work when they are short: they say what failure looks like there (for docs it's "it lies", for config it's "it misroutes"), cap the nits, list paths to skip, and ask for a file and line as evidence instead of a guess from a name. **When the reviewer keeps flagging the same thing, fix it at the source:** in the skill, with a lint rule, or in the instruction files the reviewer loads.
+
 ## Output
 
 **Cleanup:** the diff, then one to three sentences: what was removed, that behavior is unchanged, and the test and type-check results.
 
-**Review:** findings most damaging first, one per root cause, each with `file:line`, the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. End with a per-file verdict:
+**Review:** start with a count of findings, and say plainly when there's nothing to fix. Then findings most damaging first, one per root cause, each with `file:line` (read, not guessed from a name), the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. Tag each **Important**, **Nit** or **Pre-existing**, so a bug the change didn't introduce doesn't look like the author's fault. Name the class of bug, so the author fixes every instance, not one line. End with a per-file verdict:
 
 | File | Verdict | Main findings | Action |
 |---|---|---|---|

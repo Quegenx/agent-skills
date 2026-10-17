@@ -51,11 +51,11 @@ A side classifier that reads the newest message (is it simple, does it need a hi
 | Step limit | Measure the step counts of real turns; set the ceiling above the observed maximum (most turns end in 1-2 steps; a ceiling of 6 above an observed 4). Always set it explicitly: an SDK default (20 is common) is a guess, and hitting it may only log a warning | Stops runaway loops without cutting real work |
 | Last step | Tools off, plus "answer now with what you found and what is still open" | Never end silently |
 | Repeated calls | The same call with the same input: a reminder on the 3rd, a stop on the 5th | Loops |
-| Reasoning effort | Start low for simple turns; raise it with an appended message (a long message, step 3+, a tool error, a loaded skill); it never falls within a turn. Check the provider's rules for these updates: some refuse two in a row or alongside server-side compaction | Pay for thinking only when the turn needs it, without editing the cached prefix |
+| Reasoning effort | Start low for simple turns; raise it with an appended message (a long message, step 3+, a tool error, a loaded skill); it never falls within a turn. Check the provider's rules for these updates: some refuse two in a row or alongside server-side compaction, and on some models and platforms changing the request's effort clears the cache. Higher effort buys "more independent action for judgement and verification": it cuts failures from missed edge cases but doesn't fix a wrong approach. Before raising it, give the model a way to check its work: a test run costs one turn, more effort adds thinking to every turn (the tell of too little is a fix that stops at one layer). Levels are recalibrated per model and defaults differ by surface: set it explicitly, rerun the effort sweep on a model change, and use the top levels only where the evals show a gain | Pay for thinking only when the turn needs it, without editing the cached prefix |
 | Retries | Turn the SDK's silent retries off; wrap the model so a retryable error is retried a few times (1, 2, 4 s) and each retry is logged, and shown to the user in a live UI. Retry only before anything streamed, and never a stopped answer. A retry after streaming began reruns only the failed step, but the text already shown can't be taken back (the user may see it twice) and a provider-run tool may run twice: allow it only where the UI resets the step and those tools are idempotent | Silent retries hide outages |
 | Timeouts | One per pass (90 s) and one per step (30 s), plus, when streaming, one until the first chunk and one for a stall between chunks; one per tool, tighter for slow outside calls. A tool timeout comes back as a tool error the model can answer, not a dead turn. The request's abort signal reaches every tool | A stalled call otherwise never ends |
 | Concurrency | A cap on tool calls running at once; 1 runs the whole turn in the model's order. Reads side by side and writes in order still needs the queue below | Parallel writes race |
-| Output | A token cap per reply | Bounded cost and length |
+| Output | A token cap per reply, with room for thinking, which counts toward it; an agentic coding loop sets it to the model's maximum and streams | Bounded cost and length |
 | Privacy | Provider-side storage off; a hashed user id for abuse tracking | No raw identifiers at the provider |
 
 ## Tool traits
@@ -99,7 +99,7 @@ export function createToolQueue() {
 - **An approval reason is not a data channel:** a denial's reason reaches the model, an approval's usually does not. Input the agent needs from the user comes through a question tool.
 - **System-started turns** (a reminder, a follow-up the app schedules) get read tools only.
 - **A failed write with no known error code** reaches the model as "the outcome is unknown", so it never claims success.
-- **Audit tools with data** before merging or removing one: production call counts per tool, which eval cases need it, which calls the baseline made.
+- **Audit tools with data** before merging or removing one: production call counts per tool, which eval cases need it, which calls the baseline made. Keep the bar to add one high: each tool is "one more option to think about" (Claude Code keeps about 20 and keeps asking whether it needs them all).
 
 ## Stop hooks, in order
 
@@ -134,10 +134,11 @@ For a first week with real customers, hold everything the agent writes as a draf
 
 ## More than one agent
 
-One agent with good tools is the default; split only when the work has distinct stages or expertise, a part burns tokens exploring (research, a big codebase), or a part needs other permissions.
+One agent with good tools is the default; split only when the work has distinct stages or expertise, a part burns tokens exploring (research, a big codebase), or a part needs other permissions. The patterns for splitting work across agents are in [WORKFLOWS.md](WORKFLOWS.md).
 
 - **Route in code where you can:** keep the workflow's progress as typed state that tools write (the plan, the classification, done), and let a function pick the next agent from it. Use a model to route only where the path is unclear, give that router a "finished" choice and a step cap, and check that the agent it names exists.
-- **A subagent runs as a tool:** a fresh context with only what the task needs, the parent's abort signal, a final message that summarises everything it found. The page may show its full work; the parent model reads only the summary.
+- **A subagent runs as a tool:** a fresh context with only what the task needs, the parent's abort signal, a final message that summarises everything it found. The page may show its full work; the parent model reads only the summary, and checks its evidence before accepting it. A rarely used capability (answering questions about the product's own docs) fits here too: in the prompt it adds context rot, loaded as docs it pulls large chunks in for a one-sentence answer, and a subagent searches in its own context and "hands back only the answer".
+- **Pick each subagent's model** ([WORKFLOWS.md](WORKFLOWS.md#which-model-each-agent-uses)): a mid model fits a task with a clear spec and a way to check the result; the hardest long-horizon work goes to the top model.
 - **No approval inside a subagent:** keep tools that need a click on the parent.
 - **Never hand the same turn to the same specialist twice;** that is a loop. A handoff passes a trimmed history (no tool chatter, the last few messages) and the previous agent's results as a short note marked as data.
 
@@ -149,7 +150,7 @@ One agent with good tools is the default; split only when the work has distinct 
 
 ## Long runs
 
-An agent that works for minutes or hours (research, an import, a coding task) outlives a request and will meet a crash, a deploy or a timeout.
+An agent that works for minutes or hours (research, an import, a coding task) outlives a request and will meet a crash, a deploy or a timeout. One that runs on a schedule with nobody watching is in [SCHEDULED-AGENTS.md](SCHEDULED-AGENTS.md).
 
 - **Run it as a durable workflow** (the `background-jobs` skill, DURABLE-WORKFLOWS.md): each model call and each tool call is a step, so a resumed run replays saved results instead of paying for them, or acting, twice. Side effects live inside steps and carry idempotency keys derived from the run and the call.
 - **Keep the run's context serialisable:** ids and settings, never clients or open connections; rebuild those inside each step. Derive anything long-lived (a sandbox, a working directory) from the run's id, and never tear it down at a step boundary.
@@ -158,9 +159,15 @@ An agent that works for minutes or hours (research, an import, a coding task) ou
 - **Waits for a person are durable waits** keyed by the run, with a timeout and an explicit "no answer" branch ([Human in the loop](#human-in-the-loop)).
 - **Stopping cancels future steps and undoes nothing:** say so in the UI, and list what already happened.
 - **Progress:** frequent updates (tokens, "reading source 3 of 8") by plain publish; state changes (waiting for approval, done) from a step, once. The page reads the stored run state on reload, then resumes the stream.
-- **Define done as saved results plus evidence:** the deliverable written where it belongs, a check of it (a claims table, test output, counts reconciled), and the open issues. A run that only says it finished hasn't proven it; check the evidence in code where you can.
-- **A reviewer that returns evidence:** give a second agent read-only tools, the deliverable and its sources, and require a table (claim, verdict, source, correction; verdicts verified, incorrect, unresolved, with what evidence is missing). The main agent applies the corrections.
-- **A progress record a new run can resume from:** task, outputs and their paths, finished stages and checks, decisions with their sources, open issues, and one concrete next action. Update it after each stage; a resumed run reads it first.
+- **Define done as saved results plus evidence:** the deliverable written where it belongs, a check of it (a claims table, test output, counts reconciled), and the open issues. A run that only says it finished hasn't proven it; check the evidence in code where you can. The task names its proof up front, in one message with the finish line and when to stop:
+  ```
+  Migrate the payment endpoints from the old client to the new one.
+  Done means: every endpoint uses the new client, the old client is deleted, and the test suite passes.
+  Stop and ask me only if a test fails for a reason you can't explain.
+  ```
+  The final report says what it did, what it found and what it needs from the person, the last part first ("End every run with three headings: Blocked on me, Changed, Found.").
+- **A reviewer that returns evidence:** give a second agent read-only tools, the deliverable and its sources, and require a table (claim, verdict, source, correction; verdicts verified, incorrect, unresolved, with what evidence is missing). The main agent applies the corrections. When the author is an agent too, cap the rounds ([WORKFLOWS.md](WORKFLOWS.md#author-and-reviewer-loops)).
+- **A progress record a new run can resume from:** task, outputs and their paths, finished stages and checks, decisions with their sources, open issues, and one concrete next action. Update it after each stage; a resumed run reads it first. A list in a file also survives compaction, which summarises older turns away: "Keep a checklist in TASKS.md. Tick each item when it's done, and add anything new you find."
 - **One run per conversation or record at a time** (a per-key concurrency limit or singleton), and a per-tenant cap on runs at once.
 
 ## Observability
@@ -170,7 +177,7 @@ An agent that works for minutes or hours (research, an import, a coding task) ou
 | Metrics | Model calls, tokens (input, cached, output, reasoning), response time, tool calls and time, errors, check results: names, counts and timings, never conversation text |
 | Traces with content | One trace per turn, each side call under it with its own name, personal data masked; content goes only here |
 | Run records | One row per run: events (signals, gate reminders, retries, the route taken), usage, timings |
-| Run analysis | Classify each finished run (truncated, empty, too long, too many calls, unexplained tool errors); some classes stop the reply |
+| Run analysis | Classify each finished run (truncated, empty, too long, too many calls, unexplained tool errors); some classes stop the reply. Usage tells too: a low cached share points at a pause, a model switch, an MCP server connected midway or an effort change where effort is part of the cache match; much output on a small change, effort too high or retrying; total input many times the conversation's size, many turns, so read where the loop repeated |
 | Alerts | A failed turn means someone got no reply: alert the team within minutes, throttled to one alert per window during an outage |
 | Flushing | Flush traces before a serverless function returns; it ends abruptly |
 

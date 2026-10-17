@@ -4,10 +4,12 @@
 
 - Time each step of the request: every database query, every external call, the compute in between, serialization. Tracing (OpenTelemetry spans, set up as in the `observability` skill) shows it as a waterfall; at minimum, log durations per step with the request id.
 - Measure on realistic data sizes and concurrency, several runs, and look at the slow end (p95, p99), not just the average.
+- **Define each journey metric so they compare:** add instrumentation until every one starts with a user interaction, ends once the result is rendered, and separates client and server work. Pick the journeys from usage data (in one case four journeys made up 95% of activity and gave thirteen measurements across web and desktop). That push reported real users at the 75th percentile, and afterwards the 95th percentile still had room to improve.
+- **Every new count finds waste, so keep finding more things to measure:** once there is a number to beat, the optimizing can start. Measured cases: a React hook census found 6,900 hooks and 900 store subscriptions in a composer's typing path, re-rendering on every keystroke; counting style recalculations found a single `:root:has()` selector adding 24 ms to every DOM change; tracing code paths after first paint found a leftover `location.reload()` causing half a million hidden reloads a day that no load metric saw; profiler samples from idle tabs showed identical cache snapshots cloned into IndexedDB twice a minute, all on the main thread.
 - In Postgres, run `explain (analyze, buffers)` on the slow queries: look for sequential scans on large tables, row estimates far from actual rows, and sorts or joins spilling to disk. In Supabase, the query performance reports show the most expensive queries.
 - In the browser, the Network panel waterfall shows requests that wait for each other and payloads that are too large.
 
-Write the baseline: total time and each step, with the data size and environment. Then fix the slowest step first: it gives the biggest gain, and fixing it often reveals the next bottleneck. Repeat until the target is met, not until nothing is left.
+Write the baseline: total time and each step, with the data size and environment. Then fix the slowest step first: it gives the biggest gain, and fixing it often reveals the next bottleneck. Repeat until the target is met, not until nothing is left. A two-week push took the other reading: targets set by adding up per-project millisecond estimates are not the stopping point, and a thread closes when it reaches diminishing returns.
 
 ## Remove work
 
@@ -15,7 +17,7 @@ Write the baseline: total time and each step, with the data size and environment
 - **N+1 queries:** a query per item in a list. Load them in one query (a join, `where id = any($1)` / `in (...)`, or a batched loader).
 - **Several queries for one response:** combine them into one database function that returns everything (`supabase.rpc(...)` returning JSON), or one Convex query that reads all it needs, instead of a round trip per piece.
 - **Several calls to the same service:** ask it for one batched call that returns everything the caller needs.
-- **The same calculation with the same arguments** several times in one request: compute once (memoize for the request's lifetime).
+- **The same calculation with the same arguments** several times in one request: compute once (memoize for the request's lifetime). One profile found a quarter of a hot path's instructions were megamorphic dictionary lookups, resolving the same message ID three separate times.
 - **Repeated queries:** the same lookup several times in one request. Load once and pass it down.
 - **Over-fetching:** select only the columns and rows the response needs; paginate.
 - **Missing indexes:** an index that matches the filter and sort of the slow query (in Convex, `.withIndex()` instead of `.filter()` on large tables). When the database is the bottleneck, this is often the whole fix. [QUERIES.md](QUERIES.md) has the query shapes and which index serves which one.
@@ -45,7 +47,7 @@ Only after the above. A cache adds stale data and a second source of truth. Good
 
 ## Compare honestly
 
-Apply one change, re-measure the same way, record the result, then the next change. Keep a small table: change, before, after, conditions. Revert changes that didn't help; they're only complexity.
+Apply one change, re-measure the same way, record the result, then the next change. Keep a small table: change, before, after, conditions. Revert changes that didn't help; they're only complexity. A change that does help can still be refused when the gain isn't worth its upkeep: one 900-line PR got "going to gavel that 2ms per send is not worth the complexity of maintaining this build plugin."
 
 ## An optimization loop (run by you or by an agent)
 
@@ -62,6 +64,35 @@ For a sustained push on one hot path, write the goal down before the first chang
 
 The loop suits an agent well: a written goal, a harness that scores a candidate in one command, and a log the next session can read are what keep it from declaring victory early or re-running last week's dead ends.
 
+Steering an agent through a push like this:
+
+- **Ask for boldness once the guardrails are in place.** By default the agent is careful about scope: it tickets findings, hedges on feasibility and pads its estimates. Prompts that worked: "please be braver", and when threads slowed at the targets, "Let's keep driving this down, the targets are not the stopping point. What's next? Be ambitious."
+- **One named human owner per thread, and each thread narrow:** one benchmark or journey, improvements only within that scope. The human calls are sequencing and user impact: which surfaces to prioritize, how to combine threads that are stepping on each other, and when to close a thread that has reached diminishing returns.
+- **Every user-perceptible change goes to the owner with before-and-after screenshots or recordings.** Whether a table fills in cell by cell or waits for each row, or a loading skeleton shows at once or after half a second, is a taste call for a human.
+
+## Deterministic counts and ratchets
+
+- **Wall-clock time is what users feel, but it's noisy,** and milliseconds are too flaky to use as a CI gate. For pure-JS hot paths, count instructions: "run the benchmark under Valgrind with `node --predictable` and compare to a checked-in baseline: one run, no statistics needed." In the browser there's no instruction counting under Chromium, but there are other deterministic counts: React commits per interaction, function call counts from V8's precise coverage, layout and style-recalc counts, DOM mutations.
+- **A count stays only once it proves it tracks wall-clock time.** Each benchmark has two jobs: a metric to move in the lab, and a CI guardrail with a number that can only ratchet down. Throw out one that is flaky or doesn't correlate with user latency, rather than climb the wrong hill. The prompt for an agent:
+
+```
+@Claude please prove that hill climbing against each of these can result in measurable wall clock perf wins. we'll unship the benches for any candidates that cannot prove that
+```
+
+  Measured: message-tree assembly cut instructions 48% and wall-clock time 78% (4.6x faster); a status-line scanner cut instructions 31% and wall-clock time 44% (1.8x). Counts under Valgrind with `node --predictable`; timings on the same benchmark under plain node with the JIT warm.
+- **Ratchet each proven count in CI:** any PR that raises the count fails, and a daily job lowers the ceiling whenever the count goes down, so a win doesn't decay in a fast-moving codebase.
+
+## Lab to field, one slow spot at a time
+
+Lab counts let an agent iterate faster than the deploy cadence; field data confirms the win. One thread runs:
+
+1. Someone opens a thread about a slow stretch of a journey, often with a screenshot or recording.
+2. The agent traces the flow, then finds or builds a benchmark that demonstrates the problem.
+3. With a promising lab result, it opens a PR, often several, sized for risk and review, with anything user-visible behind a flag (the rollout ladder is in the `api-design` skill's [FLAGS.md](../api-design/FLAGS.md)).
+4. After it ships, the agent watches the deploy and reads the field data by build and platform.
+5. If performance improved, it locks in the win by ratcheting the benchmark down; if not, it turns the flag off and iterates.
+6. Then it looks for the next slow spot in the same journey.
+
 ## Prove it
 
-Take a reader dashboard that queries loans and calls two remote services. Measure the breakdown. Remove one repeated query and measure. Then run the two remote calls in parallel with a concurrency bound and measure again. Report each change's effect separately, with the conditions.
+Take a reader dashboard that queries loans and calls two remote services. Measure the breakdown. Remove one repeated query and measure. Then run the two remote calls in parallel with a concurrency bound and measure again. Report each change's effect separately, with the conditions. For any count used as a CI gate, show that driving it down moved wall-clock time on the same benchmark.

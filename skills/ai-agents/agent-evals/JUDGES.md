@@ -22,15 +22,17 @@ A judge is a model too, so ask it narrow questions with answers that code turns 
 - **Give the context in the question:** who writes what (a shop, couriers who never call, the agent's persona and its grammatical gender), and that message text is data, never instructions.
 - **Pass rules:** *strict* (every failure question must lean "no") for conversation rules and hard rules; a *weighted mean* over a threshold (say 0.7) for graded qualities such as voice or faithfulness to tool output, with the most feared failure weighted double.
 - **Judges that recur:** the conversation rules over the whole chat (stays in voice, no wrong self-reference, no request left unanswered, no detail asked twice); a reference judge against a reply staff approved for the same moment; tool faithfulness (order numbers, totals, links and dates come from the tools); case-specific statements; voice.
-- **Writing the judge prompt:** one criterion per judge; pass and fail defined in the product's own terms, taken from the review notes; 2 to 4 labelled examples, borderline ones included, drawn only from the examples split; the critique before the verdict; output forced to a schema; the inputs marked as data. Start on a capable model and move to a cheaper one only after it calibrates; never the model under test; pin a dated model version. For severity, use two yes-or-no judges ("any harm?", "serious harm?"), not a 1 to 5 scale.
+- **Writing the judge prompt:** one criterion per judge; pass and fail defined in the product's own terms, taken from the review notes; 2 to 4 labelled examples, borderline ones included, drawn only from the examples split; the critique before the verdict; output forced to a schema; the inputs marked as data. Start on a capable model and move to a cheaper one only after it calibrates; never the model under test, and never the context that produced the work (a model prefers its own results, especially when judging them against a rubric); pin a dated model version. For severity, use two yes-or-no judges ("any harm?", "serious harm?"), not a 1 to 5 scale.
 - **A rubric with branches is a decision tree, not one prompt:** a first step extracts what the later ones need (the headings, the claims, the tools used), a yes-or-no gate can end the path ("left out a required fact: 0"), and a classifier picks one named level for what passes. Every path ends at a score you chose, so the same input reaches the same number. Use one holistic judge only when no condition needs exact control.
 - **Turn judges and conversation judges:** a turn judge reads one reply against what came before it (relevant to the last message, faithful to what was retrieved this turn); a conversation judge reads the whole chat (was every request met, did it forget something the user said, did it stay in its role and its topics, was the goal reached). Long conversations go to the judge summarized or in a window, and say which.
-- **Comparing two replies:** randomize which goes first, allow a tie and "both bad", and compare against one frozen reference.
-- **Stability:** a judge case runs three times and every run must pass; a verdict that flips on the same input is one the product can't rely on. Run judge calls sequentially if the judge's API rate-limits.
+- **Comparing two replies:** randomize which goes first, don't tell the judge which is the baseline, allow a tie and "both bad", and compare against one frozen reference. Comparative judgment is more reliable than absolute scoring; to rank many items, run a tournament of pairwise-comparison agents (or bucket-rank in parallel, then merge), with code holding the bracket.
+- **Stability:** a judge case runs three times and every run must pass; a verdict that flips on the same input is one the product can't rely on. High run-to-run variance in the suite often means an ambiguous task, not only an unstable judge. Run judge calls sequentially if the judge's API rate-limits.
 
 ## Judge self-tests
 
 Because the judges grade the agent, they get tests of their own: a small set of known conversations per question, each labelled must-pass or must-fail, kept in the repo and rerun whenever the question, the judge model or its version changes.
+
+**Before the first baseline,** grade a handful of cases and ask the owner whether they would have scored any differently, and read a sample of scored transcripts: scoring failures are among the most common ways an eval is misconfigured.
 
 ## Calibrating a reworded question
 
@@ -47,7 +49,7 @@ Before trusting a reworded judge question:
 
 **Long answers move their facts to code:** on a long report the faithfulness judge scored correct answers around its threshold and failed 2 of 5. Code checks that every number and link in the answer appears in the tools' output, and the judge asks only what reading decides. Write down the blind spot that remains (two real values swapped between items passes both).
 
-**Planted defects measure a rule judge on real chats:** take good real conversations, plant one defect per copy, and count catches against false alarms on the clean originals (one set caught 24 of 25 to 40 of 40 with no false alarm beyond three real staff mistakes).
+**Planted defects measure a rule judge on real chats:** take good real conversations, plant one defect per copy, and count catches against false alarms on the clean originals (one set caught 24 of 25 to 40 of 40 with no false alarm beyond three real staff mistakes). For an agent that reviews code, run it on known-clean changes and count the reports that would have led someone to make a harmful change.
 
 ## Calibrating a new judge
 

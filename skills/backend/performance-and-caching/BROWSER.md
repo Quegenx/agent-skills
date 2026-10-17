@@ -11,6 +11,14 @@ Which properties to animate, GPU versus main thread, motion values instead of Re
 The first visit is the one wait you can't avoid: the content comes from the server, in the first paint (server rendering) or right after. Everything after that should be already there. Audit in this order:
 
 1. **The shell renders on the first frame.** Navigation, header and layout are static; they never wait for data. A root-level loading state, if you keep one, must not block navigation. Put the data boundary (`<Suspense>`, a route's pending component) around the content area, not around the app.
+
+   The main input can go further: bake a static copy of it into the HTML so users can type during React initialization, and let React paint directly on top of it; what was typed is kept when the real one takes over. In a throttled 4G recording, the input took typing at 0.36 s instead of 2.93 s; across the push that included it, time to a typeable page on a fresh load went from 3,085 to 550 ms at p75. The stand-in is brittle by design (if the React render is off by even a pixel, the effect is lost), so guard it:
+   - generate the static markup by rendering the real React component in jsdom, with a test that guarantees they never drift;
+   - an integration test compares the static page against the React render across many viewport sizes (fourteen in the measured case) and asserts alignment within 1 px;
+   - a keystroke test types straight through the handoff and fails on any lost or reordered key;
+   - in the field, every handoff reports shifts to a tenth of a pixel, and any event with nonzero movement gets a look.
+
+   Roll it out to employees first, then one percent of users, then everyone ([FLAGS.md](../api-design/FLAGS.md)): four hours after one internal release, a teammate's screen recording caught a layout shift that no metric saw. Keep that input mounted between pages instead of remounting it on each navigation.
 2. **Fetch before the click.** Between the pointer landing on a link and the click there are roughly 300-500 ms, enough to load most route data. Prefetch on hover and focus (and on touch start), not on click:
 
 ```tsx
@@ -113,6 +121,12 @@ export function playVisibleVideos(videos: HTMLVideoElement[], maxPlaying = 3): (
 
   A video that scrolls in while the cap is full waits for its next visibility change; if a freed slot should start it at once, keep a queue of visible-but-waiting videos and start the first when one pauses.
 
+## Layout shift
+
+- **CLS can pass while the page jumps.** Sidebar rows popping in after load scored about 0.008 per shift, well within the good threshold of 0.1, and no monitor noticed. Read the Layout Instability API directly: map the `sources` of each `layout-shift` entry to a named region (sidebar, transcript) and a phase (before first paint, after typeable), and send that as a telemetry event. In the measured case, 31% of web page loads moved something after the page was usable, without any user interaction. Work through the causes by name (a header row that arrived late, a caret that slid sideways once the user's name loaded, a list that moved when the scrollbar popped in), fix the top offenders as a batch, then find the next batch.
+- **Test it:** open the page with a populated list, hold its data until after first paint, and fail on any shift in any named region. The fix is proven when the test is red on every run on main and green on every run with the fix (20 of 20 each).
+- **Prerendering can shift the first frame.** While a user types the URL into the address bar, Chrome's speculative loading prerenders the page in the background at the current tab's height. On browsers managed by an organization the new-tab page is shorter by a 56 px footer, so the first frame shows the shorter layout and Chrome resizes it about a tenth of a second later. Pin the layout across the resize and add a test that simulates the prerender flow; headless Chrome has no browser UI to retract, so ordinary layout tests can't see it. A shift like this was always latent: it shows once the page paints that early.
+
 ## Long lists
 
 Render what's visible: virtualize long lists (TanStack Virtual), or let the browser skip off-screen sections with `content-visibility: auto` plus `contain-intrinsic-size`. Endless carousels from a few items are in the `ui-animation` skill's PATTERNS.md.
@@ -127,4 +141,4 @@ Load heavy, rarely used components with a dynamic `import()` on the route that n
 
 ## Prove it
 
-Record the page load and the main interactions in the Performance panel with 4x CPU slowdown and network throttling: the shell paints before any data, hovering a link then clicking shows the next page with no placeholder, going back shows the previous page instantly, no spinner appears for data, the largest image arrives early, no layout shift when media loads, only visible videos play, and long lists render only what's on screen.
+Record the page load and the main interactions in the Performance panel with 4x CPU slowdown and network throttling: the shell paints before any data, hovering a link then clicking shows the next page with no placeholder, going back shows the previous page instantly, no spinner appears for data, the largest image arrives early, no layout shift when media loads, no shift in any named region after first paint, only visible videos play, and long lists render only what's on screen.

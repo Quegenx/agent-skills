@@ -3,7 +3,7 @@
 Run it on every edit or draft before returning it. Any "no" means fix and run it again.
 
 **Meaning and voice**
-1. Is every claim, number, name, quote and example from the source or the user? Missing facts marked `[NEED: ...]`, not invented?
+1. Is every claim, number, name, quote and example from the source or the user? Missing facts marked `[NEED: ...]`, not invented? In a long document, does it contradict itself anywhere (numbers, dates, names)? Quote each problem and say where it is.
 2. Would the writer recognize it as their own voice: vocabulary, rhythm, bluntness, humor, uncertainty kept?
 3. Were strong human sentences left alone, and is the amount cut proportional to the slop actually present?
 4. Does it lead with what the reader needs, keeping setup that adds context or character?

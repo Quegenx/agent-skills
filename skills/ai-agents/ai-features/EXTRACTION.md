@@ -61,7 +61,7 @@ The schema check is the first layer. Then the domain:
 - formats and ranges: a date that exists and isn't in the future, a currency code from a known list, check digits on IDs, an expiry after the issue date;
 - flag, don't fix: a failed check marks the record for review instead of silently correcting it.
 
-Decide what happens on failure: ask the person to confirm or correct, retry with a better image, or route to manual review. Never silently store a value that failed validation. Keep the original image linked to the extracted record for audit; pre-process (rotate, crop) only if it measurably helps.
+Decide what happens on failure: ask the person to confirm or correct, retry with a better image, or route to manual review. Never silently store a value that failed validation. Keep the original image linked to the extracted record for audit; pre-process (rotate, crop) only if it measurably helps. Image size is a cost lever: on a model with a high-resolution image tier, a 2000×1500 image can cost about 2.5 times the tokens it did on older models. If you don't need the detail, downscale before you send.
 
 ## Testing it
 

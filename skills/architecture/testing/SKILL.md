@@ -29,6 +29,7 @@ A test is worth what it would catch. Imagine the plausible broken versions of th
 13. **Mock only boundaries you don't own** (payment and email providers, third-party APIs, the clock); never mock domain objects, test them directly. Many mocks for one unit means it has too many dependencies. Don't unit test the framework, the ORM's mapping, middleware or plain data types; integration tests cover them ([INTEGRATION.md](INTEGRATION.md)).
 14. **Build test data with factories that default everything** (`aCustomer({ vip: true })`), so a new required field changes one function instead of every test, and the test shows only the values that matter. Use `test.each` for a table of cases instead of copied tests, and keep test files mirroring the source tree.
 15. **Check the suite against broken code.** Run a mutation tool (StrykerJS for TypeScript) or plant the bugs by hand, one at a time, and see which survive. A surviving mutant is a missing test or a test that asserts too little.
+16. **Reproduce a bug before fixing it, and test against a simple reference.** Run the reproducer before editing, and check that the new test would have caught the original bug and fails on half-finished fixes. Where a reference exists (a separate brute-force solver, a reference that never compacts), test on random inputs against it; for code with many hidden edge cases, like an HTML sanitizer, add a standard XSS test suite and a random-document fuzzer.
 
 ## Fakes for code that orchestrates
 
@@ -70,4 +71,4 @@ test("an approved order is charged, then saved, then receipted", () => {
 
 ## Prove it
 
-Plant the plausible bugs one at a time (or run a mutation tool) and show the suite fails for each, while staying green on the correct code. For every boundary in the contract, point to the test on each side of it.
+Plant the plausible bugs one at a time (or run a mutation tool) and show the suite fails for each, while staying green on the correct code. For every boundary in the contract, point to the test on each side of it. For a bug fix, show the new test red on the unfixed code and green on the fix; for an intermittent one, repeat both (red 20 of 20 runs on main, green 20 of 20 on the branch).

@@ -41,6 +41,8 @@ background   ->  extract facts  ->  dedupe and link  ->  consolidate into belief
 5. **Facts carry their time.** When it happened, when it was said, whether it is ongoing, done or planned. Staying current depends on it.
 6. **Nothing is silently overwritten.** A change keeps what it replaced ("lived in Austin until March 2026, now Seattle"), so the agent knows what changed and why.
 7. **The user can see, correct and delete it,** and deleting a source deletes what was derived from it.
+8. **The user's preferences are read-only to the agent.** Keep what the user set (what to read, what to leave out, the length cap, when to stop) apart from the agent's own state (bookmarks, a ledger of what it reported, run records, notes on how each source behaves). The agent writes changes it proposes to the preferences into its state instead of editing them, and reads the preferences fresh every run: a copy baked into the prompt keeps applying rules the user already changed. If it can't read them, it stops and says so instead of running on defaults.
+9. **Memory carries injected instructions forward.** Text other people wrote can be read as instructions, and a planted one can still change what the agent produces, including through the notes it keeps between runs. Limit what following it could do: the preferences store and the tokens the agent only reads with stay read-only.
 
 ## When not to build it
 

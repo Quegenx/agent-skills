@@ -14,7 +14,7 @@ Pin the rendered prompt and the tool list as snapshot files in the repo, so ever
 - **Rare tools load through tool search,** and the prompt names every deferred tool with its namespace, built from the tool registry, so the model knows what it can find. A tool the user asks for in words that don't match its search terms stays up front: deferred, "forget what I told you" found no memory tool.
 - **Schemas say formats in words:** a validation pattern compiled into the schema (an id's 240-character regular expression) is sent on every request; "a UUID" says the same.
 
-**Splitting a tool by job** (create, then set its schedule with a second tool) keeps each schema small and each call simpler for the model.
+**Splitting a tool by job** (create, then set its schedule with a second tool) keeps each schema small and each call simpler for the model. The reverse fails too: a questions parameter added to a plan tool confused the model, which was asked for a plan and a set of questions about the plan at once (what if the answers conflict with the plan? call the tool twice?). Questions got a tool of their own.
 
 ## A stable prefix, changing context appended
 
@@ -23,7 +23,10 @@ The base prompt stays byte-identical for the whole session, so the provider's pr
 - **Session-wide sections may be conditional** (present or empty for the whole session), decided once at the start.
 - **Anything that changes mid-session is an appended message,** never an edit of the prompt: the date rolling over, a mode switch, the current order state, a policy change. Put the project instructions, the date and the environment in the first user-role message; later turns append only what changed and supersede earlier snapshots, never rewrite them.
 - **Pin the prefix with a test:** render it for two different sessions and assert the bytes match. A section that truly must change every turn is declared as such, with the reason next to it.
-- The measured cost of getting this wrong: one per-turn policy line inside the prompt can drop the cached share from most of the request to almost nothing. Done right, 90-99% of input is cached.
+- The measured cost of getting this wrong: one per-turn policy line inside the prompt can drop the cached share from most of the request to almost nothing. Done right, 90-99% of input is cached. A prefix shorter than the provider's minimum cacheable length is never cached at all.
+- **What else clears the cache:** "Changing the tool definitions clears the whole cache, and a change to the system prompt clears it from that point on." So do a pause longer than the cache lifetime, switching models (the new model starts from an empty cache), connecting or disconnecting an MCP server, compaction, and on some platforms changing reasoning effort. Set these when the session starts and leave them alone while it works.
+- **A cache write costs more than a read:** 1.25 times the input price for a five-minute cache and twice for a one-hour cache, on one provider's pricing, and each hit resets the lifetime at no charge. At 120K tokens of context one five-minute write costs as much as 25 reads, so a pause past the lifetime turns the next cheap read into a write.
+- **Every turn resends everything before it:** a task that grows from 20K to 120K tokens over 40 turns sends about 2.8M input tokens, though the conversation never passed 120K; in 25 turns it sends about 1.75M. "A turn costs more than the tokens it adds, because it resends everything before it. So the cheapest turn is the one you don't need." Stale context (old stack traces, finished files, fixed test output) is paid for again on every turn.
 - **The order:** tools first, then the static instructions, then rarely changing stable data (the customer, the settings) as a second system message, then the history, and the turn's reminders, memories and record state as one note just before the newest message. Stamp each user message with its own time (weekday, date, time, time zone).
 - **The tools in a fixed order,** set explicitly where the SDK allows it, so adding a tool or a discovered one doesn't reshuffle the cached start.
 - **A cache key per conversation** (`<app>-chat:<conversationId>`), so one conversation's turns land on the same cache.
@@ -34,7 +37,7 @@ When sections are tagged (`<voice>`, `<scope>`, `<customer>`), escape or quote w
 
 ## Reminders code adds
 
-A situational rule arrives only in its situation, as a short message code appends to the turn ("her way in needs a call: keep the order open, no payment link yet"). Code detects the situation from facts (a delivery report arrived, the order is missing a field), so the reminder can't be forgotten and the base prompt stays short. Reminders that keep firing on every turn belong in the prompt instead. Some providers offer a reminder that expires by itself at the next user message; it does the same job without your code removing it.
+A situational rule arrives only in its situation, as a short message code appends to the turn ("her way in needs a call: keep the order open, no payment link yet"). Code detects the situation from facts (a delivery report arrived, the order is missing a field), so the reminder can't be forgotten and the base prompt stays short. Reminders that keep firing on every turn belong in the prompt instead. A recurring reminder of a plan can also hold a newer model back: reminders of its todo list "made Claude think that it had to stick to the list instead of modifying it when it realized it needed to change course". Some providers offer a reminder that expires by itself at the next user message; it does the same job without your code removing it.
 
 A rule about what to do with a tool's result goes in as a **step note** right after that result, not in the base prompt. Moving every rule to its reminder, step note or tool description can halve a base prompt (19,000 characters to under 10,000).
 
@@ -42,18 +45,38 @@ A rule about what to do with a tool's result goes in as a **step note** right af
 
 - **The list is a message, with a budget:** a small share of the context window (one or two percent) and a cap per description (a few hundred characters). The model reads the descriptions and loads the full text itself. Don't route skill choice through a classifier unless you have measured it in shadow mode first.
 - **Code decides what is visible:** a skill tied to certain files appears once such a file is touched; a skill the model must never choose is hidden; integrations the user hasn't connected stay out of the list.
-- **A description is a classifier:** say when it applies, with the signal that marks it ("only after she says it is a gift"). Say when not to use it. Never put an example that looks like the common case into a rare skill's description: one count-and-street example made plain orders load the gift flow one time in three. Tell the agent not to load a skill "to check whether it applies".
-- **Keep a routing eval:** each typical opening message mapped to the skill it must load, or none; rerun it after any description, prompt or gate change. A new skill gets two or three cases that must load it, and the existing cases show it doesn't take messages that belong elsewhere. Write descriptions as general rules; one tuned to the eval's exact messages scores well and routes real messages badly.
+- **A description is a classifier:** say when it applies, with the signal that marks it ("only after she says it is a gift"). Say when not to use it. Never put an example that looks like the common case into a rare skill's description: one count-and-street example made plain orders load the gift flow one time in three. Tell the agent not to load a skill "to check whether it applies". Put the words users say in it, as triggers, not a summary.
+- **Keep a routing eval:** each typical opening message mapped to the skill it must load, or none; rerun it after any description, prompt or gate change. A new skill gets two or three cases that must load it, and the existing cases show it doesn't take messages that belong elsewhere. Write descriptions as general rules; one tuned to the eval's exact messages scores well and routes real messages badly. In production, log each skill load, so a skill that triggers less often than expected shows up.
 - **Routing lives in two places only:** the skill's line in the list and its description. The body is read after the choice is made, so a "when to use this" section inside it is dead weight.
-- **A skill with several flows is a short router:** the main text says which file covers which case and the agent opens only that one. Keep each file one link away from the main text, short (around 100 lines is a good ceiling), with a contents list at the top of anything longer.
-- **Leave out what the agent can fetch:** a skill holds what the agent couldn't work out from the live data, the tools and the docs; code samples and copied facts go stale, so point to the source instead.
+- **A skill with several flows is a short router:** the main text says which file covers which case and the agent opens only that one. Keep each file one link away from the main text, short (around 100 lines is a good ceiling), with a contents list at the top of anything longer. A table from symptom to file does the routing. Depth is a choice with two views: one link deep keeps every file in reach, while Claude Code's model went, over a year, to "nested search across several layers of files to find the exact context it needed".
+- **Leave out what the agent can fetch:** a skill holds what the agent couldn't work out from the live data, the tools and the docs; code samples and copied facts go stale, so point to the source instead. Leave out what the model already does by default too: a skill earns its place with "opinions, knowledge, or best practices that are particular to you, your team, or product" (a frontend design skill that steers away from the Inter font and purple gradients).
+- **A gotchas section and one kind of job per skill:** "The highest-signal content in any skill is the Gotchas section", grown from the failure points the agent actually hits; a skill that straddles several categories confuses the agent. Writing a skill in full is the `skill-authoring` skill.
 - **Match the freedom to the risk:** plain guidance where several ways are fine, exact steps or a script where one wrong move breaks something.
 - **A playbook says when to skip its own steps:** a search-everywhere playbook loaded for "only on Marketplace" searched every source anyway, and a research playbook loaded for one narrow question ran its whole sequence. Name the narrow requests it answers directly.
 - **Write a playbook as a goal, the sources and when it's done,** not a numbered recipe; keep the tool names only where the model needed them to act at all.
 
 ## The base prompt
 
-What remains: voice, language, scope, what the agent never does, and the flows nearly every conversation runs. Write each rule once, short, as what to do, with the reason when it isn't obvious: a model that knows why applies the rule to the neighbouring case. Align two rules that contradict rather than tuning both, and never let instructions be cut silently by a size limit: fail loudly or test the size.
+What remains: voice, language, scope, what the agent never does, and the flows nearly every conversation runs. Write each rule once, short, as what to do, with the reason when it isn't obvious: a model that knows why applies the rule to the neighbouring case. Align two rules that contradict rather than tuning both, and never let instructions be cut silently by a size limit: fail loudly or test the size. Contradictions also arrive across layers of one assembled context: the system prompt says "leave documentation as appropriate", a skill says "DO NOT add comments", the user says "just make it work like the old one". They showed up in transcripts of real requests, as the system prompt, skills and user requests clashed.
+
+- **Ask for what you need, not its reasoning:** a request to reproduce the model's internal reasoning in the reply can be declined. Ask instead: "Explain why you chose this approach in three sentences." If the user should see updates at predictable points, such as a line before the first tool call and a short recap at the end, say so in the system prompt.
+- **A chat agent with long conversations** sometimes re-examines an earlier answer while thinking about a short follow-up, which slows the reply. Where answers stay settled, the instruction:
+  ```
+  Once you have answered something, treat that answer as done. Focus on what I'm asking now, and don't go back over an earlier answer unless I ask about it or point out a problem with it.
+  ```
+  Leave it out for long analysis, where a later step can show a mistake in an earlier one.
+- **A coding agent that reports changes as done** without test or build output (more likely at low effort) gets this paragraph:
+  ```text
+  When you change code that can be run, built, or type-checked, run a real
+  check that exercises the change before reporting it done: the project's
+  tests, type-checker, or build, or the changed command itself. A syntax-only
+  check, or a check command that failed to start, does not count; if all
+  that is missing is the project's declared dependencies, install them with
+  its own package manager and lockfile (e.g. npm install, pip
+  install -r requirements.txt), never via sudo or the system package manager,
+  unless told not to. Only if no real check can run here, say which one you
+  did not run and why instead of reporting the change as done.
+  ```
 
 ## Changing the prompt
 
@@ -73,4 +96,15 @@ What remains: voice, language, scope, what the agent never does, and the flows n
 
 When a call waits for the user's approval, it ends the turn: the prompt says to write the whole answer first and put that call last.
 
-**Write for the model that will read it.** Instructions accumulate for the weaknesses of older models and then hold back newer ones: step-by-step recipes where the model now plans well, "always run the tests" where it already does, and hard "never without asking" language that makes a careful model stop early. When the model changes, reread every instruction: keep boundaries that protect something real, give explicit permission for work you know is safe ("these tests use throwaway data: run them and fix what fails without asking"), and state what done means, so the model neither stops at a first draft nor runs past the goal. Check the model's own prompting guide: newer reasoning models want goals over micromanaged steps and less shouted emphasis. A prompt that serves several model families is tested on each.
+**Write for the model that will read it.** Instructions accumulate for the weaknesses of older models and then hold back newer ones: step-by-step recipes where the model now plans well, "always run the tests" where it already does, and hard "never without asking" language that makes a careful model stop early. When the model changes, reread every instruction: keep boundaries that protect something real, give explicit permission for work you know is safe ("these tests use throwaway data: run them and fix what fails without asking"), and state what done means, so the model neither stops at a first draft nor runs past the goal. Check the model's own prompting guide: newer reasoning models want goals over micromanaged steps and less shouted emphasis. A prompt that serves several model families is tested on each; support a small set of models with a fairly similar capability profile.
+
+- **The measured size of the change:** Claude Code's system prompt lost over 80% for its newer models with no measurable loss on its coding evaluations. One trade it made, a hard rule for judgement. Before: "In code: default to writing no comments. Never write multi-paragraph docstrings or multi-line comment blocks - one short line max. Don't create planning, decision, or analysis documents unless the user asks for them - work from conversation context, not intermediate files." After: "Write code that reads like the surrounding code: match its comment density, naming, and idiom."
+- **Remove old workarounds before tuning:** refusal steering, tool-call retry shims, "do not be lazy"; remove them and rerun the evals before tuning anything else. Instructions written for an older model can make a newer one write more and repeat tool calls: on one benchmark a prompt audit after a model migration cut cost a further 9% by removing "a mandatory six-step procedure, a scratchpad rule, a verify-twice rule, and instructions that contradicted each other".
+- **Delete "think carefully" lines:** "think carefully", "think step by step" and similar. A reasoning model already thinks before it replies and decides how much; in one chat product removing such a line made replies start sooner, with no clear drop in quality. For a quick answer say "Answer directly." To get less thinking, lower the effort: asking in the system prompt to think less doesn't reliably reduce it.
+- **Name the stops you want:** on a long task a model sometimes stops to report instead of going on, with "a summary that names the next step without taking it, an offer to continue, or a list of choices that don't block the work", and it follows instructions that name these stops:
+  ```
+  When a step doesn't need my input, keep going. Put status notes in the same message as your next action.
+  Stop and ask only when you can't continue without me, or before anything destructive: deleting data, force-pushing, or changing anything outside this repository.
+  ```
+  A rule to keep going means fewer stops, so keep your own check before anything risky or hard to undo.
+- **Tools and settings age with the model too:** shape tools to the model's own abilities, learned by reading its outputs; "the tools that your models once needed might now be constraining them". Effort levels don't mean the same amount of thinking on every model, so a level chosen for the old model doesn't carry over.

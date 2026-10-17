@@ -2,15 +2,18 @@
 
 ## Auditing an eval you didn't build
 
-Before trusting a number, check seven things; evidence you can't see is unknown, not passed.
+Before trusting a number, check ten things; evidence you can't see is unknown, not passed.
 
 1. **The task:** does it measure the outcome that matters? For an agent that acts, the resulting state, not its account.
 2. **The data:** current, representative of the rate being claimed, allowed to be kept; written or model-made expected answers marked; no duplicates or shared conversations across splits.
 3. **The trace:** the output, the score, the model and the usage come from the same execution.
-4. **The grader:** try a known pass, a known fail, an empty output and an answer to a different question. Check the expected answer before blaming the agent, and never tune the agent around a wrong one.
+4. **The grader:** try a known pass, a known fail, an empty output and an answer to a different question. Check the expected answer before blaming the agent, and never tune the agent around a wrong one. When a grader's instructions contradict the docs, test the real API.
 5. **The harness:** break something locally and see it reported as an execution error, not a capability score of zero; check retries, timeouts, results written as they arrive, and that a resumed run is the same run.
 6. **The comparison:** recompute the headline from the raw rows; same cases, judge, config and environment on both sides; error rates and denominators shown; the setting being compared really reached the agent and its subagents.
 7. **The resolution:** is the uncertainty smaller than the smallest improvement worth having? Repetitions on one built index don't measure what rebuilding it would change.
+8. **Stronger models and more thinking score higher:** run a smaller and a more capable model, at low and high effort. If scores don't rise, ambiguous tasks or a miscalibrated grader are often holding them down.
+9. **Headroom:** the most capable model at the highest effort stays well below 100%, or you can't judge how changes move it. A baseline already at about 95% or higher should aim a hillclimb at cost or latency, not quality.
+10. **The gap isn't impossible tasks:** a task that fails every run, however many repetitions, is a common tell of an impossible or ambiguous task.
 
 Report each finding as blocking, important or an improvement, with the artifact, the consequence and the fix.
 
@@ -37,7 +40,7 @@ Report each finding as blocking, important or an improvement, with the artifact,
 
 - **Sample live conversations two ways,** tracked apart: a random share of normal traffic, and every conversation a complaint or a low rating points to.
 - **One production judge per failure you have seen** (an answer that ends with no result, a count that doesn't match the tool, a source read twice, a tool error left unexplained), code where code can tell, each score written back to the trace (1 means the failure is there) so flagged traces can be filtered. Labels a person hasn't checked keep a judge provisional; write the flagged answers to a file for the owner to mark.
-- **Real conversations become cases** through a mining script that masks before writing anything (phones, emails, names from tool output, ids as stable fakes), writes outside git, and adds a case only after the owner reviews it, with the user's wording kept and the case marked as an incident with its date.
+- **Real conversations become cases** through a mining script that masks before writing anything (phones, emails, names from tool output, ids as stable fakes), writes outside git, and adds a case only after the owner reviews it, with the user's wording kept and the case marked as an incident with its date. An agent that reviews code gets the same: past changes that caused incidents, with their fix-forwards and reverts, each bug and its location confirmed by engineers who know the code; it runs against the set daily, and a change to the reviewer is kept only if the score went up.
 - **Map the workflows before writing cases:** each user goal against each source, what the agent should do end to end, what it does today (measured, with the path) and what the data store lacks for it. The map shows which goals have no end-to-end case.
 - **Grade a conversation only once it is over,** by a stated rule (closed, or quiet for a set time).
 - **Alerts need a minimum sample,** carry the failing cases, and group repeats. Tell an incomplete window from a real drop, and a provider outage from a drift in quality.

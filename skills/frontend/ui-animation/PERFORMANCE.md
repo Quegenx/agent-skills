@@ -1,6 +1,6 @@
 # Performance: smooth on a slow phone
 
-At 60 Hz a frame is 16.7 ms and the browser keeps part of it: budget about 10 ms of your work per frame, less on 120 Hz screens.
+At 60 Hz a frame is 16.7 ms and the browser keeps part of it: budget about 10 ms of your work per frame, less on 120 Hz screens, where the whole frame is 8.33 ms.
 
 ## Move only what the compositor can move
 
@@ -30,3 +30,8 @@ Motion's `LazyMotion` with `domAnimation` and the `m` component starts at about 
 ## Measuring
 
 The Performance panel with 4x CPU slowdown: record the interaction and look at the animation frames for long tasks, Layout and Paint entries. The Rendering tab's "Paint flashing" and "Layer borders" show what repaints and what got its own layer. Interaction responsiveness is INP: an animation that starts late because a click handler did heavy work first is an INP problem, not an animation one; respond visually first, then do the work.
+
+- **Headless Chromium ticks at 60 Hz by default,** so a lab rig is capped at 60 fps. Deterministic 120 Hz frame stepping in headless Chrome via DevTools begin-frame control gives exactly 240 frames for 240 begin-frames at 8.33 ms, so "did this frame fit the 120 Hz budget" becomes an exact read rather than a noisy one. Add a frame-rate readout computed in the page from animation-frame timestamps, step through the slow interaction frame by frame timing each one, and run the rig as a nightly job to catch regressions.
+- **Price an effect in frame budget:** a word-by-word fade on streamed text costs a fifth of the frame budget; whether that is worth it is a taste call for a human, with before-and-after recordings.
+- **Count style recalculations:** a single `:root:has()` selector added 24 ms to every DOM change.
+- **Sweep for CPU hitches** beyond the animation itself: highlighting a finished code block froze one page for about a second (the cause is in [the `agent-chat-ui` skill's STREAMING.md](../../ai-agents/agent-chat-ui/STREAMING.md)).

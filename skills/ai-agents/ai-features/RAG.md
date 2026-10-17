@@ -9,6 +9,7 @@ Check this before building the pipeline:
 - **Small, stable knowledge** (it all fits in a few thousand tokens: a few pages of policy, a product's FAQ): put it in the system prompt. No index to keep in sync.
 - **Questions about structured data** ("how many orders last week", "which plan is this user on"): query the database through a tool or function call. Embedding rows and hoping the model counts them gives wrong numbers.
 - **Questions about the whole corpus** ("what are the common complaints across all tickets"): retrieval returns a handful of passages, not the corpus. Aggregate or summarize in a batch job instead.
+- **An agent working in a codebase or a file tree:** give it a search tool (grep, file search) and let it find its own context. Claude Code started with a pre-indexed vector database; it was fast but needed indexing and setup and was fragile across environments, and a Grep tool let the model build its context itself.
 - **People only need to find documents, not read an answer:** semantic search without generation ([VECTOR-SEARCH.md](VECTOR-SEARCH.md)) is cheaper and can't invent anything.
 
 ## Indexing

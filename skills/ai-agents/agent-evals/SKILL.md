@@ -11,8 +11,8 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 |---|---|
 | The harness: what a case grades, the case set and its splits, simulated users, fixtures and the network guard, fake time, run records and statuses, fingerprints, repetitions, intervals, comparisons, snapshots | [HARNESS.md](HARNESS.md) |
 | Grading: code checks, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
-| Auditing an eval, release gates and the baseline, gates that lie, production sampling and alerts | [GATES.md](GATES.md) |
-| Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
+| Auditing an eval (including whether it can tell a better agent from a worse one), release gates and the baseline, gates that lie, production sampling and alerts | [GATES.md](GATES.md) |
+| Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, hillclimbing with keep or revert, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
 | Auditing a product's docs, SDK or a SKILL.md by having several subagents attempt one task: goal, personas, credentials, traces, URL provenance, scoring, the write-up | [DX-AUDIT.md](DX-AUDIT.md) |
 | What to fix in the agent once a failure is understood | the `agent-harness` skill |
 | Judges and classifiers built on typed probabilities | the `jev-decisions` skill |
@@ -26,7 +26,7 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 5. **A low-confidence judge fail is a hint, not a verdict.** Read the conversation before fixing anything.
 6. **One code version, one run.** Fingerprint each run (commit, uncommitted changes, case set, repetitions) and refuse to mix results from changed code.
 7. **Never buy the number.** Don't delete a check, lower a threshold or reword a judge without calibration to get a pass.
-8. **Cases come from real conversations,** and every real failure after launch becomes a case. Written cases only fill gaps, and are marked.
+8. **Cases come from real conversations,** and every real failure after launch becomes a case. Written cases only fill gaps, and are marked. The other view: users try what they expect to work, so a set drawn strictly from traffic may skew easy; it adds hard cases a person judged hard, each with a stated reason ([HARNESS.md](HARNESS.md)).
 
 ## What "100%" means
 

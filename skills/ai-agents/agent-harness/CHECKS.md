@@ -60,7 +60,7 @@ Small code fixes for what the model keeps doing in replies:
 - **A fixed line the shop always sends exactly,** padded with the model's own words, is a violation.
 - **A promise before the fact:** "we'll come tomorrow with 2 bottles" while the order isn't closed yet; a day the reply names that isn't the stored delivery day.
 - **A price written in the same step as the catalogue read** (a caption saying 45 for a 50 product) is checked against the catalogue before it goes out.
-- **A refusal by the provider's content filter** is never sent.
+- **A refusal by the provider's content filter** is never sent. It can arrive as a success: a declined request returns HTTP 200 with a refusal stop reason, so read the stop reason, not the status. The provider's check covers everything in the conversation, including files and search results, so a flag can come from earlier content, and the same conversation sent again can be flagged again; a new conversation avoids that.
 
 ## Fields a model must not set
 
@@ -86,7 +86,7 @@ A model that decides whether an action may run (a shell command, a payment, a de
 
 - **Feed it only trusted input:** what the user wrote and the pending action, never the agent's own prose, its plan or tool results, which can be fabricated or injected.
 - **Roll it out in shadow mode:** run, log, allow; enforce once its decisions are measured. Log both the verdict and what actually happened, so the switch to enforcing is a measured step.
-- **Pattern blocklists for commands stay narrow:** broad patterns (`&&`, `../`, any `rm`) block normal work and lock sessions. Keep code blocks for what is destructive by itself (a recursive forced delete of a root or home, formatting a disk, writing raw to a device, piping a download into a shell), and match human-only actions by exact subcommand (`terraform apply`, not `terraform`). A tripped breaker is a signal to escalate to a person, not to retry.
+- **Pattern blocklists for commands stay narrow:** broad patterns (`&&`, `../`, any `rm`) block normal work and lock sessions. Keep code blocks for what is destructive by itself (a recursive forced delete of a root or home, formatting a disk, writing raw to a device, piping a download into a shell), and match human-only actions by exact subcommand (`terraform apply`, not `terraform`). A tripped breaker is a signal to escalate to a person, not to retry. A block only some work needs is switched on for that work: a careful mode that blocks `rm -rf`, `DROP TABLE`, force-push and `kubectl delete` while touching production (always on, it gets in the way), or a freeze that blocks any edit outside one directory while debugging.
 - **A provider's own safety verdict on a tool call** is another input of this kind: its "flagged" blocks, and its "unavailable" or "skipped" counts as a denial for tools that pay, send or delete.
 
 ## Loop breakers and goal loops

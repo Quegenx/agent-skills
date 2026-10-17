@@ -4,7 +4,7 @@ A flag separates deploying code from turning the behavior on. It lets you releas
 
 ## Rules
 
-- **Kinds of rule:** on/off; a percentage of users; a list or segment of users or tenants (targeting, for phased rollouts: start small, raise while watching errors and latency); a time window (on between two dates, such as a sale). Flags can live in configuration for simple on/off, or in a flag service when you need targeting and changes without a deploy.
+- **Kinds of rule:** on/off; a percentage of users; a list or segment of users or tenants (targeting, for phased rollouts: start small, raise while watching errors and latency; for high-risk changes, employees first, then one percent of users, then everyone); a time window (on between two dates, such as a sale). Flags can live in configuration for simple on/off, or in a flag service when you need targeting and changes without a deploy.
 - **One definition per flag name.** Declare flag keys as constants in one module (`export const FLAGS = { newRanking: "new-ranking" } as const`) and import them, so a typo is a compile error and a search finds every use.
 - **Gate whole endpoints too,** not only branches inside them: when the flag is off, the endpoint answers 404 as if it didn't exist.
 
@@ -24,11 +24,12 @@ export const isEnabledFor = (flagKey: string, subjectId: string, rolloutPercent:
 - **Evaluate once per workflow.** Decide the variant at the start of a request or multi-step flow and pass it down, so a user doesn't switch variants mid-checkout because the rollout percentage changed between steps.
 - **Evaluate on the server** for anything that affects data, money, permissions or security. A client-side flag is presentation only.
 - **Every flag has an owner and a removal condition** written where it's defined: "remove when the new ranking is at 100% for two weeks", with a date to review. Release flags are short-lived; kill switches for risky dependencies may be permanent and are labeled as such.
+- **Classify every flag as a kill switch or a ramp,** and retire each one as soon as it is safe. When flags pile up, open a dedicated thread to coordinate their rollouts and cleanup: one two-week push that shipped anything that could cause a user-visible problem behind a short-lived flag introduced nearly two hundred, and more than half were already cleaned up by the end.
 - **Default to the safe behavior** when the flag service is unreachable.
 
 ## Flags and trunk-based development
 
-Everyone merges small changes to the main branch at least daily instead of keeping long-lived feature branches. Unfinished work ships to production behind a flag that is off, so main is always releasable; turning the flag on is the release, and turning it off is the rollback.
+Everyone merges small changes to the main branch at least daily instead of keeping long-lived feature branches. Unfinished work ships to production behind a flag that is off, so main is always releasable; turning the flag on is the release, and turning it off is the rollback. When the field data shows a flagged change didn't help, turn the flag off and iterate. With automated review, at least one human approval on every PR and unit tests before optimizations, and anything that could cause a user-visible problem behind a short-lived flag, one push merged more than three thousand changes without a customer-facing incident or rollback.
 
 ## Experiments (A/B)
 
