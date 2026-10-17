@@ -1,0 +1,109 @@
+# Accessibility
+
+Making a Flutter app usable with screen readers, large text, switch and voice control, and low vision. "Flutter's standard widgets generate an accessibility tree automatically", so most of the work is keeping standard widgets, labeling what is custom with `Semantics`, giving every control a real action and a large enough target, and leaving room for large fonts. "We strongly encourage you to include an accessibility checklist as a key criteria before shipping your app." Layout and orientation rules are in [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md), widget tests in [TESTING.md](TESTING.md), reduced motion in [../../frontend/ui-animation/SKILL.md](../../frontend/ui-animation/SKILL.md).
+
+## Regulations
+
+- **Standards named:** WCAG 2, EN 301 549 (EU harmonized standard), VPAT; US ADA and Section 508; EU European Accessibility Act (EAA, technical basis EN 301 549).
+
+## Release checklist
+
+- **Active interactions:** no no-op `onPressed`. Every control does something, for example shows a `SnackBar`.
+- **Screen reader testing:** with TalkBack (Android) and VoiceOver (iOS), all controls are described intelligibly.
+- **Contrast ratios:** "at least 4.5:1 between controls or text and the background, with the exception of disabled components".
+- **Context switching:** nothing changes context automatically while the user is typing.
+- **Tappable targets:** "at least 48x48 pixels".
+- **Errors:** important actions can be undone; suggest corrections.
+- **Color vision deficiency testing:** check in colorblind and grayscale modes.
+- **Scale factors:** the UI stays legible at very large text and display scaling.
+
+## Design values
+
+| Item | Value |
+| --- | --- |
+| Contrast, small text (below 18 pt regular or 14 pt bold) | At least 4.5:1 (W3C) |
+| Contrast, large text | At least 3.0:1 (W3C) |
+| Tap target, Android | 48x48 dp |
+| Tap target, iOS | 44x44 pts |
+| Tap target, W3C | 44x44 CSS pixels |
+
+- **Large fonts:** Flutter text widgets respect the OS font-size setting. "Make sure your layout has enough room to render all its contents when the font sizes are increased." Test on a small-screen device at the largest font. iOS: Settings > Accessibility > Display & Text Size. Android: Settings > Font size.
+- **Other platform settings** come through `AccessibilityFeatures` (bold text, high contrast, inverted colors). `MediaQuery` also exposes high contrast, text scaling and whether TalkBack or VoiceOver is on.
+- **Recent additions:** Flutter 3.47 detects Android high contrast and color inversion automatically (`MediaQueryData.highContrast`, `MediaQueryData.invertColors`). Flutter 3.44 added iOS motion accessibility features via `AccessibilityFeatures`, percentage `SemanticsValue` for progress indicators, and on web honors `prefers-reduced-motion` and announces form validation errors via `aria-description`.
+- **Orientation:** locked screens can be an accessibility issue; see [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#orientation).
+- **Keyboard:** keep common flows keyboard-navigable and support mice, trackpads and keyboard shortcuts.
+
+## Semantics and screen readers
+
+- **Customize the tree with the `Semantics` widget** where standard widgets do not describe a control.
+- **Headings (Flutter 3.47):** `header` is a no-op on iOS and Android. Use `Semantics(headingLevel: 1, child: Text('Section Title'))`; details in [VERSIONS.md](VERSIONS.md).
+- **Screen reader voice:** set a specific voice with `TextSpan.locale`. "`MaterialApp.locale` and `Localizations.override` will affect screen reader voices starting from flutter 3.38 release."
+- **Assistive technologies to test:**
+  - Screen readers: TalkBack (Settings > Accessibility > TalkBack), VoiceOver (Settings > Accessibility > VoiceOver). Web: VoiceOver and TalkBack on mobile browsers; VoiceOver, JAWS and NVDA on desktop. Windows: Narrator, NVDA. Linux: Orca.
+  - Mobility: Android Switch Access, Voice Access, Accessibility Menu; iOS Switch Control, Voice Control, AssistiveTouch.
+
+## Web
+
+- **Accessibility is off by default on web** "For performance reasons". Users turn it on with an invisible button, `aria-label="Enable accessibility"`, or you enable it in code:
+
+```dart
+import 'package:flutter/semantics.dart';
+
+void main() {
+  runApp(const MyApp());
+  if (kIsWeb) {
+    SemanticsBinding.instance.ensureSemantics();
+  }
+}
+```
+
+- **Roles:** `Semantics(role: SemanticsRole.list, explicitChildNodes: true, ...)` and `SemanticsRole.listItem` translate to ARIA roles. Prefer standard widgets that already include roles (`TabBar`, `MenuAnchor`, `Table`). The docs' example imports `package:material_ui/material_ui.dart`; the move of Material and Cupertino into packages is in [VERSIONS.md](VERSIONS.md).
+- **See the semantics tree on web:** `flutter run -d chrome --profile --dart-define=FLUTTER_WEB_DEBUG_SHOW_SEMANTICS=true` (profile and release modes).
+
+## Testing
+
+- **Guideline API test.** Put it alongside widget tests or in `test/a11y_test.dart`:
+
+```dart
+import 'package:flutter_test/flutter_test.dart';
+import 'package:your_accessible_app/main.dart';
+
+void main() {
+  testWidgets('Follows a11y guidelines', (tester) async {
+    final SemanticsHandle handle = tester.ensureSemantics();
+    await tester.pumpWidget(const AccessibleApp());
+
+    // Checks that tappable nodes have a minimum size of 48 by 48 pixels
+    // for Android.
+    await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+
+    // Checks that tappable nodes have a minimum size of 44 by 44 pixels
+    // for iOS.
+    await expectLater(tester, meetsGuideline(iOSTapTargetGuideline));
+
+    // Checks that touch targets with a tap or long press action are labeled.
+    await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+
+    // Checks whether semantic nodes meet the minimum text contrast levels.
+    // The recommended text contrast is 3:1 for larger text
+    // (18 point and above regular).
+    await expectLater(tester, meetsGuideline(textContrastGuideline));
+    handle.dispose();
+  });
+}
+```
+
+- **Automated scanners:**
+  - Android: Accessibility Scanner (Settings > Accessibility > Accessibility Scanner > On).
+  - iOS: Xcode > Open Developer Tools > Accessibility Inspector (Inspection > Enable Point to Inspect; Audit > Run Audit).
+  - Web: Chrome DevTools Elements > Accessibility sub-tab on the semantics host.
+
+## Prove it
+
+- **Guideline test passes:** `test/a11y_test.dart` (or an equivalent widget test) runs `androidTapTargetGuideline`, `iOSTapTargetGuideline`, `labeledTapTargetGuideline` and `textContrastGuideline` on each main screen, and all four pass.
+- **Screen reader pass:** with TalkBack and VoiceOver on, every control on the changed screens is announced intelligibly and does something when activated.
+- **Scanners:** Android Accessibility Scanner and the iOS Accessibility Inspector audit report no issues on the changed screens.
+- **Largest font:** on a small-screen device at the largest OS font size, no text is cut off and no overflow stripes appear.
+- **Color:** contrast meets 4.5:1 for small text and 3.0:1 for large text, and the screens still work in grayscale and colorblind modes.
+- **No no-op handlers:** search for empty `onPressed: () {}` callbacks; there are none.
+- **Web builds:** `SemanticsBinding.instance.ensureSemantics()` runs when `kIsWeb`, or the "Enable accessibility" button is documented for users; the semantics debug run shows labeled nodes.

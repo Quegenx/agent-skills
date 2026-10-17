@@ -1,0 +1,40 @@
+---
+name: aso
+description: "Optimizes App Store and Google Play listings: the ASO audit and its checks, keyword research, metadata per store with every field limit, localization and category, the icon, screenshots and preview videos, custom product pages, product page optimization and store listing experiments, in-app events, App Clips and featuring, competitor and market tracking, seasonal changes, rating prompts and review replies, and Play-specific ASO. Use when auditing or rewriting a store listing, choosing keywords, planning screenshots or a preview, setting up a custom product page, A/B test or in-app event, tracking competitors, or raising an app's rating."
+---
+
+# ASO
+
+App store optimization decides two numbers: how often the app appears in search and charts (the indexed text, category and user behaviour such as downloads and ratings) and how often an impression becomes an install (icon, first screenshots, preview, rating). Apple's and Google's docs are the authority for every limit and rule here; the practice and lift figures tagged [eronred] (third-party ASO skills) and [rorkai] (the asc CLI authors' skills) are third-party, and where they differ from the official docs, each file gives both. Data that comes from the third-party Appeeky API (keyword volumes, chart estimates, download estimates) is labelled as such. Uploading metadata and assets is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md); paid acquisition is [../app-growth/SKILL.md](../app-growth/SKILL.md).
+
+| The job | Read |
+|---|---|
+| Scoring a listing, the six offline metadata checks, keyword gaps with data, app tags, Apple's search plan, reading your own download and revenue numbers | [AUDIT.md](AUDIT.md) |
+| Field limits per store, what is indexed, keyword research and scoring, name, subtitle, keyword field, description, promotional text, metadata rejection rules, localization, category | [KEYWORDS-AND-METADATA.md](KEYWORDS-AND-METADATA.md) |
+| The icon, screenshot sizes and slot strategy, app preview specs and strategy, product page header and search assets | [VISUALS.md](VISUALS.md) |
+| Custom product pages, product page optimization, how to run a store test, in-app events, App Clips, getting featured | [PRODUCT-PAGES.md](PRODUCT-PAGES.md) |
+| Competitor analysis and weekly tracking, market movers and pulse, seasonal ASO, trending moments, the Appeeky reference | [COMPETITORS-AND-MARKET.md](COMPETITORS-AND-MARKET.md) |
+| How each store treats ratings, when to prompt, the iOS and Play prompt APIs and quotas, replying to reviews, recovering a rating | [RATINGS-AND-REVIEWS.md](RATINGS-AND-REVIEWS.md) |
+| Google Play: listing fields, copy, graphic assets, preview video, metadata policy, category and tags, custom store listings, store listing experiments | [ANDROID.md](ANDROID.md) |
+
+## Before starting [eronred]
+
+- **Read `app-marketing-context.md`** in the workspace first; if it doesn't exist, offer once per session to create it. Default country is US.
+- **"Optimize my app" is ambiguous:** ask one question: search ranking (ASO), conversion (icon, screenshots), revenue (paywall) or retention. "Ratings" means replying to reviews or prompting for new ones. A named competitor means a one-time teardown or ongoing weekly tracking.
+- **Common sequences:** whole listing = audit, keyword research, metadata; beat a competitor = competitor analysis, keyword research, metadata; holiday push = seasonal ASO, metadata, in-app event; new country = localization, keyword research per country, metadata; bad reviews = review replies plus rating prompts; pick a category = category, then audit; ads with different landing pages = custom product pages, then the ad campaigns; app rejected = recover the rejection, then audit; flat revenue = your own numbers ([AUDIT.md](AUDIT.md#reading-your-own-numbers-eronred)), then monetization in app-growth.
+- **Keyword discovery is research, not the audit or the metadata rewrite:** the metadata step implements, it doesn't research.
+
+## The rules
+
+1. **Check every field against the official limit:** Apple name and subtitle 30, keywords 100 (bytes in App Store Connect Help, characters on Apple's marketing pages: count bytes), promotional text 170, description 4000; Play name 30, short description 80, full description 4000.
+2. **Spend each indexed character once:** no word repeated across the name, subtitle, keyword field and category; keywords comma-separated with no spaces; no app name, company name, "app", plurals of included words, or filler.
+3. **Never game the metadata:** no trademarks, competitor or other-platform names, prices, ranking claims ("#1", "Best") or unverifiable claims in names, subtitles, keywords, screenshots, previews or event copy (Apple 2.3.7, 2.3.10; Google's metadata policy).
+4. **Research keywords per market with data;** never translate the primary list and never guess popularity.
+5. **Show the app in use, first:** screenshot 1 and the first seconds of a muted, autoplaying preview carry the decision; previews only from screen captures of the app.
+6. **Test one change at a time** and apply a treatment only once the store reports the confidence it requires (Apple: at least 90%).
+7. **Ask for ratings only after value,** inside the OS quota (iOS three times per 365 days; Play's time-bound quota), and never put a question in front of Play's review card.
+8. **Never trade a keyword that already ranks** for seasonal speculation: swap only evergreen keywords that already underperform, and give every seasonal change a revert date.
+
+## Prove it
+
+Every locale's fields fit the official limits with no repeated words across the indexed fields; no metadata or asset contains a price, ranking claim, competitor or other-platform name; every keyword choice has a data source; screenshot 1 shows the app in use; every running test changes one thing; rating prompts fire only after the activation event and within the quota; and each file's own Prove it checks pass for the parts you touched.

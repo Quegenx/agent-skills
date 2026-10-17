@@ -1,6 +1,6 @@
 # Agent skills
 
-60 skills for coding agents, in eight sets:
+66 skills for coding agents, in nine sets:
 
 | Folder | What it's for |
 |---|---|
@@ -12,6 +12,7 @@
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, and animation in general. 3 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy) and k6 load tests. 4 skills. |
+| [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention). 6 skills. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -182,6 +183,17 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 | [posthog](./skills/monitoring/posthog/SKILL.md) | PostHog for web, Next.js, Node, React Native and Flutter: setup, the reverse proxy, consent and cookieless mode, events and identity, feature flags, experiments and their health, surveys, web analytics, session replay and Replay Vision, error tracking, logs and metrics, LLM and MCP analytics, HogQL with examples and tables, insights and dashboards, metric modeling, the data warehouse, endpoints, workflows, ingestion warnings and costs, the MCP server |
 | [grafana](./skills/monitoring/grafana/SKILL.md) | The Grafana stack: dashboards, alerting and OnCall, provisioning and Grafana as code, Prometheus, PromQL and Mimir, cardinality and cost, Loki and LogQL, Tempo and TraceQL, Pyroscope, Alloy, OpenTelemetry and Beyla, application and database observability, Faro, infrastructure, synthetic monitoring, the Grafana MCP server |
 | [k6](./skills/monitoring/k6/SKILL.md) | Load and performance tests with k6: test types, executors, scenarios, thresholds and checks, browser tests, a website performance suite with CI templates, Grafana Cloud k6 runs and results, test maintenance and trend analysis |
+
+## Mobile
+
+| Skill | Covers |
+|---|---|
+| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter from the official docs and the Flutter team's skills: architecture (layers, MVVM, commands), routing and deep links, networking and JSON, localization, responsive and adaptive layout, flutter_scale_kit, performance, accessibility, testing, platform channels and Pigeon, building and releasing for iOS and Android, versions and breaking changes, the MCP server and agent tooling |
+| [dart](./skills/mobile/dart/SKILL.md) | Dart from dart.dev and the Dart team's skills: Effective Dart style, docs, usage and design, the Dart 3 language (records, patterns, class modifiers, extension types, primary constructors), async and isolates, versions, analysis and lints, packages and pub, testing, CLI apps, FFI |
+| [app-store-connect](./skills/mobile/app-store-connect/SKILL.md) | Shipping to the App Store: the asc CLI, builds and signing, TestFlight and release, ad hoc distribution, the App Review Guidelines, a preflight checklist by app type, privacy manifests, ATT and account deletion, metadata and screenshots, pricing and subscriptions, in-app events, analytics and crashes |
+| [google-play](./skills/mobile/google-play/SKILL.md) | Shipping to Google Play: the gplay CLI, builds, signing and target API deadlines, testing tracks and the 12-tester rule, staged rollouts, policy and Data safety, Android vitals, billing and purchase verification, pricing, the store listing, reviews and reports |
+| [aso](./skills/mobile/aso/SKILL.md) | App store optimization for both stores: audits, keywords and metadata, icons, screenshots and previews, custom product pages and experiments, in-app events, competitors and the market, ratings and reviews, Google Play specifics |
+| [app-growth](./skills/mobile/app-growth/SKILL.md) | Growing an app: launch, PR and referrals, analytics and attribution (ATT, AdAttributionKit, SKAdNetwork), onboarding, paywalls, retention and subscription offers, Apple Ads and its APIs, Google App campaigns, Meta and TikTok app ads, ad creatives, budgets and ROAS |
 
 ## Reference code
 

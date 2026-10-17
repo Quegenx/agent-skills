@@ -1,0 +1,35 @@
+---
+name: google-play
+description: "Ships Android apps on Google Play the way Google's Play Console Help and Android docs prescribe, scripted with the third-party gplay CLI: service-account auth, edits and the Developer API, app bundles, Play App Signing, version codes and target API levels, testing tracks, production access for new personal accounts, staged rollouts and halts, preflight and readiness checks, Data safety, account deletion and permission policy, store listings, custom listings and experiments, one-time products, subscriptions, regional pricing, server-side purchase verification, RTDN, Play Integrity, reviews, in-app review and update APIs, reports, Android vitals and pre-launch reports. Use when releasing or updating an Android, Flutter or React Native app on Google Play, a Play upload or review is rejected, setting up tracks or a rollout, filling Data safety or a permission declaration, editing the store listing, selling products or subscriptions, or reading vitals and reviews."
+---
+
+# Google Play
+
+Google Play takes a signed Android App Bundle and changes the live app only through an edit: a copy of the app's published state that you change, validate and commit in one step, with changes then waiting in "Changes not yet sent for review" until sent. Google's Play Console Help and Android developer docs are the authority in every file; the `gplay` CLI used to script it is third-party (not a Google tool), and where its skills disagree with Google or with themselves, both are stated and Google wins. This covers the Android side of Flutter and React Native apps too: Flutter build commands are in [../flutter/SKILL.md](../flutter/SKILL.md), keyword and conversion strategy is in [../aso/SKILL.md](../aso/SKILL.md), and the App Store side is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
+
+| The job | Read |
+|---|---|
+| The gplay CLI: install, flags and output, service-account auth and permissions, profiles, edits, the Developer API endpoints and quotas, users and grants, migrating from fastlane | [CLI.md](CLI.md) |
+| App bundles and size limits, Gradle builds and signing config, version codes, R8 and mapping files, Play App Signing and key resets, target API levels, releasing with gplay, release notes, review and publishing | [BUILD-AND-RELEASE.md](BUILD-AND-RELEASE.md) |
+| Internal, closed and open tracks, which build a tester gets, managing testers, production access for new personal accounts, staged rollouts, halting, rollback, rollout schedules | [TESTING-AND-ROLLOUT.md](TESTING-AND-ROLLOUT.md) |
+| The check ladder, offline `gplay preflight` and its scanners, `gplay validate` and Google Checks, common rejections, Data safety, account deletion, restricted permissions, privacy policy and disclosure, enforcement | [POLICY-AND-PREFLIGHT.md](POLICY-AND-PREFLIGHT.md) |
+| Store listing text limits, metadata policy, graphic asset specs, preview video, metadata as files, screenshots, custom store listings, store listing experiments | [LISTING-AND-METADATA.md](LISTING-AND-METADATA.md) |
+| One-time products and subscriptions with base plans and offers, test purchases, server-side verification, RTDN, orders and voided purchases, Billing Library deadlines, Play Integrity API | [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md) |
+| Regional and PPP prices: `--regions-version`, update masks, fetch and merge, money format, migrating existing subscribers | [PRICING.md](PRICING.md) |
+| Replying to reviews, the in-app review and in-app update APIs, financial and stats reports from Cloud Storage | [REVIEWS-AND-REPORTS.md](REVIEWS-AND-REPORTS.md) |
+| Core vitals and bad-behaviour thresholds, memory thresholds, enforcement, vitals from the CLI, the anomaly gate, pre-launch reports | [VITALS.md](VITALS.md) |
+
+## The rules
+
+1. **Never use review as a troubleshooting step.** Google says submitting non-compliant apps for reviewers to find issues leads to rejections, review delays and longer appeals; check from cheapest to most expensive (`gplay preflight`, `gplay validate`, Google Checks, `gplay release --dry-run`) and report every failure together.
+2. **Give every build a version code strictly higher than all earlier releases on every track.** A device gets the highest compatible version code on any track its user is eligible for, and everyone is eligible for production. Play has no automatic rollback, so the fix for a bad build is a new build with a higher version code.
+3. **Sign the bundle with the upload key registered in Play App Signing,** keep it separate from the Google-held app signing key, never ship a keystore, and register Google's app signing key fingerprints (all three with hybrid signing) with Maps, OAuth and `assetlinks.json`.
+4. **Read the target API level from Google's current requirement, don't recall it:** Android 16 (API 36) for new phone apps and updates from August 31, 2026, at https://support.google.com/googleplay/android-developer/answer/11926878. Uploads below the floor are rejected.
+5. **Keep Data safety, permissions and account deletion true at all times.** Declare every SDK's data in one global form, request only permissions needed for features promoted in the listing (with a declaration for restricted ones), and if the app creates accounts, offer both an in-app deletion path and a web deletion link that deletes the data rather than freezing the account.
+6. **Verify every purchase on the server before granting it,** acknowledge within 3 days or it is refunded, remove entitlements for voided purchases, and ship Billing Library 8 or later by August 31, 2026.
+7. **Stage updates, never the first release.** Staged rollouts only work for app updates; nothing increases on its own; a halt stops new users while existing ones keep the build. New personal accounts created after November 13, 2023 reach production only after a closed test with at least 12 testers opted in for 14 consecutive days.
+8. **Upload the mapping file for every release and watch Google's thresholds:** a 1.09% user-perceived crash rate and 0.47% ANR rate overall, on a 28-day average, beyond which Play may reduce visibility and warn on the listing.
+
+## Prove it
+
+`gplay preflight --file app-release.aab --fail-on error` exits 0; `gplay validate --strict` and `gplay release ... --dry-run` pass; the new `versionCode` is above every code `gplay tracks list` shows; the release is in review or published, not waiting in "Changes not yet sent for review"; the Data safety section shows the green check mark; and every file's own Prove it checks pass for the parts you touched.
