@@ -24,7 +24,7 @@ Before writing or reviewing, find where the strings live (calls like `t(`, `i18n
 
 ## Build strings whole, for every language
 
-Never assemble a sentence around a variable (`"You have " + n + " new messages"`); word order changes per language. Write one message with placeholders and plural rules (ICU MessageFormat: `{count, plural, =0 {No new messages} one {# new message} other {# new messages}}`). Many languages have more than two plural forms. Format numbers, currency, dates, relative times and lists with `Intl` and the user's locale, never by hand. In Hebrew and other RTL languages, isolate embedded English, numbers and codes (`<bdi>`), and for Hebrew follow the gender approach in [HEBREW.md](../anti-slop-writing/HEBREW.md) (verbal nouns on buttons: שמירה, שליחה, ביטול).
+Never assemble a sentence around a variable (`"You have " + n + " new messages"`); word order changes per language. Write one message with placeholders and plural rules (ICU MessageFormat: `{count, plural, =0 {No new messages} one {# new message} other {# new messages}}`). Many languages have more than two plural forms. Format numbers, currency, dates, relative times and lists with `Intl` and the user's locale, never by hand. In Hebrew and other RTL languages, isolate embedded English, numbers and codes (`<bdi>`). A time reads `HH:MM` left to right in every locale (React Aria wraps it in an LRI, U+2066, and a closing U+2069), but don't force left to right on an Arabic `Intl` date: its separators carry right-to-left marks, and forcing gave `2 2022/ 12/` instead of `2022/12/2`. For Hebrew follow the gender approach in [HEBREW.md](../anti-slop-writing/HEBREW.md) (verbal nouns on buttons: שמירה, שליחה, ביטול).
 
 ## Review format
 

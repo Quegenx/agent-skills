@@ -11,6 +11,7 @@ The model knows what a card entrance is. It doesn't know this card should take 2
 |---|---|
 | How long, which curve, which spring; staggers, overlaps, distance, direction | [TIMING.md](TIMING.md) |
 | Enter and exit, layout and shared-element transitions, a card that opens a modal and owns the URL, lists, modals, trays, a button that grows into a panel, toasts, feedback at the tap, icons that rotate into each other, numbers, live charts, gestures, scroll, galleries and carousels, where delight goes | [PATTERNS.md](PATTERNS.md) |
+| A sheet swiped away on native scroll: snap points, swipe-synced animation, stacking, the software keyboard | [SHEETS.md](SHEETS.md) |
 | Per-frame math in your own loop: lerp and exponential approach, a spring by hand, physics, facing the direction of travel, sine waves, sawtooth loops, controlled randomness, piecewise segments | [MATH.md](MATH.md) |
 | Smooth on a slow phone: which properties, GPU vs main thread, React re-renders, reduced motion, measuring | [PERFORMANCE.md](PERFORMANCE.md) |
 

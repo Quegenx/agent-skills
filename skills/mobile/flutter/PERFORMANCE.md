@@ -86,6 +86,7 @@ Future<List<Photo>> getPhotos() async {
 ```
 
 - **Repeated work:** long-lived background workers with `Isolate.spawn()`, `Isolate.exit()`, `ReceivePort`, `SendPort` and `send()`; or the `worker_manager` package, `isolate_agents`, `IsolateNameServer`.
+- **On-device models in an adaptive UI** (community practice, [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)): "Keep the model small and quantized, sample sensors at the lowest rate that still feels responsive, and gate expensive work on battery and thermal state". Move the `interpreter.run` call to a background isolate (via `compute` or a long-lived isolate) if the model is heavy enough to jank the frame.
 - **Plugins in a background isolate** need `BackgroundIsolateBinaryMessenger`:
 
 ```dart

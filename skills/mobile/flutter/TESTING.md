@@ -13,6 +13,7 @@ Flutter has three kinds of test: a unit test covers one function, method or clas
 | Dependencies | Few | More | Most |
 | Execution speed | Quick | Quick | Slow |
 
+- **Sources differ on the mix:** one community reference app (Emin Şahin's 100% coverage post) ran about 80% unit, 15% widget and 5% integration tests, "invest heavily in unit tests"; [../../architecture/testing/INTEGRATION.md](../../architecture/testing/INTEGRATION.md) puts integration tests first for services, with unit tests at roughly 15 to 25%.
 - **Unit tests mock their dependencies** and generally don't read from or write to disk, render to screen, or receive user actions from outside the process. For plugin code in unit tests see https://docs.flutter.dev/testing/plugins-in-tests; for testing plugins themselves, https://docs.flutter.dev/testing/testing-plugins.
 - **Integration tests with native interaction need `patrol`** (third party): it adds permission dialogs, notifications and platform views. First test: https://patrol.leancode.co/documentation/write-your-first-test. Setup: https://patrol.leancode.co/getting-started.
 - **CI services** listed for Flutter: fastlane, Appcircle, Travis, Cirrus, Codemagic (Flutter and Patrol), Bitrise. CI release lanes are in [BUILD-AND-RELEASE.md](BUILD-AND-RELEASE.md).
@@ -77,6 +78,34 @@ test('returns an Album if the http call completes successfully', () async {
 ```
 
 - **Fakes are the other option:** the architecture case study uses hand-written fakes (`FakeBookingRepository`) and `package:mocktail` for `MockGoRouter`.
+- **mocktail needs no code generation:** its pub.dev page says it mocks "without the need for manual mocks or code generation", so there is no `build_runner` step. Define a mock by extending `Mock` and implementing the interface; stubs and verifies take closures. From a community post (Emin Şahin, "How I Achieved 100% Test Coverage in a Flutter Enterprise App"):
+
+```dart
+class MockAuthRepository extends Mock implements IAuthRepository {}
+
+// Usage
+when(() => mockRepo.login(any(), any()))
+    .thenAnswer((_) async => Right(user));
+```
+
+- **Sources differ on how much to mock:** that post mocks every layer (use cases against a mocked repository, BLoCs against a mocked use case) and verifies calls on reads; [../../architecture/testing/SKILL.md](../../architecture/testing/SKILL.md) mocks only boundaries you don't own and records commands, not queries.
+- **BLoC tests with `bloc_test`** (bloclibrary.dev, community practice in the same post): `blocTest` builds the bloc, acts on it and lists the states it must emit, in order.
+
+```dart
+blocTest<AuthBloc, AuthState>(
+  'emits [loading, authenticated] when login succeeds',
+  build: () {
+    when(() => mockLoginUseCase(any()))
+        .thenAnswer((_) async => Right(user));
+    return AuthBloc(loginUseCase: mockLoginUseCase);
+  },
+  act: (bloc) => bloc.add(LoginRequested(email: 'test@test.com', password: '123')),
+  expect: () => [
+    const AuthState.loading(),
+    AuthState.authenticated(user),
+  ],
+);
+```
 
 ## Widget tests
 
@@ -206,6 +235,28 @@ void main() {
     expect(find.text('Buy groceries'), findsNothing);
   });
 }
+```
+
+**Pin context in context-aware screens** (community practice, from the post behind [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)): "there's a distribution of home screens, one per context. The practical fix is to make context an _injectable input_ so you can pin it in tests." Feed the screen a fabricated `UiContext` and assert the resulting layout, after one more pump for the stream to emit. `FakeEngine` is not defined in the post.
+
+```dart
+testWidgets('moving commuter gets the quick action', (tester) async {
+  const ctx = UiContext(
+    isNight: false,
+    isMoving: true,
+    ambientLux: 12000,
+    batterySaver: true,
+    predictedIntent: Intent.quickAction,
+  );
+
+  await tester.pumpWidget(
+    MaterialApp(home: HomeScreen(engine: FakeEngine(ctx))),
+  );
+  await tester.pump(); // let the stream emit
+
+  expect(find.byKey(const Key('primaryActionCard')), findsOneWidget);
+  expect(find.byKey(const Key('discoveryGrid')), findsNothing);
+});
 ```
 
 More widget-test recipes (finders, scrolling, tap, drag and enter text, orientation) are under https://docs.flutter.dev/cookbook/testing/widget/finders.

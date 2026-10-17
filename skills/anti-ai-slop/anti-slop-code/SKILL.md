@@ -37,9 +37,9 @@ Don't stop at local polish. For each meaningful change ask: is there a reframing
 
 The fundamentals are the review checklist, whoever typed the code: does this rule belong in the domain model, or is it a copy in a handler? Will this change break an existing API client? What happens when this network call fails: is there a timeout, a bounded retry, an idempotency key, an outbox for the message? The agent changes how fast the code appears, not what makes it correct.
 
-**Before "does it work", ask "should it exist".** When building is cheap, code arrives from everyone (engineers, agents, designers, PMs), and checking that it runs is the easy part. For a new feature, screen, setting or flow:
+**Before "does it work", ask "should it exist".** When building is cheap, code arrives from everyone (engineers, agents, designers, PMs, marketing, sales), and checking that it runs is the easy part. For a new feature, screen, setting or flow:
 - **The need:** who asked for it, and what evidence says users need it (a request, a ticket, a metric), not only that it could be built.
-- **What already exists:** search for the feature, component or flow that already covers part of it. Extending or refactoring that beats a second way to do the same thing; two date pickers, two settings pages or two ways to share are a UX problem every user pays for.
+- **What already exists:** search for the feature, component or flow that already covers part of it. Estimate how far the new feature is needed against refactoring what already exists. Extending or refactoring that beats a second way to do the same thing; two date pickers, two settings pages or two ways to share are a UX problem every user pays for.
 - **What it touches:** open the change running (a preview deployment of the branch), use it, and walk the screens and shared components it changed, not only the new one. Check it matches the patterns around it.
 - **The verdict can be "don't ship":** not needed, or fold it into what exists. Saying so is part of the review, not a failure of it.
 

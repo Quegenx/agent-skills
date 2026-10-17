@@ -148,6 +148,18 @@ class Policy {
 }
 ```
 
+### Context-aware layouts (optional)
+
+Community practice from one Flutter Community post (Rudraksh Shukla, "The Death of the Static UI"), whose author calls its code "illustrative and simplified". In a context-aware screen "the interface has conditional branches, and an on-device model decides which branch to render", fed by sensors, system state and usage history. The reactive plumbing stays the same (`StreamBuilder`, `ValueListenableBuilder`, Riverpod, Bloc pointed at a stream of context).
+
+- **Write the branches as if/then rules:** moving (accelerometer, gyroscope): enlarge touch targets and simplify the layout; bright light outdoors: boost contrast; night: dark mode; usage history: "promote the three features this user actually touches, demote the ones they never open"; dying battery or weak connection: "drop to a minimalist, low-power layout".
+- **Branch whole layouts on the predicted intent,** as in [Branch at a breakpoint](#branch-at-a-breakpoint): one shared list of actions, a large primary-action card for a user in a hurry, a denser discovery grid for browsing. Give each branch root a `Key` so a test can find it ([TESTING.md](TESTING.md#widget-tests)).
+- **Keep a stability budget:** "users build spatial memory, and moving the button they reach for by reflex is a bug, not a feature. Adapt at sensible boundaries (app launch, a clear context change), not continuously."
+- **Let users see and reset adaptation:** give them "a visible, easy way to see and reset how the app has adapted to them".
+- **Make accessibility an explicit adaptation rule,** "rather than hoping it falls out": the post calls real-time touch-target enlargement and automatic WCAG-compliant contrast natural fits for adaptive systems. Values: [ACCESSIBILITY.md](ACCESSIBILITY.md#design-values).
+- **Design review approves rules and bounds,** not one comp: "designers specify how far the UI is allowed to move, not one frozen state."
+- **Signal and model packages** named in the post: [PLATFORM-INTEGRATION.md](PLATFORM-INTEGRATION.md#pick-the-mechanism). Battery cost: [PERFORMANCE.md](PERFORMANCE.md#isolates).
+
 ## Platform adaptations
 
 - **Automatic, no code needed:**

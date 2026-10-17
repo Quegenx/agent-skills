@@ -260,6 +260,32 @@ class ProfileView extends StatelessWidget {
 - **Pros:** less duplication, better testability and readability. **Cons:** more classes and cognitive load, more mocks, boilerplate.
 - **Rules:** use cases depend on repositories; use cases and repositories are many to many; a view model can depend on one or more use cases and one or more repositories at once.
 
+### CQRS variant (community)
+
+One developer's Clean Architecture pattern (Emin Şahin, "CQRS Pattern in Flutter", DEV), community practice and not Flutter team guidance. It puts operations in use cases, including pass-through reads such as `CheckUserExists`, which conflicts with the official advice above to add use cases only when needed. The CQRS idea itself is in [../../architecture/domain-modeling/EVENTS.md](../../architecture/domain-modeling/EVENTS.md#cqrs).
+
+- **Type use cases by their nature:** "Name your operations by what they DO, and type them by their NATURE (read vs write)." With a separate base type for reads and writes, the post says, team members "can easily find all write vs read operations".
+- **Not the Compass `Command`:** a CQRS command is a write use case in the domain layer; a Compass [command](#commands) is a view model property that wraps any action, read or write, for the view.
+- **`FutureResult<T>` is never defined** in the post; its `fold((failure) => ..., (value) => ...)` calls point to an Either-style type rather than the Compass `Result`.
+
+```dart
+/// Base class for commands that mutate state
+abstract class Command<Params, Output> {
+  const Command();
+
+  FutureResult<Output> call(Params params);
+}
+
+/// Base class for queries that read data
+abstract class Query<Params, Output> {
+  const Query();
+
+  FutureResult<Output> call(Params params);
+}
+```
+
+- **No-params and stream variants:** the post adds `CommandNoParams<Output>` and `QueryNoParams<Output>` (`call()` with no argument), and `StreamQuery<Params, Output>` and `StreamCommand<Params, Output>` returning `StreamResult<Output>`, for example a `WatchAuthChanges` query that emits whenever the auth state changes.
+
 ## Dependency injection
 
 - **Use `package:provider`.** Teams at Google recommend it for DI, based on their experience building Flutter apps. The skill names `provider` or `get_it`.

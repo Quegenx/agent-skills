@@ -197,6 +197,8 @@ transition={{
 - **Focus moves with it:** into the dialog when it opens, back to the trigger when it closes; motion never delays focus or input.
 - **Dismiss mid-animation:** Escape or a backdrop click during the entrance reverses from where it is.
 - **Build it as a pipeline:** kciter's notification is three pieces: the background dims (opacity 0 to 0.5, 200 ms), the card slides up into place (300 ms, ease-out), the content fades in (opacity 0 to 1, 200 ms). Each can be tuned alone ([TIMING.md](TIMING.md#composing-a-sequence)).
+- **A popup in CSS alone:** the Base UI select popup on Florian Kiem's "Tips to improve your product" page is `origin-[var(--transform-origin)] transition-all duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0`, the origin taken from the anchor.
+- **A sheet swiped away on native scroll** (scroll snap and view timelines, no JavaScript touch handling) is in [SHEETS.md](SHEETS.md).
 
 ## Trays: a flow in steps over the current screen
 
@@ -257,6 +259,15 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
 ## Buttons, presses and feedback
 
 - Press: `whileTap={{ scale: 0.97 }}` with the `ui` spring; hover: a colour or shadow change, not a jump in size. **Every pressable element has a pressed state, and it is stronger than the hover** (rest, hover, press, each a step further). Playful brands move (a slight scale); professional tools shift tone. Keep it subtle and under 100 ms in: some buttons are pressed hundreds of times a day. Component details beyond motion are in the `anti-slop-ui` skill's DETAILS.md. A like button's heart "shrinks for an instant and then springs back"; the overshoot "gives the press a tactile sense of feedback" (kciter). The RNDR Realm dropdown trigger also grows on hover (`whileHover={{ scale: 1.03 }}`); this line keeps hover to colour or shadow.
+- **Press in faster than release.** Kiem's demos press in quicker than they let go: a tone-only press goes darker in 90ms and back over 240ms (`[transition:background-color_240ms_ease-out]`, `active:[transition:background-color_90ms_ease-out]`), a playful one scales in over 240ms and back over 420ms. With reduced motion the press keeps its colour change and drops the scale (`motion-reduce:[transition:background-color_180ms_ease-out] motion-reduce:active:scale-100`).
+- **Playful press, both ways:** Kiem's playful press goes to `active:scale-[0.94]` over 240ms on a `linear()` spring that overshoots about 16%; the line above says 0.97 and under 100 ms in, and [TIMING.md](TIMING.md#duration-by-element) gives a press 120-180 ms and 5-10% overshoot. Neither wins.
+
+```
+[--press-spring:linear(0,0.09,0.298,0.547,0.779,0.963,1.085,1.148,1.163,1.145,1.11,1.069,1.032,1.003,0.985,0.975,0.974,0.977,0.983,0.989,1)]
+playful: [transition:background-color_180ms_ease-out,scale_420ms_var(--press-spring)]
+         active:[transition:background-color_180ms_ease-out,scale_240ms_var(--press-spring)]
+         active:scale-[0.94]
+```
 - **Stretch a switch while it is held.** Fast-moving things look longer, so a thumb that widens toward the side it will travel to while pressed, then snaps across and back to round on release, feels physical. The stretch's size and speed set the character: a small quick stretch feels light, a longer one with a slower travel feels heavy. Match it to the brand.
 
 ```css
@@ -272,6 +283,7 @@ Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `
 ```
 
   Use a real `<button role="switch" aria-checked>`, so it works with Space and Enter, With reduced motion, keep the stretch (it is feedback) and make the travel instant.
+- **Kiem's switch, for numbers:** a 72×32 track with a 40px pill thumb placed by `left` and `right` (`left-[29px] right-[3px]` on, `left-[3px] right-[29px]` off), so stretching moves one edge. Travel is `transition-[left,right] duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)]`; while held, `group-active:duration-[160ms] group-active:ease-out` moves the far edge 9px toward the travel side (`group-active:left-[20px]` on, `group-active:right-[20px]` off); the track colour is `transition-colors duration-200 ease-out`. With reduced motion, `motion-reduce:transition-none` on track and thumb makes the stretch instant too, where the line above animates it. `left` and `right` are layout properties, which [PERFORMANCE.md](PERFORMANCE.md) keeps out of animations.
 - **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in the `performance-and-caching` skill's BROWSER.md.
 - Success lands once (a check that draws in 200-300 ms), errors shake horizontally 2-3 times over 300-400 ms with no bounce, and the message stays.
 
@@ -382,9 +394,15 @@ const x = useMotionValue(0);                                  // slideWidth, max
 
 Snap to where the throw was heading (position plus velocity), not to the nearest slide from the release point, or a flick lands back where it started. Keep keyboard and buttons working for the same moves.
 
+- **A scroll that starts on a row doesn't toggle it:** Kiem's list-row toggles record the pointer position on `pointerdown` (primary pointer only), count the click as a tap only if `Math.hypot(dx, dy) <= 12` px at `pointerup`, cancel on `pointercancel`, and in `onClick` ignore non-taps but always accept keyboard clicks (`e.detail === 0`):
+
+```js
+onClick:e=>{let t=i.current;i.current=!1,!(e.detail!==0&&!t)&&n()}
+```
+
 ## Scroll-linked motion
 
-- **Driven by scroll, not triggered by it:** `const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })`, then `useTransform(scrollYProgress, [0, 1], [40, -40])` into `style`; no re-renders, and it scrubs both ways. In CSS, `animation-timeline: view()` does the same on the compositor where supported.
+- **Driven by scroll, not triggered by it:** `const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })`, then `useTransform(scrollYProgress, [0, 1], [40, -40])` into `style`; no re-renders, and it scrubs both ways. In CSS, `animation-timeline: view()` does the same on the compositor where supported; inside a clipped scroller, `view-timeline-inset` moves where the timeline starts (the swipeable sheet's `0 100dvh` in [SHEETS.md](SHEETS.md)).
 - **Reveal once, quietly:** content appearing as it scrolls in takes 8-16 px and 300-500 ms once, not on every pass, and never hides content a fast scroller or a search crawler needs.
 - Parallax stays small (a few percent of the scroll distance) and turns off with reduced motion.
 

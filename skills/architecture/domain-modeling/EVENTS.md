@@ -169,7 +169,7 @@ Use an established event store for production instead of a hand-rolled one; you 
 CQRS means **the model for changing data and the model for reading it are different**, nothing more. Writes enforce rules on aggregates; reads return shapes built for the screen, joining and flattening freely. It prescribes no library, no separate database and no messaging.
 
 - **Commands** express intent (`placeOrder`, `completeTodo`), go through the domain model, and return a result (often just success or an ID). **Queries** never change state and can read straight from tables or views, skipping the aggregate.
-- **Convex already separates them:** `query` functions are read-only and reactive; `mutation` functions are the transactional write path. In Supabase or a Node API, keep separate command handlers and query functions, the queries free to use views or RPC functions shaped for the UI.
+- **Convex already separates them:** `query` functions are read-only and reactive; `mutation` functions are the transactional write path. In Supabase or a Node API, keep separate command handlers and query functions, the queries free to use views or RPC functions shaped for the UI. In a Flutter client, one community post gives use cases separate `Command` and `Query` base types: [../../mobile/flutter/ARCHITECTURE.md](../../mobile/flutter/ARCHITECTURE.md#cqrs-variant-community).
 - **No mediator library needed.** Call the handler directly from the route, action or mutation. A mediator adds indirection that makes code harder to follow; its useful part, a pipeline for cross-cutting concerns, is a function wrapper:
 
 ```ts

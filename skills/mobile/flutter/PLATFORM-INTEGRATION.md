@@ -15,6 +15,7 @@ Dart code reaches native platform code in two ways: the Flutter platform channel
 
 - **Prefer channels over Native Interop** for Windows and Linux, simple low-frequency data, or a simpler setup.
 - **Platform languages:** Android Kotlin or Java, iOS Swift or Objective-C, Windows C++, macOS Objective-C, Linux C. Web generally uses JS interop instead. Platform-specific Dart code can inspect `defaultTargetPlatform`.
+- **Sensors and on-device models come as plugins** (named in a community post on context-aware UI, [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional); checked on pub.dev): `sensors_plus` (accelerometer, gyroscope, magnetometer, barometer; Android, iOS, web), `light` (ambient light; pub.dev lists Android and iOS, where the post says Android only, and iOS needs Apple-approved SensorKit entitlements), `battery_plus` (power state), and `tflite_flutter` (TensorFlow Lite models, which its page says can run "in different isolates to prevent jank in UI thread"). The post reaches Core ML on iOS "through a platform channel when you need it".
 - **Reusable platform code belongs in a plugin package:** https://docs.flutter.dev/packages-and-plugins/developing-packages.
 - **Full examples:** https://github.com/flutter/flutter/tree/main/examples/platform_channel and https://github.com/flutter/flutter/tree/main/examples/platform_channel_swift.
 
