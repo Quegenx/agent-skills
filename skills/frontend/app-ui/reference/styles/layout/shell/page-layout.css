@@ -127,7 +127,7 @@
     overscroll-behavior-inline: contain;
   }
   /* The Ad Library's grid, shared by the posts page: a column per 21.25rem
-     of width, Facebook's 24px row and 12px column gaps. */
+     of width, 24px row and 12px column gaps. */
   .card-feed-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 21.25rem), 1fr));

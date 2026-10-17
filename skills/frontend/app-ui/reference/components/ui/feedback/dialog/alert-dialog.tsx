@@ -5,7 +5,7 @@ import { app_cancel, app_delete } from "#/paraglide/messages";
 import { AppDialogHeader } from "@/components/ui/feedback/dialog/app-dialog-header";
 import { Button } from "@/components/ui/general/button";
 
-// Facebook's confirm dialog; styles and measurements live in styles/ui/feedback/dialog.css.
+// Confirm dialog; styles and measurements live in styles/ui/feedback/dialog.css.
 // Built on Base UI's Dialog, not its AlertDialog, so a press outside it or
 // Escape closes it as the settings dialog closes (AlertDialog ignores a
 // press outside); it is still announced as an alertdialog. A caller that

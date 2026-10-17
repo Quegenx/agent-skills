@@ -6,6 +6,8 @@ A page feels slow when it makes you wait for content it could have had ready, wh
 
 Which properties to animate, GPU versus main thread, motion values instead of React state, interruptible and shared-element transitions, and reduced motion are in the `ui-animation` skill (PERFORMANCE.md and PATTERNS.md).
 
+- **Measure once, not on every interaction:** Argyle's custom select caches offsets in a `WeakMap` and hardcodes its layout constants to avoid `getComputedStyle` reflows ([SELECT-AND-FORMS.md](../../frontend/modern-css/SELECT-AND-FORMS.md#a-nice-select-part-by-part) in modern-css).
+
 ## Loading states
 
 The first visit is the one wait you can't avoid: the content comes from the server, in the first paint (server rendering) or right after. Everything after that should be already there. Audit in this order:
@@ -49,6 +51,7 @@ Report what you changed and, separately, what needs a backend change.
 ## Images and video
 
 - **Reserve the space:** `width` and `height` attributes (or `aspect-ratio`) on every image and video, so nothing shifts when it loads.
+- **Media delivery, one site's list:** reliable `alt`, lazy loading, async decoding, [client hints](https://web.dev/performance-optimizing-content-efficiency-client-hints/), multiple formats, compression, CDN delivery, and "videos always offer controls and only loop on demand" ([nerdy.dev: New Year, New Site](https://nerdy.dev/new-year-new-site), 2023-01-01). The muted autoplay hero loop below does the opposite; neither wins.
 - **Load what's visible:** `loading="lazy"` below the fold, `fetchpriority="high"` and no lazy loading on the largest image above the fold, `srcset` and `sizes` so a phone doesn't download the desktop file, and `decoding="async"`.
 - **Every image compressed, as WebP:** never ship the original export or camera file. Resize to the widths `srcset` lists (the largest at about twice its biggest display size), strip metadata, and encode WebP at quality 75 to 82 for photos; screenshots and UI with text or sharp edges as lossless (or near-lossless) WebP, which also keeps transparency and is usually far smaller than the PNG. Every current browser decodes WebP, so no JPEG or PNG fallback is needed. Encode once at build or upload, never on request; check the result by eye at 100% on a high-density screen.
 

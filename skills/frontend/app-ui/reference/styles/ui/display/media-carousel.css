@@ -1,7 +1,7 @@
 /* MediaCarousel (media-carousel.tsx): items side by side in a sideways
    scroller that snaps to each, with the app's small gray previous and next
    buttons over its edges. The Ad Library's carousel ads ("ad") keep
-   Facebook's 188px cards and its button height; a post's photos ("post")
+   188px cards and the ad button height; a post's photos ("post")
    take most of the card's width, the next one peeking in. */
 @layer components {
   .media-carousel {
@@ -37,7 +37,7 @@
   }
   /* The previous and next buttons: the app's gray icon buttons (surface),
      32px and without a shadow, in a strip across the media halfway down,
-     each 0.5rem in from its edge; on an ad, at the height of Facebook's
+     each 0.5rem in from its edge; on an ad, at the height of the ad
      button. The strip lets the pointer through between them. */
   .media-carousel-steps {
     position: absolute;

@@ -148,6 +148,8 @@ use[data-outlaw="1"] { --foot-rotate: 0deg; animation: tapping 1s ease-in-out in
 }
 ```
 
+- **A registered property also guards a design system** (a wrong-typed value keeps the last valid one): [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](../modern-css/CUSTOM-PROPERTIES-AND-FUNCTIONS.md#typed-properties-with-property). Typed colours and hints animating inside a gradient: [GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md); set every frame from JavaScript, it needs no transition: [Live properties from JS](../modern-css/CUSTOM-PROPERTIES-AND-FUNCTIONS.md#live-properties-from-js).
+
 - **Multiple `var()` fallbacks** "can be useful when working with Custom Elements and Shadow DOM".
 - **`path()` can't be built from `var()` pieces.** The path must be a single string.
 

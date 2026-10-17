@@ -9,7 +9,7 @@ import { AppIcon } from "@/components/ui/general/app-icon";
  * Media side by side, scrolled sideways and snapping to each item, with the
  * app's small gray previous and next buttons over its edges, each the same
  * distance in from its side: the Ad Library's carousel
- * ads and a post's photos. variant sizes the items: "ad" Facebook's 188px
+ * ads and a post's photos. variant sizes the items: "ad" the 188px
  * carousel cards, "post" one photo across most of the card with the next
  * peeking in (media-carousel.css).
  *

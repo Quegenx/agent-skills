@@ -8,7 +8,7 @@
     @apply type-label-xs;
     white-space: nowrap;
   }
-  /* FDSNumberedBadge geometry; text metadata retains the existing variant API. */
+  /* Numbered-badge geometry; text metadata retains the existing variant API. */
   .app-badge {
     display: inline-flex;
     flex-shrink: 0;

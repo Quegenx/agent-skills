@@ -1,6 +1,6 @@
 /* The fluid scale: spacing and display type that shrink smoothly on narrow
    screens and stop at today's measured desktop size. Every value is
-   clamp(min-rem, rem + cqi, max-rem): the max is the measured Facebook or
+   clamp(min-rem, rem + cqi, max-rem): the max is the measured desktop
    size, the min is 75% of it for space and 85% for type (85% for
    space of 14px and below), and the ramp runs from a 22.5rem to a 60rem wide
    page area. Body and control text stays fixed in rem (WCAG 1.4.4 resize).

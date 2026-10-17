@@ -479,6 +479,7 @@ circle {
 - **Syntax:** `paint-order: normal | [ fill || stroke || markers ]`, default `normal` (fill, then stroke, then markers). Keywords left out are painted afterwards in default order, so `stroke` means `stroke fill markers`. Discrete animation.
 - **Main use:** painting a text stroke below its fill without duplicating the `text` element.
 - **Support:** property Chrome 123 (keyword values from Chrome 35), Firefox 60, Safari 11 (keywords Safari 8).
+- **On HTML text:** [GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#paint-order-on-html-text) in modern-css.
 
 ```html
 <svg width="400" height="180" xmlns="http://www.w3.org/2000/svg">

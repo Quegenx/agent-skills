@@ -97,7 +97,7 @@ el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }]
 
 - One `layoutId` per thing, present in one place at a time; wrap the views in `LayoutGroup` when they live in separate components that re-render independently.
 - Text inside a growing container distorts while it scales; give the text its own `layout="position"`, or fade it in after the box arrives.
-- **Across routes,** the View Transitions API does the same with no library: `document.startViewTransition(() => navigate(to))`, with matching `view-transition-name` on the two elements. Frameworks expose it (TanStack Router's `viewTransition` option, React's `<ViewTransition>`); without support, the change simply happens.
+- **Across routes,** the View Transitions API does the same with no library: `document.startViewTransition(() => navigate(to))`, with matching `view-transition-name` on the two elements. Frameworks expose it (TanStack Router's `viewTransition` option, React's `<ViewTransition>`); without support, the change simply happens. Support, cross-document, limits and debugging: [NATIVE-CSS.md](NATIVE-CSS.md#view-transitions).
 - Close to where it came from: the detail returns to the item's current position (it may have scrolled), not to a stale one.
 - **What persists, travels.** "If a component occupies a space and will persist in the next phase of the user's journey, it should remain consistent": it moves into the next screen and never "unnecessarily duplicates itself during an animation" (Family's wallet cards).
 - **High-stakes values travel.** In Family's send flow the amount moves visibly from the entry screen to the confirm screen, so users get "confidence that the amount entered is indeed the amount being sent".
@@ -197,7 +197,7 @@ transition={{
 - **Focus moves with it:** into the dialog when it opens, back to the trigger when it closes; motion never delays focus or input.
 - **Dismiss mid-animation:** Escape or a backdrop click during the entrance reverses from where it is.
 - **Build it as a pipeline:** kciter's notification is three pieces: the background dims (opacity 0 to 0.5, 200 ms), the card slides up into place (300 ms, ease-out), the content fades in (opacity 0 to 1, 200 ms). Each can be tuned alone ([TIMING.md](TIMING.md#composing-a-sequence)).
-- **A popup in CSS alone:** the Base UI select popup on Florian Kiem's "Tips to improve your product" page is `origin-[var(--transform-origin)] transition-all duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0`, the origin taken from the anchor.
+- **A popup in CSS alone:** the Base UI select popup on Florian Kiem's "Tips to improve your product" page is `origin-[var(--transform-origin)] transition-all duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0`, the origin taken from the anchor. Native `@starting-style`, `allow-discrete` and `overlay`: [NATIVE-CSS.md](NATIVE-CSS.md#top-layer-enter-and-exit).
 - **A sheet swiped away on native scroll** (scroll snap and view timelines, no JavaScript touch handling) is in [SHEETS.md](SHEETS.md).
 - **Flutter sheets** (the spring sheet, swipe down at the top to close, the iOS 26 sheet) are in [../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md](../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md#pick-the-sheet).
 
@@ -246,7 +246,7 @@ exit={{ width: 52, height: 52, borderRadius: 26, y: 0, x: "-50%",
 
 ## Height and accordions
 
-Animating `height` runs layout every frame; fine for a small accordion, costly for a big panel. Two cheaper options:
+Animating `height` runs layout every frame; fine for a small accordion, costly for a big panel. Two cheaper options (a native `<details>` route is in [NATIVE-CSS.md](NATIVE-CSS.md#details-and-height-auto)):
 
 ```css
 /* CSS: animate grid rows from 0fr to 1fr, no measuring */
@@ -358,7 +358,7 @@ Liveline, a real-time line chart for React: "One `<canvas>`, one `requestAnimati
 - **Same data, another view:** a toggle morphs between line and candlestick, and "The live candle keeps updating in real time, growing its wicks as new ticks arrive."
 - **Ambient motion that carries data:** orderbook labels "spawn at the bottom, drift upward, and fade out", bigger orders brighter, and the stream speed reacts to price momentum and orderbook churn: "Calm markets drift slowly, volatile ones rush."
 - **Loud motion is opt-in:** `degen` adds burst particles and chart shake on momentum swings, "For when subtlety is not the goal"; everything else "is off by default or has sensible defaults".
-- **One colour in, a palette out:** `color` takes any CSS colour, converted to HSL, and every variant (line, fill gradient, glow, badge, grid labels) is derived from it.
+- **One colour in, a palette out:** `color` takes any CSS colour, converted to HSL, and every variant (line, fill gradient, glow, badge, grid labels) is derived from it. [nerdy.dev](https://nerdy.dev/lch-luminance-vs-hsl-lightness) (2022-12-02) derives in LCH-type spaces instead: HSL 50% "is almost never 50% as humans see it". Neither wins.
 - **Moving beats jumping:** Family holds that price charts that move instead of jumping "could make the app feel faster" (an opinion, no measurement).
 - **Test it on hostile data:** "A chart that only looks good on calm data isn't much use." Liveline's demos: wild swings at 100 ms updates; near-flat with `exaggerate` at 150 ms; chaotic huge spikes at 80 ms; frequent sharp reversals at 60 ms ("Sharp reversals are the classic breaking point"); near-flat with massive isolated spikes at 120 ms; rapid zigzag at 50 ms; and irregular arrival, "long quiet stretches of 1-3 seconds between points, then sudden bursts at 40-80ms", because "WebSocket connections drop, batch updates land all at once, mobile networks stall."
 

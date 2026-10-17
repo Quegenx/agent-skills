@@ -175,6 +175,8 @@ Input tokens only, about $0.042 per million; output is free. A request holds abo
 
 Measure the bill per completed task, not per call: a cheap wrong decision that sends a good change back, books the wrong thing or hides a real customer costs a person's time, which is more than any call. Speed and cost multiples published by the vendor are the favourable end of its own evaluations (TypeSafe AI reports Jev "up to 194 times faster and 445 times cheaper than language models" in its own workflow evaluations); measure yours.
 
+Another view: Adam Argyle singles out "machine interfaces matter more than the chat interfaces" and "code owns the workflow and AI handles narrow, structured decisions" (the shape in [SKILL.md](SKILL.md)), and writes "No hallucinations because it's not using probability to hopefully create a pleasing string" ([nerdy.dev: Jev](https://nerdy.dev/jev), 2026-09-17). This skill treats every answer as a probability that can be wrong, calibrated only across many cases ([Calibrating thresholds](#calibrating-thresholds)), so the gates stay.
+
 Besides the TypeSafe API, the model has been offered through gateways (Vercel AI Gateway lists it as `typesafe-ai/jev`, with an AI Gateway key in `AI_GATEWAY_API_KEY`); check the current options and the data-retention terms before routing personal data through any of them.
 
 The habit that cuts the bill most is not a cheaper model but fewer, focused states: the node that judges consent sends the proposal and the reply, not the transcript.

@@ -23,6 +23,7 @@ Separate overlapping avatars by **cutting each one where its neighbour overlaps*
 }
 ```
 
+- **A fixed-pixel edge instead of `99%`/`100%`:** Argyle's ring mask puts the opaque stop 1px past the transparent one ([GRADIENTS-AND-EFFECTS.md](../../frontend/modern-css/GRADIENTS-AND-EFFECTS.md#conic-recipes)).
 - The initials sit in the uncut part, so they stay readable; check two-letter initials at the smallest size you ship.
 - The cut position is physical (left to right). For right-to-left layouts, mirror the `at` position (`calc(-1 * var(--size) / 2 + var(--overlap))`), or set `direction` on the group and test both.
 - One size and overlap per group, from tokens, so the maths stays true.
@@ -43,8 +44,10 @@ Separate overlapping avatars by **cutting each one where its neighbour overlaps*
 
 - **Order in the DOM first.** Among elements in the same stacking context, the later one paints on top. Most "it needs a z-index" cases are elements in the wrong order.
 - **Contain instead of escalating.** `isolation: isolate` on a component starts a new stacking context, so its internal z-indexes can't fight the rest of the page. Escalating to `z-index: 9999` only moves the fight.
+  - **The other view:** "Need to beat `z-index: 999999999` or something?" Argyle writes `z-index: calc(infinity)`, which maxes out at 2147483647 ([nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases), 2026-07-25). It wins the number, not the stacking context: the toolbar case below still loses.
 - **Why 9999 loses (Kiem's demo):** a toolbar at `position: absolute; z-index: 1`, the content card below it at `z-index: 2`, and the toolbar's open menu at `z-index: 9999`. The menu still renders under the card: the toolbar's `z-index: 1` makes it a stacking context the 9999 can't escape. His version with no z-index moves the toolbar after the content in the DOM while its menu is open (`children: l ? [f, d] : [d, f]`, content then toolbar), and back only once the menu's exit animation finishes (`AnimatePresence` `onExitComplete`).
 - **Layers that must float (menus, popovers, toasts, dialogs)** go to the top layer: the `popover` attribute and `<dialog>` with `showModal()` render above everything with no z-index at all, or a portal to the end of `body`.
+  - **A component can put itself there** on connect, which retired VisBug's max-int layer tokens: [POPOVER-AND-DIALOG.md](../../frontend/modern-css/POPOVER-AND-DIALOG.md#a-component-that-puts-itself-in-the-top-layer), with support, DevTools' `#top-layer` node, animating them in and out, and light dismiss with `closedby`.
 - **When a z-index is unavoidable,** take it from a short named scale (`--z-dropdown`, `--z-sticky`, `--z-modal`), and leave a comment at the use saying why, so the next person or agent doesn't add another layer on top.
 - Don't nest absolutely positioned elements without a reason; each layer of `position: absolute` is a coordinate system someone has to reason about.
 
@@ -74,6 +77,8 @@ function el(e){return`linear-gradient(to top, ${Yc.map((t,n)=>`rgb(0 0 0 / ${t.t
 ```
 
 Check contrast at the worst spot under the text (`scripts/contrast.py`), not at the darkest part of the scrim.
+
+**A caption scrim that follows the theme, no script:** Argyle's `light-dark()` with `border-image: fill` ([GRADIENTS-AND-EFFECTS.md](../../frontend/modern-css/GRADIENTS-AND-EFFECTS.md#borders-scrims-and-shadows)). It paints one translucent colour, not an eased ramp.
 
 ## Pressed states
 

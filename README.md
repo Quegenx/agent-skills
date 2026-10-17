@@ -1,6 +1,6 @@
 # Agent skills
 
-71 skills for coding agents, in nine sets:
+72 skills for coding agents, in nine sets:
 
 | Folder | What it's for |
 |---|---|
@@ -10,7 +10,7 @@
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal). 18 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review. 8 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
-| [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, animation in general, and SVG. 4 skills. |
+| [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, animation in general, SVG, and modern CSS. 5 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy) and k6 load tests. 4 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 
@@ -163,8 +163,9 @@ TypeScript, with Supabase/Postgres, Convex and Effect where the stack matters. E
 
 | Skill | Covers |
 |---|---|
-| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion, per-frame animation math, live charts, trays, URL-owning modals, button-to-panel morphs, morphing icons, swipeable sheets on native scroll, press and switch timing |
+| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Website and app animation: durations, curves, springs, staggers, enter and exit, shared elements, gestures, scroll, galleries, smooth performance, reduced motion, per-frame animation math, live charts, trays, URL-owning modals, button-to-panel morphs, morphing icons, swipeable sheets on native scroll, press and switch timing, native CSS motion (top-layer enter and exit, view transitions, scroll-driven ranges) |
 | [svg](./skills/frontend/svg/SKILL.md) | SVG from MDN and the W3C specs: viewBox and coordinates, shapes, text, every path command, symbols and use, presentation attributes and currentColor, gradients, clipping and masking, filters including goo and glass refraction, CSS, SMIL and JavaScript animation, morphing icons, embedding and icon sprites, accessibility, SVGO and SVGR, sanitizing uploads |
+| [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern CSS from Adam Argyle's nerdy.dev with each feature's current MDN support: dialog and popover in the top layer, invoker commands and light dismiss, enter and exit transitions with @starting-style, anchor positioning and anchor-interpolated morphs, the customizable select and forms, scroll-driven animation, snap, scroll-state and carousels, view transitions, container, style and media queries, @layer and @scope, @property, if() and CSS math, oklch, color-mix and light-dark, units and text, gradients and effects, layout |
 | [app-ui](./skills/frontend/app-ui/SKILL.md) | The product's own UI (the signed-in app), its component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, sign-in and sign-up, the shell and sidebar, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker. Ships the production source in `reference/` |
 | [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | A product's marketing site, apart from the app: its own tokens and stylesheet, a hero that assembles letter by letter, two-tone headings, story sections built from real product screens, carousels, FAQ with structured data, a floating header that grows into a menu, a revealed footer, language and theme transitions, contact, help, blog and legal pages, head tags and consent. Ships the production source in `reference/` |
 

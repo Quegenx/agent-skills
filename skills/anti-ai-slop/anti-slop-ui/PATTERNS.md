@@ -6,7 +6,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 
 | Pattern | Signs |
 |---|---|
-| The default gradient | Blue to purple, blue to cyan, purple to pink; a full-page colored glow |
+| The default gradient | Blue to purple, blue to cyan, purple to pink; a full-page colored glow; animated gradient text, "like the poster child of AI right now" ([nerdy.dev: Animated Gradient Text](https://nerdy.dev/animated-gradient-text), 2024-12-20) |
 | Glass everywhere | Blur on the navbar, cards, modals and sidebar at once |
 | Glow everywhere | Glowing cards, buttons, icons, badges, borders and background together |
 | Floating page | A large soft shadow on every component |
@@ -15,7 +15,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Accent everywhere | One accent on buttons, icons, links, lines, backgrounds and glows |
 | Too many colors | Five or more colors with no system |
 | Dark because "tech" | Dark by default with no brand or user reason |
-| Decorative backgrounds | Grids, dot patterns, blueprint lines, noise, blobs and mesh gradients stacked |
+| Decorative backgrounds | Grids, dot patterns, blueprint lines, noise, blobs and mesh gradients stacked (Argyle publishes a stacked radial-gradient fake mesh and a gradient noise as techniques, [nerdy.dev: CSS Wishlist 2025](https://nerdy.dev/css-wishlist-2025), 2024-12-17, and [Make some hacky noise](https://nerdy.dev/hacky-css-noise-with-repeating-gradients), 2024-01-22; the technique is fine, the default use is the sign) |
 | Sterile default | Near-white, thin grey borders, small radius, generic font, no identity: over-filtering with no direction |
 | Cream default | A cream or off-white background as the fallback when no direction was given |
 
@@ -99,6 +99,6 @@ Vercel's design.md lists these as "recognizable defaults" to never ship on its f
 | Said four times | "Repeated recommendation, summary, rationale, and conclusion sections that say the same thing" |
 | Process narration | "Authoring-process narration such as how the page was organized, why a representation was chosen, or how source fields were renamed" (it keeps "concise interpretive captions that state an evidence-led takeaway or limitation") |
 | Page chrome | "Visible theme controls, print-only UI, stock imagery, fake screenshots, or decorative brand marks" |
-| Motion on a report | From its motion rules, not the list: "Default to stillness. Never add auto-scrolling marquees, simulated typing cursors, or decorative pulsing status indicators... Never gate reading behind animation, reveal every section on scroll, move imagery on hover, or add bounce, parallax, cinematic transitions, sound, or spectacle." |
+| Motion on a report | From its motion rules, not the list: "Default to stillness. Never add auto-scrolling marquees, simulated typing cursors, or decorative pulsing status indicators... Never gate reading behind animation, reveal every section on scroll, move imagery on hover, or add bounce, parallax, cinematic transitions, sound, or spectacle." Outside reports, Argyle's chat prototype uses exactly a blinking cursor as its "machine is typing" loader: "of all the little loader thingies I made, this one was the simplest and most effective" ([nerdy.dev: LLM chat prototype](https://nerdy.dev/llm-chat-prototype), 2025-07-28). |
 
 Avoiding these is not the goal by itself: "Do not compensate for avoiding these defaults by producing a sterile anti-design template" (the Sterile default row).

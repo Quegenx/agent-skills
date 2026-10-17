@@ -1,4 +1,4 @@
-/* The results table adapts Facebook's measured surfaces to the app's data view. */
+/* The results table: measured surfaces on the app's data view. */
 @layer components {
   .app-table-frame {
     overflow: hidden;
