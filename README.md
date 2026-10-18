@@ -138,7 +138,7 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [messaging](./skills/backend/messaging/SKILL.md) | Transactional outbox/inbox, idempotent consumers, ordering and brokers. External-effect uncertainty, broker returns and aggregate ordering. |
 | [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | Correct SQL for joins, NULLs, ties, windows, time zones, JSON and hierarchies. |
 | [postgres](./skills/backend/postgres/SKILL.md) | Production schemas, pooling, transactions, WAL, recovery and PlanetScale-specific operations. |
-| [supabase](./skills/backend/supabase/SKILL.md) | Data API, RLS, Auth, database services, scoped tooling and current declarative-schema workflows. |
+| [supabase](./skills/backend/supabase/SKILL.md) | Data API, RLS, Auth, database services, scoped tooling and declarative schemas; Fetch middleware authoring, bridge limits and transaction-scoped Postgres claims. |
 | [effect](./skills/backend/effect/SKILL.md) | Effect v4 code, errors, services, resources, concurrency, Schema and platform APIs. |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Connected accounts, OAuth, provider APIs, sync and webhooks, with the Kapso integration branch. |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics, logs, health checks and incident diagnosis. Current semantic attributes, telemetry privacy, SDK buffers and collector limits. |
