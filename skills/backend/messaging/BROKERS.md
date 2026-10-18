@@ -2,7 +2,9 @@
 
 ## Queues delete, logs retain
 
-Almost every difference between a queue (RabbitMQ, SQS, pgmq) and a log (Kafka, Redpanda, Kinesis) follows from one fact: a queue tracks each message and deletes it when acknowledged; a log appends messages, keeps them for a retention period whether read or not, and each consumer group remembers only its position (offset) per partition.
+This comparison covers RabbitMQ's classic and quorum queues versus Kafka's ordered consumer groups. A queue tracks each message and deletes it when acknowledged; a log keeps messages for a retention period whether read or not, and each ordered consumer group remembers its position (offset) per partition. https://www.rabbitmq.com/docs/compare/kafka
+
+**Broader broker features:** RabbitMQ Streams are retained, replayable logs. Kafka share groups support individual acknowledgments and can have more consumers than partitions, so the table's partition limit and offset model do not describe them. The source and old introduction treated these as broker-wide differences. https://www.rabbitmq.com/docs/streams and https://github.com/apache/kafka/blob/trunk/docs/design/design.md
 
 | | Queue | Log |
 |---|---|---|
@@ -49,7 +51,7 @@ await ch.consume("orders.billing", async (msg) => {
 }, { noAck: false });
 ```
 
-- **Durable queue plus persistent message,** or a broker restart loses both. Use `mandatory` publishing (or an alternate exchange) to notice messages that route nowhere.
+- **Durable queue, persistent message and publisher confirms** establish that a publication was accepted with the intended persistence guarantee. An unroutable message can still be confirmed: `mandatory` requires a `basic.return` handler, or configure an alternate exchange. The source described `mandatory` as making publication fail; the example above waits for confirms but does not implement return handling. https://www.rabbitmq.com/docs/confirms and https://www.rabbitmq.com/docs/reliability
 - **Acknowledge after the work commits,** never on receipt. A crash before the ack means redelivery, which is why the handler deduplicates.
 - **Competing consumers vs fan-out:** several consumers on one queue share the work, each message going to one of them; to give every service its own copy, give each service its own queue bound to a fanout (or topic) exchange.
 - **Direct and topic exchanges** route on exact keys or patterns (`orders.*.eu`) for selective subscriptions; headers exchanges route on message headers.
@@ -58,6 +60,8 @@ await ch.consume("orders.billing", async (msg) => {
 - Higher-level libraries (Rascal for config-driven topology and recovery, or a framework's broker integration) handle reconnection, which raw amqplib leaves to you.
 
 ## Kafka essentials
+
+These rules describe ordered consumer groups; share groups use different acknowledgment and assignment semantics. https://github.com/apache/kafka/blob/trunk/docs/design/design.md
 
 - **The partition is the unit of order and of parallelism.** Pick the key (the aggregate ID) so everything that must stay ordered shares a partition, and enough partitions for the consumer parallelism you'll need; increasing partitions later remaps keys.
 - **Commit offsets after processing,** not before: committing first loses messages on a crash, committing after duplicates them, so handlers are idempotent.

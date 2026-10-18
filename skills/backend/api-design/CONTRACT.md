@@ -49,39 +49,14 @@ Each ambiguous pair has one deciding question:
 
 Each status tells the client what to do next: fix the request (400/422), log in again (401), stop (403/404/410), refresh and retry with the new state (409/412), wait (429/503), retry later or report (5xx).
 
-**Never return 200 with an error in the body** (`{ "success": false }`). Machines act on the status without reading your docs: error-rate dashboards read 0% during an outage, CDNs cache the "failure" (they cache 200 and 404, never 500) and serve it after the thing exists, and retry logic can't tell transient from permanent. (GraphQL's always-200 model is the exception, and it ships its own error specification to compensate.) Encode the mapping once (validation, exception handler, Problem Details) so endpoints can't freelance.
+**Never return 200 with an error in the body** (`{ "success": false }`). Machines act on the status without reading your docs: error-rate dashboards read 0% during an outage, and retry logic can't tell transient from permanent. Encode the mapping once (validation, exception handler, Problem Details) so endpoints can't freelance. [milan-jovanovic, apis/rest-api-http-status-codes.md]
+
+- **Cacheability depends on the response and cache policy.** RFC 9111 permits storage under its stated conditions, including explicit freshness; heuristic cacheability is a separate rule. The source and old paragraph said CDNs cache 200 and 404 but never 500, which is not a general HTTP guarantee. https://www.rfc-editor.org/rfc/rfc9111.html#section-3
+- **GraphQL has request, transport and execution errors.** A successful HTTP response can contain GraphQL execution errors, while malformed requests and server failures can use error statuses. Check the server's documented behavior and response media type. The source and old paragraph called GraphQL an always-200 model. https://graphql.org/learn/debug-errors/
 
 ## Error bodies: Problem Details
 
-One helper builds every error response, so the shape and the correlation fields can't drift between endpoints:
-
-```ts
-export function problem(status: number, type: string, extra: { detail?: string; errors?: FieldError[] } = {}, req?: Request) {
-  return Response.json(
-    {
-      type: `https://api.example.com/problems/${type}`,
-      title: PROBLEM_TITLES[type] ?? "Request failed",
-      status,
-      ...extra,
-      instance: req ? `${req.method} ${new URL(req.url).pathname}` : undefined,
-      traceId: currentTraceId(),
-    },
-    { status, headers: { "content-type": "application/problem+json" } },
-  );
-}
-
-// One place maps known failures; everything else becomes a generic 500 whose details stay in the logs
-export function toProblem(error: unknown, req: Request): Response {
-  if (error instanceof ValidationError) return problem(422, "validation_failed", { errors: error.fields }, req);
-  if (error instanceof NotFoundError) return problem(404, "not_found", {}, req);
-  if (error instanceof ConflictError) return problem(409, error.code, {}, req);
-  log.error({ err: error, traceId: currentTraceId() }, "unhandled error");
-  return problem(500, "internal_error", {}, req);
-}
-```
-
-
-Use the standard shape (RFC 9457), `Content-Type: application/problem+json`:
+One helper builds every error response, so the shape and the correlation fields can't drift between endpoints. Use the standard shape (RFC 9457), `Content-Type: application/problem+json`:
 
 ```json
 {
@@ -100,7 +75,7 @@ Use the standard shape (RFC 9457), `Content-Type: application/problem+json`:
 - A good error says what broke, why, and how to fix it. Field errors carry the field, the reason and the rejected value (`{ "field": "frequency", "reason": "Must be one of: daily, weekly, monthly", "value": "sometimes" }`).
 - Unexpected exceptions become a generic 500 problem with the trace id. The exception text, stack, SQL and internal names stay in the logs (full detail is fine in local and staging builds, never in production). Don't copy the common shortcut of putting the exception's class name in `type` and its message in `detail`.
 - **Framework-generated errors use the same shape:** an unmatched route, a wrong method, an unparsable body, an auth middleware rejection. A catch-all that turns empty error responses into Problem Details closes the gap.
-- Add the correlation fields in one shared place (the error helper or middleware), not per endpoint: `instance` as method plus path, a request id, and the trace id that finds the request in your tracing tool.
+- Add the correlation fields in one shared place (the error helper or middleware), not per endpoint. `instance` is a URI-reference identifying this occurrence; keep the request id and trace id in documented extension fields. The source and removed helper used method plus path, which is not a URI-reference. https://www.rfc-editor.org/rfc/rfc9457.html#section-3.1.5
 - Map known domain failures to specific types deliberately, in one place, so the same failure looks the same from every endpoint.
 
 ## Changing a contract
@@ -125,12 +100,7 @@ Use the standard shape (RFC 9457), `Content-Type: application/problem+json`:
 
 **Deprecate like you mean it,** with all four parts:
 1. Mark it `deprecated: true` in the OpenAPI description.
-2. Signal it at runtime on every response that uses it:
-   ```http
-   Deprecation: true
-   Sunset: Wed, 31 Dec 2026 23:59:59 GMT
-   Link: <https://docs.example.com/migrations/orders-total>; rel="deprecation"
-   ```
+2. Signal it at runtime on every response that uses it. `Deprecation` uses a Structured Field Date, as in the RFC's `Deprecation: @1688169599`; `Sunset` uses an HTTP-date, and a `Link` with `rel="deprecation"` points to deprecation documentation. The source and old example used `Deprecation: true`; their Sunset example also mislabeled 31 December 2026 as Wednesday instead of Thursday. https://www.rfc-editor.org/rfc/rfc9745.html#section-2.1 and https://www.rfc-editor.org/rfc/rfc8594.html#section-3
 3. Publish a migration guide with examples, and give real notice (6 to 12 months for external clients), running old and new in parallel.
 4. Measure usage per client id, API key or tenant, contact the remaining callers, and remove only when usage is actually gone or the owners agreed, not because a date passed.
 

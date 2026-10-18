@@ -32,67 +32,15 @@ Never put the token in the query string; URLs end up in logs. The client library
 
 ## Client
 
-```ts
-import { fetchEventSource } from "@microsoft/fetch-event-source";
-
-class FatalStreamError extends Error {}
-class RetryableStreamError extends Error {
-  constructor(message: string, readonly retryAfterMs = 0) { super(message); }
-}
-
-function retryAfterMs(res: Response): number {
-  const value = res.headers.get("retry-after");
-  if (!value) return 0;
-  const seconds = Number(value);
-  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
-  const date = Date.parse(value);                       // Retry-After can be an HTTP date
-  return Number.isNaN(date) ? 0 : Math.max(0, date - Date.now());
-}
-
-export async function subscribeToLoans(opts: {
-  token: string; signal: AbortSignal; lastEventId?: string;
-  onLoan: (loan: Loan, id: string) => void;
-}) {
-  let failures = 0;
-  await fetchEventSource("/api/loans/stream", {
-    signal: opts.signal,
-    headers: {
-      Authorization: `Bearer ${opts.token}`,
-      ...(opts.lastEventId ? { "Last-Event-ID": opts.lastEventId } : {}),
-    },
-    async onopen(res) {
-      if (res.status === 408 || res.status === 429 || res.status >= 500)
-        throw new RetryableStreamError(`HTTP ${res.status}`, retryAfterMs(res));
-      if (res.status !== 200) throw new FatalStreamError(`HTTP ${res.status}`); // 401, 403, 404, 204...
-      const type = res.headers.get("content-type")?.split(";")[0].trim().toLowerCase();
-      if (type !== "text/event-stream") throw new FatalStreamError("STREAM_NOT_SSE");
-    },
-    onmessage(msg) {
-      if (opts.signal.aborted || msg.event !== "loan" || !msg.data) return;
-      const loan = LoanSchema.parse(JSON.parse(msg.data));   // a parse failure is fatal
-      opts.onLoan(loan, msg.id);                             // synchronous, see below
-      failures = 0;                                          // reset only after real progress
-    },
-    onclose() {
-      throw new RetryableStreamError("STREAM_CLOSED");       // a persistent stream should reconnect
-    },
-    onerror(err) {
-      if (err instanceof FatalStreamError) throw err;        // throwing is the only way to stop
-      if (++failures > 5) throw err;
-      const backoff = Math.min(1000 * 2 ** (failures - 1), 30_000) + Math.random() * 500;
-      return Math.max(backoff, err instanceof RetryableStreamError ? err.retryAfterMs : 0);
-    },
-  });
-}
-```
-
-What the library actually does, and why the code looks like this:
+What the library does: https://github.com/Azure/fetch-event-source/blob/main/src/fetch.ts and https://github.com/Azure/fetch-event-source/blob/main/src/parse.ts
 
 - **Providing `onopen` replaces its default check,** so check the status and content type yourself. Compare the media type without parameters, so `text/event-stream; charset=utf-8` passes.
 - **Throwing from `onerror` is the only way to stop retrying.** Returning a number retries after that many milliseconds (overriding the server's `retry:`); returning `undefined` keeps retrying at the default interval. Without a classifier it retries forever.
 - **A normal end of the response completes the call** unless `onclose` throws. For a persistent subscription, throw there so `onerror` schedules a reconnect. For a finite stream (one search, one AI answer), let it finish normally.
 - **Limit consecutive failures and reset the counter only after a message was handled,** not in `onopen`. A server that accepts the connection with 200 and then closes it would otherwise loop forever.
 - **`onmessage` is not awaited.** An async handler runs unsupervised and its errors are lost. Keep it synchronous, or hand work to your own queue. `JSON.parse` doesn't validate the payload; parse with the schema.
+- **Classify parsing, validation and synchronous handler failures deliberately.** An ordinary thrown error reaches `onerror` and retries unless that callback throws. The removed helper called parsing failures fatal without wrapping them in its fatal error class, so its classifier retried them. The source wraps these failures before dispatching them to the retry policy. [milan-jovanovic, apis/fetch-event-source.md] https://github.com/Azure/fetch-event-source/blob/main/src/fetch.ts
+- **Check an already-aborted signal before starting.** The source does this before calling the library; the removed helper did not. Registering an abort listener does not handle a signal that was already aborted. [milan-jovanovic, apis/fetch-event-source.md] https://github.com/Azure/fetch-event-source/blob/main/src/fetch.ts
 - Unlike native `EventSource`, `onmessage` receives named events too, and `msg.data` is the raw string.
 - For a very long `Retry-After`, stop and show a "retry" action instead of holding a long timer.
 - `openWhenHidden: false` (the default) closes the stream while the tab is hidden and reopens it when visible: fewer open connections, but replay must work. `true` keeps it open at a server cost, and mobile browsers may suspend it anyway.
@@ -108,22 +56,7 @@ A search or generation endpoint may need a body: `method: "POST"`, `Content-Type
 
 ## React
 
-```tsx
-useEffect(() => {
-  setLatest(null); setError(null);
-  if (!token) return;
-  const controller = new AbortController();               // a fresh controller per effect run
-  subscribeToLoans({
-    token, signal: controller.signal, lastEventId: lastIdRef.current,
-    onLoan(loan, id) {
-      if (controller.signal.aborted) return;              // ignore late callbacks from an old run
-      lastIdRef.current = id;
-      setLatest(loan);
-    },
-  }).catch((e) => { if (!controller.signal.aborted) setError(e.message); });
-  return () => controller.abort();
-}, [token]);
-```
+Use a fresh abort controller for each effect run, abort it during cleanup, and ignore callbacks from an aborted run. [milan-jovanovic, apis/fetch-event-source.md]
 
 - Cleanup runs on unmount and before the effect restarts for a new token; Strict Mode runs setup and cleanup an extra time in development. The guards keep an old run from updating the current view.
 - **A 401 is a handoff to the auth flow,** not a retry: the headers are fixed for the call, so retrying sends the same expired token. Refresh the token; the effect restarts with it.
@@ -132,3 +65,5 @@ useEffect(() => {
 ## Prove it
 
 Open a stream for one reader with a bearer token, then: let the token expire (the stream stops and restarts with a fresh token, no retry storm); drop the network mid-stream (it reconnects and receives the missed events once, from the last id); have the server close an idle stream with 200 repeatedly (the client gives up after the limit); open two tabs (both receive every event); try to subscribe to another reader's stream (refused).
+
+- Send malformed JSON, a schema-invalid payload and a synchronous handler failure: each follows the chosen terminal-error policy. Pass an already-aborted signal: no connection starts. [milan-jovanovic, apis/fetch-event-source.md]

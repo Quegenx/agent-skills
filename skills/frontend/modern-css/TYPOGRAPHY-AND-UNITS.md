@@ -5,16 +5,11 @@ Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`
 ## Line-height units: lh and rlh
 
 - **`lh` is the element's computed `line-height` as a length** (MDN: "computed value of the line-height property ... converted to an absolute length", [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length)). Support: Baseline widely available since 2026-05-21 (Chrome 109, Firefox 120, Safari 16.4; [web-features](https://web-platform-dx.github.io/web-features-explorer/features/lh/)). [nerdy.dev: Another rad use for the line-height unit](https://nerdy.dev/another-rad-use-for-the-line-height-unit)
-- **Even padding on a tag from half-leading.** "Any `line-height` value above unitless `1` will get distributed to the line box as 'half leading'", so inline padding of half the extra leading matches the space above and below the text. [nerdy.dev: Another rad use for the line-height unit](https://nerdy.dev/another-rad-use-for-the-line-height-unit)
+- **Tag padding as a visual recipe.** The source's `calc(.5lh / 2)` is one quarter of computed line-height. CSS leading is line-height minus the sum of font ascent and descent, divided equally above and below; glyph ink can differ from those metrics. This recipe does not guarantee equal visible padding on all four sides. The [nerdy.dev post](https://nerdy.dev/another-rad-use-for-the-line-height-unit) and our old line called it half-leading and claimed even spacing. [CSS 2.2: Leading and half-leading](https://www.w3.org/TR/CSS22/visudet.html#leading), [MDN length units](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length). The post's shorter, uncommented form:
 
 ```css
 .tag {
-  /* .5 extra leading */
   line-height: 1.5;
-  
-  /* we can divvy equal spacing to the inline edges */
-  /* complimenting extra height half leading */
-  /* making even spacing all around */
   padding-inline: calc(.5lh / 2);
 }
 ```
@@ -59,7 +54,7 @@ h1 {
 - **`ic` is the advance of the "水" glyph** (the CJK water ideograph): size CJK measure and gaps in `ic` the way Latin measure uses `ch`. Baseline widely available (newly 2022-10-03, widely 2025-04-03; [MDN `<length>`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length)). No nerdy.dev source covers it; it is the owner's rule in anti-slop-ui ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#units)).
 - **"54 CSS length units"** was the count in January 2023 ("And I don't think we're done yet!"); the count was not re-checked. A quiz demo is on CodePen (oNxbNzy, not exported). [nerdy.dev: New CSS Relative Units](https://nerdy.dev/new-relative-units-ric-rex-rlh-and-rch)
 - **Query by reading length in `ch`:** a container query pattern switches from an inline flex layout to a centered block layout "based on available reading length for the text", and Adam likes `ch` for it "since I'm wanting to switch based on available reading length for the text". The note has no code. Container queries are in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md). [nerdy.dev: A CSS Container Query Pattern](https://nerdy.dev/a-css-container-query-pattern)
-- **The maximum value for a CSS length in a layout context is `33554432px`**: the note links Chromium's Blink source (`layout_unit.h`) and Bramus on Mastodon. [nerdy.dev: Max Value Of A CSS Length Layout Unit](https://nerdy.dev/max-value-of-a-css-length-layout-unit) (2026-08-05)
+- **A Blink layout-unit observation:** the note reports `33554432px` and links Chromium's `layout_unit.h` and Bramus on Mastodon. Our old line presented it as the maximum CSS length generally; supported numeric ranges and precision are implementation dependent, so do not apply it to every engine or property. [nerdy.dev: Max Value Of A CSS Length Layout Unit](https://nerdy.dev/max-value-of-a-css-length-layout-unit) (2026-08-05), [CSS Values: Numeric types](https://drafts.csswg.org/css-values-4/#numeric-types)
 
 ## text-wrap: balance
 
@@ -213,7 +208,7 @@ h1 {
 
 - **No invalid drop-cap code:** search for `float: start` and `::first-of-type`; both must be gone (`float: inline-start`, `p:first-of-type`). In DevTools the `float` declaration is not struck through.
 - **`lh` drop cap:** the first letter spans exactly the intended number of lines at two different `line-height` values, and a browser without `lh` falls back to the `ex` size (the `ex` line comes first).
-- **Half-leading tag:** with `line-height: 1.5` and `padding-inline: calc(.5lh / 2)`, the measured space left and right of the text equals the space above and below it.
+- **Tag recipe:** confirm the inline padding computes to one quarter of line-height; inspect its appearance with the chosen font without assuming equal glyph-to-edge spacing. [Line-height units](#line-height-units-lh-and-rlh)
 - **`rlh` rhythm:** raise the browser's default font size; the rhythm spacing grows with it.
 - **Balance:** a heading of more than six lines in Chromium wraps normally (not balanced); a balanced heading inside a bordered box shows the leftover inline space, so don't rely on the box hugging the text.
 - **`text-box`:** with and without the declaration, the space above the capitals and below the baseline changes; in a browser without it the element keeps its normal box.

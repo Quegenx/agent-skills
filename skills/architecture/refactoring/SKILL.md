@@ -41,20 +41,7 @@ if (order.status !== "ready_to_process") return notReady(order.id);
 
 **Extract a function** for a block with one purpose: validation into `validateNewCustomer`, a calculation that isn't validation (`ageOn(dateOfBirth, today)`) into its own function. Duplicated blocks usually collapse into one extracted function with a parameter.
 
-```ts
-export function ageOn(dateOfBirth: Date, today: Date): number {
-  let age = today.getFullYear() - dateOfBirth.getFullYear();
-  const hadBirthday = today.getMonth() > dateOfBirth.getMonth()
-    || (today.getMonth() === dateOfBirth.getMonth() && today.getDate() >= dateOfBirth.getDate());
-  return hadBirthday ? age : age - 1;                            // subtracting years alone is off by one before the birthday
-}
-
-const MINIMUM_AGE = 21;
-const isValidNewCustomer = (c: NewCustomer, today: Date) =>
-  c.firstName.trim() !== "" && c.lastName.trim() !== "" && isEmail(c.email) && ageOn(c.dateOfBirth, today) >= MINIMUM_AGE;
-```
-
-Pass `today` in rather than reading the clock inside, so the rule is testable on a birthday.
+Preserve the original validation predicate when extracting it. The source checks null or empty names; the removed TypeScript illustration added `.trim()`, changing acceptance of whitespace-only names, and an `isEmail` predicate absent from the source. The source contains C# examples, not that TypeScript implementation. [milan-jovanovic, code-quality/5-awesome-csharp-refactoring-tips.md]
 
 **Replace type-based branching with a switch or a table.** An `if / else if` chain on a type field becomes an exhaustive `switch` over a union (the compiler flags a missing case with a `never` check) or a lookup table of functions. Use a strategy object only when cases carry real behavior of their own.
 

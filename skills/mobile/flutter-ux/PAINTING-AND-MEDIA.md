@@ -18,7 +18,8 @@ All three end in `toByteData(format: ui.ImageByteFormat.png)` or PNG bytes as a 
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/automatic-redraw-canvas-use-change-notifier/)
 
-- Redraw a canvas without rebuilding the widget: the model `extends ChangeNotifier` and calls `notifyListeners()`; the painter passes it to `super(repaint: model)`. `paint` then runs on every notify, "without needing to rebuild the entire widget that holds the `CustomPaint`", and `shouldRepaint` can return `false`.
+- Redraw a canvas without rebuilding the widget: the model `extends ChangeNotifier` and calls `notifyListeners()`; the painter passes it to `super(repaint: model)`. This drives repainting without rebuilding the widget that holds `CustomPaint`. [ApparenceKit](https://apparencekit.dev/flutter-tips/automatic-redraw-canvas-use-change-notifier/)
+- **P2 correction:** `shouldRepaint` handles replacement delegates: return true when the new delegate represents different information. The source's unconditional `false` below assumes the delegate still represents the same information and the same notifying model; `repaint:` notifications do not make replacement comparisons unnecessary. [CustomPainter.shouldRepaint](https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRepaint.html)
 
 ```dart
 class WaveModel extends ChangeNotifier {
@@ -459,7 +460,7 @@ player.setReleaseMode(ReleaseMode.stop);
 
 ## Prove it
 
-- Every painter fed by a changing model passes it as `repaint:`; `shouldRepaint` compares the painter's own fields (or returns `false` when `repaint` drives it).
+- A notifying model reaches the painter through `repaint:`; a replacement delegate representing different information returns true from `shouldRepaint`. [CustomPainter.shouldRepaint](https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRepaint.html)
 - No `hitTest` calls `distanceTo`; every override is `@override bool? hitTest(Offset position)`.
 - Every `canvas.save()` has a matching `canvas.restore()` in the same `paint` call.
 - Every `TextPainter` calls `layout()` before `paint`.

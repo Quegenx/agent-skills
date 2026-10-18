@@ -234,7 +234,7 @@ window.addEventListener('scrollend', e => {
 
 - **`scrollend` replaces scroll timeouts:** "Delete your timeout functions and shake off their bugs, here's the event you really need: `scrollend`" ([nerdy.dev: A Scrollend Event](https://nerdy.dev/a-scrollend-event), 2023-01-25; his polyfill is npm `scrollyfills`). Status: Baseline 2025, newly available since December 2025 ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollend_event)). MDN: it fires when there are no pending scroll updates and the gesture has ended, not when the position didn't change; listen on `Document` for the page.
 - **`scrollsnapchanging` and `scrollsnapchange`** ([nerdy.dev: Scroll Snap Events In Chrome 129](https://nerdy.dev/scroll-snap-events-in-chrome-129), 2024-08-14; [visualizer demo](https://codepen.io/argyleink/full/pomYMpB) not exported). The posts write them camelCase (`scrollSnapChange`); the event names are lowercase. The June 2024 note's "Try it in Canary" ([nerdy.dev: Preview ScrollSnapChange And ScrollSnapChanging Js Events](https://nerdy.dev/preview-scrollSnapChange-and-scrollSnapChanging-js-events), 2024-06-26) is superseded by the Chrome 129 ship. Status: Limited availability, experimental, Chrome and Edge 129 only ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollsnapchanging_event), [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollsnapchange_event)); the event is a `SnapEvent` with `snapTargetBlock`.
-- **Sound and haptics as items pass and land** (Switch post, 2025-06-13): preload the sounds "so they can play instantly at first"; `scrollsnapchanging` fires as each item passes the snap area (pop and a 50ms vibration), `scrollsnapchange` when scroll rests on a new target (the snap click).
+- **Sound on pending and committed snap changes** (Switch post, 2025-06-13): preload the sounds "so they can play instantly at first". `scrollsnapchanging` reports a changed pending snap target; a fast gesture need not emit an event for every passed candidate. `scrollsnapchange` reports the new selected target at the end of scrolling. The post and our old line promised a pop for each passing item; that is not the pending-target event's guarantee. [MDN scrollsnapchanging](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollsnapchanging_event), [scrollsnapchange](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollsnapchange_event)
 
 ```js
 const sounds = {
@@ -243,12 +243,7 @@ const sounds = {
 }
 ```
 
-```js
-scroller.onscrollsnapchanging = event => {
-  navigator?.vibrate(50)
-  sounds.pop.play()
-}
-```
+- **The source vibration guard checks the wrong object.** Its `navigator?.vibrate(50)` checks `navigator`, not whether `vibrate` exists, so an absent method still throws. Feature-detect the method before invoking it; the Vibration API also requires sticky user activation and has limited support. The post and our removed handler treated that expression as a safe optional vibration call. [MDN optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining), [Navigator.vibrate()](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate)
 
 ```js
 scroller.onscrollsnapchange = event => {
@@ -565,7 +560,7 @@ The post's `animation-trigger` has no trigger name, which the current grammar re
 }
 ```
 
-The longhand comes after the shorthand, which resets it. Status: scroll-triggered animations are experimental, Chrome and Edge 146 only. Actions per MDN: `none`, `play`, `play-forwards`, `play-backwards`, `play-once`, `pause`, `replay`, `reset`. The demo itself uses `scroll 100%`, "a specced way that feels closer to the intent", ending the range at the end of the scroll area; a scroll-driven version of the same navbar is there to compare ([triggered](https://codepen.io/argyleink/pen/BypVjyj), [scroll-driven](https://codepen.io/argyleink/pen/zxNaGVK)). `calc(infinity)` is in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#calcinfinity).
+The longhand comes after the shorthand, which resets it. Status: scroll-triggered animations are experimental, Chrome and Edge 146 only. Actions per MDN: `none`, `play`, `play-forwards`, `play-backwards`, `play-once`, `pause`, `replay`, `reset`. The demo itself uses `scroll 100%`, "a specced way that feels closer to the intent", ending the range at the end of the scroll area; a scroll-driven version of the same navbar is there to compare ([triggered](https://codepen.io/argyleink/pen/BypVjyj), [scroll-driven](https://codepen.io/argyleink/pen/zxNaGVK)). `calc(infinity)` is in [CSS-INFINITY.md](CSS-INFINITY.md).
 
 ## CSS carousels
 
@@ -634,7 +629,7 @@ The longhand comes after the shorthand, which resets it. Status: scroll-triggere
 - **Chaining:** scroll a nested scroller to its end and keep going; with `contain` the page doesn't move, and in Chrome 145+, Firefox and Safari the scroller bounces.
 - **Overscroll spacers:** fling past the first and last item; the scroller springs back and never rests on a spacer, and the last item can snap to the start.
 - **Pull to refresh:** the page loads snapped to `<main>`; a short pull snaps back; a long pull rests on the indicator, `scrollend` fires once, and the page scrolls back after "done!".
-- **Snap events:** in Chrome 129+, a pop plays as each item passes and a snap when it rests (after a first tap); in other browsers the scroller still snaps silently.
+- **Snap events:** in a supporting browser, tie feedback to changed pending targets and the committed target, without expecting an event for every passed item; without support the scroller still snaps. Vibration is method-detected and user-activated. [Scroll events](#scroll-events)
 - **scroll-state:** in Chrome the stuck header gains its shadow and the snapped item its highlight; in Firefox and Safari every title still shows and nothing is hidden.
 - **Scroll-driven:** in Firefox (no `animation-timeline`), the items stay fully opaque; in Chrome and Safari 26 they dim only while exiting, and `animation-timeline` is declared after `animation`.
 - **Triggered:** with the corrected trigger, the title plays in once and stays when scrolling back up, in Chrome 146+.

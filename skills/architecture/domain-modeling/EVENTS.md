@@ -155,7 +155,7 @@ Insert all of a command's events in one transaction at `expected + 1, expected +
 - handle every event that affects the view (forgetting `LineItemAdded` shows every total as zero);
 - **idempotent:** skip events at or below the view's recorded version; **reject gaps**;
 - save the view and its checkpoint in the same transaction, and acknowledge delivery only after that commit;
-- a projection over all streams tracks a global position, since versions are ordered only within a stream;
+- a projection over all streams needs the event store's committed-stream checkpoint contract, since versions are ordered only within a stream. The illustrative identity column above does not establish that contract: PostgreSQL sequence advances are visible independently of commit. A reader advancing past a higher committed identity can miss a lower value that becomes visible later. This is a static inference, not a reproduced execution; the old global-position guidance omitted the distinction. Use the established event-store recommendation below. [https://www.postgresql.org/docs/18/transaction-iso.html]
 - projections can be rebuilt from the history, which is one of the main benefits.
 
 **Evolving events:** store stable event type names and a schema version in each record (never a language-specific class name); never change the meaning of an old event; read old shapes with upcasters or tolerant handlers. A network failure after a commit leaves the outcome ambiguous: give commands IDs and deduplicate retries.

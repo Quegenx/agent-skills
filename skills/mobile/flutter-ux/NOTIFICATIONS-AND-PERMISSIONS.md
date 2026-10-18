@@ -123,7 +123,7 @@ Future<void> _onEnableTap() async {
 
 [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/):
 
-- **A push message does not show anything by itself.** "Every time you receive a push notification, your phone will not show a local notification. That's up to you to show it or not." A push can also update the app in realtime with no visible message; in a chat app the push arrives, then the app shows a local notification for the new message.
+- **Distinguish notification and data messages.** In the background, FCM displays a notification message on the app's behalf; app code processes data messages. Foreground notification messages do not display a visible notification by default on Android or iOS. [FCM message types](https://firebase.google.com/docs/cloud-messaging/customize-messages/set-message-type), [Flutter receive guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive). P2 correction: ApparenceKit's blanket claim that a push never displays anything by itself, and the old background-handler line saying there is usually nothing to do, omitted the message type.
 - **Ask permission through the plugin** (verbatim; see [When to ask](#when-to-ask-for-notifications) for the timing):
   ```dart
   import 'package:firebase_messaging/firebase_messaging.dart';
@@ -200,7 +200,7 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 ```
 
 - **`onMessage`:** the app is in the foreground and a push arrives.
-- **`onBackgroundMessage`:** the app is in the background; Firebase shows the notification itself, so usually nothing to do. The handler must be a top-level function, not inside a class, "Either it won't work."
+- **`onBackgroundMessage`:** handles background messages; distinguish notification display from app processing of data as [above](#fcm-push-is-not-a-notification). The handler must be a top-level function, not inside a class. [Firebase](https://firebase.google.com/docs/cloud-messaging/flutter/receive)
 - **`onMessageOpenedApp`:** the user tapped a notification; use it to redirect the user.
 - **Official additions** ([Firebase: receive messages in Flutter](https://firebase.google.com/docs/cloud-messaging/flutter/receive)): the background handler "must not be an anonymous function", and from Flutter 3.3.0 it "must be annotated with `@pragma('vm:entry-point')` right above the function declaration":
   ```dart
@@ -212,7 +212,7 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 
 ## FCM: show it in the foreground
 
-- **Firebase shows notifications automatically except in the foreground,** so show a local notification yourself there with `flutter_local_notifications` (https://pub.dev/packages/flutter_local_notifications) [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/). Official ([Firebase](https://firebase.google.com/docs/cloud-messaging/flutter/receive)): foreground notification messages "won't display a visible notification by default, on both Android and iOS"; on Android "you must create a "High Priority" notification channel", and on iOS you can change the app's presentation options.
+- **Foreground presentation:** ApparenceKit uses `flutter_local_notifications` to show a local notification. [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/). Follow the [message-type distinction above](#fcm-push-is-not-a-notification); the old "automatically except in the foreground" line was too broad. For visible foreground notifications the [Firebase guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive) calls for a high-priority notification channel on Android and allows changing presentation options on iOS.
 - **Build the notification from `message.data` and publish it to an app-wide queue** that any part of the app can listen to [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/) (verbatim; `Notification.from` and the publisher are the kit's own classes):
   ```dart
   @override
@@ -292,7 +292,7 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 
 [FlutterPro](https://flutterpro.design/details/timezone-change):
 
-- **The bug:** `zonedSchedule` turns your `TZDateTime` into a UTC moment and gives that to the OS, which keeps only that moment, not the local time you meant. When the user flies to another country, or clocks shift for daylight saving, it still fires at the old UTC moment, and the local time is wrong.
+- **Scheduling contract:** `zonedSchedule` schedules a date and time relative to a timezone. `matchDateTimeComponents` can request daily or weekly component-matching recurrence, similar to calendar triggers on iOS/macOS; behavior depends on the platform and schedule. [zonedSchedule](https://pub.dev/documentation/flutter_local_notifications/latest/flutter_local_notifications/FlutterLocalNotificationsPlugin/zonedSchedule.html). P2 correction: FlutterPro describes every schedule as an OS-stored UTC instant that loses local-time intent. Keep its zone-change detection recipe below without treating that explanation as universal.
 - **Detect it with two values:** the timezone name (like `Europe/London`) changes when the user travels; the current UTC offset (like `+01:00`) changes with daylight saving. Save both after each scheduling pass; on resume, read them again with `flutter_timezone` and compare (verbatim):
   ```dart
   Future<void> handleClockShift() async {

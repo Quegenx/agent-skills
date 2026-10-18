@@ -157,7 +157,7 @@ InteractiveViewer(
 
 ## Flex and row height
 
-- **Flexible defaults:** "By default Flexible element are set to flex 1. Flex 0 mean that the child determines his own size." Each child's share is "`(item flex / total flex) * height`"; "The higher the flex factor, the more space it will take." With `fit` tight a child takes all the space it is given; "Expanded is basically a shortcut for this", with a fixed flex of 1, so two `Expanded` children in a row get 50% each. [ApparenceKit](https://apparencekit.dev/blog/flutter-flex/) Official `Expanded` / `Flexible` rule: [../flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md).
+- **Flex allocation and the correction to ApparenceKit's fixed-flex claim:** [the canonical `Expanded` / `Flexible` rule](../flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint), checked against the [Expanded constructor](https://api.flutter.dev/flutter/widgets/Expanded/Expanded.html). [ApparenceKit](https://apparencekit.dev/blog/flutter-flex/)
 
 ```dart
 Column(

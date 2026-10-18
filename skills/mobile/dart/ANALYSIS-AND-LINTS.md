@@ -2,7 +2,7 @@
 
 Static analysis catches type, null safety and style problems before code runs, and `dart fix` repairs many of them automatically. What the analyzer reports is decided by one file, `analysis_options.yaml`: the lint set it includes, the strict modes it turns on and the severities it assigns. `dart fix` only fixes diagnostics that are enabled, so a thin options file means fewer automatic fixes. The style rules these lints enforce are in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md); the language features behind the errors are in [LANGUAGE.md](LANGUAGE.md); Flutter specifics are in [../flutter/SKILL.md](../flutter/SKILL.md).
 
-**Contents:** [analysis_options.yaml](#analysis_optionsyaml) · [Strict modes](#strict-modes) · [Lint sets](#lint-sets) · [Rules, severities and suppression](#rules-severities-and-suppression) · [Formatter settings](#formatter-settings) · [Analyzer plugins](#analyzer-plugins) · [dart analyze](#dart-analyze) · [dart fix](#dart-fix) · [dart format](#dart-format) · [Fixing analysis errors](#fixing-analysis-errors) · [The Dart and Flutter MCP server](#the-dart-and-flutter-mcp-server) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
+**Contents:** [analysis_options.yaml](#analysis_optionsyaml) · [Strict modes](#strict-modes) · [Lint sets](#lint-sets) · [Rules, severities and suppression](#rules-severities-and-suppression) · [Formatter settings](#formatter-settings) · [Analyzer plugins](#analyzer-plugins) · [dart analyze](#dart-analyze) · [dart fix](#dart-fix) · [dart format](#dart-format) · [Fixing analysis errors](#fixing-analysis-errors) · [The Dart and Flutter MCP server](#the-dart-and-flutter-mcp-server) · [VM inlining hints](#vm-inlining-hints) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
 
 ## analysis_options.yaml
 
@@ -291,6 +291,13 @@ The Dart Tooling MCP Server exposes Dart and Flutter tool actions (analyzer diag
 | `launch_app`, `stop_app`, `list_running_apps`, `get_app_logs` | | flutter, flutter_app_lifecycle | No |
 | `list_devices` | | flutter, flutter_app_lifecycle, cli | No |
 
+## VM inlining hints
+
+[ApparenceKit](https://apparencekit.dev/flutter-tips/speed-up-flutter-code-inline-compilation/), checked against the [Dart VM compiler pragmas](https://github.com/dart-lang/sdk/blob/main/runtime/docs/compiler/pragmas_recognized_by_compiler.md) and [VM FAQ](https://github.com/dart-lang/sdk/blob/main/docs/Frequently-asked-questions-about-the-Dart-VM.md).
+
+- `@pragma("vm:prefer-inline")` asks the VM to inline a function or method when possible; other factors can prevent it, so the annotation is not a guarantee. `@pragma("vm:never-inline")` prevents inlining and is always respected by the VM.
+- Keep the compiler's heuristic unless the method is performance-critical and measurement shows an improvement. Excessive inlining increases code size and can regress performance. The community tip describes a possible call-overhead benefit, not a measured speedup for the app being edited.
+
 ## Changes by version
 
 Current stable is 3.13.5 (2026-09-29).
@@ -314,3 +321,4 @@ Unreleased on the SDK main branch: 3.15.0 adds lint `unnecessary_this_alias`.
 - **`dart format -o none --set-exit-if-changed .`** exits 0.
 - **`analysis_options.yaml`** sits at the package root, includes `package:lints/recommended.yaml` or `package:flutter_lints/flutter.yaml`, and no `rules:` block mixes list and map syntax.
 - **For the MCP server:** `dart mcp-server --help` runs, and the client lists `analyze_files`.
+- **Inlining:** every retained `vm:prefer-inline` annotation has a measured benefit on a performance-critical method; otherwise rely on the compiler heuristic. [Dart VM FAQ](https://github.com/dart-lang/sdk/blob/main/docs/Frequently-asked-questions-about-the-Dart-VM.md)

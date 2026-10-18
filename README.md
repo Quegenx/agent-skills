@@ -107,7 +107,7 @@ Start with `anti-slop`; it holds the shared rules and routes to the others.
 - **[anti-slop](./skills/anti-ai-slop/anti-slop/SKILL.md)**: The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies.
 - **[anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md)**: Voice-preserving prose and developer docs, evidence-based audits and Hebrew language guidance.
 - **[anti-slop-copy](./skills/anti-ai-slop/anti-slop-copy/SKILL.md)**: Grounded product copy, point edits, shared context, review panels and source-attributed alternatives.
-- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, component states, responsive/RTL behavior and correctly scoped WCAG contrast.
+- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, component states, responsive/RTL behavior and correctly scoped WCAG contrast. Source-qualified numeric stacking limits.
 - **[anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md)**: Behavior-preserving code cleanup, duplication pointers and runtime-qualified defensive checks.
 
 ## AI agents
@@ -133,18 +133,18 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 
 | Skill | Covers |
 |---|---|
-| [api-design](./skills/backend/api-design/SKILL.md) | HTTP contracts, pagination, errors, idempotency, streaming and limits. |
-| [background-jobs](./skills/backend/background-jobs/SKILL.md) | Workers, queues, retries, durable workflows, concurrency and the Convex workflow branch. |
-| [messaging](./skills/backend/messaging/SKILL.md) | Transactional outbox/inbox, idempotent consumers, ordering and brokers. |
+| [api-design](./skills/backend/api-design/SKILL.md) | HTTP contracts, pagination, errors, idempotency, streaming and limits. Official HTTP deprecation, Problem Details, caching and SSE failure boundaries. |
+| [background-jobs](./skills/backend/background-jobs/SKILL.md) | Workers, queues, retries, durable workflows, concurrency and the Convex workflow branch. Session-lock release and failure detection limits. |
+| [messaging](./skills/backend/messaging/SKILL.md) | Transactional outbox/inbox, idempotent consumers, ordering and brokers. External-effect uncertainty, broker returns and aggregate ordering. |
 | [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | Correct SQL for joins, NULLs, ties, windows, time zones, JSON and hierarchies. |
 | [postgres](./skills/backend/postgres/SKILL.md) | Production schemas, pooling, transactions, WAL, recovery and PlanetScale-specific operations. |
 | [supabase](./skills/backend/supabase/SKILL.md) | Data API, RLS, Auth, database services, scoped tooling and current declarative-schema workflows. |
 | [effect](./skills/backend/effect/SKILL.md) | Effect v4 code, errors, services, resources, concurrency, Schema and platform APIs. |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Connected accounts, OAuth, provider APIs, sync and webhooks, with the Kapso integration branch. |
-| [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics, logs, health checks and incident diagnosis. |
+| [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics, logs, health checks and incident diagnosis. Current semantic attributes, telemetry privacy, SDK buffers and collector limits. |
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, host moves, backups, release verification and npm publishing. |
-| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Query tuning, caching, browser performance and equivalent whole-task cost and correctness measurements. |
-| [secure-coding](./skills/backend/secure-coding/SKILL.md) | Trust boundaries, authentication, tenant isolation, parsers, browser boundaries and package installation controls. |
+| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Query tuning, caching, browser performance and equivalent whole-task cost and correctness measurements. Planner caveats, index benefits, PostgreSQL ranking and temperature-zero limits. |
+| [secure-coding](./skills/backend/secure-coding/SKILL.md) | Trust boundaries, authentication, tenant isolation, parsers, browser boundaries and package installation controls. Atomic one-time-code redemption and encrypted relay fallback. |
 | [stripe](./skills/backend/stripe/SKILL.md) | Payments, Billing, Connect, Tax, Stripe Apps, agent tools and qualified revenue/operations metrics. |
 | [revenuecat](./skills/backend/revenuecat/SKILL.md) | Purchases and subscriptions, current identity, store testing, verification modes, paywalls, experiments and webhooks. |
 | [resend](./skills/backend/resend/SKILL.md) | Sending and receiving email, domains, webhooks, contacts, automations and tooling. |
@@ -152,20 +152,20 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [email-practices](./skills/backend/email-practices/SKILL.md) | Authentication, delivery, consent, unsubscribe rules and lifecycle email. |
 | [onesignal](./skills/backend/onesignal/SKILL.md) | Push and messaging setup, identity, permissions, sending, journeys and analytics. |
 | [convex](./skills/backend/convex/SKILL.md) | Functions and data, authentication, components, agents/billing, operations, migrations and provider-specific testing. |
-| [firebase](./skills/backend/firebase/SKILL.md) | Web/Flutter setup, Auth, AI Logic, Firestore, SQL Connect, Hosting, Functions migration and Remote Config. |
+| [firebase](./skills/backend/firebase/SKILL.md) | Web/Flutter setup, Auth, AI Logic, Firestore, SQL Connect, Hosting, Functions migration and Remote Config. Flutter Storage downloads, task progress and failures. |
 | [kapso](./skills/backend/kapso/SKILL.md) | WhatsApp messages/templates, webhooks, Flows, workflows, functions/events, calling and operational observation. |
 
 ## Architecture
 
 | Skill | Covers |
 |---|---|
-| [software-architecture](./skills/architecture/software-architecture/SKILL.md) | Application structure, module boundaries, data ownership, extraction and question-driven logic prototypes. |
-| [system-design](./skills/architecture/system-design/SKILL.md) | Load balancing, caching, queues, CDNs, feeds, sandboxes; worked designs from URL shorteners to data recovery |
-| [domain-modeling](./skills/architecture/domain-modeling/SKILL.md) | Contexts, aggregates, invariants, events, sagas, CQRS, domain glossaries and decision records. |
+| [software-architecture](./skills/architecture/software-architecture/SKILL.md) | Application structure, module boundaries, data ownership, extraction and question-driven logic prototypes. Transaction scope, source-qualified slice policies, isolation and rollback limits. |
+| [system-design](./skills/architecture/system-design/SKILL.md) | Load balancing, caching, queues, CDNs, feeds, sandboxes; worked designs from URL shorteners to data recovery. Commit-order limits and idempotent feed fan-out. |
+| [domain-modeling](./skills/architecture/domain-modeling/SKILL.md) | Contexts, aggregates, invariants, events, sagas, CQRS, domain glossaries and decision records. Shallow collection protection and projection watermark gaps. |
 | [system-migration](./skills/architecture/system-migration/SKILL.md) | Incremental ports, legacy replacement, dependency changes and jscpd function maps with behavior evidence. |
-| [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving changes, typed errors, deep modules, duplication and dependency-usage audits. |
-| [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets |
-| [testing](./skills/architecture/testing/SKILL.md) | Behavior tests, real infrastructure, independent oracles, provider evidence and deliberate malformed fixtures. |
+| [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving changes, typed errors, deep modules, duplication and dependency-usage audits. Behavior-preserving validation, typestate and undo tradeoffs. |
+| [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets. JavaScript midpoint coercion and source-qualified numeric budgets. |
+| [testing](./skills/architecture/testing/SKILL.md) | Behavior tests, real infrastructure, independent oracles, provider evidence and deliberate malformed fixtures. Equivalent mutants and strike-lookahead coverage. |
 | [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based code review, repository/security audits, browser boundaries, scanner triage and Ultracite. |
 | [debugging](./skills/architecture/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. |
 | [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specifications, local work breakdown, decision maps, handoff plans, RFCs and human-only steps. |
@@ -179,7 +179,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 |---|---|
 | [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Web/app motion, timing, gestures, scroll, native CSS, React transitions and audits. |
 | [svg](./skills/frontend/svg/SKILL.md) | Drawing, styling, animation, filters, icons, embedding, accessibility and sanitization. |
-| [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern layout, queries, forms, top-layer controls, motion, colors and browser support. |
+| [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern layout, queries, forms, top-layer controls, motion, colors and browser support. Corrected registration, geometry and dismissal contracts, CSS infinity, flex balancing and Tailwind aliases. |
 | [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, eases, timelines, React cleanup, ScrollTrigger and the official plugins. |
 | [web-accessibility](./skills/frontend/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers with numbering validity separate from identity. |
 | [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, semantic tokens, contrast, dark mode, gamut and color audits. |
@@ -217,14 +217,14 @@ Detailed coverage is in the [Monitoring set README](./skills/monitoring/README.m
 
 | Skill | Covers |
 |---|---|
-| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter from the official docs and the Flutter team's skills: architecture (layers, MVVM, commands), routing and deep links, networking and JSON, localization, responsive and adaptive layout, flutter_scale_kit, performance, accessibility, testing, platform channels and Pigeon, building and releasing for iOS and Android, versions and breaking changes, the MCP server and agent tooling, the owner's CSS-units-to-Flutter rules (LayoutBuilder over MediaQuery, M3 window classes, no app-wide text-scale cap); plus community Riverpod, testing recipes, fastlane, Drift, Slang and plugin authoring, marked as such |
-| [dart](./skills/mobile/dart/SKILL.md) | Dart from dart.dev and the Dart team's skills: Effective Dart style, docs, usage and design, the Dart 3 language (records, patterns, class modifiers, extension types, primary constructors), async and isolates, core libraries (dates across daylight saving, maps, copying collections, JSON), versions, analysis and lints, packages and pub, testing, CLI apps, FFI |
+| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter from the official docs and the Flutter team's skills: architecture (layers, MVVM, commands), routing and deep links, networking and JSON, localization, responsive and adaptive layout, flutter_scale_kit, performance, accessibility, testing, platform channels and Pigeon, building and releasing for iOS and Android, versions and breaking changes, the MCP server and agent tooling, the owner's CSS-units-to-Flutter rules (LayoutBuilder over MediaQuery, M3 window classes, no app-wide text-scale cap); plus community Riverpod, testing recipes, fastlane, Drift, Slang and plugin authoring, marked as such. Corrected flex, test variants, framework errors and semantics; ADB operations. |
+| [dart](./skills/mobile/dart/SKILL.md) | Dart from dart.dev and the Dart team's skills: Effective Dart style, docs, usage and design, the Dart 3 language (records, patterns, class modifiers, extension types, primary constructors), async and isolates, core libraries (dates across daylight saving, maps, copying collections, JSON), versions, analysis and lints, packages and pub, testing, CLI apps, FFI. VM inline hints and measurement requirements. |
 | [app-store-connect](./skills/mobile/app-store-connect/SKILL.md) | Shipping to the App Store: the asc CLI, builds and signing, TestFlight and release, ad hoc distribution, the App Review Guidelines, a preflight checklist by app type, privacy manifests, ATT and account deletion, metadata and screenshots, pricing and subscriptions, in-app events, analytics and crashes; price-increase consent rules, the Small Business Program |
 | [google-play](./skills/mobile/google-play/SKILL.md) | Shipping to Google Play: the gplay CLI, builds, signing and target API deadlines, testing tracks and the 12-tester rule, staged rollouts, policy and Data safety, Android vitals, billing and purchase verification, pricing, the store listing, reviews and reports; the Subscriptions policy word for word, price-increase rules |
 | [aso](./skills/mobile/aso/SKILL.md) | App store optimization for both stores: audits, keywords and metadata, icons, screenshots and previews, custom product pages and experiments, in-app events, competitors and the market, ratings and reviews, Google Play specifics; an audit rubric and sourced benchmarks, Play promotional content |
 | [app-growth](./skills/mobile/app-growth/SKILL.md) | Growing an app: launch, PR and referrals, analytics and attribution (ATT, AdAttributionKit, SKAdNetwork), onboarding, paywalls, retention and subscription offers, the Facebook SDK in Flutter with RevenueCat events, Apple Ads and its APIs, Google App campaigns, Meta and TikTok app ads, ad creatives, budgets and ROAS; onboarding and paywalls in their own files, Product Hunt from its own guide, FTC disclosure for creators, Apple referral rules, current Meta ad specs and Google Play fees |
-| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community Flutter UX and app polish from FlutterPro (Kamran Bekirov) and ApparenceKit, checked against the official docs: forms, keyboard and focus, navigation, sheets and route guards, scrolling and layout, images and typography, motion and haptics, painting and media, notifications and permissions, device features, forced updates and maintenance mode, Flutter web, formatting, theming and widget patterns, plus a find, pick, plan design review with a 42-rule catalog |
-| [flutter-render-objects](./skills/mobile/flutter-render-objects/SKILL.md) | Custom RenderObjects from renderobjects.com (Matt Carroll), corrected against api.flutter.dev: layout, intrinsics and baselines, child models and parent data, painting, compositing and layers, hit testing and mouse cursors, semantics, show-on-screen, diagnostics, custom Elements, and three worked examples |
+| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community Flutter UX and app polish from FlutterPro (Kamran Bekirov) and ApparenceKit, checked against the official docs: forms, keyboard and focus, navigation, sheets and route guards, scrolling and layout, images and typography, motion and haptics, painting and media, notifications and permissions, device features, forced updates and maintenance mode, Flutter web, formatting, theming and widget patterns, plus a find, pick, plan design review with a 42-rule catalog. Gesture arbitration, painter stability, notifications, scheduling and loader weights. |
+| [flutter-render-objects](./skills/mobile/flutter-render-objects/SKILL.md) | Custom RenderObjects from renderobjects.com (Matt Carroll), corrected against api.flutter.dev: layout, intrinsics and baselines, child models and parent data, painting, compositing and layers, hit testing and mouse cursors, semantics, show-on-screen, diagnostics, custom Elements, and three worked examples. Widget placements, lookup dependencies, clipping offsets and transform contracts. |
 
 ## Marketing
 

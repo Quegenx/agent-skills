@@ -2,9 +2,11 @@
 
 ## Three shapes, by size
 
+The SDK's batching span processor has a bounded queue. The old direct-export row said there was no buffer, which does not describe a configured batching processor. https://opentelemetry.io/docs/specs/otel/trace/sdk/#batching-processor
+
 | Setup | When | Trade-off |
 |---|---|---|
-| App exports straight to the backend | Getting started, one small service, a hosted backend | No buffer: a backend or network blip drops telemetry; every app holds backend addresses and credentials |
+| App exports straight to the backend | Getting started, one small service, a hosted backend | SDK buffering depends on the configured processor; bounded queues and failed exports can drop telemetry; every app holds backend addresses and credentials |
 | One Collector next to the apps | One machine, a monolith, a single compose file | One place to batch, filter, redact and fan out; apps know one OTLP address |
 | An agent Collector on every box plus one gateway | Two or more machines, boxes whose memory is budgeted for real work, browser telemetry, several teams | Local buffering on each box, a single controlled ingest point, backends known only to the gateway |
 
@@ -21,7 +23,7 @@ receivers:
     protocols:
       grpc: { endpoint: 0.0.0.0:4317 }
 processors:
-  memory_limiter:            # first in every pipeline: a hard ceiling, sheds spikes instead of growing
+  memory_limiter:
     check_interval: 1s
     limit_mib: 96
     spike_limit_mib: 32
@@ -54,8 +56,8 @@ service:
 The decisions that matter:
 
 - **The app knows only a local address.** Moving the monitoring stack doesn't touch application deployments.
-- **Sending queue plus retry** ride out a gateway restart or network blip. Size the queue for how long an outage you want to survive (spans per second times seconds), and know what happens past it: telemetry is dropped, the app is unaffected.
-- **`memory_limiter` first, with real numbers.** On a box whose memory belongs to the workload, the agent must shed load rather than compete with the app or trigger the out-of-memory killer.
+- **Sending queue plus retry** can absorb a bounded outage. Check the exporter's queue sizing unit: the default `queue_size` counts requests or batches, not individual spans. In-memory queues are lost on Collector restart; persistence requires a configured storage extension. Overflow and exhausted retries can drop telemetry. The old sizing rule multiplied spans per second by seconds without accounting for batches. https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/exporterhelper/README.md
+- **`memory_limiter` first, with real numbers.** It checks periodically, refuses data above the soft limit and forces garbage collection above the hard limit; memory can exceed the configured limit. The preceding component must retry refused data or it is lost. The removed comment called this a hard memory ceiling. https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md
 - **No defaults for endpoints.** A Collector that starts with a wrong or empty endpoint swallows telemetry silently until the next incident shows nothing.
 - **Agents publish no host ports;** only the app on the same network can reach them. Nothing exposes an ingest surface it doesn't need.
 - **Encrypt the agent-to-gateway hop,** with TLS or a private network that already encrypts (a WireGuard mesh such as Tailscale); then plaintext OTLP inside it is acceptable.

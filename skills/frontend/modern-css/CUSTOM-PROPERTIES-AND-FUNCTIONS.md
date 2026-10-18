@@ -1,8 +1,8 @@
 # Custom properties, tokens and CSS functions
 
-Custom properties as a design-system interface: the ten kinds Adam Argyle names, typed properties with `@property`, tokens (Open Props, Open Props UI, Tailwind v4 `@theme`), the status of mixins, `@function` and `if()`, typed `attr()`, and the math that now runs inside CSS (`calc(infinity)`, `sibling-index()` and `sibling-count()`, trig, stepped values, `progress()`), plus live properties written from JS. Source: Adam Argyle's nerdy.dev posts, each tagged, plus a few bullets tagged [css-modern-features] (rushenn/css-modern-features, MIT) and [Libraries.dev] (its free `libraries-dev` skill, MIT); current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Colour tokens and palettes live in [COLOR.md](COLOR.md); stagger timing lives in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md); style queries live in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md).
+Custom properties as a design-system interface: the ten kinds Adam Argyle names, typed properties with `@property`, tokens (Open Props, Open Props UI, Tailwind v4 `@theme`), the status of mixins, `@function` and `if()`, typed `attr()`, and the math that now runs inside CSS (`sibling-index()` and `sibling-count()`, trig, stepped values, `progress()`), plus live properties written from JS. Infinity recipes are in [CSS-INFINITY.md](CSS-INFINITY.md). Source: Adam Argyle's nerdy.dev posts, each tagged, plus a few bullets tagged [css-modern-features] (rushenn/css-modern-features, MIT) and [Libraries.dev] (its free `libraries-dev` skill, MIT); current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Colour tokens and palettes live in [COLOR.md](COLOR.md); stagger timing lives in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md); style queries live in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md).
 
-**Contents:** [Ten kinds of custom property](#ten-kinds-of-custom-property) · [Typed properties with @property](#typed-properties-with-property) · [The custom property bomb](#the-custom-property-bomb) · [Tokens from Open Props](#tokens-from-open-props) · [Your tokens in Tailwind v4](#your-tokens-in-tailwind-v4) · [Mixins and @apply](#mixins-and-apply) · [Custom functions and if()](#custom-functions-and-if) · [Typed attr()](#typed-attr) · [calc(infinity)](#calcinfinity) · [sibling-index() and sibling-count()](#sibling-index-and-sibling-count) · [Trig and physics](#trig-and-physics) · [Stepped values](#stepped-values) · [Functions still coming](#functions-still-coming) · [Live properties from JS](#live-properties-from-js) · [Prove it](#prove-it)
+**Contents:** [Ten kinds of custom property](#ten-kinds-of-custom-property) · [Typed properties with @property](#typed-properties-with-property) · [The custom property bomb](#the-custom-property-bomb) · [Tokens from Open Props](#tokens-from-open-props) · [Your tokens in Tailwind v4](#your-tokens-in-tailwind-v4) · [Mixins and @apply](#mixins-and-apply) · [Custom functions and if()](#custom-functions-and-if) · [Typed attr()](#typed-attr) · [sibling-index() and sibling-count()](#sibling-index-and-sibling-count) · [Trig and physics](#trig-and-physics) · [Stepped values](#stepped-values) · [Functions still coming](#functions-still-coming) · [Live properties from JS](#live-properties-from-js) · [Prove it](#prove-it)
 
 ## Ten kinds of custom property
 
@@ -79,7 +79,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
     border-radius: var(--radius-conditional-2);
   }
   ```
-  The 2026 form uses `infinity` and `vi` or `cqi` ([calc(infinity)](#calcinfinity)); the `100cqi` variant compares with the container instead. How these `vw` tricks meet anti-slop-ui's `vw` rule is in [RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md).
+  The 2026 form uses `infinity` and `vi` or `cqi` ([CSS infinity](CSS-INFINITY.md)); the `100cqi` variant compares with the container instead. How these `vw` tricks meet anti-slop-ui's `vw` rule is in [RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md).
 - **Pseudo-private props** (Lea Verou's name): start the name with `--_` and don't register it on `:root`; it signals "the intent to keep them localized to that component". Vanilla Extract emits this pattern. "I've seen usage where they are treated as overwritable, and I've seen usage where they are not."
   ```css
   .card {
@@ -179,7 +179,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
 
 `@property` is Baseline 2024, newly available since July 2024 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property)). The 2023 post's "still awaiting cross browser interop ... Firefox is almost done" is out of date.
 
-- **Why register** [nerdy.dev: 6 CSS Snippets Every Front-End Developer Should Know In 2025](https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025) (2025-01-19): "when building a system", limit what goes into variables. With `@property` a system given an invalid colour "remained functioning with the latest known valid color value". It "1. Formalizes CSS system interfaces 2. Protects CSS systems 3. Enables new animation powers 4. Can perform better when using `inherits: false`". Typed values animate because "the browser can infer the steps needed to interpolate".
+- **Why register** [nerdy.dev: 6 CSS Snippets Every Front-End Developer Should Know In 2025](https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025) (2025-01-19): "when building a system", limit what goes into variables. It "1. Formalizes CSS system interfaces 2. Protects CSS systems 3. Enables new animation powers 4. Can perform better when using `inherits: false`". Typed values animate because "the browser can infer the steps needed to interpolate".
   ```css
   @property --color-1 {
     syntax: "<color>";
@@ -188,22 +188,13 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
   }
   ```
   For the performance point the post links Bramus's measurements of registered and unregistered properties, [web.dev/blog/at-property-performance](https://web.dev/blog/at-property-performance) ([nerdy.dev: Benchmarking Custom Properties](https://nerdy.dev/benchmarking-custom-properties), 2024-10-02; the note itself has no numbers).
-- **A wrong-typed value keeps the last good one, silently** [nerdy.dev: Type safe CSS design systems with @property](https://nerdy.dev/cant-break-this-design-system) (2023-09-01): "It doesn't crash the page, lock a thread, and unfortunately also won't tell you in any console". The post's last comment is unterminated (`*.`), which would swallow the closing brace; it is fixed to `*/` here (a comment ends with `*/`, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Syntax/Comments)).
+- **Invalid registered values use inheritance or the initial value.** Registration syntax is checked at computed-value time; an invalid value behaves as `unset`, so an inherited registration uses the inherited value and a non-inherited registration uses its initial value. It does not recover an earlier cascaded declaration. [CSS Properties and Values API](https://www.w3.org/TR/css-properties-values-api-1/#computed-value-time), [CSS Variables](https://www.w3.org/TR/css-variables-1/#invalid-variables)
+  The 2023 [nerdy.dev post](https://nerdy.dev/cant-break-this-design-system), the 2025 snippets post and our old line said "last known good value"; the removed example wrongly claimed `90deg` survived a later colour assignment and also had an unterminated comment in the source. This source registration instead has `.5turn` as its non-inherited initial value:
   ```css
   @property --hue {
     syntax: '<angle>';
     initial-value: .5turn;
     inherits: false;
-  }
-  ```
-  ```css
-  .card {
-    --hue: 90deg; /* ✅ */
-    --hue: #f00;  /* ❌ */
-    background: oklch(98% .01 var(--hue));
-
-    /* background will always resolve 👍🏻 */
-    /* --hue resolves 90deg */
   }
   ```
 - **Which types `syntax` accepts.** The post lists nineteen CSS types as type primitives. MDN's `syntax` page lists fifteen supported names: `<angle>`, `<color>`, `<custom-ident>`, `<image>`, `<integer>`, `<length>`, `<length-percentage>`, `<number>`, `<percentage>`, `<resolution>`, `<string>`, `<time>`, `<transform-function>`, `<transform-list>`, `<url>` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property/syntax)). The post's `<hue>`, `<position>`, `<ratio>`, `<flex>`, `<frequency>` and `<dimension>` are not on it, so register a hue as `<angle>`, as the post itself does.
@@ -330,6 +321,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
 [nerdy.dev: BYO CSS tokens to Tailwind v4's new CSS centric config](https://nerdy.dev/BYO-CSS-tokens-to-tailwind-v4s-new-CSS-centric-config) (2024-03-18), written against the v4 alpha.
 
 - **Setup:** `@import "tailwindcss";`, then your token file, then `@theme { }`. Reset a default namespace with `--<namespace>-*: initial;` (the post resets `--font-size-*`; the stable docs show `--color-*: initial;`, [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme)); the rules "look like naming hooks": a property named into a namespace generates its utilities, so "hook into the naming while also supplying your own design tokens as values".
+- **Aliases to other variables:** use `@theme inline` when defining theme values that reference another variable, so generated utilities use the referenced value directly. Ordinary aliases resolve where the theme variable is defined, which can differ from where a utility is used. The alpha post's ordinary `@theme` aliases omit this caveat. [Tailwind: Referencing other variables](https://tailwindcss.com/docs/theme#referencing-other-variables)
 - **Font sizes, corrected for stable v4.** The post maps `--font-size-*`, the alpha name. The stable docs map font size utilities to `--text-*` ("`--text-` | Font size utilities like text-xl", [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme)), so the post's block becomes:
   ```css
   @theme {
@@ -462,81 +454,6 @@ Base `attr()` is Baseline widely available, but "support for properties other th
   ```
 - **Not a URL.** The wishlist's icon idea, `url("…" attr(data-icon type(<string>)))`, was a wish; MDN says "`<url>` is not allowed as an `attr()` type, for security reasons." Don't copy it.
 
-## calc(infinity)
-
-[nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases) (2026-07-25). The `<calc-keyword>` values (`infinity`, `-infinity`, `NaN`, `pi`, `e`) are Baseline widely available since December 2022; "an infinite value is clamped to the allowed range" ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/calc-keyword)).
-
-- **Basics:** "`infinity` and `-infinity` need to always be wrapped in `calc()`"; a dimension also needs a unit multiplier. It works in `clamp()`, `min()` and `max()` too.
-  ```css
-  div {
-    border-radius: calc(infinity * 1px);
-    z-index: calc(infinity);
-  }
-  ```
-  For pills it replaces the old `1e9px`. app-ui's `--radius-full` is `calc(infinity * 1rem)`, "a pill at any height" ([app-ui TOKENS.md](../app-ui/TOKENS.md)).
-- **The browser's max int:** `z-index: calc(infinity)` maxes out at `2147483647`, which a counter can show:
-  ```css
-  .css-max-int {
-    counter-reset: cssInt calc(infinity);
-
-    &::after {
-      content: counter(cssInt);
-    }
-  }
-  ```
-  Two views on using it for stacking: the post offers it to "beat `z-index: 999999999`"; anti-slop-ui says "Escalating to `z-index: 9999` only moves the fight" and sends floating layers to the top layer ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md), [POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md)).
-- **No floor, no ceiling:**
-  ```css
-  div {
-    inline-size: clamp(
-      calc(-infinity * 1px), /* no floor */
-      100%, 
-      calc(infinity * 1px)   /* no ceiling */
-    );
-  }
-  ```
-- **A radius that switches on:** "If the elements inline-size is less than 100vi, the radius will be 0. If it's greater than 100vi, the radius will be 20px." Open Props ships a set.
-  ```css
-  .viewport-responsive-radius {
-    border-radius: clamp(0px, (100vi - 100%) * infinity, 20px);
-  }
-
-  .container-responsive-radius {
-    border-radius: clamp(0px, (100cqi - 100%) * infinity, 20px);
-  }
-  ```
-- **Booleans:** "Clamp an arbitrary number down to exactly 0 or 1, then use it"; "One variable now can drive color, offset, opacity, gaps, whatever."
-  ```css
-  .flippy {
-    --solo: clamp(0, (2 - sibling-count()) * infinity, 1);
-    --crowded: clamp(0, (sibling-count() - 5) * infinity, 1);
-
-    flex-grow: calc(1 - var(--solo));
-    font-size: calc(1rem - var(--crowded) * 0.125rem);
-  }
-  ```
-- **Perma-state:** an infinite duration "appears to be frozen"; on hover the duration drops to `.2s`, so the hovered state sticks for the page's life (the post's demo):
-  ```css
-    .perma-state-example {
-      --size: min(3vi, 3ch);
-      display: grid;
-      grid: var(--size) var(--size) var(--size) / auto-flow var(--size);
-      gap: 5px;
-
-      > div {
-        border: 2px solid var(--text-2);
-        transition: background calc(infinity * 1s) ease;
-
-        &:hover {
-          background: var(--text-2);
-          transition-duration: .2s;
-        }
-      }
-    }
-  ```
-  Freezing view transitions for inspection is in [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md); the never-reverse scroll trigger is in [SCROLL.md](SCROLL.md).
-- **Doesn't work:** a backdrop from an infinite spread, `.backdrop { box-shadow: 0 0 0 calc(infinity * 1px) #0005; }`, carries the post's own warning, "This actually doesn't work!" ([Bramus explains why](https://front-end.social/@bramus/117043307620167329)).
-
 ## sibling-index() and sibling-count()
 
 Both are Baseline 2026, newly available since August 2026 ([MDN sibling-index()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/sibling-index), [MDN sibling-count()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/sibling-count)). `sibling-count()` returns an `<integer>`, so unlike `counter()` it works in math (MDN: `width: calc(100% / sibling-count())`). Argyle proposed the idea in 2019 (csswg-drafts issue 4559); it is specced as css-values-5 "tree counting" [nerdy.dev: Let the stagger experiments begin](https://nerdy.dev/sibling-index) (2025-03-11, then "try it in Canary today"; the 2026-01 post said "stable Chrome and Safari").
@@ -639,12 +556,11 @@ Status (web-features): `round()`, `mod()` and `rem()` are Baseline newly availab
 
 ## Prove it
 
-- Set a registered `<angle>` property to a colour in DevTools: the computed value stays at the last valid angle and the element still paints.
+- Set a registered `<angle>` property to a colour in DevTools: check the inherited or initial fallback described in [Typed properties](#typed-properties-with-property), rather than expecting an earlier declaration to survive.
 - Every `syntax` in a registration names a type from MDN's list of fifteen; none uses `<hue>`, `<ratio>` or `<position>`.
 - `grep -n 'if ('` over the stylesheet finds no `if()` call with a space before the parenthesis.
 - No typed `attr()` uses a bare `color` type or a `url` type; each colour reads `type(<color>)`, and the page reads correctly in a browser without typed `attr()` (the fallback value shows).
-- Tailwind v4 `@theme` blocks use `--text-*` for font sizes; `text-5` renders the mapped size.
-- `calc(infinity)` lengths carry a unit multiplier; no `z-index: calc(infinity)` stands in for the top layer.
+- Tailwind v4 font-size mappings use `--text-*`; aliases to other variables follow the [`@theme inline` caveat](#your-tokens-in-tailwind-v4), including when the referenced variable changes in a descendant.
 - Elements that used hand-set `--sibling-index` variables now use `sibling-index()`, and a stagger's total stays within ui-animation's budget.
 - Nothing ships on `@mixin` or `@apply`: no browser supports them.
 - `CSS.registerProperty()` appears only where an initial value is computed at runtime; the rest are `@property` rules.

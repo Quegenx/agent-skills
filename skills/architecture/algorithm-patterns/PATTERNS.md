@@ -143,7 +143,7 @@ Each index is pushed once and popped at most once, so the inner `while` is linea
 
 ## Binary search
 
-**On a sorted array:** `lo <= hi`, `mid = lo + ((hi - lo) >> 1)`, discard the half that can't hold the target. In JavaScript `(lo + hi) >> 1` overflows past 2³¹ - 1 because `>>` converts to 32-bit; `Math.floor((lo + hi) / 2)` is safe for array indices.
+**On a sorted array:** `lo <= hi`, `mid = lo + Math.floor((hi - lo) / 2)`, discard the half that can't hold the target. JavaScript `>>` converts numbers to signed 32-bit integers, so subtracting before shifting does not protect a gap of 2³¹ or more. The old line used `lo + ((hi - lo) >> 1)`. [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Right_shift]
 
 **On the answer:** when the question is "the smallest x that works" or "the largest x that works" and feasibility flips only once, search x and test it with a linear check.
 
@@ -220,3 +220,7 @@ Some problems need neither a structure nor a trick, only the smallest state that
   `Math.max(...arr)` is fine for a few numbers only: "both spread (`...`) and `apply` will either fail or return the wrong result if the array has too many elements, because they try to pass the array elements as function parameters. ... The `reduce` solution does not have this problem" (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max). The rule's per-browser limits (about 124,000 in Chrome 143, 638,000 in Safari 18) come from a jsfiddle, not a spec.
 - GCD of many values: fold Euclid's `gcd(a, b) = gcd(b, a % b)` across the array and stop as soon as the running value is 1. Trying divisors downward from the minimum is billions of steps when the answer is 1.
 - Zigzag layout over r rows: simulate the row index bouncing between 0 and r - 1, appending to one buffer per row, then join the rows. With one row, or at least as many rows as characters, return the input: the direction would never flip.
+
+## Prove it
+
+Binary-search midpoint arithmetic must not coerce the index gap to a signed 32-bit number; compare the chosen expression with JavaScript's documented shift semantics. [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Right_shift]

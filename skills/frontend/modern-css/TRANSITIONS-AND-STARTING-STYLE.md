@@ -166,7 +166,7 @@ How each part earns its place, from the post:
 - **`[hidden]` is the exit state.** "I chose to lean into the browser provided attribute that sets `display: none`, the `[hidden]` attribute!" "So when any element has been given the `[hidden]` attribute, we describe the **off stage styles**."
 - **`display: none !important`.** "The browser provides that automatically for the attribute, but it's specificity is weak. If elements have any custom display type set, none isn't applied and the effect is lost. This also means you could employ your own type of flag here."
 - **Exits are quicker.** ".4s with an `ease-out` effect because I think it's nice when exit animations happen slightly faster than entry animations." Entry is .5s `ease-in`.
-- **Dialogs and popovers leave the same way.** "For `<dialog>`, I'm using the `:modal` pseudo class for knowing when the dialog is hidden. For `[popover]`, I'm using the `:popover-open` pseudo class for knowing when a popover is hidden."
+- **The dialog selector is modal-only.** The source uses `:modal` to mean visible, but an open modeless dialog also matches `dialog:not(:modal)` and would be hidden by this snippet. Use it only where dialogs open modally; see the [official modal/modeless distinction](POPOVER-AND-DIALOG.md#use-them-and-the-top-layer). The popover branch uses `:popover-open`.
 - **The anonymous `@layer { }`** keeps a `*` rule "easy to override" and quiet in DevTools: "a demoted anonymous layer is weaker than unlayered styles or can be imported into another layer the author knows is a weaker layer", and "the layer drops the styles in the styles pane underneath the other styles". "You could def get away without this `@layer`." Layers in general are in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md).
 - **Scope it in real use.** "I also think it'd make sense to scope it to a class or something, there's probably some scenarios where the results aren't desirable for every element. But conceptually targetting everything sure is fun."
 - **Why not view transitions:** "View transitions are a good option for some of what this solves, but they aren't interruptible. Also not as easy to integrate with dialog and popovers." See [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md).
@@ -368,6 +368,7 @@ li {
 - Every standalone (unnested) `@starting-style` block comes after the rule it overrides in source order.
 - Every `transition` that lists `display` or `content-visibility` has `allow-discrete` (per property or as `transition-behavior`), and every top-layer transition lists `overlay`.
 - A `[hidden]` exit rule uses `display: none !important`; test it on an element with its own `display: flex` or `grid` and confirm it still hides.
+- The shared `dialog:not(:modal)` exit is used only for modal dialogs; any modeless dialog opened with `show()` remains visible under its own styles. [Enter and exit stage](#enter-and-exit-stage-for-any-element)
 - Toggle each element in Chrome, Firefox and Safari: entry animates everywhere, nothing is stuck visible or invisible, and an exit that is instant (Firefox, Safari for top-layer elements) still ends hidden.
 - Code that removes a node after an exit sets the state before calling `getAnimations()`, and logs a non-empty array during the exit.
 - With reduced motion turned on in the OS, elements still appear and disappear, without transitions.

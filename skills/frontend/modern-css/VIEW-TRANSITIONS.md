@@ -206,7 +206,7 @@ h1 {
 
 ## Debugging
 
-- **Freeze every transition to inspect it** ([nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases), 2026-07-25): with an infinite duration, "The `::view-transition` tree stays in the devtools DOM, giving you an opportunity to inspect or tweak." `calc(infinity)` is in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#calcinfinity).
+- **Freeze every transition to inspect it** ([nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases), 2026-07-25): with an infinite duration, "The `::view-transition` tree stays in the devtools DOM, giving you an opportunity to inspect or tweak." `calc(infinity)` is in [CSS-INFINITY.md](CSS-INFINITY.md).
 
 ```css
 ::view-transition-group(*),

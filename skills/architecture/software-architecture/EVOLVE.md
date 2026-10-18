@@ -6,7 +6,7 @@ Find the constrained resource before choosing a fix; each step solves a differen
 
 1. **Fix the code and queries:** missing indexes, N+1 queries, oversized payloads (the `performance-and-caching` skill).
 2. **Cache what's read often and changes rarely,** at the right level: browser, CDN, application cache, database.
-3. **Scale vertically** while it's cost-effective: it keeps everything simple. Its limits are a hardware ceiling, cost that grows faster than capacity, and a single point of failure. Move on when cost grows faster than users, you need redundancy, deploy downtime hurts the business, or the largest instance is at about 70% utilization.
+3. **Scale vertically** while it's cost-effective: it keeps everything simple. Its limits are a hardware ceiling, cost that grows faster than capacity, and a single point of failure. Move on when cost grows faster than users, you need redundancy or deploy downtime hurts the business. The source's about-70-percent utilization trigger is an author example, not a universal capacity ceiling. [milan-jovanovic, scaling-monoliths-a-practical-guide-for-growing-systems]
 4. **Scale horizontally** behind a load balancer. The prerequisite is statelessness: token-based auth or a shared session store, a distributed cache, no local files. Converting a stateful app is real refactoring, so keep new code stateless from the start. In return: fault tolerance, rolling deploys and scaling down when quiet (details in the `system-design` skill).
 5. **Move slow work to queues** and workers: file processing, emails, reports, search indexing, batch jobs. A queue accepts work at peak rate and processes it at a sustainable one (the `background-jobs` skill).
 6. **Scale the database:**
@@ -71,7 +71,7 @@ export const catalogHttpClient = (baseUrl: string, fetchFn = fetch): CatalogApi 
 4. **Replace in-memory events with a broker,** publishing through the outbox, because the broker can now be unreachable (the `messaging` skill).
 5. **Give it its own pipeline, hosting, database instance and observability,** and propagate trace context across the hop.
 6. **Migrate its data:** a one-time copy during a short maintenance window when that's acceptable, or continuous sync (change data capture) and a gradual switch when it isn't. Take a backup and have a rollback plan either way.
-7. **Route with the strangler approach:** deploy the service alongside the monolith, route the module's traffic to it (a reverse proxy or gateway with path routing; it can also centralize rate limiting and caching), keep the in-process implementation until the service is proven, then delete it. Rollback is a routing change. A gateway doesn't restore the local transactions the split removed.
+7. **Route with the strangler approach:** deploy the service alongside the monolith, route the module's traffic to it (a reverse proxy or gateway with path routing; it can also centralize rate limiting and caching), keep the in-process implementation until the service is proven, then delete it. Routing rollback requires the old path to remain runnable with compatible, reconciled data, including accepted new writes; use the canonical [migration contract](../system-migration/SKILL.md#rewriting-a-legacy-system). The source and old line called rollback just a routing change. This qualification follows the source-of-truth and synchronization requirements, not a performed rollback test. A gateway doesn't restore the local transactions the split removed. [milan-jovanovic, when-to-extract-module-to-microservice; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]
 
 Run the first extracted service in production for a while before extracting the next; the second one goes faster because the pipeline, tracing and messaging already exist.
 
@@ -95,25 +95,17 @@ export const orderReadsRouter = (legacy: OrderReads, next: OrderReads, flags: Fl
 
 **3. Keep the data in sync** while both run:
 
-- **a polling job** copies rows changed since the last run, upserting by ID. Record the start time before querying and use it as the next cutoff, so rows modified during a run are picked up next time instead of skipped. Long-running jobs get a fresh connection or scope per iteration;
+- **a polling job** in the source copies rows changed since the last cutoff and advances the cutoff to the run's start. The old line claimed this prevents skips. That recipe alone does not cover deletions, equal timestamps or a transaction that becomes visible after the poll with an earlier modification time. These are static contract limitations; no polling run was executed. Use the canonical [capture and reconciliation contract](../system-migration/SKILL.md#rewriting-a-legacy-system) before relying on it. [milan-jovanovic, strangler-fig-modular-monolith-migration; https://www.postgresql.org/docs/18/transaction-iso.html]
 - **or events:** the legacy code publishes a change after each write and the new module consumes it (in-process while they share a runtime), or change data capture on the legacy tables.
 
-**4. Run in parallel on reads.** Call both implementations, compare the results, log mismatches with the IDs, and return the legacy answer until the mismatch rate is zero. Never double the writes: that duplicates every side effect.
+**4. Compare reads** through the canonical [hot-path switch](../system-migration/SKILL.md#switching-a-hot-path-to-a-new-implementation). The source example and removed TS illustration awaited both answers, so a slow new implementation delayed the user; they did not establish background latency isolation. Never double the writes: that duplicates every side effect. [milan-jovanovic, strangler-fig-modular-monolith-migration]
 
-```ts
-import { isDeepStrictEqual } from "node:util";
+**5. Cut over and clean up:** flip the flag for everyone, retaining the legacy path only while the [rollback data contract](../system-migration/SKILL.md#rewriting-a-legacy-system) holds; then stop the sync and remove obsolete code and tables through the project's authorized migration. The source's flag-only rollback omitted accepted new writes. [milan-jovanovic, strangler-fig-modular-monolith-migration]
 
-export const orderReadsShadow = (legacy: OrderReads, next: OrderReads, log: Logger): OrderReads => ({
-  async getOrder(id) {
-    const [old, neu] = await Promise.all([legacy.getOrder(id), next.getOrder(id).catch((e) => ({ error: String(e) }))]);
-    if (!isDeepStrictEqual(old, neu)) log.warn({ orderId: id, legacy: old, next: neu }, "orders-module mismatch");
-    return old;                                           // the legacy result stays authoritative until verified
-  },
-});
-```
-
-**5. Cut over and clean up:** flip the flag for everyone, keep the legacy code for a rollback period, stop the sync, delete the legacy code, then drop the legacy tables.
-
-**Timeline per module,** as a planning baseline: scoping 1 to 2 weeks, building 2 to 4, data migration 1 to 2, parallel run 1 to 2, cutover a day, cleanup a week; roughly 6 to 11 weeks. Later modules go faster because the seam, sync tooling and habits exist, and the work pipelines (scope the next module during the current one's parallel run). Five or six modules is commonly six months to a year, delivering a verified module every few weeks instead of everything at the end.
+**Timeline per module,** the author's planning example: scoping 1 to 2 weeks, building 2 to 4, data migration 1 to 2, parallel run 1 to 2, cutover a day, cleanup a week; roughly 6 to 11 weeks. The source suggests pipelining later modules and estimates six months to a year for five or six modules. These are contextual estimates, not measured universal baselines. [milan-jovanovic, strangler-fig-modular-monolith-migration]
 
 **Mistakes:** migrating several modules at once; skipping the parallel run; no per-request routing seam; letting old and new code read each other's tables instead of talking through events or APIs.
+
+## Prove it
+
+Name the source of truth at every stage, account for accepted writes before a routing rollback, and explain how deletions and late-visible changes reach the new store. A production shadow comparison must satisfy the canonical request-path contract rather than merely await both answers. State migration timelines as attributed estimates. [milan-jovanovic, strangler-fig-modular-monolith-migration; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]

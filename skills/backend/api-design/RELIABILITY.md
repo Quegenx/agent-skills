@@ -113,19 +113,8 @@ const lookup = fetchCatalog(id).pipe(
 
 ## Rate limits
 
-- **Choose the key in one function,** so every limiter uses the same rule:
-
-```ts
-function rateLimitKey(req: Request, user: { id: string } | null): string {
-  if (user) return `user:${user.id}`;                          // from the verified token, never a header
-  const forwarded = req.headers.get("x-forwarded-for")?.split(",").map((s) => s.trim()) ?? [];
-  const ip = forwarded.at(-TRUSTED_PROXY_HOPS) ?? "unknown";    // the entry your own proxy appended
-  return `ip:${ip}`;
-}
-// e.g. a fixed window of 10 per minute for "ip:*", a token bucket of 1,000 with 700 refilled per hour for "user:*"
-```
-
-- **Partition by a trusted identity:** the user or API key from a verified token for authenticated callers; the client address for anonymous ones only as reported by a proxy you control. With `X-Forwarded-For`, read the entry your own proxy added (counting from the right), never the left-most value, which the caller can write.
+- **Choose the key in one function,** so every limiter uses the same rule. [milan-jovanovic, apis/advanced-rate-limiting-use-cases-in-dotnet.md]
+- **Partition by a trusted identity:** the user or API key from a verified token for authenticated callers; for anonymous callers, use the framework's client address after configuring trusted proxies for the actual topology. Express checks the socket peer and then forwarded addresses from right to left until the first untrusted address. The last trusted proxy must remove or overwrite client-supplied forwarded headers. The source trusted an arbitrary `X-Forwarded-For`; the removed helper indexed that header without establishing peer trust. https://expressjs.com/en/guide/behind-proxies.html
 - **Separate budgets** for anonymous and authenticated callers, per tenant, and tighter ones for expensive operations (search, export, AI calls).
 - **A single global limit is almost always wrong:** one noisy caller uses up everyone's budget. Partition the limit by caller.
 - **Watch for a missing key.** An anonymous request has no user id; if the partition key is `user?.id`, every anonymous caller shares one bucket (or, worse, gets none). Fall back explicitly: user id when authenticated, else the trusted client address.

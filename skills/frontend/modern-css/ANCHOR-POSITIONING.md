@@ -31,18 +31,7 @@ Anchor positioning tethers one element (a tooltip, a picker, a dialog, a carouse
   }
   ```
 
-- **Corrected for today's syntax.** The 2022 post links the element only through the name inside `anchor()`. MDN now says a name inside `anchor()` "does not associate" the element with that anchor: the association comes from `position-anchor` (or the HTML `anchor` attribute), and once it is set the name inside `anchor()` is optional. The grammar is `anchor( <anchor-name>? && <anchor-side> , <length-percentage>? )`, the last part a fallback, for example `anchor(--my-anchor bottom, 50%)` ([MDN anchor()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/anchor)). The post's tooltip in the current form:
-
-  ```css
-  .tooltippy {
-    position: absolute;
-    position-anchor: --side;
-    top: anchor(bottom);
-    left: anchor(left);
-  }
-  ```
-
-  What changed: `position-anchor: --side` was added, and `--side` left the two `anchor()` calls.
+- **Explicit target lookup differs from the default anchor.** A name inside `anchor(--side bottom)` looks up that named target and remains valid without `position-anchor`. `position-anchor` can establish the default anchor, letting `anchor(bottom)` omit the name; this also matters for the default anchor's other positioning behavior. Our old correction wrongly rejected the source's explicitly named function as obsolete syntax, so its source examples above remain. [CSS Anchor Positioning: Anchor position functions](https://drafts.csswg.org/css-anchor-position-1/#anchor-pos), [target anchor element](https://drafts.csswg.org/css-anchor-position-1/#target-anchor-element)
 - **One line exposes the box** [nerdy.dev: Anchor Interpolated Morph (AIM)](https://nerdy.dev/anchor-interpolated-morphing), 2026-01-23: `anchor-name` "enables any other element to observe the height, width, and position of this element." Its own list of what a component can know includes "where other elements are and their size" (`position-anchor`, `anchor-size()`) and "distance from other elements" (anchor) [nerdy.dev: Web elements know about the user, device, variables, layout and more](https://nerdy.dev/components-can-know), 2025-10-30.
 - **Anchor names are dashed** [nerdy.dev: An Emoji Naming Convention](https://nerdy.dev/css-emoji-convention), 2025-02-20: "some CSS features require the dashed names while others do not"; its list writes `anchor-name: --foo;` beside an undashed `container-name: foo;`. The same post prefixes anchor names with an anchor emoji (`anchor-name: --⚓-example;`), and the AIM post uses `--⚓︎-morph`. The naming convention itself is in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#emoji-in-custom-names).
 - **Layering without `position: absolute` math** [nerdy.dev: The Over Easy Mini Web Machine](https://nerdy.dev/the-over-easy-mini-web-machine), 2024-09-04: UI layering with `anchor()`, "no more complex `position: absolute`", keyword alignment ([anchor-tool.com](https://anchor-tool.com/)), "intrinsically sized based on content", and it "pairs radically with `popover` elements" (popovers are in [POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md)). Video and CodePen demos only; demo code not exported.
@@ -55,11 +44,7 @@ Anchor positioning tethers one element (a tooltip, a picker, a dialog, a carouse
 
 ## Flip when space runs out
 
-- **Flip both axes** [nerdy.dev: Nice Select](https://nerdy.dev/nice-select), 2026-02-03: the select picker uses `anchor(start)` against its button, and the anchor fallbacks `flip-block, flip-inline` "automatically repositions the anchor position if the picker would overflow the viewport." The post labels this "`position-try`" but links the `position-try-fallbacks` page. The property that takes the list is `position-try-fallbacks` (`position-try` is its shorthand), so write:
-
-  ```css
-  position-try-fallbacks: flip-block, flip-inline;
-  ```
+- **Flip both axes** [nerdy.dev: Nice Select](https://nerdy.dev/nice-select), 2026-02-03: the select picker uses `anchor(start)` against its button, and the anchor fallbacks `flip-block, flip-inline` "automatically repositions the anchor position if the picker would overflow the viewport." The post labels this `position-try` but links the longhand page. Both the shorthand and `position-try-fallbacks` accept fallback lists: the shorthand's optional order defaults to `normal` when omitted. Our old line and check wrongly required the longhand; use it when changing fallbacks while preserving an existing order. [MDN position-try](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-try)
 
   Support: Baseline 2026, newly available since 2026-01-13 (Chrome 128, Firefox 147, Safari 26), [MDN position-try-fallbacks](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-try-fallbacks). MDN describes the try-tactic keywords `flip-block`, `flip-inline` and `flip-start`; its formal syntax and browser-compat-data also have `flip-x` and `flip-y` (Chrome 144, Firefox 147, Safari 26.2).
 - **Pick the fallback with the most room** [css-modern-features, positioning.md]: `position-try-order` reorders the fallbacks by available space. Verbatim:
@@ -260,8 +245,8 @@ Anchor positioning tethers one element (a tooltip, a picker, a dialog, a carouse
 
 ## Prove it
 
-- **Association:** every rule that uses `anchor()` without a name inside it also sets `position-anchor` (or sits under a rule that does); a bare `anchor(--name side)` with no `position-anchor` is the 2022 syntax.
-- **Names:** search for `inset-area` and for `position-try:` used with a plain list of tactics; both should be `position-area` and `position-try-fallbacks`.
+- **Anchor lookup:** a named `anchor()` resolves its explicit target; an unnamed call resolves the default anchor. Do not reject an explicit name merely because `position-anchor` is absent. [Name an anchor](#name-an-anchor-and-tether-to-it)
+- **Names and shorthand:** replace obsolete `inset-area` with `position-area`; accept valid `position-try` fallback lists, and check whether resetting the order to `normal` is intended. [Flip when space runs out](#flip-when-space-runs-out)
 - **Flip test:** narrow the viewport until the anchored element no longer fits above its anchor; it flips. If it stops flipping only at small widths, look for `center` in its `position-area` and switch to the spanning area (`top`).
 - **Popover reset:** an anchored popover using `position-area` sits next to its anchor, not centered in the viewport (`margin: 0; inset: auto;`).
 - **AIM:** open the dialog; it starts on the trigger's box and grows to its natural size in Chrome. Close it mid-animation; it reverses from where it is. With reduced motion on, it opens with no movement. In a browser without `interpolate-size` it still opens and closes, only without the size morph.

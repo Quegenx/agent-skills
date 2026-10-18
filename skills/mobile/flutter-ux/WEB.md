@@ -15,7 +15,7 @@ Flutter web's HTML shell plus a few everyday platform behaviors: a progress bar 
 
 [FlutterPro](https://flutterpro.design/details/flutter-web-loading-progress): Flutter web has to download `main.dart.js`, the CanvasKit (or skwasm) runtime, fonts and your assets before it can paint a single pixel. Depending on their size, that's "easily 3 to 5 seconds of staring at a blank white page".
 
-No Dart needed: Flutter mounts into `<body>`, so anything you put there shows immediately and disappears on its own once the engine takes over. Show a progress bar that reflects how far the boot actually is.
+No Dart needed: Flutter mounts into `<body>`, so anything you put there shows immediately and disappears on its own once the engine takes over. The source bar steps at loader lifecycle stages. [FlutterPro](https://flutterpro.design/details/flutter-web-loading-progress)
 
 Markup in `web/index.html`:
 
@@ -83,7 +83,7 @@ _flutter.loader.load({
 });
 ```
 
-- **Real milestones, not fake percentages:** the bootstrap script running, `onEntrypointLoaded` (main.dart.js parsed), `initializeEngine` resolving, and `runApp` mounting the app. "A handful of discrete stages, not continuous progress, but enough to feel honest."
+- **Stage weights, not measured completion:** the source sets 20, 50 and 80 as constants at bootstrap, entrypoint-loaded and engine-ready stages. These are author-chosen weights, not byte or workload measurements. P3 correction: the old "Real milestones, not fake percentages" line overstated what the sample measures. This follows from the literal sample above and the documented [loader lifecycle](https://docs.flutter.dev/platform-integration/web/initialization). [FlutterPro](https://flutterpro.design/details/flutter-web-loading-progress)
 - **Pitfall:** everything here ships as plain HTML and CSS with the initial page request. "Don't load a 2MB animated background, or you'll be solving one loading problem by creating another."
 - **Official check** (https://docs.flutter.dev/platform-integration/web/initialization): a custom `flutter_bootstrap.js` needs the `{{flutter_js}}` token, the `{{flutter_build_config}}` token and a call to `_flutter.loader.load()`; the sample has all three. When you provide your own `onEntrypointLoaded`, "the `config` that you pass to `_flutter.loader.load()` is **not** forwarded to the engine automatically"; pass it to `initializeEngine()` yourself, for example `initializeEngine({ renderer: 'canvaskit' })`.
 
@@ -472,7 +472,7 @@ Future<void> shareFile(String url) async {
 
 ## Prove it
 
-- **Boot progress:** on a throttled network the web build shows the bar from the first paint, it steps through 20, 50 and 80 percent, and it disappears when the app paints; the splash adds no large asset to the first request.
+- **Boot stages:** the bar follows the loader callbacks and disappears when the app paints; describe its 20/50/80 values as stage weights, not measured download completion. [Flutter initialization](https://docs.flutter.dev/platform-integration/web/initialization)
 - **Link previews:** a link pasted into a chat or a card validator shows the title, description and an image of at least 1200×630; `og:image` and `twitter:image` are absolute URLs.
 - **Tab titles:** navigating between pages changes the browser tab title each time; an unknown path shows the fallback, never a blank tab; `Title.color` is opaque.
 - **Date picker:** iOS shows the wheel in a sheet, Android the Material dialog; dismissing either keeps the previous date.

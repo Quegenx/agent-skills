@@ -1,13 +1,13 @@
 # Popover and dialog
 
-Native overlays: `<dialog>` and the `popover` attribute, the top layer they render in, opening and closing them from HTML with invoker commands (`commandfor`, `command`), light dismiss with `closedby`, `popover="hint"` with `interestfor`, `interactivity: inert`, `CloseWatcher`, and copy-ready transition starter kits. The source is Adam Argyle's nerdy.dev; each section names its post and date. Support status comes from MDN (index data checked 2026-10-17) and webstatus.dev, stated once per feature with its URL. The mechanics behind the transitions (`@starting-style`, `allow-discrete`, `overlay`) are explained in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md); positioning an overlay against its trigger is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md). Code is copied from the posts as written, including their `closedBy` casing (see [Invoker commands](#invoker-commands-commandfor-and-command)).
+Native overlays: `<dialog>` and the `popover` attribute, the top layer for modal dialogs and shown popovers, opening and closing them from HTML with invoker commands (`commandfor`, `command`), light dismiss with `closedby`, `popover="hint"` with `interestfor`, `interactivity: inert`, `CloseWatcher`, and copy-ready transition starter kits. The source is Adam Argyle's nerdy.dev; each section names its post and date. Support status comes from MDN (index data checked 2026-10-17) and webstatus.dev, stated once per feature with its URL. The mechanics behind the transitions (`@starting-style`, `allow-discrete`, `overlay`) are explained in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md); positioning an overlay against its trigger is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md). Code is copied from the posts as written, including their `closedBy` casing (see [Invoker commands](#invoker-commands-commandfor-and-command)).
 
 **Contents:** [Use them, and the top layer](#use-them-and-the-top-layer) · [Support](#support) · [A dialog](#a-dialog) · [A popover](#a-popover) · [Invoker commands](#invoker-commands-commandfor-and-command) · [Light dismiss with closedby](#light-dismiss-with-closedby) · [A component that puts itself in the top layer](#a-component-that-puts-itself-in-the-top-layer) · [popover="hint" and interestfor](#popoverhint-and-interestfor) · [interactivity: inert](#interactivity-inert) · [CloseWatcher](#closewatcher) · [Starter kits](#starter-kits) · [Dialog patterns](#dialog-patterns) · [Where other skills differ](#where-other-skills-differ) · [Prove it](#prove-it)
 
 ## Use them, and the top layer
 
 - [nerdy.dev: 6 CSS Snippets Every Front-End Developer Should Know In 2025](https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025) (2025-01-19): "knowing your way around a `<dialog>` and a `[popover]` are table stakes. Otherwise, everyone else will be on top of you, and your wack `z-index` attempts will be defeated with a puny value of `1`." They are "common UI elements, with no JavaScript to download, and accessibility built in. **Use em**" (he links Hidde de Vries on the differences: [hidde.blog](https://hidde.blog/dialog-modal-popover-differences/)).
-- Both render in the top layer: "The browser projects the elements from anywhere in the document, to the top when shown." The same rule is already in [anti-slop-ui DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#stacking-without-z-index-wars) ("Layers that must float ... go to the top layer").
+- A shown popover and a modal dialog opened with `showModal()` render in the top layer; `show()` opens a modeless dialog outside it. The post and our old line said both render there whenever shown. Top-layer boxes are laid out as if siblings of the root; the DOM element is not cloned. [MDN show()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/show), [showModal()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal), [CSS Positioned Layout: Top layer](https://drafts.csswg.org/css-position-4/#top-layer). The floating-layer rule is already in [anti-slop-ui DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#stacking-without-z-index-wars).
 - Why they are hard to animate (the browser toggles `display`, and they enter and leave the top layer) and the fix are in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md#why-top-layer-elements-are-hard-to-animate).
 - Debugging: in Chrome DevTools the `#top-layer` node in the Elements panel is invented, so you can find these elements: "`#top-layer` is artificially created in the Elements panel, we just made it up because we felt we needed somewhere to find these mysterious elements that were on top of the page." ([nerdy.dev: VisBug v0.4.0 release notes](https://nerdy.dev/a-2024-visbug-update), 2024-04-28)
 - There is no `:top-layer` selector. [nerdy.dev: Anchor Interpolated Morph (AIM)](https://nerdy.dev/anchor-interpolated-morphing) (2026-01-23) and [nerdy.dev: The CSS Podcast On Animating Popover And Dialog](https://nerdy.dev/the-css-podcast-on-animating-popover-and-dialog) (2024-06-13) write `:top-layer` but link the MDN glossary entry "[Top layer](https://developer.mozilla.org/en-US/docs/Glossary/Top_layer)", a term, not a pseudo-class. Do not write it in a stylesheet.
@@ -48,7 +48,7 @@ The transition properties (`transition-behavior`, `overlay`, `@starting-style`) 
 ```
 
 - "The `[open]` attribute is used to know when the dialog is open or closed."
-- "You can enable **light dismiss** on a dialog and skip the close button like `<dialog closedby="any">`" (see [closedby](#light-dismiss-with-closedby) for support and a fallback).
+- The post says light dismiss lets you skip the close button; see [closedby](#light-dismiss-with-closedby) for support and the fallback limitation before relying on outside clicks.
 - With invoker commands the `onclick` handlers go away: [Invoker commands](#invoker-commands-commandfor-and-command).
 
 ## A popover
@@ -102,14 +102,7 @@ An open button:
 "And just like that, tapping or clicking outside the dialog will close it." He wrote it because "I haven't seen enough folks using it or talking about it."
 
 - Values, per MDN (closedBy page above): `any` (light dismiss, a platform close action such as Esc, or a developer mechanism), `closerequest` (a platform action or a developer mechanism), `none` (only a developer mechanism). With the attribute absent or invalid, a dialog opened with `showModal()` behaves as `closerequest` and one opened any other way as `none`.
-- `closedby` is not Baseline (Safari lacks it), so ship a fallback. The post's "bit-o-js":
-
-```js
-someDialog.addEventListener('click', ({target:dialog}) => {
-  if (dialog.nodeName === 'DIALOG')
-    dialog.close('dismiss')
-})
-```
+- **The source click fallback is not outside-only dismissal.** Its `dialog.nodeName === 'DIALOG'` test also matches clicks on the dialog's own padding. Native light dismiss checks pointer-down and pointer-up targets and dialog bounds. The post and our old recommendation treated that test as an equivalent fallback. Where `closedby` is unsupported, keep a close control and accept no outside-click dismissal unless an equivalent implementation has been verified. [HTML: Dialog light dismiss](https://html.spec.whatwg.org/multipage/interactive-elements.html#dialog-light-dismiss)
 
 ## A component that puts itself in the top layer
 
@@ -250,7 +243,7 @@ How it reads, from the post:
 Same post ([demo](https://codepen.io/argyleink/pen/OJeWWNZ)). Why each part is there, in his words:
 1. "Two parts need animation: the `<dialog>` itself and its `::backdrop`."
 2. "When a dialog is shown, `display: none` is changed to `display: block` and `transition-behavior` enables timing this change with our animation."
-3. "When a dialog is shown, it is cloned into the top layer, this also needs to be timed with our animation."
+3. A modal dialog enters the top layer; `overlay` times its removal. The post called this "cloned into the top layer"; use the [top-layer correction](#use-them-and-the-top-layer).
 4. "The `[open]` attribute is used to know when the dialog is open or closed. `@starting-style` is used during the first render as starting styles."
 
 ```css
@@ -337,7 +330,7 @@ Same post ([demo](https://codepen.io/argyleink/pen/JjzqXee)):
 
 ### Sharing the exit with everything else
 
-The `*`-wide enter and exit transitions in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md#enter-and-exit-stage-for-any-element) close dialogs and popovers through `dialog:not(:modal)` and `&[popover]:not(:popover-open)`. That post's update (quoted there) says backdrops and `overlay` need more, and for "a less experimental snippet that does fully transition dialogs and popovers" points to the crossfade kit above ([demo](https://codepen.io/argyleink/pen/zYbQBOm)).
+The `*`-wide enter and exit transitions in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md#enter-and-exit-stage-for-any-element) hide dialogs and popovers through `dialog:not(:modal)` and `&[popover]:not(:popover-open)`. The dialog selector is for modal-only use; it also hides an open modeless dialog. That post's update (quoted there) says backdrops and `overlay` need more, and for "a less experimental snippet that does fully transition dialogs and popovers" points to the crossfade kit above ([demo](https://codepen.io/argyleink/pen/zYbQBOm)).
 
 More: the [Dialog Starter notebook](https://nerdy.dev/notebook/dialog-starter.html), his [Dialog CodePen collection](https://codepen.io/collection/wkKogp), and the Pop n' Lock Dialog Mini Web Machine video, which covers "`<dialog>` basics", "`top-layer`, `transition-behavior` and `overlay` explained" and "how to transition a `<dialog>`" ([nerdy.dev: Pop N Lock Dialog Mini Web Machine](https://nerdy.dev/pop-n-lock-dialog-mini-web-machine), 2024-07-31).
 
@@ -357,9 +350,9 @@ More: the [Dialog Starter notebook](https://nerdy.dev/notebook/dialog-starter.ht
 ## Prove it
 
 - `grep -n 'z-index: 2147483647\|z-index: 9999' -r src/`: a floating layer that needs one should be a `popover` or a modal `<dialog>` instead ([Use them](#use-them-and-the-top-layer)).
-- Every `<dialog closedby` in the code ships with a click fallback or accepts no light dismiss in Safari; open it in Safari and click outside.
+- With native light dismiss, outside clicks dismiss and clicks on the dialog's own padding do not; without support, the close control still works. Do not use the removed target-name test as an outside-only fallback. [Light dismiss](#light-dismiss-with-closedby)
 - Every button with `commandfor` points at an existing `id`, and its `command` is one of `show-modal`, `close`, `request-close`, `show-popover`, `hide-popover`, `toggle-popover` or a `--custom` value.
 - No stylesheet contains `:top-layer` (`grep -rn ':top-layer' src/` returns nothing).
-- In DevTools, open each overlay and confirm it appears under `#top-layer` in the Elements panel.
+- In DevTools, confirm modal dialogs and shown popovers appear under `#top-layer`; a modeless `show()` dialog remains outside it. [Top-layer distinction](#use-them-and-the-top-layer)
 - Open and close each overlay in Chrome, Firefox and Safari: it must open and close everywhere; a smooth exit is expected only where `overlay` and a transitionable `display` exist (see [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md#support)).
 - `interestfor`, `popover="hint"` and `interactivity: inert` sit behind a feature test or degrade to something usable when unsupported.

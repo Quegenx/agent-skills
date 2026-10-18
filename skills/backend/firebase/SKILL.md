@@ -1,11 +1,11 @@
 ---
 name: firebase
-description: "Builds Firebase web and Flutter backends and clients: setup, Authentication, AI Logic, Firestore Core and Pipelines, Security Rules, SQL Connect, Hosting, Functions migration and Remote Config templates. Use when adding or fixing Firebase in TypeScript, JavaScript, Node or Flutter, or working with Firebase Data Connect or SQL Connect."
+description: "Builds Firebase web and Flutter backends and clients: setup, Authentication, AI Logic, Firestore Core and Pipelines, Security Rules, Flutter Storage downloads, SQL Connect, Hosting, Functions migration and Remote Config templates. Use when adding or fixing Firebase in TypeScript, JavaScript, Node or Flutter, or working with Firebase Data Connect or SQL Connect."
 ---
 
 # Firebase
 
-From [firebase/agent-skills], with corrections checked against Firebase documentation and current SDK source. This skill covers the supplied web, Node and Flutter material. Native-only Swift/Kotlin, Crashlytics and Xcode setup are outside this repository's stack.
+From [firebase/agent-skills], with corrections checked against Firebase documentation and current SDK source. Flutter Storage downloads also draw on [ApparenceKit](https://apparencekit.dev/flutter-tips/download-file-firebase-flutter-progress/), corrected against the [official download guide](https://firebase.google.com/docs/storage/flutter/download-files). This skill covers the supplied web, Node and Flutter material. Native-only Swift/Kotlin, Crashlytics and Xcode setup are outside this repository's stack.
 
 | The job | Read |
 |---|---|
@@ -16,6 +16,7 @@ From [firebase/agent-skills], with corrections checked against Firebase document
 | Use Firestore documents, listeners and indexes | [FIRESTORE.md](FIRESTORE.md) |
 | Choose Enterprise Pipeline operations and interpret query costs | [FIRESTORE-PIPELINES.md](FIRESTORE-PIPELINES.md) |
 | Author or audit Firestore Security Rules | [SECURITY-RULES.md](SECURITY-RULES.md) |
+| Download Flutter Storage objects with bounded memory, file tasks and progress | [STORAGE.md](STORAGE.md) |
 | Define SQL Connect schema, authorized operations and local data | [SQL-CONNECT.md](SQL-CONNECT.md) |
 | Use generated web/Flutter SDKs or privileged Node operations | [SQL-CONNECT-SDKS.md](SQL-CONNECT-SDKS.md) |
 | Choose SQL vector, full-text or pattern search | [SQL-CONNECT-SEARCH.md](SQL-CONNECT-SEARCH.md) |

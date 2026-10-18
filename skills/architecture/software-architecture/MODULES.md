@@ -43,13 +43,15 @@ The public API is intentional, explicit coupling: it is the contract, it control
 
 ## Data isolation
 
+[milan-jovanovic, schema-per-module-vs-database-per-module; https://www.postgresql.org/docs/18/glossary.html; https://www.postgresql.org/docs/18/app-pgdump.html; https://www.postgresql.org/docs/18/app-pgrestore.html]
+
 Rules: a module reads and writes only its own tables; no table is shared; joins happen only inside one module.
 
 Levels, weakest to strongest:
 
 1. **Table prefixes or naming conventions:** nothing enforces them.
 2. **Schema per module** in one database (`ordering.orders`, `catalog.products`): real isolation with little operational cost. **Start here.**
-3. **Database per module:** physical isolation and independent backup, restore and tuning, at the cost of one more of everything to operate.
+3. **Database per module:** a separate logical database and its operational boundary. Resource isolation needs a separate instance or capacity boundary; PostgreSQL can manage several databases in one instance. The source equated separate databases with physical isolation. [milan-jovanovic, schema-per-module-vs-database-per-module; https://www.postgresql.org/docs/18/glossary.html]
 4. **A different store per module** where the data shape demands it (a document or search store for one module), which is also database per module.
 
 **Make the database enforce the boundary** with a role per module that can use only its own schema, so a cross-module query fails loudly instead of working silently:
@@ -78,12 +80,16 @@ alter role ordering_app set search_path = ordering;
 
 | | Schema per module | Database per module |
 |---|---|---|
-| Cross-module transactions | Possible; an escape hatch that couples locks and blocks extraction | Impossible; forces outbox and sagas |
+| Cross-module transactions | Possible; an escape hatch that couples locks and blocks extraction | One database per ordinary PostgreSQL connection; externally coordinated 2PC is supported, so outbox and sagas are alternatives rather than forced |
 | Operations | One database to provision, monitor and back up | One per module, plus their connection pools (watch the total connection count) |
-| Performance isolation | Shared CPU, memory and I/O; one bad query slows every module | Independent resources |
-| Backup and restore | All or nothing | Per module |
+| Performance isolation | Shared instance resources | Separate logical databases can still share instance resources; independent capacity needs a separate boundary |
+| Backup and restore | Selected-schema logical dump/restore is possible, with dependency limitations | Per-database logical dump/restore; physical recovery scope is separate |
 | Local development | One connection string | Several databases (a Compose file) |
 | Path to a service | A data copy first | Already separated |
+
+The source and old matrix called cross-module transactions impossible across separate databases. PostgreSQL documents [one database per connection](https://www.postgresql.org/docs/18/manage-ag-overview.html), while [PREPARE TRANSACTION](https://www.postgresql.org/docs/18/sql-prepare-transaction.html) supports atomic global transactions through an external transaction manager. This facility is intended for transaction managers, not ad hoc application use. [milan-jovanovic, schema-per-module-vs-database-per-module]
+
+The source and old matrix promised independent resources and all-or-nothing schema recovery. PostgreSQL documents [one instance managing all databases in a cluster](https://www.postgresql.org/docs/18/glossary.html), [selected-schema dumps and their dependency limitation](https://www.postgresql.org/docs/18/app-pgdump.html), and [selected-schema restores](https://www.postgresql.org/docs/18/app-pgrestore.html). Logical recovery is distinct from physical/PITR recovery. [milan-jovanovic, schema-per-module-vs-database-per-module]
 
 Move a module to its own database when it needs independent scaling, its own restore, relief from a noisy neighbor, or is about to become a service. If nothing queries across modules, that move is a data copy plus a connection string change.
 
@@ -95,9 +101,9 @@ Move a module to its own database when it needs independent scaling, its own res
 | Cost | Availability coupling: if the callee fails, the caller fails | Eventual consistency, duplicate deliveries, more moving parts |
 
 - **In-process events are decoupled code, not decoupled runtime.** A publish that awaits every handler in the same call adds their latency to the request and propagates their exceptions; one failing subscriber fails the publisher. For reactions that must not block or break the operation, write the event to an outbox in the publisher's transaction and dispatch it after commit.
-- **Grow in steps:** in-process dispatch first; an outbox per module (in its own schema) once losing an event matters; a broker when a module leaves the process. The outbox processor stores the event's type name, retries with a count and last error, dead-letters after N attempts, and uses the event ID as the consumers' deduplication key (the `messaging` skill's OUTBOX-INBOX.md). A single processor reading in occurrence order gives ordering for free; competing processors need per-aggregate ordering.
+- **Grow in steps:** in-process dispatch first; an outbox per module (in its own schema) once losing an event matters; a broker when a module leaves the process. The outbox processor stores the event's type name, retries with a count and last error, dead-letters after N attempts, and uses the event ID as the consumers' deduplication key (the `messaging` skill's OUTBOX-INBOX.md). The source promised save ordering from occurrence timestamps with one processor. That does not establish commit order under concurrent writers, and equal sort values need a tie breaker. Use the canonical [ordering contract](../../backend/messaging/FAILURE-AND-ORDER.md#ordering-per-aggregate-not-global), including when processors compete. [milan-jovanovic, event-driven-communication-modules; https://www.postgresql.org/docs/18/queries-limit.html; https://www.postgresql.org/docs/18/transaction-iso.html]
 - **Event contracts** live with the publishing module's public surface (or a shared contracts package; pick one convention): versioned, minimal, primitives only, no domain types. Domain events stay inside the module; an integration event is a deliberate translation of one (the `domain-modeling` skill's EVENTS.md).
-- **A direct call still couples.** When extracting a side effect like notifications, replacing the call with an event is what lets billing succeed while notifications is failing.
+- **A direct call still couples.** Replacing it with an event changes the code dependency; failure isolation depends on dispatch, as the in-process rule above explains. The source's extraction advice and old line implied the event alone isolated notification failures. [milan-jovanovic, refactoring-overgrown-bounded-contexts-in-modular-monoliths; event-driven-communication-modules]
 
 ## Work that spans modules
 
@@ -107,7 +113,7 @@ Treat each module boundary as a transaction boundary. One transaction across two
 - **Three or more modules, steps that fail independently, a process that runs for minutes or days, or operations needing to see where an instance is stuck:** an orchestrated saga on a persisted state machine (states like `started`, `inventory_reserved`, `payment_processed`, `shipment_scheduled`, `completed`, `compensating`, `failed`). Design, compensations and idempotency are in the `domain-modeling` skill's EVENTS.md and the `messaging` skill's FAILURE-AND-ORDER.md. Points specific to a modular monolith:
   - the participating modules don't know the saga exists; it uses their public APIs and listens to their integration events;
   - the saga stores in its own state what later steps need (the order total captured at the start), rather than asking other modules again;
-  - persist each transition before issuing the next command;
+  - commit the state transition and outgoing command intent together; persistence followed by a separate send leaves a crash gap. The source's persist-before-command shorthand omitted that contract; use the canonical [saga plumbing](../domain-modeling/EVENTS.md#sagas-and-process-managers). [milan-jovanovic, saga-pattern-modular-monolith; https://learn.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction]
   - each event type must be routed to the saga; a missing registration leaves instances stuck silently, so add a test that every event the saga handles is registered;
   - a version column on the saga row with retry on conflict handles concurrent events for one instance.
 
@@ -119,6 +125,7 @@ A middle path between duplicating identical code in every module and a `common` 
 - **Doesn't belong:** module-specific logic (the `Order` entity is ordering's), infrastructure (database, HTTP clients, logging helpers), utilities one module uses, request and response DTOs. Rule: if removing a type breaks only one module, it doesn't belong.
 - **Zero runtime dependencies.** If it needs the ORM or a framework, that code belongs in a shared infrastructure package; the kernel declares an interface, the infrastructure package implements and registers it.
 - **Governance:** changes reviewed by every consuming module's owner; additive only (add new types, don't rename or remove); resist convenience helpers (a `toSlug` string helper is not a cross-module contract; an `IntegrationEventHandler<E>` interface is).
+- **Governance conflict:** the additive-only source policy above protects existing consumers. The supplied project rule removes obsolete paths unless compatibility requires them; retained paths are deprecated and point to their replacements. Keep these views tagged and resolve compatibility before choosing removal or retention. [milan-jovanovic, shared-kernel-pattern-modular-monolith; owner AGENTS.md, Architecture]
 - Event payload types can live either in the kernel or in each module's public surface; the second scopes each contract to its owner at the cost of more imports. Pick one.
 
 ## Refactoring an overgrown module
@@ -126,6 +133,10 @@ A middle path between duplicating identical code in every module and a `common` 
 Signs: everyone is afraid to touch it, one entity serves four unrelated use cases, files past a thousand lines, and one subdomain's changes keep breaking another's.
 
 1. **Find the seams:** group functions and tables by subdomain. Do they change together? Use different vocabulary? Belong to different people?
-2. **Extract the lowest-risk piece first,** usually a pure side effect such as notifications: new module, public API, then replace the direct calls with events so its failures stop blocking the core.
+2. **Extract the lowest-risk piece first,** usually a pure side effect such as notifications: new module, public API, then use the [dispatch contract](#communication-between-modules) when choosing events for failure isolation. The source's event-only shorthand omitted whether handlers still run on the caller's path. [milan-jovanovic, refactoring-overgrown-bounded-contexts-in-modular-monoliths]
 3. **Move the data after the code:** the new module gets its own schema; move its tables over gradually; during the transition both sides may read, then switch writes when confident; cross-module reads go through the public API, events or a view.
 4. **Repeat** for the next area, one module per release, and lock each boundary in with the import-graph rule, separate models, public APIs and database roles.
+
+## Prove it
+
+State which instance supplies each module's resources and which recovery scope is available; distinguish timestamp order from the required event order; and show that a failed asynchronous reaction cannot invalidate a committed business operation. Saga progress and command intent use the canonical atomic handoff, including the crash between recording progress and sending. [https://www.postgresql.org/docs/18/glossary.html; milan-jovanovic, event-driven-communication-modules; saga-pattern-modular-monolith]

@@ -2,7 +2,7 @@
 
 Dart code reaches native platform code in two ways: the Flutter platform channel APIs, where messages and responses pass asynchronously over a named channel and both sides must agree on strings for method names and data types, or the Pigeon package, which generates type-safe code for both sides from one Dart interface so nothing is matched by hand. The last section lists the native files a Flutter app itself edits. Signing, flavors and release builds are in [BUILD-AND-RELEASE.md](BUILD-AND-RELEASE.md).
 
-**Contents:** [Pick the mechanism](#pick-the-mechanism) · [Platform channels](#platform-channels) · [Codec types](#codec-types) · [Dart client](#dart-client) · [Android host](#android-host) · [iOS host](#ios-host) · [Threading](#threading) · [Pigeon](#pigeon) · [Writing a plugin](#writing-a-plugin) · [Testing a plugin](#testing-a-plugin) · [Native files a Flutter app needs](#native-files-a-flutter-app-needs) · [Prove it](#prove-it)
+**Contents:** [Pick the mechanism](#pick-the-mechanism) · [Platform channels](#platform-channels) · [Codec types](#codec-types) · [Dart client](#dart-client) · [Android host](#android-host) · [iOS host](#ios-host) · [Threading](#threading) · [Pigeon](#pigeon) · [Writing a plugin](#writing-a-plugin) · [Testing a plugin](#testing-a-plugin) · [Native files a Flutter app needs](#native-files-a-flutter-app-needs) · [Android device commands](#android-device-commands) · [Prove it](#prove-it)
 
 ## Pick the mechanism
 
@@ -484,6 +484,16 @@ void main() {
 - **Hybrid Composition++ for platform views** (Android, opt-in since 3.44): `--enable-hcpp` or manifest `<meta-data android:name="io.flutter.embedding.android.EnableHcpp" android:value="true" />`. It has API and hardware requirements.
 - **Deep links:** intent filters, `Runner.entitlements`, `assetlinks.json` and `apple-app-site-association` are in [ROUTING-AND-DEEP-LINKS.md](ROUTING-AND-DEEP-LINKS.md). Since 3.27 Flutter's deep linking default is true. With Firebase dynamic links, `uni_links`, `app_links` or `flutter_branch_sdk`, set `flutter_deeplinking_enabled` to false (Android) and `FlutterDeepLinkingEnabled` to `<false/>` (iOS).
 
+## Android device commands
+
+[ApparenceKit ADB cheat sheet](https://apparencekit.dev/flutter-tips/android-adb-cheat-sheet/), checked against [Android Debug Bridge](https://developer.android.com/tools/adb).
+
+- Open a device shell with `adb shell`. Install an APK with `adb install path_to_apk`; the source's `adb install -r MyApp.apk` reinstalls while keeping existing app data.
+- Uninstall takes a package name: the official package-manager syntax is `uninstall [options] package`, reached through `adb shell pm`. P2 correction: the article's `adb uninstall MyApp.apk` supplies an APK filename instead.
+- Record with the official `adb shell screenrecord /sdcard/demo.mp4`; stop with Control+C, then use `adb pull` to copy the recording to the host. P2 correction: the article adds `-p` to `screenrecord`, which its documented options do not include.
+- Screenshot capture already has a canonical recipe in [Google Play listing assets](../google-play/LISTING-AND-METADATA.md); use that pointer rather than duplicating it here.
+- The source's show-touches blocks put spaces after continuation backslashes; do not copy those blocks as runnable shell commands.
+
 ## Prove it
 
 - Every channel name has a domain prefix, and the Dart side and each host use the identical channel and method strings.
@@ -494,3 +504,4 @@ void main() {
 - A plugin's `pubspec.yaml` `flutter.plugin.platforms` lists only the platforms it implements, and its channel name has a domain prefix (not the template's bare name).
 - A plugin has all four test layers: `flutter test` passes the unit and channel tests, `flutter test integration_test/` from `example/` passes on an iOS simulator and an Android emulator, and the native tests run in Xcode and Android Studio.
 - No plugin is newly scaffolded with `--template=plugin_ffi` on Flutter 3.44 or later.
+- ADB installation uses an APK path, uninstallation uses the package name, and screen recording uses the documented `screenrecord` options. [Android Debug Bridge](https://developer.android.com/tools/adb)

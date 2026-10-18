@@ -20,57 +20,9 @@ testWidgets('upload file and save avatar', (tester) async {
 });
 ```
 
-- **One test, many values: `ValueVariant`.** Pass a `ValueVariant` of any list as `variant:` to `testWidgets`; the framework runs "this *single* test multiple times, once for each item", and the test reads the current item with `.currentValue` ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-test-value-variants/)).
-- **Every screen size, to catch overflows.** "Widget tests are great for checking this automatically" ([ApparenceKit](https://apparencekit.dev/flutter-tips/run-flutter-tests-multiple-screen-sizes/)). `toString()` returning `name` labels each run by device:
+- **One test, many values: `ValueVariant`.** Pass a `ValueVariant` as `variant:` to `testWidgets` and read the current item through `.currentValue`. Its constructor takes `Set<T>`, not a list. [ValueVariant constructor](https://api.flutter.dev/flutter/flutter_test/ValueVariant/ValueVariant.html). P2 correction: [ApparenceKit's value-variant tip](https://apparencekit.dev/flutter-tips/flutter-test-value-variants/) and the old line here said any list would do.
+- **Screen-size variants:** the source models each size with a name, width, height and pixel density; `toString()` labels each run by name. Its published recipe passes the `basicPhones` List to `ValueVariant`, omits `_setScreenSize`, and never declares `screenSizeVariants`; the incomplete blocks are omitted here. Use the constructor's documented Set contract when supplying values. [ApparenceKit](https://apparencekit.dev/flutter-tips/run-flutter-tests-multiple-screen-sizes/), [ValueVariant](https://api.flutter.dev/flutter/flutter_test/ValueVariant/ValueVariant.html). Manual resize checks: [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md).
 
-```dart
-class ScreenSize {
-  final String name;
-  final double width;
-  final double height;
-  final double pixelDensity;
-
-  const ScreenSize(this.name, this.width, this.height, this.pixelDensity);
-
-  @override
-  String toString() => name;
-}
-
-const iphone8Plus = ScreenSize('iPhone 8 Plus', 414, 736, 3);
-const iphone11Max = ScreenSize('iPhone 11 Max', 414, 896, 3);
-const samsungGalaxyS = ScreenSize('Android Samsung Galaxy S', 480, 800, 1);
-
-final basicPhones = <ScreenSize>[iphone8Plus, iphone11Max];
-```
-
-```dart
-extension ScreenSizeManager on WidgetTester {
-  Future<void> setScreenSize(ScreenSize screenSize) async {
-    return _setScreenSize(
-      width: screenSize.width,
-      height: screenSize.height,
-      pixelDensity: screenSize.pixelDensity,
-    );
-  }
-}
-
-testWidgets(
-  'click on button => shows an anchored widget overlay',
-  (WidgetTester tester) async {
-    await tester.setScreenSize(screenSizeVariants.currentValue!); // Set the current screen size
-    
-    await tester.pumpWidget(const MyAppWithCircleAnchored());
-    expect(find.byType(AnchoredHelper), findsNothing);
-    
-    await tester.tap(find.byType(OutlinedButton).first);
-    await tester.pump(const Duration(seconds: 2));
-    expect(find.byType(AnchoredHelper), findsOneWidget);
-  },
-  variant: ValueVariant<ScreenSize>(basicPhones), // Run the test for each screen in the list
-);
-```
-
-  The article never defines `_setScreenSize` (the call that sets the surface size is not shown) and never declares `screenSizeVariants`; hold the `ValueVariant` in a variable with that name and pass it as `variant:`. The manual resize check is in [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md).
 - **Typed finder helpers,** kept "in a dedicated file, like `test_utils.dart`, within your test directory" ([ApparenceKit](https://apparencekit.dev/flutter-tips/easy-access-widget-flutter-test/)); use as `findWidget<MyWidget>()` and `findNWidget<MyWidget>(1)` for the second:
 
 ```dart
@@ -92,27 +44,7 @@ T findNWidget<T>(int n) => find
   .widget as T;
 ```
 
-- **Assert that a widget throws** by swapping `FlutterError.onError`, since "unhandled errors can make your test fail"; "always reset `FlutterError.onError` after your test is done checking the error. This prevents side effects in other tests" ([ApparenceKit](https://apparencekit.dev/flutter-tips/test-throwing-errors-flutter-widgets/)). The corrected block (the export had `→` where Dart needs `=>`, used `isInstanceOf<T>()`, which package:matcher deprecates with "Use `isA<MyType>()` instead" (https://pub.dev/documentation/matcher/latest/matcher/isInstanceOf-class.html), and pumped `MyAppWithError` without calling it):
-
-```dart
-testWidgets('creating a widget with some param => throw', (WidgetTester tester) async {
-  var exceptionRes;
-
-  // Catch Flutter error or this will make your test fail
-  FlutterError.onError = (details) {
-    exceptionRes = details.exception;
-  };
-
-  await tester.pumpWidget(MyAppWithError());
-
-  // Set Flutter onError back. Flutter will throw if not handled.
-  FlutterError.onError = (details) => FlutterError.presentError(details);
-
-  // Now you can check the caught error
-  expect(exceptionRes, isNotNull);
-  expect(exceptionRes, isA<MyCustomException>());
-});
-```
+- **Expected framework exceptions:** call `tester.takeException()` to retrieve an exception caught by the framework; an expected exception that is not taken is rethrown when `testWidgets` completes. [WidgetTester.takeException](https://api.flutter.dev/flutter/flutter_test/WidgetTester/takeException.html), [TestWidgetsFlutterBinding.takeException](https://api.flutter.dev/flutter/flutter_test/TestWidgetsFlutterBinding/takeException.html). P2 correction: [ApparenceKit](https://apparencekit.dev/flutter-tips/test-throwing-errors-flutter-widgets/) replaced `FlutterError.onError` and reset it to `FlutterError.presentError`, which does not restore the test binding's handler. The old copied block is removed; use the documented exception API without replacing that handler.
 
 - **Test go_router navigation with the real router** ([ApparenceKit](https://apparencekit.dev/flutter-tips/how-to-test-gorouter-navigation-flutter/)): "1. **Embed your router within a Material app:** Wrap your GoRouter setup inside a `MaterialApp.router`." 2. Add your pages within routes. 3. Pump that `MaterialApp.router` with `testWidgets`. 4. `expect` the widgets that should appear after navigation, or behaviors like redirects. Build the router in a function that takes `initialLocation`, so a test can start on any page. "Testing widgets directly is often simpler, but testing navigation flow can be useful for certain scenarios." Sources differ: the Compass case study mocks the router instead (`MockGoRouter`, [ARCHITECTURE.md](ARCHITECTURE.md#testing-each-layer)).
 
@@ -122,6 +54,6 @@ The four layers of plugin tests from ApparenceKit's plugin guide, with their cod
 
 ## Prove it
 
-- Every test that assigns `FlutterError.onError` restores it before it ends.
+- Expected framework exceptions are retrieved with `tester.takeException()` while the test binding retains its error handler. [TestWidgetsFlutterBinding.takeException](https://api.flutter.dev/flutter/flutter_test/TestWidgetsFlutterBinding/takeException.html)
 - Every widget test that runs `compute` or an isolate wraps it in `tester.runAsync()` and finishes.
 - Layout-heavy screens have a widget test run per screen size through a `ValueVariant`, and the runner lists one result per device name.

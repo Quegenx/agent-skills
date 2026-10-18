@@ -53,8 +53,12 @@ Each entry lists the cases that catch the usual broken versions. Expected values
 - **Ledgers with idempotency keys:** assert both balances after every call; the exact remaining balance succeeds; a rejected transfer doesn't reserve its ID (deposit, retry the same ID, it succeeds); the same ID and amount is a duplicate that moves nothing; the same ID with a different amount is a conflict.
 - **Priority queues:** ties leave in insertion order, duplicates included; peek doesn't consume; two instances don't share contents; the extreme priorities catch a comparator that subtracts.
 - **Interval merging:** overlap, touching ends (merge when the contract says so), containment (the larger end survives), disjoint, unsorted input, a chain of overlaps, empty input; assert the complete ordered output.
-- **Scoring with look-ahead (bowling):** a single spare, a single strike, consecutive strikes, final-frame bonuses, and the perfect game, the only case that reads two rolls ahead at the end.
+- **Scoring with look-ahead (bowling):** a single spare, a single strike, consecutive strikes, final-frame bonuses, and the perfect game. The source code reads two bonus rolls for every strike, including a final-frame strike in a non-perfect game; the source explanation and our old line incorrectly made that look-ahead exclusive to the perfect game. [katabench, coding-exercises/test-writing/bowling-score-tests.md, Score implementation]
 
 ## Orchestration
 
 See the recording-fake pattern in [SKILL.md](SKILL.md): one shared call log for order across collaborators, commands recorded and queries left out, amounts that a unit bug would change, and an injected collaborator failure with the stated recovery asserted. Say in the test where the contract accepts a gap (saving first and sending a best-effort receipt second can lose the receipt if the process dies in between; an outbox closes that gap when the message must not be lost, see the `domain-modeling` skill's EVENTS.md).
+
+## Prove it
+
+For look-ahead scoring, distinguish an ordinary strike's bonus access, final-frame bonus rolls and the perfect-game sequence; do not claim only the perfect game reads two rolls ahead. [katabench, coding-exercises/test-writing/bowling-score-tests.md, Score implementation]

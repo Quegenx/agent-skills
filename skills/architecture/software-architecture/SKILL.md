@@ -62,10 +62,10 @@ Signs you need more structure: business rules leaking into route handlers, datab
 
 ## Drawing it (C4)
 
-Use four zoom levels and fixed vocabulary, so a diagram means the same thing to everyone:
+Choose the C4 zoom levels that add value, using fixed vocabulary. Official guidance says context and container diagrams are sufficient for most teams; the old line required all four. [https://c4model.com/diagrams]
 
 - **Context:** your system as one box, the people who use it and the external systems it talks to. No technology; anyone in the company should understand it.
-- **Container:** the runnable or storage units inside the system (web app, SPA, API, database, object store, broker, worker) with their main technology choices. "Container" means deployable unit, not necessarily a Docker container. For developers, architects and operations.
+- **Container:** an application or data-store runtime boundary with its main technology choices. The old deployable-unit shorthand must not imply one-to-one physical deployment: C4 treats deployment separately, and a container is not necessarily a Docker container. For developers, architects and operations. [https://c4model.com/abstractions/container; https://c4model.com/diagrams/container]
 - **Component:** the major building blocks inside one container (modules, with their responsibilities). For developers.
 - **Code:** classes or tables; rarely worth drawing except for the most complex parts. Sequence and deployment diagrams fill specific gaps.
 

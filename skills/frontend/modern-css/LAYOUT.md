@@ -86,7 +86,7 @@ visbug-logo {
 
 ## Balanced wrapping
 
-- **Balanced flex wrapping is a proposal** (csswg-drafts #3070): wrap rows evenly instead of leaving one item alone on the last row; it "would also reduce scenarios where folks have to use empty elements". The post's demo fakes the balanced version with a grid that has 3 columns instead of 4. [nerdy.dev: CSS Wishlist 2025](https://nerdy.dev/css-wishlist-2025) (2024-12-17)
+- **Historical balanced-wrap proposal** (csswg-drafts #3070): wrap rows evenly instead of leaving one item alone on the last row; it "would also reduce scenarios where folks have to use empty elements". The 2024 post's demo fakes the balanced version with a grid that has 3 columns instead of 4. [nerdy.dev: CSS Wishlist 2025](https://nerdy.dev/css-wishlist-2025) (2024-12-17)
 
 ```css
   .flex-balanced-demo {
@@ -107,7 +107,8 @@ visbug-logo {
   }
 ```
 
-- **The container keeps its width after wrapping** (the "shrink-wrap" problem, csswg-drafts #191); details in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#text-wrap-balance). Same post.
+- **The newer `flex-wrap: balance` note** says it is headed to Chrome and shows that declaration on a flex container. MDN now includes `balance` in the grammar; check support for that value against the project's targets and retain ordinary wrapping where absent. The whole property's Baseline status does not establish support for this value. [nerdy.dev: Flex Wrap Balance](https://nerdy.dev/flex-wrap-balance), [MDN flex-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flex-wrap)
+- **The container keeps its width after wrapping** (the "shrink-wrap" problem, csswg-drafts #191); details in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#text-wrap-balance). [nerdy.dev: CSS Wishlist 2025](https://nerdy.dev/css-wishlist-2025)
 
 ## Centering
 
@@ -142,5 +143,6 @@ visbug-logo {
 - **No squish:** shrink the viewport until the pushy sibling squeezes the fixed-size item; with `flex-shrink: 0` its width and height stay as set (a circle stays round).
 - **Responsive columns:** put the grid in a parent narrower than the `min()` length (10rem); there is one column and no horizontal scrollbar.
 - **Subgrid cards:** give one card a two-line title; the bodies and footers of every card in that row still start on the same lines.
+- **Balanced wrapping:** verify support for the `balance` value itself; without it the flex container still wraps with the chosen fallback. [Balanced wrapping](#balanced-wrapping)
 - **Logical properties:** set `dir="rtl"` and `writing-mode: vertical-rl` on a test page; spacing and alignment mirror or rotate with no physical property left except transforms and documented exceptions.
 - **No dashes:** a search of LAYOUT.md for em and en dash characters finds none.

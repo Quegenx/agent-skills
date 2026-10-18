@@ -111,7 +111,7 @@ app.use((req, res, next) => {                                   // register afte
 });
 ```
 
-- **Opaque identifiers only:** a user ID is enough to find everything; email and name aren't needed and are personal data.
+- **Minimize identifiers:** collect a user ID only when needed for the diagnostic purpose; omit email and name. An opaque or hashed ID is not automatically anonymous. The source said opaque GUIDs reveal no personal information; the old bullet did not qualify that assumption. https://opentelemetry.io/docs/security/handling-sensitive-data/
 - **Feature flags** belong here too (`feature.new_checkout = "on"`), so latency and errors can be compared between variants.
 - **Take the tenant from the verified session,** not a header the client can set, or a caller can file their errors under someone else's tenant.
 - These attributes go on spans and logs, **not** on metrics (rule 5).

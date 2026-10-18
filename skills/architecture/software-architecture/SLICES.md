@@ -31,7 +31,7 @@ tests/
 
 - **Files are verbs:** `place-order.ts`, never `order-service.ts`. The folder listing is the feature list.
 - **One use case per file.** A file that handles two operations is two slices pretending to be one.
-- **A slice graduates to a folder** when its file passes roughly 150 to 300 lines, needs private helpers, has complex validation, or several response types: `orders/place-order/{schema,handler,route}.ts`. Mix both forms freely.
+- **A slice graduates to a folder** when it needs private helpers, has complex validation or several response types. The source preferences differ: roughly 300 to 400 lines in the 2025 article, roughly 150 to 200 in the 2026 article. Both are author heuristics; the old 150 to 300 range blended them without a source. Mix file and folder forms freely. [milan-jovanovic, vertical-slice-architecture-is-easier-than-you-think; vertical-slice-project-structure-dotnet]
 - **A feature-local `shared/`** (`orders/shared/order-summary.ts`) holds what two or three sibling slices reuse. It's deleted with the feature, so no zombie code.
 - **50+ features:** add a level for the domain area (`features/ordering/`, `features/catalog/`, `features/identity/`). These groups mirror bounded contexts and become modules if you move to a modular monolith. Signals you've reached this point: scrolling to find anything, two areas reaching into each other's entities, teams colliding in the same folders. Restructure in one pull request before the pain compounds; it's mechanical.
 - **One package until you need compile-time enforcement.** Folder boundaries are cheap to change, package boundaries aren't; an import-graph rule gives most of the enforcement without splitting.
@@ -79,8 +79,9 @@ On Convex, a slice is one `query` or `mutation` with its argument validators in 
 ## Commands, queries and the wrappers around them
 
 - **Don't share request or response types between neighbors.** `GetOrderResponse` and `CreateOrderResponse` look identical today; next week the read needs a tracking URL the create can't have, and a shared type grows a confusingly empty optional field. Duplication is cheaper than the wrong abstraction.
+- **Source conflict, keep the strict rule above:** the 2025 shared-logic article says request/response ownership has no exceptions; the 2026 structure article permits a feature-local `OrderResponse` shared by `GetOrder` and `GetOrders`. That allowance concerns related sibling queries, not every contract with matching fields. [milan-jovanovic, vertical-slice-architecture-where-does-the-shared-logic-live; vertical-slice-project-structure-dotnet]
 - **Separate read and write paths are allowed to diverge:** the command uses the domain model, the query reads a view, a denormalized table or a replica that only it knows about. Start with one database. If reads become eventually consistent, return the created resource from the command so the client doesn't read stale data.
-- **Cross-cutting concerns are wrappers, applied once** (the function-wrapper pattern in the `domain-modeling` skill's EVENTS.md). Mark which ones apply: validation for commands, caching for selected queries, a transaction only for commands that save more than once.
+- **Cross-cutting concerns are wrappers, applied once** (the function-wrapper pattern in the `domain-modeling` skill's EVENTS.md). Mark which ones apply: validation for commands, caching for selected queries, and transactions chosen by the operation's consistency contract. The source excluded queries, but read-only operations can need a shared snapshot; see [Transactions belong to the use case](LAYERS.md#transactions-belong-to-the-use-case). [milan-jovanovic, cross-cutting-concerns-in-vertical-slice-architecture]
 - **Order is behavior, and order bugs are silent.** A sensible default from the outside in: logging (so everything is logged, including rejections), validation (so invalid input never starts a transaction or touches the cache), transaction, caching. Caching must store successful results only. Watch for wrapper sprawl; a wrapper that only one slice needs belongs in that slice.
 - **Prefer wrappers and middleware over base classes** for handlers: a base class welds every slice to one shape.
 - **Authorization** can be a wrapper driven by a permission declared on the slice, plus ownership checks inside the handler after loading. **Unexpected errors** go to one global handler at the HTTP boundary.
@@ -132,3 +133,7 @@ Organize tests by feature, not by layer (container setup, data isolation and arc
 4. Delete layers as they empty: when `OrderService` has one method left, inline it and remove the class.
 
 The two styles coexist during the transition; that inconsistency is fine and temporary. The same works for adopting feature folders inside an existing Clean Architecture project: organize the application layer by feature, the domain by aggregate, and the presentation mirrors the features.
+
+## Prove it
+
+State each wrapper's scope and order, distinguish a deliberate read snapshot from a blanket write wrapper, and identify which tagged response-sharing policy the project follows. File-splitting thresholds remain attributed preferences. [milan-jovanovic, cross-cutting-concerns-in-vertical-slice-architecture; vertical-slice-project-structure-dotnet]

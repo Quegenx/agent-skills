@@ -78,40 +78,7 @@ Three moves:
 2. **Guard every transition:** no setters; each change is a method that checks whether it's allowed now.
 3. **Guard the aggregate:** rules that span children live on the root, and children change only through it.
 
-```ts
-export class Order {
-  #lines: OrderLine[] = [];
-  #status: OrderStatus = "pending";
-  private constructor(readonly id: OrderId, readonly customerEmail: Email) {}
-
-  static create(id: OrderId, customerEmail: Email): Order { return new Order(id, customerEmail); }
-
-  get status() { return this.#status; }
-  get lines(): readonly OrderLine[] { return [...this.#lines]; }   // a copy, see below
-
-  addLine(productId: ProductId, price: Money, quantity: number): Result<void, OrderError> {
-    if (this.#status !== "pending") return err({ code: "order.not_modifiable", status: this.#status });
-    if (!Number.isInteger(quantity) || quantity <= 0) return err({ code: "order.invalid_quantity" });
-    this.#lines.push({ productId, price, quantity });
-    return ok();
-  }
-
-  markPaid(): Result<void, OrderError> {          // call only after the app verified the payment
-    if (this.#status !== "pending") return err({ code: "order.cannot_pay", status: this.#status });
-    if (this.#lines.length === 0) return err({ code: "order.empty" });
-    this.#status = "paid";
-    return ok();
-  }
-
-  ship(): Result<void, OrderError> {
-    if (this.#status !== "paid") return err({ code: "order.cannot_ship", status: this.#status });
-    this.#status = "shipped";
-    return ok();
-  }
-}
-```
-
-"You can't ship an unpaid order" now exists once and can't be bypassed. `markPaid` records a domain transition; it doesn't call the payment provider.
+The old TS illustration exposed mutable child objects through a copied array; see [Encapsulated collections](#encapsulated-collections) for the shallow-copy limitation and official references.
 
 **Boundary validation and invariants are both needed.** Request validation (a zod schema on the input) rejects malformed data early with field-level errors. Invariants are what the domain guarantees regardless of caller: a background job, a queue consumer or a future teammate calling `Order.create` directly still can't break them. Some checks appear in both places on purpose; the domain must never depend on the boundary having run.
 
@@ -165,8 +132,8 @@ They compose: value objects for structure, a factory for creation, result-return
 
 A public mutable array lets anyone `push`, `splice` or clear it, skipping every rule and every event. TypeScript's `readonly` is compile-time only: returning the internal array typed as `readonly OrderLine[]` still hands out the real array, and a cast or plain JavaScript can mutate it.
 
-- Keep the array in a private field (`#lines`), expose a copy (`[...this.#lines]`) or a frozen snapshot, and route every change through methods (`addLine`, `removeLine`, `changeLineQuantity`). The same holds for sets and maps: expose `new Set(this.#tags)` or `new Map(this.#prefs)` and change them through methods (`setPreference(key, value)` rejecting an empty key).
-- **Children are protected too:** a line's quantity changes through the root (`order.changeLineQuantity(lineId, 5)`), never by loading the line on its own and editing it. In TypeScript, keep child constructors and mutators unexported from the domain module.
+- Keep the collection private and route changes through the root. A copied or frozen container still shares object-valued children unless those children are also protected. The old spread-copy example protected the array structure only; do not claim it prevents child mutation. [milan-jovanovic, encapsulating-collections-domain-entities; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze]
+- **Children are protected too:** a line's quantity changes through the root, never through a mutable child reference returned to a caller. Unexported constructors or mutators alone do not protect public mutable object properties. [milan-jovanovic, encapsulating-collections-domain-entities; https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax]
 - **Guard numeric overflow:** JavaScript numbers lose precision past `Number.MAX_SAFE_INTEGER`; check `Number.isSafeInteger` on quantities and minor-unit amounts after arithmetic, or use `bigint` for money totals.
 - **Typical root rules:** merge a repeated product into the existing line; reject it if the price differs; cap the number of distinct lines but still let an existing line grow; compute the new total before changing anything, so a failure leaves no partial update.
 - **Persistence:** map the private state explicitly in the repository (rows in, aggregate out, and back), loading the children each operation needs.

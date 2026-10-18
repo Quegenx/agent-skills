@@ -377,7 +377,7 @@ form {
 }
 ```
 
-- **An adaptive caption scrim with no JS:** `border-image: fill` paints a translucent single-colour conic over the element, flipping with `light-dark()` (built on Temani Afif's border-image techniques). `light-dark()` is Baseline newly available since May 2024 and needs `color-scheme: light dark` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)). MDN notes "some browsers don't render the border image if border-style is none or border-width is 0"; test the `fill 0` form in your targets. [nerdy.dev: Adaptive Scrim](https://nerdy.dev/adaptive-scrim) (2024-09-08)
+- **An adaptive caption scrim with no JS:** `border-image: fill` paints a translucent single-colour conic over the element, flipping with `light-dark()` (built on Temani Afif's border-image techniques). Automatic and forced colour-scheme selection follow the [corrected rule in COLOR.md](COLOR.md#light-dark-and-color-scheme); our old scrim line required `light dark` everywhere. MDN notes "some browsers don't render the border image if border-style is none or border-width is 0"; test the `fill 0` form in your targets. [nerdy.dev: Adaptive Scrim](https://nerdy.dev/adaptive-scrim) (2024-09-08), [MDN light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
 
 ```css
 .card > figcaption {
@@ -389,7 +389,7 @@ form {
 - anti-slop-ui's image scrims are eased gradients from a helper instead ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md)); this one is a flat translucent band.
 - **An animated radial gradient box shadow** on a `<dialog>` or `[popover]` (CodePen abezozz, not exported). anti-slop-ui flags "Glow everywhere": "Glowing cards, buttons, icons, badges, borders and background together" ([PATTERNS.md](../../anti-ai-slop/anti-slop-ui/PATTERNS.md)). [nerdy.dev: Animated Radial Gradient Box Shadow Effect](https://nerdy.dev/animated-radial-gradient-box-shadow-effect)
 - **A bouncy focus effect:** `box-shadow` transitioned on a `linear()` bounce easing (CodePen XWOOydB, not exported). app-ui: "No control shows a focus ring, outline or focus border" ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#focus)). [nerdy.dev: Neat Bouncy Focus Effect With Linear And Box Shadow](https://nerdy.dev/neat-bouncy-focus-effect-with-linear-and-box-shadow)
-- **Pitfall: an infinite `box-shadow` spread does not make a backdrop;** the post's warning is in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#calcinfinity). [nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases) (2026-07-25)
+- **Pitfall: an infinite `box-shadow` spread does not make a backdrop;** the post's warning is in [CSS-INFINITY.md](CSS-INFINITY.md). [nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases) (2026-07-25)
 
 ### Shadow as border tokens
 
@@ -474,6 +474,6 @@ img:hover {
 - **Mesh or noise background:** it is in the design direction, and the page has no other stacked decorative background (anti-slop-ui's tell).
 - **`corner-shape` and `overflow-clip-margin`:** in Firefox or Safari the element still has acceptable rounded corners (fallback radius, or app-ui's computed inner radius).
 - **`corner-shape` decorations:** in Chrome the element's `box-shadow`, `outline` and border follow the squircle (a clip would cut them); every element with `corner-shape` has a non-zero `border-radius`; the `@supports not (corner-shape: scoop)` branch was viewed in Firefox or Safari.
-- **Adaptive scrim:** the caption scrim appears in both light and dark, with `color-scheme: light dark` set.
+- **Adaptive scrim:** the caption scrim follows automatic or forced colour-scheme selection as described in [COLOR.md](COLOR.md#light-dark-and-color-scheme).
 - **Proposals stay out of shipping code:** search for `freeform-gradient`, `motion-blur`, `text-grow` and `loooong`; none ship without a fallback.
 - **No dashes:** a search of GRADIENTS-AND-EFFECTS.md for em and en dash characters finds none.

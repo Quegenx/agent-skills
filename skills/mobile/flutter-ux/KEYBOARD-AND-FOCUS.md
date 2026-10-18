@@ -114,11 +114,9 @@ KeyboardVisibility(
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/center-form-flutter-keyboard-safe/)
 
-- **Wrap the form in `SingleChildScrollView`** so it can scroll when the keyboard takes space.
-- **Give it a `SizedBox` with the full screen height and width.** The article reads them with `MediaQuery.of(context).size`; the repo rule is `MediaQuery.sizeOf(context)` ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md)), so write that.
-- **Inside, a `Column`** with `mainAxisSize: MainAxisSize.max`, `mainAxisAlignment: MainAxisAlignment.center` and `crossAxisAlignment: CrossAxisAlignment.stretch` (fields fill the width).
-- **`Spacer(flex: 1)` at the top and the bottom of the field list.** "When the keyboard opens, the available vertical space for the column reduces. The `Spacer` widgets then shrink", so the form "stays centered when there's room and scrolls nicely when the keyboard appears". No code in the article.
-- **Width:** the article sets no width limit. On large screens the official rule wraps forms in `ConstrainedBox(BoxConstraints(maxWidth: ...))` inside a `Center` ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#large-screens-and-foldables)).
+- **Use the actual viewport constraints:** follow Flutter's [spaced-items recipe](https://docs.flutter.dev/cookbook/lists/spaced-items) and [SingleChildScrollView guidance](https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html): `LayoutBuilder` outside the scroll view, then `ConstrainedBox` with a minimum height from `constraints.maxHeight`. Fixed-height children can use the Column's alignment without flex; the documented `Spacer`/`Expanded` variation adds `IntrinsicHeight`, which can require laying out the contents twice.
+- **P2 correction:** ApparenceKit prescribes a full-screen-height `SizedBox` and says the `Spacer`s shrink when the keyboard reduces the viewport. That box bounds the Column, so it is not inherently an unbounded-flex error, but full window height is not the available scroll viewport height. Use the official recipe above rather than promising the source's keyboard behavior. [ApparenceKit](https://apparencekit.dev/flutter-tips/center-form-flutter-keyboard-safe/), [SingleChildScrollView](https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html)
+- **Width:** keep the existing [large-screen form width rule](../flutter/LAYOUT-AND-RESPONSIVE.md#large-screens-and-foldables); the source specifies no width limit. [ApparenceKit](https://apparencekit.dev/flutter-tips/center-form-flutter-keyboard-safe/)
 
 ## Forms in a bottom sheet
 

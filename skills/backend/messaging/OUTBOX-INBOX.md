@@ -143,5 +143,5 @@ async function handleNoteCreated(msg: Message<NoteCreated>) {
 A handler that calls an email API or a payment provider can't put that call in its transaction: the database may commit while the call's outcome is unknown, and the retry repeats it.
 
 - **Pass a stable idempotency key** (the message ID, or `order:{id}`) to every provider that supports one; the provider then performs identical requests once.
-- **When the provider has no key:** record the intended action in your database in the handler's transaction (a `pending_emails` row keyed by the message ID), and let a worker perform each pending action once and mark it done. This is an outbox for that one effect; use it for effects that are costly to repeat (payments, provisioning), not for everything.
+- **When the provider has no key:** use the [intent, uncertain outcome and reconciliation workflow](../../ai-agents/ai-features/AI-JOBS.md#a-job-is-a-state-machine). The old line promised a worker could perform an action once and mark it done; a crash after the external effect but before the completion write leaves an uncertain outcome. [milan-jovanovic, ai-and-vector-search/speech-to-text-in-dotnet-with-assemblyai.md]
 - **Decide what a repeat costs.** A duplicate "your report is ready" email may be acceptable; a duplicate charge isn't.

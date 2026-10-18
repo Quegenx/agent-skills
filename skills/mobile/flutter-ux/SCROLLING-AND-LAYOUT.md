@@ -237,6 +237,7 @@ Exemptions: "single-line `EditableText`, `PageView`, `ListWheelScrollView`, `Nes
 - Give each tab a `GlobalKey`; on select pass its context; `alignment: 0.5` centers it.
 - Wait one frame (`addPostFrameCallback`) in `initState`, because the tabs are not laid out yet; scroll again in `didUpdateWidget` when `selected` changes.
 - Values in the sample: duration 200 ms, `Curves.easeInOut`, strip height 44, horizontal padding 16, tab gap 8, radius 22.
+- **P2 sample limitation:** the source creates `_keys` once from the initial `labels.length`; its `didUpdateWidget` handles selection changes only. Use this sample only with a stable label count and a valid selected index. Configuration changes reach [State.didUpdateWidget](https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html); the article supplies no key-list update for a changing tab count. [FlutterPro](https://flutterpro.design/details/tab-visibility)
 
 ```dart
 import 'package:flutter/material.dart';
@@ -633,8 +634,8 @@ GestureDetector(
 
 - **deferToChild** (default): only the child takes taps. "A `Container` takes taps on its whole box only if it has a color."
 - **opaque:** the whole box is tappable; widgets behind do not get the tap.
-- **translucent:** the whole box is tappable and widgets behind get the tap too. "Two overlapping detectors can both fire."
-- The rule: "Make `opaque` your default. Use `translucent` only when stacked widgets should both respond."
+- **translucent:** permits hit-test targets behind it to participate; that does not make competing tap recognizers both win. In the documented parent/child case both enter the gesture arena and only one `onTap` wins, whether the behavior is `opaque` or `translucent`. [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html)
+- **P2 correction:** FlutterPro says "Two overlapping detectors can both fire" and recommends `translucent` when both should respond. Its hit-test setting does not guarantee both tap callbacks; keep the author's preference for `opaque` separate from gesture-arena resolution. [FlutterPro](https://flutterpro.design/details/gesture-detector-hit-area), [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html)
 
 Tap-target sizes (48x48, 44x44) are in [ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values). The sample's `onTap: () {}` is a placeholder.
 
@@ -648,4 +649,4 @@ Tap-target sizes (48x48, 44x44) are in [ACCESSIBILITY.md](../flutter/ACCESSIBILI
 - **Layout jump:** every network image sits in a sized box (`AspectRatio`, `SizedBox` with both sides, or `Expanded` in a bounded parent); on a throttled network, nothing below an image moves when it loads.
 - **Fades:** edge fades look the same in light and dark mode; `checkerboardOffscreenLayers` shows whether a fade adds an offscreen layer.
 - **Text scale:** at the largest OS font size, no overflow stripes appear (with the FlutterPro cap, text stops growing at x1.1).
-- **Hit areas:** tapping the padding or gap of a custom `GestureDetector` row triggers it; overlapping detectors use `translucent` only where both should fire.
+- **Hit areas:** tapping the padding or gap of a custom `GestureDetector` row triggers it; competing parent/child `onTap` callbacks follow gesture-arena resolution rather than assuming `translucent` makes both fire. [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html)

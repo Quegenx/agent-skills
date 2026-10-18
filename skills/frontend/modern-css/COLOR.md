@@ -105,11 +105,7 @@ Relative colour is Baseline newly available since 2024-09-16 (web-features); MDN
     background: rgb(from rgb(255 0 0 / 10%) r g b / 5%);
   }
   ```
-  ```css
-  .cut-transparent-in-half {
-    background: rgb(from rgb(255 0 0 / 10%) r g b / calc(a / 2));
-  }
-  ```
+- **Relative RGB alpha is named `alpha`.** Channel math uses `alpha` for the origin's opacity. The post and our removed halving example used `a` in `calc(a / 2)`, which is not that channel name. [MDN rgb()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/rgb)
 - **Lighten, desaturate, fade, grayscale** [nerdy.dev: How To Use CSS Relative Colors Syntax On The Latest GUI Challenge](https://nerdy.dev/how-to-use-css-relative-colors-syntax-on-the-latest-gui-challenge) (2023-10-05). The post's first line, `oklch(from hotpink calc(l - 20) c h)`, is wrong for today's syntax: in `oklch()` lightness 0% is 0 and 100% is 1 ([MDN oklch()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/oklch)), so `l - 20` lands far below 0 (MDN's compat data notes Chrome 119 to 121 wrongly resolved `l` to 0 to 100, the scale `l - 20` assumes). Darken by 20% of the range with `0.2`:
   ```css
   oklch(from hotpink calc(l - 0.2) c h)
@@ -158,7 +154,7 @@ button {
 
 ## light-dark() and color-scheme
 
-`light-dark()` is Baseline 2024, newly available since May 2024; it needs `color-scheme: light dark` (usually on `:root`) and accepts two colours or two images ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)). `color-scheme` is Baseline widely available since January 2022 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme)). Both are signals a component can read about its context [nerdy.dev: Web elements know about the user, device, variables, layout and more](https://nerdy.dev/components-can-know) (2025-10-30).
+`light-dark()` is Baseline 2024, newly available since May 2024. `color-scheme: light dark` enables selection by the user's preference; an explicit `color-scheme: light` or `dark` selects that scheme's branch. Our old line required `light dark` everywhere, contradicting the source's forced-scheme examples below. MDN documents colour and image forms; check image support separately from the colour form's Baseline status. [MDN light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark). `color-scheme` is Baseline widely available since January 2022 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme)). Both are signals a component can read about its context [nerdy.dev: Web elements know about the user, device, variables, layout and more](https://nerdy.dev/components-can-know) (2025-10-30).
 
 - **Adaptive scrim** [nerdy.dev: Adaptive Scrim](https://nerdy.dev/adaptive-scrim) (2024-09-08): a caption band that flips with `light-dark()`; the code and MDN's `border-image` caveat are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md#borders-scrims-and-shadows).
 - **Tint native widgets:** `accent-color: light-dark(deeppink, yellow)` and its support are in [SELECT-AND-FORMS.md](SELECT-AND-FORMS.md#accent-color).
@@ -287,8 +283,9 @@ button {
 
 - Colour variants (hover, borders, tints) derive in `oklch`, `oklab` or `lch`, not `hsl`, unless a quoted source says otherwise.
 - No relative `oklch(from ...)` subtracts whole numbers from `l`: lightness math stays within 0 to 1 (`calc(l - 0.2)`).
+- Relative RGB opacity math uses the `alpha` channel, not `a`. [Relative colour syntax](#relative-colour-syntax)
 - No `color-contrast(... vs ...)` remains; contrast picks use one-argument `contrast-color()` and keep a static fallback.
-- Every `light-dark()` has `color-scheme: light dark` set on it or an ancestor; toggling the OS theme or the section's `color-scheme` flips it.
+- Check automatic selection under `color-scheme: light dark` and forced selection under `light` or `dark`; a forced section follows its own scheme rather than the OS toggle. Check image support separately. [light-dark() and color-scheme](#light-dark-and-color-scheme)
 - Each `color(display-p3 ...)` follows an sRGB declaration of the same property.
 - Turn on forced colours (DevTools rendering panel): every control and card still shows an edge where it relied on a shadow or fill.
 - No component reads `AccentColor` expecting the author's `accent-color`.

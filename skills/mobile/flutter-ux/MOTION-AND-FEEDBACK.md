@@ -560,7 +560,7 @@ WidgetState.disabled & WidgetState.selected: Icon(...)
 ```
 
 - "iOS apps rarely use thumb icons, so think twice before adding them to `Switch.adaptive` or `CupertinoSwitch`."
-- The tile's title "must be true when the switch is on. 'Dark theme', not 'Theme'. Screen readers read only the title, never the icons." See the [flutter skill's ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md).
+- The author's clear on-state title advice and the P2 correction to the title-only screen-reader claim are in [ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#semantics-and-screen-readers). [FlutterPro](https://flutterpro.design/details/switch-thumb-icons), [SwitchListTile](https://api.flutter.dev/flutter/material/SwitchListTile-class.html)
 
 ## Loading indicators
 

@@ -57,6 +57,8 @@ export const invoicePdfKey = (r: InvoiceRenderRequest) =>
 
 **Use it when** the computation is deterministic (any output for the same inputs is equally valid), you can list every input, and computing costs much more than hashing (hashing a few KB takes microseconds): document and report rendering, image transforms, code generation, aggregations over immutable data, LLM calls at temperature 0. Static assets with a content hash in the file name are the browser version and can be cached forever (`Cache-Control: public, max-age=31536000, immutable`).
 
+**Source conflict:** the content-addressed caching article lists LLM calls at temperature zero as deterministic derivations [milan-jovanovic, caching-and-performance/content-addressed-cache-dotnet.md]. The Ollama article says temperature-zero outputs can still differ and require validation [milan-jovanovic, ai-and-vector-search/how-to-extract-structured-data-from-images-using-ollama-in-dotnet.md]. Keep the existing interchangeable-valid-output rule above; temperature alone does not establish that contract.
+
 **Don't use it** for data that changes because the world changed: a price, a stock count, an unread badge. Those need a staleness budget and an expiry.
 
 ## Stampede (many concurrent misses)

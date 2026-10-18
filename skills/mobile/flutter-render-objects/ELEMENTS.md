@@ -109,11 +109,12 @@ Tag for this section: [renderobjects](https://renderobjects.com/guides/elements/
   - `getInheritedWidgetOfExactType<T>()`: O(1), no dependency, for example in a callback.
   - `getElementForInheritedWidgetOfExactType<T>()`: returns the `InheritedElement`, no dependency.
   - `findAncestorWidgetOfExactType<T>()`: matches the exact runtime type, works for any widget, O(N) in depth; discouraged because it creates implicit coupling.
-  - `findAncestorStateOfType<T extends State>()`: the nearest; backs `Scaffold.of`, `Form.of` and `Scrollable.of`; O(N), no dependency.
+  - `findAncestorStateOfType<T extends State>()`: the nearest; backs `Scaffold.of`; O(N), no dependency. [Scaffold.of](https://api.flutter.dev/flutter/material/Scaffold/of.html)
   - `findRootAncestorStateOfType<T extends State>()`: the topmost match (outermost `Navigator` or `Form`); rarely needed.
   - `findAncestorRenderObjectOfType<T extends RenderObject>()`: O(N), no dependency.
   - `visitAncestorElements(bool Function(Element) visitor)`: return true to continue, false to stop; the most flexible lookup.
 - **Costs (official):** get and getElementFor are "O(1) with a small constant factor"; the `findAncestor*` methods and `visitAncestorElements` are "relatively expensive (O(N) in the depth of the tree)". https://api.flutter.dev/flutter/widgets/Element-class.html
+- **P2 correction:** [Form.of](https://api.flutter.dev/flutter/widgets/Form/of.html) and [Scrollable.of](https://api.flutter.dev/flutter/widgets/Scrollable/of.html) create dependencies on the returned form or scrollable. The [renderobjects ancestor guide](https://renderobjects.com/guides/elements/accessing-ancestors/) and the old list here grouped them with the one-shot `Scaffold.of` lookup.
 - **The inherited lookups use a map, not a walk.** `getInheritedWidgetOfExactType` is built on `getElementForInheritedWidgetOfExactType`, which reads the element's `_inheritedElements` map (Flutter master `framework.dart`).
   - renderobjects.com calls `visitAncestorElements` "the one all the others are built on".
 - **Descendants:** `visitChildElements(ElementVisitor)` visits immediate children and does not recurse ("Wrapper around visitChildren for BuildContext."). `visitChildren` is the framework's tree-walk hook: you override it in a custom element and rarely call it. There is no "find descendant of type" API; a descendant that must be found should announce itself (a callback, a notification, or registering with an ancestor).
