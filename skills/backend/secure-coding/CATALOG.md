@@ -136,6 +136,8 @@ export function resolveUnderRoot(root: string, userPath: string): string {
 
 `startsWith(base)` without the separator accepts `/srv/files-evil`. Symlinks inside the root can still point out; resolve with `fs.realpath` before the check when links are possible. Lexical normalization of a path (collapsing `..`) is not a security check by itself.
 
+**A resolved path is not a race-safe open.** If a lower-trust writer can replace a path component between validation and use, retain a verified directory/file descriptor, use no-follow directory-relative traversal where the platform supports it, verify final type and bounds, and read through that same handle. Fail closed when the required confinement cannot be enforced. The old realpath-before-check advice above is incomplete under concurrent path replacement; Node also warns against check/open races, and its archive reader uses no-follow open plus descriptor validation. [cloudflare/security-audit-skill, security-audit/SKILL.md; https://github.com/nodejs/node/blob/main/doc/api/fs.md; https://github.com/nodejs/node/blob/main/lib/internal/zip/archive.js]
+
 ## Logs and email headers: CRLF injection
 
 A username of `bob\r\n2026-10-15 INFO admin logged in` forges a log line. Escape carriage return and newline in every field you write into a text log, so they show as visible `\r` and `\n`:

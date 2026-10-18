@@ -19,6 +19,7 @@ When agents write the code, the number of changes goes up fast, and manual, line
 | Checking repository standards and requested behavior as independent review lanes, with separate evidence and verdicts | [TWO-AXIS.md](TWO-AXIS.md) |
 | Receiving feedback: verifying a suggestion, preserving accepted decisions, resolving dependent uncertainty and correcting evidence-based pushback | [RECEIVING-FEEDBACK.md](RECEIVING-FEEDBACK.md) |
 | A repository audit: intent, expected load, coverage, confidence and fix risk, grounded direction options and selected plan artifacts | [REPOSITORY-AUDIT.md](REPOSITORY-AUDIT.md) |
+| Security audit evidence: principal, boundary and result, coverage gaps, prior-result revalidation and independent verification of material replacements | [SECURITY-AUDITS.md](SECURITY-AUDITS.md) |
 | Operating or migrating an explicitly selected Ultracite setup: installed commands, backend presets, doctor limits and conditional v5 to v8 migrations | [ULTRACITE.md](ULTRACITE.md) |
 
 ## The rules

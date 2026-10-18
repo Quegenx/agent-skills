@@ -67,6 +67,10 @@ The source's email panel has a "Spam filter analyst (deliverability red flags, t
 
 When: "Always" for launch copy, pricing pages and high-traffic landing pages; "Recommended" for email sequences, sales pages and ad copy; "Optional" for blog posts, social content and internal docs; "Skip" for quick updates, minor edits and low-stakes content. The panel score is a quality gate, not a finding severity: findings keep the repo's one scale, P0 to P3 as in code-review's [REVIEWER.md](../../architecture/code-review/REVIEWER.md#tags-and-output).
 
+### An alternative five-lens panel
+
+[Yuzzyuk/marketing-os, references/copy.md] offers a different optional rubric: skeptic (believability/proof), stranger (cold comprehension), competitor (swap test), buyer (actual concern) and editor (word load). Each receives 0 to 20 points, total 100. It rewrites candidates at 70 to 84, discards those under 70 and stops at 90+ or after three passes. These are practitioner quality gates, not calibrated outcome predictions or P0 to P3 severity. Keep the existing 1-to-10 panel above as its own source method; do not blend their scores. Point-edit mode and the real author's voice still govern, and no lens impersonates a real person or invents an endorsement.
+
 ## Working with the author
 
 [coreyhaines31/marketingskills, copy-editing] "Run a sweep and present findings", "Recommend specific edits", "Request the updated copy. Let the author make final decisions", "Verify previous sweeps" after each round, and "Repeat until clean": "Continue until a full sweep finds no new issues."

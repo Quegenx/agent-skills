@@ -49,7 +49,7 @@ The most common failure is formal Hebrew in a casual context: הנכם מוזמ�
 | הבית הספר, הצוות המכירות | בית הספר, צוות המכירות | In smichut only the last noun takes ה |
 | ראיתי הדוח | ראיתי את הדוח | "את" before a definite direct object |
 | להתחבר את החשבון | לחבר את החשבון / להתחבר לחשבון | Wrong preposition after a reflexive verb [skills-il, hebrew-content-writer] |
-| שלוש ימים, שלושה שנים | שלושה ימים, שלוש שנים | Numbers 3 to 10 take the opposite gender form to the noun; in body copy digits avoid the trap: 3 ימים |
+| שלוש ימים, שלושה שנים | שלושה ימים, שלוש שנים | Numbers agree with the counted noun: שלושה is masculine, שלוש feminine. The source and old line mislabeled this as opposite gender. [Academy number decisions](https://hebrew-academy.org.il/topic/hahlatot/grammardecisions/terminology-ordinance/4-3-%D7%94%D7%A9%D7%99%D7%9E%D7%95%D7%A9-%D7%91%D7%A9%D7%9D-%D7%94%D7%9E%D7%A1%D7%A4%D7%A8/) |
 | Mixed spelling (תכנית and תוכנית) | One spelling, full (ktiv maleh): תוכנית, שירות, תוכנה, קודם, פירוט | Consistency |
 
 ## 4. Gender
@@ -64,7 +64,7 @@ Pick one approach per text and keep it. If the brief doesn't name one, "Ask the 
 
 ## 5. Punctuation and typography
 
-- **Dashes:** the long English dash is not a Hebrew habit; AI scatters it. Same cap as English: none in short copy, at most one or two in long text. The Hebrew maqaf (־, often typed as -) joins words with no spaces: ה-API, תל־אביב.
+- **Dashes:** use commas, periods or spaced hyphens in this repository. Em and en dashes are excluded by the owner, including long text. [Owner writing rule] The Hebrew maqaf (־, often typed as -) joins words with no spaces: ה-API, תל־אביב.
 - **Gershayim and geresh** are not quotation marks: צה"ל, מנכ"ל, דו"ח for acronyms; ג'ירפה, צ'יפס, ד"ר, עמ' for sounds and abbreviations. Don't replace them with English quotes or strip them.
 - **Exclamation marks:** Hebrew marketing overuses them. At most one, at a real peak.
 - **Numbers and dates:** digits in body copy (3 ימים, תוך 24 שעות), DD/MM/YYYY, 24-hour time, ₪ placed consistently across the site. `Intl` does not produce those forms by default: in Node 26, `Intl.DateTimeFormat('he-IL')` gives `18.10.2026` (dots, so slashes need an explicit format), and `Intl.NumberFormat('he-IL', {style:'currency', currency:'ILS'})` gives `‏1,234.00 ‏₪`, with right-to-left marks and the ₪ after the number (measured in Node 26 during this repo's review; skills-il's test vector `₪1,234` does not match it).
@@ -91,4 +91,4 @@ Hebrew attaches prefixes (ה, ב, ל, ו, ש, מ) and inflects heavily, so one k
 
 ## Check against
 
-When a spelling, loanword or grammar call is unclear, the references hebrew-content-writer names [skills-il, hebrew-content-writer]: the [Academy of the Hebrew Language](https://hebrew-academy.org.il) ("Official spelling rules, loanword decisions, new terms") and its [decisions](https://hebrew-academy.org.il/topic/hahlatot/); [Milog](https://milog.co.il) ("Modern Hebrew usage, register, common phrasing"); [Ravmilim](https://www.ravmilim.co.il) ("Synonyms, collocations, grammatical info"); and [he.wikipedia's style page](https://he.wikipedia.org/wiki/ויקיפדיה:לשון). That skill also has two grammar rules this file does not take: number polarity for "1-10" (only 3 to 10 take the opposite gender, as section 3 says) and "Adjectives agree with the LAST noun in the chain", which this repo's review flagged as wrong in general and left for a Hebrew editor to confirm.
+When a spelling, loanword or grammar call is unclear, the references hebrew-content-writer names [skills-il, hebrew-content-writer]: the [Academy of the Hebrew Language](https://hebrew-academy.org.il) ("Official spelling rules, loanword decisions, new terms") and its [decisions](https://hebrew-academy.org.il/topic/hahlatot/); [Milog](https://milog.co.il) ("Modern Hebrew usage, register, common phrasing"); [Ravmilim](https://www.ravmilim.co.il) ("Synonyms, collocations, grammatical info"); and [he.wikipedia's style page](https://he.wikipedia.org/wiki/ויקיפדיה:לשון). That skill also has two grammar rules this file does not take: number polarity for "1-10" (the grammatical gender correction is in section 3) and "Adjectives agree with the LAST noun in the chain", which this repo's review flagged as wrong in general and left for a Hebrew editor to confirm.

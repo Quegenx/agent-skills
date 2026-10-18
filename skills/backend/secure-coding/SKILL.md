@@ -15,6 +15,8 @@ Every rule here comes down to one decision: trust nothing that crossed the bound
 | Tenant isolation: scoped queries plus Postgres row-level security, pooled connections, Supabase policies | [TENANCY.md](TENANCY.md) |
 | Encrypting stored secrets (AES-GCM, key versions, KMS), keeping internal services off the internet | [SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md) |
 | Parsers that disagree (IP spellings, duplicate JSON keys, request smuggling, Unicode lookalikes), ReDoS and expansion bombs, CSV formulas, shell arguments, card numbers in logs, CORS, reset tokens, delegation chains, webhook signatures | [PARSERS.md](PARSERS.md) |
+| Browser boundaries: window messages, cross-tab identity, service-worker caches, DOM gadgets and cross-site observations | [BROWSER-BOUNDARIES.md](BROWSER-BOUNDARIES.md) |
+| Package installation boundaries: version-specific lifecycle-script policies, direct and transitive execution, dependency sources, evidence and exceptions | [PACKAGE-INSTALLS.md](PACKAGE-INSTALLS.md) |
 
 ## The rules
 

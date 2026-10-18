@@ -12,7 +12,7 @@ Hooks, post templates, the AI tells specific to social, and comment quality. Tex
 - **Contrarian:** "Unpopular opinion: [bold statement]" · "[Common advice] cost us [specific result]." · "I stopped [common practice] and [positive result]." · "Everyone says [X]. In our [N] [accounts/clients/tests], [Y]."
 - **Social proof:** "We [achieved result] in [timeframe]. Here's the full story:" · "[Number] people asked me about [topic]. Here's my answer:" · "[Authority figure] taught me [lesson]."
 
-On X, also put a specific claim in the first 8 words and name the topic in the first 10 ([X-RANKING.md](X-RANKING.md#the-10-rules)).
+On X, the source recommends a specific claim in the first 8 words and the topic in the first 10 as writing heuristics ([X-RANKING.md](X-RANKING.md#source-publishing-heuristics)).
 
 ## Post templates
 
@@ -122,7 +122,7 @@ CTA (25-30 sec): [Follow, comment, share, link]
 Social-specific:
 
 - **Broetry:** "one short sentence per line, every line, for the whole post. Write paragraphs and break lines where a person would pause."
-- **Engagement bait:** "Agree?" "Thoughts?" "Let that sink in." "Read that again." End on the point, or a real question you want answered. On X this is also a modeled negative ([X-RANKING.md](X-RANKING.md#what-kills-reach)).
+- **Engagement bait:** "Agree?" "Thoughts?" "Let that sink in." "Read that again." End on the point, or a real question you want answered. X's separate negative-action predictions do not establish a fixed penalty for each phrase ([X-RANKING.md](X-RANKING.md#signal-families)).
 - **Manufactured vulnerability:** "I'll be honest, I was terrified..." with no real story behind it (TELLS.md's "Fake candor").
 - **Emoji as bullets:** 🚀 ✅ 💡 leading every line. TELLS.md allows emoji in casual social posts only when it's the writer's voice; leading every line is the tell.
 

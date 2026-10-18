@@ -11,7 +11,8 @@ You cannot charge real money during development, so every store has its own test
 | RevenueCat Test Store | Lowest, fastest, deterministic | Synthetic store hosted by RevenueCat; a dialog lets you pick success, failure or cancel; entitlements and `CustomerInfo` update; no Apple or Google call | Sandbox data |
 | iOS StoreKit Configuration File | Low (Apple synthetic) | Xcode stubs the store; purchases succeed instantly, no login, no network | May or may not appear depending on SDK version and routing; not a faithful dashboard test |
 | iOS Sandbox (sandbox Apple account) / Android Internal or Closed Testing (license tester) | High | Real store backends, real receipts, real dashboard ingestion; slower (build, install, wait for propagation) | Sandbox |
-| TestFlight / Play Closed or Open Testing | Very close to production | Production-style receipts; purchases are free | **Production** (testing-setup skill); the docs say TestFlight installs are treated as sandbox and excluded from experiments. Check the current docs |
+| TestFlight | Apple platform sandbox | Uses production Apple accounts but sandbox purchases | Sandbox, including install/paywall views |
+| Play test tracks | Distribution validation | License testers can use test methods; other testers may pay real money | Classify the actual purchase, not the track alone |
 | Production | Real money | Do not use for testing | Production |
 
 - **Start with the lowest fidelity that answers the question, then move up.** Paywall and UI iteration belong in the Test Store; entitlement flips, renewals, grace periods and pending purchases belong in a store sandbox.
@@ -79,10 +80,10 @@ await Purchases.configure(PurchasesConfiguration(_apiKey()));
 
   The `kReleaseMode` branch makes the test key dead code in release builds, and it gets eliminated. The alternative is Flutter flavors, each compiling its own key constant and mapping to its own dashboard app entry.
 - **iOS sandbox:** `flutter run` on a connected device with a development provisioning profile and a sandbox Apple account. For TestFlight, `flutter build ipa` and upload. `flutter run` does not use a StoreKit Configuration File (see [App Store sandbox](#app-store-sandbox)).
-- **Android sandbox:** `flutter build appbundle --release`, upload the signed AAB to Play Internal Testing, install through the tester opt-in link: "the only supported path for sandbox purchases". `flutter run` produces a debug-key build that **will not** make sandbox purchases (Play rejects the signature).
+- **Android sandbox:** use the platform key and the [licensed testing paths](#google-play-testing). The old source claimed every `flutter run` signature prevents sandbox purchases; Google permits the licensed debug path. [https://developer.android.com/google/play/billing/test]
 - **Flavors:** each flavor (dev, staging, prod with different bundle IDs or applicationIds) needs its own App Store Connect and Play Console app with its own products, and its own RevenueCat app entry and key. The common mistake is testing the `dev` flavor with the `prod` key: offerings come back empty because no dashboard app matches the `dev` bundle ID. Branch on flavor (`--dart-define=FLAVOR=dev` or equivalent).
 - **Logs:** iOS in Xcode (attached to `flutter run`); Android with `flutter logs` or `adb logcat -s Purchases`. Dart `print` output does not show native SDK logs.
-- **Verify:** (1) `await Purchases.setLogLevel(LogLevel.debug);` before `configure`; (2) the right build is installed (signed AAB from Play Internal Testing on Android, development build on a sandbox device on iOS); (3) the purchase succeeds and the native console shows the SDK posting the transaction; (4) the dashboard Sandbox view shows it on the expected `appUserID`; (5) `await Purchases.getCustomerInfo()` shows the entitlement active; (6) drop to `LogLevel.info` before shipping.
+- **Verify:** (1) `await Purchases.setLogLevel(LogLevel.debug);` before `configure`; (2) the intended platform-sandbox build and licensed test account are selected (licensed debug or a test-track build on Android, sandbox device on iOS); (3) the purchase succeeds and the native console shows the SDK posting the transaction; (4) the dashboard Sandbox view shows it on the expected `appUserID`; (5) `await Purchases.getCustomerInfo()` shows the entitlement active; (6) drop to `LogLevel.info` before shipping.
 
 ## React Native and Expo
 
@@ -121,7 +122,7 @@ Purchases.configure({ apiKey });
 
 - **Expo Go cannot make purchases.** The testing and troubleshooting skills say any SDK call throws "native module not found" and Expo Go cannot be fixed to support it; the docs say the SDK's **Preview API Mode** detects Expo Go and swaps native calls for JavaScript mocks, so the app runs but real purchases do not. Either way, test purchases in a development build: `npx expo prebuild` or `eas build --profile development`.
 - **iOS sandbox:** `npx react-native run-ios` on a connected device with a sandbox Apple account. TestFlight: `eas build --profile preview` or an archive uploaded to TestFlight.
-- **Android sandbox:** `eas build --profile preview` (or `cd android && ./gradlew bundleRelease`) for a signed AAB, upload to Play Internal Testing, install from the tester opt-in link. `npx react-native run-android` produces a debug-key build Play will **not** allow sandbox purchases against.
+- **Android sandbox:** use the platform key and the [licensed testing paths](#google-play-testing). The old source claimed every `npx react-native run-android` debug signature prevents sandbox purchases; Google permits the licensed debug path. [https://developer.android.com/google/play/billing/test]
 - **Every bundle ID and applicationId you test** must be registered in Dashboard, Project, Apps with a matching public SDK key; each environment with its own identifier needs its own app entry and key. Branch on `Platform.OS` plus an env var or build-time constant.
 - **Logs:** Metro's console does not show native SDK logs. Watch the Xcode console or Console.app (filter by bundle ID) and Android Studio Logcat or `adb logcat -s Purchases`.
 - **After bumping `react-native-purchases` or changing a native build file,** clear stale caches that bind JS to an old native module:
@@ -133,7 +134,7 @@ cd ios && pod install && cd ..
 npx expo prebuild --clean
 ```
 
-- **Verify:** (1) `Purchases.setLogLevel(LOG_LEVEL.DEBUG);` before `configure` (the quickstart and Expo pages use `LOG_LEVEL.VERBOSE`); (2) a dev client, not Expo Go, and on Android a signed AAB from Play Internal Testing; (3) the purchase succeeds and the native console shows the posting; (4) the dashboard Sandbox view shows it on the expected `appUserID`; (5) `await Purchases.getCustomerInfo()` shows the entitlement active; (6) back to `LOG_LEVEL.INFO` before shipping.
+- **Verify:** (1) `Purchases.setLogLevel(LOG_LEVEL.DEBUG);` before `configure` (the quickstart and Expo pages use `LOG_LEVEL.VERBOSE`); (2) a dev client for real purchases, and on Android the intended licensed debug or test-track build; (3) the purchase succeeds and the native console shows the posting; (4) the dashboard Sandbox view shows it on the expected `appUserID`; (5) `await Purchases.getCustomerInfo()` shows the entitlement active; (6) back to `LOG_LEVEL.INFO` before shipping.
 
 ## App Store sandbox
 
@@ -145,7 +146,7 @@ npx expo prebuild --clean
 - **Prices in sandbox and TestFlight may be wrong or in USD.** Check the purchase sheet currency, that entitlements unlock, the Apple ID's country, and that no currency is hardcoded.
 - **Receipt limit:** RevenueCat keeps at most 100 App Store subscription receipts per customer; delete the customer to reset.
 - **Clean first-purchase state:** purchase history stays on the sandbox account, so testing first purchases, intro offers or free trials on a used account misleads. Create a new sandbox tester, or App Store Connect, Sandbox, Testers, select the tester, clear purchase history. Deleting the RevenueCat customer doesn't delete Apple's history.
-- **TestFlight:** receipts are validated through Apple's production servers and purchases are free but behave like production for the SDK. Use it only after sandbox works, not as a replacement.
+- **TestFlight is sandbox for RevenueCat.** Purchases and the install itself, including pre-purchase paywall views, are treated as sandbox and excluded from experiment results. The old source described SDK behavior as production and the table labeled its dashboard Production. [https://www.revenuecat.com/docs/test-and-launch/sandbox/apple-app-store]
 
 ### StoreKit Configuration File
 
@@ -156,11 +157,11 @@ npx expo prebuild --clean
 
 ## Google Play testing
 
-- **A real Play sandbox purchase needs three things:** a license tester account, a signed build on Internal Testing (see the track note below), and live (not draft) products. Use a real device (an emulator needs Play Services).
-- **Which track:** the testing-setup skill and the troubleshooting platform file use **Internal testing**; the troubleshooting skill's checklist says "internal testing won't work" and requires at least closed testing, and the docs say the app must be published on a closed track before products can be fetched, even for testing. Check the current docs; a closed track satisfies both.
-- **License testers:** Play Console, **Setup, License testing** (the docs: **Settings > License testing**), add the Gmail accounts, set **License response** to `RESPOND_NORMALLY` (other values simulate errors). Only one license tester account may be signed in on the device. Testers pay a test price ("test card, always approves") and can trigger renewal scenarios on Google's accelerated clock.
-- **Upload the build:** (1) a signed AAB whose key matches the Play Console upload key or is uploaded under Play App Signing; (2) Play Console, **Release, Testing, Internal testing** (per the testing-setup skill), create a release, upload; (3) add the testers to the track's list; (4) publish to the track (the docs: no need to roll out; make the release available in at least one country); (5) each tester opens the opt-in link, accepts, and installs **from the Play Store link**, not Android Studio and not `adb install`. "You must open the Opt-in URL" or products won't load. Fresh uploads take roughly 15 minutes; "not available in your country" on the opt-in link means wait and retry.
-- **A sideloaded debug build cannot buy licensed products,** even for license testers: "a Play Billing constraint, not a RevenueCat one", and "the step most often skipped".
+- **Licensed Play testing:** use a license-tester account and the matching Play package/products. A signed test-track build is a distribution path; a matching-package sideloaded debug build is also permitted for license testers. The old three-part requirement incorrectly made a Play-installed build mandatory. [https://developer.android.com/google/play/billing/test]
+- **Track guidance differs:** [RevenueCat/ai-toolkit, revenuecat-testing-setup, revenuecat-troubleshoot] recommends different internal/closed-track setups, and RevenueCat's sandbox guide describes a closed track. Google's primary guide separately permits licensed sideloaded debug testing. Do not turn the troubleshooting path into a universal requirement. [https://www.revenuecat.com/docs/test-and-launch/sandbox/google-play-store; https://developer.android.com/google/play/billing/test]
+- **License testers:** Play Console, **Setup, License testing** (the docs: **Settings > License testing**), add the Gmail accounts, set **License response** to `RESPOND_NORMALLY` (other values simulate errors). RevenueCat recommends a single signed-in tester account to avoid account-selection problems; Google also documents how purchase-account selection works when several accounts are present. [https://developer.android.com/google/play/billing/test] Testers pay a test price ("test card, always approves") and can trigger renewal scenarios on Google's accelerated clock.
+- **Upload the build:** (1) a signed AAB whose key matches the Play Console upload key or is uploaded under Play App Signing; (2) Play Console, **Release, Testing, Internal testing** (per the testing-setup skill), create a release, upload; (3) add the testers to the track's list; (4) publish to the track (the docs: no need to roll out; make the release available in at least one country); (5) each tester opens the opt-in link, accepts, and installs **from the Play Store link** for that distribution path; this does not prohibit licensed debug sideloading. "You must open the Opt-in URL" or products won't load. Fresh uploads take roughly 15 minutes; "not available in your country" on the opt-in link means wait and retry.
+- **Debug sideloading is supported for license testers.** Match the package name to the Play-configured app and use a license-tester Google account for that Console account. The old source said the opposite, even for licensed testers. [https://developer.android.com/google/play/billing/test]
 - **Identifiers:** the AAB's `applicationId` must match the Play Console app and the Android app in the RevenueCat dashboard. Suffixed flavor IDs (`com.example.myapp.dev`) need their own Play Console and RevenueCat app entries.
 - **Products:** **Monetize, In-app products** (one-time, must be **Active**) or **Monetize, Subscriptions** (at least one **Active** base plan). IDs are case sensitive and can't be reused after deletion. Non-active products show up as empty offerings in RevenueCat.
 - **You may need** `<uses-permission android:name="com.android.vending.BILLING" />`, and a device PIN (otherwise a cryptic "Something went wrong").
@@ -169,7 +170,7 @@ npx expo prebuild --clean
 | Account and build | Result |
 |---|---|
 | License tester and closed-track tester | Test card |
-| Debug build without the closed track | "Item attempting to purchase could not be found" |
+| Matching-package sideloaded debug build and license tester | Test purchases are supported; a closed-track install is not a universal prerequisite |
 | Not a license tester | Real card purchase |
 
 - **Clean first-purchase state:** there is no one-click clear. Use another license tester Gmail, or cancel in Play Store, Subscriptions on the device, wait for expiry (fast on the test clock), and retry.
@@ -195,9 +196,11 @@ Use accelerated renewals to exercise renewal callbacks, grace periods and billin
 | 3 months | 15 min | 15 min | 10 min | 15 min |
 | 6 months | 30 min | 30 min | 15 min | 30 min |
 | 1 year | 1 hour | 1 hour | 30 min | 60 min |
-| Renewals | 5, then cancels | 6 then expires (skill); at most 12 per day (docs) | At most 6 | At most 6 |
+| Renewals | 5, then cancels | Up to 12 renewals, then auto-renewal disables on attempt 13 (Apple) | At most 6 | At most 6 |
 
 - **Web extras:** trial 5 min, intro 5 min, discount window 11 min, grace 3 min, billing retries every 3 minutes up to 5 attempts.
+- **Apple sandbox count correction:** the old source said six renewals and the old table said twelve per day. Apple states up to twelve renewals, disabling auto-renewal on the thirteenth attempt, with configurable sandbox-account speeds; the default equalizes one month to five minutes. [https://developer.apple.com/help/app-store-connect/test-in-app-purchases/manage-sandbox-apple-account-settings/]
+
 - **TestFlight renews "once every 24 hours"** since December 2024.
 
 ## Test cases

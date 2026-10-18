@@ -1,6 +1,8 @@
 # A constrained browser tool with a domain allowlist
 
-When an agent must stay on one site (to contain prompt injection and link-following, or a scraper with a domain policy), give it exactly one browser capability. The tool owns the Playwright or CDP session, intercepts every request and fails any whose host isn't allowlisted. The runtime boundary is the app you build around the agent, not the instructions you give it.
+When an agent must stay on one site (to contain prompt injection and link-following, or a scraper with a domain policy), give it exactly one browser capability. This demo owns one page's CDP session and checks requests intercepted on that session. The runtime boundary is the app you build around the agent, not the instructions you give it. [browserbase/skills, safe-browser]
+
+The old line said it intercepted every request. A page CDP session does not by itself cover every other target or worker: target attachment and child-session handling have their own scope. Report the actual attached targets and intercepted requests; do not describe this demo as complete network isolation. [CDP Target.setAutoAttach](https://chromedevtools.github.io/devtools-protocol/tot/Target/#method-setAutoAttach)
 
 ```
 runtime agent -> only tool: safe_browser -> local Chromium
@@ -36,7 +38,7 @@ cdp.on("Fetch.requestPaused", async (params) => {
 await cdp.send("Fetch.enable", { patterns: [{ urlPattern: "*" }] });
 ```
 
-- **Register the `Fetch.requestPaused` handler before `Fetch.enable`,** which intercepts every request (`urlPattern: "*"`).
+- **Register the `Fetch.requestPaused` handler before `Fetch.enable`.** The wildcard matches requests within the attached session's interception scope; it does not establish coverage of unrelated targets. [CDP Fetch.enable](https://chromedevtools.github.io/devtools-protocol/tot/Fetch/#method-enable)
 - **Normalize the host and match exactly:** `new URL(url).hostname.toLowerCase().replace(/^www\./, "")` checked against a `Set` such as `new Set(["news.ycombinator.com"])`. No subdomain wildcard.
 - **Always continue internal URLs:** prefixes `about:`, `chrome:`, `devtools:`, `data:`.
 - **Fail closed.** Any handler error is recorded as blocked and `Fetch.failRequest` is attempted.

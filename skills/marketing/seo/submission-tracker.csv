@@ -70,8 +70,6 @@ Smithery,4,https://smithery.ai/new,MCP,,,Draft,,,,,,,Web form or smithery mcp pu
 MCP.so,4,https://mcp.so/submit,MCP,,,Draft,,,,,,,Free; $39 fast track
 MCP Servers,4,https://mcpservers.org/submit,MCP,paid tier,,Draft,,,,,,,Link unqualified only on $39 tier per source; a paid link should be sponsored
 MCP Market,4,https://mcpmarket.com/submit,MCP,,,Draft,,,,,,,Submit GitHub repo; free queue 4-6 weeks
-TensorBlock awesome-mcp-servers,4,https://github.com/TensorBlock/awesome-mcp-servers,GitHub list,,,Draft,,,,,,,Open a PR
-public-apis,4,https://github.com/public-apis/public-apis,GitHub list,,,Draft,,,,,,,PR; only if you have a free public API
 Claude plugin directory,4,https://claude.ai/directory/manage,Agent,,,Draft,,,,,,,Plugins/connectors; paid Claude plan; reviewed
 ClawHub,4,https://clawhub.ai,Agent,,,Draft,,,,,,,OpenClaw skills; see malware caveat
 llmstxt.site,4,https://llmstxt.site/submit,AI search,,,Draft,,,,,,,List your /llms.txt

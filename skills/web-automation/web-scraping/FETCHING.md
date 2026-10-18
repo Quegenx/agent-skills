@@ -20,14 +20,7 @@
 | Simple scraping | Yes | Overkill |
 | Speed | Fast | Slower |
 
-One library's ladder (Scrapling), each tier with a session class that keeps the connection or browser alive:
-
-```
-get / FetcherSession
-  └─ If JS required → fetch / DynamicSession
-       └─ If blocked → stealthy-fetch / StealthySession
-            └─ If multi-page → Spider
-```
+Scrapling's current tiers are HTTP requests, a browser for permitted rendering/interaction, and spiders for multi-page work. A block is a stop/permission signal, not a reason to escalate into evasion. The old ladder used removed DynamicSession and an evasion escalation step. [D4Vinci/Scrapling, scrapling-official/references/fetching/choosing.md; https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 
 - **Timeout units differ by tier:** in Scrapling's CLI, Python API and MCP server, HTTP timeouts are in **seconds** (default 30) and browser timeouts in **milliseconds** (default 30000).
 
@@ -49,12 +42,11 @@ Fetches a URL with no browser session; faster and cheaper than one.
 | `url` | string (URI) | required | |
 | `allowRedirects` | boolean | `false` | Shortened URLs, login flows; turn it on when scraping, since most sites redirect |
 | `allowInsecureSsl` | boolean | `false` | Skips TLS verification (see Safety) |
-| `proxies` | boolean | `false` | IP rate limiting or geo-restrictions |
 
 - **Response:** `id`, `statusCode`, `headers` (string to string), `content` (body as a string), `contentType`, `encoding`.
 - **JSON endpoints:** the body arrives as a string, so parse it: `jq '.content | fromjson'` or `JSON.parse(response.content)`.
 - **Status and headers only:** `curl ... | jq '{statusCode, headers}'`.
-- **SDKs:** Node `@browserbasehq/sdk`, `bb.fetchAPI.create({ url, allowRedirects, allowInsecureSsl, proxies })`; Python `browserbase`, `bb.fetch_api.create(url=..., allow_redirects=..., allow_insecure_ssl=..., proxies=...)` returning `status_code`, `headers`, `content`. The Python sync SDK runs a batch one request after another.
+- **Node SDK:** @browserbasehq/sdk exposes bb.fetchAPI.create for the request contract above. The source also supplied Python examples and proxy-based access workarounds; unsupported-stack examples and evasion procedures are omitted. Do not use proxy/identity rotation or bot-detection bypass to evade a restriction. [browserbase/skills, fetch; user standing rules 9 and 10]
 - **Batches:** `Promise.all(urls.map(url => bb.fetchAPI.create({ url, allowRedirects: true })))` fetches several URLs concurrently.
 
 | Status | Meaning | Fix |
@@ -66,55 +58,34 @@ Fetches a URL with no browser session; faster and cheaper than one.
 
 ## Option: Scrapling CLI (vendor)
 
-Python 3.10+. Set up in a venv: `pip install "scrapling[all]>=0.4.15"`, then `scrapling install --force` (downloads browser dependencies). If `scrapling` is not on `$PATH`, use its full path. Docker images `pyd4vinci/scrapling` or `ghcr.io/d4vinci/scrapling:latest` cover the commands only, not Python code. The `rag` extra installs Markdown conversion support; `ai`, `shell` and `all` include it.
+Current contracts below target Scrapling 0.5. Read the installed help/schema before calling it; older 0.4.15 examples are not interchangeable. This library's Python internals do not require adding Python implementation recipes to a TS/JS application. [D4Vinci/Scrapling, scrapling-official/SKILL.md; https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 
-- **Commands:** `scrapling extract get|post|put|delete|fetch|stealthy-fetch <url> <outfile>`. `get` for simple sites, blogs, news; `fetch` for modern web apps and dynamic content.
-- **The output format follows the file extension:** `.md` converts HTML to Markdown, `.html` saves raw, `.txt` saves clean text. Prefer `.md`; use `.html` only to parse structure.
-- **Write to a temp file, read it back, then always delete it.**
-- **Always pass `--ai-targeted`** to protect against prompt injection: it extracts main content and sanitizes hidden elements (default off). On browser commands it also turns on ad blocking.
-- **Select with `-s/--css-selector`** (returns all matches) instead of passing whole HTML; it saves tokens significantly.
-- **HTTP options** (`get`, `post`, `put`, `delete`): `-H/--headers "Key: Value"` (repeatable), `--cookies "n1=v1; n2=v2"`, `--timeout` seconds (default 30), `--proxy "http://user:pass@host:port"`, `-p/--params "k=v"` (repeatable), `--follow-redirects/--no-follow-redirects` (default safe), `--verify/--no-verify` (default on), `--impersonate`, `--stealthy-headers/--no-stealthy-headers` (default on). `post` and `put` add `-d/--data "a=1&b=2"` and `-j/--json '<json>'`.
-- **Browser options** (`fetch`, `stealthy-fetch`): `--headless/--no-headless` (default on), `--disable-resources` (default off), `--network-idle` (default off), `--real-chrome` (default off), `--timeout` ms (default 30000), `--wait` ms (default 0), `--wait-selector`, `--proxy`, `-H/--extra-headers`, `--dns-over-https` (Cloudflare DoH to prevent DNS leaks with proxies, default off), `--block-ads` (about 3,500 ad and tracker domains, default off), `--executable-path` (falls back to env `SCRAPLING_EXECUTABLE_PATH`). `fetch` only: `--locale`.
+- **Commands:** `scrapling extract get|post|put|delete|fetch <url> <outfile>`; `fetch` is the browser path. The former separate browser command was removed in 0.5. Use only authorized hosts and platform-compliant access. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
+- **Output follows the extension:** Markdown, raw HTML or text. Read a temporary output and remove it when no longer needed; retain approved evidence artifacts only in their selected location. [D4Vinci/Scrapling, scrapling-official/SKILL.md]
+- **`--ai-targeted` narrows and sanitizes content; it does not confer authority or guarantee prompt-injection protection.** The old source called it protection. Use the [untrusted-content rule](UNTRUSTED-CONTENT.md#the-rule) for every returned format. [D4Vinci/Scrapling, scrapling-official/SKILL.md; https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks]
+- **Inspect actual timeout and extraction options.** HTTP timeouts use seconds; browser timeouts use milliseconds. Select the needed content before sending it to a model and keep TLS/redirect safety above. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]
 
 ## Option: Scrapling HTTP fetcher (vendor)
 
-`from scrapling.fetchers import Fetcher, AsyncFetcher, StealthyFetcher, DynamicFetcher`. The HTTP tier runs on `curl_cffi`; any other `curl_cffi` argument passes through.
-
-- **Defaults:** `timeout=30` s, `retries=3`, `retry_delay=1` s, `follow_redirects="safe"`, `max_redirects=30`, `verify=True`, `http3=False` (can be problematic with `impersonate`), `stealthy_headers` on, `impersonate` the latest Chrome (a list picks one at random per request).
-- **Other args:** `cookies` (dict or list of dicts), `proxy` (`http://user:pass@host:port`), `proxy_auth` (tuple), `proxies` (`{"http": ..., "https": ...}`), `proxy_rotator` (cannot combine with `proxy`/`proxies`), `headers` (override generated ones), `cert=(cert, key)`, `selector_config`.
-- **Methods:** `get(params=)`, `post`/`put`/`delete(data=, json=)`, `auth=(user, pw)` for basic auth. **`OPTIONS` and `HEAD` are not supported.** Async: `AsyncFetcher` with `await`.
-- **Use a `FetcherSession` for many requests:** it keeps cookies and auth, pools connections and holds one config (overridable per request). It works in sync and async code; `asyncio.gather(*[session.get(u) for u in urls])`. `Fetcher` alone makes a temporary session per request; the library claims a session is 10 times faster than a session per request.
-- **Response:** a `Selector` (PARSING.md) plus `status`, `reason`, `cookies` (dict), `headers`, `request_headers`, `history` (redirects), `body` (always bytes), `encoding`, `meta` (e.g. the proxy used), `captured_xhr`.
-- **JSON:** `page.json()`. **Files:** write `page.body` to a file opened `'wb'`.
-- **Pagination:** loop `?page={n}` until `page.css('.product')` comes back empty.
-- **Global parser config:** `Fetcher.configure(adaptive=True, keep_comments=False, keep_cdata=False)` (keys `adaptive`, `adaptive_domain`, `huge_tree`, `keep_comments`, `keep_cdata`, `storage`, `storage_args`); `display_config()` shows them; per request `selector_config={...}`. `adaptive` is off by default.
+- **HTTP uses Fetcher/AsyncFetcher and FetcherSession for related requests.** Sessions retain cookies/auth and pool connections; a fetch response supplies status, headers, body and selector methods. Treat cookies and authentication state as credentials. [D4Vinci/Scrapling, scrapling-official/references/fetching/static.md]
+- **Parser configuration:** adaptive and comment handling remain configurable. `keep_cdata` was removed from Selector, global/per-request configuration, display_config and the Scrapy converter; the old examples still passed it. There is no replacement option. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
+- **Parse only after checking status.** Narrow the HTML/JSON body using [PARSING.md](PARSING.md); a successful transport or conversion is not proof of complete data. [D4Vinci/Scrapling, scrapling-official/SKILL.md]
 
 ## Option: Scrapling browser fetcher (vendor)
 
-`DynamicFetcher` runs Playwright; async method `async_fetch`. Three modes: bundled Chromium; `real_chrome=True` (installed Chrome; `playwright install chrome` installs it); `cdp_url='ws://...'` or `http://localhost:9222` for a remote or managed browser.
-
-- **Waiting:** `load_dom` (default on, waits for `domcontentloaded`), `network_idle` (no connections for 500 ms), `wait` (ms after everything), `wait_selector` with `wait_selector_state` (default `attached`; also `detached`, `visible`, `hidden`; `visible` means a non-empty box and not `visibility:hidden`, and `display:none` counts as not visible). Order: navigation, network idle (if on), `page_action`, `wait_selector`, `load_dom` re-check, network idle re-check.
-- **Hooks:** `page_setup(page)` runs before `page.goto()` (register listeners and routes); `page_action(page)` runs after navigation. Both must be async functions with `async_fetch`. `init_script` takes an absolute path to a JS file run on page creation.
-- **Speed:** `disable_resources` drops fonts, images, media, beacons, objects, imagesets, text tracks, websockets, CSP reports and stylesheets (about 25% faster on some sites, but some sites then never finish loading); `blocked_domains` (a set, subdomains match); `block_ads`.
-- **Other args:** `headless` (default on), `timeout` ms (default 30000), `cookies`, `useragent`, `extra_headers`, `google_search` (default on), `proxy` (string, or dict with only `server`/`username`/`password`), `locale`, `timezone_id`, `user_data_dir` (sessions only), `extra_flags`, `additional_args` (Playwright context; beats the library's settings), `dns_over_https`, `proxy_rotator`, `retries=3`, `retry_delay=1`, `capture_xhr`, `executable_path`, `selector_config`.
-- **Sessions** (`DynamicSession`, `AsyncDynamicSession`) reuse the browser and keep cookies. Per-request overrides: `google_search`, `timeout`, `wait`, `page_action`, `page_setup`, `extra_headers`, `disable_resources`, `wait_selector`, `wait_selector_state`, `network_idle`, `load_dom`, `blocked_domains`, `proxy`, `selector_config`.
-- **Tab pool (`max_pages`):** a request reuses a free tab (tab-level settings are re-applied, so nothing leaks), else opens a new one under `max_pages`, else polls for **60 s** and raises `TimeoutError` (usually an unresponsive site). Errored tabs are closed and replaced; `session.close_pages()` closes all; `get_pool_stats()` shows busy, free and errored. Tabs stay open, so the next request's `page_setup` runs on the previous page, which lets you chain steps.
-- **Proxies with a browser:** a browser can't set a proxy per tab, so with a `ProxyRotator` the fetcher opens one context per proxy with one tab each, and closes both when done.
+- **Current browser classes:** StealthyFetcher, StealthySession and AsyncStealthySession. DynamicFetcher, DynamicSession and AsyncDynamicSession were removed in 0.5. Use this browser API only for permitted rendering and interaction; its class name is not permission to evade a site's controls. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
+- **Readiness is an observable result.** `load_dom` waits for DOMContentLoaded; that event does not wait for async scripts, images or subframes. The source incorrectly described it as all JavaScript loaded/executed. Wait for the intended result element rather than treating that lifecycle event as complete application readiness. [https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event; D4Vinci/Scrapling, scrapling-official/references/fetching/stealthy.md]
+- **Use explicit sessions for related interactions and network history.** Current-page extraction and actions are in [MCP-SERVER.md](MCP-SERVER.md#which-tool); general browser safety and credentials are owned by [browser-automation](../browser-automation/SKILL.md). [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]
 
 ## Stealth fetchers
 
-Stealth browser fetchers exist for sites behind bot protection: in Scrapling, `StealthyFetcher` (sessions `StealthySession`, `AsyncStealthySession`; CLI `stealthy-fetch`; MCP `stealthy_fetch`, `bulk_stealthy_fetch`), which accepts all `DynamicFetcher` arguments. When its challenge handling is used, set the timeout to **at least 60 seconds**, and on custom sites add `wait_selector` so it waits for the real content.
+Do not use CAPTCHA solving, bot-detection bypass, impersonation or identity/proxy rotation to evade a block or rate limit. Stop and use a documented API or an owner-approved access route within platform rules; owning the target does not authorize evasion procedures in this skill. The old source and copied section supplied procedural evasion guidance, which is omitted under the user's safety rule. [D4Vinci/Scrapling, scrapling-official/references/spiders/proxy-blocking.md; user standing rule 9]
 
 ## Capturing XHR data
 
-Many single-page apps load their data through background XHR or fetch calls; a browser fetcher can capture those responses.
-
-```python
-AsyncDynamicSession(capture_xhr=r"https://api\.example\.com/.*")
-# page.captured_xhr: each a full Response with .url, .status, .headers, .body (bytes)
-```
-
-`captured_xhr` is an empty list when `capture_xhr` is unset. To turn a whole session's traffic into a documented API, see TRAFFIC-TO-OPENAPI.md.
+- **Use explicit browser-session network history in 0.5.** Enable `record_requests` on the session and inspect `session.network`; one-shot fetches do not return a capture list. `capture_xhr` and `response.captured_xhr` were removed, even when the old option was None. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
+- **History is retained completed traffic across the session, not only the last page.** Search filters apply after collection; search returns at most 100 retained matches by default, while `limit=None` requests all retained matches without expanding retention. Unfinished requests and unavailable bodies are not proof of absent traffic. Read needed MCP history before closing its session. [D4Vinci/Scrapling, scrapling-official/references/fetching/stealthy.md; https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py]
+- **Captured traffic remains sensitive evidence.** Review headers, bodies and generated clients for credentials before sharing; the separate [traffic-to-OpenAPI workflow](TRAFFIC-TO-OPENAPI.md) owns spec/client generation. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md; existing traffic owner]
 
 ## Prove it
 

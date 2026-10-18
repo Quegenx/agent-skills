@@ -37,7 +37,7 @@ Segment pages: one per core industry you actually serve, with real specifics; ne
 
 ## YouTube and podcasts
 
-[coreyhaines31/marketingskills, ai-seo, youtube-ai-citations] "Models don't watch your video. They read everything around it." Work the text layer in order of leverage:
+[coreyhaines31/marketingskills, ai-seo, youtube-ai-citations] recommends working the surrounding text layer. The source and this file formerly said models cannot watch video; Gemini's [video-understanding documentation](https://ai.google.dev/gemini-api/docs/video-understanding) explicitly supports visual and audio streams, including public YouTube URL inputs. That capability does not establish a particular search product's citation mechanics. Keep the source's practical text checklist:
 1. **The transcript:** answer questions in complete, liftable sentences; outline the key answers before recording; say the product name, the category and the entities out loud.
 2. **Accurate captions:** upload cleaned captions or correct the auto-generated ones (product names spelled right).
 3. **A question-shaped title** that front-loads the question or task.

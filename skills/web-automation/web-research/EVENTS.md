@@ -21,19 +21,19 @@ Detect in this order, with one `browse eval` that probes everything. Order matte
 | 6 | Anything else | `markdown` heuristic: split on `##` to `####`; line 1 the name (starts with a capital), line 2 the title, line 3 the company, plus a `linkedin.com/in/` match. Covers 60-80%; misses card layouts |
 
 - **Waits:** 2500 ms for recon, 2000 ms for Next.js extraction and 2500 ms for markdown extraction; raise to 5 s if speakers lazy-load.
-- **Zero people from markdown extraction** should surface a "platform unsupported" error rather than an empty `people.jsonl`.
+- **Zero people is incomplete evidence.** [browserbase/skills, event-prospecting/SKILL.md and scripts/extract_event.mjs; EVIDENCE.md unknown-evidence rule] Report that the selected extractor returned no people, its strategy and any observed access/rendering failure. The source and this file formerly inferred "platform unsupported" from an empty result; absence alone does not establish that cause. Keep the limitation visible instead of presenting an empty file as a complete attendee list.
 
 ## Extracting people
 
 - **Normalize field names with fallbacks:** `name|fullName`, `title|role`, `companyName|company|org`, `linkedInProfile|linkedinUrl|linkedin`, `bio|description`.
 - **Pick the photo:** keys matching `/portrait|headshot|photo|image|picture|avatar|thumbnail/i`, mono, grey and black variants sorted last; unwrap `.url`, `.src`, `.asset.url`, `.fields.file.url` and arrays. Resolve relative image URLs against the event origin; `//` becomes `https:`.
 - **Give duplicate names slugs `-2`, `-3`,** so a later subagent's `people/{slug}.md` write doesn't silently overwrite another person.
-- **Drop the host organization's and the user company's own people,** comparing slugified names on both sides. The host name is the registrable-domain label with one `sessions?|conf(erence)?|summit|events?` suffix stripped, only if what remains is at least 5 characters (so `devconf.io` doesn't collapse to `dev`); `.co.uk`-style suffixes are a known limitation. Keep people whose company is unknown.
-- **Sanity checks:** fewer than about 10 lines in `people.jsonl` means recon picked the wrong platform. Expect companies at about 0.4-0.6 times the speakers, and 20-40% ICP survival; below 10%, warn that the threshold may be too high or the ICP too narrow.
+- **Drop verified host and user-company people.** [browserbase/skills, event-prospecting/scripts/extract_event.mjs; EVIDENCE.md identity rule] Compare normalized names with the confirmed organizations. The source derives a possible host name from a domain label, but that heuristic does not verify identity; do not exclude people solely on that guess. Keep people whose company is unknown.
+- **Sanity checks are prompts to inspect, not diagnoses.** [browserbase/skills, event-prospecting/SKILL.md; EVIDENCE.md unknown-evidence rule] The source's fewer-than-about-10 people, company-to-speaker ratio of 0.4-0.6, 20-40% ICP survival and below-10% warning are planning heuristics. A small result does not prove a wrong platform, narrow ICP or excessive threshold. Report observed counts, extraction coverage and unknowns before interpreting them.
 
 ## Triage: one call per company
 
-- **Guess the homepage:** `https://{name lowercased, non-alphanumerics removed}.com`, carried as a `name|url|slug` line. Searching for the real URL would break the 1-call cap; if the guess fails, the file says `Unknown` with a score of 3 or less.
+- **Use an evidenced homepage.** [browserbase/skills, event-prospecting/SKILL.md; EVIDENCE.md identity rule] Carry a verified event/profile/source URL as a `name|url|slug` line. The source and this file formerly constructed `name.com`; a responding domain does not prove it belongs to the named company. With no evidenced URL inside the agreed one-call budget, leave the company `Unknown` with a score of 3 or less and record the unresolved identity; do not classify a different business or silently add calls.
 - **Use the slug verbatim.** Re-slugifying creates duplicate files.
 - **Batch with the shell:** `split -l 10` for triage, `-l 5` for deep research and people, into `_batch_*` files that are removed afterwards.
 - **Filter on the frontmatter:** `awk '/^icp_fit_score:/{print $2; exit}'` compared with `-ge $THRESHOLD`, writing `icp_fits.txt`.
@@ -65,4 +65,4 @@ Detect in this order, with one `browse eval` that probes everything. Order matte
 
 ## Prove it
 
-`people.jsonl` has at least about 10 lines; `ls companies/*.md | wc -l` equals `wc -l seed_companies.txt` and the `triage_only: false` count equals `wc -l icp_fits.txt`; no two person files share a slug; every hook in a sample of five traces to a cited finding or the talk title; every file parses with its closing `---`; every person file has a source, a collection date and a lawful basis.
+Observed people and company counts, extraction strategy and coverage limitations are reported without inferring a platform failure from an empty result; each researched company URL has identity evidence; `ls companies/*.md | wc -l` equals `wc -l seed_companies.txt` and the `triage_only: false` count equals `wc -l icp_fits.txt`; no two person files share a slug; every hook in a sample of five traces to a cited finding or the talk title; every file parses with its closing `---`; every person file has a source, a collection date and a lawful basis.

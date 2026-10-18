@@ -52,7 +52,7 @@ A working layout per job: `artifacts/<domain>/<task>/{manifest.json, webmcp.init
 - **Top frame only:** an IIFE that returns early if `window.self !== window.top`.
 - **Timeout and error capture:** each `execute` is raced against a 30 s timer that rejects with "WebMCP tool timed out"; all errors are caught and returned as `{ success: false, error: { name, message, stack } }`; the timer is cleared in `finally`; input is passed as `input || {}`.
 - **Registration:** each name is unregistered in try/catch, then registered; if `navigator.modelContext` is missing it returns `{ success: false, error: "navigator.modelContext is not available." }`. The result is kept on a window global for inspection.
-- **Two caveats.** This script uses `navigator.modelContext` only, with `unregisterTool`, while the first-party route says current Chrome exposes `document.modelContext` (with `navigator.modelContext` undefined) and has no unregister handle (TOOL-CONTRACT.md). And because the wrapper returns errors as `success: false`, the validator also treats `output.success === false` as a failure.
+- **Two caveats.** The supplied pinned script uses navigator.modelContext only and name-based unregisterTool; that is not the current Chrome contract. Adapt its generated registration to the [current document.modelContext and lifecycle rules](TOOL-CONTRACT.md#the-browser-api), then validate against the actual target browser. The old comparison repeated the source's no-cleanup claim. Because this wrapper returns errors as success: false, its validator also treats output.success === false as a failure. [browserbase/skills, webmcp-gen]; [Chrome imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api)
 
 ## Validating the script (Stagehand 3.6 alpha)
 

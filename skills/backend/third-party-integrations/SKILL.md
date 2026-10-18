@@ -14,6 +14,7 @@ Your product acts in systems it doesn't own, with credentials users lent it, aga
 | An agent acting through connected accounts: scoped tool sets, approvals by effect, connecting mid-chat, errors that say what to do, raw-API escape hatches, standing automations | [AGENT-ACCESS.md](AGENT-ACCESS.md) |
 | Verifying a webhook signature, encrypting stored tokens, SSRF | the `secure-coding` skill |
 | Delivering your own events reliably (outbox, retries) | the `messaging` skill |
+| Kapso WhatsApp onboarding, messages, webhooks, native forms, workflows, Functions and Calling | [kapso](../kapso/SKILL.md) |
 
 ## Build or buy
 

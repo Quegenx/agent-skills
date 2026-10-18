@@ -68,13 +68,15 @@ remotecfg {
     username = sys.env("FM_USERNAME")
     password = sys.env("FM_TOKEN")
   }
-  poll_interval = "1m"
+  poll_frequency = "1m"
 }
 
 clustering {
   enabled = true
 }
 ```
+
+The remote configuration setting is `poll_frequency`; the old example used `poll_interval`. [Alloy remotecfg](https://grafana.com/docs/alloy/latest/reference/config-blocks/remotecfg/)
 
 ### Modules and secrets
 
@@ -733,7 +735,7 @@ kubectl -n monitoring logs -l app.kubernetes.io/name=alloy --tail=100 | grep -iE
 Check the current Alloy reference for each before relying on it.
 
 - **Env function:** the alloy, send-data, database-observability and fleet-management API references use `sys.env("VAR")`; the opentelemetry collector config, app-observability files and the fleet-management overview and bootstrap use `env("VAR")`. The Alloy syntax reference documents only `sys.env`.
-- **`remotecfg` poll key:** `poll_interval = "1m"` in the Alloy syntax, collection-patterns and fleet-management API references; `poll_frequency = "1m"` in the fleet-management overview and bootstrap.
+- **`remotecfg` poll key:** the source Alloy syntax, collection-patterns and fleet-management API references said `poll_interval`; the fleet-management overview and bootstrap used the documented `poll_frequency`. Use the official key as corrected above. [https://grafana.com/docs/alloy/latest/reference/config-blocks/remotecfg/]
 - **Language name:** the app-observability files fence configs as `river`; others use `alloy`.
 
 ## Debugging

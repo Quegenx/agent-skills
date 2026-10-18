@@ -11,6 +11,7 @@ An end-to-end test drives the app the way a user does and proves the outcome on 
 |---|---|
 | Writing a test: the workflow, goals vs exact steps, locators, actions, reads, assertions, sign-in sessions, secrets, test data | [WRITING-TESTS.md](WRITING-TESTS.md) |
 | Agent steps in an agentic runner: `act`, judgments, budgets, what the model sees, the replay cache, choosing a model | [AGENT-STEPS.md](AGENT-STEPS.md) |
+| Using a decision model for bounded actions with a separate text model, fresh completion checks and gates | [DECISION-EXECUTOR.md](DECISION-EXECUTOR.md) |
 | Installing a runner, its config and defaults, starting the app under test, browsers and mobile targets, running, exit codes, CI | [RUNNER-SETUP.md](RUNNER-SETUP.md) |
 | A red or flaky test: reading the trace, error codes, flake causes, measuring a fix, driving the live app over MCP | [DEBUGGING.md](DEBUGGING.md) |
 | Exploratory testing and a bug bash: charters, personas, parallel explorers, triage, proving each bug with a failing test | [BUG-BASH.md](BUG-BASH.md) |
@@ -31,7 +32,7 @@ An end-to-end test drives the app the way a user does and proves the outcome on 
 1. **One goal, one check.** An agent step drives one outcome and an exact assertion pins it right after. Two outcomes worth checking are two goals.
 2. **Never add a sleep.** Fix the locator, the expectation or the app. Wait on state with a matcher (a longer `timeout` if needed) or poll the read (`expect.poll`) for off-screen state like a database row.
 3. **Use stable handles.** Roles and accessible names, labels, test ids, routes, taken from the source. Where the app lacks an accessible name, add an `aria-label` or heading instead of falling back to CSS classes.
-4. **No PASS without evidence.** Every assertion rests on the accessibility tree or a deterministic check. An agent's finding is a claim plus evidence: read it against the screenshot, and call a bug confirmed only when a repro test fails on the assertion that encodes it.
+4. **No PASS without evidence.** Every assertion rests on the accessibility tree or a deterministic check. An agent's finding is a claim plus evidence: read it against the screenshot, and use a repro assertion for the source's confirmed-bug label. Other action/timeout failures still need [cause-based triage](DEBUGGING.md#failure-code-versus-cause); they do not automatically prove a bad test. [tester-army/e2e, bug-bash; migrate-to-e2e]
 5. **Judge meaning, not phrasing.** `toContain('Pro')`, not the exact sentence a model produced.
 6. **Secrets never appear in test code.** Declare accounts and secrets in config with values from the environment, and pass only opaque handles to fills and agents.
 7. **Give test data a run-unique name** (`Invoice ${Date.now()}`) and clean it up in `afterEach`, so retries and replays never trip over leftovers. Explorers each get their own account.

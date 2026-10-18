@@ -4,12 +4,14 @@ Where most customers live outside the US, WhatsApp often beats SMS for the same 
 
 **Contents:** [When WhatsApp fits](#when-whatsapp-fits) · [App or platform](#app-or-platform) · [The 24-hour window](#the-24-hour-window) · [Template categories](#template-categories) · [Opt-in and opt-out](#opt-in-and-opt-out) · [Quality rating and limits](#quality-rating-and-limits) · [Formats and copy](#formats-and-copy) · [Phone numbers](#phone-numbers) · [Pricing](#pricing) · [Click-to-WhatsApp ads](#click-to-whatsapp-ads) · [Playbooks](#playbooks) · [Sources](#sources) · [Prove it](#prove-it)
 
+Kapso implementation, onboarding, webhook, native form and Calling contracts are in [kapso](../../backend/kapso/SKILL.md); this file remains the marketing-policy owner.
+
 ## When WhatsApp fits
 
 | Situation | Better fit | Why |
 |---|---|---|
 | Customers mostly in LATAM, EMEA, India, SEA | **WhatsApp** | It's where conversations already happen |
-| Customers mostly in the US | **SMS** | Meta does not currently deliver marketing templates to US (+1) numbers |
+| Customers mostly in the US | **SMS** | Meta's restriction covers +1 numbers with a US area code, not every +1 destination |
 | Rich product messages (images, buttons, lists) | **WhatsApp** | Native interactive formats, no MMS surcharge |
 | Two-way sales or support conversations | **WhatsApp** | Threaded chat, reply buttons, human handoff |
 | Paid social is a major acquisition channel | **WhatsApp** | Click-to-WhatsApp ads open a free window |
@@ -17,6 +19,8 @@ Where most customers live outside the US, WhatsApp often beats SMS for the same 
 | Multi-country program | **Both** | WhatsApp where adoption is high, SMS as fallback |
 
 "Ask first: where are the customers? If more than half are in the US, WhatsApp marketing is a support or transactional layer at best until Meta lifts the US marketing restriction."
+
+The source and this file formerly reduced that restriction to all +1 numbers. Meta specifies +1 together with a US area code; Canada and other +1 destinations must not be classified as US solely by country code. [Meta per-user marketing limits](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/per-user-limits)
 
 ## App or platform
 
@@ -179,5 +183,5 @@ As cited by the source, all accessed 2026-10:
 - A cart reminder for a Brazil or Mexico shopper goes out as an approved **marketing** template unless an open service or free entry point window is shown in that customer's message history.
 - Every recipient has an opt-in that names the business (and WhatsApp), and every marketing template has a `Stop promotions` button or a STOP footer.
 - Cost estimates use per-message rates by category and country, never per-conversation pricing.
-- No marketing template is scheduled to +1 numbers.
+- No marketing template is scheduled to a +1 number with a US area code under the current US restriction; +1 alone is not a sufficient country classification. [Meta per-user marketing limits](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/per-user-limits)
 - Before scaling, the number shows Green quality and the portfolio's current messaging limit covers the send.

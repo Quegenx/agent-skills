@@ -25,6 +25,7 @@ Grafana is the front end of the LGTM stack: metrics in Prometheus or Mimir, logs
 | Kubernetes with the `k8s-monitoring` chart, Linux hosts, Docker, cloud integrations (AWS, Azure, Confluent) and cloud data sources | [INFRA-AND-CLOUD.md](INFRA-AND-CLOUD.md) |
 | Synthetic Monitoring: check types, what fails an execution, scripted and browser checks, checks from an OpenAPI spec, cost, the API, Terraform, alerting and rollback | [SYNTHETIC-MONITORING.md](SYNTHETIC-MONITORING.md) |
 | Roles and custom RBAC, users and teams, service accounts, SSO, the Cloud API, audit logs, the Grafana MCP server, Grafana Assistant and A2A, the LLM plugin, ML features, private connectivity | [ADMIN-AND-AI.md](ADMIN-AND-AI.md) |
+| Grafana-hosted plugin startup graphs, lazy roots/routes/extensions, Scenes composition and host React compatibility | [PLUGIN-DEVELOPMENT.md](PLUGIN-DEVELOPMENT.md) |
 
 ## The rules
 

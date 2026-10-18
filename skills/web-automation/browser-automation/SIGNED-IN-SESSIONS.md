@@ -60,14 +60,12 @@ function toCookieParams(cookies) {
 
 ## Load into a persistent context (Browserbase)
 
-Flow: local Chrome through Stagehand (`new Stagehand({env: 'LOCAL', localBrowserLaunchOptions: {cdpUrl}, verbose: 0, disablePino: true})`), `context.cookies()`, close; context id from `--context`, else `BROWSERBASE_CONTEXT_ID`, else `bb.contexts.create({})`; a cloud Stagehand `{env: 'BROWSERBASE', apiKey, disableAPI: true, browserbaseSessionCreateParams: {browserSettings, proxies?}}` with `browserSettings.context = {id, persist: true}`; `context.addCookies(toCookieParams(cookies))`; close the session. The context persists and the temporary session is gone.
+Flow: local Chrome through Stagehand (`new Stagehand({env: 'LOCAL', localBrowserLaunchOptions: {cdpUrl}, verbose: 0, disablePino: true})`), `context.cookies()`, close; context id from `--context`, else `BROWSERBASE_CONTEXT_ID`, else `bb.contexts.create({})`; a cloud session uses `browserSettings.context = {id, persist: true}`; `context.addCookies(toCookieParams(cookies))`; close the session. The context persists and the temporary session is gone. [browserbase/skills, cookie-sync]
 
 | Flag or env | Effect |
 |---|---|
 | `--domains a.com,b.com` | Filter to those domains and their subdomains |
 | `--context ctx_...` | Refresh the cookies in an existing context |
-| `--verified` | `browserSettings.verified = true`, the Verified browser; for sites that fingerprint, such as Google |
-| `--proxy "City,ST,Country"` | `proxies: [{type: 'browserbase', geolocation: {city, state, country}}]`; city and state required, country defaults to `US`. Matches your local IP's location so auth cookies aren't rejected |
 | `BROWSERBASE_API_KEY` | Required |
 | `BROWSERBASE_CONTEXT_ID` | Reuse a context (the cookies are injected into it) |
 | `CDP_URL`, `CDP_PORT_FILE`, `CDP_HOST` | Debugging endpoint, custom `DevToolsActivePort` path, host (default `127.0.0.1`) |
@@ -86,7 +84,7 @@ Flow: local Chrome through Stagehand (`new Stagehand({env: 'LOCAL', localBrowser
 | "No open page targets found" | Open a tab |
 | "WebSocket error" | Chrome may be hung: force quit and reopen |
 | Cookies expired in the context | Re-run with `--context <id>` |
-| Site rejects the auth | Add `--verified` and/or a `--proxy` near you |
+| Site rejects the auth | Stop, report the block and use an authorized sign-in or supported API. Do not use bot-detection bypass. [User policy; browserbase/skills, sync-cookies source conflict] |
 
 ## Prove it
 

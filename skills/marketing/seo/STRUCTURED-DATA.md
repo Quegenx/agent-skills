@@ -28,7 +28,7 @@ Rules for JSON-LD that search engines and other consumers can use: which Google 
 - **JSON-LD.** Google: "In general, Google recommends using JSON-LD ... if your site's setup allows it"; Microdata and RDFa also work. The script can sit in `<head>` or `<body>` ([intro](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)). [coreyhaines31/marketingskills, schema]
 - **Markup matches the page.** Mark up only content the page shows, and update it when the content changes. [coreyhaines31/marketingskills, schema]
 - **JavaScript-built markup counts once rendered:** Google processes "structured data that's available in the DOM when it renders the page" ([JavaScript](https://developers.google.com/search/docs/appearance/structured-data/generate-structured-data-with-javascript)). For Product, put it in the initial HTML, because "dynamically-generated markup can make Shopping crawls less frequent and less reliable" ([product snippet](https://developers.google.com/search/docs/appearance/structured-data/product-snippet)). Rendering and crawl checks are in [TECHNICAL-AUDIT.md](TECHNICAL-AUDIT.md).
-- **One script, one `@graph`** combines several types on a page, linked by `@id` (below). [coreyhaines31/marketingskills, schema]
+- **One script and one `@graph` is a source organization convention**, not a JSON-LD validity requirement. When processing all JSON-LD script elements in an HTML document, the standard merges them into one dataset. The old line did not distinguish the convention from the standard. [coreyhaines31/marketingskills, schema; W3C embedding JSON-LD](https://www.w3.org/TR/json-ld11/#embedding-json-ld-in-html-documents)
 - **Credit only the top-level type that matches the page's role.** "Nested Question, Answer, Offer, and SearchAction objects do not represent additional page-level coverage." [freescan]
 - **By stack** [coreyhaines31/marketingskills, schema]: static sites write JSON-LD in the template, with partials for repeated blocks; React and Next.js render it from a component, server-side; WordPress uses a plugin (Yoast, Rank Math, Schema Pro), theme changes or custom fields. Two sources of markup on one site split the identity (next sections).
 
@@ -59,8 +59,8 @@ What the source's table said instead, each corrected above from Google's page [c
 
 ## One identity across pages
 
-- **Declare each real thing once, give it one absolute `@id`, and reference that `@id` elsewhere** instead of repeating the block. "An `@id` is not a URL that has to resolve. It is a name. It has to be absolute, and it has to be byte-identical on every page." The `WebPage` node's `@id` changes per page; the `WebSite` and `Organization` ones never do. [squirrelscan]
-- **Build ids from the site origin, never a relative path.** "`#organization` and `${SITE}/#organization` look equally correct in a template and only one of them works." In Astro, set `site` in `astro.config.mjs` or the ids silently become relative. [squirrelscan] Google's own examples have used hash `@id`s since 2024-01-09 ([Search updates](https://developers.google.com/search/updates)).
+- **Use a stable expanded identity across pages.** Absolute site-wide `@id` values are the source's useful convention for avoiding different page bases. JSON-LD also accepts relative IRI references and resolves them against the document base or `@base`; relative syntax is not inherently invalid. The source and old rule said an ID had to be absolute. [squirrelscan; W3C node identifiers](https://www.w3.org/TR/json-ld11/#node-identifiers), [base IRI](https://www.w3.org/TR/json-ld11/#base-iri)
+- **Resolve before comparing.** A fragment `#organization` on two different page bases can identify two different nodes. Use the intended stable expanded identifier everywhere; the source's claim that only an absolute spelling works was too broad. In Astro, configure the intended site origin when generating absolute site-wide IDs. [squirrelscan; W3C base IRI](https://www.w3.org/TR/json-ld11/#base-iri)
 - **Where the Organization lives: two views.** squirrelscan's `entity-dangling` finding says to "Declare the target in the `@graph` of every page that references it" [squirrelscan]. Google says to place Organization markup on the home page or a single page about the organization, and "You don't need to include it on every page of your site"; its page does not mention `@id` ([organization](https://developers.google.com/search/docs/appearance/structured-data/organization)). squirrelscan's line that sixty unlinked `Organization` blocks are "sixty organizations to a search engine" is its interpretation, not in Google's docs.
 - **squirrelscan's entity findings** (rule pages `https://docs.squirrelscan.com/rules/schema/{finding}`) [squirrelscan]:
 
@@ -70,7 +70,7 @@ What the source's table said instead, each corrected above from Google's page [c
 | `entity-split-identity` | One entity under two different `@id`s, usually two plugins | Pick one; make the other a `sameAs` or remove it |
 | `entity-conflicts` | The same entity with two logos, names or phone numbers | Converge on one value, then reference instead of repeating |
 | `entity-dangling` | A reference to an `@id` nothing declares | Declare the target in the `@graph` of every page that references it |
-| `entity-id-format` | An `@id` that is not an absolute URL | Write the scheme and host out in full |
+| `entity-id-format` | Scanner convention flags an `@id` that is not an absolute URL | Use the chosen absolute site-wide convention; relative JSON-LD references remain valid as qualified above |
 | `entity-type-drift` | One `@id` with different `@type` sets on different pages | Emit the same type array everywhere |
 | `entity-authors` | A byline with no `Person`, or a `Person` with no identifiers | Declare the author with `@id`, `url` and `sameAs` |
 | `entity-publisher-mismatch` | Pages that name different publishers | One publisher, referenced by `@id` |
@@ -127,7 +127,7 @@ The owner's marketing site keeps its own head design in [landing-page-ui DISCOVE
 - **Feature exists:** for every rich result the task names, the gallery lists it today; a request for FAQ, HowTo or a sitelinks search box is answered with the retirement and its date before any code.
 - **Validators pass:** each changed page passes the Schema.org Validator, and each supported Google feature passes the Rich Results Test by URL with no required-property errors.
 - **Matches the page:** every marked-up question, price, rating and date is visible on the rendered page with the same value.
-- **One identity:** across a crawl of the site, each `Organization` and `WebSite` `@id` is absolute and byte-identical, with one `@type` set per id.
+- **One identity:** across a crawl of the site, each `Organization` and `WebSite` reference expands to the same intended stable identifier, with one `@type` set per id.
 - **Escaping holds:** a test value containing `</script><script>alert(1)</script>` comes out of the page's JSON-LD as `\u003c/script>` and `JSON.parse` returns the original string.
 - **Dates:** every `datePublished` and `dateModified` parses as ISO 8601 with a timezone, and no example or live `priceValidUntil` is in the past.
 - **Events:** every `Event` with Google markup has a physical `location.address`.

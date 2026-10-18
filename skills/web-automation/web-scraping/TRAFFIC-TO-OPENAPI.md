@@ -1,6 +1,6 @@
 # Captured traffic to an OpenAPI spec
 
-**Contents:** [What it can and can't tell you](#what-it-can-and-cant-tell-you) · [Review the output for secrets](#review-the-output-for-secrets) · [Capture](#capture) · [Generate](#generate) · [Pipeline](#pipeline) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
+**Contents:** [What it can and can't tell you](#what-it-can-and-cant-tell-you) · [Review the output for secrets](#review-the-output-for-secrets) · [Capture](#capture) · [Generate](#generate) · [Pipeline](#pipeline) · [Static generator limits](#static-generator-limits) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 A site's own pages call its API; record that traffic while you drive the flows you care about, then turn the request and response pairs into an OpenAPI 3.1 spec, a client and a report, offline. The tools are Browserbase's `browse` CLI with the `browser-trace` capture, and the `browser-to-api` generator (Node 18+, standard library only).
 
@@ -58,7 +58,7 @@ An unknown argument exits with code 2. Outputs: `index.html`, `client.mjs` (zero
 
 ### Load: pair requests with responses
 
-- **Pair by CDP `requestId`;** the last response per id wins (the terminal status after redirects).
+- **Pairing is only by CDP requestId.** The source keeps the last response for that ID and can attach it to an earlier request in a redirect chain. It does not build a verified hop-by-hop request/response join; inspect the original events and body correspondence before treating redirected observations as an endpoint contract. The old line described the terminal response as an adequate pairing guarantee. [browserbase/skills, browser-to-api/scripts/load.mjs; https://chromedevtools.github.io/devtools-protocol/tot/Network/#event-requestWillBeSent]
 - **Drop** `OPTIONS`, `data:` and `blob:` URLs, and 3xx responses.
 - **Keep** types `XHR`, `Fetch`, `Document`, or any URL that looks like an API:
 
@@ -71,7 +71,7 @@ An unknown argument exits with code 2. Outputs: `index.html`, `client.mjs` (zero
 
 ### Filter: drop noise
 
-Precedence: `--origins` gates everything (host equal or a `.`-suffix match); a user `--exclude` always wins; default excludes can be rescued by `--include`; when `--include` is set, anything that doesn't match is dropped.
+At the filter stage, `--origins` gates everything (host equal or a `.`-suffix match), a user `--exclude` wins, and `--include` can rescue that stage's default excludes. It cannot restore rows dropped by load, override origin/user exclusions or prevent the later normalize stage from discarding page/noise classifications. The old troubleshooting claim said --include bypassed filtering globally. [browserbase/skills, browser-to-api/scripts/discover.mjs, scripts/filter.mjs, scripts/normalize.mjs]
 
 - **Default excludes:** segment, mixpanel, google-analytics, googletagmanager, datadog(hq), sentry.io, amplitude, fullstory, hotjar, intercom.io, clarity.ms, cloudflareinsights, doubleclick, facebook.com/tr.
 - **Static files:** `png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|otf|css|map|mp4|webm|mp3|m4a`, plus `/sw.js`, `/service-worker.js`, `/manifest.json`, `/robots.txt`, `/favicon.ico`.
@@ -117,16 +117,29 @@ Precedence: `--origins` gates everything (host equal or a `.`-suffix match); a u
 - Redirect 3xx responses are dropped, not recorded on the next request as the docs say.
 - The reference docs describe an `open-swagger-ui.mjs` script that is not shipped; use `index.html`.
 
+## Static generator limits
+
+These are source-reading defects in the supplied generator, not an executed validation result or permission to rewrite it. [browserbase/skills, browser-to-api/scripts/emit.mjs, scripts/lib/schema-merge.mjs]
+
+- **Templated paths are not substituted in the generated REST client.** buildClient passes the template path straight to request, without binding path arguments; report curl examples can retain the same placeholders. A generated function is not a usable concrete request until its path parameters are supplied and encoded through an actual implementation. The source advertised a callable client without this qualification. [browserbase/skills, browser-to-api/scripts/emit.mjs]
+- **A null-only field can produce an empty type array.** The merger removes null from nonNull, treats nullable as requiring another type, then emits that empty list for null-only data. It does not describe the observed null value; use an actual null type where that is the supported inferred contract. The old source claimed all sample merges yielded a valid matching schema. [browserbase/skills, browser-to-api/scripts/lib/schema-merge.mjs; https://json-schema.org/draft/2020-12/json-schema-validation.html#section-6.1.1]
+- **A nullable type does not override enum.** The source can include null in type while excluding it from enum; the observed null then still fails enum. Include null among permitted enum values when null is intended, or remove an unsupported inferred enum. [browserbase/skills, browser-to-api/scripts/lib/schema-merge.mjs; https://json-schema.org/draft/2020-12/json-schema-validation.html#section-6.1.2]
+- **Date-only is not date-time.** The source's ISO_RE accepts a date with no time/offset but labels it date-time. RFC 3339 distinguishes full-date from date-time; choose the actual observed representation and format rather than copying that overbroad inference. [browserbase/skills, browser-to-api/scripts/lib/schema-merge.mjs; https://www.rfc-editor.org/rfc/rfc3339#section-5.6]
+- **Generated report HTML still needs output encoding.** Most report fields call escHtml, but the Client usage variable JSON is interpolated into an HTML code element without that encoding. Treat capture-controlled values as untrusted and repair their output boundary before opening or sharing the report; JSON.stringify alone is not HTML encoding. No replacement template or payload is invented here. [browserbase/skills, browser-to-api/scripts/emit.mjs]
+- **Client and curl examples choose the primary origin.** The spec can list several servers and x-origin values while generated requests use servers[0]. Inspect each operation's observed origin and any collisions; do not assume the client exercises every captured origin. Redirect joins need the separate qualification above. [browserbase/skills, browser-to-api/scripts/emit.mjs, scripts/load.mjs]
+
+The shared HTML and JSON-in-HTML boundary is defined in [secure-coding/CATALOG.md](../../backend/secure-coding/CATALOG.md); keep one definition rather than treating a generated report as trusted. [existing security owner]
+
 ## Troubleshooting
 
 | Symptom | Cause and fix |
 |---|---|
 | `paired.jsonl` empty | The trace has no XHR or Fetch `Network.requestWillBeSent`; exercise dynamic flows (static-only sites yield nothing) |
-| `paths: {}` | Everything was filtered; check `--origins` and the defaults; `--include '.*'` bypasses filtering |
+| `paths: {}` | Inspect each saved pipeline stage and its drop reason; --include only affects its documented filter-stage branch, not load/normalization or origin/user exclusions |
 | Over-aggressive templating | `--exclude` the noisy paths |
 | Everything `type: "string"` | Bodies aren't JSON or weren't captured; check `reqBody` and `respBody` in `paired.jsonl` |
 | Validator rejects `info.version` `0.1.0-discovered` | Edit it after generation |
 
 ## Prove it
 
-`report.md` lists an endpoint for every flow you drove and none for analytics or static files; `--min-samples 2` leaves the endpoints you care about; response schemas have real types (not all strings), which shows bodies were captured. A search of `client.mjs`, `index.html` and `samples/` for the token, cookie and session values from the capture finds none.
+`report.md` lists an endpoint for every flow you drove and none for analytics or static files; `--min-samples 2` leaves the endpoints you care about; response schemas have real types (not all strings), which shows bodies were captured. A search of `client.mjs`, `index.html` and `samples/` for the token, cookie and session values from the capture finds none. Path parameters and origins match the intended request, nullable/date formats describe the samples, and report interpolation is safe before the HTML is opened or shared. State unperformed validation rather than claiming a runnable complete client. [browserbase/skills, browser-to-api/scripts/emit.mjs, scripts/lib/schema-merge.mjs]

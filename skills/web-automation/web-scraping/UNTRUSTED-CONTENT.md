@@ -6,6 +6,8 @@
 - **Raw HTML wastes tokens and can carry hidden prompt injection.** Convert it to sanitized Markdown with no model in the loop, and narrow it before it reaches one.
 - **Narrow with a CSS selector** instead of passing whole HTML; it saves tokens significantly.
 
+Filtering is not an injection-safety boundary: visible hostile instructions can remain. The source called --ai-targeted protection, but approval and tool authority still come from the user and trusted handlers. [D4Vinci/Scrapling, scrapling-official/SKILL.md; https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks; https://modelcontextprotocol.io/specification/2026-07-28/server/tools]
+
 ## What sanitizing removes
 
 Hidden content can carry prompt injection. A sanitizer that runs before conversion strips:
@@ -19,12 +21,12 @@ Hidden content can carry prompt injection. A sanitizer that runs before conversi
 ## Option: Scrapling (vendor)
 
 - **CLI:** always pass `--ai-targeted`; it extracts main content and sanitizes hidden elements (default off), and on browser commands also turns on ad blocking to save tokens.
-- **MCP server:** the sanitizing above applies when `main_content_only=true`, the default. Keep it on for maximum protection; `css_selector` is applied after it.
+- **MCP server:** the sanitizing above applies when `main_content_only=true`, the default. This is content reduction, not an authority or injection-safety guarantee; `css_selector` is applied after it.
 - **Python:** `Response.markdown(main_content_only=True, css_selector=...)` always removes scripts, styles and hidden content before converting, the same cleaning the MCP server uses. It needs the `rag` extra. `main_content_only` keeps only `<body>` content; `css_selector` concatenates all matches.
 
 ## Markdown corpus for RAG
 
-1. Crawl the site into Markdown (Scrapling's `SiteToMarkdownSpider`, CRAWLING.md), with `css_selector` set on the spider to cut boilerplate before chunking instead of cleaning it downstream.
+1. Crawl the site into Markdown (Scrapling's `ContentSpider`, see CRAWLING.md), with `css_selector` set on the spider to cut boilerplate before chunking instead of cleaning it downstream.
 2. Export: `result.items.to_jsonl("docs.jsonl")`.
 3. Chunk each `page["markdown"]`.
 4. Store each chunk with `{url, title}` metadata.

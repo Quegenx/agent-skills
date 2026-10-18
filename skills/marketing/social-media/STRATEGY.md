@@ -91,7 +91,7 @@ For each pillar ask: What unique perspective do you have? What questions does yo
 
 `[coreyhaines31/marketingskills, social]`
 
-- **Schedule:** core posts, threads, carousels, evergreen content. **Post live:** real-time commentary, responses to news and trends, engagement with others. On X, "Post when you can stay, not when the scheduler fires" ([X-RANKING.md](X-RANKING.md#the-10-rules)).
+- **Schedule:** core posts, threads, carousels, evergreen content. **Post live:** real-time commentary, responses to news and trends, engagement with others. On X, "Post when you can stay, not when the scheduler fires" is the source's publishing heuristic ([X-RANKING.md](X-RANKING.md#source-publishing-heuristics)).
 - **Queue:** keep 1 to 2 weeks scheduled, review it weekly for relevance, leave gaps for spontaneous posts, adjust timing from performance data.
 
 ## Publishing from an agent

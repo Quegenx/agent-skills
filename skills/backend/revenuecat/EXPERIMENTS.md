@@ -1,6 +1,6 @@
 # Experiments
 
-A RevenueCat experiment (A/B test) compares two to four offerings: `offering_a` is the control and `offering_b` to `offering_d` are treatments. Enrolled customers are served their variant's offering instead of the project's current offering. Setup is one offering per variant, then the experiment created as a draft; nothing reaches customers until `start-experiment`. The rules below center on keeping variants identical except the one thing under test, publishing treatment paywalls before the start, and analyzing results against the supporting chart data rather than the results alone. Offerings, packages and products are explained in [CONCEPTS.md](CONCEPTS.md); paywall design is in [PAYWALLS.md](PAYWALLS.md); chart mechanics are in [CHARTS-AND-METRICS.md](CHARTS-AND-METRICS.md).
+A RevenueCat experiment (A/B test) compares two to four offerings: `offering_a` is the control and `offering_b` to `offering_d` are treatments. Enrolled customers are served their variant's offering instead of the project's current offering. Setup is one offering per variant, then the experiment created as a draft; experiment enrollment begins at `start-experiment`; this does not prove the underlying offerings are unreachable through direct selection or targeting. The rules below center on keeping variants identical except the one thing under test, publishing treatment paywalls before the start, and analyzing results against the supporting chart data rather than the results alone. Offerings, packages and products are explained in [CONCEPTS.md](CONCEPTS.md); paywall design is in [PAYWALLS.md](PAYWALLS.md); chart mechanics are in [CHARTS-AND-METRICS.md](CHARTS-AND-METRICS.md).
 
 ## MCP tools
 
@@ -28,12 +28,12 @@ A RevenueCat experiment (A/B test) compares two to four offerings: `offering_a` 
 
 | What the test changes | How to build the treatment |
 |---|---|
-| Paywall copy, layout, CTA, pricing display | Needs RevenueCat Paywalls (a paywall is an optional property of an offering). If the control's `paywall_id` is `null`, the app renders its own paywall in code: the change must be made in the app, so tell the user. Otherwise read [PAYWALLS.md](PAYWALLS.md) and edit the duplicate with `edit-paywall-ai`, requesting only the minimum changes, then verify by looking at the result. |
+| Paywall copy, layout, CTA, pricing display | Needs RevenueCat Paywalls (a paywall is an optional property of an offering). If the control's `paywall_id` is `null`, establish the actual UI from app evidence; absence of an attachment does not prove custom UI (see [PAYWALLS.md](PAYWALLS.md#create-and-edit-the-dashboard-paywall)). Otherwise read [PAYWALLS.md](PAYWALLS.md) and edit the duplicate with `edit-paywall-ai`, requesting only the minimum changes, then verify by looking at the result. |
 | Price, trial or intro offer | These live on store products, so the treatment needs different products. Check `list-products`; create only the missing ones and their store counterparts. Swap them in with `detach-products-from-package`, then `attach-products-to-package`. |
 | A brand-new paywall | `duplicate-offering` with `include_paywall: false`, read [PAYWALLS.md](PAYWALLS.md), then `create-paywall-ai` with the new `offering_id` so the generated draft is attached to it directly. |
 
 - **Paywalls and offerings pair 1:1.** `attach-offering-to-paywall` fails if either side is already paired. Undo with `detach-offering-from-paywall` (unpublish the paywall first if it is published).
-- **Publish treatment paywalls with `publish-paywall` before the start:** a duplicated or newly created paywall is an unpublished draft, and a variant serves only the published version. This is the exception to the rule against proactive publishing, and it is safe: the treatment offering is not the current offering, so no customer sees the paywall until the experiment starts enrolling.
+- **A treatment must have its intended published paywall before display, but publication needs explicit authorization.** The source called experiment preparation an automatic publishing exception because a noncurrent offering supposedly reaches nobody. Other offering identifiers and targeting can expose it; follow [PAYWALLS.md](PAYWALLS.md#create-and-edit-the-dashboard-paywall) rather than that safety claim. [RevenueCat/ai-toolkit, revenuecat-experiments; https://www.revenuecat.com/docs/getting-started/displaying-products#custom-offering-identifiers; https://www.revenuecat.com/docs/tools/targeting; user standing rules]
 
 ### Creating the draft
 
@@ -71,10 +71,10 @@ Six steps, in order: 1) get the experiment ID; 2) get its details; 3) get suppor
   - **Expand paths differ by tool:** here offerings come expanded through `get-experiment`; the charts method reads a single offering with `get-offering` and `expand: ["package.product"]` (see [CHARTS-AND-METRICS.md](CHARTS-AND-METRICS.md#mcp-tools)).
   - **Variants:** the offerings (`offering_a`, `offering_b`, ...). Sophisticated setups may include a `placements` object (different offerings per placement, for example onboarding or a feature gate).
   - **Prices:** products' `indicative_price` gives only USD prices for the US, and introductory prices are not returned. For price-localization tests, non-US tests or intro prices, use `get-product-store-state`.
-  - **Paywall type:** `paywall_id` present means a RevenueCat Paywall; `null` means a custom paywall.
+  - **Paywall attachment:** `paywall_id` identifies an attached RevenueCat paywall; null alone does not establish custom UI. Use the [canonical evidence rule](PAYWALLS.md#create-and-edit-the-dashboard-paywall). [https://www.revenuecat.com/docs/tools/paywalls/displaying-paywalls#default-paywall]
   - **Catalog data can be stale.** Product fields (`indicative_price`, the `subscription` fields `trial_duration` and `duration`) are RevenueCat catalog data last synced from the store. Before presenting a trial, intro offer or price as fact, or flagging it as a confound, confirm it with `get-product-store-state` and cross-check the results' trial metrics.
   - **Setup fields:** `notes`, `display_name`, `targeting_conditions` (the experiment only applies to customers meeting them), `enrollment_mode` (only new customers by default, or also existing), `experiment_type` (from a predefined list), `primary_metric`, `secondary_metrics`, status.
-- **Screenshot every RevenueCat paywall:** `render-paywall-screenshot` with `project_id`, `paywall_id` and `version: "published"` for each `paywall_id`. The tool defaults to the draft, which may contain unpublished edits. Skip this if every offering uses a custom paywall.
+- **Screenshot every RevenueCat paywall:** `render-paywall-screenshot` with `project_id`, `paywall_id` and `version: "published"` for each `paywall_id`. The tool defaults to the draft, which may contain unpublished edits. Skip RevenueCat rendering only when evidence confirms every relevant offering uses custom UI, not merely because its attachment is null.
 
 ### 3. Supporting chart data (do not skip)
 

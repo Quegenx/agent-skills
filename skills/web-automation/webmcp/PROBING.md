@@ -7,16 +7,12 @@ Run this last, after validation is green, and by hand against the live page rath
 Use a persistent browser session so probes accumulate against real state. In the page:
 
 - `document.modelContext.getTools()` returns the tool objects.
-- `mc.executeTool(toolObject, JSON.stringify(args))` invokes one. It takes the tool **object** and the arguments as a **JSON string**; a plain object fails with "Failed to parse input arguments".
+- Current executeTool takes the discovered tool object and a serializable argument object. The old source required JSON.stringify(args) and said a plain object failed; Chrome now accepts objects and deprecates JSON strings from Chrome 155. Check the actual browser/pinned driver version. [Chrome imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api)
 - Error messages are replaced by a generic invocation-failed string, so record only ACCEPTED or REJECTED.
 
 With the `browse` CLI:
 
-```bash
-browse open http://localhost:3000 --session probe --local --headed
-browse eval --session probe '(async()=>{const mc=document.modelContext;const t=(await mc.getTools()).find(x=>x.name==="my_tool");try{return "ACCEPTED "+JSON.stringify(await mc.executeTool(t,JSON.stringify({/* probe input */})));}catch(e){return "REJECTED";}})()'
-browse screenshot --session probe --path /tmp/effect.png
-```
+Open the local app in the authorized persistent session, discover the tool object, invoke it using the browser's current argument contract, and capture the resulting application state. The source's old single-line CLI example passed JSON-stringified input; do not copy it as the current browser API. [browserbase/skills, add-webmcp; webmcp-gen]; [current contract](TOOL-CONTRACT.md#the-browser-api)
 
 - **`--local` is required:** `browse open` defaults to a cloud browser that cannot reach localhost.
 - **One probe per command:** `browse eval` reliably accepts only single-line scripts.

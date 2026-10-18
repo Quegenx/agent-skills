@@ -175,13 +175,13 @@ module.exports = {
 | `dsn` | string | none | Required. The SDK is disabled when empty |
 | `environment` | string | `"production"` | |
 | `release` | string | none | e.g. `"my-app@1.0.0"` or a git SHA |
-| `dataCollection` | object | conservative unless set | See below |
+| `dataCollection` | object | Version-specific | See below |
 | `tracesSampleRate` | number | none | 0 to 1; `1.0` dev, `0.1` to `0.2` prod |
 | `tracesSampler` | function | none | Overrides the rate |
 | `tracePropagationTargets` | `(string\|RegExp)[]` | see [REACT-TRACING.md](REACT-TRACING.md) | |
 | `replaysSessionSampleRate` | number | none in the SKILL.md table; `0` per the Replay reference | Fraction of all sessions recorded |
 | `replaysOnErrorSampleRate` | number | none in the SKILL.md table; `0` per the Replay reference | Fraction of error sessions recorded |
-| `enableLogs` | boolean | `false` | |
+| `enableLogs` | boolean | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | |
 | `attachStacktrace` | boolean | `false` | Stack traces on `captureMessage()` |
 | `maxBreadcrumbs` | number | `100` | |
 | `normalizeDepth` | number | `3` | Depth of context and Redux state |
@@ -193,14 +193,14 @@ Also: `ignoreErrors`, `allowUrls`, `denyUrls`, `beforeSend`, `beforeBreadcrumb` 
 
 ## dataCollection
 
-- **SDK ≥10.57.0.** When omitted, the SDK falls back to `sendDefaultPii` (default `false`). Passing the object, even `{}`, flips unset categories to their permissive defaults: collection is on (with sensitive-value scrubbing) and you opt out per category.
+- **Version the privacy contract.** In JavaScript SDK 10 (dataCollection introduced in 10.57.0), omitting the object falls back to `sendDefaultPii`; providing it enables category defaults unless opted out. SDK 11 uses category defaults even when the object is absent and removes `sendDefaultPii`. Set the categories your privacy policy requires explicitly. The old source described SDK 10 fallback as universal. Use `urlQueryParams`, not the old source's `queryParams`. [getsentry/sentry-for-ai, sentry-react-sdk; https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 
 | Field | Type | Default |
 |---|---|---|
 | `userInfo` | boolean | `true` (user id, email, IP) |
 | `cookies` | `boolean \| { allow: string[] } \| { deny: string[] }` | `true` (sensitive keys filtered) |
 | `httpHeaders.request` / `.response` | same | `true` |
-| `queryParams` | same | `true` |
+| `urlQueryParams` | same | `true` |
 | `httpBodies` | `HttpBodyCollectionTarget[]` | `["incomingRequest", "outgoingRequest", "incomingResponse", "outgoingResponse"]` |
 | `genAI.inputs` / `genAI.outputs` | boolean | `true` |
 | `stackFrameVariables` | boolean | `true` |
@@ -394,7 +394,7 @@ const router = Sentry.wrapCreateBrowserRouterV6(createBrowserRouter)([
 - **Labels:** `triggerLabel`, `triggerAriaLabel`, `formTitle`, `submitButtonLabel`, `cancelButtonLabel`, `confirmButtonLabel`, `addScreenshotButtonLabel`, `removeScreenshotButtonLabel`, `nameLabel`, `namePlaceholder`, `emailLabel`, `emailPlaceholder`, `isRequiredLabel`, `messageLabel`, `messagePlaceholder`, `successMessageText`, `highlightToolText`, `hideToolText`, `removeHighlightText`.
 - **Themes:** `themeLight` / `themeDark` with `foreground`, `background`, `accentForeground`, `accentBackground`, `successColor`, `errorColor`.
 - **Callbacks:** `onFormOpen`, `onFormClose`, `onSubmitSuccess(data, eventId)`, `onSubmitError(error)`.
-- **Your own trigger:** `const feedbackIntegration = Sentry.feedbackIntegration({ autoInject: false });`, then `feedbackIntegration.openDialog()` or `feedbackIntegration.attachTo(element)`.
+- **Manual feedback:** initialize with `autoInject: false`, obtain `Sentry.getFeedback()`, and use `attachTo(element)` or await `createForm()`, then `appendToDom()` and `open()`. The old source used `openDialog()`. `triggerLabel` remains valid in the SDK type despite a docs example using `buttonLabel`. [https://docs.sentry.io/platforms/javascript/user-feedback/configuration/; https://github.com/getsentry/sentry-javascript/blob/develop/packages/core/src/types/feedback/config.ts]
 - **No UI:** `Sentry.captureFeedback({ name, email, message }, { captureContext, attachments: [{ filename, data: Uint8Array, contentType }] })`.
 - **`showReportDialog` options:** `eventId` (required), `dsn`, `user.name`, `user.email`, `lang`, `title`, `subtitle`, `subtitle2`, `labelName`, `labelEmail`, `labelComments`, `labelSubmit`, `labelClose`, `successMessage`, `onLoad`, `onClose`. Pass the `eventId` from `captureException` or the boundary's `onError`, or the dialog has no event.
 

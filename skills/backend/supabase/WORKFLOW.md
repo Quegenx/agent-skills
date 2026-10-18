@@ -25,9 +25,11 @@ First find out which workflow the project uses.
 
 **Declarative schema** (a `supabase/schemas/` folder, or `schema_paths` in `config.toml`): edit the desired state in those files, generate the migration from them, and review it. Don't start by writing a migration by hand.
 
+Check the selected diff engine and installed CLI: pg-delta uses `supabase db schema declarative sync` to generate from declared files, with `--no-apply` for generation without applying; its `db diff` ignores `schema_paths`. Legacy migra uses `db diff`. A schemas folder alone does not establish the active engine. [https://supabase.com/docs/guides/local-development/declarative-database-schemas]
+
 **Imperative migrations** (everything else):
 
-1. **Iterate with SQL that writes no history:** MCP `execute_sql` or `supabase db query` against the local database. Don't use `apply_migration` for this: every call writes a migration history entry, so you can't iterate, and `db diff` or `db pull` then produce empty or conflicting results.
+1. **For free-form local iteration, use SQL that writes no migration history:** MCP `execute_sql` or `supabase db query` against the local database, then generate and review the migration. The source's claim that a first `apply_migration` leaves you stuck is too broad: later migrations remain possible; this is a workflow preference, not a platform impossibility. [supabase/agent-skills, supabase; https://supabase.com/docs/guides/local-development/cli-workflows]
 2. **Run the advisors** (`supabase db advisors` or MCP `get_advisors`) and fix what they report.
 3. **Re-read the security checklist** (SECURITY.md) if the change touches views, functions, triggers or storage.
 4. **Generate the migration:** `supabase db pull <descriptive-name> --local --yes`.

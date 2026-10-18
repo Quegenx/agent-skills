@@ -39,6 +39,8 @@ Improving a score one change at a time against a fixed eval:
 
 ## Finding failures nobody has named yet
 
+Definitions and assignments have separate human acceptance, with unresolved notes and stable revision lineage: [REVIEW-AND-TAXONOMY.md](REVIEW-AND-TAXONOMY.md). [confident-ai/eval-skills, eval-discover and eval-error-analysis]
+
 Before writing checks for a new agent, or when the suite passes and users still complain, find the failures in real traffic:
 
 1. **A sample** of real conversations (around 50), spread across the kinds of users and requests.

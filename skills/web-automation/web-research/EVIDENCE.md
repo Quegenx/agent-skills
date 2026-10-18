@@ -66,7 +66,7 @@
 ## Finding the right pages
 
 - **Sitemap first, never hardcoded paths** (`/pricing` might be `/plans`):
-  1. Fetch `/sitemap.xml`, the primary source, which has all pages.
+  1. Fetch `/sitemap.xml` as a discovery source. A sitemap lists the URLs the publisher considers important; it is not an exhaustive inventory. [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview) corrects the source and this file's former claim that it "has all pages".
   2. Scan it for keywords: `customer, case-stud, pricing, about, use-case, blog, docs, industry, solution` (for competitors: `pricing, customer, compare, vs, about, features, integrations`).
   3. Optionally fetch `/llms.txt`: bonus context, often incomplete.
   4. Pick the 3-5 most relevant URLs.

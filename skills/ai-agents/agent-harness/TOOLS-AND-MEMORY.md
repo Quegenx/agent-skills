@@ -51,6 +51,17 @@
 - Bound arrays, ranges and string lengths where they bound the operation. A shape-valid call can still have the wrong intent; selection guidance and authorization remain outside shape validation. [bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md]
 - A partial result identifies its checked scope and how to continue; preserve the opaque cursor unchanged. Truncation, an unread page or a permission boundary prevents a completeness claim. Put action-relevant fields first and expose extra diagnostics only when the next step needs them. [bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md; MCP tools specification linked above]
 
+## Evidence and resource ownership
+
+[morluto/rea, docs/tool-design.md](https://github.com/morluto/rea/blob/main/docs/tool-design.md); [rea-analysis-optimization/SKILL.md]
+
+- Keep observed, derived and inferred relationships distinct. Returned direct relationships cover the examined producer scope, not every possible runtime edge.
+- Describe source selection, partial coverage and unknowns separately from result pagination. An exhausted page is not evidence that the producer examined everything.
+- A shared producer has an explicit key, owner, invalidation and lifetime. One cancelled waiter must not cancel a successful peer or erase completed observations.
+- Retain resource ownership/capacity until shared work and cleanup settle. Cancellation of one caller's wait is different from cancellation of the owned producer.
+- Distinguish observed process exit from output closure or descendant settlement. Do not infer one lifecycle boundary merely because another completed.
+- Keep existing deferred-tool routing above. The source's broad catalog preferences are a tagged design view, not a reason to remove measured tool-search guidance.
+
 ## Tools from outside (MCP and plugins)
 
 Acting through a user's connected accounts (their mailbox, their CRM): scoped sessions, approvals by effect, connecting mid-chat and error wording are in the `third-party-integrations` skill, AGENT-ACCESS.md.
@@ -63,8 +74,14 @@ Acting through a user's connected accounts (their mailbox, their CRM): scoped se
 - **Pin the approved tool list:** store a fingerprint of each tool's name, description and schema when a person approves the server, and block (or ask again) when one changes or a new one appears. A changed description is a new instruction to the model.
 - **Setting up a server is not proof it works:** OpenSEO's setup prompt: "Track installation, sign-in, and verification separately. A connected server is not proof that this session can use its tools. Never claim verification before the free reads succeed"; "Do not create projects or run paid research during installation"; and for keys, "Have me enter the key in the client's secret settings or environment, never chat or a repository" ([openseo.so/docs/agent-setup](https://openseo.so/docs/agent-setup)).
 - **Prefix tool names with the server's name** so two servers can't collide or shadow a built-in tool.
+- **Authenticate and correlate the peer separately from its name.** Bind a result to the authenticated connection, outstanding request ID, tenant and credentials; a server-chosen name or request ID must not satisfy another server's pending call. Namespacing alone does not authenticate a peer. [cloudflare/security-audit-skill, security-audit/AI-AND-LLM.md; https://modelcontextprotocol.io/specification/2026-07-28/basic/index]
 - **The connection:** HTTP transport in production, redirects refused (a redirect can point the client at an internal address; AI SDK 7's MCP transport defaults `redirect` to `'error'` to prevent server-side request forgery; leave it there), retries only for tools that are safe to repeat, and the client closed in a `finally`, never only in the success callback.
 - **One integration gateway exposing generic tools** (search actions, run an action, call any API) has no allowlist of its own: its "run" and "call" tools are dispatchers, so the policy reads the action out of their input ([RUNTIME.md](RUNTIME.md#tool-traits)). Pin which of the user's connected accounts a call uses; a default such as "the oldest connection for that app" acts as the wrong identity sooner or later.
+
+## Action binding
+
+- **Resource permission and user intent are separate checks.** A tool may be allowed to access a resource while untrusted content has selected an action the user never requested. Bind approval to the normalized tool and arguments, requester, target, amount, expiry and batch; preserve that binding across retries, resume and delegation. Metadata, a valid schema and retrieved text cannot grant authority. [cloudflare/security-audit-skill, security-audit/AI-AND-LLM.md; https://modelcontextprotocol.io/specification/2026-07-28/server/tools; https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/security-considerations]
+- **Bind an elicited answer to its originating request and user.** Do not let a different peer, tenant or stale request consume the response merely because its display text or identifier matches. [cloudflare/security-audit-skill, security-audit/AI-AND-LLM.md; https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation]
 
 ## History the agent can trust
 

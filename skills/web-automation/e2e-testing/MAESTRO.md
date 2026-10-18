@@ -37,14 +37,14 @@ appId: com.myapp
 
 ## Auth pre-flight and adaptive flows
 
-- **Render a readiness marker** only when auth loading completes: a zero-size `<View testID="auth-loaded" style={{ width: 0, height: 0 }} />`.
-- **Every test starts the same way:** `launchApp`, a no-op `swipe` DOWN of 100 ms (works around the iOS cold-boot XCTest crash), then `extendedWaitUntil` visible id `auth-loaded` with `timeout: 15000`.
+- **Render a readiness marker** only when auth loading completes: a marker exposed to the tested native hierarchy. The source uses a zero-size View; first confirm the installed platform actually exposes that marker, rather than treating its existence in JSX as proof of visibility. [tovimx/maestro-mobile-testing-skill, maestro-mobile-testing/SKILL.md]
+- **Auth readiness:** launch, then wait for the exposed `auth-loaded` marker. The source adds a 100 ms downward swipe for a particular iOS cold-boot XCTest crash; use that workaround only when that symptom is reproduced, rather than adding a gesture to every platform. [tovimx/maestro-mobile-testing-skill, maestro-mobile-testing/SKILL.md]
 - **Adaptive tests** work in either auth state: `runFlow` with `when: visible: "Sign In"` vs `when: visible: { id: "tab-home" }`.
 - **Auth-aware tab bars differ by state:** assert only the tabs present in both, or use `when:`.
 
 ## Patterns
 
-- **Optimistic updates:** short timeouts prove the UI changed before the server answered: a button flip under 3 s (`extendedWaitUntil ... timeout: 3000`), a list update under 5 s, and a redo under 3 s proves persistence.
+- **Optimistic updates:** a short timeout establishes only a UI deadline. To claim the UI changed before the server answered, retain evidence of response ordering; verify persistence separately. The source treated 3 to 5 second UI deadlines as proof of optimistic behavior. [tovimx/maestro-mobile-testing-skill, maestro-mobile-testing/SKILL.md]
 - **Native `Alert.alert()`:** wait for the expected state first, then `tapOn: { text: "OK", optional: true }`, then a 300 ms swipe to let the animation finish.
 - **Sub-flows** live in `flows/` and run with `runFlow: { file: ... }`.
 - **Expo deep links use the scheme from app.json** (`myapp://profile/settings`), not the bundle id; unregistered routes fail silently.
@@ -54,18 +54,8 @@ appId: com.myapp
 
 ## Sign-in by email code
 
-- **Architecture:** the test triggers the auth provider, which sends to an email capture service (Mailpit, MailHog, Ethereal); the test reads `GET /api/v1/messages` over REST and extracts the code.
-- **Scripts run in GraalJS:** no `async/await`, no `fetch()`. Use `http.get()` / `http.post()`, `json()`, `output.VAR`, and `var`.
-
-```javascript
-// CRITICAL: Maestro uses GraalJS: NO async/await, NO fetch()
-var response = http.get(emailServiceUrl + "/api/v1/messages");
-if (!response.ok) { throw new Error("Failed to fetch emails: " + response.status); }
-var data = json(response.body);
-var body = data.messages[0].Content.Body;
-var match = body.match(/(\d{6})/);
-output.OTP_CODE = match[1];
-```
+- **Use the actual capture service contract.** Mailpit lists summaries at `GET /api/v1/messages`; fetch the selected message at `GET /api/v1/message/{ID}` to read `Text` or `HTML`. Fetching the message marks it read. MailHog and Ethereal do not share this response schema. The removed source snippet read `data.messages[0].Content.Body` from a universal endpoint. [Mailpit API](https://github.com/axllent/mailpit/blob/develop/_autodocs/endpoints.md), [message structures](https://github.com/axllent/mailpit/blob/develop/internal/storage/structs.go)
+- **Match the JavaScript engine.** Current Maestro uses GraalJS with ES6+ support; `let` and `const` are not universally forbidden. Use Maestro's documented `http.get` / `http.post`, `json()` and `output` APIs for these scripts; the source's blanket legacy-language restriction is stale. [Maestro JavaScript](https://github.com/mobile-dev-inc/maestro-docs/blob/main/flows/javascript/javascript-overview.md), [HTTP requests](https://github.com/mobile-dev-inc/maestro-docs/blob/main/flows/javascript/make-http-requests.md)
 
 - **OTP inputs with auto-focus:** split the code into digits in the script, then tap each `otp-input-N` and `inputText ${output.OTP_N}`.
 - **Provider-specific steps** (Supabase with Mailpit, Firebase, Auth0) belong in a project-level skill that extends this one.
@@ -73,7 +63,7 @@ output.OTP_CODE = match[1];
 ## Gotchas
 
 - **`clearState: true` does not clear the iOS Keychain:** `expo-secure-store` tokens persist across `clearState` and reinstalls. Never rely on it for a guest state on iOS; use the `auth-loaded` marker and adaptive flows. On Android `clearState` fully resets.
-- **XCTest `kAXErrorInvalidUIElement` crash on iOS cold boot:** a no-op swipe after `launchApp`.
+- **XCTest `kAXErrorInvalidUIElement` crash on iOS cold boot:** the source's post-launch swipe is a symptom-specific workaround; confirm it resolves that installed-platform failure. [tovimx/maestro-mobile-testing-skill, maestro-mobile-testing/SKILL.md]
 - **Backend dependency:** without the API server, screens show spinners or empty states because queries fail silently. Start a mock API server serving canned JSON (`npx tsx scripts/mock-api-server.ts &`), which is faster and more deterministic than running the full backend.
 - **iOS vs Android:** Maestro runs iOS on the simulator only (no physical devices), Android on emulators and physical devices over ADB; the Keychain and the cold-boot crash are iOS only; ARM emulation is slower on x86.
 
@@ -81,7 +71,7 @@ output.OTP_CODE = match[1];
 
 - **Layout:** `.maestro/` with `README.md` (a quick reference plus the testID inventory), `config.yaml`, `flows/`, `scripts/` and the tests; `scripts/mock-api-server.ts` and `scripts/run-e2e.sh`.
 - **Names:** tests `{feature}-{action}.yaml`, sub-flows `{action}-{context}.yaml`, scripts `{verb}-{noun}.js`.
-- **Test file template:** a header comment (Tests, Prerequisites), `appId`, `env` (`TEST_EMAIL: maestro-{feature}@example.com`); STEP 1 launch, pre-flight and `takeScreenshot: 01-initial-state`; STEP 2 the action; STEP 3 verify and `takeScreenshot: 02-final-state`.
+- **Test file template:** a header comment (Tests, Prerequisites), `appId`, `env` (`TEST_EMAIL: maestro-{feature}@example.com`, a source template value rather than a unique-per-run address); STEP 1 launch, pre-flight and `takeScreenshot: 01-initial-state`; STEP 2 the action; STEP 3 verify and `takeScreenshot: 02-final-state`.
 - **Orchestration script:** start backend services, seed, start the mock, run the tests, clean up.
 
 ## Android
@@ -92,14 +82,13 @@ output.OTP_CODE = match[1];
 
 ## CI
 
-- **GitHub Actions with Maestro Cloud:** `mobile-dev-inc/action-maestro-cloud@v2` with `api-key: ${{ secrets.MAESTRO_API_KEY }}`, `app-file`, `workspace: .maestro`, `include-tags: ci`; outputs `MAESTRO_CLOUD_CONSOLE_URL`, `MAESTRO_CLOUD_UPLOAD_STATUS`, `MAESTRO_CLOUD_FLOW_RESULTS`. Build the APK with `npx expo prebuild --platform android --no-install`, then `./gradlew assembleRelease`, on Java 17 (temurin).
 - **Tags** in the flow header (`ci`, `smoke`, `wip`); `maestro test --include-tags ci`, `--exclude-tags wip`.
 - **Docker works for Android only** (`FROM openjdk:17-slim`); iOS needs macOS, so use Maestro Cloud.
 - **From the CLI:** `maestro cloud --api-key $MAESTRO_API_KEY --app-file ./app-release.apk [--include-tags smoke] .maestro/`.
 
 ## Maestro MCP
 
-- **`maestro mcp` ships with the CLI:** `.mcp.json` `{ "mcpServers": { "maestro": { "command": "maestro", "args": ["mcp"] } } }`. It has 47 tools: tap, swipe, scroll, input, `assertVisible`, `assertWithAI`, `assertNoDefectsWithAI`, lifecycle, device control, `runFlow`, `evalScript`, media.
+- **`maestro mcp` ships with the CLI:** `.mcp.json` `{ "mcpServers": { "maestro": { "command": "maestro", "args": ["mcp"] } } }`. Discover the installed server's tool schema rather than relying on the source's unverified fixed count of 47 tools. [Maestro MCP](https://docs.maestro.dev/getting-started/maestro-mcp)
 - **Write, run, fix in one conversation:** write the YAML, run it via MCP, read the failures, fix, re-run.
 
 ## Common errors
@@ -119,4 +108,4 @@ output.OTP_CODE = match[1];
 
 ## Prove it
 
-Each new flow meets the checklist: a unique test email; a selector strategy chosen; state properties used; relative selectors, not index; the auth pre-flight and post-launch swipe; both auth states handled; native alerts dismissed after mutations; short optimistic timeouts (3 to 5 s); sub-flows; descriptive screenshots; a header comment with prerequisites; a row in the README test table; the mock server if it depends on the backend; CI tags. Then it passes with `maestro test <file>` and its two screenshots show the initial and final states.
+Each new flow meets the checklist: a unique test email; a selector strategy chosen; state properties used; relative selectors, not index; the auth readiness check and any reproduced platform workaround; both auth states handled; native alerts dismissed after mutations; UI deadlines plus response-ordering evidence for any optimistic claim; sub-flows; descriptive screenshots; a header comment with prerequisites; a row in the README test table; the mock server if it depends on the backend; CI tags. Then it passes with `maestro test <file>` and its two screenshots show the initial and final states.

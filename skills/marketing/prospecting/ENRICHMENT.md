@@ -97,8 +97,8 @@ This adds pre-send verification of lists you didn't collect yourself to the repo
 [coreyhaines31/marketingskills, prospecting] Catch-all domains accept mail for any address, so a basic check can't tell whether the person exists; the source's vendor estimate is 15 to 28% of B2B domains.
 
 1. **Resolve them** with a verifier that goes beyond the SMTP check; some verifiers only mark catch-alls "risky".
-2. **Send resolved-valid catch-alls from a separate, lower-volume inbox,** so a bad batch can't hurt your main sending. That inbox is one of your own disclosed senders; it is not a reason to rotate domains around reputation ([../cold-outreach/SENDING.md](../cold-outreach/SENDING.md#out-of-bounds)).
-3. **Send unresolved catch-alls only for Tier 1 accounts** and watch bounces on that inbox closely.
+2. **Do not use reputation-isolation sending tricks or domain swapping.** The source and this file formerly described a separate-inbox sending recipe; the owner's do-not-only evasion rule takes precedence. Follow the lawful consent, verification and suppression rules in [SENDING.md](../cold-outreach/SENDING.md#out-of-bounds). [repository owner safety policy]
+3. **An unresolved address remains unresolved.** Account priority does not establish consent or a valid recipient; keep the existing no-unknown-send rule rather than the source's Tier 1 exception. [coreyhaines31/marketingskills, prospecting/references/sourcing-and-enrichment.md; repository owner safety policy]
 
 ## Suppression list
 

@@ -2,6 +2,8 @@
 
 A job that does one thing fits a queue and a worker ([WORKERS.md](WORKERS.md)). Work with several side effects in a row, waits in between, or a run longer than a request (an import, an onboarding sequence, an AI agent researching for twenty minutes) needs a durable workflow: code written as one function, run as a series of steps whose results are saved, so a crash, deploy or timeout resumes at the next step instead of starting over. Use a workflow engine for this (Inngest, Vercel Workflow, Convex's workflow component, Temporal), not a hand-rolled state machine, unless the flow is two steps.
 
+For Convex-specific component isolation, app wrappers and generated APIs, see [convex/COMPONENTS.md](../convex/COMPONENTS.md); retain this file as the generic workflow owner. [get-convex/agent-skills, convex-design, convex-suggest]
+
 ## How a step function runs
 
 The engine calls your function again and again. Each call replays it from the top: a step that already finished returns its saved result at once, and the first step without a result runs (or is scheduled) and the call ends. So:

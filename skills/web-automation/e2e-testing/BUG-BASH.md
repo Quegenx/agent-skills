@@ -16,16 +16,16 @@ An explorer's finding is a model's claim plus evidence, not a verified reproduct
   - **Edge cases:** the empty state, a 404, an expired session, a mobile viewport.
   - **Performance perception:** loading indicators, content popping in.
 - **Tips:** start at the homepage and follow the nav; try `/does-not-exist`; enter garbage before valid input; check every page at 375 px wide.
-- **Finding format:** `FINDING / SEVERITY (critical/high/medium/low) / ROUTE / EVIDENCE / RECOMMENDATION`.
+- **Finding format:** `FINDING / SEVERITY (P0/P1/P2/P3) / ROUTE / EVIDENCE / RECOMMENDATION`.
 - **Turn a finding into a test:** the reproduction steps become the actions and `expected` becomes the assertion.
 
 ## The explore command
 
 - **`npx e2e explore ['goal']`** (default goal `Explore the app and find bugs`) needs a target and an agent with a model.
-- **Loop:** open the app; a planner model call reads the goal, the steps so far, the findings and the current screen, and returns a title and a concrete charter for one flow, or "covered"; the charter runs as `agent.act()` with the project tools plus `report_finding` (title, `issue` or `warning`, severity 1 to 5, expected, actual, reproduction steps; the runner adds the path and a redacted screenshot). It repeats until the planner finishes, the step limit, the clock, or three failed or blocked steps in a row that reported nothing; then a closing assessment.
+- **Loop:** open the app; a planner model call reads the goal, the steps so far, the findings and the current screen, and returns a title and a concrete charter for one flow, or "covered"; the charter runs as `agent.act()` with the project tools plus `report_finding` (title, `issue` or `warning`, the runner's numeric severity, expected, actual, reproduction steps; the runner adds the path and a redacted screenshot). Normalize severity only in the derived review/report using the mapping below. It repeats until the planner finishes, the step limit, the clock, or three failed or blocked steps in a row that reported nothing; then a closing assessment.
 - **Flags:** `--target`, `--agent`, `--session <name>` (runs exactly the setup that saves it, then explores signed in), `--max-steps` (default 8, 1 to 12), `--timeout` (default 600000, 180000 to 900000; the last minute is for the assessment), plus the `run` output flags. Per-step budgets default to 40 actions and 40 model calls. Cache off, retries zero.
 - **Verdict:** exit 0 means steps ran, no `issue`, not all blocked (warnings allowed). Exit 1 means at least one issue, or no step ran and nothing was found. All blocked exits with the first blocker's code (1 automation limit, 2 missing model, credentials, seed or setup, 3 environment).
-- **Severity words:** critical 5, high 4, medium 3, low 2, trivial 1. The report sits under `run.explore` (`ended`: `finished | step-limit | time | stuck | aborted`, the steps, and findings with id, kind, severity, expected, actual, reproduction, path, artifactId). Screenshots land in `.e2e/results/explore-<slug>-<id>/attempt-1/finding-1.png`.
+- **One report severity scale:** map the source's critical/5 to P0, high/4 to P1, medium/3 to P2, and low/2 or trivial/1 to P3 in the derived review/report. Preserve the runner's numeric tool inputs and raw artifacts; this normalization does not change its API. issue/warning remains a finding kind, not another severity scale. [tester-army/e2e, e2e explore] The report sits under `run.explore` (`ended`: `finished | step-limit | time | stuck | aborted`, the steps, and findings with id, kind, severity, expected, actual, reproduction, path, artifactId). Screenshots land in `.e2e/results/explore-<slug>-<id>/attempt-1/finding-1.png`.
 
 ## Bug bash: prepare
 
@@ -98,7 +98,7 @@ done < .e2e/bugbash/charters.txt | xargs -0 -n 4 -P 4 sh -c \
 
 - **Read `actual` against the screenshot or video.** A valid `href` with its default prevented is still dead; a copy claim must show in the rendered screenshot.
 - **Write a repro test that asserts the expected behavior,** so it fails today and passes once fixed: under the glob (`tests/bugbash/<slug>.e2e.ts`), tagged `bugbash`, preferring exact `screen` plus `expect` steps, with exact locators taken from the live app. Run it alone.
-- **Confirmed only when it fails with `ASSERTION_FAILED` on the assertion that encodes the bug.** Any other failure (`LOCATOR_NOT_FOUND`, a timeout, setup) means the test is wrong. A passing test means the bug did not reproduce: reject it, and move the test out (`.e2e/bugbash/extra-tests/`, or offer it as a regression test).
+- **Confirmed only when it fails with `ASSERTION_FAILED` on the assertion that encodes the bug.** Other failures need [cause-based triage](DEBUGGING.md#failure-code-versus-cause), rather than the source's blanket claim that the test is wrong. A passing test means the bug did not reproduce: reject it, and move the test out (`.e2e/bugbash/extra-tests/`, or offer it as a regression test).
 - **Optional subagents for verification** (unlike the fan-out): one per area with 3 to 5 candidates, up to four at a time (the MCP default session limit). Each reports confirmed or rejected, the root cause as `file:line`, the repro test path and the observed failure.
 
 ## Report and clean up

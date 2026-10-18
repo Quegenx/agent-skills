@@ -69,11 +69,11 @@ Trusted Entitlements protects against man-in-the-middle attacks that grant entit
 |---|---|---|
 | Disabled | No signing happens | Only for quick prototypes |
 | Informational | Logged, access still granted | You want signal without risking false denials to real users |
-| Enforced | The entitlement's `isActive` returns `false` | You accept some false negatives from proxies or VPNs in exchange for a strict client guarantee |
+| Enforced | Not exposed by the current Flutter/RN enums | Do not promise automatic denial |
 
 - **Defaults conflict between sources.** The rc-security skill says the default is `DISABLED`, in which case `CustomerInfo` is trusted without signature checking. The docs say iOS SDK 5.15.0+ and Android SDK 8.11.0+ enable it by default in informational mode, while older versions (iOS 4.25.0 to 5.14.x, Android 6.6.0 to 8.10.x) have it disabled by default. Set the mode explicitly and confirm in `https://www.revenuecat.com/docs/customers/trusted-entitlements`.
 - **Support:** iOS SDK 4.25.0+, Android SDK 6.6.0+; devices on Android 4.4+ and iOS 13.x+. No performance impact.
-- **Rollout:** start with informational. Move to enforced once telemetry confirms `FAILED` is rare on real traffic.
+- **Supported modes:** current Flutter and RN expose disabled/informational. Informational reports verification failure while still granting entitlements; the app decides its handling. The old source claimed an available enforced mode automatically set `isActive` false and recommended graduating to it; Flutter's enforced value is commented out until supported. Keep native version-qualified defaults above distinct from wrapper configuration defaults. [https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/entitlement_verification_mode.dart; https://github.com/RevenueCat/react-native-purchases/blob/main/_autodocs/types-enums.md; https://www.revenuecat.com/docs/customers/trusted-entitlements]
 - **Anti-pattern:** leaving it disabled in production lets a man in the middle forge `CustomerInfo` responses.
 - **Flutter:** `configuration.entitlementVerificationMode = EntitlementVerificationMode.disabled;` (use `EntitlementVerificationMode.informational` to enable on older SDKs). **React Native:** `entitlementVerificationMode: ENTITLEMENT_VERIFICATION_MODE.DISABLED`.
 - **Read the result** from `customerInfo.entitlements.verification` (and per entitlement):
@@ -90,7 +90,7 @@ Trusted Entitlements protects against man-in-the-middle attacks that grant entit
 
 ## The server is the authority
 
-- **Even with enforced verification, the client is not the authority for paid content.** Each premium endpoint either calls the RevenueCat REST API per request or reads a local `has_entitlement` flag driven by webhooks (see [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md#pick-the-mechanism)).
+- **The client is not the authority for paid content, regardless of its verification result.** Each premium endpoint either calls the RevenueCat REST API per request or reads a local `has_entitlement` flag driven by webhooks (see [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md#pick-the-mechanism)).
 - **Never trust `customerInfo` sent from the client** or any client header on the server: a tampered client can claim any entitlement. The logic is: fetch the subscriber, and if the entitlement is not active, respond Forbidden.
 - **Customer attributes are not secure storage.** They are writable with the public key, so never keep subscription status, coins or similar values in them.
 
@@ -109,7 +109,7 @@ Trusted Entitlements protects against man-in-the-middle attacks that grant entit
 ## Prove it
 
 - A grep of the app source for `sk_` returns zero hits; release builds use the platform key, never `test_`.
-- The verification mode is set explicitly (not disabled), `FAILED` results are logged and watched, and enforced mode is turned on only after telemetry shows `FAILED` is rare.
+- The installed SDK's verification mode is set explicitly, failure results are observed and handled according to the app's chosen policy; no unsupported enforced-mode guarantee substitutes for server authorization. [https://www.revenuecat.com/docs/customers/trusted-entitlements]
 - Every catch block checks `userCancelled` first, logs `message`, shows a mapped string, and contains no retry loop; `PaymentPendingError`, `ProductAlreadyPurchasedError` and `NetworkError` each have their own flow.
 - Real users are identified with `logIn`; anonymous IDs appear only before login.
 - Every paid-content endpoint verifies entitlement through the REST API or a webhook-driven flag.

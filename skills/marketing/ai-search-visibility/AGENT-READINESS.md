@@ -84,8 +84,8 @@ Rules: consistent units (monthly vs annual, per-seat vs flat); specific limits, 
 
 ## OKF bundles (emerging)
 
-[coreyhaines31/marketingskills, ai-seo, okf] Open Knowledge Format v0.1, introduced on the Google Cloud blog on 2026-06-12, built mainly for data teams sharing catalog metadata; pointing it at a marketing site is a repurposing. Spec: github.com/GoogleCloudPlatform/knowledge-catalog/blob/HEAD/okf/SPEC.md (not fetched here).
-- A directory of cross-linked Markdown files, each with YAML frontmatter (`type` required; `title`, `description`, `resource`, `tags`, `timestamp` recommended), an optional `index.md`, distributed as a git repo, tarball or subdirectory.
+[coreyhaines31/marketingskills, ai-seo, okf] introduces Open Knowledge Format for data/catalog metadata; a marketing-site bundle is a repurposing. Current [official SPEC v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md), last modified 2026-08-21, supersedes v0.1. The source and this file formerly named v0.1 and recommended timestamp; v0.2 supersedes timestamp with generated.at, allowing legacy fallback when generated is absent. No search-discovery or SEO benefit is implied by conformance.
+- Cross-linked Markdown files use YAML frontmatter: type is required, while title, description, resource and tags are optional; an index.md is optional. The source distributes a bundle as a repository, tarball or subdirectory. [official SPEC v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md); [coreyhaines31/marketingskills, ai-seo/references/okf.md]
 - Serve it at `/okf/`, starting with `/okf/index.md`, and add a line to llms.txt pointing to it.
 - "Nothing crawls the web for OKF bundles yet." Skip it for a site under 10 pages, a closed platform without custom paths, or when nobody maintains the other machine-readable files.
 

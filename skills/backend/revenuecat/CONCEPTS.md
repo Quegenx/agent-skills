@@ -265,7 +265,7 @@ Platform Server Notifications reduce these delays (see [STORE-SETUP.md](STORE-SE
 | Other error | Surface the error message |
 
 - **"Do not grant access from optimistic local state."** Trust the purchase result's CustomerInfo; pending purchases grant nothing until paid, so register the update listener.
-- **Server-side provisioning:** subscribe to the `INITIAL_PURCHASE` webhook, which fires for every new non-subscription purchase. "Do not reimplement Google Play Developer API verification."
+- **Server-side provisioning:** non-renewing purchases emit `NON_RENEWING_PURCHASE`; the old source said `INITIAL_PURCHASE` fires for every new non-subscription purchase. Fulfillment follows the consumable/non-consumable contract. [RevenueCat/ai-toolkit, rc-one-time-products; https://www.revenuecat.com/docs/integrations/webhooks/event-types-and-fields]
 - **Offline Entitlements do not cover one-time purchases.**
 
 ## Plan changes
@@ -310,8 +310,8 @@ const { customerInfo } = await Purchases.purchaseStoreProduct(
 | Upgrade during an active free trial | `CHARGE_PRORATED_PRICE` | Immediate switch, prorated charge now |
 | Downgrade (annual to monthly) | `DEFERRED` | Switch applies at next renewal |
 
-- **The default is `WITHOUT_PRORATION`. "Set the mode explicitly every time."** Never use it for trial upgrades: it applies the new plan immediately but charges nothing until next renewal, giving free premium access.
-- **`CHARGE_PRORATED_PRICE` is for upgrades only. `DEFERRED` is for downgrades only** ("Google rejects deferred upgrades") and requires Google Server Notifications.
+- **The RevenueCat default is `WITHOUT_PRORATION`; set the intended mode explicitly.** For trial upgrades, use `WITHOUT_PRORATION` to preserve the trial, or `CHARGE_PRORATED_PRICE` to end it. The source wrongly banned preserving trial access. [RevenueCat/ai-toolkit, rc-plan-changes; https://www.revenuecat.com/docs/subscription-guidance/managing-subscriptions; https://developer.android.com/google/play/billing/subscriptions#replacement-recommendations]
+- **`CHARGE_PRORATED_PRICE` requires an increased price per unit of time; `DEFERRED` can upgrade or downgrade at renewal.** Check restrictions for the actual plan transition: same-subscription switches to an auto-renewing plan support `CHARGE_FULL_PRICE` or `WITHOUT_PRORATION`, not every mode. The source wrongly said Google rejects every deferred upgrade. [https://developer.android.com/google/play/billing/subscriptions#replacement-modes]
 - **Derive the old product ID from `activeSubscriptions`,** stripping the `:basePlanId` suffix: "Hardcoded SKUs break when a user has migrated between plans." If you pass `"productId:basePlanId"` the SDK strips it, but slicing it yourself is clearer.
 - **After the change** `activeSubscriptions` holds the new `productId:basePlanId` and the entitlement stays active across the switch: "do not gate UI on the SKU string". For `DEFERRED`, `activeSubscriptions` reports the old product until next renewal; RevenueCat tracks the pending switch and flips it after Google's renewal RTDN.
 - **Delete `linkedPurchaseToken` traversal code.** RevenueCat resolves the chain, marks the old token replaced, and attributes both tokens to the same App User ID.
@@ -359,4 +359,4 @@ These rules come from the Google Play chapter.
 - **Test matrix passes:** fresh purchase gives `isActive` true (premium); grace period true (premium plus billing warning); canceled before expiration true (premium plus expiry notice); on hold, paused, expired and pending (no payment yet) all false.
 - **The gate flips when the listener fires** after a purchase; a forced fresh fetch updates after a backend grant (promo, refund, support action); after `logOut` CustomerInfo reflects an anonymous user; an offline launch still gates from cache.
 - **A test purchase of each product** makes the expected entitlement active; a Google lifetime product is flagged non-consumable in the dashboard (otherwise RevenueCat consumes it and Google allows repurchase).
-- **Each plan-change call sets its replacement mode explicitly,** and a trial upgrade uses `CHARGE_PRORATED_PRICE`, never `WITHOUT_PRORATION`.
+- **Each plan-change call sets its intended replacement policy explicitly,** including whether a trial continues or ends, and uses an allowed mode for the concrete plan transition above. [https://developer.android.com/google/play/billing/subscriptions#replacement-recommendations]

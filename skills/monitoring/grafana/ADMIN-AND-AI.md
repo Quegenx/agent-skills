@@ -63,7 +63,8 @@ Stack API (Bearer service account token):
 | Find team | `GET /api/teams/search?name=platform` |
 | Create team | `POST /api/teams` with `{ "name": "Platform Team", "email": "platform@example.com" }` |
 | Add member | `POST /api/teams/{teamId}/members` with `{ "userId": 2 }` |
-| Look up user | `GET /api/users/lookup?loginOrEmail=alice@example.com` |
+
+- **Server-level user lookup is separate:** `/api/users/lookup` requires Basic authentication as a Grafana server administrator; an organization service-account token cannot supply server-admin privileges. The old table incorrectly grouped it under Bearer service-account calls. The same distinction applies to `/api/admin/*`. [Grafana User API](https://grafana.com/docs/grafana-cloud/learn-and-build/developer-resources/api-reference/http-api/api-legacy/user/), [Admin API](https://grafana.com/docs/grafana-cloud/learn-and-build/developer-resources/api-reference/http-api/api-legacy/admin/)
 
 - **Onboarding:** invite each user, create the team, add members, assign the RBAC role, then check `GET /api/teams/{teamId}/members`.
 - **As code:** `grafana_team`, `grafana_user`, `grafana_team_member` in Terraform ([PROVISIONING-AND-API.md](PROVISIONING-AND-API.md#terraform)).
@@ -110,7 +111,7 @@ groups_attribute_path = groups
 - **GitHub `[auth.github]`:** `scopes = user:email,read:org`, `auth_url = https://github.com/login/oauth/authorize`, `token_url = https://github.com/login/oauth/access_token`, `api_url = https://api.github.com/user`, `allowed_organizations = ["your-org"]`, `team_ids = [123456]`, `role_attribute_path = "Admin"`.
 - **SAML keys:** `certificate_path`, `private_key_path`, `idp_metadata_path`, `max_issue_delay = 90s`, `metadata_valid_duration = 48h`, `assertion_attribute_login`, `assertion_attribute_email`, `assertion_attribute_name`, `assertion_attribute_role`, `role_values_admin`, `role_values_editor`. Availability conflicts: the admin skill's SSO reference says SAML is Enterprise and Cloud; the Grafana OSS config reference says these configs "are the same in OSS". Confirm your edition supports SAML in the current docs.
 - **Set `root_url`** so the callback matches; the IdP's allowed redirect URIs must include `https://yourstack.grafana.net/login/<provider>`. `grafana.ini` changes need a restart.
-- **Verify:** an incognito login page shows the provider button; click through the IdP; check the role with `/api/users/lookup?loginOrEmail=<your-email>`. Wrong role: claims are logged at debug level, so read `journalctl -u grafana-server | grep -i "OAuth\|SAML" | tail -50` and fix the claim path.
+- **Verify:** an incognito login page shows the provider button; click through the IdP; an authorized server administrator can check the role with `/api/users/lookup?loginOrEmail=<your-email>` using Basic authentication, as qualified above. Wrong role: claims are logged at debug level, so read `journalctl -u grafana-server | grep -i "OAuth\|SAML" | tail -50` and fix the claim path.
 
 ## Cloud API
 
@@ -133,7 +134,7 @@ Repo and releases: https://github.com/grafana/mcp-grafana
 
 - **Install:** `go install github.com/grafana/mcp-grafana/cmd/mcp-grafana@latest`; check `mcp-grafana --version`. "command not found" means `$GOPATH/bin` (or `$HOME/go/bin`) isn't on PATH.
 - **Token:** a service account with `Viewer` (add `Editor` only for writes).
-- **Config** for Claude Code (`~/.claude/settings.json` or project `.claude/settings.json`); Cursor takes the same block in `~/.cursor/mcp.json`:
+- **Config:** Claude Code stores user/local MCP configuration in `~/.claude.json` and shared project configuration in `.mcp.json`; the old source used settings.json paths. [Claude Code MCP scopes](https://code.claude.com/docs/en/mcp). The source uses `~/.cursor/mcp.json` for Cursor:
 
 ```json
 {
@@ -259,7 +260,7 @@ loki.write "cloud_private" {
 | Symptom | Cause |
 |---|---|
 | 401 | Token expired or wrong stack URL |
-| 403 on `/api/admin/*` | Account lacks Admin |
+| 403 on `/api/admin/*` | Server-level calls need Basic authentication and server-admin privileges; an org Admin service account is insufficient |
 | 404 on a known stack | Wrong region in the URL (`us-east-0` vs `eu-west-0`) |
 | Empty audit logs | May not be enabled on the free tier |
 | 500 after the IdP redirect | Wrong `token_url` or expired `client_secret` |
@@ -276,7 +277,7 @@ loki.write "cloud_private" {
 ## Prove it
 
 - Each service account token returns 200 on `/api/org`, and calling a write endpoint with a Viewer token returns 403.
-- A test user from each IdP group signs in and `/api/users/lookup` shows the expected role.
+- A test user from each IdP group signs in and an authorized server administrator checks `/api/users/lookup` using Basic authentication for the expected role.
 - `GET /api/access-control/roles` lists every provisioned custom role, and a member of the team can edit only dashboards in its folder.
 - `/mcp` lists the Grafana tools and "What data sources are configured" answers from the live stack, with `--disable-write` still set unless writes were asked for.
 - `GET /api/plugins/grafana-llm-app/health` returns `{"status":"ok"}`; an ML forecast query returns a non-empty result.

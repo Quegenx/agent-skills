@@ -15,7 +15,7 @@ Before trusting a number, check ten things; evidence you can't see is unknown, n
 9. **Headroom:** the most capable model at the highest effort stays well below 100%, or you can't judge how changes move it. A baseline already at about 95% or higher should aim a hillclimb at cost or latency, not quality.
 10. **The gap isn't impossible tasks:** a task that fails every run, however many repetitions, is a common tell of an impossible or ambiguous task.
 
-Report each finding as blocking, important or an improvement, with the artifact, the consequence and the fix.
+Report each finding as P0 to P3, with the artifact, consequence and fix. The old blocking/important/improvement labels map to P1/P2/P3; reserve P0 for an actually critical condition. Severity and the release decision are separate. [confident-ai/eval-skills, eval-audit]
 
 ## Release gates
 
@@ -67,6 +67,7 @@ The orchestration around this (who re-spawns, the join key) is in [agent-harness
 - **Autonomy is earned on a measured sample:** an outbound agent's responses to positive, objection, information and referral replies are drafts a person sends "until accuracy is proven over 100+ replies", and Tier 2 first touches run alone while "a human reviews a sample weekly" [coreyhaines31/marketingskills, marketing-loops]; the full approval table is in [marketing-loops OUTBOUND-OPERATOR.md](../../marketing/marketing-loops/OUTBOUND-OPERATOR.md) and the send-time code gate in [agent-harness CHECKS.md](../agent-harness/CHECKS.md#authorization-classifiers).
 - **Grade a conversation only once it is over,** by a stated rule (closed, or quiet for a set time).
 - **Alerts need a minimum sample,** carry the failing cases, and group repeats. Tell an incomplete window from a real drop, and a provider outage from a drift in quality.
+- **No data is not a clean monitor.** A missing, partial or undersized window follows the agreed incomplete policy and names its coverage; it never silently passes. Record the owner who reviewed a changed reference or accepted a measurement change. The source monitor returned normally when no traces were sampled, before its documented incomplete-window check. [confident-ai/eval-skills, eval-maintain, SKILL.md and templates/monitor.py]
 - **Refresh the cases and recalibrate** after a change of model, prompt, tool, retrieval or audience.
 - Build and test the review screen like any app handling untrusted text: the trace is escaped, links and images don't load from outside, saves are atomic and a stale edit is a conflict, not an overwrite. Test it with a script tag in a message, a huge tool result, unusual characters and a missing attachment.
 

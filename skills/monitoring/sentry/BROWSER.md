@@ -191,7 +191,7 @@ Without source maps, stack traces show minified code. The general upload and rel
 | Vite | `build: { sourcemap: "hidden" }` | `sentryVitePlugin` from `@sentry/vite-plugin`, last in the plugin list |
 | webpack | `devtool: "hidden-source-map"` | `sentryWebpackPlugin` from `@sentry/webpack-plugin` |
 | Rollup | `output: { sourcemap: "hidden" }` | `sentryRollupPlugin` from `@sentry/rollup-plugin` |
-| esbuild | `sourcemap: "hidden"` | `sentryEsbuildPlugin` from `@sentry/esbuild-plugin`; doesn't fully support `splitting: true`, so use `sentry-cli` with code splitting |
+| esbuild | `sourcemap: "external"` | `sentryEsbuildPlugin` from `@sentry/esbuild-plugin`; doesn't fully support `splitting: true`, so use `sentry-cli` with code splitting |
 
 - **Plugins read** `org`, `project` and `authToken` from `process.env.SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN`, kept in an uncommitted `.env`: `SENTRY_AUTH_TOKEN=sntrys_...`, `SENTRY_ORG=my-org-slug`, `SENTRY_PROJECT=my-project-slug`.
 - **Any toolchain or CI:**
@@ -202,6 +202,8 @@ npx @sentry/cli sourcemaps upload ./dist
 ```
 
 - **Upload before errors occur:** make it part of CI/CD, build in production mode (`npm run build`) and verify `SENTRY_AUTH_TOKEN`.
+
+The old source used esbuild `sourcemap: "hidden"`; esbuild supports external for a separate map without a sourceMappingURL comment. Rollup/Vite hidden modes remain valid. [https://esbuild.github.io/api/#sourcemap; https://rollupjs.org/configuration-options/#output-sourcemap]
 
 ## Init options
 
@@ -216,7 +218,7 @@ npx @sentry/cli sourcemaps upload ./dist
 | `tracesSampler` | | Overrides the rate |
 | `tracePropagationTargets` | see [tracing](BROWSER-TRACING-REPLAY-LOGS.md#distributed-tracing) | |
 | `replaysSessionSampleRate` / `replaysOnErrorSampleRate` | `0` | |
-| `enableLogs` | `false` | |
+| `enableLogs` | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | |
 | `attachStacktrace` | `false` | Stack traces on `captureMessage`. Spelling differs: the setup guide's table writes `attachStackTrace`, the error-monitoring reference writes `attachStacktrace: true` |
 | `maxBreadcrumbs` | `100` | |
 | `debug` | `false` | |
@@ -235,18 +237,7 @@ npx @sentry/cli sourcemaps upload ./dist
 
 ## dataCollection
 
-- **The fine-grained replacement for `sendDefaultPii`.** When omitted, the SDK falls back to `sendDefaultPii` (default `false`). Passing the object, even `{}`, flips unset categories to their permissive defaults; opt out per category.
-
-| Field | Default | Notes |
-|---|---|---|
-| `userInfo` | `true` | Auto-populates `user.*` fields from instrumentation (the React Router guide: includes IP-derived user context) |
-| `cookies` | `true` | `boolean \| { allow: string[] } \| { deny: string[] }`; `true` = all (filtered), `false` = none, `allow`/`deny` = specific keys |
-| `httpHeaders` | `{ request: true, response: true }` | Each can be `boolean` or an `allow`/`deny` object |
-| `httpBodies` | `["incomingRequest","outgoingRequest","incomingResponse","outgoingResponse"]` | When `dataCollection` is explicitly set |
-| `queryParams` | `true` | `boolean \| { allow } \| { deny }`, with sensitive value filtering |
-| `genAI` | `{ inputs: true, outputs: true }` | Generative AI input and output recording |
-| `stackFrameVariables` | `true` | Local variable values in stack frames |
-| `frameContextLines` | `5` | Source lines around stack frames |
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 
 ```typescript
 Sentry.init({
@@ -258,7 +249,7 @@ Sentry.init({
       request: { deny: ["authorization", "cookie"] },
       response: true,
     },
-    queryParams: { allow: ["utm_source", "utm_campaign"] },
+    urlQueryParams: { allow: ["utm_source", "utm_campaign"] },
   },
 });
 ```
@@ -377,7 +368,7 @@ Sentry.withScope((scope) => {
 | Option | Default |
 |---|---|
 | `colorScheme` | `'system'` (`'light'`, `'dark'` or `'system'`) |
-| `buttonLabel` | `"Report a Bug"` |
+| `triggerLabel` | `"Report a Bug"` |
 | `submitButtonLabel` | `"Send Bug Report"` |
 | `cancelButtonLabel` | `"Cancel"` |
 | `formTitle` | `"Report a Bug"` |
@@ -391,13 +382,15 @@ Sentry.withScope((scope) => {
 | `enableScreenshot` | `true` (≥8.0.0) |
 | `tags` | `{}` |
 
-- **The trigger-label option name differs between sources:** the browser reference uses `buttonLabel`; the React Router and TanStack references use `triggerLabel: "Report a bug"` and `successMessageText: "Thanks for the report."` (and `formTitle: "Report a bug"`, `submitButtonLabel: "Send report"` in their examples).
+- **Feedback labels:** use the typed `triggerLabel`/`triggerAriaLabel`. The source and one official example used `buttonLabel`, but the current SDK type declares `triggerLabel`; preserve the typed form. [https://github.com/getsentry/sentry-javascript/blob/develop/packages/core/src/types/feedback/config.ts]
 - **Pre-fill:** `Sentry.setUser({ email, name })`.
-- **Your own button:** `autoInject: false`, then `Sentry.getFeedback()?.openDialog()`. The widget uses Shadow DOM; for z-index conflicts, place it yourself this way.
+- **Your own button:** use the [canonical manual feedback workflow](REACT.md#user-feedback). The old source used `Sentry.getFeedback()?.openDialog()` rather than the documented attachTo or createForm/appendToDom/open API. [https://docs.sentry.io/platforms/javascript/user-feedback/configuration/]
 - **`captureFeedback`:** `Sentry.captureFeedback({ name?, email?, message, associatedEventId? }, { captureContext: { tags }, attachments: [{ filename, data: Uint8Array }] })`; only `message` is required. Link to an error with `associatedEventId` set to the return value of `Sentry.captureException(err)` or `Sentry.lastEventId()`.
 - **`showReportDialog`:** collects name, email and a description, paired with the captured error event. Options `eventId` (required), `user.name`, `user.email`, `lang` (e.g. `"de"`, `"fr"`), `title`, `subtitle`, `subtitle2`, `labelSubmit`. Call it from `beforeSend` when `event.exception && event.event_id`, on a 500 page with the server-side event id (the primary use case), or after a manual `captureException`.
 - **Screenshots** are hidden on mobile and count against the attachment quota (1 GB standard).
 - **With Replay,** feedback links to the replay: the SDK buffers up to 30 seconds when the widget opens, and needs `replaysOnErrorSampleRate > 0`.
+
+**Logs defaults:** Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
 
 ## Debugging
 

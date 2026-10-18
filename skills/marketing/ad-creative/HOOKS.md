@@ -45,6 +45,7 @@ Cycle through them; don't cluster on favorites.
 | **Contrast / before-after** | Two states shown or named in the first beat | The transformation must be visually honest; before/after is regulated in health, finance and beauty |
 | **Relatability / POV** | A hyper-specific situation: "POV: it's 3pm and you're on your fourth coffee" | Specificity is the whole mechanic; generic POV is invisible |
 | **Question** | The exact question the buyer types into search or a chatbot | Their phrasing, verbatim from the corpus |
+| **Implied answer** | Set up the situation so the viewer completes the thought without an explicit question | The inference must be small enough to follow; use known facts, not invented proof. [Yuzzyuk/marketing-os, references/hooks.md] |
 | **Countdown / gamified** | A timer or challenge that promises a payoff | The payoff must exist; hold rate collapses on cheats |
 | **Proof-first** | Lead with the receipt: result screenshot, stat, demo money-shot | Strongest when the proof brags by itself |
 | **Choice** | Two options: "Sandler or MEDDIC for a $50K deal?" | Both must be real options the audience weighs |
@@ -87,6 +88,8 @@ Testing a hunch with an expensive shoot and a proven angle with a throwaway stat
 ## Grounding
 
 Hooks inherit every grounding rule ([SKILL.md](SKILL.md#grounded-inputs)): each cites the corpus source of its motivation; no invented claims, stats or testimonials; verbatim customer language over paraphrase. Also mine organic content in the niche for the audience's actual vocabulary (the slang for the pain, the term they use instead of the clinical one); the source mines it by scraping and social listening, done here within each site's terms ([CREATIVE-ROADMAP.md](CREATIVE-ROADMAP.md#research-workflows)). It's language research, not copying: take the vocabulary and visual conventions, never a creator's specific creative.
+
+Yuzzyuk/marketing-os permits labelled "ungrounded hypotheses" without a corpus; this repo keeps its existing grounding requirement and does not manufacture customer language or evidence. Its borrowed-enemy tactic routes to the system/norm guardrails in [STORY-ANGLES.md](../public-relations/STORY-ANGLES.md), rather than defining another hook taxonomy here. [Yuzzyuk/marketing-os, references/hooks.md]
 
 ## Failure modes
 

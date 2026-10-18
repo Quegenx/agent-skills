@@ -72,7 +72,7 @@ An agentic runner lets a model drive one goal through the app while the test pin
 | OpenRouter | `OPENROUTER_API_KEY` |
 | Local endpoint | URL, model, and a key if required |
 
-- **A decision-model executor** is an option: `decisionExecutor({ model, textModel })` from `@e2e-dev/decision` under `executor`.
+- **A decision-model executor** is an option: [DECISION-EXECUTOR.md](DECISION-EXECUTOR.md) owns its two model roles, narrower AI SDK requirement, completion checks, gates and limitations. [tester-army/e2e, docs/decision-models.mdx]
 
 ## Prove it
 

@@ -18,7 +18,7 @@ try { total = items.reduce((s, i) => s + i.price, 0) } catch (e) { console.error
 ```
 Nothing here throws in a way the catch handles. Remove it; catch only where you can recover or add context, and catch the specific error.
 
-**Impossible null checks.** `if (!user) return` right after a line that guarantees `user`, or on a non-optional typed parameter. Trust the type; if the type is wrong, fix the type.
+**Impossible null checks.** Remove a redundant guard only where the actual contract establishes the invariant. A TypeScript non-null assertion is erased and does not validate a runtime value; keep validation at untrusted input boundaries and fix a misleading type. The old line treated a non-optional type as sufficient runtime proof. [TypeScript everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html); [asyrafhussin/agent-skills, code-slop/rules/defensive-impossible-null.md]
 
 **Missing real defenses.** These take systems down and are the ones usually absent:
 - outbound HTTP with no timeout;

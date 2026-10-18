@@ -1,24 +1,17 @@
 # Revenue metrics, invoices and pricing experiments
 
-Measuring a Stripe business means reading Subscriptions, Invoices, Prices and Coupons through the API (often the Stripe MCP) and normalizing them yourself: MRR comes from active subscription items converted to a monthly amount, churn from canceled subscriptions, cash from paid invoices. Most wrong numbers come from three mistakes: stopping before pagination ends, counting trials or `past_due` as paid revenue, and treating cash collected as recognized revenue. Almost every formula and threshold here comes from a third-party skill set (marked [appeeky]), not from Stripe; the Stripe facts they rest on are unmarked. Subscription statuses and lifecycle are in [BILLING.md](BILLING.md); usage revenue in [USAGE-BASED.md](USAGE-BASED.md).
+Measuring a Stripe business means reading Subscriptions, Invoices, Prices and Coupons through the API (often the Stripe MCP) and normalizing them yourself: MRR comes from active subscription items converted to a monthly amount, churn from canceled subscriptions, and paid-invoice totals serve as a declared collection proxy. Most wrong numbers come from incomplete pagination, mixing metric conventions and confusing invoices, cash and recognized revenue. Almost every formula and threshold here comes from a third-party skill set (marked [appeeky]), not from Stripe; the Stripe facts they rest on are unmarked. Subscription statuses and lifecycle are in [BILLING.md](BILLING.md); usage revenue in [USAGE-BASED.md](USAGE-BASED.md).
 
 **Contents:** [Reading data over the Stripe MCP](#reading-data-over-the-stripe-mcp) · [MRR and ARR](#mrr-and-arr) · [Subscription counts and risk](#subscription-counts-and-risk) · [Churn](#churn) · [Cohorts](#cohorts) · [Forecasting](#forecasting) · [Expansion and NRR](#expansion-and-nrr) · [Segmentation and customer 360](#segmentation-and-customer-360) · [Invoices and cash](#invoices-and-cash) · [Revenue recognition](#revenue-recognition) · [Pricing experiments and price increases](#pricing-experiments-and-price-increases) · [Coupons and promotion codes](#coupons-and-promotion-codes) · [Health dashboard](#health-dashboard) · [Prove it](#prove-it)
 
 ## Reading data over the Stripe MCP
 
-All [appeeky].
-
-- **Connect the Stripe MCP** via OAuth or a restricted key (https://docs.stripe.com/mcp). Call `GetMcpTools` (server `user-Stripe` or `plugin-stripe-stripe`) before any `CallMcpTool`.
-- **Prefer `stripe_api_search`, then `stripe_api_details`, then `stripe_api_read`** for list and retrieve. Example: `stripe_api_read GetSubscriptions { status: "active", limit: 100 }`.
-- **Always paginate:** `limit: 100`, follow `has_more` with `starting_after`.
-- **Search caps at 100 results.** `search_stripe_resources` with `subscriptions:status:"canceled"` stops at 100; use `GetSubscriptions` with pagination (list and filter) instead.
-- **Other tools:** `search_stripe_resources`, `fetch_stripe_resources` (by `cus_` or `sub_` id), `search_stripe_documentation`, `get_stripe_account_info`.
-- **Amounts are in cents** unless noted. Never expose secret keys; never print card numbers or PII beyond last4 and country. Read-only for audits; confirm before writes.
+Use the shared [Stripe MCP read contract](AGENT-TOOLS.md#the-stripe-mcp): discover actual host tools, confirm account/project and read scope, paginate each endpoint correctly and preserve currency minor units. The [appeeky/stripe-skills] wrappers below are examples from that host, not universal tool names.
 
 ## MRR and ARR
 
 - **Fetch** `GetSubscriptions` with `expand: ["data.items.data.price"]`, `status: active`, `limit: 100`, paginating until `has_more: false`. [appeeky]
-- **Normalize each item to a month** [appeeky]:
+- **Normalize flat recurring items to a month** [appeeky]. The table assumes flat `unit_amount` and quantity; weekly normalization is an approximation. Tiered, transformed, decimal, metered and day-based prices need their actual billing model rather than this formula. [https://docs.stripe.com/billing/subscriptions/analytics]
 
 | `recurring.interval` | Monthly amount |
 |---|---|
@@ -28,7 +21,7 @@ All [appeeky].
 
 - **Sum to MRR, × 12 for ARR;** group by `price.id` and product name. [appeeky]
 - **Exclude trials from paid MRR** unless the user asks for "pipeline MRR". [appeeky] This matches Stripe: trial offer items and free trial periods don't count toward MRR during the trial.
-- **`past_due` is "MRR at risk",** reported separately if included. [appeeky]
+- **Two measures:** [appeeky] uses active-only MRR and reports past_due separately as at risk. Stripe Billing Analytics includes active and past_due with positive normalized MRR, excluding trials, free plans, tax and metered products, with configurable discount treatment. Name the convention; do not claim the active-only snapshot equals the Dashboard. Stripe active subscribers counts a customer with several subscriptions once. [https://docs.stripe.com/billing/subscriptions/analytics]
 - **Multi-currency:** report per currency, or convert with a stated FX rate. [appeeky]
 - **Multi-item subscriptions** count once per subscription; sum their line items. [appeeky]
 
@@ -36,9 +29,9 @@ All [appeeky].
 
 All [appeeky].
 
-- **Paid subscriptions** = active (+ optionally past_due). **Trial pipeline** = trialing count. **At risk** = past_due + unpaid. `items.data.length` gives line items per subscription (multi-product subscriptions).
+- **Subscription counts by status:** active, trialing, past_due and unpaid are distinct counts; active status is not a payment ledger. [appeeky] optionally includes past_due in its active-style measure and calls past_due plus unpaid at risk. State that convention rather than labeling the sum paid subscriptions. [https://docs.stripe.com/billing/subscriptions/overview#subscription-statuses]
 - **Flag when `past_due` exceeds 5% of active** and investigate the dunning setup ([BILLING.md](BILLING.md#smart-retries-and-dunning)).
-- **Status meanings differ from Stripe's for two values:** this skill set reads `paused` as "collection paused" and `unpaid` as "retries exhausted". Stripe's docs say pausing collection keeps the status `active`, and `unpaid` appears only when your retry settings choose it. Use Stripe's definitions ([BILLING.md](BILLING.md#statuses)).
+- **Status meanings differ from Stripe's for two values:** this skill set reads `paused` as "collection paused" and `unpaid` as "retries exhausted". Stripe's docs say pause_collection preserves the subscription's status and continues invoice behavior, while a paused subscription stops invoicing, and `unpaid` appears only when your retry settings choose it. Use Stripe's definitions ([BILLING.md](BILLING.md#statuses)).
 
 ## Churn
 
@@ -56,14 +49,14 @@ All [appeeky].
 [appeeky]
 
 - **List subscriptions of all statuses** with `created` and `canceled_at` or `ended_at`; bucket by signup month; compute the % still active at M1, M2, M3 and onward.
-- **Optionally weight by MRR** for revenue retention. Flag the month with the steepest drop.
+- **Declare the retention unit, observation cutoff and cohort maturity.** Customer and subscription retention are different measures; current snapshots alone cannot reconstruct every historical revenue level. Use observed change history for revenue retention and state unavailable history. The source's optional current-MRR weighting is not proof of historical cohort revenue. [appeeky; https://docs.stripe.com/data/query-billing-data]
 
 ## Forecasting
 
 [appeeky]
 
 - **Model:** `Next month MRR = current_MRR * (1 - churn_rate) + new_MRR_added`; project 3, 6 and 12 months.
-- **Inputs:** current MRR; new subscriptions per month (active subscriptions created in the last 30, 60 or 90 days via the `created` filter); monthly churn %; average new MRR per subscription.
+- **Inputs:** current MRR, historically observed new acquisitions and their MRR, and the declared churn measure. Count acquisitions across later outcomes using change history, separating new, reactivated, expanded, contracted and churned activity. The old source counted only currently active recent subscriptions, excluding those already churned. [appeeky; https://docs.stripe.com/data/query-billing-data]
 - **Scenarios:** best, base and worst = churn ±2 percentage points, growth ±20%. State every assumption; quality degrades past 6 months.
 
 ## Expansion and NRR
@@ -84,8 +77,8 @@ All [appeeky].
 
 ## Invoices and cash
 
-- **Invoice statuses** [appeeky]: `open` awaiting payment (check past_due subscriptions); `paid` collected; `uncollectible` written off, a churn signal; `void` canceled.
-- **Cash collected** = the sum of `amount_paid` on paid invoices (`GetInvoices` by `status`). The gap to MRR comes from one-time charges, prorations and credits. [appeeky]
+- **Invoice statuses** [appeeky]: open awaits payment; paid is a recorded invoice state, not proof of a Stripe cash transfer (out-of-band and zero-value invoices exist); uncollectible is written off; void is canceled. [https://docs.stripe.com/invoicing/automatic-reconciliation]
+- **Paid-invoice amount is a declared proxy.** The source sums `amount_paid` on paid invoices; reconcile actual payments, out-of-band marking, refunds, customer balances and timing before calling it Stripe settlement or bank cash. For a payment-time metric use `paid_at`, not invoice creation time. The old source labeled that invoice sum cash collected. [https://docs.stripe.com/invoicing/automatic-reconciliation]
 - **Subscription vs one-off invoices:** check the invoice's `subscription` property.
 - **Proration lines** carry `proration` on invoice items and `parent.subscription_item_details.proration` on invoice line items; negative prorations aren't refunded automatically and positive ones aren't billed immediately ([SUBSCRIPTION-CHANGES.md](SUBSCRIPTION-CHANGES.md#prorations)).
 - **Rounding is per invoice line item.**
@@ -96,12 +89,12 @@ All [appeeky].
 [appeeky]
 
 - **Cash isn't recognized revenue.** An annual plan bills 120 USD upfront but recognizes 10 USD a month over 12 months; the unrecognized part is deferred revenue (a liability).
-- **Recognized (period)** = MRR × months elapsed; **deferred balance** = prepaid - recognized.
+- **Recognize actual service obligations over their service periods.** Use finalized invoice lines, the selected amortization granularity and credit/refund treatment; current MRR times elapsed months is not a general accounting formula. The old source presented it as one. The annual example above is a simplified equal-month illustration, not a substitute for invoice-period accounting. [https://docs.stripe.com/revenue-recognition/methodology/subscriptions-and-invoicing; https://docs.stripe.com/revenue-recognition/examples/subscriptions]
 - **For audited books** use Stripe Revenue Recognition (Dashboard > Revenue; https://docs.stripe.com/revenue-recognition).
 
 ## Pricing experiments and price increases
 
-- **Never mutate a live Price; create a new one.** Stripe's docs: after creation only `metadata`, `nickname` and `active` are updatable; to change a price, create a new Price and archive the old one. Archived prices keep existing subscriptions running until canceled, and deactivate payment links that use them.
+- **Changing the recurring amount, currency or interval needs a new Price.** Supported maintenance updates remain allowed, including documented lookup-key, tax-behavior and currency-options updates subject to their constraints. The old line incorrectly limited all updates to metadata, nickname and active. Inspect the current update schema before changing a live object. [https://docs.stripe.com/api/prices/update]
 - **Move a lookup key to the new price** with `transfer_lookup_key: true` so code that reads `prices.list({ lookup_keys: [...] })` picks it up.
 - **Test design** [appeeky]: a new Price object; split traffic at checkout (price ID by cohort or flag); grandfather existing subscriptions on the old price; compare conversion %, ARPU and churn at 30 and 60 days.
 - **Price increase playbook** [appeeky]: (1) create the new higher price; (2) send new customers to it; (3) keep existing customers or migrate them with notice (email plus `subscriptions.update`); (4) measure the churn delta. When migrating, replace the subscription item by `id` and resend the quantity ([SUBSCRIPTION-CHANGES.md](SUBSCRIPTION-CHANGES.md#upgrades-and-downgrades)).
@@ -124,13 +117,13 @@ All [appeeky].
 [appeeky]
 
 - **Run order:** (1) `get_stripe_account_info`; (2) MRR (active, with past_due as at risk); (3) subscription status table; (4) top 5 past_due by MRR; (5) payment failures over the last 30 days; (6) card mix, active vs past_due; (7) open disputes from `GetDisputes`; (8) available balance from `GetBalance`.
-- **Traffic lights** for MRR trend, churn and past due, payment failures, webhooks and emails (manual or code check), fraud and Radar; end with "Top 3 actions this week". Load `stripe-billing-context.md` if present for target comparisons.
+- **Traffic lights** for MRR trend, churn and past due, payment failures, webhooks and emails (manual or code check), fraud and Radar; end with "Top 3 actions this week". Use the shared `.agents/product-context.md` for relevant marketing targets; its contract is in [anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). Do not create another required billing-context file. [user shared-context rule]
 
 ## Prove it
 
-- **Pagination:** the subscription count you report equals the number of rows across all pages until `has_more: false`, not 100.
-- **MRR:** a yearly 1200 USD item contributes 100 USD; a trialing subscription contributes 0 to paid MRR; past_due appears only as MRR at risk.
+- **Pagination:** totals exhaust the selected endpoint's actual list/search pagination and disclose unavailable history or wrapper caps. [https://docs.stripe.com/api/pagination/search]
+- **MRR:** a yearly 1200 USD item contributes 100 USD; a trialing subscription contributes 0 to paid MRR; past_due treatment is named as either the appeeky convention or Stripe Analytics convention above. [https://docs.stripe.com/billing/subscriptions/analytics]
 - **Currencies:** MRR is either split per currency or carries the FX rate used.
-- **Cash vs MRR:** the difference between paid invoice `amount_paid` and MRR is explained by one-time charges, prorations and credits.
-- **Pricing change:** the old Price is archived, not edited; existing subscriptions still show the old `price.id` unless deliberately migrated.
+- **Invoices, cash and recognition:** the report distinguishes paid-invoice proxy totals, actual payment/settlement evidence and service-period recognition. [https://docs.stripe.com/invoicing/automatic-reconciliation; https://docs.stripe.com/revenue-recognition/methodology/subscriptions-and-invoicing]
+- **Pricing change:** an amount/interval change creates a new Price; supported maintenance updates remain allowed; existing subscriptions still show the old `price.id` unless deliberately migrated.
 - **Churn split:** canceled subscriptions are classified voluntary or involuntary from `cancellation_details` and `past_due` history, and the total matches the canceled count.

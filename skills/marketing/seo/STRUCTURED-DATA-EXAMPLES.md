@@ -392,6 +392,6 @@ The source wrapped the script in `<Head>`; the guide renders it in the page or l
 
 - **Each example validates:** pasted into the Schema.org Validator with real values, every block above parses with no errors.
 - **Google features pass by URL:** a deployed page using the Article, Product, SoftwareApplication, BreadcrumbList, LocalBusiness or Event block passes the Rich Results Test by URL with no required-property errors.
-- **No stale dates:** no `priceValidUntil`, `startDate` or `validFrom` in a copied block is in the past.
+- **Dates describe the real offer/event:** check price expiry and event timing/status separately. validFrom is when tickets go on sale, so a past sale-start date can correctly describe a current offer. This file formerly required validFrom never to be in the past; do not move the actual date forward to satisfy that check. [Google Event offers.validFrom](https://developers.google.com/search/docs/appearance/structured-data/event); [Schema.org validFrom](https://schema.org/validFrom)
 - **No placeholders shipped:** a search of the built site for `example.com`, `Example Company` and `555-555` returns nothing.
 - **Escaping:** a product name containing `</script>` renders inside the JSON-LD as `\u003c/script>`, and the page's DOM has exactly one `application/ld+json` script for that block.

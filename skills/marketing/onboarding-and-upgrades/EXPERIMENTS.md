@@ -64,4 +64,4 @@ A catalogue of tests for activation and in-product upgrades, with the store and 
 
 ## Prove it
 
-Each running test changes one thing, names its metric and its guardrail (retention or post-upgrade churn), and has no arm that breaks a store rule on the platform it runs on or shows a deadline, count or "value" that isn't real.
+Each running test names its metric and guardrail (retention or post-upgrade churn), and has no arm that breaks a store rule on its platform or shows a deadline, count or "value" that isn't real. The source favors changing one thing to attribute an effect to that component; [ab-testing](../ab-testing/SKILL.md) also supports deliberately testing whole variants, whose result estimates the aggregate variant effect. This file formerly made one change mandatory for every test. Keep those scopes distinct instead of calling a whole-variant result uninterpretable. [coreyhaines31/marketingskills, onboarding/references/experiments.md; Yuzzyuk/marketing-os, references/analytics.md]

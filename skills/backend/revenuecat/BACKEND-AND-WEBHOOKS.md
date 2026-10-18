@@ -92,7 +92,7 @@ function verifySignature(payload, header, secret, tolerance = 300) {
 - **The job:** verify the request, deduplicate by `event.id`, dispatch per event type.
 - **Acknowledge fast:** return 2xx as soon as the event is persisted. If processing is slow, enqueue it and acknowledge. A slow handler causes retries and duplicate deliveries.
 - **Idempotency key is `event.id`.** An already-processed event falls through and the responder still returns 200. The insert-if-absent must be atomic (a unique index on `event_id` plus an insert that swallows duplicate-key errors works). Do all downstream writes in the same transaction as the event ID insert, so a crash mid-handler cannot leave an event marked but unapplied.
-- **Dispatch:** `INITIAL_PURCHASE`, `RENEWAL`, `UNCANCELLATION` grant (with `expiration_at_ms`); `CANCELLATION` schedules revocation; `EXPIRATION` revokes; `BILLING_ISSUE` flags; `PRODUCT_CHANGE` updates the product; `SUBSCRIBER_ALIAS` and `TRANSFER` merge identity; anything else is a no-op.
+- **Dispatch:** `INITIAL_PURCHASE`, `RENEWAL`, `UNCANCELLATION` grant (with `expiration_at_ms`); `CANCELLATION` schedules revocation; `EXPIRATION` revokes; `BILLING_ISSUE` flags; `PRODUCT_CHANGE` updates the product; `SUBSCRIBER_ALIAS` and `TRANSFER` merge identity. Non-renewing purchase fulfillment follows its product contract; do not discard `NON_RENEWING_PURCHASE` as an unknown no-op. [https://www.revenuecat.com/docs/integrations/webhooks/event-types-and-fields]
 - **Grant must be idempotent and additive,** so it is safe on `RENEWAL` against a user whose entitlements are currently revoked. Extending only an existing expiry leaves a resubscribed user locked out.
 - **Scheduled revocation:** store a pending job keyed by `(app_user_id, entitlement_id)` that fires at `expiration_at_ms`. If `UNCANCELLATION` arrives first, cancel the job. If `EXPIRATION` arrives first, let the `EXPIRATION` handler revoke and drop the pending job.
 - **Alternative: sync, don't interpret.** The docs recommend calling `GET /subscribers` after receiving any webhook, so data always arrives in the same format, instead of custom logic per event.
@@ -118,7 +118,7 @@ function verifySignature(payload, header, secret, tolerance = 300) {
 | `RENEWAL` | Renewal, or a lapsed user resubscribed | Grant or extend `entitlement_ids` |
 | `CANCELLATION` | Auto-renew turned off, or refunded; access continues until `expiration_at_ms` | Schedule revocation at `expiration_at_ms`; do not revoke now |
 | `UNCANCELLATION` | Auto-renew re-enabled before expiry (not Stripe) | Cancel any scheduled revocation |
-| `NON_RENEWING_PURCHASE` | A purchase that won't auto-renew | |
+| `NON_RENEWING_PURCHASE` | A purchase that won't auto-renew | Apply its consumable/non-consumable fulfillment contract |
 | `SUBSCRIPTION_PAUSED` | Scheduled to pause at the end of the current period (Google only) | Do not revoke |
 | `EXPIRATION` | Subscription actually ended; remove the user's access | Revoke now |
 | `BILLING_ISSUE` | Payment failed; user may be in grace period or on hold | Flag; do not revoke |
@@ -280,7 +280,7 @@ Authorization: Bearer sk_...
 X-Platform: android
 ```
 
-- **The response body** is the same `CustomerInfo` structure the SDK returns. It also carries `grace_period_expires_date` (null when not in grace; always null for Stripe) and, for a paused Google subscription, `paused_expiration_time_ms`.
+- **REST v1 and SDK CustomerInfo are different representations.** REST returns `request_date`, `request_date_ms` and a `subscriber` wrapper with snake_case fields such as `original_app_user_id`; Flutter's wrapper parser reads `originalAppUserId`, `activeSubscriptions`, `allPurchaseDates` and `requestDate`. Parse the REST schema rather than casting its response to SDK CustomerInfo. The old source said the response body had the same structure. [https://www.revenuecat.com/docs/api-v1/customer-info-model; https://www.revenuecat.com/docs/api-v1/customers; https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/customer_info_wrapper.dart]
 
 ```http
 POST https://api.revenuecat.com/v1/subscribers/{app_user_id}/entitlements/{entitlement_id}/promotional

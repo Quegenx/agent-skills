@@ -157,7 +157,7 @@ Sentry.init({
 
 ### `instrumentation.ts` (server registration hook)
 
-- **Next.js below 14.0.4 needs `experimental.instrumentationHook: true` in `next.config`;** the hook is stable from 14.0.4.
+- **instrumentation became stable in Next.js 15.0.0.** Next.js 14.0.4 added Turbopack support; it did not stabilize the hook. Check the installed older version's experimental option rather than treating 14.0.4 as the stability boundary, as the source did. [https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation#version-history]
 - **If the file already exists, merge these lines into it.**
 
 ```typescript
@@ -251,14 +251,14 @@ export const config = {
 | `tracesSampleRate` | number | none | 0 to 1; 1.0 in dev, 0.1 in production recommended |
 | `replaysSessionSampleRate` | number | `0.1` (see [conflicts](#source-conflicts)) | Fraction of all sessions recorded |
 | `replaysOnErrorSampleRate` | number | `1.0` (see [conflicts](#source-conflicts)) | Fraction of error sessions recorded |
-| `dataCollection` | object | conservative unless set | Categories `userInfo`, `cookies`, `httpHeaders`, `httpBodies`, `queryParams`, `genAI` |
+| `dataCollection` | object | Version-specific, see below | Categories `userInfo`, `cookies`, `httpHeaders`, `httpBodies`, `urlQueryParams`, `genAI` |
 | `includeLocalVariables` | boolean | `false` | Server only |
-| `enableLogs` | boolean | `false` | Sentry Logs |
+| `enableLogs` | boolean | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | Sentry Logs |
 | `environment` | string | auto | |
 | `release` | string | auto | Commit SHA or version tag |
 | `debug` | boolean | `false` | Logs SDK activity to the console |
 
-- **`dataCollection` flips defaults when present.** Omitted, the SDK falls back to `sendDefaultPii` (default `false`). Passing the object, even `{}`, flips every unset category to its permissive default, so opt out per category. The wizard's config passes the object, so by default it sends user identity, HTTP bodies and query params; reduce that with `dataCollection: { userInfo: false }`.
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 
 | Variable | Runtime | Purpose |
 |---|---|---|
@@ -550,6 +550,8 @@ export async function submitForm(formData: FormData) {
 - **Look for a backend:** `../backend ../server ../api ../services`, `go.mod`, `requirements.txt` or `pyproject.toml`, `Gemfile`, `pom.xml` or `build.gradle`. A Node.js backend (Express, Fastify, Hapi) uses `@sentry/node`: https://docs.sentry.io/platforms/javascript/guides/express/.
 - **Connecting frontend and backend with the same DSN or linked projects enables distributed tracing** (see [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md#distributed-tracing)).
 
+**JavaScript Logs defaults:** Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
+
 ## Debugging
 
 | Symptom | Cause | Fix |
@@ -559,7 +561,7 @@ export async function submitForm(formData: FormData) {
 | Server Component errors missing, `onRequestError` not firing | Hook not exported, or SDK below 8.28.0 | `export const onRequestError = Sentry.captureRequestError`; `npm install @sentry/nextjs@latest`; Next.js 15 |
 | Edge errors missing | `sentry.edge.config.ts` not loaded | `instrumentation.ts` imports it when `NEXT_RUNTIME === "edge"` |
 | Minified stack traces | Source maps not uploading | Check `SENTRY_AUTH_TOKEN` and `authToken`; run `next build` and look for "Source Maps" in the output; use `digest` to correlate |
-| Maps missing with Turbopack | Turbopack source map upload is experimental | Fall back to webpack for production builds |
+| Maps missing with Turbopack | Check documented SDK/Next.js support | Full production support requires @sentry/nextjs 10.13.0+ and Next.js 15.4.1+; the source's unversioned experimental claim was stale [https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/] |
 | Duplicate errors | More than one handler per error, or React Strict Mode double-firing in dev | One handler per error; validate in production builds |
 | Events blocked by ad-blockers | No tunnel | `tunnelRoute: "/monitoring"`, excluded from the middleware matcher |
 | Tunnel route 404 | Route missing | The plugin creates it automatically; run `next build` after adding `tunnelRoute` |

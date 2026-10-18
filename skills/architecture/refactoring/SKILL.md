@@ -15,6 +15,7 @@ Refactoring changes the structure of code and keeps its behavior. One step does 
 | Dependency direction: ports owned by the core, configuration as a port, layer skips, driving vs driven adapters, breaking cycles with a kernel leaf and published ports | [DEPENDENCIES.md](DEPENDENCIES.md) |
 | Deep module interfaces, deletion test, leverage and locality, dependency seams and alternative designs | [DEEP-MODULES.md](DEEP-MODULES.md) |
 | Duplication evidence, safe extraction, clone comparison and migration candidates | [DUPLICATION.md](DUPLICATION.md) |
+| Dependency usage across imports, configuration and external consumers; measured upgrade/removal decisions | [DEPENDENCY-AUDIT.md](DEPENDENCY-AUDIT.md) |
 
 ## The rules
 

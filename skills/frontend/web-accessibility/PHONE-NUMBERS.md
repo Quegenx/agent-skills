@@ -35,13 +35,13 @@ A phone field takes what people type, stores one canonical form and shows a read
 | Emergency | `100` police, `101` MDA, `102` fire | libphonenumber `is_emergency_number`; never format these with `+972` [skills-il, israeli-phone-formatter] |
 
 - **Abroad:** libphonenumber's `no_international_dialling` lists only `1700`, which Wikipedia calls "Not available from most countries outside Israel"; Wikipedia says 19XX premium numbers and the 10X, 11X and 12XX short codes can't be reached from abroad. The source's blanket "1-800 ... cannot be dialed internationally" has no support in either.
-- **056 and 059** are Palestinian carriers (Ooredoo Palestine and Jawwal, per Wikipedia). libphonenumber treats them as valid mobile numbers for region IL, so it won't flag them; check the prefix yourself when the business needs an Israeli SIM [skills-il, israeli-phone-formatter].
+- **056 and 059** are Palestinian carriers (Ooredoo Palestine and Jawwal, per Wikipedia). libphonenumber treats them as valid mobile numbers for region IL, so it won't flag them; treat allocation as a numbering-policy input only. The source and old line used it to establish an Israeli SIM requirement; a prefix does not prove the current SIM provider, assignment, reachability, residency or citizenship. [libphonenumber FAQ](https://github.com/google/libphonenumber/blob/master/FAQ.md), [falsehoods](https://github.com/google/libphonenumber/blob/master/FALSEHOODS.md).
 - **057** is unallocated; Wikipedia gives it as Hot Mobile's former prefix until November 2014. **055** is split across many MVNOs (Wikipedia).
 - **Star services** (`*XXXX`): the source lists them, but libphonenumber's short-number metadata does not (`*2421` is invalid there). Left out.
 
 ## The prefix is not the carrier
 
-"The prefix in a mobile number reflects the **issuing** carrier, not the active SIM provider. Do not bill, route SMS, or gate features on prefix-derived carrier inference." For the live carrier, use an HLR or portability lookup [skills-il, israeli-phone-formatter]. The source dates Israeli number portability to 2007; the Wikipedia page it cites mentions portability without a date, so the year is unverified.
+"The prefix in a mobile number reflects the **issuing** carrier, not the active SIM provider. Do not bill, route SMS, or gate features on prefix-derived carrier inference." For the live carrier, use an HLR or portability lookup [skills-il, israeli-phone-formatter]. The State Comptroller confirms that the portability program began on 1 December 2007; the old line left the source's 2007 date unverified. [State Comptroller report](https://library.mevaker.gov.il/sites/DigitalLibrary/Pages/Reports/1746-44.aspx).
 
 ## Prove it
 

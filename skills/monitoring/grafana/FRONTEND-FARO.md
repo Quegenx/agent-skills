@@ -408,12 +408,14 @@ gcx frontend sessions get <session_id> \
 | healthy | None of those |
 | unknown | An empty dump or too little signal |
 
-1. **Exceptions** (critical).
-2. **Failed HTTP:** `0` (network, CORS, abort) or `5xx` are critical; `4xx` is a warning unless it blocks the flow.
+The source's session-problem labels map critical to P1, warning to P2 and info to P3 here. These are priorities within this session analysis, not proof of a service-wide incident. [grafana/skills, frontend-session-rca/SKILL.md]
+
+1. **Exceptions** (P1).
+2. **Failed HTTP:** `0` (network, CORS, abort) or `5xx` are P1; `4xx` is P2 unless it blocks the flow.
 3. **ANR or freeze.**
 4. **Poor performance.**
 5. **Error logs.**
-6. **Rage clicks:** 3 or more of the same action on the same view within about 1.5 s (info).
+6. **Rage clicks:** 3 or more of the same action on the same view within about 1.5 s (P3).
 
 - **Deduplicate** consecutive identical exceptions; report first time, count and last time. Skip `faro_internal_*`, `session_resume`, `session_extend` and raw `performanceEntry` rows.
 - **Web-vital thresholds,** used only when the dump has no `rating` (the dump's `rating` wins over recomputing):

@@ -66,57 +66,7 @@ node app.js
 
 ### Manual SDK straight to the Cloud gateway (TypeScript, ESM)
 
-```bash
-npm install --save \
-  @opentelemetry/api \
-  @opentelemetry/sdk-node \
-  @opentelemetry/exporter-trace-otlp-http \
-  @opentelemetry/exporter-metrics-otlp-http \
-  @opentelemetry/resources \
-  @opentelemetry/semantic-conventions \
-  @opentelemetry/auto-instrumentations-node
-```
-
-```typescript
-// instrumentation.ts
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
-import { Resource } from '@opentelemetry/resources';
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-
-const sdk = new NodeSDK({
-  resource: new Resource({
-    [ATTR_SERVICE_NAME]: 'myapp',
-    [ATTR_SERVICE_VERSION]: '1.0.0',
-  }),
-  traceExporter: new OTLPTraceExporter({
-    url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT + '/v1/traces',
-    headers: {
-      Authorization: `Basic ${Buffer.from(
-        `${process.env.GRAFANA_INSTANCE_ID}:${process.env.GRAFANA_API_KEY}`
-      ).toString('base64')}`,
-    },
-  }),
-  metricReader: new PeriodicExportingMetricReader({
-    exporter: new OTLPMetricExporter({
-      url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT + '/v1/metrics',
-    }),
-  }),
-  instrumentations: [getNodeAutoInstrumentations()],
-});
-
-sdk.start();
-process.on('SIGTERM', () => {
-  sdk.shutdown().finally(() => process.exit(0));
-});
-```
-
-- **Load it before the app code:** `node --require ./instrumentation.js app.js`.
-- **The example imports `@opentelemetry/sdk-metrics`,** which the install line above does not list.
-- **The sources disagree on the semantic-convention constants:** this example uses `ATTR_SERVICE_NAME` / `ATTR_SERVICE_VERSION`; the APM setup example (CommonJS, gRPC to `http://localhost:4317` with `@opentelemetry/exporter-trace-otlp-grpc`, run with `node -r ./tracing.js app.js`) uses `SEMRESATTRS_SERVICE_NAME` / `SEMRESATTRS_SERVICE_NAMESPACE`. Check the current `@opentelemetry/semantic-conventions` exports.
+Use the single vendor-neutral SDK definition in [INSTRUMENT.md](../../backend/observability/INSTRUMENT.md), then configure the Grafana gateway endpoint and credentials above. OpenTelemetry JS 2.x creates resources with `resourceFromAttributes`; the removed example used `new Resource` with unversioned installation instructions, omitted an imported metrics package and mixed loader conventions. Match the installed SDK, resource and ESM loader versions. [OpenTelemetry JS 2.x upgrade](https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/upgrade-to-2.x.md)
 
 ### Manual span
 
@@ -164,27 +114,7 @@ logger.info({ ...getTraceContext(), userId: '123' }, 'User logged in');
 // Output: {"traceId":"abc123","spanId":"def456","userId":"123","msg":"User logged in"}
 ```
 
-The APM setup source then has Alloy extract both fields for Loki:
-
-```river
-loki.process "extract_trace" {
-  stage.json {
-    expressions = {
-      traceId = "traceId",
-      spanId  = "spanId",
-    }
-  }
-  stage.labels {
-    values = {
-      traceId = "",
-      spanId  = "",
-    }
-  }
-  forward_to = [loki.write.grafana_cloud.receiver]
-}
-```
-
-- **The sources disagree on trace IDs as labels:** this APM setup snippet turns `traceId` and `spanId` into Loki labels; the Loki label docs say dynamic labels should never be a trace ID and list trace ID as high cardinality, preferring structured metadata ([LOKI.md](LOKI.md)). Confirm in the current Loki docs before copying the `stage.labels` step.
+Keep trace and span IDs in log content or Loki structured metadata, rather than indexed labels. Structured metadata requires the documented compatible storage configuration (chunk format V4, schema v13 or later). The APM source promoted `traceId` and `spanId` to indexed labels, creating high cardinality. [Loki structured metadata](https://grafana.com/docs/loki/latest/get-started/labels/structured-metadata/); the canonical Loki guidance is [LOKI.md](LOKI.md).
 
 ## Through Alloy
 
@@ -215,119 +145,8 @@ otelcol.auth.basic "cloud" {
 ```
 
   Env: `GRAFANA_CLOUD_OTLP_ENDPOINT=https://otlp-gateway-prod-us-east-0.grafana.net/otlp`, `GRAFANA_CLOUD_INSTANCE_ID=123456`, `GRAFANA_CLOUD_API_KEY=glc_eyJ...`. The Alloy syntax reference documents `sys.env` rather than `env` (see [ALLOY.md](ALLOY.md#source-disagreements)).
-- **The full "Application Observability" Alloy config** (save as `config.alloy`): resource detection, a transform that drops noisy resource attributes, the `host_info` connector that generates host metrics from traces (metrics and traces pass through it, logs go straight to batch), batch, and one OTLP HTTP exporter:
-
-```alloy
-// =========================================
-// OTLP Receiver - accepts telemetry from apps
-// =========================================
-otelcol.receiver.otlp "default" {
-  grpc {
-    endpoint = "0.0.0.0:4317"
-  }
-  http {
-    endpoint = "0.0.0.0:4318"
-  }
-
-  output {
-    metrics = [otelcol.processor.resourcedetection.default.input]
-    logs    = [otelcol.processor.resourcedetection.default.input]
-    traces  = [otelcol.processor.resourcedetection.default.input]
-  }
-}
-
-// =========================================
-// Resource Detection - enrich with host/cloud metadata
-// =========================================
-otelcol.processor.resourcedetection "default" {
-  detectors = ["env", "system", "docker"]
-
-  system {
-    hostname_sources = ["os"]
-  }
-
-  output {
-    metrics = [otelcol.processor.transform.drop_unneeded_resource_attributes.input]
-    logs    = [otelcol.processor.transform.drop_unneeded_resource_attributes.input]
-    traces  = [otelcol.processor.transform.drop_unneeded_resource_attributes.input]
-  }
-}
-
-// =========================================
-// Transform - remove noisy/unnecessary attributes
-// =========================================
-otelcol.processor.transform "drop_unneeded_resource_attributes" {
-  error_mode = "ignore"
-
-  trace_statements {
-    context = "resource"
-    statements = [
-      "delete_key(attributes, \"process.pid\")",
-      "delete_key(attributes, \"process.runtime.description\")",
-      "delete_key(attributes, \"process.runtime.name\")",
-      "delete_key(attributes, \"process.runtime.version\")",
-    ]
-  }
-
-  metric_statements {
-    context = "resource"
-    statements = [
-      "delete_key(attributes, \"process.pid\")",
-    ]
-  }
-
-  log_statements {
-    context = "resource"
-    statements = [
-      "delete_key(attributes, \"process.pid\")",
-    ]
-  }
-
-  output {
-    metrics = [otelcol.connector.host_info.default.input]
-    logs    = [otelcol.processor.batch.default.input]
-    traces  = [otelcol.connector.host_info.default.input]
-  }
-}
-
-// =========================================
-// Host Info Connector - generate host metrics from traces
-// =========================================
-otelcol.connector.host_info "default" {
-  host_identifiers = ["host.name"]
-
-  output {
-    metrics = [otelcol.processor.batch.default.input]
-  }
-}
-
-// =========================================
-// Batch Processor - group data for efficiency
-// =========================================
-otelcol.processor.batch "default" {
-  output {
-    metrics = [otelcol.exporter.otlphttp.grafana_cloud.input]
-    logs    = [otelcol.exporter.otlphttp.grafana_cloud.input]
-    traces  = [otelcol.exporter.otlphttp.grafana_cloud.input]
-  }
-}
-
-// =========================================
-// OTLP HTTP Exporter - send to Grafana Cloud
-// =========================================
-otelcol.exporter.otlphttp "grafana_cloud" {
-  client {
-    endpoint = env("GRAFANA_CLOUD_OTLP_ENDPOINT")
-
-    auth = otelcol.auth.basic.grafana_cloud.handler
-  }
-}
-
-otelcol.auth.basic "grafana_cloud" {
-  username = env("GRAFANA_CLOUD_INSTANCE_ID")
-  password = env("GRAFANA_CLOUD_API_KEY")
-}
-```
+- **Preserve the unaffected full-pipeline stages:** an OTLP receiver accepts gRPC on 4317 and HTTP on 4318, resource detection enriches telemetry, selected transforms remove unwanted attributes, batching feeds the authenticated OTLP HTTP exporter. The source selected `process.pid` removal for every signal and additionally `process.runtime.description`, `process.runtime.name` and `process.runtime.version` for traces; those are source cleanup choices, not required removals. Its system detector used the OS hostname. Keep these stages on each signal's own path; the corrected host-metric branch below is additional. Component configuration and source detector spelling still require the installed-version checks in [ALLOY.md](ALLOY.md#source-disagreements). [grafana/skills, opentelemetry, references/collector-config.md]
+- **Keep a separate trace export path when generating host metrics.** `otelcol.connector.host_info` consumes traces and emits metrics; it does not pass the original traces through. Route original traces to the trace processor/exporter separately, and route generated host metrics into the metrics pipeline. The removed full source configuration sent both original metrics and traces through `host_info`, losing the original trace path. Retain only resource transforms whose removed attributes are actually unwanted. [Alloy host_info connector](https://grafana.com/docs/alloy/latest/reference/components/otelcol/otelcol.connector.host_info/)
 
 - **Run it:**
 

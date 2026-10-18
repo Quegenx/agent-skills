@@ -14,6 +14,9 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 | Auditing an eval (including whether it can tell a better agent from a worse one), release gates and the baseline, gates that lie, gating an agent's findings (re-run thresholds, hard triggers, accepting a re-run), production sampling and alerts | [GATES.md](GATES.md) |
 | Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, hillclimbing with keep or revert, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
 | Auditing a product's docs, SDK or a SKILL.md by having several subagents attempt one task: goal (a task per framework or setup path), personas, credentials, traces, URL provenance, scoring, the write-up | [DX-AUDIT.md](DX-AUDIT.md) |
+| Human-led open notes, accepted failure definitions versus accepted assignments, unresolved evidence and taxonomy lineage | [REVIEW-AND-TAXONOMY.md](REVIEW-AND-TAXONOMY.md) |
+| Preserving source exports, reviewed labels and versions across managed/local tools, operation schemas and migration evidence | [MANAGED-AND-LOCAL.md](MANAGED-AND-LOCAL.md) |
+| DeepEval TypeScript modes and metric boundaries, confident-trace Node instrumentation and raw OTLP contracts | [DEEPEVAL.md](DEEPEVAL.md) |
 | What to fix in the agent once a failure is understood | the `agent-harness` skill |
 | Judges and classifiers built on typed probabilities | the `jev-decisions` skill |
 

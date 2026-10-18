@@ -15,6 +15,16 @@ Use the numbers as a starting point, not a quota: classify recent bugs by the sm
 
 **What a handler unit test can't prove:** a mocked `isOverlapping` returning `true` shows the handler reacts to an overlap, not that overlap detection works. The query, constraints and transaction need a test with real rows.
 
+## Independent evidence
+
+[morluto/rea, rea-analysis-optimization/SKILL.md; rea-ci-tests-audit/SKILL.md]
+
+- Choose an oracle independent of the changed producer: source-built expectations, independently mapped bytes or a producer whose interpretation is checked separately. Two wrappers sharing one faulty decoder can agree while both are wrong.
+- Separate fake-producer, boundary and actual-provider evidence. A fixture or fake engine does not establish the corresponding real provider's behavior.
+- Preserve intentionally malformed/adversarial fixtures and their expected rejection. Updating every fixture to become valid can delete the behavior the suite exists to protect.
+- A missing required test/report must not become a green result. Optional lanes may skip only with their stated prerequisites and limits recorded.
+- A faster run that removes a distinct assertion, lifecycle boundary or concurrency case has changed coverage; compare equivalent completed work before claiming improvement.
+
 ## Integration tests against real infrastructure
 
 In-memory substitutes behave like mocks: no constraints, different SQL, different isolation. Run the real engine, and make each run start clean.
@@ -51,7 +61,7 @@ const app = buildApp({ databaseUrl: inject("databaseUrl"), email: new FakeEmailS
 - **Assert both halves of a rejection:** the 400 and that no row was written.
 - **Drive the public entrance** (an HTTP request, the Convex function, the queue message) and assert the observable outcome: the response, the rows, the message published. Tests that don't know whether the handler uses a query builder or raw SQL, one file or three, survive every refactor inside it.
 - **Hide setup behind helpers** (`createCustomer()`, `authenticatedClient()`, `resetDatabase()`), so each test reads as the business scenario.
-- **Supabase:** `supabase start` runs the full local stack (Postgres, Auth, Storage) in Docker; run migrations with `supabase db reset` and test RLS with two real users. **Convex:** `convex-test` runs functions against an in-memory mock of the backend for fast logic tests; keep a few tests against a real dev deployment for what the mock doesn't model.
+- **Supabase:** `supabase start` runs the full local stack (Postgres, Auth, Storage) in Docker; run migrations with `supabase db reset` and test RLS with two real users. **Convex:** `convex-test` runs functions against an in-memory mock of the backend for fast logic tests; keep a few tests against a real dev deployment for what the mock doesn't model. Convex-specific mock setup, component registration and authorization cases are in [convex/TESTING.md](../../backend/convex/TESTING.md). [get-convex/agent-skills, convex-test, convex-verify]
 - **CI** needs Docker (GitHub Actions' Ubuntu runners have it). Expect a few minutes for a suite of hundreds of integration tests with container reuse and file-level parallelism.
 
 ## Workflows across modules

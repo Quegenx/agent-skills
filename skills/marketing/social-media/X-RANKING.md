@@ -1,72 +1,61 @@
 # X ranking
 
-How X's "For You" feed ranks posts and what to change in posting practice because of it. Text is from coreyhaines31/marketingskills `social` (`references/x-algorithm.md`, MIT), which reads xAI's open-sourced algorithm (https://github.com/xai-org/x-algorithm, the source's "May 2026 release", with the Phoenix ranker and the Grox content-understanding pipeline). This repo did not check the code itself; the source's own tags are kept.
+Feed-ranking interpretation from [coreyhaines31/marketingskills, social/references/x-algorithm.md], corrected against xAI's current published [README](https://github.com/xai-org/x-algorithm/blob/main/README.md), [parameters](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/params/param.rs), [Phoenix scorer](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/scorers/phoenix_scores_ranking_scorer.rs) and [value scoring](https://github.com/xai-org/x-algorithm/blob/main/xai-value-model/scoring.rs), read on 2026-10-18. These are published implementation/defaults, not a guarantee of every live experiment's configuration.
 
-**Sourcing note** `[coreyhaines31/marketingskills, social]`: the release publishes the ranking structure (which signals are scored and how they combine) but not the weight values (`params.rs` is withheld). Rules are tagged **[verified]** when the mechanism is visible in the code and **[reported]** when the number or magnitude comes from secondary analysis. "Structure changes slowly; reported numbers age fast."
+## Structure and predicted outcomes
 
-## How ranking works
+[coreyhaines31/marketingskills, social/references/x-algorithm.md; xAI sources linked above]
 
-`[coreyhaines31/marketingskills, social]`
+- Followed-account and retrieved out-of-network candidates pass eligibility filters and scoring. A post can be absent before ranking because of seen/served, age, muted-keyword or author filters.
+- The ranker predicts engagement outcomes, then weights those predictions. A published coefficient is not a multiplier on a post's observed engagement count or a promise of reach.
+- Separate quote and quoted-click terms do not mean quoting earns twice the distribution. The source and this file formerly called that mechanism "Quote posts score twice"; retain the distinct predictions without that causal claim.
+- Author-diversity scoring considers repeated authors in the ordered candidate pool. It does not prove that a second post within one hour receives a fixed penalty; the source's hourly spacing is a publishing heuristic.
 
-1. Candidate posts come from two sources: accounts the viewer follows (Thunder) and ML-retrieved posts from the global corpus (Phoenix retrieval). You always compete for out-of-network reach.
-2. Filters remove ineligible posts before scoring: too old, already seen or served, muted keywords, blocked or muted authors.
-3. The Phoenix transformer predicts a probability for each engagement type: about 15 separate predictions, not one quality score.
-4. Final score = a weighted sum of those probabilities. Positive actions add; predicted negative actions (not interested, mute, block, report) subtract.
-5. An author-diversity scorer decays the scores of repeated authors within a feed response, so your posts compete with each other.
+## Signal families
 
-The model has no hand-engineered quality features; it learns from engagement histories. You optimize for the behaviors it predicts: staying to read, sending to a friend, following the author, joining the conversation. "The rules tune distribution; the story earns the engagement."
+[coreyhaines31/marketingskills, social/references/x-algorithm.md; xAI scorer and value-model sources linked above] Distinct modeled outcomes do not imply equal, positive or stable live coefficients:
 
-## The signals
-
-`[coreyhaines31/marketingskills, social]` [verified] Each is a separate weighted term in the scoring code:
-
-| Signal | What to notice |
+| Family | Distinction |
 |---|---|
-| Favorite (like) | The baseline, and the weakest lever given how many other signals exist |
-| Reply | Conversation-starting posts earn a distinct signal |
-| Repost | Public amplification |
-| Quote and quoted-click | Two terms: engagement on a quote post and clicks through to the quoted post both score |
-| Click | Opening the post detail |
-| Profile click | Its own scored action |
-| Share, share via DM, share via copy link | Three separate share signals; private sharing is modeled explicitly |
-| Video quality view | Only above a minimum duration (`MIN_VIDEO_DURATION_MS`); short clips earn zero video credit |
-| Dwell (two forms) | Time reading, scored as a threshold and as continuous time |
-| Photo expand | Tapping to enlarge an image |
-| Follow author | A post that converts a viewer into a follower earns its own signal |
-| Not interested, mute, block, report | Negative weights; the model predicts these too |
+| Favorite, reply, repost | Separate predicted engagement outcomes |
+| Quote and quoted-click | Quote engagement and clicking through to the quoted post are different terms |
+| Click and profile click | Opening post detail differs from clicking the author's profile |
+| Share, share via DM, share via copy link | The source identifies separate public/private sharing outcomes |
+| Video quality view | A duration-gated outcome; inspect both the threshold and its coefficient |
+| Dwell | The source distinguishes thresholded and continuous reading-time terms |
+| Photo expand | Opening the larger image |
+| Follow author | Following from the post is a distinct modeled outcome |
+| Not interested, mute, block, report | Negative-action predictions, distinct from a viewer already taking those actions |
 
-## The 10 rules
+## Published defaults
 
-`[coreyhaines31/marketingskills, social]`
+[xAI parameters](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/params/param.rs), current file inspected 2026-10-18; the README dates publication of key weights to 2026-08-13.
 
-1. **Open with a specific claim in the first 8 words.** [reported] Dwell is scored two ways [verified], and scroll-past kills it. The hook is the post.
-2. **Wait ~60 minutes between original posts.** [reported number] The author-diversity scorer is verified: each additional post from the same author in a feed response gets a decayed score.
-3. **Name your topic in the first 10 words.** [reported] Topic-based candidate sourcing is verified; the algorithm routes posts to topic followers only if it can tell the topic.
-4. **Write for the DM forward, not the like.** [verified structure; relative weight reported] "would someone send this to a friend?" beats "would someone like this?"
-5. **Quote posts score twice.** [verified structure] Quote engagement and quoted-click are separate terms; quoting with added insight beats a plain repost.
-6. **Write for the follow.** [verified structure] Follow-author is a distinct signal.
-7. **Make them curious enough to click your profile.** [verified structure] Profile clicks are scored, which is the argument for a strong bio and pinned post.
-8. **Name specific things.** [verified mechanism] Specificity enables topic routing, and the muted-keyword filter removes posts before scoring: generic engagement-bait phrases are commonly muted; specific nouns rarely are.
-9. **Video must clear the minimum duration, with captions.** [verified mechanism; ~8 s reported] Below the threshold video earns zero video credit; captions serve dwell (most viewing is muted).
-10. **Be present for the first 30 minutes.** [reported] Each reply you answer is a fresh engagement event. "Post when you can stay, not when the scheduler fires."
+| Parameter | Published default |
+|---|---:|
+| FavoriteWeight | 0.66 |
+| ReplyWeight | 5 |
+| PhotoExpandWeight | 0.05 |
+| ProfileClickWeight | 0 |
+| VqvWeight | 0 |
+| QuoteWeight | 5 |
+| QuotedClickWeight | 0.05 |
+| MinVideoDurationMs | 10000 |
 
-## What kills reach
+The source and this file formerly said weights were unpublished, likes were the weakest lever, profile clicks necessarily added score and the video threshold was about eight seconds. Those claims do not follow from these defaults: some listed coefficients are lower than favorite, some are zero, and the duration default is ten seconds. A duration gate does not by itself guarantee a positive contribution when the relevant coefficient is zero. Recheck the actual revision/configuration before quoting values.
 
-`[coreyhaines31/marketingskills, social]` [verified]
+## Source publishing heuristics
 
-- **Muted keywords:** filtered before scoring. Spammy CTA phrases and rage-bait vocabulary are widely muted.
-- **Predicted negative actions:** a post that pattern-matches content people block, mute or mark not interested is penalized before anyone acts. Engagement bait is a modeled negative ([POSTS.md](POSTS.md#no-ai-tells)).
-- **Posting bursts:** author-diversity decay; your second post in an hour starts handicapped.
-- **Already-seen content:** reposting the same content quickly hits the seen or served filters; space evergreen reruns.
+[coreyhaines31/marketingskills, social/references/x-algorithm.md]
 
-## Caveats
-
-`[coreyhaines31/marketingskills, social]`
-
-- **Weights are unpublished.** "shares are worth N× likes" claims are inference. The safe conclusion is which behaviors are scored at all.
-- **This ages fast.** Check https://github.com/xai-org/x-algorithm for changes before treating numbers as current.
-- **X-specific.** Hooking early, specificity and reply presence travel to other platforms; 60-minute spacing, quote double-counting and video minimums do not.
+- Open with a specific claim in the first eight words and name the topic in the first ten. These word counts are the source's writing preferences, not code-enforced routing thresholds.
+- Space original posts about sixty minutes apart and be available for replies for the first thirty minutes. Neither number is established by the inspected diversity/ranking code.
+- Make the post useful enough to forward and give a quote post added insight. Distinct modeled behaviors do not prove a universal DM-versus-like or quote-versus-repost advantage.
+- Use concrete nouns, captions and a clear bio/pinned post where useful. Do not promise that profile clicks improve distribution under a zero default weight or that muted viewing is universal.
+- Avoid engagement bait and misleading claims; the general copy rules remain in [POSTS.md](POSTS.md#no-ai-tells). A source's publishing advice is not permission for coordinated engagement or automated unsolicited contact.
 
 ## Prove it
 
-An X plan spaces original posts about an hour apart rather than in a burst; every post names its topic and a specific claim in its opening words and names concrete things; none uses bait phrasing ("Like and retweet if…"); video posts clear about 8 seconds with captions; the poster is around for the first 30 minutes; and any number quoted from this file keeps its [verified] or [reported] tag. A draft like "We're so excited to announce something HUGE is coming... 🔥🔥" gets rewritten around the named feature, not lightly edited.
+[xAI sources linked above; coreyhaines31/marketingskills, social/references/x-algorithm.md]
+
+Every ranking claim identifies whether it is observed implementation, a dated default or a source heuristic. Predicted probabilities and observed engagement counts remain distinct; no fixed reach multiplier, hourly penalty or universal video-credit promise is inferred from separate terms or configuration values.

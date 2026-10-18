@@ -67,7 +67,7 @@ A level is a named set of settings (pages, crawl strategy, cloud checks, renderi
 
 | Level | Pages | Behaviour | Use [audit-website] |
 |---|---|---|---|
-| `quick` | 25 | The URL and its sitemaps, no link following, no cloud checks. Default when signed out | First look, CI checks |
+| `quick` | 25 | The URL and its sitemaps, no link following; verify actual rendering/billing mode. Default when signed out | First look, CI checks |
 | `surface` | 100 | Follows links, one page per URL pattern first (`/blog/{slug}` crawled once), cloud and external link checks. Default when signed in | Template-level coverage |
 | `full` | 500 | Every reachable page up to the budget, with the cloud checks | Final verification |
 
@@ -76,7 +76,7 @@ squirrel audit https://example.com --level quick --format llm
 squirrel audit https://example.com --level full -m 500 --format llm
 ```
 
-- Progression: a quick first pass learns the structure, technology and biggest problems without loading the site; then surface or full. Signed in, the default is surface, so pass `--level quick` for the first look. Sign off against `--level full` [audit-website].
+- Progression: a quick first pass makes a shallow crawl of target pages and sitemaps; it is not a zero-request or zero-impact preview. Then choose surface or full within the authorized scope. Signed in, the default is surface, so pass `--level quick` for the first look. Report actual visited pages, skipped checks and budget/time/credit limits even at `full`; the level name does not prove complete coverage. The source and old line overstated quick as not loading the site. [audit-website; crawl documentation](https://docs.squirrelscan.com/crawl).
 - `--level` needs 0.0.108 or later; `--coverage` / `-C` is the older name (`fast` means quick).
 - In the cloud (dashboard, API, hosted MCP), full is Pro and Team. A Free organization's full request samples one page per URL pattern first, up to 500 pages, and says so (`levelNotice` in the API, `level_notice` from the hosted MCP).
 
@@ -109,6 +109,7 @@ Details: `-P` is a capital P (lowercase `-p` is `--publish`). `--probe-budget` c
 
 ## Accounts, credits and keys
 
+- **Quick alone does not establish free or private execution.** Current quickstart and credit guidance disagree about signed-in quick processing. Prefer explicit `--offline` for the documented no-cloud/no-publish/no-telemetry contract; target crawling still makes network requests. [squirrelscan credits](https://docs.squirrelscan.com/cloud/credits)
 - **Signed out, or with `--offline`,** an audit runs entirely on the machine, needs no account and costs nothing. `--offline` means no cloud, no publish, no telemetry.
 - **Signed in,** every audit is a billed cloud audit at every level, quick included: 50 credits plus 2 per audited page, however the page was fetched (up to 100 credits for 25 pages). `--http` skips the cloud browser, not the page charge. A cloud audit (dashboard, API, hosted MCP) also pays 1 credit per distinct external link checked. Free accounts get 500 credits a month. `squirrel credits` shows the balance and pricing.
 - When the balance or `[cloud] max_credits_per_audit` covers fewer pages than the level asks for, the audit runs on what it can pay for and says so: tell the user rather than treating the smaller audit as the whole site. Below the 52 credits a one-page audit needs, `squirrel audit` runs local-only, and the local MCP `audit_website` stops without charging.
@@ -225,14 +226,13 @@ With the opt-in `squirrelscan-channel` plugin, cloud audit events arrive in the 
 - **Slow or stuck crawl:** `--verbose`; large sites take minutes.
 - **Audit dies after the first page** (connection refused, a sudden block, a run of timeouts): the firewall may be banning the discovery probes an audit sends first (`llms.txt`, `/.well-known/*`, `/swagger.json`); a common fail2ban "sensitive files" jail bans an IP for `/swagger.json`. Re-run with `--disable-discovery-probes` or set `disable_discovery_probes = true` under `[crawler]`; the agent experience checks then report "not checked". An existing ban may last a while: wait it out or ask the site owner to lift it. To keep those checks, have the owner let the audit through (https://docs.squirrelscan.com/cloud/firewall).
 - **Redirect or block behind an access gateway** (Cloudflare Access, Vercel deployment protection): send the gateway's header, such as a Cloudflare Access service token (`CF-Access-Client-Id`, `CF-Access-Client-Secret`), with `-H`. Custom headers are not sent on cloud browser renders, so use `--http` (or rendering off for the website), and audit the exact `https://` origin the gateway protects, since a redirect to another origin drops the headers. Gateways with no header route (Okta, Entra ID) need the CLI on a network they admit.
-- **Anything else:** `squirrel self doctor`, then report it (`squirrel feedback --category bug_report ... --json` or the `send_feedback` MCP tool). Never paste secrets found during an audit into feedback.
+- **Anything else:** inspect `squirrel self doctor` and prepare a local diagnostic summary. Send feedback only when the user explicitly requests or approves it: `squirrel feedback` and `send_feedback` are outward writes, and `--message` / `--json` can send without prompting. The old line directed automatic feedback. Exclude secrets from any authorized report. [Feedback CLI](https://docs.squirrelscan.com/cli/feedback), [MCP](https://docs.squirrelscan.com/developers/mcp)
 
 These are for sites the user owns or is authorized to audit; on anyone else's site a block is the answer, not a problem to route around ([../../web-automation/web-scraping/CRAWLING.md](../../web-automation/web-scraping/CRAWLING.md#guardrails)).
 
 ## CI
 
 - `--fail-on "score<90"` (repeatable) exits non-zero when a threshold trips; run it with an org key in `SQUIRRELSCAN_API_KEY`, or signed out for a free local audit.
-- The GitHub Action [squirrelscan/audit-action](https://github.com/squirrelscan/audit-action) runs an audit in CI "and fail[s] the build on regressions" (MIT).
 - A gate on rule findings and score is deterministic, unlike a gate on milliseconds ([../../backend/performance-and-caching/MEASURE.md](../../backend/performance-and-caching/MEASURE.md#deterministic-counts-and-ratchets)).
 
 ## Prove it

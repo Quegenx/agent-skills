@@ -185,7 +185,7 @@ export default app;
 
 ## Secrets, release and source maps
 
-- **The DSN is a secret, not a var:** locally `echo 'SENTRY_DSN="https://examplePublicKey@o0.ingest.sentry.io/0"' >> .dev.vars`; in production `npx wrangler secret put SENTRY_DSN`; add `SENTRY_DSN: string` to `Env`. Never put it in `wrangler.toml` vars, which are visible in source control. Check with `wrangler secret list`.
+- **The DSN is public; SENTRY_AUTH_TOKEN is secret.** A DSN permits event submission, not reading stored data. A Cloudflare secret binding is an optional storage choice, not required because the DSN is confidential. The old source falsely called source-controlled DSN vars secret exposure. Keep actual auth tokens out of chat, tool output and source control. [https://docs.sentry.io/concepts/key-terms/dsn-explainer/]
 - **Release from version metadata:** add `[version_metadata]` with `binding = "CF_VERSION_METADATA"`. Priority: the `release` option, then `SENTRY_RELEASE`, then `CF_VERSION_METADATA.id`.
 - **Source maps with Vite:** `npm install @sentry/vite-plugin --save-dev`, set `build: { sourcemap: true }` and add `sentryVitePlugin({ org, project, authToken: process.env.SENTRY_AUTH_TOKEN })`. Upload details and debug IDs are in [RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md).
 
@@ -196,9 +196,9 @@ export default app;
 | `dsn` | `env.SENTRY_DSN`, read automatically | |
 | `tracesSampleRate` | `env.SENTRY_TRACES_SAMPLE_RATE` (parsed as float) | 0 to 1; 1.0 in dev, lower in production. Without it or `tracesSampler`, no spans are created |
 | `tracesSampler` | | Mutually exclusive with `tracesSampleRate` |
-| `dataCollection` | Same omitted versus `{}` semantics as Node ([NODE.md](NODE.md#configuration)) | Cookies are off by default here: `dataCollection.cookies: true` to include them. Headers are captured with sensitive values redacted; control with `httpHeaders` and `httpBodies` |
+| `dataCollection` | [Versioned JavaScript schema](REACT.md#datacollection) | Check Cloudflare integration-specific categories and explicit privacy settings |
 | `sendDefaultPii` | `false` | Legacy |
-| `enableLogs` | `false` | |
+| `enableLogs` | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | |
 | `environment` | `env.SENTRY_ENVIRONMENT` | |
 | `release` | See above | |
 | `debug` | `env.SENTRY_DEBUG` (`"true"` or `"1"`) | |
@@ -224,7 +224,7 @@ export default app;
 - **Production sample rate, the references disagree:** the error reference says `0.1` to `0.5`, the tracing reference says start with `0.05` to `0.1`. Set it from `wrangler.toml` with `[vars] SENTRY_TRACES_SAMPLE_RATE = "0.1"`, or with a `tracesSampler` reading `samplingContext.attributes?.["url.full"]` (health checks `0`, `/api/` `0.2`, default `0.1`). General sampling guidance is in [SAMPLING-AND-QUOTAS.md](SAMPLING-AND-QUOTAS.md).
 - **`http.server` spans** carry `http.request.method`, `url.full`, `http.response.status_code`, `http.request.body.size`, `user_agent.original`, `network.protocol.name`. `OPTIONS` and `HEAD` requests create no spans (errors are still captured).
 - **Streaming responses** (SSE, streaming AI) keep the root span alive until the stream is consumed.
-- **Outbound `fetch()`** is traced by `fetchIntegration`, which injects `sentry-trace` and `baggage`, into every outbound request when `tracePropagationTargets` is unset. Set the targets so the headers don't leak to third parties. `propagateTraceparent: true` is an explicit opt-in. Don't remove `fetchIntegration` from the defaults or fetch spans disappear.
+- **Outbound `fetch()`** is traced by `fetchIntegration`, which injects `sentry-trace` and `baggage`, into every outbound request when `tracePropagationTargets` is unset. Set the targets so the headers don't leak to third parties. `propagateTraceparent: true` opts into the W3C `traceparent` header, under the propagation targets; it does not control `sentry-trace` as the source suggested. [https://develop.sentry.dev/sdk/telemetry/traces/trace-propagation/] Don't remove `fetchIntegration` from the defaults or fetch spans disappear.
 - **Manual propagation:** spread `Sentry.getTraceData()` into fetch headers; for HTML responses `Sentry.getTraceMetaTags()` returns `<meta name="sentry-trace" .../><meta name="baggage" .../>`.
 - **0 ms spans are expected for CPU-bound work:** Workers timers only advance during I/O.
 - **Incoming traces continue automatically:** `withSentry` and `sentryPagesPlugin` read `sentry-trace` and `baggage` from incoming requests.
@@ -232,7 +232,7 @@ export default app;
 
 ## Logs
 
-- **`enableLogs: true` is required.** The Cloudflare reference writes the signature as `Sentry.logger.<level>(message: string, params?: unknown[], attributes?: Record<string, unknown>)` with printf placeholders `%s`, `%d`, `%f`, `%o`, `%O`: `Sentry.logger.info("User %s authenticated successfully", [userId]);`, `Sentry.logger.info("Request processed", [], { "http.method": request.method, ... })`. The Node reference uses `(message, attributes?, options?)` with `Sentry.logger.fmt` for parameters ([NODE.md](NODE.md#logs)). Confirm against your installed types.
+- **Logger API:** use `Sentry.logger.<level>(message, attributes)` and the `Sentry.logger.fmt` tagged template for parameters, as in [NODE.md](NODE.md#logs). The old Cloudflare source invented a printf-style params array before attributes. Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
 - **Console:** the default `consoleIntegration` sends console output to breadcrumbs only; `Sentry.consoleLoggingIntegration({ levels: ["warn", "error"] })` forwards it to Logs.
 - **Logs link to the active trace** when tracing is on; with tracing off they carry no trace link.
 - **Practice:** put searchable data in attributes; use format strings with parameters so Sentry groups similar logs; log what matters (auth, payments, external APIs, errors), not everything, and never in tight loops; keep `console.log` for local debugging; drop debug and trace in production with `beforeSendLog`.

@@ -35,7 +35,7 @@ TOP 10 POSTS - 2026-06-05
 
 ## Scoring rubric
 
-`[coreyhaines31/marketingskills, social]` Score each post 1 to 10 on five dimensions, weight, sum and rank.
+`[coreyhaines31/marketingskills, social]` Score each post 1 to 10 on five dimensions, weight, sum and rank. The weights sum to 8, so the raw maximum is 80; divide the weighted sum by 8 to display a score out of 10, or report the raw score out of 80. The source and this file formerly displayed /10 without this normalization; do not invent missing component scores to reproduce an example total.
 
 | Dimension | What it measures | Weight |
 |---|---|---|

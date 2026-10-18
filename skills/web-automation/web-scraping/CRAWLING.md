@@ -19,7 +19,7 @@
 1. The spider builds requests from its start URLs.
 2. A scheduler holds them in a priority queue and drops duplicates by fingerprint.
 3. An engine dequeues under global and per-domain concurrency limits and delays, and drops requests robots.txt disallows.
-4. Each request goes to the session it names; the response is checked for a block and retried if blocked.
+4. Each request goes to the session it names; check its status and stop at an access block rather than escalating into evasion. [D4Vinci/Scrapling, scrapling-official/SKILL.md; user standing rule 9]
 5. The callback yields items or new requests.
 6. It repeats until the queue is empty with no active tasks, or the crawl is paused.
 
@@ -42,7 +42,7 @@ result.completed; result.paused
 |---|---|
 | Item pipelines | `on_scraped_item()` |
 | Middlewares | Session manager |
-| Blocked detection | `is_blocked()` + `retry_blocked_request()` |
+| Blocked response | Stop and use the permitted access route below |
 | `CONCURRENT_REQUESTS` | `concurrent_requests` |
 | `ROBOTSTXT_OBEY` | `robots_txt_obey` |
 | `JOBDIR` | `crawldir` |
@@ -52,10 +52,10 @@ result.completed; result.paused
 ## Requests and dedup
 
 - **`Request(url, sid="", callback=None, priority=0, dont_filter=False, meta={}, **kwargs)`:** the callback defaults to `parse`; extra kwargs go to the session's fetch.
-- **`response.follow(url, ...)`** resolves relative URLs, sets the Referer (`referer_flow=True`), and inherits callback, `sid`, priority and session kwargs; `meta` is merged with new values winning.
+- **`response.follow(url, ...)`** resolves relative links and merges metadata, but 0.5 does not inherit method, params, data, json, files or multipart, and removes inherited Content-Length. Followed links start as GET unless explicitly set otherwise. The old description said all session kwargs were inherited. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 - **Fingerprint = URL + method + body + session ID.** `dont_filter=True` allows a revisit (e.g. after login). Class attrs `fp_include_kwargs`, `fp_keep_fragments`, `fp_include_headers` are all `False` by default.
 - **`allowed_domains`** (subdomains match) drops offsite requests and counts them in `stats.offsite_requests_count`.
-- **Priority:** e.g. product pages `priority=10`, pagination `0`.
+- **Queue order:** BFS is the default; DFS changes order only within equal Request.priority. Higher priority still wins, rediscovery does not reorder a duplicate and parallel completion need not follow queue order. Keep the selected strategy on resume. [D4Vinci/Scrapling, scrapling-official/references/spiders/generic-templates.md]
 
 ## robots.txt
 
@@ -64,7 +64,7 @@ result.completed; result.paused
 - Pre-fetches robots.txt for the start domains concurrently; domains found mid-crawl fetch theirs on first request; cached per domain.
 - Drops disallowed requests and counts them in `stats.robots_disallowed_count`.
 - `Crawl-delay` and `Request-rate` set the delay to max(directive, `download_delay`): it never lowers your delay.
-- It does not change concurrency.
+- It does not change concurrency. In 0.5, robots fetch exceptions or non-200/non-4xx responses block that domain for the run; the result is cached, so restart after correcting the failure. Respect the delay ceiling qualification below. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 
 ### How Google reads robots.txt
 
@@ -103,19 +103,13 @@ An adaptive delay per domain.
 - **Track the server's latency.** After each response the delay moves toward the server's latency divided by the target concurrency (`autothrottle_target_concurrency`, else `concurrent_requests_per_domain`, else 1). Latency spikes apply at once; speed-ups come gradually.
 - **Double on blocks.** A 429, a 403 or a captcha page usually comes back faster than real content, so latency alone would speed the crawler up. Any non-2xx or blocked response doubles the domain's delay (0.5, 1, 2, 4, 8 ... up to the max); healthy responses walk it back down.
 - **Honor `Retry-After`** on 429 and 503 (seconds or an HTTP date) in place of doubling; it is still capped by `autothrottle_max_delay`, so raise the cap to honor long waits.
-- **Floors:** `download_delay` and robots `Crawl-delay` are never undercut.
+- **Delay floors are capped.** autothrottle_max_delay can undercut download_delay, robots delay and Retry-After; configure its maximum to honor the actual required wait. The old source said floors were never undercut. [D4Vinci/Scrapling, scrapling-official/references/spiders/advanced.md; https://github.com/D4Vinci/Scrapling/blob/main/docs/spiders/advanced.md]
 - **Measured latency includes** internal retries and browser render time.
 - **Learned delays are not checkpointed;** a resumed crawl restarts from `start_delay`. Final delays are in `stats.autothrottle_delays`.
 
 ## Blocked responses
 
-- **Default blocked statuses:** 401, 403, 407, 429, 444, 500, 502, 503, 504.
-- **Flow:** `is_blocked(response)`, then `retry_blocked_request(request, response)`, which re-queues a copy with `dont_filter=True` and lower priority, up to `max_blocked_retries` (default **3**, a counter separate from the session's `retries`).
-- **Custom `is_blocked`:** check the status plus a body sniff (`"access denied"`, `"rate limit"`).
-- **Escalate the tier on block:** switch `request.sid` to a lazily started browser session.
-- **Report blocks honestly.** OpenSEO's audit crawler classifies a final 429 as `rate_limited`, and 401, 403, 202, `cf-mitigated`, a 2xx carrying a challenge page ("Just a moment...", `/.well-known/sgcaptcha/`) or a 503 with challenge markers as `blocked`, and says so in the report: "We report this honestly rather than pretending the page is broken". The remedy it offers is the owner's consent: allowlist the crawler's user agent in the WAF, or use the platform's sanctioned crawler signature (Shopify's "Crawler access") [open-seo, classify-fetch.ts].
-- **On a site you don't own, a challenge is the answer.** The tier escalation and proxies below are for content you are authorized to fetch. For research, audits or prospecting on a third-party site, a CAPTCHA, login wall or bot challenge is a stop signal ([SKILL.md](SKILL.md) rule 4; [coreyhaines31/marketingskills, prospecting] guardrail 2: "No CAPTCHA, login wall, or bot protection bypass"). The browser-automation skill's escalation rule and this one disagree; that skill states both views and keeps the stop rule until the owner decides ([../browser-automation/SKILL.md](../browser-automation/SKILL.md), rule 3).
-- **Proxies:** `ProxyRotator([...])` is cyclic by default, or pass `strategy(proxies, current_index) -> (proxy, next_index)`. Strings work everywhere, Playwright dicts work for browsers. `response.meta["proxy"]` and `stats.proxies` show what was used. A per-request `proxy=` overrides the rotator (e.g. for geo-located content). It cannot combine with `proxy`/`proxies`.
+Stop on a challenge, access denial or rate-limit boundary and report it. Do not use CAPTCHA solving, bot-detection bypass or identity/proxy rotation to continue. Use a documented API or an owner-approved route consistent with platform rules; retry/backoff is not permission to evade. The source's procedural blocked-retry guidance is excluded. [D4Vinci/Scrapling, scrapling-official/references/spiders/proxy-blocking.md; user standing rule 9]
 
 ## Audit crawlers: worked limits
 
@@ -130,13 +124,14 @@ The rule both follow: when the server says slow down, slow the whole origin, and
 ## Sessions per request
 
 - **Default:** one `FetcherSession`. Add more in `configure_sessions(self, manager)` with `manager.add(session_id, session, default=False, lazy=False)`; the first added is the default unless another sets `default=True`. Sessions are started for you and all close when the spider closes; `lazy=True` starts one on first use (e.g. a browser only when needed).
-- **Spiders take only** `FetcherSession` and the async browser sessions (`AsyncDynamicSession`, `AsyncStealthySession`).
+- **Spiders take only** `FetcherSession` and the async browser sessions (`AsyncStealthySession`).
 - **`FetcherSession` in a spider has no `.get()`/`.post()`;** pass `method="POST"` on the `Request`.
-- **Route with `sid=`;** kwargs such as `headers`, `wait_selector`, `network_idle` and `impersonate` are forwarded, and new ones override inherited ones.
+- **Route with `sid=`;** kwargs such as `headers`, `wait_selector` and `network_idle` are forwarded, and new ones override inherited ones.
 
 ## Checkpoints, dev cache, streaming
 
 - **Pause and resume:** `MySpider(crawldir="crawl_data/x", interval=120.0)`; the periodic checkpoint defaults to every **5 minutes**. Checkpoints hold pending requests plus seen fingerprints, pickled and written atomically (temp file then rename), periodically and on graceful shutdown, and are deleted on normal completion. Ctrl+C once waits for in-flight requests, checkpoints and exits; twice forces a stop. A resume skips `start_requests()`; `on_start(resuming: bool)` tells you which. Ctrl+C closes gracefully even without a `crawldir`.
+- **0.5 migration:** params, falsy JSON bodies and header ordering have corrected request fingerprints, so old cache/checkpoint identities can differ. Blocked pages are not cached as successful, and failed runs retain recovery checkpoints. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 - **Development cache:** `development_mode = True` caches every response under `.scrapling_cache/{name}/` relative to the **current working directory** (override with `development_cache_dir`), one `{fingerprint_hex}.json` per fingerprint with a base64 body, written atomically. A replay skips the network, `download_delay`, rate limiting and the blocked-retry; stats still count, plus `cache_hits` and `cache_misses`. No expiry: delete the directory or call the manager's `clear()`. Changing fingerprint options forces a refetch. **Don't ship a spider with `development_mode = True`.**
 - **Streaming:** `async for item in spider.stream()` in an async context, with live `spider.stats`; run with `anyio.run(main)`. `spider.pause()` closes the crawl when no `crawldir` is set.
 
@@ -153,8 +148,10 @@ The rule both follow: when the server says slow down, slow the whole origin, and
 - **`SitemapSpider`:** `sitemap_urls` (a robots.txt URL works; its `Sitemap:` lines are read), descends into `<sitemapindex>`, `sitemap_follow = LinkExtractor(...)` filters child sitemaps, `sitemap_alternate_links = True` adds hreflang URLs; handles gzip. The first matching rule wins; with rules set, an unmatched URL is dropped; with no rules, everything goes to `parse()` (which raises `NotImplementedError` by default).
 - **`XMLFeedSpider`:** `itertag` (default `"item"`), `parse_node(response, node)` where the node is a namespace-stripped lxml element (`node.findtext("title")`); a prefixed `itertag` plus `namespaces = (("media", "http://search.yahoo.com/mrss/"),)` matches one namespace. Gzip is decompressed; malformed XML logs a warning instead of crashing.
 - **`CSVFeedSpider`:** `parse_row(response, row: dict)`; `headers`, `delimiter`, `quotechar`; gzip.
-- **`SiteToMarkdownSpider`:** requires `allowed_domains`; yields `url`, `title`, `markdown`; `output_dir` writes one `.md` per page; `max_pages` (0 = no limit; already-queued requests may still be fetched but are not converted); `css_selector`; `main_content_only` (default on). Restrict it with `rules()` allow and deny (deny wins). The RAG pipeline is in UNTRUSTED-CONTENT.md.
+- **`ContentSpider` (`SiteToMarkdownSpider` remains a supported alias):** requires `allowed_domains`; yields `url`, `title`, `markdown`; `output_dir` writes one `.md` per page; `max_pages` (0 = no limit; already-queued requests may still be fetched but are not converted); `css_selector`; `main_content_only` (default on). Restrict it with `rules()` allow and deny (deny wins). The RAG pipeline is in UNTRUSTED-CONTENT.md. [https://github.com/D4Vinci/Scrapling/blob/main/scrapling/spiders/templates/site_to_markdown.py]
 - **`ShopifySpider` (platform-specific):** `target_website` (falls back to `start_urls[0]`, then `allowed_domains`, else `ValueError`); pages `/collections.json` (250 per page), then `/collections/<handle>/products.json`; one item per variant, deduped, with name, price (string), category, brand, identifier, sku, stock (`None` available, `0` out of stock), image_url, url, description, old_price, barcode. Override `_process_product()`. It sees only online-store-channel products, so `products_count` means "nonzero, fetch it", not a total; protected or password stores most likely fail.
+
+**0.5 template corrections:** a restrict selector matching nothing yields no links rather than falling back to the whole page; a matching sitemap rule without a callback routes to parse. The old behavior could widen the crawl or misroute results. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 
 ## Export
 
@@ -162,11 +159,11 @@ The rule both follow: when the server says slow down, slow the whole origin, and
 
 ## Inside Scrapy
 
-To use the parser inside an existing Scrapy project: `from scrapling.integrations.scrapy import scrapling_response` and decorate callbacks (functions, generators, coroutines and async generators; name, docstring and kind are kept for Scrapy contracts), e.g. `@scrapling_response(adaptive=True, keep_comments=True)`. Outside callbacks: `convert_response(scrapy_response, keep_comments=False, keep_cdata=False)`. No extras needed.
+To use the parser inside an existing Scrapy project: `from scrapling.integrations.scrapy import scrapling_response` and decorate callbacks (functions, generators, coroutines and async generators; name, docstring and kind are kept for Scrapy contracts), e.g. `@scrapling_response(adaptive=True, keep_comments=True)`. Outside callbacks: `convert_response(scrapy_response, keep_comments=False)`. No extras needed.
 
 - **Use `scrapy.Request(response.urljoin(href))`, not `response.follow()`,** which builds Scrapling-spider requests Scrapy doesn't understand.
 - `meta` is shallow-copied (`response.meta["playwright_page"]` stays reachable); cookies are parsed from the raw `Set-Cookie`.
 
 ## Prove it
 
-Run against a sandbox site with `robots_txt_obey = True`, `concurrent_requests_per_domain` set and AutoThrottle on: `robots_disallowed_count` and `offsite_requests_count` match what robots.txt and `allowed_domains` exclude, a forced 429 raises that domain's delay in `autothrottle_delays`, and blocked retries stop at `max_blocked_retries`. Interrupt with one Ctrl+C, resume from the `crawldir`, and the final `items_scraped` has no duplicates. `development_mode` is off in the shipped spider. For an audit crawler: a run against a server that answers 429 pauses the origin, stops after the configured limit, and the report lists the unfetched URLs as not crawled rather than broken; a challenge page is reported as `blocked`, not retried through another tier; the user agent names the tool.
+Run against a sandbox site with `robots_txt_obey = True`, `concurrent_requests_per_domain` set and AutoThrottle on: `robots_disallowed_count` and `offsite_requests_count` match what robots.txt and `allowed_domains` exclude, a forced 429 raises that domain's delay in `autothrottle_delays`, and an access block stops the crawl without evasion. Interrupt with one Ctrl+C, resume from the `crawldir`, and the final `items_scraped` has no duplicates. `development_mode` is off in the shipped spider. For an audit crawler: a run against a server that answers 429 pauses the origin, stops after the configured limit, and the report lists the unfetched URLs as not crawled rather than broken; a challenge page is reported as `blocked`, not retried through another tier; the user agent names the tool.

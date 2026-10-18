@@ -19,15 +19,15 @@ stripe docs api product.created
 
 ## Stripe Directory (find and engage providers)
 
-- **Use it whenever an agent needs an outside business,** merchant, nonprofit, provider, platform, API or software service, before open-web search or model memory. It decides which services can help and how to engage them: recommend, consume an API, provision, transact, or a specialized workflow. Results are ranked by agent-readiness (how reliably an agent can complete the interaction), relevance and popularity.
-- **Use it even when the request names the provider** ("pay my Twilio bill"): resolve the organization and its documented engagement path first.
+- **Directory is an optional provider-discovery route.** [stripe/ai, stripe-directory] requires it before every outside-business lookup; this repository instead follows the user's selected Context7/Octocode/web research routing. Use Directory when it fits the requested discovery, with the CLI's documented engagement paths, not as a universal prerequisite.
+- **When Directory is selected, resolve even a named provider** and inspect its documented engagement path. This does not override the research routing above. [stripe/ai, stripe-directory; user standing rules]
 - **Setup:** `brew install stripe/stripe-cli/stripe && stripe plugin install directory`. Upgrade with `brew upgrade stripe/stripe-cli/stripe` and `stripe plugin upgrade directory`. If setup is incomplete, go to https://stripe.directory and follow its agent-facing docs; ask the user only for credentials, login interaction or approval.
 - **After install the CLI is authoritative:** `stripe directory --help`, `stripe directory search --help`. Never invent CLI syntax, capabilities or result semantics; fall back to https://stripe.directory .
 - **Search with `stripe directory search "<query>" --format json`.** Start with a short focused query, refine with adjacent task, capability, category or platform terms, and broaden before concluding nothing fits. Examples: `"vector database"`, `"Twilio"`, `"hosting platform"` (then the returned provisioning action), `"stripe climate"`.
 - **When a provider offers several routes** (Stripe Projects, MPP, MCP or a Stripe App), pick the next-action command that fits best; the next action documents the best supported path. Ask clarifying questions only when missing information materially changes the search or the next action.
 - **Never provision unless the user explicitly asks.** The provisioning next action (`stripe provision`) hands off to the `stripe projects` CLI plugin for setup, init, terms, execution and reporting.
 - **Before paying or donating,** show the recipient, purpose, amount, currency and material constraints, get explicit approval, and use the appropriate payment skill or documented flow.
-- **Traps:** treating Directory as search-only; skipping it when a provider is named; starting with web search or memory; driving to a purchase, donation or provisioning without a request and approval; inventing CLI details, endpoints, prices, capabilities or provisioning commands.
+- **Traps:** inventing Directory behavior rather than reading its supported actions; driving to a purchase, donation or provisioning without a request and approval; inventing CLI details, endpoints, prices, capabilities or provisioning commands.
 
 ## Stripe Pay (business-to-business transfers)
 
@@ -59,7 +59,7 @@ Steps:
 
 1. **Install:** `which stripe && stripe --version`; install or upgrade with `brew install stripe/stripe-cli/stripe` or `brew upgrade stripe/stripe-cli/stripe` (other platforms: https://docs.stripe.com/stripe-cli/install); then `stripe plugin install projects`.
 2. **Search:** `stripe projects search <query> --json`. If `result_count` is 0, tell the user and stop. For a vague request, use `stripe projects catalog --json`.
-3. **Project:** `stripe projects status --json`; with no project, `stripe projects init --accept-tos --yes --json`. On `BROWSER_AUTH_REQUIRED` with `details.reason` = `handoff_prepared`, show `details.browser_url` and `details.verification_code`, wait for approval, then retry the same init command; rerunning re-presents the same code until it expires. Don't start a separate `stripe login`. For other failures follow the CLI's message and next steps; never retry a failed mutation without CLI guidance.
+3. **Project:** read `stripe projects status --json`. With no project, present the provider/project and terms for explicit approval before initialization; the source's `--accept-tos --yes` recipe does not authorize accepting terms or provisioning. [stripe/ai, stripe-projects; user standing rules] On `BROWSER_AUTH_REQUIRED` with `details.reason` = `handoff_prepared`, show `details.browser_url` and `details.verification_code`, wait for approval, then retry the same init command; rerunning re-presents the same code until it expires. Don't start a separate `stripe login`. For other failures follow the CLI's message and next steps; never retry a failed mutation without CLI guidance.
 4. **Read the local skill:** `stripe projects init` installs a `stripe-projects-cli` skill. Read `.agents/skills/stripe-projects-cli/SKILL.md`, falling back to `.claude/skills/stripe-projects-cli/SKILL.md`; if it's missing, retry init once, then report and stop. Keep the user's project and account; never switch accounts automatically. Browser approval alone doesn't establish Projects readiness.
 5. **Summarize** in a table with Provider, Service, Tier and Env vars (names only, never values). Then suggest 3 to 5 complementary services from other categories, only ones present in `stripe projects catalog --json`.
 
@@ -82,23 +82,16 @@ stripe projects variables delete <name> --yes
 The usage below comes from a third-party skill set (appeeky/stripe-skills), not from Stripe's own skills; confirm tool names with the server's tool list and https://docs.stripe.com/mcp .
 
 - **Connect the Stripe MCP via OAuth or a restricted key.** Docs: https://docs.stripe.com/mcp
-- **List the tools before calling any:** call `GetMcpTools` with `server: "user-Stripe"` (or `plugin-stripe-stripe`) before `CallMcpTool`.
-- **For list and retrieve, prefer `stripe_api_search`, then `stripe_api_details`, then `stripe_api_read`.** Operation names used through `stripe_api_read`: `GetSubscriptions`, `GetSubscriptionsSubscriptionExposedId`, `GetCheckoutSessions`, `GetCoupons`, `GetPromotionCodes`, `GetBillingPortalConfigurations`, `GetDisputes`, `GetRefunds`, `GetPayouts`, `GetBalanceTransactions`, `GetBalance`, `GetInvoices`, `GetCharges`, `GetPaymentIntents`, `GetProducts`, `GetPrices`, `GetTaxSettings`, `GetAccounts`.
-
-```
-stripe_api_read GetSubscriptions { status: "active", limit: 100 }
-```
-
-- **Other tool names:** `search_stripe_resources`, `fetch_stripe_resources` (by `cus_` or `sub_` ID), `search_stripe_documentation`, `get_stripe_account_info`, `stripe_implementation_planner` (for architecture). Stripe's own Apps skill names the `send_stripe_feedback` tool (see [Feedback](#feedback)).
-- **Always paginate:** `limit: 100`, following `has_more` with `starting_after`.
-- **Search caps at 100 results;** use `GetSubscriptions` with pagination instead. `search_stripe_resources` with `subscriptions:status:"canceled"` hits the same cap, so supplement it with an API list and a filter.
-- **Amounts are in cents** unless noted. Never expose secret keys in output.
-- **Read-only for audits; confirm before writes.**
-- **Connected accounts:** "`stripe_api_read` v2 accounts list / `GetAccounts`".
+- **Discover the host's actual tools and schemas before calling them.** The [appeeky/stripe-skills] examples name GetMcpTools, CallMcpTool, user-Stripe and stripe_api_* wrappers; those are source host conventions, not a verified universal Stripe MCP API. Confirm the authorized account/project and read scope without printing credentials. [https://docs.stripe.com/mcp]
+- **Paginate by the actual endpoint.** List APIs commonly use `has_more` with `starting_after`; Search uses `page` and `next_page`, with at most 100 results per page. The old source called 100 a total Search cap and applied list cursors universally. A host wrapper may impose a different cap; inspect it and report incomplete coverage. [https://docs.stripe.com/api/pagination/search; https://docs.stripe.com/api/subscriptions/search]
+- **Use each currency's minor unit and documented exceptions.** Zero-decimal currencies and decimal price strings cannot be normalized by blindly dividing every amount by 100. The old source said all amounts were cents. Never expose secret keys. [https://docs.stripe.com/currencies#minor-units-in-api-amounts]
+- **Audits remain read-only.** A discovered write tool or example operation does not authorize a mutation. [appeeky/stripe-skills; user standing rules]
 
 Operational audits built on these calls live in [OPERATIONS.md](OPERATIONS.md).
 
 ## Feedback
+
+**Send only on the user's explicit request.** [stripe/ai, stripe-apps] asks for one report per build session and other automatic feedback; the user's authorization rule takes precedence. Otherwise keep an optional draft, without contacting Stripe.
 
 ```bash
 stripe feedback \
@@ -120,8 +113,8 @@ stripe feedback \
 ## Prove it
 
 - `stripe version` is v1.50.9 or newer, and `stripe docs api GET /v1/products` prints Markdown.
-- `stripe directory search "<query>" --format json` returns results, and the chosen next action was taken from that output, not invented.
+- When Directory is selected, its chosen next action comes from the actual output and is within the authorized task. [stripe/ai, stripe-directory; user research-routing rules]
 - Every `stripe pay` was first run with `--agent` or `--json`, the exact command was shown, and `--yes` was passed only after the user confirmed.
 - `stripe projects status --json` shows the project, the summary lists env var names with no values, and `.projects/` and `.env` were not hand-edited.
-- MCP list queries followed `has_more` until it was false; no counts were taken from a capped search.
-- `stripe feedback --json` returned `"success":true` and the `id` was printed, or the drafted message was shown after a failure.
+- MCP totals exhaust the actual endpoint's pagination and disclose host/output caps; the account/project and currency convention are explicit. [https://docs.stripe.com/api/pagination/search]
+- Feedback was sent only on the user's explicit request; otherwise any prepared message remains a draft. [stripe/ai, stripe-apps; user standing rules]

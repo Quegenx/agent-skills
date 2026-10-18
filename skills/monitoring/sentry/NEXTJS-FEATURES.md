@@ -121,8 +121,8 @@ Sentry.init({
 ## Distributed tracing
 
 - **Headers:** `sentry-trace` (`{traceId}-{spanId}-{sampled}`) and `baggage` (W3C Baggage with `sentry-*` keys). Backends must allow them in CORS: `Access-Control-Allow-Headers: sentry-trace, baggage`.
-- **`tracePropagationTargets`** takes strings (substring match) and RegExps. Default `['localhost', /^\//]`; disable with `[]`. For an API at `http://localhost:3001` use `"localhost:3001"` or a regex matching the port; `"localhost"` alone won't match.
-- **SSR to client continuation is automatic** via `<meta name="sentry-trace">` and `<meta name="baggage">` in `<head>`; no configuration needed.
+- **`tracePropagationTargets`** string entries match substrings of the full URL; RegExps use the URL too. `localhost` therefore matches a URL containing `localhost:3001`; the old source said it would not. CORS origin policies still distinguish ports. Choose targets deliberately rather than confusing propagation matching with origin authorization. [https://docs.sentry.io/platforms/javascript/configuration/options/#tracePropagationTargets]
+- **App Router SSR continuation:** the official setup adds `Sentry.getTraceData()` to `generateMetadata().other`. The old source claimed no configuration was needed. Follow the documented metadata setup for the installed Next.js/Sentry version. [https://docs.sentry.io/platforms/javascript/guides/nextjs/tracing/distributed-tracing/]
 - **Non-HTTP channels:** `Sentry.getTraceData()` returns `{ "sentry-trace": "...", "baggage": "..." }`; the receiver wraps its work in `Sentry.continueTrace`.
 - **Sampling is head-based:** the originating service decides, and all services either sample or drop the whole trace.
 
@@ -184,7 +184,7 @@ Sentry.init({
 
 ## Logs
 
-- **Set `enableLogs: true` in all three configs.** Without it `Sentry.logger.*` calls are silent no-ops. Not available via the CDN or loader snippet; install from npm.
+- **Configure each runtime deliberately.** Use the [JavaScript Logs version rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source claimed every version is a silent no-op without explicit true. Client, server and edge initialization remain independent. [https://docs.sentry.io/platforms/javascript/logs/]
 - **Levels:** `Sentry.logger.trace/debug/info/warn/error/fatal(message, attributes)`. Attribute values are `string`, `number` or `boolean` only (no `undefined`, arrays or objects).
 - **`Sentry.logger.fmt` is a tagged template, not a function call:** `Sentry.logger.info(Sentry.logger.fmt\`User ${userId} purchased ${productName} for $${amount}\`)` stores `message.template` "User %s purchased %s for $%s" and `message.parameter.0` to `.2`.
 - **Console capture:** `Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] })`. `console.log` and `info` map to info, `warn` to warn, `error` to error, `debug` to debug, a failing `console.assert` to error.

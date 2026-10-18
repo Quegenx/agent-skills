@@ -52,7 +52,7 @@ An update that changes no indexed column and fits on the same page skips every i
 
 ## WAL and checkpoints
 
-Every change is written to the write-ahead log and flushed on commit before the data files are touched; recovery replays the WAL since the last checkpoint.
+The WAL corresponding to a dirty data page must reach durable storage before that page is written. Data pages can be written before their transaction commits once their WAL is durable; the old line incorrectly made commit the boundary before any data-file write. Recovery replays the WAL since the last checkpoint. [https://www.postgresql.org/docs/18/wal-intro.html; https://www.postgresql.org/docs/18/wal-configuration.html]
 
 - **Checkpoints** happen every `checkpoint_timeout` (5 min) or when `max_wal_size` (1 GB, a soft limit) fills, whichever comes first; `checkpoint_completion_target = 0.9` spreads the writes. More than 10% of checkpoints requested by size (`num_requested` against `num_timed` in `pg_stat_checkpointer`, Postgres 17+; earlier in `pg_stat_bgwriter`) or "checkpoints are occurring too frequently" in the log means: raise `max_wal_size`. Longer intervals mean less I/O and longer crash recovery.
 - **`wal_compression`** (`lz4` or `zstd` on Postgres 15+) shrinks full-page images in WAL, which helps write-heavy and replicated systems.

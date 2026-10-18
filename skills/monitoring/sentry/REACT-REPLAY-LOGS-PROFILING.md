@@ -1,6 +1,6 @@
 # React Replay, Logs and Profiling
 
-Three browser features beyond errors and traces in `@sentry/react`: Session Replay (a DOM recording, masked by default, sampled at init), structured logs (`Sentry.logger`, off until `enableLogs: true`) and browser profiling (Beta, Chromium only, silent without the `Document-Policy: js-profiling` header). Each one fails quietly when its switch is missing: sample rates of `0`, a missing CSP `blob:` entry, `enableLogs` unset, or the header absent. Setup is in [REACT.md](REACT.md); tracing, which logs and profiles link to, in [REACT-TRACING.md](REACT-TRACING.md).
+Three browser features beyond errors and traces in `@sentry/react`: Session Replay (a DOM recording, masked by default, sampled at init), structured logs (`Sentry.logger`, with version-specific defaults) and browser profiling (Beta, Chromium only, silent without the `Document-Policy: js-profiling` header). Each one fails quietly when its switch is missing: sample rates of `0`, a missing CSP `blob:` entry, logging disabled for the installed version, or the header absent. Setup is in [REACT.md](REACT.md); tracing, which logs and profiles link to, in [REACT-TRACING.md](REACT-TRACING.md).
 
 **Contents:** [Versions](#versions) · [Replay: where it runs](#replay-where-it-runs) · [Replay sampling](#replay-sampling) · [replayIntegration options](#replayintegration-options) · [Replay privacy](#replay-privacy) · [Network recording](#network-recording) · [Canvas](#canvas) · [Lazy loading and manual control](#lazy-loading-and-manual-control) · [Sessions, clicks and overhead](#sessions-clicks-and-overhead) · [CSP for Replay](#csp-for-replay) · [Logs](#logs) · [Profiling](#profiling) · [Debugging](#debugging) · [Prove it](#prove-it)
 
@@ -64,7 +64,7 @@ Three browser features beyond errors and traces in `@sentry/react`: Session Repl
 
 - **Defaults are maximum privacy:** all text masked (length-preserving `*`), all input values masked, `<img>`, `<video>`, `<audio>`, `<svg>`, `<picture>`, `<embed>`, `<map>`, `<object>` blocked, network bodies not captured, headers beyond Content-Type, Content-Length and Accept not captured.
 - **Three primitives:** Mask (text becomes `*`, layout kept), Block (an opaque box of the same size), Ignore (suppresses input events; the element stays visible).
-- **Attributes:** `data-sentry-mask`, `data-sentry-unmask`, `data-sentry-block`, `data-sentry-unblock`, `data-sentry-ignore`, with class equivalents (`sentry-mask` and so on). In v8 the `data-sentry-*` attributes are in the default selector lists; the class forms must be listed explicitly.
+- **Replay selectors:** mask/block defaults and unmask/unblock opt-ins are different. Since JS SDK 8, neither `data-sentry-unmask` nor `.sentry-unmask` is enabled automatically; explicitly configure unmask selectors, likewise unblock. The old source said data attributes were automatically recognized while classes always required listing. Keep the default mask/block selectors separate. [https://docs.sentry.io/platforms/javascript/session-replay/privacy/]
 - **v7 to v8:** `unmask` defaulted to `['.sentry-unmask', '[data-sentry-unmask]']` and is now `[]`; `unblock` likewise (restore with `['.sentry-unblock', '[data-sentry-unblock]']`).
 - **Masking works on the rendered DOM** through `MutationObserver` and cascades to children; a child's `unmask` / `unblock` overrides the parent.
 - **Three modes:** max privacy (the defaults); selective (`maskAllText: false, blockAllMedia: false, maskAllInputs: true, mask: [...], block: [...]`); allowlist (mask everything, then `unmask` / `unblock` approved elements).
@@ -110,7 +110,7 @@ Three browser features beyond errors and traces in `@sentry/react`: Session Repl
 ## Logs
 
 - **npm only:** not available through the CDN or Loader snippet.
-- **`enableLogs: true` is required.** Without it every `Sentry.logger.*` call is a no-op and `beforeSendLog` never fires.
+- **Logs version rule:** JavaScript Logs is supported from 9.41.0 and enabled by default from 10.71.0; earlier versions require `enableLogs: true`. Explicit true remains valid. The old source described Logs as universally off until enabled. This boundary does not apply to RN or Flutter versions. [https://docs.sentry.io/platforms/javascript/logs/]
 - **Six levels:** `Sentry.logger.trace/debug/info/warn/error/fatal(message, attributes?)`. Attribute values are `string`, `number` or `boolean` only; `undefined`, arrays and objects are rejected.
 - **`Sentry.logger.fmt` must be a tagged template.** It produces `message.template: "User %s purchased %s for $%s"` and `message.parameter.0..N`, each searchable. `Sentry.logger.fmt("text")` produces no parameters.
 
@@ -272,7 +272,7 @@ Sentry.init({
 | Scope attributes not on logs | Upgrade to `@sentry/react` ≥10.32.0 |
 | Too many logs | `beforeSendLog` drops `trace` and `debug` in production |
 | Log attributes contain `undefined` | Only `string`, `number`, `boolean` are accepted; filter undefined values first |
-| `beforeSendLog` not firing | `enableLogs: true`; without it no logs are sent and no hook is called |
+| `beforeSendLog` not firing | Check the Logs version rule above and whether logging is explicitly disabled |
 | Sensitive data in logs | Filter in `beforeSendLog`; better, don't log sensitive data at the call site |
 | Logs have no user context | `Sentry.setUser({ id, email })` after authentication (`userInfo` defaults to `true`) |
 | No profiles | `Document-Policy: js-profiling` on document responses |

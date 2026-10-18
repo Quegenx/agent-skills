@@ -45,7 +45,8 @@ All official, from the Threads API Posts page (https://developers.facebook.com/d
 ## YouTube
 
 - **Hashtags (official):** "If a video or playlist has more than 60 hashtags, we'll ignore each hashtag on that content. Over-tagging may result in the removal of your video" (https://support.google.com/youtube/answer/6390658). The source said a maximum of 15 above which YouTube ignores all hashtags; the help page gives 60 and no 15 cap.
-- **Source figures (not verified):** title 100 characters (about 70 visible), description 5,000, about 100 characters before "Show more"; "The first 3 hashtags in the description automatically appear above the title as clickable links"; 1 to 5 hashtags for Shorts; 3 to 5 recommended.
+- **Hashtag display (official):** up to three hashtags considered most engaging may appear by the title. The source and this file formerly promised the first three would appear automatically; neither order nor display is guaranteed (https://support.google.com/youtube/answer/6390658?hl=en).
+- **Source figures (not verified):** title 100 characters (about 70 visible), description 5,000, about 100 characters before "Show more"; 1 to 5 hashtags for Shorts; 3 to 5 recommended. [coreyhaines31/marketingskills, social/references/platform-limits.md]
 
 ## Facebook
 

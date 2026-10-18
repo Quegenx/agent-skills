@@ -63,7 +63,9 @@ Capability docs:
 
 ## Scaffold and dev loop
 
-The mandatory sequence:
+The source workflow below is conditional on the user authorizing its setup, tests/builds and outward actions; it does not grant that permission. Feedback is prepared or sent only when explicitly requested. [stripe/ai, stripe-apps/references/workflow.md; user standing rules]
+
+The source sequence:
 
 ```
 1. stripe plugin install apps && stripe plugin install generate   ← one-time CLI setup
@@ -76,7 +78,7 @@ The mandatory sequence:
 8. stripe apps upload                                            ← publish version (REQUIRED before Secret Store or fetchStripeSignature work)
 9. Install in a sandbox using the private or public flow below  ← test the installed app
 10. Dashboard → Apps → Submit for review                         ← marketplace publishing (optional)
-11. stripe feedback                                              ← one report per build session (see references/feedback.md)
+11. Optional feedback only on the user's explicit request (see AGENT-TOOLS.md#feedback)
 ```
 
 - **Never use `stripe apps create`:** it doesn't scaffold correctly. Don't hand-create files the scaffold provides. The CLI must be 1.25.0 or newer (`stripe version`).
@@ -160,7 +162,7 @@ General webhook handling lives in [WEBHOOKS.md](WEBHOOKS.md). Canonical for apps
 - **A second test-mode endpoint** is recommended for public apps but not required.
 - **Permissions:** `event_read`, plus a read permission per event type (for example `payment_intent_read`, `customer_read`).
 - **Verify with `stripe.webhooks.constructEvent()`** using the raw request body and the signing secret. For platform-key apps check `event.account`, and pass the `stripeAccount` option to act on the merchant's behalf (platform keys only). Return 200 quickly and process asynchronously if needed.
-- **Local testing:** `stripe listen --forward-to localhost:<PORT>/webhook` (your own account only); `stripe listen --forward-connect-to localhost:<PORT>/webhook` (connected accounts). Trigger with `stripe trigger payment_intent.succeeded`; for a public app, `stripe trigger --stripe-account payment_intent.succeeded`.
+- **Local testing, when authorized:** `stripe listen --forward-to localhost:<PORT>/webhook` is for your account; `--forward-connect-to` handles connected accounts. The trigger command requires both its event argument and a string account ID after `--stripe-account`; the old source supplied the event where the account ID belonged and omitted the event argument. Do not copy that malformed command. [stripe/ai, stripe-apps/references/webhooks.md; https://github.com/stripe/stripe-cli/blob/master/pkg/cmd/trigger.go]
 - **Dashboard setup:** Developers, Webhooks (https://dashboard.stripe.com/webhooks), Add endpoint, the URL, the events, (public platform-key apps) check "Listen to events on Connected accounts", then copy the signing secret into env vars.
 
 ## UI extensions: the sandbox
@@ -251,7 +253,7 @@ import { List, ListItem, Inline } from "@stripe/ui-extension-sdk/ui";
 
 - **Loading:** inside the content region (keep the header and tab bar), a centered `Spinner` (https://docs.stripe.com/stripe-apps/patterns/loading.md).
 - **Empty states:** an object with a CTA when there's no data; a plain string when filters return zero (https://docs.stripe.com/stripe-apps/patterns/empty-state.md).
-- **Forms are uncontrolled (required):** `defaultValue` plus `onChange` (or React 17 `useState`) for `TextField` and `Select`. In a `FocusView`, set `Button pending` on save.
+- **Forms can use controlled or uncontrolled SDK inputs.** TextField supports `value` with an updating `onChange`, or the documented uncontrolled form; ref-based libraries remain constrained by the sandbox. The old source required uncontrolled forms even while permitting useState, and the UI extension SDK removed the value/checked deprecation in 8.9.0. In FocusView, show pending state on save. [https://docs.stripe.com/stripe-apps/components/textfield; https://docs.stripe.com/stripe-apps/upgrade-stripes-ui-extension-sdk]
 
 ## Onboarding
 
@@ -307,7 +309,7 @@ stripe generate extension <extension-point-id> <extension-id> script --name "<ex
 | `Invalid manifest` / validation failed | Missing fields or malformed YAML: check indentation; `id:`, `version:`, `name:` present |
 | `Build failed` / TypeScript errors | Run `pnpm build` locally |
 | `Version already exists` | Bump `version` (0.0.1 to 0.0.2) |
-| `Permission denied` / `Not authenticated` | `stripe login`, verify with `stripe config --list` |
+| `Permission denied` / `Not authenticated` | `stripe login`, verify with `stripe whoami --format json`; the old `config --list` check can print retained credentials [https://github.com/stripe/stripe-cli/blob/master/pkg/config/config.go; stripe/ai, stripe-best-practices/SKILL.md] |
 | `connect-src` / CSP error | Add the URL to `content_security_policy.connect-src` in `stripe-app.yaml` |
 | `extensions field required` | Add `extensions: []` even without backend extensions |
 | `Component not found` | `component:` must match your default export name |

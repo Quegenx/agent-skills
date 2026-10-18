@@ -108,7 +108,7 @@ for UA in Googlebot bingbot OAI-SearchBot; do
 done
 ```
 
-"An absent tag isn't proof it's indexed; confirm with a `site:` search."
+The source says "An absent tag isn't proof it's indexed; confirm with a `site:` search." A positive matching result is useful evidence, but an absent result does not prove noindex or absence from Google's index: site: results are not exhaustive. For a verified owned site, follow up with URL Inspection rather than treating search absence as a diagnosis. [Google site operator](https://developers.google.com/search/docs/monitor-debug/search-operators/all-search-site); [search-console](../search-console/SKILL.md)
 
 ## Errors in the sources
 

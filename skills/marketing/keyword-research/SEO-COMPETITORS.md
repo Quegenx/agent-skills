@@ -43,7 +43,7 @@ Both need competitors from the context file. If none are saved, run the minimal 
 2. When comparing, get the user's domain overview too, and with Search Console connected use it as the user's real baseline.
 3. Pull the competitor's ranked keywords, filtered to keep rows relevant: maximum rank, minimum search volume, brand terms excluded, chosen result types.
 4. When comparing, pull the user's ranked keywords too, or check the shared terms' SERPs "when a lighter check is enough."
-5. **Local:** get local business and local SERP results around the relevant locations "before drawing local-pack conclusions." The source also calls a Google Business Q&A tool here; Google discontinued the My Business Q&A API on 2025-11-03 with no replacement ([sunset dates](https://developers.google.com/my-business/content/sunset-dates)), so do not treat profile Q&A as a lever.
+5. **Local:** get local business and local SERP results around the relevant locations "before drawing local-pack conclusions." This file formerly excluded all profile Q&A from the old API's shutdown; use the corrected provider/market/availability distinction in [LOCAL.md](../seo/LOCAL.md#workflow) for optional Q&A evidence. [open-seo, competitor-analysis]
 6. When the user supplied the competitor but its search overlap is unclear, check whether it really competes across the target keyword set.
 7. Group its keywords into themes:
    - product and category terms;

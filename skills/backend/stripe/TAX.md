@@ -95,11 +95,11 @@ const registration = await stripe.tax.registrations.create({
 ## Verify and diagnose zero tax
 
 - **Confirm registrations** through the Tax Registrations API or the Dashboard; other prerequisites: https://docs.stripe.com/tax/set-up.md
-- **With execution access, run a test Tax Calculation** (https://docs.stripe.com/api/tax/calculations.md) and check `tax_breakdown[].taxability_reason`, not the amount. `not_collecting` means setup is broken (a registration or tax code gap). Any other reason means the calculation worked, including zero (correct for an exempt code or customer): report the reason and have the user confirm with a tax advisor. Never swap the tax code to produce tax. With read-only or advisory access, don't claim it's verified; point to https://docs.stripe.com/tax/testing.md
+- **With authorized execution access, inspect a test Tax Calculation** and `tax_breakdown[].taxability_reason`, not just the amount. `not_collecting` can mean no registration or an intentionally Nontaxable product; `not_supported` can mean an unsupported country, territory or product. The old source said `not_collecting` always meant broken setup and every other reason meant success. Report the documented reason and have the user confirm applicability with a tax advisor; never swap tax codes merely to produce tax. Read-only advice is not executed verification. [https://docs.stripe.com/tax/zero-tax; https://docs.stripe.com/tax/testing]
 - **Zero tax, in order:** first confirm `automatic_tax` is enabled on the object; then read `taxability_reason` on the line item `taxes` (for a Checkout Session, retrieve it with `expand[]=line_items.data.taxes`).
 - **`not_collecting` is ambiguous:** no active registration (the usual cause) or the Nontaxable code `txcd_00000000`. Rule out the Nontaxable code first.
 - **Other reasons:** `reverse_charge`, `customer_exempt`, `not_subject_to_tax`, `product_exempt`, `zero_rated`, `vat_exempt`, `standard_rated` (https://docs.stripe.com/tax/zero-tax.md).
-- **Fix in this order:** (1) check the Product `tax_code` matches the delivery method and customer type and isn't `txcd_00000000`; (2) add a registration for the customer's jurisdiction; (3) run a test transaction and check `taxability_reason` isn't `"not_collecting"`. Step 1 comes first so you don't register where you have no taxable products.
+- **Diagnose before changing tax setup:** confirm the product's tax code and delivery/customer treatment, then the applicable registration and supported jurisdiction. A zero amount does not itself establish a legal registration obligation. Make only authorized changes and verify the expected documented reason, which may legitimately be `not_collecting`. [https://docs.stripe.com/tax/zero-tax]
 - **`invoice.finalization_failed`:** inspect `last_finalization_error`; `automatic_tax[status]=requires_location_inputs` means collect the location; `failed` means retry later. See [WEBHOOKS.md](WEBHOOKS.md).
 - **Past transactions:** don't promise that config changes fix completed transactions; use tax reports (https://docs.stripe.com/tax/reports.md); historical obligations go to a tax advisor.
 
@@ -129,7 +129,7 @@ const registration = await stripe.tax.registrations.create({
 
 - **Settings:** Tax Settings `status` reads `active` and a head office address is set.
 - **Registration:** the customer's jurisdiction shows as *Collecting* in live mode, not only in the sandbox.
-- **Calculation:** a test Tax Calculation with an address in that jurisdiction and the product's real tax code returns a `taxability_reason` other than `not_collecting`.
+- **Calculation:** a test Tax Calculation with an address in that jurisdiction and the product's real tax code returns the documented reason expected for that product/customer/jurisdiction; valid zero-tax cases remain explicit. [https://docs.stripe.com/tax/zero-tax]
 - **Checkout:** a completed session retrieved with `expand[]=line_items.data.taxes` shows taxes on each line, with `automatic_tax` enabled.
 - **No mixing:** no subscription or invoice carries `tax_rates` or `default_tax_rates` alongside `automatic_tax`.
 - **Custom PaymentIntents:** after a paid test order, a tax transaction is recorded and the sale appears in tax reports.

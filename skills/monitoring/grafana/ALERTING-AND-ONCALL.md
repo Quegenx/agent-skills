@@ -194,7 +194,7 @@ groups:
           (slo:availability:ratio_rate30d - 0.999) / (1 - 0.999)
 ```
 
-- **A single-window burn alert fires on transient noise:** `slo:burn_rate:ratio_rate1h > 14.4` (1h window, 5% of budget in 1h), `for: 2m`. Use multi-window, multi-burn-rate (Google SRE Workbook ch. 5, https://sre.google/workbook/alerting-on-slos/): the `and` filters a lone 5m spike (1h stays low) and a slow burn that already recovered (5m now low).
+- **A single-window burn alert fires on transient noise:** `slo:burn_rate:ratio_rate1h > 14.4` (1h window, 2% of a 30-day budget: 14.4 / (30 × 24); the old line said 5%), `for: 2m`. Use multi-window, multi-burn-rate (Google SRE Workbook ch. 5, https://sre.google/workbook/alerting-on-slos/): the `and` filters a lone 5m spike (1h stays low) and a slow burn that already recovered (5m now low).
 
 ```yaml
 - alert: SLOBurnRateFast
@@ -564,7 +564,7 @@ resource "grafana_oncall_on_call_shift" "weekday" {
 ### Slack, incidents, roles, limits
 
 - **Slack:** install at OnCall Settings > Chat Ops > Slack; users connect in Profile; set a default channel. Message actions: Acknowledge, Resolve, Silence, Add responders, Add note. Slash commands: `/escalate`, `/oncall`.
-- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; severity P1 to P4; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#the-postmortem)).
+- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; source severity P1 to P4, mapped here to P0 to P3 respectively; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#the-postmortem)).
 - **RBAC roles:** `oncall-admin`, `oncall-editor`, `oncall-viewer`, `oncall-notifications-receiver`. Assign integrations and schedules to teams.
 - **Rate limits:** 300 alerts per integration per 5 min; 500 alerts per org per 5 min; 300 API requests per key per 5 min.
 - **Always `send_resolved: true` and `max_alerts: 100`** on Alertmanager webhooks.

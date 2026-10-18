@@ -95,6 +95,17 @@ Only after the above. A cache adds stale data and a second source of truth. Good
 
 Apply one change, re-measure the same way, record the result, then the next change. Keep a small table: change, before, after, conditions. Revert changes that didn't help; they're only complexity. A change that does help can still be refused when the gain isn't worth its upkeep: one 900-line PR got "going to gavel that 2ms per send is not worth the complexity of maintaining this build plugin."
 
+## Compare the completed task
+
+[morluto/rea, rea-analysis-optimization/SKILL.md]
+
+- Pin the completed task, target/input identity, options, host and evidence coverage before comparing implementations. A smaller projection is not equivalent if it omits facts needed to finish the task.
+- Include admission, producer work, decoding, lookup, projection, serialization, retained evidence and cleanup. Count catalog/discovery calls and continuations when they affect the actual task.
+- Compare small/empty as well as representative inputs. Distinguish fresh sessions, warm runtime caches and OS file caches; keep failed attempts and resource stops.
+- Account for the process family and retained state, not just the parent heap. Projection can reduce transport output while leaving analysis work and peak memory unchanged.
+- For token claims, count discovery/schema, arguments, replies, retries and follow-up calls. Label tokenizer estimates separately from actual model usage. Smaller JSON alone proves neither fewer model tokens nor a better completed investigation.
+- Use an [independent correctness oracle](../../architecture/testing/INTEGRATION.md#independent-evidence) before comparing speed. Shared-work cancellation and cleanup follow the canonical [resource ownership contract](../../ai-agents/agent-harness/TOOLS-AND-MEMORY.md#evidence-and-resource-ownership).
+
 ## An optimization loop (run by you or by an agent)
 
 For a sustained push on one hot path, write the goal down before the first change, so neither you nor an agent can move it later:

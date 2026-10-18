@@ -73,7 +73,7 @@ Zero conversions in N clicks only rules out conversion rates at or above (95% co
 | 50 | 6% | Meaningful for high-intent search |
 | 100 | 3% | Underperforming if break-even CVR is above 3% |
 
-The table is the rule of three (about 3 ÷ N at 95%), which holds mathematically. Before calling spend wasted, work out what it would have to convert at:
+The table rounds the exact one-sided 95% zero-event binomial upper bound, `1 - 0.05^(1/N)`, under independent Bernoulli trials; at N=5 this is about 45.07%. This file formerly called it the rule of three: `3/N` is an approximation and gives 60% at N=5, not the table's 45% ([NIST exact binomial limits](https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/exacbino.htm); [Jovanovic and Levy, rule of three](https://doi.org/10.1080/00031305.1997.10473947)). Before calling spend wasted, work out what it would have to convert at:
 
 ```
 break-even CVR = CPC ÷ target CPA

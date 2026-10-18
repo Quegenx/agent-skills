@@ -15,7 +15,7 @@ Local SEO works out why a business does or doesn't show in Google Maps and the l
 
 [open-seo, local-seo]
 
-1. **Find the listing.** Search the brand name with a wide radius. Several hits means a chain (below).
+1. **Find the listing.** Search the brand name with a wide radius, then resolve identity with cid/place_id, coordinates and the actual business context. The source and this file formerly treated several name hits as proof of a chain, despite the source's warning about same-name collisions; multiple hits alone do not establish common ownership. [open-seo, local-seo]
 2. **Get the local pack** for the main keyword near the coordinate. Record the top 3 to 5 competitors' `cid`/`place_id` and the business's own row.
 3. **Compare against the top two competitors:** primary category, additional categories, review count, hours completeness, photo count, claimed status.
 4. **Check each listing's website link:** it "should deep-link to that location's page on the project domain, not a homepage or a stale domain". Broader on-page work goes to [TECHNICAL-AUDIT.md](TECHNICAL-AUDIT.md).
@@ -24,7 +24,7 @@ Local SEO works out why a business does or doesn't show in Google Maps and the l
 7. **Posts** only once the profile basics are competitive and the gap is engagement, not setup.
 8. **Prioritize.** "Category and claim problems outrank posting cadence every time."
 
-The source's step 7 also uses profile Q&A. Google discontinued the My Business Q&A API on November 3, 2025, with no replacement ([sunset dates](https://developers.google.com/my-business/content/sunset-dates)); don't treat profile Q&A as a lever to work on.
+The source's step 7 also uses profile Q&A. Google discontinued the My Business Q&A API on November 3, 2025 ([sunset dates](https://developers.google.com/my-business/content/sunset-dates)); this file formerly inferred that all profile Q&A work was unavailable. Google's [Maps Q&A help](https://support.google.com/maps/answer/7421661?hl=en) still describes the feature in certain countries/regions, and DataForSEO separately documents a [Q&A endpoint](https://docs.dataforseo.com/v3/business_data/google/questions_and_answers/task_post/). OpenSEO's tool uses that provider route. Treat Q&A as optional evidence only after checking the actual provider, market and runtime availability; documentation alone does not prove a live endpoint. [every-app/open-seo, local-seo/SKILL.md; src/server/mcp/tools/dataforseo-research-tools.ts]
 
 ## Reading the grid
 
@@ -60,4 +60,4 @@ Apple's equivalent rules for app reviews are in [../../mobile/aso/RATINGS-AND-RE
 
 ## Prove it
 
-The listing is matched by `cid` or `place_id`; the grid's center matches the storefront; every missing grid rank is read against its `resultsCount`; the first fix is a category, claim or website-link problem whenever one exists; each listing links to its own location page; no recommendation gates, buys or filters reviews, stuffs the business name, or relies on profile Q&A; the user saw the cost before any 5x5 grid ran.
+The listing is matched by `cid` or `place_id`; the grid's center matches the storefront; every missing grid rank is read against its `resultsCount`; the first fix is a category, claim or website-link problem whenever one exists; each listing links to its own location page; no recommendation gates, buys or filters reviews or stuffs the business name; optional Q&A evidence uses a verified available surface rather than the discontinued API; the user saw the cost before any 5x5 grid ran. [open-seo, local-seo; official Q&A sources above]

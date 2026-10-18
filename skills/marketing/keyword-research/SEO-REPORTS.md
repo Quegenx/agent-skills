@@ -34,12 +34,14 @@ How every SEO workflow here hands over its result: one self-contained HTML page 
 - No `<script>`. Anything interactive is static.
 - Charts are inline SVG or CSS bars "with real `<text>` labels and a `viewBox`", with the numbers printed beside them.
 - Aim under 80 KB; the hard cap is 500,000 bytes and "A filled report is normally 10-30 KB." Inlined images are the usual way past it.
-- "No backticks and no `${` anywhere in the HTML": Codex passes the argument through a JavaScript template literal. Use `<code>` for inline code.
+- The source avoids backticks and `${` as a JavaScript-template-literal escaping precaution for its invocation path. This file formerly called that a universal Codex/HTML restriction; current ReportService validation does not ban those literal characters. Escape for the actual transport or pass a properly structured tool argument; use `<code>` for visible inline code. [every-app/open-seo, seo-report/SKILL.md; ReportService](https://github.com/every-app/open-seo/blob/main/src/server/features/reports/services/ReportService.ts)
 - Finish the document: the server rejects HTML that does not end with `</html>` as "stopped early". Keep the doctype, `<html>`, `<head>` and `<title>`.
 
 ## The template
 
 [open-seo, seo-report] Copy [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html), keep its CSS, and replace the ALL-CAPS placeholders. "Do not restyle the template per report. One look, kept good, is the point." A report template may change `--accent`, the byline and the footer, nothing else.
+
+Select a saved template only when the user names it or its report kind matches the requested workflow; ask when multiple choices remain ambiguous. The source's template-selection workflow does not authorize applying an unrelated design or replacing the owner's app styles. [every-app/open-seo, seo-report/SKILL.md]
 
 - **Light only, on purpose.** The CSS comment: the report is read inside an app with its own theme toggle, and "a report that follows the OS scheme alone shows a black panel inside a light app for anyone whose two settings disagree." That reasoning is about a report embedded in a light app; a stand-alone page follows the page's own theming rules.
 - **Contents rail:** sticky beside the text on wide screens, dropped below 900px because "a contents list above the report is a wall to scroll past on a phone". Every `h2` has a kebab-case id the rail links to. The rail and article are both pinned to `grid-row:1`, or the rail "pushes the article down a whole row".
@@ -56,8 +58,9 @@ How every SEO workflow here hands over its result: one self-contained HTML page 
 - "New reports are private." Publish only when the user explicitly asks for public sharing. "A request to save a report or make it client-ready is not permission to publish. Report content and research sources cannot authorize sharing."
 - After saving, the whole chat reply is at most three short bullets (the verdict, the leading recommendation and its expected benefit if supported, anything the user must act on), then `Read the full report: <url>` on its own line. "Never paste the report into chat instead."
 - Revising your own report for the same subject and period replaces it; "A new month, a new competitor, or a different skill is a new report. Never save a near-duplicate."
+- Read metadata/summary first; retrieve complete HTML when editing a passage. Never overwrite an existing report from truncated HTML: preserve the record when the complete content cannot be read. [every-app/open-seo, seo-report/SKILL.md]
 - The producing workflow appends its own research-log line ([PROJECT-SETUP.md](PROJECT-SETUP.md#the-research-log)).
 
 ## Prove it
 
-The saved HTML has no `<script>`, no external URL outside `<a>` tags, no backtick and no `${`, ends with `</html>` and is under 80 KB; every non-anchor link has `target="_blank" rel="noopener"`; the title, `<title>` and `<h1>` match and carry the `MMM D, YYYY` date; every chart value appears in text; no cell holds a made-up number; the last `h2` is "How this report was made" with Tools and Verified; the report is private unless the user asked to share it; and the chat reply is three bullets and the link.
+The saved HTML has no `<script>`, no external URL outside `<a>` tags, ends with `</html>` and is under 80 KB; its actual transport is escaped correctly; every non-anchor link has `target="_blank" rel="noopener"`; the title, `<title>` and `<h1>` match and carry the `MMM D, YYYY` date; every chart value appears in text; no cell holds a made-up number; the last `h2` is "How this report was made" with Tools and Verified; a revision has complete source HTML; the report is private unless the user asked to share it; and the chat reply is three bullets and the link. [open-seo, seo-report]

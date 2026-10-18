@@ -13,10 +13,10 @@ This workflow performance-, load- or stress-tests a public website end to end: i
 
 ## Prerequisites and tools
 
-- **k6 v2.0.0+** (`k6 version`), for stable `k6/browser`, `expect()`, async iteration functions and per-request `tags`.
+- **k6 v2.0.0+** (`k6 version`) is this source workflow's chosen baseline. Stable `k6/browser` and its async API arrived in v0.52.0, rather than v2.0.0 as the old prerequisite implied. Check the version of each remaining API separately. [k6 browser migration](https://grafana.com/docs/k6/latest/using-k6-browser/migrating-to-k6-v0-52/)
 - **Node.js 20+ and npm; Playwright with Chromium** (`npx playwright install chromium`); **`har-to-k6`** (`npm i -D har-to-k6`); network access from the LG host to the target.
 - **The scaffold's `package.json`** is named `perf-tests`, `"private": true`, pins devDependencies `"har-to-k6": "0.14.15"` and `"playwright": "1.63.0"`, and suggests `record:wN-<short-name>` scripts (`node recordings/scripts/wN-<short-name>.js`).
-- **Prefer installed tools:** `mcp-k6` (script creation, Playwright to `k6/browser` migration with real UA selection, hydration waits and selector extraction, API lookup; prefer it over hand-written boilerplate), `mcp-grafana` (in-session Prometheus, Loki, Tempo, Pyroscope queries), `gcx` (Grafana Cloud CLI: queries, datasource discovery, cloud-run dispatch), the `k6` binary (local validation, breakpoint hunting), `k6 x docs`. Without them, use plain `k6`, `npx`, `curl` and hand-written scripts; the hand-written approach is also the specification for what `mcp-k6` output should look like. The workflow doesn't own toolchain setup.
+- **Prefer installed tools:** `mcp-k6` (script creation, Playwright to `k6/browser` migration, hydration waits and selector extraction, API lookup; prefer it over hand-written boilerplate), `mcp-grafana` (in-session Prometheus, Loki, Tempo, Pyroscope queries), `gcx` (Grafana Cloud CLI: queries, datasource discovery, cloud-run dispatch), the `k6` binary (local validation, breakpoint hunting), `k6 x docs`. Without them, use plain `k6`, `npx`, `curl` and hand-written scripts; the hand-written approach is also the specification for what `mcp-k6` output should look like. The workflow doesn't own toolchain setup.
 
 ## The ten steps
 
@@ -63,13 +63,13 @@ grep -rl '<WORKFLOW_PLACEHOLDER>' tests/wN-<short-name> recordings/scripts/wN-<s
 ```
 
   Then `cd <target-dir> && npm install && npx playwright install chromium`.
-- **`.gitignore`:** `node_modules/`, `*.log`, `.DS_Store`, `*.bak`. HARs under `recordings/har/` are committed on purpose and must not be ignored; `recordings/har/.gitkeep` can go once one HAR is committed.
+- **HARs are sensitive session artifacts.** Keep raw HARs private. Before any authorized sharing or publication, inspect and remove credentials, cookies, authorization headers, personal data and sensitive request or response bodies, including embedded content. The source default committed raw HARs; Playwright warns that authentication artifacts can enable impersonation. [Playwright authentication](https://playwright.dev/docs/auth)
 - **Output locations:** functional logs `${TMPDIR}/k6-run-all/`; load-test logs and LG CSVs `/tmp/perf-lg-monitor/`; cloud runs in the Grafana Cloud k6 web UI. (The scaffold README says cloud run links appear in `run-all.sh` output, but `run-all.sh` only runs functional tests locally.)
 
 ## 3. Record with Playwright
 
-- **Per workflow:** fill in the recorder (the user-action sequence, a `recordHar.urlFilter` regex that allow-lists the target host and blocks third-party RUM and ads, a real Chrome `userAgent`); run `node recordings/scripts/wN-<short-name>.js` (writes `recordings/har/wN-<short-name>.har`); convert with `npx har-to-k6 recordings/har/wN-<short-name>.har -o tests/wN-<short-name>/from-har.js`; commit both the HAR and `from-har.js` as the audit trail for bundle-path changes.
-- **Set a real user agent** on both the recorder (`userAgent` in the browser context) and the k6 scripts (`options.userAgent`): the default headless UA contains `HeadlessChrome`, which triggers bot blocking (403, 429 or 503 on the first request, redirects to a challenge page, empty responses). Template UA: `'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36'`.
+- **Per workflow:** fill in the recorder (the user-action sequence, a `recordHar.urlFilter` regex that allow-lists the target host and blocks third-party RUM and ads, an authorized browser configuration); run `node recordings/scripts/wN-<short-name>.js` (writes `recordings/har/wN-<short-name>.har`); convert with `npx har-to-k6 recordings/har/wN-<short-name>.har -o tests/wN-<short-name>/from-har.js`; retain a private audit trail. Share only reviewed, sanitized artifacts within the authorized scope.
+- **Respect access controls.** Do not use user-agent changes, CAPTCHA solving or bot-detection bypass to evade a block. Stop or obtain an approved access route. [Owner safety rule]
 - **HAR options:**
 
 ```js
@@ -93,7 +93,7 @@ jq '.log.entries | map(.request.url) | group_by(. | capture("//(?<h>[^/:]+)").h)
 
 - **Spot missing hydration:** `k6 run --vus 1 --iterations 1 tests/wN-<short-name>/from-har.js` (`k6 run --once` on k6 v2.3+, [VERSIONS.md](VERSIONS.md)); a homepage with none of the client-JS API calls means the recorder clicked before hydration. Add a sentinel wait and re-record.
 - **HAR size:** typically 300 KB to 2 MB; over 10 MB means narrow `urlFilter` (it's probably capturing CDN assets). Treat a HAR like a secret: it captures the live session (see cleanup step 4 below).
-- **Re-record** when hash-named assets change paths (for example SvelteKit `/_app/immutable/nodes/4.<hash>.js`; the protocol test failing with a 404 is the intended signal), when the API or workflow changes the request sequence, or for a fresh before/after HAR: re-run the recorder, regenerate with har-to-k6, bring the new paths into `protocol.js` by hand, run `./tests/run-all.sh`.
+- **Re-record** when hash-named assets change paths (the protocol test failing with a 404 is the intended signal), when the API or workflow changes the request sequence, or for a fresh before/after HAR: re-run the recorder, regenerate with har-to-k6, bring the new paths into `protocol.js` by hand, run `./tests/run-all.sh`.
 
 ## 4. Functional tests
 

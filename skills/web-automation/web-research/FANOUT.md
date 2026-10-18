@@ -7,6 +7,7 @@
 
 ## Profiles of the user's company
 
+- **Keep one shared marketing context.** [browserbase/skills, company-research/SKILL.md; repository context convention] Read `.agents/product-context.md` as defined in [CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). The source's research profiles below are job artifacts, not a second definition of shared marketing context; confirm any run-specific ICP against that context instead of silently replacing it.
 - **Store one profile per company** at `profiles/{slug}.json`, the same shape for every research job: `company, website, product, icp_description, existing_customers[], competitors[], use_cases[], researched_at`. Competitor analysis adds `precise_category`, `category_include_keywords` and `exclusion_list` (COMPETITORS.md).
 - **Keep profiles out of git:** `.gitignore` with `profiles/*.json` and `!profiles/example.json`.
 - **A profile is a fact sheet:** Company, Product, Existing Customers, Competitors, Use Cases. Don't put the ICP, the pitch angle or sub-verticals in it; those are per-run targeting decisions.
@@ -69,11 +70,15 @@ Either way:
 
 ## Sizing
 
+[browserbase/skills, company-research/references/workflow.md; competitor-analysis sizing recorded in COMPETITORS.md; event-prospecting/references/workflow.md] The source's batching quantities below are estimates; use observed retained counts for deliverable coverage.
+
 | Job | Discovery | Research subagents | Over-discover |
 |---|---|---|---|
-| Company research | `search_queries = ceil(requested/35)`, one discovery subagent per query, `expected_urls = search_queries*20` | quick `ceil(urls/10)`, deep `/5`, deeper `/3` | 2-3x: filtering drops 50-70% |
-| Competitor analysis | `search_queries = ceil(requested/20)`, `discovery_subagents = ceil(search_queries/3)`, `expected_urls = search_queries*15` | quick `/8`, deep `/4`, deeper `/2` | about 3x: the gate drops about 40-60% |
+| Company research | Count actual unique eligible homepages after deduplication and filtering | quick `ceil(urls/10)`, deep `/5`, deeper `/3` | Source estimates 2-3x discovery and 50-70% filtering loss; neither guarantees the requested count |
+| Competitor analysis | Count actual unique candidates and the confirmed gated list | quick `/8`, deep `/4`, deeper `/2` | Source estimates about 3x discovery and 40-60% gate loss; neither guarantees the requested count |
 | Event prospecting | | `triage = ceil(seed/10)`, `deep = ceil(icp_fits/5)`, `person = ceil(people/5)` | |
+
+[browserbase/skills, company-research/SKILL.md and references/workflow.md; repository count correction] The old company recipe `ceil(requested/35)*20` does not ensure even `requested` raw URLs, so it cannot ensure the stated over-discovery after filtering. The competitor recipe `ceil(requested/20)*15` has the same shortfall. Treat source yield percentages as planning estimates; compare observed retained counts with the requested deliverable, report a shortfall and keep the agreed call budget. Do not silently equate expected raw URLs with completed research.
 
 ## Failures and counts
 
@@ -83,4 +88,4 @@ Either way:
 
 ## Prove it
 
-The profile in use is named in chat and isn't `example.json`; every subagent prompt contains the profile fields and the literal output path; each subagent's calls carry a counter that never exceeds its cap; each wave's file count matches its input list; a wave with more than half its subagents failed stopped and asked.
+The profile in use is named in chat and isn't `example.json`; shared marketing context remains `.agents/product-context.md`; every subagent prompt contains the profile fields and the literal output path; each subagent's calls carry a counter that never exceeds its cap; retained entity counts are checked against the requested deliverable and any shortfall is reported; each wave's file count matches its input list; a wave with more than half its subagents failed stopped and asked.

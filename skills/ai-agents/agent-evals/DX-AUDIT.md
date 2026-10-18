@@ -48,7 +48,7 @@ Several subagents each attempt one real task against a product's docs, SDK or a 
   2. A fixed allowlist, `~/.zshrc ~/.bashrc ~/.bash_profile ~/.zprofile ~/.env ./.env ./.envrc`, scanned with `grep -hE '^[[:space:]]*export[[:space:]]+...'`. Don't expand the list and don't recurse. Read values lazily, only after confirmation.
   3. A secrets manager (1Password `op` only if `op account list` exits 0, so no interactive sign-in starts; macOS `security find-generic-password -l "<name>" -w`, tried once).
   4. Paste.
-- **Choosing:** exactly one candidate matching the slug is used silently, logging only its name and source. Several: ask with the top 3 plus "Paste manually instead" (and "Show all" if there are more).
+- **Choosing:** use a candidate only within the approved account/product scope; show its name and source without its value and ask when that identity or use is unresolved. The source selected one slug-matching candidate silently, but a name match alone does not establish authorization. Several candidates: ask with the top 3 plus "Paste manually instead" (and "Show all" if there are more). [browserbase/skills, agent-experience source conflict; user authorization]
 - **Keep values private:** never write a value to chat, a trace, the write-up or any file other than the agent's own workspace `.env`; never re-export it under a product name inside a workspace; don't log its length, prefix or fingerprint.
 - **The orchestrator keeps the real-named credentials to verify claims,** for example a `curl` that a reported session ID resolves; an ID that doesn't resolve is evidence of hallucination. Show only the result, never the headers. The asymmetry is deliberate.
 - **Don't help an agent that asks for credentials.**
@@ -93,13 +93,15 @@ Several subagents each attempt one real task against a product's docs, SDK or a 
 | `FROM LLMS.TXT` | The URL was mentioned in llms.txt |
 | `FROM PREV PAGE` | It appeared in an earlier tool output |
 | `GUESS · 404` | It was guessed and returned 404 |
-| `TRAINING PRIOR` | None of the above: a guess from training data |
+| `UNTRACED` | No observed discovery source in this trace; origin is unknown |
 
 - **Which vendor agents pick, tracked over time:** the same subagent panel, phrased without vendor names and rerun monthly against the previous release's baseline, is the agent-default check in [ai-search-visibility AGENT-DEFAULTS.md](../../marketing/ai-search-visibility/AGENT-DEFAULTS.md) and [marketing-loops SEO-LOOPS.md](../../marketing/marketing-loops/SEO-LOOPS.md#the-agent-default-check-loop) [coreyhaines31/marketingskills, marketing-loops].
-- **Read the labels:** many successful priors means a head start from training data; many 404 guesses means the URL taxonomy drifts from conventions; llms.txt after a 404 means llms.txt is carrying discoverability. Subagents don't have search.
+- **Read the labels within their evidence.** The source called an unexplained URL TRAINING PRIOR and inferred a training-data head start. A trace cannot establish that origin: retain UNTRACED, the actual URL/outcome and missing provenance. Repeated 404s or an observed llms.txt discovery are evidence of those events, not proof of their sole cause. [browserbase/skills, agent-experience/SKILL.md]
 - **Review across agents in 3-5 sentences:** convergent mistakes (3 of 3 agents on the wrong package is a doc-quality disaster), hallucinated artifacts, inconsistent end states, silent workarounds, and contradictions between tool output and narrative (grep for `error`, `404`, `401`, `deprecated`, `warning`).
 
 ## Scoring
+
+- **Measured versus estimated:** the source trace has wall_time_estimate_sec and agent-reported timing. Label estimates as estimates; use actual recorded clock/tool-usage evidence for measured duration or cost. An exact-looking score does not turn estimated inputs into measurements. [browserbase/skills, agent-experience/SKILL.md]
 
 - **Weights:** setup friction 25%, speed 20%, efficiency 20%, error recovery 15%, doc quality 20%. Grades: A at 90 or more, B 75, C 60, D 45, else F.
 - **Cap by onboarding success rate:** 0.9 or more, no cap; 0.7 or more, 85; 0.5 or more, 70; below 0.5, 55.

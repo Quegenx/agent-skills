@@ -9,6 +9,11 @@ In a shared database, the one bug that ends a business is tenant A seeing tenant
 - **Scope lookups by ID too:** `where id = $1 and tenant_id = $2`. Another tenant's row is "not found", not "forbidden" (no enumeration).
 - **Include the tenant in cache keys, file paths, queue messages and search indexes;** isolation that stops at the database leaks through everything derived from it.
 
+## Derived data and revocation
+
+- **Follow access changes through every copy.** Trace ACL changes, deletion, revocation, export, restore, search indexes, caches and queued work; a job authorized at enqueue time may run after the relevant permission changes. Name the promised boundary and unauthorized reader/action before reporting a lifecycle vulnerability. [cloudflare/security-audit-skill, security-audit/DATA-ISOLATION-AND-LIFECYCLE.md]
+- **Include browser persistence in that trace.** Service-worker caches, offline data and cross-tab state must preserve current account/tenant boundaries; details are in [BROWSER-BOUNDARIES.md](BROWSER-BOUNDARIES.md#service-workers-and-account-lifecycle). [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md]
+
 ## Layer 2: Postgres row-level security
 
 A policy is a predicate Postgres adds to every statement on the table, for every role that isn't exempt. The application never sees it, so it can't forget it.

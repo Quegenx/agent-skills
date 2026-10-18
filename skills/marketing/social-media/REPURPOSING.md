@@ -72,7 +72,7 @@ Clip editing (start inside the conflict, result before the workflow, one CTA) is
 3. **Adapt to each platform** (format, length and tone; limits in [PLATFORM-LIMITS.md](PLATFORM-LIMITS.md)).
 4. **Write standalone captions:** each post must work without context.
 5. **Schedule across the week:** spread distribution, don't dump everything at once.
-6. **Update and reshare:** evergreen content can repeat every 3 to 6 months. On X, reposting the same content quickly hits the already-seen filters, so space reruns ([X-RANKING.md](X-RANKING.md#what-kills-reach)).
+6. **Update and reshare:** evergreen content can repeat every 3 to 6 months. On X, seen/served filters can remove candidates before ranking; the source's repeat interval is a publishing heuristic ([X-RANKING.md](X-RANKING.md#structure-and-predicted-outcomes)).
 
 Horizontal video recut for TikTok is on the source's "What doesn't" list ("Repurposed horizontal video"); each vertical cut is its own composition.
 

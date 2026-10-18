@@ -7,8 +7,10 @@ How a brand shows up in AI answers about its market, and the few changes most li
 ## 1. Get evidence
 
 [open-seo, ai-visibility-audit]
-- **A tracker with a completed run:** use the latest completed run. Do not buy new answers.
+- **A tracker with a completed run:** use the latest completed baseline or scheduled run; use the latest completed manual check only when neither exists. Do not buy new answers. For manual evidence, pass the same explicit runId to every results/sources read, since default reads cover baseline/scheduled runs. This sharpens this file's former unqualified "latest completed run" rule. [every-app/open-seo, ai-visibility-audit/SKILL.md]
 - **A run in progress:** follow it rather than start another. "A failed or partial run still supplies whatever answers it completed; report its coverage."
+- **Active prompts with no run:** estimate one check of the saved active prompts, obtain the cost approval once and follow that run; do not change the schedule as a side effect. [every-app/open-seo, ai-visibility-audit/SKILL.md]
+- **No active prompts:** ask whether to resume the saved set or add new prompts; an audit does not silently unpause or rebuild the portfolio. [every-app/open-seo, ai-visibility-audit/SKILL.md]
 - **No tracker:** propose 10 to 15 neutral prompts across two or three topics, preferring researched prompts ([PROMPT-RESEARCH.md](PROMPT-RESEARCH.md)). Show the check cost and the monthly cost, get one approval, then run once. If the user declines the spend, audit on prompt research alone and say the report has no observed answers.
 - Never unpause prompts or change a schedule without the user's direction.
 

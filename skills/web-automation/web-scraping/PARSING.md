@@ -14,7 +14,7 @@
 
 Built on lxml and cssselect. HTML only: no XML feeds, because adaptive matching does not work with XML (the crawler's feed template handles XML, CRAWLING.md).
 
-- **Create:** `from scrapling import Selector`, `Selector(html, url=...)`. Args: `encoding` (default UTF-8), `keep_comments` (off), `keep_cdata` (off); `url`, `adaptive`, `storage`, `storage_args` for adaptive. Properties load lazily. A fetcher's response is already a `Selector`.
+- **Create:** `from scrapling import Selector`, `Selector(html, url=...)`. Args: `encoding` (default UTF-8), `keep_comments` (off); `url`, `adaptive`, `storage`, `storage_args` for adaptive. Properties load lazily. A fetcher's response is already a `Selector`.
 - **Types:** `Selector`, `Selectors` (list subclass), `TextHandler` (str subclass), `TextHandlers`, `AttributesHandler` (read-only dict).
 - **Read-only DOM:** it cannot modify the parsed document.
 - **Text:** `.text` is direct text only; `.get_all_text(separator='\n', strip=False, ignore_tags=('script','style'), valid_values=True)` for everything below.
@@ -25,6 +25,8 @@ Built on lxml and cssselect. HTML only: no XML feeds, because adaptive matching 
 - **Results:** every selection returns `Selector`/`Selectors`, text nodes included (`tag == "#text"`). `get()`, `getall()`, `extract_first`, `extract`; `Selectors.get(default=None)`; `.first` and `.last` return `None` instead of raising; `.length`; `Selectors.search(fn)` returns the first match, `.filter(fn)` all matches.
 - **Text helpers:** `re(pattern, replace_entities=True, clean_match=False, case_sensitive=True)`, `re_first`; `.json()` on text or an element; `.clean()` (collapse whitespace, `remove_entities`); `.sort(reverse=)`.
 - **Links:** `page.urljoin(relative)`.
+
+The former `keep_cdata` option was removed in 0.5, without replacement; this includes global and per-request selector settings and display_config. The old source still listed it. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 
 ## Selecting
 

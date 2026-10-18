@@ -21,7 +21,7 @@ Checking existing pages and sales assets for claims that went stale or were neve
 
 Apply the evidence rules ([SKILL.md](SKILL.md#evidence-discipline)) to internal sales assets too. "Where several assets repeat one fact, fix it in the centralized competitor data so the fix carries through" ([DATA-AND-HUB.md](DATA-AND-HUB.md)).
 
-The source ranks fixes by audience (public, reps, internal), not by a severity scale, so this audit uses that order rather than P0 to P3.
+The source ranks fixes by audience (public, reps, internal); keep that ordering and assign every finding P0 to P3 severity separately. This file formerly treated audience order as a replacement for severity, contrary to the owner's one-scale rule. [coreyhaines31/marketingskills, competitors; repository owner severity policy]
 
 ## Refresh cadence
 

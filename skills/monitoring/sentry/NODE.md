@@ -197,9 +197,9 @@ app.listen(3000);
 |---|---|---|
 | `dsn` | none | Required; or `SENTRY_DSN` |
 | `tracesSampleRate` | none | 0 to 1; required to enable tracing; never on the OTLP path |
-| `dataCollection` | see below | `userInfo`, `cookies`, `httpHeaders`, `httpBodies`, `queryParams`, `genAI` |
+| `dataCollection` | see below | `userInfo`, `cookies`, `httpHeaders`, `httpBodies`, `urlQueryParams`, `genAI` |
 | `includeLocalVariables` | `false` | Local variable values in stack frames |
-| `enableLogs` | `false` | Logs (9.41.0+) |
+| `enableLogs` | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | Logs (9.41.0+) |
 | `environment` | `"production"` | Or `SENTRY_ENVIRONMENT` |
 | `release` | none | Or `SENTRY_RELEASE` |
 | `debug` | `false` | |
@@ -213,7 +213,7 @@ app.listen(3000);
 
 Also: `serverName`, `maxValueLength`, `ignoreErrors`, `ignoreTransactions`, `beforeSend`, `beforeSendTransaction`, `beforeBreadcrumb`, `onFatalError`.
 
-- **`dataCollection` defaults, the references disagree.** The Node error reference: conservative unless set; when omitted the SDK falls back to `sendDefaultPii` (default `false`); passing the object, even `{}`, flips unset categories to their permissive defaults, so opt out per category. The NestJS skill lists the permissive values as plain defaults: `userInfo: true`, `cookies: true`, `queryParams: true`, `httpHeaders: { request: true, response: true }`, `httpBodies: ["incomingRequest", "outgoingRequest", "incomingResponse", "outgoingResponse"]`, `genAI: { inputs: true, outputs: true }`. `cookies` and `queryParams` also take `{allow: [...]}` or `{deny: [...]}`. Confirm in the current docs, and set every category you care about explicitly. Privacy policy across platforms is in [PRACTICES.md](PRACTICES.md).
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection] Platform capture behavior still depends on its installed integrations; explicitly disable categories you must not collect.
 - **Environment variables:** `SENTRY_DSN`, `SENTRY_ENVIRONMENT`, `SENTRY_RELEASE` (auto-detected from git; the NestJS skill adds Heroku and CircleCI), `SENTRY_TRACES_SAMPLE_RATE`, `NODE_OPTIONS`; at build time `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`.
 
 ## Capturing errors
@@ -355,13 +355,6 @@ Sentry.init({
       event.fingerprint = ["api-error", String(err.statusCode), err.endpoint];
     }
 
-    // Filter noisy breadcrumbs
-    if (event.breadcrumbs?.values) {
-      event.breadcrumbs.values = event.breadcrumbs.values.filter(
-        (bc) => !bc.data?.url?.includes("/health")
-      );
-    }
-
     return event;
   },
 
@@ -392,7 +385,7 @@ Sentry.init({
 
 ## Logs
 
-- **Sentry Logs complement a logging library, they don't replace it.** They are high-cardinality structured logs linked to traces and errors. `enableLogs: true` is required (default `false`); without it logs don't appear (the NestJS reference: every `Sentry.logger.*` call is a no-op). Logs are buffered (max 100 per buffer, `MAX_LOG_BUFFER_SIZE = 100`) and flushed when full or on `client.close()`.
+- **Sentry Logs complement a logging library.** Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/] Keep buffering/flush behavior in the installed SDK contract rather than assuming a disabled-default no-op.
 - **API:** `Sentry.logger.trace|debug|info|warn|error|fatal(message, attributes?, options?)` with severity numbers 1, 5, 9, 13, 17, 21. Signature: `info(message: ParameterizedString, attributes?: Record<string, unknown>, options?: { scope?: Scope }): void`. Attribute values are `string`, `number` or `boolean`.
 - **Parameterize with `Sentry.logger.fmt`, never string concatenation.** The tagged template stores `sentry.message.template` (e.g. "User '%s' purchased '%s'") plus `sentry.message.parameter.0`, `.1`, so interpolated values become individually searchable attributes. It is an alias for `Sentry.parameterize()`.
 
@@ -435,8 +428,10 @@ Sentry.init({
 
 - **Console:** `Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] })`; default levels `['debug','info','warn','error','log','trace','assert']`.
 - **Consola (>=10.12.0):** `logger.addReporter(Sentry.createConsolaReporter());`.
-- **Winston, Pino, Bunyan: the references disagree.** The Node logging reference says there are no first-party transports for Winston, Pino, Bunyan or Morgan: bridge them to `Sentry.logger.*`. Winston maps `silly: "trace", verbose: "debug", debug: "debug", http: "info", info: "info", warn: "warn", error: "error"` through `winston.transports.Stream`; Pino maps `10: "trace", 20: "debug", 30: "info", 40: "warn", 50: "error", 60: "fatal"` through `pino.destination({ write(chunk) {...} })`, stripping `msg, level, time, pid, hostname`. The NestJS logging reference shows `pinoIntegration()` (SDK 10.18.0+) and `createSentryWinstonTransport({ minLevel: "info" })`, both imported from `@sentry/nestjs`, and says Bunyan is not supported (see [NESTJS.md](NESTJS.md#logs)). Check the current docs for a first-party integration before writing a bridge.
+- **Use the supported logger integration before a custom bridge.** Official Node integrations support Pino from 10.18.0, Winston from 9.13.0 and Consola from 10.12.0. The old Node reference said no first-party transport existed for any of them; do not extend this correction to Bunyan or Morgan without evidence. Inspect the installed integration API. [https://docs.sentry.io/platforms/javascript/guides/node/logs/]
 - **Serverless:** `await Sentry.flush(2000)` before returning.
+
+**Breadcrumb shape correction:** SDK Event.breadcrumbs is an array, not a `.values` wrapper. The old source's beforeSend example used `event.breadcrumbs.values`; it is removed above. Use the existing beforeBreadcrumb hook for per-breadcrumb filtering. [https://github.com/getsentry/sentry-javascript/blob/develop/packages/core/src/types/event.ts]
 
 ## Metrics
 

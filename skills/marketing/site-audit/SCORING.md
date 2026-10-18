@@ -30,6 +30,10 @@ A page that returns HTML but renders no meaningful visible content is failed and
 - **Recommendation rank** combines four inputs, so the first recommendation is not picked by raw point loss alone: severity, the normalized category score loss, a category urgency weight (SEO and security 1.15, accessibility 1.05, design 1.0) and a remediation priority number, where lower is more urgent. The page gives no formula.
 - **Rule points lost are not a promise.** Each fix brief states its impact as points lost and "not a predicted overall-score gain".
 
+## A manual marketing-audit alternative
+
+[Yuzzyuk/marketing-os, references/audit-rubric.md] treats unknown evidence as lost coverage, never as scored failure. Its manual rubric renormalizes the score over inspected applicable weight, reporting coverage separately: at least 80% permits a full score, 60 to 79% a provisional score and below 60% no headline score. These are that source's heuristic gates, not industry standards. Keep FreeScan's unknown deductions above as FreeScan's actual method; never blend the two formulas or silently apply one tool's score to another. Findings still use P0 to P3 severity.
+
 ## squirrelscan's grade and targets
 
 squirrelscan returns an overall 0 to 100 score with a letter grade (A to F) and a score per category [squirrelscan, OUTPUT-FORMAT.md]. Its targets for the fix loop [squirrelscan, audit-website]:

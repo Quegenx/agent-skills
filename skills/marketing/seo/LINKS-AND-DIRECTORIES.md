@@ -79,7 +79,7 @@ The source's catalog has 13 tiers and about 270 entries, with DR figures it says
 | 1B. Indie launch sites | Twelve Tools, Turbo0, Tinyshelf, ScrollLaunch, LaunchPanda and similar | Many trade a listing for a badge, or keep the link only "while their badge stays up". A required reciprocal badge is a listed link-spam pattern; if you show a badge, you may qualify its link. Use the exact domains in the tracker: `tinyshelf.com`, `launchpanda.com` and `launchstreak.com` are lookalikes, and "A lapsed lookalike is a ready-made phishing page" (domains checked by the source on 2026-10-02) |
 | 2. Startup and SaaS directories | AlternativeTo, SaaSHub, G2, Capterra, GetApp, SourceForge, F6S, TrustRadius and similar | Rolling. Submit AlternativeTo as an alternative to your real top competitors. The source's G2 review playbook (incentives, report cut-offs, badge thresholds) is unverified against G2's docs and the FTC rules and is left out |
 | 3. AI tool directories | There's An AI For That, Futurepedia, Toolify, Future Tools and similar | AI-native products only |
-| 4. Agent and MCP registries | The official MCP Registry, Smithery, Glama, MCP.so, MCP Market; GitHub lists; the Claude plugin directory; llms.txt directories | Only if the product is an MCP server, plugin, agent or API. See below |
+| 4. Agent and MCP registries | The official MCP Registry, Smithery, Glama, MCP.so, MCP Market; the Claude plugin directory; llms.txt directories | Only if the product is an MCP server, plugin, agent or API. See below |
 | 5. No-code directories | NoCodeFinder, No Code MBA, We Are No Code and similar | No-code products only |
 | 7. Integration marketplaces | Zapier, HubSpot, Slack, Airtable, Notion, Make, Pipedream | Need a working integration; listing follows each marketplace's review |
 | 13. Niche vertical directories | Legal, home, design, health and similar | "Only submit if your product genuinely fits the vertical" |
@@ -94,7 +94,7 @@ The source's catalog has 13 tiers and about 270 entries, with DR figures it says
 4. Prove the namespace: `mcp-publisher login github` gives `io.github.<user>/*`; for `com.yourdomain/*`, a DNS TXT record or a key at `/.well-known/mcp-registry-auth`.
 5. `mcp-publisher publish`. Versions are immutable; the registry is labelled "preview", so data resets are possible. Aggregators build on it (the source says PulseMCP ingests from it and takes no direct submissions as of 2026-10).
 
-Before opening a PR to a GitHub list, check it still merges: "a big star count with hundreds of open PRs and no recent merges means your PR will sit." The source reports 341 malicious skills found on ClawHub in February 2026; say so if you recommend it. An `llms.txt` listing is discovery, not ranking: Google says "You don't need to create new machine readable files, AI text files, or markup to appear in these features" ([AI features](https://developers.google.com/search/docs/appearance/ai-features)); more in [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
+The source reports 341 malicious skills found on ClawHub in February 2026; say so if you recommend it. An `llms.txt` listing is discovery, not ranking: Google says "You don't need to create new machine readable files, AI text files, or markup to appear in these features" ([AI features](https://developers.google.com/search/docs/appearance/ai-features)); more in [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
 
 ## Positioning per directory
 
@@ -110,7 +110,21 @@ Lead sentence per tier, verbatim [coreyhaines31/marketingskills, directory-submi
 | Dev tool | "[Product] is a [technical category] with [differentiator]." |
 | B2B review | "[Product] helps [audience] [measurable business outcome]." |
 
-Vary the opening sentence, the feature emphasis and the audience framing per tier; pick 3 to 5 features per tier; "Use real numbers and specific differentiators"; avoid vague claims ("blazing fast", "game-changing"); don't lie about competitors' features; always fill the tag list, "it's how moderators route you to the right category". The source's reason for varying copy ("AI engines penalize duplicate content") has no source, and Google says "Some duplicate content on a site is normal and it's not a violation of Google's spam policies" ([canonicalization](https://developers.google.com/search/docs/crawling-indexing/canonicalization)); vary it because each audience reads a different opener. The six full description templates are in the source's `positioning-variations.md`; writing the copy itself follows [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+Vary the opening sentence, the feature emphasis and the audience framing per tier; pick 3 to 5 features per tier; "Use real numbers and specific differentiators"; avoid vague claims ("blazing fast", "game-changing"); don't lie about competitors' features; always fill the tag list, "it's how moderators route you to the right category". The source's reason for varying copy ("AI engines penalize duplicate content") has no source, and Google says "Some duplicate content on a site is normal and it's not a violation of Google's spam policies" ([canonicalization](https://developers.google.com/search/docs/crawling-indexing/canonicalization)); vary it because each audience reads a different opener. The source has seven description templates, not the six this file formerly counted; their body fields are below. Writing the copy follows [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+
+[coreyhaines31/marketingskills, directory-submissions/references/positioning-variations.md] Use the actual product facts for these field sets, not the source's sample claims:
+
+| Audience | Body fields beyond the opener |
+|---|---|
+| Startup / launch | Pain, mechanism, differentiators, actual actions/constraints, real founder origin and use cases |
+| SaaS / software | Verified competitor gaps, relevant features/benefits, integrations and actual relative pricing |
+| AI | Concrete AI capability, models/approaches actually used, stack, supported providers and real use cases |
+| Agent / MCP | Actual tools, resources and prompts; authentication, supported transports, security posture, installation and docs |
+| No-code | Real outputs/projects, visual or assisted features and available templates |
+| Dev / technical | Stack and architecture, technical approach/tradeoff, open-source/self-hostability status, actual APIs, SDKs and docs |
+| B2B review | Measured benefits and method, enterprise integrations, substantiated security claims, support, pricing and permissioned evidence |
+
+Free, no-card, no-key, no-setup, time savings, customer outcomes, supported transports and compatibility are not default values. Leave unsupported fields unresolved rather than copying the sample's promises. [coreyhaines31/marketingskills, directory-submissions/references/positioning-variations.md; repository evidence policy]
 
 ## Submitting safely
 

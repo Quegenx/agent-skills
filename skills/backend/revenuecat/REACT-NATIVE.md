@@ -158,12 +158,11 @@ export async function syncRevenueCat(appUserID: string): Promise<void> {
 }
 ```
 
-- **`logOut` throws while anonymous** (`PURCHASES_ERROR_CODE.LOG_OUT_ANONYMOUS_USER_ERROR` in the SDK reference; the identify-user skill calls it `LogOutWithAnonymousUserError`); guard with the anonymous-ID prefix. `logOut(): Promise<CustomerInfo>` generates a new anonymous ID and clears the customer-info cache.
+- **`logOut` throws while anonymous** (`PURCHASES_ERROR_CODE.LOG_OUT_ANONYMOUS_USER_ERROR`); guard with `Purchases.isAnonymous()`, which reads the current identity. The old source inspected `originalAppUserId`, which can remain anonymous after a merge into a custom ID and is not current-identity evidence. `logOut()` creates a new anonymous ID. [https://www.revenuecat.com/docs/customers/identifying-customers; https://github.com/RevenueCat/react-native-purchases/blob/main/src/purchases.ts]
 
 ```ts
 export async function signOutRevenueCat(): Promise<void> {
-  const info = await Purchases.getCustomerInfo();
-  if (info.originalAppUserId.startsWith('$RCAnonymousID:')) return;
+  if (await Purchases.isAnonymous()) return;
 
   try {
     await Purchases.logOut();
@@ -173,7 +172,7 @@ export async function signOutRevenueCat(): Promise<void> {
 }
 ```
 
-- **Account switching: the sources disagree.** The RevenueCat identify-user skill says `logOut()` first, then `logIn(newId)`, because a second `logIn` would alias the two IDs together. The docs say to call `logIn` directly with no `logOut`, and their alias table says a logIn from a non-anonymous ID never merges. The hook below follows the skill. Confirm in https://www.revenuecat.com/docs/customers/identifying-customers.md.
+- **Account switching: the sources disagree.** The RevenueCat identify-user skill says `logOut()` first, then `logIn(newId)`, because a second `logIn` would alias the two IDs together. The docs say to call `logIn` directly with no `logOut`, and their alias table says a logIn from a non-anonymous ID never merges. The official form governs the hook below: switch known IDs with `logIn` directly. The source's merge claim is wrong for a non-anonymous current ID. See https://www.revenuecat.com/docs/customers/identifying-customers.md.
 - **Custom-IDs-only apps.** If every user has an account, identify before configuring, configure only with the custom ID, and never call `logOut`; on account switch call `logIn`. Otherwise a provided user's subscription may be transferred to an anonymous ID, recoverable only through restore on the original platform.
 - **Configured with an `appUserID` up front,** you generally don't need `logIn` until that user signs out and back in as somebody else.
 - **What `logIn` merges (docs alias table).** Anonymous to a new ID, or to an existing ID without an anonymous alias: merged. Anonymous to an existing ID that already has an anonymous alias, or any non-anonymous ID to any ID: the current ID is logged out, the provided one logged in, no merge or purchase transfer. After a merge only one ID stays in `original_app_user_id` (webhooks list the others in `aliases`), and any merged ID returns the same CustomerInfo, history and attributes.
@@ -196,7 +195,6 @@ export function useRevenueCatIdentity(currentUserID: string | null) {
       } else if (prev != null && currentUserID == null) {
         await signOutRevenueCat();
       } else if (prev != null && currentUserID != null && prev !== currentUserID) {
-        await signOutRevenueCat();
         await syncRevenueCat(currentUserID);
       }
     })();

@@ -14,6 +14,7 @@ Most production Postgres trouble is not a slow query but the machinery around it
 | Connections, poolers and their limits, timeouts, transactions, locks, deadlocks, upserts, batches | [CONNECTIONS.md](CONNECTIONS.md) |
 | MVCC, vacuum, wraparound, memory, WAL and checkpoints, storage, backups, replication | [OPERATIONS.md](OPERATIONS.md) |
 | The queries that audit a database: slow statements, unused and duplicate indexes, bloat, missing FK indexes, dead rows, connections, lag | [MONITORING.md](MONITORING.md) |
+| PlanetScale Postgres targets and pooling, current Insights/inspection surfaces, query-pattern API and extension availability | [PLANETSCALE.md](PLANETSCALE.md) |
 
 ## The rules
 

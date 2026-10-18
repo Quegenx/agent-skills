@@ -141,6 +141,8 @@ async function verifyAndUpgrade(user: User, password: string): Promise<boolean> 
 
 New passwords use the new scheme; reads accept both; the stored prefix lets you count (and later list) the users still on the legacy scheme; the upgrade can sit behind a flag if login writes become a load problem; after most active users have migrated, force a reset for the rest and delete the legacy path. The same expand-and-contract shape works for any format change.
 
+Convex identity, optional application users rows, Convex Auth setup and document/parent membership are owned by [convex/AUTH.md](../convex/AUTH.md). [get-convex/agent-skills, convex-auth, convex-authz]
+
 ## Two-factor authentication (TOTP)
 
 The server and an authenticator app share a random secret; both derive a 6-digit code from it and the current 30-second time step, so checking needs no network call. With Supabase, `supabase.auth.mfa.enroll` / `challenge` / `verify` do this, and a restrictive RLS policy requiring `(select auth.jwt()->>'aal') = 'aal2'` enforces it in the database. Building it yourself means getting each of these right:
@@ -151,4 +153,5 @@ The server and an authenticator app share a random secret; both derive a 6-digit
 - **Rate-limit verification hard:** a 6-digit code has a million values. Lock or slow down after a few failures per account and log the pattern.
 - **Encrypt the secret at rest** ([SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md)); anyone who reads it can generate valid codes.
 - **Recovery codes:** 8 to 10 random codes shown once, stored hashed like passwords, each usable once, regenerable.
+- **Bind step-up to the operation.** Check assurance for factor replacement/disable, recovery, account linking and alternate API paths, not just the normal login screen. Bind the challenge to the initiating user/session and intended action, with one-time use and expiry; a weaker recovery or replacement path must not silently remove the protection. [cloudflare/security-audit-skill, security-audit/WEB-PROTOCOL-AND-AUTH.md; https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html]
 - **Prefer an authenticator app or passkeys over SMS,** which SIM swapping defeats.

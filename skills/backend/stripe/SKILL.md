@@ -27,7 +27,7 @@ Stripe takes money through a few high-level objects (Checkout Sessions, the Bill
 | Stripe in Supabase: the Stripe Wrapper, the Stripe Sync Engine, webhooks in an Edge Function | [SUPABASE.md](SUPABASE.md) |
 | Stripe Apps: extension types, viewports, scaffold and dev loop, authentication, the Secret Store, the UI sandbox and components, script extensions, publishing | [STRIPE-APPS.md](STRIPE-APPS.md) |
 | Agent tools: `stripe docs`, Stripe Directory, Stripe Pay, Stripe Projects, the Stripe MCP, feedback | [AGENT-TOOLS.md](AGENT-TOOLS.md) |
-| MRR, churn, cohorts, forecasting, NRR, invoices and cash, revenue recognition, pricing experiments, coupons [appeeky] | [REVENUE-METRICS.md](REVENUE-METRICS.md) |
+| Named MRR conventions, historical churn/cohorts, forecasting, NRR, invoice proxies versus cash and recognition, pricing experiments and coupons [appeeky] | [REVENUE-METRICS.md](REVENUE-METRICS.md) |
 | Account operations over the MCP: disputes and refunds, balance and payouts, payout reconciliation, a health dashboard [appeeky] | [OPERATIONS.md](OPERATIONS.md) |
 
 ## The rules

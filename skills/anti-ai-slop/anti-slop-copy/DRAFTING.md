@@ -43,7 +43,9 @@ The traits the answers produce:
 - **Opinions that cost something.** "A real opinion is specific and someone could disagree with it ('Most onboarding checklists are busywork. Ours has three steps.'). 'We believe in quality' costs nothing."
 - **First person only when it means something.** "First person that adds no fact is decoration."
 
-Rules that override the persona: "**Never invent experience.** The writer's opinions and emphasis can be constructed; their anecdotes, customers, and results cannot. A made-up 'when I ran my agency...' story is fabrication, and so is a fake customer quote. Use what the user gave you or mark `[NEED: founder story]`." In Situation B the writer already exists: match the real voice. "A persona for an enterprise security product is still formal."
+Rules that override the persona: never invent the writer's opinions, experience, anecdotes, customers or results. Use supplied views and evidence, or flag what is missing. The source and this file formerly permitted constructing opinions; the applicable AGENTS writing rule forbids invented opinions and takes precedence. The source's `[NEED: founder story]` marker remains useful for missing experience. In Situation B the writer already exists: match the real voice and brand register. [coreyhaines31/marketingskills, copywriting/references/ai-tells.md; repository AGENTS.md, Writing and Editing]
+
+**A different generation workflow.** Yuzzyuk/marketing-os asks for 15 to 20 independently generated variants, then comparison with the draft, and says not to anchor on the user's version. Keep that as an option for requested wide exploration in Situation A. The existing B/C restoration and point-edit rules remain: the source's blanket generation rule does not authorize replacing a real voice or expanding a one-line edit. Both workflows use the same [.agents/product-context.md definition](CONTEXT.md). [Yuzzyuk/marketing-os, references/copy.md; coreyhaines31/marketingskills, copywriting]
 
 ## Decompose and lock
 
@@ -98,4 +100,4 @@ Rules that override the persona: "**Never invent experience.** The writer's opin
 - Every kept line passes at least two of the three gate questions; the rest are rewritten or carry a `[NEED: ...]`.
 - At most one or two punchy moments on the page.
 - Every declined claim names the evidence that would unlock it.
-- No anecdote, customer, quote or number appears that the user didn't supply.
+- No opinion, anecdote, customer, quote or number is invented; missing evidence is flagged rather than filled by a persona. [repository AGENTS.md, Writing and Editing]

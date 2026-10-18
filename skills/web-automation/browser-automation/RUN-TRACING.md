@@ -5,7 +5,7 @@
 ## A second CDP client that never acts
 
 - **Every Chrome DevTools target accepts multiple concurrent CDP clients.** The automation is one client; the observer is a second that enables only observation domains (Network, Console, Runtime, Log, Page).
-- **The observer never sends `Input.dispatch*` or `Runtime.evaluate`,** so it cannot perturb the run.
+- **The passive observer never sends `Input.dispatch*` or `Runtime.evaluate`.** This limits its actions; it does not prove that attachment, enabled domains or sampling have zero timing/performance impact. The source claimed it could not perturb the run. [browserbase/skills, browser-trace]
 - **It works with any driver that speaks CDP:** `browse`, Stagehand, Playwright. Observing is a separate job from driving.
 - **Pick domains deliberately.** Default `Network Console Runtime Log Page`. `DOM` is very noisy; add it only when needed. `Performance` gives navigation timing; `Security` gives mixed-content and certificate events.
 - **Response bodies are not in the event stream** (each needs a synchronous `Network.getResponseBody`). With the `browse` CLI, run `browse network on` alongside `browse cdp`: it writes per-request folders with `request.json` and `response.json` including the body.
@@ -125,7 +125,7 @@ Settings: `O11Y_ROOT` (default `.o11y`), `O11Y_DOMAINS` (space-separated, defaul
 - **Write per-page buckets only when non-empty** so empty files don't pollute searches; always write session-wide buckets, even empty, for a predictable shape.
 - **Bisecting is idempotent:** reruns overwrite the buckets and rebuild `cdp/pages/`.
 - **A top-level navigation is a `Page.frameNavigated` whose `params.frame.parentId` is null or `''`.** Each one increments the page id (padded `000`, `001`). Events before the first navigation belong to page 0 (their requests really are part of loading that page); zero events still produce page 0. The page URL is the first top navigation in the slice, else `(initial)`.
-- **CDP has two clocks under `.params.timestamp`.** Network and Page events use monotonic seconds since browser start (small numbers); console messages and similar use epoch milliseconds (above `1e9`). Anchor wall-clock conversion on the monotonic clock only: `wallMs = (ts - firstMonotonicTs) * 1000 + manifest.started_at`.
+- **Use each CDP event's declared clock and unit.** Network.requestWillBeSent supplies a paired monotonic `timestamp` and epoch-seconds `wallTime`; convert other compatible monotonic timestamps by their difference from that pair. Preserve unavailable alignment when no pair exists. The old recipe anchored the first observed event to the manifest start, which is not a measured clock pair. [CDP Network.requestWillBeSent](https://chromedevtools.github.io/devtools-protocol/tot/Network/#event-requestWillBeSent)
 - **Per-page rollups:** counts per domain, with `Runtime.consoleAPICalled` remapped to a `Console` domain. Errors are `Network.loadingFailed`, `Runtime.exceptionThrown`, console `type=error` and `Log.entryAdded` level `error`; warnings are console `warning` or `warn` and log `warning`. Error and warning keys appear only when non-zero; a `network` block `{requests, failed, byType}` (type from `params.type ?? 'Other'`) only when there were requests or failures.
 
 ```json
@@ -153,14 +153,7 @@ jq recipes (run inside the run folder):
 - XHR and fetch only: `select(.params.type == "XHR" or .params.type == "Fetch")`
 - Slow responses over 1000 ms: join `requests.jsonl` to `finished.jsonl` by `requestId`, `(finished.ts - start.ts) * 1000` (both monotonic seconds).
 - Lifecycle timing per navigation: `group_by(.params.loaderId)`, subtract the `init` timestamp from DOMContentLoaded, load, firstContentfulPaint and networkIdle.
-- **Pending requests, the stuck-page smoking gun:** requestIds sent minus finished minus failed.
-
-```bash
-jq -s '
-  ([.[0][].params.requestId] - [.[1][].params.requestId] - [.[2][].params.requestId]) as $pending |
-  .[0] | map(select(.params.requestId | IN($pending[]))) | map(.params.request.url)
-' cdp/network/requests.jsonl cdp/network/finished.jsonl cdp/network/failed.jsonl
-```
+- **Pending-request candidates:** compare request IDs sent against IDs finished and failed, keeping each input file's records separate. A capture that starts late or ends early has incomplete lifecycle coverage. The old `jq -s` recipe incorrectly treated its first three NDJSON records as per-file arrays; slurping combines the individual input JSON values. Do not retain that broken recipe or infer a hang from one unmatched request alone. [jq slurp](https://jqlang.org/manual/#invoking-jq); [browserbase/skills, browser-trace]
 
 - Third-party audit: top hosts with `awk -F/ '{print $3}' | sort | uniq -c | sort -rn`; everything not on your domain with `test("your-site\\.example") | not`.
 - Join an event to the nearest screenshot: convert its time to `%Y%m%dT%H%M%SZ` and take the first sorted screenshot name at or after it (the last one before it for "right before").
@@ -178,7 +171,7 @@ jq -s '
 
 ## Debug playbooks
 
-- **Form submit does nothing:** did the POST go out, did it return 4xx or 5xx, any console error or exception at the click, what does the latest DOM dump show? POST missing means the click handler is broken (inspect the button in the DOM dump); 4xx means read the response; an exception's stack frame gives file and line.
+- **Form submit does nothing:** did the POST go out, did it return 4xx or 5xx, any console error or exception at the click, what does the latest DOM dump show? a missing POST is an observation, not proof that the click handler is broken: inspect the button, browser validation, actual request method and capture coverage before assigning a cause; 4xx means read the response; an exception's stack frame gives file and line.
 - **Third-party leakage:** the hosts table, every URL off your domain, non-2xx responses with their mime type.
 - **Page hangs:** the last completed navigation, pending requests, `cdp/page/dialogs.jsonl` for a blocking JS dialog, the last screenshot.
 - **Exception only in production:** reproduce on the same remote browser configuration as production, filter exceptions by message, find the screenshot just before, list the requests in the 5 s before the throw.

@@ -58,6 +58,24 @@ Testing → Scaling only when all hold: ≥ 5 qualified leads · qualified rate 
 
 ## Fatigue
 
+### A second diagnostic view
+
+[Yuzzyuk/marketing-os, references/ads-diagnostics.md] reads CTR, CPM, CVR and frequency together. Treat its labels as hypotheses to investigate, not causal proof or new kill thresholds:
+
+| Pattern | Source's diagnostic candidate |
+|---|---|
+| CTR falls, CPM/CVR stable, frequency rises | Concept fatigue |
+| CTR falls, CPM/frequency rise, CVR stable | Audience exhaustion |
+| CPM rises while CTR/CVR/frequency remain stable | Auction pressure |
+| CVR falls with stable CTR/CPM/frequency | Post-click issue |
+| CTR and CVR fall with stable CPM/frequency | Message-match issue |
+| Poor from launch, low frequency | Unproven/bad concept rather than demonstrated fatigue |
+| Volatile low-volume results | Insufficient evidence |
+
+Check tracking and change history separately before assigning a cause; the source's severe CTR/CVR-drop row does not establish a broken pixel, and CTR loss alone is not tracking proof. Attribution windows, changed audience mix, seasonality and surviving-only ads can confound the comparison. [Yuzzyuk/marketing-os, references/ads-diagnostics.md]
+
+The existing swap rule below recommends a fresh execution of the same concept. This source instead recommends a new concept for exhausted arguments, while also favoring a proven angle in an untested format. Keep both practitioner views: identify the actual failed layer and stage a test; neither recommendation overrides the existing account thresholds or authorizes live changes. [coreyhaines31/marketingskills, ads/references/meta-decision-system.md; Yuzzyuk/marketing-os, references/ads-diagnostics.md]
+
 | Campaign type | Safe | Warning | Critical |
 |---|---|---|---|
 | Cold prospecting | 1.0 to 2.5 | 2.5 to 4.0 | > 4.0 |

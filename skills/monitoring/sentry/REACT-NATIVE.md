@@ -196,7 +196,7 @@ export default Sentry.wrap(RootLayout);
 ```
 
 - **Import `isRunningInExpoGo` from `expo`:** `import { isRunningInExpoGo } from "expo"`.
-- **Expo Router tracks navigation automatically;** `Sentry.NavigationContainer` is not needed. (One tracing example still adds a `navigationIntegration` to init for Expo Router route params; see [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md#navigation).)
+- **Expo Router:** use the current route-specific integration in [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md#navigation), not a blanket no-configuration claim. The old source said tracking required no integration; current docs use `Sentry.expoRouterIntegration` and `Sentry.wrapExpoRouter(useRouter())`. [https://docs.sentry.io/platforms/react-native/guides/expo/tracing/instrumentation/expo-router/]
 - **Standard Expo (`App.tsx`, no Expo Router):** same init, root wrapped in `<Sentry.NavigationContainer>` and `export default Sentry.wrap(App);`.
 
 ### Expo Router ErrorBoundary
@@ -369,7 +369,7 @@ useEffect(() => { fetchConfig().then(() => { Sentry.appLoaded(); }); }, []);
 
 | Option | Default | Notes |
 |---|---|---|
-| `autoSessionTracking` | `true` | |
+| `enableAutoSessionTracking` | `true` | |
 | `sessionTrackingIntervalMillis` | `30000` | ms in background before the session ends |
 | `tracesSampleRate` | `0` per the setup guide, `undefined` per the tracing and profiling references | use `1.0` in dev |
 | `tracesSampler` | | overrides `tracesSampleRate` |
@@ -503,6 +503,8 @@ Release and dist naming, and why they must match, are in [RELEASES-AND-SOURCEMAP
 | Too many transactions | `tracesSampleRate: 0.1` or `tracesSampler` |
 
 Feature-specific symptoms (navigation, replay, profiling, logs, feedback) are in [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md#debugging).
+
+The native-session option is `enableAutoSessionTracking` (default true), not the old source's `autoSessionTracking`; retain the documented background interval separately. [https://docs.sentry.io/platforms/react-native/configuration/options/#enableAutoSessionTracking]
 
 ## Prove it
 
