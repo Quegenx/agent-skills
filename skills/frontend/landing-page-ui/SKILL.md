@@ -14,7 +14,7 @@ A marketing site is read once, scrolled fast and judged in seconds; an app is us
 | Page structure and sections: hero, story panels and cards, carousels, plans, FAQ, closing call, 404 | [SECTIONS.md](SECTIONS.md) |
 | Pages with function: contact form, help center and its search, blog, legal documents, on-this-page navigation | [CONTENT-PAGES.md](CONTENT-PAGES.md) |
 | Being found and measured: head tags, hreflang, structured data, caching, consent and analytics | [DISCOVERY.md](DISCOVERY.md) |
-| The production source of every piece above, to copy as is | [reference/REFERENCE.md](reference/REFERENCE.md) |
+| The production source of every piece above, to copy as is | [reference/REFERENCE.md](reference/REFERENCE.md), page files in [reference/REFERENCE-PAGES.md](reference/REFERENCE-PAGES.md) |
 
 The product's own screens are `app-ui`; its agent's chat is `agent-chat-ui`; durations and curves in general are `ui-animation`; what copy to put in the sections is `anti-slop-copy`. To build it exactly, copy from reference/ rather than writing it from the description.
 

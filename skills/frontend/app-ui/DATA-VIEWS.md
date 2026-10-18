@@ -153,7 +153,7 @@ Bulk actions beside the selection they act on, in a disclosure panel that opens 
   mix-blend-mode: plus-lighter; }                                       /* old + new always add up to one opaque card */
 ::view-transition-old(.item-morph) { animation-name: morph-out; }      /* 1 until 20%, 0 from 70% */
 ::view-transition-new(.item-morph) { animation-name: morph-in; }       /* 0 until 20%, 1 from 70% */
-::view-transition { inline-size: 100vw !important; block-size: 100vh !important; pointer-events: none; }
+::view-transition { inline-size: 100vw !important; /* whole screen */ block-size: 100dvh !important; pointer-events: none; }
 ```
 
 - Wave classes (`wave-1` to `wave-9`) on the group set `--wave` by the item's index in its column, capped. The delay goes on the old and new images too: delayed on the group alone, a card crossfades before its glide starts.

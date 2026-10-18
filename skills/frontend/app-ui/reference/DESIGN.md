@@ -93,7 +93,7 @@ Active sidebar labels use `#0064d1` on `#e7f3ff`; the measured WCAG text contras
 
 # Locally hosted typography
 
-Two fonts, both hosted with the project: Geist for Latin text (`/fonts/geist/geist-variable.woff2`, Vercel's variable font, weights 100–900, with its OFL license beside it) and Ploni for Hebrew (`/fonts/ploni/`, one file per weight). The app and the website share them: `--app-button-font` lists Geist, then Ploni, then system fonts (`src/styles/base/tokens.css`), so each script picks its own face. `font-display: swap` keeps text visible during loading.
+Two fonts, both hosted with the project: Geist for Latin text (`/fonts/geist/geist-variable.woff2`, Vercel's variable font, weights 100 to 900, with its OFL license beside it) and Ploni for Hebrew (`/fonts/ploni/`, one file per weight). The app and the website share them: `--app-button-font` lists Geist, then Ploni, then system fonts (`src/styles/base/tokens.css`), so each script picks its own face. `font-display: swap` keeps text visible during loading.
 
 # Group details drawer
 
@@ -105,7 +105,7 @@ Group avatars use the search result's profile picture and the details header's s
 
 # Search enrichment
 
-Search results render immediately, then the client loads each group's details sequentially using the existing details API. This supplies reported member totals, activity, profile images, history dates, and membership metadata without requiring a separate bulk-load action. The existing cancellation control stops after the active group. Search-only rounded counts retain the ≈ marker until an exact total is available; unavailable values remain —. All supported table columns are visible by default and can be hidden through the columns menu.
+Search results render immediately, then the client loads each group's details sequentially using the existing details API. This supplies reported member totals, activity, profile images, history dates, and membership metadata without requiring a separate bulk-load action. The existing cancellation control stops after the active group. Search-only rounded counts retain the ≈ marker until an exact total is available; unavailable values remain the em dash (U+2014). All supported table columns are visible by default and can be hidden through the columns menu.
 
 # Search switches
 

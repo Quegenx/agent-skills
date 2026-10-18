@@ -34,7 +34,7 @@ Three film modes follow from this:
 | **Music-led kinetic** | type and motion are the message; under about 15 s; brand sting | a beat grid (frames) | M921-M924, M962-M963, M973 |
 | **Hybrid** | short vocal or one VO line over a music bed | grid for cuts, word times for the one line | M914 (music with a short vocal 1.0-2.4 s) |
 
-**WHEN** choosing a mode **DO** decide it with the film header (director.md section 7) **because** voice-led films cut on words and music-led films cut on a grid, and a film that tries to do both cuts to nothing.
+**WHEN** choosing a mode **DO** decide it with the film header (director-worksheet.md section 7) **because** voice-led films cut on words and music-led films cut on a grid, and a film that tries to do both cuts to nothing.
 
 ---
 
@@ -97,7 +97,7 @@ Meet <name>. Start now.
 1. **Script** to `script.txt` (section 3).
 2. **VO**: `python3 scripts/voice.py vo --script script.txt --out audio/vo.mp3` writes `audio/vo.mp3`, `audio/vo.words.json` (`[{"word","start","end","raw_start","raw_end"}]`; start/end are refined to the audible speech, raw_* is the API alignment) and `audio/vo.lines.json`. Exit code 3 means no key: go to section 9.
 3. **Word timings to frames**: `node scripts/sync.mjs audio/vo.words.json --fps 30 --lead 2 --out beats.json` prints the frame table (word, start frame, end frame, onset frame = start minus `--lead`) and writes `beats.json` plus `beats.js` (`window.BEATS`, loadable from a `file://` page); it also adds `vo.lines.json` lines when that file sits next to the words file. By hand: `frame = round(start_seconds * fps)`.
-4. **Beat frames**: set each beat's start and end from the timings: a beat starts a few frames before its first spoken word and ends at the cut chosen in the storyboard. Update the storyboard Frames column (director.md section 7).
+4. **Beat frames**: set each beat's start and end from the timings: a beat starts a few frames before its first spoken word and ends at the cut chosen in the storyboard. Update the storyboard Frames column (director-worksheet.md section 7).
 5. **Picture** to those frames. Put every word pop, row, and big hit on a frame from the table (section 5), not on a round number.
 6. **SFX on picture events**: list each frame-exact event (cursor press, hard cut, whip, logo hit, counter end), generate or choose the sound, place it by the event frame (section 7).
 7. **Music** last: it must fit the cut grid and the voice (section 6).

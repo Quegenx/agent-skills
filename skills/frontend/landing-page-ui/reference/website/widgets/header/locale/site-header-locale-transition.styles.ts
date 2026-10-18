@@ -5,5 +5,5 @@ export const siteHeaderLocaleTransitionStyles = {
   overlayActive: "pointer-events-auto visible",
   stair: "bg-accent h-full w-[20vw]",
   stairCovering: "h-0",
-  stairs: "flex h-[100vh] start-0 pointer-events-none fixed top-0 w-full z-2",
+  stairs: "flex h-[100dvh] start-0 pointer-events-none fixed top-0 w-full z-2",
 };

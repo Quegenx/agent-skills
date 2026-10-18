@@ -63,7 +63,7 @@ Seen in M965, M968, M946.
 ### C6. Logo morph from a previous identity
 Seen in M973.
 - **When to use:** a rename, a rebrand, "from X to Y"; high-energy product launch; 1.05 s total.
-- **Name:** per-glyph flip (type.md section 9), fixed left anchor x .49, anticipation spread +26% over 0.19 s, second flip 0.70-0.83 s, glyphs arriving violet, darkening L->R.
+- **Name:** per-glyph flip (type-numbers-and-decisions.md section 9), fixed left anchor x .49, anticipation spread +26% over 0.19 s, second flip 0.70-0.83 s, glyphs arriving violet, darkening L->R.
 - **Icon:** rosette spins clockwise, accelerating (8 deg at 0.47 s, 35 at 0.53, 128 at 0.60, 275 at 0.67, 336 at 0.70, ~30 deg/f) while shrinking 153 -> 133 px (.87x), centre fixed; cross-dissolve over 8 f (0.70-0.78 s: new badge opacity 0, .1, .35, .6, .85, 1) on the same centre, new badge drawn above; new badge scale .68 -> .85 -> 1.02 -> **1.04 peak** (4% overshoot, 0.87 s) -> 1.0 (0.93 s); rotation continues clockwise and decelerates (-139 deg at 0.77 s, -85, -56, -31, -8, 0 at 1.03 s); still moving on the last frame; no glow or flash at the swap.
 - **Hold:** none; ends mid-rotation.
 

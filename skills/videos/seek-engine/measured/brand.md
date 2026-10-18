@@ -208,7 +208,7 @@ Selection procedure: list the site's H1, H2s, button labels, input placeholders,
 
 ## 8. Brand to film system checklist
 
-Fill every line before the storyboard (director.md section 7).
+Fill every line before the storyboard (director-worksheet.md section 7).
 
 - [ ] Brand name, spelling verified against the site.
 - [ ] Inventory table (section 0.5) filled; the idea (idea.md) states which row it came from.

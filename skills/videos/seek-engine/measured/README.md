@@ -10,15 +10,22 @@ Licence notice for these files: `LICENSE-motionmaxxing.txt` beside this file (Ap
 | [idea.md](idea.md) | finding the idea only this brand could own; PAGE; the metaphor bank |
 | [brand.md](brand.md) | turning a captured site into ground, ink, accent, type, carrier and copy decisions |
 | [director.md](director.md) | beat roles, what each beat buys, film shapes, the storyboard worksheet |
+| [director-worksheet.md](director-worksheet.md) | the storyboard worksheet (section 7) and the slop tells, split from director.md |
 | [world.md](world.md) | ground, light, depth, texture, 3D and generated surfaces, shutter blur, grain |
 | [layout.md](layout.md) | coordinates, type size by role, emptiness, UI framing, lockups, page chrome |
 | [motion.md](motion.md) | measured durations, the 12 eases, entry and exit grammar, smear, clocks, camera |
+| [motion-camera.md](motion-camera.md) | camera, physical bodies, pulses and springs (sections 6 and 7) and the slop tells, split from motion.md |
 | [transitions.md](transitions.md) | twenty measured ways beat A becomes beat B, and how to choose |
+| [transitions-catalogue.md](transitions-catalogue.md) | the catalogue of transition types (section 2), split from transitions.md |
 | [type.md](type.md) | kinetic type measured: meaning on the word, cadence, counters, reading |
+| [type-numbers-and-decisions.md](type-numbers-and-decisions.md) | counters, name morphs, reading time, holds, the decision table (sections 8 to 12) and the slop tells, split from type.md |
 | [ui-demo.md](ui-demo.md) | cursor, click, typing, toggles, agent work, phones |
+| [ui-demo-recipes.md](ui-demo-recipes.md) | cards, agent work, phones, dense scrolls, counters, the beat recipes (sections 7 to 13) and the slop tells, split from ui-demo.md |
 | [close.md](close.md) | CTA and logo endings by brand personality |
 | [sound-sync.md](sound-sync.md) | script, voice, cutting to the voice, mixing |
 | [slop.md](slop.md) | AI default against the designer's decision; the render review and its gates |
+| [slop-table.md](slop-table.md) | Part 1, the master table, split from slop.md |
+| [slop-review.md](slop-review.md) | Part 2, the frame-review checklist and its gates, split from slop.md |
 
 ## Their tools in this skill set
 

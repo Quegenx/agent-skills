@@ -4,9 +4,9 @@
    search field. */
 .items {
   width: var(--menu-open-width);
-  max-height: min(var(--menu-max-height), calc(100dvh - 24px));
+  max-height: min(var(--menu-max-height), calc(100dvh - 1.5rem));
   overflow: auto;
-  padding: 8px;
+  padding: 0.5rem;
   color: var(--foreground);
   outline: none;
 }
@@ -18,15 +18,15 @@
 .items[data-searchable="true"] {
   max-height: min(
     var(--menu-max-height),
-    calc(100dvh - 24px),
-    calc(44px * 5.5 + 16px + var(--menu-search-height, 0px))
+    calc(100dvh - 1.5rem),
+    calc(2.75rem * 5.5 + 1rem + var(--menu-search-height, 0px))
   );
 }
 .items[data-list="true"] {
   scroll-timeline: --menu-scroll block;
 }
 .items[data-searchable="true"] {
-  --menu-search-height: 52px;
+  --menu-search-height: 3.25rem;
 }
 /* iOS's edge blur: while there is more above or below, a strip at that edge
    blurs and fades the rows passing under it. Each strip shows only once the
@@ -38,22 +38,22 @@
   position: sticky;
   z-index: 2;
   display: block;
-  height: 28px;
-  margin-inline: -8px;
+  height: 1.75rem;
+  margin-inline: -0.5rem;
   opacity: 0;
   pointer-events: none;
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(0.375rem);
+  backdrop-filter: blur(0.375rem);
   animation-timing-function: linear;
   animation-fill-mode: both;
   animation-timeline: --menu-scroll;
 }
-/* Sticky offsets count from inside the list's 8px padding, so -8px puts
-   each strip flush with the menu's real edge (at 0 the last 8px showed the
+/* Sticky offsets count from inside the list's 0.5rem padding, so -0.5rem puts
+   each strip flush with the menu's real edge (at 0 the last 0.5rem showed the
    rows in full color). */
 .items[data-list="true"]::before {
-  top: -8px;
-  margin-block: -8px -20px;
+  top: -0.5rem;
+  margin-block: -0.5rem -1.25rem;
   background: linear-gradient(to bottom, var(--popover), transparent);
   -webkit-mask-image: linear-gradient(to bottom, black, transparent);
   mask-image: linear-gradient(to bottom, black, transparent);
@@ -61,11 +61,11 @@
 }
 /* Below the search field, which stays at the top. */
 .items[data-searchable="true"]::before {
-  top: 44px;
+  top: 2.75rem;
 }
 .items[data-list="true"]::after {
-  bottom: -8px;
-  margin-block: -20px -8px;
+  bottom: -0.5rem;
+  margin-block: -1.25rem -0.5rem;
   background: linear-gradient(to top, var(--popover), transparent);
   -webkit-mask-image: linear-gradient(to top, black, transparent);
   mask-image: linear-gradient(to top, black, transparent);
@@ -93,20 +93,20 @@
    scroll under it. */
 .search {
   position: sticky;
-  top: -8px;
+  top: -0.5rem;
   z-index: 3;
-  margin: -8px -8px 0;
-  padding: 8px 8px 4px;
+  margin: -0.5rem -0.5rem 0;
+  padding: 0.5rem 0.5rem 0.25rem;
   background: var(--popover);
 }
 .searchInput {
   display: block;
   width: 100%;
-  height: 40px;
+  height: 2.5rem;
   border: 0;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   background: rgb(var(--ink) / 0.05);
-  padding-inline: 12px;
+  padding-inline: 0.75rem;
   color: var(--foreground);
   font: inherit;
   font-size: 0.9375rem;
@@ -120,7 +120,7 @@
 }
 .empty {
   margin: 0;
-  padding: 12px;
+  padding: 0.75rem;
   color: var(--muted-foreground);
   font-size: 0.875rem;
 }
@@ -138,7 +138,7 @@
 @keyframes smooth-dropdown-exit {
   to {
     opacity: 0;
-    transform: translateX(-8px);
+    transform: translateX(-0.5rem);
   }
 }
 .item {
@@ -146,10 +146,10 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: 40px;
-  padding: 8px 12px;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
   margin-block: 2px;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
   color: var(--muted-foreground);
   font-size: 0.9375rem;
@@ -174,13 +174,13 @@
 .item > [data-slot="app-icon"] {
   position: relative;
   flex-shrink: 0;
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
 }
 .highlight {
   position: absolute;
   inset: 0;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: rgb(var(--ink) / 0.05);
   pointer-events: none;
 }
@@ -188,11 +188,11 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   flex-shrink: 0;
   border: 2px solid rgb(var(--ink) / 0.4);
-  border-radius: 6px;
+  border-radius: 0.375rem;
   color: var(--primary-foreground);
   transition:
     background-color 500ms,

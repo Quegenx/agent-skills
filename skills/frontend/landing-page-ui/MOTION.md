@@ -60,7 +60,7 @@ The footer is fixed to the bottom behind the page and revealed as the page scrol
 
 ## Language switch: a curtain of columns
 
-Five brand-colored columns (each 20vw by 100vh, z 1100), animated with the Web Animations API and `fill: forwards` on `cubic-bezier(.33, 1, .68, 1)`:
+Five brand-colored columns (each 20vw by 100dvh, z 1100), animated with the Web Animations API and `fill: forwards` on `cubic-bezier(.33, 1, .68, 1)`:
 
 | Phase | Timing |
 |---|---|

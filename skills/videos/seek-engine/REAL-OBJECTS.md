@@ -90,7 +90,7 @@ The 3D mode draws convex parts only (3d.md section 5). Everything else is built 
 - **Large objects** (a car, a piano, a building): build at real size in millimetres, but group detail at the scale the film shows. Use a few hundred parts at most. Spend the detail on the two or three regions the macro shots visit, and keep the rest as clean large parts.
 - **Sets or pairs** (earbuds in a case, a pair of shoes): one root group holding both, each its own sub-assembly.
 
-**Size it before building.** Anatomy-reveal sizes a product as a "Hero": 100-150 parts, about 2-4 hours for the object and about 1 hour for the film (its espresso machine has 82 parts, builds in about 1 s and draws in 5-10 ms a frame). Rounds cost about three prisms each and a ball with flats about nine: weigh the figure against 3d.md section 15 and measure it. Tell the user the size, then build, with the object rendering early and deepened from there.
+**Size it before building.** Anatomy-reveal sizes a product as a "Hero": 100-150 parts, about 2-4 hours for the object and about 1 hour for the film (its espresso machine has 82 parts, builds in about 1 s and draws in 5-10 ms a frame). Rounds cost about three prisms each and a ball with flats about nine: weigh the figure against 3d-checks.md section 15 and measure it. Tell the user the size, then build, with the object rendering early and deepened from there.
 
 ## Building it in the 3D mode
 
@@ -109,7 +109,7 @@ Build it the kit's way (a Node `build.mjs` that writes the page, with the audit 
 - **Moving toward the centre:** parts that move toward the middle (two cushions facing each other) need their parent to move out first, or they meet.
 - **Sideways exits:** a part leaving sideways must clear its neighbour's swept volume. A door's hinge sweeps a slab beside it, so whatever slides out through that door sits outside that slab.
 - **Read the explode at the film's own angle:** a long object fans out along its axis; a column needs most of the travel along z, with the view pitched 20-30°.
-- **Prove it** with the orbit audit (3d.md section 13) and the quick pass check, `turn-check --passes`, over the explode from five views (front, back, top, below, side; anatomy-reveal uses yaw/pitch -35/15, 0/5, 140/20, 90/-20, -20/70) and over the finished film (`--passes --film`; 3d.md section 14). Fix every `unseparated` with timing or geometry, and every `forced` as a cycle (anatomy-reveal's alternative, a lone forced pick counted as harmless, is noted in 3d.md section 13).
+- **Prove it** with the orbit audit (3d-checks.md section 13) and the quick pass check, `turn-check --passes`, over the explode from five views (front, back, top, below, side; anatomy-reveal uses yaw/pitch -35/15, 0/5, 140/20, 90/-20, -20/70) and over the finished film (`--passes --film`; 3d-checks.md section 14). Fix every `unseparated` with timing or geometry, and every `forced` as a cycle (anatomy-reveal's alternative, a lone forced pick counted as harmless, is noted in 3d-checks.md section 13).
 
 **Markings and decoration.**
 - **Text, ticks, screens, grilles, engraving and inlay** are `T.plane({ part, o, u, v, svg, normal })`. `u` is the drawing's right and `v` its down, **seen from outside the face**. Always pass `normal`. The kit sets the font on `.iso-face-text`, so a face font goes in `style="font-family:…"`.

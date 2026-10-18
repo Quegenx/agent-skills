@@ -69,7 +69,7 @@ Budget honestly: figures built with it take 30-90 minutes for a 40-80 part figur
 - **Split anything that wraps another part:** a coil around a rod is drawn back half, rod, front half (`coil` returns `back` and `front`); a frame around a carriage is drawn back bars, carriage, front bars.
 - A moving part is drawn in the slot where it physically sits. If it passes both in front of and behind the same neighbour during the shot, split the neighbour or limit the move so the order never changes.
 - A post through a clamp is two segments, below and above, around the clamp.
-- Past a few dozen overlapping parts, hand-tuned order keys fight each other: the kit's `kit/audit.mjs` measures true depth wherever two items overlap and proves it. Use it from `templates/isokit/kit/audit.mjs` (`A.recorder`, `A.settle`, `A.auditOrExit`): record the true shape of everything you draw, never a stand-in that quiets the audit. Round parts come from `lathe.mjs`, pipes and cables from `tube.mjs` (`references/kit.md`, `references/craft.md` section 8).
+- Past a few dozen overlapping parts, hand-tuned order keys fight each other: the kit's `kit/audit.mjs` measures true depth wherever two items overlap and proves it. Use it from `templates/isokit/kit/audit.mjs` (`A.recorder`, `A.settle`, `A.auditOrExit`): record the true shape of everything you draw, never a stand-in that quiets the audit. Round parts come from `lathe.mjs`, pipes and cables from `tube.mjs` (`references/kit.md`, `references/craft-round-parts.md` section 8).
 
 ## Into seek(t)
 

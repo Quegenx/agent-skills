@@ -161,7 +161,7 @@ const RULES = {
   "trap/motion-overshoot": ["A cubic-bezier() whose second or fourth value is outside 0 to 1, so the motion overshoots and springs back", "a preset whose curve stays inside 0 to 1, unless the motion follows the hand"],
   "trap/hover-unguarded": ["A CSS :hover rule outside @media (hover: hover) that changes display or visibility, or reveals a child, sibling or ::before/::after through opacity. On touch, a tap shows it and leaves it stuck", "wrap the rule in @media (hover: hover), and give the content another way to show on touch"],
   "trap/zoom-disabled": ["user-scalable=no, user-scalable=0 or maximum-scale=1 in the viewport meta, or userScalable: false or maximumScale: 1 in a viewport export", "remove it. Fix input zoom with a 16px input text size"],
-  "trap/viewport-height": ["100vh or h-screen (height or max-height) on a shell or sheet, with no dvh or svh value beside it. min-height passes", "use dvh, or svh when the height must not change while scrolling"],
+  "trap/viewport-height": ["100vh or h-screen (height or max-height) on a shell or sheet, even with a dvh or svh value beside it as a fallback. min-height passes", "use dvh, or svh when the height must not change while scrolling, with no 100vh fallback"],
   "trap/touch-autofocus": ["autoFocus or autofocus on a field in a page, outside any dialog, sheet, popover or command menu. A conditional value such as autoFocus={!isTouch} passes", "drop it, or set it only where typing is the one thing to do and the device has a keyboard"],
   "trap/touch-tap-highlight": ["-webkit-tap-highlight-color: transparent in CSS, a class or an inline style, in a repo with no pressed style: no :active rule, no active: class and no data-pressed style", "give every control a pressed state that shows from pointer-down, or keep the system highlight"],
 };
@@ -627,8 +627,8 @@ function cssMotionTraps(cfg, code, hit) {
     }
     for (const prop of ["height", "max-height"]) {
       const ds = decl(new RegExp(`^${prop}$`));
-      const bad = ds.find((d) => vh100(d.value)), fix = ds.some((d) => /\d[dsl]vh\b|fill-available|-moz-available|stretch/.test(d.value));
-      if (bad && !fix) hit(bad.pos, "trap/viewport-height", `${prop}: ${bad.value}`);
+      const bad = ds.find((d) => vh100(d.value));
+      if (bad) hit(bad.pos, "trap/viewport-height", `${prop}: ${bad.value}`);
     }
     if (!cfg.hasPress) for (const d of decl(/^-webkit-tap-highlight-color$/)) if (NO_TAP.test(d.value)) hit(d.pos, "trap/touch-tap-highlight", `-webkit-tap-highlight-color: ${d.value}, and the repo has no pressed style`);
   }
@@ -647,12 +647,11 @@ function jsMotionTraps(cfg, rel, code, mask, hit) {
     // Tailwind: ease-in in an open state, or bare ease-in beside an enter class.
     const enter = toks.some((x) => ENTER_CLASS.test(x.u) && !/(?:closed|exit|leav)/.test(x.t));
     for (const x of toks) if (x.u === "ease-in" && !/(?:closed|exit|leav)/.test(x.t) && (OPEN_VARIANT.test(x.t) || (enter && x.t === x.u))) hit(x.pos, "trap/motion-ease-in-enter", `${x.t} beside ${toks.find((y) => ENTER_CLASS.test(y.u))?.t || "an open state"}`);
-    const dyn = toks.some((x) => /^(?:max-)?h-(?:dvh|svh|lvh|\[\d+[dsl]vh\])$/.test(x.u));
-    for (const x of toks) if (/^(?:max-)?h-(?:screen|\[[^\]]*(?<![\d.])100vh[^\]]*\])$/.test(x.u) && !dyn) hit(x.pos, "trap/viewport-height", x.t);
+    for (const x of toks) if (/^(?:max-)?h-(?:screen|\[[^\]]*(?<![\d.])100vh[^\]]*\])$/.test(x.u)) hit(x.pos, "trap/viewport-height", x.t);
     if (!cfg.hasPress) for (const x of toks) if (/^\[-webkit-tap-highlight-color:(?:transparent|rgba\(0,0,0,0\))\]$/.test(x.u)) hit(x.pos, "trap/touch-tap-highlight", `${x.t}, and the repo has no pressed style`);
     // CSS written in a string, such as a styled-components template.
     for (const c of text.matchAll(/(?<![\w-])transition(?:-property)?\s*:\s*all\b/g)) hit(at + c.index, "trap/motion-transition-all", c[0]);
-    for (const c of text.matchAll(/(?<![\w-])(?:max-)?height\s*:\s*[^;"'`]*?(?<![\d.])100vh\b/g)) if (!/\d[dsl]vh\b/.test(text)) hit(at + c.index, "trap/viewport-height", c[0]);
+    for (const c of text.matchAll(/(?<![\w-])(?:max-)?height\s*:\s*[^;"'`]*?(?<![\d.])100vh\b/g)) hit(at + c.index, "trap/viewport-height", c[0]);
     if (!cfg.hasPress) for (const c of text.matchAll(/(?<!\[)-webkit-tap-highlight-color\s*:\s*(transparent|rgba\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0\s*\))/g)) hit(at + c.index, "trap/touch-tap-highlight", `${c[0]}, and the repo has no pressed style`);
     for (const c of text.matchAll(/(?<![\w-])animation\s*:\s*([^;"'`]*)/g)) if (easeIn(c[1]) && animNames(c[1]).some((n) => ENTER_NAME.test(n))) hit(at + c.index, "trap/motion-ease-in-enter", c[0].trim());
   }

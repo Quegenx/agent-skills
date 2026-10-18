@@ -33,7 +33,7 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 - Identity comes from the **logo placed once, at the end**, and from the world looking like the brand (its surfaces, type, colour logic), never from a label.
 - A chapter or act break is a **ground change plus a carried object** (transitions.md T1 + T15), never a number.
 - The product is a **camera-magnified fragment** of its real UI inside a built world (R5.1, world.md), and the UI names itself by showing its real icon, layout and words.
-- A number is a **physical quantity inside a beat** (type.md section 8), not a caption in a corner.
+- A number is a **physical quantity inside a beat** (type-numbers-and-decisions.md section 8), not a caption in a corner.
 - Edge cropping is of *content* (R9): figures, cards, a device. Text, labels and logos stay out of the outer 12% W / 10% H band unless the crop is the point.
 
 ---

@@ -213,7 +213,7 @@ Sliding indicator, for `share="tab-underline"`: "Slide the group; disable old/ne
 ```
 
 - **Live root:** it "removes the main reason to hand-name static chrome; keep names only for elements that must stack above animating groups". It pairs with enter-only reveals: `<ViewTransition enter="auto" default="none">` around the content and nothing on the skeleton, so "the skeleton snaps out live while the content fades in". app-ui uses the same two root rules for its page transitions ([../app-ui/MENUS.md](../app-ui/MENUS.md)).
-- **An empty overlay:** app-ui adds `inline-size: 100vw !important; block-size: 100vh !important` to `::view-transition`, because at 0 by 0 "the browser then paints none of the groups" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+- **An empty overlay:** app-ui adds `inline-size: 100vw !important; block-size: 100dvh !important` to `::view-transition`, because at 0 by 0 "the browser then paints none of the groups" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
 
 ## Durations, curves and reduced motion, both ways
 
