@@ -151,7 +151,7 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [react-email](./skills/backend/react-email/SKILL.md) | React email components, styling, rendering, delivery, localization and templates. |
 | [email-practices](./skills/backend/email-practices/SKILL.md) | Authentication, delivery, consent, unsubscribe rules and lifecycle email. |
 | [onesignal](./skills/backend/onesignal/SKILL.md) | Push and messaging setup, identity, permissions, sending, journeys and analytics. |
-| [convex](./skills/backend/convex/SKILL.md) | Functions and data, authentication, components, agents/billing, operations, migrations and provider-specific testing. |
+| [convex](./skills/backend/convex/SKILL.md) | Functions/data, authorization, components, agents/billing, operations, migrations and testing; optional kitcn cRPC, ORM, aggregates, Better Auth, React/RSC, HTTP, scheduling and rate limits. |
 | [firebase](./skills/backend/firebase/SKILL.md) | Web/Flutter setup, Auth, AI Logic, Firestore, SQL Connect, Hosting, Functions migration and Remote Config. Flutter Storage downloads, task progress and failures. |
 | [kapso](./skills/backend/kapso/SKILL.md) | WhatsApp messages/templates, webhooks, Flows, workflows, functions/events, calling and operational observation. |
 

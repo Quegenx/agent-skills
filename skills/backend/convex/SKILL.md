@@ -1,11 +1,13 @@
 ---
 name: convex
-description: "Builds and operates Convex backends: transactional functions, indexed data, authentication and authorization, components, agents and billing, deployment evidence, migrations, recovery and mock-backend testing. Use when adding or reviewing Convex functions, securing document access, authoring a component, investigating deployment behavior or planning a Convex migration."
+description: "Builds and operates Convex backends: transactional functions, indexed data, authorization, components, agents and billing, deployment, migrations, recovery and mock-backend testing, plus optional kitcn cRPC, ORM and client integration. Use when adding or reviewing Convex functions, securing document access, authoring a component, investigating deployment behavior, planning a migration or working in an application that selects kitcn."
 ---
 
 # Convex
 
 Convex-specific guidance comes from [get-convex/agent-skills] and the [official documentation](https://docs.convex.dev/). Read the actual schema, convex.json, component configuration, installed package exports and generated types before choosing an API. An existing application decides its stack and identity provider; the source's preference for Convex does not authorize replacing an installed backend. Generic architecture belongs to [software-architecture](../../architecture/software-architecture/SKILL.md), agent design to [agent-harness](../../ai-agents/agent-harness/SKILL.md) and payment authority to [stripe](../stripe/SKILL.md).
+
+The optional kitcn branch comes from [udecode/kitcn, kitcn skill and references] and its [current docs](https://kitcn.dev/docs). Use it only when that application's selected adapter is kitcn; it does not replace native Convex guidance or the owner's production UI rules.
 
 | The job | Read |
 |---|---|
@@ -16,6 +18,15 @@ Convex-specific guidance comes from [get-convex/agent-skills] and the [official 
 | Deployment selection, MCP permissions, logs, insights, cost and evidence | [OPERATIONS.md](OPERATIONS.md) |
 | Schema evolution, resumable migrations, preview rehearsal, backups and recovery | [MIGRATIONS-AND-RECOVERY.md](MIGRATIONS-AND-RECOVERY.md) |
 | convex-test scope, custom directories, authorization cases, components and scheduler completion | [TESTING.md](TESTING.md) |
+| kitcn feature decisions, procedure contracts, errors, metadata and generated call boundaries | [KITCN.md](KITCN.md) |
+| kitcn bootstrap, file ownership, codegen, environment, plugin plans and diagnostics | [KITCN-SETUP.md](KITCN-SETUP.md) |
+| kitcn schema, queries, relations, writes, RLS, triggers and migrations | [KITCN-ORM.md](KITCN-ORM.md) |
+| kitcn count exceptions, aggregate/rank capabilities, readiness and backfills | [KITCN-AGGREGATES.md](KITCN-AGGREGATES.md) |
+| kitcn Better Auth sessions, admin, organizations and qualified Polar integration | [KITCN-AUTH.md](KITCN-AUTH.md) |
+| kitcn React subscriptions, caching, optimistic updates, pagination, RSC, Next.js, Start and Expo | [KITCN-REACT.md](KITCN-REACT.md) |
+| kitcn HTTP/Hono routes, argument validation, webhooks and streaming | [KITCN-HTTP.md](KITCN-HTTP.md) |
+| kitcn generated schedules, cron intervals, job visibility and cancellation | [KITCN-SCHEDULING.md](KITCN-SCHEDULING.md) |
+| kitcn limiter installation, accounting, shards, snapshots, protection and failure modes | [KITCN-RATELIMIT.md](KITCN-RATELIMIT.md) |
 
 ## The rules
 
@@ -26,6 +37,7 @@ Convex-specific guidance comes from [get-convex/agent-skills] and the [official 
 5. **Name the deployment before reading or changing it.** Distinguish private-data read access from mutation access, and carry existing session authorization forward within its scope. The source says earlier permission does not carry; the user's standing authorization governs instead. [get-convex/agent-skills, convex-deploy-guard; user standing rules]
 6. **Separate observed evidence from explanation.** Logs and insights establish events; trace code and preventing controls before assigning a root cause. Keep P0 to P3 severity separate from confidence. Source high/error maps to P1, medium/warning to P2 and low/suggestion to P3; assess the demonstrated consequence. [get-convex/agent-skills, convex-advisor, convex-insights, convex-launch-readiness]
 7. **Verification follows the task's execution permission.** The source requests automatic tests, typechecks and deployment; this repository permits no tests or builds unless the user asks. Record missing evidence and use the topic's Prove it as acceptance criteria. [get-convex/agent-skills, convex-verify; user standing rules]
+8. **Scope adapter rules to the installed adapter.** In a kitcn application, start with [its procedure boundaries](KITCN.md) and load the selected topic. Preserve existing native contracts and owner-design rules; source setup defaults are not permission to replace either. [udecode/kitcn, SKILL.md, references/setup/index.md; user standing rules]
 
 ## Gotchas
 
