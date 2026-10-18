@@ -81,7 +81,7 @@ Common mistakes: copying v2 syntax (`page.act()`, `stagehand.page`, `modelName` 
 
 ## Trace-assisted migration
 
-- **Run the original unmodified on Browserbase;** the only change is `cdp_url=session.connect_url`. Tag the session with `user_metadata` and keep recording on. Connect within about 5 minutes or the session terminates. Configure proxies, stealth and region on the session, not the framework.
+- **Run the original unmodified on Browserbase;** the only change is `cdp_url=session.connect_url`. Tag the session with `user_metadata` and keep recording on. Connect within about 5 minutes or the session terminates. Do not use session settings to evade bot detection. [owner safety policy]
 - **Logs drive the rewrite, video is for eyeballing it.** The machine-readable trace is the Session Logs API (`bb.sessions.logs.list(id)`: CDP network, console and lifecycle, available after the run); the recording is H.264 or HLS video for human QA, not DOM events.
 - **From the logs:** navigations become `goto` anchors; network calls show what mattered (maybe read an API response instead of scraping); console errors mark fragile spots.
 - **Validate the rewrite against the baseline:** same navigations, end state and extracted data, reusing the same context and session parameters.

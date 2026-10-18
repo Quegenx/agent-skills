@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Reviews code at the volume agents write it: the review layers from verified work before the pull request through AI and security review, required CI, risk-tiered human approval, the merge queue, flags and fast rollback; the AI reviewer with CLAUDE.md and REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, scoping one change to its merge base and blast radius with Introduced, Regression and Pre-existing statuses and the removed lines read, a P0 to P3 user-impact scale for UI reviews, round caps and diff-only re-review; evals that score the reviewer on past incidents and measure its noise; and who owns a change once it lands. Use when setting up or tuning code review for a team or repo, adding an AI reviewer or security review, writing risk tiers, approval rules or a REVIEW.md, or reviewing an agent-written pull request."
+description: "Reviews code at the volume agents write it: the review layers from verified work before the pull request through AI and security review, required CI, risk-tiered human approval, the merge queue, flags and fast rollback; the AI reviewer with CLAUDE.md and REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, scoping one change to its merge base and blast radius with Introduced, Regression and Pre-existing statuses and the removed lines read, a P0 to P3 user-impact scale for UI reviews, round caps and diff-only re-review; evals that score the reviewer on past incidents and measure its noise; who owns a change once it lands; separate standards/specification review, feedback reception, repository audits and Ultracite setup/migration. Use when setting up or tuning code review for a team or repo, adding an AI reviewer or security review, writing risk tiers, approval rules or a REVIEW.md, or reviewing an agent-written pull request."
 ---
 
 # Code review
@@ -16,6 +16,11 @@ When agents write the code, the number of changes goes up fast, and manual, line
 | Running a scanner or linter on a change: scopes with per-rule ownership, baseline scans and pre-edit check baselines, one pinned tool, warning exit codes, the narrowest rule control, triaging its findings by leverage, a verdict per finding, when a fix counts and when a scan may be called clean | [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md) |
 | Running a checker on a pull request's base and head and diffing its output: pinned SHAs and inputs, paired runs, canonical finding identity, coverage before diagnostics, exit codes 0, 1 and 2, import-traced scope with a full-run fallback, cached baselines verified on reuse, slowdown thresholds, Vercel Sandbox | [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md) |
 | Making the reviewer better: incidents as an eval, measuring noise, round caps and convergence, fixing repeated findings at the source | [TUNING-THE-REVIEWER.md](TUNING-THE-REVIEWER.md) |
+| Checking repository standards and requested behavior as independent review lanes, with separate evidence and verdicts | [TWO-AXIS.md](TWO-AXIS.md) |
+| Receiving feedback: verifying a suggestion, preserving accepted decisions, resolving dependent uncertainty and correcting evidence-based pushback | [RECEIVING-FEEDBACK.md](RECEIVING-FEEDBACK.md) |
+| A repository audit: intent, expected load, coverage, confidence and fix risk, grounded direction options and selected plan artifacts | [REPOSITORY-AUDIT.md](REPOSITORY-AUDIT.md) |
+| Operating or migrating an explicitly selected Ultracite setup: installed commands, backend presets, doctor limits and conditional v5 to v8 migrations | [ULTRACITE.md](ULTRACITE.md) |
+| Reusing the adapted source material: copyright, permission and warranty notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

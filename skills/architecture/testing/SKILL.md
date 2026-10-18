@@ -1,6 +1,6 @@
 ---
 name: testing
-description: "Writes tests that catch real bugs, from unit tests to integration tests on real Postgres and architecture tests. Use when writing or reviewing tests, or setting up a test database."
+description: "Writes tests that catch real bugs, from unit tests to integration tests on real Postgres, architecture tests, test-first behavior slices and interactive terminal harnesses. Use when writing or reviewing tests, setting up a test database, or investigating an interactive CLI or TUI."
 ---
 
 # Testing
@@ -12,6 +12,9 @@ A test is worth what it would catch. Imagine the plausible broken versions of th
 | Thresholds, formulas, parsers, text, dates, money, comparators, state machines, time-based and stateful code, delays and timeouts, orchestration | [CATALOG.md](CATALOG.md) |
 | The shape of the suite, integration tests against real Postgres in containers, data isolation, async workflows across modules, architecture and contract tests, end-to-end tests (writing and running them in a browser or on a device is the `e2e-testing` skill) | [INTEGRATION.md](INTEGRATION.md) |
 | A lint rule or detector: the rule contract, edge cases to write first, labelling hits on real code, before and after on fixed repositories, fuzzing, FP and FN labels with a second pass, and the fix priority formula | [LINT-RULES.md](LINT-RULES.md) |
+| Authorized test-first development: one public behavior slice, the intended failing check, minimal implementation and existing persistence/callback exceptions | [TDD.md](TDD.md) |
+| An interactive CLI or TUI: reuse its harness, capture before acting, deterministic prompt waits, transcripts, inspector environment and profile evidence | [CLI-HARNESS.md](CLI-HARNESS.md) |
+| Reusing the adapted source material: copyright, permission and warranty notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

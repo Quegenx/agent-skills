@@ -54,6 +54,8 @@ A judge is a model too, so ask it narrow questions with answers that code turns 
 
 ## Judge self-tests
 
+A graph evaluator needs the same scrutiny: inspect a deliberately wrong intermediate or final result and verify that the relevant check catches it. A local text checker is evidence only for its encoded criteria; checking that trigger-case rows exist does not show that an agent actually loads the skill. Keep that behavioral routing check at its [canonical owner](../agent-harness/PROMPT.md#skills). [bgauryy/octocode, octocode-graph-eval/references/eval-harness.md and scripts/check-description.mjs]
+
 Because the judges grade the agent, they get tests of their own: a small set of known conversations per question, each labelled must-pass or must-fail, kept in the repo and rerun whenever the question, the judge model or its version changes.
 
 **Before the first baseline,** grade a handful of cases and ask the owner whether they would have scored any differently, and read a sample of scored transcripts: scoring failures are among the most common ways an eval is misconfigured.

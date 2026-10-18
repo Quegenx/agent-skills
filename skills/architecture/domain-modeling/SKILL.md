@@ -1,6 +1,6 @@
 ---
 name: domain-modeling
-description: "Models business rules: bounded contexts, ubiquitous language, aggregates and invariants, domain events, sagas, CQRS. Use when designing business logic or choosing aggregate and context boundaries."
+description: "Models business rules: bounded contexts, ubiquitous language, domain glossaries and decision records, aggregates, invariants, events, sagas and CQRS. Use when designing business logic, settling terminology or choosing aggregate and context boundaries."
 ---
 
 # Domain modeling
@@ -12,6 +12,8 @@ Put each business rule in one place that every path must go through, and draw bo
 | Boundaries, language, how contexts relate and translate, running an EventStorming workshop | [STRATEGIC.md](STRATEGIC.md) |
 | Entities, value objects, IDs, invariants, aggregates, factories, services, moving from scripts to a model | [MODEL.md](MODEL.md) |
 | Domain and integration events, outbox, sagas and process managers, event sourcing, CQRS | [EVENTS.md](EVENTS.md) |
+| Canonical domain terms, avoided synonyms, lazy glossary layout and architectural decision records | [GLOSSARY-AND-ADRS.md](GLOSSARY-AND-ADRS.md) |
+| Copyright and permission notices for adapted source material | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 For reshaping existing code in small safe steps, also use the `refactoring` skill; for typed errors, its ERRORS.md.
 

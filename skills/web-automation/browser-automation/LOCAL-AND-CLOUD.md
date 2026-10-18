@@ -7,13 +7,21 @@
 | Clean, reproducible local test | Isolated local browser |
 | Reuse your local login | Attach to your already-running Chrome |
 | Simple public sites: docs, wikis, public APIs, localhost | Local |
-| Protected sites: login walls, CAPTCHAs, anti-scraping | Remote, stealth |
-| Local fails with bot detection or access denied | Switch to remote |
+| Authorized site that needs an existing account session | Attach to the permitted signed-in session |
+| Third-party site blocks access | Stop and report the limit |
 
-- **Escalate on signals, not by default:** CAPTCHAs (reCAPTCHA, hCaptcha, Turnstile), "Checking your browser..." interstitials, HTTP 403 or 429, empty pages on sites that should have content, or the user asks. Don't switch for simple sites.
-- **On a third-party site, a block is a stop signal, not an escalation trigger:** the table above applies to the user's own or authorized sites; the rule and its sources are [SKILL.md](SKILL.md#the-rules) rule 3.
-- **Ask the user before escalating to a paid service.** Tell them what blocked you (for example Cloudflare) and ask whether to set it up.
+- **Do not solve CAPTCHAs or evade bot detection.** A blocked third-party page is a stop signal. Report the access limit and use only the material the user is authorized to access. [coreyhaines31/marketingskills, prospecting; owner safety policy]
+- **Ask before using a paid browser service.** Keep its purpose and access within the authorized scope. [owner safety policy]
 - **Keep a debug browser isolated** with its own `--user-data-dir`, and set the viewport before capture so screenshots are a consistent size.
+
+## Selecting an attached page
+
+[cursor/plugins, control-ui/SKILL.md]
+
+- Reuse the installed browser harness before adding another. When a debug port has several pages, select the requested app by a positive stable marker, with an exclusion marker when needed; tab order alone is not identity.
+- If no page matches, report the available titles and URLs instead of choosing the first tab. Keep selectors, ports and script paths tied to the current repository, and leave sessions you did not create running.
+- Playwright documents its Chromium CDP attach path as lower fidelity than a Playwright-protocol connection. Check the installed version and browser support before relying on advanced behavior; an attached browser is not a promise of equivalent capabilities. [Playwright BrowserType.connectOverCDP](https://playwright.dev/docs/api/class-browsertype#browser-type-connect-over-cdp)
+- Chrome 136+ does not honor remote debugging on the default Chrome data directory; use a separate user data directory for debugging. The source's normal-profile fallback is stale for that contract. [Chrome remote debugging change](https://developer.chrome.com/blog/remote-debugging-port); [bgauryy/octocode, octocode-chrome-devtools/scripts/open-browser.mjs]
 
 ## Local versus Browserbase (vendor)
 
@@ -21,9 +29,6 @@
 |---|---|---|
 | Speed | Faster | Slightly slower |
 | Needs | Chrome installed | API key |
-| Verified browser (Identity) | No | Yes |
-| CAPTCHA solving | No | Automatic reCAPTCHA and hCaptcha |
-| Proxies | No | Residential, 201 countries, geo-targeting |
 | Cookies and auth across runs | No | Persist through contexts |
 | Parallel tasks | One at a time | Up to 20+ |
 
@@ -35,7 +40,6 @@
 - **`--remote`:** Browserbase; the default when `BROWSERBASE_API_KEY` is set. `BROWSERBASE_PROJECT_ID` is an optional passthrough.
 - **Mode flags apply only when a session starts.** An active session does not switch between local and remote: run `browse stop` before `browse open <url> --remote` if a daemon may be running. After `stop`, the next start falls back to detecting the env var.
 - **`--session <name>` names the local daemon, not a cloud session.** Use a named session when the default daemon may be active in another mode.
-- **Stealth session:** `browse cloud sessions create --keep-alive --verified --proxies`; drop `--verified` or `--proxies` for low-anti-bot sites.
 
 ## Cloud session lifecycle (Browserbase)
 
@@ -45,7 +49,7 @@
 - **List running sessions client-side;** there is no `--status` flag: `browse cloud sessions list | jq -r '.[] | select(.status == "RUNNING") | .id'`.
 - **A session hitting `--timeout` ends mid-run.** Raise the timeout when creating it (the tracing wrapper reads `BB_SESSION_TIMEOUT`, default 600 s, for example `1800`).
 - **Connect within about 5 minutes** of creating a session for a framework run, or it terminates.
-- **Configure proxies, stealth and region on the session,** not on the framework that drives it. Session create parameters through Stagehand's `browserbaseSessionCreateParams`: `projectId`, `region` (us-east-1, us-west-2, eu-central-1, ap-southeast-1), `proxies`, `keepAlive`, `browserSettings.{blockAds, solveCaptchas (default on), advancedStealth (Scale plan), context}`; downloads through `bb.sessions.downloads.list(id)`.
+- **Configure the authorized session lifecycle at creation,** including its region, keep-alive and context. Session reuse does not expand the identity or site access granted to the run. [coreyhaines31/marketingskills, prospecting; owner safety policy]
 - **Live view versus trace:** `browse cloud sessions debug` gives a URL for interactive DevTools on a live run; a recorded trace is the durable, searchable postmortem. Use both.
 
 ### Login once, reuse
@@ -68,4 +72,4 @@ Connect `wss://connect.browserbase.com?apiKey=...&sessionId=...`, call `Target.g
 
 ## Prove it
 
-`browse status` (or the equivalent) shows the resolved mode and target before the run; an escalation is backed by the observed signal (the 403, the CAPTCHA page) and the user's yes; after the run the cloud session list shows no keep-alive session of yours still `RUNNING`.
+`browse status` (or the equivalent) shows the resolved mode and target before the run; a multi-page attach identifies the app with an observed marker, and a block is reported without evasion; after the run the cloud session list shows no keep-alive session of yours still `RUNNING`. [cursor/plugins, control-ui/SKILL.md; coreyhaines31/marketingskills, prospecting]

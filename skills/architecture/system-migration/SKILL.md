@@ -7,6 +7,12 @@ description: "Moves a running system to new code or off a dependency without sto
 
 Change what runs underneath while the business keeps running. A rewrite fails when it stops the product for months, when nobody can tell whether the new code behaves like the old, or when the knowledge in the old system leaves with the people who wrote it. Every rule below exists to prevent one of those.
 
+| The job | Read |
+|---|---|
+| Incremental ports, legacy rewrites, hot-path switches and dependency replacement | [SKILL.md](SKILL.md) |
+| jscpd function maps, unmatched capabilities, source-test coverage maps and independent behavior evidence | [FUNCTION-PARITY.md](FUNCTION-PARITY.md) |
+| Source copyright and permission notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
+
 ## Incremental ports (new language, runtime or framework)
 
 - **Start from the requirement, not the language.** Write down the measurable goals (latency, memory, startup, binary size) and the constraint that forces the change, such as loading the runtime in-process from several host languages with no second garbage collector or child process. The choice of language follows from that.

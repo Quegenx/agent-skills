@@ -1,3 +1,20 @@
 # Architecture skills
 
 The design and structure of any codebase: architecture styles, system design, domain modeling, migrations, refactoring, algorithms, testing and code review. Details in the [main README](../../README.md#architecture).
+
+10 skills.
+
+## Skills
+
+| Skill | Covers |
+|---|---|
+| [software-architecture](./software-architecture/SKILL.md) | Monolith, modular monolith or services; Clean Architecture vs vertical slices; module boundaries and data isolation; extracting a module; strangler-fig migration. Also: One-question logic prototypes with pure state, visible transitions and known-state scenarios. |
+| [system-design](./system-design/SKILL.md) | Load balancing, caching, queues, CDNs, feeds, sandboxes; worked designs from URL shorteners to data recovery |
+| [domain-modeling](./domain-modeling/SKILL.md) | Bounded contexts, aggregates, invariants, domain and integration events, sagas, CQRS, event sourcing. Also: Canonical domain glossaries and lightweight ADRs for consequential tradeoffs. |
+| [system-migration](./system-migration/SKILL.md) | Incremental ports, legacy rewrites, replacing a dependency whose license changed. Also: jscpd function comparisons, unmatched-function inspection and source-test coverage maps, with similarity separate from behavior. |
+| [refactoring](./refactoring/SKILL.md) | Small verified steps, typed errors, a functional core, design principles as moves, dependency direction. Also: Deep modules, interface leverage/locality, deletion tests, jscpd clone/dead-code/complexity triage and corrected TypeScript structural compatibility. |
+| [algorithm-patterns](./algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets |
+| [testing](./testing/SKILL.md) | Tests that catch real bugs, integration tests with real Postgres, architecture and contract tests; worst-case names and values; designing and validating lint rules. Also: Vertical behavior slices and terminal interaction harnesses while keeping existing real-engine, persistence-readback and callback-behavior rules. |
+| [code-review](./code-review/SKILL.md) | Code review at the volume agents write it: review layers from verified work to the merge queue, risk tiers and approval rules, the AI reviewer with REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, round caps, evals for the reviewer on past incidents, ownership after landing, a P0 to P3 scale for UI reviews, sandboxed screenshots as proof; scoping a change to its merge base with Introduced, Regression and Pre-existing statuses; base-versus-head parity runs and triaging a scanner's findings; Lighthouse CI as a required check. Also: Separate standards/specification findings, review reception, evidence-vetted repository audits and first-party Ultracite operation/migrations. |
+| [debugging](./debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. |
+| [engineering-planning](./engineering-planning/SKILL.md) | Interviews, specifications, local work breakdown, decision maps, handoff plans, RFCs and human-only steps. |

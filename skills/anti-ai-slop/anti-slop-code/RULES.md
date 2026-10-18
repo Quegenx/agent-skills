@@ -103,6 +103,8 @@ For an agent, Deslop's MCP server's `find-similar` belongs in the write loop: ca
 
 Two tools share the name: Nimblesite's **Deslop** above is a tree-sitter duplicate finder (`deslop .`, `deslop-mcp`); React Doctor's **deslop** is a simplification prompt (the source of the rules tagged [React Doctor, deslop] here), and it runs truffler for the search.
 
+For jscpd's separate exact, renamed and near-miss passes, hotspot reports and version-specific flag corrections, use [DUPLICATION.md](../../architecture/refactoring/DUPLICATION.md). [kucherenko/jscpd, jscpd; dry-refactoring]
+
 [truffler](https://github.com/rayhanadev/truffler) (`@rayhanadev/truffler`, MIT) is a fuzzy symbol-name search for JavaScript and TypeScript, built on oxc-parser. It ranks names and shows signatures; Deslop matches AST shape, so it also catches renamed copies. truffler needs Bun: its bin is TypeScript source with `#!/usr/bin/env bun`. Recipes [React Doctor, find-similar-functions]:
 
 ```bash

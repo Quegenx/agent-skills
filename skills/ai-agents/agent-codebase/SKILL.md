@@ -9,6 +9,7 @@ An agent grows fast: tools, gates, notes, memory, playbooks. Without a fixed pla
 
 | The job | Read |
 |---|---|
+| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | What each module owns and its contract: the factory, step preparation, the tool runtime, a tool file, turn modules, the transport pipeline, memory, skills, seams | [MODULES.md](MODULES.md) |
 | What the agent does inside these modules (gates, prompt, tools, runtime) | the `agent-harness` skill |
 | The eval suite that drives the agent through these seams | the `agent-evals` skill |
@@ -77,6 +78,9 @@ Rules that keep it that way:
 - **Metrics:** snake case with the agent prefix (`agent_model_calls`, `agent_tool_seconds`, `agent_turn_gates`), names, counts and timings only.
 
 ## Comments at the definition
+
+- Put the natural-language phrase someone would search for beside a non-obvious constraint, with ordinary spaced words as well as the identifier. A source excerpt should make sense without opening its imports: precise imported names and definition context carry the meaning. The source asks for a comment on every export; this repository keeps comments for constraints the signature and code do not already explain, and follows the project's existing test-location convention. [modem-dev/skills, write-discoverable-code/SKILL.md]
+- Locating behavior and proving its connections use the shared [code research method](../agent-harness/CODE-RESEARCH.md); do not duplicate discovery instructions in each module guide. [bgauryy/octocode, octocode-research/references/code-research.md]
 
 Each constant or rule says why it exists, what it was measured on and when, and which established pattern it follows: "calibrated on 149 stored answers, 0 false alarms", "the model left the follow-ups out of 11 of 28 answers". A deliberate shortcut names its ceiling and upgrade path ("cut results kept in this process's memory, the newest 100; upgrade: a table"). A rule that was tried and removed says so where someone would add it again. A helper library the agent composes into one-off scripts records its data gotchas in the docstrings (`user_id` is null until after signup), so the agent spends its turns on composition, not on reconstructing boilerplate.
 

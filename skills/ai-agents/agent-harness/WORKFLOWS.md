@@ -59,6 +59,19 @@ Vercel's `vercel-optimize` audit wires its subagents through deterministic scrip
 - **A budget checkpoint the host parses:** "JSON output is the contract the orchestrator parses; markdown is human-only", and `--no-prompt` serves "CI / non-interactive hosts". The same holds for any CLI an agent drives: "Non-interactive flags, JSON output, and errors that say what to run next" [coreyhaines31/marketingskills, ai-seo]. The message to show carries its line count and a `sha256` of its body, so the host can check it was printed verbatim ([CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer)).
 - **The renderer checks again,** because the orchestrator can skip a step: [CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer).
 
+## Delegation packets
+
+[bgauryy/octocode, octocode-subagent/references/packets.md, coordinate.md, synthesize.md and blind-review.md]
+
+- **Request:** one bounded goal, decisive context with exact anchors, allowed scope/tools and stop condition, ownership, observable acceptance, and the required return shape. Declare whether the parent retains the user conversation or transfers it; give writers disjoint paths. Put the task-relevant constraints into the packet regardless of how much chat the host inherits.
+- **Result:** status `complete`, `partial` or `blocked`; conclusion; decisive evidence; actual verification or its limit; confidence and gaps; next action or none. Keep phase updates separate from the completed result, and return an artifact handle or exact slice for large data rather than a transcript.
+- **Barrier:** wait for the required results, then inspect their status and acceptance. An idle or terminated worker is not a successful result. Missing return fields require repair or replanning; partial and blocked work never average into complete.
+- **Merge:** surface conflicts first, recheck load-bearing anchors in the parent and preserve unresolved disagreement. Do not pass a worker's unverified conclusion into the next packet as an established fact.
+- **Independent review:** give the critic the artifact, acceptance and anchors; omit the author's identity, persuasive rationale and peer verdicts when they would bias the check. A separate context alone does not make a reviewer independent if its prompt supplies the answer to endorse.
+- **Choose the intervention:** a rubber duck surfaces assumptions in a stuck plan; an interview tests a claim; a red team attacks failure paths; a blind review judges the artifact; independent consensus compares attempts. Agreement is not proof, and another layer must earn its coordination cost. [bgauryy/octocode, octocode-subagent/references/techniques.md]
+
+Compact localization returns use [CODE-RESEARCH.md](CODE-RESEARCH.md#a-localization-handback); a selected implementation plan resumes through [PLAN-EXECUTION.md](PLAN-EXECUTION.md), using this packet mechanism rather than defining another one.
+
 ## Author and reviewer loops
 
 An agent author and an agent reviewer can keep each other busy indefinitely: one pull request went through more than fifty rounds of review and fixes overnight before its author stopped it. A git blame of what the reviewer kept flagging found about 59% of it was code present since the reviewer's first pass: it was finding a few more old bugs each round, not new ones.
@@ -106,5 +119,6 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 - [ ] An author and reviewer loop: a round cap, diff-only re-review, no repeated findings, rounds-to-pass tracked
 - [ ] Agents that read untrusted content have read-only tools and hand on only structured summaries
 - [ ] The parent checks each subagent's evidence before accepting it
+- [ ] Worker status, acceptance and verification are checked independently of whether the worker stopped; conflicts remain visible and writer paths do not overlap [bgauryy/octocode, octocode-subagent/references/packets.md and synthesize.md]
 - [ ] A fan-out joins outputs back by one key per brief and fails on an unknown, duplicate or missing key; candidates the cheap evidence already disproves never get a subagent
 - [ ] Small models only on work where a mistake is cheap to spot; code and judgment calls on the main model

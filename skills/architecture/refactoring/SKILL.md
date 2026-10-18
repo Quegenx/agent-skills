@@ -1,6 +1,6 @@
 ---
 name: refactoring
-description: "Restructures code without changing behavior, in small tested steps, with typed errors and clean dependency direction. Use when code is hard to read, test or change, or when asked to refactor."
+description: "Restructures code without changing behavior, in small tested steps, with typed errors, clean dependency direction, deep module interfaces and evidence-based duplication removal. Use when code is hard to read, test or change, or when asked to refactor."
 ---
 
 # Refactoring
@@ -13,6 +13,9 @@ Refactoring changes the structure of code and keeps its behavior. One step does 
 | Pure calculations, immutable updates, composable rules | [FUNCTIONAL.md](FUNCTIONAL.md) |
 | Design principles as moves: injection and the composition root, strategy, null object, decorator, composite, state, command, memento, Liskov, interface segregation, CQS, Demeter, typestate, deleting speculative layers | [DESIGN.md](DESIGN.md) |
 | Dependency direction: ports owned by the core, configuration as a port, layer skips, driving vs driven adapters, breaking cycles with a kernel leaf and published ports | [DEPENDENCIES.md](DEPENDENCIES.md) |
+| Deep module interfaces, deletion test, leverage and locality, dependency seams and alternative designs | [DEEP-MODULES.md](DEEP-MODULES.md) |
+| Duplication evidence, safe extraction, clone comparison and migration candidates | [DUPLICATION.md](DUPLICATION.md) |
+| Copyright and permission notices for adapted source material | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

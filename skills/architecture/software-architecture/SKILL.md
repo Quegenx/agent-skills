@@ -1,6 +1,6 @@
 ---
 name: software-architecture
-description: "Chooses an application's shape: monolith, modular monolith or services; layers or vertical slices; module boundaries and data ownership; extracting or replacing modules. Use when structuring a codebase or deciding whether to split it."
+description: "Chooses an application's shape: monolith, modular monolith or services, layers or vertical slices, module boundaries, data ownership, extracting or replacing modules and logic prototypes. Use when structuring a codebase, resolving a state-model question or deciding whether to split it."
 ---
 
 # Software architecture
@@ -18,6 +18,9 @@ The macro decision constrains how modules talk to each other. The micro decision
 | Vertical slices: folder structure from 5 to 50+ features, endpoints, validation, cross-cutting wrappers, shared code, testing slices | [SLICES.md](SLICES.md) |
 | Modular monolith: boundaries, public APIs, data isolation per module, communication, shared kernel, refactoring an overgrown module | [MODULES.md](MODULES.md) |
 | Scaling a monolith, deciding to split, extracting a module into a service, strangler-fig migration off legacy code | [EVOLVE.md](EVOLVE.md) |
+| Answering a logic question with a portable model, visible state and guided scenarios | [PROTOTYPES.md](PROTOTYPES.md) |
+| Deep module interfaces and dependency seams | [DEEP-MODULES.md](../refactoring/DEEP-MODULES.md) |
+| Copyright and permission notices for adapted source material | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 Related: bounded contexts and context maps are in the `domain-modeling` skill's STRATEGIC.md; domain vs integration events, sagas and CQRS in its EVENTS.md; outbox, inbox and brokers in the `messaging` skill; import-graph rules and breaking cycles in the `refactoring` skill's DEPENDENCIES.md; whole-system components (load balancers, caches, CDNs, queues) in the `system-design` skill.
 

@@ -1,6 +1,6 @@
 ---
 name: agent-harness
-description: "Builds LLM agents that stay reliable: where each rule lives, a cache-stable prompt, code gates with caps, tools, history, compaction, memory and the runtime (leases, loop limits, tool traits, traces). Use when building or fixing an agent, a tool-using chatbot or its system prompt."
+description: "Builds reliable LLM agents: rule placement, prompts, gates, tools, history, runtime, source research, measured context reductions, plan execution and session diagnosis. Use when building or fixing an agent, its system prompt or tools, executing a selected plan, researching code, or explaining a costly or drifting run."
 ---
 
 # Agent harness
@@ -9,12 +9,18 @@ A model is a probability, not code: the same conversation can go another way on 
 
 | The job | Read |
 |---|---|
+| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
+| Apache 2.0 license for adapted Caveman guidance | [LICENSE-caveman.txt](LICENSE-caveman.txt) |
 | The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their routing, changing a prompt, writing for the model that reads it | [PROMPT.md](PROMPT.md) |
 | Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, sanitizers that rewrite or drop an answer, a version-gated citation allow-list, already-on project facts, verbatim printing, the renderer as the last check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
 | Tools, picking tools by search, outside (MCP) tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
 | The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, long runs, observability, the build order | [RUNTIME.md](RUNTIME.md) |
 | Multi-agent workflows: why one context fails, fan-out and its contract (evidence before the spawn, the brief as the whole prompt, a join key with coverage enforced, abstaining as an answer), adversarial verification, tournaments, loop until done, quarantine triage, author and reviewer loops with a round cap, which model each subagent uses | [WORKFLOWS.md](WORKFLOWS.md) |
 | Scheduled and background agents: bookmarks per source, a failed read that isn't a quiet day, re-check before posting, post once, read-only preferences and a ledger, scoped credentials, a spending cap from real runs | [SCHEDULED-AGENTS.md](SCHEDULED-AGENTS.md) |
+| Researching source: strongest handles, evidence lanes, negative-proof limits, exact/versioned anchors and compact localization returns | [CODE-RESEARCH.md](CODE-RESEARCH.md) |
+| Context reductions: measured units, recoverable originals, recall overhead, controlled comparisons and honest savings claims | [CONTEXT-COSTS.md](CONTEXT-COSTS.md) |
+| Executing a selected plan: shared interfaces, durable progress, rulings, authorized verification and phase handoff | [PLAN-EXECUTION.md](PLAN-EXECUTION.md) |
+| Diagnosing a recorded session: identity and record meanings, plan drift, repetitions, cost, coverage and scrubbed evidence | [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Long-term memory across conversations: extraction, profile and search, staying current, forgetting | the `agent-memory` skill |
 | Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |

@@ -19,6 +19,10 @@ Establish the contract before writing [c15t, writing-docs]:
 3. "Write down the result, prerequisites, defaults and failure cases. A page should let someone implement and verify a task without guessing missing files."
 4. One canonical page per distinct task. Put shared explanations in one place and reuse them through includes or links. "Do not clone a React guide and replace its framework name."
 
+The [Diataxis view](https://diataxis.fr/) names four reader needs: learning through a tutorial, completing a task with a how-to, looking up reference and understanding an explanation. Use this as a planning distinction under the existing one-job-per-page rule, rather than combining a lesson, a procedure and exhaustive reference in one document. [bgauryy/octocode, octocode-documentation/references/diataxis.md]
+
+Decision records belong with [the architecture glossary and ADRs](../../architecture/domain-modeling/GLOSSARY-AND-ADRS.md); RFC and live implementation-status audits belong with [engineering planning](../../architecture/engineering-planning/RFC.md). Link those records from agent-facing instructions when the same decision would otherwise be reopened. [bgauryy/octocode, octocode-documentation/references/adr.md]
+
 ## Tone by content type
 
 [Vercel, writing-guidelines]

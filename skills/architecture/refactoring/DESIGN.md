@@ -31,7 +31,7 @@ Use these when each case carries real behavior that varies independently; a look
 - **Liskov:** a base type that promises `renew()` while one subtype throws "not supported" is lying. Split the capability (`Membership`, `RenewableMembership`) and have the service accept only the capability it uses, with no type checks.
 - **Interface segregation:** an `IMachine` with `print` and `scan` forces an inkjet to throw from `scan`. Split `Printer` and `Scanner`; don't recombine them into a bundle type that every implementer must satisfy.
 - **Command-query separation:** `peek()` that also consumes surprises the caller. A read-only view (`peek`, the same answer on every call) and a separate `consume`; hand the preview code only the view.
-- **Matching method names aren't an implementation.** A class with a `send` method isn't a `Notifier` until it declares `implements Notifier` and the whole family follows it.
+- **TypeScript compatibility is structural.** Compatible public instance members can satisfy an interface without an explicit `implements` declaration. Requiring that declaration can be a project style/check policy, not a language prerequisite. The old line said a matching class was not a `Notifier` until it declared `implements Notifier`. [Official TypeScript compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html)
 - **Law of Demeter:** `order.customer.address.city` couples the caller to three shapes. Local variables don't fix it, and moving the whole chain into `Order` doesn't either. Ask each object for what it owns (`order.shippingCity()` asks the customer, who asks the address).
 - **Observers:** a coordinator with a field per listener isn't open; keep a readonly list of observers and notify every one. Per instance, not a shared static list.
 
@@ -49,3 +49,15 @@ These overlap the `domain-modeling` skill's MODEL.md (value objects, branded IDs
 - **Split by who asks for changes:** an importer that parses, deduplicates, stores and formats changes for four reasons. Parser, store, summary data and formatter become separate pieces; lines that fail to parse never reach the store, and the store decides duplicates at insert time (an insert that returns whether it kept the row), not by a check-then-insert.
 - **An abstraction is paid for by its second implementation.** A factory, base class, selector or interface with one implementation is a layer to read through. Delete it, and keep the behavior that hid inside it (a cap, a weighting, a rounding rule, a case-insensitive comparison). Don't replace the deleted interface with an extra callback parameter: that's the same layer in another shape.
 - **Leaky ports:** a payment port typed in the vendor's request and response objects is the vendor in disguise. Define neutral domain types for the port and translate both ways in the adapter, which only the root constructs. More in [DEPENDENCIES.md](DEPENDENCIES.md).
+
+## Finding the missing owner
+
+[mattpocock/skills, code-review]
+
+- **Feature envy:** a method uses another object's data more than its own. Move the behavior toward the data it operates on.
+- **Data clumps:** the same fields or parameters repeatedly travel together. Give that concept one type and pass it together.
+- **Shotgun surgery:** one logical change requires scattered edits across many files. Gather the behavior that changes together into one module.
+
+## Prove it
+
+For each ownership change, identify the observed data access, recurring field group or scattered change that motivated it; show where that concept now lives and which callers use it. Interface compatibility claims distinguish TypeScript's structural rules from an explicit project declaration policy. [mattpocock/skills, code-review; https://www.typescriptlang.org/docs/handbook/type-compatibility.html]

@@ -12,6 +12,27 @@ Each case is a conversation: the customer's messages, the data it starts from (a
 
 **A fresh data store per case,** seeded with the real catalogue and settings as of a fixed date and no customer data. A fake store is code too, so test it: one whose filter parsed numbers as dates (a score of 88 read as the year 1988) returned no rows, and two cases failed for that reason since before the first baseline. The workspace is fresh too: leftover state from an earlier trial (a file, a git history) can hand the agent the answer. A good fake is the real database client with its `fetch` answering from the case's rows: writes apply to later reads and turns, a missing row comes back missing, pagination and embedded counts behave as the real API does, and every write is recorded for the checks. **Times the judges can check:** when tools return UTC, show the judge each time followed by its local time; a judge can't confirm the agent's own conversion and fails correct answers. **Only the clock is faked:** each case's first message arrives at a fixed time (say Tuesday 12:00 local), each later one a minute after; timers and timeouts stay real.
 
+## Graph outcomes and node diagnostics
+
+[bgauryy/octocode, octocode-graph-eval/references/graph-of-loops.md and goal-kpi-cascade.md]
+
+- Keep the end-to-end user outcome as the primary measure, per-node results as diagnostics, and graph-level cost, latency and permission scope as guardrails. Every metric names the goal it serves; a node's score improving does not establish that the graph improved.
+- When the primary outcome falls, freeze the inputs and isolate suspect nodes. Attribute the failure to a node only after its own sensor reproduces it, rather than blaming whichever step last changed.
+- Check whether an ordered edge carries data the next step actually requires. Remove needless waits only when that evidence permits parallel work; dependent sequential tasks remain valid. Strengthen an overloaded verifier before adding another agent node.
+
+### Trajectory comparison modes
+
+[bgauryy/octocode, octocode-graph-eval/references/trajectory-grading.md], checked against [LangSmith trajectory evaluations](https://docs.langchain.com/langsmith/trajectory-evals).
+
+| Mode | Contract |
+|---|---|
+| Strict | Match the reference messages and tool calls in the same order |
+| Unordered | Match the same tool calls without requiring their order |
+| Subset | Allow only calls present in the reference; no extra tools |
+| Superset | Require the reference calls while allowing additional ones |
+
+Choose from the actual requirement: an order-sensitive policy needs order checked; a valid alternative route should not fail solely for taking a different path. State how arguments compare; the library defaults to equality of tool name and arguments and supports configured argument comparison. A reference-free judge can inspect whether a trajectory was reasonable, while a maintained reference pins a known contract. Keep simulated-user generation separate from grading the resulting frozen trajectory. [bgauryy/octocode, octocode-graph-eval/references/trajectory-grading.md; LangSmith trajectory evaluations linked above]
+
 ## The cases
 
 - **Each case records where it came from:** the source (a real conversation, a reported failure, written to fill a gap), its group, where its expected answer came from, and the fixtures that replay it. Expected answers written by a model are marked, and a person checks them before they count.
@@ -146,3 +167,11 @@ test("a cancel waits for the user after the lookup", async () => {
 ```
 
 `model.doGenerateCalls` holds every request the agent sent, so the same test can assert what the model was shown: a policy denial's reason in the next prompt, a note added by step preparation, the tool list unchanged between steps.
+
+## Prove it
+
+[bgauryy/octocode, octocode-graph-eval/references/graph-of-loops.md and trajectory-grading.md]
+
+- The graph's primary result is observed at its user-visible boundary, with node diagnostics and cost/latency/scope guardrails separate.
+- A blamed node reproduces the failure with frozen inputs.
+- Path checks state their ordering, allowed extra/missing calls and argument-comparison contract; generation is complete before grading its frozen trajectory.

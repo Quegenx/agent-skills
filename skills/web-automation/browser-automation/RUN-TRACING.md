@@ -167,6 +167,15 @@ jq -s '
 - An element that came and went: `rg -l 'class="error-banner"' .o11y/<run>/dom/`. Live view: `tail -f raw.ndjson | jq -c '{m: .method, ...}'`. Size: `du -sh .o11y/<run>`.
 - Browserbase proxy bytes (billed per byte) versus per-host attribution: `jq '.proxyBytes' browserbase/session.json` against `jq -s 'map(.params.encodedDataLength // 0) | add' cdp/network/finished.jsonl`.
 
+## Capture the cause before the trigger
+
+[bgauryy/octocode, octocode-chrome-devtools/references/script-patterns-observe.md, har-capture.md and cdp-agent.md]
+
+- Attach the needed observation listeners before navigation or the user action that produces the evidence. Diagnose one stated intent, keep the same target/session while checking it, and verify the observed result before switching browsers.
+- Query existing summaries, failures, slow requests and bounded pages of artifacts before launching another capture. Keep raw evidence locally and return counts, decisive excerpts and artifact paths rather than a full traffic dump.
+- Treat HAR and captured bodies as private input until secrets are reviewed and redacted. The supplied ingestion helper can preserve short secret bodies and a raw original; its redacted-corpus claim is not a guarantee adopted here. [bgauryy/octocode, octocode-scraping/scripts/har-ingest.mjs]
+- Performance collection must use `PerformanceObserver` for LCP and layout-shift entries. The supplied measure script used `getEntriesByType`, which cannot return those entry types. [MDN Performance.getEntriesByType](https://developer.mozilla.org/en-US/docs/Web/API/Performance/getEntriesByType); [bgauryy/octocode, octocode-chrome-devtools/scripts/cdp-checks/performance-measure-check.mjs]
+
 ## Debug playbooks
 
 - **Form submit does nothing:** did the POST go out, did it return 4xx or 5xx, any console error or exception at the click, what does the latest DOM dump show? POST missing means the click handler is broken (inspect the button in the DOM dump); 4xx means read the response; an exception's stack frame gives file and line.

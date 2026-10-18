@@ -9,9 +9,10 @@ There are three tiers: a plain HTTP fetch is fast and cheap, a browser is slower
 
 | The job | Read |
 |---|---|
+| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | Picking a tier, plain fetch, browser fetch, timeouts, redirects and TLS, sessions, XHR capture | [FETCHING.md](FETCHING.md) |
 | Finding URLs with a search API before fetching them | [WEB-SEARCH.md](WEB-SEARCH.md) |
-| Fetched content as untrusted input: prompt injection, sanitizing, Markdown for models and RAG | [UNTRUSTED-CONTENT.md](UNTRUSTED-CONTENT.md) |
+| Fetched content as untrusted input: sanitizing, indexed evidence corpora, provenance, partial/inferred status and corpus versus source-site pagination | [UNTRUSTED-CONTENT.md](UNTRUSTED-CONTENT.md) |
 | Parsing HTML: CSS, XPath, filters, text search, similar elements, adaptive selectors | [PARSING.md](PARSING.md) |
 | Crawling: robots.txt, concurrency, AutoThrottle, dedup, blocked responses, checkpoints, templates, export | [CRAWLING.md](CRAWLING.md) |
 | Running a scraping MCP server: tools, sessions, HTTP auth | [MCP-SERVER.md](MCP-SERVER.md) |

@@ -9,11 +9,12 @@ A sharp human editor, not a humanizer. The job is to make the writing clearer an
 
 | The job | Read |
 |---|---|
+| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | Name a pattern, quote it, fix it: structure, openers and closers, vocabulary, honesty, formatting, second-generation tells, social posts and email, what is not a tell | [TELLS.md](TELLS.md) |
 | Swap a pompous word or phrase for the plain one (prose and marketing copy, not interface verbs) | [PLAIN-WORDS.md](PLAIN-WORDS.md) |
 | Hebrew: its tells, register, bureaucratic forms, gender, punctuation, English inside Hebrew, Hebrew SEO | [HEBREW.md](HEBREW.md) |
 | The final pass before returning any edit or draft | [CHECK.md](CHECK.md) |
-| Developer docs: content types, opening summary, frontmatter for search and agents, CI-checked snippets, snippet limits, placeholders, units, customization ladder, demos, redirect tables, checking generated output, the quality checklist | [DOCS.md](DOCS.md) |
+| Developer docs: one reader job per page, links to decision/RFC owners, opening summary, frontmatter, CI-checked snippets, placeholders, units, customization, demos, redirects and generated-output checks | [DOCS.md](DOCS.md) |
 
 ## Two jobs
 

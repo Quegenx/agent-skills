@@ -83,6 +83,8 @@ What remains: voice, language, scope, what the agent never does, and the flows n
 
 ## Changing the prompt
 
+For the evidence behind a proposed reduction, exact-original recovery and recall overhead, use [CONTEXT-COSTS.md](CONTEXT-COSTS.md). Its comparison contract keeps a smaller prompt separate from a measured quality or cost improvement. [JuliusBrussee/caveman, caveman-learn/SKILL.md and caveman-optimize/SKILL.md]
+
 1. **Start from an observed failure:** real replies that went wrong, named as a failure (wrong format, an ignored rule, an invented fact). What could go wrong is not a reason to add a rule.
 2. **Find where the prompt causes it:** a missing, vague or contradicting instruction.
 3. **Fix the class, not the example:** write the rule at the level of the mistake, in your own words, never the failing message itself. If the general rule doesn't work, say so; narrowing it until it fits one case is overfitting.

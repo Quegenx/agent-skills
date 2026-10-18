@@ -35,6 +35,16 @@ Give the extractor, in this order:
 - **No inferred attributes:** never gender, age, origin or health from a name or a hint.
 - **Attributed by speaker:** each fact records who stated it. The agent's own actions are its experience; a user's "I bought a car" is a fact about the user. Tell the extractor who each speaker is, so a customer's first person is never stored as the agent's.
 
+## Turning conversation evidence into working preferences
+
+[cursor/plugins, workflow-from-chats/SKILL.md]
+
+- Inventory the relevant parent conversations, approximate dates, completion state and associated workers. A worker's behavior can support the investigation, but cite the parent conversation for the user's preference; do not expose private transcript paths or customer content in the resulting guidance.
+- Extract a preference atom: its trigger, workflow step, decision rule, quality bar, stop condition, evidence and confidence. Cluster atoms by recurring workflow rather than writing one summary per chat.
+- Distinguish explicit preferences and corrections from behavior the agent chose without feedback. Repeated accepted use is stronger evidence than a single ambiguous or task-specific action; incompatible evidence remains contradicted and pending rather than becoming a silent rule.
+- Choose the artifact by the job: a recurring procedure with a clear trigger can become a skill; broad behavior a rule; useful context without a reliable trigger a workflow document; stale, situational or weak observations no artifact. Show adopt, consider and dismissed separately.
+- Keep the user's preference store read-only under [SKILL.md](SKILL.md#the-shape) rule 8. This source mines candidate guidance; it does not authorize the agent to rewrite a user-owned preference or resolve a contradiction on their behalf.
+
 ## Duplicates and links
 
 - **Skip what is already captured,** but a known entity is not a captured event: "has a dog named Max" does not cover "camped with Max last summer".
@@ -64,3 +74,12 @@ Raw facts pile up. A background pass merges them into beliefs, each one holding 
 - **Edit long-lived summaries in place,** applying only the change. Regenerating a document on every refresh drifts its wording until it says something else.
 
 Keep the consolidation instructions the same for every account and pass the account's own focus in the message, so the cached prefix is shared.
+
+## Prove it
+
+[cursor/plugins, workflow-from-chats/SKILL.md]
+
+- Each proposed working preference has parent-conversation evidence, trigger, decision/quality/stop conditions and confidence.
+- Agent-chosen behavior without feedback remains weak evidence, and contradictory preferences stay pending.
+- The artifact fits the recurrence and trigger; no artifact is a valid outcome for a situational observation.
+- User-owned preferences are unchanged unless the user authorizes their update.

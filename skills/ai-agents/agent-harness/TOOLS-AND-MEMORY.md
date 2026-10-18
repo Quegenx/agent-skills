@@ -36,6 +36,21 @@
           print(block.text)
   ```
 
+## Tool contract ownership and continuation
+
+[bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md], checked against [Anthropic's tool guidance](https://www.anthropic.com/engineering/writing-tools-for-agents) and [MCP tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools).
+
+| Layer | Owns |
+|---|---|
+| Agent/server instructions | Tool-family routing, cross-tool scope and approval boundaries |
+| Name and description | Selection, exclusions and the context needed to call it |
+| Input schema | Types, required fields, bounds and incompatible combinations |
+| Result | Found/changed state, stable handles, completeness and continuation |
+
+- Use distinct verbs for filtered discovery, a known identifier, bounded listing and mutation. Keep overlapping near-synonyms only when selection evidence shows agents can distinguish them. This naming policy is the source's recommendation, not an MCP naming requirement. [bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md]
+- Bound arrays, ranges and string lengths where they bound the operation. A shape-valid call can still have the wrong intent; selection guidance and authorization remain outside shape validation. [bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md]
+- A partial result identifies its checked scope and how to continue; preserve the opaque cursor unchanged. Truncation, an unread page or a permission boundary prevents a completeness claim. Put action-relevant fields first and expose extra diagnostics only when the next step needs them. [bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md; MCP tools specification linked above]
+
 ## Tools from outside (MCP and plugins)
 
 Acting through a user's connected accounts (their mailbox, their CRM): scoped sessions, approvals by effect, connecting mid-chat and error wording are in the `third-party-integrations` skill, AGENT-ACCESS.md.
@@ -98,3 +113,11 @@ Customer messages, transcribed audio, image descriptions, documents and tool res
 A tool that fetches a URL the model or a user supplied resolves the address first and refuses private, loopback and metadata ranges, follows no redirect to them, and caps the size and the time.
 
 **An agent that runs code in a sandbox never holds the real credentials.** In Claude Code's cloud sessions the GitHub token never enters the VM: "A proxy holds it, and the session gets a short-lived credential that can push only to its own working branch." API keys attach to requests for the hosts you name outside the VM, "so the key never sits in a variable"; network access is a level (none, trusted package registries and hosts, a custom list, full), and "All outbound traffic passes through a proxy that logs hostnames." Even with the network at none, the model API is still a way out: "data can leave the VM that way". AI SDK 7's `SandboxSession` keeps a tool that runs commands independent of the sandbox: any sandbox-aware tool runs on any sandbox provider.
+
+## Prove it
+
+[bgauryy/octocode, octocode-prompt-optimizer/references/tool-contracts.md and validate.md]
+
+- Selection, valid input shape, result completeness and continuation each have one owner.
+- A partial response retains its exact continuation handle and scope; an unread page cannot yield a complete answer.
+- Validating shape does not substitute for authorization or intent, and a refused call carries its real next-step reason.

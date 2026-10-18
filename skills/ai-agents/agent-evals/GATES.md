@@ -30,6 +30,9 @@ Report each finding as blocking, important or an improvement, with the artifact,
 
 ## Gates that lie
 
+- **Freeze the harness within an experiment.** Choose the primary outcome and guardrails before looking; do not alter cases, graders or thresholds mid-experiment to buy acceptance. A harness revision is a separate change with its own calibration. Keep a decline from the stated baseline visible even when the candidate still clears an absolute floor. [bgauryy/octocode, octocode-graph-eval/references/held-out-and-guards.md and kpi-contract.md]
+- **A required or forbidden check is a gate, not a contribution to a passing average.** Missing cases stay incomplete. The source's supplied grader averages required/forbidden checks and can ignore missing answer files when setting batch success; that implementation is not the contract adopted here. [bgauryy/octocode, octocode-graph-eval/scripts/eval-eval.mjs]
+
 - **A check turned on that never fires:** the field means something other than its name, a hidden default already scores it, a misspelt category matches nothing, or the check isn't on the path the work takes. Prove each check with a crafted failing case.
 - **Smoke the gate itself** with a good output, a bad one and a runner error, and see three different results. Skipped cases and missing credentials show as incomplete, never as passed.
 - **When the gate is a checker** (a lint rule or detector) changed in the pull request, run it on base and head with exit `2` for invalid evidence outranking any diff: [code-review BASE-HEAD-PARITY.md](../../architecture/code-review/BASE-HEAD-PARITY.md#exit-codes); testing the rule itself for false positives and misses: [testing LINT-RULES.md](../../architecture/testing/LINT-RULES.md).
@@ -66,3 +69,10 @@ The orchestration around this (who re-spawns, the join key) is in [agent-harness
 - **Alerts need a minimum sample,** carry the failing cases, and group repeats. Tell an incomplete window from a real drop, and a provider outage from a drift in quality.
 - **Refresh the cases and recalibrate** after a change of model, prompt, tool, retrieval or audience.
 - Build and test the review screen like any app handling untrusted text: the trace is escaped, links and images don't load from outside, saves are atomic and a stale edit is a conflict, not an overwrite. Test it with a script tag in a message, a huge tool result, unusual characters and a missing attachment.
+
+## Prove it
+
+[bgauryy/octocode, octocode-graph-eval/references/held-out-and-guards.md and scripts/eval-eval.mjs]
+
+- A failed required or forbidden criterion cannot pass through an average, and a missing case remains incomplete.
+- The experiment uses the fixed harness, stated baseline, primary outcome and guardrails; a passing absolute floor does not hide deterioration.
