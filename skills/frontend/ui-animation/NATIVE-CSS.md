@@ -38,6 +38,7 @@ The CSS counterpart of `AnimatePresence` holding an element until its exit ends:
 - **Not interruptible and straight-line:** view transitions "aren't interruptible. Also not as easy to integrate with dialog and popovers" ([Using @starting-style and transition-behavior](https://nerdy.dev/using-starting-style-and-transition-behavior-for-enter-and-exit-stage-effects), 2024-05-20); they are "always a straight line" and "can't curve or swing to a new destination" ([Anchor Interpolated Morph](https://nerdy.dev/anchor-interpolated-morphing), 2026-01-23). A curve is possible only through a fragile trick on the browser's own keyframe names ([nerdy.dev: View Transitions can swoop‽](https://nerdy.dev/swoop-there-it-is), 2026-03-07); the trick and its limits are in [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#the-swoop).
 - **Freeze a transition to inspect it:** an infinite `animation-duration` keeps the `::view-transition` tree in the devtools DOM ([nerdy.dev: CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases), 2026-07-25); the snippet is in [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#debugging).
 - Text swaps, 3D perspective and the per-snapshot choreography are in [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md).
+- React's `<ViewTransition>`, `addTransitionType` and Next.js `transitionTypes` are in [REACT-VIEW-TRANSITIONS.md](REACT-VIEW-TRANSITIONS.md); their CSS is in [VIEW-TRANSITION-RECIPES.md](VIEW-TRANSITION-RECIPES.md).
 
 ## Scroll-driven animations
 

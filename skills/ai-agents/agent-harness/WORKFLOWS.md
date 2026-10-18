@@ -41,6 +41,21 @@ Give each service to its own subagent. When a subagent reports back, check its e
 Finish with one table: service, affected yes or no, and the evidence.
 ```
 
+- **A chain of existing skills run one after another in one session** (review, simplify, commit, open the PR, babysit) is not a fan-out: it is a manual-only skill with a checklist and stop conditions, in [skill-authoring DISTRIBUTION.md](../skill-authoring/DISTRIBUTION.md#composing-skills).
+
+## Fan-out contract
+
+Vercel's `vercel-optimize` audit wires its subagents through deterministic scripts; what transfers is the contract around them [Vercel, vercel-optimize].
+
+- **Inline or fan out:** "1-2 briefs: investigate inline. 3+ briefs: spawn one sub-agent per brief when the host supports it. Hosts without sub-agents: run inline serially." Visible worker names are human labels ("`Low cache-hit route on /docs/llm-digest/[...slug]`, not `toLaunch-7`").
+- **Evidence before the spawn:** the follow-up data for each candidate is attached "BEFORE any sub-agent reads source", and candidates that evidence already disproves are dropped in code, so no subagent is spent on them. Reuse rows from the broad pass, but "Zero rows ≠ 'no data'": the broad pass's row limit may have truncated the item, so fall through to a real query. Deduplicate identical queries by a key holding everything that changes the call's arguments, then fire them together.
+- **The brief is the whole prompt:** one file per candidate holds the candidate, its evidence, the citations filtered for it, the protocol and the output schema. It stays under 12 KB and is byte-identical for identical input (a `--deterministic` flag drops the timestamp). The subagent reads only the files the brief lists (at most 12, plus the 3 nearest layouts), follows imports one level, stops after 5 files, and gets the evidence "already collected - do NOT re-query" with a units legend. "If a sub-agent reaches for repo-wide grep, the candidate is malformed; drop or abstain rather than widening scope."
+- **A join key per brief, coverage enforced:** every brief carries a `candidateRef` (`kind:target`); the collector errors on unknown, duplicate and missing refs and orders the output by the manifest. "Extraction is permissive while candidateRef coverage stays strict": fenced ```json blocks first, then the whole text, then the first balanced `{…}` or `[…]` span (a string- and escape-aware bracket stack), unwrapping up to two single-key envelopes (`data`, `result`, `insights`); a missing ref is inferred from the file name only when exactly one manifest entry matches.
+- **Abstaining is an answer:** "Abstentions are first-class outputs ({abstain:true, candidateRef, reason}) and MUST NOT be graded; the abstention IS the answer." What an abstention means for the report is in [skill-authoring PROJECT-AUDITS.md](../skill-authoring/PROJECT-AUDITS.md#a-telemetry-first-audit-pipeline).
+- **The script plans, the orchestrator spawns:** the verify step "Does NOT spawn sub-agents - the orchestrator reads regenPlan, re-spawns one sub-agent per targeted candidate with topFailures injected, then re-runs this script." `topFailures` is the first 5 failed claims. The thresholds that trigger a re-run are in [agent-evals GATES.md](../agent-evals/GATES.md#gating-an-agents-findings).
+- **A budget checkpoint the host parses:** "JSON output is the contract the orchestrator parses; markdown is human-only", and `--no-prompt` serves "CI / non-interactive hosts". The message to show carries its line count and a `sha256` of its body, so the host can check it was printed verbatim ([CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer)).
+- **The renderer checks again,** because the orchestrator can skip a step: [CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer).
+
 ## Author and reviewer loops
 
 An agent author and an agent reviewer can keep each other busy indefinitely: one pull request went through more than fifty rounds of review and fixes overnight before its author stopped it. A git blame of what the reviewer kept flagging found about 59% of it was code present since the reviewer's first pass: it was finding a few more old bugs each round, not new ones.
@@ -87,4 +102,5 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 - [ ] An author and reviewer loop: a round cap, diff-only re-review, no repeated findings, rounds-to-pass tracked
 - [ ] Agents that read untrusted content have read-only tools and hand on only structured summaries
 - [ ] The parent checks each subagent's evidence before accepting it
+- [ ] A fan-out joins outputs back by one key per brief and fails on an unknown, duplicate or missing key; candidates the cheap evidence already disproves never get a subagent
 - [ ] Small models only on work where a mistake is cheap to spot; code and judgment calls on the main model

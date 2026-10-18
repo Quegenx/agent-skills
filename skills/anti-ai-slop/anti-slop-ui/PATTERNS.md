@@ -11,7 +11,7 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Glow everywhere | Glowing cards, buttons, icons, badges, borders and background together |
 | Floating page | A large soft shadow on every component |
 | Pills everywhere | Buttons, inputs, cards, badges and modals all fully rounded |
-| The AI palette | Purple and black, neon accents, pastel blocks, radial orbs as the default treatment |
+| The AI palette | Purple and black, neon accents, pastel blocks, radial orbs as the default treatment (a chaptered launch page's palette method, "one sharp color per release chapter": [webgl LAUNCH-SITES.md](../../frontend/webgl/LAUNCH-SITES.md#visual-system)) |
 | Accent everywhere | One accent on buttons, icons, links, lines, backgrounds and glows |
 | Too many colors | Five or more colors with no system |
 | Dark because "tech" | Dark by default with no brand or user reason |
@@ -54,6 +54,14 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Numbered sections | Numbered "01 / 02 / 03" section labels |
 | Default typeface | The model's usual font picked with no reason (a popular font is fine with a reason) |
 | Generic illustration | Stock vector people or 3D blobs unrelated to the product |
+
+### Effect libraries, both views
+
+Libraries.dev's free skill places its seven effect packages (beams, orbs, gooey, voice glow, bot avatars, liquid metal, image reveals) by rule [Libraries.dev]. Some of its placements are signs on this scan; others give the scan's "with no reason" a working limit. Both views stand, and this scan keeps its rows.
+
+- **Where they disagree:** Libraries.dev puts "**Liquid metal**, Badge type (`MetalBadge`)" on "A badge ("New", "Pro")", "**Thinking orbs**, usually beside a text label" on any wait of "2 s or more", "Also **Border beam** on the element doing the work" past 3 s, and "**Bot avatars**" on "Anything avatar related for a bot or agent". This scan counts capsule badges, glowing borders and badges, and orbs and robots as icons among its signs (Capsule badges, Glow everywhere, AI icons). Its wait rule also differs from the owner's: "Under 2 s | Nothing. No orb, no beam.", where agent-chat-ui shows "**A pulse dot** the instant the message is sent" and performance-and-caching shows "nothing at all for waits under about 300 ms" ([BROWSER.md](../../backend/performance-and-caching/BROWSER.md#loading-states)); the owner's skills decide there.
+- **Where it sharpens the scan:** "**Don't stack effects.** Never put two effects on one element or on neighbouring elements; beam, metal and gooey each draw the eye, so give each its own area of the screen." Its review suggests "at most one library per UI area (a sidebar, a thread, a composer, a card)", and "every metal element on a page shares one colour, so pick one preset for the page, and keep metal elements apart (a headline and a CTA in the same header is fine; two metal buttons side by side is not)". That is a countable form of Glow everywhere: one attention effect per area, each with its job. "No clear match ... Do not force an effect."
+- **Its fit signals are this scan's leads:** the hand-rolled versions it looks for, `Loader2` with `animate-spin` "near chat or agent code", `TypingIndicator` and "three bouncing dots CSS", "`conic-gradient` with `@keyframes` rotate, `animate-border`, `border-beam`, `shine-border`, `magic-border`", "`filter: url(#goo)`", and "`animate-pulse`, `<Skeleton`, `shimmer`, `aspect-square bg-muted` on image containers". Libraries.dev swaps each for a package; here each one is a lead to ask what it serves.
 
 ## Content and function
 

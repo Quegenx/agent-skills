@@ -10,7 +10,10 @@ import { isNonEmptyText } from "../../../backend/shared/text/non-empty-text";
 import { siteEnvironment } from "../shared/site/site-environment";
 import { buttonPressCss } from "../shared/styles/button-press";
 import { CookieConsentBanner } from "../widgets/cookie-consent/cookie-consent-banner";
-import { cookieConsentStorageKey } from "../widgets/cookie-consent/cookie-consent-storage";
+import {
+  cookieConsentStorageKey,
+  legacyCookieConsentStorageKey,
+} from "../widgets/cookie-consent/cookie-consent-storage";
 import { SiteFooter } from "../widgets/footer/site-footer";
 import { SiteHeader } from "../widgets/header/bar/site-header";
 import { localeTransitionBootstrapScript } from "../widgets/header/locale/site-header-locale-transition";
@@ -34,7 +37,7 @@ const globalSmoothScrollOptions = {
 const { googleTagId } = siteEnvironment;
 
 const googleTagBootstrapScript = isNonEmptyText(googleTagId)
-  ? `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}var granted=false;try{granted=localStorage.getItem(${JSON.stringify(cookieConsentStorageKey)})==="accepted"}catch(e){}gtag("consent","default",{ad_personalization:"denied",ad_storage:"denied",ad_user_data:"denied",analytics_storage:granted?"granted":"denied"});gtag("js",new Date);gtag("config","${googleTagId}")`
+  ? `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}var granted=false;try{granted=(localStorage.getItem(${JSON.stringify(cookieConsentStorageKey)})??localStorage.getItem(${JSON.stringify(legacyCookieConsentStorageKey)}))==="accepted"}catch(e){}gtag("consent","default",{ad_personalization:"denied",ad_storage:"denied",ad_user_data:"denied",analytics_storage:granted?"granted":"denied"});gtag("js",new Date);gtag("config","${googleTagId}")`
   : null;
 
 /**

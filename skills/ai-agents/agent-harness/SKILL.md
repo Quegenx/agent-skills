@@ -10,10 +10,10 @@ A model is a probability, not code: the same conversation can go another way on 
 | The job | Read |
 |---|---|
 | The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their routing, changing a prompt, writing for the model that reads it | [PROMPT.md](PROMPT.md) |
-| Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
+| Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, sanitizers that rewrite or drop an answer, a version-gated citation allow-list, already-on project facts, verbatim printing, the renderer as the last check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
 | Tools, picking tools by search, outside (MCP) tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |
 | The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, long runs, observability, the build order | [RUNTIME.md](RUNTIME.md) |
-| Multi-agent workflows: why one context fails, fan-out, adversarial verification, tournaments, loop until done, quarantine triage, author and reviewer loops with a round cap, which model each subagent uses | [WORKFLOWS.md](WORKFLOWS.md) |
+| Multi-agent workflows: why one context fails, fan-out and its contract (evidence before the spawn, the brief as the whole prompt, a join key with coverage enforced, abstaining as an answer), adversarial verification, tournaments, loop until done, quarantine triage, author and reviewer loops with a round cap, which model each subagent uses | [WORKFLOWS.md](WORKFLOWS.md) |
 | Scheduled and background agents: bookmarks per source, a failed read that isn't a quiet day, re-check before posting, post once, read-only preferences and a ledger, scoped credentials, a spending cap from real runs | [SCHEDULED-AGENTS.md](SCHEDULED-AGENTS.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Long-term memory across conversations: extraction, profile and search, staying current, forgetting | the `agent-memory` skill |

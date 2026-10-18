@@ -13,6 +13,8 @@ When agents write the code, the number of changes goes up fast, and manual, line
 | Risk tiers, who may approve what, approvals tied to a commit, the paths that always need a person, and the decisions humans keep | [APPROVAL.md](APPROVAL.md) |
 | Setting up and running the AI reviewer: what it reads, CLAUDE.md and REVIEW.md, review depth, verifying findings, the Important, Nit and Pre-existing tags, the P0 to P3 user-impact scale for a UI review, the output, review prompts, security review, rule-by-rule and fan-out reviews | [REVIEWER.md](REVIEWER.md) |
 | Reviewing one change: resolving the range and its base, pull request refs, excluded paths, blast radius to consumers, Introduced, Regression and Pre-existing by cause with `git blame`, removed UI signals, absent states, the read-only rule, the scope block and report | [CHANGE-SCOPE.md](CHANGE-SCOPE.md) |
+| Running a scanner or linter on a change: scopes with per-rule ownership, baseline scans and pre-edit check baselines, one pinned tool, warning exit codes, the narrowest rule control, triaging its findings by leverage, a verdict per finding, when a fix counts and when a scan may be called clean | [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md) |
+| Running a checker on a pull request's base and head and diffing its output: pinned SHAs and inputs, paired runs, canonical finding identity, coverage before diagnostics, exit codes 0, 1 and 2, import-traced scope with a full-run fallback, cached baselines verified on reuse, slowdown thresholds, Vercel Sandbox | [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md) |
 | Making the reviewer better: incidents as an eval, measuring noise, round caps and convergence, fixing repeated findings at the source | [TUNING-THE-REVIEWER.md](TUNING-THE-REVIEWER.md) |
 
 ## The rules

@@ -209,6 +209,8 @@ The goo (blob) effect, from RNDR Realm's "Gooey Dropdown": a button that melts i
 
   In JSX the demo writes the same values on one line, `values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10"`, with the host as `<svg style={{ position: "absolute", width: 0, height: 0 }}>`.
 - **The two knobs:** "`stdDeviation=\"10\"` controls how much blur, and the `20 -10` in the last row of the color matrix controls how aggressively the edges snap back. Higher values mean a sharper cutoff, lower values mean more goo."
+- **Blur about the gap** [Libraries.dev, liquid-gooey] (Jakubantalik/Libraries.dev, its free `libraries-dev` skill, MIT): "neighbours bridge once `blur` is roughly as large as the gap between them. Items 8px apart barely bridge at `blur={5}` and merge cleanly at `blur={12}`." Its defaults are blur 6 and contrast 18, and "Expecting pieces 10px apart to merge at `blur={6}`" is listed as a mistake: "Raise `blur` or close the gap." The same skill names a second hand-rolled matrix, `feColorMatrix` with `0 0 0 18 -7` under `filter: url(#goo)`, beside the `20 -10` above.
+- **The liquid is the surface** (same source): "The liquid below is the surface; item backgrounds should be transparent. An opaque round photo that covers its own liquid is fine." And "The filter region is the group's box plus padding. Size `<Liquid>` to contain the full travel of its items, like a menu reserving its open footprint." Pieces that travel outside the filtered parent's box are cut, as in [The filter element](#the-filter-element).
 - **Keep the content sharp:** "The `feBlend` at the end composites the original sharp graphic back on top so the content inside (text, icons) doesn't look blurry."
 - **Filter the parent of both shapes:** `<div style={{ filter: "url(#gooey)" }}>{/* button */}{/* dropdown */}</div>`. "Because the button and dropdown are both inside the same filtered container, the filter sees them as one shape and blends their edges together during the animation."
 - **The shapes must overlap or nearly touch.** The panel starts at the button's `top-0` and is pushed down with `translate-y` "so they overlap vertically", because "the two shapes need to be close enough to blend into each other."
@@ -311,6 +313,7 @@ renderer.setLenses([playButton, skipBack, skipForward, scrubBar]);
 ## Performance
 
 - **Blurring is computation heavy;** use it sparingly, especially on elements that scroll or animate.
+- **WebKit filters on the CPU** [Libraries.dev, liquid-gooey]: "WebKit rasterises SVG filters on the CPU. Blurred outer shadows are moved to CSS `drop-shadow()` on the svg (GPU). Keep groups small and few." Its voice glow goes further: the warp "is an SVG filter; on Safari/WebKit it is switched off automatically for hosts larger than about 60,000 px² (a phone screen)" [Libraries.dev, voice-glow]. These are the vendor's own engineering notes, not MDN's.
 - **For layer and `will-change` guidance,** see [OPTIMIZING-AND-SECURITY.md](OPTIMIZING-AND-SECURITY.md#rendering-performance).
 
 ## Prove it
@@ -320,5 +323,6 @@ renderer.setLenses([playButton, skipBack, skipForward, scrubBar]);
 - **Colors match the design:** if a matrix or transfer looks too dark or washed out next to a CSS filter, compare with `color-interpolation-filters="sRGB"`.
 - **Step through it:** remove primitives from the end one at a time and the intermediate results look as expected.
 - **Scroll and animation:** no blur sits on a large element that scrolls or animates.
+- **Goo blur:** pieces the design should merge sit no farther apart than about the blur value, and item backgrounds are transparent unless an opaque piece is meant to cover its own liquid.
 - **Goo:** with the filter off the two shapes stay separate; with it on their edges merge as they meet, and the text and icons inside stay sharp.
 - **Glass:** text under the lens can be selected and links under it clicked; in Safari the glass keeps moving while the map changes (a fresh filter ID per update) and doesn't break into blocks; over a live `<video>` in Safari the lens runs in WebGL.

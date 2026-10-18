@@ -37,6 +37,8 @@ A "button" that navigates is a styled `<a>`, and a "link" that performs an actio
 
 Where a native element is truly impossible, the full polyfill is `role="button"` plus `tabindex="0"` plus Enter and Space handlers, which is why the native element is always less code.
 
+[Vercel, web-design-guidelines] writes "Interactive elements need keyboard handlers (`onKeyDown`/`onKeyUp`)". Read it as non-native interactive elements: a `<button>` and an `<a href>` already activate from the keyboard (the table above), so an `onKeyDown` on them for Enter or Space is redundant; the handler belongs on a custom `role=` widget.
+
 ## Landmarks and headings
 
 [Jakub Krehel, better-accessibility]

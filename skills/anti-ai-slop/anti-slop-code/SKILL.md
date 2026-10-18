@@ -7,10 +7,12 @@ description: "Removes AI code slop (narrating comments, bloated names, needless 
 
 The cost of writing code collapsed; the cost of reading it didn't. Code that's slow to understand is slop even when it works. Load `anti-slop` for the shared rules (do what was asked, verify before claiming). The rule catalogue with examples is [RULES.md](RULES.md).
 
+Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md) agent (Apache-2.0), tagged [Anthropic, code-simplifier]; React Doctor's `deslop` skill, which is that agent's text with additions (indirection, inlining single-use functions, leftover scaffolding, consolidating duplicates with truffler), tagged [React Doctor, deslop] for the additions only; and React Doctor's `find-similar-functions`, which comes from the [truffler](https://github.com/rayhanadev/truffler) repo (MIT), tagged [React Doctor, find-similar-functions]. React Doctor's `deslop` is not Nimblesite's Deslop duplicate finder; RULES.md tells the two apart.
+
 ## Guardrails
 
 - **Behavior stays the same** unless you're fixing a clear bug, and then you say so. A cleanup that changes behavior is a new bug.
-- **Scope:** the diff against the main branch when reviewing a branch; the named files when given; otherwise ask, or start with the most recently changed files.
+- **Scope:** the diff against the main branch when reviewing a branch; the named files when given; otherwise ask, or start with the most recently changed files. The other view, not taken: code-simplifier and deslop end with "You operate autonomously and proactively, refining code immediately after it's written or modified without requiring explicit requests" [Anthropic, code-simplifier]. Here a cleanup runs when asked, on the scope above.
 - **Match the codebase,** not your taste: its naming, error handling, comment density and test style. Something is slop when it's inconsistent with the surrounding code or adds reading cost for nothing, not when it differs from what you'd write.
 - **Minimal, focused edits.** Remove the slop; don't rewrite working code around it. Comment-only cleanups touch comments only.
 - **Run the tests and the type checker** before and after. Report what you ran and the result.
@@ -21,9 +23,9 @@ In order of damage (details and examples in [RULES.md](RULES.md)):
 1. **Looks done but isn't:** placeholder logic behind a confident name, mocked or hard-coded data in a real path, `// TODO: implement`, swallowed errors, silent fallbacks that hide a broken invariant, calls to functions or APIs that don't exist.
 2. **Defense in the wrong places:** generic try/catch that only logs, null checks on values the types guarantee, while external calls have no timeout, retries no backoff, payments no idempotency key, shared state no lock or unique constraint.
 3. **Tests that can't fail:** everything mocked, "doesn't throw" assertions, tests that re-compute the implementation, snapshots in place of behavior.
-4. **Over-engineering:** interfaces with one implementation and no second planned, classes wrapping one function, wrappers called once that only delegate, new dependencies for what an existing one or the standard library does, config and options nobody uses.
-5. **Structure:** spaghetti growth (one-off conditionals in unrelated flows, flag parameters, special cases inside busy functions), logic in the wrong layer, duplicated helpers, files pushed past a healthy size, deep nesting that early returns would flatten.
-6. **Types and style:** `as any`, `@ts-ignore` and casts to silence the checker, debug output left in (`console.log`, `print`, `dd()`), `if (x) return true; else return false`, redundant annotations on obvious literals.
+4. **Over-engineering:** interfaces with one implementation and no second planned, classes wrapping one function, wrappers called once that only delegate, single-use functions that a name doesn't make clearer, leftover scaffolding and unused exports, new dependencies for what an existing one or the standard library does, config and options nobody uses.
+5. **Structure:** spaghetti growth (one-off conditionals in unrelated flows, flag parameters, special cases inside busy functions), logic in the wrong layer, duplicated helpers (search with 3-6 queries, reuse only what passes the four-part test, then re-search), files pushed past a healthy size, deep nesting that early returns would flatten.
+6. **Types and style:** `as any`, `@ts-ignore` and casts to silence the checker, debug output left in (`console.log`, `print`, `dd()`), `if (x) return true; else return false`, nested ternaries, redundant annotations on obvious literals.
 7. **Names:** placeholders (`data`, `result`, `info`, `temp`, `item2`), type-in-name (`userObject`, `resultArray`), run-on names, reflexive `*Manager` / `*Helper` / `*Util` / `*Service` suffixes.
 8. **Comments:** narration of the next line, step-by-step "Step 1/2/3", decorative banners and emoji, docblocks that repeat the signature, end-of-block markers, vague TODOs, and paragraph-long comments for a one-line fact.
 
@@ -53,6 +55,14 @@ Review instructions for a repo (a `REVIEW.md` written by its code owners) work w
 ## Output
 
 **Cleanup:** the diff, then one to three sentences: what was removed, that behavior is unchanged, and the test and type-check results.
+
+**After a duplicate search** that shaped the change, say what you found and whether you reused something or added new code [React Doctor, find-similar-functions]:
+```markdown
+I checked for existing symbols with `truffler` using queries like `normalize`, `path`, and `resolve`. The closest match was `normalizePath` in `src/files.ts`, so I reused that behavior instead of adding a separate helper.
+```
+```markdown
+I searched with `truffler` for `parse`, `config`, and `loadConfig` across `src/`; the matches were unrelated, so I added a new helper in the nearest module.
+```
 
 **Review:** start with a count of findings, and say plainly when there's nothing to fix. Then findings most damaging first, one per root cause, each with `file:line` (read, not guessed from a name), the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. Tag each **Important**, **Nit** or **Pre-existing**, so a bug the change didn't introduce doesn't look like the author's fault. Name the class of bug, so the author fixes every instance, not one line. End with a per-file verdict:
 

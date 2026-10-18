@@ -36,6 +36,7 @@ Most slow code is a nested loop that asks the same question again: "is the partn
 5. **Count every resource,** not only time: allocations per token, output built by repeated copying, recursion depth on a long chain, intermediate values that overflow. See [BUDGETS.md](BUDGETS.md).
 6. **The simple scan can be right.** A straightforward check at each position, with allocation removed, beats a clever linear matcher when the constraints allow it. Reach for the advanced algorithm only when the worst case demands it.
 7. **Don't mutate the caller's input** to make the algorithm easier; sort a copy (`[...nums].sort((a, b) => a - b)`, never the default string sort for numbers) unless in-place is the contract.
+   In JavaScript the copying array methods do this in one call: `toSorted()`, `toReversed()`, `toSpliced()` and `with(index, value)` return a new array and leave the original alone, each Baseline since July 2023 and widely available since January 2026 (MDN, https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted). In React, `users.sort(...)` inside `useMemo` mutates the prop array and `users.toSorted(...)` doesn't; `[...items].sort()` is the fallback for older runtimes [Vercel, react-best-practices].
 
 ## Prove it
 

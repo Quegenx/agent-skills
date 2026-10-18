@@ -26,6 +26,9 @@ Several subagents each attempt one real task against a product's docs, SDK or a 
 | SKILL.md | Its advertised job |
 | README | Install and run the smallest example |
 
+- **Docs with several setup paths get a task per path.** One getting-started run proves one path; a library documented for several frameworks, routers or deployments needs a task for each variant and each edge path. c15t's docs skill: "Evaluate usefulness with concrete tasks: set up Pages Router SSR, export a static Next.js site, install plain Vue without Nuxt, preserve SvelteKit hydration, change a banner's radius without going headless, and stop a vendor request before consent. A lint score does not establish that an agent can complete those tasks." [c15t, writing-docs]. Each task is still one abstract goal, not a checklist.
+- **A single page, before a full audit:** Vercel's writing guidelines run "a test prompt against the preview: 'given this plan's goal, can the model complete the task using only this page?'" [Vercel, writing-guidelines]. The same question fits a SKILL.md.
+
 ## Configuration
 
 - **Ask in one call** (Claude Code `AskUserQuestion`: up to 4 questions, up to 4 options each):
@@ -107,6 +110,7 @@ Several subagents each attempt one real task against a product's docs, SDK or a 
 ## The write-up
 
 - **Opinion before data,** in this order: scorecard and status grid; narrative review (always rendered, with a default line if nothing stood out); executive summary; fixes; what worked and what didn't; patterns hit by 2 or more agents; metrics; tool breakdown; timeline (Research, Setup, Execution, Validation, Interrupt); per-agent table and traces. The five status counts partition N exactly.
+- **Say what was verified and how:** "Record which examples were compiled, exercised in a browser, or only checked against source." "If the private host is unavailable, report that limit rather than claiming the site or embedded previews were verified." [c15t, writing-docs]
 - **Dimension scores stay internal;** don't render a per-dimension breakdown.
 - **Results table:** #, persona and language, model (only for a mixed run), status pill, total tool calls, time (`92s`, or `2m 14s` from 120 s).
 - **Trace card:** a compact monospace event log with bracketed coloured labels; the `[PROMPT]` row comes first and is the only collapsible one; full tool inputs (a fetch shows both its `url` and its `prompt`; truncate values, not structure); a light background; max height 640 px.

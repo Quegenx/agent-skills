@@ -26,6 +26,7 @@ import type { CookieConsentDecision } from "./cookie-consent-storage";
 import {
   cookieConsentStorageKey,
   getCookieConsent,
+  legacyCookieConsentStorageKey,
   setCookieConsent,
 } from "./cookie-consent-storage";
 
@@ -33,7 +34,10 @@ const cookieConsentChangeEvent = "app-cookie-consent-change";
 
 const subscribeToCookieConsent = (onStoreChange: () => void) => {
   const handleStorage = (event: StorageEvent) => {
-    if (event.key === cookieConsentStorageKey) {
+    if (
+      event.key === cookieConsentStorageKey ||
+      event.key === legacyCookieConsentStorageKey
+    ) {
       onStoreChange();
     }
   };
@@ -47,11 +51,34 @@ const subscribeToCookieConsent = (onStoreChange: () => void) => {
   };
 };
 
-const getCookieConsentSnapshot = () => getCookieConsent(window.localStorage);
+// Reading window.localStorage itself throws when storage is blocked.
+const readLocalStorage = () => {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+};
+
+// Holds the choice for this page view when storage is blocked, so the banner
+// still closes after Accept or Deny.
+let pageViewCookieConsent: CookieConsentDecision | null = null;
+
+const getCookieConsentSnapshot = () => {
+  const storage = readLocalStorage();
+  const stored = storage === null ? null : getCookieConsent(storage);
+
+  return stored ?? pageViewCookieConsent;
+};
 const getCookieConsentServerSnapshot = () => null;
 
 const chooseCookieConsent = (decision: CookieConsentDecision) => {
-  setCookieConsent(window.localStorage, decision);
+  pageViewCookieConsent = decision;
+  const storage = readLocalStorage();
+
+  if (storage !== null) {
+    setCookieConsent(storage, decision);
+  }
   updateAnalyticsConsent(decision === "accepted");
   window.dispatchEvent(new Event(cookieConsentChangeEvent));
 };

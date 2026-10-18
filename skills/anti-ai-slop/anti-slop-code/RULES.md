@@ -49,11 +49,15 @@ Add the one the code path needs, not all of them everywhere.
 
 **Single-method class.** `class PriceCalculator { calculate(items) { ... } }` instantiated to call one method. Make it a function.
 
-**Wrapper called once** that only delegates: `function getUser(id) { return userService.getUser(id) }`. Call the real thing.
+**Wrapper called once** that only delegates: `function getUser(id) { return userService.getUser(id) }`. Call the real thing. The same goes for single-branch helpers and "layers that exist only to forward arguments": collapse them. [React Doctor, deslop]
+
+**Single-use function** with its one caller next door: inline it at that call site, and "keep a named function only when the name itself is what makes the call site readable" [React Doctor, deslop]. That exception is the reason `refactoring` gives for extracting a function or naming a complex condition ([../../architecture/refactoring/SKILL.md](../../architecture/refactoring/SKILL.md#techniques-smallest-first)), so the two rules agree.
 
 **Dependency creep.** A new package for something the standard library or an installed dependency already does (a date library when `Intl` suffices, a second HTTP client). Use what's there.
 
 **Options nobody uses.** Config flags, parameters and extension points for hypothetical futures. Delete them; add them when needed.
+
+**Leftovers from earlier attempts.** Remove "all code not needed for the final solution that solves the requested behavior - dead branches, unused exports, speculative options, and scaffolding left over from earlier iterations" [React Doctor, deslop], within the code this change created or touched.
 
 ## Structure
 
@@ -64,6 +68,17 @@ Add the one the code path needs, not all of them everywhere.
 **Wrong layer.** Feature-specific logic in a shared utility, UI formatting in the data layer, business rules in a controller. Move it to the module that owns the concept.
 
 **Duplicate helpers.** A new `formatCurrency` beside the existing one. Search by name and behavior first; reuse the canonical one.
+
+The search, before writing and for every helper, type or constant the change touched or added [React Doctor, find-similar-functions]:
+1. State the behavior you are about to implement in a few words.
+2. Derive 3-6 queries from it: the proposed name; domain nouns (`symbol`, `path`, `file`, `route`, `token`, `config`); verbs (`parse`, `normalize`, `discover`, `scan`, `format`, `rank`, `score`, `resolve`, `validate`); "common abbreviations and synonyms, such as `btn` for `button` or `cfg` for `config`".
+3. Search the narrowest useful root first, then broaden. No match on the precise name: search the noun and the verb separately. The utility may live outside `src/`: try library, package, app or test roots. Too many matches: "restrict `--kind` and reduce the root rather than skimming unrelated output".
+4. Read every close match, with its nearby tests and call sites: "a near-name is not proof of duplication" [React Doctor, deslop].
+5. **The reuse test:** an existing symbol is reusable when it "already handles the same input shape, side effects, error behavior, and return shape, or when a small extension would preserve its current contract". Prefer reusing, extending or moving it; create new code only after the search shows nothing fits.
+6. Merging copies is the full move: one focused definition, "repoint every call site at it, and delete the duplicates and any now-dead imports" [React Doctor, deslop].
+7. "Re-run the search afterward to confirm a single definition remains." [React Doctor, deslop]
+
+The other view, not taken: React Doctor's deslop extracts the merged helper as "one function per file under `utils/`, per the repo convention". That is its repo's convention; here the file is named after the concept it implements, and a reflexive `*Util` is itself slop (see Names).
 
 A tool for the search step: [Deslop](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) (https://github.com/Nimblesite/Deslop) parses code into a tree-sitter AST for Dart, C#, Rust, Python, JavaScript, TypeScript/TSX, PHP, F# and Go, "No source-level regex touches this pipeline", so renamed copies match:
 
@@ -84,7 +99,19 @@ report_hide = ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart"]
 max_duplication_percent = 5.0
 ```
 
-For an agent, its MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in the `code-review` skill's LAYERS.md.
+For an agent, Deslop's MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in the `code-review` skill's LAYERS.md.
+
+Two tools share the name: Nimblesite's **Deslop** above is a tree-sitter duplicate finder (`deslop .`, `deslop-mcp`); React Doctor's **deslop** is a simplification prompt (the source of the rules tagged [React Doctor, deslop] here), and it runs truffler for the search.
+
+[truffler](https://github.com/rayhanadev/truffler) (`@rayhanadev/truffler`, MIT) is a fuzzy symbol-name search for JavaScript and TypeScript, built on oxc-parser. It ranks names and shows signatures; Deslop matches AST shape, so it also catches renamed copies. truffler needs Bun: its bin is TypeScript source with `#!/usr/bin/env bun`. Recipes [React Doctor, find-similar-functions]:
+
+```bash
+truffler "normalize path" src --kind function,method,constant,type --limit 20
+truffler "score" src --kind function,method --format json --limit 15
+truffler "<query>" <root> --kind function,method,constant,type,interface --limit 20
+```
+
+With no installed binary and no new dependencies allowed, use `bunx` only "if network/package execution is acceptable for the environment": `bunx @rayhanadev/truffler "parse config" src --kind function,method,type --limit 20`. Flags, from the truffler README: `--limit`/`-l` (default 50), `--format`/`-f` `text|json` (default `text`), `--kind`/`-k` a comma list of `class, constant, enum, enum-member, export, function, import, interface, method, property, type, variable` (default `class, enum, function, interface, method, property, type`). Use JSON "when you need structured fields for ranking, locations, signatures, or automation". It keeps a per-project index under the home directory (`.truffler/projects/.../symbols.json`) and reparses only changed files. It is young: first release 2026-05-26, one maintainer. "If `truffler` cannot be run, say so and fall back to the repository's available search tools."
 
 **Deep nesting.** Four levels of `if`. Guard clauses and early returns.
 
@@ -97,6 +124,7 @@ For an agent, its MCP server's `find-similar` belongs in the write loop: call it
 - `as any`, `@ts-ignore`, `@ts-expect-error`, `!` non-null assertions to silence the checker: fix the type or narrow properly.
 - Debug output in production paths: `console.log`, `print`, `var_dump`, `dd()`, leftover `debugger`.
 - `if (x) return true; else return false;` -> `return x`. `const count: number = 0` -> `const count = 0`.
+- Nested ternaries: "Avoid nested ternary operators - prefer switch statements or if/else chains for multiple conditions" [Anthropic, code-simplifier]. An `if / else if` chain on a type field goes further, to an exhaustive `switch` ([../../architecture/refactoring/SKILL.md](../../architecture/refactoring/SKILL.md#techniques-smallest-first)).
 - Magic numbers in logic with no name: name the constant where it's defined, with its unit.
 
 ## Names
@@ -137,4 +165,5 @@ Over-cleaning is its own damage. Leave these alone:
 - **"Doesn't throw" tests** that are a named regression test for a specific past crash, or a one-off smoke test on a public contract.
 - **Mocks** at real boundaries: network, payment providers, rate-limited APIs, the clock, hard-to-trigger failures.
 - **Snapshots** of large generated artifacts, public API shapes, or real visual regression, kept small and reviewed like code.
+- **Explicit code over compact code.** Don't clean toward fewer lines: "Choose clarity over brevity". Avoid cleanups that "Create overly clever solutions", "Combine too many concerns into single functions or components", "Remove helpful abstractions that improve code organization", or "Prioritize 'fewer lines' over readability (e.g., nested ternaries, dense one-liners)". [Anthropic, code-simplifier]
 - **Formatting and style** that matches the codebase. Never add fake `HACK` comments or deliberate inconsistency to make code "look human".

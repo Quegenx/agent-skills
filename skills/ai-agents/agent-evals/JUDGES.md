@@ -12,6 +12,28 @@ For an agent that acts, check the **state this run produced** (the file, the row
 
 **A code check catches only failures already seen and written down.** Vercel's design.md test: three scenarios generated with and without the file, first attempts only, 39 known failures over the pages with it and 91 without; the checks can't say whether a page is well designed overall, six pages is far too small a sample for quality or reliability claims, and every page still had at least one failure serious enough to block shipping. What it does show is that a failure once named and encoded tends to stay gone.
 
+### Checking the claims in an agent's findings
+
+When the agent's output is a set of findings or recommendations, code extracts the claims it makes and checks each against the files: "The LLM is not asked to judge whether its own output is correct." From Vercel's `vercel-optimize` audit, whose verifier is pure functions over the file system and grep, with no network and no model [Vercel, vercel-optimize]:
+
+- **Claim types:** `file_exists`, `pattern_count`, `pattern_exists`, `pattern_absent`, `code_snippet` (the snippet appears in the cited file, whitespace-normalized), `repo_count`, `citation_in_library`, `citation_applies_to_version`, plus domain safety claims (a cache rule that varies by the right header, a parallelized fetch that still runs after its auth check).
+- **Guards:** a snippet found in a different file than the one cited is `unsupported`, not verified; a bare number given as a pattern is "a line number, not a pattern" (`filename:42`); a claim that something is absent needs a file and a pattern, since absence claims require evidence.
+- **Four dispositions:** `verified`, `failed`, `unsupported`, `unverifiable`, and the verifier never throws. `passRate = verified / (verified + failed)`, so a claim nothing could check doesn't count either way.
+- **"High precision, not recall."** Claims are extracted "without parsing LLM prose": the check covers what it can read exactly and leaves the rest to judges.
+
+What a run does with the pass rate (re-run, accept, hold back) is in [GATES.md](GATES.md#gating-an-agents-findings).
+
+### A rubric scored in code, with a floor
+
+The same audit grades each recommendation on four axes from 0 to 1, computed by regular expressions over its fields, not by a judge [Vercel, vercel-optimize]:
+
+- **Weights:** grounding 0.35, evidence 0.30, specificity 0.20, actionability 0.15. "Grounding + evidence are lie-detectors, weighted higher than specificity/actionability, which LLMs can game with fluff."
+- **Grades:** 0.85 or more Excellent, 0.70 Good, 0.55 Fair, below that Poor.
+- **The floor drops Poor:** "0.55 = Poor/Fair boundary. Recommending Poor-graded items erodes trust faster than the marginal recall benefit." The floor was raised from 0.4.
+- **Hedges cost:** each of `consider`, `might`, `may`, `could`, `perhaps`, `maybe`, `likely`, `probably` takes 0.1 off actionability, up to 0.3; a `file:line` reference "is the gold standard" of evidence.
+- **Items that can't cite a line get their own pair:** account-level recommendations "structurally cannot produce file:line", so they are scored on quoted units and citations instead.
+- **A cap on pruning:** the pruner may cut at most 30% of the input, which "Stops the pruner from wiping the report when LLM merit-grades are noisy".
+
 ## One shape for every grader
 
 Code checks and judges share one function shape: they take the case and the run's result (the replies, the tools called, the retrieved context, the trace id) and return `passed`, a `reason` someone can check against the trace, and optionally a score and a confidence. A grader that can't decide (the output is empty, the trace is missing, the judge's answer didn't parse) **throws**, so the slot becomes a grader error, never a quiet fail.

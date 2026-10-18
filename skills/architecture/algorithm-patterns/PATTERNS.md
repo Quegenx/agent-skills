@@ -199,5 +199,24 @@ Some problems need neither a structure nor a trick, only the smallest state that
 - Majority element (more than n/2 guaranteed): Boyer-Moore voting. Without the guarantee, verify the candidate with a second pass.
 - Word count: count transitions from space to non-space.
 - Trimmed sum (drop one min and one max): total, min and max in one pass, no sort.
+- Min or max of objects (the latest, the oldest and newest) [Vercel, react-best-practices]: one O(n) pass, not a sort for `sorted[0]`. "Single pass through the array, no copying, no sorting":
+
+  ```typescript
+  function getOldestAndNewest(projects: Project[]) {
+    if (projects.length === 0) return { oldest: null, newest: null }
+
+    let oldest = projects[0]
+    let newest = projects[0]
+
+    for (let i = 1; i < projects.length; i++) {
+      if (projects[i].updatedAt < oldest.updatedAt) oldest = projects[i]
+      if (projects[i].updatedAt > newest.updatedAt) newest = projects[i]
+    }
+
+    return { oldest, newest }
+  }
+  ```
+
+  `Math.max(...arr)` is fine for a few numbers only: "both spread (`...`) and `apply` will either fail or return the wrong result if the array has too many elements, because they try to pass the array elements as function parameters. ... The `reduce` solution does not have this problem" (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max). The rule's per-browser limits (about 124,000 in Chrome 143, 638,000 in Safari 18) come from a jsfiddle, not a spec.
 - GCD of many values: fold Euclid's `gcd(a, b) = gcd(b, a % b)` across the array and stop as soon as the running value is 1. Trying divisors downward from the minimum is billions of steps when the answer is 1.
 - Zigzag layout over r rows: simulate the row index bouncing between 0 and r - 1, appending to one buffer per row, then join the rows. With one row, or at least as many rows as characters, return the input: the direction would never flip.

@@ -10,7 +10,7 @@ Every rule here comes down to one decision: trust nothing that crossed the bound
 | The input or output | Read |
 |---|---|
 | Request bodies, HTML output, links, redirects, outbound URLs, file names and paths, logs, email headers, SQL, amounts, pagination, errors | [CATALOG.md](CATALOG.md) |
-| JWT validation, refresh-token rotation, API keys, permission checks, password hashing and upgrading it, TOTP two-factor | [AUTH.md](AUTH.md) |
+| JWT validation, refresh-token rotation, API keys, permission checks, password hashing and upgrading it, TOTP two-factor, Next.js Server Action auth | [AUTH.md](AUTH.md) |
 | Tenant isolation: scoped queries plus Postgres row-level security, pooled connections, Supabase policies | [TENANCY.md](TENANCY.md) |
 | Encrypting stored secrets (AES-GCM, key versions, KMS), keeping internal services off the internet | [SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md) |
 | Parsers that disagree (IP spellings, duplicate JSON keys, request smuggling, Unicode lookalikes), ReDoS and expansion bombs, CSV formulas, shell arguments, card numbers in logs, CORS, reset tokens, delegation chains, webhook signatures | [PARSERS.md](PARSERS.md) |

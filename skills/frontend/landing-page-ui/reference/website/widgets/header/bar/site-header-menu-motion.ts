@@ -114,12 +114,19 @@ export const useSiteHeaderMenu = (reducedMotion: boolean | null) => {
     ];
   });
 
+  // Every tween lives in one gsap.context, so cleanup reverts the inline
+  // height and overflow GSAP set on the nav instead of leaving them behind.
+  const contextRef = useRef<gsap.Context | null>(null);
+
   useLayoutEffect(() => {
-    const timeline = createTimeline();
-    timelineRef.current = timeline;
+    const context = gsap.context(() => {
+      timelineRef.current = createTimeline();
+    });
+    contextRef.current = context;
 
     return () => {
-      timeline?.kill();
+      context.revert();
+      contextRef.current = null;
       timelineRef.current = null;
     };
   }, []);
@@ -132,7 +139,8 @@ export const useSiteHeaderMenu = (reducedMotion: boolean | null) => {
       gsap.set(navRef.current, { height: calculateHeight() });
     }
 
-    const nextTimeline = createTimeline();
+    const nextTimeline =
+      contextRef.current?.add(() => createTimeline()) ?? createTimeline();
 
     if (nextTimeline && isExpanded) {
       nextTimeline.progress(1);
@@ -200,7 +208,7 @@ export const useSiteHeaderMenu = (reducedMotion: boolean | null) => {
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeMenu();
+        closeMenuFromDocument();
       }
     };
 
@@ -209,7 +217,7 @@ export const useSiteHeaderMenu = (reducedMotion: boolean | null) => {
     return () => {
       document.removeEventListener("keydown", closeOnEscape);
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (!isExpanded) {

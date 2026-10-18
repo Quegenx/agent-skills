@@ -17,6 +17,8 @@ The model knows what a card entrance is. It doesn't know this card should take 2
 | Hold to confirm, clip-path and blur reveals, the generation reveal | [REVEALS.md](REVEALS.md) |
 | One hover highlight per list, labels whose weight changes without reflow, merged selection blocks | [HIGHLIGHTS-AND-SELECTION.md](HIGHLIGHTS-AND-SELECTION.md) |
 | No library: top-layer enter and exit with `@starting-style`, `<details>` to `height: auto`, waiting for CSS transitions, a CSS FLIP (AIM), view transitions and their limits, scroll-driven ranges, Web Animations offsets, focus by demotion | [NATIVE-CSS.md](NATIVE-CSS.md) |
+| React's `<ViewTransition>` (stable in React 19.3): triggers, `default="none"`, `addTransitionType`, Suspense reveals, shared elements, isolating chrome and popovers, Next.js `transitionTypes`, a symptom table, the audit and navigation map | [REACT-VIEW-TRANSITIONS.md](REACT-VIEW-TRANSITIONS.md) |
+| The CSS those view transitions name: fades, directional slides and their right-to-left flip, morphs, isolation, the tab indicator, and their durations and reduced motion against this skill's | [VIEW-TRANSITION-RECIPES.md](VIEW-TRANSITION-RECIPES.md) |
 | A sheet swiped away on native scroll: snap points, swipe-synced animation, stacking, the software keyboard | [SHEETS.md](SHEETS.md) |
 | Per-frame math in your own loop: lerp and exponential approach, a spring by hand, physics, facing the direction of travel, sine waves, sawtooth loops, controlled randomness, piecewise segments | [MATH.md](MATH.md) |
 | Smooth on a slow phone: which properties, GPU vs main thread, React re-renders, reduced motion, measuring | [PERFORMANCE.md](PERFORMANCE.md) |

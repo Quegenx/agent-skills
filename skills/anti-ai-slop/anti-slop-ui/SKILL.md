@@ -9,9 +9,10 @@ A filter, not a style. It doesn't prescribe colors, fonts or layouts and doesn't
 
 | The job | Read |
 |---|---|
-| Scan a page for the patterns that read as generated | [PATTERNS.md](PATTERNS.md) |
-| Component details that break as a product grows: avatar groups, stacking, scrims, pressed states, optical alignment, nested corners, surfaces, spacing that groups, showing the product in use, report pages, design lint rules | [DETAILS.md](DETAILS.md) |
-| Units, fluid scales, container queries, right-to-left layout and icons, the type review, touch and browser chrome on phones | [RESPONSIVE.md](RESPONSIVE.md) |
+| Scan a page for the patterns that read as generated, and where effect libraries such as Libraries.dev place what the scan flags | [PATTERNS.md](PATTERNS.md) |
+| Component details that break as a product grows: avatar groups, stacking contexts and containing blocks, scrims, pressed states, optical alignment, nested corners, surfaces, spacing that groups, showing the product in use, report pages, design lint rules | [DETAILS.md](DETAILS.md) |
+| Units, fluid scales, container queries (Tailwind's `@md` against `md`), where other responsive skills' units differ, right-to-left layout and icons, the type review, touch and browser chrome on phones | [RESPONSIVE.md](RESPONSIVE.md) |
+| Choose a phone layout where no single answer exists (sidebar, wide table, dashboard, hero, stacked sticky bars, deep navigation, long forms, bento grid), write behaviour specs, and audit then wait, on projects other than the owner's own apps | [RESPONSIVE-FORKS.md](RESPONSIVE-FORKS.md) |
 | Product-level design principles: human needs, wayfinding, mapping, feedback, Apple's eight principles | [PRINCIPLES.md](PRINCIPLES.md) |
 | Review a whole interface across accessibility, layout, copy, type, color and motion | [REVIEW.md](REVIEW.md) |
 | Open every state a screen can reach on one page while doing visual work | [STATE-PAGE.md](STATE-PAGE.md) |

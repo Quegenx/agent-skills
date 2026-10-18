@@ -1,8 +1,8 @@
 # Fonts and text details
 
-CSS for what a font file can do and for the small text details around it: synthesis, axes and OpenType features through their properties, optical sizes, small caps and super and subscripts, tabular against proportional figures, font smoothing, hanging punctuation, underlines, selection, the caret, the iOS input zoom and decorative text. **This file is not from nerdy.dev**, unlike the rest of this skill. Its sources are two third-party agent skills, tagged on each section: [Jakub Krehel, better-typography] (jakubkrehel/skills, `better-typography`) and [Craft] (gustavo-fior/craft, the articles at [craft.gustavofior.com](https://craft.gustavofior.com)). Support status is from MDN and browser-compat-data, checked 2026-10-18; where a source's claim is wrong or stale, the official form is given with its URL and the source's words are named. Units, `text-wrap`, `text-box` and the `GRAD` axis from nerdy.dev are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md); gradient text and text stroke are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); type scale, measure and tracking as review rules belong to [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md).
+CSS for what a font file can do and for the small text details around it: synthesis, axes and OpenType features through their properties, optical sizes, small caps and super and subscripts, tabular against proportional figures, font smoothing, hanging punctuation, underlines, selection, the caret, the iOS input zoom, decorative text, fallback-font metrics, hyphenation limits, and list markers and counters. **This file is not from nerdy.dev**, unlike the rest of this skill. Its sources are third-party agent skills, tagged on each section: [Jakub Krehel, better-typography] (jakubkrehel/skills, `better-typography`), [Craft] (gustavo-fior/craft, the articles at [craft.gustavofior.com](https://craft.gustavofior.com)) and [css-modern-features] (rushenn/css-modern-features, MIT, `references/typography.md` and `references/components.md`). Support status is from MDN and browser-compat-data, checked 2026-10-18; where a source's claim is wrong or stale, the official form is given with its URL and the source's words are named. Units, `text-wrap`, `text-box` and the `GRAD` axis from nerdy.dev are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md); gradient text and text stroke are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); type scale, measure and tracking as review rules belong to [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md).
 
-**Contents:** [Properties over raw tags](#properties-over-raw-tags) · [Synthesis](#synthesis) · [Axes, static and variable](#axes-static-and-variable) · [OpenType features](#opentype-features) · [Optical sizes](#optical-sizes) · [Small caps, superscripts and subscripts](#small-caps-superscripts-and-subscripts) · [Tabular and proportional figures](#tabular-and-proportional-figures) · [Font smoothing](#font-smoothing) · [Hanging punctuation](#hanging-punctuation) · [Underlines](#underlines) · [Selection](#selection) · [Placeholder and caret](#placeholder-and-caret) · [The iOS input zoom](#the-ios-input-zoom) · [Decorative text](#decorative-text) · [Prove it](#prove-it)
+**Contents:** [Properties over raw tags](#properties-over-raw-tags) · [Synthesis](#synthesis) · [Axes, static and variable](#axes-static-and-variable) · [OpenType features](#opentype-features) · [Optical sizes](#optical-sizes) · [Small caps, superscripts and subscripts](#small-caps-superscripts-and-subscripts) · [Tabular and proportional figures](#tabular-and-proportional-figures) · [Font smoothing](#font-smoothing) · [Hanging punctuation](#hanging-punctuation) · [Underlines](#underlines) · [Selection](#selection) · [Placeholder and caret](#placeholder-and-caret) · [The iOS input zoom](#the-ios-input-zoom) · [Decorative text](#decorative-text) · [Fallback font metrics](#fallback-font-metrics) · [Hyphenation limits](#hyphenation-limits) · [List markers and counters](#list-markers-and-counters) · [Prove it](#prove-it)
 
 ## Properties over raw tags
 
@@ -249,6 +249,95 @@ a:hover {
 
 - "If `-webkit-text-stroke` draws lines inside the letters, the font has overlapping contours. Variable fonts often keep them unmerged, so use the static cut for stroked text."
 
+## Fallback font metrics
+
+[css-modern-features, typography.md] `font-size-adjust` "Normalizes x-height across font fallbacks so text doesn't jump size while the web font loads." Verbatim:
+
+```css
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size-adjust: from-font; /* auto-reads the primary font's metrics */
+}
+
+/* Or manual value */
+body {
+  font-size-adjust: 0.52; /* x-height ratio */
+}
+```
+
+- Status: `font-size-adjust` is Baseline newly available since 2024-07-25 (web-features; Chrome 127, Firefox 118, Safari 17); the `from-font` value ships in Chrome 127, Firefox 118 and Safari 17 (browser-compat-data), the floors the source gives.
+- The source's checklist adds: "Use **`@font-face` `size-adjust`** to normalize font fallbacks" (SKILL.md; it gives no code). The `size-adjust` descriptor of `@font-face` ships in Chrome 92, Firefox 92 and Safari 17 (browser-compat-data `css.at-rules.font-face.size-adjust`).
+
+## Hyphenation limits
+
+[css-modern-features, typography.md] "Fine-grained control over hyphenation, prevent breaking very short words." Verbatim:
+
+```css
+p {
+  hyphens: auto;
+  hyphenate-limit-chars: 8 4 3; /* min-word min-before min-after */
+}
+```
+
+Status: Limited availability, Chrome 109 and Firefox 137, Safari only in preview (browser-compat-data `css.properties.hyphenate-limit-chars`). The source said "Chrome 109, Safari 17 (Firefox partial)".
+
+## List markers and counters
+
+[css-modern-features, components.md] "Style list bullets and numbers without replacing them with `::before` hacks." Verbatim:
+
+```css
+/* Style all markers */
+li::marker {
+  color: var(--color-brand);
+  font-size: 0.75em;
+}
+
+/* Ordered list, style the number */
+ol li::marker {
+  color: oklch(0.6 0.2 260);
+  font-weight: 700;
+  content: counters(list-item, ".") ". ";
+}
+
+/* Custom content */
+ul.checklist li::marker {
+  content: "✓ ";
+  color: oklch(0.6 0.2 145);
+}
+```
+
+- Status: `::marker` is not Baseline. browser-compat-data has Chrome 86 and Firefox 68, and Safari only partial (since 11.1); web-features lists no Safari. The source said "Chrome 86, Safari 14.1, Firefox 68" and rated it safe for most targets, so check each marker style in Safari.
+- **Counters** for "CSS-only numbered steps, progress indicators, section headings, no JS or manual numbering". Counters are Baseline widely available (since 2018-01-29, web-features `counters`). Verbatim:
+
+```css
+/* Step list */
+.steps { counter-reset: step; }
+
+.steps li {
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: "Step " counter(step);
+  display: block;
+  font-weight: 700;
+  color: var(--color-brand);
+}
+
+/* Nested counters: "1.1", "1.2", "2.1" */
+ol {
+  counter-reset: section;
+  list-style: none;
+}
+
+ol li { counter-increment: section; }
+ol li::before {
+  content: counters(section, ".") " ";
+}
+```
+
+  Two comments lost their dashes ("Ordered list, style the number", "Nested counters: ...").
+
 ## Prove it
 
 - **Raw tags:** a search for `font-variation-settings: "wght"`, `"opsz"` and `font-feature-settings: "tnum"` finds none; each is the property instead. With the variable font blocked, the fallback still renders the intended weight.
@@ -259,4 +348,7 @@ a:hover {
 - **Selection:** text stays selectable outside drag surfaces; every `user-select: none` has its `-webkit-` twin; a brand `::selection` color is not relied on for iPhone users.
 - **iOS input:** on an iPhone, focusing every input causes no zoom, and the scaled input fills its wrapper with the focus outline on the wrapper.
 - **Stroked text:** no lines show inside the letters.
+- **Fallback fonts:** with the web font blocked, the fallback's x-height matches closely enough that the text doesn't jump in size when the font arrives.
+- **Hyphenation:** in Chrome or Firefox, no word shorter than eight letters breaks, and every break leaves at least four letters before and three after; Safari hyphenates without the limits.
+- **Markers:** list markers keep their color, size and custom content in Chrome and Firefox, and still read correctly in Safari; nested counters print "1.1", "1.2", "2.1".
 - **No dashes:** a search of FONTS-AND-TEXT-DETAILS.md for em and en dash characters finds none.

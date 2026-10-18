@@ -110,3 +110,4 @@ Every mode takes `--format`, reads `audio/beats.json` when present, writes `out/
 - Periodic decoration in a loop (drift, rotation) must divide the loop length, or the seam jumps. The smoke test catches it.
 - Declare every variable before the first `seek()` call; a temporal-dead-zone error only appears in render mode.
 - WebGL (Three.js) is fine when the scene is rebuilt from `t` each frame and any shader time uniform is `t`. Shaders on their own clock paint a different picture each run.
+- WebGL on a live web page is the opposite case (refuse software rendering with `failIfMajorPerformanceCaveat`, a DPR cap chosen by shader cost, context loss, a rAF loop): [../../frontend/webgl/SKILL.md](../../frontend/webgl/SKILL.md). A film keeps SwiftShader, the fixed `maxRatio` and `seek(t)`.

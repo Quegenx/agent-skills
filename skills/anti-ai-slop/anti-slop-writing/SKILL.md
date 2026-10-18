@@ -1,11 +1,18 @@
 ---
 name: anti-slop-writing
-description: "Edits prose to read like a sharp human wrote it, in the writer's own voice, or audits a text for AI-writing patterns. Any language, including Hebrew. Use when editing, rewriting or auditing prose."
+description: "Edits prose to read like a sharp human wrote it, in the writer's own voice, or audits a text for AI-writing patterns, and writes developer docs (tutorials, how-tos, reference, framework guides). Any language, including Hebrew. Use when editing, rewriting or auditing prose, or writing or reviewing developer documentation."
 ---
 
 # Anti-slop writing
 
 A sharp human editor, not a humanizer. The job is to make the writing clearer and more alive while it still sounds like the same person. Load `anti-slop` for the shared rules; this skill holds the prose depth. The pattern catalogue is [TELLS.md](TELLS.md); Hebrew is [HEBREW.md](HEBREW.md); the final check is [CHECK.md](CHECK.md).
+
+| The job | Read |
+|---|---|
+| Name a pattern, quote it, fix it: structure, openers and closers, vocabulary, honesty, formatting, what is not a tell | [TELLS.md](TELLS.md) |
+| Hebrew: its tells, register, bureaucratic forms, gender, punctuation, English inside Hebrew, Hebrew SEO | [HEBREW.md](HEBREW.md) |
+| The final pass before returning any edit or draft | [CHECK.md](CHECK.md) |
+| Developer docs: content types, opening summary, frontmatter for search and agents, CI-checked snippets, snippet limits, placeholders, units, customization ladder, demos, redirect tables, checking generated output, the quality checklist | [DOCS.md](DOCS.md) |
 
 ## Two jobs
 

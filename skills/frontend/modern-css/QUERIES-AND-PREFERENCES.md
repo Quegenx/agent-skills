@@ -1,8 +1,8 @@
 # Queries and preferences
 
-How a component asks about its surroundings and its user: container size queries (with the `container` shorthand, `calc()` in the condition and thresholds in `ch`), name-only container queries, style queries, media query range syntax, `@custom-media` (including feature flags), and the preference and device queries: reduced motion, reduced transparency, reduced data, color scheme and contrast, forced colors, hover and pointer, orientation and color gamut. The source is Adam Argyle's nerdy.dev; each bullet carries its post and, where support matters, the post date. Current support comes from MDN and webstatus.dev, checked 2026-10-17. Scroll-state container queries (`stuck`, `snapped`, `scrollable`, `scrolled`) are in [SCROLL.md](SCROLL.md); the naming rules for containers and other custom names are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#emoji-in-custom-names).
+How a component asks about its surroundings and its user: container size queries (with the `container` shorthand, `calc()` in the condition and thresholds in `ch`), name-only container queries, style queries, media query range syntax, `@custom-media` (including feature flags), and the preference and device queries: reduced motion, reduced transparency, reduced data, color scheme and contrast, forced colors, hover and pointer, orientation, color gamut, scripting and display mode. The source is Adam Argyle's nerdy.dev; each bullet carries its post and, where support matters, the post date. Container queries in Tailwind come from [flornkm, prefer-container-queries] (flornkm/skills, MIT) checked against Tailwind's docs, and `scripting` and `display-mode` from [css-modern-features] (rushenn/css-modern-features, MIT, `references/components.md`). Current support comes from MDN and webstatus.dev, checked 2026-10-17. Scroll-state container queries (`stuck`, `snapped`, `scrollable`, `scrolled`) are in [SCROLL.md](SCROLL.md); the naming rules for containers and other custom names are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#emoji-in-custom-names).
 
-**Contents:** [What a component can know](#what-a-component-can-know) · [Container size queries](#container-size-queries) · [Name-only container queries](#name-only-container-queries) · [Style queries](#style-queries) · [Media query range syntax](#media-query-range-syntax) · [Custom media](#custom-media) · [Reduced motion](#reduced-motion) · [Reduced transparency](#reduced-transparency) · [Reduced data](#reduced-data) · [Color scheme and contrast](#color-scheme-and-contrast) · [Forced colors](#forced-colors) · [Hover and pointer](#hover-and-pointer) · [Orientation](#orientation) · [Color gamut](#color-gamut) · [Prove it](#prove-it)
+**Contents:** [What a component can know](#what-a-component-can-know) · [Container size queries](#container-size-queries) · [Container queries in Tailwind v4](#container-queries-in-tailwind-v4) · [Name-only container queries](#name-only-container-queries) · [Style queries](#style-queries) · [Media query range syntax](#media-query-range-syntax) · [Custom media](#custom-media) · [Reduced motion](#reduced-motion) · [Reduced transparency](#reduced-transparency) · [Reduced data](#reduced-data) · [Color scheme and contrast](#color-scheme-and-contrast) · [Forced colors](#forced-colors) · [Hover and pointer](#hover-and-pointer) · [Orientation](#orientation) · [Color gamut](#color-gamut) · [Scripting and display mode](#scripting-and-display-mode) · [Prove it](#prove-it)
 
 ## What a component can know
 
@@ -48,6 +48,26 @@ Container queries are Baseline widely available since 2025-08-14 (newly availabl
 - **`calc()` works inside the condition.** [nerdy.dev: A powerful container query](https://nerdy.dev/carousel-adaptive-anchor-positioning-with-calc-in-a-container-query) (2024-12-19): anchored outside the carousel, its scroll buttons have "potential for them to be off screen or out of bounds", so `@container (inline-size >= calc(100cqi - 120px))` moves them inside; the code and its support are in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md#carousel-buttons-that-move-inside-or-outside).
 - **Container queries rescue layouts that media queries make hard.** [nerdy.dev: New Year, New Site](https://nerdy.dev/new-year-new-site) (2023-01-01), on its logical properties: "Turned out Media Queries made this hard though, and Container Queries saved the day." The promised follow-up post is not in the export.
 - **Count-aware grids combine `:has()` and `@container`.** [nerdy.dev: Neue Bento Layouts With Grid Has And Container Queries](https://nerdy.dev/neue-bento-layouts-with-grid-has-and-container-queries) (2024-01-08): "A CSS bento-like grid that's aware of the number of children and aspect ratio available thanks to `:has()` and `@container`", with view transitions animating the changes. Demo code not exported ([demo](https://codepen.io/argyleink/pen/RwdRaVg)). The post does not discuss cost; the repo's own measurement is that one `:root:has()` selector added 24 ms to every DOM change ([../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md)).
+
+### Container queries in Tailwind v4
+
+[flornkm, prefer-container-queries] "Tailwind v4 ships container queries in core." "Mark the parent as a container, then use `@`-prefixed variants on its children":
+
+```html
+<div class="@container">
+  <div class="flex flex-col @md:flex-row @md:gap-6">
+    <img class="w-full @md:w-48" />
+    <div class="@md:flex-1">...</div>
+  </div>
+</div>
+```
+
+- **"Two rules that trip people up":** "The `@container` class goes on the parent. The `@md:` variants go on descendants. An element cannot query its own size." And "Container variants respond to the nearest ancestor with `@container`. If styles are not applying, check which container you are actually querying." MDN's form of the second: container queries style elements "based on the size of the nearest ancestor with a containment context" ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries)).
+- **The sizes** (minimum container width; the source's table matches [Tailwind's docs](https://tailwindcss.com/docs/responsive-design#container-queries)): `@3xs` 16rem, `@2xs` 18rem, `@xs` 20rem, `@sm` 24rem, `@md` 28rem, `@lg` 32rem, `@xl` 36rem, `@2xl` 42rem, `@3xl` 48rem, `@4xl` 56rem, `@5xl` 64rem, `@6xl` 72rem, `@7xl` 80rem.
+- **Below, arbitrary and named:** "`@max-md:` styles below a container size"; "`@min-[475px]:` arbitrary values when the scale does not fit"; "`@container/sidebar` plus `@md/sidebar:flex-row` to name a container and query it from deeper in the tree, past other containers."
+- **From Tailwind's docs** (not in the source): stack a range as `@sm:@max-md:flex-col`; `@container` makes an inline-size container, and `@container-size` (or `@container-size/{name}`) a size container "when you need to use container query length units that depend on the block size, like `cqb`"; custom sizes are theme variables, `@theme { --container-8xl: 96rem; }`; units go in arbitrary values such as `w-[50cqw]`.
+- **Tailwind v3 is not the same syntax.** The source: "On Tailwind v3, the same syntax needs the `@tailwindcss/container-queries` plugin." The plugin's README gives sizes only "from `@xs` (`20rem`) to `@7xl` (`80rem`)" (no `@3xs` or `@2xs`), writes arbitrary values as `@[17.5rem]:`, documents no `@max-*` variants, and says "As of Tailwind CSS v4.0, container queries are supported in the framework by default and this plugin is no longer required" ([tailwindcss-container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries)). On v3, write the plugin's own syntax; check the Tailwind version first, as the source says.
+- **Porting `md:` classes and reviewing them** (`md` is 768px of viewport, `@md` is 448px of container; the review mistakes) is in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md). The source keeps viewport breakpoints for page-level layout, viewport-fixed or sticky bars and a "Global typography scale tied to screen size"; anti-slop-ui keeps one only for the shell, and a query that only stepped a size "becomes one `clamp()`" (same file).
 
 ## Name-only container queries
 
@@ -290,6 +310,35 @@ The interaction media queries (`hover`, `any-hover`, `pointer`, `any-pointer`) a
 
 - **A wider gamut is a capability like a wider viewport.** [nerdy.dev: Device Width Is Like Device Color Gamut](https://nerdy.dev/device-width-is-like-device-color-gamut) (2023-04-05): "Viewport widths n' color gamuts; **As each widen, adapt the UI.**" The note has no code. MDN's `color()` page detects the gamut with `@media (color-gamut: p3)`; P3 colors and their sRGB fallbacks are in [COLOR.md](COLOR.md).
 
+## Scripting and display mode
+
+[css-modern-features, components.md]
+
+- **Show the no-JS version with `(scripting: none)`:** "Progressive enhancement, show fallback content when JS is unavailable", the media-query form of rule 3 in [SKILL.md](SKILL.md). Verbatim:
+
+  ```css
+  /* Default: JS-enhanced accordion (JS handles open/close) */
+  .accordion-content { display: none; }
+
+  /* No-JS: show all content */
+  @media (scripting: none) {
+    .accordion-content { display: block; }
+    .accordion-toggle  { display: none; }
+  }
+  ```
+
+  Status: Baseline widely available since 2026-06-07 (newly 2023-12-07; Chrome 120, Firefox 113, Safari 17; web-features `scripting`).
+- **Style an installed web app with `(display-mode: standalone)`:** "Style PWA installs differently from browser tabs." Verbatim:
+
+  ```css
+  @media (display-mode: standalone) {
+    .install-banner { display: none; } /* already installed */
+    .navbar { padding-top: env(safe-area-inset-top); }
+  }
+  ```
+
+  Status: not Baseline. web-features lists only Chrome 47 and Firefox for Android 116; browser-compat-data has the query itself from Chrome 42, Firefox 47 and Safari 13. The source rated it safe for most targets with "Chrome 45, Safari 13, Firefox 89". OneSignal's web setup reads the same query from JS with `matchMedia` ([../../backend/onesignal/SETUP-WEB.md](../../backend/onesignal/SETUP-WEB.md)).
+
 ## Prove it
 
 - **Name-only query:** give `.sidebar` `container-name: sidebar` and nest `@container sidebar { grid-auto-flow: column; }` in `.card`; a card inside the sidebar lays out in a row and one outside does not, in Chrome 148, Firefox 149 and Safari 26.4 or later.
@@ -300,4 +349,7 @@ The interaction media queries (`hover`, `any-hover`, `pointer`, `any-pointer`) a
 - **Reduced motion:** turn on the OS setting; every snippet guarded with `(prefers-reduced-motion: no-preference)` stops transitioning, and anything that should still cross-fade has its own branch.
 - **Forced colors:** emulate `forced-colors: active` in DevTools; every element that relied on a shadow or background to stand apart still shows an edge from its transparent border.
 - **Pointer gate:** on a touch device the Nice Select keeps the native picker; with a mouse it enhances.
+- **Tailwind container:** every `@md:` (or other `@` size) class has an `@container` ancestor and none sits on the element carrying `@container`; on v3 the classes use the plugin's `@[17.5rem]:` form.
+- **No JS:** with JavaScript disabled, every accordion panel shows and its toggle is hidden.
+- **Installed app:** opened from the home screen, the install banner is gone; in a browser tab it shows.
 - **No long dashes:** a search of this file for the em dash (U+2014) and en dash (U+2013) finds nothing.

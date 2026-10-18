@@ -1,6 +1,6 @@
 # Layout
 
-Flex and grid fixes that are easy to forget (intrinsic minimum sizes, shrinking, intrinsically responsive columns), grid and subgrid slots, stacking in one cell, a pointer to the circle layout with trig and `sibling-index()`, layering without `position: absolute`, balanced wrapping, centering, aspect ratios that follow orientation, and logical properties against physical ones. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN (checked 2026-10-17). Code is copied from the posts; where a post's code is outdated, the current form is given with the MDN link and the change is named. Units, fluid scales and container queries for whole layouts are in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md); container and style queries are in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md); anchoring one element to another is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md).
+Flex and grid fixes that are easy to forget (intrinsic minimum sizes, shrinking, intrinsically responsive columns), grid and subgrid slots, stacking in one cell, a pointer to the circle layout with trig and `sibling-index()`, layering without `position: absolute`, balanced wrapping, centering, aspect ratios that follow orientation, and logical properties against physical ones. Source: Adam Argyle's nerdy.dev posts and notes (one bullet tagged [css-modern-features], rushenn/css-modern-features, MIT), with current support from MDN (checked 2026-10-17). Code is copied from the posts; where a post's code is outdated, the current form is given with the MDN link and the change is named. Units, fluid scales and container queries for whole layouts are in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md); container and style queries are in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md); anchoring one element to another is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md).
 
 ## Three unintuitive layout solutions
 
@@ -37,6 +37,25 @@ Adam's "least favorite, easy to forget, unintuitive CSS layout 'solutions'". `fl
 
 - **Layout slots by name.** "Grid and Subgrid layout slots with named areas are rad"; "Placing things by name like search, tab bar, and home bar can be sweet." Demo code not exported (CodePen gOKXKYQ). The 2022 note said "experiment in Canary, Safari Tech Preview or Firefox"; that is stale: subgrid is Baseline widely available since 2026-03-15 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Subgrid)), and `grid-template-areas` since 2020-04-17 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/grid-template-areas)). [nerdy.dev: Subgrid Named Area Slots](https://nerdy.dev/subgrid-named-area-slots) (2022-12-01)
 - **Subgrid is a value of `grid-template-rows` or `grid-template-columns`;** The CSS Podcast episode 64 covers basics, use cases, tips and gotchas ([listen](https://thecsspodcast.libsyn.com/64-subgrid)). [nerdy.dev: CSS Podcast On Subgrid](https://nerdy.dev/css-podcast-on-subgrid)
+- **Align card parts across a row with subgrid** [css-modern-features, layout.md]: "Align grid items across nested grid contexts." Each card spans the parent's three row tracks and takes them as its own, so titles, bodies and footers line up from card to card. Verbatim:
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 1rem;
+}
+
+/* Child participates in parent's tracks */
+.card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid; /* aligns title, body, footer across all cards */
+}
+```
+
+  The source's floors (Chrome 117, Safari 16, Firefox 71) match browser-compat-data; subgrid's status is above.
 - **Masonry is `display: grid-lanes`** (and `inline-grid-lanes`), the shipped name of the masonry proposal: experimental, Safari 26.4 only, no Chrome or Firefox ([MDN `display`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display), [Grid lanes guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Grid_lanes)). No nerdy.dev source covers it; anti-slop-ui lists it among [features not to build a system on](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#dont-build-a-system-on-them).
 - **Stack children in one cell** with `grid-area: 1/1`; Adam uses it to pile radios in a centered cell (the circle layout below) and to layer the parts of the VisBug logo. [nerdy.dev: VisBug v0.4.0 release notes](https://nerdy.dev/a-2024-visbug-update)
 
@@ -122,5 +141,6 @@ visbug-logo {
 - **Min-size reset:** a grid or flex child holding a long unbroken string or a wide table overflows without `min-width: 0` and stays inside its track with it.
 - **No squish:** shrink the viewport until the pushy sibling squeezes the fixed-size item; with `flex-shrink: 0` its width and height stay as set (a circle stays round).
 - **Responsive columns:** put the grid in a parent narrower than the `min()` length (10rem); there is one column and no horizontal scrollbar.
+- **Subgrid cards:** give one card a two-line title; the bodies and footers of every card in that row still start on the same lines.
 - **Logical properties:** set `dir="rtl"` and `writing-mode: vertical-rl` on a test page; spacing and alignment mirror or rotate with no physical property left except transforms and documented exceptions.
 - **No dashes:** a search of LAYOUT.md for em and en dash characters finds none.

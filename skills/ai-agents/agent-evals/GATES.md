@@ -32,9 +32,28 @@ Report each finding as blocking, important or an improvement, with the artifact,
 
 - **A check turned on that never fires:** the field means something other than its name, a hidden default already scores it, a misspelt category matches nothing, or the check isn't on the path the work takes. Prove each check with a crafted failing case.
 - **Smoke the gate itself** with a good output, a bad one and a runner error, and see three different results. Skipped cases and missing credentials show as incomplete, never as passed.
+- **When the gate is a checker** (a lint rule or detector) changed in the pull request, run it on base and head with exit `2` for invalid evidence outranking any diff: [code-review BASE-HEAD-PARITY.md](../../architecture/code-review/BASE-HEAD-PARITY.md#exit-codes); testing the rule itself for false positives and misses: [testing LINT-RULES.md](../../architecture/testing/LINT-RULES.md).
 - **One results folder per purpose:** mixing runs of different kinds in one trend or baseline folder invents regressions, and a baseline file of the wrong shape silently finds none. Check the shape when loading.
 - **Blocking and scoring are separate code paths:** the guardrail that stops a tool call before it runs never scores, and the batch scorer afterwards never blocks.
 - **Pull requests from outside run without secrets;** the eval job that needs keys runs only on trusted code.
+
+## Gating an agent's findings
+
+A gate can run inside the product too, on each finding an agent writes before a person sees it. Vercel's `vercel-optimize` audit runs the claim checks and the code-scored rubric from [JUDGES.md](JUDGES.md#checking-the-claims-in-an-agents-findings) on every recommendation, then decides [Vercel, vercel-optimize]:
+
+| Condition | Action |
+|---|---|
+| `passRate < 0.8` and at least 2 verifiable claims | Re-run the writer with `topFailures` (the first 5 failed claims) injected as "Previous attempt failed these checks" |
+| A contradiction with project config, a cache-safety failure or a framework-semantic failure | A hard re-run; the report holds back the original until the re-run fixes it or abstains |
+| `passRate >= 0.8`, or fewer than 2 verifiable claims | Accept |
+
+- **The claim floor is 2, not 5:** "a rec with 1/1 failed claim is just as broken as 1/5, and the old floor let many small recs escape re-gen entirely." Below 2 claims "is below the noise floor".
+- **A re-run must improve to replace the original:** `regenPassRate >= originalPassRate`, it drops no more than 50% of the recommendations, and the findings stay cited. "If re-gen makes things worse, keep the original output unless the trigger was hard safety". "Hard-safety failures must not ship to the customer report."
+- **A pass rate misses a wrong answer, so hard triggers come first:** "a 'turn on Fluid' rec on a project where Fluid is already on passes 8/9 claims but is the wrong rec." The order is `project_config_contradiction > cache_vary_safety > semantic_safety > pass_rate_below_threshold`, each with its own hint for the re-run.
+- **Three buckets out, none silent:** recommendations that passed; recommendations held back with a reason (the trigger, `quality_floor` or `needs_review`); and abstentions, observations and items a sanitizer dropped. The summary reports the average pass rate and the average quality.
+- **Version the thresholds:** "Bump on any threshold change so report + iteration baselines can detect gate-logic drift" (`GATE_VERSION = '1.8.0'`).
+
+The orchestration around this (who re-spawns, the join key) is in [agent-harness WORKFLOWS.md](../agent-harness/WORKFLOWS.md#fan-out-contract), and the renderer's last check in [agent-harness CHECKS.md](../agent-harness/CHECKS.md#rewriting-and-dropping-a-finished-answer).
 
 ## Production
 

@@ -19,7 +19,8 @@ Run it on every edit or draft before returning it. Any "no" means fix and run it
 **The read**
 11. Swap test: would the headline or opening line work unchanged for someone else? If so, is it fixed or flagged?
 12. Read it aloud. Anywhere it sounds like a press release or a LinkedIn post?
-13. No new tic introduced by the fixes (every reveal turned into ", because...", every list into "There's nothing to...")?
+13. Second-read test: read each sentence once at speech pace; "if you re-read to parse it, name the subject, the action, and the consequence (kill metaphor verbs and pronouns reaching back several sentences)" [Vercel, writing-guidelines].
+14. No new tic introduced by the fixes (every reveal turned into ", because...", every list into "There's nothing to...")?
 
 **Output**
-14. Edit: full text plus a short What changed. Detect: each pattern named with a quoted line and a fix, no rewrite, no score, no claim about who wrote it.
+15. Edit: full text plus a short What changed. Detect: each pattern named with a quoted line and a fix, no rewrite, no score, no claim about who wrote it.

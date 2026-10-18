@@ -222,31 +222,39 @@ export const AnimatedTitleText = ({ lines, text }: AnimatedTitleTextProps) => {
       return constVoid;
     }
 
-    const entrances = [...lineElements].map((lineElement) =>
-      gsap.fromTo(
-        lineElement.querySelectorAll("[data-animated-title-letter]"),
-        {
-          opacity: 0,
-          rotate: () => gsap.utils.random(-8, 8),
-          scaleY: 0.72,
-          y: 18,
-        },
-        {
-          duration: 0.72,
-          ease: "elastic.out(1, 0.62)",
-          opacity: 1,
-          rotate: 0,
-          scaleY: 1,
-          stagger: { amount: 0.48, from: "start" },
-          y: 0,
-        }
-      )
-    );
+    // The entrance tweens live in one gsap.context so unmounting reverts them;
+    // hover tweens start from pointer events outside it, so they are killed
+    // by target on cleanup. The letters are read now: React has already
+    // cleared visualTextRef when this effect's unmount cleanup runs.
+    const letters =
+      visualTextRef.current?.querySelectorAll("[data-animated-title-letter]") ??
+      [];
+    const context = gsap.context(() => {
+      for (const lineElement of lineElements) {
+        gsap.fromTo(
+          lineElement.querySelectorAll("[data-animated-title-letter]"),
+          {
+            opacity: 0,
+            rotate: () => gsap.utils.random(-8, 8),
+            scaleY: 0.72,
+            y: 18,
+          },
+          {
+            duration: 0.72,
+            ease: "elastic.out(1, 0.62)",
+            opacity: 1,
+            rotate: 0,
+            scaleY: 1,
+            stagger: { amount: 0.48, from: "start" },
+            y: 0,
+          }
+        );
+      }
+    }, visualTextRef.current ?? undefined);
 
     return () => {
-      for (const entrance of entrances) {
-        entrance.kill();
-      }
+      gsap.killTweensOf(letters);
+      context.revert();
     };
   }, []);
 

@@ -2,7 +2,7 @@
 
 At 60 Hz a frame is 16.7 ms and the browser keeps part of it: budget about 10 ms of your work per frame, less on 120 Hz screens, where the whole frame is 8.33 ms. "A layout recalculation on a complex page can take over 100ms. That isn't one missed frame, it's a dozen" [Emil Kowalski, animation-performance].
 
-**Contents:** [Move only what the compositor can move](#move-only-what-the-compositor-can-move) · [What each property costs](#what-each-property-costs) · [Where it runs](#where-it-runs) · [Traps that use transform and still drop frames](#traps-that-use-transform-and-still-drop-frames) · [will-change](#will-change) · [React](#react-animate-without-re-rendering) · [Reduced motion](#reduced-motion) · [Bundle](#bundle) · [Measuring](#measuring)
+**Contents:** [Move only what the compositor can move](#move-only-what-the-compositor-can-move) · [What each property costs](#what-each-property-costs) · [Where it runs](#where-it-runs) · [Traps that use transform and still drop frames](#traps-that-use-transform-and-still-drop-frames) · [will-change](#will-change) · [React](#react-animate-without-re-rendering) · [Canvas and WebGL effects](#canvas-and-webgl-effects) · [Reduced motion](#reduced-motion) · [Bundle](#bundle) · [Measuring](#measuring)
 
 ## Move only what the compositor can move
 
@@ -90,6 +90,17 @@ elements.forEach((el, i) => {
 - Hundreds of animated items: animate a container, or only the visible ones; virtualize the rest.
 - **Dragging many items:** don't render an update every time the move event fires, and render only what changed (one developer's account of dragging 100,000 transformed rectangles; no numbers).
 
+## Canvas and WebGL effects
+
+Always-on effects drawn every frame (orbs, border beams, voice glows, avatars, metal and image effects), from the seven free Libraries.dev packages [Libraries.dev]. The general rules (one module-level loop, a 30fps cap for slow drift, pausing offscreen and in hidden tabs, a pixel-ratio cap chosen by shader cost, one context per page) are flornkm's, checked against MDN and Khronos, in [../webgl/WIDGETS.md](../webgl/WIDGETS.md#frame-loop); building the widget itself is in [the `webgl` skill](../webgl/SKILL.md). What the packages do:
+
+- **One loop for every instance:** pulse beams, voice glows, avatars and metal effects run one shared `requestAnimationFrame` loop for the page, and thinking orbs "share one clock, so they resume in phase". Physics bodies share one loop too ([PHYSICS.md](PHYSICS.md)).
+- **Frame caps by effect:** pulse beams "near 30 fps", voice glow "about 60 fps" ("On a device that cannot hold 60 it drops to every other frame and probes full rate again every 4 s"), metal "composites at about 15 fps", image generation "capped at 10 fps".
+- **Pause offscreen:** `IntersectionObserver` margins of 256 px (beams, voice) and 64 px (metal, image generation); an offscreen voice instance "unregisters from the loop and releases its analyser".
+- **Done means no frames:** "inactive beams render no layers", `paused` "stops the loop entirely (no per-frame cost)", and with no active image card "the animation loop stops completely". The common mistake: "Leaving an orb mounted and animating after the work finishes. Unmount it or set `paused` when the step completes."
+- **Pixel ratio:** orbs, avatars and the visible image canvas cap it at 2, the image shader's GL canvas at 1.25, and the voice glow's soft layers "render at half resolution and are scaled up". flornkm's rule against copying a cap from another project is in [../webgl/WIDGETS.md](../webgl/WIDGETS.md#resolution-and-dpr).
+- **One WebGL context:** the image effect keeps "One shared `THREE.WebGLRenderer` and one WebGL context for the whole page. Each card copies its frame into its own 2D canvas", and on context loss "the loop stops and resumes on restore"; metal runs on "One shared WebGL2 context".
+
 ## Reduced motion
 
 - Respect `prefers-reduced-motion: reduce`: slides, zooms, parallax and large movements become 100-150 ms opacity cross-fades; colour and state changes stay; nothing becomes unreachable or invisible.
@@ -118,4 +129,4 @@ The Performance panel with 4x CPU slowdown: record the interaction and look at t
 
 ## Prove it
 
-Record each animation at 4x CPU slowdown and on a real mid-range phone: the animation frames show no Layout entries, and Paint only where the tier table expects it. Grow the content a drag moves past about 20 items: the drag stays as smooth (no inherited-variable trap). Run the animation while a route loads: it holds its frame rate. Toggle reduced motion: no transform, layout or blur animation remains, fades and press feedback do.
+Record each animation at 4x CPU slowdown and on a real mid-range phone: the animation frames show no Layout entries, and Paint only where the tier table expects it. Grow the content a drag moves past about 20 items: the drag stays as smooth (no inherited-variable trap). Run the animation while a route loads: it holds its frame rate. Toggle reduced motion: no transform, layout or blur animation remains, fades and press feedback do. With fifty ambient canvas or WebGL instances on the page, scrolling holds 60fps and a hidden tab's CPU sits near zero [flornkm, webgl-components].

@@ -1,8 +1,8 @@
 # Custom properties, tokens and CSS functions
 
-Custom properties as a design-system interface: the ten kinds Adam Argyle names, typed properties with `@property`, tokens (Open Props, Open Props UI, Tailwind v4 `@theme`), the status of mixins, `@function` and `if()`, typed `attr()`, and the math that now runs inside CSS (`calc(infinity)`, `sibling-index()` and `sibling-count()`, trig, `progress()`), plus live properties written from JS. Source: Adam Argyle's nerdy.dev posts, each tagged; current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Colour tokens and palettes live in [COLOR.md](COLOR.md); stagger timing lives in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md); style queries live in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md).
+Custom properties as a design-system interface: the ten kinds Adam Argyle names, typed properties with `@property`, tokens (Open Props, Open Props UI, Tailwind v4 `@theme`), the status of mixins, `@function` and `if()`, typed `attr()`, and the math that now runs inside CSS (`calc(infinity)`, `sibling-index()` and `sibling-count()`, trig, stepped values, `progress()`), plus live properties written from JS. Source: Adam Argyle's nerdy.dev posts, each tagged, plus a few bullets tagged [css-modern-features] (rushenn/css-modern-features, MIT) and [Libraries.dev] (its free `libraries-dev` skill, MIT); current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Colour tokens and palettes live in [COLOR.md](COLOR.md); stagger timing lives in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md); style queries live in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md).
 
-**Contents:** [Ten kinds of custom property](#ten-kinds-of-custom-property) · [Typed properties with @property](#typed-properties-with-property) · [The custom property bomb](#the-custom-property-bomb) · [Tokens from Open Props](#tokens-from-open-props) · [Your tokens in Tailwind v4](#your-tokens-in-tailwind-v4) · [Mixins and @apply](#mixins-and-apply) · [Custom functions and if()](#custom-functions-and-if) · [Typed attr()](#typed-attr) · [calc(infinity)](#calcinfinity) · [sibling-index() and sibling-count()](#sibling-index-and-sibling-count) · [Trig and physics](#trig-and-physics) · [Functions still coming](#functions-still-coming) · [Live properties from JS](#live-properties-from-js) · [Prove it](#prove-it)
+**Contents:** [Ten kinds of custom property](#ten-kinds-of-custom-property) · [Typed properties with @property](#typed-properties-with-property) · [The custom property bomb](#the-custom-property-bomb) · [Tokens from Open Props](#tokens-from-open-props) · [Your tokens in Tailwind v4](#your-tokens-in-tailwind-v4) · [Mixins and @apply](#mixins-and-apply) · [Custom functions and if()](#custom-functions-and-if) · [Typed attr()](#typed-attr) · [calc(infinity)](#calcinfinity) · [sibling-index() and sibling-count()](#sibling-index-and-sibling-count) · [Trig and physics](#trig-and-physics) · [Stepped values](#stepped-values) · [Functions still coming](#functions-still-coming) · [Live properties from JS](#live-properties-from-js) · [Prove it](#prove-it)
 
 ## Ten kinds of custom property
 
@@ -263,6 +263,16 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
   }
   ```
 - **Animation:** a registered `--focal-size` is "enough to teach some browsers how to animate a gradient used into a mask" ([nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/custom-prop-categories), 2023-01-26; the 2023-09 post types it `<length-percentage>`). Registering to animate in `@keyframes` is in [svg STYLING.md](../svg/STYLING.md); gradient uses are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md).
+- **Register from JS when the initial value is computed at runtime** [css-modern-features, houdini.md]: "Use `@property` in CSS when possible; use `CSS.registerProperty()` when the initial value is dynamic or computed at runtime." Its floors are Chrome 78, Firefox 128 and Safari 16.4 (browser-compat-data `api.CSS.registerProperty_static`), the source's numbers; `@property` itself is Chrome 85. Verbatim:
+  ```js
+  CSS.registerProperty({
+    name: '--theme-hue',
+    syntax: '<number>',
+    inherits: true,
+    initialValue: '260',
+  });
+  ```
+- **Rotating border beams** [Libraries.dev, border-beam]: its rotate types "animate registered CSS custom properties (`@property`)", and without it "Older browsers step instead of interpolating." "Paint cost comes from masks, conic/radial gradients and blur filters redrawn every frame. Keep a handful of live beams per screen." The source puts `@property` at "Safari 15.4+"; it is Safari 16.4 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property)). The rounded shine border is in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md#borders-scrims-and-shadows).
 - anti-slop-ui registers its fluid tokens so they are "computed on `:root`" and on the page area ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)).
 
 ## The custom property bomb
@@ -561,6 +571,36 @@ Both are Baseline 2026, newly available since August 2026 ([MDN sibling-index()]
   }
   ```
 
+## Stepped values
+
+[css-modern-features, layout.md] "Snap values to a grid, compute remainders, and handle signs, all in CSS." Verbatim, with the dashes in the heading comments dropped:
+
+```css
+/* round(value, step): snap to grid */
+.card {
+  width: round(var(--container-width), 8px); /* snap to 8px grid */
+}
+
+/* Round to nearest, up, or down */
+.font { font-size: round(nearest, 1.7rem, 0.25rem); }
+.box  { width: round(up, 33.3%, 1px); }
+
+/* mod(): CSS remainder (sign matches divisor) */
+.stripe:nth-child(n) {
+  background: oklch(calc(0.9 - mod(var(--i, 0), 3) * 0.1) 0 0);
+}
+
+/* abs(): always positive */
+.offset { translate: abs(var(--x)) 0; }
+
+/* sign(): returns -1, 0, or 1 */
+.arrow {
+  rotate: calc(sign(var(--delta)) * 45deg);
+}
+```
+
+Status (web-features): `round()`, `mod()` and `rem()` are Baseline newly available since 2024-05-17 (Chrome 125, Firefox 118, Safari 17.2); `abs()` and `sign()` since 2025-06-26 (Chrome 138). The source gave all five as "Chrome 125, Safari 15.4, Firefox 118".
+
 ## Functions still coming
 
 [nerdy.dev: CSS functions in the works](https://nerdy.dev/css-values-5-is-lookin-hot) (2024-08-26) lists the css-values-5 draft: `random()`, `random-item()`, `sibling-count()`, `sibling-index()`, `progress()`, `media-progress()`, `container-progress()`, `mix()`, `calc-mix()`, `cross-fade()`, `transform-mix()`, `first-valid()`, `toggle()`, `calc-size()`. Status on MDN now:
@@ -607,3 +647,5 @@ Both are Baseline 2026, newly available since August 2026 ([MDN sibling-index()]
 - `calc(infinity)` lengths carry a unit multiplier; no `z-index: calc(infinity)` stands in for the top layer.
 - Elements that used hand-set `--sibling-index` variables now use `sibling-index()`, and a stagger's total stays within ui-animation's budget.
 - Nothing ships on `@mixin` or `@apply`: no browser supports them.
+- `CSS.registerProperty()` appears only where an initial value is computed at runtime; the rest are `@property` rules.
+- An `abs()` or `sign()` rule has a fallback for browsers before Chrome 138.

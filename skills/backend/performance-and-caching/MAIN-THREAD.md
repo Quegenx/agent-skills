@@ -60,6 +60,29 @@ async function processDuringAnimation(items) {
 
 - **Backpressure:** yielding lowers throughput, so when arrivals outpace processing the backlog grows and what reaches the screen gets older. Batching raises throughput by paying the fixed cost per item once per batch. Splitting fixes tasks too long for rendering to squeeze in; batching fixes tasks so frequent that the pipeline's fixed cost repeats.
 - **Debounce and throttle scroll, resize and input handlers:** debounce runs once after things quiet down; throttle runs at most once per interval. A demo: a markdown preview of about 2,000 lines rebuilt on every keystroke lags the input; debounced at 300 ms it renders once after typing stops and typing is smooth.
+- **Keep each keystroke cheap:** "Prefer uncontrolled inputs; controlled inputs must be cheap per keystroke" [Vercel, web-design-guidelines]. [react.dev: `<input>`](https://react.dev/reference/react-dom/components/input#optimizing-re-rendering-on-every-keystroke): "When you use a controlled input, you set the state on every keystroke. If the component containing your state re-renders a large tree, this can get slow." Move the state into the input's own component, so "only `SignupForm` re-renders on every keystroke":
+
+```js
+function App() {
+  return (
+    <>
+      <SignupForm />
+      <PageContent />
+    </>
+  );
+}
+
+function SignupForm() {
+  const [firstName, setFirstName] = useState('');
+  return (
+    <form>
+      <input value={firstName} onChange={e => setFirstName(e.target.value)} />
+    </form>
+  );
+}
+```
+
+  "If there is no way to avoid re-rendering (for example, if `PageContent` depends on the search input's value), `useDeferredValue` lets you keep the controlled input responsive even in the middle of a large re-render."
 - **Draw once per frame and keep every data point.** Calling a chart library's `update()` on every message is a common mistake. A demo: 60 tickers, over 1,000 messages per second.
 
 ```js
@@ -77,6 +100,40 @@ socket.on('tick', (tick) => {
 ```
 
 - **Batch DOM writes:** append many nodes in one operation, toggle one class instead of several style properties, or build an HTML string and assign `innerHTML` once. React's virtual DOM, merged state updates in one handler, and analytics events queued into one request are the same idea.
+- **No layout reads between style writes** [Vercel, react-best-practices]: "When you read a layout property (like `offsetWidth`, `getBoundingClientRect()`, or `getComputedStyle()`) between style changes, the browser is forced to trigger a synchronous reflow." Group the writes, then read once (or read everything first, then write):
+
+Incorrect (interleaved reads and writes force reflows):
+
+```typescript
+function layoutThrashing(element: HTMLElement) {
+  element.style.width = '100px'
+  const width = element.offsetWidth  // Forces reflow
+  element.style.height = '200px'
+  const height = element.offsetHeight  // Forces another reflow
+}
+```
+
+Correct (batch writes, then read once):
+
+```typescript
+function updateElementStyles(element: HTMLElement) {
+  // Batch all writes together
+  element.style.width = '100px'
+  element.style.height = '200px'
+  element.style.backgroundColor = 'blue'
+  element.style.border = '1px solid black'
+  
+  // Read after all writes are done (single reflow)
+  const { width, height } = element.getBoundingClientRect()
+}
+```
+
+  "Prefer CSS classes over inline styles when possible." The list of layout-forcing operations: [Paul Irish's gist](https://gist.github.com/paulirish/5d52fb081b3570c81e3a) and [CSS Triggers](https://csstriggers.com/). In React the same rule reaches render: "No layout reads in render (`getBoundingClientRect`, `offsetHeight`, `offsetWidth`, `scrollTop`)" [Vercel, web-design-guidelines].
+
+## Let scrolling start at once
+
+- **Passive touch and wheel listeners** [Vercel, react-best-practices]: "Add `{ passive: true }` to touch and wheel event listeners to enable immediate scrolling. Browsers normally wait for listeners to finish to check if `preventDefault()` is called, causing scroll delay." "Use passive when: tracking/analytics, logging, any listener that doesn't call `preventDefault()`." "Don't use passive when: implementing custom swipe gestures, custom zoom controls, or any listener that needs `preventDefault()`."
+- **On the document it is already the default.** [MDN: addEventListener](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#using_passive_listeners): `passive` "defaults to `true` for `wheel`, `mousewheel`, `touchstart`, and `touchmove` events on `Window`, `Document`, `Document.documentElement`, and `Document.body`. For other events and targets, the default is `false`." The source's example adds `{ passive: true }` to `document` listeners, where it changes nothing; the option matters on elements. To call `preventDefault()` from one of those default-passive listeners, "you must explicitly set the option to `false`", and "You don't need to worry about the value of `passive` for the basic `scroll` event." The owner's caret already sets it on an element: `element.addEventListener("wheel", followFieldScroll, { passive: true });` (landing-page-ui `smooth-caret-lifecycle.ts`).
 
 ## Prioritize and defer
 
@@ -119,6 +176,40 @@ onClickPhoto((i) => {
 ```
 
 - **In React, `startTransition` and `useDeferredValue`** engage a scheduler that yields through `MessageChannel` and orders work with its own priority queue (plus starvation protection, batching and continuations). The Scheduler API and `TaskController` are standards, but support is still incomplete, so in practice people pair them with polyfills or build their own queues.
+- **`requestIdleCallback` for work nobody waits on, with a timeout and a fallback** [Vercel, react-best-practices]: "Use `requestIdleCallback()` to schedule non-critical work during browser idle periods." When to use: "Analytics and telemetry", "Saving state to localStorage/IndexedDB", "Prefetching resources for likely next actions", "Processing non-urgent data transformations", "Lazy initialization of non-critical features". Not for "User-initiated actions that need immediate feedback", "Rendering updates the user is waiting for" or "Time-sensitive operations". [MDN: requestIdleCallback](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback): "This feature is not Baseline because it does not work in some of the most widely-used browsers", and "A `timeout` option is strongly recommended for required work, as otherwise it's possible multiple seconds will elapse before the callback is fired." The source names the fallback but not the missing support (three of its blocks, joined):
+
+```typescript
+// Ensure analytics fires within 2 seconds even if browser stays busy
+requestIdleCallback(
+  () => analytics.track('page_view', { path: location.pathname }),
+  { timeout: 2000 }
+)
+
+const scheduleIdleWork = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1))
+
+scheduleIdleWork(() => {
+  // Non-critical work
+})
+
+function processLargeDataset(items: Item[]) {
+  let index = 0
+
+  function processChunk(deadline: IdleDeadline) {
+    // Process items while we have idle time (aim for <50ms chunks)
+    while (index < items.length && deadline.timeRemaining() > 0) {
+      processItem(items[index])
+      index++
+    }
+
+    // Schedule next chunk if more items remain
+    if (index < items.length) {
+      requestIdleCallback(processChunk)
+    }
+  }
+
+  requestIdleCallback(processChunk)
+}
+```
 - **Defer what isn't on screen:** off-screen lists in [BROWSER.md](BROWSER.md#long-lists), off-screen video and widgets in [BROWSER.md](BROWSER.md#images-and-video), heavy routes with a dynamic `import()` ([BROWSER.md](BROWSER.md#bundle)).
 
 ## Workers
@@ -153,4 +244,4 @@ The biggest gains usually come from removing work. Once the inflow exceeds the m
 
 ## Prove it
 
-Flood the screen the way the article's demos do (a burst of incoming data, typing while it arrives, an animation running) and check: no task over 50 ms, typing and animation stay smooth during the burst, and under sustained inflow the backlog stays bounded and what reaches the screen doesn't keep getting older.
+Flood the screen the way the article's demos do (a burst of incoming data, typing while it arrives, an animation running) and check: no task over 50 ms, no forced reflow from a layout read between style writes, typing re-renders only the input's own component, typing and animation stay smooth during the burst, and under sustained inflow the backlog stays bounded and what reaches the screen doesn't keep getting older.

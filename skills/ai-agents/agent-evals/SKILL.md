@@ -10,21 +10,21 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 | The job | Read |
 |---|---|
 | The harness: what a case grades, the case set and its splits, simulated users, fixtures and the network guard, fake time, run records and statuses, fingerprints, evaluating a skill (holdouts, a run without it), repetitions, intervals, comparisons, snapshots | [HARNESS.md](HARNESS.md) |
-| Grading: code checks, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
-| Auditing an eval (including whether it can tell a better agent from a worse one), release gates and the baseline, gates that lie, production sampling and alerts | [GATES.md](GATES.md) |
+| Grading: code checks, mechanical checks of the claims in an agent's findings, a rubric scored in code with a 0.55 floor, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
+| Auditing an eval (including whether it can tell a better agent from a worse one), release gates and the baseline, gates that lie, gating an agent's findings (re-run thresholds, hard triggers, accepting a re-run), production sampling and alerts | [GATES.md](GATES.md) |
 | Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, hillclimbing with keep or revert, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
-| Auditing a product's docs, SDK or a SKILL.md by having several subagents attempt one task: goal, personas, credentials, traces, URL provenance, scoring, the write-up | [DX-AUDIT.md](DX-AUDIT.md) |
+| Auditing a product's docs, SDK or a SKILL.md by having several subagents attempt one task: goal (a task per framework or setup path), personas, credentials, traces, URL provenance, scoring, the write-up | [DX-AUDIT.md](DX-AUDIT.md) |
 | What to fix in the agent once a failure is understood | the `agent-harness` skill |
 | Judges and classifiers built on typed probabilities | the `jev-decisions` skill |
 
 ## The rules
 
 1. **Run the real thing.** The production prompt, the real tools and the real model; only the outside world (messaging, payments, maps, email) is faked, through the same clients the app uses, with no eval-only branch in the app.
-2. **Nothing reaches the world.** A network guard fails every call that isn't fixtured, and the case fails as a harness error, never graded as the agent's mistake.
+2. **Nothing reaches the world.** A network guard fails every call that isn't fixtured, and the case fails as a harness error, never graded as the agent's mistake. "Do not treat error records as clean scans" [React Doctor, rde-eval].
 3. **Three repetitions at least, five for flaky cases.** One pass proves little; a case at 2 of 3 has a real, occasional problem.
 4. **Code checks first, judges second.** Tools called and not called, what was stored, required data in the reply, things it must never contain: exact, in code. Tone, an unanswered question, a detail asked twice: a judge.
 5. **A low-confidence judge fail is a hint, not a verdict.** Read the conversation before fixing anything.
-6. **One code version, one run.** Fingerprint each run (commit, uncommitted changes, case set, repetitions) and refuse to mix results from changed code.
+6. **One code version, one run.** Fingerprint each run (commit, uncommitted changes, case set, repetitions) and refuse to mix results from changed code. A run over real repositories also reports "checkout revisions, target rule, repositories, project roots, diagnostics, inspected hits, fixed false positives, and the artifact path", with repository and project-root counts kept apart and "any setup error or skipped repository" stated [React Doctor, rde-eval].
 7. **Never buy the number.** Don't delete a check, lower a threshold or reword a judge without calibration to get a pass.
 8. **Cases come from real conversations,** and every real failure after launch becomes a case. Written cases only fill gaps, and are marked. The other view: users try what they expect to work, so a set drawn strictly from traffic may skew easy; it adds hard cases a person judged hard, each with a stated reason ([HARNESS.md](HARNESS.md)).
 

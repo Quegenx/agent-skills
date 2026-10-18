@@ -1,6 +1,6 @@
 # Scroll
 
-Scrollers, snapping, scroll events, `scroll-state()` queries, scroll-driven and scroll-triggered animation, and CSS carousels, from Adam Argyle's [nerdy.dev](https://nerdy.dev). Each fact is tagged with its post and date; each feature's status is from MDN (or MDN's browser-compat-data where MDN has no page), checked October 2026. Code is copied from the posts; where a line differs (an emoji pointer removed, a typo fixed, a stale syntax replaced) the text says so. Motion timing for scroll-linked effects and the Motion (`useScroll`) route are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion); a sheet swiped away on native scroll is in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll).
+Scrollers, snapping, scroll events, `scroll-state()` queries, scroll-driven and scroll-triggered animation, and CSS carousels, from Adam Argyle's [nerdy.dev](https://nerdy.dev). Each fact is tagged with its post and date; each feature's status is from MDN (or MDN's browser-compat-data where MDN has no page), checked October 2026. Code is copied from the posts; where a line differs (an emoji pointer removed, a typo fixed, a stale syntax replaced) the text says so. Sticky positioning (why it fails, coordinated offsets, anchor offsets, stuck detection, two-axis tables) is in [STICKY.md](STICKY.md). Motion timing for scroll-linked effects and the Motion (`useScroll`) route are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion); a sheet swiped away on native scroll is in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll).
 
 **Contents:** [Scroller structure and essentials](#scroller-structure-and-essentials) · [Snapping](#snapping) · [Pull to refresh](#pull-to-refresh) · [Scroll events](#scroll-events) · [scroll-state() queries](#scroll-state-queries) · [Scroll-driven animation](#scroll-driven-animation) · [Edge-aware scroll fades](#edge-aware-scroll-fades) · [Scroll-triggered animation](#scroll-triggered-animation) · [CSS carousels](#css-carousels) · [Prove it](#prove-it)
 
@@ -70,6 +70,7 @@ Scrollers, snapping, scroll events, `scroll-state()` queries, scroll-driven and 
 ```
 
   landing-page-ui's capability carousel uses proximity snap and its own buttons instead ([../landing-page-ui/SECTIONS.md](../landing-page-ui/SECTIONS.md#carousel-of-capability-cards)).
+- **`mandatory` or `proximity`** [responsive-craft, sticky-scroll-patterns.md]: "`mandatory` - always snaps. Can trap users if snap points are far apart. Only use when items fit the viewport." "`proximity` - snaps only when close to a snap point. Safer for variable-height content."
 - **An elastic overscroll from snap alone** (same post): invisible `::before` and `::after` spacers have no `scroll-snap-align`, so under `x mandatory` "the scroller will never rest on these invisible overscroll spacers". The start spacer is `25cqi` ("a 25% overscroll vibe"); the end one is `90cqi`, "ensuring the last game can be snapped to the start".
 
 ```css
@@ -284,7 +285,7 @@ scroller.onscrollsnapchange = () =>
 [nerdy.dev: 4 CSS Features Every Front-End Developer Should Know In 2026](https://nerdy.dev/4-css-features-every-front-end-developer-should-know-in-2026), 2026-01-07. The post presents them as shipped; they are Chrome only and experimental: `container-type: scroll-state` with `stuck`, `snapped` and `scrollable` from Chrome 133 and `scrolled` from Chrome 144, no Firefox or Safari (browser-compat-data; [MDN guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries), which shows an `@supports not (container-type: scroll-state)` unsupported-browser message). The post treats them as progressive enhancement, "similar to scroll driven animations".
 
 - **Setup:** "you need the element that's stuck, snapped, or scrollable to have `container-type: scroll-state`. Then, a child can query it with `@container scroll-state()`." "An element cannot query itself, but its pseudo elements can!"
-- **stuck:** "Use this to help users understand an element will now be overlaying their scroll content." MDN's form with a side is `@container sticky-heading scroll-state(stuck: top)`. Nice Select colors its sticky group headers when stuck, and "even the sticky scroll state respects" forced colors (Nice Select post, 2026-02-03).
+- **stuck:** in other browsers, detect it with an `IntersectionObserver` sentinel ([STICKY.md](STICKY.md#detect-the-stuck-state)). "Use this to help users understand an element will now be overlaying their scroll content." MDN's form with a side is `@container sticky-heading scroll-state(stuck: top)`. Nice Select colors its sticky group headers when stuck, and "even the sticky scroll state respects" forced colors (Nice Select post, 2026-02-03).
 
 ```css
 /* when .outer-navbar is stuck */
@@ -398,6 +399,22 @@ Status: `animation-timeline` and `animation-range` are Limited availability, Chr
 }
 ```
 
+- **Name a timeline to share it** [css-modern-features, animation.md]: "Named timeline - share one scroll timeline across elements":
+
+```css
+.scroll-container {
+  scroll-timeline-name: --gallery;
+  scroll-timeline-axis: inline;
+  overflow-x: scroll;
+}
+
+.gallery-item {
+  animation: slide-in linear;
+  animation-timeline: --gallery;
+}
+```
+
+  Status: `scroll-timeline-name` and `scroll-timeline-axis` ship in Chrome 115 and Safari 26, Firefox in preview only (browser-compat-data), the Limited availability above. The source gave scroll-driven animation as "Chrome 115, Edge 115, Firefox 110, Safari 18 (partial)"; no Firefox release ships it.
 - **A load animation and a scroll animation on one property** ([nerdy.dev: A keyframe combo trick](https://nerdy.dev/combining-onload-keyframes-with-scroll-driven-animation), 2024-11-07): assign both, list the scroll-driven one first ("a **lesser composite order**"), and give `animation-timeline` the same order. The post's `👈` after the timeline line is removed (it is not CSS; the timeline list follows the `animation` list in order, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-timeline)):
 
 ```css

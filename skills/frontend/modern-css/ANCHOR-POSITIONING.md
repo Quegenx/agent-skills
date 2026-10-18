@@ -1,6 +1,6 @@
 # Anchor positioning
 
-Anchor positioning tethers one element (a tooltip, a picker, a dialog, a carousel button) to another element's box, in CSS, without changing the DOM. This file covers naming an anchor (`anchor-name`), linking to it (`position-anchor`), placing against its edges (`anchor()`, `anchor-size()`), placing in its grid of areas (`position-area`), flipping when space runs out (`position-try-fallbacks`) and why flips stop working in small spaces, anchor-interpolated morphing (AIM, a CSS-only FLIP for overlays) and carousel scroll buttons that move inside or outside by available space. Source: Adam Argyle's nerdy.dev posts, each tagged where used; support status was checked on MDN (page Baseline banner and browser-compat-data 8.1.6) on 2026-10-17. Code is copied verbatim from the posts unless a line says it was corrected.
+Anchor positioning tethers one element (a tooltip, a picker, a dialog, a carousel button) to another element's box, in CSS, without changing the DOM. This file covers naming an anchor (`anchor-name`), linking to it (`position-anchor`), placing against its edges (`anchor()`, `anchor-size()`), placing in its grid of areas (`position-area`), flipping when space runs out (`position-try-fallbacks`) and why flips stop working in small spaces, anchor-interpolated morphing (AIM, a CSS-only FLIP for overlays) and carousel scroll buttons that move inside or outside by available space. Source: Adam Argyle's nerdy.dev posts, each tagged where used (one bullet is tagged [css-modern-features], rushenn/css-modern-features, MIT); support status was checked on MDN (page Baseline banner and browser-compat-data 8.1.6) on 2026-10-17. Code is copied verbatim from the posts unless a line says it was corrected.
 
 **Contents:** [Name an anchor and tether to it](#name-an-anchor-and-tether-to-it) · [Place it with position-area](#place-it-with-position-area) · [Flip when space runs out](#flip-when-space-runs-out) · [Why fallbacks fail in small spaces](#why-fallbacks-fail-in-small-spaces) · [Anchor-interpolated morphing (AIM)](#anchor-interpolated-morphing-aim) · [Carousel buttons that move inside or outside](#carousel-buttons-that-move-inside-or-outside) · [Other uses](#other-uses) · [Prove it](#prove-it)
 
@@ -62,6 +62,16 @@ Anchor positioning tethers one element (a tooltip, a picker, a dialog, a carouse
   ```
 
   Support: Baseline 2026, newly available since 2026-01-13 (Chrome 128, Firefox 147, Safari 26), [MDN position-try-fallbacks](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-try-fallbacks). MDN describes the try-tactic keywords `flip-block`, `flip-inline` and `flip-start`; its formal syntax and browser-compat-data also have `flip-x` and `flip-y` (Chrome 144, Firefox 147, Safari 26.2).
+- **Pick the fallback with the most room** [css-modern-features, positioning.md]: `position-try-order` reorders the fallbacks by available space. Verbatim:
+
+  ```css
+  .tooltip {
+    position-try-fallbacks: --flip-above, --flip-left;
+    position-try-order: most-width; /* pick the position with most space */
+  }
+  ```
+
+  `--flip-above` is an `@position-try` rule the source defines earlier; `--flip-left` it never shows. Status: Chrome 125, Safari 26, Firefox 148 (browser-compat-data `css.properties.position-try-order`); the source gives no version. MDN's values are `normal`, `most-width`, `most-height`, `most-block-size` and `most-inline-size` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position-try-order)).
 - The rest of that select (aligning the picker with the chosen option) is in [SELECT-AND-FORMS.md](SELECT-AND-FORMS.md).
 
 ## Why fallbacks fail in small spaces

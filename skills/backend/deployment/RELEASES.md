@@ -8,6 +8,16 @@ A production deploy should be able to answer, from evidence and not from trust: 
 - **Record provenance at build time:** a signed statement (SLSA provenance, in-toto format) saying this digest was built from repository X at commit Y by workflow Z, with these inputs. GitHub's `actions/attest-build-provenance` produces one per artifact; other CI systems have equivalents.
 - **Build in CI only, from a clean checkout,** with pinned dependency versions (lockfiles) and pinned actions or tool versions (by commit SHA for third-party CI actions). An artifact built on a laptop has no trustworthy provenance.
 - Attach a software bill of materials (SBOM) to the same digest, so a later vulnerability can be traced to the releases that contain it.
+- npm packages: pack once, publish that tarball with trusted publishing, and get provenance automatically; see [NPM-PACKAGES.md](NPM-PACKAGES.md).
+
+## Cached build outputs
+
+[React Doctor, run-parity] A cached artifact (a baseline, a build output reused by later runs) is evidence only while it can be checked again.
+
+- **Key the cache on everything that could change the output:** the exact tool commit, the input manifest's hash, the evaluator or schema hash, the rule set or config hash. "Never cache an older unstamped run." Stamp every record with its producer, not only the file.
+- **Keep a provenance file next to the artifact:** its sha256, byte length, record count, the input manifest's sha256 and the producer. Re-verify on every reuse by streaming the raw bytes and re-checking each record's producer; "Any mismatch is a cache miss." One appended space in the file must fail the check.
+- **Exact key sets:** a provenance object with an unexpected extra field fails, and a verifier never follows a path out of the provenance to some other shared cache; each artifact directory is self-contained evidence.
+- **Write once, atomically:** write to `<path>.tmp` with the `wx` flag (fail if it exists), then `rename`. The output path "is created exclusively and never overwrites an existing artifact."
 
 ## Sign with the build's identity, not a long-lived key
 

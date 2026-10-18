@@ -34,6 +34,8 @@ Most review now happens before a PR exists.
 - **UI proof travels with the PR.** In Vercel's Rillet story, agents "spin up a browser in a sandbox to test the change and attach screenshots as proof", while the engineer reviews the pull request and merges it.
 - **Then a subagent reviews the diff with fresh context.**
 - **Pre-PR skills:** one hunts for bugs, one simplifies the diff, and one checks the behavior end to end. UI changes also get checked against the design guidelines.
+- **The built-in pair** ([Claude Code commands](https://code.claude.com/docs/en/commands)): `/code-review` reviews "the current diff, or a PR number, branch, or path you pass, for correctness bugs", and `--fix` applies the findings; `/review` is an alias of it (before v2.1.223 `/review` was a separate single-pass, read-only PR review). `/simplify`: "Review the changed code for cleanup opportunities and apply the fixes. Four review agents run in parallel, covering reuse of existing helpers, simplification, efficiency, and whether the change is at the right level of abstraction. The review doesn't look for correctness bugs." React Doctor's `ship` skill still calls `/review` and runs its review stage against the rules file: "Read `AGENTS.md` first (its rules change)", then fix real violations, pausing "only if a fix would change behavior or broaden scope" [React Doctor, ship].
+- **Commit rules** [React Doctor, ship]: "Stage only the intended changes; never commit secrets." "Write a concise commit message in the repo's style, focused on the why." Push with `-u` on the first push. "Git safety: no force-push to `main`, no skipped hooks, no `git config` changes."
 - **List the checks it can run in a short CLAUDE.md,** plus hooks that run formatters and linters.
 
 ### 2 and 3. AI review and security review
@@ -43,6 +45,8 @@ Every PR gets an AI review before a person looks, and security gets its own auto
 ### 4. Automated checks that block
 
 The usual: lint, type checks, tests on every platform, and a build. A typical CLI pull request may run dozens of checks before anyone looks at it.
+
+- **A change to a checker itself** (a lint rule, a detector, an evaluator) gets a base-and-head run over pinned inputs with exit codes `0` match, `1` changes, `2` invalid evidence: [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md). Triage of a scanner's findings on a change, and when its "no findings" may be called clean: [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md).
 
 - **The PR template asks how the change was tested and how to undo it,** under the headings "Testing", "Risk" and "How to revert". The agent can fill it in, but the person who asked for the change signs off on it.
 - **A duplication gate** ([ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)): Deslop (the tool is in the `anti-slop-code` skill's RULES.md) fails the step with exit code 3 above the ceiling, naming the measured percentage and the ceiling. `only-changed` reports only clusters the diff touches, so legacy duplication doesn't block every PR; `upload-artifact` keeps the HTML report. It posts no PR comment: read the `duplication-percent` step output and post it yourself. "Pin the version. Do not float on a tag."

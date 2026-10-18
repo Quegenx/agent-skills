@@ -41,6 +41,52 @@ const [loans, holds, recs] = await Promise.all([getLoans(userId), getHolds(userI
 - **Bound the concurrency** when the count depends on data (one call per item): a limit (for example 5 at a time) protects the dependency and your connection pool. Unbounded `Promise.all` over a large list is a self-inflicted outage.
 - All of them share the request's deadline and cancellation signal (see the `api-design` skill's RELIABILITY.md).
 
+**Start early, await late,** when only part of the chain depends on an earlier result: "In API routes and Server Actions, start independent operations immediately, even if you don't await them yet." [Vercel, vercel-react-best-practices, async-api-routes.md]
+
+```typescript
+export async function GET(request: Request) {
+  const sessionPromise = auth()
+  const configPromise = fetchConfig()
+  const session = await sessionPromise
+  const [config, data] = await Promise.all([
+    configPromise,
+    fetchData(session.user.id)
+  ])
+  return Response.json({ data, config })
+}
+```
+
+For partial dependencies the source's first choice is the third-party `better-all` package, which "automatically starts each task at the earliest possible moment" (https://github.com/shuding/better-all). Without it: "We can also create all the promises first, and do `Promise.all()` at the end" [Vercel, vercel-react-best-practices, async-dependencies.md]:
+
+```typescript
+const userPromise = fetchUser()
+const profilePromise = userPromise.then(user => fetchProfile(user.id))
+
+const [user, config, profile] = await Promise.all([
+  userPromise,
+  fetchConfig(),
+  profilePromise
+])
+```
+
+**When not to overlap** [Vercel, vercel-optimize, support-topics/auth-preserving-parallelization.md, function-duration-io-and-after.md, lib/verify-claim.mjs]:
+
+- **Never move a private read ahead of the check that authorizes it.** "Parallelizing awaits is safe only when it does not move private data access ahead of the auth, ownership, tenant, or permission check protecting that data." "Do not parallelize a private record fetch with the ownership check that authorizes that fetch. Instead, recommend combining the guard and data lookup into one query constrained by the authenticated user, tenant, or ownership key." A `getSession()` that gates a redirect stays first. The example above is safe because `fetchData` waits for `session`. (The same skill's SaaS and API playbooks say "`await getSession()` then `await checkPermissions()` then `await loadData()`, these can often be parallelized when the permissions check doesn't depend on the data load"; the auth-preserving rule is the one to follow. Tenant isolation is in the `secure-coding` skill.)
+- **Not for CPU-bound work.** "Do not recommend `Promise.all` for CPU-bound or compile-bound work unless trace/span evidence shows wait time to overlap. High `cpu.p95` near `latency.p95` is a warning sign." `Promise.all` overlaps waiting, not computing.
+- **Not for dependent operations,** and "Do not replace `Promise.allSettled` when partial failure handling is intentional."
+- **Don't promise the saving before measuring it:** "Do not promise a latency drop equal to a helper unless that helper duration was measured", and its verifier rejects a promised "helper/round-trip-sized drop without measured helper or span timing".
+
+## Slow routes, cold starts and wall clock on Vercel
+
+Thresholds from Vercel's vercel-optimize skill, all per 14-day window ([VERCEL-METRICS.md](VERCEL-METRICS.md) has the queries) [Vercel, vercel-optimize, lib/gates/slow-route.mjs, lib/gates/cold-start.mjs, lib/reconcile-candidates.mjs, lib/investigation-brief.mjs, support-topics/]:
+
+- **A slow route is worth the work at** p95 over 500 ms with at least 1,400 invocations, or p95 over 1,500 ms with at least 250. "1.4k/14d is the floor where p95 stabilizes statistically and a 3-5x performance win still pays for engineering time." Rank by p95 times invocations.
+- **A route with more than 50% 5xx is a reliability problem,** not a tuning target: its "latency reflects crash time, not work time". Two more reasons to stop before reading code: the per-route follow-up shows p95 under 500 ms (the broad query misled), or the worst deployment's p95 is at least 1,000 ms and at least twice the next one, which is a deployment regression to triage (it needs 3 or more deployments to tell). 3xx and 4xx slices inflate p95.
+- **CPU against wall clock decides where to look.** "If cpu << latency, the bottleneck is wall-clock / external IO / awaits ... If cpu ≈ latency, look for in-process compute." "When wall-clock latency is much higher than CPU time, check critical-path awaits before blaming rendering or compute." TTFB close to total latency points at streaming earlier or moving work after the response (`after()`, stable since Next.js 15.1.0, https://nextjs.org/docs/app/api-reference/functions/after). "For streaming, SSE, resumable chat ... do not treat high wall-clock duration alone as a bug."
+- **Cold starts count only at volume:** cold share over 40% with at least 1,000 invocations; "30% is the noise floor for serverless without keep-warm", and 1,000 per window "keeps Poisson CI on cold rate at ~±5% near the 40% threshold". Look at module-scope SDK and database client construction, top-level network calls, heavy dependencies and the runtime export; cold starts concentrated on the newest deployment point at a regression (imports, init code, a framework upgrade). "Do not blame cold starts when warm requests are similarly slow. Do not recommend keep-warm traffic or more memory before proving initialization or runtime pressure." (The skill's "Cold starts add 200-800ms per request" has no source; don't quote it.)
+- **Slow upstreams:** host p75 over 2,000 ms with at least 500 calls, ranked by p75 times calls ("100k-call/2.1s outranks 1k-call/8s"). A wide p95 to p99 spread means a flaky upstream; a narrow one, slow by design. "Do not blame Vercel runtime when the upstream owns the latency."
+- **Errors cost money too:** "Errored function invocations still bill at full duration." Flag a route at more than 250 5xx, or at least 1,000 requests with over 1% 5xx; name a runtime cause only with log or stack evidence.
+
 ## Cache last
 
 Only after the above. A cache adds stale data and a second source of truth. Good candidates are read often and change rarely; decide how long a value may be stale and how it gets cleared before adding it ([CACHING.md](CACHING.md)).
@@ -81,6 +127,7 @@ Steering an agent through a push like this:
 
   Measured: message-tree assembly cut instructions 48% and wall-clock time 78% (4.6x faster); a status-line scanner cut instructions 31% and wall-clock time 44% (1.8x). Counts under Valgrind with `node --predictable`; timings on the same benchmark under plain node with the JIT warm.
 - **Ratchet each proven count in CI:** any PR that raises the count fails, and a daily job lowers the ceiling whenever the count goes down, so a win doesn't decay in a fast-moving codebase.
+- **The other view: a wall-clock gate that survives noise.** React Doctor's base-against-head parity check gates on milliseconds, under conditions that remove most of the noise [React Doctor, run-parity]: both sides run in one sandbox, sequentially ("Use `auto` or `parallel` only for diagnostic-only parity where timing evidence will be discarded"), over the same pinned inputs, with identical coverage and complete reports, or the result is invalid (exit 2). The thresholds need a ratio and an absolute delta together: projects with a base under 1,000 ms are ignored; one project regresses at a ratio of 1.5 or more **and** a delta of 2,000 ms or more; the aggregate regresses only with 10 or more eligible projects, a ratio of 1.2 or more **and** a delta of 10,000 ms or more. It reports the median and p95 per-project ratio and echoes the thresholds in the output; exit 0 within thresholds, 1 for a regression, 2 for invalid evidence. Tests: 10 s to 16 s fails; 0.5 s to 2 s is ignored as too small; ten projects each 25% slower fail on the aggregate although none fails alone. "Do not project a speedup from samples", and "Inspect the emitted measurements before attributing a cause." Both views stand: deterministic counts for a per-PR CI gate; wall clock only with paired sequential runs and these floors.
 
 ## Lab to field, one slow spot at a time
 

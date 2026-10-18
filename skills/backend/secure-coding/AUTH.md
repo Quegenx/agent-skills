@@ -70,6 +70,58 @@ app.post("/orders/:id/refund", requirePermission(Permission.OrdersRefund), refun
 - **Supabase:** keep roles and permissions in tables and check them in RLS policies or in a custom access token hook that adds them as claims. Authorization data goes in `app_metadata` (only the server can write it), never `user_metadata`, which the user can edit.
 - **Builder access to the deploy platform comes from the company directory** once non-engineers deploy agents: company-managed accounts through single sign-on rather than personal ones, access added and removed by directory sync from the identity provider's assignments, and internal tools private by default (Rillet on Vercel, in Vercel's write-up).
 
+## Next.js Server Actions
+
+[Vercel, react-best-practices] Server Actions (functions marked `"use server"`, stable since Next.js 14, https://nextjs.org/blog/next-14) "are exposed as public endpoints, just like API routes. Always verify authentication and authorization **inside** each Server Action - do not rely solely on middleware, layout guards, or page-level checks, as Server Actions can be invoked directly." The rule quotes Next.js as "Treat Server Actions with the same security considerations as public-facing API endpoints"; the current docs say it this way: "you should still treat Server Actions as reachable via direct POST requests and verify authentication and authorization inside each one", and "A page-level authentication check does not extend to the Server Actions defined within it. Always re-verify inside the action" (https://nextjs.org/docs/app/guides/data-security).
+
+Validate, then authenticate, then authorize, then mutate [Vercel, react-best-practices]:
+
+```typescript
+'use server'
+
+import { verifySession } from '@/lib/auth'
+import { z } from 'zod'
+
+const updateProfileSchema = z.object({
+  userId: z.string().uuid(),
+  name: z.string().min(1).max(100),
+  email: z.string().email()
+})
+
+export async function updateProfile(data: unknown) {
+  // Validate input first
+  const validated = updateProfileSchema.parse(data)
+
+  // Then authenticate
+  const session = await verifySession()
+  if (!session) {
+    throw new Error('Unauthorized')
+  }
+
+  // Then authorize
+  if (session.user.id !== validated.userId) {
+    throw new Error('Can only update own profile')
+  }
+
+  // Finally perform the mutation
+  await db.user.update({
+    where: { id: validated.userId },
+    data: {
+      name: validated.name,
+      email: validated.email
+    }
+  })
+
+  return { success: true }
+}
+```
+
+From the Next.js data-security guide (https://nextjs.org/docs/app/guides/data-security):
+
+- **Action IDs are not a lock.** Next.js creates encrypted, non-deterministic action IDs during compilation, cached for at most 14 days and regenerated on a new build, and removes unused actions from the client bundle. This "reduces the risk in cases where an authentication layer is missing"; it does not replace the check.
+- **Origin check:** Next.js compares the `Origin` header to the `Host` (or `X-Forwarded-Host`) and aborts on a mismatch. Behind a proxy on another domain, list it in `experimental.serverActions.allowedOrigins` in `next.config.js` (`allowedOrigins: ['my-proxy.com']`).
+- **No mutations during render:** "Mutations (e.g. logging out users, updating databases, invalidating caches) should never be a side-effect, either in Server or Client Components."
+
 ## Passwords
 
 - **Hash with a slow, salted algorithm** built for passwords: Argon2id (preferred) or bcrypt, through a maintained library; never a plain or fast hash.

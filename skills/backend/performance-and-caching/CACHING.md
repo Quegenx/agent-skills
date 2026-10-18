@@ -1,5 +1,7 @@
 # Caching
 
+**Contents:** [Decide first](#decide-first) · [Keys](#keys) · [Content-addressed keys](#content-addressed-keys) · [Stampede (many concurrent misses)](#stampede-many-concurrent-misses) · [Invalidation across instances](#invalidation-across-instances) · [Lookup data: how much to fetch per miss](#lookup-data-how-much-to-fetch-per-miss) · [Layers in a TypeScript stack](#layers-in-a-typescript-stack) · [CDN caching on Vercel](#cdn-caching-on-vercel) · [Module-level caches](#module-level-caches) · [Caching browser storage reads](#caching-browser-storage-reads) · [Caching as a wrapper](#caching-as-a-wrapper) · [Prove it](#prove-it)
+
 ## Decide first
 
 For each cache, write down:
@@ -164,6 +166,108 @@ export function lookupInShard(shard: { index: number[]; data: Buffer }, key: str
 - **Server memory:** fine for small, read-mostly data on one instance; remember each serverless instance has its own and may start cold.
 - **Redis / a shared cache:** for data shared across instances, with expiry on every key and the invalidation pattern above.
 
+## CDN caching on Vercel
+
+Facts from https://vercel.com/docs/caching/cache-control-headers (checked 2026-10-18); the safety rules come from Vercel's vercel-optimize skill [Vercel, vercel-optimize, support-topics/cdn-cache-auth-safety.md, lib/verify-claim.mjs, lib/gates/uncached-route.mjs]. Finding the uncached routes is in [VERCEL-METRICS.md](VERCEL-METRICS.md#the-query-catalog).
+
+- **Which header wins:** `Vercel-CDN-Cache-Control`, then `CDN-Cache-Control`, then `Cache-Control`. With no header the default is `public, max-age=0, must-revalidate`; `private` stops CDN caching; `s-maxage` runs from 1 s to 31536000 s. When `Cache-Control` is the only cache header, Vercel strips `s-maxage` before the response reaches the browser; `stale-while-revalidate` and `stale-if-error` are consumed "for all requests".
+- **Documented starting values:** the same SSR output for everyone `max-age=0, s-maxage=86400`; semi-static `max-age=120, s-maxage=86400`; per-user `private, max-age=0`; content-hashed assets `max-age=31536000, immutable`.
+- **`stale-if-error` works; `proxy-revalidate` doesn't.** "When you set the `stale-if-error` HTTP Cache-Control extension, the CDN serves a stale response when an error is encountered ... Vercel's proxy consumes `stale-if-error` for all requests." "`proxy-revalidate`: This directive is currently not supported." The skill's sanitizer strips both (and `must-revalidate`) as directives "Vercel's CDN silently ignores"; only `proxy-revalidate` is documented as unsupported, and `must-revalidate` is in Vercel's own default.
+- **Safety before speed.** The route must be a public, cacheable GET before it gets a shared-cache header: "rule out cookies, sessions, authorization, draft state, and user-specific data." "Do not cache mutations, dashboards, account data, request-personalized responses, or routes whose value changes per viewer. Do not mix `private` with shared-cache directives." A cache change names its "mechanism, scope, TTL/freshness, and `Vary`"; "If the right policy is `no-store`", report no change rather than a weaker header.
+- **Mutation routes are not cache misses.** Flag a route as uncached only with more than 500 requests, a hit rate under 50% and a GET share over 20% in the window: "a route that's >80% POST/PUT/DELETE is a mutation endpoint where 0% cache is correct". STALE, REVALIDATED and BYPASS count as not-HIT. Routes named like login, logout, auth, account, dashboard, checkout, cart, profile, session or me are kept out of cache candidates only; "errors/slowness on auth routes still warrant investigation."
+- **`Vary` by what the output depends on, at low cardinality.** Output that changes by geography varies on a coarse header (`X-Vercel-IP-Country`, `X-Vercel-IP-Country-Region`, `X-Vercel-IP-City`), never on `X-Vercel-IP-Latitude`, `X-Vercel-IP-Longitude` or `X-Vercel-IP-Postal-Code` ("very high-cardinality CDN cache keys"). Vercel's docs add that a `Vary` on `Cookie` isn't cacheable.
+- **404s stay uncached or short.** A change that puts `s-maxage` on every response, 404 included, fails. A not-found branch sets `status: 404` ("a markdown/body-only Response defaults to 200"), and unexpected errors stay 5xx: a fix "must not convert unexpected exceptions into not-found".
+- **`immutable` only on a URL whose bytes can't change:** a content-hashed URL, or scope it to `Vercel-CDN-Cache-Control` so the browser never holds it forever.
+- **Error-heavy routes:** a cache change on a route with more than 20% function 5xx must exclude or acknowledge the error traffic. Reject a header with an empty directive (a trailing comma).
+- **Conditional requests:** "Ensure your Function supports `If-Modified-Since` or `ETag` to prevent duplicate data transmission" (on by default for Next.js applications), per https://vercel.com/docs/manage-cdn-usage.
+
+### `cacheLife` in Next.js 16: what it proves and what it doesn't
+
+`cacheLife` and `cacheTag` became stable in Next.js 16.0.0, with Cache Components (https://nextjs.org/docs/app/api-reference/functions/cacheLife, checked 2026-10-18).
+
+- **It does not set the CDN header.** "The `stale` property controls the Client Cache, not the `Cache-Control` header"; "The server sends the stale time via the `x-nextjs-stale-time` response header". Don't claim a missing `cacheLife` alone makes a route run per request "without production header evidence" [Vercel, vercel-optimize, lib/verify-claim.mjs]. Check the response headers in production.
+- **Profiles, the implicit `default` and the one-call rule** are in [NEXTJS.md](../../frontend/react/NEXTJS.md#cachelife).
+- **A longer lifetime on content-derived data needs its invalidation path.** Lengthening to `hours`, `days`, `weeks` or `max` requires a `cacheTag` and a matching `revalidateTag(tag, profile)` or `updateTag(tag)` call in the repo for the exact tags, literal or through a config `tags: [...]` array; "near-matches do not count", and "A cacheTag() in the cached function is not proof that CMS edits invalidate it". [Vercel, vercel-optimize, lib/verify-claim.mjs, support-topics/isr-revalidation-static-generation.md] The `revalidateTag` forms are in [NEXTJS.md](../../frontend/react/NEXTJS.md#cachetag-updatetag-and-revalidatetag).
+- **A clock inside a cached scope costs ISR writes.** vercel-optimize's scanner flags `new Date()`, `Date.now()` or `Math.random()` in a `'use cache'` file: a timestamp baked into the cached output "forces a fresh ISR write on every regeneration even when the underlying data is unchanged". Its fix: a build-time constant or a client component, and "Do not pass dates as arguments to `'use cache'` functions" [Vercel, vercel-optimize, lib/scanners/use-cache-date-stamp.mjs].
+  The Next.js docs allow it: "you can **cache the result** so all users see the same value until revalidation" (`'use cache'` with `crypto.randomUUID()`), or call `await connection()` inside `<Suspense>` for a value per request (https://nextjs.org/docs/app/getting-started/caching#random-values-and-timestamps). So the scanner's line is a cost warning, not a correctness rule ([NEXTJS.md](../../frontend/react/NEXTJS.md#use-cache)).
+- **`'use cache'` is in memory per instance** on serverless; `'use cache: remote'` and the rest are in [NEXTJS.md](../../frontend/react/NEXTJS.md#use-cache).
+
+## Module-level caches
+
+A `Map` at module scope caches a function's results across calls, in render, utilities and event handlers alike ("Use a Map (not a hook) so it works everywhere") [Vercel, vercel-react-best-practices, js-cache-function-results.md]:
+
+```typescript
+// Module-level cache
+const slugifyCache = new Map<string, string>()
+
+function cachedSlugify(text: string): string {
+  if (slugifyCache.has(text)) {
+    return slugifyCache.get(text)!
+  }
+  const result = slugify(text)
+  slugifyCache.set(text, result)
+  return result
+}
+```
+
+For a single value, a module variable with a reset where the input changes:
+
+```typescript
+let isLoggedInCache: boolean | null = null
+
+function isLoggedIn(): boolean {
+  if (isLoggedInCache !== null) {
+    return isLoggedInCache
+  }
+  
+  isLoggedInCache = document.cookie.includes('auth=')
+  return isLoggedInCache
+}
+
+// Clear cache when auth changes
+function onAuthChange() {
+  isLoggedInCache = null
+}
+```
+
+- **Bound it.** The source's `Map` grows with every distinct input; this file's rule stands ("Bound the memory: an LRU or maximum entry count", in [Stampede](#stampede-many-concurrent-misses)).
+- **On the server, module scope is shared between requests.** On Vercel's Fluid compute, "multiple invocations can share the same physical instance (a global state/process) concurrently" (https://vercel.com/docs/fluid-compute). Audit "module-scoped mutable state, lazy singletons holding per-user data, globals keyed on per-request inputs" [Vercel, vercel-optimize, support-topics/fluid-compute-caveats.md]: a module cache is for values that are the same for every user, or its key includes the user (rule 5 in [SKILL.md](SKILL.md)).
+
+## Caching browser storage reads
+
+"`localStorage`, `sessionStorage`, and `document.cookie` are synchronous and expensive. Cache reads in memory." Write through, and "If storage can change externally (another tab, server-set cookies), invalidate cache" [Vercel, vercel-react-best-practices, js-cache-storage.md]. The source's "Correct (Map cache)" and "invalidate on external changes" blocks, joined:
+
+```typescript
+const storageCache = new Map<string, string | null>()
+
+function getLocalStorage(key: string) {
+  if (!storageCache.has(key)) {
+    storageCache.set(key, localStorage.getItem(key))
+  }
+  return storageCache.get(key)
+}
+
+function setLocalStorage(key: string, value: string) {
+  localStorage.setItem(key, value)
+  storageCache.set(key, value)  // keep cache in sync
+}
+
+window.addEventListener('storage', (e) => {
+  if (e.key) storageCache.delete(e.key)
+})
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    storageCache.clear()
+  }
+})
+```
+
+- **The staleness budget** (rule 4 in [SKILL.md](SKILL.md)) is set by the two listeners: another tab's write fires `storage`, and the whole cache clears when the tab becomes visible again.
+- **Wrap the storage calls in try/catch** where storage can be blocked. The source's companion rule (client-localstorage-schema) gives the reason as "`getItem()` and `setItem()` throw in incognito/private browsing (Safari, Firefox)". MDN (https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) lists `SecurityError` for an invalid origin or when "the user has configured the browsers to prevent the page from persisting data", and says of private browsing only that its data "is cleared when the last 'private' tab is closed". Blocked storage is the documented reason to catch.
+- **The source's cookie parser** (`document.cookie.split('; ').map(c => c.split('='))`) keeps only the first two parts of each `split('=')`, so a cookie value that contains `=` comes back cut short.
+- landing-page-ui does a guarded read in its theme bootstrap instead (`try{stored=localStorage.getItem(...)}catch{}`, [site-theme.ts](../../frontend/landing-page-ui/reference/website/widgets/header/theme/site-theme.ts)).
+
 ## Caching as a wrapper
 
 Add caching (and timing, retries) around a function or an object rather than inside it, so the original stays coherent and each concern can be removed alone. For an object, the wrapper implements the same interface and delegates (`const members: MemberRepository = cachedMembers(dbMembers, cache)`), and the composition happens in one place where dependencies are wired, so callers never know:
@@ -180,3 +284,4 @@ Order matters: here timing wraps the cache, so it records hits and misses; rever
 - Send 50 concurrent misses for one key: the source is called once. Make the refresh fail: later requests recover and no key stays locked.
 - Cache a rendered reading-list page by content, template version and locale: change each one and confirm the key changes; confirm old entries expire.
 - Warm a key on two instances, disconnect one instance's invalidation listener, update the source: show that its staleness ends at the local expiry or on reconnect.
+- On Vercel, read a cached route's response headers in production: the CDN serves it as HIT on repeat requests, a 404 from the same route is not cached long, and a lengthened `cacheLife` has a matching `revalidateTag` or `updateTag` call for each of its tags.

@@ -8,7 +8,11 @@ interface CookieConsentStorage {
   setItem: (key: string, value: string) => void;
 }
 
-export const cookieConsentStorageKey = "app-cookie-consent";
+/** Versioned so a future change of the stored value can move to a new key. */
+export const cookieConsentStorageKey = "app-cookie-consent:v1";
+
+/** The unversioned key earlier visits wrote; read so their choice still counts. */
+export const legacyCookieConsentStorageKey = "app-cookie-consent";
 
 /**
  * The visitor's stored cookie choice.
@@ -19,9 +23,17 @@ export const cookieConsentStorageKey = "app-cookie-consent";
 export const getCookieConsent = (
   storage: CookieConsentStorage
 ): CookieConsentDecision | null => {
-  const decision = storage.getItem(cookieConsentStorageKey);
+  // Storage throws when the browser blocks it (privacy settings, sandboxed
+  // frames); the visitor then counts as not having chosen.
+  try {
+    const decision =
+      storage.getItem(cookieConsentStorageKey) ??
+      storage.getItem(legacyCookieConsentStorageKey);
 
-  return decision === "accepted" || decision === "denied" ? decision : null;
+    return decision === "accepted" || decision === "denied" ? decision : null;
+  } catch {
+    return null;
+  }
 };
 
 /**
@@ -34,5 +46,9 @@ export const setCookieConsent = (
   storage: CookieConsentStorage,
   decision: CookieConsentDecision
 ) => {
-  storage.setItem(cookieConsentStorageKey, decision);
+  try {
+    storage.setItem(cookieConsentStorageKey, decision);
+  } catch {
+    // Blocked storage: the banner keeps the choice for this page view.
+  }
 };

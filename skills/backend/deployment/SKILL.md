@@ -1,6 +1,6 @@
 ---
 name: deployment
-description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups and signed releases. Use when writing a Dockerfile or compose file, moving hosts, setting up backups or verifying release artifacts."
+description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups, signed releases and npm packages. Use when writing a Dockerfile or compose file, moving hosts, setting up backups, verifying release artifacts or publishing an npm package."
 ---
 
 # Deployment
@@ -11,7 +11,8 @@ Build one artifact, run the same artifact everywhere, and make every change of w
 |---|---|
 | A Dockerfile, image size and security, a local stack with Compose, migrations in containers | [CONTAINERS.md](CONTAINERS.md) |
 | Moving a site or app to a new host or DNS provider; backups | below |
-| Provenance, keyless signing and verification before promotion, offline verification, release transparency | [RELEASES.md](RELEASES.md) |
+| Provenance, keyless signing and verification before promotion, offline verification, release transparency, cached build outputs | [RELEASES.md](RELEASES.md) |
+| Creating a monorepo npm package, its exports map, release notes and versions, trusted publishing from CI | [NPM-PACKAGES.md](NPM-PACKAGES.md) |
 
 ## The rules
 

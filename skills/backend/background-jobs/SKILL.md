@@ -26,6 +26,8 @@ For jobs that call paid AI APIs, also read the `ai-features` skill's AI-JOBS.md;
 6. **Uncertain is not acquired.** If you can't confirm you hold a lock or that a side effect didn't happen, act as if you don't hold it and as if it might have happened.
 7. **Every failure has a defined outcome** written down: skipped, retried later, or rejected with a visible reason. Never silently dropped.
 
+**Next.js `after()` against rule 1.** [Vercel, react-best-practices] `after()` from `next/server` schedules work "after a response is sent", so logging and analytics don't block it; the rule lists "Analytics tracking", "Audit logging", "Sending notifications", "Cache invalidation" and "Cleanup tasks" as uses. Next.js documents it as stable since v15.1.0, usable in Server Components (including `generateMetadata`), Server Functions, Route Handlers and Proxy, "executed even if the response didn't complete successfully", and Server Components can't read `cookies` or `headers` inside it, so read them before and pass the values in (https://nextjs.org/docs/app/api-reference/functions/after). Rule 1 here stands: the `after()` docs promise no retry or persistence, so it counts as a fire-and-forget promise; keep it for work you can afford to lose (logs, analytics), and put anything that must happen (a notification the user expects, an audit record you're required to keep) in a durable job ([WORKERS.md](WORKERS.md), [DURABLE-WORKFLOWS.md](DURABLE-WORKFLOWS.md)).
+
 ## Prove it
 
 For any job or lock you build, test on purpose: a restart right after accepting; a crash mid-job; two workers or instances at once; the lock backend unavailable; the same message delivered twice. For each, write down what the user sees and confirm the invariant held.

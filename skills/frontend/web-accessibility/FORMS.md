@@ -67,6 +67,8 @@ A valid `autocomplete` token on fields about the user is a WCAG requirement (1.3
 
 Prefix with a section where relevant: `autocomplete="shipping street-address"`.
 
+[Vercel, web-design-guidelines] puts "`autocomplete="off"` on non-auth fields to avoid password manager triggers". It is a hint, not a switch. MDN: it tells the browser not to save the data, but "some browsers make exceptions for special cases, such as prompting users to save passwords", and "many modern browsers do not support `autocomplete="off"` for login fields"; "If a browser keeps on making suggestions even after setting autocomplete to off, then you have to change the `name` attribute"; a page where a user sets another person's password uses `autocomplete="new-password"`, which "is a hint to browsers; some may not comply with it". Turning it off on the form still meets 1.3.5 when the fields about the user keep their own `autocomplete` tokens ([MDN: How to turn off form autocompletion](https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides/Turning_off_form_autocompletion)).
+
 Correct `type` and `inputmode` pick the right mobile keyboard:
 
 | Input | Use |
@@ -87,7 +89,7 @@ Never block paste; users paste passwords and one-time codes.
 - Keep submit enabled until the request starts. While it runs, show a spinner *beside the original label*: "Save" with a spinner, not a bare spinner. The label is what tells assistive tech which button is busy.
 - Mark the pending button `aria-disabled="true"` and ignore repeat clicks in the handler. Native `disabled` on the focused button drops focus to `<body>`.
 - Announce results. Success goes through a polite live region. On failure, focus the first invalid field, which is itself the announcement.
-- Warn on unsaved changes before navigation. A re-render or hydration must never reset a field's typed value or move focus out of it.
+- Warn on unsaved changes before navigation: "`beforeunload` or router guard" [Vercel, web-design-guidelines]. A re-render or hydration must never reset a field's typed value or move focus out of it.
 
 app-ui does this instead: the pending "button is disabled and `aria-busy`", and "A form in flight disables its `fieldset`" ([app-ui/STATES.md](../app-ui/STATES.md)).
 

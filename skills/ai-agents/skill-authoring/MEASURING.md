@@ -47,6 +47,7 @@ Usage logging shows which skills are popular or under-triggering; an eval of the
   Require stable evidence, explicit scope and exceptions, and an approver.
   ```
 - **Keep a decision log:** record "what changed, why, and which source supported it. Treat new rules as product changes, reviewing and testing each one, and removing those that stop helping."
+- **An earlier report is a lead, not a result:** "Do not treat prior reviews or reports as ground truth. Use them as leads and reverify every claim against the current benchmark revision." "Always recompute before relying on a prior summary." [React Doctor, benchmark-fp-fn-audit]
 - **Count the complaint after the fix:** "count how often each kind of complaint shows up in similar work over time. Once we encode a fix, that count should start falling. When it does not, something about the fix is wrong": the rule is unclear, it isn't loading when needed, the stylesheet lacks a primitive that can express it, or it needs a deterministic check instead of prose. "A passing evaluation matters less if people keep correcting the same mistake in production."
 
 ## Prove it

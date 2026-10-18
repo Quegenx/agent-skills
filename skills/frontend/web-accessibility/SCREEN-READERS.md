@@ -68,6 +68,8 @@ Rules for reliable announcements:
 
 For loading states: set `aria-busy="true"` on the updating region, announce "Loading..." politely, then announce the outcome ("Loaded, 12 results").
 
+A status animation drawn on a `<canvas>` gets `role="img"` and a label for its state ("Searching…", "Clover bot, working"); pass a label that names the real task, or `aria-hidden="true"` when the text beside it already says it, "so screen readers do not read them twice". The canvas is not a live region: "If the status change must be announced, put the text in your own `role="status"` element." [Libraries.dev]
+
 A looping visual (a thinking indicator whose words cycle) stays `aria-hidden`, and screen readers hear one static "Thinking..." under `role="status"`; a copy button keeps its label and says "Copied" through a visually hidden `aria-live="polite"` span. [fluid-functionalism]
 
 ## aria-hidden
@@ -91,6 +93,8 @@ Choose by purpose, not by what the image looks like:
 | Complex (chart, diagram) | Short summary in `alt`, full data as a table or text nearby | `alt="Revenue by quarter, described below"` |
 
 A missing `alt` is worse than an empty one, because screen readers fall back to reading the file name.
+
+An image painted into a `<canvas>` (a generation reveal, a shader effect) has no alt text: "If the result matters to screen readers, render a visually hidden description or an `<img>` elsewhere." [Libraries.dev]
 
 SVG: decorative gets `aria-hidden="true"`; meaningful inline SVG gets `role="img"` plus a name; `<img src="icon.svg" alt="...">` is the most reliable delivery for simple cases. The full treatment is in [svg/ACCESSIBILITY.md](../svg/ACCESSIBILITY.md).
 
