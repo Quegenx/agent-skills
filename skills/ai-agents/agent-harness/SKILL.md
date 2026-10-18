@@ -9,8 +9,6 @@ A model is a probability, not code: the same conversation can go another way on 
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
-| Apache 2.0 license for adapted Caveman guidance | [LICENSE-caveman.txt](LICENSE-caveman.txt) |
 | The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their routing, changing a prompt, writing for the model that reads it | [PROMPT.md](PROMPT.md) |
 | Code that backs the rules: gates on the finished reply, tools that refuse, the reply check, sanitizers that rewrite or drop an answer, a version-gated citation allow-list, already-on project facts, verbatim printing, the renderer as the last check, authorization classifiers, loop breakers | [CHECKS.md](CHECKS.md) |
 | Tools, picking tools by search, outside (MCP) tools, history, compaction, memory, retries and untrusted content | [TOOLS-AND-MEMORY.md](TOOLS-AND-MEMORY.md) |

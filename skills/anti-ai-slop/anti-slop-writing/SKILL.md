@@ -9,7 +9,6 @@ A sharp human editor, not a humanizer. The job is to make the writing clearer an
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | Name a pattern, quote it, fix it: structure, openers and closers, vocabulary, honesty, formatting, second-generation tells, social posts and email, what is not a tell | [TELLS.md](TELLS.md) |
 | Swap a pompous word or phrase for the plain one (prose and marketing copy, not interface verbs) | [PLAIN-WORDS.md](PLAIN-WORDS.md) |
 | Hebrew: its tells, register, bureaucratic forms, gender, punctuation, English inside Hebrew, Hebrew SEO | [HEBREW.md](HEBREW.md) |

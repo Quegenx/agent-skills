@@ -11,7 +11,6 @@ Find where observed behavior first departs from its contract before choosing a r
 |---|---|
 | Classify the request, build a reproducer, trace the cause and choose a repair | [SKILL.md](SKILL.md) |
 | Test a falsifiable claim, compare evidence and state a verdict | [VERIFICATION.md](VERIFICATION.md) |
-| Source copyright and permission notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

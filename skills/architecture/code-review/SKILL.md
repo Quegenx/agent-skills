@@ -20,7 +20,6 @@ When agents write the code, the number of changes goes up fast, and manual, line
 | Receiving feedback: verifying a suggestion, preserving accepted decisions, resolving dependent uncertainty and correcting evidence-based pushback | [RECEIVING-FEEDBACK.md](RECEIVING-FEEDBACK.md) |
 | A repository audit: intent, expected load, coverage, confidence and fix risk, grounded direction options and selected plan artifacts | [REPOSITORY-AUDIT.md](REPOSITORY-AUDIT.md) |
 | Operating or migrating an explicitly selected Ultracite setup: installed commands, backend presets, doctor limits and conditional v5 to v8 migrations | [ULTRACITE.md](ULTRACITE.md) |
-| Reusing the adapted source material: copyright, permission and warranty notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

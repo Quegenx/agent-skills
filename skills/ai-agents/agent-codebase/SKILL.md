@@ -9,7 +9,6 @@ An agent grows fast: tools, gates, notes, memory, playbooks. Without a fixed pla
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | What each module owns and its contract: the factory, step preparation, the tool runtime, a tool file, turn modules, the transport pipeline, memory, skills, seams | [MODULES.md](MODULES.md) |
 | What the agent does inside these modules (gates, prompt, tools, runtime) | the `agent-harness` skill |
 | The eval suite that drives the agent through these seams | the `agent-evals` skill |

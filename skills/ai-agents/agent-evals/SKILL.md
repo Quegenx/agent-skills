@@ -9,7 +9,6 @@ An agent is probabilistic, so a test is a sample: every case runs several times,
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | The harness: end result, path and part checks, graph outcomes/node diagnostics, explicit trajectory comparison modes, cases and splits, simulated users, fixtures, records, fingerprints, repetitions and snapshots | [HARNESS.md](HARNESS.md) |
 | Grading: code checks, mechanical checks of the claims in an agent's findings, a rubric scored in code with a 0.55 floor, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
 | Auditing an eval (including whether it can tell a better agent from a worse one), release gates and the baseline, gates that lie, gating an agent's findings (re-run thresholds, hard triggers, accepting a re-run), production sampling and alerts | [GATES.md](GATES.md) |

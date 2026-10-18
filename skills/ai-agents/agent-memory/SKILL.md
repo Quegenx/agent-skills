@@ -9,7 +9,6 @@ Memory is what lets the next conversation start from what the last ones establis
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | Writing memory: what to extract, who said it, grounding dates, preference atoms from parent-conversation evidence, artifact choice, duplicates, links and consolidation | [WRITE.md](WRITE.md) |
 | Reading it back: the always-on profile, search on demand, ranking, time-aware retrieval, token budgets, where memory goes in the prompt | [READ.md](READ.md) |
 | Keeping it true: change over time, contradictions, expiry, forgetting and erasure, what users see and correct, scopes and privacy, evals | [LIFECYCLE.md](LIFECYCLE.md) |

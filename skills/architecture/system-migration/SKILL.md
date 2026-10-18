@@ -11,7 +11,6 @@ Change what runs underneath while the business keeps running. A rewrite fails wh
 |---|---|
 | Incremental ports, legacy rewrites, hot-path switches and dependency replacement | [SKILL.md](SKILL.md) |
 | jscpd function maps, unmatched capabilities, source-test coverage maps and independent behavior evidence | [FUNCTION-PARITY.md](FUNCTION-PARITY.md) |
-| Source copyright and permission notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## Incremental ports (new language, runtime or framework)
 

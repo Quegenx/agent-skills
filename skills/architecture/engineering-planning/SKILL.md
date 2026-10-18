@@ -16,7 +16,6 @@ Resolve the uncertainty that matters to the requested outcome, then choose the s
 | Prepare an implementation plan for an executor without conversation history | [HANDOFF-PLANS.md](HANDOFF-PLANS.md) |
 | Develop and audit a consequential proposal | [RFC.md](RFC.md) |
 | Guide a human through steps requiring their access or judgment | [MANUAL-STEPS.md](MANUAL-STEPS.md) |
-| Source copyright and permission notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

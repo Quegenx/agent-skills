@@ -20,7 +20,6 @@ The macro decision constrains how modules talk to each other. The micro decision
 | Scaling a monolith, deciding to split, extracting a module into a service, strangler-fig migration off legacy code | [EVOLVE.md](EVOLVE.md) |
 | Answering a logic question with a portable model, visible state and guided scenarios | [PROTOTYPES.md](PROTOTYPES.md) |
 | Deep module interfaces and dependency seams | [DEEP-MODULES.md](../refactoring/DEEP-MODULES.md) |
-| Copyright and permission notices for adapted source material | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 Related: bounded contexts and context maps are in the `domain-modeling` skill's STRATEGIC.md; domain vs integration events, sagas and CQRS in its EVENTS.md; outbox, inbox and brokers in the `messaging` skill; import-graph rules and breaking cycles in the `refactoring` skill's DEPENDENCIES.md; whole-system components (load balancers, caches, CDNs, queues) in the `system-design` skill.
 

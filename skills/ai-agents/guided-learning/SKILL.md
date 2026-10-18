@@ -12,7 +12,6 @@ Build lessons around what the learner wants to be able to do, using trusted mate
 | Establish the teaching loop and choose the next lesson | [SKILL.md](SKILL.md) |
 | Maintain the mission, resources, learning evidence and workspace | [WORKSPACE.md](WORKSPACE.md) |
 | Build short lessons, practice, reference sheets and reusable assets | [LESSONS.md](LESSONS.md) |
-| Source copyright and permission notice | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

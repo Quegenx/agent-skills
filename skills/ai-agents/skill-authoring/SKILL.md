@@ -18,7 +18,6 @@ Branch-triggered references and observable completion also draw on [mattpocock/s
 | Sharing it: checked into the repo or a plugin marketplace, a public registry or a single public URL, an uploaded ZIP for Claude, a skill handed to an audience, skills and docs bundled inside a package, running a marketplace, composing skills (a missing dependency is a stop, a manual-only chain of skills) | [DISTRIBUTION.md](DISTRIBUTION.md) |
 | Knowing how it does: logging skill usage, under-triggering, evals with and without the skill, raw answers saved before grading, routing negatives and unused queries, pressure checks, frozen scenarios, blind A/B and hillclimbing, keeping it current from real use, earlier reports as leads | [MEASURING.md](MEASURING.md) |
 | Turning an owned course, webinar series, podcast or newsletter archive into a skill: the pilot, the source register and rights, lesson and reference layers, claim records, the question router, context budget, the eight answer tests, packaging and an honest status table | [CONTENT-TO-SKILL.md](CONTENT-TO-SKILL.md) |
-| Reusing the adapted source material: copyright, permission and warranty notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 
 ## The rules
 

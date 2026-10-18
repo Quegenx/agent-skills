@@ -1,6 +1,6 @@
 # Measuring context and cost
 
-Reduce what an agent repeatedly reads while preserving the evidence and constraints it needs. This file adapts and paraphrases guidance from [JuliusBrussee/caveman, caveman-compress, caveman-learn, caveman-stats, caveman-evidence-review and caveman-optimize]; its implementation is not copied. Attribution and the Apache 2.0 terms are in [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) and [LICENSE-caveman.txt](LICENSE-caveman.txt). [PROMPT.md](PROMPT.md#measure-what-is-sent) owns rendered-request measurement and caching; this file owns the evidence behind a claimed reduction and the recovery contract.
+Reduce what an agent repeatedly reads while preserving the evidence and constraints it needs. This file adapts and paraphrases guidance from [JuliusBrussee/caveman, caveman-compress, caveman-learn, caveman-stats, caveman-evidence-review and caveman-optimize]; its implementation is not copied. [PROMPT.md](PROMPT.md#measure-what-is-sent) owns rendered-request measurement and caching; this file owns the evidence behind a claimed reduction and the recovery contract.
 
 ## State what the number measures
 

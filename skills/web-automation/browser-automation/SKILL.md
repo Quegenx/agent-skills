@@ -9,7 +9,6 @@ An agent reads the page as an accessibility-tree snapshot with element refs, act
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | The snapshot, ref, act loop; waits; failure heuristics; the `browse` and `agent-browser` CLIs | [SNAPSHOT-AND-ACT.md](SNAPSHOT-AND-ACT.md) |
 | Local, attached or cloud browser; matching the right page, CDP limits, stopping on blocks, cloud sessions and keep-alive | [LOCAL-AND-CLOUD.md](LOCAL-AND-CLOUD.md) |
 | Reusing a signed-in session: exporting cookies, persistent contexts, scheduled jobs | [SIGNED-IN-SESSIONS.md](SIGNED-IN-SESSIONS.md) |

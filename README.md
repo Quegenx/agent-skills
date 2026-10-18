@@ -270,5 +270,3 @@ Marketing, SEO and GEO for web and SaaS products, from Corey Haines's marketings
 ## Licences
 
 Code copied from other projects keeps its licence file beside the copy (`LICENSE-*.txt` in the folder that holds it, and `skills/videos/seek-engine/templates/isokit/LICENSE`).
-
-Adapted source workflows retain their notices in each receiving skill's `LICENSE-SOURCES.txt`; agent-harness also carries `LICENSE-caveman.txt`. Google-derived documentation keeps its official attribution and licence scope beside the adapted prose.

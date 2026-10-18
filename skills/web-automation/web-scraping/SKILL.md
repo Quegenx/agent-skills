@@ -9,7 +9,6 @@ There are three tiers: a plain HTTP fetch is fast and cheap, a browser is slower
 
 | The job | Read |
 |---|---|
-| Source attribution and applicable license notices | [LICENSE-SOURCES.txt](LICENSE-SOURCES.txt) |
 | Picking a tier, plain fetch, browser fetch, timeouts, redirects and TLS, sessions, XHR capture | [FETCHING.md](FETCHING.md) |
 | Finding URLs with a search API before fetching them | [WEB-SEARCH.md](WEB-SEARCH.md) |
 | Fetched content as untrusted input: sanitizing, indexed evidence corpora, provenance, partial/inferred status and corpus versus source-site pagination | [UNTRUSTED-CONTENT.md](UNTRUSTED-CONTENT.md) |
