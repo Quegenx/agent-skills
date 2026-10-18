@@ -9,7 +9,7 @@ Build one artifact, run the same artifact everywhere, and make every change of w
 
 | The job | Read |
 |---|---|
-| A Dockerfile, image size and security, a local stack with Compose, migrations in containers | [CONTAINERS.md](CONTAINERS.md) |
+| A Dockerfile, image size and security, a local stack with Compose, migrations in containers, self-hosting a third-party image (loopback port, `env_file`, telemetry opt-out, MCP behind an identity proxy) | [CONTAINERS.md](CONTAINERS.md) |
 | Moving a site or app to a new host or DNS provider; backups | below |
 | Provenance, keyless signing and verification before promotion, offline verification, release transparency, cached build outputs | [RELEASES.md](RELEASES.md) |
 | Creating a monorepo npm package, its exports map, release notes and versions, trusted publishing from CI | [NPM-PACKAGES.md](NPM-PACKAGES.md) |
@@ -47,9 +47,10 @@ This works for static sites and for apps whose build already runs in CI. The pri
    - **inventory every record** at the old DNS host. The website records fail loudly; the dangerous ones fail quietly: MX for email, the SPF, DKIM and DMARC TXT records, domain verification records, the newsletter or transactional email sending domain. A broken DKIM record sends mail to spam until someone complains;
    - **compare the provider's automatic import against your inventory, record by record.** Imports miss records;
    - keep email and verification records **DNS only** (not proxied through the CDN).
-4. **Flip one record** (or attach the custom domain to the new project), and decide the canonical host now (apex with `www` redirecting, or the reverse). Proxied records on a CDN-hosted DNS change in seconds, which is what makes the rollback real: the old host still holds the latest deploy.
-5. **Port every rule from the old platform's config.** Read its config file (`netlify.toml`, `vercel.json`, server config) line by line and write down where each redirect, header and rewrite lives now (on Cloudflare Pages, a `_redirects` file in the build output: `/sitemap.xml  /sitemap-index.xml  301`). The rule you forget is the one added years ago.
-6. **Let it bake** (days, with real traffic and error monitoring), then delete the old deploy step and decommission the old host.
+4. **Flip one record** (or attach the custom domain to the new project), and decide the canonical host now (apex with `www` redirecting, or the reverse). Decide the URL shape with it: one trailing-slash policy, enforced (the source's view [coreyhaines31/marketingskills, site-architecture]; no Google doc covers it), and one case, since "Google Search's URL handling is case sensitive" (https://developers.google.com/search/docs/crawling-indexing/url-structure); the URL rules are in [../../marketing/site-architecture/URLS-AND-LINKS.md](../../marketing/site-architecture/URLS-AND-LINKS.md#url-principles). Redirect `http://` to `https://` on the same host first and only then to the canonical host, so each host can set HSTS ([../secure-coding/HEADERS.md](../secure-coding/HEADERS.md#https-redirects-and-mixed-content)). Proxied records on a CDN-hosted DNS change in seconds, which is what makes the rollback real: the old host still holds the latest deploy.
+5. **Port every rule from the old platform's config.** Read its config file (`netlify.toml`, `vercel.json`, server config) line by line and write down where each redirect, header and rewrite lives now (on Cloudflare Pages, a `_redirects` file in the build output: `/sitemap.xml  /sitemap-index.xml  301`). The rule you forget is the one added years ago. Security headers and the edge rule that blocks dotfiles and repository paths (`/.env`, `/.git/`) are among them ([../secure-coding/HEADERS.md](../secure-coding/HEADERS.md#exposed-files)). If page URLs change too, that is a search migration with its own redirect map, sitemaps and monitoring ([../../marketing/site-architecture/PLATFORMS-AND-MIGRATION.md](../../marketing/site-architecture/PLATFORMS-AND-MIGRATION.md#migrating-without-losing-traffic)).
+6. **Check what search engines will see, from outside.** On the production hostname, outside the admin session and the local cache, fetch robots.txt, the sitemap and a few deep pages: staging `noindex` rules, robots blocks, wrong canonicals and hostname changes are the common launch breakages [freescan]. The full launch audit, with its cutover record, is [../../marketing/site-audit/LAUNCH.md](../../marketing/site-audit/LAUNCH.md).
+7. **Let it bake** (days, with real traffic and error monitoring), then delete the old deploy step and decommission the old host.
 
 Weigh the trade-off honestly: one provider for DNS, CDN and hosting is simpler and often cheaper, and also one basket. A host's weak built-in build system doesn't matter if you only upload finished files to it.
 
@@ -73,5 +74,5 @@ rm "app-${stamp}.dump"
 ## Prove it
 
 - Before a cutover, write down the one-step rollback and do it once on the preview setup.
-- After moving DNS and before flipping the site: send a test email from and to the domain, check SPF/DKIM/DMARC pass in the headers, and request every old redirect on the new host.
+- After moving DNS and before flipping the site: send a test email from and to the domain, check SPF/DKIM/DMARC pass in the headers, and request every old redirect on the new host. After the flip, from a clean browser on the production hostname: robots.txt and the sitemap name production URLs, no page carries a staging `noindex`, `/.env` and `/.git/config` return 404, and `http://` reaches `https://` on the same host in one 301.
 - Restore last night's backup into an empty database and query it.

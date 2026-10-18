@@ -72,6 +72,9 @@ Details in [FEATURE-FLAGS.md](FEATURE-FLAGS.md).
 | `advanced_disable_feature_flags_on_first_load` | | |
 | `advanced_feature_flags_dedup_per_session` | | Dedupes `$feature_flag_called` per session (mobile SDKs already do) |
 
+- **Narrower wording from [c15t]:** "With feature flags off, surveys that target a feature flag never show" (PostHog logs a warning); for those surveys leave flags on and pass `advanced_only_evaluate_survey_feature_flags: true`, which still requests `/flags` but evaluates only survey flags. Use `advanced_disable_feature_flags: true` to stop `/flags`, not `advanced_disable_flags: true`, which also stops the remote config so session replay never starts.
+- **Modules that load anyway** [c15t]: "PostHog downloads `surveys.js` whenever the remote config includes a `surveys` value, even when surveys are off in the project"; `disable_surveys: true` is the only way to skip it. While heatmaps are on, PostHog loads `dead-clicks-autocapture.js` "whatever `capture_dead_clicks` says"; turn off both. Product tours and exception autocapture load only when the project turns them on; `disable_product_tours: true` and `capture_exceptions: false` keep them off. Sizes c15t measured (brotli, posthog-js 1.436.1): `surveys.js` about 29 KB, `product-tours.js` about 36 KB, `dead-clicks-autocapture.js` about 8 KB, `web-vitals-with-attribution.js` and `exception-autocapture.js` about 6 KB each.
+
 ### Logs options
 
 `captureConsoleLogs` (it may forward passwords or tokens written to the console), `serviceName` (default `'unknown_service'`), `environment`, `serviceVersion`, `resourceAttributes`, `flushIntervalMs` (3000), `maxBufferSize` (100), `maxLogsPerInterval` (1000). Send a log with `posthog.captureLog({ body: 'checkout completed', level: 'info', attributes: { order_id: 'ord_789', amount_cents: 4999 } })`.

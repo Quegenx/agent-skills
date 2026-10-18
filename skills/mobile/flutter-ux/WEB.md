@@ -109,8 +109,8 @@ _flutter.loader.load({
 (The source's titles separate the name with a dash; it is a hyphen here.)
 
 - **`og:image` has to be an absolute URL.** A relative path like `og-image.png` gets ignored.
-- **Size it 1200×630.** Off-ratio images get cropped or dropped.
-- **Set `twitter:image` too.** X reads its own tags first, and only sometimes falls back to `og:image`.
+- **Size it at least 1200×630.** Meta: "Use images that are at least 1200 x 630 pixels", with a ratio "as close to 1.91:1" (https://developers.facebook.com/docs/sharing/webmasters/images). The line said "Size it 1200×630", an exact size where Meta gives a minimum.
+- **`twitter:card` picks the X layout.** The archived X Cards markup says `twitter:image` falls back to `og:image`, and "If an og:type, og:title and og:description exist in the markup but twitter:card is absent, then a summary card may be rendered"; set `twitter:card` to `summary_large_image` for the wide image. The line said X "only sometimes falls back to `og:image`". Per-platform rules are in [../../marketing/seo/LINK-PREVIEWS.md](../../marketing/seo/LINK-PREVIEWS.md#x-cards).
 - The fuller tag set for a marketing site (site name, locale, a share image per language) is in [landing-page-ui DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md).
 
 ## Browser tab title per page
@@ -473,7 +473,7 @@ Future<void> shareFile(String url) async {
 ## Prove it
 
 - **Boot progress:** on a throttled network the web build shows the bar from the first paint, it steps through 20, 50 and 80 percent, and it disappears when the app paints; the splash adds no large asset to the first request.
-- **Link previews:** a link pasted into a chat or a card validator shows the title, description and a 1200×630 image; `og:image` and `twitter:image` are absolute URLs.
+- **Link previews:** a link pasted into a chat or a card validator shows the title, description and an image of at least 1200×630; `og:image` and `twitter:image` are absolute URLs.
 - **Tab titles:** navigating between pages changes the browser tab title each time; an unknown path shows the fallback, never a blank tab; `Title.color` is opaque.
 - **Date picker:** iOS shows the wheel in a sheet, Android the Material dialog; dismissing either keeps the previous date.
 - **Wakelock:** the screen stays on only on the named pages and locks normally elsewhere, including after switching away from a kept-alive tab.

@@ -7,7 +7,7 @@ description: "Generates ElevenLabs narration with word timings and pronunciation
 
 When a film is narrated, **the audio is the clock**. Every animation that illustrates a word should know exactly when that word lands, so the voice is generated with per-character timestamps, grouped into words, and the picture reads those times. Never squeeze a read to fit a slot; retime the picture to the voice.
 
-Copy `scripts/tts.py` from this skill's folder into the film's `scripts/`. It needs `ELEVENLABS_API_KEY` in the environment or the film's `.env`. Never paste a key into a prompt, a file you'll screenshot, or a commit.
+Copy `scripts/tts.py` from this skill's folder into the film's `scripts/`. It needs `ELEVENLABS_API_KEY` in the environment or the film's `.env`. Never paste a key into a prompt, a file you'll screenshot, or a commit. A key the user pastes into chat is not used: tell them to rotate it, since chat logs aren't a safe place for secrets [coreyhaines31/marketingskills, video].
 
 ## You can't hear it
 

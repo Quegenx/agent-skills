@@ -1,6 +1,6 @@
 import { getLocale } from "#/paraglide/runtime";
 
-import { SITE_ORIGIN } from "./marketing-page-head";
+import { SITE_ORIGIN, serializeJsonLdScript } from "./marketing-page-head";
 
 /**
  * One FAQ question and its answer, as a page shows it and its JSON-LD repeats
@@ -31,7 +31,11 @@ export const faqItemsToJsonLdQuestions = (
 
 /**
  * A page's FAQ as schema.org FAQPage, for its route's head (scripts). The
- * items are the same ones the page shows, so search results match the page.
+ * items are the same ones the page shows, so the markup matches the visible
+ * text. Google no longer shows FAQ rich results (from May 7, 2026,
+ * https://developers.google.com/search/updates); the markup stays valid
+ * schema.org, and unused structured data "does not cause problems for Search"
+ * (https://developers.google.com/search/blog/2023/08/howto-faq-changes).
  *
  * @param path - The page's path, for its canonical URL.
  * @param items - The page's questions and answers.
@@ -45,7 +49,7 @@ export const getFaqPageStructuredData = (
   const canonicalUrl = `${SITE_ORIGIN}${locale === "en" ? "/en" : ""}${path}`;
 
   return {
-    children: JSON.stringify({
+    children: serializeJsonLdScript({
       "@context": "https://schema.org",
       "@id": `${canonicalUrl}/#faq`,
       "@type": "FAQPage",

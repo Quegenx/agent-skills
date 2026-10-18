@@ -1,6 +1,6 @@
 ---
 name: secure-coding
-description: "Closes holes where untrusted input meets code, plus authentication, tenant isolation with RLS, secrets and tricky parsers. Use when handling user input, URLs, uploads, auth, permissions or multi-tenant data, or reviewing for security."
+description: "Closes holes where untrusted input meets code, plus authentication, tenant isolation with RLS, secrets, tricky parsers and response security headers. Use when handling user input, URLs, uploads, auth, permissions or multi-tenant data, setting HSTS, CSP or cookie flags, or reviewing for security."
 ---
 
 # Secure coding
@@ -9,7 +9,8 @@ Every rule here comes down to one decision: trust nothing that crossed the bound
 
 | The input or output | Read |
 |---|---|
-| Request bodies, HTML output, links, redirects, outbound URLs, file names and paths, logs, email headers, SQL, amounts, pagination, errors | [CATALOG.md](CATALOG.md) |
+| Request bodies, HTML output, JSON inside a script element (JSON-LD), links, redirects, outbound URLs, file names and paths, logs, email headers, SQL, amounts, pagination, errors | [CATALOG.md](CATALOG.md) |
+| Response security headers by value: HTTPS redirects and mixed content, HSTS, CSP, framing, `nosniff`, `Referrer-Policy`, cookie attributes, exposed `.env` and `.git` files | [HEADERS.md](HEADERS.md) |
 | JWT validation, refresh-token rotation, API keys, permission checks, password hashing and upgrading it, TOTP two-factor, Next.js Server Action auth | [AUTH.md](AUTH.md) |
 | Tenant isolation: scoped queries plus Postgres row-level security, pooled connections, Supabase policies | [TENANCY.md](TENANCY.md) |
 | Encrypting stored secrets (AES-GCM, key versions, KMS), keeping internal services off the internet | [SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md) |
@@ -28,4 +29,4 @@ Every rule here comes down to one decision: trust nothing that crossed the bound
 
 ## Prove it
 
-For each input the change touches, a test with an honest value (unchanged), a hostile value (rejected or neutralized: `<script>`, `javascript:`, `//evil.com`, `../../etc/passwd`, `\r\nInjected:`, `http://169.254.169.254/`, a negative amount, a page size of 10,000), and a newly added field that must be denied by default.
+For each input the change touches, a test with an honest value (unchanged), a hostile value (rejected or neutralized: `<script>`, `javascript:`, `//evil.com`, `../../etc/passwd`, `\r\nInjected:`, `http://169.254.169.254/`, a negative amount, a page size of 10,000, `</script><script>alert(1)</script>` inside a JSON-LD value), and a newly added field that must be denied by default.

@@ -233,6 +233,8 @@ The question: "This navigation has [N] items across [M] categories. On mobile, i
 
 Signals: "content-heavy site with defined categories (e-commerce, docs) → hamburger + accordion (A)"; "app with 3-5 core flows (dashboard, messages, settings, profile) → bottom tabs (B)"; "content is highly searchable and users have intent (knowledge base, marketplace) → search-first (C)"; "3+ nesting levels → hamburger (A): bottom tabs can't handle depth"; "navigation items have icons → bottom tabs (B): icon + label fits the tab bar pattern".
 
+Rules per option [coreyhaines31/marketingskills, site-architecture, navigation-patterns.md]: a hamburger keeps the "CTA button visible without opening the menu (sticky header)", has "Search accessible from mobile menu" and uses an "Accordion pattern for nested items"; a bottom tab bar has "3-5 items max", "Icons + labels (not just icons)", "Active state clearly indicated" and the "Most important action in the center". In the owner's sites "One list of navigation items (title, description, two icon styles, address) feeds both the header menu and the footer" ([landing-page-ui MOTION.md](../../frontend/landing-page-ui/MOTION.md)).
+
 ### 7. Form layout with complex fields
 
 Desktop: "Multi-column form, inline validation, conditional fields, field groups side by side."

@@ -27,6 +27,7 @@ Vercel's `vercel-optimize` runs a pipeline of a dozen scripts, each a thin comma
 
 - **Ask for what the skill can't know:** some skills need context from the user first. A skill that posts your standup to Slack should have Claude ask which Slack channel to post it in.
 - **Keep it in a `config.json` in the skill directory:** the standup-post example's SKILL.md has a "Your config" section that runs a shell command reading `config.json` and echoing `NOT_CONFIGURED` if it is missing; when unconfigured, the instructions tell Claude to ask for the Slack channel and a sample standup, then save the answers.
+- **User extensions live in the project, not the skill folder:** marketingskills' `marketing-council` saves a user's custom advisor to "`.agents/advisors/<name>.md` in the user's project so it persists and never collides with repo updates"; for a private person (the user's old boss), "have the user supply the positions; do not invent them" [coreyhaines31/marketingskills, marketing-council].
 - **Use AskUserQuestion for structured choices:** to have the agent present structured, multiple-choice questions, instruct Claude to use the AskUserQuestion tool.
 
 ## Memory

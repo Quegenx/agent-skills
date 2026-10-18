@@ -7,7 +7,10 @@ import {
 
 import { HomePage } from "../../website/pages/home/page/home-page";
 import { getHomepageStructuredData } from "../../website/pages/home/page/home-structured-data";
-import { getMarketingPageHead } from "../../website/shared/layout/page/marketing-page-head";
+import {
+  getMarketingPageHead,
+  serializeJsonLdScript,
+} from "../../website/shared/layout/page/marketing-page-head";
 
 export const Route = createFileRoute("/(website)/")({
   component: HomePage,
@@ -22,7 +25,7 @@ export const Route = createFileRoute("/(website)/")({
       ...pageHead,
       scripts: [
         {
-          children: JSON.stringify(getHomepageStructuredData()),
+          children: serializeJsonLdScript(getHomepageStructuredData()),
           type: "application/ld+json",
         },
       ],

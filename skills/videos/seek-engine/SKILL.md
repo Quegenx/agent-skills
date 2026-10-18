@@ -59,7 +59,7 @@ A finished example film that passes every smoke counter in every format is in [e
 
 ## Formats
 
-16:9, 9:16, 1:1 and 4:5 (1080 × 1350) are different compositions of one story, never crops of one render. All layout derives from `W`, `H` and `U` (1% of the short side) inside `setFormat()`; give the vertical cut larger type, fewer simultaneous elements and its own camera path. Check each format with its own sheet.
+16:9, 9:16, 1:1 and 4:5 (1080 × 1350) are different compositions of one story, never crops of one render. All layout derives from `W`, `H` and `U` (1% of the short side) inside `setFormat()`; give the vertical cut larger type, fewer simultaneous elements and its own camera path. Check each format with its own sheet. For YouTube, "avoid adding padding or black bars directly to your video" ([YouTube Help](https://support.google.com/youtube/answer/6375112)): render the 16:9 cut at 16:9, not a letterboxed copy of another format.
 
 ## Looks
 

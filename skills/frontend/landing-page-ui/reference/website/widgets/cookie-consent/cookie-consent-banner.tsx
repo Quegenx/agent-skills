@@ -64,6 +64,13 @@ const readLocalStorage = () => {
 // still closes after Accept or Deny.
 let pageViewCookieConsent: CookieConsentDecision | null = null;
 
+// True while the visitor has reopened the banner to change a stored choice;
+// this tab only.
+let isCookieConsentReopened = false;
+
+const getCookieConsentReopenedSnapshot = () => isCookieConsentReopened;
+const getCookieConsentReopenedServerSnapshot = () => false;
+
 const getCookieConsentSnapshot = () => {
   const storage = readLocalStorage();
   const stored = storage === null ? null : getCookieConsent(storage);
@@ -74,6 +81,7 @@ const getCookieConsentServerSnapshot = () => null;
 
 const chooseCookieConsent = (decision: CookieConsentDecision) => {
   pageViewCookieConsent = decision;
+  isCookieConsentReopened = false;
   const storage = readLocalStorage();
 
   if (storage !== null) {
@@ -91,11 +99,22 @@ const handleDenyCookies = () => {
   chooseCookieConsent("denied");
 };
 
+/**
+ * Reopens the cookie banner so the visitor can change or withdraw their choice
+ * (GDPR Art. 7(3): "It shall be as easy to withdraw as to give consent",
+ * https://eur-lex.europa.eu/eli/reg/2016/679/oj). The stored choice holds until
+ * they pick again.
+ */
+export const reopenCookieConsent = () => {
+  isCookieConsentReopened = true;
+  window.dispatchEvent(new Event(cookieConsentChangeEvent));
+};
+
 const cookieConsentOffsetCustomProperty = "--cookie-consent-offset";
 
 /**
- * The website's cookie banner until the visitor chooses; accepting turns
- * analytics on (Consent Mode).
+ * The website's cookie banner until the visitor chooses, and again when they
+ * reopen it; accepting turns analytics on (Consent Mode).
  *
  * @returns The banner, or nothing once they chose.
  */
@@ -106,9 +125,15 @@ export const CookieConsentBanner = () => {
     getCookieConsentServerSnapshot
   );
 
+  const isReopened = useSyncExternalStore(
+    subscribeToCookieConsent,
+    getCookieConsentReopenedSnapshot,
+    getCookieConsentReopenedServerSnapshot
+  );
+
   const overlayRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const isCookiePromptOpen = consent === null;
+  const isCookiePromptOpen = consent === null || isReopened;
 
   useLayoutEffect(() => {
     const overlay = overlayRef.current;
@@ -177,7 +202,8 @@ export const CookieConsentBanner = () => {
             }
             ref={overlayRef}
             transition={{
-              delay: 1,
+              // Reopened on request: no first-visit delay.
+              delay: isReopened ? 0 : 1,
               duration: prefersReducedMotion === true ? 0.2 : 0.5,
               ease: [0.19, 1, 0.22, 1],
             }}
@@ -205,7 +231,7 @@ export const CookieConsentBanner = () => {
                   <Button
                     onClick={handleDenyCookies}
                     size="small"
-                    className={styles.denyButton}
+                    tone="solidInk"
                   >
                     {cookie_consent_deny()}
                   </Button>

@@ -1,6 +1,6 @@
 ---
 name: k6
-description: "Writes, runs and maintains k6 load and performance tests: scripts for HTTP, WebSocket, gRPC and xk6 extensions, test types, executors, scenarios, thresholds and checks, k6 browser tests with Web Vitals, a full website performance suite (workflow elicitation, Playwright recording, hybrid load tests, load-generator monitoring, reporting), Grafana Cloud k6 runs managed and investigated through gcx and its API, test maintenance and multi-run trend analysis. Use when load, stress, spike, soak, smoke or breakpoint testing a service or website, writing or fixing a k6 script, setting k6 thresholds, running or investigating Grafana Cloud k6 tests, or tracking performance across runs."
+description: "Writes, runs and maintains k6 load and performance tests: scripts for HTTP, WebSocket, gRPC and xk6 extensions, test types, executors, scenarios, thresholds and checks, k6 browser tests with Web Vitals, a full website performance suite (workflow elicitation, Playwright recording, hybrid load tests, load-generator monitoring, reporting), Grafana Cloud k6 runs managed and investigated through gcx and its API, test maintenance, k6 v2 migration and multi-run trend analysis. Use when load, stress, spike, soak, smoke or breakpoint testing a service or website, writing or fixing a k6 script, setting k6 thresholds, running or investigating Grafana Cloud k6 tests, tracking performance across runs, or upgrading scripts to k6 v2."
 ---
 
 # k6
@@ -17,12 +17,13 @@ k6 runs JavaScript test scripts as load: `options` (or `options.scenarios`) set 
 | Grafana Cloud k6: `options.cloud`, load zones, cloud run commands, CI templates, gcx auth, the API proxy and its quirks, pagination, managing tests, runs and schedules, editing cloud scripts safely, gotchas | [CLOUD.md](CLOUD.md) |
 | Reading and investigating cloud runs: the investigation workflow, result vs status vs checks, the v5 metrics API, Loki logs, screenshots, Tempo traces, Insights audits, run reports | [CLOUD-RESULTS.md](CLOUD-RESULTS.md) |
 | Maintaining existing tests (change control, verification classes, tightening thresholds, migrations, service changes, audits) and multi-run trend analysis | [MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md) |
+| Which k6 version a behavior needs: the v2.0.0 migration checklist, v1.7 to v2.3 changes, feature flags, version boundaries in trend data | [VERSIONS.md](VERSIONS.md) |
 
 ## The rules
 
 1. **Every load test has thresholds,** at least `http_req_duration` and `http_req_failed` (or the protocol's equivalent), plus a threshold on `checks` wherever checks matter: `check()` never fails a run, and without thresholds the run cannot fail in CI.
 2. **Guard against zero-sample passes:** a threshold on a metric with no samples passes, so record that the iteration completed (a completion check or an `iteration_completed` Rate) and delete thresholds on metrics nothing records.
-3. **Smoke first, then larger tests;** never run a load profile with an untested script. Validate locally (`k6 inspect` for ramping and arrival-rate profiles, a 1-VU run otherwise), and edit `iterations:` in a copy rather than passing `--iterations 1` to a scenario script.
+3. **Smoke first, then larger tests;** never run a load profile with an untested script. Validate locally (`k6 inspect` for ramping and arrival-rate profiles, a single run otherwise). On k6 v2.3+ run once with `--once`, which keeps the scenario's function and browser options ([VERSIONS.md](VERSIONS.md)); on older k6 edit `iterations:` in a copy rather than passing `--iterations 1` to a scenario script.
 4. **Find breakpoints by offered load:** `ramping-arrival-rate` with `abortOnFail` and `delayAbortEval`, no think time, and enough `maxVUs` that k6 reports no `dropped_iterations`.
 5. **Don't trust a saturated load generator:** monitor it (minimum CPU idle under 10% makes the run inconclusive), keep browser VUs few, and use the cloud for measurement at scale.
 6. **Never loosen a threshold to get a green run.** Tighten from observed data with 10 to 20% headroom; loosen only when the user asks, and record it.

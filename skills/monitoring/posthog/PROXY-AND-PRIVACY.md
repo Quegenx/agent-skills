@@ -273,6 +273,17 @@ function onConsentChange(hasConsented) {
 }
 ```
 
+- **Two views on gating the SDK.** PostHog's rule is the one above. [c15t]'s `posthog` helper defaults to `loadMode: 'always'`, which matches it (loads `array.js` before a choice and calls `opt_out_capturing()` while `measurement` has no consent), but its examples use `loadMode: 'after-consent'` with `initOptions: { cookieless_mode: 'never' }`, which waits for measurement permission before requesting the SDK. Pick by whether the site may make any PostHog request before opt-in. Consent managers in general are [../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md).
+- **Guard your own capture calls** [c15t]: "The `posthog` global exists before the SDK loads, so its presence does not mean measurement is allowed."
+
+```ts
+export function trackSignupStarted(measurementAllowed: boolean) {
+	if (!measurementAllowed) return;
+	window.posthog?.capture('signup_started');
+}
+```
+
+- **An SDK you already initialize, under c15t** [c15t]: init it with `opt_out_capturing_by_default: true` and `cookieless_mode: 'never'` and let a callback-only consent script call `opt_in_capturing()` / `opt_out_capturing()`; "`loadMode: 'disabled'` is not a substitute, because it syncs nothing." The script itself is in [../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md).
 - **Show the banner only while `posthog.get_explicit_consent_status()` returns `'pending'`** (it returns `'granted' | 'denied' | 'pending'` and ignores the default config).
 - **`reset()` clears consent too.** With `opt_out_capturing_by_default`, calling `reset()` after `opt_in_capturing()` silently stops capturing: always `reset()` first, then opt in.
 - **Consent across subdomains:** consent lives in `localStorage` (one origin) by default. Set `opt_out_capturing_persistence_type: "cookie"` on every subdomain, keep `cross_subdomain_cookie` (default on), the same project token, and the same `consent_persistence_name` if you set one.
@@ -289,7 +300,7 @@ const handleCookieConsent = (consent) => {
 
 - **Turn on "Cookieless server hash mode"** in Project Settings > Web analytics first; without it cookieless events are ignored.
 - **`cookieless_mode: "always"`:** no PostHog data in cookies, `localStorage` or `sessionStorage`, so no cookie banner is needed for PostHog (other cookies may still need one). Users are counted with a privacy-preserving server-side hash. `identify()` isn't blocked, but avoid it (a persistent distinct ID is personal data); `person_profiles: 'never'` makes it a no-op. `alias()` is unsupported (alias events are dropped).
-- **`cookieless_mode: "on_reject"`:** show a banner. Nothing is stored until `posthog.opt_in_capturing()`, and no events are captured until consent is given or denied; if denied, users are still counted through the server hash. It replaces wiring opt-in and opt-out yourself. Here `is_capturing()` is true in cookieless mode when the user opted out or defaulted to opt-out.
+- **`cookieless_mode: "on_reject"`:** show a banner. Nothing is stored until `posthog.opt_in_capturing()`, and no events are captured until consent is given or denied; if denied, users are still counted through the server hash. It replaces wiring opt-in and opt-out yourself. Here `is_capturing()` is true in cookieless mode when the user opted out or defaulted to opt-out. [c15t]'s helper defaults to `initOptions: { cookieless_mode: 'on_reject', defaults: '2026-01-30' }`, so under it "PostHog keeps capturing without cookies after a refusal"; set `cookieless_mode: 'never'` "if a refusal must stop capture."
 - **Collection and storage still need configuring separately;** don't send identifying data (such as an email person property) without consent.
 - **In server hash mode the IP is stripped before transformations run,** so GeoIP enrichment and bot detection don't enrich events.
 

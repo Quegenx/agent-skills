@@ -12,6 +12,7 @@ Group C of the experiment health check: results that flip, A/A tests that come o
 - **MUST state age and share of the target sample before any reading of a result** when below target and sequential testing is off. One day in, the honest first sentence is that the result is not readable yet. No target: state age and exposures per variant and say no target was set.
 - **MUST NOT withhold numbers or refuse:** give the current estimate labeled early and say when it becomes readable. The 50-exposure floor is where analysis starts, not where it becomes stable.
 - **Recommend:** predetermine the duration before launch (the running-time calculator), or turn on sequential testing before launch. Frequentist α=0.05 by default is about a 5% false-positive chance per metric; 0.05 is a convention, not a hard cliff.
+- **Read a p-value as the ASA statement does** [coreyhaines31/marketingskills, ab-testing; [amstat.org](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf)]: the probability, assuming the null model and its assumptions, of a result at least as extreme as the one observed; "not the probability that the result is random, that the null is true, or that a variant will win again." p = 0.04 is never "a 96% chance the change works"; a 95% confidence interval is not a 95% posterior probability.
 
 ## C2 Low volume and validity gates
 
@@ -40,6 +41,7 @@ Walk this checklist:
 
 - **PostHog does NOT correct for multiple comparisons,** across variants (each is compared with the baseline independently) or across metrics.
 - **Frequentist α=0.05:** 5 independent metrics give about a 23% chance of at least one false positive; 10 give about 40%.
+- **Other tools differ:** Optimizely's Stats Engine controls the false discovery rate with a tiered Benjamini-Hochberg procedure ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/false-discovery-rate-control)); with PostHog, apply Bonferroni by hand or keep the metric set small ([../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md#multiple-variants)).
 - **Bayesian:** significant when the chance to win is above the confidence level OR below 1 minus the level; at 95% that is two 5% tails, so about 1 in 10 comparisons comes out significant when nothing changed, and at least one among 5 metrics about 40% of the time.
 - **Recommend:** a small, planned, hypothesis-driven metric set; read the results as a pattern; guardrails as secondary metrics; an unexpected significant metric is a hypothesis for a follow-up with it as primary. Metrics added after seeing data are p-hacking.
 

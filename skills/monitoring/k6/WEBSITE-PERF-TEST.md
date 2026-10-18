@@ -91,7 +91,7 @@ recordHar: {
 jq '.log.entries | map(.request.url) | group_by(. | capture("//(?<h>[^/:]+)").h) | map({host: .[0] | capture("//(?<h>[^/:]+)").h, count: length})' recordings/har/wN-<short-name>.har
 ```
 
-- **Spot missing hydration:** `k6 run --vus 1 --iterations 1 tests/wN-<short-name>/from-har.js`; a homepage with none of the client-JS API calls means the recorder clicked before hydration. Add a sentinel wait and re-record.
+- **Spot missing hydration:** `k6 run --vus 1 --iterations 1 tests/wN-<short-name>/from-har.js` (`k6 run --once` on k6 v2.3+, [VERSIONS.md](VERSIONS.md)); a homepage with none of the client-JS API calls means the recorder clicked before hydration. Add a sentinel wait and re-record.
 - **HAR size:** typically 300 KB to 2 MB; over 10 MB means narrow `urlFilter` (it's probably capturing CDN assets). Treat a HAR like a secret: it captures the live session (see cleanup step 4 below).
 - **Re-record** when hash-named assets change paths (for example SvelteKit `/_app/immutable/nodes/4.<hash>.js`; the protocol test failing with a 404 is the intended signal), when the API or workflow changes the request sequence, or for a fresh before/after HAR: re-run the recorder, regenerate with har-to-k6, bring the new paths into `protocol.js` by hand, run `./tests/run-all.sh`.
 

@@ -2,7 +2,7 @@
 
 Google Play has no hidden keyword field: per [eronred] it indexes the app name, both descriptions, the developer name, and reviews and replies; Google enforces a strict metadata policy, so Play ASO is natural keyword placement in visible copy that never claims rank, price or promotion. Store listing limits, asset specs and policy come from Google's docs; [eronred] tags third-party practice, and where it differs from Google both are given. Uploading the listing is [../google-play/SKILL.md](../google-play/SKILL.md).
 
-**Contents:** [How Play differs from the App Store](#how-play-differs-from-the-app-store) · [Listing fields](#listing-fields) · [Writing the copy](#writing-the-copy) · [Graphic assets](#graphic-assets) · [Preview video](#preview-video) · [Metadata policy](#metadata-policy) · [Category and tags](#category-and-tags-eronred) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Prove it](#prove-it)
+**Contents:** [How Play differs from the App Store](#how-play-differs-from-the-app-store) · [Listing fields](#listing-fields) · [Writing the copy](#writing-the-copy) · [Graphic assets](#graphic-assets) · [Preview video](#preview-video) · [Metadata policy](#metadata-policy) · [Category and tags](#category-and-tags-eronred) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Promotional content](#promotional-content) · [Prove it](#prove-it)
 
 ## How Play differs from the App Store
 
@@ -19,6 +19,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 | Algorithm signals | installs, engagement, ratings, keywords | keyword match, ratings, conversions |
 
 - **Backlinks** [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "links to your Play Store listing from websites influence ranking." Google's docs read for this skill don't say so.
+- **"Official" ranking factors:** [coreyhaines31/marketingskills, aso] lists engagement and retention, update frequency, localization ("59% of US apps localize titles") and install velocity as factors "Google confirms"; none of the Google pages fetched for it confirm that list, so treat it as third-party.
 - **App quality counts:** "Your app's core vitals affect your app's visibility on Google Play." The vitals and their thresholds are in [../google-play/SKILL.md](../google-play/SKILL.md).
 
 ## Listing fields
@@ -53,6 +54,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 - **Promotion eligibility (highly recommended):** apps need at least four screenshots at 1080 px minimum (16:9 landscape at least 1920 x 1080, or 9:16 portrait at least 1080 x 1920); games at least three 16:9 or 9:16 screenshots at those minimums; taglines cover no more than 20% of the image.
 - **Feature graphic** [eronred]: shown at the top of the listing when there's no video; must work without its text, which may be truncated.
 - **Adaptive icon** [eronred]: 108×108 dp with a 66×66 dp safe zone.
+- **How Play renders the icon** ([Google Play icon design specifications](https://developer.android.com/distribute/google-play/resources/icon-design-specifications)): "Google Play dynamically renders rounded corners and drop shadows for your app icons, you should omit them"; "Radius will be equivalent to 30% of icon size"; "Transparent assets will display the background color of Google Play UI"; icons not migrated go to legacy mode, "scaled down 75% to the keyline grid size (512 \* 0.75 = 384px)".
 - Screenshot slot strategy (hook first, one benefit per slot) is in [VISUALS.md](VISUALS.md).
 
 ## Preview video
@@ -77,17 +79,31 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 
 - **Up to 50** custom store listing pages. Each customizes the name, icon, descriptions and graphic assets; contact details, privacy policy and category stay shared with the main listing.
 - **Targeting:** country or region ("You can only target a country with one custom store listing at a time"), pre-registration users, inactive users (lapsed = "haven't opened your app in the last 28 days"; churned = uninstalled), a unique URL (a string parameter unique across your custom listings), Google Ads traffic, search keywords.
+- **More segments:** non-buyers, one-time, repeat and lapsed buyers, custom audiences, and the rule that custom listings get no automated translations are in [../google-play/LISTING-AND-METADATA.md](../google-play/LISTING-AND-METADATA.md#custom-store-listings).
+- **Store listing groups** (shared assets across listings): [../google-play/LISTING-AND-METADATA.md](../google-play/LISTING-AND-METADATA.md#custom-store-listings).
+- **Unverified:** [coreyhaines31/marketingskills, aso]'s "100 for Play partners" and "Gemini AI auto-generates text for CSLs"; Google's page says "up to 50" and mentions neither.
 - **For Google Ads:** the listing must be fully reviewed and approved, then selected as the landing page in Google Ads. Running the campaigns is [../app-growth/SKILL.md](../app-growth/SKILL.md).
 
 ## Store listing experiments
 
 - **Types:** default graphics experiments (icon, feature graphic, screenshots in the default language) and localized experiments (also the descriptions, in up to five languages).
-- **Concurrency:** "For each app, you can run one default graphics experiment or up to five localized experiments at the same time." Experiments run on the default and on custom store listings.
-- **Variants:** Google says up to 2 variants; [eronred] says up to 3 per element (icon, feature graphic, screenshots, short description, full description). Confirm in the current Play Console.
+- **Concurrency:** "For each app, you can run one default graphics experiment or up to five localized experiments at the same time." Experiments run on the default and on custom store listings. [coreyhaines31/marketingskills, aso]'s "Cannot run more than 1", "First-time installers + retained first-time installers" metrics and "Signed-in Google Play users only" are stale against [Google's page](https://support.google.com/googleplay/android-developer/answer/6227309).
+- **Variants:** Google says up to 2 variants; [eronred] and [coreyhaines31/marketingskills, aso] say up to 3 per element (icon, feature graphic, screenshots, short description, full description). Confirm in the current Play Console.
 - **Settings:** target metric (Unique user install clicks, Unique user open clicks, Unique user pre-registration clicks), audience percentage, minimum detectable effect, confidence level ("Increasing the confidence level decreases the likelihood of a false positive").
-- **Duration:** experiments stop automatically after 6 months. [eronred]: run at least 7 days or 1,000 impressions.
+- **Duration:** experiments stop automatically after 6 months. [eronred]: run at least 7 days or 1,000 impressions; sizing a test from its own baseline is [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md).
 - **Finish:** apply the winning variant from the recommendation, or "Keep current listing". Test one asset at a time. The general test method is in [PRODUCT-PAGES.md](PRODUCT-PAGES.md).
 - **Where:** Play Console > Store listing experiments > New experiment [eronred]; Google reports install conversion rate per variant [eronred].
+
+## Promotional content
+
+Promotional content (LiveOps) shows "fresh and timely content, such as special offers, limited-time events, and major updates" in "the Apps or Games tab, the Events tab, search results, and your store listing page" ([Google, understand promotional content](https://support.google.com/googleplay/android-developer/answer/12929029)). Rules below are Google's; the Apple counterpart is in-app events in [PRODUCT-PAGES.md](PRODUCT-PAGES.md#in-app-events).
+
+- **Who can use it** ([Google, create promotional content](https://support.google.com/googleplay/android-developer/answer/12932541)): "available for all games, and for apps that meet our eligibility criteria for premium growth tools" (featuring, deep links and audience targeting likewise).
+- **Where games show** ([12929029](https://support.google.com/googleplay/android-developer/answer/12929029)): the Events tab is for games only, in AU, BR, CA, FR, DE, HK, IN, ID, IT, JP, KR, MX, RU, TW, TR, UK and US. "Misclassified content may have limited visibility."
+- **Timing** ([12932541](https://support.google.com/googleplay/android-developer/answer/12932541)): "the earliest they can be submitted is 60 days before the event start date. It can take up to four days to approve your event; ... submit ... at least four days before." "Events with featuring requested must be submitted at least 14 days prior." A featuring request is used only when featuring was requested, "the event starts in the current quarter" and the event is submitted, not a draft.
+- **Durations:** "Major updates have a set duration of 28 days, and pre-registration announcements have a set duration of one week." [12932541](https://support.google.com/googleplay/android-developer/answer/12932541) [coreyhaines31/marketingskills, aso] says "Major Update: Max 1 week", which is wrong.
+- **Offer quality** ([Google, promotional content quality guidelines](https://support.google.com/googleplay/android-developer/answer/12929944)): an offer is specific (SKU or category, value, mechanics, eligible users); time-limited ("should not be an 'everyday low price' discount", except evergreen new-user offers); broadly available (no "first 500 buyers only"). Sensitive and restricted-finance topics get limited or no reach. The deep-link destination must be "consistent with the promotional content event details" ([Google, deep links for promotional content](https://support.google.com/googleplay/android-developer/answer/15322603)).
+- **Reported impact** ([Android Developers Blog, May 2022](https://android-developers.googleblog.com/2022/05/whats-new-in-google-play.html)): LiveOps "drives 5% more 28-day active users and 4% higher revenue". [coreyhaines31/marketingskills, aso]'s benchmarks give "+2% 28-day active users" (wrong against the blog) and "2x explore acquisitions (official Google)", which wasn't found on the pages fetched: unverified.
 
 ## Prove it
 
@@ -95,3 +111,4 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 - Icon is a 512 x 512 32-bit PNG under 1024 KB; feature graphic is 1024 x 500 without alpha; at least two screenshots across device types, within 320 to 3840 px with the 2:1 ratio cap, and four at 1080 px or more for promotion eligibility.
 - The preview video is a single public or unlisted, embeddable YouTube URL with ads disabled and real footage in the first 10 seconds.
 - Each custom store listing targets a country no other custom listing targets; each experiment tests one asset.
+- Every promotional content item was submitted at least four days before it starts (14 with featuring), names a specific, time-limited offer open to all eligible users, and deep-links to the matching content.

@@ -74,6 +74,10 @@ Check the host before suspecting the code. Dev servers commonly bind `localhost`
 
 It is a bounded happy-path subset check. For high confidence, add target-specific tests for invalid and extra inputs, repeated and idempotent calls, navigation and hot-module re-evaluation, persistence across reload, ambiguous names or conflicts, and the exact output shape, so leaked internal fields cannot hide outside an expected subset.
 
+## Lighthouse's WebMCP audits
+
+Lighthouse has an agentic-browsing category whose WebMCP integration group lists three audits: "Registered WebMCP tools", "Forms missing declarative WebMCP" and "WebMCP schema validity"; the same category holds llms.txt discoverability, "Accessibility for agents" and layout stability [https://developer.chrome.com/docs/lighthouse/agentic-browsing/llms-txt, updated 2026-05-05]. The page names these audits without saying what each checks, so treat a Lighthouse run as an extra signal beside the Stagehand ladder above, not a replacement for it. The rest of the category is in [../../marketing/ai-search-visibility/AGENT-READINESS.md](../../marketing/ai-search-visibility/AGENT-READINESS.md#lighthouses-agentic-browsing-audits); the audit ids and which Lighthouse release ships them are in [../../backend/performance-and-caching/LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#the-agentic-browsing-category).
+
 ## Prove it
 
 Tests, typecheck and build pass; with no init script, against the production build, Stagehand discovers every tool in `webmcp.e2e.json`, invokes the read-only and reversible ones with `Completed` and the expected output subset, and the `expectedDom` checks show the page observed the calls while consequential counters stayed at zero.

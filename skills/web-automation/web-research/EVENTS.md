@@ -50,6 +50,7 @@ Detect in this order, with one `browse eval` that probes everything. Order matte
 
 ## Person files and hooks
 
+- **Never use sensitive traits** `[coreyhaines31/marketingskills, prospecting]`: "Never use sensitive traits (health, finances, politics, religion, family) even when public." Not for triage, not for a hook.
 - **Hooks quote or paraphrase a specific search finding.** Never infer from "they look senior" or "their company is AI-y". With no signal from the last 6 months, fall back to the event context (the talk title).
 - **Hook priority, two readings:** one puts recent activity (last 6 months) first, then the event context, then the company context; another puts the event context first.
 - **The DM opener uses the hook verbatim** and never names a podcast or blog post the person didn't actually appear in. Two to three sentences: the hook reference, a one-line tie-in to the wedge, a soft call to action. Never salesy.
@@ -59,7 +60,9 @@ Detect in this order, with one `browse eval` that probes everything. Order matte
   - `image` is kept verbatim; `icp_fit_score` is inherited from the company.
   - Body: `## Why reach out` (3 bullets), `## Public links`, `## Recent activity`.
   - Every file has the closing `---` before its first section.
+- **Provenance per person** `[coreyhaines31/marketingskills, prospecting]`: "Every contact carries: the source (provider or URL), the collection date, the lawful basis for EU/UK contacts, and the last verification date and result. This answers "where did you get my email?" and makes data deletion requests possible." A person file with a LinkedIn link and a DM opener is a lead record: list-building law is in [prospecting LIST-COMPLIANCE.md](../../marketing/prospecting/LIST-COMPLIANCE.md) and send-time law in [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md). The DM opener is a draft: no messages, connects or follows "unless the user separately authorizes that action" `[coreyhaines31/marketingskills, prospecting]`.
+- **Downstream:** outbound stages and fields (source list, signal type and date, tier, sequence, last verification) that these files feed into a CRM are in [revops LIFECYCLE.md](../../marketing/revops/LIFECYCLE.md#outbound-stages).
 
 ## Prove it
 
-`people.jsonl` has at least about 10 lines; `ls companies/*.md | wc -l` equals `wc -l seed_companies.txt` and the `triage_only: false` count equals `wc -l icp_fits.txt`; no two person files share a slug; every hook in a sample of five traces to a cited finding or the talk title; every file parses with its closing `---`.
+`people.jsonl` has at least about 10 lines; `ls companies/*.md | wc -l` equals `wc -l seed_companies.txt` and the `triage_only: false` count equals `wc -l icp_fits.txt`; no two person files share a slug; every hook in a sample of five traces to a cited finding or the talk title; every file parses with its closing `---`; every person file has a source, a collection date and a lawful basis.

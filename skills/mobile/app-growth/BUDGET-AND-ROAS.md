@@ -1,6 +1,6 @@
 # Paid UA budget and ROAS
 
-Planning paid user acquisition across channels: the unit economics every channel is judged against, where the first dollars go, how budget moves between channels, and whether the ads make money. The mechanism that decides most outcomes is the chain from tracking to LTV: a channel can only optimize toward a purchase it can see (so the MMP and event mapping come before social spend), and spend is only profitable against an LTV and target CPA you wrote down first. Everything here is third-party practice from [appeeky] (UA skills built on the vendor Appeeky MCP server, whose tool names appear below) and [eronred] (ASO skills); the platforms' own rules are in the channel files. Channels: [APPLE-ADS.md](APPLE-ADS.md), [GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md), [META-ADS.md](META-ADS.md), [TIKTOK-ADS.md](TIKTOK-ADS.md); SKAdNetwork, AdAttributionKit and ATT are [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); RevenueCat itself is [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md).
+Planning paid user acquisition across channels: the unit economics every channel is judged against, where the first dollars go, how budget moves between channels, and whether the ads make money. The mechanism that decides most outcomes is the chain from tracking to LTV: a channel can only optimize toward a purchase it can see (so the MMP and event mapping come before social spend), and spend is only profitable against an LTV and target CPA you wrote down first. Everything here is third-party practice from [appeeky] (UA skills built on the vendor Appeeky MCP server, whose tool names appear below), [eronred] (ASO skills) and [coreyhaines31/marketingskills] (MIT; its `ads`, `marketing-plan`, `marketing-loops` and `attribution` skills), except the Google Play fee schedule, which is Google's; the platforms' own rules are in the channel files. Channels: [APPLE-ADS.md](APPLE-ADS.md), [GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md), [META-ADS.md](META-ADS.md), [TIKTOK-ADS.md](TIKTOK-ADS.md); SKAdNetwork, AdAttributionKit and ATT are [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); RevenueCat itself is [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md).
 
 **Contents:** [Routing ads questions](#routing-ads-questions) · [The ads context document](#the-ads-context-document) · [Channels and planning](#channels-and-planning) · [Cross-channel budget](#cross-channel-budget) · [MMP setup](#mmp-setup) · [Subscription snapshot](#subscription-snapshot) · [Campaign profitability](#campaign-profitability) · [Cross-channel performance](#cross-channel-performance) · [Numbers that disagree](#numbers-that-disagree) · [Prove it](#prove-it)
 
@@ -34,12 +34,13 @@ Planning paid user acquisition across channels: the unit economics every channel
 
 - **`app-ads-context.md`** is the document "all paid growth skills reference before pulling data or recommending spend". Save it to the project root or `.cursor/`. Before routing anywhere else, check it exists; if not, suggest it once per session. Merge with an existing `app-marketing-context.md`. Probe the Appeeky MCP connection before asking for credentials. "Don't skip unit economics: every paid skill depends on CPA/LTV targets." [appeeky]
 - **App identity:** name, Apple App ID, Google Play package, category, store URL, price model, primary conversion event ("Install (install-only only if ad-supported)"), platform priority; fill gaps with `get_app`.
-- **Economics:** blended LTV; LTV by geo; **target CPA ("CPA < 0.5× LTV to scale aggressively")**; target CPI (install-only or ad-supported campaigns only, "not the scale target for subs apps"); payback period target; current MRR; store fee assumption 15% or 30%.
+- **Economics:** blended LTV; LTV by geo; **target CPA ("CPA < 0.5× LTV to scale aggressively")** (a paid-scaling gate, LTV/CPA ≥ 2; the plan-level health check "LTV/CAC ... Health benchmark: > 3" [coreyhaines31/marketingskills, marketing-plan] divides by fully loaded blended CAC, a different denominator); target CPI (install-only or ad-supported campaigns only, "not the scale target for subs apps"); payback period target; current MRR; store fee assumption 15% or 30%.
 - **LTV when unknown:** RevenueCat snapshot `revenue_28d / new_customers`; trial model `trial_rate × paid_conversion × ARPU × avg_lifetime_months`; conservative default ARPU × expected retention months.
 - **Budget and channels:** "Test budget (new channel): $30 to 50/day ASA, $50/day social: run **7 days** (first kill window is 48h, not 2 days)". No verified MMP is a blocker before social spend.
 - **Integrations:** TikTok (Advertiser ID), Meta (default ad account `act_xxx`), Apple Ads (Org ID), RevenueCat (Project ID), MMP, Google Ads (App campaigns only). Check with `tiktok_ads_credentials_status`, `meta_ads_credentials_status`, `asa_credentials_status`, `rc_overview` (needs `rc_key` and `rc_project`).
 - **Creative refresh cadence:** every 3 to 7 days.
-- **Goals:** "Kill criteria: spend > 2× target CPA with 0 conversions = pause channel"; "Scale criteria: ROAS > 1.5× for 7 consecutive days = increase budget 20%".
+- **Goals:** "Kill criteria: spend > 2× target CPA with 0 conversions = pause channel"; "Scale criteria: ROAS > 1.5× for 7 consecutive days = increase budget 20%". Two other sources set kill criteria at different scopes. A marketing plan's channel-level rule is "If a paid channel has CAC > 2× target after 30 days at meaningful spend, pause" [coreyhaines31/marketingskills, marketing-plan]: blended CAC over a month, where [appeeky]'s is a per-channel test with a 48 hour first window. And [coreyhaines31/marketingskills, ads] treats any fixed kill rule as an input, not a verdict: check sample size, conversion lag and learning state first ([paid-ads AUDIT-GUARDRAILS.md](../../marketing/paid-ads/AUDIT-GUARDRAILS.md#recommendation-safety)). Plan-level kill criteria live in [marketing-plan](../../marketing/marketing-plan/SKILL.md).
+- **The generic product context** (positioning, audience, proof, goals) is `.agents/product-context.md` ([CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); keep the paid unit economics here and point to it rather than copying.
 - **Bootstrap:**
 
 ```
@@ -70,7 +71,8 @@ rc_overview
 
 - **[eronred]'s budget ladder:** < $1K Apple Ads (Basic) only; $1K to $5K Apple Ads (Advanced) + 1 social; $5K to $20K Apple Ads + Meta + Google App campaigns; $20K to $100K + TikTok + testing; $100K+ all + programmatic + influencer.
 - **Targets [eronred]:** CTR > 5% Apple Ads, > 1% social; CVR > 30% Apple Ads, > 10% social; CPI < LTV / 3; CPA < LTV; ROAS > 1.0 break even, > 2.0 good; D7 ROAS predicts long-term.
-- **Cadence [eronred]:** daily spend pacing; weekly CPI, CPA and bids; bi-weekly creative refresh ("ad fatigue after 2-3 weeks"); monthly channel mix; quarterly strategy and new channels.
+- **Cadence [eronred]:** daily spend pacing; weekly CPI, CPA and bids; bi-weekly creative refresh ("ad fatigue after 2-3 weeks"); monthly channel mix; quarterly strategy and new channels. [coreyhaines31/marketingskills, marketing-loops] checks creative fatigue and CPA drift every 2 to 3 days ("Meta/Google feedback loops are days, not hours"); that is how often to look, not how often to refresh.
+- **The weekly ads check** [coreyhaines31/marketingskills, ads and marketing-loops]: go in a fixed order, spend → traffic → conversions → creative fatigue → landing page (for an app, the store listing) → tracking, and end each account with exactly one call: HOLD (with a reason), FIX (the problem and the fix), TEST (hypothesis, metric, stopping rule) or INVESTIGATE (beats everything; use it when tracking disagrees with RevenueCat or the MMP beyond the usual gap). The check itself changes no budget, bid, status or live ad. Full version: [paid-ads AUDIT-GUARDRAILS.md](../../marketing/paid-ads/AUDIT-GUARDRAILS.md#the-weekly-operating-check); run on a schedule: [marketing-loops PAID-LOOPS.md](../../marketing/marketing-loops/PAID-LOOPS.md#the-weekly-ads-check-loop).
 
 | App type | Channels [appeeky] |
 |---|---|
@@ -107,9 +109,10 @@ rc_overview
   "Do not launch social channels before `mmp-setup` is verified."
 - **After 14+ days, weight by performance:** `Weight(channel) = (1 / CPA_channel) / sum(1 / CPA_all_channels)` and `Weight(channel) = ROAS_channel / sum(ROAS_all_channels)`, blended 50/50. Keep the caps (50% max per channel until 50+ conversions), the floors (else pause) and a 5 to 10% reserve. [appeeky]
 - **Months [appeeky]:** month 1, one channel for weeks 1 and 2, a second only if the leftover meets its floor; month 2, move 20% from worst to best every 2 weeks and test 1 new creative per week per social channel; month 3+, scale the best 20% a week until CPA rises 15%, reserve 5%.
+- **At plan level** [coreyhaines31/marketingskills, marketing-plan]: "Always add 10 to 20% as 'experimental budget'" on top of the formula, and split spend 70% current channels / 20% next / 10% experimental (40/30/30 in the first phase, 80/15/5 later).
 - **Test reserve:** 10% (5% at $30K+); a test runs at least $50/day for 2 days; kill at 2× target CPA with 0 conversions after $100; promote next month if CPA < target. [appeeky]
 - **Daily budget:** `(Monthly allocation × 12) / 365` or `Monthly allocation / 30`. [appeeky]
-- **Reallocate:** CPA < 0.8× the others over 14 days → shift 20%; CPA > 2× target over 7 days → pause; ROAS > 1.5× for 7 days → scale 20%. **Kill:** spend > 2× target CPA with 0 conversions; ROAS < 0.5× for 14 days. Revisit on day 7, 14 and 30. [appeeky]
+- **Reallocate:** CPA < 0.8× the others over 14 days → shift 20%; CPA > 2× target over 7 days → pause; ROAS > 1.5× for 7 days → scale 20%. **Kill:** spend > 2× target CPA with 0 conversions; ROAS < 0.5× for 14 days. Revisit on day 7, 14 and 30. [appeeky] These moves read platform-reported ROAS; branded Apple Ads and retargeting are "always credited" channels, so run a holdout or on-off test and scale them on incremental CPA or ROAS (spend ÷ incremental conversions) instead [coreyhaines31/marketingskills, attribution] ([MEASUREMENT-PARADIGMS.md](../../marketing/marketing-attribution/MEASUREMENT-PARADIGMS.md#reading-a-test)).
 - **Mistakes [appeeky]:** even splits; 4 channels at $10/day; $1K across three channels; scaling social before the MMP; ignoring Apple Ads for iOS search apps; no reserve; reallocating on < 7 days of data.
 
 ## MMP setup
@@ -183,7 +186,7 @@ rc_chart
 | Daily revenue per sub | `MRR / active_subscriptions / 30` |
 | Payback days | `Target CPA / (MRR / active_subscriptions / 30)` |
 
-- **Caveats:** `revenue_28d / new_customers` is rough, true LTV needs cohort analysis; apps under 90 days old have unreliable LTV; MRR growth with flat spend means organic strength; flat MRR with rising spend means a unit economics problem. [appeeky]
+- **Caveats:** `revenue_28d / new_customers` is rough, true LTV needs cohort analysis; apps under 90 days old have unreliable LTV; MRR growth with flat spend means organic strength; flat MRR with rising spend means a unit economics problem. [appeeky] [coreyhaines31/marketingskills, marketing-plan] adds four plateau alerts: "Week-over-week additions flattening", "Rising CAC on a formerly cheap channel", "Engagement/activation softening at the top of the funnel", "Effort up, output flat"; "When two or more fire on the same curve, that's the trigger to accelerate the 20% 'next' bucket."
 
 ## Campaign profitability
 
@@ -196,14 +199,17 @@ rc_chart
   - Break-even CPA = LTV × (1 − store fee %)
   - Scale CPA = LTV × (1 − store fee %) × 0.5
   - Payback days = CPA / (MRR / active_subscriptions / 30)
-  - Blended CPA = Total spend / Total conversions
-- **Store fees [appeeky]:** Apple Small Business 15% (under $1M a year), Apple standard 30% (above $1M), Google Play 15% on the first $1M; default to 15%.
+  - Blended CPA = Total spend / Total conversions (ad spend only). [coreyhaines31/marketingskills, marketing-plan]'s blended CAC is fully loaded instead: marketing salaries, ad spend, martech, content production, agency and contractor retainers, SDR/BDR salaries and CRM, automation and analytics tools, divided by new customers ("A company that 'doesn't run ads' still has a CAC"). Keep both, under their own names.
+- **Store fees [appeeky]:** Apple Small Business 15% (under $1M a year), Apple standard 30% (above $1M); default to 15%.
+- **Google Play fees** (https://support.google.com/googleplay/android-developer/answer/112622): for users in the EEA, UK and US from June 30, 2026 (Australia and Japan from September 30, 2026), auto-renewing subscriptions (new and existing installs) and, for developers in the 15% service fee tier, the first $1M of annual earnings pay "10% + 5% billing fee"; other transactions pay 20% + 5% on installs made on or after that date and 25% + 5% (or 20% for external web links) on earlier installs. Elsewhere, until the new fees roll out: 15% on the first $1M, 30% above it, and 15% on auto-renewing subscriptions regardless of revenue. The billing fee applies to purchases through Google Play Billing. This line said "Google Play 15% on the first $1M" [appeeky]: still the total for subscriptions and the first $1M, but the standard rate for other new-install transactions in those markets is now 25% in total.
 
 | Revenue source | Confidence [appeeky] |
 |---|---|
 | Apple Ads via `asa_profitability` | High |
 | Meta and TikTok via `rc_attribution_summary` (`mediaSource`) | Medium: "directional: MMP dashboard is more accurate for optimization decisions" |
 | Blended `rc_overview` revenue / total spend | Low (includes organic) |
+
+- **Triangulate, never add up** [coreyhaines31/marketingskills, attribution]: one source of truth for the count, never sum platform-claimed installs or conversions across Meta, TikTok and Apple Ads (de-dupe against the store or RevenueCat count), trust directional agreement over an absolute match, and budget for the gap ("platforms claim N; we can verify M"). Reported ROAS is attributed, not incremental: incremental CPA = spend ÷ incremental conversions from a holdout, and branded Apple Ads and retargeting, which platforms credit by default, need a holdout before you scale them on reported ROAS ([marketing-attribution MEASUREMENT-PARADIGMS.md](../../marketing/marketing-attribution/MEASUREMENT-PARADIGMS.md#incrementality)).
 
 | ROAS | Margin | Decision [appeeky] |
 |---|---|---|
@@ -260,7 +266,7 @@ asa_profitability
 
 ## Numbers that disagree
 
-None of these come from a platform's docs; confirm against your own data.
+None of these come from a platform's docs; confirm against your own data. [coreyhaines31/marketingskills] (MIT, Copyright (c) 2025 Corey Haines) lines quote its `ads`, `marketing-plan` (adapted from Corey Haines' *Founding Marketing*), `marketing-loops` and `attribution` skills.
 
 - **Learning spend per channel:** "$300 to 500" (context, MMP setup) versus "$500" (budget, profitability) versus "$500 to 1000" wasted without an MMP. [appeeky]
 - **Reallocation minimum:** "< 20 conversions or < 7 days" versus 50+ conversions for the 0.8× shift and the 50% cap. [appeeky]
@@ -268,6 +274,8 @@ None of these come from a platform's docs; confirm against your own data.
 - **Apple fee threshold wording:** "< $1M annual" / "> $1M annual" versus "After $1M revenue". [appeeky]
 - **Smallest budgets:** [appeeky] puts ≤ $1,500 into one channel; [eronred] puts < $1K into Apple Ads (Basic) only and $1K to $5K into Apple Ads plus one social.
 - **Google floor:** $50/day as a channel floor versus $30 in the launch sequence. [appeeky]
+- **Payback:** [appeeky]'s `CPA / (MRR / active_subscriptions / 30)` and TikTok's `CPA / (LTV / expected lifetime months)` are revenue-only. [coreyhaines31/marketingskills, ads] uses "gross-margin payback = CAC / (monthly ARPU × gross margin)" and calls "A 3 to 12 month target ... a planning reference". At $300 CAC a $99/month plan is 3.0 months revenue-only but "300 / (99 × 0.20) = 15.2 months" at 20% gross margin. For a cohort, "Cumulative recovery through month n = sum(ARPU_t × gross_margin_t × retained_fraction_t)": two cohorts both at 70% retention in month 12 recover a $300 CAC in month 6 (lost early) and month 4 (lost late), so "Annual retention alone" can't give the payback date; "If the observed cohort has not recovered CAC, report that rather than inventing a payback date". More in [paid-ads PAYBACK.md](../../marketing/paid-ads/PAYBACK.md).
+- **Kill criteria:** per-channel test (2× CPA, 0 conversions, 48 hours) [appeeky] versus plan-level CAC > 2× target after 30 days [coreyhaines31/marketingskills, marketing-plan] (see [Goals](#the-ads-context-document)).
 
 ## Prove it
 
@@ -277,4 +285,6 @@ None of these come from a platform's docs; confirm against your own data.
 - **Every channel clears its floor:** no channel runs below $50/day social and Google, $30/day Apple Ads, and none exceeds 50% of budget before 50+ conversions.
 - **Reallocations have data:** each budget move cites at least 7 days and the conversion count it was based on.
 - **Profitability uses the right source:** Apple Ads ROAS from the revenue join, Meta and TikTok marked directional, blended ROAS labelled as including organic.
+- **Fees match the market:** Android margins use Google Play's schedule for the user's region and install date (10% + 5% for subscriptions and the first $1M in the EEA, UK and US from June 30, 2026), not a flat 15%.
+- **No summed platform claims:** cross-channel totals come from the store, RevenueCat or the MMP, and branded or retargeting spend was scaled only after a holdout.
 - **Conversion health first:** trial conversion from the snapshot shows no trial pile-up before a budget increase.

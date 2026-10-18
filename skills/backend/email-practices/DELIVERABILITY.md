@@ -2,7 +2,7 @@
 
 Deliverability is whether mail reaches the inbox, the spam folder or nothing. Authentication (SPF, DKIM, DMARC with an aligned From: domain) is required by Gmail, Yahoo and Microsoft, which reject or spam-filter unauthenticated mail; after that comes reputation: the spam complaint rate, bounces and steady sending volume. Authentication problems are the most common cause of mail landing in spam. The one-click unsubscribe headers the same providers require are in [COMPLIANCE.md](COMPLIANCE.md); setting up a domain in Resend is in [../resend/SKILL.md](../resend/SKILL.md).
 
-**Contents:** [Authentication](#authentication) · [DMARC in detail](#dmarc-in-detail) · [Sender requirements by mailbox provider](#sender-requirements-by-mailbox-provider) · [Gmail error codes](#gmail-error-codes) · [Reputation and thresholds](#reputation-and-thresholds) · [Warming up and volume](#warming-up-and-volume) · [Bounces and complaints](#bounces-and-complaints) · [Infrastructure](#infrastructure) · [Message format and display names](#message-format-and-display-names) · [Debugging mail that lands in spam](#debugging-mail-that-lands-in-spam) · [Prove it](#prove-it)
+**Contents:** [Authentication](#authentication) · [DMARC in detail](#dmarc-in-detail) · [Sender requirements by mailbox provider](#sender-requirements-by-mailbox-provider) · [Gmail error codes](#gmail-error-codes) · [Reputation and thresholds](#reputation-and-thresholds) · [Stop-loss rules](#stop-loss-rules) · [Warming up and volume](#warming-up-and-volume) · [Bounces and complaints](#bounces-and-complaints) · [Infrastructure](#infrastructure) · [Message format and display names](#message-format-and-display-names) · [Debugging mail that lands in spam](#debugging-mail-that-lands-in-spam) · [Prove it](#prove-it)
 
 ## Authentication
 
@@ -93,6 +93,7 @@ The official pages, to re-read when a rule matters: Gmail https://support.google
 - **Missing one-click** doesn't by itself auto-reject or spam-mark, but only fully compliant bulk senders are eligible for mitigation, and an unsubscribe link broken for an extended time counts as non-compliance.
 - **Open rates:** Google doesn't track open rates; low open rates "aren't necessarily an accurate indicator of deliverability."
 - **No allowlists:** Google doesn't accept allowlist requests from email providers.
+- **Consent is part of the guidelines:** "Don't send messages to people who didn't sign up to get messages from you." "Make sure recipients opt in to get messages from you." "Don't purchase email addresses from other companies." (https://support.google.com/a/answer/81126). Cold email law is in [COMPLIANCE.md](COMPLIANCE.md#cold-and-unsolicited-email).
 
 ### Yahoo and AOL
 
@@ -137,7 +138,7 @@ The official pages, to re-read when a rule matters: Gmail https://support.google
 ## Reputation and thresholds
 
 - **Do:** send to engaged users, keep bounce below 4% and complaints below 0.1%, remove inactive subscribers.
-- **Don't:** send to purchased lists, ignore bounces or complaints, send inconsistent volumes.
+- **Don't:** send to purchased lists, ignore bounces or complaints, send inconsistent volumes. Loading cold event badge scans into a sequence "burns domain reputation" [coreyhaines31/marketingskills, events].
 - **Gmail spam rate:** "Keep spam rates reported in Postmaster Tools below 0.10% and avoid ever reaching a spam rate of 0.30% or higher." Spam rate is calculated daily, and "even today, user-reported spam rates greater than 0.1% have a negative impact on email inbox delivery for bulk senders."
 - **The sources give different targets;** confirm in the provider's current pages:
 
@@ -145,6 +146,23 @@ The official pages, to re-read when a rule matters: Gmail https://support.google
 |---|---|---|---|---|
 | Bounce rate | Keep below 4%; below 1% good, 1 to 3% acceptable, 3 to 4% concerning, over 4% critical | Below 2%; alert above 2% | | |
 | Complaint (spam) rate | Keep below 0.1%; below 0.01% excellent, 0.01 to 0.05% good, over 0.05% critical | Below 0.05%; alert above 0.05% | Below 0.10%; never 0.30% or higher | Below 0.3% |
+
+- **Bounce rate has no provider threshold:** Google states none. The 4% and 2% targets above are the sources' own; the cold-email source also sides with 2%: "Keep them under 2% per campaign; under 1% is best in class" [coreyhaines31/marketingskills, cold-email].
+
+## Stop-loss rules
+
+Decide these before launch and enforce them automatically where your tool allows [coreyhaines31/marketingskills, cold-email]. The thresholds are the source's own numbers, not provider rules, except where the Gmail column above backs them:
+
+| Trigger | Action |
+|---|---|
+| Bounce rate above 2% on a campaign | Pause the campaign and re-verify the list |
+| Spam complaints approaching 0.1% | Pause, cut volume, review targeting and copy |
+| Domain appears on a major blocklist | Stop sending from it |
+| Reply rate under ~1% after 300+ sends | Stop the campaign; the targeting or offer is wrong, and more volume makes it worse |
+| Rising complaint or bounce rate on any sequence | "Pause and escalate any sequence with rising complaint/bounce rates - that's a deliverability emergency" [coreyhaines31/marketingskills, marketing-loops] |
+
+- **Left out of the source's table:** an inbox-placement row whose action is to pull a mailbox "from rotation" and return it "to warmup", and "retire" as the blocklist action. Mailbox rotation, warmup networks and swapping out burned domains are evasion, named as do-nots in [../../marketing/cold-outreach/SENDING.md](../../marketing/cold-outreach/SENDING.md#out-of-bounds).
+- **Gmail's own consequence** for crossing 0.3% is losing mitigation until 7 consecutive days below it ([Gmail](#gmail) above), so the 0.1% pause comes first.
 
 ## Warming up and volume
 
@@ -163,7 +181,7 @@ The official pages, to re-read when a rule matters: Gmail https://support.google
 
 ## Bounces and complaints
 
-- **Hard bounce** (permanent failure): remove immediately.
+- **Hard bounce** (permanent failure): remove immediately. Never send to guessed addresses to find out which bounce; verify first ([LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#suppression-list)).
 - **Soft bounce** (transient): retry after 1 hour, 4 hours, then 24 hours, and remove after repeated failures. The deliverability reference says after 3 to 5 failures; the list-management reference and the webhooks-events handler suppress after 3. Handlers are in [RELIABILITY.md](RELIABILITY.md#handling-bounces-and-complaints); suppression rules are in [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#suppression-list).
 - **Reduce complaints:** send only to opted-in users, make unsubscribe easy and immediate, use clear sender names and From addresses.
 - **Feedback loops:** set them up with Gmail (Postmaster Tools), Yahoo, Microsoft SNDS. Remove complainers immediately.
@@ -199,6 +217,9 @@ Check in this order:
 4. Content.
 5. Sending patterns (sudden volume spikes).
 
+- **A falling open rate is not a deliverability reading.** Google doesn't track opens ([Gmail](#gmail) above), and Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios); on a Mac it loads remote content "in the background when a message is received (instead of when you view it)" (https://support.apple.com/guide/mail/change-privacy-settings-mlhlae4a4fe6/mac). When opens drop, run the checks above and read clicks, complaints and bounces; the emails source's eval lists reputation, hygiene, frequency and deliverability as causes beyond subject lines [coreyhaines31/marketingskills, emails].
+- **No trigger-word lists:** none of the provider pages this skill cites names spam "trigger words"; content checks are Gmail's formatting rules ([Message format and display names](#message-format-and-display-names)).
+
 | Tool | Shows |
 |---|---|
 | Google Postmaster Tools, https://postmaster.google.com | Domain reputation, spam rates |
@@ -213,4 +234,5 @@ Check in this order:
 - The sending IP has a PTR whose hostname resolves back to it, and mail goes over TLS.
 - Postmaster Tools shows a spam rate below 0.10%; bounce and complaint rates sit under the targets you chose from the table above.
 - Transactional and marketing mail go from separate subdomains.
+- Each stop-loss trigger you adopted is wired to pause sends automatically, and a test campaign with seeded bounces above the threshold pauses itself.
 - Volume grew week over week, not by doubling overnight.

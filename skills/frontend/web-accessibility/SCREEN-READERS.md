@@ -94,6 +94,9 @@ Choose by purpose, not by what the image looks like:
 
 A missing `alt` is worse than an empty one, because screen readers fall back to reading the file name.
 
+- **Alt is not a keyword slot.** Google: "The most important attribute when it comes to providing more metadata for an image is the alt text", and "Avoid filling `alt` attributes with keywords", which "may cause your site to be seen as spam" ([Google Images SEO](https://developers.google.com/search/docs/appearance/google-images)). Describe the purpose, as in the table.
+- **Alt is written in the page's language.** A localized route translates its alt text along with the copy; check each language's pages, not only the default one [freescan].
+
 An image painted into a `<canvas>` (a generation reveal, a shader effect) has no alt text: "If the result matters to screen readers, render a visually hidden description or an `<img>` elsewhere." [Libraries.dev]
 
 SVG: decorative gets `aria-hidden="true"`; meaningful inline SVG gets `role="img"` plus a name; `<img src="icon.svg" alt="...">` is the most reliable delivery for simple cases. The full treatment is in [svg/ACCESSIBILITY.md](../svg/ACCESSIBILITY.md).
@@ -107,4 +110,4 @@ SVG: decorative gets `aria-hidden="true"`; meaningful inline SVG gets `role="img
 
 ## Prove it
 
-With a screen reader on: every status change ("Saved", a result count, a loading outcome) is spoken once without moving focus; repeated updates in the same region are each announced; only urgent untied errors interrupt; the `role="status"` region exists in the DOM before its first message (`grep -rnE '&& <div role="status"' src/` is empty); no focusable element sits inside an `aria-hidden` subtree; every `<img>` has an `alt` attribute, empty for decoration; every prerecorded video has captions and controls; and no audio autoplays for more than 3 seconds without a pause or volume control.
+With a screen reader on: every status change ("Saved", a result count, a loading outcome) is spoken once without moving focus; repeated updates in the same region are each announced; only urgent untied errors interrupt; the `role="status"` region exists in the DOM before its first message (`grep -rnE '&& <div role="status"' src/` is empty); no focusable element sits inside an `aria-hidden` subtree; every `<img>` has an `alt` attribute, empty for decoration, in the page's own language and free of keyword lists; every prerecorded video has captions and controls; and no audio autoplays for more than 3 seconds without a pause or volume control.

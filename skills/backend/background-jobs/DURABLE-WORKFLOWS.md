@@ -20,11 +20,13 @@ The engine calls your function again and again. Each call replays it from the to
 - **A failure handler** runs when the run gives up: notify, mark the record failed, release what was reserved.
 - **Side effects already done stay done.** For a multi-step booking (hold seat, charge, confirm), give each step its compensation (release the seat, refund) and run them in reverse when a later step fails for good. Cancelling a run stops future steps; it undoes nothing.
 - **After an ambiguous failure of an outside write** (a timeout, a dropped connection), read the destination before writing again; the first attempt may have landed. Pass the same idempotency key on the retry.
+- **Give rows a step writes a deterministic id,** so a retried step overwrites its own earlier output instead of adding to it: open-seo's audit steps store each issue with a `dedupeKey` in a deterministic id "so step retries don't duplicate issues". [open-seo]
 
 ## Waiting
 
 - **Sleep** for a duration or until a time, without holding a worker. Sleeping for a week costs nothing.
 - **Wait for an event** (a payment confirmed, a reply from a person) matched on an id from the run's own input (`order_id` equals `order_id`), with a timeout. A timeout returns nothing, and the code must handle that branch ("no reply in 4 hours: escalate").
+- **A result that lands after the timeout branch ran** (a slow enrichment, a late reply) guards its write with the current state: [../third-party-integrations/CALLS-AND-SYNC.md](../third-party-integrations/CALLS-AND-SYNC.md) [coreyhaines31/marketingskills, revops].
 - **An event sent before the wait began is missed.** If the other side can answer quickly, have it also record the answer in the database, and check the database first, then wait.
 - **A named signal** (one key, one waiter) suits approvals: decide what happens when a second wait for the same key starts (replace the old one, or fail).
 - **Cancel on an event** (the user deleted the project, the order was cancelled) so a sleeping run doesn't wake up and act on something gone.
@@ -56,6 +58,8 @@ Decide these per workflow, keyed by the tenant or user so one account can't star
 | Idempotency key | the same key within a window starts one run | a webhook delivered twice |
 | Timeouts | cancel if it waits too long to start, or runs too long once started | stale work that no one needs anymore |
 
+For a form or booking webhook the idempotency key is the provider's stable submission id: a replay "should not create another contact, task, notification, or booking" [coreyhaines31/marketingskills, revops]; for affiliate payouts, "Replayed webhooks and exports must not count a conversion or payment twice" [coreyhaines31/marketingskills, referrals].
+
 Throttle queues, rate limit drops: choosing the wrong one either loses work or builds an unbounded backlog.
 
 ## Running inline, then in the background
@@ -81,4 +85,4 @@ Run history grows without limit. Delete a run's records only after it reached a 
 
 ## Prove it
 
-Kill the worker mid-run and confirm it resumes at the next step without repeating the last side effect; deploy a change while runs are sleeping and confirm they finish; send the awaited event before the wait starts and confirm the run still proceeds; trigger the same work twice and confirm the singleton or idempotency key held; fail the last step for good and confirm the compensations ran.
+Kill the worker mid-run and confirm it resumes at the next step without repeating the last side effect; deploy a change while runs are sleeping and confirm they finish; send the awaited event before the wait starts and confirm the run still proceeds; trigger the same work twice and confirm the singleton or idempotency key held; deliver the same form webhook twice and confirm one contact, one task and one booking; fail the last step for good and confirm the compensations ran.

@@ -23,7 +23,7 @@ OneSignal stores each person as a User with up to 20 Subscriptions (an app insta
 | HTML in-app messages: the `OneSignalIamApi` bridge, click labels, Liquid in HTML, mobile rendering, templates, composing one | [IAM-HTML.md](IAM-HTML.md) |
 | iOS Live Activities: when to use one, lifecycle, limits, update budget and priority, analytics | [LIVE-ACTIVITIES.md](LIVE-ACTIVITIES.md) |
 | Liquid, data sources, templates, API `custom_data`, Data Feeds, multi-language messages | [PERSONALIZATION.md](PERSONALIZATION.md) |
-| Email senders, DNS, thresholds, warm-up, unsubscribe and suppression; SMS, MMS and RCS senders, registration, consent, keywords and compliance | [EMAIL-AND-SMS.md](EMAIL-AND-SMS.md) |
+| Email senders, DNS, thresholds, warm-up, unsubscribe and suppression; SMS, MMS and RCS senders, registration, consent, keywords and compliance (provider-neutral SMS law, 10DLC and sequences: [../../marketing/sms-marketing/SKILL.md](../../marketing/sms-marketing/SKILL.md)) | [EMAIL-AND-SMS.md](EMAIL-AND-SMS.md) |
 | Push reports, confirmed receipt, CTR, metric names across dashboard, API, CSV and Event Streams, conversion metrics, retention, plan limits, consent, GDPR, deletion | [ANALYTICS-AND-PRIVACY.md](ANALYTICS-AND-PRIVACY.md) |
 | Player Model to User Model, the Web v15 to v16 method map, legacy endpoints and keys, troubleshooting order, delivered but not shown, duplicates, debug logs, test users | [MIGRATION-AND-TROUBLESHOOTING.md](MIGRATION-AND-TROUBLESHOOTING.md) |
 

@@ -1,6 +1,6 @@
 ---
 name: web-accessibility
-description: "Builds and reviews accessible web interfaces against WCAG 2.2 and the ARIA Authoring Practices: focus rings, skip links, tabindex, roving focus, dialogs and focus restore, APG key maps, SPA route changes, native elements and the rules of ARIA, landmarks, accessible names, disabled states, labels, autocomplete, input types, errors and submit behavior, sr-only text, live regions, alt text, captions, reduced motion, timed content, zoom and reflow, contrast, target size and dragging alternatives, and a WCAG-citing review on P0 to P3. Use when building or reviewing a web screen or component for keyboard, screen-reader, motion or zoom users, or when an accessibility audit is asked for."
+description: "Builds and reviews accessible web interfaces against WCAG 2.2 and the ARIA Authoring Practices: focus rings, skip links, tabindex, roving focus, dialogs and focus restore, APG key maps, SPA route changes, native elements and the rules of ARIA, landmarks, page and passage language, accessible names, disabled states, labels, autocomplete, input types, phone numbers and E.164, accessible authentication, errors and submit behavior, sr-only text, live regions, alt text, captions, reduced motion, timed content, zoom and reflow, contrast, target size and dragging alternatives, and a WCAG-citing review on P0 to P3. Use when building or reviewing a web screen or component for keyboard, screen-reader, motion or zoom users, or when an accessibility audit is asked for."
 ---
 
 # Web accessibility
@@ -12,8 +12,9 @@ When unsure, take the platform default over a custom rebuild, and remove ARIA ra
 | The job | Read |
 |---|---|
 | Focus rings, forced colors, focus not obscured, skip links, tabindex, roving tabindex, `aria-activedescendant`, dialogs, trapping and restoring focus, the APG key maps, Escape order, SPA route changes | [FOCUS-AND-KEYBOARD.md](FOCUS-AND-KEYBOARD.md) |
-| The four rules of ARIA, button vs link vs div, landmarks, headings, page titles, accessible names, Label in Name, common ARIA mistakes, disabled states, switch and tab states | [SEMANTICS-AND-ARIA.md](SEMANTICS-AND-ARIA.md) |
-| Labels, required fields, the error pattern, autocomplete tokens, `type` and `inputmode`, paste, submit while pending | [FORMS.md](FORMS.md) |
+| The four rules of ARIA, button vs link vs div, landmarks, breadcrumbs, headings, page titles, page and passage language (3.1.1, 3.1.2), accessible names, Label in Name, common ARIA mistakes, disabled states, switch and tab states | [SEMANTICS-AND-ARIA.md](SEMANTICS-AND-ARIA.md) |
+| Labels, required fields, the error pattern, autocomplete tokens, `type` and `inputmode`, paste, redundant entry (3.3.7), accessible authentication (3.3.8), submit while pending | [FORMS.md](FORMS.md) |
+| Phone fields: `type="tel"`, storing E.164 with its `+`, validating with libphonenumber, Israeli number ranges, the prefix is not the carrier | [PHONE-NUMBERS.md](PHONE-NUMBERS.md) |
 | `.sr-only`, choosing how to announce a change, live regions, loading announcements, `aria-hidden`, alt text by purpose, video and audio | [SCREEN-READERS.md](SCREEN-READERS.md) |
 | Reduced motion, autoplay and Pause, Stop, Hide, toasts and timing, content on hover or focus, text resize, reflow, viewport zoom, contrast | [MOTION-AND-ZOOM.md](MOTION-AND-ZOOM.md) |
 | Target size (2.5.8 and 2.5.5), the spacing exception, expanding hit areas, collisions, decorative layers, dragging and gesture alternatives | [HIT-AREAS.md](HIT-AREAS.md) |

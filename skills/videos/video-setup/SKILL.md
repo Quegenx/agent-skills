@@ -26,6 +26,6 @@ Optional keys, only when a film needs them, in the project's `.env` (never in a 
 - `ELEVENLABS_API_KEY`: narration and cloned voices (voiceover)
 - `FAL_KEY`: generated images or base footage (asset-prep)
 
-Optional engines, only when a brief calls for one (see make-video): `npx skills add remotion-dev/skills` for Remotion, `npx skills add heygen-com/hyperframes` for HyperFrames.
+Optional engines, only when a brief calls for one (see make-video): `npx skills add remotion-dev/skills` for Remotion, `npx skills add heygen-com/hyperframes` for HyperFrames. HyperFrames requires Node.js 22 or later and FFmpeg (github.com/heygen-com/hyperframes README), above the doctor's Node 20+ check: run `node --version` before choosing it.
 
 Finish by telling the user what is ready and that `make-video` is the place to start ("make a 15-second launch video for …").

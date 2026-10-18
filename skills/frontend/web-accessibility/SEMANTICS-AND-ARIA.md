@@ -1,6 +1,6 @@
 # Semantics and ARIA
 
-Native elements first, landmarks, accessible names, ARIA states for custom widgets and disabled controls. Source: [Jakub Krehel, better-accessibility, semantics-and-aria.md], with the rules of ARIA restated from the W3C note and state rules from MDN; additions are tagged where they appear.
+Native elements first, landmarks, the page and passage language, accessible names, ARIA states for custom widgets and disabled controls. Source: [Jakub Krehel, better-accessibility, semantics-and-aria.md], with the rules of ARIA restated from the W3C note and state rules from MDN; additions are tagged where they appear.
 
 ## The rules of ARIA
 
@@ -45,8 +45,18 @@ Where a native element is truly impossible, the full polyfill is `role="button"`
 
 - `<header>`, `<nav>`, `<main>`, `<aside>` and `<footer>` map to landmarks screen-reader users jump between. Expose one visible primary `<main>`.
 - Multiple landmarks of the same type need distinguishing labels: `<nav aria-label="Primary">`, `<nav aria-label="Breadcrumbs">`.
+- **Breadcrumbs:** the APG pattern marks the link to the current page with `aria-current="page"`; "If the element representing the current page is not a link, aria-current is optional" ([APG breadcrumb](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/)). Which pages the trail lists is in [marketing/site-architecture](../../marketing/site-architecture/SKILL.md).
 - Headings are structure, not styling. Style a heading level with CSS instead of picking the tag by size. Headings describe their sections and form a coherent outline; one `<h1>` and no skipped levels are conventions, not WCAG criteria ([REVIEW.md](REVIEW.md#criteria-not-conventions)).
+- A component reused in several places takes its heading level from where it sits, not a fixed tag, so the outline stays coherent on every page that uses it [freescan].
 - `<title>` matches the current context, most specific first: `Billing · Settings · Acme` (2.4.2 Page Titled).
+
+## Language of page and parts
+
+[WCAG 2.2](https://www.w3.org/TR/WCAG22/), with the right-to-left markup from [skills-il, hebrew-rtl-best-practices].
+
+- **3.1.1 Language of Page (A):** "The default human language of each web page can be programmatically determined." Understanding 3.1.1: "Screen readers can load the correct pronunciation rules", and on a page with several languages the default is "the language which is used most" ([Understanding 3.1.1](https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html)). Set it on the root from the active locale as a BCP 47 tag [freescan], with the direction beside it: `<html lang="he" dir="rtl">`, in the markup, not only in CSS [skills-il, hebrew-rtl-best-practices].
+- **3.1.2 Language of Parts (AA):** "The human language of each passage or phrase in the content can be programmatically determined", except "proper names, technical terms, words of indeterminate language" and words that have become part of the surrounding language ([Understanding 3.1.2](https://www.w3.org/WAI/WCAG22/Understanding/language-of-parts.html)). An English passage inside a Hebrew page carries `lang="en"` as well as `dir="ltr"`: `dir` fixes the order, `lang` fixes the pronunciation. The source's own log lists "lang+dir pairing on embedded spans" as deferred; this is that pairing.
+- A route per language sets its own `lang`, taken from the active locale [freescan]. Direction in CSS (logical properties, `:dir()`, isolating values) is in [anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#direction).
 
 ## Accessible names
 
@@ -105,4 +115,4 @@ app-ui does this instead: "Search submit is disabled until the query has non-spa
 
 ## Prove it
 
-Every clickable element is a `<button>` or `<a href>` (`grep -rnE '<(div|span)[^>]*onClick' src/` is empty, or each hit has `role`, `tabindex="0"` and Enter and Space handlers); the accessibility tree shows one `<main>`, a label on every repeated landmark, and a page title that changes per view; each control's computed name starts with its visible text; no `aria-labelledby` or `aria-describedby` points at a missing id; every `role="switch"` has `aria-checked` and every toggle button `aria-pressed`; and no element carries both `disabled` and `aria-disabled`.
+Every clickable element is a `<button>` or `<a href>` (`grep -rnE '<(div|span)[^>]*onClick' src/` is empty, or each hit has `role`, `tabindex="0"` and Enter and Space handlers); `<html>` carries `lang` (and `dir` on a right-to-left page) matching the active locale, and every passage in another language carries its own `lang`; the current breadcrumb link has `aria-current="page"`; the accessibility tree shows one `<main>`, a label on every repeated landmark, and a page title that changes per view; each control's computed name starts with its visible text; no `aria-labelledby` or `aria-describedby` points at a missing id; every `role="switch"` has `aria-checked` and every toggle button `aria-pressed`; and no element carries both `disabled` and `aria-disabled`.

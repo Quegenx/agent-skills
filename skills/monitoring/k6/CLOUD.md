@@ -19,7 +19,7 @@ Grafana Cloud k6 runs your script on its load generators, keeps the runs, and ex
   },
 ```
 
-  Percentages must sum to 100. `projectID` is required (from app.k6.io, project settings). The testing skill's example also sets `note: 'Testing new checkout flow'` and `staticIPs: false` (static IPs are Enterprise) and names its distribution keys `loadZone1` to `loadZone4` (`loadZone1: { loadZone: 'amazon:us:ashburn', percent: 40 }`). `options.ext.loadimpact` is deprecated: k6 warns `The options.ext.loadimpact option is deprecated, please use options.cloud instead`.
+  Percentages must sum to 100. `projectID` is required (from app.k6.io, project settings). The testing skill's example also sets `note: 'Testing new checkout flow'` and `staticIPs: false` (static IPs are Enterprise) and names its distribution keys `loadZone1` to `loadZone4` (`loadZone1: { loadZone: 'amazon:us:ashburn', percent: 40 }`). `options.ext.loadimpact` was removed in v2.0.0: move its fields to `options.cloud` ([k6 release notes v2.0.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.0.0.md)). The warning `The options.ext.loadimpact option is deprecated, please use options.cloud instead` appears only on k6 v1.x; this line used to call the option merely deprecated.
 - **Load zones:**
 
 | Region | Zone IDs |
@@ -28,9 +28,12 @@ Grafana Cloud k6 runs your script on its load generators, keeps the runs, and ex
 | Europe | `amazon:eu:dublin`, `amazon:eu:frankfurt`, `amazon:eu:london`, `amazon:eu:paris`, `amazon:eu:stockholm`, `amazon:eu:milan` |
 | Asia Pacific, Middle East, Africa | `amazon:ap:singapore`, `amazon:ap:sydney`, `amazon:ap:tokyo`, `amazon:ap:mumbai`, `amazon:ap:seoul`, `amazon:ap:hong kong`, `amazon:ap:osaka`, `amazon:ap:jakarta`, `amazon:ap:cape town`, `amazon:me:bahrain` |
 
-  A real run in the investigation example shows London as `amazon:gb:london`, not `amazon:eu:london`; confirm zone IDs in the current docs or the cloud UI.
-- **Commands differ between sources.** The k6 and management skills use `k6 cloud run script.js` and `k6 cloud login --token <token>` (plus `--stack`); the testing skill uses `k6 cloud script.js` (no `run`) and `k6 run --out cloud script.js` for local execution streaming to the cloud. `--local-execution` is described both as "runs the test on your machine but streams results to Grafana Cloud" and as "run on cloud infra but with local VUs". Check `k6 cloud --help` on your version.
-- **More CLI from the testing skill:** `export K6_CLOUD_TOKEN=<token>`, `k6 cloud login --show`, `k6 cloud -e API_URL=https://api.example.com script.js`, `k6 cloud --project-id 123456 script.js`, `k6 cloud --results-id {runId}`, `k6 cloud --results-export results.json`.
+  A real run in the investigation example shows London as `amazon:gb:london`, not `amazon:eu:london`, and the v2.2.0 release notes' sample output of `k6 cloud load-zone list` shows `amazon:sa:cape town`, not `amazon:ap:cape town`. On k6 v2.2+ list the IDs your stack serves with `k6 cloud load-zone list [--json]` ([k6 release notes v2.2.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.2.0.md)); otherwise confirm them in the current docs or the cloud UI.
+- **Use `k6 cloud run script.js`:** the positional `k6 cloud script.js` form was removed in v2.0.0, and from v2.2.0 `k6 cloud --vus 10 script.js` fails with `unknown flag` and a non-zero exit ([k6 release notes v2.0.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.0.0.md), [v2.2.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.2.0.md)). This used to be a dispute between sources; the testing skill's `k6 cloud script.js` is the removed form. `k6 run --out cloud script.js` (local execution streaming to the cloud) stays on the legacy cloud API, while `k6 cloud run --local-execution` moved to the v6 API in v2.2.0.
+- **`--local-execution`** is described both as "runs the test on your machine but streams results to Grafana Cloud" and as "run on cloud infra but with local VUs"; the v2.0.0 notes describe it as local execution that can read cloud secrets. From v2.2.0 it streams logs to the cloud run (opt out with `--no-cloud-logs`), and from v2.0.0 cloud secrets are available by default (opt out with `--no-cloud-secrets`, [Secrets](SCRIPTS.md#secrets)).
+- **A stack is required for every `k6 cloud` command** (v2.0.0+): `k6 cloud login` needs both `--token` and `--stack`, or set `K6_CLOUD_STACK_ID`, or the `stackID` script option. A token alone fails with an explicit error ([k6 release notes v2.0.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.0.0.md)).
+- **Cloud CLI commands on v2:** `k6 cloud upload script.js` uploads without running (it replaced the removed `--upload-only`); `k6 cloud project list [--format=json]` (v2.0); `k6 cloud test list [--project-id N] [--json]` (v2.1), resolving the project from `--project-id`, then `K6_CLOUD_PROJECT_ID`, then the stack default from `k6 cloud login`; `k6 cloud load-zone list [--json]` (v2.2). Versions: [VERSIONS.md](VERSIONS.md).
+- **More CLI from the testing skill:** `export K6_CLOUD_TOKEN=<token>` (plus `K6_CLOUD_STACK_ID` on v2), `k6 cloud login --show`, `k6 cloud -e API_URL=https://api.example.com script.js`, `k6 cloud --project-id 123456 script.js`, `k6 cloud --results-id {runId}`, `k6 cloud --results-export results.json`. These are written in the removed positional form: add `run` before the script and check `k6 cloud run --help` for which flags remain.
 - **Log in from a gcx context:**
 
 ```bash
@@ -41,24 +44,28 @@ k6 cloud run script.js
 ```
 
   gcx auth does not carry over to `k6 cloud run`. The token comes from `gcx k6 auth token`, the stack URL from the active context's `grafana.server` field. The k6 cloud config `~/.config/k6/cloud.json` holds one context; log in again when you switch gcx contexts, or `k6 cloud run` keeps targeting the previous stack.
-- **Validate locally first:** `k6 run --vus 1 --duration 30s script.js` costs no cloud time. The management skill's local checks are `k6 inspect script.js | head -20` (parse-only) and `k6 run --quiet script.js`. Exit codes: `0` pass, `99` threshold fail, anything else a script or runtime error.
+- **Validate locally first:** `k6 run --vus 1 --duration 30s script.js` costs no cloud time. The management skill's local checks are `k6 inspect script.js | head -20` (parse-only) and `k6 run --quiet script.js`. Exit codes: `0` pass, `99` threshold fail, `97` a cloud run aborted by system, limit, script error, user or timeout (v2.0.0+; these exited `0` before), anything else a script or runtime error ([LOAD-AND-THRESHOLDS.md](LOAD-AND-THRESHOLDS.md#exit-codes)).
 - **Docs:** `https://grafana.com/docs/grafana-cloud/testing/k6/`.
 - **The UI:** tabs Performance Overview, Checks, Thresholds, Logs (`console.log`), Comparison. Authoring tools: k6 Studio (desktop GUI), the browser recorder (Chrome extension), the test builder (Cloud UI), the k6 TypeScript template.
 
 ## CI
 
-GitHub Actions:
+GitHub Actions: `grafana/k6-action` is archived and no longer maintained; its README points to the Setup K6 and Run K6 actions ([grafana/k6-action](https://github.com/grafana/k6-action)). This block used to show `uses: grafana/k6-action@v0.3.1` with `filename`, `cloud: true` and `token`.
 
 ```yaml
-- name: Run k6 Cloud Test
-  uses: grafana/k6-action@v0.3.1
+- uses: grafana/setup-k6-action@v1
+- uses: grafana/run-k6-action@v1
+  env:
+    K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+    K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
   with:
-    filename: tests/load.js
-    cloud: true
-    token: ${{ secrets.K6_CLOUD_TOKEN }}
+    path: |
+      ./tests/api*.js
 ```
 
-One variant adds `flags: --out cloud`. GitLab CI uses `image: grafana/k6` with `k6 cloud login --token $K6_CLOUD_TOKEN` then `k6 cloud tests/load.js`, `only: - main`; CircleCI runs the same two commands. Keep larger tests out of auto-deploy pipelines ([LOAD-AND-THRESHOLDS.md](LOAD-AND-THRESHOLDS.md#automating-performance-tests)).
+run-k6-action inputs: `path` (a glob), `cloud-run-locally` (default true), `parallel`, `fail-fast`, `flags`, `inspect-flags`, `cloud-comment-on-pr` (default true), `only-verify-scripts`, `debug`, `disable-analytics` ([grafana/run-k6-action](https://github.com/grafana/run-k6-action)). On k6 v2 a cloud run also needs a stack (`K6_CLOUD_STACK_ID`), and CI must treat exit `97` as a failure.
+
+GitLab CI uses `image: grafana/k6` with `k6 cloud login` then the cloud run, `only: - main`; CircleCI runs the same two commands. The sources wrote them as `k6 cloud login --token $K6_CLOUD_TOKEN` and `k6 cloud tests/load.js`; on k6 v2 that is `k6 cloud login --token $K6_CLOUD_TOKEN --stack $K6_CLOUD_STACK_ID` and `k6 cloud run tests/load.js`. Keep larger tests out of auto-deploy pipelines ([LOAD-AND-THRESHOLDS.md](LOAD-AND-THRESHOLDS.md#automating-performance-tests)).
 
 ## Authentication
 
@@ -212,9 +219,11 @@ cp /tmp/script_current.js /tmp/script_backup_$(date +%s).js
 # 4. Local parse-only sanity check
 k6 inspect /tmp/script_new.js | head -20
 
-# 5. 1-iteration smoke (edit IN-FILE; --iterations CLI flag breaks browser scenarios)
-sed 's/iterations: [0-9]\+/iterations: 1/' /tmp/script_new.js > /tmp/script_1iter.js
-k6 run --quiet /tmp/script_1iter.js   # exit 0 = pass, 99 = threshold fail
+# 5. 1-iteration smoke: k6 v2.3+ keeps the scenario's function and browser options
+k6 run --quiet --once /tmp/script_new.js   # exit 0 = pass, 99 = threshold fail
+#    Older k6: edit IN-FILE (--iterations CLI flag breaks browser scenarios)
+# sed 's/iterations: [0-9]\+/iterations: 1/' /tmp/script_new.js > /tmp/script_1iter.js
+# k6 run --quiet /tmp/script_1iter.js
 
 # 6. PUT: Content-Type must be application/octet-stream
 gcx api /api/plugins/k6-app/resources/cloud/cloud/v6/load_tests/$ID/script \
@@ -229,13 +238,15 @@ gcx api /api/plugins/k6-app/resources/cloud/cloud/v6/load_tests/$ID/script \
 shasum -a 256 /tmp/script_new.js /tmp/script_verify.js
 ```
 
-  The `updated` timestamp does not change on a script PUT: verify by sha256. A 415 on the PUT means the `Content-Type: application/octet-stream` header didn't make it through (some shell quoting mistakes drop it); pass `-vvv` to `gcx api` for the request and response trace. Use `sed` on `iterations:` for the smoke, never `--iterations 1`, which overrides the scenario block and breaks browser scenarios. Which checks a change needs before the PUT is in [MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md#verifying-a-change).
+  The `updated` timestamp does not change on a script PUT: verify by sha256. A 415 on the PUT means the `Content-Type: application/octet-stream` header didn't make it through (some shell quoting mistakes drop it); pass `-vvv` to `gcx api` for the request and response trace. Smoke with `--once` on k6 v2.3+ (at most one scenario; `--scenario a,b --once` for several); on older k6 use `sed` on `iterations:`, never `--iterations 1`, which overrides the scenario block and breaks browser scenarios. Which checks a change needs before the PUT is in [MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md#verifying-a-change).
 
 ## Gotchas
 
 | Symptom | Cause and fix |
 |---|---|
 | 401, expired token | `gcx login --context <ctx>` |
+| `k6 cloud` errors on a missing stack or token (v2) | `k6 cloud login --token ... --stack ...`, or set `K6_CLOUD_STACK_ID` |
+| Cloud run exits `97` | Aborted by system, limit, script error, user or timeout (v2.0.0+); read the run's status and logs |
 | 403 or 404 on a right-looking path | The doubled `cloud/cloud/` is missing |
 | 415 on script PUT | Add `Content-Type: application/octet-stream` |
 | PUT returns 200 but nothing changed | Verify by sha256; `updated` doesn't bump |
@@ -254,3 +265,4 @@ shasum -a 256 /tmp/script_new.js /tmp/script_verify.js
 - Any run list you report came from the `@nextLink` loop with `created desc`, and its newest run date matches what the UI shows.
 - After every mutation, a re-GET shows the new value; after every script PUT, the two sha256 sums match.
 - A backup of the previous cloud script exists on disk before the PUT.
+- CI and scripts call `k6 cloud run` (never the positional `k6 cloud script.js`), log in with a token and a stack, and treat exit `97` as a failure.

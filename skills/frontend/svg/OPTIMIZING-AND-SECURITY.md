@@ -86,7 +86,7 @@ const getSvgoConfigFromSvgrConfig = (config: Config): any => {
 
 ## Rendering performance
 
-- **DOM size.** Inline SVG typically means more DOM nodes (or larger bundles with React); the more nodes, the longer layout takes. Lighthouse warns above about 800 body nodes and errors above about 1,400; web.dev calls a DOM excessive past 1,400 nodes. Lighthouse's advice: create nodes only when needed, and in React use windowing (`react-window`) and `React.memo` to cut repeated nodes and re-renders.
+- **DOM size.** Inline SVG typically means more DOM nodes (or larger bundles with React); the more nodes, the longer layout takes. Lighthouse 12's `dom-size` audit warns above about 800 body nodes and errors above about 1,400; web.dev calls a DOM excessive past 1,400 nodes. Lighthouse 13 replaced `dom-size` with `dom-size-insight` ([moving Lighthouse to insights](https://developer.chrome.com/blog/moving-lighthouse-to-insights)); this line used to name the audit without its version, and Lighthouse 13 no longer has `dom-size`. Lighthouse's advice: create nodes only when needed, and in React use windowing (`react-window`) and `React.memo` to cut repeated nodes and re-renders.
 - **Reuse instead of repeating.** `<symbol>` and `<use>` define a graphic once and instance it many times; `<img>` and CSS `url()` SVGs are cached and keep bundles small.
 - **Filters:** blurring is computation heavy; use it sparingly, especially on elements that scroll or animate (see [FILTERS.md](FILTERS.md)).
 - **Animation cost.** Code-based animations (CSS, SVG, canvas, WebGL, JavaScript) can consume CPU and cause jank even with a small bandwidth footprint. `transform` and `opacity` render in their own layer and don't trigger repaint; `color` triggers style recalculation and repaint; geometry properties trigger layout.
@@ -166,7 +166,7 @@ const clean = DOMPurify.sanitize(dirty, { NAMESPACE: 'http://www.w3.org/2000/svg
 - **Names survive:** informative SVGs keep `<title>` and non-empty `<desc>` after optimization.
 - **No id clashes:** with several optimized SVGs inlined on one page, every id is unique and each `url(#id)` paints the right gradient, clip or filter; prefixes are reproducible, and an SSR page shows no hydration mismatch.
 - **Standalone files work:** any SVG served to `<img>` or CSS was not run through `removeXMLNS`.
-- **DOM budget:** Lighthouse's DOM size audit stays under its warning (about 800 nodes) on pages with many inline icons.
+- **DOM budget:** on pages with many inline icons, Lighthouse 12's `dom-size` audit stays under its warning (about 800 nodes), or `dom-size-insight` passes on Lighthouse 13 ([moving Lighthouse to insights](https://developer.chrome.com/blog/moving-lighthouse-to-insights); this line said "Lighthouse's DOM size audit", an id Lighthouse 13 removed). Gating it in CI: [LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#audit-ids-in-lighthouse-12-and-13).
 - **Scripts can't run:** a test upload containing `<script>`, an `onload` attribute and a `javascript:` link is clean after sanitizing (DOMPurify output has no event attributes), and opening its URL directly downloads it (`Content-Disposition: attachment`) or runs nothing under the CSP.
 - **Headers:** the response for an SVG carries `Content-Type: image/svg+xml`; on an uploaded one also the CSP and `Content-Disposition` you set.
 - **Type check ignores the client:** an upload with a spoofed `Content-Type` is rejected by your own file-type validation.

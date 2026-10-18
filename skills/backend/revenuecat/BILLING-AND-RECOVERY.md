@@ -17,12 +17,13 @@ What happens to a subscription after the first purchase: failed renewals, cancel
 
 - **Do not compute access from `expirationDate`.** Read `isActive` and `willRenew`. Field names above are the Android SDK's; see [FLUTTER.md](FLUTTER.md) and [REACT-NATIVE.md](REACT-NATIVE.md).
 - **Spelling conflict:** the cancellations skill writes `billingIssuesDetectedAt` (plural); the payment-recovery skill and the quick reference write `billingIssueDetectedAt`. Check your SDK's API reference.
-- **Send users to fix or cancel through `managementURL`** from CustomerInfo. It is already a URI; do not re-parse it. Google requires apps to let customers cancel a subscription within the app.
+- **Send users to fix or cancel through `managementURL`** from CustomerInfo. It is already a URI; do not re-parse it. Google's [Subscriptions policy](https://support.google.com/googleplay/android-developer/answer/9900533): "You must also include in your app access to an easy-to-use, online method to cancel the subscription", met in account settings by "A link to Google Play's Subscription Center ... and/or direct access to your cancellation process" (the full policy is in [../../mobile/google-play/BILLING-AND-PURCHASES.md](../../mobile/google-play/BILLING-AND-PURCHASES.md#subscriptions-policy)). This line used to say only "Google requires apps to let customers cancel a subscription within the app".
 - **Grace-period subscriptions count as active.**
 
 ## Billing issues and grace periods
 
 - **The flow on Google Play:** a failed renewal enters a grace period (access kept while Google retries the card), then account hold (access revoked until the payment method is fixed). Both states land in `CustomerInfo` automatically, and Google's in-app message shows by default.
+- **Google's defaults** ([subscription lifecycle](https://developer.android.com/google/play/billing/lifecycle/subscriptions)): grace is enabled by default on all auto-renewing base plans; "You can set a grace period of 0 days, but Play will wait a minimum of 1 day"; account hold is enabled by default and lasts "60 days minus any grace period duration"; "Specifying a length less than the default value may reduce the number of subscriptions recovered".
 - **`billingIssueDetectedAt`** is non-null from the moment Google reports a billing problem until the user resolves it.
 - **Where grace periods exist:** optional and customizable on App Store, Google Play, RevenueCat Billing, Stripe and Paddle; Amazon does not support them. iOS 16.4+ shows a system sheet to update payment.
 - **Events:** only one `BILLING_ISSUE` per failure streak. Entering grace also sends cancellation events while access remains. Detect grace from the webhook's `grace_period_expiration_at_ms` (`BILLING_ISSUE` only) or `grace_period_expires_date` in `GET /subscriber` (null when not in grace; always null for Stripe).
@@ -35,7 +36,7 @@ What happens to a subscription after the first purchase: failed renewals, cancel
 | The message only on specific screens | Disable the automatic message and call `showInAppMessagesIfNeeded(activity)` yourself (Android) |
 | A server-side flag (recovery email) | Handle the `BILLING_ISSUE` webhook; no app code |
 
-- **UI branching order:** no entitlement or not active, the subscribe screen; billing issue and active, a grace-period warning; billing issue and not active, the account-hold screen; otherwise premium.
+- **UI branching order:** no entitlement or not active, the subscribe screen; billing issue and active, a grace-period warning; billing issue and not active, the account-hold screen; otherwise premium. For your own grace-period banner, [coreyhaines31/marketingskills, churn-prevention] shows it "on every page load during dunning period", dismissible but shown "again next session", and says "Don't block the product"; web dunning in full is [../../marketing/churn-prevention/SKILL.md](../../marketing/churn-prevention/SKILL.md).
 - **Stripe failed-payment settings** (Stripe **Settings > Billing > Subscriptions and email > Manage failed payments**):
 
 | Stripe setting | RevenueCat result |
@@ -57,6 +58,7 @@ What happens to a subscription after the first purchase: failed renewals, cancel
 
 ## Pauses
 
+- **Google's pause lengths** ([subscription lifecycle](https://developer.android.com/google/play/billing/lifecycle/subscriptions)): weekly plans 1, 2, 3 or 4 weeks; monthly, three-month, six-month and annual plans 1, 2 or 3 months, "Subject to change at any time". Apps "should also provide a way for the user to manually resume ... using a deep link to Google Play".
 - **RevenueCat resolves pause state** from the server-side subscription state; you don't query suspended subscriptions yourself.
 - **The resume date is not in the SDK.** Fetch `/v1/subscribers/{app_user_id}` on your backend, read `paused_expiration_time_ms` on the subscription, and expose it to the client through your own endpoint.
 

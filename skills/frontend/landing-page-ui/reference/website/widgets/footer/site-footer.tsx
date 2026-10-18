@@ -2,6 +2,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import type { MouseEvent } from "react";
 
 import {
+  footer_cookie_settings,
   footer_home_aria,
   footer_legal_text,
   footer_nav_label,
@@ -14,6 +15,7 @@ import { trackAnalyticsEvent } from "../../shared/site/google-analytics";
 import { cn } from "../../shared/styles/site-class-merge";
 import { typography } from "../../shared/styles/typography";
 import { AppLockup } from "../../shared/ui/brand/app-lockup";
+import { reopenCookieConsent } from "../cookie-consent/cookie-consent-banner";
 import { getSiteFooterGroups } from "./site-footer-links";
 import { SiteFooterReveal } from "./site-footer-reveal";
 import { siteFooterStyles as styles } from "./site-footer.styles";
@@ -44,7 +46,8 @@ const trackFooterNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
 };
 
 /**
- * The website's footer: the logo and the link groups.
+ * The website's footer: the logo, the link groups and the cookie settings
+ * control.
  *
  * @returns The footer.
  */
@@ -109,6 +112,13 @@ export const SiteFooter = () => {
             <div className={cn(typography.legal, styles.legalText)}>
               {footer_legal_text()}
             </div>
+            <button
+              onClick={reopenCookieConsent}
+              type="button"
+              className={cn(typography.legal, styles.cookieSettings)}
+            >
+              {footer_cookie_settings()}
+            </button>
           </ScrollReveal>
         </div>
       </section>

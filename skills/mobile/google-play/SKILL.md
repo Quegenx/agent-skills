@@ -14,8 +14,8 @@ Google Play takes a signed Android App Bundle and changes the live app only thro
 | Internal, closed and open tracks, which build a tester gets, managing testers, production access for new personal accounts, staged rollouts, halting, rollback, rollout schedules | [TESTING-AND-ROLLOUT.md](TESTING-AND-ROLLOUT.md) |
 | The check ladder, offline `gplay preflight` and its scanners, `gplay validate` and Google Checks, common rejections, Data safety, account deletion, restricted permissions, privacy policy and disclosure, enforcement | [POLICY-AND-PREFLIGHT.md](POLICY-AND-PREFLIGHT.md) |
 | Store listing text limits, metadata policy, graphic asset specs, preview video, metadata as files, screenshots, custom store listings, store listing experiments | [LISTING-AND-METADATA.md](LISTING-AND-METADATA.md) |
-| One-time products and subscriptions with base plans and offers, test purchases, server-side verification, RTDN, orders and voided purchases, Billing Library deadlines, Play Integrity API | [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md) |
-| Regional and PPP prices: `--regions-version`, update masks, fetch and merge, money format, migrating existing subscribers | [PRICING.md](PRICING.md) |
+| One-time products and subscriptions with base plans and offers, the Subscriptions policy (disclosure, trials, cancel link, refunds), test purchases, server-side verification, RTDN, orders and voided purchases, Billing Library deadlines, Play Integrity API | [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md) |
+| Regional and PPP prices: `--regions-version`, update masks, fetch and merge, money format, migrating existing subscribers, opt-in and opt-out price increases | [PRICING.md](PRICING.md) |
 | Replying to reviews, the in-app review and in-app update APIs, financial and stats reports from Cloud Storage | [REVIEWS-AND-REPORTS.md](REVIEWS-AND-REPORTS.md) |
 | Core vitals and bad-behaviour thresholds, memory thresholds, enforcement, vitals from the CLI, the anomaly gate, pre-launch reports | [VITALS.md](VITALS.md) |
 

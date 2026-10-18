@@ -44,6 +44,7 @@ returning *;
 - **Scheduled mutations run exactly once** and are retried on transient errors. **Scheduled actions run at most once and are not retried:** an action that calls an external API can fail and simply not run again. For important work, have the action record its outcome through a mutation, and let a mutation (or a cron) check for unfinished jobs and reschedule them.
 - Schedule `internal` functions so clients can't call them directly.
 - Recurring work goes in `crons.ts`. A cron that might overlap a still-running previous run must check job state before starting.
+- **A recurring job's first run sets its watermark to "now"** rather than processing all history; backfills and resets: [../../marketing/marketing-loops/LOOP-STATE.md](../../marketing/marketing-loops/LOOP-STATE.md#resetting-and-backfilling-safely) [coreyhaines31/marketingskills, marketing-loops].
 - For many parallel actions with limits and retries, use a work pool component rather than scheduling unbounded actions at once.
 
 ## Retries and failure

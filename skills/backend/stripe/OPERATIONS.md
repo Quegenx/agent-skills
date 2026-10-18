@@ -25,6 +25,8 @@ All workflows on this page come from a third-party skill set (appeeky/stripe-ski
 4. **Compute fees:** sum `fee` across the balance transactions and express it as an effective percentage of gross. Break the composition down by type (charges, refunds, adjustments) with count, gross, fees and net.
 5. **Flag discrepancies** between the payout net and the expected bank deposit.
 
+- **Affiliate commissions reconcile on their own states:** pending, approved or due, paid, refunded or adjusted, disputed. "Marking a commission paid is not necessarily a money transfer", and "Replayed webhooks and exports must not count a conversion or payment twice" [coreyhaines31/marketingskills, referrals]; the program side is in [../../marketing/referral-programs/AFFILIATES.md](../../marketing/referral-programs/AFFILIATES.md#reconciliation-and-payouts).
+
 ## Health dashboard
 
 Run in this order:

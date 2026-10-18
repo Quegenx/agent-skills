@@ -97,6 +97,7 @@ Six steps, in order: 1) get the experiment ID; 2) get its details; 3) get suppor
 ### 5. Interpret
 
 - **Interpret from what changed** between the variants.
+- **Judge a price or paywall winner on revenue, not conversion alone** [coreyhaines31/marketingskills, marketing-loops]: "Judge winners on revenue per visitor, plan mix, refunds, downgrades, churn, and support load - not conversion rate alone"; "Do not promote a variant that lifts conversion but lowers revenue-per-visitor or raises refunds/churn".
 - **Verify disputed catalog claims yourself:** if the user disputes a catalog-derived claim, check it with `get-product-store-state` rather than asking the user to check the store.
 
 ### 6. Report

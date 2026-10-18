@@ -40,6 +40,7 @@ This is not the same as `async`/`await`: that lets one server handle many reques
 - **Keep results for a stated time,** then expire them, and say so in the response. Generated files (reports, exports) go to object storage, and the user gets a short-lived signed link from an authorized endpoint, never a public URL.
 - **Making the job faster doesn't remove the wait.** A report five times quicker still blocks the user and still dies with the tab; move it off the request first, then optimize its queries.
 - **Stuck jobs are found and handled:** a job `running` past its expected duration with no heartbeat is either retried (if safe) or marked failed with a reason.
+- **Providers offer the same split.** OpenSEO sends scheduled rank checks through DataForSEO's task queue "instead of the live API, which costs about a third as much", at the price of posting the tasks, polling for results and handling "the ones that get stuck" [openseo.so, /openseo-vs-dataforseo].
 - **Workers scale separately from the API.** Keeping the heavy work out of request handlers lets the API stay fast while the worker pool grows or shrinks with the backlog. A worker loop inside the API process is a fine first step; once it competes with the endpoints for CPU, memory and database connections, move it to its own deployment behind the queue. Choosing a queue or broker for that is in the `messaging` skill.
 
 ## Stack notes

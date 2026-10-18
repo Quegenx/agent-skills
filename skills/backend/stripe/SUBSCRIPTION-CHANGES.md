@@ -175,6 +175,7 @@ const invoice = await stripe.invoices.createPreview({
 - **Resume:** `stripe.subscriptions.update('sub_...', { pause_collection: '' })`, then for drafts `stripe.invoices.list({ subscription, status: 'draft' })` and `stripe.invoices.update(id, { auto_advance: true })`.
 - **Schedule phase transitions don't remove** a `pause_collection` set on the subscription.
 - **`customer.subscription.paused` and `.resumed` are about status `paused`,** not about pausing collection.
+- **Pause as a save offer** [coreyhaines31/marketingskills, churn-prevention]: options of 1, 2 or 3 months with 1 month the default, data kept and access removed during the pause, auto-reactivation with an email 7 days ahead, and one pause per 12 months ([../../marketing/churn-prevention/CANCEL-FLOWS.md](../../marketing/churn-prevention/CANCEL-FLOWS.md#save-offers)). Removing access means "Pause subscriptions", not pausing collection.
 
 ## Prove it
 

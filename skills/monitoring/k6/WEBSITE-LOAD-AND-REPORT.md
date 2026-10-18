@@ -33,7 +33,7 @@ const ms = await page.evaluate(() => {
 timeToResult.add(ms);
 ```
 
-  with `time_to_result: ['p(95)<3000']`. The templates ship `timeToResult.add()` commented out, and a threshold on a metric with zero samples passes vacuously: wire it up or delete the threshold.
+  with `time_to_result: ['p(95)<3000']`. From k6 v2.3.0, the experimental `k6 run --features async-metric-context script.js` lets `await group('browse', async () => {...})` keep requests and checks in the group across `await`, with `group_duration` measured until the callback's promise settles (before, `group()` rejected async functions) ([k6 release notes v2.3.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.3.0.md)); keep `performance.mark/measure` as the default while the flag is experimental. The templates ship `timeToResult.add()` commented out, and a threshold on a metric with zero samples passes vacuously: wire it up or delete the threshold.
 - **In sync protocol code `group()` works:** `group('checkout', () => {...})` with `'group_duration{group:::checkout}': ['p(95)<2000']`.
 - **A thrown browser iteration shows as "interrupted", not "failed",** so record completion yourself:
 
@@ -161,7 +161,7 @@ histogram_quantile(0.95,
 
 ## The report
 
-- **Sections:** Summary (workflows, test types local or cloud, backend investigated or not, outcome pass / pass-with-findings / fail); SLOs and threshold results table (PASS/FAIL plus notes); Findings (severity-ordered: observation, evidence, neutral next step); Loosened or skipped thresholds (Threshold, Original, Loosened to, Cause); Evidence index (k6 logs, LG CSVs, cloud run URLs, Grafana datasource UIDs, service labels, run windows); Methodology notes (k6 and Node versions, LG host spec, sidecar interval, scenario shape, threshold strategy); Suggested next steps (including adding thresholds to CI via `k6 run --threshold=...`, a quarterly re-run).
+- **Sections:** Summary (workflows, test types local or cloud, backend investigated or not, outcome pass / pass-with-findings / fail); SLOs and threshold results table (PASS/FAIL plus notes); Findings (severity-ordered: observation, evidence, neutral next step); Loosened or skipped thresholds (Threshold, Original, Loosened to, Cause); Evidence index (k6 logs, LG CSVs, cloud run URLs, Grafana datasource UIDs, service labels, run windows; on k6 v2 a local run can add the built-in HTML report from `K6_WEB_DASHBOARD_EXPORT`, [SCRIPTS.md](SCRIPTS.md#results-output)); Methodology notes (k6 and Node versions, LG host spec, sidecar interval, scenario shape, threshold strategy); Suggested next steps (including adding thresholds to CI via `k6 run --threshold=...`, a quarterly re-run).
 - **Severity:** critical (SLO failed, user-facing, production blocker); high (SLO failed, one workflow); medium (trending toward failure); low (cosmetic or a rare edge); informational. When in doubt, go lower.
 - **Rules:** be specific (metric, window, evidence path); every number cites a file path or URL; stay neutral ("Customer should investigate whether X can be optimised", never "fix X by doing Y"); don't recommend code changes; don't infer backend findings from client-side signals ("the database is slow" needs the backend investigation). Good: "GetPizza p(95) hit 1.4s at iteration ~200; correlated with sustained 100% CPU on the recommender service per Grafana panel link".
 

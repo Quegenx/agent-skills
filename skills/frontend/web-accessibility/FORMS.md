@@ -1,6 +1,6 @@
 # Forms
 
-Labels, required fields, error messaging, autocomplete, input types, paste and submit behavior. Source: [Jakub Krehel, better-accessibility, forms.md]. Label, error and hint wording is in [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+Labels, required fields, error messaging, autocomplete, input types, paste, redundant entry, accessible authentication and submit behavior. Source: [Jakub Krehel, better-accessibility, forms.md]. Label, error and hint wording is in [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md).
 
 ## Labels
 
@@ -82,6 +82,14 @@ Disable spellcheck on emails, codes and usernames: `spellcheck="false"`.
 
 Never block paste; users paste passwords and one-time codes.
 
+Phone fields (`type="tel"`, `autocomplete="tel"`, storing E.164, validating with libphonenumber, Israeli numbers) are in [PHONE-NUMBERS.md](PHONE-NUMBERS.md).
+
+## Multi-step forms and sign-in
+
+- **3.3.7 Redundant Entry (A):** "Information previously entered by or provided to the user that is required to be entered again in the same process" is auto-populated or available to select; "The autocomplete feature of browsers is not considered sufficient" ([Understanding 3.3.7](https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html)).
+- **3.3.8 Accessible Authentication (Minimum) (AA):** no cognitive function test in any step of an authentication process unless that step offers an alternative, a mechanism that assists, or one of the two exceptions. Password managers and paste satisfy it, so blocking paste or autofill on a password or code field fails; one-time codes must be pasteable. Object-recognition and personal-content tests are excepted at AA but not at AAA (3.3.9); an audio CAPTCHA the user must transcribe "cannot be used to meet the Alternative exception" ([Understanding 3.3.8](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html)).
+- **Email links, two views:** WCAG lists "Email link authentication" (technique G218) as sufficient for 3.3.8; NIST SP 800-63B-4 says "Email SHALL NOT be used for out-of-band authentication", exempting codes that confirm an address and recovery codes ([SP 800-63B-4](https://pages.nist.gov/800-63-4/sp800-63b.html)). NIST is the US federal assurance baseline; WCAG is about access. Sign-up flow design is in [marketing/cro/SIGNUP.md](../../marketing/cro/SIGNUP.md).
+
 ## Submit behavior
 
 [Jakub Krehel, better-accessibility]
@@ -95,4 +103,4 @@ app-ui does this instead: the pending "button is disabled and `aria-busy`", and 
 
 ## Prove it
 
-Clicking every label focuses or toggles its control; no input relies on a placeholder for its name; `grep -rn 'disabled={!' src/` finds no submit gated on validity; submitting an empty form focuses the first invalid field, which announces its error with its label; every field about the user has an `autocomplete` token from the table; a phone shows the numeric keypad on code and PIN fields; pasting into every password and code field works; and while a request runs, focus stays on the submit button and a second click sends nothing.
+Clicking every label focuses or toggles its control; no input relies on a placeholder for its name; `grep -rn 'disabled={!' src/` finds no submit gated on validity; submitting an empty form focuses the first invalid field, which announces its error with its label; every field about the user has an `autocomplete` token from the table; a phone shows the numeric keypad on code and PIN fields; pasting into every password and code field works, and no sign-in step needs a puzzle without an alternative; a later step never asks again for what an earlier step collected; and while a request runs, focus stays on the submit button and a second click sends nothing.

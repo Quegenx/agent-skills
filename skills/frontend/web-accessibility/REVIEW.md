@@ -59,6 +59,8 @@ Take the earliest rung that works: (1) delete (an ARIA attribute a native elemen
 
 - **Without a browser:** accessible names on every interactive element, keyboard handlers on non-native controls, focus styles, `prefers-reduced-motion` guards and form labels bound to their inputs.
 - **With one:** tab the flow in order, read computed names and roles from the accessibility tree, confirm a visible focus indicator at every stop and run an automated audit.
+- **Triage an automated audit** [freescan]: work axe's critical and serious results first; fix the shared component, not each page it appears on; record each accepted exception with its scope and an owner; and treat the "incomplete" results as a list for manual review, neither passes nor failures.
+- **Scope and environment** [freescan]: audit by template, state and task rather than by URL alone, and record browser, OS, viewport, zoom, assistive technology, input method, signed-in state, date and code version with the results.
 - Report every check you could not run as `Not verified`, never as a finding. A source-only claim about rendering needs the rendered page, and a screenshot alone cannot support a code finding. [Jakub Krehel, better-interface]
 
 ## The report
@@ -126,4 +128,4 @@ The `role="switch"` and tooltip rows come from [transitions.dev] findings, not t
 
 ## Prove it
 
-Every finding in the report cites a WCAG 2.2 A or AA criterion or a task that cannot be completed, or is ranked P2 or P3; no AAA criterion is ranked P0 or P1; every trigger in the table above that was found is ranked P1 or higher and listed first; every check that was not run is marked `Not verified`; each root cause is one row with all its locations; for a change review, the removed-signals command was run and each hit is either a finding or named as replaced; and the verdict is `Block` exactly when a P0 or P1 remains.
+Every finding in the report cites a WCAG 2.2 A or AA criterion or a task that cannot be completed, or is ranked P2 or P3; no AAA criterion is ranked P0 or P1; every trigger in the table above that was found is ranked P1 or higher and listed first; every check that was not run is marked `Not verified`, and the report records its environment; each root cause is one row with all its locations; for a change review, the removed-signals command was run and each hit is either a finding or named as replaced; and the verdict is `Block` exactly when a P0 or P1 remains.

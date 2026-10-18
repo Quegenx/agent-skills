@@ -15,6 +15,7 @@ For each cache, write down:
 
 - Include every input: the identifiers, query parameters, the user or tenant when results differ per user, locale, permissions, feature flags, and the version of the code or template that produced it. A key missing the user serves one user's data to another.
 - Use one function to build each kind of key, so every reader and writer agrees.
+- **Paid third-party lookups** (enrichment) need exact keys and their own hit, miss and negative rules: [ENRICHMENT.md](../../marketing/prospecting/ENRICHMENT.md#exact-cache-keys) [coreyhaines31/marketingskills, prospecting].
 
 ## Content-addressed keys
 

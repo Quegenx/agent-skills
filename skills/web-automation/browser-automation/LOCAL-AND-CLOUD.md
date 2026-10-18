@@ -11,6 +11,7 @@
 | Local fails with bot detection or access denied | Switch to remote |
 
 - **Escalate on signals, not by default:** CAPTCHAs (reCAPTCHA, hCaptcha, Turnstile), "Checking your browser..." interstitials, HTTP 403 or 429, empty pages on sites that should have content, or the user asks. Don't switch for simple sites.
+- **On a third-party site, a block is a stop signal, not an escalation trigger:** the table above applies to the user's own or authorized sites; the rule and its sources are [SKILL.md](SKILL.md#the-rules) rule 3.
 - **Ask the user before escalating to a paid service.** Tell them what blocked you (for example Cloudflare) and ask whether to set it up.
 - **Keep a debug browser isolated** with its own `--user-data-dir`, and set the viewport before capture so screenshots are a consistent size.
 

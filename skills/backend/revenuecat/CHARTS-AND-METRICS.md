@@ -116,6 +116,7 @@ The definition of conversion may vary with the app's model: customers may conver
 ### Retention
 
 - **Churn chart:** the % of the active subscriber base lost each period. It is hard to interpret and benchmark because it blends periods. The valuation method still scores retention from the `get-benchmarks` monthly-churn benchmark (see [FORECASTING-AND-VALUATION.md](FORECASTING-AND-VALUATION.md#positioning-scorecard)): the two sources differ on how far to trust a monthly-churn reading.
+- **Reconcile before reporting outside the team** [coreyhaines31/marketingskills, marketing-plan]: its worked example flags "29% monthly App Store churn vs. 38% 12-month retention claim" as a definition mismatch ("Both can be true"), and an implied ~$4 per subscriber a month against a $30 list price as plan mix or promo pricing. Settle which definition each number uses before it goes into a plan or a pitch.
 - **Long-term product retention:** the Subscription Retention chart, or Cohort Explorer with the `retained_subscriptions` measure (subscriptions still active, that is not expired, over time).
 - **When in the lifecycle subscriptions get cancelled** (auto-renew turned off): Cohort Explorer with the `subscriptions_set_to_renew` measure.
 - **Subscription Retention** reports each cohort's renewals period by period as counts and precomputed rates ("Month N" and "Month N rate" columns). A single period answers questions like "what share renewed once": the first renewal is the period matching the plan length (Month 1 for monthly, Year 1 for annual). Filter by `product_duration` for one plan length per read, and by `subscription_type` (`new`) to exclude product changes and resubscriptions. Periods a cohort hasn't fully reached are reported incomplete: don't read them as zeros.
@@ -201,7 +202,7 @@ https://app.revenuecat.com/projects/56965ae1/charts/churn?range=Custom%3A2025-08
 - **No 400 retries by guessing:** after a `parameter_error`, the next call uses an ID from the error message or the re-read schema.
 - **Filters:** no filter name appears twice in one `filters` array, and no value contains a comma.
 - **Totals:** no answer sums the `is_total` segment with other segments; segment shares are computed by a script against `Total`.
-- **Incomplete periods:** every `incomplete: true` point is excluded from trends or called out.
+- **Incomplete periods:** every `incomplete: true` point is excluded from trends or called out. The same rule for rates [coreyhaines31/marketingskills, marketing-plan]: "every rate divides matching closed windows", and "a trial still inside its window is pending, not failed".
 - **Selectors stated:** any non-default selector (for example `revenue_type=proceeds`, `conversion_timeframe=14_days`) is named in the answer, and cohort comparisons use one window.
 - **Shift explained from tool calls:** an answer to "why did X change" that names an offering, package, product, paywall or experiment rests on `list-experiments`, `list-offerings`, `get-offering`, `get-product-store-state` or `list-paywalls` calls from this run, and the annotations were checked.
 - **Links:** every chart link uses the short project ID in the path, a `range=Custom%3A...` param, an explicit `resolution`, and only filters, segments and selectors from a successful call.

@@ -21,7 +21,7 @@ How to write, time and pace push notifications so they get delivered, seen and c
 | Custom time per timezone | Same local time for everyone | `delayed_option: timezone` + `delivery_time_of_day` |
 
 - **Per-user delivery spans 24 hours.** With Intelligent Delivery or Custom time per timezone, every record in the audience gets a chance to receive it. If it is already 10 AM for a recipient when a 9 AM local-time message sends, they receive it at 9 AM the following day.
-- **Pick by use case:** send immediately for time-sensitive messages (breaking news); timezone for the same local time (a TV episode at 3 PM local); Intelligent Delivery to reach each user at their most active hour.
+- **Pick by use case:** send immediately for time-sensitive messages (breaking news); timezone for the same local time (a TV episode at 3 PM local); Intelligent Delivery to reach each user at their most active hour. Event reminders count back from the event's start (confirmation immediately, T-1 day, T-1 hour, T-5 minutes with the join link) [coreyhaines31/marketingskills, events]; timezone delivery would move each to the same local clock time instead, so send them immediately at each step.
 - **Sources disagree on what Intelligent Delivery uses.** The current push docs say "session activity" and the email docs say "open and click activity (excludes bot activity)"; a 2019 OneSignal blog post says it uses "up to three months of historical data" of when a user used this and other OneSignal apps and sites. Confirm in the current docs.
 - **Throttling disables both** (see [Throttling](#throttling)).
 
@@ -215,7 +215,7 @@ The full retry rules belong with the REST API; these are the ones that decide wh
 - **Cadence signal:** a histogram of messages received per user per week over 30 days. When the top decile gets 3 to 4 times the median, fatigue opt-outs may concentrate there.
 - **Map every campaign and Journey that reaches the same user** (entry, waits, exits, suppression). Review segments not referenced in 90 days. Spot-check the personalization fallbacks of your top 5 templates. Test the full deep-link destination.
 - **Change one thing** with a hypothesis, a success metric and a guardrail metric (e.g. opt-outs).
-- **Channel roles:** push for time-sensitive, email for visual or long, in-app for contextual messages to active users, SMS/RCS for consented direct messages, Live Activities for ongoing changing information. Consent is separate per channel: a yes to push doesn't carry over to texts.
+- **Channel roles:** push for time-sensitive, email for visual or long, in-app for contextual messages to active users, SMS/RCS for consented direct messages, Live Activities for ongoing changing information. Consent is separate per channel: a yes to push doesn't carry over to texts. For texts: "If it could wait 24 hours, send it via email" [coreyhaines31/marketingskills, sms]; see [../../marketing/sms-marketing/CHANNEL-AND-COPY.md](../../marketing/sms-marketing/CHANNEL-AND-COPY.md#when-sms-beats-email).
 
 ## Prove it
 

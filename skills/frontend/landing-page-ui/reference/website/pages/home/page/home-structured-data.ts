@@ -32,7 +32,10 @@ export const getHomepageStructuredData = () => {
         inLanguage,
         name: "App",
         publisher: { "@id": organizationId },
-        url: canonicalUrl,
+        // Google site names: url is "the canonical home page of your site's
+        // domain or subdomain"; subdirectories such as /en are not supported
+        // (https://developers.google.com/search/docs/appearance/site-names).
+        url: SITE_ORIGIN,
       },
       {
         "@id": `${canonicalUrl}/#webpage`,

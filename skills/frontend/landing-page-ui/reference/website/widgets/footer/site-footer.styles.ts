@@ -1,6 +1,8 @@
 export const siteFooterStyles = {
   body: "items-start grid gap-12 max-[47.9375rem]:gap-8 min-[48rem]:max-[68.6875rem]:gap-12 grid-cols-[minmax(19rem,1.7fr)_minmax(0,5fr)] max-[47.9375rem]:grid-cols-1 min-[48rem]:max-[68.6875rem]:grid-cols-1",
   brandColumn: "items-center flex flex-col gap-6 min-w-0 text-start",
+  cookieSettings:
+    "bg-transparent hover:text-brand-white text-brand-white-muted block cursor-pointer rounded-xsmall focus-visible:outline-focus outline-transparent outline-offset-2 outline-solid outline-2 mt-4 mx-auto [transition:color_150ms_ease]",
   footer:
     "box-border mx-auto py-20 max-[39.9375rem]:py-12 min-[40rem]:max-[47.9375rem]:py-16 min-[48rem]:max-[68.6875rem]:py-20 px-8 max-[39.9375rem]:px-4 min-[40rem]:max-[47.9375rem]:px-6 min-[48rem]:max-[68.6875rem]:px-6 relative w-[min(100%,80rem)] z-1",
   legalRegion:

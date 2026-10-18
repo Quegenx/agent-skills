@@ -101,7 +101,7 @@ The page files (`website/pages/`, 141 rows) are in [REFERENCE-PAGES.md](REFERENC
 | `website/shared/layout/page/marketing-content-section.styles.ts` | Class strings for marketing content section | [SECTIONS.md](../SECTIONS.md) |
 | `website/shared/layout/page/marketing-content-section.tsx` | A marketing page's content section: its centered inner column, with the first section's spacing when it opens the page | [SECTIONS.md](../SECTIONS.md) |
 | `website/shared/layout/page/marketing-motion-page.tsx` | A marketing page's main element, with motion's features loaded once for the page | [MOTION.md](../MOTION.md) |
-| `website/shared/layout/page/marketing-page-head.ts` | Canonical, hreflang, and Open Graph tags for a public marketing URL | [DISCOVERY.md](../DISCOVERY.md) |
+| `website/shared/layout/page/marketing-page-head.ts` | Canonical, hreflang, and Open Graph tags for a public marketing URL, and the JSON-LD script serializer | [DISCOVERY.md](../DISCOVERY.md) |
 | `website/shared/layout/page/marketing-page-header.tsx` | Provides the shared semantic and responsive header shell for marketing pages | [DISCOVERY.md](../DISCOVERY.md) |
 | `website/shared/layout/page/marketing-page.styles.ts` | Shared page chrome used by marketing, support, and legal routes | [SECTIONS.md](../SECTIONS.md) |
 | `website/shared/layout/page/marketing-section.tsx` | Shared outer shell for full-width marketing page sections | [SECTIONS.md](../SECTIONS.md) |
@@ -159,12 +159,12 @@ The page files (`website/pages/`, 141 rows) are in [REFERENCE-PAGES.md](REFERENC
 | `website/widgets/app-start-cta/app-start-cta.styles.ts` | Class strings for app start cta | [SECTIONS.md](../SECTIONS.md) |
 | `website/widgets/app-start-cta/app-start-cta.tsx` | The closing panel of a page: heading, what happens next, the app's sign-up and log-in, and an app screen | [SECTIONS.md](../SECTIONS.md) |
 | `website/widgets/cookie-consent/cookie-consent-banner.styles.ts` | Class strings for cookie consent banner | [SECTIONS.md](../SECTIONS.md), [DISCOVERY.md](../DISCOVERY.md) |
-| `website/widgets/cookie-consent/cookie-consent-banner.tsx` | The website's cookie banner until the visitor chooses; accepting turns analytics on (Consent Mode) | [SECTIONS.md](../SECTIONS.md), [DISCOVERY.md](../DISCOVERY.md) |
+| `website/widgets/cookie-consent/cookie-consent-banner.tsx` | The website's cookie banner until the visitor chooses, and again when they reopen it from the footer; accepting turns analytics on (Consent Mode) | [SECTIONS.md](../SECTIONS.md), [DISCOVERY.md](../DISCOVERY.md) |
 | `website/widgets/cookie-consent/cookie-consent-storage.ts` | What the visitor chose in the cookie banner | [SECTIONS.md](../SECTIONS.md), [DISCOVERY.md](../DISCOVERY.md) |
 | `website/widgets/footer/site-footer-links.ts` | The footer's link groups: the navigation's sections, then the legal pages, in the page's language | [SECTIONS.md](../SECTIONS.md), [MOTION.md](../MOTION.md) |
 | `website/widgets/footer/site-footer-reveal.tsx` | Reveals the footer from under the page as it scrolls to the end, sized to its content | [SECTIONS.md](../SECTIONS.md), [MOTION.md](../MOTION.md) |
 | `website/widgets/footer/site-footer.styles.ts` | Class strings for site footer | [SECTIONS.md](../SECTIONS.md), [MOTION.md](../MOTION.md) |
-| `website/widgets/footer/site-footer.tsx` | The website's footer: the logo and the link groups | [SECTIONS.md](../SECTIONS.md), [MOTION.md](../MOTION.md) |
+| `website/widgets/footer/site-footer.tsx` | The website's footer: the logo, the link groups and the cookie settings control | [SECTIONS.md](../SECTIONS.md), [MOTION.md](../MOTION.md), [DISCOVERY.md](../DISCOVERY.md) |
 | `website/widgets/header/bar/site-header-card.tsx` | One section of the header menu as a card of links, the current page marked | [MOTION.md](../MOTION.md) |
 | `website/widgets/header/bar/site-header-logo.tsx` | The header's logo, its wordmark hidden on phones | [MOTION.md](../MOTION.md) |
 | `website/widgets/header/bar/site-header-menu-motion.ts` | The header menu's GSAP motion: the nav grows to its cards' height, cards fade up in turn | [MOTION.md](../MOTION.md) |

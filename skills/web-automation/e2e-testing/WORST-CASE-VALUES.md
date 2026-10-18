@@ -17,6 +17,7 @@ Realistic values that break UI, grouped by the kind of value a component renders
 | `Đặng Thị Ngọc Hân` | Stacked Vietnamese diacritics; clipped by tight `line-height` + `overflow: hidden` |
 | `王秀英` | CJK, no spaces; "first + last word" initials logic finds one word, and CJK breaks anywhere |
 | `نور الهدى عبد الرحمن` | RTL; punctuation and icons land on the wrong side without `dir="auto"` |
+| `שלום John 050-2345678 ‏1,234.00 ‏₪` | Hebrew, Latin, a phone number and an amount in one string; skills-il's hebrew-rtl-best-practices tests `שלום John 050-1234567 ₪1,234` "in every text surface", and the amount here is what `Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS' }).format(1234)` returns in Node 26 (RLM, `1,234.00`, no-break space, RLM, `₪` after the number), not the source's `₪1,234` [skills-il, hebrew-rtl-best-practices]. The phone number is changed too: the source's `050-1234567` fails libphonenumber's Israeli mobile pattern `5(?:[0-2][02-9]|...)` ([PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md#validate-with-libphonenumber)), so a validating field would reject it before the layout is tested. Open every modal, dropdown, tooltip and toast with it: "portalled UI is the most common RTL miss" |
 | `Seán O'Brien-Ó Súilleabháin` | Apostrophe and accents; escaping, initials, search |
 | `María José de la Cruz y Fernández` | Lowercase particles; initials `Md` or `MF`, sorting by "last name" |
 | `dana` | All lowercase; initials should still be uppercase |

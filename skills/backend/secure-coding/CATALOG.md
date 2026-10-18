@@ -28,6 +28,25 @@ export const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => HTML_ESCAP
 
 Honest text comes out looking unchanged. Stripping `<script>` or blocklisting tags fails on the next payload and mangles `x < y`. In React, text children are escaped for you; `dangerouslySetInnerHTML`, `href` values and inline event handlers are where escaping stops, so sanitize HTML you must render with a maintained sanitizer.
 
+### JSON inside a script element
+
+JSON-LD written into `<script>` is a different context: "JSON escaping alone does not stop a product string containing a script-closing tag from terminating the element" [coreyhaines31/marketingskills, schema]. The [Next.js JSON-LD guide](https://nextjs.org/docs/app/guides/json-ld): "`JSON.stringify` ... does not sanitize malicious strings used in XSS injection", so scrub them "by replacing the character, `<`, with its unicode equivalent, `\u003c`", or use a maintained serializer such as `serialize-javascript`:
+
+```tsx
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+/>
+```
+
+The same guide uses a native `<script>`, not `next/script`: JSON-LD "is structured data, not executable code". Escape at the HTML embedding boundary, "without deleting legitimate characters from the source data"; "parsing the JSON recovers the original product text" [coreyhaines31/marketingskills, schema]. aeo.js escapes more: "A schema value containing `</script>` (or U+2028 / U+2029) breaks out of the script block", fixed with [aeo.js]
+
+```ts
+JSON.stringify(value).replace(/</g, "\\u003C").replace(/>/g, "\\u003E").replace(/&/g, "\\u0026").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029")
+```
+
+Which structured data to emit is the [seo skill's STRUCTURED-DATA.md](../../marketing/seo/STRUCTURED-DATA.md).
+
 ## Links: scheme allowlist
 
 A link built from user input can be `javascript:alert(1)`. Parse it and allow only the schemes you mean:
@@ -88,6 +107,8 @@ Use the hostname from the same parser the HTTP client uses: `new URL` turns `213
 - **Redirects:** fetch with `redirect: "manual"`, run the check on each `Location`, and cap the number of hops.
 - **DNS rebinding:** the name can resolve to a public address for the check and a private one for the connection. Connect to the address you checked (a custom `lookup` on the HTTP agent that applies the same rules), or send outbound traffic through an egress proxy that enforces them.
 - **Network controls:** the process shouldn't be able to reach the metadata service or internal admin ports at all; code checks are the second line.
+
+**Crawlers are where this check gets cut short.** OpenSEO's site-audit crawler resolves DNS (over DoH) "only for the start URL ... per-link DoH lookups would be prohibitively slow"; links found mid-crawl are checked by hostname or IP-literal text only, and a failed lookup returns `false`, so it fails open [open-seo, url-policy.ts]. aeo.js never resolves at all: its guard matches hostname strings and literal IPs, so a public name pointing at a private address passes [aeo.js]. That is the ceiling of a text-only check; a crawler that fetches arbitrary links needs the per-connection check above or an egress proxy. OpenSEO's block list also names entries the list above lacks: the hostname `metadata.google.internal`, the address `100.100.100.200`, the `.internal` and `.home.arpa` suffixes, `198.18.0.0/15`, and everything from `224.0.0.0` up [open-seo, url-policy.ts]. Add the ranges and the address to `PRIVATE`, and match the hostname and suffixes (exactly, or with the leading dot) before resolving.
 
 ## File names and paths
 

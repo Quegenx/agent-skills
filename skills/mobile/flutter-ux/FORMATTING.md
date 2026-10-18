@@ -259,6 +259,8 @@ api.updatePhone(
 )
 ```
 
+**Store E.164 with the `+`, not bare digits.** The mask `+### ## ### ## ##` unmasks to digits without the `+`. Store and send one E.164 value (`+`, country code, national number) and render separators only for display; Meta's WhatsApp Cloud API: "We highly recommend that you include both the plus sign and country calling code" ([phone numbers](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers/)). The Israeli case (trunk `0`, `+972`), the ranges, special numbers and what the Israeli source got wrong are in [web-accessibility/PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md) [skills-il, israeli-phone-formatter].
+
 **With a country picker:** one mask stops working. Don't write a mask per country. First check whether your country picker package ships a formatter. If not, [phone_numbers_parser](https://pub.dev/packages/phone_numbers_parser) knows every country's format; wrap it in a small `TextInputFormatter` with the selected country's ISO code:
 
 ```dart
@@ -286,6 +288,8 @@ class PhoneInputFormatter extends TextInputFormatter {
 ```
 
 The returned `TextEditingValue` sets no `selection`, so the source leaves the caret position unhandled.
+
+Validate against a parser's metadata, not a regex: a hand-written regex for one country's numbers over-accepts (the Israeli source's own sample `0521234567` fails libphonenumber), so take test numbers from the parser, not from a blog post ([PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md#validate-with-libphonenumber)).
 
 ## Never show null
 
@@ -368,5 +372,5 @@ Without the parentheses, a null `cartInfo` short-circuits the whole expression a
 
 - **Dates:** no screen shows a raw `DateTime` string; switching the app language changes month and weekday names; `initializeDateFormatting()` runs in `main`; `Today` and `Yesterday` are translated; backend requests use `yyyy-MM-dd`.
 - **Numbers:** counts, prices and big numbers follow the device region (check `en_US`, `de_DE`, `fr_FR`); a JPY price shows no decimals; numbers the user reads as "which one" are left unformatted.
-- **Phone numbers:** typing shows the spaces as each digit lands; pasted numbers with symbols are cleaned; the request body carries digits only; with a country picker, switching country reformats the field.
+- **Phone numbers:** typing shows the spaces as each digit lands; pasted numbers with symbols are cleaned; the request body carries one E.164 value with its `+` and no separators; with a country picker, switching country reformats the field.
 - **Null:** with the API returning `null`, `"null"` and `""` for a text field, the screen shows the placeholder (or hides the widget), never the word "null" or a blank.

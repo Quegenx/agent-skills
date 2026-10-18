@@ -55,6 +55,10 @@ html {
 
 A sticky footer or cookie banner needs `scroll-padding-bottom` the same way.
 
+A non-modal overlay (a slide-in, a sticky bar, a cookie notice) passes 2.4.11 when it is modal, when scroll padding reserves its space, or, for a notification that needs no action, when it closes on losing focus; one that neither takes focus nor closes when focus leaves "will be at risk of failing" where it can cover focusable items ([Understanding 2.4.11](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)). Popup rules beyond focus are in [marketing/cro/POPUPS.md](../../marketing/cro/POPUPS.md#accessibility).
+
+**Cookie banners** [c15t]: "Blocking banners carry `role="dialog"` and `aria-modal="true"`. Non-blocking banners leave page controls usable by keyboard and pointer", and "A notice never traps focus or locks scroll." Its interface check: "Tab through the banner and dialog with the keyboard only. Focus stays inside a modal dialog and returns to the button that opened it when it closes. Set the viewport to 375 pixels wide and switch to a language with long labels, such as German. After applying your theme, check text contrast and that focus rings are visible." The banner itself is [cookie-consent](../cookie-consent/SKILL.md).
+
 ## Skip link
 
 [Jakub Krehel, better-accessibility]
@@ -144,7 +148,9 @@ triggerRef.current?.focus();
 Either way:
 
 - On open, focus the first focusable element. For destructive confirmations, focus the least destructive action instead.
+- The APG adds ([Dialog (Modal) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)): `aria-labelledby` "refers to a visible dialog title"; "It is strongly recommended that the tab sequence of all dialogs include a visible element with role button" that closes it; focus may start on a static element at the top when focusing the first interactive element would scroll the start of the content out of view; "Windows under a modal dialog are inert."
 - On close, return focus to the trigger, or to the nearest logical container if the trigger is gone.
+- A dialog that opened on its own (a timed, scroll or exit popup) has no trigger. For a missing invoker the APG says "focus is set on another element that provides logical work flow"; reading, not stated by the APG: for a popup that is where focus was before it opened.
 - When an inline element (a banner, a chip) is dismissed, focus moves to the next focusable element after it, else the one before, "not back to the top of the page". [fluid-functionalism]
 - A closed menu, panel or toast hidden only with `opacity: 0` and `pointer-events: none` stays focusable and in the accessibility tree; hide the closed state with `visibility: hidden` or `inert` as well, as app-ui's disclosure panel does ("Closed panels also get `inert`", [app-ui/reference/styles/ui/display/disclosure-panel.css](../app-ui/reference/styles/ui/display/disclosure-panel.css), which also sets `visibility: hidden` once closed). [transitions.dev]
 
@@ -182,4 +188,4 @@ Client-side navigation doesn't reset focus or announce anything. On route change
 
 ## Prove it
 
-With the mouse unplugged, every flow completes, every stop shows a focus indicator, and the order matches the screen; no `tabindex` above 0 exists (`grep -rnE 'tabindex="[1-9]|tabIndex=\{[1-9]' src/` is empty); a focused field never sits fully under the sticky header; the skip link appears on the first Tab and lands in `<main>`; each composite widget is one Tab stop and the arrows move inside it; every dialog takes focus on open, holds it, closes on Escape and returns focus to its trigger; a closed overlay cannot be reached by Tab; and after a client-side navigation the tab title has changed and focus sits on the new heading or `<main>`.
+With the mouse unplugged, every flow completes, every stop shows a focus indicator, and the order matches the screen; no `tabindex` above 0 exists (`grep -rnE 'tabindex="[1-9]|tabIndex=\{[1-9]' src/` is empty); a focused field never sits fully under the sticky header, a sticky bar or a non-modal cookie banner; the skip link appears on the first Tab and lands in `<main>`; each composite widget is one Tab stop and the arrows move inside it; every dialog has a visible title and a visible close button, takes focus on open, holds it, closes on Escape and returns focus to its trigger; a closed overlay cannot be reached by Tab; and after a client-side navigation the tab title has changed and focus sits on the new heading or `<main>`.

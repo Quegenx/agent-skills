@@ -2,7 +2,7 @@
 
 These tools read what browsers send: heatmap geometry, `$autocapture` clicks with their `elements_chain`, user agents for bot classification, and `$pathname` for page tiles. Most outcomes come down to whether the data is captured at all (heatmaps and autocapture are opt-in, crawlers that never run JS never fire `$pageview`) and whether you filter it correctly (unique visitors over raw counts, bots excluded from human metrics, selectors that match one interaction, path cleaning rules anchored and ordered). SQL in general is [HOGQL.md](HOGQL.md).
 
-**Contents:** [Heatmaps](#heatmaps) · [Autocapture events](#autocapture-events) · [Bot traffic](#bot-traffic) · [Live traffic](#live-traffic) · [Path cleaning rules](#path-cleaning-rules) · [Suggested path cleaning rules](#suggested-path-cleaning-rules) · [Prove it](#prove-it)
+**Contents:** [Heatmaps](#heatmaps) · [Autocapture events](#autocapture-events) · [Bot traffic](#bot-traffic) · [Live traffic](#live-traffic) · [Path cleaning rules](#path-cleaning-rules) · [Suggested path cleaning rules](#suggested-path-cleaning-rules) · [Marketing analytics](#marketing-analytics) · [Prove it](#prove-it)
 
 ## Heatmaps
 
@@ -616,6 +616,14 @@ order=2  /users/[a-z0-9-]+        →  /users/<slug>          (catch-all, runs l
 - **Applying merges into `path_cleaning_filters`, never overwrites** (dedupes by regex, continues `order`).
 - **API:** `POST /api/projects/:id/web_analytics_path_cleaning_suggestions/generate/`; `GET .../{issue_id}/preview/` (before/after on a fresh sample, never stored); `POST .../{issue_id}/apply/` (merges and resolves; project admin only). List with `GET /api/projects/:id/health_issues/?kind=path_cleaning_suggestions&status=active&dismissed=false`; dismiss with `PATCH .../health_issues/{id}/` and `{"dismissed": true}`.
 - **MCP:** `web-analytics-path-cleaning-suggestions-generate` and `web-analytics-path-cleaning-suggestions-apply`. Apply is `destructive` (it changes historical chart numbers), so the MCP confirmation gate applies.
+
+## Marketing analytics
+
+- **The scene defaults to last-touch with a 90-day window** (range 1 to 90 days): `DEFAULT_ATTRIBUTION_MODE = AttributionMode.LastTouch`, `DEFAULT_ATTRIBUTION_WINDOW_DAYS = 90` in PostHog's source ([marketing-analytics/frontend/logic/utils.ts](https://github.com/PostHog/posthog/blob/master/frontend/src/scenes/web-analytics/tabs/marketing-analytics/frontend/logic/utils.ts)); the docs pages don't state it. Ad platforms' own numbers count conversions with "their own pixel data and attribution models (e.g., 7-day click, 1-day view)" ([marketing analytics schema](https://posthog.com/docs/web-analytics/marketing-analytics-schema)), so reported conversions may differ from PostHog conversions.
+- **First-party first touch** is a breakdown on `$initial_utm_source` or `$initial_referring_domain`, built explicitly ([METRICS-MODELING.md](METRICS-MODELING.md#conversion)) [coreyhaines31/marketingskills, attribution].
+- **Revenue computed at ingest:** some tools compute revenue properties at ingest (person-on-events), so historical events may read 0; use the persons table for current MRR, or tier by plan [coreyhaines31/marketingskills, attribution].
+- **AI referrers:** group chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com, claude.ai and the like into one channel, keep landing page, referrer and query parameters, and expect it to undercount [coreyhaines31/marketingskills, ai-seo]; measure branded search and direct visits to exposed pages over 1-hour, 24-hour and 7-day windows after a known exposure change ([../../marketing/ai-search-visibility/MEASUREMENT.md](../../marketing/ai-search-visibility/MEASUREMENT.md#four-layers-of-effect)).
+- Choosing a model and reconciling PostHog with ad platforms and the CRM: [../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md).
 
 ## Prove it
 

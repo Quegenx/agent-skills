@@ -116,6 +116,7 @@ EDIT_ID=$(gplay edits create --package com.example.app | jq -r '.id')
 - **Targeting:** country or region ("you can only target a country with one custom store listing at a time"); pre-registration; churned (uninstalled), lapsed ("haven't opened your app in the last 28 days"), or lapsed and churned users; non-buyers, one-time buyers, repeat buyers, lapsed buyers ("haven't bought in the last 180 days"); ads traffic; search keywords; custom audiences.
 - **Unique URL:** a string parameter unique across all your custom listings (lowercase alphanumerics plus `.`, `-`, `_`, `~`), served at `https://play.google.com/store/apps/details?id=[packageName]&listing=[parameter]`.
 - **No automated translations:** "Custom store listings aren't automatically translated"; pick a default language and add translations for the languages spoken in the targeted countries.
+- **Store listing groups** ([Google](https://support.google.com/googleplay/android-developer/answer/9867158)): every app starts with a "Default store listing group"; listings in a group inherit the icon, screenshots and descriptions, and "Updating a group asset will update that asset in all listings in the group."
 - **Google Ads listings** must be fully reviewed and approved, then selected as a landing page in Google Ads.
 
 ## Store listing experiments
@@ -124,7 +125,7 @@ EDIT_ID=$(gplay edits create --package com.example.app | jq -r '.id')
 - **Concurrency:** "For each app, you can run one default graphics experiment or up to five localized experiments at the same time"; up to 2 variants.
 - **Target metric:** Unique user install clicks, Unique user open clicks, or Unique user pre-registration clicks.
 - **Settings:** audience percentage, minimum detectable effect, confidence level ("Increasing the confidence level decreases the likelihood of a false positive").
-- **Scope:** experiments run on default and custom store listings. Test one asset at a time.
+- **Scope:** experiments run on default and custom store listings. Test one asset at a time. Hypotheses, sample size and reading results in general: [../../marketing/ab-testing/SKILL.md](../../marketing/ab-testing/SKILL.md).
 - **End:** "Store listing experiments stop automatically after running for 6 months"; then traffic reverts to the current listing and no variant is applied. Apply the winning variant from the recommendation, or "Keep current listing".
 
 ## Prove it

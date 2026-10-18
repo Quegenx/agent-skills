@@ -1,0 +1,101 @@
+# Drafting
+
+How to draft or rewrite page copy so it keeps the writer's good choices and earns every line. Source: [coreyhaines31/marketingskills, copywriting] (v2.3.1, MIT, Corey Haines), whose diagnosis, three-question gate and decompose-and-lock are "adapted from Profound's `improved-copywriting` skill ([skills-marketing-library](https://github.com/retieedra-profound/skills-marketing-library), MIT)"; its `ai-tells.md` credits the build-a-writer questions to Profound's `humanizer` and `improved-copywriting` and Wispr Flow's `writing` skills (same library). Quotes keep the source's words with its dashes replaced. Reviewing copy someone else wrote is in [REVIEW.md](REVIEW.md); the patterns to remove are in [TELLS](../anti-slop-writing/TELLS.md).
+
+## Diagnose the situation first
+
+[coreyhaines31/marketingskills, copywriting] "Before drafting, decide which of three situations you're in. Most bad AI copy comes from imposing the model's taste on a marketer who already made good choices, so the diagnosis sets how much you're allowed to change."
+
+| Situation | What you were given | Your job |
+|---|---|---|
+| **A. Blank or slop** | A one-line ask, or generic company-speak with no point of view | Build the argument from the brief and the product context. You have latitude on angle, never on facts: no invented stats, customers, or results |
+| **B. Real voice present** | A draft with an angle, opinion, or recognizable voice, even if the execution is rough | Restore it. Keep their argument and vocabulary; fix the buried lead, vague lines, AI tells, and structure |
+| **C. Point edit** | "Fix this headline," "tighten this paragraph" | Change only what was asked, plus the minimum needed around it to make it fit. Return the rest untouched |
+
+"State the diagnosis in one line with the evidence ('B: the draft argues against agencies in the founder's voice, uses 'ship' and 'stuff'') before writing."
+
+## Read taste out of the input (B and C)
+
+[coreyhaines31/marketingskills, copywriting] What they gave you is evidence of their judgment:
+- **"Vocabulary is a voice choice.** If they write 'stuff' and 'ship,' don't upgrade to 'solutions' and 'deploy.'"
+- **"Where they spent words is a priority choice.** Keep the emphasis."
+- **"What they left out is a scope choice.** Don't add sections they didn't ask for."
+- **"Their angle is the positioning.** Deepen it; don't replace it with one you like better."
+
+"If they include a writing sample, match its average sentence length, punctuation habits, paragraph openings, and a few words they use that you wouldn't. A sample beats the default voice when the two conflict." The brand's own profile, when one exists, is in [VOICE.md](VOICE.md).
+
+## Build a writer (Situation A)
+
+[coreyhaines31/marketingskills, copywriting] "Removing patterns leaves copy that's clean and flat. Human-sounding copy comes from a specific person with uneven knowledge and real opinions." Before a full rewrite of Situation A copy, answer these silently:
+
+1. **Who is writing?** "Name the person and role: the founder, the head of support, the engineer who built the feature. Say why they're writing this page."
+2. **What do they know cold?** "Those parts get the most words and the most specific detail."
+3. **What do they find boring or not know well?** "Those parts get compressed, or cut."
+4. **What's their honest, arguable opinion** "about the problem, the category, or the old way of doing it?"
+5. **If they had to cut a third, what goes first?** "Cut it now."
+
+The traits the answers produce:
+- **Uneven density.** "The section the writer cares about runs longest. Equal coverage of everything is a tell."
+- **Mixed register.** "A precise technical term in one sentence, plain words in the next."
+- **Honest limits.** "Saying who the product isn't for is a strong version of this."
+- **Lopsided structure.** "At least one section is noticeably longer, and at least one is short, because that's how much there was to say."
+- **Sentence length from the thought.** "Don't plan short-short-long rhythms."
+- **Opinions that cost something.** "A real opinion is specific and someone could disagree with it ('Most onboarding checklists are busywork. Ours has three steps.'). 'We believe in quality' costs nothing."
+- **First person only when it means something.** "First person that adds no fact is decoration."
+
+Rules that override the persona: "**Never invent experience.** The writer's opinions and emphasis can be constructed; their anecdotes, customers, and results cannot. A made-up 'when I ran my agency...' story is fabrication, and so is a fake customer quote. Use what the user gave you or mark `[NEED: founder story]`." In Situation B the writer already exists: match the real voice. "A persona for an enterprise security product is still formal."
+
+## Decompose and lock
+
+[coreyhaines31/marketingskills, copywriting] "Don't write the page in one pass. Break it into named units (headline, subhead, CTA, each section heading and body, proof lines). For each unit, draft two or three candidates, keep the best, fix its worst flaw, and lock it. Assemble and read the whole page once for flow. In Situation B, lines that already work are locked from the start." The headline gets three to five candidates from different angles ([PAGES.md](PAGES.md#the-hero-problem-picture-path)).
+
+## The three-question gate
+
+[coreyhaines31/marketingskills, copywriting] Run every line you write or keep through three questions:
+1. **"Can the reader picture it?** A specific image, scene, or object beats an abstraction."
+2. **"Can it be proven true or false?** A falsifiable claim is a claim; 'best-in-class' is decoration."
+3. **"Could a competitor write this exact sentence?** If yes, it fails (the swap test)."
+
+"Three passes, keep it. Two, sharpen the weak one. One or none, rewrite it from the facts or flag what's missing with `[NEED: ...]`." The swap, "Now you can..." and proof tests in [SKILL.md](SKILL.md#3-tests-every-headline-and-claim-must-pass) still apply.
+
+## Ration the punch
+
+[coreyhaines31/marketingskills, copywriting] "Most lines should be plain, specific, and declarative. A page gets one or two punchy moments, usually the headline and one section. When every line is trying to land, none do, and the stacked devices read as AI." Analogies and wit are allowed on the same budget: "Puns and wit make copy memorable when they fit the brand and don't cost clarity."
+
+## Decline a claim with its unlock
+
+[coreyhaines31/marketingskills, copywriting] "When a requested claim isn't supported, don't write it and don't silently drop it: name the claim, say why it falls short, offer the closest supportable alternative, and state exactly what evidence would unlock the original, a customer-review export, a written guarantee policy, a certification, a citable study or dataset. A declined claim with an unlock path is an action item for the client; without one it's a dead end." List each one with the open `[NEED: ...]` items at the end of the delivery.
+
+## The leave-it-alone test
+
+[coreyhaines31/marketingskills, copywriting] "Before delivering, check each change: is it measurably better, or just different? Revert changes you can't give a reason for. This matters most in Situations B and C."
+
+## Output for a point edit
+
+[coreyhaines31/marketingskills, copywriting] "For a point edit (Situation C), return only the changed lines with a one-line reason each. Skip the annotations and alternatives below unless asked." Full-page output is in [SKILL.md](SKILL.md#6-output).
+
+## Ad copy formulas
+
+[coreyhaines31/marketingskills, ads, ad-copy-templates.md] Skeletons for primary text; every proof slot takes a real number or a named quote from the product context ([SKILL.md](SKILL.md#3-tests-every-headline-and-claim-must-pass)), and the source's sample stats are left out.
+
+| Formula | Lines |
+|---|---|
+| Problem-Agitate-Solve (PAS) | Problem statement / Agitate the pain / Introduce solution / CTA |
+| Before-After-Bridge (BAB) | Current painful state / Desired future state / Your product as the bridge |
+| Social Proof Lead | Impressive stat or testimonial / What you do / CTA |
+| Feature-Benefit Bridge | Feature / So that... / Which means... |
+| Direct Response | Bold claim or outcome / Proof point / CTA "with urgency if genuine" |
+
+- **Search headlines:** [Keyword] + [Benefit], [Action] + [Outcome], [Question], [Number] + [Benefit], [Keyword] + [Differentiator], [Price/Offer] + [Keyword].
+- **Social hooks:** outcome, curiosity, contrarian, specificity, question, number, story. The source's question hook ("What if you could cut your admin time in half?") is a shape [PAGES.md](PAGES.md#the-hero-problem-picture-path) keeps out of headlines. The hook slop to avoid is in [SKILL.md](SKILL.md#5-copy-slop-specific-to-pages).
+- **CTAs by stage:** soft for "Top of funnel, cold audiences, complex products" (See How It Works, Watch Demo, Get the Guide); hard for "Bottom of funnel, warm audiences, clear offers" (Start Free Trial, Book a Demo); urgency "use when genuine" only (Offer Ends [Date]); action-oriented (Get Your Free Report, Calculate Your ROI). Write them in sentence case ([MICROCOPY.md](MICROCOPY.md#rules)).
+- **Testing order** "in order of impact": hook or angle, headline, primary benefit, CTA, supporting proof points. "Test one element at a time for clean data." Campaign-side testing is in [paid-ads](../../marketing/paid-ads/SKILL.md); concepts and hooks for creative are in [ad-creative](../../marketing/ad-creative/SKILL.md).
+
+## Prove it
+
+- The delivery opens with a one-line diagnosis (A, B or C) and its evidence.
+- In B and C, the writer's words, emphasis and angle survive: no "stuff" became "solutions", no section was added.
+- Every kept line passes at least two of the three gate questions; the rest are rewritten or carry a `[NEED: ...]`.
+- At most one or two punchy moments on the page.
+- Every declined claim names the evidence that would unlock it.
+- No anecdote, customer, quote or number appears that the user didn't supply.

@@ -39,6 +39,11 @@ What AI-generated interfaces look like. A single item is fine if it serves a sta
 | Button-shaped badge | "A non-clickable badge shaped exactly like the buttons beside it collects dead clicks" [Jakub Krehel, better-layout] |
 | Hidden with no cue | A row of cards that ends exactly at the container edge, or content collapsed behind a bare "More": "A row of cards that ends exactly at the container edge looks complete, and nobody scrolls it." Let the next item peek or name what is hidden ("Show 12 more results") [Jakub Krehel, better-layout] |
 
+Two rows above are a generic source's defaults, both views stated:
+
+- **Three tiers, middle highlighted.** [coreyhaines31/marketingskills, pricing] makes Good-Better-Best the default: the Better tier is "Where most customers land" at "Your "anchor" price", Best "often 2-3x "Better""; [coreyhaines31/marketingskills, marketing-psychology]: "Three tiers where the middle is your target. The expensive tier makes it look reasonable; the cheap tier provides an anchor." The scan keeps its row: the sign is the shape chosen before the real plans exist, and anti-slop-copy agrees ("Not always three tiers with a highlighted middle", [PAGES.md](../anti-slop-copy/PAGES.md)). With three real plans and a real recommendation it is no sign; landing-page-ui's pricing page shows "the recommended plan solid" ([landing-page-ui/SYSTEM.md](../../frontend/landing-page-ui/SYSTEM.md)). Tier design: [marketing/pricing-strategy/TIERS-AND-TRIALS.md](../../marketing/pricing-strategy/TIERS-AND-TRIALS.md#good-better-best).
+- **The template page.** [coreyhaines31/marketingskills, copywriting] ships fixed page templates (a compact landing page of six sections, an enterprise page of ten). The scan keeps the row: order sections by the visitor's doubts and include only those this product can fill ([anti-slop-copy/PAGES.md](../anti-slop-copy/PAGES.md)).
+
 ## Decoration and type
 
 | Pattern | Signs |

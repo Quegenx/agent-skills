@@ -60,6 +60,17 @@ This is for "why did X change?" on a saved insight, a dashboard tile or a pasted
   - Otherwise the cause is likely system-wide (deploy, tracking, infra).
 - **Why absolute, not percent:** a 50% swing on a series that's 1% of volume only explains 0.5% of the aggregate delta.
 
+### Compute, don't eyeball
+
+[coreyhaines31/marketingskills, analytics]
+
+- **"Derive every total, rate, and delta from row-level data with a script or spreadsheet - never by scanning rows and summing mentally.** One silently dropped row corrupts every figure downstream of it."
+- **Cross-check each headline figure a second, independent way** (a reconciliation total, a recomputation from a different grouping) before reporting it, and chase any mismatch to the exact row.
+- **A claim about one segment** (a single campaign, ad set, channel or week) reports that segment's own numbers; never fold it into a neighboring group and let the group's total speak for it.
+- **Match observation windows:** a rate divides a numerator and denominator over the same closed window. "Never divide a full period's spend by a partial period's conversions or revenue"; restate both over the weeks that have data, and say which weeks.
+- **Recommend against the stated goal:** "Name which stated goal each option serves and what it trades away."
+- The same rules with the full quotes, for any analytics tool: [../google-analytics/TRACKING-PLAN.md](../google-analytics/TRACKING-PLAN.md#reading-the-numbers). Recurring checks that run them (the analytics-anomaly and tracking-QA loops, which "Escalate a broken revenue/conversion event immediately") are in [../../marketing/marketing-loops/OPS-LOOPS.md](../../marketing/marketing-loops/OPS-LOOPS.md).
+
 ## Shared techniques
 
 - **Discover the schema** with `posthog:read-data-schema`, `query.kind`: `events`; `event_properties` with `event_name`; `entity_properties` with `entity: "person"`; `event_property_values` with `event_name` and `property_name`.

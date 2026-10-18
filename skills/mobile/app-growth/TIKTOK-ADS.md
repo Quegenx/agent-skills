@@ -1,6 +1,6 @@
 # TikTok Ads
 
-TikTok app ads run under the App Promotion objective. The optimization event (Purchase or Subscribe, never install-only for subscription apps) must reach TikTok Events Manager through a mobile measurement partner (MMP), Spark Ads (organic posts run as ads) are the default format for app install tests, and on iOS 14.5+ campaigns need a dedicated campaign slot and enough daily installs for SKAdNetwork to release conversion data. Bullets tagged [appeeky] come from third-party UA skills built on the Appeeky MCP and REST API (a paid service that needs an Appeeky API key); untagged facts come from TikTok's own help center. Where the two disagree, both are stated. Meta is in [META-ADS.md](META-ADS.md), creative tooling and competitor teardowns in [AD-CREATIVES.md](AD-CREATIVES.md), cross-channel spend in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md), MMPs and SKAdNetwork in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md), Apple's ads in [APPLE-ADS.md](APPLE-ADS.md).
+TikTok app ads run under the App Promotion objective. The optimization event (Purchase or Subscribe, never install-only for subscription apps) must reach TikTok Events Manager through a mobile measurement partner (MMP), Spark Ads (organic posts run as ads) are the default format for app install tests, and on iOS 14.5+ campaigns need a dedicated campaign slot and enough daily installs for SKAdNetwork to release conversion data. Bullets tagged [appeeky] come from third-party UA skills built on the Appeeky MCP and REST API (a paid service that needs an Appeeky API key); bullets tagged [coreyhaines31/marketingskills, <skill>] come from that MIT-licensed practitioner repo and [lightreel] from lightreel.ai's observational blog (paraphrased; one-week samples, not controlled tests); untagged facts come from TikTok's own help center. Where the two disagree, both are stated. Meta is in [META-ADS.md](META-ADS.md), creative tooling and competitor teardowns in [AD-CREATIVES.md](AD-CREATIVES.md), cross-channel spend in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md), MMPs and SKAdNetwork in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md), Apple's ads in [APPLE-ADS.md](APPLE-ADS.md).
 
 **Contents:** [App Promotion objective](#app-promotion-objective) · [Prerequisites and gates](#prerequisites-and-gates) · [Campaign setup](#campaign-setup) · [Bidding, budget and learning](#bidding-budget-and-learning) · [iOS 14.5+ dedicated campaigns](#ios-145-dedicated-campaigns) · [Creative strategy](#creative-strategy) · [Spark Ads](#spark-ads) · [Audits](#audits) · [Appeeky MCP tools](#appeeky-mcp-tools) · [Prove it](#prove-it)
 
@@ -105,7 +105,21 @@ tiktok_ads_create_adgroup
 All [appeeky].
 
 - **Principles:** copy what works, differentiate the twist; show the app on screen 50%+ of the runtime; native beats polished; one hook per video; 3 formats × 2 variations = 6 ads; 9:16 vertical, 15 to 30 s; "Captions always on: 80%+ watch muted".
-- **The 6-ad matrix:** A/A′ (format 1), B/B′ (format 2), C/C′ (format 3, a wildcard or competitor-inspired). "A and A′ differ only in the first 2 seconds (hook text/voiceover). Same format, same demo, same length."
+- **The 6-ad matrix:** A/A′ (format 1), B/B′ (format 2), C/C′ (format 3, a wildcard or competitor-inspired). "A and A′ differ only in the first 2 seconds (hook text/voiceover). Same format, same demo, same length." The two hooks should be different reasons to keep watching (for one product: context switching, ticket-writing time, flow state), not synonyms [lightreel].
+- **App screen time conflict.** The 50%+ screen rule is [appeeky]. [lightreel] observed the opposite on Instagram: "The app screen is moving later. Several successful app Reels hold the interface until the viewer understands the emotional or practical problem", and "Show the experience, not the interface"; its clipping post reports that operators saw "stronger conversion when the app was explicitly introduced early". Lightreel's posts are one-week observational samples; test both.
+- **More from [lightreel]:** brief order, matched before/after frames and app-video structure are in [../../marketing/creator-marketing/UGC-HOOKS.md](../../marketing/creator-marketing/UGC-HOOKS.md) and [../../marketing/creator-marketing/UGC-FORMATS.md](../../marketing/creator-marketing/UGC-FORMATS.md#app-videos).
+- **Length conflict.** 15 to 30 s is [appeeky]'s paid test length; [lightreel] found 40 to 75 s talking-head videos "most repeatable" in organic feeds. Different contexts.
+- **The strongest app shape** [lightreel]: human use case → fast screen proof → product name. Make the CTA match activation (invite a friend, create an event, log a meal, build a profile); end cards that remove friction ("Free barcode scanning", "No ads", "No account"); put trust assets (App Store "App of the Day", reviews, real data) where viewers need reassurance. Organic hook libraries and formats: [creator-marketing UGC-HOOKS.md](../../marketing/creator-marketing/UGC-HOOKS.md) and [UGC-FORMATS.md](../../marketing/creator-marketing/UGC-FORMATS.md).
+
+### TikTok's In-Feed specs
+
+From TikTok's Auction In-Feed spec (https://ads.tiktok.com/help/article?aid=10002742) unless marked (the same limits beside the other platforms' are in [../../marketing/ad-creative/PLATFORM-SPECS.md](../../marketing/ad-creative/PLATFORM-SPECS.md#tiktok)):
+
+- **Video:** 9:16 at least 540 x 960, 16:9 at least 960 x 540, 1:1 at least 640 x 640; up to 10 minutes; up to 500 MB; bitrate "More than or equal to 516 kbps".
+- **Ad captions** (non-Spark) are "Displayed in white with a uniform font that can't be customized" and do "not support any clickable links, symbols (@), or hashtags". Keep them within 100 characters (50 in Chinese, Japanese or Korean) "to avoid being covered by See more"; emojis and "{ }" are not supported. A Spark ad's caption comes from the organic post (TikTok's Reservation In-Feed spec; the 100/50 limit, emoji and "{ }" rules are from that page, not aid=10002742).
+- **Account name:** one line, "a maximum of 10 characters (Chinese, Japanese, and Korean) or 20 characters in other languages"; for app ads the app name is "automatically extracted from the App Store or Google Play". Profile photo 98 x 98 px, under 50 KB, key element inside the central 66 x 66 px.
+- **Safe zone:** no fixed margins. "The safe zone size is determined by the dimension (vertical, horizontal, or square), ad caption length, and any additional formats used"; download TikTok's safe zone files (standard, with anchor, and Arabic RTL versions) and lay the overlay on every export.
+- **AI-generated content:** "Completely AI-generated or significantly AI-modified ads require disclosure"; non-Spark ads have the toggle "This ad contains AI-generated content", and Spark ads follow the Community Guidelines AI labelling (TikTok's add-disclaimers-to-ads page and its misleading-and-false-content ad policy).
 
 ### Formats
 
@@ -134,6 +148,7 @@ Format 1 targets: app screen time ≥ 50% of runtime; hook readable in < 2 s wit
 
 - **Rules:** second person; a specific outcome; a curiosity gap; hashtags only on the organic Spark post, not in Ads Manager fields; no jargon ("AI-powered solution" is bad); no false claims.
 - **Rubric:** 5 criteria × 0 to 2 (specificity, curiosity, authenticity, app relevance, distinctness); minimum 8/10 to produce.
+- **Stock openers read as generated.** [coreyhaines31/marketingskills, ad-creative] lists generic "POV:", "Stop scrolling" and "Here's what nobody tells you" as ad tells, allowing POV only when "hyper-specific"; [lightreel] uses "POV" only "when followed by a concrete situation". Formats 1 and 3 above ([appeeky]) use "POV: you finally [solved problem]" and "Stop scrolling if you [persona trait]": fill the slot with a situation only this persona has.
 
 ### Production
 
@@ -145,7 +160,7 @@ Format 1 targets: app screen time ≥ 50% of runtime; hook readable in < 2 s wit
 
 - **AI video:** real app screenshots, never fake UI; face + phone-in-hand beats faceless; no watermarks; burned-in captions.
 - **Screen recording:** clean status bar (Do Not Disturb); the "aha" within the first 8 seconds; zoom on key UI; native resolution.
-- **Creator brief:** the exact 2 second hook script; a specific demo flow; length (20 s); a do and don't list; Spark posting instructions.
+- **Creator brief:** the exact 2 second hook script; a specific demo flow; length (20 s); a do and don't list; Spark posting instructions. [coreyhaines31/marketingskills, influencer-marketing] says the opposite on the script, "Don't hand creators a script": brief one person, one situation, one promise and one proof ("One problem, one person, one way"). Both are vendor practice; [lightreel]'s brief order is recognizable situation → specific friction → product used on screen → visible output → benefit in the customer's language → direct CTA.
 - **Research:** save 10 competitor ads (hook type, length, face, share of app screen); trending sounds in TikTok Creative Center; optionally the Meta Ad Library ([AD-CREATIVES.md](AD-CREATIVES.md#competitor-ad-teardowns)). Pull app assets for briefs with Appeeky `get_app` (screenshots and category) and `get_app_screenshots` (demo reference), each with `app_id`, `platform: "apple"`, `country: "us"`.
 
 | Creative benchmark | Weak | Healthy | Strong |
@@ -156,7 +171,7 @@ Format 1 targets: app screen time ≥ 50% of runtime; hook readable in < 2 s wit
 
 "A 0.7% CTR ad with $12 CPA beats a 1.5% CTR ad with $35 CPA."
 
-- **Mistakes:** a polished TV-style ad; no app until the end ("Demo by second 8"); the same hook 6 times; fake UI (policy rejection); 60 s+ on the first test; a trending sound with no relevance.
+- **Mistakes:** a polished TV-style ad; no app until the end ("Demo by second 8"); the same hook 6 times; fake UI (policy rejection: TikTok bans "Invalid buttons, induced gestures, or text ... that portray unsupported functionality", for example "Swipe up to learn more.", per its ad format and functionality policy, so fake iMessage, AirDrop or notification reveals with tappable-looking buttons are out); 60 s+ on the first test; a trending sound with no relevance.
 
 ## Spark Ads
 
@@ -175,6 +190,7 @@ Format 1 targets: app screen time ≥ 50% of runtime; hook readable in < 2 s wit
 All [appeeky].
 
 - **Account types:** brand (trustworthy, lower reach); persona (native, needs consistent niche content); creator (maximum authenticity). Age a new account with 3 to 5 organic niche videos over 3 to 7 days before posting Spark-bound creatives. "One account can host all 6 Spark ads".
+- **A persona or program account still discloses.** A paid creator posting on a brand-run persona account is an endorsement with a material connection, so each post carries its own disclosure; a bio line is a profile page, which the FTC lists among missed placements (https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers; 16 CFR 255.5). Meta adds: "Creators cannot accept anything of value to post content that does not feature themselves or that they were not involved in creating" (https://www.facebook.com/business/help/221149188908254). On TikTok the "Paid partnership" label appears when the creator turns on Disclose commercial content > Branded content; no TikTok doc found says Spark authorization adds it. Do not script or fake account activity to look less automated: TikTok "strictly prohibit[s] automation tools, scripts, or other tricks designed to bypass our systems" (https://www.tiktok.com/community-guidelines/en/integrity-authenticity). Full rules: [creator-marketing DISCLOSURE.md](../../marketing/creator-marketing/DISCLOSURE.md).
 - **Posting rules:** post all 6 within 24 to 48 hours; use TikTok library sounds; "Don't edit after posting: Edits can invalidate Spark codes"; keep posts public ("Private posts can't Spark"); no link in bio needed.
 - **Ad text and CTA:** Install now (not "Learn more"); keep the organic caption hook as the ad text; 1 to 2 selling points.
 
@@ -252,7 +268,7 @@ If all 6 ads map to "doesn't resonate", the batch failed.
 
 - **Per-ad rubric:** 5 dimensions × 0 to 3 (CPA vs target, conversion volume, CTR, spend efficiency, fatigue risk), total 0 to 15: 12 to 15 scale +20%/day; 8 to 11 watch; 4 to 7 pause and analyze; 0 to 3 kill.
 - **Playbook.** Day 0 launch 6 ads at $50/day; day 1 observe; day 2 full audit; days 3 to 4 hold; days 5 to 7 identify winners. Week 2: +20%/day, hook variants of the winning format only, comment filtering, hold US. Week 3+: a new batch every 7 days; add CA, UK, AU.
-- **Economics:** gross margin (LTV - CPA) / LTV of 30 to 50%+; learning tax $300 to 500; payback CPA / (LTV / expected lifetime months) under 3 months for subscriptions; ROAS > 100% at scale. "If CPA looks good but revenue doesn't follow → problem is downstream." See [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md).
+- **Economics:** gross margin (LTV - CPA) / LTV of 30 to 50%+; learning tax $300 to 500; payback CPA / (LTV / expected lifetime months) under 3 months for subscriptions; ROAS > 100% at scale. "If CPA looks good but revenue doesn't follow → problem is downstream." See [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md), which also gives [coreyhaines31/marketingskills, ads]'s gross-margin payback and cohort recovery beside this revenue-only formula ([Numbers that disagree](BUDGET-AND-ROAS.md#numbers-that-disagree)).
 - **Refresh cadence differs by source:** 3 to 7 days in the setup and audit skills, every 7 days in the audit's week-3 playbook; Meta creatives refresh every 2 to 3 weeks ([META-ADS.md](META-ADS.md)).
 
 ## Appeeky MCP tools
@@ -267,3 +283,4 @@ If all 6 ads map to "doesn't resonate", the batch failed.
 - Each of the 6+ ads uses its own Spark code (one code per ad instance), the posts are public and unedited since posting, and every code expires more than 10 days out.
 - On iOS 14.5+ the campaign uses a dedicated campaign slot (within the per-app quota) or has SKAN reporting deliberately opted out, and AEO campaigns return at least 90 daily app installs (below that SKAdNetwork may withhold conversion data as Null Conversions).
 - No kill or budget change happened before the 48 hour audit except spend > 2× target CPA with zero conversions.
+- Every non-Spark ad caption fits 100 characters (50 CJK) with no link, @, hashtag, emoji or "{ }", each export was checked against TikTok's safe zone file, AI-generated ads carry the AI-generated content toggle, and every creator or persona post carries its own disclosure.

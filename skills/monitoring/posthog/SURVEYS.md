@@ -39,7 +39,8 @@ Recommended patterns:
 
 - **Apply the question advice by default.** Recommend the trigger and audience advice, but ask before adding a trigger or audience the user did not request: both change who receives the survey.
 - **Trigger on the moment you ask about** via `conditions.events` (completed checkout, used a feature). Event-triggered surveys get about twice the responses of page-based ones; a URL condition alone does about as well as showing on every page. Confirm the event exists in the project before using it.
-- **Make the first question one click** (single choice or a short rating). Open text first gets about a fifth of the responses. Ask "why" in an optional open question after it.
+- **Make the first question one click** (single choice or a short rating). Open text first gets about a fifth of the responses. Ask "why" in an optional open question after it. Research skills prefer open text for language mining ("multiple-choice answers are artifacts of the options you gave" [coreyhaines31/marketingskills, customer-research]); both hold with a choice first and open text second.
+- **Read NPS by its passives and detractors** for improvement work, and pair scores with the verbatims: "a 9 with a specific complaint beats a 10 with no comment" [coreyhaines31/marketingskills, customer-research].
 - **Keep it short.** About 4 in 10 who start a two- or three-question survey stop before the end. Prefer one to three questions.
 - **Turn partial responses on** with `enable_partial_responses: true`. It defaults to off when a survey is created through the API.
 - **Recommend a targeted audience** (person or cohort).
@@ -122,6 +123,40 @@ In-app CSAT after an action (replace `export_completed` with an event the projec
   }
 }
 ```
+
+Product-market fit survey (Sean Ellis's question, popularized by Superhuman's Rahul Vohra [coreyhaines31/marketingskills, customer-research]; replace `[product]`; run it as a recurring pulse and segment every answer by the "Very disappointed" cohort; [customer-research] treats 40% or more "very disappointed" as likely product/market fit; its follow-ups and order are in [../../marketing/customer-research/INTERVIEWS-AND-SURVEYS.md](../../marketing/customer-research/INTERVIEWS-AND-SURVEYS.md#the-pmf-survey)):
+
+```json
+{
+  "name": "Product-market fit pulse",
+  "type": "popover",
+  "enable_partial_responses": true,
+  "questions": [
+    {
+      "type": "single_choice",
+      "question": "How would you feel if you could no longer use [product]?",
+      "choices": ["Very disappointed", "Somewhat disappointed", "Not disappointed", "N/A, I no longer use it"]
+    },
+    {
+      "type": "open",
+      "question": "What type of person do you think would most benefit from [product]?",
+      "optional": true
+    },
+    {
+      "type": "open",
+      "question": "What is the main benefit you receive from [product]?",
+      "optional": true
+    },
+    {
+      "type": "open",
+      "question": "How can we improve [product] for you?",
+      "optional": true
+    }
+  ]
+}
+```
+
+A "How did you hear about us?" question for attribution: ask it at the conversion moment, a pick-list of known channels plus a free-text other ([../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md#self-reported-attribution)).
 
 Hosted feedback form:
 

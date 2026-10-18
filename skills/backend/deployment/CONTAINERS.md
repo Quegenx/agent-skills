@@ -114,6 +114,18 @@ volumes:
 - The development credentials in a compose file are for local containers only. Real secrets come from the platform's secret store.
 - **Supabase and Convex bring their own local stacks:** `supabase start` runs Postgres, auth, storage and the rest in containers (with `supabase db reset` applying migrations and seed), and `npx convex dev` runs the Convex backend for development. Use Compose for what those don't cover.
 
+## Self-hosting a tool someone else ships
+
+OpenSEO's Docker setup is a worked example of running a third-party app's image on your own machine (MIT, [open-seo] `compose.yaml` and openseo.so/docs/self-hosting/docker):
+
+- **Pin the image.** It defaults to `ghcr.io/every-app/open-seo:latest` and takes `OPEN_SEO_IMAGE=ghcr.io/every-app/open-seo:v1.2.3` to pin; pin it, per the build-once rule in [SKILL.md](SKILL.md).
+- **Publish the port on loopback only:** `127.0.0.1:${PORT:-3001}`, so the container isn't reachable from the network until you put something in front of it.
+- **A no-auth mode stays private.** `AUTH_MODE=local_noauth` signs everyone in as `admin@localhost`: "Only expose it behind your own auth-protected reverse proxy, tunnel, or private network." `ALLOWED_HOST` names the one hostname the reverse proxy may use.
+- **`env_file` passes everything; `environment:` passes only what it lists.** The compose file added `env_file: .env` because without it "any .env value not listed there (e.g. OPENROUTER_API_KEY) silently never reached the app." After changing `.env`, recreate the container (`docker compose up -d --force-recreate open-seo`) and confirm the merged config with `docker compose config`.
+- **State on a named volume** (`open_seo_data:/app/.wrangler`) and a health endpoint (`/api/health`) that reports configuration and database status.
+- **Telemetry disclosed, with an opt-out.** Anonymized heartbeats with aggregate counts and a random install ID, "No URLs, keywords, prompts, emails, or IP-derived location", nothing from idle installs; `OPENSEO_TELEMETRY_DISABLED=1` or `DO_NOT_TRACK=1` turns it off.
+- **An MCP server behind an identity proxy needs the proxy's OAuth.** Behind Cloudflare Access, Managed OAuth must be turned on for MCP clients ("not enabled by default"), with loopback redirect URIs (`http://localhost:PORT/callback`) allowed for CLI and desktop agents and HTTPS redirect URIs for web connectors: "Without this, clients can't finish Dynamic Client Registration and log in but expose no tools." [open-seo, SELF_HOSTING_CLOUDFLARE_OPERATIONS.md]
+
 ## Health checks
 
 Expose a cheap endpoint (`GET /health`) that reports whether the process can serve: it checks its own critical dependencies (the database answers a trivial query) and returns 200 or 503. Keep it fast and unauthenticated but uninformative to outsiders. Checking dependencies makes it a readiness check; anything that restarts the container on failure should call a separate liveness endpoint that checks only the process, or a database blip restarts every instance (the `observability` skill's HEALTH.md).

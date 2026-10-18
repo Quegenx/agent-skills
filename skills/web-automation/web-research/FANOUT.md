@@ -10,7 +10,7 @@
 - **Store one profile per company** at `profiles/{slug}.json`, the same shape for every research job: `company, website, product, icp_description, existing_customers[], competitors[], use_cases[], researched_at`. Competitor analysis adds `precise_category`, `category_include_keywords` and `exclusion_list` (COMPETITORS.md).
 - **Keep profiles out of git:** `.gitignore` with `profiles/*.json` and `!profiles/example.json`.
 - **A profile is a fact sheet:** Company, Product, Existing Customers, Competitors, Use Cases. Don't put the ICP, the pitch angle or sub-verticals in it; those are per-run targeting decisions.
-- **Research the user's own company properly.** A thin profile produces generic search queries, weak lead scoring and cookie-cutter emails.
+- **Research the user's own company properly.** A thin profile produces generic search queries, weak lead scoring and cookie-cutter emails. The scoring spec those leads feed is [revops LEAD-SCORING.md](../../marketing/revops/LEAD-SCORING.md).
 - **Reuse with a confirm:** "I have your profile from {researched_at}. Still accurate?" If yes, skip self-research. For competitor analysis, still run the lane enrichment on the user's company so the matrix has fresh evidence.
 - **Resolve the profile without guessing** (event prospecting): an explicit `--user-company <slug>` first; otherwise list `profiles/*.json` excluding `example.json`. Exactly one: use it and say which. Several: ask. None: fail loudly with instructions. Never look outside the skill's `profiles/` folder, and never use `example.json`, which is a template.
 
@@ -45,7 +45,7 @@ Company research:
 | deep | 2-3 sub-questions, 5-8 calls | about 50 companies |
 | deeper | 4-5 sub-questions, 10-15 calls | about 25 companies |
 
-Competitor analysis: quick runs lane 1 only for about 30-50 competitors; deep runs lanes 1 and 2 for about 15-25 and yields 5-10 mentions across source types; deeper runs all 4 lanes for about 5-15.
+Competitor analysis: quick runs lane 1 only for about 30-50 competitors; deep runs lanes 1 and 2 for about 15-25 and yields 5-10 mentions across source types; deeper runs all 4 lanes for about 5-15. Profiling one competitor (competitor-profiling) defaults the other way round: "Default to **quick scan** unless the user requests deep profiling or specifies a small number of competitors (3 or fewer)." Its quick scan is homepage and pricing plus a domain rank and ranked-keywords summary, skipping reviews, tech stack and backlink details; deep adds every key page, review sites, full backlinks and keywords, competitor discovery, tech stack, content strategy and review mining `[coreyhaines31/marketingskills, competitor-profiling]`.
 
 ## Hard call caps
 

@@ -96,7 +96,7 @@ Each follows the hover rule in [SKILL.md](SKILL.md): the trigger for each is sta
 | Showcase description | rises 16px over .35s at 1s |
 | Showcase actions | rise 8px over .2s at 1.25s |
 | Closing panel | rises 24px over .8s on the site ease, in view with a -80px margin, once |
-| Cookie banner | after 1s, rises 20px over .5s on the site ease (opacity only over .2s with reduced motion); leaves with a fade and `scale(.94)` over .2s |
+| Cookie banner | after 1s (at once when reopened from the footer), rises 20px over .5s on the site ease (opacity only over .2s with reduced motion); leaves with a fade and `scale(.94)` over .2s |
 
 Showcase pieces use the library's default ease and layer on top of their scroll-blur reveal; the badge and description wait for the section to be in view (`once`), the actions play from mount, and reduced motion makes each duration 0.
 

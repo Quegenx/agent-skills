@@ -55,6 +55,7 @@ function toCookieParams(cookies) {
 - **Match domains exactly or by dot suffix** after stripping the leading `.` and lowercasing: `google.com` matches `accounts.google.com` but not `evilgoogle.com`. Split the domain list on `,`, trim, lowercase.
 - **Session cookies** (`expires <= 0`) go in without `expires`.
 - **Keep `SameSite=None` only with `secure`;** browsers reject `None` without Secure, so omit it otherwise.
+- **`Secure` cookies need HTTPS, except on localhost** (MDN Set-Cookie): a `Secure; SameSite=None` session on a plain-HTTP LAN IP or custom dev domain never sticks. The MDN quotes and the fix are in [APP-RECORDING.md](../../videos/asset-prep/APP-RECORDING.md#local-app-gotchas).
 - **Zero cookies after filtering:** warn and exit 0.
 
 ## Load into a persistent context (Browserbase)

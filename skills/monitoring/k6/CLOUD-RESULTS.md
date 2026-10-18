@@ -49,9 +49,9 @@ gcx --context <stack> api \
 | `result: error` with clean logs | A platform abort code in `status_history` |
 | Reading the current script for a past run | Use the bundled snapshot |
 | You overwrote a script with `update-script` | Restore the backup taken in step 2 |
-| CLI `--iterations 1` breaks browser scenarios | It overrides the scenario block; edit `iterations:` in the file with sed |
+| CLI `--iterations 1` breaks browser scenarios | It overrides the scenario block; use `--once` on k6 v2.3+, or edit `iterations:` in the file with sed on older k6 |
 
-- **Signals from a worked example:** browser log `navigating page: navigating frame to "...": net::ERR_ADDRESS_UNREACHABLE`; the warning `The options.ext.loadimpact option is deprecated, please use options.cloud instead`; `browser_http_req_duration` clustering at exactly 3 s means a connection timeout. Its browser run reported `checks`, `iterations`, `iteration_duration`, `browser_http_req_duration`, `browser_web_vital_ttfb`, `browser_web_vital_fcp` and `browser_data_received`, and its `script completed without exception` check at ratio 0.0 against `rate==1.0` is what flipped `result` to `failed`.
+- **Signals from a worked example:** browser log `navigating page: navigating frame to "...": net::ERR_ADDRESS_UNREACHABLE`; the warning `The options.ext.loadimpact option is deprecated, please use options.cloud instead` (k6 v1.x only: v2.0.0 removed the option, [VERSIONS.md](VERSIONS.md)); `browser_http_req_duration` clustering at exactly 3 s means a connection timeout. Its browser run reported `checks`, `iterations`, `iteration_duration`, `browser_http_req_duration`, `browser_web_vital_ttfb`, `browser_web_vital_fcp` and `browser_data_received`, and its `script completed without exception` check at ratio 0.0 against `rate==1.0` is what flipped `result` to `failed`.
 
 ## Pass and fail: three layers
 
@@ -332,7 +332,7 @@ jq -nr \
       actions:     (.actions // [])
     })
   | .[]
-  | "── \(.title) — score: \(.score)\(if .status == "failed" then " [audit did not run: \(.status_reason // "unknown")]" else "" end)\n  \(.description)\n  → \(.explanation)\(if (.actions|length) > 0 then "\n  actions:\n    - " + (.actions|join("\n    - ")) else "" end)\n"
+  | "── \(.title) - score: \(.score)\(if .status == "failed" then " [audit did not run: \(.status_reason // "unknown")]" else "" end)\n  \(.description)\n  → \(.explanation)\(if (.actions|length) > 0 then "\n  actions:\n    - " + (.actions|join("\n    - ")) else "" end)\n"
 '
 ```
 

@@ -1,6 +1,6 @@
 # Crawling politely
 
-**Contents:** [Guardrails](#guardrails) · [How a crawler runs](#how-a-crawler-runs) · [Option: Scrapling spiders](#option-scrapling-spiders-vendor) · [Requests and dedup](#requests-and-dedup) · [robots.txt](#robotstxt) · [Concurrency and delay](#concurrency-and-delay) · [AutoThrottle](#autothrottle) · [Blocked responses](#blocked-responses) · [Sessions per request](#sessions-per-request) · [Checkpoints, dev cache, streaming](#checkpoints-dev-cache-streaming) · [Hooks, stats, logging](#hooks-stats-logging) · [Templates](#templates) · [Export](#export) · [Inside Scrapy](#inside-scrapy) · [Prove it](#prove-it)
+**Contents:** [Guardrails](#guardrails) · [How a crawler runs](#how-a-crawler-runs) · [Option: Scrapling spiders](#option-scrapling-spiders-vendor) · [Requests and dedup](#requests-and-dedup) · [robots.txt](#robotstxt) · [How Google reads robots.txt](#how-google-reads-robotstxt) · [Concurrency and delay](#concurrency-and-delay) · [AutoThrottle](#autothrottle) · [Blocked responses](#blocked-responses) · [Audit crawlers](#audit-crawlers-worked-limits) · [Sessions per request](#sessions-per-request) · [Checkpoints, dev cache, streaming](#checkpoints-dev-cache-streaming) · [Hooks, stats, logging](#hooks-stats-logging) · [Templates](#templates) · [Export](#export) · [Inside Scrapy](#inside-scrapy) · [Prove it](#prove-it)
 
 ## Guardrails
 
@@ -10,6 +10,9 @@
 - **Don't bypass paywalls or authentication without permission.**
 - **Never scrape personal or sensitive data.**
 - **Practice on a purpose-built sandbox** such as `quotes.toscrape.com`.
+- **Terms of service bind crawlers by name.** LinkedIn's [User Agreement](https://www.linkedin.com/legal/user-agreement) (section 8.2) forbids using "software, devices, scripts, robots or any other means or processes (such as crawlers, browser plugins and add-ons or any other technology) to scrape or copy the Services", using "bots or other unauthorized automated methods" to add contacts, message or drive engagement, and to "bypass or circumvent any access controls or use limits". Read the target's terms before the first request; an official API or export is the route when they forbid scraping.
+- **Probe by who owns the site.** An audit crawler that also sends discovery probes (`/.env`, `/swagger.json`, paths robots.txt disallows) runs passive on a site the user does not own, such as a competitor or a prospect; loud probing that "can trip a WAF" runs only on a site the user owns or is authorized to test, only on request, after confirming ownership: "Never choose them on your own" [squirrelscan]. The audit workflow is [../../marketing/site-audit/SKILL.md](../../marketing/site-audit/SKILL.md).
+- **Identify the crawler.** Send a user agent that names the tool and, ideally, a URL: `OpenSEO-Audit/1.0` [open-seo], `aeo.js (+https://aeojs.org)` [aeo.js]. A site owner who wants the crawl can then allowlist it.
 
 ## How a crawler runs
 
@@ -63,6 +66,18 @@ result.completed; result.paused
 - `Crawl-delay` and `Request-rate` set the delay to max(directive, `download_delay`): it never lowers your delay.
 - It does not change concurrency.
 
+### How Google reads robots.txt
+
+What the file means is defined by the parser that reads it; Google's rules are the common reference ([robots.txt spec](https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec)):
+
+- **One group applies:** the crawler picks "the group with the most specific user agent", and the other groups are ignored.
+- **Within the group, the longest path wins:** "the most specific rule based on the length of the rule path"; on a true tie, "the least restrictive rule".
+- **Google supports `user-agent`, `allow`, `disallow` and `sitemap`;** "other fields such as `crawl-delay` aren't supported", so `Content-Signal` is ignored too. Other crawlers do honor `crawl-delay` (Anthropic supports "the non-standard Crawl-delay extension", [Anthropic crawlers](https://support.claude.com/en/articles/8896518)), and Scrapling's `robots_txt_obey` honors it as above.
+- **Size:** the file limit is 500 KiB.
+- **Fetch errors:** any 4xx except 429 means no robots.txt, so everything is allowed. On a 5xx Google stops crawling for 12 hours while retrying, then uses its last cached copy for 30 days, then, if the site is generally reachable, treats it as having no robots.txt.
+
+A crawler that clears its user-agent set on blank lines, or treats a `Disallow: /` in any group as a block for every bot, misreads real files; aeo.js's audit parser does both [aeo.js]. Use a maintained parser (OpenSEO uses `robots-parser` [open-seo]). Writing a robots.txt for your own site, including the AI crawler tokens, is [../../marketing/ai-search-visibility/AI-CRAWLERS.md](../../marketing/ai-search-visibility/AI-CRAWLERS.md).
+
 ## Concurrency and delay
 
 | Setting | Default | Meaning |
@@ -98,7 +113,19 @@ An adaptive delay per domain.
 - **Flow:** `is_blocked(response)`, then `retry_blocked_request(request, response)`, which re-queues a copy with `dont_filter=True` and lower priority, up to `max_blocked_retries` (default **3**, a counter separate from the session's `retries`).
 - **Custom `is_blocked`:** check the status plus a body sniff (`"access denied"`, `"rate limit"`).
 - **Escalate the tier on block:** switch `request.sid` to a lazily started browser session.
+- **Report blocks honestly.** OpenSEO's audit crawler classifies a final 429 as `rate_limited`, and 401, 403, 202, `cf-mitigated`, a 2xx carrying a challenge page ("Just a moment...", `/.well-known/sgcaptcha/`) or a 503 with challenge markers as `blocked`, and says so in the report: "We report this honestly rather than pretending the page is broken". The remedy it offers is the owner's consent: allowlist the crawler's user agent in the WAF, or use the platform's sanctioned crawler signature (Shopify's "Crawler access") [open-seo, classify-fetch.ts].
+- **On a site you don't own, a challenge is the answer.** The tier escalation and proxies below are for content you are authorized to fetch. For research, audits or prospecting on a third-party site, a CAPTCHA, login wall or bot challenge is a stop signal ([SKILL.md](SKILL.md) rule 4; [coreyhaines31/marketingskills, prospecting] guardrail 2: "No CAPTCHA, login wall, or bot protection bypass"). The browser-automation skill's escalation rule and this one disagree; that skill states both views and keeps the stop rule until the owner decides ([../browser-automation/SKILL.md](../browser-automation/SKILL.md), rule 3).
 - **Proxies:** `ProxyRotator([...])` is cyclic by default, or pass `strategy(proxies, current_index) -> (proxy, next_index)`. Strings work everywhere, Playwright dicts work for browsers. `response.meta["proxy"]` and `stats.proxies` show what was used. A per-request `proxy=` overrides the rotator (e.g. for geo-located content). It cannot combine with `proxy`/`proxies`.
+
+## Audit crawlers: worked limits
+
+Two open-source site-audit crawlers, as reference values for a polite crawl of one site (their choices, not standards):
+
+- **OpenSEO's throttle** [open-seo, crawl-throttle.ts]: a 1 s interval that doubles on trouble up to 30 s; the first 429 backs off 30 s, then exponentially, honoring `Retry-After` as seconds or an HTTP date; **every 429 pauses the whole origin**, not just the URL; 3 retries per URL. The crawl stops for good after more than 3 consecutive 429s or more than 30 minutes of total cooldown, and the report says it is incomplete: "URLs we did not fetch are not recorded as broken or rate limited". Its throttle state is checkpointed between chunks, unlike AutoThrottle's learned delays above.
+- **OpenSEO's sitemap discovery** [open-seo, discovery.ts]: sitemaps from robots.txt plus `/sitemap.xml`, recursion depth 3, at most 300 sitemap documents, concurrency 5, and a discovered-URL cap of `min(max(maxPages*20, 500), 50_000)`. A sitemap may legally reach 50 MB uncompressed or 50,000 URLs ([build a sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)), so read it with a bound.
+- **aeo.js** [aeo.js, remote-crawl.ts]: a 12 s timeout, the home page plus 10 inner pages, at most 20 sitemap URLs, concurrency 5, a 1 MB body cap, manual redirects (at most 5, each re-checked), and the first 5 same-origin links when there is no sitemap.
+
+The rule both follow: when the server says slow down, slow the whole origin, and when it keeps saying it, stop and report what you didn't see instead of guessing.
 
 ## Sessions per request
 
@@ -142,4 +169,4 @@ To use the parser inside an existing Scrapy project: `from scrapling.integration
 
 ## Prove it
 
-Run against a sandbox site with `robots_txt_obey = True`, `concurrent_requests_per_domain` set and AutoThrottle on: `robots_disallowed_count` and `offsite_requests_count` match what robots.txt and `allowed_domains` exclude, a forced 429 raises that domain's delay in `autothrottle_delays`, and blocked retries stop at `max_blocked_retries`. Interrupt with one Ctrl+C, resume from the `crawldir`, and the final `items_scraped` has no duplicates. `development_mode` is off in the shipped spider.
+Run against a sandbox site with `robots_txt_obey = True`, `concurrent_requests_per_domain` set and AutoThrottle on: `robots_disallowed_count` and `offsite_requests_count` match what robots.txt and `allowed_domains` exclude, a forced 429 raises that domain's delay in `autothrottle_delays`, and blocked retries stop at `max_blocked_retries`. Interrupt with one Ctrl+C, resume from the `crawldir`, and the final `items_scraped` has no duplicates. `development_mode` is off in the shipped spider. For an audit crawler: a run against a server that answers 429 pauses the origin, stops after the configured limit, and the report lists the unfetched URLs as not crawled rather than broken; a challenge page is reported as `blocked`, not retried through another tier; the user agent names the tool.

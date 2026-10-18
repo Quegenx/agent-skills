@@ -41,6 +41,7 @@ export const Route = createFileRoute("/(website)/blog_/$slug")({
       description: article.description,
       datePublished: article.published_at,
       image: article.imageSrc,
+      imageAlt: article.image_alt_texts.hero ?? article.title,
       index: true,
       path: `/blog/${article.slug}`,
       title: article.title,

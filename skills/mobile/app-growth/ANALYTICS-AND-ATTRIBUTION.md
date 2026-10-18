@@ -39,6 +39,7 @@ Knowing what users do in the app, which crashes hurt them, and which ad or chann
 | | MRR, Churn Revenue | Churn Revenue = Lost MRR / Start MRR |
 
 - **The playbooks disagree with themselves:** LTV is ARPU x Avg Lifetime here and in the monetization playbook, but ARPU / Monthly churn rate in the subscription lifecycle playbook; the per-category retention benchmarks in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#retention-and-engagement-eronred) differ from the general numbers above.
+- **Five stages, not four** [coreyhaines31/marketingskills, marketing-plan]: its AARRR table adds Activation (signup completion, time-to-value, % first key action, trial to paid) and Referral (viral coefficient, NPS, ambassador attribution) between the groups above; landing on the signup page is Acquisition, completing signup and everything after is Activation.
 
 ## Event tracking plan [eronred]
 
@@ -133,7 +134,7 @@ notification_permission (granted: boolean)
 - **Rules (Guidelines 5.1.1(iv) and 5.1.2(i)):** never gate functionality on tracking consent or reward it ("Your app may not require users to enable system functionalities (such as push notifications, location services, tracking) in order to access functionality, content, use the app, or receive monetary or other compensation"); never manipulate, trick or force consent. A transparent pre-prompt explanation screen is allowed. A separate consent (CMP) screen is allowed but the ATT answer must always be respected. You may link to Settings (`openSettingsURLString`) so users can change a denied choice.
 - **What still counts as tracking:** hashed email or phone matching without ATT; fingerprinting (may be rejected, including SDKs that do it); third-party deep-linking or deferred deep-linking tools that pass unique identifiers or create a shared identity; tracking inside webviews; an SDK that combines your users' data with other apps' data even if you don't use it. You are responsible for your SDKs and SSO. Not tracking: on-device-only linking; a data broker used only for fraud or security; a consumer reporting agency for creditworthiness. IDFV may be used for analytics across apps from the same content provider without ATT, but not combined to track.
 - **Privacy manifests:** apps with third-party SDKs must describe what they collect, use and whether they track; Xcode combines the manifests into a report for the Privacy Nutrition Labels.
-- **When to ask [eronred]:** after a value moment, once the user is invested; never on first open (too early kills the opt-in rate). Fire the prompt before any IDFA-dependent SDK call. A pre-permission screen that explains why raises grant rates (the playbook claims 2-3x). Onboarding permission order is in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#onboarding-and-activation-eronred).
+- **When to ask [eronred]:** after a value moment, once the user is invested; never on first open (too early kills the opt-in rate). Fire the prompt before any IDFA-dependent SDK call. A pre-permission screen that explains why raises grant rates (the playbook claims 2-3x). Onboarding permission order is in [ONBOARDING.md](ONBOARDING.md).
 - **When to ask: the sources differ.** [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/) warns against asking too late: "If you request ATT after the user has already triggered events, those early events are sent without tracking authorization. Request it during onboarding, before any purchase flow"; its starter kit asks "within onboarding" ([ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/)). [eronred] (above) says never on first open, when a new user's onboarding runs. Apple's rules above apply either way.
 - **Attribution APIs don't need ATT:** apps can call AdAttributionKit and SKAdNetwork regardless of tracking authorization status, and their signed postbacks carry no user- or device-specific data.
 
@@ -316,6 +317,9 @@ private func attributeCustomerAccountCreated() async {
 | Deferred deep link drops params | App doesn't handle cold-start launch params |
 | Revenue mismatch between MMP and RevenueCat / App Store Connect | Currency conversion, refunds, Family Sharing; expect a 5-10% delta |
 
+- **Never add up what each network claims** [coreyhaines31/marketingskills, attribution]: ad platforms over-count themselves (view-through, their own windows), so per-network installs overlap; count conversions once against one source of truth (the store or RevenueCat count) and explain each platform's credit separately. Reconciling sources, attribution models and incrementality tests are in [../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md#reconciling-conflicting-sources).
+- **Ask users where they heard of you** [coreyhaines31/marketingskills, attribution]: a self-reported question at the moment of conversion (for an app, an onboarding question) with a pick-list of known channels plus a free-text "other" catches dark social and word of mouth that no postback sees; answers lean toward the most memorable touch, so a 22% "YouTube" share is not 22% of the credit ([../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md#self-reported-attribution)).
+
 - **Testing plan:** install from each channel and verify the postback in the MMP; trigger a value update and verify it propagates; test the deferred deep link from each ad source.
 - **Anti-patterns:** the ATT prompt too early; URL-scheme deep links in ad creative; forgetting AdServices for Apple Ads.
 
@@ -327,5 +331,6 @@ private func attributeCustomerAccountCreated() async {
 - **AdAttributionKit / SKAdNetwork:** with AdAttributionKit Developer Mode on (iOS 18+), a development impression produces a postback signed with `kid` `apple-development-identifier/0` within the 0-3 minute window plus the 5-10 minute delay, and your `/.well-known/appattribution/report-attribution/` endpoint receives the copy.
 - **Conversion values:** the app calls an update method at first launch and at each schema step, and both frameworks' update APIs are called.
 - **AdServices:** posting a fresh token returns 200 with an `attribution` field; a 404 is retried at 5-second intervals at most three times.
+- **Totals:** installs and revenue are counted once, from App Store Connect, Play Console or RevenueCat, and never as the sum of what each network claims.
 - **Android:** the Install Referrer is read within 60s of first launch and is not empty for a Play install.
 - **Deep links:** a deferred deep link from each ad source lands on the intended screen after install on iOS and Android, and the Universal Links / App Links domains verify.

@@ -1,6 +1,6 @@
 # Meta Ads
 
-Meta app ads buy installs and in-app events across Facebook, Instagram, Messenger and Audience Network. The app must be registered and linked to the ad account, the optimization event (Purchase or Subscribe) must reach Meta from the SDK, the Conversions API or a mobile measurement partner (MMP), and the campaign must use the app promotion objective with an app destination; without registration or linking, Meta optimizes for link clicks. Bullets tagged [appeeky] come from third-party UA skills built on the Appeeky MCP and REST API (a paid service that needs an Appeeky API key); bullets tagged [ApparenceKit] come from a Flutter starter-kit author who publishes his own fork of the Flutter Facebook plugin; untagged facts come from Meta's own docs. Where the two disagree, both are stated. Creatives and their upload to Meta live in [AD-CREATIVES.md](AD-CREATIVES.md); cross-channel spend and payback in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); MMPs, SKAdNetwork and AdAttributionKit in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); Apple's own ads in [APPLE-ADS.md](APPLE-ADS.md).
+Meta app ads buy installs and in-app events across Facebook, Instagram, Messenger and Audience Network. The app must be registered and linked to the ad account, the optimization event (Purchase or Subscribe) must reach Meta from the SDK, the Conversions API or a mobile measurement partner (MMP), and the campaign must use the app promotion objective with an app destination; without registration or linking, Meta optimizes for link clicks. Bullets tagged [appeeky] come from third-party UA skills built on the Appeeky MCP and REST API (a paid service that needs an Appeeky API key); bullets tagged [ApparenceKit] come from a Flutter starter-kit author who publishes his own fork of the Flutter Facebook plugin; bullets tagged [coreyhaines31/marketingskills, <skill>] come from that MIT-licensed practitioner repo and [lightreel] from lightreel.ai's observational blog; untagged facts come from Meta's own docs. Where the two disagree, both are stated. Creatives and their upload to Meta live in [AD-CREATIVES.md](AD-CREATIVES.md); cross-channel spend and payback in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); MMPs, SKAdNetwork and AdAttributionKit in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); Apple's own ads in [APPLE-ADS.md](APPLE-ADS.md).
 
 **Contents:** [Prerequisites](#prerequisites) · [Objectives](#objectives) · [Campaign setup](#campaign-setup) · [Advantage+ app campaigns](#advantage-app-campaigns) · [Audiences and placements](#audiences-and-placements) · [Measurement: SDK, Conversions API, MMP](#measurement-sdk-conversions-api-mmp) · [iOS 14+: SKAdNetwork and AEM](#ios-14-skadnetwork-and-aem) · [Audits](#audits) · [Budget optimization](#budget-optimization) · [Appeeky MCP tools](#appeeky-mcp-tools) · [Prove it](#prove-it)
 
@@ -125,7 +125,7 @@ meta_ads_create_adset
 - **What it is.** Formerly Automated App Ads. Structure is 1 campaign, 1 ad set, multiple ads (a manual campaign has multiple ad sets); "Manually test up to 50 creative combinations." SKAdNetwork Advantage+ app campaigns for iOS 14 are available. You can run as many Advantage+ app campaigns as needed.
 - **Creative volume.** Bulk create up to 50 ads at a time, no limit on total creatives; upload up to 50 images, videos, playables or Instant Experiences at once; up to 5 texts and headlines. Upload a high volume of creative and "refresh them a few times a month to avoid creative fatigue".
 - **Delivery.** Advantage+ placements across Facebook, Messenger, Instagram and Audience Network; lowest cost bid strategy with optional bid cap (Meta suggests no cap); breakdowns by age, gender, country, device, platform and placement.
-- **Leave it alone while learning.** "Making changes while the campaign is in the learning phase is not recommended." [appeeky] scales winners by +20% per day and caps changes at 20% while an ad set has under 50 conversions (see [Budget optimization](#budget-optimization)); confirm against Meta's current guidance before changing a learning campaign.
+- **Leave it alone while learning.** "Making changes while the campaign is in the learning phase is not recommended." [appeeky] scales winners by +20% per day and caps changes at 20% while an ad set has under 50 conversions (see [Budget optimization](#budget-optimization)); confirm against Meta's current guidance before changing a learning campaign. Meta's list of significant edits, each of which sends an ad set back into learning: "Any change to targeting", "Any change to ad creative", "Any change to optimization event", "Adding a new ad to your ad set", "Pausing your ad set for 7 days or longer", "Changing bid strategy"; budget, bid or ROAS-goal amounts "may or may not be significant, depending on the magnitude" ($100 to $101 unlikely, $100 to $1000 may) (https://www.facebook.com/business/help/316478108955072). So adding a variant to a learning ad set resets it; Meta publishes no safe percentage, the 20% caps here are [appeeky]'s.
 - **Breaking API change (Marketing API v25.0).** "As of v25.0, Marketing API developers will no longer be able to use ... the Advantage+ app campaign API with the `smart_promotion_type=SMART_APP_PROMOTION` field"; instead set Advantage+ audience, Advantage+ campaign budget and Advantage+ placements with an `advantage_state`.
 - **Legacy API fields.** Campaign: `objective=APP_INSTALLS`, `buying_type` AUCTION only, `special_ad_categories=[]`, `is_skadnetwork_attribution`. Ad set: `billing_event=IMPRESSIONS`, `promoted_object {application_id, object_store_url, custom_event_type}`, `campaign_attribution` `AEM` or `SKADNETWORK` (required for iOS 14+, the same across ad sets); targeting only `geo_locations` and `locales` (no OS targeting; SKAN Advantage+ targets only iOS 14.5+).
 
@@ -136,14 +136,14 @@ meta_ads_create_adset
 | `OFFSITE_CONVERSIONS` | both lowest-cost strategies | any standard app event |
 | `VALUE` | `LOWEST_COST_WITHOUT_CAP`, `LOWEST_COST_WITH_MIN_ROAS` | `PURCHASE` |
 
-- **Campaign budget optimization.** [appeeky] keeps CBO off for testing (ABO gives control per test), turns it on after 1+ proven ad sets, and runs a hybrid at scale (a CBO campaign for winners, ABO for tests).
+- **Campaign budget optimization.** [appeeky] keeps CBO off for testing (ABO gives control per test), turns it on after 1+ proven ad sets, and runs a hybrid at scale (a CBO campaign for winners, ABO for tests). [coreyhaines31/marketingskills, ads] disagrees for testing: a separate CBO testing campaign (~20% of budget), because "Why not ABO for testing: equal forced distribution keeps spending on ads Meta has already deprioritized". Both are practitioner.
 
 ## Audiences and placements
 
 - **Phase 1, Broad (days 1 to 14):** no interest stacking, 3 to 5 variants. [appeeky]
 - **Phase 2, Lookalike after 100+ purchase events:** 1% for highest quality, 1 to 3% for expansion, 3 to 5% only if the 1% CPA is stable. [appeeky]
 - **Phase 3, interest stacks (optional):** "Interest targeting shrinks over time on Meta: creative matters more." [appeeky]
-- **Creative requirements:** square static 1024×1024; vertical video 9:16, 15 to 30 s; 3 to 5 primary text hooks; refresh every 2 to 3 weeks or at frequency > 3. [appeeky] Meta says refresh "a few times a month".
+- **Creative requirements:** square static 1024×1024; vertical video 9:16, 15 to 30 s; 3 to 5 primary text hooks; refresh every 2 to 3 weeks or at frequency > 3. [appeeky] Meta says refresh "a few times a month", and its own size recommendations are 4:5 at 1440 x 1800 for Feed images and 9:16 at 1440 x 2560 for Reels ([AD-CREATIVES.md](AD-CREATIVES.md#meta-static-specs-and-copy)). A refresh changes the premise, wording, emotion or use case: near-identical frustration-to-app videos see one take reach and the rest stay interchangeable [lightreel].
 
 ## Measurement: SDK, Conversions API, MMP
 
@@ -360,8 +360,8 @@ meta_ads_insights
 ### Decide
 
 - **Winning:** CPA under target (for example $14 versus $20) → scale; CPA < LTV × 0.5 → aggressive scale; 15+ conversions is minimum confidence, 25+ high confidence; CTR > 1% with CPA on target = creative validated.
-- **Scale:** +20% per day until CPA rises 15%+ above target; one variable per day; duplicate a winner to a new ad set only after 50+ conversions at stable CPA; refresh creative every 2 to 3 weeks even on winners.
-- **Kill:** spend > 2× target CPA with 0 conversions → pause now; after 48 hours, batch CPA > 1.5× target → pause the weakest, keep the 1 to 2 best; CPA > 2× target after 20+ conversions → pause; CTR < 0.5% after 5K impressions → hook failure; frequency > 4 with CTR down 40%+ → replace the creative.
+- **Scale:** +20% per day until CPA rises 15%+ above target; one variable per day; duplicate a winner to a new ad set only after 50+ conversions at stable CPA; refresh creative every 2 to 3 weeks even on winners. [coreyhaines31/marketingskills, ads] paces it slower, "+20% every 5 days"; Meta only says to avoid frequent budget changes (https://www.facebook.com/business/help/112167992830700).
+- **Kill:** spend > 2× target CPA with 0 conversions → pause now; after 48 hours, batch CPA > 1.5× target → pause the weakest, keep the 1 to 2 best; CPA > 2× target after 20+ conversions → pause; CTR < 0.5% after 5K impressions → hook failure; frequency > 4 with CTR down 40%+ → replace the creative. [coreyhaines31/marketingskills, ads] warns against pausing on a fixed CPA multiple alone ("A doubled CPA on 6 conversions with a 14-day conversion lag is noise"): check sample size, conversion lag and learning state first ([paid-ads AUDIT-GUARDRAILS.md](../../marketing/paid-ads/AUDIT-GUARDRAILS.md#recommendation-safety)).
 - **Hold:** CPA 0.8 to 1.2× target; fewer than 15 conversions; iOS days 1 to 2.
 - **Pause, never delete:** deleting loses learning history.
 
@@ -374,12 +374,16 @@ meta_ads_insights
 | High | High | Low | Low | Listing issue | Screenshots, ratings |
 | Even delivery, all bad CPA | Medium | Medium | Low | Wrong audience or event | Verify MMP setup + optimization goal |
 
+For video, read one stage at a time [coreyhaines31/marketingskills, ad-creative]: weak thumbstop or 3-second view rate → the visual opening; weak hold rate (3 s → 15 s) → "Rework seconds 3 to 15, not the hook"; weak CTR → the promise, CTA or proof; weak post-click conversion → the page (here the store listing) doesn't continue the ad. "One component per iteration."
+
 | Frequency | CTR trend | Action |
 |---|---|---|
 | < 2 | Stable | Scale |
 | 2 to 3 | Slight drop | Prepare refresh |
 | 3 to 4 | Drop 20%+ | A′ edit or new variant |
 | > 4 | Drop 40%+ | Pause, new creative mandatory |
+
+Per-campaign-type frequency bands (cold prospecting, retargeting, ABM) are in [../../marketing/paid-ads/META-WEB-ADS.md](../../marketing/paid-ads/META-WEB-ADS.md#fatigue) [coreyhaines31/marketingskills, ads]; both tables are practitioner.
 
 | Benchmark (Meta app campaigns) | Weak | OK | Strong |
 |---|---|---|---|

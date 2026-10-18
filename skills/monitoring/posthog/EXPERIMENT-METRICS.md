@@ -163,6 +163,7 @@ The same reference also shows a single-step funnel on `checkout_started`, a clic
 
 - **Example:** p = 0.1, MDE 20%: 3,600 per variant, 7,200 total for 2 variants.
 - **Half the effect needs four times the sample** (inverse square).
+- **The approximation runs a little low:** the exact two-proportion value at p = 0.1, MDE 20% is 3,841 per variant. A table computed from the exact formula, and duration with unequal splits, are in [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md).
 - **"Target reached" is not "significant".** It doesn't end the experiment either.
 
 ## Statistics
@@ -181,6 +182,7 @@ The same reference also shows a single-step funnel on `checkout_started`, a clic
 - **Recommend shipping only when the result is statistically significant.** "Do NOT recommend shipping just because a variant is "winning", check significance first." Bayesian reports the probability of each variant being best; Frequentist reports p-values and confidence intervals.
 - **"Experiments typically need 1-2 weeks minimum for reliable results";** warn on small samples.
 - **Present every metric.** Call out primary up and guardrail down; don't cherry-pick.
+- **Pricing and paywall tests:** "Judge winners on revenue per visitor, plan mix, refunds, downgrades, churn, and support load - not conversion rate alone", and "Do not promote a variant that lifts conversion but lowers revenue-per-visitor or raises refunds/churn" [coreyhaines31/marketingskills, marketing-loops]. Make those the secondary and counter metrics.
 
 | Situation | Recommendation |
 |---|---|
@@ -191,6 +193,7 @@ The same reference also shows a single-step funnel on `checkout_started`, a clic
 | Under 1 week | Too early |
 
 - **Don't** declare failure on early results, ship on borderline significance, ignore guardrails, or hide ambiguity.
+- **"Continue" on a borderline result** fits only before the planned sample is reached or with sequential testing on. [coreyhaines31/marketingskills, ab-testing] says of a finished fixed-horizon test: "do not extend a finished fixed-horizon test until it becomes significant"; report the effect interval and plan a new test ([../../marketing/ab-testing/SKILL.md](../../marketing/ab-testing/SKILL.md#reading-the-result)).
 
 ## Prove it
 

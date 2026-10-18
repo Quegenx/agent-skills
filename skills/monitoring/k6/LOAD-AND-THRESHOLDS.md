@@ -40,7 +40,8 @@ Model load by VUs (closed) or by iterations per second (open): `https://grafana.
 | `ramping-vus` | A variable VU count | Closed (VUs) |
 | `constant-arrival-rate` | A fixed iteration rate regardless of response time | Open (rate) |
 | `ramping-arrival-rate` | A variable iteration rate | Open (rate) |
-| `externally-controlled` | VU count changed at runtime through the k6 REST API | Runtime control |
+
+`externally-controlled` was removed in v2.0.0 and a script that uses it fails to start; move to the executor that fits the load profile ([k6 release notes v2.0.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.0.0.md); the [Scenarios docs](https://grafana.com/docs/k6/latest/using-k6/scenarios/) list the six above). This table used to list it as "VU count changed at runtime through the k6 REST API".
 
 Option shapes, with the commented alternatives:
 
@@ -82,7 +83,6 @@ Option shapes, with the commented alternatives:
   //   },
   //   user_journey: { executor: 'per-vu-iterations', vus: 10, iterations: 5, maxDuration: '5m' },
   //   smoke: { executor: 'shared-iterations', vus: 5, iterations: 50, maxDuration: '2m' },
-  //   dynamic: { executor: 'externally-controlled', vus: 10, maxVUs: 100, duration: '10m' },
   thresholds: {
     http_req_duration: ['p(95)<1000'],
     http_req_failed:   ['rate<0.02'],
@@ -104,8 +104,8 @@ Option shapes, with the commented alternatives:
 | `tags` | `{}` |
 | `options` (browser options) | `{}` |
 
-- **Select scenarios** with `k6 run --scenario checkout scenarios.js` or `--scenario api,checkout`. It cannot be combined with `--vus`, `--duration`, `--iterations` or `--stage`; thresholds tagged for excluded scenarios are removed with a warning. It works with `k6 cloud run`, `--local-execution` and `k6 archive`. `--scenario api,checkout --once` runs one iteration of each; `--once` alone rejects multi-scenario scripts.
-- **CLI `--vus` and `--iterations` don't apply to scenario configs,** and `--iterations 1` overrides the scenario block entirely, which breaks browser scenarios. To smoke a scenario script, edit `iterations:` in a local copy (`sed 's/iterations: [0-9]\+/iterations: 1/' ...`) or add a temporary `smoke` scenario at vus=1, iterations=1 and run it with `--scenario smoke`.
+- **Select scenarios** (k6 v2.3.0+, [k6 release notes v2.3.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.3.0.md)) with `k6 run --scenario checkout scenarios.js` or `--scenario api,checkout`. It cannot be combined with `--vus`, `--duration`, `--iterations` or `--stage`; thresholds tagged for excluded scenarios are removed with a warning. It works with `k6 cloud run`, `--local-execution` and `k6 archive`. `--scenario api,checkout --once` runs one iteration of each; `--once` alone rejects multi-scenario scripts.
+- **CLI `--vus`, `--duration`, `--iterations` and `--stage` replace a script's scenarios, they don't tune them:** `--vus N` alone creates one `shared-iterations` scenario with N VUs and N iterations and prints a warning (v2.1.0+; before, a lone `--vus` was silently ignored when the script defined scenarios), so the scenario's `exec` function and browser options are lost, which breaks browser scenarios ([options reference](https://grafana.com/docs/k6/latest/using-k6/k6-options/reference/), [k6 release notes v2.1.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.1.0.md), [v2.3.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.3.0.md)). This line used to say the flags "don't apply to scenario configs". To smoke a scenario script on k6 v2.3+, use `k6 run --once script.js` (`--scenario a,b --once` for several scenarios); it keeps the scenario's function and browser options ([VERSIONS.md](VERSIONS.md)). On older k6, edit `iterations:` in a local copy (`sed 's/iterations: [0-9]\+/iterations: 1/' ...`); `--scenario` also arrived in v2.3.0, so a temporary `smoke` scenario run with `--scenario smoke` needs v2.3+ too.
 
 ## Thresholds
 
@@ -135,7 +135,7 @@ export default function () {
 | Rate | `rate` |
 | Trend | `avg`, `min`, `max`, `med`, `p(N)` (N from 0.0 to 100, for example `p(99.99)`; values in milliseconds) |
 
-  A percentile outside 0 to 100 or NaN fails parsing before the run.
+  A percentile outside 0 to 100 or NaN fails parsing before the run (since v2.1.0; earlier versions accepted it silently, [VERSIONS.md](VERSIONS.md)).
 - **Repeat a metric key and the rest are silently ignored.** Put several thresholds for one metric in one array: `http_req_duration: ['p(90) < 400', 'p(95) < 800', 'p(99.9) < 2000']`.
 - **Short and long format:** an array of strings, or objects `{ threshold, abortOnFail, delayAbortEval }`. `abortOnFail: true` stops the run as soon as the threshold fails; `delayAbortEval: '10s'` (relative time strings like `10s`, `1m`) delays the evaluation to let some metric samples be collected, so a test that fails a threshold early doesn't abort before it generates significant data. Tightening an `abortOnFail` threshold makes runs abort earlier; warn the user.
 - **In Grafana Cloud k6, thresholds are evaluated every 60 seconds,** so `abortOnFail` can lag up to 60 s. On runs under 60 s the abort may not fire, though `result` still flips to `failed` at the end.
@@ -170,7 +170,10 @@ try {
 |---|---|
 | `0` | Pass |
 | `99` | A threshold failed |
+| `97` | A cloud run aborted by system, limit, script error, user or timeout (v2.0.0+; before, these exited `0`) |
 | Anything else | Script or runtime error |
+
+Treat `97` as a failure in CI: on k6 v1.x a cloud abort exited `0` and looked like a pass ([k6 release notes v2.0.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.0.0.md)). The v2.3.0 notes' `/v1/status` example shows `"exit_code": 108` after `exec.test.abort()`.
 
 A k6 cloud run reporting `ABORTED_THRESHOLD` means a threshold tripped; inspect the run page.
 
@@ -198,4 +201,5 @@ A k6 cloud run reporting `ABORTED_THRESHOLD` means a threshold tripped; inspect 
 - Every load test has thresholds on `http_req_duration` and `http_req_failed` (or the protocol's metric) and, where checks matter, on `checks`; no metric key appears twice in `thresholds`.
 - A deliberately broken request makes the run exit 99, and a script that throws early fails the `script completed without exception` threshold instead of passing on zero samples.
 - Breakpoint tests use `ramping-arrival-rate` with `abortOnFail` and `delayAbortEval`, and the run log shows no `Insufficient VUs` line and no `dropped_iterations`.
-- Scenario scripts were smoked by editing `iterations:` or with `--scenario smoke`, never with `--iterations 1`.
+- Scenario scripts were smoked with `--once` (k6 v2.3+), or by editing `iterations:` on older k6, never with `--iterations 1` or `--vus 1`.
+- CI treats exit `97` from a cloud run as a failure, and no scenario uses `externally-controlled`.

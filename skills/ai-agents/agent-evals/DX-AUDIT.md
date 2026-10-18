@@ -95,6 +95,7 @@ Several subagents each attempt one real task against a product's docs, SDK or a 
 | `GUESS · 404` | It was guessed and returned 404 |
 | `TRAINING PRIOR` | None of the above: a guess from training data |
 
+- **Which vendor agents pick, tracked over time:** the same subagent panel, phrased without vendor names and rerun monthly against the previous release's baseline, is the agent-default check in [ai-search-visibility AGENT-DEFAULTS.md](../../marketing/ai-search-visibility/AGENT-DEFAULTS.md) and [marketing-loops SEO-LOOPS.md](../../marketing/marketing-loops/SEO-LOOPS.md#the-agent-default-check-loop) [coreyhaines31/marketingskills, marketing-loops].
 - **Read the labels:** many successful priors means a head start from training data; many 404 guesses means the URL taxonomy drifts from conventions; llms.txt after a 404 means llms.txt is carrying discoverability. Subagents don't have search.
 - **Review across agents in 3-5 sentences:** convergent mistakes (3 of 3 agents on the wrong package is a doc-quality disaster), hallucinated artifacts, inconsistent end states, silent workarounds, and contradictions between tool output and narrative (grep for `error`, `404`, `401`, `deprecated`, `warning`).
 

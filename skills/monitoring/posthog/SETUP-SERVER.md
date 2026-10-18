@@ -176,6 +176,7 @@ client.identify({
 })
 ```
 
+- **A webhook that merges a third-party conversion** (booking, checkout) [coreyhaines31/marketingskills, attribution]: send it after the business work, with a timeout, non-fatal on failure; check `response.ok` (fetch resolves on HTTP errors), log the booking ID and status, never the payload or email; if delivery needs retry guarantees, enqueue analytics separately with idempotency rather than replaying the booking. A 200 alone doesn't prove acceptance: the capture docs say some invalid events still return "200: OK" ([posthog.com/docs/api/capture](https://posthog.com/docs/api/capture)). Recipe: [../../marketing/marketing-attribution/FIRST-PARTY-STITCH.md](../../marketing/marketing-attribution/FIRST-PARTY-STITCH.md#2c-merge-in-the-webhook).
 - **Alias** when the frontend distinct ID isn't available in the backend: `client.alias({ distinctId: 'distinct_id', alias: 'alias_id' })`. The docs strongly recommend reading the alias docs first ([EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md)). `aliasImmediate(...)` returns a promise.
 - **Per-capture GeoIP:** pass `disableGeoip` on the capture call. It overrides `$geoip_city_name`, `$geoip_country_name`, `$geoip_country_code`, `$geoip_continent_name`, `$geoip_continent_code`, `$geoip_postal_code`, `$geoip_time_zone`.
 

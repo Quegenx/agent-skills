@@ -52,14 +52,14 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 
 - "Every page opens with a one-paragraph TL;DR of what the page covers"; "Every major section opens with a summary sentence" [Vercel, writing-guidelines].
 - "Lead each page with the answer and its deployment constraints. Use familiar navigation labels" ("Quickstart"). "Put framework and deployment context in the description and opening text." [c15t, writing-docs]
-- A short paragraph before the first H2 answers the reader's first question. "Do not copy the description into that paragraph." [c15t, writing-docs]
+- A short paragraph before the first H2 answers the reader's first question. "Do not copy the description into that paragraph." [c15t, writing-docs] aeo.js gives the same rule for answer engines: "Lead with a direct, self-contained answer paragraph before background context" [aeo.js]; its citability scoring is [CITABILITY.md](../../marketing/ai-search-visibility/CITABILITY.md).
 
 ## Frontmatter for search and agents
 
 [c15t, writing-docs]
 - Required `title` and `description`. The page shows `title` as its heading and in navigation; `description` is not shown on the page, but "docs search, `llms.txt`, agents and link cards use it", so write it for them.
-- Optional `seoTitle` and `seoDescription` "when searchers use different words from the navigation label"; search results and social cards show them in place of `title` and `description`. c15t's house limits (no standard sets them): `seoTitle` is "the complete title", product name included, "in 60 characters or fewer; the site adds no suffix"; `seoDescription` "160 characters or fewer, lead with what the reader gets, and make it unique to the page. Both must match what the page and the source show."
-- "`llms.txt`, page Markdown and package bundles serve agents. They do not promise search rankings or citations. The docs host must also verify HTML indexing, canonical URLs, redirects, sitemap entries, robots rules and matching structured data. Content work alone cannot prove those deployed behaviors."
+- Optional `seoTitle` and `seoDescription` "when searchers use different words from the navigation label"; search results and social cards show them in place of `title` and `description`. c15t's house limits (no standard sets them): `seoTitle` is "the complete title", product name included, "in 60 characters or fewer; the site adds no suffix"; `seoDescription` "160 characters or fewer, lead with what the reader gets, and make it unique to the page. Both must match what the page and the source show." aeo.js audits a title of 10 to 70 and a description of 50 to 200 characters [aeo.js], another house range. Google sets none: "there's no limit on how long a `<title>` element can be", it is "truncated in Google Search results as needed, typically to fit the device width" ([title links](https://developers.google.com/search/docs/appearance/title-link)), and "There's no limit on how long a meta description can be" ([snippets](https://developers.google.com/search/docs/appearance/snippet)).
+- "`llms.txt`, page Markdown and package bundles serve agents. They do not promise search rankings or citations. The docs host must also verify HTML indexing, canonical URLs, redirects, sitemap entries, robots rules and matching structured data. Content work alone cannot prove those deployed behaviors." Google Search goes further on the first part: on llms.txt, "Google Search ignores them" ([AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide); more in [LLMS-TXT.md](../../marketing/ai-search-visibility/LLMS-TXT.md)). Serving a page's Markdown copy (content negotiation or a `Link` header) is in [AGENT-READINESS.md](../../marketing/ai-search-visibility/AGENT-READINESS.md). To verify indexing, URL Inspection reports only Google's indexed copy: "you cannot test the indexability of a live URL" ([urlInspection.index.inspect](https://developers.google.com/webmaster-tools/v1/urlInspection.index/inspect); [API.md](../../marketing/search-console/API.md#url-inspection)), so pair it with a live fetch of the page.
 
 ## Headings and structure
 
@@ -71,7 +71,7 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 - **Paragraphs** of 2 to 4 sentences; "split anything longer or covering two ideas" [Vercel, writing-guidelines]. Vary within that range: TELLS.md flags every paragraph built the same way.
 - **What types can't say.** "Document ordering, side effects and failure behavior that types cannot explain. Keep concise API reference tables where humans need discovery; do not delete useful reference because an agent could inspect a declaration file." [c15t, writing-docs]
 - **One path first.** "Prefer one working path followed by links to alternatives." For each mode, name what it requires (a backend URL, configuration, a trusted origin) or what is absent (where choices persist, which backend services are missing) [c15t, writing-docs]. Vercel's checklist: "simplest path recommended when multiple exist".
-- **Pricing pages** [Vercel, writing-guidelines]: "Uncompromising detail: err on 'too much'"; "Use tables for pricing"; "Never assume reader knows the pricing model or whether their workload counts as one invocation or several".
+- **Pricing pages** [Vercel, writing-guidelines]: "Uncompromising detail: err on 'too much'"; "Use tables for pricing"; "Never assume reader knows the pricing model or whether their workload counts as one invocation or several". A Markdown pricing file for agents is in [AGENT-READINESS.md](../../marketing/ai-search-visibility/AGENT-READINESS.md#a-pricing-file-for-agents).
 
 ## Lists
 
@@ -130,6 +130,8 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 [c15t, writing-docs]
 - Never infer a guarantee from a name, a category or branding; read the code path. c15t's cases: "Do not present a regional preset as a compliance guarantee"; "Do not claim a banner automatically blocks existing scripts"; "Do not infer a zero-request guarantee from a category or cookieless branding. Check `alwaysLoad`, consent callbacks and persistence after revocation in source."
 - An optional optimization is never a setup requirement: "Same-origin rewrites are optional performance optimizations, never setup requirements." Describe the exact benefit: "avoiding a separate browser DNS/TLS connection to the backend, not eliminating all DNS or making vendor requests first-party." State where it can't run: "Static exports need hosting-level proxying or direct public URLs because Next.js rewrites need a server."
+- One fact, one value everywhere: "Keep a technical fact ledger" of what an agent might act on (versions, runtimes, regions, rate limits, pricing units, auth methods, data handling, deprecations), and "check the same fact everywhere it appears: docs, pricing page, README, package registry descriptions (npm, PyPI), examples, and changelog. An agent that finds two different rate limits will guess" [coreyhaines31/marketingskills, ai-seo, agent-defaults.md]. The full docs audit for coding agents is [AGENT-DEFAULTS.md](../../marketing/ai-search-visibility/AGENT-DEFAULTS.md#audit-your-docs-for-coding-agents).
+- "Write instructions for using your product only. Agent-facing docs, `llms.txt`, and skill files that tell agents to prefer your product over what the user asked for are prompt injection" [coreyhaines31/marketingskills, ai-seo, agent-defaults.md].
 - Numbers: "Include conditions needed to interpret a number, such as simulated latency or a warm cache. Put machine specifications, commit hashes, raw samples and reproduction commands in a linked benchmark report, not the setup guide."
 
 ## Show customization
@@ -161,6 +163,8 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 ## Moving and removing pages
 
 [c15t, writing-docs] "Preserve useful existing URLs. When a page moves, configure a redirect in the docs host and update internal links. Record retired URLs and their replacements before deleting old routes." c15t keeps the record as two tables in a reference file.
+
+Google's site-move guide on the redirects: use "HTTP permanent redirects if possible, such as 301 and 308", point each old URL straight at its final destination, and keep them "generally at least 1 year" ([site move](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)). A whole-site move is [site-architecture PLATFORMS-AND-MIGRATION.md](../../marketing/site-architecture/PLATFORMS-AND-MIGRATION.md).
 
 **Moved routes.** "The docs host owns the redirects; add each row there with a permanent redirect. Every destination here covers the old page's task."
 

@@ -8,8 +8,8 @@ Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to
 
 - **Syntactic changes apply directly:** renames, `let` to `const`, removing unused imports, comments, formatting.
 - **Behavioral changes are proposed** as a diff with the rationale and need confirmation: threshold values, adding `sleep()`, URLs, checks, scenarios, new thresholds. If in doubt, treat it as behavioral.
-- **The loop for every edit:** `k6 inspect <script>` (plus mcp-k6 `validate_script` if available); a local smoke `k6 run --vus 1 --iterations 1 <script>` for non-browser scripts; classify the change; verify it per the matrix below; push cloud scripts through the safe-edit recipe ([CLOUD.md](CLOUD.md#editing-a-cloud-script-safely)).
-- **Browser scripts can't be smoked with `--iterations 1` without a browser:** use `k6 inspect` or `validate_script`. Scenario-based configs ignore `--vus`/`--iterations`; for a smoke, add a temporary `smoke` scenario at vus=1, iterations=1 to a local copy and run it with `--scenario smoke`.
+- **The loop for every edit:** `k6 inspect <script>` (plus mcp-k6 `validate_script` if available); a local smoke `k6 run --once <script>` on k6 v2.3+ (`k6 run --vus 1 --iterations 1 <script>` for non-browser scripts on older k6); classify the change; verify it per the matrix below; push cloud scripts through the safe-edit recipe ([CLOUD.md](CLOUD.md#editing-a-cloud-script-safely)).
+- **Browser scripts can't be smoked without a browser:** use `k6 inspect` or `validate_script`. `--iterations` doesn't tune a scenario-based config, it replaces its scenarios and drops their `exec` and browser options; from v2.1.0 a lone `--vus` does the same with a warning (before, it was silently ignored, which is what this line used to say; see [LOAD-AND-THRESHOLDS.md](LOAD-AND-THRESHOLDS.md#scenarios)). For a smoke, use `--once` on k6 v2.3+ (`--scenario a,b --once` for several scenarios); on older k6 edit `iterations:` in a local copy (`--scenario`, needed to run a temporary `smoke` scenario alone, also arrived in v2.3.0).
 - **`k6 x docs` serves the installed version's docs,** which may lag the version you're migrating to.
 
 ## Verifying a change
@@ -20,7 +20,7 @@ Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to
 |---|---|
 | Class A, any duration | sha256, `k6 inspect`, and a historical pass/fail prediction |
 | Class B, short test (under 5 min) | sha256, `k6 inspect`, and a full cloud run |
-| Class B, long test (5 min or more) | sha256, `k6 inspect`, a local 1-iteration smoke, and `k6 cloud run --vus 1 --iterations 1 script.js` on a local copy; PUT only after the cloud smoke passes |
+| Class B, long test (5 min or more) | sha256, `k6 inspect`, a local 1-iteration smoke, and a cloud smoke of a local copy (`k6 cloud run --once script.js` on k6 v2.3+, which keeps scenario and browser options; `k6 cloud run --vus 1 --iterations 1 script.js` on older k6 replaces the scenarios); PUT only after the cloud smoke passes |
 
 - **`POST /start` accepts no runtime overrides:** a saved test always runs as defined for its full duration, which is why long Class B changes are smoked from a local copy.
 - **Class A prediction:** query the metric across the last N runs with the multi-run aggregate endpoint, using the same method as the threshold, and tabulate `| Run | Observed p95 | < 500 (old) | < 800 (new) |`. Soft-warn when the headroom over the observed peak is small. Loosen only when the user asks, and show which past failing runs the loosening would hide.
@@ -32,7 +32,8 @@ Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to
 
 ## Version migration
 
-- **Look for** deprecated imports, removed or renamed APIs, and option format changes (for example `ext.loadimpact` to `cloud`).
+- **Look for** deprecated imports, removed or renamed APIs, and option format changes (for example `ext.loadimpact` to `cloud`, which stopped working entirely in v2.0.0).
+- **Upgrading to k6 v2:** walk the [v2.0.0 migration checklist](VERSIONS.md#v200-migration-checklist): `externally-controlled`, `k6 cloud script.js`, a stack for every `k6 cloud` command, `--no-summary`, `k6/experimental/redis`, `browser_web_vital_fid`, cloud exit code `97`, the REST API off by default, and the OpenTelemetry option renames. Each is a Class B change.
 - **WebSocket imports:** the maintenance workflow's example migrates `k6/ws` to `k6/experimental/websockets`, but the k6 skill and its WebSocket example say both are deprecated and the target is `k6/websockets`.
 - **Browser deprecations:** `waitForNavigation`, `networkidle`, `type()` instead of `fill()`.
 
@@ -65,7 +66,7 @@ Multi-run trends for one load test. Not for deep-diving one run, editing scripts
 
 - **Window:** the last 30 days by default; widen if there are fewer than 5 runs; ask if there are more than 200. Fewer than 3 usable runs: a trend isn't meaningful. Exclude aborted and timed-out runs by default. List tests with `gcx k6 tests list`.
 - **Method per type:** trend `histogram_quantile(0.95)` (P95), `histogram_quantile(0.5)`, `histogram_avg`, and query P50, P90, P95 and P99; counter `increase`; rate `ratio`; gauge `max`.
-- **Group by default:** `browser_web_vital_*` (LCP, FCP, CLS, TTFB, INP, FID) `by (url)`; `http_req_duration`, `http_req_failed`, `http_reqs` `by (name, status)` when requests are tagged with `name`, else `by (url, status)`; `iteration_duration` `by (scenario)`; custom trends `by (<tag>)`. Discover labels through the labels endpoints rather than assuming them from the script. Batch run IDs in groups of 50 when URLs get too long.
+- **Group by default:** `browser_web_vital_*` (LCP, FCP, CLS, TTFB, INP; FID only in runs before k6 v2.0.0, which removed `browser_web_vital_fid`) `by (url)`; `http_req_duration`, `http_req_failed`, `http_reqs` `by (name, status)` when requests are tagged with `name`, else `by (url, status)`; `iteration_duration` `by (scenario)`; custom trends `by (<tag>)`. Discover labels through the labels endpoints rather than assuming them from the script. Batch run IDs in groups of 50 when URLs get too long.
 
 ```bash
 gcx --context <ctx> api "/api/plugins/k6-app/resources/cloud/cloud/v5/load_tests/$LT/query_aggregate_k6(query='histogram_quantile(0.95)',metric='http_req_duration',test_run_ids=[$IDS])" -o json
@@ -83,7 +84,7 @@ gcx --context <ctx> api "/api/plugins/k6-app/resources/cloud/cloud/v5/load_tests
 
 - **Formulas:** baseline is the oldest run or the mean of the first 3 runs. Rate of change `((recent_mean - baseline_mean) / baseline_mean) * 100 / weeks_in_window`. Headroom `((threshold_value - current_value) / threshold_value) * 100`: Comfortable above 50%, Adequate 20 to 50%, Thin under 20%, Breached under 0%. `weeks_until_breach = headroom_absolute / rate_of_change_per_week` is a rough projection. For rate metrics, "degrading" means decreasing.
 - **Overall health** is Healthy, Watch, Degrading or Critical, taken from the worst-case metric.
-- **Inflection points:** sha256-diff the run-bundled scripts (`/cloud/v6/test_runs/{id}/script`) on either side of the change. Different scripts: split the history into eras. Same script: the regression is external.
+- **Inflection points:** sha256-diff the run-bundled scripts (`/cloud/v6/test_runs/{id}/script`) on either side of the change. Different scripts: split the history into eras. Same script: the regression is external, unless the k6 version changed across a boundary that shifts the numbers ([VERSIONS.md](VERSIONS.md#version-boundaries-in-trend-data)); split there too.
 - **Load generator resources trending up** (`load_generator_cpu_percent`, `load_generator_file_handles`) can mean the test is outgrowing its load generator, not that the service is degrading.
 - **When the service has no observability,** correlate client-side: Tempo traces for browser tests; for protocol tests compare `http_req_duration by (name, status)` and `http_req_failed by (name, status)`, and split `http_req_waiting` (server time) from `http_req_receiving` (transfer). Latency up with payload up suggests a content change; latency up with payload stable, a processing change; an intermittent payload, a flaky cache or an A/B test.
 

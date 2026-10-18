@@ -2,7 +2,7 @@
 
 `k6/browser` drives a real Chromium from a k6 script: one test file, functional by default (a single iteration with `expect()` assertions) or a browser load test (scenarios plus Web Vitals thresholds) when the user asks for load. Discover selectors on the live site, prefer role and label locators, and let locator actions and retrying `expect()` do the waiting. End-to-end suites in Playwright and other runners belong to the e2e-testing skill ([../../web-automation/e2e-testing/SKILL.md](../../web-automation/e2e-testing/SKILL.md)). A full multi-workflow website suite is [WEBSITE-PERF-TEST.md](WEBSITE-PERF-TEST.md).
 
-**Contents:** [Prerequisites](#prerequisites) · [Script structure](#script-structure) · [Selectors](#selectors) · [Waits and navigation](#waits-and-navigation) · [Consent banners](#consent-banners) · [Assertions](#assertions) · [Screenshots](#screenshots) · [Browser load tests and Web Vitals](#browser-load-tests-and-web-vitals) · [Exploring a live site](#exploring-a-live-site) · [Validating](#validating) · [Docs pages](#docs-pages) · [Prove it](#prove-it)
+**Contents:** [Prerequisites](#prerequisites) · [Script structure](#script-structure) · [Selectors](#selectors) · [Waits and navigation](#waits-and-navigation) · [Consent banners](#consent-banners) · [Assertions](#assertions) · [Screenshots](#screenshots) · [Browser load tests and Web Vitals](#browser-load-tests-and-web-vitals) · [Newer browser APIs](#newer-browser-apis) · [Exploring a live site](#exploring-a-live-site) · [Validating](#validating) · [Docs pages](#docs-pages) · [Prove it](#prove-it)
 
 ## Prerequisites
 
@@ -103,7 +103,7 @@ check(await el.isVisible(), { 'visible': (v) => v === true });
 - **`await page.screenshot({ path: 'screenshots/01-home.png' })`;** k6 creates the directory.
 - **Functional tests:** one after each navigation or action, unique numbered paths, no redundant shot right before an assertion.
 - **Load tests:** only on the first iteration and on failure (`exec.scenario.iterationInTest === 0`; failure path `screenshots/load-fail-vu${exec.vu.idInTest}-iter${exec.scenario.iterationInTest}.png`). Per-iteration shots flood the disk and bias Web Vitals.
-- **Where they land:** written to the load generator's local disk; the browser-test skill says they are not uploaded to Grafana Cloud k6, while the cloud management notes say browser runs in the cloud write screenshots to per-run storage, retrievable through the files API ([CLOUD-RESULTS.md](CLOUD-RESULTS.md#browser-screenshots)).
+- **Where they land:** written to the load generator's local disk; the browser-test skill says they are not uploaded to Grafana Cloud k6, while the cloud management notes say browser runs in the cloud write screenshots to per-run storage, retrievable through the files API ([CLOUD-RESULTS.md](CLOUD-RESULTS.md#browser-screenshots)). The v2.3.0 fix "Uses forward slashes in remote screenshot paths on Windows" touches remote screenshots but does not settle this ([k6 release notes v2.3.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.3.0.md)).
 
 ## Browser load tests and Web Vitals
 
@@ -121,6 +121,22 @@ check(await el.isVisible(), { 'visible': (v) => v === true });
 
   The browser-test skill uses p75; the website suite's SLO design uses the same limits at p(95) ([WEBSITE-LOAD-AND-REPORT.md](WEBSITE-LOAD-AND-REPORT.md#slos-and-thresholds)). A 1-VU functional test has too few samples for a percentile; omit these there.
 - **Metrics seen in cloud runs:** `browser_http_req_duration`, `browser_web_vital_ttfb`, `browser_web_vital_fcp`, `browser_data_received`, `iteration_duration`, `iterations`, `checks`.
+- **FID is gone:** k6 v2.0.0 removed `browser_web_vital_fid` (web-vitals library v5.1.0); threshold on `browser_web_vital_inp` instead. From v2.3.0, Web Vitals from intermediate pages in a tab that navigates several times are kept instead of lost ([VERSIONS.md](VERSIONS.md)).
+
+## Newer browser APIs
+
+Each needs the k6 version named; check `k6 version` first ([VERSIONS.md](VERSIONS.md)).
+
+| API | Since | Notes |
+|---|---|---|
+| Locator actions auto-retry | v2.0 | [k6 release notes v2.0.0 #5657](https://github.com/grafana/k6/blob/master/release%20notes/v2.0.0.md) |
+| `browser.newContext({ proxy: { server, bypass } })` | v2.1 | A per-context proxy; a missing `proxy.server` fails early ([k6 release notes v2.1.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.1.0.md)); close the page, then the context, in `finally` ([Script structure](#script-structure)) |
+| `locator.isInViewport({ ratio })` | v2.1 | [k6 release notes v2.1.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.1.0.md) |
+| `chromium.connectOverCDP(wsEndpoint)` | v2.2 | Closes itself at iteration end; unlike `K6_BROWSER_WS_URL` the endpoint is a runtime value, for example a session URL fetched in `setup()` ([k6 release notes v2.2.0](https://github.com/grafana/k6/blob/master/release%20notes/v2.2.0.md)) |
+| `page.throttleNetwork(networkProfiles['Slow 3G'])`, `page.throttleCPU({ rate: 4 })` | Not stated | From the grafana/k6 example `examples/browser/throttle.js` |
+| `page.route(url or regex, route => route.abort())` | Not stated | From the grafana/k6 example `examples/browser/route.js` |
+
+The two grafana/k6 examples navigate with `waitUntil: 'networkidle'`; keep `'load'` as in [Waits and navigation](#waits-and-navigation), which comes from the k6 browser recommended practices.
 
 ## Exploring a live site
 

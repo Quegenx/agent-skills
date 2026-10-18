@@ -1,6 +1,6 @@
 # Ad Creatives
 
-One creative teaches nothing, so every test is a batch of 3 to 5 variants that each isolate a different angle or visual format, run in one ad set, and get judged on CPA, because CTR alone does not win. This file covers the creative loop for Meta (generate from the store listing, write the copy, build a variant batch, edit winners, push the images and ads to Meta) and competitor ad teardowns. Everything here comes from third-party UA skills [appeeky] built on the Appeeky App Ad Creatives API and its MCP tools (a paid service: an Appeeky API key, and the Pro plan for image generation), except where a Meta or TikTok rule is named. Campaign settings are in [META-ADS.md](META-ADS.md) and [TIKTOK-ADS.md](TIKTOK-ADS.md) (TikTok video formats and Spark Ads live there); spend and payback in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); tracking in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); Apple's ads and custom product pages in [APPLE-ADS.md](APPLE-ADS.md).
+One creative teaches nothing, so every test is a batch of 3 to 5 variants that each isolate a different angle or visual format, run in one ad set, and get judged on CPA, because CTR alone does not win. This file covers the creative loop for Meta (generate from the store listing, write the copy, build a variant batch, edit winners, push the images and ads to Meta) and competitor ad teardowns. Everything here comes from third-party UA skills [appeeky] built on the Appeeky App Ad Creatives API and its MCP tools (a paid service: an Appeeky API key, and the Pro plan for image generation), except where a Meta, TikTok or FTC rule is named or a line is tagged [coreyhaines31/marketingskills, ad-creative] (MIT, Copyright (c) 2025 Corey Haines). Campaign settings are in [META-ADS.md](META-ADS.md) and [TIKTOK-ADS.md](TIKTOK-ADS.md) (TikTok video formats and Spark Ads live there); spend and payback in [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); tracking in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); Apple's ads and custom product pages in [APPLE-ADS.md](APPLE-ADS.md). Ad copy craft, hooks, static templates and text limits for other platforms (Google Search, LinkedIn, X) are in [ad-creative](../../marketing/ad-creative/SKILL.md); creator and UGC programs in [creator-marketing](../../marketing/creator-marketing/SKILL.md).
 
 **Contents:** [Before generating](#before-generating) · [Generate a Meta creative](#generate-a-meta-creative) · [Meta static specs and copy](#meta-static-specs-and-copy) · [Creative variants](#creative-variants) · [Editing creatives](#editing-creatives) · [Push creatives to Meta](#push-creatives-to-meta) · [Competitor ad teardowns](#competitor-ad-teardowns) · [Prove it](#prove-it)
 
@@ -130,21 +130,26 @@ POST /v1/app-ad-creatives/generate
 
 | Element | Spec | Notes |
 |---|---|---|
-| Image size | 1024×1024 | Square feed; API output default |
-| Primary text | Up to 125 chars visible before "See more" | The hook must land in the first line |
-| Headline | 40 chars recommended | Appears below the image |
-| Description | 30 chars (optional) | Often hidden on mobile |
+| Image size | 1024×1024 (Appeeky API output) | Meta's Feed image recommendation is ratio 4:5 at 1440 x 1800 pixels, minimum width 600 pixels, maximum file size 30 MB (https://www.facebook.com/business/ads-guide/update/image); crop or regenerate for it |
+| Primary text | Meta Feed: "50-150 characters" | The hook must land in the first line |
+| Headline | Meta Feed: "27 characters" | Appears below the image |
+| Description | Not in Meta's Feed text recommendations | [appeeky] 30 chars (optional), often hidden on mobile |
 | CTA | `INSTALL_MOBILE_APP` | Set in Ads Manager or the API |
-| Text on image | ≤ 20% of area (guideline) | Heavy text can limit delivery |
+| Text on image | Meta's best practices: "a large enough type size and a contrasting hue", "Don't obstruct the visuals", "Don't communicate too many messages", "Stay within the safe zone" | Meta's text-overlay page states no percentage limit (https://www.facebook.com/business/help/980593475366490) |
+
+These rows said "Up to 125 chars visible before 'See more'", "40 chars recommended", "30 chars (optional)" and "Text on image ≤ 20% of area (guideline): Heavy text can limit delivery" [appeeky]; Meta's current specs above replace them.
+
+- **Reels and Stories (9:16).** Meta's Facebook Reels spec: 9:16 at 1440 x 2560 pixels, "Primary Text: 40 characters", "Headline Text: 55 characters", and "Consider leaving roughly 14% of the top, 35% of the bottom, and 6% on each side of your asset free from text, logos, or other key creative elements" (https://www.facebook.com/business/ads-guide/update/video/facebook-facebook-reels). Instagram Reels: "Primary text: 44 characters" (https://www.facebook.com/business/ads-guide/update/video/instagram-reels/traffic). For Reels ads with disclaimers, "leave the bottom 40% of your ad free from text, logos and other key creative elements"; for Instagram Feed in 1:1 or 4:5, keep the bottom and side edges free; Ads Manager's **Safe zone guardrail** toggle shows the area (https://www.facebook.com/business/help/980593475366490).
 
 - **Primary text structure:** "Line 1: Hook (pain or curiosity), must work standalone / Line 2-3: Proof or mechanism / Line 4: Soft CTA + social proof if available".
 - **Hook patterns:** problem callout "Still juggling 4 apps to stay organized?"; outcome promise "Plan your week in 5 minutes."; social proof "Join 2M+ users who..."; question "What if your notes actually stuck?".
-- **Headline rules:** lead with the benefit, not the app name; ≤ 40 characters; never repeat the primary-text hook verbatim.
+- **Headline rules:** lead with the benefit, not the app name; never repeat the primary-text hook verbatim [appeeky]. Length: Meta's Feed recommendation is 27 characters (above); [appeeky] said ≤ 40.
 - **CTA by monetization:** free install → Install Now; freemium → Install Now or Learn More; subscription → Install Now (trial in the copy).
 - **Quality check:** hook visible in the first line; on-image text readable at thumbnail size; "No unsubstantiated claims (Apple/Google policy)"; rating and review claims match the live listing.
+- **Testimonials and faces are real or labelled.** The FTC Rule on Consumer Reviews and Testimonials (16 CFR Part 465, in effect October 21, 2024) prohibits testimonials "by someone who does not exist, such as AI-generated fake reviews, or who did not have actual experience"; it has "no blanket prohibition on the use of AI-generated avatars", but under the Endorsement Guides an endorsement shown with "the image or likeness of a person other than the actual endorser is deceptive if it misrepresents a material attribute" (16 CFR 255.1(g); https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers). So a `creator_testimonial` image quotes a real user who agreed to it, and a staged scene is labelled a dramatization. Full disclosure rules: [creator-marketing DISCLOSURE.md](../../marketing/creator-marketing/DISCLOSURE.md).
 - **Pre-launch checklist:** Meta app ID linked in Events Manager; iOS AEM and SKAN expectations set with the user; the user approved the copy before upload.
 - **Static benchmarks:** install rate (click → install) weak < 8%, OK 8 to 15%, strong > 15%; frequency before fatigue OK at 2.5 to 3.5, refresh at 3+; "CTR alone does not win".
-- **Video for Meta:** vertical 9:16, 15 to 30 s; 3 to 5 primary text hooks. Meta's Advantage+ app campaigns accept up to 50 images, videos, playables or Instant Experiences per upload and up to 5 texts and headlines ([META-ADS.md](META-ADS.md#advantage-app-campaigns)).
+- **Video for Meta:** vertical 9:16, 15 to 30 s; 3 to 5 primary text hooks [appeeky]; Meta recommends 1440 x 2560 for Reels (above). Meta's Advantage+ app campaigns accept up to 50 images, videos, playables or Instant Experiences per upload and up to 5 texts and headlines ([META-ADS.md](META-ADS.md#advantage-app-campaigns)).
 
 ## Creative variants
 
@@ -156,7 +161,7 @@ POST /v1/app-ad-creatives/generate
 | $1.5K to 10K | 5 | $50 to 100 | 4 to 5 days |
 | $10K+ | 5 to 8 | $100+ | 3 to 4 days |
 
-Each ad needs ~2× target CPA in spend before it can be killed, so smaller budgets get fewer variants.
+Each ad needs ~2× target CPA in spend before it can be killed, so smaller budgets get fewer variants. [coreyhaines31/marketingskills, ad-creative] sets a looser floor, "Allow 1,000+ impressions before judging"; both are practitioner numbers.
 
 | Variant | Style / preset | Angle |
 |---|---|---|
@@ -180,6 +185,8 @@ Each ad needs ~2× target CPA in spend before it can be killed, so smaller budge
 | CTR < 0.5% after 5K impressions | Likely hook failure |
 | One ad > 70% of spend | Still wait for CPA |
 | Frequency > 3 on the winner | Prepare an edit |
+
+"Strong CTR with weak qualified conversion is a reason to examine the promise and landing-page continuity, not proof of a winning headline" [coreyhaines31/marketingskills, ad-creative]; for an app the landing page is the store listing and onboarding.
 
 | Batch benchmark | Weak | Healthy |
 |---|---|---|
@@ -270,7 +277,7 @@ meta_ads_create_ad
 | No Page | Connect a Page in Business Settings |
 | Invalid app link | Full App Store or Play URL |
 | `application_id` invalid | Add the app in Events Manager |
-| Creative rejected (image text % or content) | Edit the creative |
+| Creative rejected (content or policy) | Edit the creative |
 | Budget too low | Raise `daily_budget_minor` |
 
 - **Mistakes:** a separate ad set per variant on day 1; the wrong `object_store_url`; skipping the image re-upload after an edit; no naming convention.
@@ -310,6 +317,8 @@ meta_app_ad_intelligence
 | 30 to 90 days | Likely working |
 | 90+ days | Core evergreen |
 
+- **Weigh a concept by its evidence** [coreyhaines31/marketingskills, ad-creative]: 1 "Your own account: a converting ad with the same angle/segment"; 2 "Your customers verbatim: recurring review/call language"; 3 "Competitor creative running 60+ days (presumed working)", "adapt the angle, never the ad"; 4 organic engagement in the niche; 5 a cross-niche pattern; 6 "Team hunch, no external signal", "low-fi test or drop". A competitor teardown is tier 3, below your own account and your customers' words.
+
 - **TikTok:** "No TikTok Ad Library API in Appeeky yet": use TikTok Creative Center → Top Ads by industry, and search `#[competitor]`. For TikTok creative research, save 10 competitor ads ([TIKTOK-ADS.md](TIKTOK-ADS.md#creative-strategy)).
 - **Ethics:** take inspiration from format and structure, never copy exact copy or visuals; paraphrase hooks; internal use only; label competitor ads with their source.
 - **Mistakes:** verbatim hooks; looking at inactive ads only (filter `ACTIVE`); one competitor only (compare 2 to 3); ignoring ad age.
@@ -318,7 +327,7 @@ meta_app_ad_intelligence
 
 - Every generation was preceded by an `analyze` call whose `keyPoints` the user confirmed, and the user was told the credit cost first.
 - The batch has 3 to 5 variants (sized to budget), no two share a hook line, at least 2 presets differ, and all run in one ad set.
-- Headlines are ≤ 40 characters and lead with a benefit, the hook sits in the first 125 characters of primary text, and every rating or user-count claim matches the live listing.
+- Headlines lead with a benefit and fit Meta's placement recommendation (27 characters Feed, 55 Reels), the hook sits in the first line of primary text (Meta Feed recommends 50 to 150 characters, Reels 40 to 44), no text, logo or CTA sits in the 9:16 safe-zone margins, and every rating or user-count claim matches the live listing.
 - Each Meta creative was created with `format: "app_install"`, a `name`, an `image_hash` from `meta_ads_upload_ad_image_from_url`, and `call_to_action_type: "INSTALL_MOBILE_APP"`; every ad was created `PAUSED`.
 - Subscription and IAP apps went through the manual path with `custom_event_type` set, never `meta_ads_create_app_install_draft`.
 - After an edit, the new image was re-uploaded, a new ad created, and the old ad paused, not deleted.

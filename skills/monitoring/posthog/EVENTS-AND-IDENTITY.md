@@ -23,7 +23,9 @@ posthog.capture('user_signed_up', {
 - **Start from product goals,** make the data accessible where you capture it, and verify the format.
 - **Leave other tools alone.** If a file already has another tool's integration code, don't overwrite or remove it; place PostHog code below it, keep additions minimal and targeted, and don't change the file's architecture.
 - **Set up a reverse proxy** so tracking and ad blockers are less likely to block events (see [SETUP-WEB.md](SETUP-WEB.md)).
-- **Use one project for the marketing site and the app:** full journeys, channel attribution, CAC and LTV, cross-platform funnels.
+- **Use one project for the marketing site and the app:** full journeys, channel attribution, CAC and LTV, cross-platform funnels. The formulas (CAC = total sales + marketing spend / new customers; pipeline velocity) are in [../../marketing/revops/PIPELINE-AND-METRICS.md](../../marketing/revops/PIPELINE-AND-METRICS.md#metrics).
+- **Form and popup funnels:** form views, first field focus, each field completion, errors by field, submit attempts, successful submissions [coreyhaines31/marketingskills, cro]; for popups also close-button clicks, outside clicks and Escape [coreyhaines31/marketingskills, popups]. The metrics (start rate, completion, field drop-off) are in [../../marketing/cro/SKILL.md](../../marketing/cro/SKILL.md).
+- **Lead-magnet quality as funnel steps** [coreyhaines31/marketingskills, lead-magnets]: per magnet source, click through to content or product pages, return to the site within 30 days, progress to trial, demo or purchase within 90 days. The full signal list and A/B candidates (gate level, fields asked, delivery) are in [../../marketing/lead-magnets/PROMOTION-AND-MEASUREMENT.md](../../marketing/lead-magnets/PROMOTION-AND-MEASUREMENT.md#lead-quality).
 - **Keep PII out of event properties.** One example app says never send PII or user-generated content in capture properties and puts name and email in `identify` instead; most other examples send `username` as an event property.
 
 ## Naming events and properties
@@ -40,7 +42,7 @@ Treat event names, property names and feature flag keys as an analytics contract
 | Dates and timestamps end in `_date` or `_timestamp` | `user_creation_date`, `last_login_timestamp` |
 | Version events after a revamp | `registration:sign_up_button_click` to `registration_v2:sign_up_button_click` |
 
-- **Conflict on format:** the product analytics best-practices page uses snake case `category:object_action`; the SDK usage page recommends an `[object] [verb]` format such as `project created`, `user signed up`, `invite sent`. Pick one per project and confirm in the current docs.
+- **Conflict on format:** the product analytics best-practices page uses snake case `category:object_action`; the SDK usage page recommends an `[object] [verb]` format such as `project created`, `user signed up`, `invite sent`. Pick one per project and confirm in the current docs. A third convention: [coreyhaines31/marketingskills, analytics] recommends an Object-Action format in lowercase with underscores (`signup_completed`, `button_clicked`, `form_submitted`). Reuse whichever the project already has (rule 6); the marketing tracking plan is [../google-analytics/TRACKING-PLAN.md](../google-analytics/TRACKING-PLAN.md#naming-events).
 - **Anti-pattern, inconsistent names across platforms:** web `Create Account`, iOS `user_sign_up`, Android `create-account` for the same action.
 - **Keep names static; never interpolate.** Each interpolated name creates a new event definition. Same for properties: `feature_${featureName}_used` becomes a `feature_name` property. Too many unique property names get new property definitions rate limited, and they stop appearing in filters and breakdowns.
 

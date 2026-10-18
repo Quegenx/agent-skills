@@ -19,6 +19,7 @@ They compose: a workflow combines several of them.
 - **Adversarial verification:** for each agent, a separate agent verifies its output against a rubric or criteria.
 - **Generate-and-filter:** generate many ideas, filter them by a rubric or by verification, dedupe, and return only the best tested ones.
 - **Tournament:** agents compete instead of dividing the work: N agents attempt the same task in different ways, and a judging agent compares results pairwise until one wins.
+- **Panel with a designated dissenter:** for a judgment call (a strategy, a pricing change), seat several lenses and always at least one whose documented position conflicts with where the question leans ("A council that agrees is a mirror, not a board"); map 2 to 4 real disagreements, each with the trade-off underneath and "what evidence would settle each", before any synthesis; end the synthesis with a tripwire, the dissent to keep watching and its signal. "A take that would survive with the name swapped isn't a take" [coreyhaines31/marketingskills, marketing-council]. The source runs every seat inline in one context; that ceiling and its upgrade are in [marketing-council SKILL.md](../../marketing/marketing-council/SKILL.md#session-protocol).
 - **Loop until done:** for an unknown amount of work, keep spawning agents until a stop condition holds (no new findings, no more errors in the logs), not for a fixed number of passes.
 
 ## Jobs, and the shape that fits each
@@ -41,6 +42,8 @@ Give each service to its own subagent. When a subagent reports back, check its e
 Finish with one table: service, affected yes or no, and the evidence.
 ```
 
+- **Ask an audit for a measurement or a task list, not a hunt or a score:** "Ask an agent to find index bloat and it will find index bloat. Ask it what fraction of the suspects are in the index and you get a number that can come back as zero." And: "Ask for a score and you get a number to argue about; ask for a task list and you get work" ([openseo.so](https://openseo.so/library/site-audit/index-bloat), [technical SEO audit checklist](https://openseo.so/library/site-audit/technical-seo-audit-checklist)).
+
 - **A chain of existing skills run one after another in one session** (review, simplify, commit, open the PR, babysit) is not a fan-out: it is a manual-only skill with a checklist and stop conditions, in [skill-authoring DISTRIBUTION.md](../skill-authoring/DISTRIBUTION.md#composing-skills).
 
 ## Fan-out contract
@@ -53,7 +56,7 @@ Vercel's `vercel-optimize` audit wires its subagents through deterministic scrip
 - **A join key per brief, coverage enforced:** every brief carries a `candidateRef` (`kind:target`); the collector errors on unknown, duplicate and missing refs and orders the output by the manifest. "Extraction is permissive while candidateRef coverage stays strict": fenced ```json blocks first, then the whole text, then the first balanced `{…}` or `[…]` span (a string- and escape-aware bracket stack), unwrapping up to two single-key envelopes (`data`, `result`, `insights`); a missing ref is inferred from the file name only when exactly one manifest entry matches.
 - **Abstaining is an answer:** "Abstentions are first-class outputs ({abstain:true, candidateRef, reason}) and MUST NOT be graded; the abstention IS the answer." What an abstention means for the report is in [skill-authoring PROJECT-AUDITS.md](../skill-authoring/PROJECT-AUDITS.md#a-telemetry-first-audit-pipeline).
 - **The script plans, the orchestrator spawns:** the verify step "Does NOT spawn sub-agents - the orchestrator reads regenPlan, re-spawns one sub-agent per targeted candidate with topFailures injected, then re-runs this script." `topFailures` is the first 5 failed claims. The thresholds that trigger a re-run are in [agent-evals GATES.md](../agent-evals/GATES.md#gating-an-agents-findings).
-- **A budget checkpoint the host parses:** "JSON output is the contract the orchestrator parses; markdown is human-only", and `--no-prompt` serves "CI / non-interactive hosts". The message to show carries its line count and a `sha256` of its body, so the host can check it was printed verbatim ([CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer)).
+- **A budget checkpoint the host parses:** "JSON output is the contract the orchestrator parses; markdown is human-only", and `--no-prompt` serves "CI / non-interactive hosts". The same holds for any CLI an agent drives: "Non-interactive flags, JSON output, and errors that say what to run next" [coreyhaines31/marketingskills, ai-seo]. The message to show carries its line count and a `sha256` of its body, so the host can check it was printed verbatim ([CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer)).
 - **The renderer checks again,** because the orchestrator can skip a step: [CHECKS.md](CHECKS.md#rewriting-and-dropping-a-finished-answer).
 
 ## Author and reviewer loops
@@ -79,7 +82,7 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 
 ## Cost and stopping
 
-- **Ask whether it needs more compute.** Most coding tasks don't need a panel of five reviewers; a "quick workflow" (a quick adversarial review of one assumption) is fine for a small task.
+- **Ask whether it needs more compute.** Most coding tasks don't need a panel of five reviewers; a "quick workflow" (a quick adversarial review of one assumption) is fine for a small task. The panel version: one seat for a quick take, 3 to 5 by default, the full bench only "when stakes justify it"; "Twelve advisors on a headline" is the anti-pattern [coreyhaines31/marketingskills, marketing-council].
 - **Long threads are context traps:** "Each message carries the full conversation history." Argyle's per-thread cost dashboard for his OpenClaw assistant found "Two threads accounted for 60% of the total spend": a store project ($73) and `#general` ($70), "a catch-all channel accumulating context from random conversations. Expensive by accident." His fixes: "Start fresh threads for new topics instead of continuing in the same one", delegate self-contained tasks to sub-agents "as they don't carry the parent context" (the subagent line above: still on the bill), and "Treat `#general` as a lobby, not a workspace". He tracks cost per thread, daily spend, input vs output vs cache hits, and session type (Discord, cron, direct chat), aggregated from the JSONL session logs (token counts and cost per response) into one static JSON file behind an Astro page; "The dashboard cost less than a dollar to make" ([nerdy.dev: My OpenClaw Token Dashboard](https://nerdy.dev/openclaw-token-dashboard), 2026-03-02).
 - **A token budget per workflow** caps the spend; in Claude Code a prompt such as "use 10k tokens" sets it.
 - **Repeatable workflows** (triage, research, verification) run on an interval with a hard completion requirement ([CHECKS.md](CHECKS.md), Loop breakers and goal loops).
@@ -98,6 +101,7 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 - [ ] The task needs more compute than one context gives it (long-running, massively parallel, highly structured or adversarial), and the workflow has a token budget
 - [ ] A long multi-part task is split so each part runs in its own context with its own goal
 - [ ] Every verifier, judge and refuter runs in a context that did not produce what it checks
+- [ ] A panel seats a dissenter, maps its disagreements with the evidence that would settle each, and ends on a tripwire
 - [ ] An unbounded loop has a stop condition (no new findings, no more errors), not a fixed pass count
 - [ ] An author and reviewer loop: a round cap, diff-only re-review, no repeated findings, rounds-to-pass tracked
 - [ ] Agents that read untrusted content have read-only tools and hand on only structured summaries

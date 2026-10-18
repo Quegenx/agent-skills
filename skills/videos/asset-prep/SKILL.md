@@ -71,6 +71,8 @@ Pick one or two reference videos whose style the film should take and name it: l
 
 For a game, a tool or anything with live behaviour, record real use (replays, screen captures of a real session) and mine it for the tense or revealing moments: a near miss, the instant the smart part acts. Cut those to the beat; never let emphasis text or a transition hide the moment itself.
 
+**A scripted recording of your own web app** (one flow re-recorded every release, driven by Playwright with subtitles, a visible cursor, a fake URL bar and optional narration): [APP-RECORDING.md](APP-RECORDING.md).
+
 **Recording the screen yourself**: record at twice the delivery size (4K for a 1080p film) so a 2x zoom on code stays sharp; 60 fps for scrolling and UI, 30 for mostly static code or a terminal; editor text 18-22 px or more at delivery, line numbers on, minimap and status clutter off; move the pointer deliberately, rest on a target about half a second before clicking, hide it while explaining; hold each zoomed area 3 s or more before panning on; play key moments at real speed, speed up boilerplate and navigation, and cut the wait out of installs and builds.
 
 **Transforming supplied footage:** probe it first (`ffprobe` duration, fps, size, audio, subtitle tracks), write down what must not change (the voice, the captions, the length, the person, the order of information), then plan segment by segment: what the original shows, what replaces it, what has to be drawn or repaired. Make a 10-second sample, check it against the original audio and captions, then do the rest.

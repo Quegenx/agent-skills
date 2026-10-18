@@ -10,7 +10,7 @@ The pipeline runs from the email form through validation, double opt-in and a re
 - **Always validate server-side** (client-side can be bypassed): format (RFC 5322), the domain exists (DNS lookup), the domain has MX records, and optionally disposable-email detection. Recommended tools: https://resend.com/blog/best-email-verification-apis.
 - **Input:** `type="email"` for the mobile keyboard; placeholder "you@example.com"; error "Please enter a valid email address", not "Invalid".
 - **Invalid email:** a clear error, typo suggestions (`@gmial.com` to `@gmail.com`), and allow resubmitting.
-- **Already registered:** for accounts, "This email is already registered. [Sign in]"; for marketing, "You're already subscribed! [Manage preferences]". Don't reveal whether an account exists (security).
+- **Already registered:** for accounts, don't reveal whether an account exists: answer a sign-up with an existing address the same way as a new one. The line said both "This email is already registered. [Sign in]" and "Don't reveal whether an account exists (security)"; the security rule wins ([../secure-coding/CATALOG.md](../secure-coding/CATALOG.md#lookups-and-errors): "Return the same status and message for both"). Supabase returns "an obfuscated fake user" for an existing confirmed user only when both Confirm email and Confirm phone are on, and `User already registered` otherwise ([../supabase/AUTH-SIGN-IN.md](../supabase/AUTH-SIGN-IN.md#email-and-password)). For marketing, "You're already subscribed! [Manage preferences]". The owner's app-ui does this instead: "map the provider's codes to the app's messages (invalid credentials, an existing user or email, ...)" ([../../frontend/app-ui/AUTH.md](../../frontend/app-ui/AUTH.md)).
 - **Rate limiting:** verification emails at 3 per hour per address; rate-limit form submissions; use CAPTCHA sparingly if needed; monitor for abuse patterns.
 
 ## Double opt-in
@@ -33,18 +33,21 @@ The pipeline runs from the email form through validation, double opt-in and a re
 - **Checkboxes are unchecked by default (required),** use specific language, are separate per email type, and link to the privacy policy. Examples:
   - "☐ Subscribe to our weekly newsletter with product updates"
   - "☐ Send me promotional offers and deals"
-- **Never** pre-check boxes, use vague language, or hide consent in the terms.
+- **Never** pre-check boxes, use vague language, or hide consent in the terms. The FTC lists "Preselection" as a dark pattern, with "the accept tracking cookies box is pre-checked" as its example (Bringing Dark Patterns to Light, 2022, p. 25, https://www.ftc.gov/system/files/ftc_gov/pdf/P214800%20Dark%20Patterns%20Report%209.14.2022%20-%20FINAL.pdf); GDPR Recital 32: "Silence, pre-ticked boxes or inactivity should not therefore constitute consent" (https://gdpr-info.eu/recitals/no-32/).
+- **Don't make the thing they asked for depend on marketing consent:** a download or quiz result is delivered to the address; joining the marketing list takes its own unchecked box (GDPR Art. 7(4), in [COMPLIANCE.md](COMPLIANCE.md#the-laws)), and the address joins only after the double opt-in click; the email that delivers the file can carry that confirmation [coreyhaines31/marketingskills, lead-magnets]. The thank-you page confirms delivery ("Check your inbox") and offers one next step. Gating, delivery and thank-you pages for lead magnets are in [../../marketing/lead-magnets/GATING-AND-DELIVERY.md](../../marketing/lead-magnets/GATING-AND-DELIVERY.md); tag each subscriber with the magnet or form that brought them, so quality can be judged per source.
 - **Form layout:** simple and focused, one primary action, a clear value proposition, mobile-friendly, accessible (labels, ARIA).
+- **Ask for the minimum needed** [coreyhaines31/marketingskills, lead-magnets]: email only for the lowest friction, add a name for personalization, company or role for lead qualification, and multi-field forms "only for high-value offers (webinars, demos)". Capture the email now and ask for more later (progressive profiling), and remove fields the follow-up never uses. The source's "Every extra field reduces conversion by 5-10%" is its own heuristic. The field ladder is in [../../marketing/lead-magnets/GATING-AND-DELIVERY.md](../../marketing/lead-magnets/GATING-AND-DELIVERY.md#what-to-ask-for).
 - **What counts as explicit opt-in:** the user checks an unchecked box, clicks "Subscribe", or completes a form with clear intent. **What doesn't:** pre-checked boxes, an opt-out model, consent assumed from a purchase, purchased or rented lists. Gmail: don't buy lists, avoid pre-checked opt-in boxes.
-- **Informed consent** discloses the email types, frequency, sender identity and how to unsubscribe. Right: "Subscribe to our weekly newsletter with product updates and tips". Wrong: "Sign up for emails".
+- **Informed consent** discloses the email types, frequency, sender identity and how to unsubscribe. Right: "Subscribe to our weekly newsletter with product updates and tips". Wrong: "Sign up for emails". "No spam. Unsubscribe anytime." [coreyhaines31/marketingskills, lead-magnets] discloses neither type nor frequency: keep the unsubscribe line and add both.
 - **Record the consent** (fields in [COMPLIANCE.md](COMPLIANCE.md#consent-records)).
 
 ## Marketing emails
 
+- **Sequences and lifecycle mail** (welcome, nurture, onboarding, re-engagement, billing and win-back), with their timing, exit conditions and copy, are in [SEQUENCES.md](SEQUENCES.md) and [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md). The rules below apply to all of them.
 - **Core:** consent first (explicit opt-in required, especially GDPR/CASL); value-driven (useful content, not just promotions); respect preferences (let users control frequency and content types).
 - **Required in every marketing email:** clear sender identification, a physical mailing address (CAN-SPAM), an unsubscribe mechanism, and an indication that it is marketing (GDPR).
 - **Unsubscribe:** prominent in every email; one-click preferred; immediately (GDPR) or within 10 days (CAN-SPAM), immediate preferred; free; no login. Headers are in [COMPLIANCE.md](COMPLIANCE.md#the-list-unsubscribe-headers).
-- **Subject lines:** clear, specific, 50 characters or less for mobile; curiosity without misleading; A/B test. Right: "Your weekly digest: 5 productivity tips". Wrong: "You won't believe what happened!"
+- **Subject lines:** clear, specific, 50 characters or less for mobile (the emails source says "40-60 characters ideal", [SEQUENCES.md](SEQUENCES.md#subject-and-preview)); curiosity without misleading; A/B test. Right: "Your weekly digest: 5 productivity tips". Wrong: "You won't believe what happened!"
 - **Structure:** above the fold, a value proposition, a primary call to action and an engaging visual; a scannable body (short paragraphs, bullets) with a clear hierarchy and multiple calls to action; a footer with unsubscribe, company info, physical address (CAN-SPAM) and social links.
 - **Mobile-first:** single column, buttons at least 44x44px, text at least 16px; test on iOS, Android and in dark mode.
 - **Segment** by behavior (purchases, activity), demographics, preferences, engagement level and signup source, for higher open and click rates, lower unsubscribes and a better experience.
@@ -63,6 +66,8 @@ The pipeline runs from the email form through validation, double opt-in and a re
 | Manual removal | On request | Only if the user requests it |
 
 - **Hard bounces and complaints suppress across all email types.** Unsubscribe is marketing-only: the user still gets password resets and order confirmations.
+- **Across channels:** an opt-out on email, LinkedIn, phone or SMS removes the person from every outreach channel, so key the list on email, LinkedIn URL and phone [coreyhaines31/marketingskills, prospecting], and mirror it to the CRM and every tool that sends [coreyhaines31/marketingskills, revops]. The CRM's outbound "Suppressed" stage ("Opted out, bounced, hostile, customer, or competitor") has the exit "Never (unless they opt back in)" ([../../marketing/revops/PIPELINE-AND-METRICS.md](../../marketing/revops/PIPELINE-AND-METRICS.md)). For outbound, the source also suppresses current customers and open deals, competitors and partners, "not interested" replies for a cooldown, and do-not-contact and deletion requests ([../../marketing/prospecting/ENRICHMENT.md](../../marketing/prospecting/ENRICHMENT.md#suppression-list)).
+- **Lists you didn't collect yourself** (bought data is never used; enriched or event lists) are verified right before they reach a sequence: result by result actions and re-verification timing are in [../../marketing/prospecting/ENRICHMENT.md](../../marketing/prospecting/ENRICHMENT.md#verification). Never send to guessed addresses to see what bounces; a source suggested "just guess and bounce-check" [coreyhaines31/marketingskills, public-relations], and hard bounces cost reputation ([DELIVERABILITY.md](DELIVERABILITY.md#bounces-and-complaints)).
 - **Keep transactional and marketing lists separate:** transactional for anyone with an account relationship, marketing only for opted-in users.
 - **Check before every send.** Schema and helpers:
 
@@ -121,7 +126,7 @@ async function sendEmail(to: string, emailData: EmailData) {
 More: https://resend.com/docs/knowledge-base/audience-hygiene.
 
 - **Remove immediately:** hard bounces, unsubscribes, complaints. Gmail also says auto-unsubscribe after multiple bounces.
-- **Inactive** means no opens or clicks in 45 to 90 days. Send a "We miss you" or "Still interested?" email, wait 14 to 30 days, then remove non-responders from active lists. The source's job selects `getInactiveSubscribers(90)` and removes a subscriber when `daysSince(subscriber.reengagement_sent) > 30`.
+- **Inactive** means no opens or clicks in 45 to 90 days (the emails source starts re-engagement after "30-60 days of inactivity", and its eval uses 90; its four-email version is in [SEQUENCES.md](SEQUENCES.md#re-engagement)). Opens are a weak signal: Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), so judge inactivity on clicks and product activity where you can. Send a "We miss you" or "Still interested?" email, wait 14 to 30 days, then remove non-responders from active lists. A CRM rule like "Archive contacts with no activity in 12+ months" [coreyhaines31/marketingskills, revops] is about CRM records, not the mailing list; both hold. The source's job selects `getInactiveSubscribers(90)` and removes a subscriber when `daysSince(subscriber.reengagement_sent) > 30`.
 - **Gmail:** periodically confirm recipients still want your mail, and consider unsubscribing people who never open.
 
 ## Retention
@@ -146,3 +151,6 @@ More: https://resend.com/docs/knowledge-base/audience-hygiene.
 - An unsubscribed user receives no marketing mail but still receives a password reset.
 - The cleanup job leaves the suppression list and consent records untouched.
 - Every marketing email shows the sender, physical address, unsubscribe link and a marketing indication.
+- Signing up with an existing account's address returns the same response as a new address.
+- A lead magnet downloads with the marketing box unchecked, and the address joins no marketing list.
+- An opt-out recorded on one channel blocks the next send on every other channel.

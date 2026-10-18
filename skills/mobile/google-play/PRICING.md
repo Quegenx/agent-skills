@@ -67,10 +67,17 @@ Round results to `.99` endings: $4.73 becomes $4.99, ₹249.37 becomes ₹249.99
 
 New prices apply only to new subscribers. Migrate existing ones with `gplay baseplans migrate-prices --base-plan-id <id> --json @migration.json` for every changed base plan.
 
+What existing subscribers then see is Google's rule ([Change subscription prices](https://developer.android.com/google/play/billing/price-changes)):
+
+- **Opt-in by default:** "By default, price increases are opt-in changes for existing subscribers. Users must explicitly accept the higher price before it is first charged, or Google Play automatically cancels their subscription."
+- **Timing:** the new price is charged after "an advance notification period of 37 days"; Play notifies users "Starting 30 days before this charge", and "you have seven days to notify your existing subscribers before Google Play begins to notify them directly". Google recommends an in-app notice with "a deep link to the Play Store subscription screen" (Billing Library 9's in-app messaging for opt-in increases is in [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md#subscriptions-base-plans-and-offers)).
+- **Opt-out increases:** notice of "either 30 days or 60 days", "only available in certain locations with limits on the increase amount and frequency".
+- **Apple's rules differ** (consent thresholds, 27 or 7 days' notice): [../app-store-connect/PRICING-AND-SUBSCRIPTIONS.md](../app-store-connect/PRICING-AND-SUBSCRIPTIONS.md#price-increases-for-existing-subscribers). Rollout strategy for a web price change (grandfathering, staged waves) is [../../marketing/pricing-strategy/PRICE-CHANGES.md](../../marketing/pricing-strategy/PRICE-CHANGES.md); on Play it runs inside these rules.
+
 ## Prove it
 
 - **The update kept every region:** the region count in `subscriptions get` (or `iap get`, `onetimeproducts get`) after the update equals the count before it.
 - **New-regions defaults survived:** `otherRegionsConfig` or `newRegionsConfig` is still present after the update.
 - **Prices are well formed:** every `nanos` is between 0 and 999999999, prices end in `.99` where intended, and currencies match the fetched ones.
 - **Dry run first:** `gplay --dry-run subscriptions update ...` succeeds before the real call.
-- **Existing subscribers moved:** `baseplans migrate-prices` ran for every base plan whose price changed.
+- **Existing subscribers moved:** `baseplans migrate-prices` ran for every base plan whose price changed, and for an opt-in increase the app showed its own notice within the first seven days.

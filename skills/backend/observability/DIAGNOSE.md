@@ -118,6 +118,7 @@ The same dashboard serves three purposes. Peacetime: find where problems will oc
 2. **Ask what changed** in the last thirty minutes to a few hours: a deploy, a config change, a feature flag, infrastructure work, a marketing-driven traffic surge. "The prior probability that it is the culprit is overwhelming, so before digging deep into graphs, consider reverting it first."
 3. **Recover first.** "Recovery comes first almost always": rollback, restart, scale out, flag off. The evidence stays in metrics, logs and heap dumps for later.
 4. **Diagnose by hypothesis,** only when the prepared recovery measures don't work and the cause has to be narrowed further. "Don't open twenty graphs and scan for anything that looks spiky. Form a hypothesis instead, like 'if the DB slowed down, connection waits should have risen,' then open the one graph that checks it, and discard or adopt."
+5. **Tell customers in parallel.** The public side (a severity tier, one spokesperson and channel of record, a holding statement with no unconfirmed cause or scope, affected customers before social and press, a stated next-update time) runs from [../../marketing/public-relations/CRISIS.md](../../marketing/public-relations/CRISIS.md) [coreyhaines31/marketingskills, public-relations].
 
 ## The thirty minutes after a deploy
 
@@ -140,6 +141,7 @@ A 1%-a-day decline produces zero alerts over four weeks. "An alert is a way to c
 - **Reach causation, not correlation.** Mid-incident analysis stops at correlation ("we reverted the deploy and the incident ended"); the postmortem asks "why was that deploy a problem, and why didn't review catch it?" Go one layer past the surface cause: not "because of a slow query" but "because there was no procedure for checking the execution plan of queries against large tables."
 - **Never write a person as the cause.** "The moment a person's name goes into the cause field, whoever is standing there during the next incident will hide it or blame themselves … A postmortem that blames people only makes the next incident longer." Record only the context: "in this situation, this was the judgment that had to be made."
 - **The output is "a list of changes that make the next incident shorter":** panels, alerts, rollback criteria agreed in advance, root-cause removal.
+- **The public postmortem is a separate document.** For Tier 3 and 4 incidents in the crisis tiers, publish a postmortem with a summary, timeline, a specific root cause ("Avoid vague phrases like 'a configuration issue.'"), impact, specific verifiable changes, what went well and what you'd do differently; it keeps the no-person rule above. Template: [../../marketing/public-relations/CRISIS-STATEMENTS.md](../../marketing/public-relations/CRISIS-STATEMENTS.md#public-postmortem) [coreyhaines31/marketingskills, public-relations].
 
 ## Prove it
 

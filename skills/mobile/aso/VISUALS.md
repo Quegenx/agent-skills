@@ -42,7 +42,7 @@ Visuals turn a search impression into an install. The icon is the first thing se
 | Apple TV / Vision Pro | 1920 x 1080, 3840 x 2160 / 3840 x 2160 |
 | Apple Watch (one size across all localizations) | e.g. 422 x 514 (Ultra 4, Ultra 3), 416 x 496 (Series 12, 11, 10), 396 x 484 (Series 9, 8, 7) |
 
-- **Apple's advice:** up to 10 screenshots; the first one to three appear in search results when there's no preview; consider at least one Dark Mode screenshot; localize screenshots per market. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Apple gives you 10. Use at least 6"; avoid "Dark screenshots that look the same at thumbnail size", stock-photo backgrounds and too much text; design for small size with large text and high contrast.
+- **Apple's advice:** up to 10 screenshots; the first one to three appear in search results when there's no preview; consider at least one Dark Mode screenshot; localize screenshots per market. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Apple gives you 10. Use at least 6"; avoid "Dark screenshots that look the same at thumbnail size", stock-photo backgrounds and too much text; design for small size with large text and high contrast. How many to fill is practice, not a rule (Apple requires one): [eronred] scores "all 10 slots", [ApparenceKit] says at least 6, and [coreyhaines31/marketingskills, aso] flags fewer than 5 and calls 4 to 5 optimal for utilities and 5 to 6 for complex apps, with "diminishing returns" past 6 ([BENCHMARKS.md](BENCHMARKS.md#screenshots-and-preview-video)).
 - Resizing and the automated capture pipeline are in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
 
 ## Screenshot strategy [eronred]

@@ -1,0 +1,43 @@
+---
+name: cold-outreach
+description: "Writes and runs B2B cold outreach inside the law and the platforms' rules: the opt-in stance of Gmail's sender guidelines, who may be emailed at all, cold email copy, subject lines, personalization, follow-up sequences, multichannel cadences with calls and LinkedIn, reply handling and what an agent may send alone, outbound plays (teardown, product-led, problem-led, founder-led) and vendor benchmarks. Use when writing a cold email, a follow-up sequence or a LinkedIn connection note, planning an outbound cadence, setting up a separate sending domain for outreach, handling replies to outreach, or deciding whether outreach is lawful for a list."
+---
+
+# Cold outreach
+
+Cold outreach is unsolicited mail and messages to people who never signed up, so it sits next to, not inside, opted-in email. Gmail's own sender guidelines reject the premise ("Don't send messages to people who didn't sign up to get messages from you", "Make sure recipients opt in to get messages from you", https://support.google.com/a/answer/81126), and whether a cold message is lawful at all depends on the recipient's country and entity type, which is decided before any copy is written. Everything here comes from coreyhaines31/marketingskills `cold-email` v2.2.0 (MIT) [coreyhaines31/marketingskills, cold-email], checked against the official pages each correction cites. Building the list, scoring accounts and the research brief are in [../prospecting/SKILL.md](../prospecting/SKILL.md); the law per country is in [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md); authentication, mailbox-provider rules and thresholds for all mail are in [../../backend/email-practices/DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md); lifecycle and nurture mail to people who opted in is in [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md).
+
+Product facts come from `.agents/product-context.md` ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); the source calls the same file `.agents/product-marketing.md`.
+
+| The job | Read |
+|---|---|
+| The sending setup for outreach, what the email itself may contain, verification before send, monitoring, and the evasion techniques that are out of bounds | [SENDING.md](SENDING.md) |
+| Writing principles, voice per audience, structures and named frameworks, personalization levels and signals, AI personalization, subject lines, what to avoid | [COPY.md](COPY.md) |
+| How many emails and when, angle rotation, the breakup email, phrases that kill replies, multichannel cadences by tier, calls, video, direct mail, ads, SMS | [SEQUENCES.md](SEQUENCES.md) |
+| LinkedIn: profile, limits, the engage-then-connect sequence, note and message copy, and the User Agreement on automation | [LINKEDIN.md](LINKEDIN.md) |
+| Classifying replies, speed, booking, early objections, what an agent may send alone, logging | [REPLIES.md](REPLIES.md) |
+| Four outbound plays with triggers, sequences, rules and metrics, and how to choose one | [PLAYS.md](PLAYS.md) |
+| Reply-rate and funnel benchmarks, levers, seniority, industry and region, the top mistakes, named experts' methods (all vendor data) | [BENCHMARKS.md](BENCHMARKS.md) |
+
+## Before writing
+
+Ask only for what the context file doesn't answer [coreyhaines31/marketingskills, cold-email]: who you are writing to (role, company, why them), the outcome you want (meeting, reply, intro, demo), the specific problem you solve for people like them, your proof, and any research signal (funding, hiring, posts, news, stack changes). Work with what you have and note what would make it stronger; don't block on missing inputs. Lawfulness is the one input you can't skip: country and entity type of each recipient, checked against [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md).
+
+## The rules
+
+1. **Decide whether the message is lawful before writing it.** CAN-SPAM covers business-to-business mail ("The law makes no exception for business-to-business email", https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business); the EU, UK, Germany, Canada and Australia each set who may be emailed without consent. The per-country rules are in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md); a contact that fails them is not emailed.
+2. **Every message identifies itself and offers a way out.** Accurate From, Reply-To and routing, a non-deceptive subject, a clear statement that the message is an advertisement, your valid postal address, and an opt-out that works for at least 30 days and is honored within 10 business days; a reply or a single page is enough (FTC guide above). For EU and UK contacts, the first message also says where the address came from and that they may object (GDPR Art. 14 and 21, in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md)). The source's rule named only the opt-out line and the postal address.
+3. **Keep outreach off the primary domain** and authenticate every sending domain ([SENDING.md](SENDING.md#the-sending-setup)). One identity per program, accurate headers, and no technique whose purpose is to hide that mail is bulk or automated ([SENDING.md](SENDING.md#out-of-bounds)).
+4. **Verify every list right before upload** and stop a campaign whose bounces pass your threshold ([SENDING.md](SENDING.md#verify-before-you-send)); the list rules are in [../prospecting/ENRICHMENT.md](../prospecting/ENRICHMENT.md#verification).
+5. **Write like a peer, short, about their world, with one low-friction ask** [coreyhaines31/marketingskills, cold-email]. Personalization must connect to the problem: "If you remove the personalized opening and the email still makes sense, the personalization isn't working" ([COPY.md](COPY.md)).
+6. **No fake "Re:" or "Fwd:".** Gmail: "don't send messages with subject lines starting with Re: or Fwd: unless the messages are actual replies or forwards" (https://support.google.com/a/answer/81126). Subject lines stay accurate to the content; CAN-SPAM bans deceptive ones.
+7. **3 to 5 emails with growing gaps, each standing alone with one new point; honor the breakup email** ([SEQUENCES.md](SEQUENCES.md#how-many-and-when)).
+8. **A reply on any channel stops every channel, and an opt-out on one channel is an opt-out on all of them.** Key suppression on email, LinkedIn URL and phone together ([SEQUENCES.md](SEQUENCES.md#rules-that-hold-any-cadence-together)).
+9. **An agent sends alone only out-of-office handling, unsubscribes, bounces and not-now reminders;** a human sends positive replies until accuracy is proven over 100+ replies ([REPLIES.md](REPLIES.md#what-an-agent-can-handle)).
+10. **No third-party LinkedIn automation that acts for your account.** LinkedIn's User Agreement 8.2 bans "bots or other unauthorized automated methods to access the Services, add or download contacts, send or redirect messages" ([LINKEDIN.md](LINKEDIN.md#the-user-agreement-on-automation)).
+11. **AI-voiced calls need the called party's prior express consent** "absent an emergency purpose or exemption", not only on mobile numbers (FCC 24-17, https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf); scrub Do Not Call lists. SMS and WhatsApp are not cold channels ([SEQUENCES.md](SEQUENCES.md#calls)).
+12. **Measure replies, positive replies and meetings, not opens.** Gmail: "Google doesn't track open rates" (https://support.google.com/a/answer/14229414). Treat every published benchmark as one vendor's range ([BENCHMARKS.md](BENCHMARKS.md)).
+
+## Prove it
+
+Every recipient on the list passed the country and entity check in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email) and has a source and date recorded; the email names the sender accurately, says it is an advertisement, carries a postal address and a working opt-out, and for EU and UK contacts says where the address came from; it sends from a separate authenticated domain with SPF, DKIM and DMARC passing; the list was verified within a week of sending; removing the personalized opening breaks the email; the subject has no fake "Re:" or "Fwd:"; a reply logged on LinkedIn pauses the email sequence for that person before the next send; an unsubscribe on any channel appears in the shared suppression list the same day; and every file's own Prove it checks pass for the parts you touched.

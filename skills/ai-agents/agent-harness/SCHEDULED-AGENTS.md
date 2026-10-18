@@ -14,6 +14,7 @@ An agent that runs on a schedule, gathers context in the background and tells so
 ## Reading the sources
 
 - **Read from a bookmark, not a fixed window.** "The last 24 hours" leaves a gap after a late run and repeats items after an early one. At the end of each run, write the timestamp of the newest item read from each source to one file, `bookmarks.json`, one entry per source (`"slack": "2026-09-14T13:02:11Z"`); the next run starts there, so its window stretches or shrinks to cover everything since the last run. In Claude Managed Agents the bookmarks live in the `state` memory store: a folder of text files mounted into every run's sandbox under `/mnt/memory/` and kept between runs, which the agent reads and writes with its ordinary file tools, as its instructions say.
+- **The first run starts from now, not from all history,** "or you'll blast every historical item"; a deliberate backfill runs first as a dry run that logs what it would do and acts on nothing, and respects cooldowns. A reset clears the bookmarks and the handled set but keeps the cooldowns, "so a reset doesn't spam people who were recently contacted" [coreyhaines31/marketingskills, marketing-loops]. The per-loop state file for marketing loops is in [marketing-loops LOOP-STATE.md](../../marketing/marketing-loops/LOOP-STATE.md).
 - **A failed read is not a quiet day.** When an MCP server is down or its token expired, the run still starts, just without that server's tools; the session logs an error, but the agent sees nothing from that source and reports "nothing new". When a source fails: keep its bookmark where it is, write from the other sources, and end with one line naming what couldn't be read ("pull requests unavailable this run").
 
 ## Deciding and checking
@@ -24,6 +25,7 @@ An agent that runs on a schedule, gathers context in the background and tells so
 4. Decide. An item earns a line when the reader would act on it today, or it changes a decision they are about to make. When unsure, leave it out. Most days that is a few items, sometimes none. A count ("12 open reviews") is not an item; link the ones that are blocked. An item already in the ledger and still open is carried as one marked line ("still waiting, day 3"), not re-reported; a closed item is dropped without comment. Do not bring back a topic the preferences file has retired.
 ```
 
+- **Checking is not acting:** "a churn-signal loop might *check* daily but only *act* when an account crosses a risk threshold it hasn't been contacted about inside the cooldown window. Conflating the two produces loops that either miss the window or spam." Set the check cadence to how fast the signal changes; "Over-frequent loops are the most common failure mode" [coreyhaines31/marketingskills, marketing-loops].
 - **Re-check anything still open right before posting:** items change between the read and the post.
 
 ```text
@@ -40,6 +42,7 @@ If the records don't match what was posted, a post recorded but never landed mov
 - **A post counts as sent only on the destination's confirmation** (for Slack, `"ok": true` and a message ts).
 - **Update the ledger and bookmarks only after that confirmation.** If the result is unclear, mark the run "maybe posted" and change nothing else, so nothing is lost.
 - **A run record per run** (`runs/<date>.md`): "posting" before the post, then "posted" with the message id, or "maybe posted".
+- **Log every run, acted or not,** with counts: `2026-07-02T09:00Z  checked=298  acted=0   note="no action"`. The log answers two questions: is it a vanity run ("every run is `acted=0` for weeks and nobody misses it - or it acts every run (a sign it's chasing noise)"), and did it double-act ("Two runs acting on the same entity means the dedupe/cooldown state isn't working") [coreyhaines31/marketingskills, marketing-loops].
 
 ## Memory between runs
 
@@ -76,6 +79,8 @@ await client.beta.vaults.credentials.create(vaultId, {
 });
 ```
 
+- **Outward actions are drafts unless someone authorized more.** Reading, analyzing, scoring, drafting and staging are safe unattended; spending, shifting budget, sending, publishing, deleting or suppressing records and changing live settings wait for a person, unless the user "explicitly authorized it *and* it's bounded by caps + an allowlist" [coreyhaines31/marketingskills, marketing-loops]. The marketing sources say the same per channel: "Create posts as drafts first - the user approves before anything is scheduled. Never auto-publish without an explicit go-ahead" [coreyhaines31/marketingskills, social]; "no messages, connects, follows, comments, form submissions, or CRM records unless the user separately authorizes that action" [coreyhaines31/marketingskills, prospecting]; "**Agent may:** read, compare, flag, draft, recommend" / "**Agent may not (without approval):** change budgets or bids, pause or launch, edit tracking, publish ads" [coreyhaines31/marketingskills, product-marketing]. When a run can't confirm consent, permission or a platform's terms, its stop condition is don't act.
+- **A kill switch for every schedule, and one for all of them:** disable the schedule or a global flag the run bodies check, written down where the schedules live [coreyhaines31/marketingskills, marketing-loops]. In Claude Code, `CLAUDE_CODE_DISABLE_CRON=1` stops every session-scheduled task and `CronDelete <id>` removes one (https://code.claude.com/docs/en/scheduled-tasks).
 - **Set the spending cap from real runs.** Start at three to five times the cost of a normal run, then tighten as real numbers come in. Every run gets the full amount; a run that hits the cap pauses instead of failing, so a cap set too low looks like an output that went quiet.
 
 ## Example: a scheduled deployment
@@ -118,9 +123,24 @@ budget:
 
 A run that reaches the budget pauses with a `budget_reached` stop reason. Start a run by hand to test without waiting for the schedule (`ant beta:deployments run --deployment-id <id>`). The preferences store is created empty: seed the preferences file before the first run (the reference implementation's `scripts/seed-preferences.sh`). The reference implementation is `anthropics/claude-quickstarts/managed-agents/daily-brief`.
 
+## Scheduling inside Claude Code
+
+Claude Code's own scheduler (`/loop`, `CronCreate`) is session-scoped, so it suits in-session work and not a weekly job (https://code.claude.com/docs/en/scheduled-tasks):
+
+- "Tasks only fire while Claude Code is running and idle. Closing the terminal or letting the session exit stops them firing."
+- "Recurring tasks automatically expire 7 days after creation. The task fires one final time, then deletes itself." For longer, the docs name "Routines or Desktop scheduled tasks for durable scheduling".
+- "No catch-up for missed fires": a time that passes while Claude is busy fires once when it is idle.
+- Recurring tasks run late by a jitter (except every-five-minute tasks); one-shot tasks on the hour or half hour run up to 90 seconds early, so schedule them off those minutes.
+- On `claude --resume` or `--continue`, `CronCreate` tasks come back except expired recurring and past one-shot ones; a self-paced `/loop` isn't restored.
+
+A source that schedules weekly marketing loops with `CronCreate` [coreyhaines31/marketingskills, marketing-loops] gets about one run before the task expires; the corrected guidance is in [marketing-loops SKILL.md](../../marketing/marketing-loops/SKILL.md#scheduling-a-loop). Deployed schedules (cron with a time zone, as above) and durable steps are in the `background-jobs` skill.
+
 ## Prove it
 
-- [ ] Each source is read from a bookmark, not a fixed time window
+- [ ] Each source is read from a bookmark, not a fixed time window; the first run starts from now, a backfill ran dry first, and a reset kept the cooldowns
+- [ ] Every run logs checked and acted counts; no entity was acted on twice inside its cooldown; a run that never acts or always acts was questioned
+- [ ] Spending, sending, publishing and deleting wait for a person unless explicitly authorized with caps and an allowlist; one switch stops every schedule
+- [ ] A recurring job meant to outlive a week runs on a durable scheduler, not a session task
 - [ ] A failed read is reported as unreadable, never as a quiet day, and its bookmark stays put
 - [ ] Every item is re-checked right before posting; links come from the source's own link field
 - [ ] A post counts as sent only when the destination confirms it, then bookmarks and ledger update; an unclear result is "maybe posted" and changes nothing else
