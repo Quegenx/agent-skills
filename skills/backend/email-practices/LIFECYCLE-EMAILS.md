@@ -67,7 +67,7 @@ The marketing and retention side of an app's email, next to the transactional ca
 
 - **Expired trials,** 3-4 emails over 30 days: day 1 after expiry "here's what you're missing"; day 7 "What held you back?"; day 14 an incentive (discount, extended trial); day 30 "Final reach-out, door is open". By trial engagement: high, remove friction to convert; low, a fresh start with more onboarding; none, ask what happened and offer a demo or call.
 - **Cancelled customers,** 2-3 emails over 90 days: day 30 "What's new since you left"; day 60 "We've addressed [common reason]"; day 90 a special offer. "No guilt, no desperation"; personalize by cancellation reason; make returning easy.
-- **Two ladders, side by side:** the app-growth win-back ladder runs week 1 "We miss you", week 3 30% off the first month, week 6 three months at 50% off, week 12+ archive ([../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#subscription-lifecycle-eronred)). Both are source conventions; pick one per product.
+- **Two ladders, side by side:** the app-growth win-back ladder runs week 1 "We miss you", week 3 30% off the first month, week 6 three months at 50% off, week 12+ archive ([../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#subscription-lifecycle)). Both are source conventions; pick one per product.
 - **Consent:** a cancelled customer may still be a marketing subscriber or may not; win-back email goes only to those whose marketing consent stands.
 
 ## Campaigns

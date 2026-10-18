@@ -1,14 +1,16 @@
 # Retention and monetization
 
-Turning installs into active, paying, returning users: onboarding to the activation event, the paywall and pricing, the subscription lifecycle from trial to win-back, retention loops, web-to-app funnels, and asking for ratings. What decides most outcomes is timing against the user's first value moment: permissions, the paywall, the ATT prompt and the rating prompt all convert better after it and do damage before it. Apple's and Google's docs are the authority for every offer type, limit and guideline here; bullets tagged [eronred] are a third-party playbook whose benchmarks and percentages are its author's claims, and where the two differ both are given. Bullets tagged [ApparenceKit] come from apparencekit.dev, a Flutter starter-kit author's posts about his own apps; its numbers are his claims. Bullets tagged [coreyhaines31/marketingskills, <skill>] come from Corey Haines' MIT-licensed marketing skills, written for web SaaS; their benchmarks are the author's claims, and the web versions of these topics live in the marketing set (linked where they apply). The paywall itself is in [PAYWALLS.md](PAYWALLS.md). Offer types and their limits per store are in [SUBSCRIPTION-OFFERS.md](SUBSCRIPTION-OFFERS.md); purchase code, entitlements, paywalls, webhooks and dunning tooling are in [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md); event names for these funnels are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#event-tracking-plan-eronred); store-side rating strategy and review replies are in [../aso/SKILL.md](../aso/SKILL.md).
+Turning installs into active, paying, returning users: onboarding to the activation event, the paywall and pricing, the subscription lifecycle from trial to win-back, retention loops, web-to-app funnels, and asking for ratings. What decides most outcomes is timing against the user's first value moment: permissions, the paywall, the ATT prompt and the rating prompt all convert better after it and do damage before it. Apple's and Google's docs are the authority for every offer type, limit and guideline here; bullets tagged [eronred] are a third-party playbook whose benchmarks and percentages are its author's claims, and where the two differ both are given. Bullets tagged [ApparenceKit] come from apparencekit.dev, a Flutter starter-kit author's posts about his own apps; its numbers are his claims. Bullets tagged [coreyhaines31/marketingskills, <skill>] come from Corey Haines' MIT-licensed marketing skills, written for web SaaS; their benchmarks are the author's claims, and the web versions of these topics live in the marketing set (linked where they apply). The paywall itself is in [PAYWALLS.md](PAYWALLS.md). Offer types and their limits per store are in [SUBSCRIPTION-OFFERS.md](SUBSCRIPTION-OFFERS.md); purchase code, entitlements, paywalls, webhooks and dunning tooling are in [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md); event names for these funnels are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#event-tracking-plan); store-side rating strategy and review replies are in [../aso/SKILL.md](../aso/SKILL.md).
 
-**Contents:** [Onboarding and activation](#onboarding-and-activation) · [Monetization model and pricing](#monetization-model-and-pricing-eronred) · [Paywalls](#paywalls) · [Trials](#trials) · [Subscription lifecycle](#subscription-lifecycle-eronred) · [Retention and engagement](#retention-and-engagement-eronred) · [Web-to-app funnels](#web-to-app-funnels-eronred) · [Rating prompts](#rating-prompts) · [Prove it](#prove-it)
+**Contents:** [Onboarding and activation](#onboarding-and-activation) · [Monetization model and pricing](#monetization-model-and-pricing) · [Paywalls](#paywalls) · [Trials](#trials) · [Subscription lifecycle](#subscription-lifecycle) · [Retention and engagement](#retention-and-engagement) · [Web-to-app funnels](#web-to-app-funnels) · [Rating prompts](#rating-prompts) · [Prove it](#prove-it)
 
 ## Onboarding and activation
 
 - **The activation event, the screen audit, permission timing, sign-up friction, onboarding flows and the onboarding paywall** are in [ONBOARDING.md](ONBOARDING.md).
 
-## Monetization model and pricing [eronred]
+## Monetization model and pricing
+
+Source: [eronred].
 
 | Model | Fits |
 |---|---|
@@ -67,7 +69,9 @@ Turning installs into active, paying, returning users: onboarding to the activat
 - **A store trial converts on its own.** Google Play requires telling users, before they enroll, "how and when a free trial will convert to a paid subscription, how much the paid subscription will cost, and how a user can cancel if they do not want to convert" (https://support.google.com/googleplay/android-developer/answer/9900533). A trial-end screen with "Continue with Pro" or "Remind me later" buttons [coreyhaines31/marketingskills, paywalls] models a web trial that lapses; in a store app it says when the charge happens and how to cancel.
 - **Run the trial [eronred]:** value reminders on days 1, 3 and 5; a trial countdown ("3 days left"); a discounted first period at trial end; easy cancellation (builds trust, reduces refund requests). Nurture schedule for a 7-day trial: day 0 welcome; day 1 core feature; day 3 progress or social proof; day 5 "2 days left"; day 6 value recap; day 7 "Your trial ends today". Show value, not just pressure. The countdown is honest because the trial really ends that day; a countdown that resets or has no real deadline is an FTC dark pattern ([../../marketing/offer-design/FTC-PRICING-CLAIMS.md](../../marketing/offer-design/FTC-PRICING-CLAIMS.md#scarcity-urgency-and-dark-patterns)). The discounted first period conflicts with "Never discount to acquire" [coreyhaines31/marketingskills, offers]: trial users are not yet customers, and that source keeps discounts for existing customers. The trial-end paywall recaps achievements and the most-used premium features, shows 3 plans and the annual saving ("Save 40%").
 
-## Subscription lifecycle [eronred]
+## Subscription lifecycle
+
+Source: [eronred].
 
 - **Stages:** install, trial start, trial, conversion, renewal, cancel, win-back. Non-converters get nurture; voluntary churners an exit survey; involuntary churners dunning; lapsed users a campaign.
 
@@ -104,7 +108,9 @@ Turning installs into active, paying, returning users: onboarding to the activat
 - **Win-back ladder** for subscribers who cancelled or expired in the last 30-90 days; start with the softest offer and escalate only if there is no response: week 1 "We miss you" plus new features; week 3 30% off the first month back; week 6 3 months at 50% off; week 12+ archive. Channels: push, email, Apple win-back offers, paid retargeting to the lapsed list. [ApparenceKit](https://apparencekit.dev/blog/flutter-good-paywall/) adds discounts and promotions "for users that use your app and not pay". The ladder's 50% conflicts with [coreyhaines31/marketingskills, churn-prevention] ("Avoid 50%+ discounts", and "Never exceed 30%" in its save ladder), and its email win-back runs day 30 "What's new since you left", day 60 "We've addressed [common reason]", day 90 an offer, "No guilt, no desperation" [coreyhaines31/marketingskills, emails].
 - **The email side** of the trial nurture is in [../../backend/email-practices/SEQUENCES.md](../../backend/email-practices/SEQUENCES.md#onboarding), failed-payment notices and win-back (both ladders side by side) in [../../backend/email-practices/LIFECYCLE-EMAILS.md](../../backend/email-practices/LIFECYCLE-EMAILS.md#win-back); web dunning copy and in-app banners are in [../../marketing/churn-prevention/DUNNING-COPY.md](../../marketing/churn-prevention/DUNNING-COPY.md).
 
-## Retention and engagement [eronred]
+## Retention and engagement
+
+Source: [eronred].
 
 | Category | D1 | D7 | D30 | Good |
 |---|---|---|---|---|
@@ -116,7 +122,7 @@ Turning installs into active, paying, returning users: onboarding to the activat
 | Finance | 20-25% | 10-12% | 5-8% | D1 over 30, D30 over 10 |
 | Education | 15-20% | 8-10% | 3-5% | D1 over 25, D30 over 8 |
 
-- **These differ from the general benchmarks** (D1 25-40%, D7 10-20%, D30 5-10%) in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#metrics-and-formulas-eronred); the playbook says benchmarks vary dramatically by category.
+- **These differ from the general benchmarks** (D1 25-40%, D7 10-20%, D30 5-10%) in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#metrics-and-formulas); the playbook says benchmarks vary dramatically by category.
 
 | Stage | Days | Tactics |
 |---|---|---|
@@ -130,7 +136,9 @@ Turning installs into active, paying, returning users: onboarding to the activat
 - **Show what's new once per version** [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/): an "update log bottom sheet" shown once to every user after an update. Building the in-app changelog in Flutter is in [../flutter-ux/APP-LIFECYCLE.md](../flutter-ux/APP-LIFECYCLE.md#changelog-after-update); the store's What's New field is a different thing ([../aso/KEYWORDS-AND-METADATA.md](../aso/KEYWORDS-AND-METADATA.md#description-promotional-text-whats-new)).
 - **In-app feature voting** [ApparenceKit](https://apparencekit.dev/blog/flutter-feedback-template-release/): "One vote per user, per feature is allowed"; requested features "won't be displayed on the vote page directly. As we don't want someone showing up crazy things on your vote page. You want to filter first." In-app beats a web form because "users don't want to open a browser" (the author claims "more than 300% increase in feature requests" in his own apps), and users "feel like they are part of the app".
 
-## Web-to-app funnels [eronred]
+## Web-to-app funnels
+
+Source: [eronred].
 
 - **Ask first:** web traffic (SEO, paid search, social ads with a web destination, podcast, newsletter); monetization model; current web property; markets (web payment rules differ in the EU and Korea); current funnel metrics.
 - **Why (as of 2025):** the stores take a 15-30% fee on subscriptions, which web-billed subscriptions save (about 15-30% of LTV; web-first CAC is typically higher, offset by the saved fee and the email asset); Apple's EU DMA compliance, Korean law, the Dutch dating-app ruling and the DOJ Epic ruling allow more web-payment flexibility; paid social CPMs are cheaper for a web destination; higher trust; email capture before install.
@@ -172,7 +180,7 @@ Turning installs into active, paying, returning users: onboarding to the activat
 - **Version resets (Apple HIG):** weigh resetting the summary rating on a new version against showing fewer ratings.
 - **Play setup:** `implementation("com.google.android.play:review:2.0.2")` and `implementation("com.google.android.play:review-ktx:2.0.2")`. `ReviewInfo` is valid only for a limited time: pre-cache it only when you are certain to launch the flow.
 - **Testing:** Apple always shows the prompt in development and never in TestFlight. Play needs the app on at least the internal test track or internal app sharing, with the tester's account in the track, the primary account selected in the Play Store, the app in their Play library and no existing review; use `FakeReviewManager(context)` in unit and integration tests. Play troubleshooting: quota reached, use the internal test track or internal app sharing; enterprise accounts, use a Gmail account; already reviewed, delete the review.
-- **Playbook timing [eronred]:** show the in-app rating prompt after a positive experience, and after shipping a crash fix ([ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#crash-analytics-eronred)). Review replies and rating recovery are in [../aso/SKILL.md](../aso/SKILL.md).
+- **Playbook timing [eronred]:** show the in-app rating prompt after a positive experience, and after shipping a crash fix ([ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#crash-analytics)). Review replies and rating recovery are in [../aso/SKILL.md](../aso/SKILL.md).
 
 ## Prove it
 

@@ -62,7 +62,7 @@ Only a read of ONE flag's value records an exposure.
 - **Evidence:** the flag history in `experiment-activity` (only this flag's changes, and only if the user can view the flag; it doesn't list other experiments or deleted flags with the same key, so ask); first-time visitors exposed, returning ones not.
 - **Fix:** web: `advanced_feature_flags_dedup_per_session: true`; a new run: a new flag key (E15); long-lived server workers: restart more often, or fire a custom exposure event (B4) and use it as the exposure criterion (cleaner when custom properties are wanted). Repeated same-variant events are harmless; two variants are `$multiple`, excluded under the default.
 
-## B4 Custom exposure without $feature/<flag-key> [HIGH]
+## B4 Custom exposure without `$feature/<flag-key>` [HIGH]
 
 - **A custom exposure event MUST include `$feature/<flag-key>` with the variant value** (e.g. `$feature/new-checkout: 'control'`), the exact variant key: not another spelling or case, not `true`, not another flag's key.
 - **Evidence:** the custom-exposure query values ([EXPERIMENT-HEALTH.md](EXPERIMENT-HEALTH.md#variant-values-custom-exposure-event)) against `feature_flag.filters.multivariate.variants[].key`. All empty: the sender doesn't set it. Different values: the sender sets another one.
@@ -141,7 +141,7 @@ Causes:
 
 Fix in this order: (a) is PostHog initialized? (b) is the flag active and rolled out? (c) is the right variant key requested?
 
-## B11 $feature/<key> on metric events [HIGH]
+## B11 `$feature/<key>` on metric events [HIGH]
 
 - **A missing `$feature/<key>` on metric events is NOT a fault for current experiments.** Only the exposure event decides the variant; metric events need no flag property for any metric type, and adding it changes nothing.
 - **It matters for:** legacy experiments (E13: migrate); a custom exposure event (B4); and the user's own insight or SQL filtering by `$feature/<flag-key>`, which undercounts server-SDK events and overcounts (the property is on events of everyone whose SDK holds the flag value, including people never exposed), so it is not a participant filter.

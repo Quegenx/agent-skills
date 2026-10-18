@@ -2,7 +2,7 @@
 
 Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
 
-**Contents:** [Rules for every asset](#rules-for-every-asset) · [App icon](#app-icon) · [Screenshot specs](#screenshot-specs-app-store) · [Screenshot strategy](#screenshot-strategy-eronred) · [App preview specs](#app-preview-specs-app-store) · [Preview strategy](#preview-strategy-eronred) · [Product page header and search assets](#product-page-header-and-search-assets-fall-2026) · [Prove it](#prove-it)
+**Contents:** [Rules for every asset](#rules-for-every-asset) · [App icon](#app-icon) · [Screenshot specs](#screenshot-specs-app-store) · [Screenshot strategy](#screenshot-strategy) · [App preview specs](#app-preview-specs-app-store) · [Preview strategy](#preview-strategy) · [Product page header and search assets](#product-page-header-and-search-assets-fall-2026) · [Prove it](#prove-it)
 
 ## Rules for every asset
 
@@ -45,7 +45,9 @@ Visuals turn a search impression into an install. The icon is the first thing se
 - **Apple's advice:** up to 10 screenshots; the first one to three appear in search results when there's no preview; consider at least one Dark Mode screenshot; localize screenshots per market. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Apple gives you 10. Use at least 6"; avoid "Dark screenshots that look the same at thumbnail size", stock-photo backgrounds and too much text; design for small size with large text and high contrast. How many to fill is practice, not a rule (Apple requires one): [eronred] scores "all 10 slots", [ApparenceKit] says at least 6, and [coreyhaines31/marketingskills, aso] flags fewer than 5 and calls 4 to 5 optimal for utilities and 5 to 6 for complex apps, with "diminishing returns" past 6 ([BENCHMARKS.md](BENCHMARKS.md#screenshots-and-preview-video)).
 - Resizing and the automated capture pipeline are in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
 
-## Screenshot strategy [eronred]
+## Screenshot strategy
+
+Source: [eronred].
 
 - **The first three decide:** users spend 3 to 6 seconds on a product page, and the first 3 screenshots (visible without scrolling) "determine 80% of the conversion decision". [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Most users decide in under 2 seconds whether to download based on the first 2-3 screenshots", and the first 3 "are the only ones visible in search results and category listings".
 - **Slot plan:**
@@ -85,7 +87,9 @@ Visuals turn a search impression into an install. The icon is the first thing se
 - **Poster frame:** Apple's default poster frame is at 5 seconds. [eronred] says the poster frame is the first frame shown when paused and "The 0:00 frame is what 80% of users see"; make it visually striking, not text-heavy. Confirm in the current docs.
 - **Resolution conflict:** [eronred] says "native device resolution (1080×1920 portrait min)"; Apple's spec table above accepts 886 x 1920 for every modern iPhone and says to use the accepted resolution, not the device one. Follow Apple's table.
 
-## Preview strategy [eronred]
+## Preview strategy
+
+Source: [eronred].
 
 - **Goal:** up to 3 App Previews (or 1 Play promo video) "that lift product page conversion by 5 to 25%". Skip video for simple utilities and content-value apps.
 - **iOS specs** [eronred]: 15 to 30 seconds; up to 3 per locale; autoplays muted in search results and on the product page; H.264, MP4 or MOV; 30 fps; portrait or landscape matching the screenshots. In-app footage only: no marketing intros, logos or real people; audio optional, subtitles required when audio carries information.

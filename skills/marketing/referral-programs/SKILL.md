@@ -7,7 +7,7 @@ description: "Designs and runs customer referral, affiliate and review programs:
 
 Existing customers and partners can bring new customers three ways: the product spreads through normal use, a reward program pays customers or affiliates for referrals, and honest reviews persuade strangers. This skill holds Corey Haines's `referrals` skill (v2.2.1) from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) (MIT), checked against the FTC's Endorsement Guides FAQ, the FTC's Consumer Reviews and Testimonials Rule Q&A, Google Maps' content policy and Trustpilot's business guidelines. The source's benchmark ranges and outcome claims come without studies and appear only labelled as its own.
 
-The source reads its context from `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md`, defined in [anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). For a mobile app, the store rules (Apple's guidelines on referral rewards, contacts, ATT and push, and Google Play's) and deep-link mechanics are in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs-eronred).
+The source reads its context from `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md`, defined in [anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). For a mobile app, the store rules (Apple's guidelines on referral rewards, contacts, ATT and push, and Google Play's) and deep-link mechanics are in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
 
 | The job | Read |
 |---|---|

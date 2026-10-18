@@ -34,7 +34,7 @@ Trigger Moment → Share Action → Convert Referred → Reward → (Loop)
 - **Share mechanism, ranked by the source** (its own ranking, no data given): 1. in-product sharing ("highest conversion"); 2. personalized link; 3. email invitation; 4. social sharing; 5. referral code ("works offline").
 - **Reduce friction:** one-click share, pre-written messages ([VIRAL-LOOPS.md](VIRAL-LOOPS.md#referral-best-practices)).
 
-On iOS, an invite flow that touches Contacts, push reminders or a free subscription period as the reward has App Review rules of its own, collected in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs-eronred).
+On iOS, an invite flow that touches Contacts, push reminders or a free subscription period as the reward has App Review rules of its own, collected in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
 
 ## Rewards
 
@@ -75,7 +75,7 @@ Max Total Reward Cost = max(0, Target CAC - Other Acquisition Cost)
 
 Worked example: lifetime revenue $1,200 at 70% gross margin gives $840 lifetime gross profit; target total referral CAC $200; other acquisition cost $40 per customer; so the maximum combined reward is $200 - $40 = $160 (for example $80 cash to each side), and total referral CAC is $200. "The old $640 reward would produce $680 CAC with these other costs, exceeding the $200 target." "Lifetime gross profit helps assess whether the chosen acquisition budget is viable; it is not the reward budget minus target CAC." "If other costs already meet or exceed target CAC, pause or redesign the program; a zero remaining reward budget does not make an already over-budget acquisition acceptable." Check retention, refunds and cash payback before committing. The source points to [Stripe's CAC guide](https://stripe.com/resources/more/cac-in-saas) for the cost definition.
 
-**app-growth's formula** [eronred]: `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`, with "Never make rewards larger than CAC" ([LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs-eronred)).
+**app-growth's formula** [eronred]: `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`, with "Never make rewards larger than CAC" ([LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs)).
 
 The differences: this source caps the combined reward of both sides against a target CAC; app-growth caps each side against LTV times margin. Run both and state which one the plan uses.
 
@@ -100,7 +100,7 @@ Applying this to a referral link posted publicly for a reward is interpretation,
 - **Policy:** clear terms; a maximum number of referrals per period; reward clawback for refunds and chargebacks; manual review of suspicious patterns.
 - **Structural:** the referred user must take a meaningful action; cap lifetime rewards; pay in product credit ("less attractive to fraudsters").
 
-"Shared IPs or devices can be a signal for review, not proof of abuse. Apply rules consistently and retain the evidence for decisions." Legitimate coupon partners "are not automatically fraud" [coreyhaines31/marketingskills, referrals, references/affiliate-operations.md]. On iOS, Apple's privacy rules conflict with device fingerprinting; the conflict and app-growth's fraud table are in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs-eronred). Store and process reward events idempotently so a replayed webhook never pays twice ([background-jobs](../../backend/background-jobs/SKILL.md)).
+"Shared IPs or devices can be a signal for review, not proof of abuse. Apply rules consistently and retain the evidence for decisions." Legitimate coupon partners "are not automatically fraud" [coreyhaines31/marketingskills, referrals, references/affiliate-operations.md]. On iOS, Apple's privacy rules conflict with device fingerprinting; the conflict and app-growth's fraud table are in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs). Store and process reward events idempotently so a replayed webhook never pays twice ([background-jobs](../../backend/background-jobs/SKILL.md)).
 
 ## Launch
 

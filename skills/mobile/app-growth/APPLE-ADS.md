@@ -49,7 +49,9 @@ Apple Ads (formerly Apple Search Ads) places your app in the App Store: the Toda
 - **Countries:** use a single-country campaign for larger markets that need their own budget or objective, or to learn the value of one country. Use multi-country for ease of management, optimizing by customer value, language, region or sales center, the same customer value across countries, regional sales teams or credit lines, or the first paid campaigns in those markets.
 - **Duplication** copies campaigns, ad groups, search results keywords and settings, only into the same placement type.
 
-### Third-party structure [eronred, appeeky]
+### Third-party structure
+
+Source: [eronred, appeeky].
 
 - **Account > App > Campaigns:** Brand, Competitor, Category, Discovery (Search Match, no keywords), and an optional Search Tab campaign (no keywords). Separate campaigns give separate budgets (protect brand spend), separate bid strategies, clean data and easy pause and scale. [eronred]
 - **Category match type differs:** [eronred]'s ua-campaign says Category uses "broad + exact"; Apple says exact, with broad only in Discovery.
@@ -88,7 +90,9 @@ GET /v1/keywords/suggestions?term=meditation&country=us
 - **[appeeky] describes BROAD as blocking "query + close variants"**; Apple's rule is all words present, in any order. Apple's docs are the authority; confirm in the current help page.
 - **Levels:** campaign level (most common, for Discovery waste) or ad group level (for example a competitor ad group blocking specific rivals). Don't use ad group level when campaign level fits. [appeeky]
 
-### Finding them [appeeky, eronred]
+### Finding them
+
+Source: [appeeky, eronred].
 
 - **"Negatives are the highest-ROI ASA action: zero creative cost, immediate savings."** Without them "10 to 30% of ASA spend goes to irrelevant searches", competitor brand terms trigger the ad, and "free" or "hack" searchers never convert. [appeeky]
 - **Pull search terms from all campaigns,** brand included: lookback 14 days, minimum $5 spend per term. Category broad match leaks too, not only Discovery. [appeeky]

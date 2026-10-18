@@ -37,14 +37,14 @@ Third-party conversion, rating, screenshot, video, custom page and event figures
 | 3-star vs 5-star app | 50% fewer conversions for 3-star |
 
 - "4.5+ stars = optimal zone. Sweet spot: 4.1-4.9"; "5.0 stars can look suspicious to users"; "79% of users check ratings before downloading"; "50% reject apps below 3 stars".
-- **Not official:** the same file's "4.0 stars = minimum for Apple featuring" and "Below 3.5 = sharp visibility drop on both stores" are stated without an Apple or Google source, and no store page read for this skill says either. [eronred]'s "rating below 4.0" as a bad time to pitch editors is in [PRODUCT-PAGES.md](PRODUCT-PAGES.md#getting-featured-eronred).
+- **Not official:** the same file's "4.0 stars = minimum for Apple featuring" and "Below 3.5 = sharp visibility drop on both stores" are stated without an Apple or Google source, and no store page read for this skill says either. [eronred]'s "rating below 4.0" as a bad time to pitch editors is in [PRODUCT-PAGES.md](PRODUCT-PAGES.md#getting-featured).
 
 ## Screenshots and preview video
 
 [coreyhaines31/marketingskills, aso] reports, citing AppTweak, ASOMobile and Sensor Tower for screenshots and StoreMaven, SplitMetrics and Leanplum for video:
 
 - **Screenshots:** "90% of users do not scroll past the 3rd screenshot"; "Average scroll rate: only 17%"; users scan 6 to 10 seconds before deciding; well-designed screenshots lift conversion 20 to 35%; A/B test winners see 10 to 25%; optimal count "4-5 for utility apps, 5-6 for complex apps", and "More than 6: diminishing returns, can cause decision paralysis"; top 200 apps update screenshots 2 to 4 times a year, top Play games up to 8 times; "57% of top games A/B tested screenshots at least 2x in 2024".
-- **The count conflicts:** [eronred] scores "all 10 slots" ([AUDIT.md](AUDIT.md#the-weighted-score-eronred)) and [ApparenceKit] says "Use at least 6" ([VISUALS.md](VISUALS.md)). All three are practice; Apple requires one screenshot.
+- **The count conflicts:** [eronred] scores "all 10 slots" ([AUDIT.md](AUDIT.md#the-weighted-score)) and [ApparenceKit] says "Use at least 6" ([VISUALS.md](VISUALS.md)). All three are practice; Apple requires one screenshot.
 - **Video:** iOS +20 to 40% conversion lift; "Autoplay introduced in iOS 11 caused +47% conversion jump"; viewers are "2x more likely to install"; average watch time "4-6.5 seconds (first 5 seconds are critical)"; "50%+ of viewers watch to the end". The source's own takeaway: "Treat reported video benchmarks as context, not a guaranteed lift." Its Play note: "A tap-to-play rate does not measure all video exposure or establish conversion lift", citing [Google's preview asset guidelines](https://support.google.com/googleplay/android-developer/answer/9866151) for playback (autoplay muted up to 30 seconds).
 
 ## Custom product pages and custom store listings

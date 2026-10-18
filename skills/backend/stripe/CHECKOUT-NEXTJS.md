@@ -73,9 +73,9 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 - **After the redirect to Checkout the order is final;** the customer can't change it without a new Checkout Session.
 
-### Subscription sessions: what the third-party skill adds [appeeky]
+### Subscription sessions: what the third-party skill adds
 
-These come from the appeeky checkout skill, not from Stripe:
+[appeeky] These come from the appeeky checkout skill, not from Stripe:
 
 - **Essentials:** `mode: subscription`; `line_items` with price and quantity; `customer` or `customer_email`; `success_url` and `cancel_url`; `allow_promotion_codes: true`; `subscription_data` metadata `user_id` (so the webhook can provision the right user); `automatic_tax` enabled if you use Stripe Tax.
 - **Reuse the customer:** look up an existing `stripe_customer_id` before creating a session, to avoid duplicate customers.

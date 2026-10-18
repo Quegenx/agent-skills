@@ -2,7 +2,7 @@
 
 Metadata is the text a store indexes and shows: on the App Store, search reads the name, subtitle, keyword field and primary category; on Google Play, the name and the descriptions. Apple ranks on "text relevance (matches for your app's title, subtitle, keywords, and primary category), as well as user behavior (downloads, ratings and reviews, and more)", so most outcomes come down to putting distinct, researched words in the few indexed fields, never wasting characters on repeats, and keeping everything accurate enough to pass review. Limits and rules below come from Apple's and Google's docs unless tagged [eronred] or [rorkai] (third-party ASO skills) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Uploading metadata is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
 
-**Contents:** [Field limits](#field-limits) · [What is indexed](#what-is-indexed) · [Keyword research](#keyword-research-eronred) · [App Store name and subtitle](#app-store-name-and-subtitle) · [App Store keyword field](#app-store-keyword-field) · [Description, promotional text, What's New](#description-promotional-text-whats-new) · [Rules that get metadata rejected](#rules-that-get-metadata-rejected) · [Localization](#localization) · [Category](#category) · [Prove it](#prove-it)
+**Contents:** [Field limits](#field-limits) · [What is indexed](#what-is-indexed) · [Keyword research](#keyword-research) · [App Store name and subtitle](#app-store-name-and-subtitle) · [App Store keyword field](#app-store-keyword-field) · [Description, promotional text, What's New](#description-promotional-text-whats-new) · [Rules that get metadata rejected](#rules-that-get-metadata-rejected) · [Localization](#localization) · [Category](#category) · [Prove it](#prove-it)
 
 ## Field limits
 
@@ -45,9 +45,9 @@ Metadata is the text a store indexes and shows: on the App Store, search reads t
 - **In-App Events:** event names and short descriptions are indexed by App Store search [eronred]; see [PRODUCT-PAGES.md](PRODUCT-PAGES.md).
 - **Google Play:** title, short description and full description are indexed, and reviews and replies too (iOS reviews are not) [eronred]. Google penalizes stuffing: repetitive or irrelevant keywords in the app name or descriptions can get the app suspended.
 
-## Keyword research [eronred]
+## Keyword research
 
-Inputs: App ID, country (default US), 3 to 5 seed keywords, the goal (downloads, revenue or brand).
+[eronred] Inputs: App ID, country (default US), 3 to 5 seed keywords, the goal (downloads, revenue or brand).
 
 1. **Expand the seeds:** Apple Search Suggestions autocomplete (variations "[keyword] app", "[keyword] for [audience]", "best [keyword]"; long-tail is often lower competition; [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Target long-tail keywords first ... Rank for 20 long-tail keywords before trying to compete on the big ones", e.g. "habit tracker for students", "morning routine app"); the keywords of the top 3 to 5 competitors; the category; synonyms, how users describe the problem, misspellings, abbreviations. Apple's own trade-off ([Search](https://developer.apple.com/app-store/search/)): "Popular, functional terms, such as 'jobs' or 'social' and trending or seasonal terms ... are highly competitive - especially if you are a newer or smaller app. Less common terms drive lower traffic, but are less competitive."
 2. **Collect signals per keyword:** Search Volume (1 to 100), Difficulty (1 to 100), Relevance (manual, 1 to 100), Intent ("how to edit photos" vs "photo editor app"), current rank. Volume and difficulty come from a data provider (Appeeky or Astro, both third-party); never guess popularity [rorkai]. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/) also names AppTweak, Sensor Tower ("comprehensive but expensive") and "Apple Search Ads: free keyword suggestions with relative popularity scores".

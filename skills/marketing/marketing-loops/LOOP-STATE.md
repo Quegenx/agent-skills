@@ -64,8 +64,7 @@ Log at minimum: timestamp, how many items checked, how many acted on, and a shor
 
 ## Resetting and backfilling safely
 
-- To **reset** a loop, clear its `cursor`/`handled` - but keep `cooldowns` so a reset doesn't spam people who were recently contacted.
-- On **first run** (no state yet), set the watermark to "now" rather than processing all history, or you'll blast every historical item. If you genuinely want a backfill, do a dry run first (log what it *would* do, act on nothing) and respect cooldowns.
+- **First run, backfill and reset:** start from now, dry-run any backfill, and keep the cooldowns on a reset, as in [agent-harness SCHEDULED-AGENTS.md](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md); here a reset clears `cursor` and `handled` and keeps `cooldowns`.
 - Never log raw PII in state or run logs - use IDs or hashes (see [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md#pii-handling)).
 
 ## Session end: decisions and learnings

@@ -8,7 +8,7 @@ What to track, the formulas, and how to report a return without claiming more th
 - **Business impact:** % of new customers from referrals; CAC via referral against other channels; LTV of referred customers; program ROI.
 - **Separately:** cost per referred customer; LTV of referred customers; payback period for rewards.
 
-Event names for an app (`invite_sent` through `reward_issued`) are in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs-eronred); funnels and cohorts are built in [posthog](../../monitoring/posthog/SKILL.md); attribution models are in [marketing-attribution](../marketing-attribution/SKILL.md).
+Event names for an app (`invite_sent` through `reward_issued`) are in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs); funnels and cohorts are built in [posthog](../../monitoring/posthog/SKILL.md); attribution models are in [marketing-attribution](../marketing-attribution/SKILL.md).
 
 ## K-factor
 

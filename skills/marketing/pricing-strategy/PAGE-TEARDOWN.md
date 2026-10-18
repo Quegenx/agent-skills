@@ -12,7 +12,7 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 
 - **Above the fold:** a clear tier comparison, the recommended tier highlighted, a monthly/annual toggle, a primary CTA per tier.
 - **Common elements:** a feature comparison table, who each tier is for, an FAQ, an annual discount callout, a money-back guarantee, customer logos and trust signals.
-- **The annual discount differs by market.** The source gives "Annual discount callout (17-20%)" for SaaS; [eronred] gives "Annual at a 40-60% discount vs monthly" for consumer apps ([../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#monetization-model-and-pricing-eronred)). Both stand, each for its market.
+- **The annual discount differs by market.** The source gives "Annual discount callout (17-20%)" for SaaS; [eronred] gives "Annual at a 40-60% discount vs monthly" for consumer apps ([../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#monetization-model-and-pricing)). Both stand, each for its market.
 - **A guarantee or strikethrough price on the page** must meet [../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md): full refund for "money back", conditions beside it, a real former price.
 
 ## Pricing psychology

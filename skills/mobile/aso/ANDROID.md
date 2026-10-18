@@ -2,7 +2,7 @@
 
 Google Play has no hidden keyword field: per [eronred] it indexes the app name, both descriptions, the developer name, and reviews and replies; Google enforces a strict metadata policy, so Play ASO is natural keyword placement in visible copy that never claims rank, price or promotion. Store listing limits, asset specs and policy come from Google's docs; [eronred] tags third-party practice, and where it differs from Google both are given. Uploading the listing is [../google-play/SKILL.md](../google-play/SKILL.md).
 
-**Contents:** [How Play differs from the App Store](#how-play-differs-from-the-app-store) · [Listing fields](#listing-fields) · [Writing the copy](#writing-the-copy) · [Graphic assets](#graphic-assets) · [Preview video](#preview-video) · [Metadata policy](#metadata-policy) · [Category and tags](#category-and-tags-eronred) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Promotional content](#promotional-content) · [Prove it](#prove-it)
+**Contents:** [How Play differs from the App Store](#how-play-differs-from-the-app-store) · [Listing fields](#listing-fields) · [Writing the copy](#writing-the-copy) · [Graphic assets](#graphic-assets) · [Preview video](#preview-video) · [Metadata policy](#metadata-policy) · [Category and tags](#category-and-tags) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Promotional content](#promotional-content) · [Prove it](#prove-it)
 
 ## How Play differs from the App Store
 
@@ -70,7 +70,9 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 - **No performance or promotion claims:** no text or images indicating store performance, ranking, price, promotion, or relation to Google Play programs. Violations include "App of the year", "#1", "Best of Play 20XX", "Popular", "10% off", "$50 cash back", "free for limited time only", "Editor's choice", "New".
 - **No misleading icon symbols** (e.g. a new-message dot when there are none) and **no unattributed or anonymous user testimonials** in the description.
 
-## Category and tags [eronred]
+## Category and tags
+
+Source: [eronred].
 
 - **One category** (it drives top charts) and up to 5 tags ("can't change often"); the content rating is required and separate; game subcategories mirror iOS.
 - **Changing category:** Play Console > Store presence > Main store listing > Category; takes effect within 24 hours, resets chart position, settles in days. Category choice in general is in [KEYWORDS-AND-METADATA.md](KEYWORDS-AND-METADATA.md).

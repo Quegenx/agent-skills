@@ -96,7 +96,7 @@ Whatever you choose: a clear single next action, no dead ends, progress indicati
 
 - **Trigger-based emails:** welcome (immediate); incomplete onboarding (24h, 72h); activation achieved (celebration + next step); feature discovery (days 3, 7, 14).
 - **Email "should reinforce in-app actions, not duplicate them"**, drive back to the product with a specific CTA, and be personalized by actions taken.
-- **Sending and compliance** are in [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md); app push schedules in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#retention-and-engagement-eronred).
+- **Sending and compliance** are in [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md); app push schedules in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#retention-and-engagement).
 
 ## Stalled users
 

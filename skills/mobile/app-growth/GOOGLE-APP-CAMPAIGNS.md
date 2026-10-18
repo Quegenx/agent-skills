@@ -2,7 +2,7 @@
 
 Google Ads App campaigns (often called UAC) promote an app across Google Search and search partners, Google Play (search results, related apps, homepage), YouTube, the Display Network (Gmail, other apps, mobile websites) and Discover from a few lines of text, a bid, a budget, assets, languages and locations. The system tests the combinations itself, so two things decide most outcomes: the conversion event the campaign optimizes toward (an in-app action that predicts value, not the install) and the volume and quality of assets it has to mix. Google's help pages are the authority here; [appeeky] and [eronred] (third-party UA and ASO skills) add practice, and where their numbers differ from Google's, both are given. The tracking it depends on is [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md); how much budget it gets is [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md).
 
-**Contents:** [Subtypes and requirements](#subtypes-and-requirements) · [When it fits](#when-it-fits-appeeky) · [Tracking setup](#tracking-setup) · [Campaign setup](#campaign-setup) · [Bidding](#bidding) · [Budget and learning](#budget-and-learning) · [Assets](#assets) · [iOS App campaigns](#ios-app-campaigns) · [Measuring and maintaining](#measuring-and-maintaining) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
+**Contents:** [Subtypes and requirements](#subtypes-and-requirements) · [When it fits](#when-it-fits) · [Tracking setup](#tracking-setup) · [Campaign setup](#campaign-setup) · [Bidding](#bidding) · [Budget and learning](#budget-and-learning) · [Assets](#assets) · [iOS App campaigns](#ios-app-campaigns) · [Measuring and maintaining](#measuring-and-maintaining) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Subtypes and requirements
 
@@ -15,7 +15,9 @@ Google Ads App campaigns (often called UAC) promote an app across Google Search 
 - **Any App campaign needs** the app published on Google Play or the Apple App Store, a payment method, the app name, category and target audience.
 - **Review:** most ads are reviewed within 24 to 48 hours, and editing during review restarts it.
 
-## When it fits [appeeky]
+## When it fits
+
+Source: [appeeky].
 
 | App | Fit |
 |---|---|
@@ -69,7 +71,9 @@ Google Ads App campaigns (often called UAC) promote an app across Google Search 
 - **Android vitals issues** (high crash rates, ANRs) may disqualify the app from premium Play Store inventory.
 - **App Uplift experiments:** budget and bid for at least 100 (ideally 150+) conversions per day; if budget-constrained, actual CPI or CPE should not be more than 2 times lower than target.
 
-### Third-party numbers [appeeky]
+### Third-party numbers
+
+Source: [appeeky].
 
 | Monthly budget | Daily | Learning |
 |---|---|---|

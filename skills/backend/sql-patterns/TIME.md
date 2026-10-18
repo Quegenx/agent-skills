@@ -1,5 +1,7 @@
 # Sequences, time and ranges
 
+**Contents:** [The previous and next row](#the-previous-and-next-row) · [Running totals that don't jump](#running-totals-that-dont-jump) · [Streaks (gaps and islands)](#streaks-gaps-and-islands) · [Sessions from a clickstream](#sessions-from-a-clickstream) · [Funnels and attribution](#funnels-and-attribution) · [Cohort retention](#cohort-retention) · [Local time over a UTC column](#local-time-over-a-utc-column) · [Months](#months) · [Buckets](#buckets) · [Business hours](#business-hours) · [Averages over time](#averages-over-time) · [Ranges, availability and overlap](#ranges-availability-and-overlap) · [The busiest instant](#the-busiest-instant) · [What we knew, when (bitemporal)](#what-we-knew-when-bitemporal)
+
 ## The previous and next row
 
 ```sql

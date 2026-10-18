@@ -2,6 +2,8 @@
 
 The prompt structures behind the films people copied. Each is a skeleton: fill the brackets from `brief.md`, keep the sections. All of them share one shape, and it is the useful part:
 
+**Contents:** [1. One shape, never cut (UI morph loop)](#1-one-shape-never-cut-ui-morph-loop) · [2. Product launch film](#2-product-launch-film) · [3. Motion brief with numbers (UI and web motion)](#3-motion-brief-with-numbers-ui-and-web-motion) · [4. Director's brief for a long autonomous run](#4-directors-brief-for-a-long-autonomous-run) · [5. The showreel one-liner](#5-the-showreel-one-liner) · [6. Voiceover-led launch film](#6-voiceover-led-launch-film) · [7. Promo built only from a real site](#7-promo-built-only-from-a-real-site) · [8. Frame-exact sting](#8-frame-exact-sting) · [9. Product film from the product's own repo](#9-product-film-from-the-products-own-repo) · [10. Speech typography](#10-speech-typography) · [11. One carrier dot](#11-one-carrier-dot) · [12. Real footage](#12-real-footage) · [13. Narrated explainer (education, a paper, a concept)](#13-narrated-explainer-education-a-paper-a-concept) · [14. Illustrated short from generated stills](#14-illustrated-short-from-generated-stills) · [15. Model showdown (one brief, several AI models)](#15-model-showdown-one-brief-several-ai-models) · [One-line starters by kind of film](#one-line-starters-by-kind-of-film)
+
 ```
 <inputs>     what to ask the user for, with defaults if they skip
 <direction>  the look in concrete terms, plus a Banned line

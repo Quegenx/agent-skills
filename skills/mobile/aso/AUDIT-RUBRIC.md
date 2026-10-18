@@ -50,7 +50,7 @@ Example: Title 7, Description 6, Visuals 8, Ratings 9, Metadata 5, Conversion 7 
 | 0-29 | F | Listing needs a complete overhaul |
 
 - **Per dimension:** 9-10 = A, 7-8 = B, 5-6 = C, 3-4 = D, 1-2 = F; 0 means "Cannot assess (data unavailable)".
-- **Against [eronred]'s weights** ([AUDIT.md](AUDIT.md#the-weighted-score-eronred)): both give visuals 25% in total (eronred: screenshots 15 + preview 5 + icon 5); they differ on ratings (20% here, 15% there) and the description (15% flat here, 5% iOS and 15% Android there).
+- **Against [eronred]'s weights** ([AUDIT.md](AUDIT.md#the-weighted-score)): both give visuals 25% in total (eronred: screenshots 15 + preview 5 + icon 5); they differ on ratings (20% here, 15% there) and the description (15% flat here, 5% iOS and 15% Android there).
 
 ## Dimension rubrics
 

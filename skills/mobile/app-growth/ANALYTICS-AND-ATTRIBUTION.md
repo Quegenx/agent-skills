@@ -2,9 +2,11 @@
 
 Knowing what users do in the app, which crashes hurt them, and which ad or channel brought each install. On iOS the mechanism that decides attribution quality is privacy: without App Tracking Transparency (ATT) permission the advertising identifier is all zeros, so most ad measurement runs through Apple's aggregated frameworks (AdAttributionKit and SKAdNetwork postbacks carrying a conversion value you design) plus AdServices for Apple Ads. On Android the Google Play Install Referrer is the deterministic source. Apple's and Google's docs are the authority for every API, window, limit and rule here; bullets tagged [eronred] are a third-party playbook whose benchmarks are its author's claims, and where the two differ both are given. Ad-network setup and their SKAN schema rules are in [APPLE-ADS.md](APPLE-ADS.md), [GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md), [META-ADS.md](META-ADS.md) and [TIKTOK-ADS.md](TIKTOK-ADS.md); ROAS math is [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md); subscription analytics are [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md).
 
-**Contents:** [The analytics stack](#the-analytics-stack-eronred) · [Metrics and formulas](#metrics-and-formulas-eronred) · [Event tracking plan](#event-tracking-plan-eronred) · [Dashboards](#dashboards-eronred) · [Crash analytics](#crash-analytics-eronred) · [App Tracking Transparency (ATT)](#app-tracking-transparency-att) · [The iOS attribution stack](#the-ios-attribution-stack) · [AdAttributionKit and SKAdNetwork](#adattributionkit-and-skadnetwork) · [Designing the conversion value schema](#designing-the-conversion-value-schema-eronred) · [AdServices (Apple Ads attribution)](#adservices-apple-ads-attribution) · [MMP setup checklists](#mmp-setup-checklists-eronred) · [Android attribution](#android-attribution-eronred) · [Deep links](#deep-links-eronred) · [Debugging attribution](#debugging-attribution-eronred) · [Prove it](#prove-it)
+**Contents:** [The analytics stack](#the-analytics-stack) · [Metrics and formulas](#metrics-and-formulas) · [Event tracking plan](#event-tracking-plan) · [Dashboards](#dashboards) · [Crash analytics](#crash-analytics) · [App Tracking Transparency (ATT)](#app-tracking-transparency-att) · [The iOS attribution stack](#the-ios-attribution-stack) · [AdAttributionKit and SKAdNetwork](#adattributionkit-and-skadnetwork) · [Designing the conversion value schema](#designing-the-conversion-value-schema) · [AdServices (Apple Ads attribution)](#adservices-apple-ads-attribution) · [MMP setup checklists](#mmp-setup-checklists) · [Android attribution](#android-attribution) · [Deep links](#deep-links) · [Debugging attribution](#debugging-attribution) · [Prove it](#prove-it)
 
-## The analytics stack [eronred]
+## The analytics stack
+
+Source: [eronred].
 
 - **Ask first:** which tools are in use; the top 3 questions about performance; which decisions the data must inform; whether paid acquisition runs (then attribution matters).
 
@@ -19,7 +21,9 @@ Knowing what users do in the app, which crashes hurt them, and which ad or chann
 
 - **App Store Connect's free metrics:** Impressions, Product Page Views, App Units (first-time downloads), Conversion Rate (Product Page Views to Downloads), Proceeds (revenue after Apple's cut), Sessions, Active Devices, Retention (Day 1, Day 7, Day 28), Crash Rate (crashes per session). Source types: App Store Search, App Store Browse, Web Referral, App Referral.
 
-## Metrics and formulas [eronred]
+## Metrics and formulas
+
+Source: [eronred].
 
 | Group | Metric | Formula or benchmark |
 |---|---|---|
@@ -38,10 +42,12 @@ Knowing what users do in the app, which crashes hurt them, and which ad or chann
 | | Trial-to-Paid | Conversions / Trial Starts |
 | | MRR, Churn Revenue | Churn Revenue = Lost MRR / Start MRR |
 
-- **The playbooks disagree with themselves:** LTV is ARPU x Avg Lifetime here and in the monetization playbook, but ARPU / Monthly churn rate in the subscription lifecycle playbook; the per-category retention benchmarks in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#retention-and-engagement-eronred) differ from the general numbers above.
+- **The playbooks disagree with themselves:** LTV is ARPU x Avg Lifetime here and in the monetization playbook, but ARPU / Monthly churn rate in the subscription lifecycle playbook; the per-category retention benchmarks in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#retention-and-engagement) differ from the general numbers above.
 - **Five stages, not four** [coreyhaines31/marketingskills, marketing-plan]: its AARRR table adds Activation (signup completion, time-to-value, % first key action, trial to paid) and Referral (viral coefficient, NPS, ambassador attribution) between the groups above; landing on the signup page is Acquisition, completing signup and everything after is Activation.
 
-## Event tracking plan [eronred]
+## Event tracking plan
+
+Source: [eronred].
 
 ```
 # Onboarding
@@ -77,11 +83,13 @@ notification_permission (granted: boolean)
 ```
 
 - **Name events `snake_case` as `[object]_[action]`** (`photo_saved`, `workout_completed`). Specific but not too granular; relevant properties but no PII; the same names on every platform.
-- **Referral events** (`invite_sent` and the rest) are in [LAUNCH-AND-MARKETING.md](LAUNCH-AND-MARKETING.md#referral-programs-eronred).
+- **Referral events** (`invite_sent` and the rest) are in [LAUNCH-AND-MARKETING.md](LAUNCH-AND-MARKETING.md#referral-programs).
 - **Write the plan as a table:** event name, when it fires, its properties, and which tool tracks it.
 - **When reading the user's data:** compare it with the benchmarks, say what the trends indicate, and give specific actions.
 
-## Dashboards [eronred]
+## Dashboards
+
+Source: [eronred].
 
 | Dashboard | Cadence | Contents |
 |---|---|---|
@@ -89,7 +97,9 @@ notification_permission (granted: boolean)
 | Funnel | Daily | Impressions, Page Views, Downloads, Activation, Purchase, with step % |
 | Cohort | Monthly | Retention curves by install-date cohort, acquisition source, country, subscription plan |
 
-## Crash analytics [eronred]
+## Crash analytics
+
+Source: [eronred].
 
 - **Why it matters:** Apple's ranking penalizes high crash rates and a high crash rate disqualifies editorial featuring (the playbook names over 2%); crashes are the #1 cause of 1-star reviews; a first-session crash destroys D1 retention.
 - **Targets:** crash-free sessions over 99.5%, crash-free users over 99%.
@@ -248,7 +258,9 @@ private func attributeCustomerAccountCreated() async {
 
 - **iOS 18+:** enable Developer Mode, then Settings > Developer > Ad Attribution Testing > AdAttributionKit Developer Mode. It turns off after two weeks and needs a production Apple ID (no sandbox). Development impressions use AdAttributionKit publisher item identifier `0` (SKAdNetwork: source App Store ID `0`); development postbacks are signed with `kid` `apple-development-identifier/0`, skip reengagement rate limits and get the highest tier. Developer Mode windows are 0-3, 3-6 and 6-9 minutes with a 5-10 minute delay. Production impressions take priority over development ones. Inspect postbacks through a Wi-Fi HTTP proxy. Before iOS 18, use the testing profile.
 
-## Designing the conversion value schema [eronred]
+## Designing the conversion value schema
+
+Source: [eronred].
 
 - **The schema is the single highest-leverage attribution decision.** Align it to the LTV signal (not vanity events), front-load it (most signal in window 1, days 0-2), and keep it monotonic when possible.
 
@@ -280,7 +292,9 @@ private func attributeCustomerAccountCreated() async {
 - **Changes by date:** September 2026, `attribution = false` for campaigns using age or gender targeting; January 2026, `supplyPlacement` added; November 2025, Apple News unsupported on iOS 26.1+; October 2025, pre-order attribution; March 27, 2025, view-through attribution with `impressionDate`; November 2024, `claimType: Click`; May 2024, the API holds connections up to 1 second before a 404 (client timeouts under 1 s may increase 404s); March 2023, a workflow update; January 2022, Creative Sets unsupported and `adId` on iOS 15.2+. Maximize Conversions campaigns bring no change to AdServices attribution.
 - **Never skip it [eronred]:** an MMP without the AdServices integration silently undercounts Apple Ads installs (the playbook claims by 30-60%). If Apple Ads attribution shows more installs than the MMP, the playbook's diagnosis is that the MMP is missing the `iAd Framework` integration: switch to the AdServices framework (iOS 14.3+). Campaign setup is in [APPLE-ADS.md](APPLE-ADS.md).
 
-## MMP setup checklists [eronred]
+## MMP setup checklists
+
+Source: [eronred].
 
 - **Ask first:** iOS, Android or both; current MMP (AppsFlyer, Adjust, Singular, Branch, Kochava); paid channels (Apple Ads, Meta, TikTok, Google App campaigns); the goal (new setup, a discrepancy, a value schema, migrating to AdAttributionKit).
 - **AppsFlyer:** SDK started with `AppsFlyerLib.shared().start()` in `applicationDidFinishLaunching`; App ID and dev key in the dashboard; SKAN mode (Conversion Studio recommended); AdAttributionKit toggle ON for iOS 17.4+; OneLink for deep linking; in-app events via `logEvent` for purchase, subscription and trial start; the ATT prompt fires before any IDFA-dependent SDK call; network integrations enabled.
@@ -289,12 +303,16 @@ private func attributeCustomerAccountCreated() async {
 - **Cost and need** [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/): Adjust, AppsFlyer and Branch run "$500 to $2,000+ per month after 10k monthly active users"; "if Meta is your primary ad channel, you don't need one", using the Facebook SDK plus the Conversions API instead ([META-ADS.md](META-ADS.md#prerequisites)).
 - **Branch (mainly deep linking):** Universal Links and App Links domains verified; deferred deep link tested (install, then first open routes correctly); Branch Discounts / People-Based Attribution if used as the MMP.
 
-## Android attribution [eronred]
+## Android attribution
+
+Source: [eronred].
 
 - **Always integrate the Google Play Install Referrer API**, even with an MMP: it is the deterministic install source and the source of truth. Call it within 60s of first launch or it comes back empty.
 - **Google Ads attribution** is built in for App campaigns ([GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md)); use an MMP SDK for Meta and TikTok.
 
-## Deep links [eronred]
+## Deep links
+
+Source: [eronred].
 
 | Type | When to use |
 |---|---|
@@ -306,7 +324,9 @@ private func attributeCustomerAccountCreated() async {
 - **Common failure:** the deferred deep link works on Android but iOS falls back to the App Store homepage because the Universal Links domain isn't verified.
 - **ATT applies:** Apple counts third-party deferred deep-linking tools that pass unique identifiers or create a shared identity as tracking (see ATT above).
 
-## Debugging attribution [eronred]
+## Debugging attribution
+
+Source: [eronred].
 
 | Symptom | Likely cause |
 |---|---|

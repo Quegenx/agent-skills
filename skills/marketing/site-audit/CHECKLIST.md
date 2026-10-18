@@ -77,7 +77,7 @@ The header checklist itself, sourced from MDN, is [../../backend/secure-coding/H
 
 Audit Kit runs one headless Lighthouse lab run and saves the raw JSON, with no field data and no repeated runs [audit-kit]. Lab numbers let an agent iterate; field data confirms the win ([../../backend/performance-and-caching/MEASURE.md](../../backend/performance-and-caching/MEASURE.md#lab-to-field-one-slow-spot-at-a-time)). Two corrections to its labels:
 
-- The Core Web Vitals are LCP, INP and CLS, and "Total Blocking Time (TBT) metric is lab-measurable and is a proxy for INP" ([web.dev vitals](https://web.dev/articles/vitals)). Audit Kit lists TBT as a Core Web Vital and always applies the mobile TBT bands (200 and 600 ms); desktop is "0 to 150 / 150 to 350 / over 350" ([Chrome TBT](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time)).
+- Audit Kit lists TBT as a Core Web Vital and always applies the mobile TBT bands; TBT is the lab proxy for INP, with separate desktop bands ([LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#reading-a-lighthouse-result)).
 - Its score colours (85 and 65) are not Lighthouse's ([SCORING.md](SCORING.md#lighthouse-bands)), and 8 of the 14 audit ids it reads no longer exist in Lighthouse 13 ([TOOLS.md](TOOLS.md#audit-kit)).
 
 How to run Lighthouse, read it and gate on it: [../../backend/performance-and-caching/LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md).

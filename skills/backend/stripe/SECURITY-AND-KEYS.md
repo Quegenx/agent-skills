@@ -100,9 +100,9 @@ The docs and Stripe's skill give the same path in slightly different words:
 
 - **Update your privacy policy** to say Stripe collects device information, linking `https://stripe.com/privacy`.
 
-### Rules [appeeky]
+### Rules
 
-These come from the appeeky Radar and card-funding skills, not from Stripe. Check attribute names with the MCP `search_stripe_documentation` tool before writing rules.
+[appeeky] These come from the appeeky Radar and card-funding skills, not from Stripe. Check attribute names with the MCP `search_stripe_documentation` tool before writing rules.
 
 - **Custom rules need a paid Radar tier.** appeeky calls it "Radar for Fraud Teams"; Stripe's docs refer to Radar Plus for custom 3DS rules and metadata in rules. Confirm the current name in the docs.
 - **Default rules often include** blocking `risk_level = highest`, default block lists, and 3DS, CVC and postal checks (often disabled). Review them in Dashboard, Radar, Rules.

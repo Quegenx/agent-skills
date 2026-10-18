@@ -2,7 +2,7 @@
 
 Apple Ads has two programmatic surfaces: the **Apple Ads Platform API** (`https://api.ads.apple.com/v1/`, scoped by ad account) and the older **Campaign Management API v5** (`https://api.searchads.apple.com/api/v5/`, scoped by organization). "The Apple Ads Campaign Management API is deprecated and will be sunset on January 26, 2027. Use the Apple Ads Platform API instead." The sources warn most about mixing the two: an org ID where an ad account ID belongs, v5 payload shapes sent to v1, and spend-changing writes sent without `--confirm`. Apple's developer docs are the authority; the `asc ads` commands come from the third-party `asc` CLI authors [rorkai]. What to bid and when is [APPLE-ADS.md](APPLE-ADS.md) and [APPLE-ADS-OPTIMIZATION.md](APPLE-ADS-OPTIMIZATION.md); the rest of the `asc` CLI is [../app-store-connect/CLI.md](../app-store-connect/CLI.md).
 
-**Contents:** [Versions and dates](#versions-and-dates) · [OAuth](#oauth) · [Calling the Platform API](#calling-the-platform-api) · [App Store campaign flow](#app-store-campaign-flow) · [Rate limits and errors](#rate-limits-and-errors) · [The legacy v5 API](#the-legacy-v5-api) · [asc ads](#asc-ads-rorkai) · [Prove it](#prove-it)
+**Contents:** [Versions and dates](#versions-and-dates) · [OAuth](#oauth) · [Calling the Platform API](#calling-the-platform-api) · [App Store campaign flow](#app-store-campaign-flow) · [Rate limits and errors](#rate-limits-and-errors) · [The legacy v5 API](#the-legacy-v5-api) · [asc ads](#asc-ads) · [Prove it](#prove-it)
 
 ## Versions and dates
 
@@ -85,7 +85,9 @@ curl "https://api.searchads.apple.com/api/v5/campaigns" -H "Authorization: Beare
 - **Create campaign fields:** `orgId`, `adChannelType: "SEARCH"`, `supplySources: ["APPSTORE_SEARCH_RESULTS"]`, `billingEvent: "TAPS"`, `name`, `dailyBudgetAmount {amount, currency}`, `adamId`, `countriesOrRegions`. Partial updates send a `campaign` envelope on PUT; partial fetch with `?fields=id,name,countriesOrRegions`.
 - **Errors and retries:** 401 unauthorized means an invalid or expired token; 403 forbidden means insufficient privileges. Retry with exponential backoff of 2, 4, 8, 16 seconds, then cap.
 
-## asc ads [rorkai]
+## asc ads
+
+Source: [rorkai].
 
 ### Auth and context
 

@@ -2,9 +2,11 @@
 
 Getting an app in front of people outside paid ads: the shared marketing context file every growth task reads first, the launch calendar, press and PR, creator and UGC programs, referral programs, and getting back into the store after a rejection. Every playbook here is third-party [eronred]: its benchmarks, prices and percentages are the author's claims with no further citation, so treat them as starting points to measure against. What decides most outcomes is timing and sequencing: listing work and the press kit start eight weeks out, embargoes and betas are set before submission, and creator, referral and review asks come after a user has felt the app's value. Store listing work is [../aso/SKILL.md](../aso/SKILL.md); paid channels are [APPLE-ADS.md](APPLE-ADS.md), [GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md), [META-ADS.md](META-ADS.md), [TIKTOK-ADS.md](TIKTOK-ADS.md), [AD-CREATIVES.md](AD-CREATIVES.md) and [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md).
 
-**Contents:** [The marketing context file](#the-marketing-context-file-eronred) · [Launch plan](#launch-plan-eronred) · [Launch channels](#launch-channels-eronred) · [Press and PR](#press-and-pr-eronred) · [Creator and UGC marketing](#creator-and-ugc-marketing-eronred) · [Referral programs](#referral-programs-eronred) · [Rejection recovery](#rejection-recovery-eronred) · [Prove it](#prove-it)
+**Contents:** [The marketing context file](#the-marketing-context-file) · [Launch plan](#launch-plan) · [Launch channels](#launch-channels) · [Press and PR](#press-and-pr) · [Creator and UGC marketing](#creator-and-ugc-marketing) · [Referral programs](#referral-programs) · [Rejection recovery](#rejection-recovery) · [Prove it](#prove-it)
 
-## The marketing context file [eronred]
+## The marketing context file
+
+Source: [eronred].
 
 - **Read `app-marketing-context.md` before any growth task.** Look in the project root or `.claude/`. If it exists, read it and offer to update it; if not, walk the user through the sections and save it as `app-marketing-context.md` in the project root. Every other growth playbook starts by checking for it (rejection recovery starts instead by asking for the verbatim rejection message).
 - **Sections, in order:**
@@ -21,7 +23,9 @@ Getting an app in front of people outside paid ads: the shared marketing context
 
 - **Close with a summary:** key strengths, obvious gaps, and the next steps to run (for example an ASO audit and keyword research in [../aso/SKILL.md](../aso/SKILL.md)).
 
-## Launch plan [eronred]
+## Launch plan
+
+Source: [eronred].
 
 - **Ask first:** new app or major update; launch date; budget (organic only or paid); existing audience (email list, social, existing users); target countries (simultaneous or phased).
 - **Output:** a checklist dated back from the launch date, prioritized tasks per phase, a channel strategy, a budget allocation, and success metrics for week 1, month 1 and month 3.
@@ -42,7 +46,9 @@ Getting an app in front of people outside paid ads: the shared marketing context
 - **Web and SaaS launches** (the ORB channel model, the Simple, Lovable, Complete readiness gate, five release phases, update tiers) are in [../../marketing/product-launch/LAUNCH-PLAN.md](../../marketing/product-launch/LAUNCH-PLAN.md); organic launch posts for your own accounts are in [../../marketing/social-media/SKILL.md](../../marketing/social-media/SKILL.md). Reading the existing audience as a funnel ("Use borrowed and rented reach to funnel strangers into owned channels") is in [../../marketing/content-strategy/DISTRIBUTION.md](../../marketing/content-strategy/DISTRIBUTION.md#orb-as-a-funnel).
 - **Analytics, crash reporting and the rating prompt** are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md) and [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md). Featuring, screenshots and store tests are in [../aso/SKILL.md](../aso/SKILL.md).
 
-## Launch channels [eronred]
+## Launch channels
+
+Source: [eronred].
 
 | Free channel | Fit |
 |---|---|
@@ -60,9 +66,11 @@ Getting an app in front of people outside paid ads: the shared marketing context
 | Meta | Consumer apps | [META-ADS.md](META-ADS.md) |
 | TikTok | Younger demographics | [TIKTOK-ADS.md](TIKTOK-ADS.md) |
 | Google Ads App campaigns | Broad reach | [GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md) |
-| Influencers | Micro-influencers (10K-100K) often give the best ROI | [Creator and UGC marketing](#creator-and-ugc-marketing-eronred) |
+| Influencers | Micro-influencers (10K-100K) often give the best ROI | [Creator and UGC marketing](#creator-and-ugc-marketing) |
 
-## Press and PR [eronred]
+## Press and PR
+
+Source: [eronred].
 
 - **Beyond the app launch:** story angles, six pitch templates, media-list scoring, newsjacking and the press page are in [../../marketing/public-relations/SKILL.md](../../marketing/public-relations/SKILL.md). Its [PITCHING.md](../../marketing/public-relations/PITCHING.md) differs from this playbook on length (150 words vs 5 sentences), subject lines (under 50 characters vs an 8-word angle) and follow-up (day 3 and day 7, each with something new, vs one after 5 business days); both are third-party.
 - **Why it pays:** App Store Connect's Web Referral source tracks installs from press links; coverage earns backlinks and "As seen on" social proof, supports Apple editorial, and amplifies organically. Google counts "links with optimized anchor text in ... press releases distributed on other sites" as link spam (https://developers.google.com/search/docs/essentials/spam-policies); link attributes and lawful link prospecting are in [../../marketing/seo/LINKS-AND-DIRECTORIES.md](../../marketing/seo/LINKS-AND-DIRECTORIES.md#what-google-calls-link-spam).
@@ -111,7 +119,9 @@ Happy to send a promo code, press kit, or get on a quick call.
 | T-0 | Launch, Product Hunt, Tier 3 |
 | T+3 | Thank reporters, share articles |
 
-## Creator and UGC marketing [eronred]
+## Creator and UGC marketing
+
+Source: [eronred].
 
 - **Wider programs** (the creator spectrum, vetting, deal models, ambassadors, a run-of-show checklist, UGC hooks and volume programs) are in [../../marketing/creator-marketing/SKILL.md](../../marketing/creator-marketing/SKILL.md); its follower bands and prices differ from the ones below, and all of them are author claims.
 - **Ask first:** the "show, don't tell" hook; budget tier; platform (TikTok, IG Reels, YouTube Shorts); audience; goal weighting (organic reach vs a library of ad creatives).
@@ -131,7 +141,9 @@ Happy to send a promo code, press kit, or get on a quick call.
 - **Measure:** cost per post, organic views, CPI from the promo code or link, branded search lift, CPI when the content runs as paid (the real ROI for most programs), and save/share rate (the best leading indicator). Attribute with a unique promo code or link per creator, branded search spike analysis, a post-purchase survey, and MMP impression tracking for Spark Ads. Ask the survey at the moment of conversion with a pick-list of known channels plus a free-text "other", and discount its share before turning it into credit ("22% recall of YouTube is evidence of awareness, not a claim that YouTube deserves 22% of conversions"); segment branded from non-branded search ([../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md#the-blind-spots)) [coreyhaines31/marketingskills, attribution]. Tag creator links with `utm_medium=creator` (not `social` or `video`) and `utm_source` set to the platform, one link per placement ([UTM.md](../../monitoring/google-analytics/UTM.md#patterns-by-partner-type)).
 - **Anti-patterns:** over-scripting; no usage rights; mega-influencers ($50k+) before testing micro; ignoring Spark Ads; a one-time program (it needs a monthly cadence); no tracking link; skipping the brief.
 
-## Referral programs [eronred]
+## Referral programs
+
+Source: [eronred].
 
 - **Expect** a mature program to bring 5-20% of net-new installs. Ask for paid CAC (it sets the upper bound on the reward) and ARPU / LTV; if LTV is unclear, measure it first, since rewards can't be sized without knowing payback.
 - **Check fit first.** Strong: network effects, high LTV, show-off content, daily use, existing word of mouth. Weak: solo utilities, low-ARPU free apps, embarrassing apps, one-and-done use, no organic sharing; for those, put the effort into creators (above) or retention ([RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md)).
@@ -175,7 +187,9 @@ Happy to send a promo code, press kit, or get on a quick call.
 - **Tooling:** deep links through Branch, AppsFlyer OneLink, Adjust or Singular; built-in referral products Branch Referrals, Tapfiliate, Friendbuy; build your own on the MMP's deep links plus your backend once referral platform fees pass $1k/mo.
 - **Anti-patterns:** no deferred deep linking; rewards above CAC; rewarding before the invitee is proven real; a single static share message; no CTA repetition (one prompt at install gets about 2% adoption; 3+ contextual prompts get 15-25%); measuring only invites sent.
 
-## Rejection recovery [eronred]
+## Rejection recovery
+
+Source: [eronred].
 
 - **Goal:** resubmit within 24-72 hours. Ask for the full rejection message verbatim with guideline numbers, the platform, first submission or update (first submissions are scrutinized harder), App ID and category, what changed, and how time-sensitive it is. Classify before fixing.
 
@@ -201,7 +215,7 @@ Happy to send a promo code, press kit, or get on a quick call.
 
 - **2.1:** read the tested device and iOS version, reproduce on that exact configuration (or the closest available), give a demo account and a walkthrough video in Resolution Center if reproduction is environmental; for a crash, ship a fixed binary and note the exact line in the response.
 - **2.3.10:** replace screenshots that show UI the app doesn't have, remove "iPad" mentions if iPad isn't supported, remove third-party trademarks.
-- **3.1.1:** remove external payment links and "Buy on web", use StoreKit. Since 2024, US users can have the External Purchase Link Entitlement; it is opt-in and requires an entitlement request. Web-payment rules are in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#web-to-app-funnels-eronred).
+- **3.1.1:** remove external payment links and "Buy on web", use StoreKit. Since 2024, US users can have the External Purchase Link Entitlement; it is opt-in and requires an entitlement request. Web-payment rules are in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#web-to-app-funnels).
 - **4.3:** the hardest. Identify the apps you were compared with; differentiate substantially (unique features, unique branding, a distinct value prop in the metadata); if it's your own portfolio, consolidate or kill old apps. On a first submission, expect it to be permanent unless you fundamentally change the app.
 - **5.1.1:** a live, app-specific privacy policy; App Store Connect App Privacy lists every SDK's data collection; a specific ATT purpose string (not "improve the app"); `NSUsageDescription` strings that explain why.
 - **5.1.5:** "Always" location needs a demonstrable background need; most apps should use "When In Use". Update Info.plist and the prompt copy.

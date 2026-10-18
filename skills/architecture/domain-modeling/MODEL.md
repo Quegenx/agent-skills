@@ -1,5 +1,7 @@
 # The tactical model inside a context
 
+**Contents:** [Entity or value object](#entity-or-value-object) · [Typed IDs](#typed-ids) · [Always valid: invariants on the object](#always-valid-invariants-on-the-object) · [Five ways to express a business rule](#five-ways-to-express-a-business-rule) · [Encapsulated collections](#encapsulated-collections) · [Aggregates](#aggregates) · [Factories](#factories) · [Domain services and application services](#domain-services-and-application-services) · [From scripts to a model, and from anemic to rich](#from-scripts-to-a-model-and-from-anemic-to-rich) · [Prove it](#prove-it)
+
 ## Entity or value object
 
 | | Entity | Value object |

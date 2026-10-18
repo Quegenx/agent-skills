@@ -42,7 +42,7 @@ Three more models have their own files:
 
 Other bands in this repo and its sources:
 
-- `[eronred]` in app-growth: "Micro-influencers (10K-100K) often give the best ROI" and a seeding tier of "micro-creators (1k-50k followers)" ([../../mobile/app-growth/LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#creator-and-ugc-marketing-eronred)).
+- `[eronred]` in app-growth: "Micro-influencers (10K-100K) often give the best ROI" and a seeding tier of "micro-creators (1k-50k followers)" ([../../mobile/app-growth/LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#creator-and-ugc-marketing)).
 - `[lightreel]` treats creators under 10K as the strongest for direct-response production but weak for organic reach, and 20K to 250K niche authorities as the strongest organic range; macro only with category authority. Its testing-roster split (explicitly not a universal budget rule): about 40% micro specialists with direct proof, 25% mid-sized niche authorities, 20% age or life-stage matches (notably 40+ for beauty, wellness, fashion and home), 15% credentialed experts or regional voices. Micro creators are production partners, not necessarily distribution partners.
 - `[lightreel]` cast by the product's user, problem and proof mechanism rather than by gender benchmarks, and brief in the audience's shopping culture (retailers, foods, festivals, climate, vocabulary); "Translation alone is weaker than culturally native proof."
 

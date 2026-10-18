@@ -2,7 +2,7 @@
 
 An audit scores a store listing field by field, finds wasted characters and repeated words, and turns the gaps into a ranked fix list. In the [eronred] score the title weighs most (20%), then the subtitle, keyword field, screenshots and ratings (15% each). Three third-party methods exist and all are kept: a weighted 0 to 100 score [eronred] and six offline checks on the pulled metadata files run with the asc CLI [rorkai] here, and a brand-tier-adjusted six-dimension score with its report template [coreyhaines31/marketingskills, aso] in [AUDIT-RUBRIC.md](AUDIT-RUBRIC.md). Apple's and Google's docs set the limits they check against; [eronred], [rorkai], [coreyhaines31/marketingskills, aso] and the Appeeky data API are third-party. Third-party benchmark figures are collected in [BENCHMARKS.md](BENCHMARKS.md).
 
-**Contents:** [Inputs](#inputs) · [The weighted score](#the-weighted-score-eronred) · [Offline metadata checks](#offline-metadata-checks-rorkai) · [Keyword gaps with data](#keyword-gaps-with-data) · [App tags and Apple's search plan](#app-tags-and-apples-search-plan) · [Report and fix order](#report-and-fix-order) · [Reading your own numbers](#reading-your-own-numbers-eronred) · [Prove it](#prove-it)
+**Contents:** [Inputs](#inputs) · [The weighted score](#the-weighted-score) · [Offline metadata checks](#offline-metadata-checks) · [Keyword gaps with data](#keyword-gaps-with-data) · [App tags and Apple's search plan](#app-tags-and-apples-search-plan) · [Report and fix order](#report-and-fix-order) · [Reading your own numbers](#reading-your-own-numbers) · [Prove it](#prove-it)
 
 ## Inputs
 
@@ -14,9 +14,9 @@ An audit scores a store listing field by field, finds wasted characters and repe
 - **Pull the data.** With the Appeeky MCP or API (third-party), fetch metadata, keyword rankings, the top 3 to 5 competitors, category chart position and review sentiment; without it, ask the user. [eronred]
 - **For the offline checks, start from canonical files:** `./metadata` from `asc metadata pull`. Normalize `asc migrate export` or `asc localizations download` output into that layout first. Read the latest version directory under `metadata/version/` (highest semantic version) for version fields, and treat `en-US` as the primary locale unless the user says otherwise. The app name may be missing from an export: fetch it with `asc apps info list` or ask, and flag it only when the app-info JSON has a `name` key with an empty value. Uploading the fixed metadata is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) (iOS) and [../google-play/SKILL.md](../google-play/SKILL.md) (Play). [rorkai]
 
-## The weighted score [eronred]
+## The weighted score
 
-Score each factor 0 to 10; the ASO Score is the weighted average out of 100.
+[eronred] Score each factor 0 to 10; the ASO Score is the weighted average out of 100.
 
 | Factor | Weight | Key checks |
 |---|---|---|
@@ -36,9 +36,9 @@ Score each factor 0 to 10; the ASO Score is the weighted average out of 100.
 - **The other weighting:** [coreyhaines31/marketingskills, aso] weighs Title & Subtitle 20%, Description 15%, Visual Assets 25%, Ratings & Reviews 20%, Metadata & Freshness 10%, Conversion Signals 10%, after a brand-tier adjustment ([AUDIT-RUBRIC.md](AUDIT-RUBRIC.md)).
 - **Check against the official limits,** not only the third-party ones: [KEYWORDS-AND-METADATA.md](KEYWORDS-AND-METADATA.md) has both stores' field limits and the places they disagree.
 
-## Offline metadata checks [rorkai]
+## Offline metadata checks
 
-Run per locale on the pulled `./metadata` files; they read local files only, with no network calls. The source introduces them as "these 5 checks" but lists six; all six are kept.
+[rorkai] Run per locale on the pulled `./metadata` files; they read local files only, with no network calls. The source introduces them as "these 5 checks" but lists six; all six are kept.
 
 | # | Check | Rule | Severity |
 |---|---|---|---|
@@ -91,9 +91,9 @@ Run per locale on the pulled `./metadata` files; they read local files only, wit
 - **[eronred] template:** a score card with bars; Quick Wins (today, 3 to 5); High-Impact Changes (this week, 3 to 5); Strategic Recommendations (this month, 3 to 5); a comparison against the top 3 competitors.
 - **[rorkai] keyword follow-up:** `asc metadata keywords diff`, then `asc metadata keywords apply ... --confirm` (or `keywords sync --input "./keywords.csv"` for external research), then re-run the audit to verify the fixes. Other fixes go out through the metadata workflow in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) or [../google-play/SKILL.md](../google-play/SKILL.md).
 
-## Reading your own numbers [eronred]
+## Reading your own numbers
 
-Apple's own view first ([Apple, Search](https://developer.apple.com/app-store/search/)): App Analytics shows "impressions, conversion rate, downloads"; "filter by source type ... to understand how many people downloaded your app from App Store search. Keep in mind that your Apple Ads performance shows up here as well."
+[eronred] Apple's own view first ([Apple, Search](https://developer.apple.com/app-store/search/)): App Analytics shows "impressions, conversion rate, downloads"; "filter by source type ... to understand how many people downloaded your app from App Store search. Keep in mind that your Apple Ads performance shows up here as well."
 
 Data here comes from App Store Connect through Appeeky Connect (third-party): connect App Store Connect in Settings > Integrations > App Store Connect; Indie plan or higher, 2 credits per request; nightly sync; up to 90 days of history. Endpoints: `GET /v1/connect/metrics/apps`, `GET /v1/connect/metrics?from=YYYY-MM-DD&to=YYYY-MM-DD`, `GET /v1/connect/metrics/apps/:appId?from=...&to=...` (response `daily[]`, `countries[]`, `totals`).
 

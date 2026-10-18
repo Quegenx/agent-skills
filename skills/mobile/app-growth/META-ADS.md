@@ -374,7 +374,7 @@ meta_ads_insights
 | High | High | Low | Low | Listing issue | Screenshots, ratings |
 | Even delivery, all bad CPA | Medium | Medium | Low | Wrong audience or event | Verify MMP setup + optimization goal |
 
-For video, read one stage at a time [coreyhaines31/marketingskills, ad-creative]: weak thumbstop or 3-second view rate → the visual opening; weak hold rate (3 s → 15 s) → "Rework seconds 3 to 15, not the hook"; weak CTR → the promise, CTA or proof; weak post-click conversion → the page (here the store listing) doesn't continue the ad. "One component per iteration."
+For video, read one funnel stage at a time, as in [ad-creative's diagnostic funnel](../../marketing/ad-creative/HOOKS.md#the-diagnostic-funnel); for an app, the post-click page is the store listing.
 
 | Frequency | CTR trend | Action |
 |---|---|---|

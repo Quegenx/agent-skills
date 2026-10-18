@@ -2,7 +2,7 @@
 
 Ratings feed ranking on both stores (Apple counts "user behavior (downloads, ratings and reviews, and more)") and conversion on the product page. Two levers move them: when you ask (the OS shows the prompt within a quota you don't control, so [eronred]'s core rule is to ask only users who have experienced value) and how you answer the reviews you get. Quotas and rules come from Apple's and Google's docs; [eronred] and [ApparenceKit] (a Flutter starter-kit author) tag third-party practice, and where it differs from Google's in-app review rules both are given. The native APIs are named here; wiring them into a Flutter app's iOS and Android side is beyond this skill.
 
-**Contents:** [How the stores treat ratings](#how-the-stores-treat-ratings) · [When to prompt](#when-to-prompt-eronred) · [iOS prompt](#ios-prompt) · [Google Play in-app review](#google-play-in-app-review) · [Pre-prompt questions](#pre-prompt-questions-a-conflict) · [Responding to reviews](#responding-to-reviews-eronred) · [Recovering a rating](#recovering-a-rating-eronred) · [Prove it](#prove-it)
+**Contents:** [How the stores treat ratings](#how-the-stores-treat-ratings) · [When to prompt](#when-to-prompt) · [iOS prompt](#ios-prompt) · [Google Play in-app review](#google-play-in-app-review) · [Pre-prompt questions](#pre-prompt-questions-a-conflict) · [Responding to reviews](#responding-to-reviews) · [Recovering a rating](#recovering-a-rating) · [Prove it](#prove-it)
 
 ## How the stores treat ratings
 
@@ -11,7 +11,9 @@ Ratings feed ranking on both stores (Apple counts "user behavior (downloads, rat
 - **Google Play:** new ratings and reviews are generally held back for around 24 hours before becoming public. Ratings are continuous and cumulative, never reset [eronred]; reviews and replies are indexed for search [eronred].
 - **Targets** [eronred]: average 4.5+ ("Below 4.0 significantly hurts conversion"; [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "An app at 4.5 stars will outrank a similar app at 3.8 stars, even with fewer downloads"); reply to 100% of negative reviews; reply within 24 hours.
 
-## When to prompt [eronred]
+## When to prompt
+
+Source: [eronred].
 
 - **Core rule:** only prompt users who have experienced value: after a positive moment, never after a crash or error, never during onboarding or the first session.
 - **Criteria:**
@@ -57,7 +59,9 @@ Ratings feed ranking on both stores (Apple counts "user behavior (downloads, rat
 - **Never ask users to change a rating** ("against guidelines") **or offer incentives for reviews** [eronred]. A paid research interview or survey is never tied to leaving a review ([../../marketing/customer-research/INTERVIEWS-AND-SURVEYS.md](../../marketing/customer-research/INTERVIEWS-AND-SURVEYS.md#incentives)).
 - **Off the stores:** Google's equivalents for Maps reviews (no gating, no incentives) are in [../../marketing/seo/LOCAL.md](../../marketing/seo/LOCAL.md#what-google-forbids); review programs for G2, Capterra and Trustpilot are in [../../marketing/referral-programs/REVIEW-PROGRAMS.md](../../marketing/referral-programs/REVIEW-PROGRAMS.md); review stars in a website's structured data are in [../../marketing/seo/STRUCTURED-DATA.md](../../marketing/seo/STRUCTURED-DATA.md#reviews-and-ratings).
 
-## Responding to reviews [eronred]
+## Responding to reviews
+
+Source: [eronred].
 
 - **Sort reviews into:** bugs and crashes, feature requests, UX complaints, pricing complaints, love and praise, competitor mentions. Mining feedback for research (rather than replying) splits further, keeping confusion and expectation mismatches apart from bugs and missing features ([../../marketing/customer-research/SKILL.md](../../marketing/customer-research/SKILL.md)), and reads app reviews 1 to 2 stars first, then 3, then 5 ([SOURCES.md](../../marketing/customer-research/SOURCES.md#consumer-products)).
 - **Apple 5.6.1** ([App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)): "do not include personal information, spam, or marketing in your response". [coreyhaines31/marketingskills, referrals] adds for public replies: no CRM or private data, separate the reviewer's assertion from verified fact, and don't promise a refund or resolution that hasn't happened ([../../marketing/referral-programs/REVIEW-PROGRAMS.md](../../marketing/referral-programs/REVIEW-PROGRAMS.md#replying-to-a-review)).
@@ -71,7 +75,9 @@ Ratings feed ranking on both stores (Apple counts "user behavior (downloads, rat
 - **Review data (third-party):** Appeeky `GET /v1/apps/:id/reviews?sort=recent&limit=20` or the MCP tool `get_app_reviews`.
 - **A root cause in the product** (crashes, onboarding) needs crash analysis or onboarding work alongside replies and prompts.
 
-## Recovering a rating [eronred]
+## Recovering a rating
+
+Source: [eronred].
 
 | When | Step |
 |---|---|

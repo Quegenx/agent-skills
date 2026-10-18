@@ -2,7 +2,7 @@
 
 Beyond the default listing, the App Store gives four more surfaces: custom product pages (alternate pages with their own URL, and now their own keywords), product page optimization (A/B tests of the default page's visuals), in-app events (timed cards in search, the product page and the Today tab) and App Clips. Custom product pages, in-app events and new metadata in a test treatment must be approved by App Review before they show, and Apple recommends applying a treatment only once it performs better or worse with at least 90% confidence. Limits come from Apple's docs; [eronred] and [ApparenceKit] (a Flutter starter-kit author) tag third-party practice and lift claims, and several of its numbers differ from Apple's: both are given. The Play equivalents (custom store listings, store listing experiments) are in [ANDROID.md](ANDROID.md); sending paid traffic to these pages is [../app-growth/SKILL.md](../app-growth/SKILL.md).
 
-**Contents:** [Custom product pages](#custom-product-pages) · [Product page optimization](#product-page-optimization) · [Running a store test](#running-a-store-test-eronred) · [In-app events](#in-app-events) · [App Clips](#app-clips) · [Getting featured](#getting-featured-eronred) · [Submitting them for review](#submitting-them-for-review) · [Prove it](#prove-it)
+**Contents:** [Custom product pages](#custom-product-pages) · [Product page optimization](#product-page-optimization) · [Running a store test](#running-a-store-test) · [In-app events](#in-app-events) · [App Clips](#app-clips) · [Getting featured](#getting-featured) · [Submitting them for review](#submitting-them-for-review) · [Prove it](#prove-it)
 
 ## Custom product pages
 
@@ -16,7 +16,9 @@ Beyond the default listing, the App Store gives four more surfaces: custom produ
 - **Measured lift:** Apple: "Developers see a 2.5 percentage point increase on average when referring people to a custom product page. This is a 156% increase compared to the 1.6% average conversion rate on default product pages." [eronred] claims 10 to 40% tap-through-to-install over the default page. [coreyhaines31/marketingskills, aso] quotes "+5.9% avg conversion lift" (its benchmarks cite AppTweak, SplitMetrics and MobileAction), a third-party figure beside Apple's; more third-party figures are in [BENCHMARKS.md](BENCHMARKS.md#custom-product-pages-and-custom-store-listings).
 - **Metrics:** App Store Connect > Analytics > Custom Product Pages (impressions, product page views, conversion rate, install events) [eronred]; Apple shows metrics once a page has at least five first-time downloads.
 
-### When they're worth it [eronred]
+### When they're worth it
+
+Source: [eronred].
 
 - **Worth it:** paid campaigns with distinct angles; a generic default page with niche ads; Apple Ads ad groups by theme; influencer and affiliate partners; distinct audiences that convert differently.
 - **Not worth it:** all-organic traffic; under 1,000 installs a month from the source; a default page that isn't optimized yet.
@@ -39,9 +41,9 @@ Beyond the default listing, the App Store gives four more surfaces: custom produ
 - **Ending:** applying a treatment ends the test. Scope note [eronred]: tests use organic App Store traffic only.
 - **Where:** App Store Connect > App > Product Page Optimization > Create Test [eronred].
 
-## Running a store test [eronred]
+## Running a store test
 
-The source writes this method for Apple's product page optimization; Play's store listing experiments and their own settings are in [ANDROID.md](ANDROID.md).
+[eronred] The source writes this method for Apple's product page optimization; Play's store listing experiments and their own settings are in [ANDROID.md](ANDROID.md).
 
 - **What to test first:** the first screenshot (15 to 30% lift possible), then the icon (10 to 20%), screenshot order (5 to 15%, low effort), screenshot style (5 to 15%, high effort), preview video (5 to 10%). "Always start with the first screenshot"; "80% of users never scroll past the first 3 screenshots". [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/) orders it differently: "**A/B test quarterly.** Icon first, then screenshots, then description", and "Run at least one test per quarter" (a 10% lift from a screenshot test means 10% more free downloads every day).
 - **Hypothesis:** `If we [change], then [metric] will [improve/increase] because [reason].`
@@ -90,9 +92,9 @@ The source writes this method for Apple's product page optimization; Play's stor
 - **Card** [eronred]: title at most 18 characters, subtitle at most 13; header image 3000×2000 px; an action button ("Order", "Pay", "Play"); multiple experiences per URL pattern (default, location, campaign, feature).
 - **Measure** [eronred]: App Store Connect > App Analytics > App Clips: sessions, cards displayed, Clip-to-full-app conversions, unique users.
 
-## Getting featured [eronred]
+## Getting featured
 
-All third-party guidance; the nomination form is Apple's.
+[eronred] All third-party guidance; the nomination form is Apple's.
 
 - **Placements:** App of the Day, Game of the Day, Today Tab Story, Apps We Love, Category Feature, Search Feature, In-App Events.
 - **What editors weigh:** design quality and adoption of Apple technology (very high), unique value, story, timeliness (high), rating 4.5+, stability, accessibility, privacy (medium).
