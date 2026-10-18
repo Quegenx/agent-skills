@@ -105,7 +105,7 @@ export const config = {
 ```
 
 - **Still set `skipTrailingSlashRedirect: true`** in `next.config.js`.
-- **With Clerk's `authMiddleware`,** put the proxy logic in `beforeAuth` and add `ignoredRoutes: ['/yourpath(.*)']`.
+- **With current Clerk,** compose the proxy by returning the other middleware from the `clerkMiddleware()` callback, using framework path matching for non-auth routing. Enforce authorization at the resources that need it. The old line used `authMiddleware`, `beforeAuth` and `ignoredRoutes`; current composition is documented at https://clerk.com/docs/reference/nextjs/clerk-middleware.
 - **Each invocation on Vercel is an Edge Request.**
 - **`@posthog/next`** has a built-in proxy option ([SETUP-NEXTJS.md](SETUP-NEXTJS.md#posthognext-pre-release)).
 

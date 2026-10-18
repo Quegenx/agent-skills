@@ -2,7 +2,24 @@
 
 Organic short video for TikTok, Instagram Reels and YouTube Shorts on your own accounts. Text is from coreyhaines31/marketingskills `social` (SKILL.md and `references/short-form-video.md`, MIT); lengths, best times and frequencies are the source's opinion. Paid TikTok and Meta creative (the 6-ad matrix, Spark Ads) is in [../../mobile/app-growth/TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#creative-strategy); creator and UGC hooks and formats (talking head, before/after, day in the life, AI UGC) are in [../creator-marketing/UGC-HOOKS.md](../creator-marketing/UGC-HOOKS.md) and [../creator-marketing/UGC-FORMATS.md](../creator-marketing/UGC-FORMATS.md); producing the video is in [../marketing-video/SKILL.md](../marketing-video/SKILL.md).
 
-**Contents:** [Specs](#specs) · [The 3-second rule](#the-3-second-rule) · [Structures](#structures) · [Captions](#captions) · [Hook library](#hook-library) · [Script template](#script-template) · [Visual patterns](#visual-patterns) · [Audio](#audio) · [Posting](#posting) · [Analytics and iteration](#analytics-and-iteration) · [Common mistakes](#common-mistakes) · [Prove it](#prove-it)
+Research, script delivery and iteration additions are paraphrased from [more skills, shortform-playbook.md]. Its batch sizes, pacing and duration choices are practitioner options, not platform requirements or measured performance thresholds.
+
+**Contents:** [Research before scripting](#research-before-scripting) · [Specs](#specs) · [The 3-second rule](#the-3-second-rule) · [Structures](#structures) · [Retention and reward](#retention-and-reward) · [Captions](#captions) · [Hook library](#hook-library) · [Script template](#script-template) · [Delivery by request](#delivery-by-request) · [Visual patterns](#visual-patterns) · [Audio](#audio) · [Posting](#posting) · [Analytics and iteration](#analytics-and-iteration) · [Common mistakes](#common-mistakes) · [Prove it](#prove-it)
+
+## Research before scripting
+
+[more skills, shortform-playbook.md] Confirm the product, primary platform and existing audience research before writing. Use the evidence-based profile in [customer-research](../customer-research/PERSONAS.md); missing income, routines or other details stay unknown. Pick the platform from where the actual audience spends time, not a blanket age rule.
+
+The source proposes a research batch of 20 to 30 well-performing videos from competitors and adjacent creators. Apply the existing [collection rules](STRATEGY.md#study-what-works-in-your-niche); per video, record:
+
+| Field | Record |
+|---|---|
+| Hook | The opening line and visual |
+| Overlay | The on-screen hook text |
+| Format and length | How the video is presented and its duration |
+| Audience reaction | What comments respond to, including the audience's actual wording |
+
+Keep the research available while drafting and update it with observed vocabulary, formats and topics from later posts. Shared customer findings belong in the [product context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). A recurring format is a research lead, not proof of demand.
 
 ## Specs
 
@@ -23,6 +40,8 @@ App-growth's paid spec is "9:16 vertical, 15 to 30 s" `[appeeky]`; lightreel's o
 ```
 [VISUAL HOOK] + [VERBAL HOOK] + [TEXT OVERLAY]
 ```
+
+[more skills, shortform-playbook.md] Make the visual, spoken and overlay hooks complementary: the overlay can add another reason to watch instead of repeating the opening line. This is separate from accurate speech captions. The source's drafting option is 5 to 10 hook candidates per concept, shortlisted to two for the existing [hook comparison](#analytics-and-iteration).
 
 ## Structures
 
@@ -68,6 +87,14 @@ App-growth's paid spec is "9:16 vertical, 15 to 30 s" `[appeeky]`; lightreel's o
 ```
 
 Ideas by business type: SaaS (feature demos with the outcome first, before/after, "Watch me do X in Y seconds"); ecommerce (unboxing, comparisons, how it's made, customer reviews); services (process reveals, client transformations, myth-busting); personal brand (lessons learned, controversial takes, day in the life).
+
+## Retention and reward
+
+[more skills, shortform-playbook.md] Choose the promised reward before drafting: a complete usable lesson, a true before/after, an emotional experience or a real product demonstration. Fulfill the opening promise; a teaser does not replace the useful content. The source rotates pain-point relief, demo proof, a complete tactic, a true founder story and an actual old/new comparison through the existing structures above.
+
+Its pacing recipe offers cuts every 2 to 3 seconds and a fresh visual, sound or text beat every 10 to 15 seconds. Use these as edit options; a longer static shot does not automatically fail. Put useful material early, remove dispensable opening material within the first 5 seconds, and try ending without an announced wrap-up. For midpoint use of the existing open-loop technique, see [ad-creative's VSL structure](../ad-creative/SHORT-FORM-VIDEO.md#creator-formats); deliver the promised payoff.
+
+The source requires engagement bait as a fourth pillar [more skills, shortform-playbook.md]; the existing rule rejects mechanical bait and allows a real question [coreyhaines31/marketingskills, social] ([POSTS.md](POSTS.md#no-ai-tells)). Keep that existing rule. A useful save request tied to a later use, or a genuine question, can serve the single CTA without promising an algorithm benefit. Resource-request comments already have a scoped home in [STRATEGY.md](STRATEGY.md#study-what-works-in-your-niche); they do not make mechanical bait mandatory.
 
 ## Captions
 
@@ -118,6 +145,20 @@ Ideas by business type: SaaS (feature demos with the outcome first, before/after
 - B-roll needed: [List any clips needed]
 - Graphics: [Any text animations or overlays]
 ```
+
+[more skills, shortform-playbook.md] Fill this existing template with the exact spoken lines, what appears on screen, explicit cut/close-up/screen/split-screen directions and timed overlays. Keep the script shootable without guessing what changes between lines. The source offers 15 to 60 seconds, with 25 to 35 seconds as its preferred range; these are creative choices. Use short spoken sentences and the researched audience's register; casual grammar is an option, and the source excludes emoji from the spoken script.
+
+## Delivery by request
+
+[more skills, shortform-playbook.md]
+
+| Request | Deliver |
+|---|---|
+| Scripts | Complete scripts using the template, each with two opening options, spanning at least two of the source's content types |
+| Strategy | The research plan, an optional 20-post calendar across its five content types, and the metrics to read at checkpoints |
+| Underperforming content | The observed weak metric, a proposed hook/pacing/reward/offer hypothesis, and a revision of the part being investigated |
+
+Prepare the primary-platform version first, then adapt versions for other intended platforms. Keep the useful teaching or demonstration complete and place a relevant offer in the existing comment, bio or DM path ([STRATEGY.md](STRATEGY.md#study-what-works-in-your-niche)). Publication still follows the [draft approval flow](STRATEGY.md#publishing-from-an-agent).
 
 ## Visual patterns
 
@@ -172,6 +213,12 @@ Ideas by business type: SaaS (feature demos with the outcome first, before/after
 
 **When to pivot:** 5+ videos under 1% completion, change the hooks; high views but low follows, check the CTA and content-audience fit; high saves but low shares, the content is valuable but not social; many negative comments, the source suggests leaning into the controversy or adjusting tone (keep within [POSTS.md](POSTS.md#no-ai-tells): no rage bait).
 
+[more skills, shortform-playbook.md] For the hook comparison above, the source specifies two opening versions covering the first 3 seconds. Vary formats, tones and content types across the wider batch; the source proposes continuing its three strongest formats while exploring others. Return the findings to the [research workflow](#research-before-scripting).
+
+The source says to withhold conclusions until 20 posts [more skills, shortform-playbook.md]; the existing rule intervenes after 5 videos below 1% completion [coreyhaines31/marketingskills, social]. Keep the existing intervention rule. A 20-post plan is an optional learning batch, not a sample-size formula or proof that a winner is established.
+
+[more skills, shortform-playbook.md] Where the platform exposes a 3-second hold metric, use it to investigate the opening; completion can suggest a pacing or payoff issue. These are hypotheses, not unique causes. Full watches without engagement do not prove that bait is missing. Keep comments as engagement and profile visits as indicators in the existing [metric taxonomy](STRATEGY.md#analytics-and-optimization); neither proves a sale. The source's 70% completion takeoff claim, universal watermark penalties and superior DM conversion claim are unverified and are not operating thresholds.
+
 ## Common mistakes
 
 `[coreyhaines31/marketingskills, social]`
@@ -186,3 +233,5 @@ Ideas by business type: SaaS (feature demos with the outcome first, before/after
 ## Prove it
 
 Every script fills the template with a visual, verbal and on-screen hook in the first second and a structure from this file; the video is a 9:16 composition, not a cropped horizontal cut; captions show at most 2 lines of 3 to 5 words timed to speech; music is from the platform library or licensed; results are read on completion, saves, shares and follows; and after 5 videos under 1% completion the hooks change.
+
+[more skills, shortform-playbook.md] The script traces to the audience research; hook text complements the spoken line while captions remain accurate; the promised reward is present; line, screen, cut and overlay directions are shootable; delivery includes the requested variants or calendar; and the next revision names a hypothesis rather than treating a metric as a proved cause. No performance guarantee or automatic publication follows from the source's batch or pacing choices.

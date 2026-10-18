@@ -31,6 +31,14 @@ Shapes that read as AI and stay out: "Stop X. Start Y.", "Finally, X that doesn'
 
 Run the headline through the swap and "Now you can..." tests. Write three to five candidates from different angles (outcome, problem, audience, difference, proof) and keep the ones that survive, never the first one by default.
 
+## A research-led headline pass
+
+[more skills, copywriting-playbook.md] An optional checklist asks whether the headline gives a useful benefit, an actual reason to act now, a distinction competitors cannot also claim and concrete detail. Urgency and numbers still need evidence. Start from a real buyer question, a specific recurring problem or an agreed testimonial fragment where it fits; the existing [headline forms](DRAFTING.md#ad-copy-formulas) already cover number and question shapes. The guide prefers digits in numeric headlines as a style choice.
+
+**Two exploration defaults.** [more skills, copywriting-playbook.md] proposes 10 or more candidates, shortlisting with that checklist and using data where testing is possible. [coreyhaines31/marketingskills, copywriting] uses the three-to-five default above; keep it unless wider exploration is requested. Neither changes [point-edit scope](DRAFTING.md#diagnose-the-situation-first), and experiment design belongs to [ab-testing](../../marketing/ab-testing/SKILL.md). The playbook's three-second message target is a practitioner heuristic alongside the existing five-second comprehension check, not a measured attention limit.
+
+[more skills, copywriting-playbook.md] When repeating the primary CTA on a long page, keep its promised outcome consistent. A different secondary intent remains separate under [the existing CTA rules](SKILL.md#4-ctas).
+
 ## Know which reader you're talking to
 
 The same claim reads differently by risk tolerance. "Ship in a weekend" is speed to a startup and immaturity to an enterprise buyer; "SOC 2 Type II and an uptime SLA" is safety to one and bloat to the other. When a page serves both, don't average the message into mush: split the page or the path, and let each reader get their version of the truth.

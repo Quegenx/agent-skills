@@ -36,6 +36,18 @@ Findings get verified by other agents before humans review them.
 
 **Keep the voters apart from the finders.** An agent tends to prefer its own results or findings, especially when asked to verify or judge them against a rubric; separate subagents with their own contexts and focused goals counter it.
 
+## Evidence-first findings
+
+[Milan Jovanovic, more skills/evidence-first-review/SKILL.md and references/reporting.md]
+
+Read the chosen source snapshot, relevant requirements, callers and contracts. Treat the builder's summary as claims to verify, not the sole authority. If a missing rule could change the conclusion, name that uncertainty and continue checks that do not depend on it; do not invent a business rule to turn a valid choice into a defect.
+
+For each candidate, trace a reachable trigger, the violated rule and its concrete consequence. Keep the evidence still needed explicit. A suspicious line alone is insufficient. Look for an explanation or nearby working path that could disprove the claim. The fix-comparison, state-effect and evidence-limit method lives in [debugging verification](../debugging/VERIFICATION.md#compare-the-actual-fix).
+
+Report a material finding with its minimum trigger, required behavior, consequence, verified location at the reviewed revision, evidence strength and next narrow check or fix direction. Separate **observed**, **source-supported but unrun**, and **hypothesis with a missing fact**; keep disproved leads separate. A speculative concern is not a release blocker without a supported failure path or an explicit policy basis.
+
+Do not impose a target number of findings or fill empty report sections. When none is supported, say so within the inspected scope. Close with the actual executed checks and important blocked or untested boundaries, without promising the whole system is correct. Review evidence does not authorize email, payments, production mutation or broader access.
+
 ## Tags and output
 
 - **Each finding is tagged Important, Nit, or Pre-existing,** so a bug the PR didn't introduce doesn't look like the author's fault.
@@ -106,3 +118,5 @@ A long security review in one context can stop early and declare the job done af
 ## Prove it
 
 CLAUDE.md is short and points to other docs; REVIEW.md names what failure looks like, caps nits, lists paths to skip and asks for file-and-line evidence and a summary that starts with a count; a check shows the reviewer follows REVIEW.md; every posted finding passed the vote, carries an Important, Nit or Pre-existing tag and a file and line; and branch protection blocks merge while any bug-review or security-review thread is open.
+
+Each material finding also has a reachable trigger, violated rule and consequence, with observed/source-supported/hypothesis evidence distinguished. A no-finding report stays scoped and names important unperformed checks. [Milan Jovanovic, more skills/evidence-first-review]

@@ -33,6 +33,8 @@ Quick decision guide: a product category, start with G2/Capterra reviews (yours 
 
 This extends web-research's mention line (`- **[SourceType]** Title | Snippet (source: URL, YYYY-MM-DD)`, [COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md#lanes-and-the-merge)) with context, sentiment, theme and profile. Under GDPR Art. 4(1), personal data is "any information relating to an identified or identifiable natural person", identifiable among other ways by "an online identifier" ([GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj)), so a quote tied to a username is personal data: keep usernames out of the quote bank unless needed and cite the URL.
 
+[more skills, copywriting-playbook.md] For a copywriting quote bank, optionally add the specific emotion expressed and the context in which the quote will be used. The source mixes problem-aware, solution-aware, objection and post-purchase labels; record awareness separately from objection or post-purchase context. An emotion tag adds detail to sentiment rather than replacing it. Awareness is defined in [the Schwartz dossier](../marketing-council/advisors/eugene-schwartz.md#core-frameworks).
+
 ## Reddit
 
 `[coreyhaines31/marketingskills, customer-research]` Find where the ICP spends time, not where the product is discussed:
@@ -48,6 +50,8 @@ site:reddit.com "[competitor name]" "vs" OR "alternative" OR "switched"
 ```
 
 High-signal posts: "What tools do you use for X?" (alternatives, vocabulary); "Frustrated with [competitor], looking for alternatives" (pain, switching triggers); "How do you handle X?" (workflow, workarounds); "Is [your category] worth it?" (objections, criteria); competitor complaint threads (gaps). Extract the exact problem, the top-voted solutions, complaints in comments, the language, and upvote patterns (consensus vs controversy). Search with Reddit's own search or Google `site:reddit.com`; the source also names Pullpush.io, an unofficial third-party archive, without any terms caveat.
+
+[more skills, copywriting-playbook.md] An optional selection pass is the relevant community's top posts of the year and comments on posts about the problem. Capture recurring objections, competitor names and peer advice as well as problem wording. Access still follows [Platform rules](#platform-rules); the guide's RSS and scraper suggestions establish no permission to collect in bulk.
 
 ## Review sites
 
@@ -68,6 +72,8 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 | Top complaint | What frustrates them? |
 | Switching context | Did they mention switching from something else? |
 | Unmet need | "I wish it could..." or "It would be better if..." |
+
+**Another selection emphasis.** [more skills, copywriting-playbook.md] emphasizes one-star reviews for fears and objections and five-star reviews for desired transformations. [coreyhaines31/marketingskills, customer-research] uses the ordering above and emphasizes competitor four-star reviews. Keep that existing priority; the other guide is an optional additional pass. Its useful phrase cues include finally, being tired of an old approach and an unexpected outcome. Record the actual sentence, not a polished version of it. Their positioning use is in [From research to a draft](../../anti-ai-slop/anti-slop-copy/DRAFTING.md#from-research-to-a-draft).
 
 ## Indie Hackers and Product Hunt
 
@@ -109,6 +115,8 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 - **YouTube consumer:** "X app honest review", "X app after 6 months", "Best [category] apps [year]"; commenters on review videos are in the consideration phase.
 - **Other platforms:** Facebook Groups for consumer verticals, Discord, Nextdoor (local services), Quora (long questions reveal decision anxiety and criteria).
 
+[more skills, copywriting-playbook.md] To check a proposed audience profile, search the product's key term on Instagram, identify relevant accounts and manually compare accessible follower bios, posts and self-descriptions with the proposed segment. Use only permitted access and evidenced self-descriptions; unknown profile fields stay blank ([PERSONAS.md](PERSONAS.md#anti-patterns)). Feed the findings into the shared product context rather than inventing another customer fact store.
+
 ## SparkToro
 
 `[coreyhaines31/marketingskills, customer-research]` A behavioral audience tool (clickstream, search and social data in aggregate). Use it first for where the ICP spends time; use manual research first for raw language and the "why"; best together. Queries: people who follow @competitor, who visit competitor.com, who frequently talk about [topic], whose bio contains [job title], who visit yourdomain.com. Outputs: websites, podcasts, YouTube channels, subreddits, search keywords, AI prompt topics, accounts followed, demographics. Weight behavioral data high, demographic data medium, and never as a substitute for qualitative research. The source states a free tier of 5 reports a month with top 5 to 10 results, "No public API", and an English and US skew; check sparktoro.com before relying on these.
@@ -132,6 +140,8 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 | Job postings | Low-medium | Aspirational, not necessarily reflective of current pain |
 
 web-research also ranks job posts as indirect evidence (`medium`, "Inferred from job posts, third-party articles or indirect signals").
+
+**Two source rankings.** [more skills, copywriting-playbook.md] puts Reddit, reviews and social comments ahead of direct customer sources in its value ordering. [coreyhaines31/marketingskills, customer-research] gives first-party interview and survey evidence priority when it conflicts with scraped evidence ([SKILL.md](SKILL.md#three-modes)). Keep the existing weighting rather than treating the playbook's collection order as evidence authority.
 
 ## Platform rules
 

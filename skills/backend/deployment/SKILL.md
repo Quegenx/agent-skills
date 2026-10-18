@@ -1,6 +1,6 @@
 ---
 name: deployment
-description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups, signed releases and npm packages. Use when writing a Dockerfile or compose file, moving hosts, setting up backups, verifying release artifacts or publishing an npm package."
+description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups, signed releases, npm packages and selected-stack SaaS buildouts. Use when writing a Dockerfile or compose file, moving hosts, setting up backups, verifying release artifacts, publishing an npm package or wiring a selected SaaS stack."
 ---
 
 # Deployment
@@ -9,6 +9,7 @@ Build one artifact, run the same artifact everywhere, and make every change of w
 
 | The job | Read |
 |---|---|
+| A selected-stack SaaS walking skeleton, identity/data/worker boundaries, environment inventory and incident checklist | [SAAS-BUILDOUT.md](SAAS-BUILDOUT.md) |
 | A Dockerfile, image size and security, a local stack with Compose, migrations in containers, self-hosting a third-party image (loopback port, `env_file`, telemetry opt-out, MCP behind an identity proxy) | [CONTAINERS.md](CONTAINERS.md) |
 | Moving a site or app to a new host or DNS provider; backups | below |
 | Provenance, keyless signing and verification before promotion, offline verification, release transparency, cached build outputs | [RELEASES.md](RELEASES.md) |

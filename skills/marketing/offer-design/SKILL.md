@@ -1,6 +1,6 @@
 ---
 name: offer-design
-description: "Designs and repairs the offer itself (what a buyer gets, why it's worth it, why now): the value equation and its four levers, the six components of a complete offer, scope and naming, payment structures, guarantee types, objection-closing bonuses, honest scarcity and urgency, when to discount, formats by business type, and the US FTC rules on former prices, comparable values, free bonuses, guarantees, fake urgency and dark patterns, installments, trials and cancellation (ROSCA). Use when building or improving an offer, a guarantee, a bonus stack, a deadline or a payment plan, when an offer isn't converting, before running a discount, or when checking whether a price, value, guarantee or countdown claim is lawful."
+description: "Designs and repairs the offer itself (what a buyer gets, why it's worth it, why now): the value equation and its four levers, the six components of a complete offer, scope and naming, payment structures, guarantee types, objection-closing bonuses, honest scarcity and urgency, when to discount, formats by business type, paid info-product validation and delivery, and the US FTC rules on former prices, comparable values, free bonuses, guarantees, fake urgency and dark patterns, installments, trials and cancellation (ROSCA). Use when building or improving an offer, a guarantee, a bonus stack, a deadline or a payment plan, when an offer isn't converting, before running a discount, when validating or building a paid knowledge product, or when checking whether a price, value, guarantee or countdown claim is lawful."
 ---
 
 # Offer design
@@ -11,6 +11,7 @@ Read the product context file first, `.agents/product-context.md` ([../../anti-a
 
 | The job | Read |
 |---|---|
+| Paid knowledge products: evidence-of-spend research, validation, complete product, distribution and opted-in audience | [INFO-PRODUCTS.md](INFO-PRODUCTS.md) |
 | The value equation and its four levers, scoring them, the six components, scope, naming, price and payment structure, the diagnostic loop, projecting the lift | [OFFER-ANATOMY.md](OFFER-ANATOMY.md) |
 | The eight guarantee types, picking one, examples by business, wording, the 10% stress test, when to offer none | [GUARANTEES.md](GUARANTEES.md) |
 | Bonuses as objection handlers, finding the objections, the 3-5 stack, stated values, timing, the audit | [BONUSES.md](BONUSES.md) |

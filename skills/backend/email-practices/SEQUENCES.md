@@ -82,6 +82,8 @@ Length depends on the sales cycle, product complexity and relationship stage.
 
 The lead magnet's email joins a marketing sequence only with marketing consent ([COMPLIANCE.md](COMPLIANCE.md#the-laws), GDPR Art. 7(4)); without it, email 1 is the delivery and the sequence stops there.
 
+[more skills, copywriting-playbook.md] Another optional narrative arc is problem, agitation, solution, proof and offer across the sequence. These are ordered beats, not a prescribed five-email count or one beat per send. Keep this file's consent, entry and exit rules and choose timing for the actual sequence; the guide supplies no additional schedule.
+
 ## Onboarding
 
 [coreyhaines31/marketingskills, emails] 5-7 emails over 14 days, for product users. Goal: activate, drive to the aha moment, upgrade.

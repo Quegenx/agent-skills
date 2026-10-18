@@ -14,6 +14,19 @@ How to draft or rewrite page copy so it keeps the writer's good choices and earn
 
 "State the diagnosis in one line with the evidence ('B: the draft argues against agencies in the founder's voice, uses 'ship' and 'stuff'') before writing."
 
+## From research to a draft
+
+[more skills, copywriting-playbook.md]
+
+1. Check whether audience research already exists. Fill missing evidence through [customer-research](../../marketing/customer-research/SKILL.md), keeping the profile and [quote bank](../../marketing/customer-research/SOURCES.md#what-to-capture) available before drafting. A research-only request returns those assets rather than unsolicited copy.
+2. Position from the overlap between dissatisfaction with alternatives and the product's actual strengths. For the existing [so-what pass](REVIEW.md#the-seven-sweeps), the guide proposes asking twice to reach the felt outcome. Use the audience's evidenced vocabulary within the confirmed [brand voice](VOICE.md#build-the-profile-from-evidence); research does not replace a real writer's choices.
+3. Pick the framework for the format and the reader's [awareness](../../marketing/marketing-council/advisors/eugene-schwartz.md#core-frameworks). Reuse the [PAS and feature-benefit definitions](#ad-copy-formulas) and existing [AIDA framework](../../marketing/cold-outreach/COPY.md#frameworks). A true founder story can follow the shared problem, attempted alternatives and discovery; never supply an experience the founder did not have.
+4. Choose proof that answers the leading research objection. Deliver brief notes identifying which harvested phrases were used and which objections the copy answers. For existing copy, explain the supported changes while preserving the diagnosis and scope above.
+
+[more skills, copywriting-playbook.md] If proof is absent and the product really is early, say so plainly and use truthful specifics and actual guarantee terms. The guide's claim that the early label converts buyers is unverified; the disclosure does not promise a result.
+
+[more skills, copywriting-playbook.md] Its optional readability targets are sentences around 11 to 14 words and roughly eighth-grade vocabulary unless the audience expects specialist language. These are author heuristics, not standards, and do not override the real writer's sentence habits or the existing [review checks](REVIEW.md#quick-pass-checks).
+
 ## Read taste out of the input (B and C)
 
 [coreyhaines31/marketingskills, copywriting] What they gave you is evidence of their judgment:
@@ -101,3 +114,4 @@ Rules that override the persona: never invent the writer's opinions, experience,
 - At most one or two punchy moments on the page.
 - Every declined claim names the evidence that would unlock it.
 - No opinion, anecdote, customer, quote or number is invented; missing evidence is flagged rather than filled by a persona. [repository AGENTS.md, Writing and Editing]
+- For research-led copy, the delivery identifies the actual phrases used and objections answered; early-stage disclosure and founder experience are true. [more skills, copywriting-playbook.md]

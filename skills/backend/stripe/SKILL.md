@@ -9,6 +9,7 @@ Stripe takes money through a few high-level objects (Checkout Sessions, the Bill
 
 | The job | Read |
 |---|---|
+| Dispute categories, inquiry versus chargeback, complete evidence, final submission and actual provider outcomes | [DISPUTES.md](DISPUTES.md) |
 | Choosing Checkout Sessions, PaymentIntents or SetupIntents, Payment Links, dynamic payment methods, the Payment Element, PCI, stripe-node setup and options, deprecated APIs | [PAYMENTS.md](PAYMENTS.md) |
 | Checkout in a Next.js App Router app: the server-only client, the Route Handler, the success page, idempotent fulfillment, conversion | [CHECKOUT-NEXTJS.md](CHECKOUT-NEXTJS.md) |
 | Webhooks: event destinations, thin vs snapshot events, the handler contract, Next.js and Express handlers, signature verification, subscription events, retries, ordering, duplicates, recovery | [WEBHOOKS.md](WEBHOOKS.md) |

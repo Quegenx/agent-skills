@@ -1,6 +1,6 @@
 ---
 name: social-media
-description: "Plans, writes and runs organic social media for LinkedIn, X, Instagram, TikTok, Threads, YouTube, Facebook and Telegram: goals and content pillars, hooks and post templates without AI tells, repurposing long-form into posts, a calendar and batching, engagement routines, metrics, drafts-first publishing from an agent, character and hashtag limits checked against each platform's docs, X's open-sourced ranking signals, carousel frameworks, short-form video scripts, and social listening with a scoring rubric through official APIs. Use when writing or scheduling social posts, threads, carousels or short videos, building a content calendar, repurposing content for social, checking platform limits, growing on X, or triaging which posts to reply to."
+description: "Plans, writes and runs organic social media for LinkedIn, X, Instagram, TikTok, Threads, YouTube, Facebook, Reddit and Telegram: goals and content pillars, hooks and post templates without AI tells, repurposing long-form into posts, a calendar and batching, engagement routines, metrics, drafts-first publishing from an agent, character and hashtag limits checked against each platform's docs, X's open-sourced ranking signals, carousel frameworks, short-form video scripts, Reddit community tutorials and inbound conversations, and social listening with a scoring rubric through official APIs. Use when writing or scheduling social posts, threads, carousels or short videos, building a content calendar, repurposing content for social, checking platform limits, growing on X, or triaging which posts to reply to."
 ---
 
 # Social media
@@ -11,6 +11,7 @@ Before writing, read the product context file `.agents/product-context.md` ([../
 
 | The job | Read |
 |---|---|
+| Reddit audience/community research, complete tutorial posts, inbound diagnosis and a daily human draft queue | [REDDIT.md](REDDIT.md) |
 | Context questions, the platform quick reference, content pillars, the weekly calendar and batching, engagement routine, metrics and the weekly review, what to do when engagement or reach drops, scheduling, publishing from an agent with drafts first, studying what works in your niche | [STRATEGY.md](STRATEGY.md) |
 | Hook formulas, LinkedIn, X and Instagram post templates, the social AI tells (broetry, engagement bait, emoji bullets), comment quality and comment tiers | [POSTS.md](POSTS.md) |
 | Turning blogs, podcasts, video, webinars and newsletters into posts: content atoms, the podcast workflow, per-episode targets | [REPURPOSING.md](REPURPOSING.md) |
@@ -18,7 +19,7 @@ Before writing, read the product context file `.agents/product-context.md` ([../
 | Per-platform playbooks: LinkedIn, X, Instagram, TikTok, Facebook, and how reach works on a Telegram channel | [PLATFORMS.md](PLATFORMS.md) |
 | X's For You ranking from xAI's open-sourced algorithm: the pipeline, the scored signals, the 10 rules, what kills reach | [X-RANKING.md](X-RANKING.md) |
 | Carousels and LinkedIn document posts: picking one of five frameworks, slide-by-slide jobs, platform notes, the production checklist | [CAROUSELS.md](CAROUSELS.md) |
-| Organic short-form video (TikTok, Reels, Shorts): specs, the 3-second rule, structures, captions, the hook library, the script template, audio, posting and when to pivot | [SHORT-VIDEO.md](SHORT-VIDEO.md) |
+| Organic short-form video: specs, research worksheet, complementary hooks, shootable scripts, reward/pacing directions, platform adaptation and evidence-based iteration | [SHORT-VIDEO.md](SHORT-VIDEO.md) |
 | Social listening: the daily triage loop, the scoring rubric, sources through official APIs and feeds, LinkedIn and X, per-platform comment notes, common workflows | [LISTENING.md](LISTENING.md) |
 | The source list the listening loop reads, ready to copy to `.agents/listening-sources.md` | [LISTENING-SOURCES-TEMPLATE.md](LISTENING-SOURCES-TEMPLATE.md) |
 

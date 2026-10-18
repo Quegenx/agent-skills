@@ -16,6 +16,10 @@ Personas are built from research, never invented. From coreyhaines31/marketingsk
 
 Personas built this way are provisional: tag each with its proxy source and replace proxy evidence with first-party evidence as real reviews arrive. For a product with no research at all, the source's minimum plan is hypotheses first, then 5 to 10 interviews plus a watering-hole scan ([SOURCES.md](SOURCES.md)), and no personas until the data exists.
 
+## Optional profile questions
+
+[more skills, copywriting-playbook.md] For a specific buyer segment, the guide proposes age, location, work and income, plus the person's routine, recurring complaints, attempted alternatives, why those attempts failed, fears, desired success and whom they blame. Use these as research questions where relevant, with evidence behind every answer. The existing minimum and no-invented-details rule still apply; an imagined day or an inference from a photograph is not a finding. Keep the result in the shared product context.
+
 ## The template
 
 `[coreyhaines31/marketingskills, customer-research]`

@@ -101,7 +101,7 @@ Send 4, 2 days after delivery (marketing consent required):
 ```
 From [Brand]: How are you liking your [product]? Share a review for 15% off next order: [short.link]
 ```
-~108 chars / 1 segment. The FTC's review rule bars incentives conditioned on the review "expressing a particular sentiment, whether positive or negative" (16 CFR 465.4), so the discount goes to any honest review.
+~108 chars / 1 segment. The FTC's review rule bars incentives conditioned on the review "expressing a particular sentiment, whether positive or negative" (16 CFR 465.4). That does not authorize a platform-prohibited incentive: do not use this discount template for Google reviews, which prohibit review incentives regardless of sentiment. Follow the destination's rules in [REVIEW-PROGRAMS.md](../referral-programs/REVIEW-PROGRAMS.md). The old line mentioned only the FTC sentiment condition. [https://support.google.com/business/answer/16816815?hl=en]
 
 Send 5, 14 days after delivery (cross-sell, marketing consent):
 
@@ -260,4 +260,4 @@ From [Brand]: You've reached Gold status! Your perks: 15% off + free shipping. [
 - A three-text cart sequence fires at 30 minutes, 4 hours and 24 hours, has no discount in Send 1, stops on purchase, opt-out or 48 hours, and reaches only double-opted-in US numbers.
 - Every sent body starts with the brand, has one link on a branded or platform domain, ends with an opt-out instruction, and fits the segment count planned for it.
 - No urgency, hold or expiry claim goes out that the store can't back with stock data or a real deadline.
-- Review incentives don't depend on the rating given.
+- Review incentives don't depend on the rating given and are allowed by the destination platform; none are offered for Google reviews. [https://support.google.com/business/answer/16816815?hl=en]
