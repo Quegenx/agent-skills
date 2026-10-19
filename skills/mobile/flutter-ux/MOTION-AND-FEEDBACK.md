@@ -214,7 +214,7 @@ void didUpdateWidget(covariant UploadedAvatarAnimation oldWidget) {
 }
 ```
 
-- **Style, two views:** the source writes `break;` in each case. The [dart skill](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/RECORDS-AND-PATTERNS.md) says Dart 3 "non-empty cases break implicitly (no `break`)", so the `break` lines are redundant there; both compile.
+- **Style, two views:** the source writes `break;` in each case. The [dart skill](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/RECORDS-AND-PATTERNS.md) says Dart 3 "non-empty cases break implicitly (no `break`)", so the `break` lines are redundant there; both compile.
 
 ## Chain on one controller
 

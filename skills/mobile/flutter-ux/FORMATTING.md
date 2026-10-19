@@ -364,7 +364,7 @@ Text(
 )
 ```
 
-Without the parentheses, a null `cartInfo` short-circuits the whole expression and `orPlaceholder()` never runs; with them it always runs ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md) on null-aware chains).
+Without the parentheses, a null `cartInfo` short-circuits the whole expression and `orPlaceholder()` never runs; with them it always runs ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md) on null-aware chains).
 
 **Placeholder character (two choices, both tagged):** [FlutterPro]: `-` by default, or a word such as `'N/A'`. The web [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md) shows an unavailable count as the em dash character (U+2014).
 

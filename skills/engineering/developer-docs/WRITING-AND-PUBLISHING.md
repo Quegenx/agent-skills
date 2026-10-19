@@ -90,7 +90,7 @@ The interface-text analogue is "tone by stakes" in [anti-slop-copy MICROCOPY.md]
 
 ## Code comes from code CI checks
 
-[c15t, writing-docs] "Code that wires c15t into an app comes from marked regions in code CI builds or type-checks. Do not hand-write a provider, layout, route handler or config file in MDX. Hand-written snippets drift: one Next.js page passed a `defineConsentConfig()` result from a server layout to `ConsentRoot`, which React cannot serialize." Dart's `{@example}` is the same method for doc comments ([dart STYLE-AND-DOCS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/STYLE-AND-DOCS.md#code-examples-from-files-example)).
+[c15t, writing-docs] "Code that wires c15t into an app comes from marked regions in code CI builds or type-checks. Do not hand-write a provider, layout, route handler or config file in MDX. Hand-written snippets drift: one Next.js page passed a `defineConsentConfig()` result from a server layout to `ConsentRoot`, which React cannot serialize." Dart's `{@example}` is the same method for doc comments ([dart STYLE-AND-DOCS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/STYLE-AND-DOCS.md#code-examples-from-files-example)).
 
 - **Pick the source by what the snippet is.** Setup that a quickstart shows comes from a starter app per framework; "Starters are smoke-tested in CI and hold no test code, so never add hide markers or test helpers to them." Feature code comes from a snippet package "which CI type-checks. Hide markers are allowed there only for type-check scaffolding the reader does not need." Test fixture apps "publish nothing".
 - **Region names are unique** across every source, because all of them publish into one folder.

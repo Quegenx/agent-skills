@@ -16,7 +16,7 @@ Riverpod is a third-party state management and dependency package, not part of F
 [ApparenceKit](https://apparencekit.dev/flutter-tips/riverpod-asyncstate-state-management/)
 
 - The notifier "should return a `Future` of your state. This `Future` is what Riverpod watches to know if your data is loading, done, or has an error."
-- "After creating your notifier, don't forget to run the `build_runner` command. This tool generates the necessary Riverpod code from the annotations (like `@Riverpod`) you've added." (The skill's generator command is `dart run build_runner build`, [dart TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/TESTING.md).)
+- "After creating your notifier, don't forget to run the `build_runner` command. This tool generates the necessary Riverpod code from the annotations (like `@Riverpod`) you've added." (The skill's generator command is `dart run build_runner build`, [dart TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/TESTING.md).)
 
 ```dart
 part 'tasks_list_notifier.g.dart';

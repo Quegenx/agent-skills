@@ -188,7 +188,7 @@ flutter:
 
 - **Why:** every `MethodChannel` call is serialized, sent across an asynchronous boundary and deserialized; for "a tight loop processing audio, video, or large buffers, that overhead adds up fast". FFI calls C, C++ or Rust functions directly in the same isolate and returns synchronously, where `MethodChannel` always returns a `Future`.
 - **When:** wrapping an existing native library (image codecs, ML inference, crypto, audio DSP), CPU-bound hot paths, synchronous native calls. **Not when** you need platform APIs: "FFI can't reach into Swift/Kotlin runtime, only into C-ABI libraries"; for one-off async calls `MethodChannel` is "dramatically easier to debug".
-- **The template, two sources.** The article scaffolds with `flutter create --template=plugin_ffi --platforms=android,ios myffiplugin` (a `src/myffiplugin.c` plus bindings that `ffigen` generates from the `.h` named in `ffigen.yaml`). Flutter 3.44 deprecated the `plugin_ffi` template ([VERSIONS.md](VERSIONS.md#344-2026-05-18)); the current route is build hooks with `ffigen`, in [dart FFI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/FFI.md). Both use `ffigen`, so "you never write the binding glue by hand".
+- **The template, two sources.** The article scaffolds with `flutter create --template=plugin_ffi --platforms=android,ios myffiplugin` (a `src/myffiplugin.c` plus bindings that `ffigen` generates from the `.h` named in `ffigen.yaml`). Flutter 3.44 deprecated the `plugin_ffi` template ([VERSIONS.md](VERSIONS.md#344-2026-05-18)); the current route is build hooks with `ffigen`, in [dart FFI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/FFI.md). Both use `ffigen`, so "you never write the binding glue by hand".
 
 ## Testing a plugin
 
@@ -283,7 +283,7 @@ void main() {
 4. **Native tests** for non-trivial Swift or Kotlin logic: XCTest in `example/ios/RunnerTests/`, JUnit in `example/android/app/src/test/` per the article. The docs' locations: JUnit in `android/src/test/`, XCTest in `example/ios/RunnerTests/` and `example/macos/RunnerTests/`, GoogleTest in `linux/test/` and `windows/test/` (https://docs.flutter.dev/testing/testing-plugins).
 
 - **CI:** all four layers on every push: unit and channel tests on Linux, integration tests on macOS (iOS simulator) and Linux (Android emulator), native tests on each platform's runner.
-- **Publishing** (pub points, `dart pub publish --dry-run`, retraction) is in [dart PACKAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/PACKAGES.md#publishing).
+- **Publishing** (pub points, `dart pub publish --dry-run`, retraction) is in [dart PACKAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/PACKAGES.md#publishing).
 
 ## Prove it
 

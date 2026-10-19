@@ -1,8 +1,8 @@
 # Engineering skills
 
-General development: debugging, refactoring, review, planning, source research, migrations, security, delivery, Dart and Effect. Details in the [main README](../../README.md#engineering).
+General development: debugging, refactoring, review, planning, source research, migrations, security, delivery and Effect. Details in the [main README](../../README.md#engineering).
 
-15 skills.
+14 skills.
 
 Category membership is the primary home, not an instruction to install every skill here. Apply the selected job's routes and checks. Required selected-branch dependencies and optional related skills remain distinct.
 
@@ -13,7 +13,6 @@ Category membership is the primary home, not an instruction to install every ski
 | [algorithm-patterns](algorithm-patterns/SKILL.md) | Recognizing algorithm cues: hash maps/sets, windows, prefix sums, graphs and dynamic programming, with duplicate-set detection and iterable/equality qualifications. JavaScript numeric and allocation limits remain source-qualified. |
 | [code-research](code-research/SKILL.md) | Code questions answered from exact source, callers, history and observed results: strongest handles, evidence lanes, version identity, claim ledgers and bounded localization returns. |
 | [code-review](code-review/SKILL.md) | Evidence-based change reviews, P0 to P3 severity, security/scanner triage and repository audits; process-rollout checks stay separate. |
-| [dart](dart/SKILL.md) | Dart language, Effective Dart, async/isolates, runtime libraries and paths, pub/workspaces, testing, CLI and FFI; shared MCP setup routes to Flutter tooling. |
 | [debugging](debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [deployment](deployment/SKILL.md) | Containers, host/DNS moves, backups, releases and npm publishing; verification follows the selected deployment operation. |
 | [developer-docs](developer-docs/SKILL.md) | Task-focused tutorials, how-tos and reference from verified source, checked snippet regions, navigation, redirects and generated Markdown; prose rules stay in anti-slop-writing. |

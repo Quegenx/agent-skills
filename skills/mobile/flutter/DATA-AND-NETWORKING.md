@@ -1,6 +1,6 @@
 # Data and networking
 
-How a Flutter app fetches data over HTTP, turns JSON into typed models, and keeps data on the device. The rules the sources repeat: every request goes through a service and fails loudly (throw or return an error `Result`, never `null`), JSON is decoded into typed classes with explicit casts, heavy parsing leaves the main isolate, and a repository decides whether the local copy or the network wins. Where these classes sit in the app is in [ARCHITECTURE.md](ARCHITECTURE.md); the Dart language (records, patterns, async) is in [dart SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/SKILL.md).
+How a Flutter app fetches data over HTTP, turns JSON into typed models, and keeps data on the device. The rules the sources repeat: every request goes through a service and fails loudly (throw or return an error `Result`, never `null`), JSON is decoded into typed classes with explicit casts, heavy parsing leaves the main isolate, and a repository decides whether the local copy or the network wins. Where these classes sit in the app is in [ARCHITECTURE.md](ARCHITECTURE.md); the Dart language (records, patterns, async) is in [dart SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/SKILL.md).
 
 **Contents:** [Setup for http](#setup-for-http) · [Making requests](#making-requests) · [Showing a request in the UI](#showing-a-request-in-the-ui) · [JSON by hand](#json-by-hand) · [Parsing off the main isolate](#parsing-off-the-main-isolate) · [Generated models](#generated-models) · [Choosing local storage](#choosing-local-storage) · [Key-value data](#key-value-data) · [SQL](#sql) · [Offline first](#offline-first) · [Server reachability](#server-reachability) · [Prove it](#prove-it)
 
@@ -250,7 +250,7 @@ Future<List<User>> fetchUsers(http.Client client) async {
 
 - **Rerun the generator** with `dart run build_runner build` "whenever you make changes to your database or tables" ([ApparenceKit](https://apparencekit.dev/flutter-tips/local-database-flutter-drift-guide/), for Drift).
 - **Scope it in a root `build.yaml`** to speed it up: tell the generators which folders to include and which files or folders to skip (tests, already generated `.g.dart` and `.freezed.dart`), "especially helpful in larger projects" ([ApparenceKit](https://apparencekit.dev/flutter-tips/optimize-flutter-code-generation/); the article shows no `build.yaml` content).
-- **The article's command** is `flutter packages pub run build_runner build --delete-conflicting-outputs`; build_runner's package page runs a build with `dart run build_runner build` (https://pub.dev/packages/build_runner), as [dart TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/TESTING.md) does.
+- **The article's command** is `flutter packages pub run build_runner build --delete-conflicting-outputs`; build_runner's package page runs a build with `dart run build_runner build` (https://pub.dev/packages/build_runner), as [dart TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/TESTING.md) does.
 
 ## Choosing local storage
 

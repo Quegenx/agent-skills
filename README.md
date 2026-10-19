@@ -8,10 +8,10 @@
 | [`skills/agent-workflows/`](./skills/agent-workflows) | Use and customize existing agents such as Codex and Claude: skill authoring, developer-agent onboarding audits, guided learning and coding-host operations. 4 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | General quality guidance for prose, copy, interfaces and code. Select the branch relevant to the task. 5 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design system shape, components, dependency direction and domain boundaries across web, mobile and backend. 3 skills. |
-| [`skills/engineering/`](./skills/engineering) | General development: debugging, refactoring, review, planning, source research, migrations, security, delivery, Dart and Effect. 15 skills. |
+| [`skills/engineering/`](./skills/engineering) | General development: debugging, refactoring, review, planning, source research, migrations, security, delivery and Effect. 14 skills. |
 | [`skills/backend/`](./skills/backend) | APIs, databases, background work and connected services. Provider skills keep their shared contracts and web/mobile client SDKs together. 17 skills. |
 | [`skills/frontend/`](./skills/frontend) | Web/client interfaces, CSS, SVG, accessibility, animation, drawing and browser performance. One global React skill includes Next.js and React Native/Expo. 17 skills. |
-| [`skills/mobile/`](./skills/mobile) | Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. 5 skills. |
+| [`skills/mobile/`](./skills/mobile) | Dart, Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. 6 skills. |
 | [`skills/testing/`](./skills/testing) | Software unit, integration, end-to-end and load testing, including named runners for web and mobile. Choose the project's existing framework. 7 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | General application signals and diagnosis across web, mobile and services: Sentry, PostHog, Grafana and OpenTelemetry. AI-specific Langfuse remains in ai-agents. 4 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing strategy, copy, SEO, advertising, ASO, app growth, campaign analytics, company/competitor research and commercial conversion workflows. 44 skills. |
@@ -131,7 +131,6 @@ Detailed coverage and related task routes are in the [Engineering set README](./
 | [algorithm-patterns](./skills/engineering/algorithm-patterns/SKILL.md) | Algorithm cues, canonical duplicate-set detection, windows, graphs, dynamic programming and numeric/allocation budgets. |
 | [code-research](./skills/engineering/code-research/SKILL.md) | Source investigation, exact anchors, version identity, claim ledgers and coverage limits. |
 | [code-review](./skills/engineering/code-review/SKILL.md) | Evidence-based change reviews, P0 to P3 severity, security/scanner triage and repository audits; process-rollout checks stay separate. |
-| [dart](./skills/engineering/dart/SKILL.md) | Dart language, Effective Dart, async/isolates, runtime libraries and paths, pub/workspaces, testing, CLI and FFI; shared MCP setup routes to Flutter tooling. |
 | [debugging](./skills/engineering/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [deployment](./skills/engineering/deployment/SKILL.md) | Containers, host/DNS moves, backups, releases and npm publishing; verification follows the selected deployment operation. |
 | [developer-docs](./skills/engineering/developer-docs/SKILL.md) | Source-verified developer docs, CI-backed snippets, navigation, redirects and generated output. |
@@ -199,6 +198,7 @@ Detailed coverage and related task routes are in the [Mobile set README](./skill
 | Skill | Covers |
 |---|---|
 | [app-store-connect](./skills/mobile/app-store-connect/SKILL.md) | App Store auth, builds/signing, TestFlight, metadata, subscriptions and review; asc, greenlight and fastlane checks follow the chosen tool. |
+| [dart](./skills/mobile/dart/SKILL.md) | Dart language, Effective Dart, async/isolates, runtime libraries and paths, pub/workspaces, testing, CLI and FFI; shared MCP setup routes to Flutter tooling. |
 | [flutter](./skills/mobile/flutter/SKILL.md) | Flutter architecture, layout, routing, networking, performance, accessibility and release artifacts; separate plugin authoring, canonical MCP/widget-preview tooling and source-qualified Riverpod recipes. |
 | [flutter-render-objects](./skills/mobile/flutter-render-objects/SKILL.md) | Custom RenderObjects, child/parent data, layout, painting, compositing, input, semantics and worked examples; canonical shared definitions and corrected reuse/semantics guidance. |
 | [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community forms, sheets, navigation, scrolling, media and device UX; focused polish and whole-app design reviews have separate acceptance. |

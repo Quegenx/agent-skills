@@ -170,7 +170,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-  Its overrides do not call `super`, and `print` trips the `avoid_print` lint ([dart ANALYSIS-AND-LINTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/ANALYSIS-AND-LINTS.md)). With go_router, pass observers to `GoRouter(observers: [...])` (the PostHog example in [posthog SETUP-FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SETUP-FLUTTER.md)); shell branches need their own list (next section).
+  Its overrides do not call `super`, and `print` trips the `avoid_print` lint ([dart ANALYSIS-AND-LINTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ANALYSIS-AND-LINTS.md)). With go_router, pass observers to `GoRouter(observers: [...])` (the PostHog example in [posthog SETUP-FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SETUP-FLUTTER.md)); shell branches need their own list (next section).
 
 ## Shell routes and tabs
 

@@ -1,8 +1,8 @@
 # Mobile skills
 
-Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. Details in the [main README](../../README.md#mobile).
+Dart, Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. Details in the [main README](../../README.md#mobile).
 
-5 skills.
+6 skills.
 
 Category membership is the primary home, not an instruction to install every skill here. Apply the selected job's routes and checks. Required selected-branch dependencies and optional related skills remain distinct.
 
@@ -11,6 +11,7 @@ Category membership is the primary home, not an instruction to install every ski
 | Skill | Covers |
 |---|---|
 | [app-store-connect](app-store-connect/SKILL.md) | App Store auth, builds/signing, TestFlight, metadata, subscriptions and review; asc, greenlight and fastlane checks follow the chosen tool. |
+| [dart](dart/SKILL.md) | Dart language, Effective Dart, async/isolates, runtime libraries and paths, pub/workspaces, testing, CLI and FFI; shared MCP setup routes to Flutter tooling. |
 | [flutter](flutter/SKILL.md) | Flutter architecture, layout, routing, networking, performance, accessibility and release artifacts; separate plugin authoring, canonical MCP/widget-preview tooling and source-qualified Riverpod recipes. |
 | [flutter-render-objects](flutter-render-objects/SKILL.md) | Custom RenderObjects, child/parent data, layout, painting, compositing, input, semantics and worked examples; canonical shared definitions and corrected reuse/semantics guidance. |
 | [flutter-ux](flutter-ux/SKILL.md) | Community forms, sheets, navigation, scrolling, media and device UX; focused polish and whole-app design reviews have separate acceptance. |
@@ -20,7 +21,6 @@ Category membership is the primary home, not an instruction to install every ski
 
 These are discovery links; follow only the selected task's requirements.
 
-- [dart](../engineering/dart/SKILL.md)
 - [react](../frontend/react/SKILL.md)
 - [patrol](../testing/patrol/SKILL.md)
 - [maestro](../testing/maestro/SKILL.md)

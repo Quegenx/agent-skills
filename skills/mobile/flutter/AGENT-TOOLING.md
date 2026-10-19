@@ -163,7 +163,7 @@ Please think out loud and provide
 - next steps checklist
 ```
 
-- **Nomenclature** [ApparenceKit](https://apparencekit.dev/blog/flutter-cursor-ai-setup/) (Effective Dart naming is in [dart SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/SKILL.md)):
+- **Nomenclature** [ApparenceKit](https://apparencekit.dev/blog/flutter-cursor-ai-setup/) (Effective Dart naming is in [dart SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/SKILL.md)):
 
 ```markdown
 - Use PascalCase for classes.
@@ -186,7 +186,7 @@ Ex: import 'package:apparence_kit/core/data/entities/upload_result.dart';
 - DO avoid relative imports for files in lib/
 ```
 
-  Effective Dart says the opposite: "PREFER relative import paths" (https://dart.dev/effective-dart/usage; lint `prefer_relative_imports`, [dart USAGE-AND-DESIGN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/USAGE-AND-DESIGN.md)). Treat `always_use_package_imports` as a project choice, not as the Dart team's guidance.
+  Effective Dart says the opposite: "PREFER relative import paths" (https://dart.dev/effective-dart/usage; lint `prefer_relative_imports`, [dart USAGE-AND-DESIGN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/USAGE-AND-DESIGN.md)). Treat `always_use_package_imports` as a project choice, not as the Dart team's guidance.
 - **Docs and reusable prompts in Cursor** (as of the article) [ApparenceKit](https://apparencekit.dev/blog/flutter-cursor-ai-setup/): Cmd+P, type "> add new doc", enter a URL, then reference it as `@MyDoc` in prompts; at the time a doc could not be referenced inside a rule. Notepads hold reusable prompts such as `Using our context @context.mdc ApparenceKit guidelines @flutter.mdc and @supabase_api.mdc create a new module that`, invoked as `@newModule [module description and specifications]`.
 - **Why examples in the codebase help** [ApparenceKit](https://apparencekit.dev/blog/flutter-cursor-ai-setup/): pre-made modules and pages give the AI examples to copy, and a pre-configured project matters because "AI can't configure Xcode files".
 

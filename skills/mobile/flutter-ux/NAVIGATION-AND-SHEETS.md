@@ -10,7 +10,7 @@ Modal sheets as routes (a spring sheet, scroll-to-dismiss, the iOS 26 sheet, pop
 - **Page transitions on the web (opinion).** FlutterPro: "no transition on web and desktop" ([FlutterPro](https://flutterpro.design/details/web-page-transitions)). The `ui-animation` skill: "a page transition 400-600 ms" ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md)). Both views are kept.
 - **Guards, router rebuilds and named routes:** see [ROUTE-GUARDS-AND-SHELLS.md](ROUTE-GUARDS-AND-SHELLS.md#where-the-sources-disagree).
 - **`IntrinsicHeight` (tension).** ApparenceKit fits a popup with `IntrinsicHeight`; the Flutter performance docs say "Avoid intrinsics" for list and grid cells ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)). The article applies it to one popup, not to list cells.
-- **Dot shorthands.** FlutterPro code uses `.iOS`, `.android`, `.transparency`, `.vertical(...)`, which need Dart 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md)). The articles state no Dart or Flutter version.
+- **Dot shorthands.** FlutterPro code uses `.iOS`, `.android`, `.transparency`, `.vertical(...)`, which need Dart 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). The articles state no Dart or Flutter version.
 
 ## Pick the sheet
 
@@ -643,7 +643,7 @@ pageTransitionsTheme: PageTransitionsTheme(
 
 ## Date picker that matches the platform
 
-- Dot shorthands in these samples need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+- Dot shorthands in these samples need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
 - The samples import `package:flutter/material.dart` and `package:flutter/cupertino.dart`; Material and Cupertino are moving to their own packages ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time. [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
 
 [FlutterPro](https://flutterpro.design/details/adaptive-date-picker): `CupertinoDatePicker` looks polished, but it's iOS-native. Android users don't expect a scroll-wheel picker for dates, and "An iOS widget dropped into Android can even read as cheap." Use the scroll picker on iOS and the default Material one (`showDatePicker`) on Android.
