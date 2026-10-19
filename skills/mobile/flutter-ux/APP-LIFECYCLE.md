@@ -8,7 +8,7 @@ What the running app shows users across failures and versions: a friendly error 
 
 - No article states a Flutter, Dart or package version. [FlutterPro](https://flutterpro.design/details/friendly-error-view)
 - `FriendlyErrorView` uses dot shorthands (`mainAxisSize: .min`, `mainAxisAlignment: .center`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)), and `Color.withValues(alpha:)`, which replaces `withOpacity` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
-- The samples import `package:flutter/material.dart`; Material is moving to its own package ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
+- The samples import `package:flutter/material.dart`; Material is moving to its own package ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
 
 ## Replace the default error view
 

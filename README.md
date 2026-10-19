@@ -1,6 +1,6 @@
 # Agent skills
 
-144 skills for coding agents, in thirteen sets:
+145 skills for coding agents, in thirteen sets:
 
 | Folder | What it's for |
 |---|---|
@@ -11,13 +11,13 @@
 | [`skills/engineering/`](./skills/engineering) | General development: debugging, refactoring, review, planning, source research, migrations, security, delivery and Effect. 14 skills. |
 | [`skills/backend/`](./skills/backend) | APIs, databases, background work and connected services. Provider skills keep their shared contracts and web/mobile client SDKs together. 17 skills. |
 | [`skills/web-ui/`](./skills/web-ui) | Web/client interfaces, CSS, SVG, accessibility, animation, drawing and browser performance. One global React skill includes Next.js and React Native/Expo. 17 skills. |
-| [`skills/mobile/`](./skills/mobile) | Dart, Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. 6 skills. |
+| [`skills/mobile/`](./skills/mobile) | Dart, Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. 7 skills. |
 | [`skills/testing/`](./skills/testing) | Software unit, integration, end-to-end and load testing, including named runners for web and mobile. Choose the project's existing framework. 7 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | General application signals and diagnosis across web, mobile and services: Sentry, PostHog, Grafana and OpenTelemetry. AI-specific Langfuse remains in ai-agents. 4 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing strategy, copy, SEO, advertising, ASO, app growth, campaign analytics, company/competitor research and commercial conversion workflows. 44 skills. |
 | [`skills/videos/`](./skills/videos) | Make, edit, render and review videos. The code-built film studio and tool-based generation, avatars and editing keep their own workflows. 12 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Drive browsers, extract permitted web data and expose user-visible browser capabilities through WebMCP. 3 skills. |
-| Total | 144 skills in thirteen sets. |
+| Total | 145 skills in thirteen sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -199,9 +199,10 @@ Detailed coverage and related task routes are in the [Mobile set README](./skill
 |---|---|
 | [app-store-connect](./skills/mobile/app-store-connect/SKILL.md) | App Store auth, builds/signing, TestFlight, metadata, subscriptions and review; asc, greenlight and fastlane checks follow the chosen tool. |
 | [dart](./skills/mobile/dart/SKILL.md) | Dart language, Effective Dart, async/isolates, runtime libraries and paths, pub/workspaces, testing, CLI and FFI; shared MCP setup routes to Flutter tooling. |
-| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter architecture, layout, routing, networking, performance, accessibility and release artifacts; separate plugin authoring, canonical MCP/widget-preview tooling and source-qualified Riverpod recipes. |
+| [flutter](./skills/mobile/flutter/SKILL.md) | Flutter app architecture, state, routing, networking, platform integration, performance, accessibility and releases; screen construction routes to flutter-ui. |
 | [flutter-render-objects](./skills/mobile/flutter-render-objects/SKILL.md) | Custom RenderObjects, child/parent data, layout, painting, compositing, input, semantics and worked examples; canonical shared definitions and corrected reuse/semantics guidance. |
-| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community forms, sheets, navigation, scrolling, media and device UX; focused polish and whole-app design reviews have separate acceptance. |
+| [flutter-ui](./skills/mobile/flutter-ui/SKILL.md) | Flutter screen layouts, responsive sizing, themes, typography, images, reusable widgets and animation; source corrections and alternatives preserved. |
+| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Interaction polish: forms, focus, keyboards, sheets, navigation behavior, scrolling, feedback and design reviews; visual construction routes to flutter-ui. |
 | [google-play](./skills/mobile/google-play/SKILL.md) | Play publishing, signing, tracks, policy, pricing, vitals and reviews; gplay build-release checks stay separate from listing-only work. |
 
 ## Testing

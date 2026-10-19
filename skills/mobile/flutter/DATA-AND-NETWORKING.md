@@ -152,7 +152,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
 }
 ```
 
-`Image.network` here caches only in memory: "Restart the app and every image downloads again" ([FlutterPro](https://flutterpro.design/details/cache-network-images); disk caching in [flutter-ux IMAGES-AND-TYPOGRAPHY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/IMAGES-AND-TYPOGRAPHY.md#cache-network-images-on-disk)).
+`Image.network` here caches only in memory: "Restart the app and every image downloads again" ([FlutterPro](https://flutterpro.design/details/cache-network-images); disk caching in [flutter-ui IMAGES-AND-TYPOGRAPHY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/IMAGES-AND-TYPOGRAPHY.md#cache-network-images-on-disk)).
 
 The Compass app's views instead listen to a view model command with `ListenableBuilder`; see [ARCHITECTURE.md](ARCHITECTURE.md#commands).
 

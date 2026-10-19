@@ -181,7 +181,7 @@ SideBarCategoryItem(
 - **Container:** width 280, full height from `LayoutBuilder` (`constraints.maxHeight`) rather than `MediaQuery.of(context).size.height`, "For performance reasons"; a right border at 5% opacity of the foreground color; a `Column` with `CrossAxisAlignment.stretch`. [ApparenceKit](https://apparencekit.dev/blog/how-to-build-flutter-sidebar-menu/)
 - **Category heading:** top padding 16; title padding vertical 10, horizontal 24; uppercase `bodySmall`, color `0xFF666666`, size 11, bold. The author's own improvements: take the color and the text style from the theme.
 - **Item:** three states (active, hovered, inactive). `Material(color: Colors.transparent)` so `InkWell` gives the ripple and `onHover`; outer horizontal padding 16; `Ink` height 40, padding vertical 6 and horizontal 12, radius 12. Active: background color, foreground text at `w600`. Hovered: primary at 30% opacity. Inactive: transparent, text at 80% opacity, `w300`. Icon right padding 12; title on one line with `TextOverflow.ellipsis`. The article says `onHover` fires "only for web".
-- The article shows the sidebar always (tablet and web); it does not switch at a breakpoint. Breakpoints and the navigation rail are in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md).
+- The article shows the sidebar always (tablet and web); it does not switch at a breakpoint. Breakpoints and the navigation rail are in [flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md).
 
 ```dart
 class SideBar extends StatelessWidget {

@@ -96,7 +96,7 @@ extension UserSessionRepositoryProvider on Ref {
 
 ## Listening to app events in a notifier
 
-[ApparenceKit](https://apparencekit.dev/blog/flutter-app-events/). The dispatcher itself is stack-neutral and lives in [flutter-ux WIDGET-PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/WIDGET-PATTERNS.md#global-app-events).
+[ApparenceKit](https://apparencekit.dev/blog/flutter-app-events/). The dispatcher itself is stack-neutral and lives in [flutter-ux WIDGET-PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/APP-EVENTS.md#global-app-events).
 
 ```dart
 part 'lobby_notifier.g.dart';
@@ -268,7 +268,7 @@ Future<void> loadNextPage() async {
 ## Routing and guards
 
 - **Rebuilding `GoRouter` from a provider** that watches the user state, with a global `navigatorKey` and the previous location restored, and the article's own drawback that "it rebuilds the Router on any user state changes": code and the `refreshListenable` comparison are in [flutter-ux ROUTE-GUARDS-AND-SHELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/ROUTE-GUARDS-AND-SHELLS.md) ([ApparenceKit](https://apparencekit.dev/blog/flutter-riverpod-gorouter-redirect/)).
-- **An `AuthGuard` is a `ConsumerWidget`** whose `build(BuildContext context, WidgetRef ref)` watches the user state and hands a `canActivate` future to a `Guard` widget (same file). `WidgetRef ref` belongs to `ConsumerWidget`; a plain `StatelessWidget.build` takes only a `BuildContext` ([flutter-ux THEMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/THEMING.md) notes a source that mixed them up).
+- **An `AuthGuard` is a `ConsumerWidget`** whose `build(BuildContext context, WidgetRef ref)` watches the user state and hands a `canActivate` future to a `Guard` widget (same file). `WidgetRef ref` belongs to `ConsumerWidget`; a plain `StatelessWidget.build` takes only a `BuildContext` ([flutter-ui THEMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/THEMING.md) notes a source that mixed them up).
 - **Error reporting:** Sentry hooks Riverpod through `ProviderScope(observers: [SentryProviderObserver()])` ([sentry FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/sentry/FLUTTER.md)).
 
 ## Prove it

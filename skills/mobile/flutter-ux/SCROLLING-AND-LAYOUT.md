@@ -1,13 +1,13 @@
 # Scrolling and layout
 
-Polish for scrolling screens in Flutter: bottom breathing room instead of `SafeArea` on scroll views, edge-to-edge horizontal lists, status-bar tap to top, scrollbars, keeping a selected tab in view, reserving image space so the layout does not jump, edge fades with `ShaderMask`, a text-scale cap, and `GestureDetector` hit areas. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice, not Flutter team docs. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Image loading and fonts are in [IMAGES-AND-TYPOGRAPHY.md](IMAGES-AND-TYPOGRAPHY.md).
+Polish for scrolling screens in Flutter: bottom breathing room instead of `SafeArea` on scroll views, edge-to-edge horizontal lists, status-bar tap to top, scrollbars, keeping a selected tab in view, edge fades with `ShaderMask`, a text-scale cap, and `GestureDetector` hit areas. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice, not Flutter team docs. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Image loading and fonts are in [IMAGES-AND-TYPOGRAPHY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/IMAGES-AND-TYPOGRAPHY.md).
 
-**Contents:** [Version notes](#version-notes) · [Bottom padding instead of SafeArea](#bottom-padding-instead-of-safearea) · [Horizontal lists inside padded pages](#horizontal-lists-inside-padded-pages) · [Status-bar tap to scroll to top](#status-bar-tap-to-scroll-to-top) · [Scrollbars](#scrollbars) · [Keep the selected tab in view](#keep-the-selected-tab-in-view) · [Reserve image space](#reserve-image-space) · [Edge fades with ShaderMask](#edge-fades-with-shadermask) · [Progressive fade under the status bar](#progressive-fade-under-the-status-bar) · [Text scale cap](#text-scale-cap) · [GestureDetector hit area](#gesturedetector-hit-area) · [Prove it](#prove-it)
+**Contents:** [Version notes](#version-notes) · [Bottom padding instead of SafeArea](#bottom-padding-instead-of-safearea) · [Horizontal lists inside padded pages](#horizontal-lists-inside-padded-pages) · [Status-bar tap to scroll to top](#status-bar-tap-to-scroll-to-top) · [Scrollbars](#scrollbars) · [Keep the selected tab in view](#keep-the-selected-tab-in-view) · [Edge fades with ShaderMask](#edge-fades-with-shadermask) · [Progressive fade under the status bar](#progressive-fade-under-the-status-bar) · [Text scale cap](#text-scale-cap) · [GestureDetector hit area](#gesturedetector-hit-area) · [Prove it](#prove-it)
 
 ## Version notes
 
 - The articles state no Flutter or Dart version. Several samples use dot shorthands (`.symmetric(horizontal: 24)`, `.only(...)`, `.all(24)`, `.topCenter`, `.dstIn`, `.vertical`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)); `separatorBuilder: (_, _) => ...` needs wildcard variables, 3.7+. The others use full names. [FlutterPro](https://flutterpro.design/details/safe-area-replacement)
-- The samples import `package:flutter/material.dart`; `MaterialScrollBehavior`, `Scrollbar`, `Colors` and `MaterialApp` would move with Material to its own package ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
+- The samples import `package:flutter/material.dart`; `MaterialScrollBehavior`, `Scrollbar`, `Colors` and `MaterialApp` would move with Material to its own package ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
 - `textScaler` with `TextScaler.clamp(maxScaleFactor:)` is the current API; `MediaQueryData.textScaleFactor` is deprecated ("Use textScaler instead", deprecated after v3.12.0-2.0.pre). [api.flutter.dev](https://api.flutter.dev/flutter/widgets/MediaQueryData/textScaleFactor.html)
 
 ## Bottom padding instead of SafeArea
@@ -16,7 +16,7 @@ Polish for scrolling screens in Flutter: bottom breathing room instead of `SafeA
 
 **Two views (style choice, pick per screen):**
 
-- **[Flutter docs, via flutter skill]:** `SafeArea` insets for notches, cutouts, the status bar and rounded corners, all four sides on by default; wrap the `Scaffold` body, not the `Scaffold` ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#safearea-and-mediaquery)). It gives no caveat for scrollable bodies.
+- **[Flutter docs, via flutter skill]:** `SafeArea` insets for notches, cutouts, the status bar and rounded corners, all four sides on by default; wrap the `Scaffold` body, not the `Scaffold` ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#safearea-and-mediaquery)). It gives no caveat for scrollable bodies.
 - **[FlutterPro]:** for a scrollable body, skip `SafeArea` and add bottom padding inside the scroll view, sized to the bottom system bar, so content scrolls under it and still ends clear of it.
 
 The goal: breathing room "only at the bottom", sized to the bottom system bar, with a minimum when there is none. It reads `MediaQuery.viewPaddingOf(context).bottom` (view padding, not `padding`). [FlutterPro](https://flutterpro.design/details/safe-area-replacement)
@@ -133,7 +133,7 @@ The rule: "horizontally scrollable widgets should reach the edges. Keep the page
 
 ## Status-bar tap to scroll to top
 
-[FlutterPro](https://flutterpro.design/details/statusbar-tap-scroll): Flutter handles tapping the status bar to scroll to top automatically "when you use `Scaffold` and `CupertinoPageScaffold`" (the flutter skill lists it under automatic platform adaptations, [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)). The catch: "If you have a custom `ScrollController`, you must wrap the `Scaffold` (or `CupertinoPageScaffold`) with a `PrimaryScrollController` and provide that controller down the widget tree".
+[FlutterPro](https://flutterpro.design/details/statusbar-tap-scroll): Flutter handles tapping the status bar to scroll to top automatically "when you use `Scaffold` and `CupertinoPageScaffold`" (the flutter skill lists it under automatic platform adaptations, [flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)). The catch: "If you have a custom `ScrollController`, you must wrap the `Scaffold` (or `CupertinoPageScaffold`) with a `PrimaryScrollController` and provide that controller down the widget tree".
 
 ```dart
 PrimaryScrollController(
@@ -202,7 +202,7 @@ MagicalScrollbar(
 ),
 ```
 
-The flutter skill says to avoid `Platform.isAndroid` and similar checks for layout decisions ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)). `MagicalScrollbar` branches on `defaultTargetPlatform` to decide whether a scrollbar appears, not to size the layout.
+The flutter skill says to avoid `Platform.isAndroid` and similar checks for layout decisions ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)). `MagicalScrollbar` branches on `defaultTargetPlatform` to decide whether a scrollbar appears, not to size the layout.
 
 **Automatic approach** ("Best when you want scrollbars app-wide"): override `MaterialApp.scrollBehavior`. [FlutterPro](https://flutterpro.design/details/scrollbars)
 
@@ -371,56 +371,6 @@ class _Tab extends StatelessWidget {
 - `ListView.builder` builds lazily, so a far-off tab's `currentContext` can be null, and the code just returns (`if (context == null) return;`). The source says no more about it.
 - This sample uses `HitTestBehavior.translucent`, while the same author's hit-area tip says "Make `opaque` your default" ([GestureDetector hit area](#gesturedetector-hit-area)).
 
-## Reserve image space
-
-[FlutterPro](https://flutterpro.design/details/reserve-image-space): an image widget has no size until its bytes arrive, then "snaps to its real height and pushes everything below it down". Fix: "decide the image's box before the bytes show up".
-
-Known ratio, `AspectRatio`:
-
-```dart
-AspectRatio(
-  aspectRatio: 16 / 9,
-  child: Image.network(
-    url, fit: BoxFit.cover,
-  ),
-)
-```
-
-Known exact size (avatars, thumbnails, list leading icons):
-
-```dart
-SizedBox(
-  width: 48,
-  height: 48,
-  child: Image.network(
-    url, 
-    fit: BoxFit.cover,
-  ),
-)
-```
-
-The parent fixes the height (a fixed-height product card): `Expanded` gives the image what is left:
-
-```dart
-SizedBox(
-  height: 320,
-  child: Column(
-    children: [
-      Expanded(
-        child: Image.network(
-          url, fit: BoxFit.cover,
-        ),
-      ),
-      // title, price, button
-    ],
-  ),
-)
-```
-
-- "One catch with `Expanded`: it needs a bounded main axis. `Column` has one, but `ListView` doesn't (its scroll axis is infinite)." The errors this throws are in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#fix-layout-errors). [FlutterPro](https://flutterpro.design/details/reserve-image-space)
-- Not fixes: "`fit` does not reserve space. `BoxFit.cover`, `.fitWidth`, any of them only decide how the image paints inside a box that's *already* been sized." And "Setting only a width still leaves the height to the image's real ratio, unknown until it loads." [FlutterPro](https://flutterpro.design/details/reserve-image-space)
-- To cross-fade the image in once loaded instead of popping, the tip points to the `image_fade` package; see [IMAGES-AND-TYPOGRAPHY.md](IMAGES-AND-TYPOGRAPHY.md#cross-fade-images-in) (the official-docs choice there is built-in `FadeInImage`). [FlutterPro](https://flutterpro.design/details/reserve-image-space)
-
 ## Edge fades with ShaderMask
 
 [FlutterPro](https://flutterpro.design/details/shader-mask): "Long lists aren't obviously scrollable." Fading the edges "signals that it scrolls". `ShaderMask` with `BlendMode.dstIn`, no package.
@@ -588,7 +538,7 @@ Scaffold(
 
 - "The several stops are what make it progressive. A two-color gradient gives a hard linear fade. The extra steps ease the content out gradually, so the top edge feels soft instead of cut." [FlutterPro](https://flutterpro.design/details/progressive-fade)
 - "The mask is alpha-only, so this works the same in light and dark mode." [FlutterPro](https://flutterpro.design/details/progressive-fade)
-- The sample reads `MediaQuery.of(context).size`; the flutter skill measures the window with `MediaQuery.sizeOf(context)` ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#measure-the-window)). The verbatim block is kept; `MediaQuery.sizeOf(context).height` is the skill's form.
+- The sample reads `MediaQuery.of(context).size`; the flutter skill measures the window with `MediaQuery.sizeOf(context)` ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#measure-the-window)). The verbatim block is kept; `MediaQuery.sizeOf(context).height` is the skill's form.
 - The `saveLayer` cost note above applies here too.
 
 ## Text scale cap
@@ -597,7 +547,7 @@ Scaffold(
 
 - **[Flutter docs, via flutter skill]:** Flutter text widgets respect the OS font-size setting; "Make sure your layout has enough room to render all its contents when the font sizes are increased." Test on a small-screen device at the largest font ([flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#design-values)). The flutter skill states no cap.
 - **[FlutterPro](https://flutterpro.design/details/text-scale-factor):** override `MediaQuery.textScaler` and clamp to 1.1: "don't ignore user's preference completely, just it limit to x1.1 at max". "Most apps can handle x1.1 scaling without layout breaks. It's not a magical number. So test for your app and either adapt to it, or limit to x1.0 **only** if you have to." The article shows overflow at x1.8 against x1.0.
-- **Owner's rule (wins over the cap):** never lock or cap text scaling app-wide, at x1.0, x1.1 or any value. When a row breaks at large text, change the structure (`Row` to `Column`), don't shrink the font; `MediaQuery.withClampedTextScaling` belongs only around one region that truly can't grow ([flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#design-values), [flutter RESPONSIVE-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/RESPONSIVE-UNITS.md#enhancement-not-the-base)).
+- **Owner's rule (wins over the cap):** never lock or cap text scaling app-wide, at x1.0, x1.1 or any value. When a row breaks at large text, change the structure (`Row` to `Column`), don't shrink the font; `MediaQuery.withClampedTextScaling` belongs only around one region that truly can't grow ([flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#design-values), [flutter-ui RESPONSIVE-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/RESPONSIVE-UNITS.md#enhancement-not-the-base)).
 
 ```dart
 MaterialApp(
@@ -646,7 +596,6 @@ Tap-target sizes (48x48, 44x44) are in [flutter ACCESSIBILITY.md](https://github
 - **Status bar:** with a custom `ScrollController`, tapping the iOS status bar scrolls to top (a `PrimaryScrollController` wraps the `Scaffold`).
 - **Scrollbars:** on desktop or desktop web, each list shows one working scrollbar, not two; on mobile, long lists that need one have it.
 - **Tabs:** selecting a tab off screen in a custom strip scrolls it to center, including the initial selection.
-- **Layout jump:** every network image sits in a sized box (`AspectRatio`, `SizedBox` with both sides, or `Expanded` in a bounded parent); on a throttled network, nothing below an image moves when it loads.
 - **Fades:** edge fades look the same in light and dark mode; `checkerboardOffscreenLayers` shows whether a fade adds an offscreen layer.
 - **Text scale:** at the largest OS font size, no overflow stripes appear and no app-wide cap suppresses the user's setting; apply the owner's structural-layout rule and its narrowly scoped region exception ([Text scale cap](#text-scale-cap)). The old check accepted the FlutterPro x1.1 app-wide cap.
 - **Hit areas:** tapping the padding or gap of a custom `GestureDetector` row triggers it; competing parent/child `onTap` callbacks follow gesture-arena resolution rather than assuming `translucent` makes both fire. [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html)

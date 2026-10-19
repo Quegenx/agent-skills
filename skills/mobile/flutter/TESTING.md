@@ -292,7 +292,7 @@ void main() {
 }
 ```
 
-**Pin context in context-aware screens** (community practice, from the post behind [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)): "there's a distribution of home screens, one per context. The practical fix is to make context an _injectable input_ so you can pin it in tests." Feed the screen a fabricated `UiContext` and assert the resulting layout, after one more pump for the stream to emit. `FakeEngine` is not defined in the post.
+**Pin context in context-aware screens** (community practice, from the post behind [LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)): "there's a distribution of home screens, one per context. The practical fix is to make context an _injectable input_ so you can pin it in tests." Feed the screen a fabricated `UiContext` and assert the resulting layout, after one more pump for the stream to emit. `FakeEngine` is not defined in the post.
 
 ```dart
 testWidgets('moving commuter gets the quick action', (tester) async {

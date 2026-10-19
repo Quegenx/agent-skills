@@ -147,7 +147,7 @@ class HomeViewModel {
 
 - **UI state is an immutable snapshot** of the data needed to fully render a view. Expose lists as `UnmodifiableListView<BookingSummary> get bookings => UnmodifiableListView(_bookings);`. For complex state you might create a `HomeUiState` class.
 - **Extend `ChangeNotifier`** (or use `Listenable`) and call `notifyListeners()` when new data arrives (the Compass `_load` example calls it in a `finally` block). The flow: repository provides state, view model updates, `notifyListeners`, view re-renders.
-- **Combine data from two repositories in the view model** (or the domain layer). Repositories never know about each other. A community alternative for one action that many services react to: a global `AppEventsDispatcher` stream each service listens to, tested by publishing events ([flutter-ux WIDGET-PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/WIDGET-PATTERNS.md#global-app-events)).
+- **Combine data from two repositories in the view model** (or the domain layer). Repositories never know about each other. A community alternative for one action that many services react to: a global `AppEventsDispatcher` stream each service listens to, tested by publishing events ([flutter-ux WIDGET-PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/APP-EVENTS.md#global-app-events)).
 
 The skill's service, repository, view model and view, end to end:
 
@@ -582,7 +582,7 @@ class SubscribeButtonStyle {
 
 - **Depend or read once.** Choose dependency-creating versus one-shot lookups using the canonical [ancestor lookup rules](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-render-objects/ELEMENTS.md#ancestor-and-descendant-lookups). Keep that lookup fresh across builds; costs are in [PERFORMANCE.md](PERFORMANCE.md#build-cost).
   - P2 correction: the old line grouped `Form.of` and `Scrollable.of` with the one-shot `Scaffold.of` lookup. The official dependency distinction and original renderobjects source claim are recorded at that owner. [Form.of](https://api.flutter.dev/flutter/widgets/Form/of.html), [Scrollable.of](https://api.flutter.dev/flutter/widgets/Scrollable/of.html)
-- **An `InheritedNotifier` in practice:** a `ThemeProvider` above `MaterialApp` switches the theme mode without a restart ([flutter-ux THEMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/THEMING.md)).
+- **An `InheritedNotifier` in practice:** a `ThemeProvider` above `MaterialApp` switches the theme mode without a restart ([flutter-ui THEMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/THEMING.md)).
 
 - **Community packages.** The state management options page no longer names packages; it points to the pub.dev `state-management` topic and says the best choice depends on the app's complexity, the team's preferences and the problem. The architecture pages name `riverpod`, `flutter_bloc` and `signals` as alternatives to `ChangeNotifier`, and the Compass UI could have used streams or those libraries. One third-party Riverpod architecture, and where it departs from this file, is [RIVERPOD.md](RIVERPOD.md).
 - **Start with `provider`** if you are new to Flutter and have no strong reason for another approach (Redux, Rx, hooks). Install with `flutter pub add provider`, import `package:provider/provider.dart`. Three concepts: `ChangeNotifier`, `ChangeNotifierProvider`, `Consumer`.

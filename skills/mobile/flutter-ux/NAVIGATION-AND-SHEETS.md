@@ -358,7 +358,7 @@ Navigator.of(context).push(
 );
 ```
 
-- **Platform switch:** this picks the route by `defaultTargetPlatform`. The official rule against `Platform.isAndroid` covers "layout decisions or assumptions about what a device can do" ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)), and the same file lists bottom navigation per platform (`NavigationBar` on Android, `CupertinoTabBar` on iOS).
+- **Platform switch:** this picks the route by `defaultTargetPlatform`. The official rule against `Platform.isAndroid` covers "layout decisions or assumptions about what a device can do" ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)), and the same file lists bottom navigation per platform (`NavigationBar` on Android, `CupertinoTabBar` on iOS).
 - **Official alternative:** Flutter 3.44 added `CupertinoSheetRoute.scrollableBuilder` and deprecated its `builder`/`pageBuilder` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)). The article does not mention it or say whether it gives the iOS 26 look.
 
 ## Popup that fits its content
@@ -644,13 +644,13 @@ pageTransitionsTheme: PageTransitionsTheme(
 ## Date picker that matches the platform
 
 - Dot shorthands in these samples need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
-- The samples import `package:flutter/material.dart` and `package:flutter/cupertino.dart`; Material and Cupertino are moving to their own packages ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time. [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+- The samples import `package:flutter/material.dart` and `package:flutter/cupertino.dart`; Material and Cupertino are moving to their own packages ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time. [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
 
 [FlutterPro](https://flutterpro.design/details/adaptive-date-picker): `CupertinoDatePicker` looks polished, but it's iOS-native. Android users don't expect a scroll-wheel picker for dates, and "An iOS widget dropped into Android can even read as cheap." Use the scroll picker on iOS and the default Material one (`showDatePicker`) on Android.
 
 - **Custom design is no reason to skip it.** The Material picker is platform UI, so users read the exception as normal. You can still theme it; keep the skeleton layout, "which is muscle memory for Android users."
 - **Packages:** the author has "yet to find one neutral enough to justify mixing with a custom design."
-- **Fits the official rules:** Flutter's `.adaptive()` constructors substitute Cupertino on iOS for switches, sliders, dialogs and more ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)); this tip does the same by hand for the date picker. It branches a platform-idiom widget on `defaultTargetPlatform`, which [flutter PLATFORM-INTEGRATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PLATFORM-INTEGRATION.md) names; [flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) rule 2 forbids branching *layout* on `Platform.isAndroid`, a different thing.
+- **Fits the official rules:** Flutter's `.adaptive()` constructors substitute Cupertino on iOS for switches, sliders, dialogs and more ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)); this tip does the same by hand for the date picker. It branches a platform-idiom widget on `defaultTargetPlatform`, which [flutter PLATFORM-INTEGRATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PLATFORM-INTEGRATION.md) names; [flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) rule 2 forbids branching *layout* on `Platform.isAndroid`, a different thing.
 
 Call it and await the picked date. It returns `null` when the user dismisses the sheet, so keep the old value then:
 

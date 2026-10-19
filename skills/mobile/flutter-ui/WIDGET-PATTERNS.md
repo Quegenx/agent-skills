@@ -1,8 +1,8 @@
 # Widget patterns
 
-Small widget recipes and the framework mechanics behind them: avatars, app bars, overlays and tutorial overlays, zoom and pan, flex and row height, `OverflowBar` vs `Wrap`, selectable text, window-size changes, Stack clipping, keys, Actions and Intents, builders and factories, and global app events. Lifecycle and first-frame work is in [APP-LIFECYCLE.md](APP-LIFECYCLE.md); paged lists and loading are in [PAGINATION-AND-LOADING.md](PAGINATION-AND-LOADING.md). Source: ApparenceKit tips and blog posts (apparencekit.dev, third-party; no article states a Flutter version), checked against api.flutter.dev where an API is named. Theming is in [THEMING.md](THEMING.md); lifecycle and scrolling tips from FlutterPro are in [APP-LIFECYCLE.md](APP-LIFECYCLE.md) and [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md).
+Small widget recipes and the framework mechanics behind them: avatars, app bars, overlays and tutorial overlays, zoom and pan, flex and row height, `OverflowBar` vs `Wrap`, selectable text, window-size changes, Stack clipping, keys, Actions and Intents, builders and factories. Lifecycle and first-frame work is in [APP-LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/APP-LIFECYCLE.md); paged lists and loading are in [PAGINATION-AND-LOADING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/PAGINATION-AND-LOADING.md). Source: ApparenceKit tips and blog posts (apparencekit.dev, third-party; no article states a Flutter version), checked against api.flutter.dev where an API is named. Theming is in [THEMING.md](THEMING.md); lifecycle and scrolling tips from FlutterPro are in [APP-LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/APP-LIFECYCLE.md) and [SCROLLING-AND-LAYOUT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/SCROLLING-AND-LAYOUT.md).
 
-**Contents:** [Circular avatar with a border](#circular-avatar-with-a-border) · [Round button](#round-button) · [Custom app bar](#custom-app-bar) · [Overlays](#overlays) · [Tutorial overlays with pal_widgets](#tutorial-overlays-with-pal_widgets) · [Zoom and pan](#zoom-and-pan) · [Flex and row height](#flex-and-row-height) · [OverflowBar and Wrap](#overflowbar-and-wrap) · [Selectable text](#selectable-text) · [React to window size changes](#react-to-window-size-changes) · [Draw outside a Stack](#draw-outside-a-stack) · [Keys](#keys) · [Child to parent with Actions and Intents](#child-to-parent-with-actions-and-intents) · [Builders and factories](#builders-and-factories) · [Global app events](#global-app-events) · [Prove it](#prove-it)
+**Contents:** [Circular avatar with a border](#circular-avatar-with-a-border) · [Round button](#round-button) · [Custom app bar](#custom-app-bar) · [Overlays](#overlays) · [Tutorial overlays with pal_widgets](#tutorial-overlays-with-pal_widgets) · [Zoom and pan](#zoom-and-pan) · [Flex and row height](#flex-and-row-height) · [OverflowBar and Wrap](#overflowbar-and-wrap) · [Selectable text](#selectable-text) · [React to window size changes](#react-to-window-size-changes) · [Draw outside a Stack](#draw-outside-a-stack) · [Keys](#keys) · [Child to parent with Actions and Intents](#child-to-parent-with-actions-and-intents) · [Builders and factories](#builders-and-factories) · [Prove it](#prove-it)
 
 ## Circular avatar with a border
 
@@ -157,7 +157,7 @@ InteractiveViewer(
 
 ## Flex and row height
 
-- **Flex allocation and the correction to ApparenceKit's fixed-flex claim:** [the canonical `Expanded` / `Flexible` rule](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint), checked against the [Expanded constructor](https://api.flutter.dev/flutter/widgets/Expanded/Expanded.html). [ApparenceKit](https://apparencekit.dev/blog/flutter-flex/)
+- **Flex allocation and the correction to ApparenceKit's fixed-flex claim:** [the canonical `Expanded` / `Flexible` rule](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint), checked against the [Expanded constructor](https://api.flutter.dev/flutter/widgets/Expanded/Expanded.html). [ApparenceKit](https://apparencekit.dev/blog/flutter-flex/)
 
 ```dart
 Column(
@@ -324,9 +324,9 @@ class _DeviceSizeBuilderState extends State<DeviceSizeBuilder>
 }
 ```
 
-- **`MediaQuery.of` vs `sizeOf`.** Flutter recommends `MediaQuery.sizeOf(context)` over `MediaQuery.of` "for performance reasons", since `sizeOf` rebuilds only when the size changes ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#measure-the-window)). The getter becomes `double get viewportWidth => MediaQuery.sizeOf(context).width;`.
-- **Breakpoints and names, two views.** ApparenceKit: buckets named `DeviceType` at 768 / 1024 / 1280. Flutter: the Material breakpoints (600 for compact) and "Never branch on hardware type" ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint)). The builder branches on window width, not hardware, so only the naming and the values differ.
-- ApparenceKit's `ResponsiveLayout` widget uses `LayoutBuilder` constraints and predefined breakpoints to pick a child (small, medium, large); its code is only in an external gist. [ApparenceKit](https://apparencekit.dev/flutter-tips/responsive-layout/) The `LayoutBuilder` breakpoint workflow is in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint).
+- **`MediaQuery.of` vs `sizeOf`.** Flutter recommends `MediaQuery.sizeOf(context)` over `MediaQuery.of` "for performance reasons", since `sizeOf` rebuilds only when the size changes ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#measure-the-window)). The getter becomes `double get viewportWidth => MediaQuery.sizeOf(context).width;`.
+- **Breakpoints and names, two views.** ApparenceKit: buckets named `DeviceType` at 768 / 1024 / 1280. Flutter: the Material breakpoints (600 for compact) and "Never branch on hardware type" ([flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint)). The builder branches on window width, not hardware, so only the naming and the values differ.
+- ApparenceKit's `ResponsiveLayout` widget uses `LayoutBuilder` constraints and predefined breakpoints to pick a child (small, medium, large); its code is only in an external gist. [ApparenceKit](https://apparencekit.dev/flutter-tips/responsive-layout/) The `LayoutBuilder` breakpoint workflow is in [flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint).
 
 ## Draw outside a Stack
 
@@ -355,7 +355,7 @@ return Stack(
 ## Keys
 
 - "Most of the time you don't need to use a widget key in Flutter. A new widget will only be used to update an existing element if its key is the same as the key of the current widget associated with that element." "Key allows Flutter to link an element from the ElementTree and a widget. If you ... swap two widgets with keys in the widget tree, Flutter will also swap these in the element tree." [ApparenceKit](https://apparencekit.dev/flutter-tips/why-use-flutter-widget-keys/)
-- Use keys to clone a widget state across pages or tabs, change a widget's order inside a list, preserve scroll position (`PageStorageKey`, [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#input-and-state)), identify widgets and their state, and identify widgets in tests ([flutter TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/TESTING.md)). [ApparenceKit](https://apparencekit.dev/flutter-tips/why-use-flutter-widget-keys/)
+- Use keys to clone a widget state across pages or tabs, change a widget's order inside a list, preserve scroll position (`PageStorageKey`, [flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#input-and-state)), identify widgets and their state, and identify widgets in tests ([flutter TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/TESTING.md)). [ApparenceKit](https://apparencekit.dev/flutter-tips/why-use-flutter-widget-keys/)
 - A `GlobalKey` is unique across the whole app: "you should not create a new GlobalKey every time your widget builds. Instead, think of it as a long-lasting object that belongs to a widget's state." [ApparenceKit](https://apparencekit.dev/flutter-tips/understanding-keys-flutter/)
 - Reach a `StatefulWidget`'s state from outside, for example to validate a `Form` [ApparenceKit](https://apparencekit.dev/flutter-tips/understanding-keys-flutter/):
 
@@ -422,70 +422,6 @@ widget.optionBuilder(widget.keys[index], _selectedIndex == index)
 ```
 
 - **Widget factories.** An abstract factory with a method (`create`) that builds the widget, concrete factories per variation (radio style, checkbox style), and a helper that takes a factory and calls `create`. "This pattern is different from basic builder patterns because you're often using premade build functions provided by the factory." [ApparenceKit](https://apparencekit.dev/flutter-tips/delegate-widget-design-with-factories/) (Code is an image only.) `pal_widgets`' `widgetFactory: AnchoredCircleHoleHelper.anchorFactory` is one in use ([above](#tutorial-overlays-with-pal_widgets)).
-
-## Global app events
-
-[ApparenceKit](https://apparencekit.dev/blog/flutter-app-events/)
-
-- **The problem:** one action (a game ends) calls many services directly (`serviceA.onGameEnded()`, `reviewService.onGameEnded()`, `ratingService.onGameEnded()`, `experienceService.onGameEnded()`...). You get concurrency you cannot follow ("You don't know who is doing something before another"), services that know each other, and code that is "completely impossible to test ... with unit test".
-- **The fix:** the Observer pattern with one global queue, a single `AppEventsDispatcher` instance ("So only one queue will be available for our all app"). Each service listens for the events it cares about; tests "simply have to publish events". `asBroadcastStream` "allow you to have multiple simultaneous listeners".
-
-```dart
-class AppEventsDispatcher<T extends AppEvent> {
-  final StreamController<T> _controller;
-  late final Stream<T?> _stream;
-
-  Stream<T?> get stream => _stream;
-
-  final List<T> _onNotificationEventsSubscriber;
-
-  AppEventsDispatcher()
-      : _onNotificationEventsSubscriber = [],
-        _controller = StreamController() {
-    _stream = _controller.stream.asBroadcastStream();
-  }
-
-  void dispose() {
-    _onNotificationEventsSubscriber.clear();
-    _controller.close();
-  }
-
-  void publish(T event) {
-    _controller.add(event);
-  }
-}
-```
-
-```dart
-sealed class AppEvent { }
-
-// or
-
-abstract class AppEvent { }
-```
-
-```dart
-appEventDispatcher.stream.listen(onEvent);
-```
-
-```dart
-Future<void> onEvent(AppEvent? event) async {
-    if (event == null) {
-	    return;
-    }
-    switch (event) {
-      case OnStartGameEvent endGameEvent:
-        // handle startGame
-      case OnEndGameEvent endGameEvent:
-	      // handle endGameEvent
-      default:
-    }
-}
-```
-
-- The author prefers `sealed` because "it has the advantage to force me handling any new cases I add"; the article's own `default:` branch turns that exhaustiveness check off (exhaustiveness: [dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). `_onNotificationEventsSubscriber` is only ever cleared.
-- **Buffering, two views.** The article's single-subscription `StreamController()` accepts `publish` calls with no listener, and `asBroadcastStream` subscribes only on its first listen, so earlier events are buffered. The Dart guidance says "A `StreamController` must wait for a subscriber before starting work (it buffers events with no subscriber, which risks a memory leak)" ([dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md)); the flutter skill's own key-value recipe uses `StreamController<bool>.broadcast()` ([flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md)). The article's design keeps services unaware of each other, which also fits "Repositories never know about each other" ([flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md)).
-- "Getting further" (no code): events with a priority, consumed by the first service that needs them; a queue consumed one by one; a replayable queue; "make sure something will only be done once." "Don't forget to close the stream subscription" when the listener does not stay alive.
 
 ## Prove it
 

@@ -375,7 +375,7 @@ void _handleExit(PointerExitEvent event) {
 
 [renderobjects](https://renderobjects.com/guides/mouse-cursors/):
 
-- **Mobile has no mouse.** Never make essential function depend on hover; "Hover is for affordance polish on desktop and web, not for primary interaction." (Matches [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md): solve touch first.)
+- **Mobile has no mouse.** Never make essential function depend on hover; "Hover is for affordance polish on desktop and web, not for primary interaction." (Matches [flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md): solve touch first.)
 - **`basic` is not "no opinion".** It overrides ancestors and descendants; use `MouseCursor.defer`. Defaulting to `basic` breaks nested cursor regions.
 - **A `click` cursor with no click action "is lying".** Provide the interaction, use another cursor, or defer.
 - **Refresh after cursor-only state changes** with `markNeedsPaint()`.

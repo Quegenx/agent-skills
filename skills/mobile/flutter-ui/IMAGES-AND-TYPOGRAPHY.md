@@ -1,13 +1,63 @@
 # Images and typography
 
-How images and text arrive on screen without popping, jumping or looking off-brand in Flutter: a disk cache for network images, placeholders and cross-fades, preloading icons and Google Fonts during the splash screen, tabular figures, the yellow-underline default text style, and selection colors. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice that leans on pub packages (`extended_image`, `image_fade`, `flutter_svg`, `google_fonts`), not Flutter team docs. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Reserving an image's box so the layout does not jump is in [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md#reserve-image-space).
+How images and text arrive on screen without popping, jumping or looking off-brand in Flutter: a disk cache for network images, placeholders and cross-fades, preloading icons and Google Fonts during the splash screen, tabular figures, the yellow-underline default text style, and selection colors. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice that leans on pub packages (`extended_image`, `image_fade`, `flutter_svg`, `google_fonts`), not Flutter team docs. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Reserving an image's box so the layout does not jump is covered below.
 
-**Contents:** [Version notes](#version-notes) · [Cache network images on disk](#cache-network-images-on-disk) · [Cross-fade images in](#cross-fade-images-in) · [Preload icons during the splash](#preload-icons-during-the-splash) · [Preload Google Fonts](#preload-google-fonts) · [Tabular figures](#tabular-figures) · [Yellow underlines](#yellow-underlines) · [Selection color](#selection-color) · [Line height, wrapping and trim](#line-height-wrapping-and-trim) · [Prove it](#prove-it)
+**Contents:** [Version notes](#version-notes) · [Reserve image space](#reserve-image-space) · [Cache network images on disk](#cache-network-images-on-disk) · [Cross-fade images in](#cross-fade-images-in) · [Preload icons during the splash](#preload-icons-during-the-splash) · [Preload Google Fonts](#preload-google-fonts) · [Tabular figures](#tabular-figures) · [Yellow underlines](#yellow-underlines) · [Selection color](#selection-color) · [Line height, wrapping and trim](#line-height-wrapping-and-trim) · [Prove it](#prove-it)
 
 ## Version notes
 
 - No article states a Flutter, Dart or package version. Check `svg.cache`, `SvgAssetLoader`, `cacheKey(null)` and `loadBytes(null)` against the current `flutter_svg`, and `GoogleFonts.pendingFonts` and `extended_image`'s `cache: true` against their current packages, before copying.
 - `Colors.purple.withValues(alpha: 0.3)` uses the current API (`withOpacity` is deprecated, [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
+
+## Reserve image space
+
+[FlutterPro](https://flutterpro.design/details/reserve-image-space): an image widget has no size until its bytes arrive, then "snaps to its real height and pushes everything below it down". Fix: "decide the image's box before the bytes show up".
+
+Known ratio, `AspectRatio`:
+
+```dart
+AspectRatio(
+  aspectRatio: 16 / 9,
+  child: Image.network(
+    url, fit: BoxFit.cover,
+  ),
+)
+```
+
+Known exact size (avatars, thumbnails, list leading icons):
+
+```dart
+SizedBox(
+  width: 48,
+  height: 48,
+  child: Image.network(
+    url, 
+    fit: BoxFit.cover,
+  ),
+)
+```
+
+The parent fixes the height (a fixed-height product card): `Expanded` gives the image what is left:
+
+```dart
+SizedBox(
+  height: 320,
+  child: Column(
+    children: [
+      Expanded(
+        child: Image.network(
+          url, fit: BoxFit.cover,
+        ),
+      ),
+      // title, price, button
+    ],
+  ),
+)
+```
+
+- "One catch with `Expanded`: it needs a bounded main axis. `Column` has one, but `ListView` doesn't (its scroll axis is infinite)." The errors this throws are in [flutter-ui LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/LAYOUT-AND-RESPONSIVE.md#fix-layout-errors). [FlutterPro](https://flutterpro.design/details/reserve-image-space)
+- Not fixes: "`fit` does not reserve space. `BoxFit.cover`, `.fitWidth`, any of them only decide how the image paints inside a box that's *already* been sized." And "Setting only a width still leaves the height to the image's real ratio, unknown until it loads." [FlutterPro](https://flutterpro.design/details/reserve-image-space)
+- To cross-fade the image in once loaded instead of popping, the tip points to the `image_fade` package; see [IMAGES-AND-TYPOGRAPHY.md](IMAGES-AND-TYPOGRAPHY.md#cross-fade-images-in) (the official-docs choice there is built-in `FadeInImage`). [FlutterPro](https://flutterpro.design/details/reserve-image-space)
 
 ## Cache network images on disk
 
@@ -197,7 +247,7 @@ Future<void> _preloadOtherFonts() async {
 ```
 
 - "`GoogleFonts.inter()` doesn't load the whole font. It only loads weight 400, normal style. So when preloading, specify the exact weights and styles you've used in your app. If you used `w700` on a heading and `w400` italic on a caption, preload both." [FlutterPro](https://flutterpro.design/details/google-fonts-glitch)
-- The rule: "preload fonts you need immediately, then load the rest in the background." [FlutterPro](https://flutterpro.design/details/google-fonts-glitch) [flutter SCALE-KIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SCALE-KIT.md) sets `GoogleFonts.inter` as a default font and says nothing about preloading.
+- The rule: "preload fonts you need immediately, then load the rest in the background." [FlutterPro](https://flutterpro.design/details/google-fonts-glitch) [flutter-ui SCALE-KIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/SCALE-KIT.md) sets `GoogleFonts.inter` as a default font and says nothing about preloading.
 
 ## Tabular figures
 
@@ -263,13 +313,15 @@ ThemeData(
 
 ## Line height, wrapping and trim
 
-Owner's rules, checked against api.flutter.dev; the full CSS-to-Flutter list is [flutter RESPONSIVE-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/RESPONSIVE-UNITS.md#the-parallel-list).
+Owner's rules, checked against api.flutter.dev; the full CSS-to-Flutter list is [flutter-ui RESPONSIVE-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ui/RESPONSIVE-UNITS.md#the-parallel-list).
 
 - **Space by the line, not magic numbers** (CSS `lh`). A line is `fontSize * TextStyle.height` tall; `StrutStyle` fixes the line height for a whole paragraph ([StrutStyle](https://api.flutter.dev/flutter/painting/StrutStyle-class.html)); `leadingDistribution: TextLeadingDistribution.even` splits the extra leading above and below like CSS, where the default `proportional` does not ([TextLeadingDistribution](https://api.flutter.dev/flutter/dart-ui/TextLeadingDistribution.html)). `TextStyle` has no `cap` unit.
 - **No `text-wrap: balance` or `pretty`.** Don't truncate headings without a reason: wrapping is already the default (`DefaultTextStyle.softWrap` is `true`, [softWrap](https://api.flutter.dev/flutter/widgets/DefaultTextStyle/softWrap.html)), so leave `maxLines` and `TextOverflow.ellipsis` off headings. For chat bubbles and tags that should hug their text, `textWidthBasis: TextWidthBasis.longestLine`: "The width will be exactly enough to contain the longest line" ([TextWidthBasis](https://api.flutter.dev/flutter/painting/TextWidthBasis.html)).
 - **No `text-box-trim`.** `TextHeightBehavior(applyHeightToFirstAscent: false)` uses the font's default ascent for the first line, so it only drops the extra line height above line one, and "only has effect if a non-null TextStyle.height is specified" ([applyHeightToFirstAscent](https://api.flutter.dev/flutter/dart-ui/TextHeightBehavior/applyHeightToFirstAscent.html)). Closer to CSS: `applyHeightToFirstAscent: false` with `applyHeightToLastDescent: false` and `TextLeadingDistribution.even`, then manual padding for the cap-height part.
 
 ## Prove it
+
+- **Layout jump:** every network image sits in a sized box (`AspectRatio`, `SizedBox` with both sides, or `Expanded` in a bounded parent); on a throttled network, nothing below an image moves when it loads.
 
 - **Disk cache:** load a screen of network images, kill and relaunch the app offline; images that use the disk-cached provider still show.
 - **Loading states:** on a throttled network, image placeholders are a flat light box or shimmer (no spinner), images fade in instead of popping, and a broken URL shows a small icon with no error text.
