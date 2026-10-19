@@ -480,7 +480,7 @@ Future<void> main() {
 | Next device test fails | The previous run left the app installed |
 | Code matching a class name fails in an obfuscated build | Obfuscation renames symbols; see [BUILD-AND-RELEASE.md](BUILD-AND-RELEASE.md) |
 | Test hangs on `compute` or other isolate work | Wrap the work in `tester.runAsync()` ([TESTING-RECIPES.md](TESTING-RECIPES.md#widget-test-recipes)) |
-| Later tests fail after one that expected an error | Reset `FlutterError.onError` after the check |
+| Later tests fail after one that expected an error | Use the canonical [expected-framework-exception recipe](TESTING-RECIPES.md#widget-test-recipes), retaining the test binding's handler. P2 correction: the old row said to reset `FlutterError.onError`; [takeException](https://api.flutter.dev/flutter/flutter_test/TestWidgetsFlutterBinding/takeException.html) acknowledges expected framework exceptions. |
 | A custom render object shows only its class name in a failure | Implement `debugFillProperties`; dump the tree with `debugDumpRenderTree()` ([../flutter-render-objects/DIAGNOSTICS.md](../flutter-render-objects/DIAGNOSTICS.md)) |
 
 ## Prove it

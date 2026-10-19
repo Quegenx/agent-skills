@@ -7,7 +7,7 @@ An audit scores a store listing field by field, finds wasted characters and repe
 ## Inputs
 
 - **Identify the app and scope:** App ID (Apple numeric ID or Google Play package name), target country (default US), platform (iOS, Android or both). [eronred]
-- **Read the marketing context first.** Every [eronred] skill starts by reading `app-marketing-context.md` in the workspace; if it doesn't exist, offer once per session to create it.
+- **Read the shared product context first,** including its [mobile app fields](../../anti-ai-slop/anti-slop-copy/CONTEXT.md#mobile-app-context). The [eronred] source used `app-marketing-context.md`; recognize that legacy name through the shared context's discovery rules rather than creating a second file. [eronred, app-marketing-context]
 - **Find the listing** [coreyhaines31/marketingskills, aso]: `apps.apple.com/{country}/app/{name}/id{digits}` is Apple, `play.google.com/store/apps/details?id={package}` is Google; given only a name, search `site:apps.apple.com "{app name}"` or `site:play.google.com "{app name}"`.
 - **Fields to read from a live listing** [coreyhaines31/marketingskills, aso]: Apple: name, subtitle, description, promotional text, primary and secondary category, screenshots (count, order, captions), preview, rating and count, visible reviews, price and IAPs, developer, last updated, version notes, age rating, size, languages, in-app events. Play: name, short and full description, category and tags, feature graphic, screenshots, preview, rating and count, visible reviews, price and IAPs, developer, last updated, What's New, downloads range, content rating, Data safety, languages.
 - **What a fetch misses** [coreyhaines31/marketingskills, aso]: stores render client-side, so "note gaps and work with what's available. Ask the user to paste missing fields if critical." A page fetch can't read screenshot images or caption text: capture a full-page screenshot of the listing (or ask the user for one). Apple's promotional text "is often indistinguishable from [the description] in scraped HTML. If you cannot confirm its presence, note this and recommend the user check App Store Connect."
@@ -17,6 +17,8 @@ An audit scores a store listing field by field, finds wasted characters and repe
 ## The weighted score
 
 [eronred] Score each factor 0 to 10; the ASO Score is the weighted average out of 100.
+
+**Source arithmetic correction:** the printed iOS percentage weights below sum to 110%, not 100%; using the printed Android description weight would sum to 120%. Preserve the source values, but do not report their unnormalized sum as a score out of 100. Divide the weighted sum of the 0 to 10 factor scores by the actual sum of their selected weights, then multiply that 0 to 10 average by 10. Keep the separate Play out-of-60 method below distinct. [eronred, ASO audit; arithmetic from the source table]
 
 | Factor | Weight | Key checks |
 |---|---|---|
@@ -40,14 +42,16 @@ An audit scores a store listing field by field, finds wasted characters and repe
 
 [rorkai] Run per locale on the pulled `./metadata` files; they read local files only, with no network calls. The source introduces them as "these 5 checks" but lists six; all six are kept.
 
+Source severity mapping: Error becomes P1, Warning P2 and Info P3 in this report, using the [shared severity convention](../../architecture/code-review/REVIEWER.md#tags-and-output). These labels do not imply P0 urgency. [rorkai]
+
 | # | Check | Rule | Severity |
 |---|---|---|---|
-| 1 | Keyword waste | tokens of the subtitle (and name) that also appear in keywords | Warning |
-| 2 | Underutilized fields | keywords under 90/100 ("90%+ usage maximizes indexing"); subtitle under 20/30 ("65%+ usage recommended") | Warning |
-| 3 | Missing fields | `subtitle`, `keywords`, `description`, `whatsNew` | Error |
-| 4 | Bad separators | spaces after commas, semicolons, pipes | Error |
-| 5 | Cross-locale gaps | keywords identical (case-insensitive) to the primary locale: likely not localized | Warning |
-| 6 | Description keyword coverage | substring check including inflections; don't flag Latin keywords in non-Latin descriptions | Info |
+| 1 | Keyword waste | tokens of the subtitle (and name) that also appear in keywords | P2 |
+| 2 | Underutilized fields | keywords under 90/100 ("90%+ usage maximizes indexing"); subtitle under 20/30 ("65%+ usage recommended") | P2 |
+| 3 | Missing fields | `subtitle`, `keywords`, `description`, `whatsNew` | P1 |
+| 4 | Bad separators | spaces after commas, semicolons, pipes | P1 |
+| 5 | Cross-locale gaps | keywords identical (case-insensitive) to the primary locale: likely not localized | P2 |
+| 6 | Description keyword coverage | substring check including inflections; don't flag Latin keywords in non-Latin descriptions | P3 |
 
 - **Tokenize by script:** Latin and Cyrillic split on whitespace, strip punctuation, lowercase; CJK split on `、` `，` `,` or per character; Arabic also strips the ال prefix ("القرآن" flags "قرآن").
 - **Non-Latin storefronts:** Arabic ال normalization is "likely"; hamza variants ("قران" vs "قرآن") target different queries; Chinese tokens split on `、` and `，`; in Cyrillic storefronts, include the Latin spelling (e.g. "quran") for Latin-script searchers.
@@ -111,3 +115,4 @@ Data here comes from App Store Connect through Appeeky Connect (third-party): co
 - Keyword field uses at least 90 of 100, subtitle at least 20 of 30; no non-primary locale has keywords identical to the primary.
 - `subtitle`, `keywords` and `description` exist in every locale, and `whatsNew` in every locale of every version after the first.
 - Every recommended keyword has a popularity or volume number from a data source behind it.
+- A weighted score uses the actual total of its stated weights; the source's 110% iOS table is not treated as a normalized 100% table. The independent six-dimension rubric and Play out-of-60 score remain distinct. [eronred; coreyhaines31/marketingskills, aso]

@@ -1,6 +1,6 @@
 # Testing recipes (community)
 
-Community widget-test and plugin-test recipes from ApparenceKit's tips and blog posts (apparencekit.dev, a third-party Flutter starter kit; no article states a Flutter version): isolate work in widget tests, `ValueVariant`, screen sizes, typed finders, expected errors, go_router navigation; the four layers of plugin tests are in [PLATFORM-INTEGRATION.md](PLATFORM-INTEGRATION.md#testing-a-plugin). The official testing guidance (pumps, goldens, integration tests, mocks and fakes, and where these sources differ from it) is in [TESTING.md](TESTING.md).
+Community widget-test and plugin-test recipes from ApparenceKit's tips and blog posts (apparencekit.dev, a third-party Flutter starter kit; no article states a Flutter version): isolate work in widget tests, `ValueVariant`, screen sizes, typed finders, expected errors, go_router navigation; the four layers of plugin tests are in [PLUGINS.md](PLUGINS.md#testing-a-plugin). The official testing guidance (pumps, goldens, integration tests, mocks and fakes, and where these sources differ from it) is in [TESTING.md](TESTING.md).
 
 **Contents:** [Widget-test recipes](#widget-test-recipes) · [Plugin tests](#plugin-tests) · [Prove it](#prove-it)
 
@@ -50,7 +50,7 @@ T findNWidget<T>(int n) => find
 
 ## Plugin tests
 
-The four layers of plugin tests from ApparenceKit's plugin guide, with their code checked against the official testing pages, are in [PLATFORM-INTEGRATION.md](PLATFORM-INTEGRATION.md#testing-a-plugin).
+The four layers of plugin tests from ApparenceKit's plugin guide, with their code checked against the official testing pages, are in [PLUGINS.md](PLUGINS.md#testing-a-plugin).
 
 ## Prove it
 

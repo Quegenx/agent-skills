@@ -2,7 +2,7 @@
 
 How a Flutter screen fits the space it gets and stays usable there: measuring the window, branching layouts at breakpoints, large screens and foldables, platform adaptations, fixing the layout exceptions Flutter throws, and previewing widgets while you build them. One rule decides most outcomes: "Constraints go down. Sizes go up. Parent sets position." Every layout decision is based on the available window space, never on the device type or its orientation. Layering and widget structure are in [ARCHITECTURE.md](ARCHITECTURE.md), rebuild cost in [PERFORMANCE.md](PERFORMANCE.md), tap targets and text scaling in [ACCESSIBILITY.md](ACCESSIBILITY.md), widget and golden tests in [TESTING.md](TESTING.md), and animation in [../../frontend/ui-animation/SKILL.md](../../frontend/ui-animation/SKILL.md). The owner's CSS-units rules (the parallel list, M3 breakpoints, the iron rule) are in [RESPONSIVE-UNITS.md](RESPONSIVE-UNITS.md). The third-party `flutter_scale_kit` package is in [SCALE-KIT.md](SCALE-KIT.md). Community scrolling and layout polish (bottom padding instead of `SafeArea` on scrollables, scrollbars, edge fades, hit areas) is in [../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md), small widget mechanics (flex, `OverflowBar`, clipping, window-size listeners) in [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md), and custom `RenderObject` layout in [../flutter-render-objects/LAYOUT.md](../flutter-render-objects/LAYOUT.md).
 
-**Contents:** [Responsive and adaptive](#responsive-and-adaptive) · [Measure the window](#measure-the-window) · [Branch at a breakpoint](#branch-at-a-breakpoint) · [Large screens and foldables](#large-screens-and-foldables) · [Orientation](#orientation) · [SafeArea and MediaQuery](#safearea-and-mediaquery) · [Input and state](#input-and-state) · [Capabilities and policies](#capabilities-and-policies) · [Platform adaptations](#platform-adaptations) · [Material and Cupertino as packages](#material-and-cupertino-as-packages) · [Fix layout errors](#fix-layout-errors) · [Widget previews](#widget-previews) · [Prove it](#prove-it)
+**Contents:** [Responsive and adaptive](#responsive-and-adaptive) · [Measure the window](#measure-the-window) · [Branch at a breakpoint](#branch-at-a-breakpoint) · [Large screens and foldables](#large-screens-and-foldables) · [Orientation](#orientation) · [SafeArea and MediaQuery](#safearea-and-mediaquery) · [Input and state](#input-and-state) · [Capabilities and policies](#capabilities-and-policies) · [Platform adaptations](#platform-adaptations) · [Material and Cupertino as packages](#material-and-cupertino-as-packages) · [Fix layout errors](#fix-layout-errors) · [Widget previews](AGENT-TOOLING.md#widget-previews) · [Prove it](#prove-it)
 
 ## Responsive and adaptive
 
@@ -189,7 +189,7 @@ Community practice from one Flutter Community post (Rudraksh Shukla, "The Death 
 | `AlertDialog.adaptive()` | `CupertinoAlertDialog` |
 
 - **`RefreshIndicator.adaptive`** can wrap a `CustomScrollView` directly; "Flutter will automatically display the refresh indicator when the user pulls down the list" ([ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/)). `onRefresh` is a `RefreshCallback` (`Future<void> Function()`) whose "returned [Future] must complete when the refresh operation is finished" (https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/refresh_indicator.dart); the article's `onRefresh` body returns nothing, so return the refresh work's `Future`.
-- **Date pickers have no row above.** FlutterPro branches by hand: `CupertinoDatePicker` (scroll wheel) on iOS, `showDatePicker` on Android, keeping the Material picker on Android even in a custom design ([FlutterPro](https://flutterpro.design/details/adaptive-date-picker), code in [../flutter-ux/WEB.md](../flutter-ux/WEB.md#date-picker-that-matches-the-platform)).
+- **Date pickers have no row above.** FlutterPro branches by hand: `CupertinoDatePicker` (scroll wheel) on iOS, `showDatePicker` on Android, keeping the Material picker on Android even in a custom design ([FlutterPro](https://flutterpro.design/details/adaptive-date-picker), code in [../flutter-ux/NAVIGATION-AND-SHEETS.md](../flutter-ux/NAVIGATION-AND-SHEETS.md#date-picker-that-matches-the-platform)).
 - **Bottom navigation per platform:** `NavigationBar` on Android, `CupertinoTabBar` on iOS.
 - **Platform idioms:** matching them reduces cognitive load and builds trust ("better app store ratings"). Assign a platform advocate per platform. Examples: `Scrollbar(thumbVisibility: DeviceType.isDesktop, ...)`, `SelectableText` / `SelectableText.rich` on web, tooltips after 200 to 400 ms of hover.
   - Scrollbars: "Flutter automatically adds a scrollbar to most vertically scrollable widgets on desktop platforms (including web when opened via a desktop browser)"; on mobile it is your job, and one added by hand on desktop "clashes with the automatic desktop scrollbar on the same page, and both stop working right" ([FlutterPro](https://flutterpro.design/details/scrollbars)). A community view: FlutterPro adds scrollbars on mobile too, by hand where needed or app-wide through `MaterialApp.scrollBehavior` ([../flutter-ux/SCROLLING-AND-LAYOUT.md](../flutter-ux/SCROLLING-AND-LAYOUT.md#scrollbars)).
@@ -288,114 +288,7 @@ Row(
 
 ## Widget previews
 
-### Rules
-
-- **What `@Preview` can annotate:** top-level functions, static methods in a class, or public widget constructors and factories that have no required arguments and return a `Widget` or `WidgetBuilder`.
-- **Always import `package:flutter/widget_previews.dart`.**
-- **Parameters:** `name`, `group`, `size`, `theme`, `brightness`.
-- **Shared properties:** extend `Preview` to make a custom annotation that injects themes or wrappers.
-- **Several previews of one target:** stack several `@Preview` annotations, or extend `MultiPreview`.
-- **Runtime configuration:** override `transform()` in a custom `Preview` or `MultiPreview`, for example to generate names from dynamic values, "which is impossible in a `const` context".
-
-### Limits (the previewer runs in a web environment)
-
-- **No native plugins and no `dart:io` or `dart:ffi`.** A widget with a transitive dependency on `dart:io` or `dart:ffi` throws when invoked. Use conditional imports to mock or bypass these in preview mode.
-- **Package-based asset paths.** Assets loaded through the `dart:ui` `fromAsset` APIs need `packages/my_package_name/assets/my_image.png`, not `assets/my_image.png`.
-- **Callbacks must be public and constant,** because code generation requires it.
-- **Unconstrained widgets get about half the viewport** by default. Set `size` on `@Preview` for explicit constraints.
-
-### Launching
-
-- **IDE:** in Android Studio, IntelliJ, or VS Code with Flutter 3.38+, the Widget Previewer starts automatically. Open the "Flutter Widget Preview" tab in the sidebar. To see previews outside the active file, toggle "Filter previews by selected file" at the bottom left.
-- **Command line:** run `flutter widget-preview start` in the project root. Chrome opens automatically.
-- **Status:** Widget Previews are stable as of Flutter 3.47, with a `.widget_preview/` cache. They first shipped in 3.35: "Flutter 3.35 brought us ... the Widget Previewer" ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)).
-- **Theme caveat** ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)): the `theme` option "might not work perfectly with all custom themes right away, a great workaround is to directly embed your widget inside a `MaterialApp` with your chosen theme."
-- **Iterating:** after changing global state (such as static initializers), click the global hot restart button at the bottom right. To reset one widget's local state, click the hot restart button on that preview card.
-
-### Code
-
-```dart
-import 'package:flutter/widget_previews.dart';
-import 'package:flutter/material.dart';
-
-@Preview(name: 'My Sample Text', group: 'Typography')
-Widget mySampleText() {
-  return const Text('Hello, World!');
-}
-```
-```dart
-import 'package:flutter/widget_previews.dart';
-import 'package:flutter/material.dart';
-
-final class TransformativePreview extends Preview {
-  const TransformativePreview({
-    super.name,
-    super.group,
-  });
-
-  PreviewThemeData _themeBuilder() {
-    return PreviewThemeData(
-      materialLight: ThemeData.light(),
-      materialDark: ThemeData.dark(),
-    );
-  }
-
-  @override
-  Preview transform() {
-    final originalPreview = super.transform();
-    final builder = originalPreview.toBuilder();
-    
-    builder
-      ..name = 'Transformed - ${originalPreview.name}'
-      ..theme = _themeBuilder;
-
-    return builder.toPreview();
-  }
-}
-
-@TransformativePreview(name: 'Custom Themed Button')
-Widget myButton() => const ElevatedButton(onPressed: null, child: Text('Click'));
-```
-```dart
-import 'package:flutter/widget_previews.dart';
-import 'package:flutter/material.dart';
-
-/// Creates light and dark mode previews automatically.
-final class MultiBrightnessPreview extends MultiPreview {
-  const MultiBrightnessPreview({required this.name});
-
-  final String name;
-
-  @override
-  List<Preview> get previews => const [
-        Preview(brightness: Brightness.light),
-        Preview(brightness: Brightness.dark),
-      ];
-
-  @override
-  List<Preview> transform() {
-    final previews = super.transform();
-    return previews.map((preview) {
-      final builder = preview.toBuilder()
-        ..group = 'Brightness'
-        ..name = '$name - ${preview.brightness!.name}';
-      return builder.toPreview();
-    }).toList();
-  }
-}
-
-@MultiBrightnessPreview(name: 'Primary Card')
-Widget cardPreview() => const Card(child: Padding(padding: EdgeInsets.all(8.0), child: Text('Content')));
-```
-
-A factory constructor as the preview target ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)):
-
-```dart
-@Preview(name: 'Primary Button Large')
-factory PrimaryButton.largePreview() {
-  return PrimaryButton(text: "text", onTap: () {});
-}
-```
+Preview annotations, the web-runtime limits, IDE/CLI launch and examples are in [AGENT-TOOLING.md](AGENT-TOOLING.md#widget-previews).
 
 ## Prove it
 
@@ -407,4 +300,3 @@ factory PrimaryButton.largePreview() {
 - **Status-bar tap (iOS):** on every screen with a custom `ScrollController`, tapping the status bar scrolls to the top (the `Scaffold` sits under a `PrimaryScrollController` with that controller).
 - **Window listeners clean up:** every `WidgetsBinding.instance.addObserver(this)` has a matching `removeObserver(this)` in `dispose`.
 - **Layout errors:** a debug run shows no red or grey error screen; for each exception, the fix matches the table above, and "RenderBox was not laid out" was traced to its primary violation.
-- **Previews:** `flutter widget-preview start` opens Chrome and every `@Preview` renders; previewed widgets have no transitive `dart:io` or `dart:ffi` dependency.

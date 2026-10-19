@@ -648,5 +648,5 @@ Tap-target sizes (48x48, 44x44) are in [ACCESSIBILITY.md](../flutter/ACCESSIBILI
 - **Tabs:** selecting a tab off screen in a custom strip scrolls it to center, including the initial selection.
 - **Layout jump:** every network image sits in a sized box (`AspectRatio`, `SizedBox` with both sides, or `Expanded` in a bounded parent); on a throttled network, nothing below an image moves when it loads.
 - **Fades:** edge fades look the same in light and dark mode; `checkerboardOffscreenLayers` shows whether a fade adds an offscreen layer.
-- **Text scale:** at the largest OS font size, no overflow stripes appear (with the FlutterPro cap, text stops growing at x1.1).
+- **Text scale:** at the largest OS font size, no overflow stripes appear and no app-wide cap suppresses the user's setting; apply the owner's structural-layout rule and its narrowly scoped region exception ([Text scale cap](#text-scale-cap)). The old check accepted the FlutterPro x1.1 app-wide cap.
 - **Hit areas:** tapping the padding or gap of a custom `GestureDetector` row triggers it; competing parent/child `onTap` callbacks follow gesture-arena resolution rather than assuming `translucent` makes both fire. [GestureDetector](https://api.flutter.dev/flutter/widgets/GestureDetector-class.html)

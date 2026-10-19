@@ -2,7 +2,7 @@
 
 Apple checks privacy in three places: the binary (a `PrivacyInfo.xcprivacy` manifest that declares tracking domains, collected data and every required reason API, for the app and each bundled SDK), App Store Connect (the privacy policy URL and the App Privacy answers shown as the product page's privacy label), and the running app (the ATT prompt before tracking, consent before sharing data with third parties including AI, account deletion, and the login options). App Store Connect does not accept an app whose manifest leaves out a required reason, and rejects submissions with an invalid manifest. Rules come from Apple's documentation and the App Review Guidelines (current text dated October 16, 2026); third-party preflight rules are marked where they add or differ.
 
-**Contents:** [Privacy manifests](#privacy-manifests) · [Required reason APIs](#required-reason-apis) · [Privacy policy and privacy labels](#privacy-policy-and-privacy-labels) · [App Tracking Transparency](#app-tracking-transparency) · [Third-party AI consent](#third-party-ai-consent) · [Account deletion](#account-deletion) · [Sign in with Apple](#sign-in-with-apple) · [Review notes](#review-notes) · [Prove it](#prove-it)
+**Contents:** [Privacy manifests](#privacy-manifests) · [Required reason APIs](#required-reason-apis) · [Privacy policy and privacy labels](#privacy-policy-and-privacy-labels) · [App Tracking Transparency](#app-tracking-transparency) · [Third-party AI consent](#third-party-ai-consent) · [Account deletion](#account-deletion) · [Sign in with Apple](#sign-in-with-apple) · [Review notes](REVIEW-OPERATIONS.md#review-notes) · [Prove it](#prove-it)
 
 Related: [REVIEW-GUIDELINES.md](REVIEW-GUIDELINES.md) (5.1.1 and 5.1.2 text), [PREFLIGHT.md](PREFLIGHT.md) (automated scans), [PRICING-AND-SUBSCRIPTIONS.md](PRICING-AND-SUBSCRIPTIONS.md), [METADATA-AND-SCREENSHOTS.md](METADATA-AND-SCREENSHOTS.md), [TESTFLIGHT-AND-RELEASE.md](TESTFLIGHT-AND-RELEASE.md).
 
@@ -103,6 +103,7 @@ Minimal example (declares UserDefaults use for app-only data):
 - **IDFV** may be used for analytics across apps from the same content provider without ATT; never combine it to track across other companies.
 - **Consent management platforms** are allowed but must always respect the ATT response. Example purpose string referencing a prior CMP consent: "[App] indicates you allowed it to use your data for advertising purposes in its legal prompt. Would you like your Apple device to provide [App] access to the advertising ID or otherwise allow it to use other means for the data processing described above?"
 - **EU alternative prompt:** "Beginning with iOS 27.2 and iPadOS 27.2, developers will have the option to use an alternative version of the App Tracking Transparency system prompt in the EU." In Germany, France, Italy, Poland and Romania only the alternative prompt is available. It has an optional "Additional Information" text button. EU users can be reprompted "one year after the user's previous choice", but not when "Allow Apps to Request to Track" (EU name: "Allow Apps to Request to Link Your Activity Across Companies") is off. New docs: "Requesting Authorization with Expanded Interface", "Tracking Markdown Usage Description".
+- **Additional Information consent:** after that screen or page, return to ATT only if the user has not opted out of all relevant legal-consent choices there. The old attribution instruction said to request again without this condition. CMP controls still cannot override the ATT response. [https://developer.apple.com/app-store/user-privacy-and-data-use/]
 - **Manifest link:** with `NSPrivacyTracking` true, list `NSPrivacyTrackingDomains`; requests to them fail until the user grants permission.
 - **Attribution without tracking:** AdAttributionKit attributes in-app ad campaigns and web ads on mobile while keeping privacy.
 
@@ -179,18 +180,7 @@ grep -rnE "aiConsent|AIConsent|ai_consent|hasAcceptedAI|aiDataSharing|ai_data_sh
 
 ## Review notes
 
-Apple's checklist asks for "detailed explanations of non-obvious features and in-app purchases in the App Review notes", and 2.3.1(a) rejects generic notes ("bug fixes and improvements", "new features").
-
-- **App Review Information fields** in App Store Connect: contact name, email, phone (international format with + and country code; numbers only are not accepted); Notes up to 4000 bytes, any language, with test registration or account details (and a test stream URL for cellular streaming video); Sign-in: a demo account username and password that "must not expire", plus an SSO demo login (e.g. Facebook) where used; extra accounts go in Notes.
-- **Six sections for every new submission** (first-time apps or major new versions; the preflight rule, severity REJECTION: omission "commonly triggers a rejection or an Information Needed response"). Apple's Information Needed message asks for the first five:
-  1. **Screen recording on a physical device,** starting from launch and showing the typical flow, including where present: registration, login, account deletion; paid content, purchase and subscription flows; UGC including reporting and blocking; prompts for sensitive data or capabilities (location, contacts, camera, microphone). Record on a real device, not a simulator, keep it under 5 minutes, upload it and paste the URL.
-  2. **App purpose:** the problem it solves and its value to the audience.
-  3. **Access instructions and test credentials:** a dedicated demo account that won't expire (keep it active "at least 2 weeks" from submission); steps to gated features; every remote feature flag gating a user-facing feature and how to turn it on (2.5.19).
-  4. **External services:** data providers, auth (Firebase Auth, Auth0), payments (Stripe, RevenueCat), AI services (OpenAI, Google AI) and where the third-party AI consent screen appears, analytics, cloud storage. The template uses a Service | Purpose table.
-  5. **Regional differences,** or confirmation the app is the same in all regions (one sentence is enough if none). Explain legal region gating here.
-  6. **Regulated industry documentation** where it applies (healthcare, finance, gambling, insurance, legal): VPN license (5.4); a medical regulatory clearance link consistent with the medical device status (1.4.1); Brazil fixed-odds SPA license, where "Only a new app version starts license verification" (5.3.4).
-- **Template** (preflight `review_notes_template.md`, pasted into the App Store Connect notes or fastlane's `metadata/review_information/notes.txt`): 1 Screen Recording (demo video URL, the physical device model, the flows shown); 2 App Purpose (what problem it solves, what value it provides); 3 Access Instructions & Test Credentials (steps, test username and password, "This account will remain active through [date, at least 2 weeks from submission]"); 4 External Services (a Service | Purpose table); 5 Regional Differences (Option A: no regional differences; Option B: list each region and difference); 6 Regulated Industry Documentation (delete if not regulated).
-- **Entitlement justifications:** if Apple asks about an entitlement, reply in App Store Connect explaining how and where it is used.
+Reviewer access details, the six-section template and regulated documentation are in [REVIEW-OPERATIONS.md](REVIEW-OPERATIONS.md#review-notes).
 
 ## Prove it
 
@@ -201,4 +191,4 @@ Apple's checklist asks for "detailed explanations of non-obvious features and in
 - The AI endpoint, SDK and proxy greps each lead to a call guarded by the consent gate.
 - On a device: create an account, delete it from settings, and confirm the whole record goes (not a deactivation), subscribers are told to cancel billing, and Sign in with Apple tokens are revoked.
 - Sign in with "Hide My Email" lands in the main app with no name or email form, and email validation accepts both `privaterelay.appleid.com` and `private.icloud.com`.
-- The review notes contain all six sections and a demo account that is valid for at least two weeks.
+- The review notes pass [REVIEW-OPERATIONS.md](REVIEW-OPERATIONS.md#prove-it).

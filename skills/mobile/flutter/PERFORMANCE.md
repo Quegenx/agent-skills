@@ -80,7 +80,7 @@ ListView.builder(
 - **Flutter does all work on the main isolate by default** and adds a "paint frame" event 60 times per second. Work that cannot finish in a frame gap should move to another isolate.
 - **"There is only one hard rule for when you should use isolates, and that's when large computations are causing your Flutter application to experience UI jank."**
 - **Common uses:** reading from a local database, sending push notifications, parsing or decoding large files, processing or compressing photos, audio and video, converting media, async support with FFI, filtering complex lists or filesystems.
-- **Messages are copied** between isolates, except immutable objects (String, unmodifiable bytes) and `Isolate.exit` (transfers ownership). "Both `Isolate.run` and `compute` use `Isolate.exit` under the hood."
+- **Message copying, immutable values and ownership transfer:** use the canonical [Dart isolate mechanics](../dart/ASYNC.md#isolates).
 
 ```dart
 // Produces a list of 211,640 photo objects.
@@ -95,7 +95,7 @@ Future<List<Photo>> getPhotos() async {
 }
 ```
 
-- **Repeated work:** long-lived background workers with `Isolate.spawn()`, `Isolate.exit()`, `ReceivePort`, `SendPort` and `send()`; or the `worker_manager` package, `isolate_agents`, `IsolateNameServer`.
+- **Repeated work:** use the canonical [long-lived worker and port mechanics](../dart/ASYNC.md#long-lived-isolates); the Flutter source also names `worker_manager`, `isolate_agents` and `IsolateNameServer`.
 - **On-device models in an adaptive UI** (community practice, [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)): "Keep the model small and quantized, sample sensors at the lowest rate that still feels responsive, and gate expensive work on battery and thermal state". Move the `interpreter.run` call to a background isolate (via `compute` or a long-lived isolate) if the model is heavy enough to jank the frame.
 - **Plugins in a background isolate** need `BackgroundIsolateBinaryMessenger`:
 
@@ -118,7 +118,6 @@ Future<void> _isolateMain(RootIsolateToken rootIsolateToken) async {
 ```
 
 - **Limits:**
-  - Globals are copied, not shared.
   - Web does not support isolates; use `compute()`, which runs on the main thread on web. On mobile and desktop, `await compute(fun, message)` equals `await Isolate.run(() => fun(message))`.
   - No `rootBundle` and no `dart:ui` or widget work in spawned isolates.
   - Background isolates cannot receive unsolicited host messages (no long-lived Firestore listener; one-off queries are fine).

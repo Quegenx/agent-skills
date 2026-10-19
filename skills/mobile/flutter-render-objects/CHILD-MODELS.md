@@ -106,18 +106,7 @@ class MyStack extends MultiChildRenderObjectWidget {
 }
 ```
 
-- Parent data for lists does two jobs: linked-list pointers (`previousSibling`/`nextSibling` from `ContainerParentDataMixin`) and per-child layout state. Row and Column need only `ContainerBoxParentData<RenderBox>` (offset plus sibling pointers). This stack's parent data and its `MyPositioned` writer are in [PARENT-DATA.md](PARENT-DATA.md#parent-data-for-a-list):
-
-```dart
-class MyStackParentData extends ContainerBoxParentData<RenderBox> {
-  double? top;
-  double? right;
-  double? bottom;
-  double? left;
-  double? width;
-  double? height;
-}
-```
+- Parent data for lists does two jobs: linked-list pointers (`previousSibling`/`nextSibling` from `ContainerParentDataMixin`) and per-child layout state. Row and Column need only `ContainerBoxParentData<RenderBox>` (offset plus sibling pointers). This stack's `MyStackParentData` definition and its `MyPositioned` writer are in [PARENT-DATA.md](PARENT-DATA.md#parent-data-for-a-list). [renderobjects](https://renderobjects.com/guides/children/list-of-children/)
 
 - `ContainerRenderObjectMixin<ChildType, ParentDataType>` provides `firstChild`, `lastChild`, `childCount`, `childBefore`, `childAfter`, `insert`, `move` and `remove`; `RenderBoxContainerDefaultsMixin` provides `defaultPaint`, `defaultHitTestChildren` and `defaultComputeDistanceToFirstActualBaseline`.
 - Official bounds and extra members: `ContainerRenderObjectMixin<ChildType extends RenderObject, ParentDataType extends ContainerParentDataMixin<ChildType>>`, which also has `add`, `addAll`, `removeAll` and `debugValidateChild` (https://api.flutter.dev/flutter/rendering/ContainerRenderObjectMixin-mixin.html); `RenderBoxContainerDefaultsMixin<ChildType extends RenderBox, ParentDataType extends ContainerBoxParentData<ChildType>>`, which also provides `defaultComputeDistanceToHighestActualBaseline` and `getChildrenAsList()` (https://api.flutter.dev/flutter/rendering/RenderBoxContainerDefaultsMixin-mixin.html). `defaultHitTestChildren` walks the list backwards and `defaultPaint` forwards.
@@ -238,7 +227,7 @@ class RenderMyLayout extends RenderBox
 Pitfalls:
 
 - Switch over the enum with no `default`, so a missing slot shows up at analysis time.
-- The same widget instance returned from two slots means "the framework [will] try to mount it twice, which fails".
+- A widget instance may be used at multiple tree locations; each placement inflates its own element. [Widget](https://api.flutter.dev/flutter/widgets/Widget-class.html). P2 correction: renderobjects.com says the same widget returned from two slots is mounted twice and fails; widget-instance reuse itself is permitted, as distinguished from element identity in [The three trees](SKILL.md#the-three-trees).
 - Slot enum order does not set paint or layout order.
 - Slots cannot be added at runtime. Always declare the slot and return `null` when it is empty.
 - Layout must handle any slot being null.

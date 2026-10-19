@@ -209,7 +209,8 @@ class User {
 
 - **The threshold is 16 ms.** If parsing takes longer, move it to an isolate with `compute()` to avoid jank. Parse small payloads (a single object) synchronously on the main thread; parse large ones (thousands of objects) with `compute(parseFunction, response.body)`.
 - **Import `package:flutter/foundation.dart`** for `compute()`.
-- **The function passed to `compute()` must be top-level or static:** closures and instance methods cannot be passed across isolates.
+- **The callback, input and result must be sendable across isolates.** A closure can capture extra state, so its captured objects matter too. [compute](https://api.flutter.dev/flutter/foundation/compute.html)
+  - P2 correction: the source and old line here categorically required a top-level or static callback and forbade closures and instance methods. The source-original block below retains its incorrect "Top-level function required for compute()" comment; the official contract is sendability, not that restriction.
 
 ```dart
 import 'dart:convert';
@@ -260,7 +261,7 @@ Future<List<User>> fetchUsers(http.Client client) async {
 | On-device SQL | `sqflite`, `drift` (also `sqlite3`, `firebase_database` as a `DatabaseService` backend) |
 | Key-value | `shared_preferences`, `flutter_secure_storage` |
 
-- **Files to share** (an invoice to send on) go in the app cache from `getTemporaryDirectory()` (`path_provider`), which needs no permission on any platform ([FlutterPro](https://flutterpro.design/details/share-instead-of-download); the share sheet recipe is in [../flutter-ux/WEB.md](../flutter-ux/WEB.md#share-instead-of-download)).
+- **Files to share** (an invoice to send on) go in the app cache from `getTemporaryDirectory()` (`path_provider`), which needs no permission on any platform ([FlutterPro](https://flutterpro.design/details/share-instead-of-download); the share sheet recipe is in [../flutter-ux/PAINTING-AND-MEDIA.md](../flutter-ux/PAINTING-AND-MEDIA.md#share-instead-of-download)).
 
 The data layer case study fetches any data the app does not create itself from within service classes, and the key-value recipe's service wraps the plugin, "hiding this third-party dependency from the rest of the application".
 

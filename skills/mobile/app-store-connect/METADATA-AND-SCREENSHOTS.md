@@ -2,7 +2,7 @@
 
 The text, screenshots, previews and creative assets of an App Store product page, kept in files and synced with the `asc` CLI. Two things decide most outcomes: whether a field belongs to the app-info record (name, subtitle, privacy URLs) or to a version (description, keywords, What's New, screenshots), and whether every write was pulled, validated and dry-run against explicit IDs before it went remote. Version fields only reach users through a submission, except promotional text. For keyword choice and listing optimization read [../aso/SKILL.md](../aso/SKILL.md); for Apple Ads read [../app-growth/SKILL.md](../app-growth/SKILL.md). Facts about the `asc` CLI come from its third-party authors (rorkai); where they differ from Apple's docs, both are given.
 
-**Contents:** [asc ground rules](#asc-ground-rules) · [Field limits](#field-limits) · [Review rules for metadata](#review-rules-for-metadata) · [Sync metadata with asc metadata](#sync-metadata-with-asc-metadata) · [Localize metadata](#localize-metadata) · [What's New and promotional text](#whats-new-and-promotional-text) · [Screenshots](#screenshots) · [App previews](#app-previews) · [Creative assets and the Asset Library](#creative-assets-and-the-asset-library) · [Custom product pages](#custom-product-pages) · [Prove it](#prove-it)
+**Contents:** [asc ground rules](#asc-ground-rules) · [Field limits](#field-limits) · [Review rules for metadata](#review-rules-for-metadata) · [Sync metadata with asc metadata](#sync-metadata-with-asc-metadata) · [Localize metadata](#localize-metadata) · [What's New and promotional text](#whats-new-and-promotional-text) · [Screenshots](#screenshots) · [App previews](../aso/VISUALS.md#app-preview-specs-app-store) · [Creative assets and the Asset Library](#creative-assets-and-the-asset-library) · [Custom product pages](#custom-product-pages) · [Prove it](#prove-it)
 
 ## asc ground rules
 
@@ -36,18 +36,7 @@ The text, screenshots, previews and creative assets of an App Store product page
 
 ## Review rules for metadata
 
-App Review Guidelines (last updated October 16, 2026), section 2.3:
-
-- **2.3 Accurate metadata:** all metadata, "including privacy information, your app description, screenshots, and previews", must reflect the core experience and stay up to date.
-- **2.3.2 Paid items:** if the app has in-app purchases, the description, screenshots and previews must say clearly whether featured items need extra purchases.
-- **2.3.3 Screenshots** "should show the app in use, and not merely the title art, login page, or splash screen". Text and image overlays are allowed.
-- **2.3.4 Previews** "may only use video screen captures of the app itself". Narration and video or text overlays are allowed.
-- **2.3.7 Names and keywords:** a unique name; keywords that describe the app; no trademarked terms, popular app names, pricing information or irrelevant phrases to game search. Names, subtitles, screenshots and previews must not carry prices, terms or descriptions that don't belong to that metadata type. Subtitles must not reference other apps or make unverifiable claims. Apple may change inappropriate keywords at any time.
-- **2.3.8 Age rating of assets:** icons, screenshots and previews must suit a 4+ rating even when the app is rated higher. "For Kids" and "For Children" are reserved for the Kids Category.
-- **2.3.9 Rights and fake data:** secure rights to everything in icons, screenshots and previews; show fictional account information, never a real person's data.
-- **2.3.10 No other platforms:** no names, icons or imagery of other mobile platforms or alternative app marketplaces in the app or metadata.
-- **2.3.12 What's New** must clearly describe new features; simple bug fixes may use a generic description.
-- **2.3.14 Creative assets** (product page header, search results) must pertain to the app or brand, suit all audiences, and carry no misleading references to other apps, unverifiable claims, "or specific or discounted pricing information".
+Use [App Review metadata policy](REVIEW-GUIDELINES.md#23-accurate-metadata) and [ASO asset policy](../aso/VISUALS.md#rules-for-every-asset) before syncing. The old local 2.3.10 summary omitted the approved interactive-functionality exception; the policy owner preserves it. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
 
 ## Sync metadata with asc metadata
 
@@ -141,7 +130,7 @@ asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fa
 - **Deliverfile paths resolve relative to the Deliverfile** and take precedence. With `--fastlane-dir "./fastlane"`, write `metadata_path "./metadata"`, not `"./fastlane/metadata"` (that resolves to `./fastlane/fastlane/metadata`).
 - **Paths outside the fastlane directory fail** unless trusted with `--allow-external-metadata` / `--allow-external-screenshots`. Leave both off for untrusted imports.
 - **Import `--dry-run` inventories local inputs only.** Add `--check-remote` to compare remote assets without writing (needs auth, may download media); add `--skip-previews` when playlist references can't be matched.
-- **If you keep fastlane** [ApparenceKit](https://apparencekit.dev/blog/automate-flutter-ios-deploy-fastlane/) (it calls fastlane "not optional. It is infrastructure", where this skill treats it as legacy): commit `fastlane/metadata/` (one folder per locale, one text file per field) for history and translator PRs, never the `.p8` key; give every locale a release note with an `en-US` fallback, since "If you forget a locale, Apple will reject your submission or show stale release notes"; and drop `force: true` on the first local run to see fastlane's HTML preview. Its locale list has 39 locales, missing `bn-BD, gu-IN, kn-IN, ml-IN, mr-IN, or-IN, pa-IN, sl-SI, ta-IN, te-IN, ur-PK` from the list below (undated article). The lanes themselves are in [../flutter/BUILD-AND-RELEASE.md](../flutter/BUILD-AND-RELEASE.md).
+- **If you keep fastlane** [ApparenceKit](https://apparencekit.dev/blog/automate-flutter-ios-deploy-fastlane/) (it calls fastlane "not optional. It is infrastructure", where this skill treats it as legacy): commit `fastlane/metadata/` (one folder per locale, one text file per field) for history and translator PRs, never the `.p8` key; give every locale a release note with an `en-US` fallback, since "If you forget a locale, Apple will reject your submission or show stale release notes"; and drop `force: true` on the first local run to see fastlane's HTML preview. Its locale list has 39 locales, missing `bn-BD, gu-IN, kn-IN, ml-IN, mr-IN, or-IN, pa-IN, sl-SI, ta-IN, te-IN, ur-PK` from the list below (undated article). The lanes themselves are in [FASTLANE.md](FASTLANE.md#ios-lanes-with-an-app-store-connect-api-key).
 - **Read the body, not the exit code.** `asc migrate validate` can return `valid: false` with a nonzero `errorCount` and still exit 0; a confirmed import can print `status: "partial"` and exit nonzero.
 
 ## Localize metadata
@@ -177,29 +166,7 @@ asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fa
 
 ## Screenshots
 
-### Apple's requirements
-
-- **1 to 10 screenshots per device size;** `.jpeg`, `.jpg` or `.png`. "Images can't include alpha channels or transparencies."
-- **Required to submit:** "At least one screenshot for iPhone with Dynamic Island (medium display)", and, if the app runs on iPad, "At least one screenshot for iPad 13-inch display".
-- **Provide only the highest required resolution** when the UI is the same across sizes; App Store Connect scales down.
-- **iPhone Duo** screenshots will be required from April 2027 for any app built with the iOS 27.1 SDK or later; submitting them shows an "optimized for iPhone Duo" badge.
-- **Read the current spec at runtime:** https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications
-
-| Display class | Devices | Portrait sizes (landscape is the same swapped) |
-|---|---|---|
-| iPhone, Dynamic Island, large | iPhone Air, 18 Pro Max, 17 Pro Max, 16 Pro Max, 16 Plus, 15 Pro Max, 15 Plus, 14 Pro Max | 1260 x 2736, 1290 x 2796, 1320 x 2868 |
-| iPhone, Dynamic Island, medium (required) | 18 Pro, 17 Pro, 17, 16 Pro, 16, 15 Pro, 15, 14 Pro | 1179 x 2556, 1206 x 2622 |
-| iPhone, Face ID, large | | 1284 x 2778, 1242 x 2688 |
-| iPhone, Face ID, medium | | 1170 x 2532, 1125 x 2436, 1080 x 2340 |
-| iPhone, Home Button, large | | 1242 x 2208 |
-| iPhone, Home Button, medium | | 750 x 1334 |
-| iPhone Duo | | outer 1398 x 2034 (2034 x 1398); inner 2007 x 2853 (2853 x 2007) |
-| iPad 13-inch (required for iPad apps) | | 2064 x 2752, 2048 x 2732 |
-| iPad 11-inch | | 1488 x 2266, 1668 x 2420, 1668 x 2388, 1640 x 2360 |
-| Mac | 16:10 | 1280 x 800, 1440 x 900, 2560 x 1600, 2880 x 1800 |
-| Apple TV | | 1920 x 1080, 3840 x 2160 |
-| Vision Pro | | 3840 x 2160 |
-| Apple Watch | one size used across all localizations | 422 x 514 (Ultra 4, Ultra 3), 416 x 496 (Series 12, 11, 10), 396 x 484 (Series 9, 8, 7) |
+Apple's screenshot counts, formats, required device classes and full size matrix have one owner: [ASO screenshot specs](../aso/VISUALS.md#screenshot-specs-app-store). Check the [current official specification](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications) and the installed CLI's size list before choosing upload targets.
 
 ### Validate, fix and upload with asc
 
@@ -290,34 +257,14 @@ xcrun simctl spawn "$UDID" defaults write NSGlobalDomain AppleLocale -string "$A
 
 ## App previews
 
-- **Up to 3 previews per device size and language** (iOS, macOS, tvOS, visionOS); not available for iMessage apps. Previews always appear before screenshots; a preview whose aspect ratio differs from the screenshots goes to "A Closer Look".
-- **Format:** `.mov`, `.m4v` or `.mp4` (H.264), or `.mov` for ProRes 422 (HQ only). Max 500 MB. 15 to 30 seconds. Default poster frame at 5 seconds. Processing takes up to 24 hours. iOS portrait or landscape; macOS, tvOS and visionOS landscape only.
-- **H.264:** 10 to 12 Mbps target, progressive, up to High Profile Level 4.0, max 30 fps, stereo 256 kbps AAC at 44.1 or 48 kHz. **ProRes 422 HQ:** VBR 220 Mbps, max 30 fps, audio PCM (16, 24 or 32-bit) or 256 kbps AAC.
-- **Use the accepted resolution, not the device resolution:**
-
-| Device class | Accepted resolution |
-|---|---|
-| All modern iPhones (Duo, Dynamic Island large and medium, Face ID large and medium) | 886 x 1920 portrait, 1920 x 886 landscape |
-| iPhone Home Button large, 4-inch | 1080 x 1920 |
-| iPhone Home Button medium | 750 x 1334 |
-| iPhone 3.5-inch | not supported |
-| iPad 13-inch, 12.9-inch, 11-inch, 10.5-inch | 1200 x 1600, 1600 x 1200 (12.9-inch also 900 x 1200, 1200 x 900) |
-| iPad 9.7-inch | 900 x 1200 |
-| Mac, Apple TV | 1920 x 1080 |
-| Vision Pro | 3840 x 2160 |
-
-- **Spec page:** https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications
+Counts, placement, codec/audio requirements, accepted resolutions, poster frame and processing limits are defined in [ASO preview specs](../aso/VISUALS.md#app-preview-specs-app-store); use the [current official spec](https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications). Metadata export/reuse and HLS-reference handling remain in [the asc sync workflow](#sync-metadata-with-asc-metadata).
 
 ## Creative assets and the Asset Library
 
 Product page headers and search results assets are new in fall 2026 (guideline 2.3.14). The Asset Library in App Store Connect (October 5, 2026) uploads and pre-approves assets, with a preview tool for Dark Mode, devices and orientations before you submit.
 
-| Asset | Images | Videos |
-|---|---|---|
-| Product page header | 21:9 3840 x 1646 (`.jpeg`, `.jpg`, `.png`) or 16:9 5244 x 2950 (`.png`) | 21:9 3840 x 1646 |
-| Search results | 3:2 from 1920 x 1280 to 3840 x 2560 (`.jpeg`, `.jpg`, `.png`) or 16:9 5244 x 2950 (`.png`) | 3:2 |
+Header/search image and video sizes, ratios, formats, alpha/audio/looping constraints and 2.3.14 policy are in [ASO creative asset specs](../aso/VISUALS.md#product-page-header-and-search-assets-fall-2026), checked against the [official specification](https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications). The upload, localization placement and review operations below remain separate stages.
 
-- **Rules:** no alpha channels; videos 30 or 60 fps, 5 to 30 seconds, `.mov`, `.m4v` or `.mp4`, muted by default (search videos can't be unmuted), looping. Spec: https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications
 - **Run only the stages asked for.** Upload, assign, submit for review and publish are separate operations.
 - **Inspect:**
 

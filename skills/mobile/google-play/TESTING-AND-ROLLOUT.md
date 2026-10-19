@@ -2,7 +2,7 @@
 
 Google Play ships a build through tracks: internal, closed, open and production. A device installs the highest compatible version code on any track its user is eligible for, and every user is eligible for production. New personal developer accounts can't reach production at all until a closed test has run with at least 12 testers opted in for 14 consecutive days. Once in production, updates go out as staged rollouts that you raise, halt and resume by hand; Play has no automatic rollback, so the fix for a bad build is always a new build with a higher version code.
 
-**Contents:** [Tracks](#tracks) · [Internal testing](#internal-testing) · [Closed testing](#closed-testing) · [Open testing](#open-testing) · [Which build a tester gets](#which-build-a-tester-gets) · [Managing testers with gplay](#managing-testers-with-gplay) · [Production access for new personal accounts](#production-access-for-new-personal-accounts) · [Staged rollouts](#staged-rollouts) · [Halting and resuming](#halting-and-resuming) · [Rollback](#rollback) · [Rollout schedules](#rollout-schedules) · [Automating a rollout](#automating-a-rollout) · [Prove it](#prove-it)
+**Contents:** [Tracks](#tracks) · [Internal testing](#internal-testing) · [Closed testing](#closed-testing) · [Open testing](#open-testing) · [Which build a tester gets](#which-build-a-tester-gets) · [Managing testers with gplay](#managing-testers-with-gplay) · [Production access for new personal accounts](#production-access-for-new-personal-accounts) · [Staged rollouts](#staged-rollouts) · [Halting and resuming](#halting-and-resuming) · [Rollback](#rollback) · [Rollout schedules](#rollout-schedules) · [Prove it](#prove-it)
 
 ## Tracks
 
@@ -146,34 +146,7 @@ These schedules and thresholds are the gplay rollout skill's recommendations, no
 - **Avoid:** jumping from 10% to 100%; ignoring crash increases; rolling out on weekends or holidays; skipping beta.
 - **Gate promotions on vitals anomalies:** the CI gate in [VITALS.md](VITALS.md) halts promotion when `gplay vitals crashes anomalies` returns any.
 
-## Automating a rollout
-
-```yaml
-# .github/workflows/rollout.yml
-name: Automated Rollout
-
-on:
-  schedule:
-    - cron: '0 9 * * *'  # Daily at 9 AM
-
-jobs:
-  increase-rollout:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get current rollout
-        id: current
-        run: |
-          CURRENT=$(gplay tracks get --package $PACKAGE | jq -r '.releases[0].userFraction')
-          echo "fraction=$CURRENT" >> $GITHUB_OUTPUT
-
-      - name: Increase rollout
-        if: steps.current.outputs.fraction < 1.0
-        run: |
-          NEW_FRACTION=$(echo "${{ steps.current.outputs.fraction }} + 0.25" | bc)
-          gplay rollout update --package $PACKAGE --track production --rollout $NEW_FRACTION
-```
-
-- **Check crash rates while it runs:** Play Console > Quality > Android vitals.
+- **Check crash rates during rollout:** Play Console > Quality > Android vitals. [gplay, rollout]
 
 ## Prove it
 

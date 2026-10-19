@@ -1,8 +1,8 @@
 # Device features
 
-App-level device features a Flutter app reaches through existing plugins rather than its own platform channel: the status bar style, blocking screenshots, the device's IANA timezone, showing the app version, iOS home-screen widgets, a portrait lock and platform detection. Sources: ApparenceKit tips and blog posts (apparencekit.dev), checked against api.flutter.dev and pub.dev where a snippet was flagged. Where the source disagrees with the Flutter skill ([mobile/flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md)), both are stated. Permissions and notifications are in [NOTIFICATIONS-AND-PERMISSIONS.md](NOTIFICATIONS-AND-PERMISSIONS.md); writing your own channel is [mobile/flutter/PLATFORM-INTEGRATION.md](../flutter/PLATFORM-INTEGRATION.md).
+App-level device features a Flutter app reaches through existing plugins rather than its own platform channel: the status bar style, blocking screenshots, the device's IANA timezone, showing the app version, iOS home-screen widgets, a portrait lock and platform detection. Sources: ApparenceKit tips and blog posts (apparencekit.dev) and FlutterPro tips by Kamran Bekirov (flutterpro.design), checked against api.flutter.dev and pub.dev where a snippet was flagged. Where the source disagrees with the Flutter skill ([mobile/flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md)), both are stated. Permissions and notifications are in [NOTIFICATIONS-AND-PERMISSIONS.md](NOTIFICATIONS-AND-PERMISSIONS.md); writing your own channel is [mobile/flutter/PLATFORM-INTEGRATION.md](../flutter/PLATFORM-INTEGRATION.md).
 
-**Contents:** [Status bar style](#status-bar-style) · [Block screenshots](#block-screenshots) · [Device timezone](#device-timezone) · [Show the app version](#show-the-app-version) · [iOS home-screen widgets](#ios-home-screen-widgets) · [Portrait lock](#portrait-lock) · [Detect the platform](#detect-the-platform) · [Prove it](#prove-it)
+**Contents:** [Status bar style](#status-bar-style) · [Block screenshots](#block-screenshots) · [Device timezone](#device-timezone) · [Show the app version](#show-the-app-version) · [iOS home-screen widgets](#ios-home-screen-widgets) · [Portrait lock](#portrait-lock) · [Detect the platform](#detect-the-platform) · [Keep the screen awake only where needed](#keep-the-screen-awake-only-where-needed) · [Open social media apps](#open-social-media-apps) · [Prove it](#prove-it)
 
 ## Status bar style
 
@@ -207,6 +207,102 @@ class PlatformUtils {
 - **On web, don't import `dart:io`;** "It won't work there." `package:flutter/foundation.dart` is web-friendly and provides `defaultTargetPlatform` and `kIsWeb` [ApparenceKit](https://apparencekit.dev/flutter-tips/detect-flutter-running-platform/).
 - **What to branch on is disputed.** The article uses it for "a different layout for desktop or a feature only for mobile" [ApparenceKit](https://apparencekit.dev/flutter-tips/detect-flutter-running-platform/). Flutter docs ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)): "Avoid using `Platform.isAndroid` and similar functions to make layout decisions or assumptions about what a device can do"; base layout on window size and put platform rules in `Capability` and `Policy` classes. Both allow a platform check for a platform feature or policy; they differ on layout.
 
+## Keep the screen awake only where needed
+
+Dot shorthands in these recipes, including `rootTab == .compass` and `mode: .externalApplication`, need Dart language version 3.10+ ([LANGUAGE.md](../dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+
+[FlutterPro](https://flutterpro.design/details/keep-screen-awake): on some pages users look at the screen for a long time without touching it: a video player, a live call, navigation, a reading page. Keep the screen awake there with [wakelock_plus](https://pub.dev/packages/wakelock_plus).
+
+- **Only on those pages.** "Don't turn it on in main.dart for the whole app. Users expect their phone to lock itself, for privacy and for battery."
+
+The handler class:
+
+```dart
+import 'dart:async';
+
+import 'package:wakelock_plus/wakelock_plus.dart';
+
+class WakelockHandler {
+  const WakelockHandler._();
+
+  static StreamSubscription<bool>? _subscription;
+
+  static void startSubscription(Stream<bool> source) {
+    if (_subscription != null) return;
+
+    _subscription = source.distinct().listen(_apply);
+  }
+
+  static Future<void> stopSubscription() async {
+    await _subscription?.cancel();
+    _subscription = null;
+
+    await _apply(false);
+  }
+
+  static Future<void> enable() => _apply(true);
+
+  static Future<void> disable() => _apply(false);
+
+  static Future<void> _apply(bool value) {
+    return WakelockPlus.toggle(enable: value);
+  }
+}
+```
+
+For screens that are pushed and popped, like a video player, use the manual methods:
+
+```dart
+@override
+void initState() {
+  super.initState();
+
+  WakelockHandler.enable();
+}
+
+@override
+void dispose() {
+  WakelockHandler.disable();
+
+  super.dispose();
+}
+```
+
+- **Pitfall, tabs:** bottom bar tabs in an `IndexedStack` are built once and never disposed, so the `dispose` pattern never turns the wakelock off. `StatefulShellRoute.indexedStack` keeps each branch alive the same way ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)). Pass the handler a stream that tells whether any visible page needs the wakelock right now. In the author's prayer times app it stays on in the "Compass" tab and the "Read" tab inside "Quran", so the stream combines the bottom tab with the inner tab:
+
+```dart
+Stream<bool> _stayAwake$() {
+  return Rx.combineLatest2(
+    rootTabCubit.stream.startWith(rootTabCubit.state),
+    quranTabCubit.stream.startWith(quranTabCubit.state),
+    (RootTab rootTab, QuranTab quranTab) {
+      final bool isCompass = rootTab == .compass;
+      final bool isReading = rootTab == .quran && quranTab == .read;
+
+      return isCompass || isReading;
+    },
+  );
+}
+```
+
+Start it once where the tabs are built:
+
+```dart
+WakelockHandler.startSubscription(_stayAwake$());
+```
+
+When the user opens the compass the wakelock turns on; when they leave, it turns off. `Rx.combineLatest2` and `.startWith` are rxdart operators and the `*Cubit` objects are bloc; the article names neither package.
+
+## Open social media apps
+
+[FlutterPro](https://flutterpro.design/details/launch-social-media-apps): social links should open the respective app directly if installed. Use `.externalApplication` mode and let the system take care of it; if the domain is claimed (App Links, Universal Links: [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#android-app-links)), it opens that app directly.
+
+The source imports `package:url_launcher/url_launcher.dart` and calls `launchUrl` with `mode: .externalApplication`; its sample link names a real account, so that sample block is omitted. [FlutterPro](https://flutterpro.design/details/launch-social-media-apps)
+
+- **Does not compile as published:** `launchUrl` takes a `Uri`, not a `String`: `Future<bool> launchUrl(Uri url, {LaunchMode mode = LaunchMode.platformDefault, ...})` (https://pub.dev/documentation/url_launcher/latest/url_launcher/launchUrl.html). Parse the selected URL with `Uri.parse` before passing it; the source passed a string.
+- **Avoid custom schemes** (`instagram://`, `whatsapp://`): they fail on devices where the app is not installed.
+- **WhatsApp chats:** `https://wa.me/{phone number}`, for example `https://wa.me/994512223344`.
+
 ## Prove it
 
 - Toggle light and dark mode on an iPhone and an Android phone: status bar text stays readable on both, and with the app launched cold on iOS the bar is visible.
@@ -216,3 +312,5 @@ class PlatformUtils {
 - The App Group ID is identical in Runner, the Widget Extension, `HomeWidget.setAppGroupId` and `UserDefaults(suiteName:)`; the widget kind in `updateWidget` matches the Swift widget; a release build succeeds with "Thin Binary" last.
 - Grep `setPreferredOrientations`: if present, the team chose a lock knowingly (see [Portrait lock](#portrait-lock)); check the app on a foldable or tablet.
 - Grep `dart:io` in code that runs on web: none. Grep `defaultTargetPlatform` and `Platform.is`: no layout decision depends on them unless the team chose ApparenceKit's approach.
+- **Wakelock:** the screen stays on only on the named pages and locks normally elsewhere, including after switching away from a kept-alive tab.
+- **Social links:** a social link opens the installed app, and the browser when the app is absent; nothing uses a custom scheme.

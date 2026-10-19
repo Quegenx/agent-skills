@@ -68,7 +68,7 @@ All metadata, "including privacy information, your app description, screenshots,
 | 2.3.7 | Unique name, accurate keywords, no trademarked terms, popular app names, pricing or irrelevant phrases. "App names must be limited to 30 characters." Names, subtitles, screenshots and previews carry no prices, terms or descriptions not specific to that metadata type. Subtitles don't reference other apps or make unverifiable claims. Apple may modify inappropriate keywords. |
 | 2.3.8 | Icons, screenshots and previews meet a 4+ rating even if the app is rated higher. "For Kids" and "For Children" are reserved for the Kids Category. |
 | 2.3.9 | Secure rights to all materials; show fictional account information, not a real person's data. |
-| 2.3.10 | No names, icons or imagery of other mobile platforms or alternative app marketplaces, in the app or its metadata. |
+| 2.3.10 | No names, icons or imagery of other mobile platforms or alternative app marketplaces in the app or its metadata unless there is specific approved interactive functionality. The old summary omitted the exception. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata] |
 | 2.3.11 | Pre-order apps must be complete and deliverable as submitted. |
 | 2.3.12 | "What's New" describes new features clearly; simple bug fixes may use a generic description. |
 | 2.3.13 | In-app events fit an event type in App Store Connect, metadata pertains to the event, events happen at the selected times across storefronts, the deep link goes to the right place. |
@@ -157,7 +157,7 @@ The third-party preflight skills (truongduy2611/app-store-preflight-skills, Revy
 
 - The guidelines page footer still reads "Last Updated: October 16, 2026"; if not, re-read the changed sections and the Apple Developer News entries.
 - A reviewer with only the demo account and review notes can reach every feature and every configured IAP item, with the backend running (2.1).
-- No price, competitor platform, other app's name or Apple trademark appears in the name, subtitle, keywords, screenshots or creative assets (2.3.7, 2.3.10, 2.3.14, 5.2.5); the name is 30 characters or fewer.
+- Metadata follows the qualified 2.3.7 price/off-type rule and the 2.3.10 approved interactive-functionality exception, plus the separate creative-asset and intellectual-property rules; the name is 30 characters or fewer. The old check imposed one blanket price/platform/trademark ban across these fields. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
 - Every digital unlock goes through IAP; any external purchase link is on the US storefront or covered by an entitlement (3.1.1, 3.1.1(a)).
 - If a third-party or social login sets up the primary account, an equivalent login with the three 4.8 properties sits beside it.
 - The privacy policy link is in App Store Connect and inside the app; account deletion is in the app if accounts can be created (5.1.1(i), 5.1.1(v)).

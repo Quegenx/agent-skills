@@ -275,6 +275,8 @@ API check: `debugPaintSizeEnabled` is a top-level `bool`, default `false` (https
 
 ## Semantics
 
+**P2 correction:** `isSemanticBoundary` stops annotation from leaking upward, but does not prevent an ancestor's explicit descendant merge. The source prose and comments below claim it cannot merge into any ancestor. Keep that source claim separate from the established [boundary and ancestor-merge correction](SEMANTICS.md#merging-boundaries-and-explicit-children), based on Flutter master and [isSemanticBoundary](https://api.flutter.dev/flutter/semantics/SemanticsConfiguration/isSemanticBoundary.html). This example still represents the remove action as a `CustomSemanticsAction` on the attachment node, not a separate focusable node.
+
 [renderobjects](https://renderobjects.com/examples/message-attachment/) "The message attachment creates a semantics boundary so that it doesn't merge with any ancestor semantics nodes." Merging upward "could silently drop one of two conflicting `onTap` handlers, or trip the framework's "incompatible configuration" assertion". `isMergingSemanticsOfDescendants` folds the child's label (an image label, say) into the same node. It reports its text direction, a label, `isButton`, and both tap callbacks: the remove button "has no backing render object of its own", so its action is a `CustomSemanticsAction` on the same node "rather than as a separate, independently-focusable node".
 
 ```dart

@@ -50,7 +50,7 @@ Example: Title 7, Description 6, Visuals 8, Ratings 9, Metadata 5, Conversion 7 
 | 0-29 | F | Listing needs a complete overhaul |
 
 - **Per dimension:** 9-10 = A, 7-8 = B, 5-6 = C, 3-4 = D, 1-2 = F; 0 means "Cannot assess (data unavailable)".
-- **Against [eronred]'s weights** ([AUDIT.md](AUDIT.md#the-weighted-score)): both give visuals 25% in total (eronred: screenshots 15 + preview 5 + icon 5); they differ on ratings (20% here, 15% there) and the description (15% flat here, 5% iOS and 15% Android there).
+- **Against [eronred]'s printed weights** ([AUDIT.md](AUDIT.md#the-weighted-score)): both source tables print visual weights totaling 25 (eronred: screenshots 15 + preview 5 + icon 5), but eronred's full iOS table totals 110%, so these are not equal normalized shares. The source tables differ on ratings (20 here, 15 there) and description (15 flat here, 5 iOS and 15 Android there); use the arithmetic correction at that owner when calculating the weighted average. [coreyhaines31/marketingskills, aso; eronred, ASO audit]
 
 ## Dimension rubrics
 
@@ -149,6 +149,8 @@ Check: price model clear; IAP names communicate value; Play download range ("10K
 
 [coreyhaines31/marketingskills, aso] `references/report-template.md`, with the source's vendor prices removed and its High/Medium impact written as P1/P2.
 
+The keyword table uses the same shared scale: the source's High/Med/Low priorities become P1/P2/P3. [coreyhaines31/marketingskills, aso]
+
 ```
 # ASO Audit: {App Name}
 **Store:** {Apple App Store / Google Play}
@@ -210,7 +212,7 @@ Keywords, competitors and the plan:
 ```
 | Keyword | Rationale | Where to Place | Priority |
 |---------|-----------|----------------|----------|
-| {keyword} | {why this keyword} | {title/subtitle/description/keyword field} | {High/Med/Low} |
+| {keyword} | {why this keyword} | {title/subtitle/description/keyword field} | {P1/P2/P3} |
 
 | Metric | {Your App} | {Competitor 1} | {Competitor 2} |
 |--------|-----------|----------------|----------------|

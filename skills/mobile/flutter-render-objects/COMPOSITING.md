@@ -170,6 +170,24 @@ bool get alwaysNeedsCompositing => child != null && _alpha > 0;
 @override
 bool get isRepaintBoundary => alwaysNeedsCompositing;
 
+set opacity(double value) {
+  assert(value >= 0.0 && value <= 1.0);
+  if (_opacity == value) {
+    return;
+  }
+  final bool didNeedCompositing = alwaysNeedsCompositing;
+  final wasVisible = _alpha != 0;
+  _opacity = value;
+  _alpha = ui.Color.getAlphaFromOpacity(_opacity);
+  if (didNeedCompositing != alwaysNeedsCompositing) {
+    markNeedsCompositingBitsUpdate();
+  }
+  markNeedsCompositedLayerUpdate();
+  if (wasVisible != (_alpha != 0) && !alwaysIncludeSemantics) {
+    markNeedsSemanticsUpdate();
+  }
+}
+
 @override
 OffsetLayer updateCompositedLayer({required covariant OpacityLayer? oldLayer}) {
   final OpacityLayer layer = oldLayer ?? OpacityLayer();
@@ -178,7 +196,7 @@ OffsetLayer updateCompositedLayer({required covariant OpacityLayer? oldLayer}) {
 }
 ```
 
-  Its `opacity` setter computes `_alpha = ui.Color.getAlphaFromOpacity(_opacity)`, calls `markNeedsCompositingBitsUpdate()` if `alwaysNeedsCompositing` flipped, then `markNeedsCompositedLayerUpdate()`; the full setter is in [PAINTING.md](PAINTING.md#case-1-a-property-decides-whether-a-layer-is-needed).
+  Its `opacity` setter computes `_alpha = ui.Color.getAlphaFromOpacity(_opacity)`, calls `markNeedsCompositingBitsUpdate()` if `alwaysNeedsCompositing` flipped, then `markNeedsCompositedLayerUpdate()`. The distinct source example is in [PAINTING.md](PAINTING.md#case-1-a-property-decides-whether-a-layer-is-needed).
 - **What renderobjects.com says instead** [renderobjects](https://renderobjects.com/guides/compositing/): mutate the live layer in the setter and skip `markNeedsPaint()`, because "The framework will pick up the change at the next compositing pass"; it calls the trigger "`markNeedsCompositingBitsUpdate`'s less-known cousin" without naming it. Its code:
 
 ```dart

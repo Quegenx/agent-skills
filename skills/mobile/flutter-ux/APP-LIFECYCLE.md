@@ -1,8 +1,8 @@
 # App lifecycle and diagnostics
 
-What the running app shows users across failures and versions: a friendly error view in place of the red or grey screen, breaking on handled exceptions in debug, a version line, a changelog after each update, forced update, soft update and maintenance mode, real screen names in analytics, and a debug-only admin panel. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and release notes (apparencekit.dev), third-party community advice, not Flutter team docs. Where a tip differs from the official-docs [flutter](../flutter/SKILL.md) skill, both sides are stated and tagged. Crash reporting itself is in the [sentry](../../monitoring/sentry/FLUTTER.md) skill.
+What the running app shows users across failures and versions: a friendly error view in place of the red or grey screen, breaking on handled exceptions in debug, a version line, a changelog after each update, forced update, soft update and maintenance mode, real screen names in analytics, a debug-only admin panel, lifecycle observers and first-frame work. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and release notes (apparencekit.dev), third-party community advice, not Flutter team docs. Where a tip differs from the official-docs [flutter](../flutter/SKILL.md) skill, both sides are stated and tagged. Crash reporting itself is in the [sentry](../../monitoring/sentry/FLUTTER.md) skill.
 
-**Contents:** [Version notes](#version-notes) · [Replace the default error view](#replace-the-default-error-view) · [Break on handled exceptions](#break-on-handled-exceptions) · [Show the app version](#show-the-app-version) · [Changelog after update](#changelog-after-update) · [Forced update, soft update, maintenance mode](#forced-update-soft-update-maintenance-mode) · [Real screen names in analytics](#real-screen-names-in-analytics) · [Debug-only admin panel](#debug-only-admin-panel) · [Prove it](#prove-it)
+**Contents:** [Version notes](#version-notes) · [Replace the default error view](#replace-the-default-error-view) · [Break on handled exceptions](#break-on-handled-exceptions) · [Show the app version](#show-the-app-version) · [Changelog after update](#changelog-after-update) · [Forced update, soft update, maintenance mode](#forced-update-soft-update-maintenance-mode) · [Real screen names in analytics](#real-screen-names-in-analytics) · [Debug-only admin panel](#debug-only-admin-panel) · [App lifecycle states](#app-lifecycle-states) · [After the first frame](#after-the-first-frame) · [Prove it](#prove-it)
 
 ## Version notes
 
@@ -598,6 +598,35 @@ Navigator.of(context).push(
 
 [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/): a "settings admin panel" with "test mode for in app purchases, reset onboarding...only in debug mode". The release note gives no code or gating mechanism.
 
+## App lifecycle states
+
+- Use the lifecycle to pause a video or stop a live process when the user leaves: add `WidgetsBindingObserver` to the widget's `State` and implement `didChangeAppLifecycleState`, which runs on every app state change. [ApparenceKit](https://apparencekit.dev/flutter-tips/observe-application-lifecycle-flutter/) (No code in the article.)
+- **Correction:** the article lists "4 main states" (`resumed`, `inactive`, `paused`, `detached`). The current `AppLifecycleState` enum has five: `detached`, `resumed`, `inactive`, `hidden`, `paused`. The article (no version stated) misses `hidden`. [AppLifecycleState](https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html)
+  - `resumed`: "the default running mode for a running application that has input focus and is visible".
+  - `inactive`: "At least one view of the application is visible, but none have input focus." On iOS: phone call, TouchID request, app switcher, control center. "On Android and iOS, apps in this state should assume that they may be hidden and paused at any time."
+  - `hidden`: "All views of an application are hidden". On iOS and Android it is synthesized before `paused` (from `inactive`) and before `inactive` (from `paused`), so one handler covers "hidden" on every platform.
+  - `paused`: "not currently visible to the user, and not responding to user input"; only entered on iOS and Android.
+  - `detached`: "still hosted by a Flutter engine but is detached from any host views"; also the state before the app initializes.
+- Besides the `WidgetsBindingObserver` mixin, "changes to the state can be observed by creating an `AppLifecycleListener`"; the current state is `SchedulerBinding.instance.lifecycleState`. "Applications should not rely on always receiving all possible notifications": a killed app gets none. [AppLifecycleState](https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html)
+
+## After the first frame
+
+[ApparenceKit](https://apparencekit.dev/flutter-tips/wait-for-view-ready-flutter-app/)
+
+- To run code once the view is built and visible (show a popup or welcome message, start the camera or a map, run animations, measure widget sizes that depend on the final layout), call `WidgetsBinding.instance.addPostFrameCallback` from `initState`. It "schedules a callback to run after the current frame has been rendered."
+
+```dart
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    // Do your stuff here, after the view is ready
+  });
+}
+```
+
+- Prefer it to `Future.delayed(Duration(seconds: 1))`, which "is unreliable". "Don't Abuse It": for user input or data loading, other lifecycle methods or async patterns usually fit better.
+
 ## Prove it
 
 - **Error view:** throw inside one widget's `build` in a release build; the user sees the friendly view in theme colors with no exception text, and a long press puts the exception and stack trace on the clipboard. In a debug build the trace shows too. A failing widget inside a list or a small slot shows the badge, not a stretched full view; no yellow text underlines appear.
@@ -607,3 +636,5 @@ Navigator.of(context).push(
 - **Update gates:** app open is not delayed on a throttled network; flipping the server's minimum version or maintenance flag for one platform affects only that platform; the forced screen fades in and cannot be left with back.
 - **Screen names:** the analytics debug view shows one event per page with a readable name, including pages inside shell branches and pages pushed with `Navigator.push`; no page reports as `FlutterViewController`.
 - **Admin panel:** a release build contains no route to it.
+- Every `addObserver(this)` has a matching `removeObserver(this)` in `dispose`; a lifecycle switch names all five values, `hidden` included. [AppLifecycleState](https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html)
+- Work that needs the rendered first frame uses the post-frame callback rather than an arbitrary `Future.delayed`. [ApparenceKit](https://apparencekit.dev/flutter-tips/wait-for-view-ready-flutter-app/)

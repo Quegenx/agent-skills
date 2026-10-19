@@ -269,7 +269,7 @@ meta_ads_create_ad
 ```
 
 - **Activate only after the user confirms,** in the order ad → ad set → campaign. On iOS 14+, AEM and SKAN report late: trust the MMP and "Do not pause winners at 24h on iOS alone".
-- **Credits:** writes cost 2 API credits each; a 5-variant batch (5 uploads, 1 campaign, 1 ad set, 5 creatives, 5 ads) is "~(2 × 12) = ~24 API credits".
+- **Credits:** writes cost 2 API credits each; a 5-variant batch (5 uploads, 1 campaign, 1 ad set, 5 creatives, 5 ads) contains 17 writes, so the source's stated two-credit-per-write assumption gives 34 API credits. The source said "~(2 × 12) = ~24 API credits"; this corrects that arithmetic, not Appeeky's current billing or whether each upload is billable. [appeeky]
 - **REST.** Base `https://api.appeeky.com/v1/connect/meta-ads/`. MCP tools hit un-nested paths with `ad_account_id`; nested aliases exist. `meta_ads_create_campaign` → `POST /campaigns` or `POST /ad-accounts/:adAccountId/campaigns`; `meta_ads_create_adset` → `POST /adsets`; `meta_ads_create_creative` → `POST /creatives`; `meta_ads_upload_ad_image_from_url` → `POST /adimages/from-url`; `meta_ads_create_app_install_draft` → `POST /app-install-drafts`.
 
 | Error | Fix |
@@ -287,18 +287,8 @@ meta_ads_create_ad
 - **What the Meta Ad Library shows:** active formats, hooks and angles, long-running ads (a profit proxy), platform mix, CTA and copy structure. **What it doesn't:** exact spend or ROAS, internal winners, full-funnel conversion rate, targeting details (limited). "Long-running active ads (30+ days) are the strongest signal".
 - **Tools:** `meta_app_ad_intelligence` (by competitor App Store or Play ID), `meta_ads_search` (keyword or brand), `meta_ads_page_ads` (Facebook Page ID). Access needs the Appeeky API key; `X-Meta-Ad-Library-Token` is optional.
 
-```
-meta_app_ad_intelligence
-  app_id: "571800810"
-  platform: "apple"
-  country: "us"
-  status: "ACTIVE"
-  media_type: "ALL"
-  limit: 25
-```
-
-- **Variants:** Google Play with `platform: "google"`, `lang: "en"`; override the search with `query: "Calm meditation sleep"`. `meta_ads_search query countries: "US" status: "ACTIVE" media_type: "ALL" limit: 25`; `meta_ads_page_ads page_id countries status limit`; paginate with the `after` cursor.
-- **REST:** `GET /v1/apps/:id/ad-intelligence?platform=apple&country=us`; `GET /v1/ads/meta/search?query=Calm&countries=US&status=ACTIVE`; `GET /v1/ads/meta/pages/:pageId/ads?countries=US`; headers `Authorization: Bearer <appeeky-key>` and optional `X-Meta-Ad-Library-Token`.
+- **Queries:** use the user's actual permitted competitor scope rather than the source's fixed real-brand example/app IDs. `meta_app_ad_intelligence` takes `app_id`, `platform: "apple"`, `country: "us"`, `status: "ACTIVE"`, `media_type: "ALL"`, `limit: 25`; the Play variant uses `platform: "google"`, `lang: "en"`, and `query` can override the search. `meta_ads_search` takes `query`, `countries: "US"`, `status: "ACTIVE"`, `media_type: "ALL"`, `limit: 25`; `meta_ads_page_ads` takes `page_id`, countries, status and limit. Paginate with `after`. [appeeky]
+- **REST routes:** `GET /v1/apps/:id/ad-intelligence`, `GET /v1/ads/meta/search`, `GET /v1/ads/meta/pages/:pageId/ads`, with the source's platform/country/status/query and pagination inputs, `Authorization: Bearer <appeeky-key>` and optional `X-Meta-Ad-Library-Token`. [appeeky]
 - **Analyze the top 10 to 15 ads:** hook, format, angle, visual, CTA, runtime (`ad_delivery_start_time` to today), platforms, seasonality; cluster them into 3 to 5 patterns.
 
 | Hook type | Signal words |

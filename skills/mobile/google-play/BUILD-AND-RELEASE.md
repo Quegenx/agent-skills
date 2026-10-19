@@ -2,7 +2,7 @@
 
 Google Play takes an Android App Bundle (AAB), not an installable app: the bundle holds all compiled code and resources and defers APK generation and signing to Google Play, which serves optimized APKs per device configuration. So two keys matter: the upload key you sign the bundle with, and the app signing key Google holds through Play App Signing. Most release failures are a version code that isn't higher than every earlier one, a bundle signed with the wrong upload key, a target API level below the current floor, or a release left uncommitted or unsent for review. This applies to the Android side of Flutter and React Native projects too; Flutter build commands are in [../flutter/SKILL.md](../flutter/SKILL.md).
 
-**Contents:** [App bundles](#app-bundles) · [Size limits](#size-limits) · [Gradle builds](#gradle-builds) · [Versions](#versions) · [Shrinking and mapping files](#shrinking-and-mapping-files) · [Play App Signing](#play-app-signing) · [Target API level](#target-api-level) · [Release with gplay](#release-with-gplay) · [Release notes](#release-notes) · [Track and release fields](#track-and-release-fields) · [Review and publishing](#review-and-publishing) · [CI](#ci) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
+**Contents:** [App bundles](#app-bundles) · [Size limits](#size-limits) · [Gradle builds](#gradle-builds) · [Versions](#versions) · [Shrinking and mapping files](#shrinking-and-mapping-files) · [Play App Signing](#play-app-signing) · [Target API level](#target-api-level) · [Release with gplay](#release-with-gplay) · [Release notes](#release-notes) · [Track and release fields](#track-and-release-fields) · [Review and publishing](#review-and-publishing) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## App bundles
 
@@ -198,29 +198,7 @@ Developer API `edits.tracks` fields, which gplay writes for you:
 - **Statuses:** App status (Draft, Internal testing, Closed testing, Open testing, Pre-registration, Production, No active releases, Unpublished, Removed by Google, Suspended by Google; a removed app is reinstated by a policy-compliant update, a suspended one only by a successful appeal); Update status (No pending changes, In review, Update rejected, App rejected, Changes not yet sent for review, Previous); Item status.
 - **Review is not a troubleshooting step:** submitting non-compliant apps for reviewers to find issues leads to rejections, review delays and longer appeals.
 
-## CI
-
-```yaml
-- name: Build Release AAB
-  run: |
-    echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > release.keystore
-    export KEYSTORE_FILE=release.keystore
-    export KEYSTORE_PASSWORD="${{ secrets.KEYSTORE_PASSWORD }}"
-    export KEY_ALIAS="${{ secrets.KEY_ALIAS }}"
-    export KEY_PASSWORD="${{ secrets.KEY_PASSWORD }}"
-    ./gradlew bundleRelease
-
-- name: Upload to Play Store
-  env:
-    GPLAY_SERVICE_ACCOUNT: ${{ secrets.PLAY_SERVICE_ACCOUNT }}
-  run: |
-    gplay release \
-      --package com.example.app \
-      --track internal \
-      --bundle app/build/outputs/bundle/release/app-release.aab
-```
-
-- **Use `--dry-run` in CI** before the real release, and upload the deobfuscation file after each release.
+- **Before the real release:** use `--dry-run` and upload the deobfuscation file after each release. [gplay, build-and-release]
 
 ## Troubleshooting
 

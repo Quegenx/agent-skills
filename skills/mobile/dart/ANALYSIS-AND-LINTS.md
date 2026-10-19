@@ -2,7 +2,7 @@
 
 Static analysis catches type, null safety and style problems before code runs, and `dart fix` repairs many of them automatically. What the analyzer reports is decided by one file, `analysis_options.yaml`: the lint set it includes, the strict modes it turns on and the severities it assigns. `dart fix` only fixes diagnostics that are enabled, so a thin options file means fewer automatic fixes. The style rules these lints enforce are in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md); the language features behind the errors are in [LANGUAGE.md](LANGUAGE.md); Flutter specifics are in [../flutter/SKILL.md](../flutter/SKILL.md).
 
-**Contents:** [analysis_options.yaml](#analysis_optionsyaml) · [Strict modes](#strict-modes) · [Lint sets](#lint-sets) · [Rules, severities and suppression](#rules-severities-and-suppression) · [Formatter settings](#formatter-settings) · [Analyzer plugins](#analyzer-plugins) · [dart analyze](#dart-analyze) · [dart fix](#dart-fix) · [dart format](#dart-format) · [Fixing analysis errors](#fixing-analysis-errors) · [The Dart and Flutter MCP server](#the-dart-and-flutter-mcp-server) · [VM inlining hints](#vm-inlining-hints) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
+**Contents:** [analysis_options.yaml](#analysis_optionsyaml) · [Strict modes](#strict-modes) · [Lint sets](#lint-sets) · [Rules, severities and suppression](#rules-severities-and-suppression) · [Formatter settings](#formatter-settings) · [Analyzer plugins](#analyzer-plugins) · [dart analyze](#dart-analyze) · [dart fix](#dart-fix) · [dart format](#dart-format) · [Fixing analysis errors](#fixing-analysis-errors) · [The Dart and Flutter MCP server](../flutter/AGENT-TOOLING.md#the-mcp-server) · [VM inlining hints](#vm-inlining-hints) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
 
 ## analysis_options.yaml
 
@@ -199,9 +199,10 @@ Workflow from the dart-lang error-fixing skill:
 - **Overrides:** return types are covariant and parameter types contravariant. Never tighten a parameter type in a subclass unless it is marked `covariant`.
 - **Generics:** annotate them explicitly (`List<T>`, `Map<K, V>`). Never assign `List<dynamic>` to a typed list such as `List<Cat>`.
 - **Casts:** avoid implicit downcasts from `dynamic`. When a cast is needed, make it explicit (`as List<Cat>`) and make sure the runtime type matches, or it throws `TypeError`.
-- **Null safety:** `?` for nullable types, `!` for null assertion, `required` for named parameters that cannot be null. Use `late` for a non-nullable top-level or instance variable that is set before use where flow analysis cannot prove it. Use the `_` wildcard (Dart 3.7+) for non-binding locals or parameters to avoid unused-variable warnings.
+- **Null safety:** `?` for nullable types, `!` for null assertion, the [required-argument rule](LANGUAGE.md#null-safety) for named arguments. Use `late` for a non-nullable top-level or instance variable that is set before use where flow analysis cannot prove it. Use the `_` wildcard (Dart 3.7+) for non-binding locals or parameters to avoid unused-variable warnings.
+  - P2 correction: the old null-safety line said `required` was for named parameters that cannot be null; see the official distinction in [Dart null safety](https://dart.dev/null-safety/understanding-null-safety).
 - **Error handling:** catch `Exception` subtypes for failures you can recover from. Never explicitly catch `Error` or its subtypes (`TypeError`, `ArgumentError`): they are bugs to fix; enforce with the `avoid_catching_errors` lint. `rethrow` inside `catch` keeps the original stack trace.
-- **Runtime errors in a running app:** the skill's description says it "Uses get_runtime_errors and lsp to fetch an active stack trace, locate the failing line, apply a fix, and verify resolution via hot_reload", but its body covers only `dart analyze`, `dart fix` and manual fixes and never mentions those tools again. The MCP tools themselves are below.
+- **Runtime errors in a running app:** the skill's description says it "Uses get_runtime_errors and lsp to fetch an active stack trace, locate the failing line, apply a fix, and verify resolution via hot_reload", but its body covers only `dart analyze`, `dart fix` and manual fixes and never mentions those tools again. The MCP tools are in [Flutter agent tooling](../flutter/AGENT-TOOLING.md#tools).
 
 The fixed forms:
 
@@ -241,55 +242,7 @@ Before the fixes these were `final list = [];` (inferred `List<dynamic>`, can't 
 
 ## The Dart and Flutter MCP server
 
-The Dart Tooling MCP Server exposes Dart and Flutter tool actions (analyzer diagnostics, symbol resolution, test runners, runtime inspection) to AI clients. The README marks it "WIP. This package is still experimental and is likely to evolve quickly." It reached stable with Dart 3.9; setup requires Dart 3.9.0-163.0.dev or later, uses stdio, needs client support for Tools and Resources for full features, and recommends Roots.
-
-| Client | Setup |
-|---|---|
-| Claude Code | `claude plugin marketplace add flutter/agent-plugins`, then `claude plugin install dart-flutter@dart-flutter`; verify with `claude plugin marketplace list`. Claude Code doesn't auto-load plugin rules: copy them from github.com/flutter/agent-plugins/tree/main/rules into `CLAUDE.md` |
-| Cursor | Cursor Marketplace "Dart and Flutter" plugin or `/add-plugin dart-flutter` (configures MCP); rules `.mdc` into `.cursor/rules/`. Older configs used `--experimental-mcp-server`, removable on Dart 3.9.0 or later |
-| Codex | `codex plugin marketplace add flutter/agent-plugins`, `codex plugin add dart-flutter@dart-flutter`; rules into `.agent/rules/` or `CODEX.md` |
-| Antigravity CLI (`agy`) | MCP in `.agents/mcp_config.json` or `~/.gemini/config/mcp_config.json` |
-| GitHub Copilot | `.vscode/mcp.json` with `"servers": {"dart": {"command": "dart", "args": ["mcp-server"]}}`, rules into `.github/copilot-instructions.md`; or `"dart.mcpServer": true` (Dart-Code extension v3.114+) |
-| Others (Windsurf, Zed, Cline) | The generic config below |
-
-```json
-{
-  "mcpServers": {
-    "dart": {
-      "command": "dart",
-      "args": ["mcp-server"]
-    }
-  }
-}
-```
-
-- **The plugin bundles** agent skills from the official Flutter and Dart repos, agent rules (for example proactively trigger stateful hot reload), the MCP server and specialized agents (for example the Flutter Accessibility `a11y` agent). For agents without plugins: `npx skills add flutter/agent-plugins --skill '*' --agent universal --yes` and `npx skills add dart-lang/skills --skill '*' --agent universal --yes`.
-- **Connecting to running apps** goes through the Dart Tooling Daemon (DTD). Flutter apps register automatically in debug or profile mode unless `--no-dds`; pure Dart apps need `--observe`. `--print-dtd` prints the DTD URI. Suggested rules-file text: "Always pass the `--print-dtd` flag to `dart` or `flutter` when spawning an application." and, for `dart` applications, "always pass the `--observe` flag", both before the script: `dart --observe --print-dtd bin/main.dart`. Dart 3.12 added agentic hot reload through the MCP server.
-- **Toggle tools** with `--enable`/`--disable` by tool name or category (for example `"args": ["mcp-server", "--enable", "flutter_app_lifecycle"]`). Disabling beats enabling at the same level; names beat categories. `dart mcp-server --help` lists all.
-- **Docs search:** the Developer Knowledge MCP server (developers.google.com/knowledge/mcp) searches the official Flutter and Dart docs.
-
-| Tool | Does | Categories | On by default |
-|---|---|---|---|
-| `analyze_files` | Analyzer diagnostics | analysis | Yes |
-| `lsp` | hover, signatureHelp, resolveWorkspaceSymbol | analysis | Yes |
-| `dart_fix` | Runs `dart fix --apply` | cli | No |
-| `dart_format` | Runs `dart format .` | cli | No |
-| `run_tests` | "ALWAYS use instead of `dart test` or `flutter test` shell commands" | cli | No |
-| `create_project` | | cli | No |
-| `pub` | | cli, package_deps | Yes |
-| `pub_dev_search` | | package_deps | Yes |
-| `read_package_uris` | Reads `package:` and `package-root:` URIs (added 3.11) | package_deps | Yes |
-| `rip_grep_packages` | Needs ripgrep installed | package_deps | Yes |
-| `roots` | | None | Yes |
-| `dtd` | `listDtdUris`, `connect`, `listConnectedApps` | dart_tooling_daemon | Yes |
-| `get_runtime_errors` | | dart_tooling_daemon | Yes |
-| `get_active_location` | | dart_tooling_daemon | No |
-| `vm_service` | | dart_tooling_daemon | Yes |
-| `hot_reload`, `hot_restart` | | flutter | Yes |
-| `widget_inspector` | | flutter | Yes |
-| `flutter_driver_command` | | flutter_driver | Yes |
-| `launch_app`, `stop_app`, `list_running_apps`, `get_app_logs` | | flutter, flutter_app_lifecycle | No |
-| `list_devices` | | flutter, flutter_app_lifecycle, cli | No |
+Install clients, connect through DTD and choose tools using the canonical [Dart and Flutter MCP setup](../flutter/AGENT-TOOLING.md#the-mcp-server). Analysis-specific analyze_files and dart_fix workflows remain above.
 
 ## VM inlining hints
 
@@ -320,5 +273,4 @@ Unreleased on the SDK main branch: 3.15.0 adds lint `unnecessary_this_alias`.
 - **`dart fix --dry-run`** proposes nothing.
 - **`dart format -o none --set-exit-if-changed .`** exits 0.
 - **`analysis_options.yaml`** sits at the package root, includes `package:lints/recommended.yaml` or `package:flutter_lints/flutter.yaml`, and no `rules:` block mixes list and map syntax.
-- **For the MCP server:** `dart mcp-server --help` runs, and the client lists `analyze_files`.
 - **Inlining:** every retained `vm:prefer-inline` annotation has a measured benefit on a performance-critical method; otherwise rely on the compiler heuristic. [Dart VM FAQ](https://github.com/dart-lang/sdk/blob/main/docs/Frequently-asked-questions-about-the-Dart-VM.md)

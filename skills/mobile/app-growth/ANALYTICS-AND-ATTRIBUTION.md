@@ -136,13 +136,13 @@ Source: [eronred].
 
 ## App Tracking Transparency (ATT)
 
-- **Required when** the app "collects data about people and shares it with other companies to track them across apps and websites." Tracking means linking user or device data from your app with other companies' apps, websites or offline properties for targeted ads or ad measurement, or sharing it with data brokers. ATT permission is required on iOS, iPadOS and tvOS 14.5+ to track or read the IDFA; without it the advertising identifier is all zeros. ATT is available from iOS 14.0. Apple's rules: https://developer.apple.com/app-store/user-privacy-and-data-use/.
-- **Three steps:** add `NSUserTrackingUsageDescription`; call `requestTrackingAuthorization(completionHandler:)`; check `trackingAuthorizationStatus`. The app crashes if it uses ATT without the key. Keep the string short and specific; the app name is shown already.
+Tracking definitions, exemptions, EU prompt/reprompt rules, hashed identifiers, IDFV, CMP and deep-link privacy boundaries have one owner: [ASC privacy](../app-store-connect/PRIVACY-AND-COMPLIANCE.md#app-tracking-transparency). The API behavior and source timing choices below apply within that policy. [https://developer.apple.com/app-store/user-privacy-and-data-use/]
+
+- **Three steps:** ATT is available from iOS 14.0; add `NSUserTrackingUsageDescription`; call `requestTrackingAuthorization(completionHandler:)`; check `trackingAuthorizationStatus`. The app crashes if it uses ATT without the key. Keep the string short and specific; the app name is shown already.
 - **Signatures:** `class func requestTrackingAuthorization(completionHandler completion: @escaping @Sendable (ATTrackingManager.AuthorizationStatus) -> Void)` and `class func requestTrackingAuthorization() async -> ATTrackingManager.AuthorizationStatus`. Statuses: `authorized`, `denied`, `notDetermined`, `restricted`.
 - **No prompt appears** (the handler runs immediately) when tracking is restricted, the user turned off "Allow Apps to Request to Track" (EU: "Allow Apps to Request to Link Your Activity Across Companies"), a request is already pending, the call comes from an app extension, or the app state is not `UIApplicationStateActive`. If the system dismisses without a decision you get `notDetermined`: call again.
-- **EU, iOS/iPadOS 27.2+:** `requestTrackingAuthorization(preferExpandedInterface:additionalInformationAction:completionHandler:)` shows a full-page sheet with Markdown from `NSUserTrackingMarkdownUsageDescription` (bold, italic, bullet lists, paragraph breaks; no underline) and an optional "Additional Information" button (tapping it dismisses without an answer, the handler gets `notDetermined`, then ask again). France, Germany, Italy, Poland and Romania always get the full-page sheet. Outside the EU both parameters are ignored. EU users can be reprompted one year after their previous answer unless they turned off the Settings toggle.
-- **Rules (Guidelines 5.1.1(iv) and 5.1.2(i)):** never gate functionality on tracking consent or reward it ("Your app may not require users to enable system functionalities (such as push notifications, location services, tracking) in order to access functionality, content, use the app, or receive monetary or other compensation"); never manipulate, trick or force consent. A transparent pre-prompt explanation screen is allowed. A separate consent (CMP) screen is allowed but the ATT answer must always be respected. You may link to Settings (`openSettingsURLString`) so users can change a denied choice.
-- **What still counts as tracking:** hashed email or phone matching without ATT; fingerprinting (may be rejected, including SDKs that do it); third-party deep-linking or deferred deep-linking tools that pass unique identifiers or create a shared identity; tracking inside webviews; an SDK that combines your users' data with other apps' data even if you don't use it. You are responsible for your SDKs and SSO. Not tracking: on-device-only linking; a data broker used only for fraud or security; a consumer reporting agency for creditworthiness. IDFV may be used for analytics across apps from the same content provider without ATT, but not combined to track.
+- **EU expanded-prompt API:** `requestTrackingAuthorization(preferExpandedInterface:additionalInformationAction:completionHandler:)` uses a full-page sheet with Markdown from `NSUserTrackingMarkdownUsageDescription` (bold, italic, bullet lists and paragraph breaks, no underline) with an optional Additional Information button. Tapping it dismisses without an answer and returns `notDetermined`; return to ATT after the information flow only within the [policy owner's consent conditions](../app-store-connect/PRIVACY-AND-COMPLIANCE.md#app-tracking-transparency), never when all relevant legal-consent choices were declined. Outside the EU the two parameters are ignored. The old instruction omitted that consent condition. [Apple, AppTrackingTransparency; https://developer.apple.com/app-store/user-privacy-and-data-use/]
+- **Settings link:** use `openSettingsURLString` to let a user change a denied choice; it does not override the ATT response. [https://developer.apple.com/app-store/user-privacy-and-data-use/]
 - **Privacy manifests:** apps with third-party SDKs must describe what they collect, use and whether they track; Xcode combines the manifests into a report for the Privacy Nutrition Labels.
 - **When to ask [eronred]:** after a value moment, once the user is invested; never on first open (too early kills the opt-in rate). Fire the prompt before any IDFA-dependent SDK call. A pre-permission screen that explains why raises grant rates (the playbook claims 2-3x). Onboarding permission order is in [ONBOARDING.md](ONBOARDING.md).
 - **When to ask: the sources differ.** [ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/) warns against asking too late: "If you request ATT after the user has already triggered events, those early events are sent without tracking authorization. Request it during onboarding, before any purchase flow"; its starter kit asks "within onboarding" ([ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/)). [eronred] (above) says never on first open, when a new user's onboarding runs. Apple's rules above apply either way.
@@ -150,8 +150,8 @@ Source: [eronred].
 
 ## The iOS attribution stack
 
-- **The playbook's view ("2024+") [eronred]:** IDFA with ATT opt-in is available but at about a 25% opt-in rate ([ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/): "On average, only 20-30% of iOS users opt in"), deterministic where you have it; SKAdNetwork (SKAN 4.0) is the default for ad networks; AdAttributionKit (iOS 17.4+) is Apple's evolution of SKAN, used alongside it and required by some networks; MMP probabilistic matching is "banned by Apple for fingerprinting; allowed for limited use", so check your MMP's terms; Apple Ads attribution gives campaign and keyword detail for Apple Ads only and is always on. Its default 2025 stack: Apple Ads attribution (built in) + SKAN 4 + AdAttributionKit + an MMP for orchestration + the Apple Ads API for depth.
-- **Apple's view:** "Use AdAttributionKit for app ad campaigns on the App Store and alternative marketplaces." Apple's privacy page says no fingerprinting (apps may be rejected, including for SDKs that do it) and names no limited-use exception, while the playbook says probabilistic matching is "allowed for limited use". Confirm with Apple's current guidance and your MMP.
+- **The playbook's view ("2024+") [eronred]:** IDFA with ATT opt-in is available but at about a 25% opt-in rate ([ApparenceKit](https://apparencekit.dev/blog/facebook-flutter-sdk-meta-ads-events/): "On average, only 20-30% of iOS users opt in"), deterministic where you have it; SKAdNetwork (SKAN 4.0) is the default for ad networks; AdAttributionKit (iOS 17.4+) is Apple's evolution of SKAN, used alongside it and required by some networks; the source claims MMP probabilistic matching is "banned by Apple for fingerprinting; allowed for limited use", but that claim does not authorize fingerprinting; Apple Ads attribution gives campaign and keyword detail for Apple Ads only and is always on. Its default 2025 stack: Apple Ads attribution (built in) + SKAN 4 + AdAttributionKit + an MMP for orchestration + the Apple Ads API for depth.
+- **Apple's view:** "Use AdAttributionKit for app ad campaigns on the App Store and alternative marketplaces." Apple's privacy page says no fingerprinting (apps may be rejected, including for SDKs that do it) and names no limited-use exception, while the playbook says probabilistic matching is "allowed for limited use". Do not fingerprint or derive device data to identify a user/device; MMP terms cannot authorize it. The old source implied a limited-use exception. [https://developer.apple.com/app-store/user-privacy-and-data-use/]
 
 | Framework | Available from | Works with |
 |---|---|---|
@@ -205,24 +205,7 @@ Source: [eronred].
 
 - **Three conversion windows from first launch:** days 0-2, 3-7 and 8-35, the same in AdAttributionKit and SKAdNetwork 4. A winning attribution gets up to three postbacks, and the app must update the conversion value in each window. Tier 0 gets only the first postback; nonwinning attributions get one; ads signed with SKAdNetwork 3 or earlier get one winning postback.
 - **Start the window:** the advertised app must call an update method at least once; call it at first launch. AdAttributionKit: `Postback.updateConversionValue(_:)`, `updateConversionValue(_:coarseConversionValue:lockPostback:)`, `updateConversionValue(_:lockPostback:)`, and `Postback.isSupported`. SKAdNetwork: `updatePostbackConversionValue(_:coarseValue:lockWindow:completionHandler:)`, `updatePostbackConversionValue(_:coarseValue:completionHandler:)`, `updatePostbackConversionValue(_:completionHandler:)`. Deprecated: `registerAppForAdNetworkAttribution()` and `updateConversionValue(_:)`.
-- **iOS 18+:** `PostbackUpdate(fineConversionValue:lockPostback:conversionTypes:)` with `[.install]` or `[.reengagement]` (`nil` updates all), passed to `Postback.updateConversionValue(_:)`. iOS 18.4+: `conversionTag` on `PostbackUpdate` updates only the conversion with that tag (delivered in the reengagement URL); without a tag the most recent conversion is updated. Apple's sample, verbatim (as published, its second call passes `installPostbackUpdate`, not `reengagementPostbackUpdate`):
-
-```swift
-private func attributeCustomerAccountCreated() async {
-    do {
-        // Updates any active install postbacks with a conversion value of 20.
-        let installPostbackUpdate = PostbackUpdate(fineConversionValue: 20, lockPostback: false, conversionTypes: [.install])
-        try await Postback.updateConversionValue(installPostbackUpdate)
-
-        // Updates any active reengagement postbacks with a conversion value of 12.
-        let reengagementPostbackUpdate = PostbackUpdate(fineConversionValue: 12, lockPostback: false, conversionTypes: [.reengagement])
-        try await Postback.updateConversionValue(installPostbackUpdate)
-    }
-    catch {
-        print("Failed to update postback conversion value: \(error)")
-    }
-}
-```
+- **iOS 18+:** `PostbackUpdate(fineConversionValue:lockPostback:conversionTypes:)` with `[.install]` or `[.reengagement]` (`nil` updates all), passed to `Postback.updateConversionValue(_:)`. iOS 18.4+: `conversionTag` on `PostbackUpdate` updates only the conversion with that tag (delivered in the reengagement URL); without a tag the most recent conversion is updated. The native-only Swift implementation is skipped; its published sample passes the install update again on its second call rather than the separately prepared reengagement update. Keep the intended install/reengagement contract distinct. [Apple, AdAttributionKit]
 
 - **Send delay:** after a window ends or is locked, the first postback goes out after a random 24-48 hours, the second and third after 24-144 hours. Locking (`lockPostback` / `lockWindow`) finalizes the window immediately and ignores later updates in it. SKAdNetwork 3 finalizes 24 h after the last update plus a random 0-24 h; SKAdNetwork 4 locks, then waits a random 24-48 h; both versions total 24-48 h for the first postback.
 - **Values:** the fine `conversion-value` is an unsigned 6-bit value (0-63) and appears only in the first postback. `coarse-conversion-value` is `low`, `medium` or `high`, sent instead in lower tiers and in postbacks 2 and 3.
@@ -307,7 +290,7 @@ Source: [eronred].
 
 Source: [eronred].
 
-- **Always integrate the Google Play Install Referrer API**, even with an MMP: it is the deterministic install source and the source of truth. Call it within 60s of first launch or it comes back empty.
+- **Always integrate the Google Play Install Referrer API**, even with an MMP: it is the deterministic install source and the source of truth. The data remains available for 90 days and does not change unless the app is reinstalled; call once during the first execution after install. The old source claimed a 60-second deadline. [https://developer.android.com/google/play/installreferrer/library]
 - **Google Ads attribution** is built in for App campaigns ([GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md)); use an MMP SDK for Meta and TikTok.
 
 ## Deep links
@@ -333,7 +316,7 @@ Source: [eronred].
 | MMP shows installs, the network doesn't | Postback timing, or privacy threshold not met |
 | Apple Ads attribution higher than the MMP | MMP missing the `iAd Framework` integration; switch to the AdServices framework (iOS 14.3+) |
 | Conversion values all 0 or null | Privacy threshold (low volume), or schema not implemented in the app |
-| Install Referrer empty on Android | API not called within 60s of first launch |
+| Install Referrer empty on Android | Inspect the Play service connection and actual referral data; the official availability is 90 days, not the old source's 60-second expiry ([guide](https://developer.android.com/google/play/installreferrer/library)) |
 | Deferred deep link drops params | App doesn't handle cold-start launch params |
 | Revenue mismatch between MMP and RevenueCat / App Store Connect | Currency conversion, refunds, Family Sharing; expect a 5-10% delta |
 
@@ -352,5 +335,5 @@ Source: [eronred].
 - **Conversion values:** the app calls an update method at first launch and at each schema step, and both frameworks' update APIs are called.
 - **AdServices:** posting a fresh token returns 200 with an `attribution` field; a 404 is retried at 5-second intervals at most three times.
 - **Totals:** installs and revenue are counted once, from App Store Connect, Play Console or RevenueCat, and never as the sum of what each network claims.
-- **Android:** the Install Referrer is read within 60s of first launch and is not empty for a Play install.
+- **Android:** the Install Referrer is requested once during the first execution after install, after a successful Play service connection; inspect the returned data without treating every empty referrer as a missed 60-second deadline. [https://developer.android.com/google/play/installreferrer/library]
 - **Deep links:** a deferred deep link from each ad source lands on the intended screen after install on iOS and Android, and the Universal Links / App Links domains verify.

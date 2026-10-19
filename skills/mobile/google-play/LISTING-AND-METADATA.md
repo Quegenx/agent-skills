@@ -2,7 +2,7 @@
 
 The store listing is the page users see on Google Play: name, descriptions, icon, feature graphic, screenshots and video, per language, plus up to 50 custom listings and A/B experiments on top. What decides most outcomes is Google's metadata policy (no ranking, price or promotional claims, no emoji or repeated keywords) and the asset specs; files kept in version control and pushed through an edit keep it repeatable. Google's Help Center is the authority; facts from the gplay CLI's third-party author are marked as the CLI's where they differ. Google's values here were rechecked against the raw Help Center pages on 2026-10-17. Keyword and conversion strategy is [../aso/SKILL.md](../aso/SKILL.md); edits and CLI auth are [CLI.md](CLI.md).
 
-**Contents:** [Text fields and limits](#text-fields-and-limits) · [Metadata policy](#metadata-policy) · [Graphic assets](#graphic-assets) · [Preview video](#preview-video) · [Metadata as files](#metadata-as-files) · [Screenshots: capture and upload](#screenshots-capture-and-upload) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Prove it](#prove-it)
+**Contents:** [Text fields and limits](#text-fields-and-limits) · [Metadata policy](../aso/ANDROID.md#metadata-policy) · [Graphic assets](../aso/ANDROID.md#graphic-assets) · [Preview video](../aso/ANDROID.md#preview-video) · [Metadata as files](#metadata-as-files) · [Screenshots: capture and upload](#screenshots-capture-and-upload) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Prove it](#prove-it)
 
 ## Text fields and limits
 
@@ -25,37 +25,17 @@ The main listing lives at Grow users > Store presence > Main store listing; grap
 
 ## Metadata policy
 
-- **Repetitive or irrelevant keywords** in the app name, description or promotional description can get the app suspended.
-- **Title, icon, developer name:** "Don't use emojis, emoticons, or repeated special characters in these metadata elements. Avoid ALL CAPS unless it is part of your brand name."
-- **Description:** "Excessive length, detail, improper formatting, or repetition can result in a violation of this policy." No word blocks or keyword lists (Google's bad example: "Car racing, car driving, race cars, car races, ..."), no comparisons with other apps or brands. The policy applies to all translations of the listing.
-- **No performance, ranking, price or promotion claims,** and no implied relation to Google Play programs, in text or images. Violation examples: "App of the year", "#1", "Best of Play 20XX", "Popular", "10% off", "$50 cash back", "free for limited time only", "Editor's choice", "New".
-- **Also avoid in assets and copy:** "Best," "#1," "Top," "New," "Discount," "Sale," "Million Downloads" (the feature graphic list adds "Free"); calls to action like "download now," "install now," "play now," "try now"; unnecessary keywords; time-sensitive copy; device imagery and store badges; third-party trademarked characters or logos without permission. In preview video copy, "Awards from Google Play such as 'Best Of' are allowed to be displayed."
-- **No misleading icon symbols** ("new message dot indicator when there are no new messages and download/install symbols when the app is not related to downloading content"), and no unattributed or anonymous user testimonials in the description.
-- **Suitable for a general audience** whatever the content rating: no sexually suggestive imagery, profanity, graphic violence or depictions of illicit drug use in the listing.
+The canonical [Play metadata policy](../aso/ANDROID.md#metadata-policy), [copy constraints](../aso/ANDROID.md#writing-the-copy) and [asset-specific rules](../aso/ANDROID.md#graphic-assets) distinguish metadata elements and mandatory requirements from promotion recommendations. The listing must also meet the general-audience policy collected there. Validate each field under its actual scope, not a blanket word/emoji blacklist across every full description. The old local acceptance check imposed that blanket blacklist. [Google Play metadata and asset policy]
 
 ## Graphic assets
 
-Required to publish: app icon, short description, feature graphic, and "a minimum of two screenshots across different device types". "Requirements" are mandatory ("failure to meet requirements may result in removal or suspension"); "Highly recommended" items affect recommendation and promotion eligibility.
+Use [ASO Android asset specifications](../aso/ANDROID.md#graphic-assets) for required/promotion counts, device classes, formats, dimensions, alpha, real-experience rules and the general-audience boundary. Actual CLI image types and historical payload limits remain below. [Google Play asset specifications; gplay]
 
-| Asset | Google's spec |
-|---|---|
-| App icon | 32-bit PNG with alpha, 512 x 512 px, max 1024 KB; meets the Google Play icon design specifications; no badges or text suggesting ranking, price or Play categories |
-| Feature graphic | JPEG or 24-bit PNG (no alpha), 1024 x 500 px; keep key elements away from cutoff zones; no device imagery or store badges |
-| Phone screenshots | Up to 8 per supported device type; JPEG or 24-bit PNG (no alpha); min dimension 320 px, max 3840 px; long side no more than twice the short side |
-| Tablet / Chromebook | "a minimum of 4 screenshots", between 1,080 and 7,680 px, 16:9 landscape or 9:16 portrait |
-| Wear OS | At least one screenshot of the current app, app interface only, 1:1, min 384 x 384 px, no device frames, no transparent backgrounds or masking |
-| Android TV | At least one TV screenshot plus a TV banner (1280 x 720 px, JPEG or 24-bit PNG, no alpha) |
-| Android Automotive OS | Required unless the app is in a parked app category; if provided, at least 2 portrait (800 x 1,280 px) and 2 landscape (1,024 x 768 px), generic system UI only |
-| Android XR | Between 4 and 8 screenshots, PNG or JPEG, up to 8 MB each, 8:5 (recommended 3840 x 2400, minimum 1920 x 1200) |
-
-- **Promotion eligibility (highly recommended):** to be eligible for formats that use screenshots, apps need at least four screenshots at 1080 px minimum (16:9 landscape min 1920 x 1080, or 9:16 portrait min 1080 x 1920); games at least three 16:9 or three 9:16 screenshots at those minimums. "Taglines should not take up more than 20% of the image." Prioritize UI in the first three screenshots.
-- **Screenshots must represent the actual app:** "Screenshots must demonstrate the actual in-app or in-game experience"; no people interacting with the device unless usage is off-device.
 - **Where the CLI's author differs from Google:** it lists image types `phoneScreenshots` (required), `sevenInchScreenshots`, `tenInchScreenshots`, `tvScreenshots`, `wearScreenshots`, `icon` (512x512), `featureGraphic` (1024x500), `promoGraphic` (180x120), `tvBanner` (1280x720), with phone screenshots 2 to 8, and says "PNG or JPEG required (PNG recommended), max 8 MB per image". Google caps the icon at 1024 KB and requires 24-bit PNG without alpha for feature graphics and screenshots; follow Google's spec.
 
 ## Preview video
 
-- **One YouTube URL:** a single video (no playlist or channel, no timecode parameters); ads disabled (turn off monetization; with copyrighted content, use a different video); public or unlisted, not private; not age-restricted; embeddable. Not required, but highly recommended for games.
-- **Content:** it "may autoplay inline with muted audio up to 30 seconds"; show the actual experience "as early as possible within the first 10 seconds"; "Aim for at least 80% of the video to be representative of the user experience." The video shows before the screenshots, with the feature graphic as its cover.
+The YouTube URL, visibility, advertising/embedding, footage, autoplay and cover rules have one owner: [ASO Play preview video](../aso/ANDROID.md#preview-video), including its distinct permission for Google Play award references. Recording and uploading remain below. [Google Play asset specifications]
 
 ## Metadata as files
 
@@ -131,8 +111,8 @@ EDIT_ID=$(gplay edits create --package com.example.app | jq -r '.id')
 ## Prove it
 
 - **Text fits:** `gplay validate listing --dir ... --locale <locale>` passes for every locale; title at most 30 characters, short description at most 80, full description at most 4000.
-- **No policy words:** a search of every title, short and full description finds none of "#1", "Best", "Top", "New", "Free", "Sale", "download now", no emoji, and no ALL CAPS outside the brand name.
-- **Assets meet spec:** the icon is a 512 x 512 32-bit PNG under 1024 KB; the feature graphic is 1024 x 500 with no alpha; at least two screenshots, each long side at most twice the short side.
+- **Policy scope:** each field and asset passes its [actual Play metadata/asset rules](../aso/ANDROID.md#metadata-policy); full-description formatting/keyword restrictions, short-description rules and title/icon/developer-name restrictions are checked separately, not by one blanket word blacklist. [Google Play metadata policy]
+- **Assets meet spec:** the files satisfy [ASO Android asset specs](../aso/ANDROID.md#graphic-assets), with mandatory device/count/format requirements distinguished from promotion eligibility. [Google Play asset specifications]
 - **Screenshots pass:** `gplay validate screenshots --dir ./metadata --output table` reports no errors and the files sort in the intended order.
 - **The edit is clean:** `gplay edits validate` passes before `gplay edits commit`.
 - **Nothing got cleared:** after a listing change, `gplay sync diff-listings` shows only the fields you meant to change.

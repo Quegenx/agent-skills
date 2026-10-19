@@ -125,8 +125,8 @@ Client verification can be bypassed: verify on the server.
 - **One-time products from the CLI:** `gplay purchases products get --package --product-id --token <PURCHASE_TOKEN>`; `acknowledge`; `consume` (consumables).
 - **`purchaseState`:** 0 Purchased, 1 Canceled, 2 Pending. **`consumptionState`:** 0 yet to be consumed, 1 consumed.
 - **Subscriptions: prefer v2.** `gplay purchases subscriptionsv2 get --token` (also `subscriptionsv2 cancel|defer|revoke`, and `purchases productsv2 get`). v2 `SubscriptionPurchaseV2` reflects base plans and offers; v1 `purchases subscriptions get` returns the legacy shape.
-- **v1 states:** `subscriptionState` 0 Active, 1 Canceled (valid until expiry), 2 grace period, 3 on hold, 4 paused, 5 expired. `paymentState` 0 pending, 1 received, 2 free trial, 3 pending deferred upgrade/downgrade.
-- **v1 management:** `purchases subscriptions cancel|revoke --token`; `defer --json @defer.json` with `{"deferralInfo":{"expectedExpiryTimeMillis":"1709000000000"}}`.
+- **Actual state fields:** v1 `SubscriptionPurchase` has no `subscriptionState`; its `paymentState` is 0 pending, 1 received, 2 free trial, 3 pending deferred upgrade/downgrade, and is absent for canceled/expired subscriptions. It also exposes expiry, auto-renewal and cancellation fields. v2 uses named `SUBSCRIPTION_STATE_*` values for pending, active, paused, grace, hold, canceled, expired and pending-purchase-canceled; canceled is not yet expired. The old source invented v1 integer subscriptionState values 0 through 5. [https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions; https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptionsv2]
+- **Legacy CLI management:** `purchases subscriptions cancel|revoke --token`; `defer --json @defer.json` with `{"deferralInfo":{"expectedExpiryTimeMillis":"1709000000000"}}`. The current v1 API resource marks cancel/defer deprecated in favor of v2; verify installed CLI support rather than assuming a legacy wrapper is the current API contract. [https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions]
 - **Suspended subscriptions:** since Billing Library 8.1.0 a new `queryPurchasesAsync()` parameter includes them ("the user paused the subscription or their renewal payment method was declined"). The `Purchase` returns "`isSuspended() = true` for any suspended subscriptions. In this case, you shouldn't grant access to the purchased subscription", and instead guide the user to the subscriptions center.
 - **Purchase history is yours to keep** (Billing Library 7.0.0, when `queryPurchaseHistoryAsync()` was deprecated): use `queryPurchasesAsync()` for acknowledged and pending purchases; "Consumed purchases: Developers should keep track of consumed purchases on their own servers"; canceled purchases come from the voided-purchases developer API.
 
@@ -158,27 +158,7 @@ async function verifyPurchase(packageName, productId, token) {
 
 The `POST /verify-purchase` handler grants only when `purchase.purchaseState === 0`. Retry transient failures, never invalid tokens:
 
-```javascript
-async function verifyWithRetry(packageName, productId, token, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await verifyPurchase(packageName, productId, token);
-    } catch (error) {
-      if (error.code === 404 || error.code === 410) {
-        throw error; // Don't retry if purchase is invalid
-      }
-      if (i === retries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-    }
-  }
-}
-```
-
-| Error | Meaning |
-|---|---|
-| `401` | Service account not authorized |
-| `404` | Token invalid or expired |
-| `410` | Refunded or canceled |
+The old source retry block retried every non-404/410 error, including authorization and argument failures, and its table equated 404 with invalid/expired and 410 with refunded/canceled. Retire that example rather than inferring entitlement from a status code. The subscription resources document reason-specific errors: 404 `notFound` calls for checking identifiers; 410 can mean a permanently invalid token, a subscription unavailable after more than 60 days expired, or an operation on an expired subscription. Read the resource and reason; query state before entitlement decisions. Retry documented transient 5xx errors and concurrent-update 409 with backoff, not authorization/argument failures. The one-time products resource does not currently supply error-table entries, so do not copy a subscription-only mapping onto it. [https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptionsv2; https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.products]
 
 - **Do:** verify on the server; store tokens securely; acknowledge within 3 days; handle refunds and cancellations; use HTTPS; rate-limit the verification endpoint; log attempts.
 - **Don't:** verify only on the client; expose service account credentials; skip acknowledging; grant before verification; ignore voided purchases; store card data.
@@ -188,7 +168,7 @@ async function verifyWithRetry(packageName, productId, token, retries = 3) {
 
 - **Setup:** create a Pub/Sub topic; Play Console > Monetization Setup > Real-time developer notifications, enter the topic name. `gplay rtdn setup --package` prints the topic and the Console steps.
 - **Decode a payload:** `gplay rtdn decode --data '{"message":{"data":"<BASE64_DATA>"}}'` or `cat payload.json | gplay rtdn decode --file -`. It accepts the Pub/Sub envelope or the raw notification.
-- **`subscriptionNotification.notificationType`:** 1 `SUBSCRIPTION_RECOVERED`, 2 `RENEWED`, 3 `CANCELED`, 4 `PURCHASED`, 7 `EXPIRED`, 10 `PAUSED`, 12 `REVOKED` (refunded). The token is in `purchaseToken`.
+- **`subscriptionNotification.notificationType`:** 1 `SUBSCRIPTION_RECOVERED`, 2 `SUBSCRIPTION_RENEWED`, 3 `SUBSCRIPTION_CANCELED`, 4 `SUBSCRIPTION_PURCHASED`, 7 `SUBSCRIPTION_RESTARTED`, 10 `SUBSCRIPTION_PAUSED`, 12 `SUBSCRIPTION_REVOKED`, 13 `SUBSCRIPTION_EXPIRED`. The old source mapped 7 to EXPIRED and glossed REVOKED as refunded; the official event means revoked before expiration. [https://developer.android.com/google/play/billing/rtdn-reference] The token is in `purchaseToken`. RTDN reports a change, not complete purchase state: query the Developer API before updating backend state. [https://developer.android.com/google/play/billing/rtdn-reference]
 
 ## Orders, refunds and voided purchases
 
@@ -257,5 +237,5 @@ async function verifyWithRetry(packageName, productId, token, retries = 3) {
 - **Refunds remove access:** `gplay purchases voided list` over the last window returns no token that still holds an entitlement in your database.
 - **RTDN arrives:** `gplay rtdn decode` on a received Pub/Sub message shows a `notificationType` and `purchaseToken`.
 - **Billing Library is current:** the app's Billing Library major version has not passed its "New app and update deadline" in the table, the merged manifest contains `com.google.android.play.billingclient.version`, and Play Console's Policy status shows no unsupported-version warning.
-- **The paywall meets the Subscriptions policy:** the billed amount and period are the most prominent price, the auto-renew line and trial length and its end charge are readable without a tap, the dismiss button is visible, terms and currency are localized in every language, the subscription name doesn't say "Free Trial", and account settings link to the Play Subscription Center or your cancel flow.
+- **The paywall meets the Subscriptions policy:** the billed amount and period are the most prominent price, the auto-renew line and trial length and its end charge are readable without a tap, access to available free content is clear, terms and currency are localized in every language, the subscription name doesn't say "Free Trial", and account settings link to the Play Subscription Center or your cancel flow. Apply the policy's dismiss control for offers of a free trial or subscription where free content is available; the old check made it universal. The stricter source preference for a visible close control remains in [PAYWALLS.md](../app-growth/PAYWALLS.md). [https://support.google.com/googleplay/android-developer/answer/9900533]
 - **Integrity tokens are bound:** the server recomputes `requestHash` from the request and rejects mismatches, and does not decrypt the same token repeatedly.

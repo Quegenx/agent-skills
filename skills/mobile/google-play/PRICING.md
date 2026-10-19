@@ -76,7 +76,7 @@ What existing subscribers then see is Google's rule ([Change subscription prices
 
 ## Prove it
 
-- **The update kept every region:** the region count in `subscriptions get` (or `iap get`, `onetimeproducts get`) after the update equals the count before it.
+- **The update kept every region:** compare the actual region IDs and configurations in `subscriptions get` (or `iap get`, `onetimeproducts get`) before and after: requested changes match the plan, and non-target regions/values survive. Equal counts alone can hide a substituted region or reject an intentional addition. [gplay, regional pricing fetch-and-merge]
 - **New-regions defaults survived:** `otherRegionsConfig` or `newRegionsConfig` is still present after the update.
 - **Prices are well formed:** every `nanos` is between 0 and 999999999, prices end in `.99` where intended, and currencies match the fetched ones.
 - **Dry run first:** `gplay --dry-run subscriptions update ...` succeeds before the real call.

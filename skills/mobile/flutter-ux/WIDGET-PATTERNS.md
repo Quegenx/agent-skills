@@ -1,8 +1,8 @@
 # Widget patterns
 
-Small widget recipes and the framework mechanics behind them: avatars, app bars, overlays and tutorial overlays, zoom and pan, flex and row height, `OverflowBar` vs `Wrap`, selectable text, window-size changes, Stack clipping, keys, app lifecycle, the first frame, Actions and Intents, builders and factories, global events, and paginated lists with skeletons. Source: ApparenceKit tips and blog posts (apparencekit.dev, third-party; no article states a Flutter version), checked against api.flutter.dev where an API is named. Theming is in [THEMING.md](THEMING.md); lifecycle and scrolling tips from FlutterPro are in [APP-LIFECYCLE.md](APP-LIFECYCLE.md) and [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md).
+Small widget recipes and the framework mechanics behind them: avatars, app bars, overlays and tutorial overlays, zoom and pan, flex and row height, `OverflowBar` vs `Wrap`, selectable text, window-size changes, Stack clipping, keys, Actions and Intents, builders and factories, and global app events. Lifecycle and first-frame work is in [APP-LIFECYCLE.md](APP-LIFECYCLE.md); paged lists and loading are in [PAGINATION-AND-LOADING.md](PAGINATION-AND-LOADING.md). Source: ApparenceKit tips and blog posts (apparencekit.dev, third-party; no article states a Flutter version), checked against api.flutter.dev where an API is named. Theming is in [THEMING.md](THEMING.md); lifecycle and scrolling tips from FlutterPro are in [APP-LIFECYCLE.md](APP-LIFECYCLE.md) and [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md).
 
-**Contents:** [Circular avatar with a border](#circular-avatar-with-a-border) · [Round button](#round-button) · [Custom app bar](#custom-app-bar) · [Overlays](#overlays) · [Tutorial overlays with pal_widgets](#tutorial-overlays-with-pal_widgets) · [Zoom and pan](#zoom-and-pan) · [Flex and row height](#flex-and-row-height) · [OverflowBar and Wrap](#overflowbar-and-wrap) · [Selectable text](#selectable-text) · [React to window size changes](#react-to-window-size-changes) · [Draw outside a Stack](#draw-outside-a-stack) · [Keys](#keys) · [App lifecycle states](#app-lifecycle-states) · [After the first frame](#after-the-first-frame) · [Child to parent with Actions and Intents](#child-to-parent-with-actions-and-intents) · [Builders and factories](#builders-and-factories) · [Global app events](#global-app-events) · [Pagination and skeletons](#pagination-and-skeletons) · [Prove it](#prove-it)
+**Contents:** [Circular avatar with a border](#circular-avatar-with-a-border) · [Round button](#round-button) · [Custom app bar](#custom-app-bar) · [Overlays](#overlays) · [Tutorial overlays with pal_widgets](#tutorial-overlays-with-pal_widgets) · [Zoom and pan](#zoom-and-pan) · [Flex and row height](#flex-and-row-height) · [OverflowBar and Wrap](#overflowbar-and-wrap) · [Selectable text](#selectable-text) · [React to window size changes](#react-to-window-size-changes) · [Draw outside a Stack](#draw-outside-a-stack) · [Keys](#keys) · [Child to parent with Actions and Intents](#child-to-parent-with-actions-and-intents) · [Builders and factories](#builders-and-factories) · [Global app events](#global-app-events) · [Prove it](#prove-it)
 
 ## Circular avatar with a border
 
@@ -394,35 +394,6 @@ class _HeroState extends State<Hero> {
 }
 ```
 
-## App lifecycle states
-
-- Use the lifecycle to pause a video or stop a live process when the user leaves: add `WidgetsBindingObserver` to the widget's `State` and implement `didChangeAppLifecycleState`, which runs on every app state change. [ApparenceKit](https://apparencekit.dev/flutter-tips/observe-application-lifecycle-flutter/) (No code in the article.)
-- **Correction:** the article lists "4 main states" (`resumed`, `inactive`, `paused`, `detached`). The current `AppLifecycleState` enum has five: `detached`, `resumed`, `inactive`, `hidden`, `paused`. The article (no version stated) misses `hidden`. [AppLifecycleState](https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html)
-  - `resumed`: "the default running mode for a running application that has input focus and is visible".
-  - `inactive`: "At least one view of the application is visible, but none have input focus." On iOS: phone call, TouchID request, app switcher, control center. "On Android and iOS, apps in this state should assume that they may be hidden and paused at any time."
-  - `hidden`: "All views of an application are hidden". On iOS and Android it is synthesized before `paused` (from `inactive`) and before `inactive` (from `paused`), so one handler covers "hidden" on every platform.
-  - `paused`: "not currently visible to the user, and not responding to user input"; only entered on iOS and Android.
-  - `detached`: "still hosted by a Flutter engine but is detached from any host views"; also the state before the app initializes.
-- Besides the `WidgetsBindingObserver` mixin, "changes to the state can be observed by creating an `AppLifecycleListener`"; the current state is `SchedulerBinding.instance.lifecycleState`. "Applications should not rely on always receiving all possible notifications": a killed app gets none. [AppLifecycleState](https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html) More lifecycle tips: [APP-LIFECYCLE.md](APP-LIFECYCLE.md).
-
-## After the first frame
-
-[ApparenceKit](https://apparencekit.dev/flutter-tips/wait-for-view-ready-flutter-app/)
-
-- To run code once the view is built and visible (show a popup or welcome message, start the camera or a map, run animations, measure widget sizes that depend on the final layout), call `WidgetsBinding.instance.addPostFrameCallback` from `initState`. It "schedules a callback to run after the current frame has been rendered."
-
-```dart
-@override
-void initState() {
-  super.initState();
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    // Do your stuff here, after the view is ready
-  });
-}
-```
-
-- Prefer it to `Future.delayed(Duration(seconds: 1))`, which "is unreliable". "Don't Abuse It": for user input or data loading, other lifecycle methods or async patterns usually fit better.
-
 ## Child to parent with Actions and Intents
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/change-parent-widget-model-from-child/)
@@ -516,160 +487,9 @@ Future<void> onEvent(AppEvent? event) async {
 - **Buffering, two views.** The article's single-subscription `StreamController()` accepts `publish` calls with no listener, and `asBroadcastStream` subscribes only on its first listen, so earlier events are buffered. The Dart guidance says "A `StreamController` must wait for a subscriber before starting work (it buffers events with no subscriber, which risks a memory leak)" ([../dart/ASYNC.md](../dart/ASYNC.md)); the flutter skill's own key-value recipe uses `StreamController<bool>.broadcast()` ([../flutter/DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md)). The article's design keeps services unaware of each other, which also fits "Repositories never know about each other" ([../flutter/ARCHITECTURE.md](../flutter/ARCHITECTURE.md)).
 - "Getting further" (no code): events with a priority, consumed by the first service that needs them; a queue consumed one by one; a replayable queue; "make sure something will only be done once." "Don't forget to close the stream subscription" when the listener does not stay alive.
 
-## Pagination and skeletons
-
-[ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/)
-
-The article's notifier is Riverpod; the parts below are the stack-neutral ones (the notifier code belongs with the Riverpod material).
-
-- **Steps:** load the first page; load the next page near the end of the list; append the new items. "I generally use 15 items per page." "As Flutter only draws the visible items, you can have a list with thousands of items without any performance issues" (lazy lists: [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md)).
-- **Page state.** Keep the previous page to know whether more exist; or "instead of having a previousPage property, you can also try until the API answers with an empty list and store just a boolean".
-
-```dart
-class InboxPageState {
-  final List<Inbox> items;
-  final Pageable<Inbox>? previousPage;
-
-  const InboxPageState({
-    required this.items,
-    this.previousPage,
-  });
-
-  bool get hasMore => previousPage?.hasMore ?? false;
-}
-```
-
-- **Next-page guards:** skip while a load is in flight and when `!hasMore`; on success append to the existing items; on failure set the error state.
-- **End-of-list detection:** a `ScrollController` listener calls `loadNextPage()` when `maxScrollExtent - pixels <= 200` ("The delta position is the distance from the end of the list ... Change it to fit your needs"):
-
-```dart
-class InboxPage extends ConsumerStatefulWidget {
-  const InboxPage({super.key});
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _InboxPageState();
-}
-
-class _InboxPageState extends ConsumerState<InboxPage> {
-  final ScrollController _scrollController = ScrollController(); // 1
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScrollListener);
-    super.dispose();
-  }
-
-  void _onScrollListener() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    const delta = 200.0;
-    if (maxScroll - currentScroll <= delta) { // 2
-      ref.read(inboxNotifierProvider.notifier).loadNextPage();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    ...
-  }
-}
-```
-
-  **Fix:** the `dispose` removes the listener but never disposes the controller; what a `State` allocates is disposed in `dispose` ([../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md)), so add `_scrollController.dispose();` before `super.dispose();`.
-- **Slivers and skeleton rows.** The page is a `CustomScrollView` with slivers ("more flexible than regular lists ... cool animated headers"). While loading, it keeps the already-loaded items and adds 5 skeleton tiles after them (`itemCount: items.length + 5`, or 5 on first load): "To make it more interactive and fun, I display 5 fake items when loading".
-- **Pull to refresh.** `RefreshIndicator.adaptive` wraps the `CustomScrollView` directly; "Flutter will automatically display the refresh indicator when the user pulls down the list."
-
-```dart
-RefreshIndicator.adaptive(
-    displacement: 100,
-    onRefresh: ()  {
-        ref.read(inboxPageStateProvider.notifier).refresh();
-    },
-    child: CustomScrollView(
-        controller: _scrollController,
-        ...
-```
-
-  **Correction:** "The returned Future must complete when the refresh operation is finished." [RefreshIndicator.onRefresh](https://api.flutter.dev/flutter/material/RefreshIndicator/onRefresh.html) The block returns nothing; return the refresh `Future`: `onRefresh: () => ref.read(inboxPageStateProvider.notifier).refresh(),`.
-- **Artificial delay, two views.** The article adds `Future.delayed(const Duration(seconds: 1))` before each load "to show the loading indicator even if the loading is fast". Against it: the same site calls `Future.delayed(Duration(seconds: 1))` "unreliable" ([After the first frame](#after-the-first-frame)), and the repo's UI rule is "Feedback is instant, results can follow" ([../../frontend/ui-animation/PATTERNS.md](../../frontend/ui-animation/PATTERNS.md)).
-- **One loading state for first load and next page, two views.** The article sets the whole state to loading for the next page, so a next-page error replaces the list with the error branch. The repo's web rule keeps them apart: "'Loading more' is a separate flag from 'loading'", and "A failed refetch keeps what is shown until a later read succeeds; only a failed first read goes to the error state" ([../../frontend/app-ui/STATES.md](../../frontend/app-ui/STATES.md)).
-- **Spinner or skeleton.** A basic indicator (`CircularProgressIndicator.adaptive()`, a `CupertinoActivityIndicator` on iOS) or a skeleton, "grey blocks that look like the layout of the page": "users perceive skeleton screens as loading faster, even if the actual load time is the same." Packages named: `sleek_circular_slider` ("customizable circular sliders"), `flutter_spinkit` ("many different kinds of loading animations"), `better_skeleton` ("Makes it easier to build these loading states"); no versions stated. [ApparenceKit](https://apparencekit.dev/flutter-tips/handle-loading-states-in-flutter/)
-- **Skeleton tile with `better_skeleton`:** a 1000 ms `AnimationController` with `..repeat()` drives `AnimatedSkeleton(listenable: ...)`, which animates "the overlayed glass effect". "You can also share the animation controller between multiple widgets to make them animate at the same time."
-
-```dart
-import 'package:better_skeleton/skeleton_container.dart';
-import 'package:flutter/material.dart';
-
-class VideoSkeletonTile extends StatefulWidget {
-  const VideoSkeletonTile({super.key});
-
-  @override
-  State<VideoSkeletonTile> createState() => _VideoSkeletonTileState();
-}
-
-class _VideoSkeletonTileState extends State<VideoSkeletonTile>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController animationController; // ℹ️ 1
-
-  @override
-  void initState() {
-    super.initState();
-    animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000))
-      ..repeat(); // ℹ️ 2
-  }
-
-  @override
-  void deactivate() {
-    animationController.dispose();
-    super.deactivate();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSkeleton( // ℹ️ 3
-      listenable: animationController,
-      child: Container(
-        height: 300,
-        width: 200,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary.withOpacity(.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: const EdgeInsets.all(16),
-      ),
-    );
-  }
-}
-```
-
-  **Corrections:** dispose what `initState` allocates in `dispose`, not `deactivate` ([../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md)); and `Color.withOpacity` is deprecated since 3.22 for `withValues(alpha: ...)` ([../flutter/VERSIONS.md](../flutter/VERSIONS.md)). The article is out of date on both:
-
-```dart
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-```
-
-```dart
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
-```
-
 ## Prove it
 
-- Every `addObserver(this)` has a matching `removeObserver(this)` in `dispose`; every `ScrollController`, `AnimationController` and `TransformationController` created in a `State` is disposed in `dispose`, never in `deactivate`.
+- Every `ScrollController`, `AnimationController` and `TransformationController` created in a `State` is disposed in `dispose`, never in `deactivate`.
 - No `GlobalKey()` constructed inside `build`.
 - No `Overlay.of(context)` followed by a null check; every inserted `OverlayEntry` has one `remove()` path.
-- A lifecycle `switch` over `AppLifecycleState` names all five values, `hidden` included.
 - A tappable badge on a `Stack` with `Clip.none` sits inside the Stack's bounds; tap it in a widget test.
-- `onRefresh` returns the refresh `Future`; the spinner stays until the data is in.
-- Scroll to the bottom of a paged list: one next-page request fires (not one per scroll event), loaded items stay visible, and skeleton rows appear after them.
-- No `Future.delayed` used to wait for layout or to show a spinner.

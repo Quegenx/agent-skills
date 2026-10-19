@@ -95,7 +95,7 @@ From App Review guideline 2.3 (Accurate Metadata):
 - **2.3:** all metadata, "including privacy information, your app description, screenshots, and previews", must reflect the core experience and stay up to date.
 - **2.3.7, verbatim:** "Choose a unique app name, assign keywords that accurately describe your app, and don't try to pack any of your metadata with trademarked terms, popular app names, pricing information, or other irrelevant phrases just to game the system. App names must be limited to 30 characters. Metadata such as app names, subtitles, screenshots, and previews should not include prices, terms, or descriptions that are not specific to the metadata type."
 - **2.3.1(a):** misleading marketing, or a false price inside or outside the App Store, is grounds for removal and termination.
-- **2.3.10:** no names, icons or imagery of other mobile platforms or alternative app marketplaces in the app or metadata. [rorkai] adds: no references to other platforms in What's New ("Now matching our Android version"), no competitor mentions.
+- **2.3.10:** no names, icons or imagery of other mobile platforms or alternative app marketplaces in the app or metadata unless there is specific, approved interactive functionality. The old summary omitted that exception. [rorkai]'s blanket no-other-platform advice for What's New ("Now matching our Android version") is a stricter source preference; the official qualified rule takes precedence. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata; rorkai]
 - **4.1:** don't use another developer's icon, brand or product name without approval.
 
 ## Localization
@@ -127,6 +127,6 @@ From App Review guideline 2.3 (Accurate Metadata):
 
 - Every field is within its limit in every locale, and the keyword field is under 100 bytes, not only 100 characters.
 - No word appears twice across name, subtitle, keyword field and category in a locale; the keyword field has no spaces after commas, no app or company name, no "app", no competitor or trademark.
-- No metadata field contains a price, a ranking claim, another platform's name or an unverifiable claim.
+- Metadata passes the qualified 2.3.7 price/off-type rule and 2.3.10 platform rule, including its approved interactive-functionality exception; it makes no misleading or unverifiable product claim. The old acceptance line imposed a blanket price/platform ban across every field. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
 - Every non-primary locale has its own researched keywords, not a translation of the primary list.
 - The primary category matches what the app actually does.

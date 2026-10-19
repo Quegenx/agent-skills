@@ -1,8 +1,8 @@
 # Painting and media
 
-Drawing with `CustomPainter` (redraw from a `ChangeNotifier`, round progress and timers, hit testing, `save`/`restore`, text and images on a canvas), turning a painter or a widget into an image, sharing it with `share_plus`, resizing and edge detection with `package:image`, cropping, playing sounds with `audioplayers`, and fullscreen video with `video_player`. Source: ApparenceKit Flutter tips (apparencekit.dev), which state no Flutter, Dart or package version. Several blocks do not compile as published; each is followed by a labelled correction, with the official URL for API errors. Animation timing, springs and the neutral spinner's painter are in [MOTION-AND-FEEDBACK.md](MOTION-AND-FEEDBACK.md); paint cost (`saveLayer`, clips, `RepaintBoundary`) is in the [flutter skill's PERFORMANCE.md](../flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips).
+Drawing with `CustomPainter` (redraw from a `ChangeNotifier`, round progress and timers, hit testing, `save`/`restore`, text and images on a canvas), turning a painter or a widget into an image, sharing it with `share_plus`, resizing and edge detection with `package:image`, cropping, playing sounds with `audioplayers`, and fullscreen video with `video_player`. Sources: ApparenceKit Flutter tips (apparencekit.dev) and FlutterPro's native-sharing tip (flutterpro.design), which state no Flutter, Dart or package version. Several blocks do not compile as published; each is followed by a labelled correction, with the official URL for API errors. Animation timing, springs and the neutral spinner's painter are in [MOTION-AND-FEEDBACK.md](MOTION-AND-FEEDBACK.md); paint cost (`saveLayer`, clips, `RepaintBoundary`) is in the [flutter skill's PERFORMANCE.md](../flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips).
 
-**Contents:** [Pick a capture route](#pick-a-capture-route) · [Redraw from a model](#redraw-from-a-model) · [Round progress and timers](#round-progress-and-timers) · [Hit testing a painter](#hit-testing-a-painter) · [Save and restore](#save-and-restore) · [Text on a canvas](#text-on-a-canvas) · [An image on a canvas](#an-image-on-a-canvas) · [Export a painter without showing it](#export-a-painter-without-showing-it) · [Capture an on-screen widget](#capture-an-on-screen-widget) · [Capture an offscreen widget](#capture-an-offscreen-widget) · [Share a file or a widget](#share-a-file-or-a-widget) · [Thumbnails and edges](#thumbnails-and-edges) · [Crop an image](#crop-an-image) · [Play a sound](#play-a-sound) · [Fullscreen video](#fullscreen-video) · [Prove it](#prove-it)
+**Contents:** [Pick a capture route](#pick-a-capture-route) · [Redraw from a model](#redraw-from-a-model) · [Round progress and timers](#round-progress-and-timers) · [Hit testing a painter](#hit-testing-a-painter) · [Save and restore](#save-and-restore) · [Text on a canvas](#text-on-a-canvas) · [An image on a canvas](#an-image-on-a-canvas) · [Export a painter without showing it](#export-a-painter-without-showing-it) · [Capture an on-screen widget](#capture-an-on-screen-widget) · [Capture an offscreen widget](#capture-an-offscreen-widget) · [Share a file or a widget](#share-a-file-or-a-widget) · [Thumbnails and edges](#thumbnails-and-edges) · [Crop an image](#crop-an-image) · [Play a sound](#play-a-sound) · [Fullscreen video](#fullscreen-video) · [Share instead of download](#share-instead-of-download) · [Prove it](#prove-it)
 
 ## Pick a capture route
 
@@ -458,6 +458,48 @@ player.setReleaseMode(ReleaseMode.stop);
 - Add `video_player`. Place the player in a `Stack` with `Positioned.fill`; set `Scaffold(extendBodyBehindAppBar: true)` so the video goes behind the app bar.
 - Wrap the player in a custom widget: `FittedBox(fit: BoxFit.cover)` around an `AspectRatio` whose ratio comes from the controller's value, so the video covers the screen without distortion at any screen size or orientation. No code in the source.
 
+## Share instead of download
+
+`SharePlus.instance.share(ShareParams(...))` is share_plus's instance API; the article gives no version, so check pub.dev at copy time. [FlutterPro](https://flutterpro.design/details/share-instead-of-download)
+
+[FlutterPro](https://flutterpro.design/details/share-instead-of-download): a "Download" button usually drags in storage permission, handling the user saying no, finding the right public folder on Android, scoped storage, a different path on iOS, then hoping the user finds the file. Almost all of that only puts the file in a public folder, and right after, the user usually opens it or sends it. The OS already has a screen for that, the native share sheet: "Save to Files", AirDrop, Messages, Mail, WhatsApp.
+
+So download the bytes, save them to the app's own cache, and pass the file to the share sheet. `getTemporaryDirectory()` (path_provider) needs no permission according to the source. The code below imports `dart:io`, so use it as a native file-sharing recipe; web code must not import `dart:io` ([Detect the platform](DEVICE-FEATURES.md#detect-the-platform)).
+
+```dart
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
+
+Future<XFile> _downloadToCache(String url, String filename) async {
+  final http.Response response = await http.get(Uri.parse(url));
+
+  final Directory dir = await getTemporaryDirectory();
+  final File file = File('${dir.path}/$filename');
+  await file.writeAsBytes(response.bodyBytes);
+
+  return XFile(file.path);
+}
+```
+
+Then open the share sheet:
+
+```dart
+Future<void> shareFile(String url) async {
+  final XFile file = await _downloadToCache(url, 'invoice.pdf');
+
+  await SharePlus.instance.share(
+    ShareParams(files: [file]),
+  );
+}
+```
+
+- No `permission_handler`, no folders per platform, no "where did my file go". Show a loading state while the file downloads.
+- **The rule:** "if "download" really means "let me do something with this file", let the OS show the options."
+- **Status codes (two views, both tagged):** [Flutter docs, via flutter skill]: throw on any unexpected status code ([SKILL.md](../flutter/SKILL.md) rule 4, [DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md#making-requests)). [FlutterPro]: the sample writes `response.bodyBytes` without checking `response.statusCode`, so a 404 page would be shared as `invoice.pdf`. Add the check when copying.
+- **Store side:** this is the Flutter form of App Review's "use the out-of-process picker or a share sheet rather than requesting full access" ([REVIEW-GUIDELINES.md](../app-store-connect/REVIEW-GUIDELINES.md)) and avoids Google Play's access review for `MANAGE_EXTERNAL_STORAGE` ([POLICY-AND-PREFLIGHT.md](../google-play/POLICY-AND-PREFLIGHT.md)).
+
 ## Prove it
 
 - A notifying model reaches the painter through `repaint:`; a replacement delegate representing different information returns true from `shouldRepaint`. [CustomPainter.shouldRepaint](https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRepaint.html)
@@ -469,3 +511,4 @@ player.setReleaseMode(ReleaseMode.stop);
 - Saving to the gallery asks for the photo-gallery permission first; share flows write to `getTemporaryDirectory()`.
 - Photo decoding and resizing that janks a frame runs in `Isolate.run` or `compute`.
 - Fullscreen video shows no letterboxing and no stretching in portrait and landscape.
+- **Share:** sharing a file triggers no permission prompt on either platform; a failed download shows an error, not a shared error page.

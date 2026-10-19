@@ -1,8 +1,8 @@
 # Packages
 
-Pub manages a Dart or Flutter package's dependencies, versions and publishing. The central rule: a project and all its transitive dependencies resolve to a single shared version of each package (two versions of a library would be unrelated types). Pub solves version ranges, not pins, to find that one version, so wide caret constraints keep resolution possible and a checked-in `pubspec.lock` keeps it reproducible. Paths inside Dart code are at the end of this file. Lints and analysis are in [ANALYSIS-AND-LINTS.md](ANALYSIS-AND-LINTS.md); Flutter-specific pubspec fields are in [../flutter/SKILL.md](../flutter/SKILL.md).
+Pub manages a Dart or Flutter package's dependencies, versions and publishing. The central rule: a project and all its transitive dependencies resolve to a single shared version of each package (two versions of a library would be unrelated types). Pub solves version ranges, not pins, to find that one version, so wide caret constraints keep resolution possible and a checked-in `pubspec.lock` keeps it reproducible. Runtime paths inside Dart code are in [CORE-LIBRARIES.md](CORE-LIBRARIES.md#paths-with-packagepath). Lints and analysis are in [ANALYSIS-AND-LINTS.md](ANALYSIS-AND-LINTS.md); Flutter-specific pubspec fields are in [../flutter/SKILL.md](../flutter/SKILL.md).
 
-**Contents:** [How resolution works](#how-resolution-works) · [Dependency sources](#dependency-sources) · [Version constraints](#version-constraints) · [Dev dependencies and overrides](#dev-dependencies-and-overrides) · [pubspec.yaml fields](#pubspecyaml-fields) · [Package layout](#package-layout) · [Upgrading and resolving conflicts](#upgrading-and-resolving-conflicts) · [Workspaces (monorepos)](#workspaces-monorepos) · [Publishing](#publishing) · [Automated publishing](#automated-publishing) · [Shipping agent skills with a package](#shipping-agent-skills-with-a-package) · [Paths with package:path](#paths-with-packagepath) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
+**Contents:** [How resolution works](#how-resolution-works) · [Dependency sources](#dependency-sources) · [Version constraints](#version-constraints) · [Dev dependencies and overrides](#dev-dependencies-and-overrides) · [pubspec.yaml fields](#pubspecyaml-fields) · [Package layout](#package-layout) · [Upgrading and resolving conflicts](#upgrading-and-resolving-conflicts) · [Workspaces (monorepos)](#workspaces-monorepos) · [Publishing](#publishing) · [Automated publishing](#automated-publishing) · [Shipping agent skills with a package](#shipping-agent-skills-with-a-package) · [Paths with package:path](CORE-LIBRARIES.md#paths-with-packagepath) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
 
 ## How resolution works
 
@@ -193,32 +193,7 @@ dart pub global run pana ~/tmp/mypkg
 
 ## Automated publishing
 
-Publish from GitHub Actions, Google Cloud Build, or anywhere with a GCP service account, through temporary OIDC tokens (no long-lived secret; exported service-account keys are long-lived and riskier). Only for existing packages: the first version must go out with `dart pub publish`.
-
-**GitHub Actions:** on the Admin tab enable "Automated publishing" with repository `<org>/<repo>` and a tag pattern containing `{{version}}` (for example `v{{version}}`; per package `my_package_name-v{{version}}` in monorepos). pub.dev only accepts runs triggered by pushing a matching git tag, and the pubspec `version` must match.
-
-```yaml
-# .github/workflows/publish.yml
-name: Publish to pub.dev
-
-on:
-  push:
-    tags:
-    - 'v[0-9]+.[0-9]+.[0-9]+' # tag-pattern on pub.dev: 'v{{version}}'
-
-# Publish using the reusable workflow from dart-lang.
-jobs:
-  publish:
-    permissions:
-      id-token: write # Required for authentication using OIDC
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-    # with:
-    #   working-directory: path/to/package/within/repository
-```
-
-- **The reusable workflow is "strongly encouraged";** prefer checking generated code into the repo. Otherwise write a custom job: `actions/checkout@v3`, `dart-lang/setup-dart@v1`, `dart pub get`, custom steps, `dart pub publish --force`.
-- **Trigger:** `git tag v1.2.3` and `git push origin v1.2.3`; the pub.dev audit log links the run.
-- **Harden:** GitHub tag protection rules, or "Require GitHub Actions environment" (for example `pub.dev`) plus `with: environment: pub.dev` and required reviewers.
+Publish from Google Cloud Build, or anywhere with a GCP service account, through temporary OIDC tokens (no long-lived secret; exported service-account keys are long-lived and riskier). Only for existing packages: the first version must go out with `dart pub publish`.
 
 **Google Cloud Build:** create service account `pub-dev@$PROJECT_ID.iam.gserviceaccount.com` and enable it on the pub.dev Admin tab; `gcloud services enable iamcredentials.googleapis.com`; grant `roles/iam.serviceAccountTokenCreator` to `$PROJECT_NUMBER@cloudbuild.gserviceaccount.com`. In `cloudbuild.yaml`, run `gcloud auth print-identity-token --impersonate-service-account=... --audiences=https://pub.dev --include-email > /secrets/temporary-pub-token.txt` (the token expires within 1 hour; don't store it in `/workspace`), then `cat ... | dart pub token add https://pub.dev` and `dart pub publish --force`. Optionally require build approval (Cloud Build Approver role).
 
@@ -231,100 +206,7 @@ jobs:
 
 ## Paths with package:path
 
-Windows separates paths with `\`, macOS and Linux with `/`, so string operations on paths silently break on one of them. Import `package:path/path.dart` as `p`: inspect with `p.split(path)`, join with `p.join(...)`.
-
-| Task | Prefer | Avoid | Why |
-|---|---|---|---|
-| Join | `p.join(dir, file)` | `'$dir/$file'`, `'a/$b'` | `/` on Windows; `//` with a trailing separator |
-| Segment match | `p.split(path).contains('foo')` | `path.contains('foo/')` | Fails on `foo\bar`; false positive on `barfoo/` |
-| Prefix | `if (p.split(path) case ['foo', ...])` or `case ['foo', ...final rest]`, or `p.isWithin('foo', path)` | `path.startsWith('foo/')`, `p.split(path).first == 'foo'` | `.first` throws `StateError` on empty lists and needs `.skip(1)`. For `./foo/bar` use `p.isWithin` or `p.split(p.normalize(path))` |
-| Extension | `p.extension(path) == '.wasm'` | `path.endsWith('.wasm')` | Matches directories like `foo.wasm/` |
-| Slicing | `p.withoutExtension(path)`, `p.extension(path, 2)` | `lastIndexOf('.')` plus `substring` | Breaks on `.gitignore`, `.js.map`, `.tar.gz` |
-| POSIX or URL form | `p.posix.joinAll(p.split(path))`, `p.url.joinAll(p.split(path))` | `path.replaceAll(r'\', '/')` | Fails on root drives, mixes contexts |
-| URI | `p.toUri(path)`, `p.fromUri(uri)` | `Uri.parse(path)`, `uri.path` | Fails on `C:`, leaks `%20` |
-| Directory basename | `String canonicalDirName(Directory d) => p.basename(p.normalize(d.absolute.path));` | Repeating it inline | Centralizes the logic |
-
-- **Joining static subpaths:** cross-platform libraries pass separate segments (`p.join(dir, 'sub', 'file.json')`). POSIX-only tools and static subpaths prefer a 2-argument join (`p.join(home, '.local/share/app/bin/config.json')`): splitting 5 or 6 static segments makes `dart format` wrap across 6 to 8 lines and destroys grep-ability.
-- **`p.normalize` is lexical only** (`.` and `..`; no filesystem, no case). For deduplication or physical identity across symlinks, relative roots or case-insensitive filesystems, use `p.canonicalize`.
-- **`<path>:<line>-<col>` strings aren't paths:** on Windows `Uri.parse` treats `C:` as a scheme and `:line` as a port. Strip with `RegExp(r'^(.*?):(\d+(?:-\d+)?)$')` first.
-- **Prefix matching across roots:** call `p.relative(filePath, from: root)` first so root segments (`'/'` or `r'C:\'`) don't break the pattern, then split, match with list patterns, and join with `p.posix.joinAll` or `p.url.joinAll`.
-
-```dart
-import 'package:path/path.dart' as p;
-
-String computeWebAssetKey(String filePath, String projectRoot) {
-  final relative = p.relative(filePath, from: projectRoot);
-  final segments = p.split(relative);
-  return switch (segments) {
-    ['assets', ...] => p.posix.joinAll(segments),
-    _ => p.posix.joinAll(['assets', ...segments]),
-  };
-}
-```
-
-- **Git paths use `/` even on Windows** (trees, `.gitignore`, `.gitattributes`, git symlinks). A `\` in `.gitignore` or git commands is an escape character and silently breaks matching.
-
-```dart
-String toGitPath(String relativeNativePath) =>
-    p.posix.joinAll(p.split(relativeNativePath));
-```
-
-- **Compound extensions:** `p.extension` takes an optional level; `p.extension('main.dart.wasm', 2)` returns `'.dart.wasm'`. Check that the 2-level result is a known compound (or `.endsWith('.map')`) before using it.
-
-```dart
-import 'package:path/path.dart' as p;
-
-String insertContentHash(String filename, String hash) {
-  final compoundExt = p.extension(filename, 2);
-  // Only use the 2-level extension for true compound suffixes (e.g., '.js.map')
-  final ext = compoundExt.endsWith('.map')
-      ? compoundExt
-      : p.extension(filename);
-  final stem = filename.substring(0, filename.length - ext.length);
-  return '$stem.$hash$ext';
-}
-```
-
-- **With `package:file`, use the filesystem's own path context.** Top-level `p.*` binds to the host OS, so `MemoryFileSystem(style: FileSystemStyle.windows)` on Linux or macOS plus a global `p.split(file.path)` splits on `/` and breaks the test. Use `file.fileSystem.path`.
-
-```dart
-import 'package:file/file.dart';
-import 'package:file/memory.dart';
-
-/// Lists subdirectory names using the [FileSystem]'s own path context
-/// rather than the host OS's global `p.*` functions.
-List<String> listSubdirectoryNames(Directory dir) {
-  final pathContext = dir.fileSystem.path;
-  return dir
-      .listSync()
-      .whereType<Directory>()
-      .map((d) => pathContext.basename(d.path))
-      .toList();
-}
-
-void main() {
-  // Simulates a Windows filesystem running inside a unit test on Linux/macOS.
-  final fs = MemoryFileSystem(style: FileSystemStyle.windows);
-  final projectDir = fs.directory(r'C:\workspace\app\lib')
-    ..createSync(recursive: true);
-  fs.directory(r'C:\workspace\app\lib\src').createSync();
-
-  final subdirs = listSubdirectoryNames(projectDir);
-  print('Subdirectories: $subdirs');
-}
-```
-
-- **Out of scope for package:path:** HTTP URI routing, database query strings, non-path strings.
-
-**Refactoring checklist:**
-
-- Replace string interpolation (`'$dir/$file'`) with `p.join(dir, file)`.
-- Replace `.contains('dir/')` and `.startsWith('dir/')` with `p.split(path)` list pattern checks (`case ['dir', ...final rest]`) or `p.isWithin(parent, child)`.
-- Replace `.replaceAll(r'\', '/')` with `p.posix.joinAll(p.split(path))` (or `p.url.joinAll`).
-- Replace `.endsWith('.ext')` on file paths with `p.extension(path) == '.ext'`.
-- Replace manual dot-index slicing with `p.withoutExtension(path)` and `p.extension(path, [level])`.
-- Verify that code using `package:file` accesses `fileSystem.path` instead of global `p.*`.
-- Ensure Git paths, `.gitignore` entries, and symlink targets use `p.posix` forward slashes.
+Runtime path operations and the path-refactoring checklist are in [CORE-LIBRARIES.md](CORE-LIBRARIES.md#paths-with-packagepath).
 
 ## Changes by version
 
@@ -346,4 +228,3 @@ The 3.12 blog post is dated 2026-05-20 while What's new says May 18, 2026.
 - **Before a release:** `dart pub downgrade`, `dart analyze` and `dart test` pass; then bump with `dart pub upgrade --tighten`.
 - **Before publishing:** `dart pub publish --dry-run` ends with "Package has 0 warnings.", the package has a `LICENSE`, no git or path dependencies remain, and pana run on a copy of the package reports no lost points you can fix.
 - **In a workspace:** there is exactly one `pubspec.lock`, at the root, and `dart pub workspace list` names every member.
-- **Path code:** no `'$dir/$file'`, `.replaceAll(r'\', '/')` or `.endsWith('.ext')` on paths remains, and tests with `MemoryFileSystem(style: FileSystemStyle.windows)` pass on Linux or macOS.

@@ -2,26 +2,11 @@
 
 Getting an app in front of people outside paid ads: the shared marketing context file every growth task reads first, the launch calendar, press and PR, creator and UGC programs, referral programs, and getting back into the store after a rejection. Every playbook here is third-party [eronred]: its benchmarks, prices and percentages are the author's claims with no further citation, so treat them as starting points to measure against. What decides most outcomes is timing and sequencing: listing work and the press kit start eight weeks out, embargoes and betas are set before submission, and creator, referral and review asks come after a user has felt the app's value. Store listing work is [../aso/SKILL.md](../aso/SKILL.md); paid channels are [APPLE-ADS.md](APPLE-ADS.md), [GOOGLE-APP-CAMPAIGNS.md](GOOGLE-APP-CAMPAIGNS.md), [META-ADS.md](META-ADS.md), [TIKTOK-ADS.md](TIKTOK-ADS.md), [AD-CREATIVES.md](AD-CREATIVES.md) and [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md).
 
-**Contents:** [The marketing context file](#the-marketing-context-file) · [Launch plan](#launch-plan) · [Launch channels](#launch-channels) · [Press and PR](#press-and-pr) · [Creator and UGC marketing](#creator-and-ugc-marketing) · [Referral programs](#referral-programs) · [Rejection recovery](#rejection-recovery) · [Prove it](#prove-it)
+**Contents:** [The marketing context file](#the-marketing-context-file) · [Launch plan](#launch-plan) · [Launch channels](#launch-channels) · [Press and PR](#press-and-pr) · [Creator and UGC marketing](#creator-and-ugc-marketing) · [Referral programs](#referral-programs) · [Rejection recovery](../app-store-connect/REVIEW-OPERATIONS.md#rejection-recovery) · [Prove it](#prove-it)
 
 ## The marketing context file
 
-Source: [eronred].
-
-- **Read `app-marketing-context.md` before any growth task.** Look in the project root or `.claude/`. If it exists, read it and offer to update it; if not, walk the user through the sections and save it as `app-marketing-context.md` in the project root. Every other growth playbook starts by checking for it (rejection recovery starts instead by asking for the verbatim rejection message).
-- **Sections, in order:**
-
-| # | Section | Fields |
-|---|---|---|
-| 1 | App Overview | App Name, App ID (Apple, numeric), App ID (Google Play, package name), Category, Secondary Category, Platform (iOS / Android / Both), Price Model (Free / Freemium / Paid / Subscription), Launch Date, Current Version |
-| 2 | Value Proposition | Problem, Target Audience, Unique Differentiator, Elevator Pitch (one sentence) |
-| 3 | Competitors | Table of the top 3-5: App, App ID, Strengths, Weaknesses |
-| 4 | Current ASO State | Title, Subtitle, Keyword Field, Rating (stars and count), Primary Keywords; offer to pull metadata if the App ID is known |
-| 5 | Goals | Top 3, each written "Target: [metric] by [date]" |
-| 6 | Resources | Budget, Team (solo / small / marketing), Tools (analytics / Apple Ads / MMP), Constraints |
-| 7 | Markets | Primary, Secondary, Languages |
-
-- **Close with a summary:** key strengths, obvious gaps, and the next steps to run (for example an ASO audit and keyword research in [../aso/SKILL.md](../aso/SKILL.md)).
+Read `.agents/product-context.md`; its [optional mobile app context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md#mobile-app-context) preserves the seven [eronred] field groups, store IDs, metadata baseline, launch/version, resources and markets. Recognize a legacy `app-marketing-context.md` through that owner and offer migration instead of creating a second file. Close the context intake with strengths, gaps and next ASO/keyword steps. [eronred, app-marketing-context]
 
 ## Launch plan
 
@@ -89,7 +74,6 @@ Source: [eronred].
 
 ```
 Subject: [App Name]: [your angle in 8 words]
-e.g., "Habitica clone reached #1 Health with zero ad spend"
 
 Hi [First name],
 
@@ -147,8 +131,8 @@ Source: [eronred].
 
 - **Expect** a mature program to bring 5-20% of net-new installs. Ask for paid CAC (it sets the upper bound on the reward) and ARPU / LTV; if LTV is unclear, measure it first, since rewards can't be sized without knowing payback.
 - **Check fit first.** Strong: network effects, high LTV, show-off content, daily use, existing word of mouth. Weak: solo utilities, low-ARPU free apps, embarrassing apps, one-and-done use, no organic sharing; for those, put the effort into creators (above) or retention ([RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md)).
-- **Reward patterns:** double-sided (most consumer apps), inviter-only, invitee-only, tiered or milestone ("Invite 5 friends, get a year free"), currency or credits, status or cosmetic (about $0), cash payouts (high fraud risk).
-- **Size the reward:** `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`. Never make rewards larger than CAC. A second third-party formula caps both sides together against a target CAC: `Max Total Reward Cost = max(0, Target CAC - Other Acquisition Cost)`, with credits and free months valued at their actual cost, not face value [coreyhaines31/marketingskills, referrals]; its worked example and the comparison are in [PROGRAM-DESIGN.md](../../marketing/referral-programs/PROGRAM-DESIGN.md#sizing-the-reward). State which formula the plan uses.
+- **Reward structures:** use the [canonical structures and incentive types](../../marketing/referral-programs/PROGRAM-DESIGN.md#rewards). [eronred] defaults to double-sided rewards for most consumer apps and adds mobile applications: invitee-only, currency or credits, status/cosmetic rewards (about $0), cash payouts with high fraud risk, and a milestone such as "Invite 5 friends, get a year free".
+- **Size the reward:** apply the [two tagged sizing views](../../marketing/referral-programs/PROGRAM-DESIGN.md#sizing-the-reward), naming the formula used and counting both sides under its stated scope. [eronred; coreyhaines31/marketingskills, referrals]
 
 | App type | Default reward |
 |---|---|
@@ -157,20 +141,20 @@ Source: [eronred].
 | Game | 50-500 currency or 1 cosmetic |
 | Fintech | $5-25 cash, only after a qualifying action |
 
-- **K-factor** = invites sent per user x invite conversion rate. Under 0.15 is nice-to-have; 0.15-0.5 meaningful; 0.5-1.0 a strong amplifier; over 1.0 true viral (extremely rare). A realistic target is 0.2-0.4; above 0.5 only with very strong network effects.
+- **K-factor and the source's bands:** [METRICS.md](../../marketing/referral-programs/METRICS.md#k-factor) is the definition and preserves [eronred]'s mobile thresholds.
 - **Mechanics:** show the CTA after a value moment and repeat it at milestones; a one-tap system share sheet with a personalized link; a deferred deep link that lands on "Welcome, friend of <Name>!" with the reward applied; credit both sides automatically; a status dashboard; a milestone progress bar; A/B test the share copy; channels iMessage, WhatsApp, copy link, X, IG Story, email; offer both a code and a link; keep an audit log of reward delivery.
 - **Track** `invite_sent`, `invite_clicked`, `invite_installed`, `invite_qualified`, `reward_issued`. Primary metric: K-factor, weekly. Secondary: % of installs from referral, referred-user retention vs paid, fraud rate.
 
 | Fraud | Defense |
 |---|---|
-| Self-referral | Device fingerprint plus IDFV / Android ID plus IP block (see the Apple conflict below) |
+| Self-referral | Do not fingerprint devices; apply the canonical fraud review/qualifying-action rules within Apple's privacy boundary below |
 | Reward farming | Reward only after a qualifying action (purchase, X-day retention) |
 | Bots | Email or phone verification (the playbook also listed ATT; see the Apple rules below) |
 | Stacking | Cap (for example 50 referrals or $X) |
 | Link spam | Score by acceptance, throttle |
 | Family Sharing | Detect and block; Apple provides a signal in receipts |
 
-- **Conflict on fingerprinting:** the playbook suggests device fingerprinting against self-referral; Apple's user privacy page says no fingerprinting (apps may be rejected, including for SDKs that do it), and IDFV may be used across apps from the same content provider for analytics but not combined to track. Confirm in Apple's current privacy guidance before shipping fingerprint checks on iOS; the ATT rules are in [ANALYTICS-AND-ATTRIBUTION.md](ANALYTICS-AND-ATTRIBUTION.md#app-tracking-transparency-att).
+- **Official correction on fingerprinting:** do not fingerprint or derive device data to uniquely identify a user/device, including through attribution SDKs. The source suggested it as a self-referral defense; fraud-prevention broker use cases do not create a fingerprinting exception. IDFV's allowed analytics scope and ATT policy remain at [ASC privacy](../app-store-connect/PRIVACY-AND-COMPLIANCE.md#app-tracking-transparency). [https://developer.apple.com/app-store/user-privacy-and-data-use/]
 - **More fraud rules** [coreyhaines31/marketingskills, referrals]: watch for referral rings; claw back rewards on refunds and chargebacks; treat a shared IP or device as "a signal for review, not proof of abuse" ([PROGRAM-DESIGN.md](../../marketing/referral-programs/PROGRAM-DESIGN.md#fraud)).
 - **Apple rules for referrals** ([App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)):
   - 5.6.3: "Manipulating any element of the App Store customer experience such as charts, search, reviews, or referrals to your app erodes customer trust and is not permitted."
@@ -189,99 +173,14 @@ Source: [eronred].
 
 ## Rejection recovery
 
-Source: [eronred].
-
-- **Goal:** resubmit within 24-72 hours. Ask for the full rejection message verbatim with guideline numbers, the platform, first submission or update (first submissions are scrutinized harder), App ID and category, what changed, and how time-sensitive it is. Classify before fixing.
-
-| Apple guideline | Bucket | Typical fix |
-|---|---|---|
-| 2.1 | Performance and completeness | Test on a physical device, fix crashes, add missing demo content |
-| 2.3.x | Accurate metadata | Match screenshots to the actual app, remove unsupported devices, fix the description |
-| 2.5.x | Software requirements | Approved APIs only, fix private API use, fix HealthKit/SiriKit misuse |
-| 3.1.1 | In-app purchase | IAP for digital goods, no external payment links |
-| 3.1.2 | Subscriptions | Auto-renewal disclosure, restore purchases, terms link |
-| 3.2.2 | Unacceptable business model | App Store-like interfaces, ad impression or click fraud, charity fundraising outside the rules, arbitrary user restrictions, manipulating visibility on other services, binary options and CFDs, personal-loan terms, forcing ratings, reviews or other store actions ([guidelines](https://developer.apple.com/app-store/review/guidelines/); the row used to say "Multi-level marketing, scams, etc.", which 3.2.2 does not list) |
-| 4.0 | Design | Spam, copycat UI, broken layouts |
-| 4.2 | Minimum functionality | Web wrappers, "thin" apps, brochureware |
-| 4.3 | Spam | Duplicate of your own or another app; the most common rejection |
-| 4.5.x | Apple sites and services | Wrong logo use, push notification misuse |
-| 5.1.1 | Privacy and data collection | Privacy policy URL, data collection disclosure, ATT prompt copy |
-| 5.1.2 | Data use and sharing | Match the privacy nutrition labels to actual collection |
-| 5.1.5 | Location services | Justify "Always" location, ATT-style strings |
-| 5.1.7 | Health and medical | Disclaimers, no diagnostic claims without FDA |
-| 5.2.x | Intellectual property | Trademark/IP holder permission required |
-| 5.3.x | Gaming, gambling, lotteries | License requirements |
-| 5.6.1 | Developer code of conduct | Spam, fake reviews, manipulation |
-
-- **2.1:** read the tested device and iOS version, reproduce on that exact configuration (or the closest available), give a demo account and a walkthrough video in Resolution Center if reproduction is environmental; for a crash, ship a fixed binary and note the exact line in the response.
-- **2.3.10:** replace screenshots that show UI the app doesn't have, remove "iPad" mentions if iPad isn't supported, remove third-party trademarks.
-- **3.1.1:** remove external payment links and "Buy on web", use StoreKit. Since 2024, US users can have the External Purchase Link Entitlement; it is opt-in and requires an entitlement request. Web-payment rules are in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#web-to-app-funnels).
-- **4.3:** the hardest. Identify the apps you were compared with; differentiate substantially (unique features, unique branding, a distinct value prop in the metadata); if it's your own portfolio, consolidate or kill old apps. On a first submission, expect it to be permanent unless you fundamentally change the app.
-- **5.1.1:** a live, app-specific privacy policy; App Store Connect App Privacy lists every SDK's data collection; a specific ATT purpose string (not "improve the app"); `NSUsageDescription` strings that explain why.
-- **5.1.5:** "Always" location needs a demonstrable background need; most apps should use "When In Use". Update Info.plist and the prompt copy.
-
-| Google Play policy | Bucket | Typical fix |
-|---|---|---|
-| Restricted Content | Sexual content, hate, violence | Content moderation, age gate |
-| Privacy, Deception, Device Abuse | Disclosure, permissions | Privacy policy, accurate Data Safety form |
-| Intellectual Property | Trademark, copyright | Get rights or remove |
-| Monetization and Ads | Disruptive ads, IAP bypass | Use Play Billing |
-| Store Listing and Promotion | Misleading metadata | Match the listing to the app |
-| Spam and Minimum Functionality | Repetitive content, low quality | Add unique value |
-| Families | Apps for kids | COPPA / GDPR-K compliance, ad SDK whitelist |
-| Permissions | High-risk permissions | Remove or justify (Special Permissions Declaration form) |
-| Health misinformation | Medical claims | Add disclaimers, provide credentials |
-| Foreground services | Background work | Justify in the Play Console form |
-
-- **Automated Play suspensions** (no human review): use the Play Console appeal form with a written justification.
-- **Reply in Resolution Center with this template:**
-
-```
-Hello App Review Team,
-
-Thank you for the feedback regarding guideline <X.Y.Z>.
-
-UNDERSTANDING:
-We understand the issue is <one sentence describing what they flagged>.
-
-CHANGES MADE:
-1. <specific change>
-2. <specific change>
-3. <specific change>
-
-DEMO INFO (if applicable):
-  Username: demo@example.com
-  Password: <password>
-  Steps to test: <numbered steps>
-  Walkthrough video: <URL if needed>
-
-We have submitted build <X.Y.Z (build N)> with these changes. Please let us know if any further information is needed.
-
-Thank you,
-<Name>
-```
-
-- **Reply rules:** a good response gets re-reviewed in 24h. Never argue the guideline; never resubmit the same binary with only a metadata change unless metadata was the issue; always reference the new build number; give demo credentials even if some flows don't need them.
-
-| Situation | Route |
-|---|---|
-| Guideline misapplied | App Review Board appeal: polite, factual, brief |
-| Reviewer mis-tested (for example the wrong device) | Resolution Center reply with reproduction info; no formal appeal needed |
-| 4.3 spam, first time | Fix and resubmit with substantial differentiation; don't appeal |
-| A sub-policy you genuinely meet | Appeal with evidence (screenshots, code references) |
-| 5.6.1 account threats or suspension | Appeal immediately, give context, don't ignore it |
-
-- **App Review Board** responds in 5-10 business days. Don't appeal trivial issues: fixing and resubmitting is faster.
-- **Expedited review:** App Store Connect > Contact Us > App Review > Expedited Request. Valid for a critical bug fix affecting users, a time-sensitive event (a launch tied to a date, a partner integration) or a security fix. Don't request it for marketing reasons: Apple denies it and may flag the account.
-- **Resubmission checklist:** tested on Apple's device; demo account verified; build number incremented; privacy nutrition labels match; response posted; expedited request only if justified. Expect re-review in 24-48h on Apple, variable on Google.
-- **Prevent the next one:** test on the oldest supported iOS and Android; human-written `NSUsageDescription` strings; a live privacy policy that matches collection; no third-party logos in screenshots; no "BETA", "BUG FIXES" or generic descriptions; a seeded demo account; Sign in with Apple offered alongside any third-party social login. Store-side release steps live in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
+Review notes, rejection diagnosis, replies and appeals are in [App Review operations](../app-store-connect/REVIEW-OPERATIONS.md); Google policy recovery is in [Play policy](../google-play/POLICY-AND-PREFLIGHT.md#rejection-recovery).
 
 ## Prove it
 
-- **Context file:** `app-marketing-context.md` exists in the project root with all seven sections filled, goals written as "Target: [metric] by [date]".
+- **Context file:** `.agents/product-context.md` contains the applicable mobile fields, goals use "Target: [metric] by [date]", and a legacy mobile context was offered for migration, not duplicated. [eronred, app-marketing-context; anti-slop-copy CONTEXT.md]
 - **Launch checklist:** every row from 8 weeks to month 1 has a date counted back from the launch date, the review submission leaves a 2-3 day buffer, and the embargo lift is scheduled for launch day.
 - **Product Hunt:** posted from a personal account, no paid hunter, no upvote asks; the listing passes [PRODUCT-HUNT.md](../../marketing/product-launch/PRODUCT-HUNT.md#prove-it).
 - **Press:** the press kit has a 1024x1024px PNG icon, 5-10 screenshots and a press contact; each pitch is 5 sentences or fewer, personalized, links (not attaches) the kit, and has exactly one follow-up after 5 business days.
 - **Creators:** every brief states usage rights, the creator's own disclosure in the post or video itself (not only the platform label) and a unique tracking code or `utm_medium=creator` link per creator and placement.
-- **Referrals:** a test invite installs through a deferred deep link, lands on the welcome screen with the reward applied, and fires `invite_sent` through `reward_issued`; the reward passes the sizing formula the plan names (per side `(LTV × target margin) - other CAC`, or both sides `max(0, Target CAC - Other Acquisition Cost)`); rewards wait for a qualifying action; no reward, ATT answer or paid feature is tied to inviting; replaying a reward webhook or export does not pay or count a conversion twice.
-- **Rejection reply:** the Resolution Center response names the guideline, lists the concrete changes, gives demo credentials and references the new, incremented build number.
+- **Referrals:** a test invite installs through a deferred deep link, lands on the welcome screen with the reward applied, and fires `invite_sent` through `reward_issued`; the reward passes the [canonical sizing view the plan names](../../marketing/referral-programs/PROGRAM-DESIGN.md#sizing-the-reward); rewards wait for a qualifying action; no reward, ATT answer or paid feature is tied to inviting; replaying a reward webhook or export does not pay or count a conversion twice.
+- **Rejection reply:** the [store operations checks](../app-store-connect/REVIEW-OPERATIONS.md#prove-it) pass for a recovery task.

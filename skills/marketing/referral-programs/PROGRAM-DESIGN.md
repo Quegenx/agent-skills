@@ -75,9 +75,9 @@ Max Total Reward Cost = max(0, Target CAC - Other Acquisition Cost)
 
 Worked example: lifetime revenue $1,200 at 70% gross margin gives $840 lifetime gross profit; target total referral CAC $200; other acquisition cost $40 per customer; so the maximum combined reward is $200 - $40 = $160 (for example $80 cash to each side), and total referral CAC is $200. "The old $640 reward would produce $680 CAC with these other costs, exceeding the $200 target." "Lifetime gross profit helps assess whether the chosen acquisition budget is viable; it is not the reward budget minus target CAC." "If other costs already meet or exceed target CAC, pause or redesign the program; a zero remaining reward budget does not make an already over-budget acquisition acceptable." Check retention, refunds and cash payback before committing. The source points to [Stripe's CAC guide](https://stripe.com/resources/more/cac-in-saas) for the cost definition.
 
-**app-growth's formula** [eronred]: `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`, with "Never make rewards larger than CAC" ([LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs)).
+**The mobile source's formula** [eronred, referral-programs]: `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`, with "Never make rewards larger than CAC". Its mobile delivery and store-specific restrictions remain in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs); the formula is defined here.
 
-The differences: this source caps the combined reward of both sides against a target CAC; app-growth caps each side against LTV times margin. Run both and state which one the plan uses.
+The differences: the Corey Haines source caps the combined reward of both sides against a target CAC; [eronred, referral-programs] caps each side against LTV times margin. Run both and state which one the plan uses.
 
 **Typical rewards the source lists** (unsourced): B2C $10-50 or 10-25% of the first purchase; B2B SaaS $50-500 or 1-3 months free; enterprise higher, often custom. app-growth gives its own defaults by app type (subscription about $5-15 as 1 month free; marketplace $5-25 invitee, $5-15 inviter; fintech $5-25 cash after a qualifying action) [eronred]. Both are author claims.
 

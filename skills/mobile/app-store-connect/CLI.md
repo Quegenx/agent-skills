@@ -240,13 +240,7 @@ asc workflow run release --resume "release-20260312T120000Z-deadbeef"
 
 ## Apple Ads through asc
 
-All of this section is [rorkai].
-
-- **Separate credentials:** run `asc ads --help` before choosing a command. Apple Ads uses `asc ads auth`, `--ads-profile` and `ASC_ADS_*` vars, not App Store Connect API credentials.
-- **Two APIs, two IDs:** direct resource commands use Platform API v1 with `--ad-account` or `ASC_ADS_AD_ACCOUNT_ID`. The deprecated Campaign Management API v5 commands live under `asc ads v5` with `--org` or `ASC_ADS_ORG_ID`. Never substitute one ID for the other.
-- **Discover access:** `asc ads auth discover --output json`; `asc ads acls list --output json`.
-- **Bodies:** body commands take `--file` with the exact schema named by the leaf help. V1 query filters use a singular `value`; bulk bodies may use wrapper objects rather than v5 arrays. Resource commands emit JSON. `--paginate` only where help shows it; reports and most query bodies carry pagination inside the JSON file.
-- **Spend safety:** deletes and spend-, billing-, delivery-, targeting- or access-sensitive mutations require `--confirm` (an explicitly paused campaign create is the main documented exception). In live tests create paused resources with a clear test name, save every ID, pause spend-bearing resources first, and delete only what the test created. Store growth work beyond the CLI: [../aso/SKILL.md](../aso/SKILL.md).
+Apple Ads credentials are separate from App Store Connect auth. For the API versions, IDs, request bodies, pagination, CLI commands and spend-sensitive confirmation rules, read [APPLE-ADS-API.md](../app-growth/APPLE-ADS-API.md#asc-ads). [rorkai]
 
 ## Removed and deprecated
 

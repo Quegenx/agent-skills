@@ -2,7 +2,7 @@
 
 Modal sheets as routes (a spring sheet, scroll-to-dismiss, the iOS 26 sheet, popups that fit their content), dialog and sheet results, the Android back flag, tab reselect, keeping scroll position and page transitions. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), both community material, not Flutter-team docs. The official routing guidance is in [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md); where these sources disagree with it, or with [VERSIONS.md](../flutter/VERSIONS.md) or the `ui-animation` skill, both sides are stated and marked. A form inside a bottom sheet with the keyboard open is in [KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md#forms-in-a-bottom-sheet); nested navigators, the sidebar shell and route guards are in [ROUTE-GUARDS-AND-SHELLS.md](ROUTE-GUARDS-AND-SHELLS.md).
 
-**Contents:** [Where the sources disagree](#where-the-sources-disagree) · [Pick the sheet](#pick-the-sheet) · [Spring bottom sheet](#spring-bottom-sheet) · [Swipe down at the top to close](#swipe-down-at-the-top-to-close) · [iOS 26 adaptive sheet](#ios-26-adaptive-sheet) · [Popup that fits its content](#popup-that-fits-its-content) · [Dialog and sheet results](#dialog-and-sheet-results) · [Android back does not close modals](#android-back-does-not-close-modals) · [Tab reselect](#tab-reselect) · [Keep scroll position across tabs](#keep-scroll-position-across-tabs) · [Page transitions](#page-transitions) · [Prove it](#prove-it)
+**Contents:** [Where the sources disagree](#where-the-sources-disagree) · [Pick the sheet](#pick-the-sheet) · [Spring bottom sheet](#spring-bottom-sheet) · [Swipe down at the top to close](#swipe-down-at-the-top-to-close) · [iOS 26 adaptive sheet](#ios-26-adaptive-sheet) · [Popup that fits its content](#popup-that-fits-its-content) · [Dialog and sheet results](#dialog-and-sheet-results) · [Android back does not close modals](#android-back-does-not-close-modals) · [Tab reselect](#tab-reselect) · [Keep scroll position across tabs](#keep-scroll-position-across-tabs) · [Page transitions](#page-transitions) · [Date picker that matches the platform](#date-picker-that-matches-the-platform) · [Prove it](#prove-it)
 
 ## Where the sources disagree
 
@@ -597,7 +597,7 @@ MaterialApp(
 
 - **Android entry on Flutter 3.38+:** the default is `PredictiveBackPageTransitionsBuilder`, not Zoom ([VERSIONS.md](../flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). To keep the native default there, put `PredictiveBackPageTransitionsBuilder` in the non-web branch of the `.android` entry instead of `ZoomPageTransitionsBuilder`.
 - **Text versus code:** the article's rule says "native defaults on Android and iOS, even in a mobile browser", but its code uses the no-op builder for `.android` and `.iOS` whenever `kIsWeb`, so a mobile browser gets no transition too.
-- **The other view:** the `ui-animation` skill gives a page transition 400-600 ms ([ui-animation SKILL.md](../../frontend/ui-animation/SKILL.md)). More web guidance is in [WEB.md](WEB.md).
+- **The other view:** the `ui-animation` skill gives a page transition 400-600 ms ([ui-animation SKILL.md](../../frontend/ui-animation/SKILL.md)). More web guidance is in [WEB-SHELL.md](WEB-SHELL.md).
 
 ### Per route with go_router
 
@@ -641,6 +641,140 @@ pageTransitionsTheme: PageTransitionsTheme(
 
 - On Flutter 3.38+ the Android line above opts out of the new default; for the default name `PredictiveBackPageTransitionsBuilder` there ([VERSIONS.md](../flutter/VERSIONS.md)).
 
+## Date picker that matches the platform
+
+- Dot shorthands in these samples need Dart language version 3.10+ ([LANGUAGE.md](../dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+- The samples import `package:flutter/material.dart` and `package:flutter/cupertino.dart`; Material and Cupertino are moving to their own packages ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time. [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+
+[FlutterPro](https://flutterpro.design/details/adaptive-date-picker): `CupertinoDatePicker` looks polished, but it's iOS-native. Android users don't expect a scroll-wheel picker for dates, and "An iOS widget dropped into Android can even read as cheap." Use the scroll picker on iOS and the default Material one (`showDatePicker`) on Android.
+
+- **Custom design is no reason to skip it.** The Material picker is platform UI, so users read the exception as normal. You can still theme it; keep the skeleton layout, "which is muscle memory for Android users."
+- **Packages:** the author has "yet to find one neutral enough to justify mixing with a custom design."
+- **Fits the official rules:** Flutter's `.adaptive()` constructors substitute Cupertino on iOS for switches, sliders, dialogs and more ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)); this tip does the same by hand for the date picker. It branches a platform-idiom widget on `defaultTargetPlatform`, which [PLATFORM-INTEGRATION.md](../flutter/PLATFORM-INTEGRATION.md) names; [SKILL.md](../flutter/SKILL.md) rule 2 forbids branching *layout* on `Platform.isAndroid`, a different thing.
+
+Call it and await the picked date. It returns `null` when the user dismisses the sheet, so keep the old value then:
+
+```dart
+final DateTime? date = await AdaptiveDatePicker.show(
+  context,
+  initialDate: _date,
+  firstDate: DateTime(2000),
+  lastDate: DateTime.now(),
+);
+
+if (date != null) {
+  setState(() => _date = date);
+}
+```
+
+The widget ("Tweak the values to taste": sheet height 400, horizontal padding 16, a 24 gap before Done). `Button` is a placeholder for your own button widget:
+
+```dart
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+class AdaptiveDatePicker {
+  const AdaptiveDatePicker._();
+
+  static Future<DateTime?> show(
+    BuildContext context, {
+    required DateTime firstDate,
+    required DateTime lastDate,
+    DateTime? initialDate,
+  }) {
+    final bool isIos = defaultTargetPlatform == .iOS;
+
+    if (isIos) {
+      return _CupertinoDatePickerSheet.show(
+        context,
+        initialDate: initialDate,
+        minimumDate: firstDate,
+        maximumDate: lastDate,
+      );
+    }
+
+    return showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
+  }
+}
+
+class _CupertinoDatePickerSheet extends StatefulWidget {
+  final DateTime? initialDate;
+  final DateTime? minimumDate;
+  final DateTime? maximumDate;
+
+  const _CupertinoDatePickerSheet({
+    this.initialDate,
+    this.minimumDate,
+    this.maximumDate,
+  });
+
+  static Future<DateTime?> show(
+    BuildContext context, {
+    DateTime? initialDate,
+    DateTime? minimumDate,
+    DateTime? maximumDate,
+  }) {
+    return showModalBottomSheet<DateTime?>(
+      context: context,
+      builder: (BuildContext context) {
+        return _CupertinoDatePickerSheet(
+          initialDate: initialDate,
+          minimumDate: minimumDate,
+          maximumDate: maximumDate,
+        );
+      },
+    );
+  }
+
+  @override
+  State<_CupertinoDatePickerSheet> createState() =>
+      _CupertinoDatePickerSheetState();
+}
+
+class _CupertinoDatePickerSheetState extends State<_CupertinoDatePickerSheet> {
+  late DateTime _selectedDate = widget.initialDate ?? .now();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 400,
+      padding: const .symmetric(horizontal: 16),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Flexible(
+              child: CupertinoDatePicker(
+                mode: .date,
+                initialDateTime: widget.initialDate,
+                minimumDate: widget.minimumDate,
+                maximumDate: widget.maximumDate,
+                onDateTimeChanged: (DateTime dateTime) {
+                  _selectedDate = dateTime;
+                },
+              ),
+            ),
+            const SizedBox(height: 24),
+            // TODO: replace with your button widget
+            Button(
+              label: 'Done',
+              onPressed: () {
+                Navigator.of(context).pop(_selectedDate);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
 ## Prove it
 
 - **Spring sheet:** a fast downward fling closes it from any position; a slow drag released above half its height springs back; dragging up past fully open resists, and the barrier never turns darker than at rest.
@@ -650,3 +784,4 @@ pageTransitionsTheme: PageTransitionsTheme(
 - **Android back:** on a device that showed the bug, back and edge swipe close sheets, dialogs and modals. `grep -rn WillPopScope lib/` is empty before `android:enableOnBackInvokedCallback="true"` lands in `AndroidManifest.xml`.
 - **Tab reselect:** scroll a tab, tap its icon: it scrolls to top; tap again at the top: the search field focuses (where the tab has one).
 - **Transitions:** on the web build a push shows no animation; on an Android build on Flutter 3.38+, the theme does not name `ZoomPageTransitionsBuilder` unless someone chose it on purpose.
+- **Date picker:** iOS shows the wheel in a sheet, Android the Material dialog; dismissing either keeps the previous date.

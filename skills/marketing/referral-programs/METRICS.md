@@ -19,7 +19,7 @@ K > 1 = Viral growth (each user brings more than 1 new user)
 K < 1 = Amplified growth (referrals supplement other acquisition)
 ```
 
-Example: 3 invitations per customer, 15% convert, K = 3 × 0.15 = 0.45. app-growth uses the same formula with finer bands [eronred]: "Under 0.15 is nice-to-have; 0.15-0.5 meaningful; 0.5-1.0 a strong amplifier; over 1.0 true viral (extremely rare). A realistic target is 0.2-0.4".
+Example: 3 invitations per customer, 15% convert, K = 3 × 0.15 = 0.45. The mobile source uses the same formula with finer bands [eronred, referral-programs]: "Under 0.15 is nice-to-have; 0.15-0.5 meaningful; 0.5-1.0 a strong amplifier; over 1.0 true viral (extremely rare). A realistic target is 0.2-0.4"; above 0.5 only with very strong network effects. These are the source's thresholds, not a second definition in app-growth.
 
 ## Referral rate
 

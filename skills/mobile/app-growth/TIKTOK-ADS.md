@@ -80,7 +80,7 @@ tiktok_ads_create_adgroup
 
 ### Setup rubric and launch
 
-- **Rubric:** 10 items scored 0 to 2, minimum 16/20 to publish: MMP verified, Purchase/Subscribe, 6+ Spark custom, TikTok-only, US, $50/day, 0 tracking errors, Smart+, 1/1 structure, comment filtering.
+- **Rubric:** 10 items scored 0 to 2, minimum 16/20 to publish: MMP verified, Purchase/Subscribe, 6+ Spark custom, TikTok-only, US, $50/day, 0 tracking errors, Smart+, 1/1 structure, permitted spam moderation (never fabricated engagement or suppression of genuine criticism).
 - **After launch:** check once at 24 and 48 hours; audit at 48 hours; plan the refresh for days 5 to 7; monitor with `tiktok_ads_performance advertiser_id level: "ad" days: 2`.
 
 ## Bidding, budget and learning
@@ -189,7 +189,7 @@ Format 1 targets: app screen time ≥ 50% of runtime; hook readable in < 2 s wit
 
 All [appeeky].
 
-- **Account types:** brand (trustworthy, lower reach); persona (native, needs consistent niche content); creator (maximum authenticity). Age a new account with 3 to 5 organic niche videos over 3 to 7 days before posting Spark-bound creatives. "One account can host all 6 Spark ads".
+- **Account types:** brand (trustworthy, lower reach); persona (native, needs consistent niche content); creator (maximum authenticity). Do not manufacture account history to disguise automation or bypass platform systems; the source's account-aging recipe is excluded ([integrity and authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity)). "One account can host all 6 Spark ads".
 - **A persona or program account still discloses.** A paid creator posting on a brand-run persona account is an endorsement with a material connection, so each post carries its own disclosure; a bio line is a profile page, which the FTC lists among missed placements (https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers; 16 CFR 255.5). Meta adds: "Creators cannot accept anything of value to post content that does not feature themselves or that they were not involved in creating" (https://www.facebook.com/business/help/221149188908254). On TikTok the "Paid partnership" label appears when the creator turns on Disclose commercial content > Branded content; no TikTok doc found says Spark authorization adds it. Do not script or fake account activity to look less automated: TikTok "strictly prohibit[s] automation tools, scripts, or other tricks designed to bypass our systems" (https://www.tiktok.com/community-guidelines/en/integrity-authenticity). Full rules: [creator-marketing DISCLOSURE.md](../../marketing/creator-marketing/DISCLOSURE.md).
 - **Posting rules:** post all 6 within 24 to 48 hours; use TikTok library sounds; "Don't edit after posting: Edits can invalidate Spark codes"; keep posts public ("Private posts can't Spark"); no link in bio needed.
 - **Ad text and CTA:** Install now (not "Learn more"); keep the organic caption hook as the ad text; 1 to 2 selling points.
@@ -214,7 +214,7 @@ tiktok_ads_create_ad
 
 All [appeeky].
 
-- **Comments:** a pinned FAQ comment; reply to questions; keyword filtering (scam, fake, AI, bot, money) at Ads Manager → Campaign/Ad settings → Comment management. Seeded comments from alt accounts are flagged "Use sparingly"; "Frame ethically: helpful pinned comments and spam filtering, not fake engagement farms."
+- **Comments:** publish truthful FAQ comments and reply to real questions. Use platform-permitted spam moderation, not word filters to suppress genuine criticism. Do not seed alternate-account comments or manufacture engagement; the old source suggested doing so "sparingly", contrary to the authenticity boundary above. [appeeky; https://www.tiktok.com/community-guidelines/en/integrity-authenticity]
 - **Lifecycle:** day 0 note the code expiry; 48 hour audit; days 5 to 7 plan the refresh; day 50 regenerate codes before the 60-day expiry. Audit whenever a code expires within 10 days.
 
 | Problem | Cause | Fix |
@@ -267,7 +267,7 @@ tiktok_ads_update_campaign
 If all 6 ads map to "doesn't resonate", the batch failed.
 
 - **Per-ad rubric:** 5 dimensions × 0 to 3 (CPA vs target, conversion volume, CTR, spend efficiency, fatigue risk), total 0 to 15: 12 to 15 scale +20%/day; 8 to 11 watch; 4 to 7 pause and analyze; 0 to 3 kill.
-- **Playbook.** Day 0 launch 6 ads at $50/day; day 1 observe; day 2 full audit; days 3 to 4 hold; days 5 to 7 identify winners. Week 2: +20%/day, hook variants of the winning format only, comment filtering, hold US. Week 3+: a new batch every 7 days; add CA, UK, AU.
+- **Playbook.** Day 0 launch 6 ads at $50/day; day 1 observe; day 2 full audit; days 3 to 4 hold; days 5 to 7 identify winners. Week 2: +20%/day, hook variants of the winning format only, permitted spam moderation, hold US. Week 3+: a new batch every 7 days; add CA, UK, AU.
 - **Economics:** gross margin (LTV - CPA) / LTV of 30 to 50%+; learning tax $300 to 500; payback CPA / (LTV / expected lifetime months) under 3 months for subscriptions; ROAS > 100% at scale. "If CPA looks good but revenue doesn't follow → problem is downstream." See [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md), which also gives [coreyhaines31/marketingskills, ads]'s gross-margin payback and cohort recovery beside this revenue-only formula ([Numbers that disagree](BUDGET-AND-ROAS.md#numbers-that-disagree)).
 - **Refresh cadence differs by source:** 3 to 7 days in the setup and audit skills, every 7 days in the audit's week-3 playbook; Meta creatives refresh every 2 to 3 weeks ([META-ADS.md](META-ADS.md)).
 

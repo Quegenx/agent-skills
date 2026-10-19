@@ -19,7 +19,7 @@ Look for `.agents/product-context.md` first. If it isn't there, look for the nam
 
 ## Sections
 
-The optional sections (Paid Ads, Sales motion, SEO) appear only when the team does that work.
+The optional sections (Paid Ads, Sales motion, SEO and the [mobile app fields](#mobile-app-context)) appear only when the team does that work.
 
 ```markdown
 # Product context
@@ -114,6 +114,22 @@ Where the sections come from: Paid Ads, Learnings, the personas, objections, glo
 - **What doesn't:** "single-run anecdotes (log those as `watch` or leave them out), task notes, and anything that belongs in another section. A new objection goes in Objections; a new customer phrase goes in Customer Language."
 - **Retiring:** when "a later test contradicts it, the product or market changed underneath it (new pricing, new ICP), or it hasn't been relevant for two quarters. Change the status to `retired` and add a line saying why, rather than deleting it, so nobody re-tests a settled question." Move retired rows to the bottom and archive them past about 20 active rows.
 - **Who writes it:** any task that finishes a test, campaign or postmortem may propose a row. "Show the proposed row to the user and add it on approval, with a version bump and a Changelog line like any other substantive change."
+
+## Mobile app context
+
+[eronred, app-marketing-context] The source uses a separate `app-marketing-context.md` with seven sections. Keep its fields in this shared file: reuse the existing Product, Audience, Alternatives and Goals sections, and add the app-specific fields under an optional Mobile section. Existing legacy files follow [Finding it](#finding-it); do not create a second context file.
+
+| Source section | Fields to retain in the shared context |
+|---|---|
+| App Overview | Product: app name and price model (Free / Freemium / Paid / Subscription). Mobile: Apple numeric App ID, Google Play package name, primary and secondary category, platform (iOS / Android / Both), launch date and current version. |
+| Value Proposition | Problems, Audience and What's different: problem, target audience, unique differentiator and one-sentence elevator pitch. |
+| Competitors | Alternatives: the top 3 to 5 apps, with App, App ID, Strengths and Weaknesses. |
+| Current ASO State | Mobile: title, subtitle, keyword field, rating (stars and count) and primary keywords. Offer to pull metadata when the App ID is known. |
+| Goals | Goals: top 3, each written "Target: [metric] by [date]". |
+| Resources | Mobile and Paid Ads where relevant: budget, team (solo / small / marketing), tools (analytics / Apple Ads / MMP) and constraints. |
+| Markets | Mobile: primary and secondary markets and languages. |
+
+Close the source's context intake with the confirmed strengths, gaps and next steps, such as an [ASO audit](../../mobile/aso/SKILL.md). These mobile fields extend the same source-backed context; unknown facts still remain `[ASK]`. [eronred, app-marketing-context]
 
 ## Keeping it
 

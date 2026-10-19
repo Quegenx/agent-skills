@@ -6,7 +6,8 @@ How a Flutter app is split into layers so each piece can change and be tested al
 
 ## The layers
 
-- **Two to three layers.** UI (presentation), Logic (domain, optional; CRUD apps may not need it), Data. Each layer talks only to the layer directly above or below it. The UI layer does not know the data layer exists, and vice versa.
+- **Two to three layers.** UI (presentation), Logic (domain, optional; CRUD apps may not need it), Data. View models in the UI layer depend on repositories in the data layer; the repositories stay private to the view models. [Architecture guide](https://docs.flutter.dev/app-architecture/guide), [UI-layer case study](https://docs.flutter.dev/app-architecture/case-study/ui-layer)
+  - P2 correction: the old line said the UI and data layers did not know each other existed, contradicting the view-model/repository dependency below.
 - **MVVM mapping.** Views plus view models are the UI layer; repositories plus services are the data (model) layer.
 - **Every feature has** one view to describe the UI, one view model for its logic, one or more repositories as sources of truth, and zero or more services that talk to external APIs (servers, platform plugins).
 - **Never mix UI rendering with business logic or data fetching.**
@@ -579,7 +580,8 @@ class SubscribeButtonStyle {
 | `InheritedWidget`, `InheritedModel` | Low level, ancestors to children; what `provider` and many others use under the hood |
 | `ChangeNotifier` | Part of `flutter:foundation`; what the architecture guide's view models extend |
 
-- **Depend or read once.** `.of(context)` built on `dependOnInheritedWidgetOfExactType` rebuilds the caller when the value changes; `getInheritedWidgetOfExactType` does not. Use the dependent form when the value decides what `build` renders and the one-shot form in callbacks; `InheritedModel.inheritFrom(context, aspect: ...)` rebuilds a dependent only for the part it reads. `Scaffold.of`, `Form.of` and `Scrollable.of` use `findAncestorStateOfType` to call methods on an ancestor's `State` without depending on it; never cache lookup results across builds ([renderobjects](https://renderobjects.com/guides/elements/accessing-ancestors/), https://api.flutter.dev/flutter/widgets/InheritedModel-class.html). Costs are in [PERFORMANCE.md](PERFORMANCE.md#build-cost).
+- **Depend or read once.** Choose dependency-creating versus one-shot lookups using the canonical [ancestor lookup rules](../flutter-render-objects/ELEMENTS.md#ancestor-and-descendant-lookups). Keep that lookup fresh across builds; costs are in [PERFORMANCE.md](PERFORMANCE.md#build-cost).
+  - P2 correction: the old line grouped `Form.of` and `Scrollable.of` with the one-shot `Scaffold.of` lookup. The official dependency distinction and original renderobjects source claim are recorded at that owner. [Form.of](https://api.flutter.dev/flutter/widgets/Form/of.html), [Scrollable.of](https://api.flutter.dev/flutter/widgets/Scrollable/of.html)
 - **An `InheritedNotifier` in practice:** a `ThemeProvider` above `MaterialApp` switches the theme mode without a restart ([../flutter-ux/THEMING.md](../flutter-ux/THEMING.md)).
 
 - **Community packages.** The state management options page no longer names packages; it points to the pub.dev `state-management` topic and says the best choice depends on the app's complexity, the team's preferences and the problem. The architecture pages name `riverpod`, `flutter_bloc` and `signals` as alternatives to `ChangeNotifier`, and the Compass UI could have used streams or those libraries. One third-party Riverpod architecture, and where it departs from this file, is [RIVERPOD.md](RIVERPOD.md).

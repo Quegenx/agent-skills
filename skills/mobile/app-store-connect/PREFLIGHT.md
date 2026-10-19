@@ -1,10 +1,10 @@
 # App Store Preflight
 
-A preflight scans the project and its App Store metadata for known rejection patterns before you submit. Two third-party tools cover it: RevylAI's `greenlight` CLI (a static scan with a severity model, plus optional runtime checks of the flows Apple tests by hand) and truongduy2611's app-store-preflight-skills (rule files with detect commands, run against metadata pulled with the `asc` CLI, plus a checklist per app type). Both are third-party paraphrases of the App Review Guidelines, not Apple's text: where a rule here and Apple's text differ, both are given (see [REVIEW-GUIDELINES.md](REVIEW-GUIDELINES.md#where-preflight-summaries-differ-from-apple)). Static checks see strings, not behavior: a `deleteAccount` string passes the scan even when the button is wired to nothing.
+A preflight scans the project and App Store metadata for rejection patterns. RevylAI's `greenlight` CLI provides a static scan with severity plus optional runtime checks of flows Apple tests by hand. truongduy2611's app-store-preflight-skills provides detect commands for metadata pulled with `asc` and app-type checklists. Both paraphrase the App Review Guidelines; differences from Apple's text are preserved in [REVIEW-GUIDELINES.md](REVIEW-GUIDELINES.md#where-preflight-summaries-differ-from-apple). Static checks see strings, not behavior: `deleteAccount` passes even when the button does nothing.
 
 **Contents:** [Greenlight CLI](#greenlight-cli) · [Rule-file workflow with asc](#rule-file-workflow-with-asc) · [Rules: metadata](#rules-metadata) · [Rules: subscriptions](#rules-subscriptions) · [Rules: design](#rules-design) · [Rules: entitlements](#rules-entitlements) · [Rules: privacy](#rules-privacy) · [Checks by app type](#checks-by-app-type) · [Prove it](#prove-it)
 
-Related: [PRIVACY-AND-COMPLIANCE.md](PRIVACY-AND-COMPLIANCE.md) (privacy manifest, third-party AI consent, Sign in with Apple and review notes, with their detect commands), [PRICING-AND-SUBSCRIPTIONS.md](PRICING-AND-SUBSCRIPTIONS.md), [METADATA-AND-SCREENSHOTS.md](METADATA-AND-SCREENSHOTS.md), [TESTFLIGHT-AND-RELEASE.md](TESTFLIGHT-AND-RELEASE.md).
+Related: [privacy](PRIVACY-AND-COMPLIANCE.md) (manifest, AI consent and sign-in detection), [review notes](REVIEW-OPERATIONS.md#review-notes), [purchases](PRICING-AND-SUBSCRIPTIONS.md), [metadata](METADATA-AND-SCREENSHOTS.md), [submission](TESTFLIGHT-AND-RELEASE.md).
 
 ## Greenlight CLI
 
@@ -36,24 +36,26 @@ greenlight guidelines search "privacy"     # Search Apple guidelines
 
 - **Re-run often:** "The scan runs in under 1 second so re-run frequently." Every finding carries a severity, guideline reference, file location and fix suggestion.
 
-| Level | Label | Action required |
-|---|---|---|
-| CRITICAL | Will be rejected | Must fix before submission |
-| WARN | High rejection risk | Should fix, strongly recommended |
-| INFO | Best practice | Consider fixing, improves approval odds |
+Severity mapping: CRITICAL/REJECTION -> P1, WARN/WARNING -> P2, INFO -> P3; P0 requires an independently assessed immediate incident. Exact GREENLIT/CRITICAL/FAILED CLI literals remain tool statuses. [RevylAI/greenlight; truongduy2611/app-store-preflight-skills]
 
-- **Loop to GREENLIT:** "zero CRITICAL findings = GREENLIT status." Fix CRITICAL, then WARN, then INFO, and keep looping: "Some fixes can introduce new issues (e.g., adding a tracking SDK requires ATT)."
+| Severity | Source meaning | Action required |
+|---|---|---|
+| P1 | Blocking rejection finding | Must fix before submission |
+| P2 | High rejection risk | Should fix, strongly recommended |
+| P3 | Best practice | Consider fixing, improves approval odds |
+
+- **Loop to GREENLIT:** "zero CRITICAL findings = GREENLIT status." Fix P1, then P2, then P3, and keep looping: "Some fixes can introduce new issues (e.g., adding a tracking SDK requires ATT)."
 - **Scope:** the greenlight skill's description claims Google Play and Android checks, but its body documents only iOS commands; the app-store-preflight-compliance variant is Apple only.
 
 ### Fix recipes
 
 | Finding | Fix |
 |---|---|
-| Hardcoded secrets | Environment variables (`process.env.VAR_NAME` or Expo's `Constants.expoConfig.extra`) |
+| Hardcoded secrets | Expo app config/`extra` is public client data, not secret storage; the source incorrectly suggested it or bundled `process.env` values as the remedy. [https://docs.expo.dev/workflow/configuration] |
 | External payment for digital goods | StoreKit or IAP instead of Stripe or PayPal for digital content. greenlight says "External payment is only OK for physical goods"; Apple also allows person-to-person real-time services and US storefront links (see [REVIEW-GUIDELINES.md](REVIEW-GUIDELINES.md#3-business)) |
-| Social login without Sign in with Apple | Add `expo-apple-authentication` alongside Google or Facebook login |
+| Social login | Apply [4.8's privacy properties and exemptions](REVIEW-GUIDELINES.md#4-design), which name no provider. greenlight's `expo-apple-authentication` fix is a conditional option, not a universal requirement. [https://developer.apple.com/app-store/review/guidelines/] |
 | Account creation without deletion | A "Delete Account" option in settings |
-| Platform references | Remove "Android", "Google Play", "Windows", etc. |
+| Platform references | Evaluate matches under [2.3.10's approved-functionality exception](REVIEW-GUIDELINES.md#23-accurate-metadata); the source prescribed unconditional removal. |
 | Placeholder content | Replace "Lorem ipsum", "Coming soon", "TBD" with real content |
 | Vague purpose strings | Say specifically why: not "Camera needed" but "PostureGuard uses your camera to analyze sitting posture in real-time" |
 | Hardcoded IPv4 | Proper hostnames |
@@ -80,7 +82,7 @@ greenlight verify . --build-name "<your Revyl build>" --artifact ./build/MyApp.a
   --var email=<test account> --var password=<test password>
 ```
 
-- **Results:** VERIFIED (flow works); FAILED (passed static analysis but broke at runtime: account deletion dead-ends, Restore Purchases is a no-op, Sign in with Apple is a dead button; "Fix the wiring, not just the presence of the string"); SETUP (could not run: not authenticated, no build, no device). "Treat a FAILED flow exactly like a CRITICAL." Ready to submit only when preflight is GREENLIT and verify reports no failed flows.
+- **Results:** VERIFIED (flow works); FAILED (passed static analysis but broke at runtime: account deletion dead-ends, Restore Purchases is a no-op, Sign in with Apple is a dead button; "Fix the wiring, not just the presence of the string"); SETUP (could not run: not authenticated, no build, no device). Treat a FAILED flow as P1 (the source equates it to a CRITICAL finding). Ready to submit only when preflight is GREENLIT and verify reports no failed flows.
 
 ## Rule-file workflow with asc
 
@@ -92,36 +94,11 @@ greenlight verify . --build-name "<your Revyl build>" --artifact ./build/MyApp.a
 3. **Run the rule checks** in `references/rules/{metadata,subscription,privacy,design,entitlements}/*.md`. Each rule has What to Check, How to Detect, Resolution, Example Rejection.
 4. **Report** rejections first, then warnings, then passed:
 
-```markdown
-## Preflight Report
-
-### Rejections Found (N)
-- [GUIDELINE X.X.X] Description of issue
-  - File: path/to/offending/file
-  - Fix: What to do
-
-### Warnings (N)
-- [GUIDELINE X.X.X] Potential issue
-
-### Passed (N)
-- [Category] All checks passed
-```
+The report keeps the source's counts, guideline number, issue description, offending file and proposed fix, but labels rejections P1 and warnings P2, followed by passed checks. [truongduy2611/app-store-preflight-skills, preflight report]
 
 5. **Autofix and re-scan.** Auto-fixable: competitor terms (suggest replacement text), metadata character limits (show current vs max), missing links (generate template ToS and privacy policy URLs). Re-run the affected checks; "Only mark as resolved once the re-scan passes." Screenshots and UI redesigns are manual: give instructions, don't auto-fix.
 
-New rules use this format:
-
-```markdown
-# Rule: [Short Title]
-- **Guideline**: [Apple Guideline Number]
-- **Severity**: REJECTION | WARNING
-- **Category**: metadata | subscription | privacy | design | entitlements
-
-## What to Check
-## How to Detect
-## Resolution
-## Example Rejection
-```
+New rules retain the source fields: title, guideline number, severity (P1 or P2 under the mapping above), category (`metadata`, `subscription`, `privacy`, `design`, `entitlements`), then What to Check, How to Detect, Resolution and Example Rejection. [truongduy2611/app-store-preflight-skills, rule format]
 
 ## Rules: metadata
 
@@ -169,10 +146,6 @@ find ./previews -type f \( -name "*.mov" -o -name "*.mp4" \) -print0 | \
 
 - **Fix:** re-record with screen capture only (Xcode Simulator recording, QuickTime) and upload in App Store Connect via "View All Sizes in Media Manager".
 
-### Review notes (2.1, 2.3.1(a), 2.5.19)
-
-The six sections every new submission needs, and the template, are in [PRIVACY-AND-COMPLIANCE.md](PRIVACY-AND-COMPLIANCE.md#review-notes). Detect from pulled metadata or the fastlane file `metadata/review_information/notes.txt`, scanning for each section's keywords.
-
 ## Rules: subscriptions
 
 - **ToS and privacy policy in two places:** links are required in BOTH the App Store description AND the in-app purchase screen; "Missing either one is a separate rejection."
@@ -192,7 +165,7 @@ Privacy Policy: https://yourdomain.com/privacy
 
 ### Hidden features (2.5.19)
 
-New on October 16, 2026 (formerly part of 2.3.1). Severity REJECTION, and it "can also lead to app removal and developer account termination". Feature flags are allowed when every feature they can enable is in the reviewed build, reachable by the reviewer, and described in review notes. Gating on review-environment checks is bait-and-switch.
+New on October 16, 2026 (formerly part of 2.3.1). Severity P1, and it "can also lead to app removal and developer account termination". Feature flags are allowed when every feature they can enable is in the reviewed build, reachable by the reviewer, and described in review notes. Gating on review-environment checks is bait-and-switch.
 
 - **Review-environment detection** ("App Review uses sandbox receipts"); gating features on it is a rejection, gating only analytics, logging or receipt-validation endpoints is fine:
 
@@ -241,7 +214,7 @@ grep -rnE "base64EncodedString|Data\(base64Encoded|atob\(|base64Decode|xorDecode
 
 - **Typical 4.2 rejections:** one or two screens; a WebView wrapper; nothing beyond Safari; links or RSS; marketing or catalog apps; a book or game guide (belongs on Apple Books); template apps.
 - **Red flags:** "< 3 unique screens -> Very likely to trigger 4.2"; a single WebView to an external URL; no model layer; no offline functionality; only static content. Metadata signal: `jq -r '.description // empty' ./metadata/version/<VERSION>/<LOCALE>.json | wc -w`; "Very short descriptions (< 50 words) can indicate minimal functionality".
-- **Saturated categories (4.3(b)):** flag a WARNING and check the notes explain the difference.
+- **Saturated categories (4.3(b)):** flag P2 and check the notes explain the difference.
 - **Resolution:** offline mode or caching, push notifications, device integrations (camera, location, HealthKit), UGC or personalization, native UI (swipe actions, drag and drop, widgets). For wrappers: native auth (Sign in with Apple, biometrics), native navigation, local storage, Apple frameworks (Share Sheet, Spotlight, Shortcuts). In the notes, explain what a website can't do, the audience and non-obvious features.
 
 ### Sign in with Apple UX
@@ -250,7 +223,7 @@ Detect commands and fixes: [PRIVACY-AND-COMPLIANCE.md](PRIVACY-AND-COMPLIANCE.md
 
 ## Rules: entitlements
 
-- **Unused entitlements (2.4.5(i)):** severity "REJECTION (info request, blocks review)". Apple asks you to justify entitlements with no matching functionality.
+- **Unused entitlements (2.4.5(i)):** severity P1 (source: info request, blocks review). Apple asks you to justify entitlements with no matching functionality.
 - **iOS capabilities to match:** Push Notifications `aps-environment`; HealthKit `com.apple.developer.healthkit`; Sign in with Apple `com.apple.developer.applesignin`; iCloud `com.apple.developer.icloud-*`.
 - **Detect:** `find . -name "*.entitlements" -not -path "./.build/*"`; `plutil -p *.entitlements`; HealthKit use `grep -rn "HKHealthStore\|HealthKit\|health_kit" --include="*.swift" --include="*.dart" .`; on the built app `codesign -d --entitlements :- /path/to/YourApp.app`.
 - **Resolution:** remove keys from `.entitlements` and capabilities in Xcode > Target > Signing & Capabilities; if one is needed, reply in App Store Connect explaining how and where it is used; "Developer Reject the current submission, rebuild, and upload a new binary".
@@ -267,70 +240,70 @@ Detect commands and fixes: [PRIVACY-AND-COMPLIANCE.md](PRIVACY-AND-COMPLIANCE.md
 - **Pre-submission:** final, complete, tested on-device (2.1); metadata complete, no placeholder text or empty URLs; a demo account (or demo mode with prior Apple approval); backend live during review; IAP findable and functional or explained (2.1(b)); review notes with all six new-submission sections; specific notes (2.3.1(a)); nothing unlocks after approval (2.5.19).
 - **Metadata:** name 30 characters or fewer, unique, no trademark stuffing, pricing, other app names or irrelevant phrases (2.3.7); 2.3.10; 2.3.3; 2.3.4; 4+ icons, screenshots and previews (2.3.8); "fictional account data in screenshots" (2.3.9); 2.3.12; 2.3.14; 4.1(c); 5.2.5.
 - **Privacy:** privacy policy linked in App Store Connect AND in the app (5.1.1(i)); consent (5.1.1(ii)); relevant data only (5.1.1(iii)); account deletion (5.1.1(v)); permission before sharing with third parties including AI (5.1.2(i)); ATT for cross-app tracking; push, location or tracking never required to use the app or get rewards; `PrivacyInfo.xcprivacy` declares all required reason APIs.
-- **Design:** 4.1, 4.2, 4.3(b); Sign in with Apple option (4.8); don't re-ask its name or email (cited as 4.0); 2.5.1; IPv6-only networks (2.5.5); recording consent (2.5.14); 4.5.3.
+- **Design:** 4.1, 4.2, 4.3(b); equivalent login option where 4.8 applies, subject to its exemptions; don't re-ask its name or email (cited as 4.0); 2.5.1; IPv6-only networks (2.5.5); recording consent (2.5.14); 4.5.3.
 - **Business:** IAP (3.1.1); 3.2.2(x); review prompts through the system API (`SKStoreReviewController` / `requestReview`), not a custom prompt (5.6.1); support URL with easy contact (1.5); verifiable identity (5.6.2).
 - **App Store Connect requirements:** builds made with the iOS 26 SDK or later (tvOS, visionOS, watchOS 26 SDKs likewise) since April 28, 2026; older Xcode fails at upload, not at review. Age rating questions incl. social media capability (2.3.6); regulated medical device status where it applies (see Health); age assurance laws (Texas, Utah, Louisiana, Brazil, Australia, Singapore) checked against the Declared Age Range API and PermissionKit Significant Change API. Upload deadlines and screenshot sizes: [TESTFLIGHT-AND-RELEASE.md](TESTFLIGHT-AND-RELEASE.md), [METADATA-AND-SCREENSHOTS.md](METADATA-AND-SCREENSHOTS.md).
 
 ### Subscriptions and IAP
 
-- **Critical:** IAP for every digital unlock ("no license keys, QR codes, crypto"); ongoing value, minimum 7-day period, works on all the user's devices (3.1.2(a)); the screen describes what the user gets (3.1.2(c)); billed amount most prominent, not the calculated monthly price; description has a functional Terms of Use (EULA) link and Privacy Policy link; Privacy Policy URL set in App Store Connect; loot box odds; IAP currencies don't expire; Restore Purchases for restorable IAP; all IAP visible to the reviewer (2.1(b)).
-- **Important:** no accidental duplicate subscriptions (3.1.2(b)); 2.3.2; don't remove previously paid functionality when switching to subscriptions; a free trial states its duration, what ends and post-trial charges; 4.10; 3.2.2(x).
+- **P1:** IAP for digital unlocks within [3.1's actual category/storefront conditions](PRICING-AND-SUBSCRIPTIONS.md#purchase-rules) (the source's unconditional wording omitted those conditions); ongoing value, minimum 7-day period, works on all the user's devices (3.1.2(a)); the screen describes what the user gets (3.1.2(c)); billed amount most prominent, not the calculated monthly price; description has a functional Terms of Use (EULA) link and Privacy Policy link; Privacy Policy URL set in App Store Connect; loot box odds; IAP currencies don't expire; Restore Purchases for restorable IAP; all IAP visible to the reviewer (2.1(b)).
+- **P2:** no accidental duplicate subscriptions (3.1.2(b)); 2.3.2; don't remove previously paid functionality when switching to subscriptions; a free trial states its duration, what ends and post-trial charges; 4.10; 3.2.2(x).
 - **Rules and detect commands:** [Rules: subscriptions](#rules-subscriptions); setup in [PRICING-AND-SUBSCRIPTIONS.md](PRICING-AND-SUBSCRIPTIONS.md).
 
 ### Social and UGC
 
-- **Critical:** content filter; reporting with timely responses; blocking users; published contact info; prevent and remove nonconsensual intimate imagery, including AI-generated; a removal process after notice; Sign in with Apple option with third-party login (4.8) and no re-asking; account deletion (5.1.1(v)); access without social login if core functionality isn't specific to a social network; privacy policy in the app and in App Store Connect.
-- **Important:** 1.1.1; recording consent for camera, microphone and screen (2.5.14); clear purpose strings (5.1.1(ii)); ATT; no compiling personal info from non-user sources (5.1.1(viii)); 4.5.4; 5.1.1(iii).
+- **P1:** content filter; reporting with timely responses; blocking users; published contact info; prevent and remove nonconsensual intimate imagery, including AI-generated; a removal process after notice; 4.8-equivalent login where applicable, with its exemptions and the sign-in UX constraints; account deletion (5.1.1(v)); access without social login if core functionality isn't specific to a social network; privacy policy in the app and in App Store Connect.
+- **P2:** 1.1.1; recording consent for camera, microphone and screen (2.5.14); clear purpose strings (5.1.1(ii)); ATT; no compiling personal info from non-user sources (5.1.1(viii)); 4.5.4; 5.1.1(iii).
 - **UGC rules:** NSFW from web services hidden by default and turned on only via your website; no Chatroulette-style random chat, anonymous bullying or "hot-or-not" voting; no apps primarily for porn; random or anonymous chat meets all UGC requirements.
 - **Age:** "A social feed or similar discovery of UGC counts; it puts the app in the Social Media Time Allowance category and adds a Social Media content descriptor". Australia: social media platforms must prevent under-16s from holding accounts (since December 10, 2025); use the Declared Age Range API and state the restriction in the description. Texas, Utah, Louisiana: Declared Age Range API and PermissionKit Significant Change API.
 
 ### Kids
 
-- **Critical (1.3, 5.1.4(a)):** no external links or purchasing unless behind a parental gate; no third-party advertising; no third-party analytics (the skill lists exceptions as "no IDFA, no PII, no location"; Apple's text allows analytics that don't collect the IDFA or identifiable information, see [REVIEW-GUIDELINES.md](REVIEW-GUIDELINES.md#1-safety)); COPPA and GDPR; no PII or device information to third parties; a privacy policy that meets children's statutes, linked in App Store Connect and in the app. Parental gate guidance: https://developer.apple.com/app-store/kids-apps/
-- **Important:** "For Kids" and "For Children" are reserved; non-Kids apps can't imply children are the main audience in name, subtitle, icon, screenshots or description; keep meeting the guidelines in updates; third-party contextual ads only with documented Kids-specific policies and human review (5.1.4(b)); no ads in extensions, widgets, App Clips, keyboards or watchOS (2.5.18).
+- **P1 (1.3, 5.1.4(a)):** no external links or purchasing unless behind a parental gate; no third-party advertising; no third-party analytics (the skill lists exceptions as "no IDFA, no PII, no location"; Apple's text allows analytics that don't collect the IDFA or identifiable information, see [REVIEW-GUIDELINES.md](REVIEW-GUIDELINES.md#1-safety)); COPPA and GDPR; no PII or device information to third parties; a privacy policy that meets children's statutes, linked in App Store Connect and in the app. Parental gate guidance: https://developer.apple.com/app-store/kids-apps/
+- **P2:** "For Kids" and "For Children" are reserved; non-Kids apps can't imply children are the main audience in name, subtitle, icon, screenshots or description; keep meeting the guidelines in updates; third-party contextual ads only with documented Kids-specific policies and human review (5.1.4(b)); no ads in extensions, widgets, App Clips, keyboards or watchOS (2.5.18).
 - **Age assurance (any app with minor users):** Texas (since June 4, 2026), Utah, Louisiana: parental consent for minors' downloads, IAP and significant app changes; Declared Age Range API; PermissionKit Significant Change API; handle the App Store server notification for revoked consent. Brazil, Australia, Singapore: 18+ apps blocked for unconfirmed adults. Brazil: loot boxes make the app 18+. Australia: the 15+ rating is gone; unrestricted web access, frequent medical information or loot boxes make it 16+. Vietnam ratings: 00+, 12+, 16+, 18+. Reference: https://developer.apple.com/support/age-assurance
 
 ### Finance and crypto
 
-- **Critical:** wallets from enrolled organizations (3.1.5(i)); no on-device mining, cloud is fine (ii); exchanges licensed (iii); ICOs, futures and crypto-securities only from established banks or financial institutions (iv); no crypto for completing tasks (v); no binary options (3.2.2(viii)); CFD and FOREX licensed; loans: APR 36% or less, no full repayment in 60 days or less, disclose APR and due date (3.2.2(ix)); submit as a legal entity (5.1.1(ix)).
-- **Important:** privacy policy covers financial data; crypto can't unlock features; 1.1.6; 2.3.1(a); 5.1.1(v); 1.6.
+- **P1:** wallets from enrolled organizations (3.1.5(i)); no on-device mining, cloud is fine (ii); exchanges licensed (iii); ICOs, futures and crypto-securities only from established banks or financial institutions (iv); no crypto for completing tasks (v); no binary options (3.2.2(viii)); CFD and FOREX licensed; loans: APR 36% or less, no full repayment in 60 days or less, disclose APR and due date (3.2.2(ix)); submit as a legal entity (5.1.1(ix)).
+- **P2:** privacy policy covers financial data; crypto can't unlock features; 1.1.6; 2.3.1(a); 5.1.1(v); 1.6.
 - **NFTs:** sold or minted via IAP; ownership can't unlock features; browsing others' NFTs has no external purchase links (except on the US storefront).
 
 ### VPN
 
-- **Critical (5.4):** the `NEVPNManager` API; organization enrollment; never sell, use or disclose data to third parties, and the privacy policy commits to this; an on-screen declaration of the data collected and its use, shown before any purchase or use; license information in App Review Notes where a territory requires a VPN license; local laws.
+- **P1 (5.4):** the `NEVPNManager` API; organization enrollment; never sell, use or disclose data to third parties, and the privacy policy commits to this; an on-screen declaration of the data collected and its use, shown before any purchase or use; license information in App Review Notes where a territory requires a VPN license; local laws.
 - **Exception:** "Parental control, content blocking, and security apps from approved providers may also use `NEVPNManager`; content blocking alone is not a 5.4 violation."
-- **Important:** privacy policy; IPv6-only networks (2.5.5); 2.3.1(a); 2.5.19; premium VPN features via IAP (3.1.1).
+- **P2:** privacy policy; IPv6-only networks (2.5.5); 2.3.1(a); 2.5.19; premium VPN features via IAP (3.1.1).
 
 ### Health and fitness
 
-- **Critical:** disclose data and methodology, no sensor-only diagnostics (x-rays, blood pressure, blood glucose, SpO2), remind users to check with a doctor (1.4.1); dosage calculators only from a manufacturer, hospital, university or FDA-approved source (1.4.2); HealthKit not for advertising, marketing or data mining (5.1.3(i)); no false data (5.1.3(ii)); never store personal health data in iCloud; research needs informed consent covering nature, purpose, duration, risks, confidentiality and withdrawal (5.1.3(iii)) and an independent ethics review board (5.1.3(iv)).
+- **P1:** disclose data and methodology, no sensor-only diagnostics (x-rays, blood pressure, blood glucose, SpO2), remind users to check with a doctor (1.4.1); dosage calculators only from a manufacturer, hospital, university or FDA-approved source (1.4.2); HealthKit not for advertising, marketing or data mining (5.1.3(i)); no false data (5.1.3(ii)); never store personal health data in iCloud; research needs informed consent covering nature, purpose, duration, risks, confidentiality and withdrawal (5.1.3(iii)) and an independent ethics review board (5.1.3(iv)).
 - **Regulated medical device status:** declare it in App Store Connect if the app ships in the EEA, UK or US and its primary or secondary category is Health & Fitness or Medical, or the age rating questionnaire declares frequent Medical or Treatment Information. Required for new apps since March 26, 2026; existing apps must declare by early 2027 or updates are blocked. Select "No" if it is not a medical device. How-to: https://developer.apple.com/help/app-store-connect/manage-app-information/declare-regulated-medical-device-status
-- **Important:** the privacy policy describes health data; HealthKit used for health purposes (2.5.1); data minimization; a regulatory clearance link with matching regulatory information; legal entity (5.1.1(ix)); no targeted ads based on health data (2.5.18).
+- **P2:** the privacy policy describes health data; HealthKit used for health purposes (2.5.1); data minimization; a regulatory clearance link with matching regulatory information; legal entity (5.1.1(ix)); no targeted ads based on health data (2.5.18).
 
 ### AI apps
 
-- **Critical:** China mainland deep synthesis rules (remove AI brand names from metadata, suppress AI or get an MIIT license, see [China storefront](#china-storefront-ai-references-5-chinese-deep-synthesis-rules)); no misleading AI capabilities such as an "AI doctor" (1.1.6); medical disclaimers (1.4.1); 2.3.1(a); 2.5.19; explicit permission before sending personal data, with the provider named (5.1.2(i), see [PRIVACY-AND-COMPLIANCE.md](PRIVACY-AND-COMPLIANCE.md#third-party-ai-consent)); AI content creation apps are UGC apps under 1.2 (filter output, report, block, contact info); prevent nonconsensual intimate imagery ("nudification", face-swap porn); no nudity generation (1.1.4).
-- **Important:** no "GPT", "ChatGPT", "OpenAI", "Gemini", "Claude" or their logos in the name or icon without approval (4.1(c)); no keyword stuffing with AI brand names (2.3.7); the privacy policy names the AI providers (5.1.1(i)); chatbots and plug-ins (4.7); consent for AI processing of recordings (2.5.14); send no more data than needed (5.1.1(iii)); AI credits via IAP (3.1.1).
+- **P1:** China mainland deep synthesis rules (remove AI brand names from metadata, suppress AI or get an MIIT license, see [China storefront](#china-storefront-ai-references-5-chinese-deep-synthesis-rules)); no misleading AI capabilities such as an "AI doctor" (1.1.6); medical disclaimers (1.4.1); 2.3.1(a); 2.5.19; explicit permission before sending personal data, with the provider named (5.1.2(i), see [PRIVACY-AND-COMPLIANCE.md](PRIVACY-AND-COMPLIANCE.md#third-party-ai-consent)); AI content creation apps are UGC apps under 1.2 (filter output, report, block, contact info); prevent nonconsensual intimate imagery ("nudification", face-swap porn); no nudity generation (1.1.4).
+- **P2:** no "GPT", "ChatGPT", "OpenAI", "Gemini", "Claude" or their logos in the name or icon without approval (4.1(c)); no keyword stuffing with AI brand names (2.3.7); the privacy policy names the AI providers (5.1.1(i)); chatbots and plug-ins (4.7); consent for AI processing of recordings (2.5.14); send no more data than needed (5.1.1(iii)); AI credits via IAP (3.1.1).
 
 ### Games
 
-- **Critical:** IAP for currency, levels and premium; loot box odds before purchase; IAP currencies don't expire; Restore Purchases; 1.1.2; licensed gambling and lotteries (5.3); no IAP for real-money credit (5.3.3); 5.3.4. Brazil fixed-odds betting needs a valid SPA license, with license details in the review Notes plus documents: "Updating App Review Information alone doesn't start verification; submit a new version".
-- **Important:** honest age rating (2.3.6); 4+ metadata even when the game is rated higher (2.3.8); Siri remote on Apple TV (2.4.3); rich AR (4.2.1); streaming game subscriptions (3.1.2(a)); no crypto mining, even in the background (2.4.2); 1.4.5; keep "full game unlock" content when switching to subscriptions; loot boxes in the questionnaire make the game 18+ in Brazil and 16+ in Australia.
+- **P1:** IAP for currency, levels and premium; loot box odds before purchase; IAP currencies don't expire; Restore Purchases; 1.1.2; licensed gambling and lotteries (5.3); no IAP for real-money credit (5.3.3); 5.3.4. Brazil fixed-odds betting needs a valid SPA license, with license details in the review Notes plus documents: "Updating App Review Information alone doesn't start verification; submit a new version".
+- **P2:** honest age rating (2.3.6); 4+ metadata even when the game is rated higher (2.3.8); Siri remote on Apple TV (2.4.3); rich AR (4.2.1); streaming game subscriptions (3.1.2(a)); no crypto mining, even in the background (2.4.2); 1.4.5; keep "full game unlock" content when switching to subscriptions; loot boxes in the questionnaire make the game 18+ in Brazil and 16+ in Australia.
 - **Also:** mini games, streaming games and emulators (4.7); lasting entertainment value (4.2); no duplicate variants (4.3(a)); drinking games rejected (4.3(b)); screenshots show actual gameplay (2.3.3); Player IDs (4.5.3, 4.5.5).
 
 ### macOS
 
-- **Critical (2.4.5):** (i) sandboxed, appropriate APIs, entitlements match functionality; (ii) packaged via Xcode, no third-party installers, a single bundle; (iii) no auto-launch without consent, no background processes after quit, no auto-added Dock or desktop icons; (iv) no downloading standalone apps, kexts or code; (v) no root or setuid; (vi) no license screens, keys or custom copy protection; (vii) updates via the Mac App Store only; (viii) current OS, no deprecated tech (Java); (ix) all localizations in one bundle.
-- **Important:** 2.5.1, 2.5.2, no iOS-only language (2.3.10), 5.2.5, 5.1.1(i), 2.5.5.
+- **P1 (2.4.5):** (i) sandboxed, appropriate APIs, entitlements match functionality; (ii) packaged via Xcode, no third-party installers, a single bundle; (iii) no auto-launch without consent, no background processes after quit, no auto-added Dock or desktop icons; (iv) no downloading standalone apps, kexts or code; (v) no root or setuid; (vi) no license screens, keys or custom copy protection; (vii) updates via the Mac App Store only; (viii) current OS, no deprecated tech (Java); (ix) all localizations in one bundle.
+- **P2:** 2.5.1, 2.5.2, no iOS-only language (2.3.10), 5.2.5, 5.1.1(i), 2.5.5.
 - **Entitlements audit:** `com.apple.security.network.server` (justify), `com.apple.security.network.client` (standard), `com.apple.security.files.downloads.read-only` (justify), `com.apple.security.files.user-selected.read-write` (standard), `com.apple.security.temporary-exception.*` (extra scrutiny: Apple asks you to justify every one). Also flagged when unused: `files.downloads.read-write`, `files.user-selected.read-only`, `files.bookmarks.app-scope`.
 
 ## Prove it
 
 - `greenlight preflight .` reports GREENLIT (zero CRITICAL); re-run it after every fix, because a fix can add a finding.
 - If the app has accounts, purchases or social login, `greenlight verify . --dry-run` lists the flows, and a real run reports no FAILED flow.
-- The competitor-term, Apple-trademark and China AI-term greps over `./metadata/` return nothing (or China mainland is deselected).
+- Metadata findings are reviewed against their actual policy scopes, approved-functionality/rights exceptions and China availability; raw term matches or zero matches alone do not prove compliance. The old check required every competitor/trademark/China-term scan to be empty. [https://developer.apple.com/app-store/review/guidelines/; truongduy2611/app-store-preflight-skills]
 - Every paywall screen shows the billed amount most prominently, tappable Terms and Privacy links and Restore Purchases, and every locale's description carries both links.
 - The review-environment, time-bomb, remote-flag and region-gate greps show no feature gated on review detection, and every flag that gates a user-facing feature is described in the review notes.
 - `plutil -p` on each `.entitlements` file shows only capabilities the app uses.
-- The app-type checklist for this app has every Critical item checked.
+- The app-type checklist for this app has every P1 item checked.

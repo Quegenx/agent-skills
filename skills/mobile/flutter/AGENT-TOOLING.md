@@ -2,7 +2,7 @@
 
 The Flutter team ships an official agent plugin that bundles four things: agent skills (on-demand guides from the official repos), agent rules (persistent instructions, such as proactively triggering stateful hot reload), the Dart and Flutter MCP server (analyzer diagnostics, symbol resolution, test runners, runtime inspection), and specialized agents (such as the Flutter Accessibility agent). Flutter apps register with the Dart Tooling Daemon (DTD) in debug and profile mode unless started with `--no-dds`, and the MCP server's `dtd` tool discovers and connects to them. Claude Code loads the plugin's skills and MCP server but not its rules, so copy the rules into `CLAUDE.md` yourself.
 
-**Contents:** [The six components](#the-six-components) · [Install per client](#install-per-client) · [The MCP server](#the-mcp-server) · [Connecting to a running app](#connecting-to-a-running-app) · [Tools](#tools) · [The hot reload rule](#the-hot-reload-rule) · [Exploring an app before writing tests](#exploring-an-app-before-writing-tests) · [Project rules for agents](#project-rules-for-agents) · [Docs for agents](#docs-for-agents) · [AI features inside apps](#ai-features-inside-apps) · [Prove it](#prove-it)
+**Contents:** [The six components](#the-six-components) · [Install per client](#install-per-client) · [The MCP server](#the-mcp-server) · [Connecting to a running app](#connecting-to-a-running-app) · [Tools](#tools) · [The hot reload rule](#the-hot-reload-rule) · [Exploring an app before writing tests](#exploring-an-app-before-writing-tests) · [Project rules for agents](#project-rules-for-agents) · [Docs for agents](#docs-for-agents) · [AI features inside apps](#ai-features-inside-apps) · [Widget previews](#widget-previews) · [Prove it](#prove-it)
 
 ## The six components
 
@@ -30,6 +30,7 @@ The Flutter team ships an official agent plugin that bundles four things: agent 
 | Antigravity CLI (`agy`) | MCP config in `.agents/mcp_config.json` (or `~/.gemini/config/mcp_config.json`) | |
 | GitHub Copilot (VS Code) | `.vscode/mcp.json` with `{"servers": {"dart": {"command": "dart", "args": ["mcp-server"]}}}`, or the user setting `"dart.mcpServer": true` (Dart-Code v3.114+) | `.github/copilot-instructions.md` |
 | Gemini CLI | `.gemini/settings.json` `mcpServers` entry `dart` running `dart mcp-server` | |
+| Others (Windsurf, Zed, Cline) | The generic config below | |
 
 - **Generic MCP config** for any client:
 
@@ -44,7 +45,7 @@ The Flutter team ships an official agent plugin that bundles four things: agent 
 }
 ```
 
-- **Cursor on older Dart** needed `--experimental-mcp-server` in `.cursor/mcp.json`.
+- **Cursor on older Dart** needed `--experimental-mcp-server` in `.cursor/mcp.json`; remove it on Dart 3.9.0 or later.
 - **Skills only, any agent,** with the `skills` CLI into `.agents/skills`:
 
 ```bash
@@ -57,44 +58,44 @@ npx skills add dart-lang/skills --skill '*' --agent universal --yes
 
 ## The MCP server
 
-- **Status:** work in progress and experimental. It requires Dart 3.9.0-163.0.dev or later and speaks stdio. Clients should support Tools and Resources, ideally Roots.
-- **Choose tools:** `--enable` / `--disable` by tool or category, for example `"args": ["mcp-server", "--enable", "flutter_app_lifecycle"]`. `dart mcp-server --help` lists them all.
+- **Status, two source statements:** the server reached stable with Dart 3.9; its README still says "WIP. This package is still experimental and is likely to evolve quickly." It requires Dart 3.9.0-163.0.dev or later and speaks stdio. Clients should support Tools and Resources, ideally Roots. [Dart MCP server](https://dart.dev/tools/mcp-server)
+- **Choose tools:** `--enable` / `--disable` by tool or category, for example `"args": ["mcp-server", "--enable", "flutter_app_lifecycle"]`. Disabling beats enabling at the same level; names beat categories. `dart mcp-server --help` lists them all.
 - **Run tests through it:** the `run_tests` tool says to always use it instead of `dart test` or `flutter test` shell commands.
 
 ## Connecting to a running app
 
 - **Flutter apps** auto-register with the Dart Tooling Daemon in debug and profile mode, unless `--no-dds` is passed.
-- **Dart apps** need `--observe`. `--print-dtd` prints the DTD URI.
+- **Dart apps** need `--observe`. `--print-dtd` prints the DTD URI. Dart 3.12 added agentic hot reload through the MCP server.
 - **Rules-file text the README suggests:** "Always pass the `--print-dtd` flag to `dart` or `flutter` when spawning an application." and "For `dart` applications, always pass the `--observe` flag", for example `dart --observe --print-dtd bin/main.dart`.
 
 ## Tools
 
-| Tool | On by default | What it does |
-|---|---|---|
-| `analyze_files` | Yes | |
-| `create_project` | No | |
-| `dart_fix` | No | |
-| `dart_format` | No | |
-| `dtd` | Yes | `listDtdUris`, `connect`, `listConnectedApps` |
-| `flutter_driver_command` | Yes | |
-| `get_active_location` | No | |
-| `get_app_logs` | No | |
-| `get_runtime_errors` | Yes | |
-| `hot_reload` | Yes | Use the `dtd` tool to discover and connect to an app proactively |
-| `hot_restart` | Yes | |
-| `launch_app` | No | |
-| `list_devices` | No | |
-| `list_running_apps` | No | |
-| `lsp` | Yes | hover, signatureHelp, resolveWorkspaceSymbol |
-| `pub` | Yes | |
-| `pub_dev_search` | Yes | |
-| `read_package_uris` | Yes | `package:` and `package-root:` URIs |
-| `rip_grep_packages` | Yes | Needs ripgrep |
-| `roots` | Yes | |
-| `run_tests` | No | Always use instead of `dart test` / `flutter test` |
-| `stop_app` | No | |
-| `vm_service` | Yes | |
-| `widget_inspector` | Yes | |
+| Tool | On by default | Categories | What it does |
+|---|---|---|---|
+| `analyze_files` | Yes | analysis | Analyzer diagnostics |
+| `create_project` | No | cli |  |
+| `dart_fix` | No | cli | Runs `dart fix --apply` |
+| `dart_format` | No | cli | Runs `dart format .` |
+| `dtd` | Yes | dart_tooling_daemon | `listDtdUris`, `connect`, `listConnectedApps` |
+| `flutter_driver_command` | Yes | flutter_driver |  |
+| `get_active_location` | No | dart_tooling_daemon |  |
+| `get_app_logs` | No | flutter, flutter_app_lifecycle |  |
+| `get_runtime_errors` | Yes | dart_tooling_daemon |  |
+| `hot_reload` | Yes | flutter | Use the `dtd` tool to discover and connect to an app proactively |
+| `hot_restart` | Yes | flutter |  |
+| `launch_app` | No | flutter, flutter_app_lifecycle |  |
+| `list_devices` | No | flutter, flutter_app_lifecycle, cli |  |
+| `list_running_apps` | No | flutter, flutter_app_lifecycle |  |
+| `lsp` | Yes | analysis | hover, signatureHelp, resolveWorkspaceSymbol |
+| `pub` | Yes | cli, package_deps |  |
+| `pub_dev_search` | Yes | package_deps |  |
+| `read_package_uris` | Yes | package_deps | `package:` and `package-root:` URIs (added 3.11) |
+| `rip_grep_packages` | Yes | package_deps | Needs ripgrep |
+| `roots` | Yes | None |  |
+| `run_tests` | No | cli | Always use instead of `dart test` / `flutter test` |
+| `stop_app` | No | flutter, flutter_app_lifecycle |  |
+| `vm_service` | Yes | dart_tooling_daemon |  |
+| `widget_inspector` | Yes | flutter |  |
 
 ## The hot reload rule
 
@@ -213,7 +214,7 @@ All from [ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude
 
 ### MCP servers for Flutter work
 
-- **The author's set** [ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude-code/), "For a Flutter app where the bug is half client, half backend": the Supabase MCP (query dev schema and rows; [../../backend/supabase/WORKFLOW.md](../../backend/supabase/WORKFLOW.md)), the Sentry MCP (recent crashes and stack traces; [../../monitoring/sentry/DEBUGGING-ISSUES.md](../../monitoring/sentry/DEBUGGING-ISSUES.md)) and the GitHub MCP (PRs, issues, recent commits), next to the Dart and Flutter MCP server above.
+- **The author's set** [ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude-code/), "For a Flutter app where the bug is half client, half backend": the Supabase MCP (query dev schema and rows; [../../backend/supabase/WORKFLOW.md](../../backend/supabase/WORKFLOW.md)) and the Sentry MCP (recent crashes and stack traces; [../../monitoring/sentry/DEBUGGING-ISSUES.md](../../monitoring/sentry/DEBUGGING-ISSUES.md)), next to the Dart and Flutter MCP server above.
 - **Deslop for duplicate code** [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/): use the canonical [Deslop setup and configuration](../../architecture/refactoring/DUPLICATION.md#deslop), preserving its distinction between `exclude` and `report_hide` for generated `.g.dart` and `.freezed.dart` files. The semantic reuse rule remains in [anti-slop code](../../anti-ai-slop/anti-slop-code/RULES.md#structure).
 
 ## Docs for agents
@@ -243,6 +244,120 @@ void main() async {
 }
 ```
 
+## Widget previews
+
+### Rules
+
+- **What `@Preview` can annotate:** top-level functions, static methods in a class, or public widget constructors and factories that have no required arguments and return a `Widget` or `WidgetBuilder`.
+- **Always import `package:flutter/widget_previews.dart`.**
+- **Parameters:** `name`, `group`, `size`, `theme`, `brightness`.
+- **Shared properties:** extend `Preview` to make a custom annotation that injects themes or wrappers.
+- **Several previews of one target:** stack several `@Preview` annotations, or extend `MultiPreview`.
+- **Runtime configuration:** override `transform()` in a custom `Preview` or `MultiPreview`, for example to generate names from dynamic values, "which is impossible in a `const` context".
+
+### Limits (the previewer runs in a web environment)
+
+- **No native plugins and no `dart:io` or `dart:ffi`.** A widget with a transitive dependency on `dart:io` or `dart:ffi` throws when invoked. Use conditional imports to mock or bypass these in preview mode.
+- **Package-based asset paths.** Assets loaded through the `dart:ui` `fromAsset` APIs need `packages/my_package_name/assets/my_image.png`, not `assets/my_image.png`.
+- **Callbacks must be public and constant,** because code generation requires it.
+- **Unconstrained widgets get about half the viewport** by default. Set `size` on `@Preview` for explicit constraints.
+
+### Launching
+
+- **IDE:** in Android Studio, IntelliJ, or VS Code with Flutter 3.38+, the Widget Previewer starts automatically. Open the "Flutter Widget Preview" tab in the sidebar. To see previews outside the active file, toggle "Filter previews by selected file" at the bottom left.
+- **Command line:** run `flutter widget-preview start` in the project root. Chrome opens automatically.
+- **Status:** Widget Previews are stable as of Flutter 3.47, with a `.widget_preview/` cache. They first shipped in 3.35: "Flutter 3.35 brought us ... the Widget Previewer" ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)).
+- **Theme caveat** ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)): the `theme` option "might not work perfectly with all custom themes right away, a great workaround is to directly embed your widget inside a `MaterialApp` with your chosen theme."
+- **Iterating:** after changing global state (such as static initializers), click the global hot restart button at the bottom right. To reset one widget's local state, click the hot restart button on that preview card.
+
+### Code
+
+Source blocks below preserve the original code with trailing whitespace removed.
+
+```dart
+import 'package:flutter/widget_previews.dart';
+import 'package:flutter/material.dart';
+
+@Preview(name: 'My Sample Text', group: 'Typography')
+Widget mySampleText() {
+  return const Text('Hello, World!');
+}
+```
+```dart
+import 'package:flutter/widget_previews.dart';
+import 'package:flutter/material.dart';
+
+final class TransformativePreview extends Preview {
+  const TransformativePreview({
+    super.name,
+    super.group,
+  });
+
+  PreviewThemeData _themeBuilder() {
+    return PreviewThemeData(
+      materialLight: ThemeData.light(),
+      materialDark: ThemeData.dark(),
+    );
+  }
+
+  @override
+  Preview transform() {
+    final originalPreview = super.transform();
+    final builder = originalPreview.toBuilder();
+
+    builder
+      ..name = 'Transformed - ${originalPreview.name}'
+      ..theme = _themeBuilder;
+
+    return builder.toPreview();
+  }
+}
+
+@TransformativePreview(name: 'Custom Themed Button')
+Widget myButton() => const ElevatedButton(onPressed: null, child: Text('Click'));
+```
+```dart
+import 'package:flutter/widget_previews.dart';
+import 'package:flutter/material.dart';
+
+/// Creates light and dark mode previews automatically.
+final class MultiBrightnessPreview extends MultiPreview {
+  const MultiBrightnessPreview({required this.name});
+
+  final String name;
+
+  @override
+  List<Preview> get previews => const [
+        Preview(brightness: Brightness.light),
+        Preview(brightness: Brightness.dark),
+      ];
+
+  @override
+  List<Preview> transform() {
+    final previews = super.transform();
+    return previews.map((preview) {
+      final builder = preview.toBuilder()
+        ..group = 'Brightness'
+        ..name = '$name - ${preview.brightness!.name}';
+      return builder.toPreview();
+    }).toList();
+  }
+}
+
+@MultiBrightnessPreview(name: 'Primary Card')
+Widget cardPreview() => const Card(child: Padding(padding: EdgeInsets.all(8.0), child: Text('Content')));
+```
+
+A factory constructor as the preview target ([ApparenceKit](https://apparencekit.dev/flutter-tips/flutter-widget-previewer-guide/)):
+
+```dart
+@Preview(name: 'Primary Button Large')
+factory PrimaryButton.largePreview() {
+  return PrimaryButton(text: "text", onTap: () {});
+}
+```
+
+
 ## Prove it
 
 - `claude plugin marketplace list` (or your client's equivalent) shows `flutter/agent-plugins`, and the MCP config runs `dart mcp-server`.
@@ -252,3 +367,5 @@ void main() async {
 - Tests ran through the `run_tests` tool, not a `flutter test` shell command.
 - The project's `CLAUDE.md` (or `.cursor/rules/*.mdc`) names the architecture layers, the state management choice, routing, the test strategy and the generated-file folders, and stays short enough to point to companion docs for detail.
 - With Deslop configured, `deslop .` reports no cluster made of `.g.dart` or `.freezed.dart` files, and `.deslop/` is in `.gitignore`.
+- **Previews:** `flutter widget-preview start` opens Chrome and every `@Preview` renders; previewed widgets have no transitive `dart:io` or `dart:ffi` dependency.
+- **MCP setup:** `dart mcp-server --help` runs, and the client lists `analyze_files`.

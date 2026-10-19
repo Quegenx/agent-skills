@@ -53,7 +53,7 @@ Registered-device installs outside TestFlight with the experimental [rorkai] `as
 - **Steps:** select the version > verify Build > "Add for Review" (adds to an existing draft submission or creates a new one; status becomes Ready for Review) > optionally add items (In-App Events, asset packs) > "Submit for Review"; status becomes In Review.
 - **Concurrency:** "Each platform can have one app version submission under review at a time." At most two submissions per platform under review: one that includes an app version, and one with items only (In-App Events, custom product pages). Submissions may not be reviewed in order. Items for different platforms can't share a submission.
 - **Items you can add:** subscriptions and groups, In-App Purchases, In-App Events, custom product pages, product page optimization tests, Apple-hosted asset packs, Game Center components. "All items submitted together must be Accepted to complete the submission."
-- **App Review Information** (contact, notes, demo account that "must not expire"): [METADATA-AND-SCREENSHOTS.md](METADATA-AND-SCREENSHOTS.md).
+- **App Review Information** (contact, notes, demo account that "must not expire"): [REVIEW-OPERATIONS.md](REVIEW-OPERATIONS.md#review-notes).
 
 ## The asc release lanes
 

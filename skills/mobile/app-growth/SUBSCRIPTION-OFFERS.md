@@ -31,19 +31,6 @@ The offer types each store lets you attach to a subscription: Apple's introducto
 - **Win-back offers** (announced September 10, 2024; WWDC24 session 10110) are configured per subscription product, not per group. Earliest start is one day after today; minimum run 3 days; priority Normal or High. Eligibility: Minimum Paid Duration (1-24 months, or 3, 4 or 5 years) and Time Since Last Subscribed (1 to 24 months), both required; Wait Between Offers (2-24 months) optional. App Store promotion (product page, editorial, personalized recommendations) needs an approved subscription image (not the app icon or a screenshot) and replaces In-App Purchase promotions in that storefront.
 - **Win-back in code:** link directly with `https://apps.apple.com/win-back/<win-back offer Apple ID>`, after checking eligibility server-side through Get All Subscription Statuses and `JWSRenewalInfoDecodedPayload.eligibleWinBackOfferIds` (best offer first). With Streamlined Purchasing on (the default) a completed transaction arrives in `Transaction.updates` / `all` / `currentEntitlements`; with it off a `PurchaseIntent` arrives in `intents` (the latest approved binary must handle `PurchaseIntent` before you turn it off). In-app, `Transaction.offer` has type `winBack`; on the server `offerType` is `4`.
 
-```swift
-// Prepare the purchase options.
-var purchaseOptions: Set<Product.PurchaseOption> = []
-
-// Add the win-back offer to the purchase.
-if let offer = purchaseIntent.offer, offer.type == .winBack {
-    purchaseOptions.insert(.winBackOffer(offer))
-}
-
-// Present the purchase.
-let result = try await purchaseIntent.product.purchase(options: purchaseOptions)
-```
-
 - **Conflict on win-back code:** the playbook says StoreKit 2 win-back offers (iOS 18+, App Store Connect > Subscriptions > Win-Back Offers) are presented automatically in the App Store and need no code beyond a StoreKit 2 integration. Apple's docs: with Streamlined Purchasing on (the default) the completed transaction is delivered in `Transaction.updates` / `all` / `currentEntitlements`, and turning it off delivers a `PurchaseIntent` that the latest approved binary must handle. Apple also shows win-back offers in Manage Subscriptions from iOS 14.3, not only iOS 18.
 - **The cancel screen:** Apple's Retention Messaging API puts a system message (text, text with image, switch-plan or promotional offer) on the Confirm Cancellation page, needs a default message per product and locale, and is pre-release with a "Request access" link (https://developer.apple.com/documentation/retentionmessaging); details in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md#subscription-lifecycle).
 - **Offer codes:** one-time-use codes (expire after at most six months, batches of 500 to 25,000), custom codes (for example SPRINGPROMO, no expiration needed) and sandbox codes (10 to 10,000 per batch, up to 10,000 per quarter). Choose whether codes stack with the introductory offer. Redeem with `offerCodeRedemption(options:isPresented:onCompletion:)` (SwiftUI), `presentOfferCodeRedeemSheet(from:options:)` (UIKit/AppKit), or `presentCodeRedemptionSheet()` on iOS 16 and earlier. Server `offerType` is `3`; notifications `OFFER_REDEEMED`, `SUBSCRIBED`, `ONE_TIME_CHARGE`.

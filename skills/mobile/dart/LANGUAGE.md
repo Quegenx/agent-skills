@@ -195,6 +195,7 @@ Point origin = .origin(); // Instead of Point.origin()
 
 ## Null safety
 
+- **Required named arguments are independent of nullability:** `required` makes the caller supply the argument; its type can still be nullable. [Understanding null safety](https://dart.dev/null-safety/understanding-null-safety)
 - **Sound and non-nullable by default.** Add `?` for nullable: `int? aNullableInt = null;`. Enforced since Dart 3 (May 2023); Dart 3 removed `--no-sound-null-safety` and rejects any package whose SDK lower bound is below `2.12.0`. Migration docs are archived at github.com/dart-community/migrate-to-null-safety.
 - **Nullable types expose only members on both the base type and `Null`:** `toString()`, `==`, `hashCode`. Implicit downcasts are gone: pass `maybeString as String` explicitly. `List<int> filterEvens(...) { return ints.where(...); }` is a compile error.
 - **Top and bottom types.** The top type is `Object?` (accept any value with it; `Object` excludes null). The bottom type is `Never`: a function like `Never wrongType(String type, Object value) { throw ArgumentError(...); }` extends reachability analysis. A `throw` expression has static type `Never`.

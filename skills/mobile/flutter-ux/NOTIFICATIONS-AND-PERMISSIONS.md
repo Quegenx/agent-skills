@@ -1,8 +1,8 @@
 # Notifications and permissions
 
-How a Flutter app asks for runtime permissions without losing users, picks photos with no permission at all, primes the notification prompt, wires FCM push (`firebase_messaging`) with local notifications, marks iOS notifications time-sensitive, and keeps scheduled notifications right when the timezone or clock changes. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), checked against pub.dev and Firebase docs where a snippet was flagged. Device timezone lookup, status bar, screenshots and home widgets are in [DEVICE-FEATURES.md](DEVICE-FEATURES.md). OneSignal's own prompt flow is [backend/onesignal/PERMISSIONS.md](../../backend/onesignal/PERMISSIONS.md).
+How a Flutter app asks for runtime permissions without losing users, picks photos with no permission at all, primes the notification prompt, routes FCM delivery to its Firebase owner, marks iOS notifications time-sensitive, and keeps scheduled notifications right when the timezone or clock changes. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), checked against pub.dev and Firebase docs where a snippet was flagged. Device timezone lookup, status bar, screenshots and home widgets are in [DEVICE-FEATURES.md](DEVICE-FEATURES.md). OneSignal's own prompt flow is [backend/onesignal/PERMISSIONS.md](../../backend/onesignal/PERMISSIONS.md).
 
-**Contents:** [Runtime permissions](#runtime-permissions) · [Denied: explain, then open Settings](#denied-explain-then-open-settings) · [Pick photos without a permission](#pick-photos-without-a-permission) · [When to ask for notifications](#when-to-ask-for-notifications) · [The priming screen](#the-priming-screen) · [FCM: push is not a notification](#fcm-push-is-not-a-notification) · [FCM: register the device](#fcm-register-the-device) · [FCM: the three handlers](#fcm-the-three-handlers) · [FCM: show it in the foreground](#fcm-show-it-in-the-foreground) · [FCM: sending, topics, APNs key](#fcm-sending-topics-apns-key) · [Open a URL on notification tap](#open-a-url-on-notification-tap) · [Time-sensitive notifications on iOS](#time-sensitive-notifications-on-ios) · [Reschedule on timezone or clock change](#reschedule-on-timezone-or-clock-change) · [Prove it](#prove-it)
+**Contents:** [Runtime permissions](#runtime-permissions) · [Denied: explain, then open Settings](#denied-explain-then-open-settings) · [Pick photos without a permission](#pick-photos-without-a-permission) · [When to ask for notifications](#when-to-ask-for-notifications) · [The priming screen](#the-priming-screen) · [FCM delivery](#fcm-delivery) · [Time-sensitive notifications on iOS](#time-sensitive-notifications-on-ios) · [Reschedule on timezone or clock change](#reschedule-on-timezone-or-clock-change) · [Prove it](#prove-it)
 
 ## Runtime permissions
 
@@ -119,132 +119,9 @@ Future<void> _onEnableTap() async {
 
 "This layer is what protects the one shot. A "Skip" costs nothing, you can ask again later at another good moment. A deny on the system dialog is forever."
 
-## FCM: push is not a notification
+## FCM delivery
 
-[ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/):
-
-- **Distinguish notification and data messages.** In the background, FCM displays a notification message on the app's behalf; app code processes data messages. Foreground notification messages do not display a visible notification by default on Android or iOS. [FCM message types](https://firebase.google.com/docs/cloud-messaging/customize-messages/set-message-type), [Flutter receive guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive). P2 correction: ApparenceKit's blanket claim that a push never displays anything by itself, and the old background-handler line saying there is usually nothing to do, omitted the message type.
-- **Ask permission through the plugin** (verbatim; see [When to ask](#when-to-ask-for-notifications) for the timing):
-  ```dart
-  import 'package:firebase_messaging/firebase_messaging.dart';
-
-  FirebaseMessaging.instance.requestPermission();
-  ```
-
-## FCM: register the device
-
-[ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/):
-
-1. Ask FCM to register the device; FCM returns a unique registration token; store it in your database.
-2. **Tokens expire.** Firebase sometimes refreshes the token; listen for token updates and update the stored one.
-3. **Several devices per user:** generate your own unique device ID, keep it in shared preferences, and store tokens in a separate devices table keyed by it, so logout replaces or removes the right token. "You can't use the deviceId from the device as Apple and Google don't like it anymore."
-4. **Register on every app start and every login,** skipping when the device is already saved (verbatim):
-   ```dart
-   Future<void> register(String userId) async {
-     final device = await _getFromPrefs();
-     if (device != null) {
-       return;
-     }
-     final newDevice = await _deviceApi.get();
-     final response = await _deviceApi.register(userId, newDevice);
-     await _saveInPrefs(response);
-   }
-   ```
-   ```dart
-   import 'package:apparence_kit/core/shared_preferences/shared_preferences.dart';
-
-   Future<void> _saveInPrefs(DeviceEntity device) async {
-     final json = device.toJsonForPrefs();
-     final data = jsonEncode(json);
-     await _prefs.setString(_devicePrefsKey, data);
-   }
-
-   Future<DeviceEntity?> _getFromPrefs() async {
-     final deviceJson = _prefs.getString(_devicePrefsKey);
-     if (deviceJson != null) {
-       final deviceMap = jsonDecode(deviceJson) as Map<String, dynamic>;
-       return DeviceEntity.fromPrefs(deviceMap);
-     }
-     return null;
-   }
-   ```
-   ```dart
-   // open lib > core > states > user_state.dart
-
-   ...
-   try {
-       final _ = await _deviceRepository.register(userId);
-     } catch (err) {
-       _logger.e(err);
-       _logger.e('''
-         ❌ Your device seems not to be registered.
-         Check that you correctly setup a device registration API
-         see: `lib/modules/notifications/api/device_api.dart`
-       ''');
-     }
-     _deviceRepository.onTokenUpdate(_onUpdateToken);
-   ...
-   ```
-   `apparence_kit/...`, `DeviceEntity` and `_deviceApi` are the kit's own code; the pattern is the reusable part.
-
-## FCM: the three handlers
-
-[ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/) (verbatim; init them every time the app starts):
-
-```dart
-FirebaseMessaging.onMessage.listen(handler);
-
-FirebaseMessaging.onBackgroundMessage(handler);
-
-FirebaseMessaging.onMessageOpenedApp.listen(handler);
-```
-
-- **`onMessage`:** the app is in the foreground and a push arrives.
-- **`onBackgroundMessage`:** handles background messages; distinguish notification display from app processing of data as [above](#fcm-push-is-not-a-notification). The handler must be a top-level function, not inside a class. [Firebase](https://firebase.google.com/docs/cloud-messaging/flutter/receive)
-- **`onMessageOpenedApp`:** the user tapped a notification; use it to redirect the user.
-- **Official additions** ([Firebase: receive messages in Flutter](https://firebase.google.com/docs/cloud-messaging/flutter/receive)): the background handler "must not be an anonymous function", and from Flutter 3.3.0 it "must be annotated with `@pragma('vm:entry-point')` right above the function declaration":
-  ```dart
-  @pragma('vm:entry-point')
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  ```
-  `onMessageOpenedApp` only covers opening from the background; a tap that launches the app from terminated arrives through `getInitialMessage()`, and the doc says to handle both.
-- **Android parsing:** "Android notification deserialization should be made from RemoteMessage.notification property" [ApparenceKit CLI 3.0.0](https://apparencekit.dev/blog/apparencekit-cli-3-update/).
-
-## FCM: show it in the foreground
-
-- **Foreground presentation:** ApparenceKit uses `flutter_local_notifications` to show a local notification. [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/). Follow the [message-type distinction above](#fcm-push-is-not-a-notification); the old "automatically except in the foreground" line was too broad. For visible foreground notifications the [Firebase guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive) calls for a high-priority notification channel on Android and allows changing presentation options on iOS.
-- **Build the notification from `message.data` and publish it to an app-wide queue** that any part of the app can listen to [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/) (verbatim; `Notification.from` and the publisher are the kit's own classes):
-  ```dart
-  @override
-  Future<void> init() async {
-    await _notificationsApi.requestPermission();
-    _notificationsApi.setForegroundHandler(_onMessage);
-  	...
-  }
-
-  Future<void> _onMessage(RemoteMessage message) async {
-    final notification = Notification.from(
-      message.data,
-      notifierApi: _localNotifier,
-      notifierSettings: _notificationSettings,
-    );
-    _notificationPublisher.publish(notification);
-  }
-  ```
-- **Android settings need channels and priority;** images and sounds are optional [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/).
-- **The article's conclusion is garbled.** Its bullets "A system notification will shows when the app is in foreground / A local notification will shows when the app is in background" contradict its own body (above); follow the body.
-
-## FCM: sending, topics, APNs key
-
-[ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/):
-
-- **Sending:** read the users' tokens from your database and send them to the FCM server, which delivers per platform (on iOS it proxies to Apple's push service). "You can't send more than 500 tokens at once" per request (the article gives no date).
-- **Topics** send to a group, for example every user about a new feature: `_notificationsApi.registerTopic('general');` (a kit wrapper; the FCM call underneath isn't shown).
-- **APNs Auth Key:** iOS needs it uploaded to Firebase under Project settings > Cloud Messaging. "You can't have more than two keys and you can download it only once. So keep this file in a safe place. You can use the same key for all your apps." The `.p8` steps are also in [backend/onesignal/SETUP-MOBILE.md](../../backend/onesignal/SETUP-MOBILE.md).
-
-## Open a URL on notification tap
-
-[ApparenceKit](https://apparencekit.dev/flutter-tips/launch-web-page-on-push-notification-tap/) (the article has no code): send the URL in the push data. On tap, read the data, check that it is a link notification with a `url` key, and open it with a URL-launching package, inside a `try...catch` so a bad link can't crash the app. The tap arrives through `onMessageOpenedApp` ([handlers](#fcm-the-three-handlers)).
+Registration tokens, foreground/background/terminated handlers, delivery, topics and tap routing are in [Firebase Flutter messaging](../../backend/firebase/MESSAGING-FLUTTER.md). [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/)
 
 ## Time-sensitive notifications on iOS
 
@@ -266,26 +143,7 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
   );
   ```
   The [flutter_local_notifications 22.3.2 README](https://pub.dev/packages/flutter_local_notifications) shows `show` both with positional `id, title, body, details` and, in its grouping example, with named `id:` and `notificationDetails:`; match the signature of the version you install.
-- **Push with `firebase_messaging`:** the level lives in the APNs payload, so the server sets it, not the device. With the FCM HTTP v1 API, one key under `aps` (verbatim):
-  ```json
-  {
-    "message": {
-      "token": "<device token>",
-      "notification": {
-        "title": "Your order is arriving",
-        "body": "Meet the courier at the door"
-      },
-      "apns": {
-        "payload": {
-          "aps": {
-            "interruption-level": "time-sensitive"
-          }
-        }
-      }
-    }
-  }
-  ```
-  Firebase Admin SDKs support the key too, but where it goes differs per language. The Firebase console can't send it at all, only the API can.
+- **FCM push payload:** the server-side APNs payload and the source's Firebase sending qualifications are in [Firebase Flutter messaging](../../backend/firebase/MESSAGING-FLUTTER.md#time-sensitive-fcm-payload). [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications)
 - **Use it for events that expire in minutes:** a courier arriving, a ride pulling up, a login code, a reservation about to be released. "Order shipped", price drops and likes are not time-sensitive; send them as normal notifications. OneSignal's field for the same level is in [MESSAGING-PRACTICES.md](../../backend/onesignal/MESSAGING-PRACTICES.md#ios-interruption-levels-and-relevance).
 
 ## Reschedule on timezone or clock change
@@ -326,8 +184,5 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 - Search for `.request()` on `Permission.` and `requestPermission()`: each runs from a user action on a priming screen or a value moment (or at launch, if the team chose ApparenceKit's timing and said so), never unguarded in `main()` by accident.
 - Deny every permission on a real device: each gated feature shows an explanation and an "open settings" button that lands on the app's settings page, never a blank or black screen.
 - Search for `READ_MEDIA_IMAGES`: the app either needs the whole library or uses `image_picker` with the system picker.
-- Grep the `onBackgroundMessage` handler: top-level, not anonymous, with `@pragma('vm:entry-point')`.
-- Send a push with the app in the foreground, background and terminated: it shows in all three, and a tap routes correctly from background (`onMessageOpenedApp`) and terminated (`getInitialMessage`).
-- Log out on one of two devices: only that device's token is removed.
 - With the Time Sensitive Notifications capability on, send a time-sensitive push in a Focus mode: it breaks through. Only minute-scale events use the level.
 - Change the device timezone, return to the app, and check that pending scheduled notifications fire at the intended local time.

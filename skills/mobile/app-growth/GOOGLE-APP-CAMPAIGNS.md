@@ -143,6 +143,6 @@ Source: [appeeky].
 - **The conversion is real:** a test install from an ad click shows its in-app event in Firebase > Events within minutes and in Google Ads > Conversions within 24 to 48 hours.
 - **The goal is an in-app action** that at least 10 different users complete per day in the campaign, not installs, for a subscription app.
 - **The budget matches the target:** daily budget ≥ 10× target CPA (or ≥ 50× target CPI for install campaigns).
-- **No target on day 1, no stacked changes:** the log shows each bid, budget or target change followed by 7 to 14 days without another, and budget moves within 10 to 20%.
+- **Targets and stability:** use the platform guidance already documented above: targets informed by recent actual values, 7 to 14 days of stability after adjustments, and budget moves within 10 to 20%. The old check imposed [appeeky]'s day-one target prohibition as a universal gate, although the preceding official guidance differs.
 - **Assets are full:** every ad group is at or near the per-ad-group maximums, and no "Low" asset stays once the maximum is reached.
 - **iOS:** at most 8 active iOS App campaigns per app, and a SKAN conversion value schema that includes the biddable events.

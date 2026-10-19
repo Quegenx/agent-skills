@@ -92,8 +92,8 @@ asa_profitability
 | `min_spend: 20` | Filtering noise |
 
 - **Supporting calls:** `rc_overview` (MRR baseline) and `rc_attribution_summary` (Apple Ads share against other media sources). [appeeky]
-- **Formulas [appeeky]:** ROAS = revenue / spend (> 1.0 break-even, > 1.5 scale); Profit = revenue − spend; CPA = spend / conversions (< 0.5× LTV to scale); CPT = spend / taps; CVR = installs / taps (investigate below 30%); TTR = taps / impressions (> 5% strong).
-- **Judge against your own targets:** "A 0.9× ROAS app with 60% margins may still be profitable." [appeeky]
+- **ROAS, CPA and profit definitions:** use [BUDGET-AND-ROAS.md](BUDGET-AND-ROAS.md#campaign-profitability). [appeeky] uses > 1.0 ROAS as its revenue/spend break-even threshold, > 1.5 to scale, CPA < 0.5× LTV to scale, CVR below 30% to investigate, and TTR > 5% as strong. These thresholds do not prove profit after costs.
+- **Source arithmetic error:** [appeeky] said "A 0.9× ROAS app with 60% margins may still be profitable." For the same cohort/window, revenue/spend below 1 means revenue is below ad spend even before store fees or other costs, contradicting its own revenue-minus-spend formula. Compare actual revenue and costs on the same basis; do not invent projected lifetime revenue to rescue that claim ([canonical formulas](BUDGET-AND-ROAS.md#campaign-profitability)).
 - **Rank by profit, not ROAS:** "A keyword with $200 profit at 1.2× ROAS beats one with $20 profit at 3.0× ROAS." [appeeky]
 
 | Campaign type | Expected ROAS [appeeky] | If below |

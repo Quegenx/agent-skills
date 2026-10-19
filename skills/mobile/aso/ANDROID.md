@@ -41,18 +41,22 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 
 ## Graphic assets
 
+[https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
+
 | Asset | Spec |
 |---|---|
 | App icon | 32-bit PNG with alpha, 512 x 512 px, max 1024 KB; meets the Google Play icon design specifications; no badges or text suggesting ranking, price or Play categories |
 | Feature graphic | JPEG or 24-bit PNG (no alpha), 1024 x 500 px; alt text 140 characters or less; key elements away from cutoff zones; no device imagery or store badges |
 | Phone screenshots | up to 8 per device type; JPEG or 24-bit PNG (no alpha); min dimension 320 px, max 3840 px; long side at most twice the short side |
 | Tablet and Chromebook | at least 4 screenshots, 1,080 to 7,680 px, 16:9 landscape or 9:16 portrait |
-| Wear OS | at least one, 1:1, min 384 x 384, no device frames |
-| Android TV | at least one TV screenshot plus a TV banner (1280 x 720, JPEG or 24-bit PNG) |
-| Android XR | 4 to 8 screenshots, 8:5, up to 8 MB each |
+| Wear OS | at least one screenshot of the current app, app interface only, 1:1, min 384 x 384, no device frames, transparent backgrounds or masking |
+| Android TV | at least one TV screenshot plus a TV banner (1280 x 720, JPEG or 24-bit PNG, no alpha) |
+| Android Automotive OS | required unless the app is in a parked app category; if provided, at least 2 portrait (800 x 1280) and 2 landscape (1024 x 768), generic system UI only |
+| Android XR | 4 to 8 screenshots, PNG or JPEG, 8:5, up to 8 MB each; recommended 3840 x 2400, minimum 1920 x 1200 |
 
 - **Promotion eligibility (highly recommended):** apps need at least four screenshots at 1080 px minimum (16:9 landscape at least 1920 x 1080, or 9:16 portrait at least 1080 x 1920); games at least three 16:9 or 9:16 screenshots at those minimums; taglines cover no more than 20% of the image.
 - **Screenshot creative guidance (highly recommended):** prioritize actual UI in the first three screenshots. Exclude store-performance/ranking/download-count text, testimonials, awards, promotional/price information and calls to action; keep localized supporting text secondary to the app experience. These recommendations are distinct from the mandatory count, format and dimensions in the table. The supplied screenshot guides recommend proof badges and large headlines; that advice does not override Google's store-specific guidance. [https://support.google.com/googleplay/android-developer/answer/9866151?hl=en; app-store-screenshots, SKILL.md, Visual Design Principles; aso-appstore-screenshots, SKILL.md, Screenshot Format Specification]
+- **Show actual use:** screenshots must demonstrate the actual in-app or in-game experience; do not show people interacting with the device unless usage is off-device. The device-specific requirements in the table above retain the qualifications from the store upload guide. [https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
 - **Feature graphic** [eronred]: shown at the top of the listing when there's no video; must work without its text, which may be truncated.
 - **Adaptive icon** [eronred]: 108×108 dp with a 66×66 dp safe zone.
 - **How Play renders the icon** ([Google Play icon design specifications](https://developer.android.com/distribute/google-play/resources/icon-design-specifications)): "Google Play dynamically renders rounded corners and drop shadows for your app icons, you should omit them"; "Radius will be equivalent to 30% of icon size"; "Transparent assets will display the background color of Google Play UI"; icons not migrated go to legacy mode, "scaled down 75% to the keyline grid size (512 \* 0.75 = 384px)".
@@ -61,6 +65,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 ## Preview video
 
 - **Google's rules:** a single YouTube video URL (no playlist or channel, no timecode parameters); ads disabled; public or unlisted; not age-restricted; embeddable. Only the first 30 seconds autoplay (muted); show real footage in the first 10 seconds; at least 80% representative of the experience. The video shows before the screenshots.
+- **Preview copy exception:** awards from Google Play such as "Best Of" may be displayed in preview video copy. Keep this scope distinct from screenshot/feature-graphic recommendations and Apple's separate asset rules. [https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
 - **[eronred]:** 30 s recommended, 2 min max; landscape preferred; audio allowed and recommended; real people, narration and a marketing intro are fine (logo or intro at most 3 s); it may end on "Get it free".
 - **CTA conflict:** Google says avoid "Free" and calls to action like "download now", "install now", "play now", "try now" in assets and copy, so leave out [eronred]'s "Get it free" ending.
 
@@ -70,6 +75,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 - **Title, icon and developer name:** "Don't use emojis, emoticons, or repeated special characters"; "Avoid ALL CAPS unless it is part of your brand name".
 - **No performance or promotion claims:** no text or images indicating store performance, ranking, price, promotion, or relation to Google Play programs. Violations include "App of the year", "#1", "Best of Play 20XX", "Popular", "10% off", "$50 cash back", "free for limited time only", "Editor's choice", "New".
 - **No misleading icon symbols** (e.g. a new-message dot when there are none) and **no unattributed or anonymous user testimonials** in the description.
+- **General audience:** the listing must be suitable for a general audience regardless of the app's content rating: no sexually suggestive imagery, profanity, graphic violence or depictions of illicit drug use. [https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
 
 ## Category and tags
 

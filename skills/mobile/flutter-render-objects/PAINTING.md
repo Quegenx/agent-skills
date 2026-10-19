@@ -139,40 +139,9 @@ set opacity(double value) {
 ```
 
 - **Official rule** ([alwaysNeedsCompositing](https://api.flutter.dev/flutter/rendering/RenderObject/alwaysNeedsCompositing.html)): "You must call [markNeedsCompositingBitsUpdate] if the value of this getter changes. (This is implied when [adoptChild] or [dropChild] are called.)"
-- **How the framework's own `RenderOpacity` does it** ([RenderOpacity](https://api.flutter.dev/flutter/rendering/RenderOpacity-class.html), framework source `proxy_box.dart`): the setter shape matches, but it composites whenever it has a child and alpha above zero, makes itself a repaint boundary only then, keeps the alpha on the layer through `updateCompositedLayer`, and calls `markNeedsCompositedLayerUpdate()` instead of `markNeedsPaint()` (excerpts):
+- **How the framework's own `RenderOpacity` does it** ([RenderOpacity](https://api.flutter.dev/flutter/rendering/RenderOpacity-class.html), framework source `proxy_box.dart`): the setter shape matches, but it composites whenever it has a child and alpha above zero, makes itself a repaint boundary only then, keeps the alpha on the layer through `updateCompositedLayer`, and calls `markNeedsCompositedLayerUpdate()` instead of `markNeedsPaint()`.
 
-```dart
-@override
-bool get alwaysNeedsCompositing => child != null && _alpha > 0;
-
-@override
-bool get isRepaintBoundary => alwaysNeedsCompositing;
-
-set opacity(double value) {
-  assert(value >= 0.0 && value <= 1.0);
-  if (_opacity == value) {
-    return;
-  }
-  final bool didNeedCompositing = alwaysNeedsCompositing;
-  final wasVisible = _alpha != 0;
-  _opacity = value;
-  _alpha = ui.Color.getAlphaFromOpacity(_opacity);
-  if (didNeedCompositing != alwaysNeedsCompositing) {
-    markNeedsCompositingBitsUpdate();
-  }
-  markNeedsCompositedLayerUpdate();
-  if (wasVisible != (_alpha != 0) && !alwaysIncludeSemantics) {
-    markNeedsSemanticsUpdate();
-  }
-}
-
-@override
-OffsetLayer updateCompositedLayer({required covariant OpacityLayer? oldLayer}) {
-  final OpacityLayer layer = oldLayer ?? OpacityLayer();
-  layer.alpha = _alpha;
-  return layer;
-}
-```
+The complete framework reference, including the setter, is in [Updating layer properties](COMPOSITING.md#updating-layer-properties). [RenderOpacity](https://api.flutter.dev/flutter/rendering/RenderOpacity-class.html)
 
   renderobjects.com's version calls `markNeedsPaint()`, so every opacity change re-runs `paint`. Details in [COMPOSITING.md](COMPOSITING.md#updating-layer-properties).
 

@@ -119,7 +119,7 @@ class LobbyNotifier extends _$LobbyNotifier {
 
 ## A paginated list
 
-[ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/). This is the notifier half; the page state, scroll-end detection, pull to refresh and skeleton tiles are in [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#pagination-and-skeletons). The article's Firestore query is out of scope here.
+[ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/). This is the notifier half; the page state, scroll-end detection, pull to refresh and skeleton tiles are in [../flutter-ux/PAGINATION-AND-LOADING.md](../flutter-ux/PAGINATION-AND-LOADING.md#pagination-and-skeletons). The article's Firestore query is out of scope here.
 
 - **First page in `build`.** `build` can also take parameters (`build(String userId)`).
 
@@ -156,6 +156,7 @@ Future<InboxPageState> build(String userId) async {
 ```
 
 - **Next page:** return if `state is AsyncLoading` or `!hasMore`, set loading, fetch with `previousPage` (or "the last element creationDate"), append, and set `AsyncValue.error` on failure.
+  - **Check the installed Riverpod version, not the constructor alone.** In the upstream implementation read on 2026-10-19, the notifier setter delegates to `setValueFromState`, which reaches `asyncTransition` and `copyWithPrevious`; a loading transition can retain previous data. An empty `AsyncLoading` constructor alone does not prove this notifier loses its page data. The article states no Riverpod version. [Notifier setter](https://github.com/rrousselGit/riverpod/blob/master/packages/riverpod/lib/src/core/provider/notifier_provider.dart), [future modifier](https://github.com/rrousselGit/riverpod/blob/master/packages/riverpod/lib/src/core/modifiers/future.dart), [async transition](https://github.com/rrousselGit/riverpod/blob/master/packages/riverpod/lib/src/core/element.dart)
 
 ```dart
 Future<void> loadNextPage() async {

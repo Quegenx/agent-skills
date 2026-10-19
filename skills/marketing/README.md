@@ -34,7 +34,7 @@ Marketing, SEO and GEO for web and SaaS products: getting found in Google (`seo`
 | [community-marketing](./community-marketing/SKILL.md) | Community identity, launch, onboarding, rituals, support, ambassadors, platform choice and health. |
 | [event-marketing](./event-marketing/SKILL.md) | Event portfolios, sponsorship, speaking and webinars; the event arc, lawful follow-up and lifecycle-owner handoffs. |
 | [lead-magnets](./lead-magnets/SKILL.md) | Lead magnets and free tools: planning, gating and delivery under double opt-in and GDPR Art. 7(4), formats, promotion and measurement, free-tool types and cases |
-| [referral-programs](./referral-programs/SKILL.md) | Product virality, customer referrals and affiliates; reward sizing, disclosure, fraud, measurement and payouts. |
+| [referral-programs](./referral-programs/SKILL.md) | Product virality, customer referrals and affiliates; canonical two-source reward sizing, K-factor, disclosure, fraud, measurement and payouts, with mobile implementations linked. |
 | [review-management](./review-management/SKILL.md) | Neutral review invitations, public replies, moderation, reputation triage and permissioned testimonial reuse. |
 | [pricing-strategy](./pricing-strategy/SKILL.md) | Pricing models, tiers, trials, research and rollout; page audits with consumer-specific markup and crawler policy. |
 | [offer-design](./offer-design/SKILL.md) | Offer anatomy, guarantees, bonuses, scarcity, discounts and paid info-products; FTC claims and canonical Stripe Price rules. |

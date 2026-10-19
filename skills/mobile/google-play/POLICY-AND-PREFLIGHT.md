@@ -2,7 +2,9 @@
 
 Most Play rejections are knowable before upload: a debuggable or test-only manifest, a target SDK below the floor, a restricted permission without a declaration, a leaked secret, an incomplete Data safety form, or an app that lets users create an account but not delete it. Google says review is not a troubleshooting step: submitting non-compliant apps for reviewers to find issues leads to rejections, review delays and longer appeals. So check in order from cheapest to most expensive: the offline `gplay preflight` scan of the artifact, then the live `gplay validate` readiness report, then Google Checks, then a dry-run release. The Play policies the checks enforce follow.
 
-**Contents:** [The check ladder](#the-check-ladder) · [Offline preflight](#offline-preflight) · [Preflight scanners](#preflight-scanners) · [Readiness report and validators](#readiness-report-and-validators) · [Common rejections](#common-rejections) · [Data safety](#data-safety) · [Account deletion](#account-deletion) · [Permissions](#permissions) · [Privacy policy and disclosure](#privacy-policy-and-disclosure) · [Other policy](#other-policy) · [CI](#ci) · [Prove it](#prove-it)
+**Contents:** [The check ladder](#the-check-ladder) · [Offline preflight](#offline-preflight) · [Preflight scanners](#preflight-scanners) · [Readiness report and validators](#readiness-report-and-validators) · [Common rejections](#common-rejections) · [Data safety](#data-safety) · [Account deletion](#account-deletion) · [Permissions](#permissions) · [Privacy policy and disclosure](#privacy-policy-and-disclosure) · [Other policy](#other-policy) · [Rejection recovery](#rejection-recovery) · [Prove it](#prove-it)
+
+Source scanner `error`/blocking findings map to P1, `warning` to P2 and `info` to P3 in human reports; reserve P0 for independently assessed immediate incidents. Exact `--fail-on`, JSON severity and Google Checks PRIORITY literals remain machine values. [gplay, preflight]
 
 ## The check ladder
 
@@ -199,41 +201,24 @@ gplay checks upload \
 - **Enforcement:** rejection; removal (doesn't immediately affect account standing, but multiple can lead to suspension); suspension ("count as strikes"); limited visibility (discoverability restricted but still reachable by direct link; no effect on standing); limited regions (downloadable only in certain regions); account termination (all apps removed). "Multiple strikes can result in the termination of individual and related Google Play Developer accounts." Repeated or serious violations (such as malware, fraud and apps that may cause user or device harm) result in termination. Actions stay unless an appeal is granted.
 - **Payments and subscriptions policy:** [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md). Store listing and metadata policy: [LISTING-AND-METADATA.md](LISTING-AND-METADATA.md). The Apple equivalents: [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
 
-## CI
+## Rejection recovery
 
-```yaml
-- name: Offline preflight
-  run: |
-    gplay preflight \
-      --file app/build/outputs/bundle/release/app-release.aab \
-      --listings-dir fastlane/metadata/android \
-      --fail-on error
-```
+The policy buckets below and the automated-suspension appeal route are [eronred, rejection-recovery]. They are a classification aid; use the actual enforcement notice and current policy rather than treating an author timeline as a guarantee.
 
-```yaml
-- name: Offline preflight (compliance + secret scan)
-  run: gplay preflight --file app/build/outputs/bundle/release/app-release.aab --fail-on error
+| Google Play policy | Bucket | Typical fix |
+|---|---|---|
+| Restricted Content | Sexual content, hate, violence | Content moderation, age gate |
+| Privacy, Deception, Device Abuse | Disclosure, permissions | Privacy policy, accurate Data Safety form |
+| Intellectual Property | Trademark, copyright | Get rights or remove |
+| Monetization and Ads | Disruptive ads, IAP bypass | Use Play Billing |
+| Store Listing and Promotion | Misleading metadata | Match the listing to the app |
+| Spam and Minimum Functionality | Repetitive content, low quality | Add unique value |
+| Families | Apps for kids | COPPA / GDPR-K compliance, ad SDK whitelist |
+| Permissions | High-risk permissions | Remove or justify (Special Permissions Declaration form) |
+| Health misinformation | Medical claims | Add disclaimers, provide credentials |
+| Foreground services | Background work | Justify in the Play Console form |
 
-- name: Checks compliance gate
-  run: |
-    gplay checks upload \
-      --account ${{ secrets.CHECKS_ACCOUNT }} \
-      --app ${{ secrets.CHECKS_APP }} \
-      --binary app/build/outputs/bundle/release/app-release.aab \
-      --binary-type ANDROID_AAB \
-      --severity-threshold PRIORITY
-
-- name: Canonical readiness report
-  run: |
-    gplay validate \
-      --package ${{ secrets.PACKAGE_NAME }} \
-      --bundle app/build/outputs/bundle/release/app-release.aab \
-      --track internal \
-      --strict
-  env:
-    GPLAY_SERVICE_ACCOUNT: ${{ secrets.GPLAY_SERVICE_ACCOUNT_PATH }}
-```
-
+- **Automated Play suspensions** (no human review): use the Play Console appeal form with a written justification.
 ## Prove it
 
 - `gplay preflight --file app-release.aab --listings-dir <dir> --fail-on error` exits 0, and `jq '.scanners[] | select(.skipped)'` on its JSON shows only scanners you meant to skip.

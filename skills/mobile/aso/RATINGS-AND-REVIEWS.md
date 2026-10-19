@@ -28,7 +28,7 @@ Source: [eronred].
   ✓ Not already rated this version
   ```
 
-- **Time conflict:** the review-management skill says at least 7 days of usage (and 3+ uses); the rating-prompt skill says at least 3 days since install.
+- **Time conflict:** [eronred, review-management] says at least 7 days of usage (and 3+ uses); [eronred, rating-prompt] says at least 3 days since install. These are upstream source skills, not the separate local marketing/review-management skill.
 - **Success moments by app type:** fitness after a workout, games after winning a level, shopping after a successful purchase.
 - **Frequency:** iOS at most 3 times per 365 days, recommended 1 to 2 per version; Android recommended once per 30 days per user; never twice in one session.
 - **Don't prompt users who left a negative review.**
