@@ -30,7 +30,7 @@ Prepare a plan a fresh executor can follow without the preceding conversation. O
 - Before executing, compare the plan's revision, assumptions and excerpts with the live implementation. Refresh changed evidence rather than apply a stale textual instruction.
 - Specify stop conditions for false assumptions, incompatible current contracts, failed gates and work required outside the authorized boundary. Name the decision or proof needed to proceed.
 - Include objective done criteria, maintenance effects and triggers for deferred follow-ups. A deferred item needs a reason or trigger, not a promise that it will somehow be handled later.
-- Use [PLAN-EXECUTION.md](../../ai-agents/agent-harness/PLAN-EXECUTION.md) for task dispatch, progress state and execution; this document owns the handoff's contents.
+- Use [EXECUTION.md](EXECUTION.md) for task dispatch, progress state and execution; this document owns the handoff's contents.
 
 ## Reconcile the result
 

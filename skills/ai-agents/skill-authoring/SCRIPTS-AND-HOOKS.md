@@ -14,7 +14,7 @@ Some of the most effective skills in Claude Code use its configuration options a
 
 ## Scripts that feed an agent
 
-Vercel's `vercel-optimize` runs a pipeline of a dozen scripts, each a thin command-line shell over a library, with agents in between; these are the conventions that keep it trustworthy [Vercel, vercel-optimize]. What the pipeline does is in [PROJECT-AUDITS.md](PROJECT-AUDITS.md#a-telemetry-first-audit-pipeline).
+Vercel's `vercel-optimize` runs a pipeline of a dozen scripts, each a thin command-line shell over a library, with agents in between; these are the conventions that keep it trustworthy [Vercel, vercel-optimize]. What the pipeline does is in [Telemetry audit](../../backend/performance-and-caching/TELEMETRY-AUDIT.md).
 
 - **One output contract:** every script prints its JSON to stdout and its status to stderr with a `[script-name]` prefix; a fatal error prints `[name] FAILED: <msg>` and exits 1, a contract or precondition failure exits 2. "Every JSON-emitting script must be deterministic: stable key order, stable sort order, 2-space indentation, trailing newline. If a consumed schema changes, update the schema version and the fixture tests in the same PR." "No runtime dependencies."
 - **Never overwrite a run:** a write fails with "output file already exists: … Use a fresh run directory or pass --force to overwrite.", and the brief writer opens files with `flag: 'wx'`.

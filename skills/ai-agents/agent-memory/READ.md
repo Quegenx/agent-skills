@@ -19,6 +19,14 @@
 - **Split by lifetime:** stable facts change rarely; current context expires (a project ends, a trip happens).
 - **Topic groups** (preferences, work, goals) with precise descriptions ("explicit first-person preferences only, not inferred traits") keep each group clean.
 
+## A minimal store
+
+Lasting facts about the user (their setup, plan, standing preferences), saved and forgotten with tools and shown at the start of each new conversation. Decide what is worth keeping with a narrow question over what the user or staff wrote, never over what the agent inferred, or a wrong inference gets saved and repeated. Don't store what belongs on a record (an entry code belongs on the order), nor shop policy.
+
+- **Cap it:** a fixed number of memories of a bounded length per person (100 of 500 characters), read whole into each turn.
+- **Memories go in the per-turn note,** not the system prompt, so saving one mid-conversation doesn't break the cache.
+- **Staff can see and delete them.**
+
 ## Ranking a search
 
 No single method answers every query, so run several and fuse them:

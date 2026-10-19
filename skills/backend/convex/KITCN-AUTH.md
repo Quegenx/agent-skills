@@ -147,7 +147,7 @@ The source uses an older `new Polar(...)`, camelCase SDK payloads and a Buffer p
 | Webhooks | Validate the provider signature and use its current typed event contract; retain billing state through authorized server handlers. |
 | User-facing SDK work | Cancellation/resume are actions. Their database reads and writes use the application's generated procedure boundaries. |
 
-The source subscription-create handler threw conflict on a duplicate event and the customer-create action swallowed failures. Current provider callback failures can fail the webhook request and lead to retries; do not promote those examples into a complete delivery/recovery contract. General idempotency and uncertain external effects remain in [AI jobs](../../ai-agents/ai-features/AI-JOBS.md) and [third-party integrations](../third-party-integrations/CALLS-AND-SYNC.md#webhooks-from-providers), rather than a new inferred Polar implementation.
+The source subscription-create handler threw conflict on a duplicate event and the customer-create action swallowed failures. Current provider callback failures can fail the webhook request and lead to retries; do not promote those examples into a complete delivery/recovery contract. General idempotency and uncertain external effects remain in [external side effects](../background-jobs/EXTERNAL-SIDE-EFFECTS.md) and [third-party integrations](../third-party-integrations/CALLS-AND-SYNC.md#webhooks-from-providers), rather than a new inferred Polar implementation.
 
 ## Prove it
 

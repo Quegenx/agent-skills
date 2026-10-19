@@ -15,7 +15,7 @@ GET, HEAD, OPTIONS, PUT and DELETE are idempotent by definition: repeating them 
 - **Decide what a failure stores.** Not storing 4xx and 5xx results lets the client retry the same key after a failure, which also means a failed attempt followed by a successful one succeeds; storing deterministic 4xx results makes the key answer the same every time. Never store a result for a transient failure (timeout, 503), or the retry can never succeed.
 - **Keep keys long enough to cover real retry windows** (minutes to 24 to 48 hours), in a store every instance shares (the database, Redis), not in process memory.
 - When the effect is a database write, write the effect and mark the key `completed` with its response in the same transaction. Caching a response after the work finished is not enough: two concurrent first attempts can both do the work.
-- If the operation calls an external paid or irreversible service, treat it as a job with an "uncertain" state (see the `ai-features` skill's AI-JOBS.md).
+- If the operation calls an external paid or irreversible service, treat it as a job with an "uncertain" state (see [external side effects](../background-jobs/EXTERNAL-SIDE-EFFECTS.md)).
 - A natural unique key (one active loan per copy, one payment per order id) is often simpler and stronger than a generic key. Use both where it matters.
 
 ```sql

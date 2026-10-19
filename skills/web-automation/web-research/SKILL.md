@@ -15,7 +15,7 @@ One orchestrator does the setup and talks to the user at fixed points; parallel 
 | Event prospecting: platform recon, extracting speakers, triage, deep research on fits, person files and hooks, provenance and sensitive traits | [EVENTS.md](EVENTS.md) |
 | Compiling the HTML views and CSV, dedup by name, the chat summary | [COMPILER.md](COMPILER.md) |
 | Public vs and alternative pages; customer voice from reviews, forums and interviews; content plans | the `comparison-pages`, `customer-research` and `content-strategy` skills ([comparison-pages](../../marketing/comparison-pages/SKILL.md), [customer-research](../../marketing/customer-research/SKILL.md), [content-strategy](../../marketing/content-strategy/SKILL.md)) |
-| Testing whether agents can use a product's docs, SDK or a SKILL.md | the `agent-evals` skill's DX-AUDIT.md |
+| Testing whether agents can use a product's docs, SDK or a SKILL.md | [agent-dx-audit](../../ai-agents/agent-dx-audit/SKILL.md) |
 | A paid third-party research agent over TikTok and Instagram creators and trends (Lightreel API and MCP) | [creator-marketing PROGRAMS.md](../../marketing/creator-marketing/PROGRAMS.md#tools) |
 
 ## The rules

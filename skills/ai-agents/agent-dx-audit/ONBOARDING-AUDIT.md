@@ -1,8 +1,10 @@
 # Auditing agent experience: docs, SDKs and skills
 
-**Contents:** [The principle](#the-principle) · [Setting the goal](#setting-the-goal) · [Configuration](#configuration) · [Credentials](#credentials) · [The prompts](#the-prompts) · [The brief and the trace](#the-brief-and-the-trace) · [Running the agents](#running-the-agents) · [Analysis](#analysis) · [Scoring](#scoring) · [The write-up](#the-write-up) · [Prove it](#prove-it)
+Sources: [browserbase/skills, agent-experience], with the existing [c15t, writing-docs], [Vercel, writing-guidelines] and [coreyhaines31/marketingskills, marketing-loops] additions and source corrections retained from the repository's former `agent-evals/DX-AUDIT.md`. This file owns the onboarding audit workflow; generic evaluation methodology stays in [agent-evals](../agent-evals/SKILL.md).
 
 Several subagents each attempt one real task against a product's docs, SDK or a SKILL.md; the audit traces what they fetched and where they failed, scores the run, and writes it up.
+
+**Contents:** [The principle](#the-principle) · [Setting the goal](#setting-the-goal) · [Configuration](#configuration) · [Credentials](#credentials) · [The prompts](#the-prompts) · [The brief and the trace](#the-brief-and-the-trace) · [Running the agents](#running-the-agents) · [Analysis](#analysis) · [Scoring](#scoring) · [The write-up](#the-write-up) · [Prove it](#prove-it)
 
 ## The principle
 

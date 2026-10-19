@@ -204,7 +204,7 @@ Reasons are short and typed, as in c15t's file: "Moved to Concepts", "Identical 
 - Generated files are regenerated, never edited: "Never edit generated `packages/*/docs`, `AGENTS.md` or `SKILL.md`."
 - "Read a generated quickstart, styling recipe and page with visual content. Check that imports, prerequisites, links and demo explanations survived."
 - "Record which examples were compiled, exercised in a browser, or only checked against source." "If the private host is unavailable, report that limit rather than claiming the site or embedded previews were verified."
-- "Evaluate usefulness with concrete tasks" named per variant and edge path (c15t's: "set up Pages Router SSR, export a static Next.js site, install plain Vue without Nuxt", "change a banner's radius without going headless"). "A lint score does not establish that an agent can complete those tasks." Running agents against the docs is [DX-AUDIT.md](../../ai-agents/agent-evals/DX-AUDIT.md).
+- "Evaluate usefulness with concrete tasks" named per variant and edge path (c15t's: "set up Pages Router SSR, export a static Next.js site, install plain Vue without Nuxt", "change a banner's radius without going headless"). "A lint score does not establish that an agent can complete those tasks." Running agents against the docs is [agent-dx-audit](../../ai-agents/agent-dx-audit/ONBOARDING-AUDIT.md).
 
 ## Quality checklist
 

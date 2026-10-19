@@ -5,7 +5,7 @@ description: "Investigates shipped JavaScript, Electron, Flutter APK, WASM and S
 
 # Reverse engineering
 
-From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. Ordinary complete-source investigation belongs in [debugging](../debugging/SKILL.md) and [agent source research](../../ai-agents/agent-harness/CODE-RESEARCH.md).
+From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. Ordinary complete-source investigation belongs in [debugging](../debugging/SKILL.md) and [code research](../code-research/SOURCE-RESEARCH.md).
 
 | The job | Read |
 |---|---|

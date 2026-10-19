@@ -1,6 +1,6 @@
 ---
 name: engineering-planning
-description: "Turns an engineering request into resolved decisions, a user-centered specification, dependency-aware tickets or a self-contained implementation handoff. Use when shaping a feature, investigating an ambiguous design, writing an RFC or planning work across sessions."
+description: "Turns an engineering request into resolved decisions, a user-centered specification, dependency-aware tickets or a self-contained implementation handoff, then executes or resumes the selected plan with a durable progress ledger. Use when shaping a feature, investigating an ambiguous design, writing an RFC, planning work across sessions or carrying an accepted plan through implementation."
 ---
 
 # Engineering planning
@@ -14,6 +14,7 @@ Resolve the uncertainty that matters to the requested outcome, then choose the s
 | Synthesize a specification and split deliverable tickets | [SPECS-AND-TICKETS.md](SPECS-AND-TICKETS.md) |
 | Find the route through a large effort with unresolved decisions | [DECISION-MAPS.md](DECISION-MAPS.md) |
 | Prepare an implementation plan for an executor without conversation history | [HANDOFF-PLANS.md](HANDOFF-PLANS.md) |
+| Execute or resume an accepted plan, track decisions and hand off a phase | [EXECUTION.md](EXECUTION.md) |
 | Develop and audit a consequential proposal | [RFC.md](RFC.md) |
 | Guide a human through steps requiring their access or judgment | [MANUAL-STEPS.md](MANUAL-STEPS.md) |
 
@@ -32,7 +33,7 @@ Resolve the uncertainty that matters to the requested outcome, then choose the s
 - Contract violations and causal diagnosis: [debugging](../debugging/SKILL.md). [bgauryy/octocode, octocode-research/references/problem-framing.md]
 - Domain terms and accepted decision records: [GLOSSARY-AND-ADRS.md](../domain-modeling/GLOSSARY-AND-ADRS.md). [mattpocock/skills, domain-modeling/SKILL.md]
 - A concrete experiment to resolve a logic question: [PROTOTYPES.md](../software-architecture/PROTOTYPES.md). [mattpocock/skills, prototype/LOGIC.md]
-- Executing an accepted plan, dispatching tasks and tracking progress: [PLAN-EXECUTION.md](../../ai-agents/agent-harness/PLAN-EXECUTION.md). [obra/superpowers, writing-plans/SKILL.md]
+- Worker dispatch packets and merge contracts: [WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets). [obra/superpowers, executing-plans/SKILL.md; bgauryy/octocode, octocode-subagent/references/packets.md]
 
 ## Gotchas
 

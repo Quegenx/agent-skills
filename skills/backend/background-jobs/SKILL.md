@@ -11,6 +11,7 @@ Work that leaves the request, and state that more than one thing touches at once
 |---|---|
 | An endpoint that starts long work and lets the client track it | [ASYNC-APIS.md](ASYNC-APIS.md) |
 | Queues, workers, schedulers, crons, retries, dead letters | [WORKERS.md](WORKERS.md) |
+| Paid or irreversible provider calls: submission intent, uncertain outcomes, reconciliation and restart | [EXTERNAL-SIDE-EFFECTS.md](EXTERNAL-SIDE-EFFECTS.md) |
 | Multi-step work that runs for minutes to days: durable steps, replay rules, waits for events and people, compensation, flow control per tenant, progress streaming | [DURABLE-WORKFLOWS.md](DURABLE-WORKFLOWS.md) |
 | Races, row locks, isolation, deadlocks, "only one at a time", across one process or many | [CONCURRENCY.md](CONCURRENCY.md) |
 

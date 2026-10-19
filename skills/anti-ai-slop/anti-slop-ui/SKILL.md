@@ -15,6 +15,7 @@ A filter, not a style. It doesn't prescribe colors, fonts or layouts and doesn't
 | Choose a phone layout where no single answer exists (sidebar, wide table, dashboard, hero, stacked sticky bars, deep navigation, long forms, bento grid), write behaviour specs, and audit then wait, on projects other than the owner's own apps | [RESPONSIVE-FORKS.md](RESPONSIVE-FORKS.md) |
 | Product-level design principles: human needs, wayfinding, mapping, feedback, Apple's eight principles | [PRINCIPLES.md](PRINCIPLES.md) |
 | Review a whole interface across accessibility, layout, copy, type, color and motion | [REVIEW.md](REVIEW.md) |
+| Recommend a small measured UI improvement shortlist, with an evidence gate and explicit exceptions | [IMPROVEMENT-SHORTLIST.md](IMPROVEMENT-SHORTLIST.md) |
 | Open every state a screen can reach on one page while doing visual work | [STATE-PAGE.md](STATE-PAGE.md) |
 | Build several named directions behind a picker and keep the chosen one | [VARIANTS.md](VARIANTS.md) |
 | Build a screen from a design file so it matches | [FROM-DESIGN.md](FROM-DESIGN.md) |

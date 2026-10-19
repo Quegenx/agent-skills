@@ -1,6 +1,6 @@
 # Executing a selected plan
 
-Carry an approved plan through implementation without losing its decisions at compaction or executor handoff. Sources: [obra/superpowers, writing-plans and executing-plans], with implementation traceability from [bgauryy/octocode, octocode-rfc-generator/references/rfc-implementation.md]. The [engineering-planning skill](../../architecture/engineering-planning/SKILL.md) owns plan creation; [WORKFLOWS.md](WORKFLOWS.md#delegation-packets) owns worker packets.
+Carry an approved plan through implementation without losing its decisions at compaction or executor handoff. Sources: [obra/superpowers, writing-plans and executing-plans], with implementation traceability from [bgauryy/octocode, octocode-rfc-generator/references/rfc-implementation.md]. The [engineering-planning skill](SKILL.md) owns plan creation; [agent-harness WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets) owns worker packets.
 
 ## Establish the execution contract
 
@@ -30,10 +30,10 @@ Update the record with the task's work, before relying on memory across a long r
 [obra/superpowers, executing-plans/SKILL.md]
 
 - Take one task's exact brief and work its dependency-ordered steps. Compare every authorized command's real output with its expected result; read the output before marking completion.
-- If the implementation is wrong, use [debugging](../../architecture/debugging/SKILL.md). If the plan is wrong, make the smallest correction consistent with its authority and record the ruling so downstream tasks receive it.
+- If the implementation is wrong, use [debugging](../debugging/SKILL.md). If the plan is wrong, make the smallest correction consistent with its authority and record the ruling so downstream tasks receive it.
 - Mark complete only when the task's deliverable and required evidence exist. An unavailable check stays unavailable; a convincing diff does not become a passing execution result.
 - Continue authorized tasks without repeatedly asking whether to proceed. Newly discovered irreversible actions, changed public contracts or expanded scope follow the repository's approval rules.
-- Review actual changes against the whole selected scope and specification. Preserve [code-review's convergence rules](../../architecture/code-review/SKILL.md); the source's single-fix-pass/no-re-review rule does not replace them.
+- Review actual changes against the whole selected scope and specification. Preserve [code-review's convergence rules](../code-review/SKILL.md); the source's single-fix-pass/no-re-review rule does not replace them.
 
 ## Hand off a phase
 
@@ -42,7 +42,7 @@ Update the record with the task's work, before relying on memory across a long r
 - Pass the governing plan and specification, completed task evidence, current shared interfaces, ledger rulings, remaining dependency order, verification state and the next executable step.
 - Keep requirement-to-task-to-acceptance-to-verification links intact. A deferred question names its reason and revisit trigger; a blocked task names the missing input rather than implying the whole plan is complete.
 - Use the same progress record when execution changes from inline to delegated or back. Preserve the chosen execution method unless the user changes it; do not fabricate a worker dispatch when the host has none.
-- The receiver reads the actual referenced artifacts and compares current state before continuing. For the bounded request/result shape, use [delegation packets](WORKFLOWS.md#delegation-packets).
+- The receiver reads the actual referenced artifacts and compares current state before continuing. For the bounded request/result shape, use [delegation packets](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets).
 
 ## Finish with decisions visible
 

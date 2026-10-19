@@ -104,7 +104,7 @@ Apply one change, re-measure the same way, record the result, then the next chan
 - Compare small/empty as well as representative inputs. Distinguish fresh sessions, warm runtime caches and OS file caches; keep failed attempts and resource stops.
 - Account for the process family and retained state, not just the parent heap. Projection can reduce transport output while leaving analysis work and peak memory unchanged.
 - For token claims, count discovery/schema, arguments, replies, retries and follow-up calls. Label tokenizer estimates separately from actual model usage. Smaller JSON alone proves neither fewer model tokens nor a better completed investigation.
-- Use an [independent correctness oracle](../../architecture/testing/INTEGRATION.md#independent-evidence) before comparing speed. Shared-work cancellation and cleanup follow the canonical [resource ownership contract](../../ai-agents/agent-harness/TOOLS-AND-MEMORY.md#evidence-and-resource-ownership).
+- Use an [independent correctness oracle](../../architecture/testing/INTEGRATION.md#independent-evidence) before comparing speed. Shared-work cancellation and cleanup follow the canonical [resource ownership contract](../../ai-agents/agent-harness/TOOLS.md#evidence-and-resource-ownership).
 
 ## An optimization loop (run by you or by an agent)
 
