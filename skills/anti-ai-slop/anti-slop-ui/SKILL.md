@@ -18,6 +18,7 @@ A filter, not a style. It doesn't prescribe colors, fonts or layouts and doesn't
 | Open every state a screen can reach on one page while doing visual work | [STATE-PAGE.md](STATE-PAGE.md) |
 | Build several named directions behind a picker and keep the chosen one | [VARIANTS.md](VARIANTS.md) |
 | Build a screen from a design file so it matches | [FROM-DESIGN.md](FROM-DESIGN.md) |
+| Reconstruct a live component and its animations from actual DOM, CSS, assets and behavior | [pixel-reverse-engineer](../../architecture/pixel-reverse-engineer/SKILL.md) |
 | Compute a contrast ratio | [scripts/contrast.py](scripts/contrast.py) |
 
 ## 1. Direction first

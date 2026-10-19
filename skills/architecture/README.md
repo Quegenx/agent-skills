@@ -2,7 +2,7 @@
 
 The design and structure of any codebase: architecture styles, system design, domain modeling, migrations, refactoring, algorithms, testing and code review. Details in the [main README](../../README.md#architecture).
 
-11 skills.
+12 skills.
 
 ## Skills
 
@@ -18,4 +18,5 @@ The design and structure of any codebase: architecture styles, system design, do
 | [code-review](./code-review/SKILL.md) | Code review at the volume agents write it: review layers from verified work to the merge queue, risk tiers and approval rules, the AI reviewer with REVIEW.md, findings verified by vote and tagged Important, Nit or Pre-existing, round caps, evals for the reviewer on past incidents, ownership after landing, a P0 to P3 scale for UI reviews, sandboxed screenshots as proof; scoping a change to its merge base with Introduced, Regression and Pre-existing statuses; base-versus-head parity runs and triaging a scanner's findings; Lighthouse CI as a required check. Also: Separate standards/specification findings, review reception, evidence-vetted repository audits and first-party Ultracite operation/migrations. Updated coverage: Evidence-based code review, repository/security audits, browser boundaries, scanner triage and Ultracite. Reachable failure paths, evidence levels and scoped no-finding reports. |
 | [debugging](./debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [engineering-planning](./engineering-planning/SKILL.md) | Interviews, specifications, local work breakdown, decision maps, handoff plans, RFCs and human-only steps. |
-| [reverse-engineering](./reverse-engineering/SKILL.md) | Shipped JS/Electron artifacts, scoped runtime observation, retained captures and version evidence. |
+| [reverse-engineering](./reverse-engineering/SKILL.md) | Shipped JS/Electron artifacts, scoped runtime observation, retained captures and version evidence; routes component reconstruction to pixel-reverse-engineer. |
+| [pixel-reverse-engineer](./pixel-reverse-engineer/SKILL.md) | Exact component, section and animation reconstruction from live DOM, CSS, assets, JavaScript and behavior, adapted to the target stack without invented defaults. |

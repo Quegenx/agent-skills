@@ -10,6 +10,7 @@ From [morluto/rea, reverse-engineer-anything], checked against the project's cur
 | The job | Read |
 |---|---|
 | Decide scope and evidence type | [SKILL.md](SKILL.md) |
+| Rebuild a live component, section or animation with the source's exact visuals and behavior | [pixel-reverse-engineer](../pixel-reverse-engineer/SKILL.md) |
 | Connect an available tool surface or repair an observed blocker | [CONNECTION.md](CONNECTION.md) |
 | Analyze an ASAR or JS tree, page modules, trace a feature or compare versions | [JAVASCRIPT.md](JAVASCRIPT.md) |
 | Observe a user action, perform a declared scenario or reconcile static/runtime evidence | [RUNTIME.md](RUNTIME.md) |

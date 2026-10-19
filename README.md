@@ -1,6 +1,6 @@
 # Agent skills
 
-127 skills for coding agents, in ten sets:
+128 skills for coding agents, in ten sets:
 
 | Folder | What it's for |
 |---|---|
@@ -8,13 +8,13 @@
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal), Convex, Firebase and Kapso. 21 skills. |
-| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review, debugging, engineering planning and JS/web reverse engineering. 11 skills. |
+| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review, debugging, engineering planning, artifact investigation and exact component/animation reconstruction. 12 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, animation in general, SVG, modern CSS, GSAP, accessibility, color systems, Sonner toasts, technical drawings, React (with Next.js and React Native) and WebGL, cookie consent. 13 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy), k6 load tests and Google Analytics 4 with Tag Manager. 5 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 38 skills. |
-| Total | 127 skills in ten sets. |
+| Total | 128 skills in ten sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -107,7 +107,7 @@ Start with `anti-slop`; it holds the shared rules and routes to the others.
 - **[anti-slop](./skills/anti-ai-slop/anti-slop/SKILL.md)**: The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies.
 - **[anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md)**: Voice-preserving prose and developer docs, evidence-based audits and Hebrew language guidance.
 - **[anti-slop-copy](./skills/anti-ai-slop/anti-slop-copy/SKILL.md)**: Grounded product copy, point edits, shared context, review panels and source-attributed alternatives. Research-to-copy traceability, scoped headline exploration and truthful early-stage proof handling.
-- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, component states, responsive/RTL behavior and correctly scoped WCAG contrast. Source-qualified numeric stacking limits.
+- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, component states, responsive/RTL behavior and correctly scoped WCAG contrast. Source-qualified numeric stacking limits. Routes live component reconstruction to pixel-reverse-engineer.
 - **[anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md)**: Behavior-preserving code cleanup, duplication pointers and runtime-qualified defensive checks.
 
 ## AI agents
@@ -169,7 +169,8 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based code review, repository/security audits, browser boundaries, scanner triage and Ultracite. Reachable failure paths, evidence levels and scoped no-finding reports. |
 | [debugging](./skills/architecture/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specifications, local work breakdown, decision maps, handoff plans, RFCs and human-only steps. |
-| [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | Shipped JS/Electron artifacts, scoped runtime observation, retained captures and version evidence. |
+| [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | Shipped JS/Electron artifacts, scoped runtime observation, retained captures and version evidence; routes component reconstruction to pixel-reverse-engineer. |
+| [pixel-reverse-engineer](./skills/architecture/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction from live DOM, CSS, assets, JavaScript and behavior. |
 
 ## Frontend
 
@@ -196,7 +197,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 | Skill | Covers |
 |---|---|
 | [e2e-testing](./skills/web-automation/e2e-testing/SKILL.md) | Web/mobile journeys, decision-model execution, failure triage, Maestro, Patrol and adversarial UI evidence. |
-| [browser-automation](./skills/web-automation/browser-automation/SKILL.md) | Browser ownership, sessions, scoped interception, paired-clock tracing and evidence-based task loops. |
+| [browser-automation](./skills/web-automation/browser-automation/SKILL.md) | Browser ownership, sessions, scoped interception, paired-clock tracing and evidence-based task loops. Routes exact reconstruction to pixel-reverse-engineer. |
 | [web-scraping](./skills/web-automation/web-scraping/SKILL.md) | Permitted fetch/crawl/parse workflows, current Scrapling contracts and qualified traffic-to-OpenAPI generation. |
 | [webmcp](./skills/web-automation/webmcp/SKILL.md) | Task tools, closed schemas, current registration/invocation lifecycle, confirmation and live probing. |
 | [web-research](./skills/web-automation/web-research/SKILL.md) | Parallel research with source identity, bounded discovery, honest coverage and evidence-backed reports. |

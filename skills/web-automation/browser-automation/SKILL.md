@@ -17,6 +17,7 @@ An agent reads the page as an accessibility-tree snapshot with element refs, act
 | Self-improving task loops, tuning an agent's prompt, oracles and judging results | [TASK-LOOPS.md](TASK-LOOPS.md) |
 | Turning a converged run into a deterministic Playwright or Stagehand script | [SCRIPT-CODEGEN.md](SCRIPT-CODEGEN.md) |
 | Reading how someone else's page or one effect was built: the stack, tokens, type, spacing, motion and breakpoint recipes, the layer stack behind an effect, `getAnimations()`, measured, derived and inferred claims, from a screenshot, without a browser | [INSPECT-A-PAGE.md](INSPECT-A-PAGE.md) |
+| Implementing an exact copy of an inspected live component, section or animation | [pixel-reverse-engineer](../../architecture/pixel-reverse-engineer/SKILL.md) |
 | Deploying a browser task as a serverless function | [BROWSER-FUNCTIONS.md](BROWSER-FUNCTIONS.md) |
 | The determinism spectrum and migrating browser-use to Stagehand | [STAGEHAND-MIGRATION.md](STAGEHAND-MIGRATION.md) |
 
