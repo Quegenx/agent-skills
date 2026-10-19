@@ -1,6 +1,6 @@
 # Caching
 
-**Contents:** [Decide first](#decide-first) · [Keys](#keys) · [Content-addressed keys](#content-addressed-keys) · [Stampede (many concurrent misses)](#stampede-many-concurrent-misses) · [Invalidation across instances](#invalidation-across-instances) · [Lookup data: how much to fetch per miss](#lookup-data-how-much-to-fetch-per-miss) · [Layers in a TypeScript stack](#layers-in-a-typescript-stack) · [CDN caching on Vercel](#cdn-caching-on-vercel) · [Module-level caches](#module-level-caches) · [Caching browser storage reads](#caching-browser-storage-reads) · [Caching as a wrapper](#caching-as-a-wrapper) · [Prove it](#prove-it)
+**Contents:** [Decide first](#decide-first) · [Cacheable results](#cacheable-results) · [Keys](#keys) · [Content-addressed keys](#content-addressed-keys) · [Stampede (many concurrent misses)](#stampede-many-concurrent-misses) · [Invalidation across instances](#invalidation-across-instances) · [Lookup data: how much to fetch per miss](#lookup-data-how-much-to-fetch-per-miss) · [Layers in a TypeScript stack](#layers-in-a-typescript-stack) · [CDN caching on Vercel](#cdn-caching-on-vercel) · [Module-level caches](#module-level-caches) · [Caching browser storage reads](#caching-browser-storage-reads) · [Caching as a wrapper](#caching-as-a-wrapper) · [Prove it](#prove-it)
 
 ## Decide first
 
@@ -10,6 +10,12 @@ For each cache, write down:
 - **the staleness budget:** how old a value may be when served;
 - **who invalidates it,** and what bounds staleness if invalidation is missed (always an expiry);
 - **the size bound** and what is evicted first.
+
+## Cacheable results
+
+- **Application-wrapper rule:** cache successful results only. A cached "not found" or validation failure is served to everyone after the fix. Keep this existing rule for the application wrappers. [existing software-architecture, LAYERS.md, Caching; SLICES.md, Commands, queries and the wrappers around them]
+- **Source conflict:** the URL-shortener design instead says to cache misses for unknown codes briefly, or scanners hammer the database. Preserve that tagged design choice alongside the existing wrapper rule; do not silently replace either with a universal policy. [existing system-design, DESIGNS.md, URL shortener]
+- **404s stay uncached or short.** A change that puts `s-maxage` on every response, 404 included, fails. A not-found branch sets `status: 404` ("a markdown/body-only Response defaults to 200"), and unexpected errors stay 5xx: a fix "must not convert unexpected exceptions into not-found". [Vercel, vercel-optimize, support-topics/cdn-cache-auth-safety.md, lib/verify-claim.mjs, lib/gates/uncached-route.mjs]
 
 ## Keys
 
@@ -179,7 +185,7 @@ Facts from https://vercel.com/docs/caching/cache-control-headers (checked 2026-1
 - **Safety before speed.** The route must be a public, cacheable GET before it gets a shared-cache header: "rule out cookies, sessions, authorization, draft state, and user-specific data." "Do not cache mutations, dashboards, account data, request-personalized responses, or routes whose value changes per viewer. Do not mix `private` with shared-cache directives." A cache change names its "mechanism, scope, TTL/freshness, and `Vary`"; "If the right policy is `no-store`", report no change rather than a weaker header.
 - **Mutation routes are not cache misses.** Flag a route as uncached only with more than 500 requests, a hit rate under 50% and a GET share over 20% in the window: "a route that's >80% POST/PUT/DELETE is a mutation endpoint where 0% cache is correct". STALE, REVALIDATED and BYPASS count as not-HIT. Routes named like login, logout, auth, account, dashboard, checkout, cart, profile, session or me are kept out of cache candidates only; "errors/slowness on auth routes still warrant investigation."
 - **`Vary` by what the output depends on, at low cardinality.** Output that changes by geography varies on a coarse header (`X-Vercel-IP-Country`, `X-Vercel-IP-Country-Region`, `X-Vercel-IP-City`), never on `X-Vercel-IP-Latitude`, `X-Vercel-IP-Longitude` or `X-Vercel-IP-Postal-Code` ("very high-cardinality CDN cache keys"). Vercel's docs add that a `Vary` on `Cookie` isn't cacheable.
-- **404s stay uncached or short.** A change that puts `s-maxage` on every response, 404 included, fails. A not-found branch sets `status: 404` ("a markdown/body-only Response defaults to 200"), and unexpected errors stay 5xx: a fix "must not convert unexpected exceptions into not-found".
+- **404s and unexpected errors:** follow the [cacheable-result policy](#cacheable-results).
 - **`immutable` only on a URL whose bytes can't change:** a content-hashed URL, or scope it to `Vercel-CDN-Cache-Control` so the browser never holds it forever.
 - **Error-heavy routes:** a cache change on a route with more than 20% function 5xx must exclude or acknowledge the error traffic. Reject a header with an empty directive (a trailing comma).
 - **Conditional requests:** "Ensure your Function supports `If-Modified-Since` or `ETag` to prevent duplicate data transmission" (on by default for Next.js applications), per https://vercel.com/docs/manage-cdn-usage.

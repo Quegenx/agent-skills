@@ -28,12 +28,45 @@ Change what runs underneath while the business keeps running. A rewrite fails wh
 
 **Start with the core domain, not the quick wins.** Migrating peripheral features first leaves the core in the old system, so every migrated feature needs synchronization with it and the debt compounds. Moving the core first shows progress later and finishes sooner. Product needs visible progress, so agree on the order openly and show the core's progress in business terms, rather than letting quick wins decide the architecture.
 
+**Source conflict, keep the core-first rule above:** the strangler-fig source instead chooses the least coupled, highest-value context (notifications, payments, user profiles), with its own schema, domain model and public API, as the first module. [milan-jovanovic, strangler-fig-modular-monolith-migration]
+
 **Run both systems side by side** and move one module at a time:
 - **One source of truth per piece of data at every stage:** the legacy system for everything not yet migrated, the new system for what has moved. Write it down per table or entity, and update it when a module switches.
 - **Modules with their own tables or schemas** in the new system, talking to each other and to the legacy system through messages (a modular monolith with a queue or event bus), so each module can move on its own schedule.
 - **Synchronize both ways without loops:** mark every synced change with its origin and skip changes that came from the other side, or the two systems echo each update forever. Make the sync idempotent (a change ID per message).
 - **Change data capture tools** (Debezium, logical replication) fit one-to-one table copies. When a legacy table is built from several new ones, or business rules apply during the transformation, you'll likely need custom sync; study the tools' patterns first even if you can't use them.
 - **Reconcile before switching traffic:** compare record counts and key totals between the systems for the module about to switch, investigate every difference, and keep the old path available until the numbers agree.
+
+### A routing seam
+
+[milan-jovanovic, strangler-fig-modular-monolith-migration]
+
+An interface with two implementations, chosen per call by a feature flag, so switching and rolling back need no deploy:
+
+```ts
+export const orderReadsRouter = (legacy: OrderReads, next: OrderReads, flags: Flags): OrderReads => ({
+  async getOrder(id) {
+    return (await flags.isEnabled("orders-module")) ? next.getOrder(id) : legacy.getOrder(id);
+  },
+});
+```
+
+When the legacy system is a separate application, the seam is a reverse proxy route table instead: migrated routes go to the new application, everything else to the old one. Flag mechanics and cleanup: the `api-design` skill's FLAGS.md.
+
+### Capture, compare and cut over
+
+- **A polling job** in the source copies rows changed since the last cutoff and advances the cutoff to the run's start. The old line claimed this prevents skips. That recipe alone does not cover deletions, equal timestamps or a transaction that becomes visible after the poll with an earlier modification time. These are static contract limitations; no polling run was executed. The source-of-truth and reconciliation contract above still applies. [milan-jovanovic, strangler-fig-modular-monolith-migration; https://www.postgresql.org/docs/18/transaction-iso.html]
+- **Or events:** the legacy code publishes a change after each write and the new module consumes it (in-process while they share a runtime), or change data capture on the legacy tables.
+
+Routing rollback requires the old path to remain runnable with compatible, reconciled data, including accepted new writes. The source and old line called rollback just a routing change. This qualification follows the source-of-truth and synchronization requirements, not a performed rollback test. [milan-jovanovic, when-to-extract-module-to-microservice; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]
+
+**Compare reads** through the canonical [hot-path switch](#switching-a-hot-path-to-a-new-implementation). The source example and removed TS illustration awaited both answers, so a slow new implementation delayed the user; they did not establish background latency isolation. Never double the writes: that duplicates every side effect. [milan-jovanovic, strangler-fig-modular-monolith-migration]
+
+**Cut over and clean up:** flip the flag for everyone, retaining the legacy path only while the rollback data contract holds; then stop the sync and remove obsolete code and tables through the project's authorized migration. The source's flag-only rollback omitted accepted new writes. [milan-jovanovic, strangler-fig-modular-monolith-migration]
+
+**Timeline per module,** the author's planning example: scoping 1 to 2 weeks, building 2 to 4, data migration 1 to 2, parallel run 1 to 2, cutover a day, cleanup a week; roughly 6 to 11 weeks. The source suggests pipelining later modules and estimates six months to a year for five or six modules. These are contextual estimates, not measured universal baselines. [milan-jovanovic, strangler-fig-modular-monolith-migration]
+
+**Mistakes:** migrating several modules at once; skipping the parallel run; no per-request routing seam; letting old and new code read each other's tables instead of talking through events or APIs.
 
 **Automate deployment early.** A pipeline that deploys to every environment in minutes is what makes many small, safe moves possible.
 
@@ -70,5 +103,5 @@ Whatever you choose, learn what the library did for you (what a mediator is, how
 ## Prove it
 
 - For a hot-path switch: the offline comparison over every fixture input, the shadow mismatch log over the full sampling period with each mismatch explained, and the metric that must hold after the flag flips.
-- Plan the migration of one capability: name the source of truth at each stage, how changes synchronize and how loops are prevented, and the reconciliation check that must pass before traffic switches.
+- Plan the migration of one capability: name the source of truth at each stage, how changes synchronize and how loops are prevented, and the reconciliation check that must pass before traffic switches. Account for accepted writes before a routing rollback, explain how deletions and late-visible changes reach the new store, and state migration timelines as attributed estimates. [milan-jovanovic, strangler-fig-modular-monolith-migration; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]
 - For a dependency: list every place it's used and the features each place needs, then estimate the work to replace those features before choosing to pay, stay, switch or rebuild.

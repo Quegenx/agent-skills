@@ -72,9 +72,11 @@ Over 80% used is a risk, over 90% critical: vacuum and writes fail when the disk
 | Point in time | base backup plus continuous WAL archiving | minutes | Restore to a timestamp, transaction or named restore point |
 | Synchronous replica | streaming replication | zero | Failover in seconds to minutes |
 
+- **Point-in-time recovery:** a base snapshot plus the continuous write-ahead log lets you restore to any second before the incident (a bad migration, a mass delete), not just last night. Managed Postgres (including Supabase's PITR add-on) does this; self-hosted, use a tool like pgBackRest or WAL-G with off-site storage. Snapshots alone lose everything since the last one.
+
 - **Production uses a tool with retention and verification** (pgBackRest), keeps about 7 daily, 4 weekly and 12 monthly copies, takes backups from a standby, and checks them with `pg_verifybackup` (Postgres 13+).
 - **An `archive_command` must return success only once the file is safely stored,** test it as the postgres user (permission errors are the usual failure), and watch `pg_stat_archiver.failed_count`: a failing archive stops WAL recycling and fills the disk.
-- **Restore on a schedule** into a scratch instance and time it; that time is your real recovery time.
+- Follow the canonical [recovery procedure](../deployment/SKILL.md#recovering-a-data-platform) for scratch restores, reconciliation, projection replay, erasures, control-plane failure and measured recovery targets.
 
 ## Replication
 
@@ -85,7 +87,7 @@ Over 80% used is a risk, over 90% critical: vacuum and writes fail when the disk
 - **Slots:** without a replication slot the primary may recycle WAL a lagging replica still needs, and the replica must be rebuilt; with a slot, an offline replica makes the primary keep WAL until the disk fills. Cap it with `max_slot_wal_keep_size`, use `idle_replication_slot_timeout` (Postgres 18+), and drop slots nobody uses (after confirming).
 - **Replication is asynchronous by default:** a primary crash can lose the last few transactions. `synchronous_commit = on` with `synchronous_standby_names` makes the primary wait for the replica's acknowledgment: zero data loss, higher commit latency, and writes stall if the synchronous replica dies. Most setups run async and accept seconds of exposure.
 - **Synchronous commit levels:** `local` waits for the local flush; `remote_write` for the replica's OS; `on` (default, with `synchronous_standby_names`) for the replica's disk; `remote_apply` until the replica applied it (read your writes on the replica). `FIRST 2 (a, b, c)` waits for the two highest-priority replicas; `ANY 2 (a, b, c)` for any two. Provision one more replica than the number you wait for, or one failure hangs every commit.
-- **Failover:** `select pg_promote()` (or `pg_ctl promote -D /var/lib/postgresql/data`) turns a replica into the primary, one way: it stops recovery and accepts writes. The hard parts are around it: **fence the old primary** so it never comes back as a second writer, and repoint clients. Rebuild the old primary as a replica, or resync it with `pg_rewind` (needs `wal_log_hints = on` or data checksums), then update connection strings. Patroni or pg_auto_failover automate this; managed services hide it.
+- **Failover:** `select pg_promote()` (or `pg_ctl promote -D /var/lib/postgresql/data`) turns a replica into the primary, one way: it stops recovery and accepts writes. Apply the canonical [writer-fencing rule](../deployment/SKILL.md#recovering-a-data-platform) and repoint clients. Rebuild the old primary as a replica, or resync it with `pg_rewind` (needs `wal_log_hints = on` or data checksums), then update connection strings. Patroni or pg_auto_failover automate this; managed services hide it.
 
 ## Prove it
 

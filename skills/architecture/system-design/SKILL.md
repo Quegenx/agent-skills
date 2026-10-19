@@ -5,7 +5,7 @@ description: "Designs a web system's components and how each one fails: load bal
 
 # System design
 
-A design is a set of components plus an answer to "what happens when this one fails or gets ten times the load?". Worked designs (URL shortener, notifications, real-time chat, web crawler, file vault, checkout, recovering from data loss, sharding and failover) are in [DESIGNS.md](DESIGNS.md). Draw the request path, then walk each box and arrow with three questions: what does it own, what does it do when the next hop is slow or down, and which number tells you it's healthy. Start with the smallest design that meets today's targets, write the targets down (requests per second, p99 latency, data size, freshness), and add a component only when a target or a failure mode needs it.
+A design is a set of components plus an answer to "what happens when this one fails or gets ten times the load?". Worked designs (URL shortener, notifications, real-time chat, web crawler, file vault, checkout, recovery choices, sharding and failover) are in [DESIGNS.md](DESIGNS.md). Draw the request path, then walk each box and arrow with three questions: what does it own, what does it do when the next hop is slow or down, and which number tells you it's healthy. Start with the smallest design that meets today's targets, write the targets down (requests per second, p99 latency, data size, freshness), and add a component only when a target or a failure mode needs it.
 
 ## The trusted boundary
 

@@ -46,7 +46,7 @@ Every PR gets an AI review before a person looks, and security gets its own auto
 
 The usual: lint, type checks, tests on every platform, and a build. A typical CLI pull request may run dozens of checks before anyone looks at it.
 
-- **A change to a checker itself** (a lint rule, a detector, an evaluator) gets a base-and-head run over pinned inputs with exit codes `0` match, `1` changes, `2` invalid evidence: [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md). Triage of a scanner's findings on a change, and when its "no findings" may be called clean: [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md).
+- **A change to a checker itself** (a lint rule, a detector, an evaluator) gets a base-and-head run over pinned inputs with exit codes `0` match, `1` changes, `2` invalid evidence: [BASE-HEAD-PARITY.md](../lint-rule-authoring/BASE-HEAD-PARITY.md). Triage of a scanner's findings on a change, and when its "no findings" may be called clean: [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md).
 
 - **A Lighthouse CI gate** posts its own GitHub status check; make that check required, and drop the `|| echo` its GitLab example ends with. Tokens and setup: [LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#upload-tokens-and-status-checks).
 

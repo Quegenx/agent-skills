@@ -90,7 +90,7 @@ export const transferStock = (uow: UnitOfWork) => async (cmd: TransferStock) =>
 
 The **decision** (what may be cached, for how long, what invalidates it) is application policy; the **mechanism** (Redis, in-memory) is infrastructure behind an application-owned port. The domain never knows.
 
-- Either a decorator around a repository or read function, or a query that declares its cache key and lifetime and one wrapper that honors it. The wrapper caches **successful results only**: a cached "not found" or validation failure is served to everyone after the fix.
+- Either a decorator around a repository or read function, or a query that declares its cache key and lifetime and one wrapper that honors it. Cacheable outcomes and the tagged negative-cache conflict are defined in [Cacheable results](../../backend/performance-and-caching/CACHING.md#cacheable-results).
 - Invalidate from application code that reacts to the change (an event handler deleting by ID or prefix), and always set a TTL as the backstop.
 - Cache response DTOs on the read side, not entities (private state doesn't survive serialization cleanly).
 - Test: flushing the cache must change only latency, never results. Stampedes and TTL sizing are in the `performance-and-caching` skill.

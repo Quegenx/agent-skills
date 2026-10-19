@@ -16,7 +16,7 @@ A CLI flag, a score, a config option, a JSON report field, a package API, an exi
 | GitHub Action input or output | "Versioned independently (`vN`); workflows in other repos break when an input or output changes." |
 | Terminal output | "The first impression and the daily experience; noise or confusion here is what makes people stop running it." |
 
-Internal-only changes "skip the pass entirely; note in one line why the change is internal and move on." Lint rules have their own pipeline: [testing LINT-RULES.md](../../architecture/testing/LINT-RULES.md).
+Internal-only changes "skip the pass entirely; note in one line why the change is internal and move on." Lint rules have their own pipeline: [lint-rule-authoring LINT-RULES.md](../../architecture/lint-rule-authoring/LINT-RULES.md).
 
 ## The steps
 

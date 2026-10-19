@@ -76,20 +76,7 @@ export const orderValidatorFor = (country: "US" | "EU" | "other") =>
 
 ## Choosing the data structure
 
-The right structure usually beats a clever expression. Checking a list for duplicates is a set that stops at the first repeat:
-
-```ts
-function hasDuplicates<T>(values: Iterable<T>): boolean {
-  const seen = new Set<T>();
-  for (const value of values) {
-    if (seen.has(value)) return true;   // stop at the first duplicate
-    seen.add(value);
-  }
-  return false;
-}
-```
-
-Expected linear time and memory. Comparing `new Set(values).size !== values.length` is shorter but always reads the whole input and needs a sized collection, and for a one-shot iterator it doesn't work at all. Define equality on purpose: a `Set` compares objects by reference, so compare by a key (`seen.has(code.toLowerCase())` for case-insensitive codes). For speed claims, measure your real collection: where the duplicate sits changes how much work the early exit saves.
+Use the canonical [hash-map and set patterns](../algorithm-patterns/PATTERNS.md#hash-map-or-set-remember-instead-of-rescanning) for duplicate detection, iterable inputs and equality choices.
 
 ## Prove it
 

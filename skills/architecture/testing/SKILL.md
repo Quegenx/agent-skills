@@ -11,7 +11,7 @@ A test is worth what it would catch. Imagine the plausible broken versions of th
 |---|---|
 | Thresholds, formulas, parsers, text, dates, money, comparators, state machines, time-based and stateful code, delays and timeouts, orchestration | [CATALOG.md](CATALOG.md) |
 | The shape of the suite, integration tests against real Postgres in containers, data isolation, async workflows across modules, architecture and contract tests, end-to-end tests (writing and running them in a browser or on a device is the `e2e-testing` skill) | [INTEGRATION.md](INTEGRATION.md) |
-| A lint rule or detector: the rule contract, edge cases to write first, labelling hits on real code, before and after on fixed repositories, fuzzing, FP and FN labels with a second pass, and the fix priority formula | [LINT-RULES.md](LINT-RULES.md) |
+| Creating or evaluating a lint rule or detector, including its contract, fixtures, real-code labels, fuzzing and paired comparisons | [lint-rule-authoring](../lint-rule-authoring/SKILL.md) |
 | Authorized test-first development: one public behavior slice, the intended failing check, minimal implementation and existing persistence/callback exceptions | [TDD.md](TDD.md) |
 | An interactive CLI or TUI: reuse its harness, capture before acting, deterministic prompt waits, transcripts, inspector environment and profile evidence | [CLI-HARNESS.md](CLI-HARNESS.md) |
 

@@ -71,41 +71,14 @@ export const catalogHttpClient = (baseUrl: string, fetchFn = fetch): CatalogApi 
 4. **Replace in-memory events with a broker,** publishing through the outbox, because the broker can now be unreachable (the `messaging` skill).
 5. **Give it its own pipeline, hosting, database instance and observability,** and propagate trace context across the hop.
 6. **Migrate its data:** a one-time copy during a short maintenance window when that's acceptable, or continuous sync (change data capture) and a gradual switch when it isn't. Take a backup and have a rollback plan either way.
-7. **Route with the strangler approach:** deploy the service alongside the monolith, route the module's traffic to it (a reverse proxy or gateway with path routing; it can also centralize rate limiting and caching), keep the in-process implementation until the service is proven, then delete it. Routing rollback requires the old path to remain runnable with compatible, reconciled data, including accepted new writes; use the canonical [migration contract](../system-migration/SKILL.md#rewriting-a-legacy-system). The source and old line called rollback just a routing change. This qualification follows the source-of-truth and synchronization requirements, not a performed rollback test. A gateway doesn't restore the local transactions the split removed. [milan-jovanovic, when-to-extract-module-to-microservice; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]
+7. **Route with the strangler approach:** deploy the service alongside the monolith, route the module's traffic to it (a reverse proxy or gateway with path routing; it can also centralize rate limiting and caching), keep the in-process implementation until the service is proven, then delete it. Routing rollback follows the canonical [migration data contract](../system-migration/SKILL.md#capture-compare-and-cut-over). A gateway doesn't restore the local transactions the split removed. [milan-jovanovic, when-to-extract-module-to-microservice; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]
 
 Run the first extracted service in production for a while before extracting the next; the second one goes faster because the pipeline, tracing and messaging already exist.
 
 ## Replacing legacy code module by module (strangler fig)
 
-Big rewrites take longer than planned, deliver nothing until the end, and chase a legacy system that keeps changing. Replace it one bounded context at a time while everything keeps running: identify a context, build the new module, route traffic to it, remove the old code, repeat. The organizational side (source of truth per entity, two-way sync without loops, reconciliation, capturing the old team's knowledge) is in the `system-migration` skill.
-
-**1. A routing seam.** An interface with two implementations, chosen per call by a feature flag, so switching and rolling back need no deploy:
-
-```ts
-export const orderReadsRouter = (legacy: OrderReads, next: OrderReads, flags: Flags): OrderReads => ({
-  async getOrder(id) {
-    return (await flags.isEnabled("orders-module")) ? next.getOrder(id) : legacy.getOrder(id);
-  },
-});
-```
-
-   When the legacy system is a separate application, the seam is a reverse proxy route table instead: migrated routes go to the new application, everything else to the old one. Flag mechanics and cleanup: the `api-design` skill's FLAGS.md.
-
-**2. The first module:** the least coupled, highest-value context (notifications, payments, user profiles), with its own schema, domain model and public API.
-
-**3. Keep the data in sync** while both run:
-
-- **a polling job** in the source copies rows changed since the last cutoff and advances the cutoff to the run's start. The old line claimed this prevents skips. That recipe alone does not cover deletions, equal timestamps or a transaction that becomes visible after the poll with an earlier modification time. These are static contract limitations; no polling run was executed. Use the canonical [capture and reconciliation contract](../system-migration/SKILL.md#rewriting-a-legacy-system) before relying on it. [milan-jovanovic, strangler-fig-modular-monolith-migration; https://www.postgresql.org/docs/18/transaction-iso.html]
-- **or events:** the legacy code publishes a change after each write and the new module consumes it (in-process while they share a runtime), or change data capture on the legacy tables.
-
-**4. Compare reads** through the canonical [hot-path switch](../system-migration/SKILL.md#switching-a-hot-path-to-a-new-implementation). The source example and removed TS illustration awaited both answers, so a slow new implementation delayed the user; they did not establish background latency isolation. Never double the writes: that duplicates every side effect. [milan-jovanovic, strangler-fig-modular-monolith-migration]
-
-**5. Cut over and clean up:** flip the flag for everyone, retaining the legacy path only while the [rollback data contract](../system-migration/SKILL.md#rewriting-a-legacy-system) holds; then stop the sync and remove obsolete code and tables through the project's authorized migration. The source's flag-only rollback omitted accepted new writes. [milan-jovanovic, strangler-fig-modular-monolith-migration]
-
-**Timeline per module,** the author's planning example: scoping 1 to 2 weeks, building 2 to 4, data migration 1 to 2, parallel run 1 to 2, cutover a day, cleanup a week; roughly 6 to 11 weeks. The source suggests pipelining later modules and estimates six months to a year for five or six modules. These are contextual estimates, not measured universal baselines. [milan-jovanovic, strangler-fig-modular-monolith-migration]
-
-**Mistakes:** migrating several modules at once; skipping the parallel run; no per-request routing seam; letting old and new code read each other's tables instead of talking through events or APIs.
+Replace one bounded context at a time through the canonical [legacy migration procedure](../system-migration/SKILL.md#rewriting-a-legacy-system): routing seam, module order, source of truth, synchronization, shadow reads, cutover and cleanup. The procedure preserves the source's module-specific example and its conflict with the existing core-first rule. [milan-jovanovic, strangler-fig-modular-monolith-migration]
 
 ## Prove it
 
-Name the source of truth at every stage, account for accepted writes before a routing rollback, and explain how deletions and late-visible changes reach the new store. A production shadow comparison must satisfy the canonical request-path contract rather than merely await both answers. State migration timelines as attributed estimates. [milan-jovanovic, strangler-fig-modular-monolith-migration; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]
+For a legacy replacement, use the canonical [migration checks](../system-migration/SKILL.md#prove-it). [milan-jovanovic, strangler-fig-modular-monolith-migration; https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html]

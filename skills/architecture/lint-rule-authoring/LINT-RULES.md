@@ -1,6 +1,6 @@
 # Lint rules and detectors: contract, cases, real code, fuzzing and FP/FN audits
 
-A lint rule is code whose bugs are false positives and missed cases, so it needs its own test design: a written contract before the code, adversarial fixtures on both sides of it, hits on real code read and labelled, a before-and-after run over a fixed corpus, fuzzing, and an audit of false positives and false negatives with a second pass. Source: React Doctor's rule pipeline skills, tagged by skill: [React Doctor, rule-research], [React Doctor, rule-writing], [React Doctor, rule-validate], [React Doctor, rde-eval], [React Doctor, fuzz] and [React Doctor, benchmark-fp-fn-audit]. Their commands, paths and corpus names are left out. Running the checker on a pull request's base and head and diffing its output is [code-review BASE-HEAD-PARITY.md](../code-review/BASE-HEAD-PARITY.md); triaging a scanner's findings on a change is [code-review SCANNER-TRIAGE.md](../code-review/SCANNER-TRIAGE.md).
+A lint rule is code whose bugs are false positives and missed cases, so it needs its own test design: a written contract before the code, adversarial fixtures on both sides of it, hits on real code read and labelled, a before-and-after run over a fixed corpus, fuzzing, and an audit of false positives and false negatives with a second pass. Source: React Doctor's rule pipeline skills, tagged by skill: [React Doctor, rule-research], [React Doctor, rule-writing], [React Doctor, rule-validate], [React Doctor, rde-eval], [React Doctor, fuzz] and [React Doctor, benchmark-fp-fn-audit]. Their commands, paths and corpus names are left out. Running the checker on a pull request's base and head and diffing its output is [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md); triaging a scanner's findings on a change is [code-review SCANNER-TRIAGE.md](../code-review/SCANNER-TRIAGE.md).
 
 ## The rule contract
 
@@ -60,7 +60,7 @@ Open questions:
 
 ## Edge cases to write before the detector
 
-Source: [React Doctor, rule-writing], [React Doctor, rule-validate]. "State the diagnostic condition, required syntax and bindings, unsupported cases, and adversarial tests." Then write detector pseudocode, add adversarial valid and invalid tests, and implement "only the contract's supported behavior". This is rule 3 of [SKILL.md](SKILL.md), partitioning the contract, applied to a detector. Account for:
+Source: [React Doctor, rule-writing], [React Doctor, rule-validate]. "State the diagnostic condition, required syntax and bindings, unsupported cases, and adversarial tests." Then write detector pseudocode, add adversarial valid and invalid tests, and implement "only the contract's supported behavior". This is rule 3 of [testing SKILL.md](../testing/SKILL.md), partitioning the contract, applied to a detector. Account for:
 
 - "import aliases and shadowed bindings"
 - "nested functions that do not execute immediately"
@@ -97,7 +97,7 @@ Source: [React Doctor, rde-eval], [React Doctor, rule-validate].
 Source: [React Doctor, rule-validate]. Run base and head over a fixed corpus "for every new rule or detector behavior change". "Skip it for documentation-only or test-only changes. If parity cannot run, report the exact blocker."
 
 - "Do not claim parity unless both ... runs complete. Compare repository and project-root counts separately. Inspect target-rule deltas before classifying them."
-- The method (pinned SHAs, coverage before diagnostics, exit codes, scoped runs) is [BASE-HEAD-PARITY.md](../code-review/BASE-HEAD-PARITY.md).
+- The method (pinned SHAs, coverage before diagnostics, exit codes, scoped runs) is [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md).
 - Review findings: "Defer unsupported control flow only when it falls outside the contract. Reject requests that broaden the message or increase false positives."
 - A rule change is a patch release: "Use a patch changeset for rules, bug fixes, false-positive fixes, and diagnostic refinements unless release impact requires more."
 
@@ -134,7 +134,7 @@ The pull request copy:
 
 ## Fuzzing a rule
 
-Source: [React Doctor, fuzz]. Fuzz after focused tests pass. This extends the random-input fuzzer in rule 16 of [SKILL.md](SKILL.md).
+Source: [React Doctor, fuzz]. Fuzz after focused tests pass. This extends the random-input fuzzer in rule 16 of [testing SKILL.md](../testing/SKILL.md).
 
 - "Confirm that the target rule fires. A silent rule only exercises early exits." If it stays silent, add a triggering shape to the generator and rerun.
 - Every finding replays from its seed, one iteration with that fixed seed.

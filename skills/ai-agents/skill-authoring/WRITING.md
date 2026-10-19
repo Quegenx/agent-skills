@@ -113,7 +113,7 @@ Think of skills as lightweight guides that let Claude find information when need
   For either path, add an example or eval that can catch regressions.
   ```
   "If a rule cannot stay reliable without many exceptions, move it back to agent guidance."
-  For the rule itself (its contract, false positives treated as correctness bugs, edge cases, real-code hits, fuzzing and FP/FN audits): [testing LINT-RULES.md](../../architecture/testing/LINT-RULES.md).
+  For the rule itself (its contract, false positives treated as correctness bugs, edge cases, real-code hits, fuzzing and FP/FN audits): [lint-rule-authoring LINT-RULES.md](../../architecture/lint-rule-authoring/LINT-RULES.md).
 
 ## Rule files: one rule, an Incorrect and a Correct
 

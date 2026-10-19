@@ -41,7 +41,7 @@ Load this when enrichment changes the next step after a demo or contact form, or
 [coreyhaines31/marketingskills, revops]
 
 - **Replay fixtures** for: existing customer, new ICP-fit lead, unknown company, false company match, exhausted quota, timeout followed by a late success, duplicate submission, and unavailable owner. Check the visible page plus the resulting CRM records and tasks, not only a workflow's success indicator.
-- **Shadow run, then pilot:** start with a shadow run that records proposed routes without changing the live experience, then a bounded pilot. The same shadow-before-gate pattern for code review: [../../architecture/code-review/BASE-HEAD-PARITY.md](../../architecture/code-review/BASE-HEAD-PARITY.md) ("Shadow the shortcut before it gates").
+- **Shadow run, then pilot:** start with a shadow run that records proposed routes without changing the live experience, then a bounded pilot. The same shadow-before-gate pattern for code review: [../../architecture/lint-rule-authoring/BASE-HEAD-PARITY.md](../../architecture/lint-rule-authoring/BASE-HEAD-PARITY.md) ("Shadow the shortcut before it gates").
 - **Compare against the existing flow:** completion and abandonment, verified routing accuracy, time to assignment, time to first human response, booking rate, fallback frequency, and duplicate tasks. "Separate request latency from actual sales response time." Set targets from the team's coverage and baseline rather than promising conversion multipliers.
 
 Deliver a branch table, required fields and sources, response budget, fallback, ownership rules, replay handling, launch scope, and measured pilot results. After assignment, the SLA and escalation rules take over ([LIFECYCLE.md](LIFECYCLE.md#slas)).

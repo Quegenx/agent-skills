@@ -37,10 +37,10 @@ Use these when each case carries real behavior that varies independently; a look
 
 ## Making invalid states impossible
 
-These overlap the `domain-modeling` skill's MODEL.md (value objects, branded IDs, always-valid objects, encapsulated collections); the refactoring angle:
+Domain definitions live in [MODEL.md](../domain-modeling/MODEL.md); the refactoring angle:
 
-- **Immutability must be structural.** A private setter or a `readonly` type over a mutable array still lets the owner (or a cast) change it. Freeze, copy on the way in and out, and offer only methods that return new values.
-- **Each ID gets its own type,** with no overloads or implicit conversions from plain strings or numbers, validated on every creation path. In TypeScript the bypasses are spreads and object literals (`{ ...order, status: "shipped" }` skips the factory); keep construction behind functions.
+- **Immutability must be structural.** Freeze, copy on the way in and out, and offer only methods that return new values. Use the domain model's [encapsulated-collection rules](../domain-modeling/MODEL.md#encapsulated-collections) for shared-reference and shallow-copy limitations.
+- **Typed IDs and construction:** use [typed IDs](../domain-modeling/MODEL.md#typed-ids) and [validated construction](../domain-modeling/MODEL.md#always-valid-invariants-on-the-object). Do not add overloads or implicit conversions from plain strings or numbers. Keep construction behind functions: in TypeScript, spreads and object literals (`{ ...order, status: "shipped" }`) bypass the factory.
 - **Typestate:** one type per stage (`DraftOrder`, `PaidOrder`, `ShippedOrder`), each with only its own data and moves, and each move returning the next stage, so "ship an unpaid order" doesn't compile. A runtime switch remains only at the untyped edge (parsing stored text), with an explicit reject for unknown values. The existing heuristic is typestate when stages are few and stable, state objects when they change often. The source also distinguishes caller contracts: typestate fits callers holding typed values where an illegal move should not compile; a uniform runtime State protocol fits an untyped event stream where every state must answer each action and reject or ignore unsupported ones. [katabench, coding-exercises/design-principles/make-illegal-states-unrepresentable.md; coding-exercises/design-principles/transition-through-state-objects.md]
 - **Expected failure as a result:** a reservation that can be rejected returns `{ ok: false, reason }` instead of throwing and being caught by every caller (see [ERRORS.md](ERRORS.md)). The exact-capacity case succeeds; a zero request is a no-op, decided on purpose.
 

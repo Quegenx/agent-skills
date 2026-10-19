@@ -6,7 +6,7 @@ Each design lists the decisions that matter, in the order you'd make them, and w
 
 - **Codes:** short, unguessable when links are private: random base62 strings (7 characters is about 3.5 trillion values) inserted with a unique constraint, retrying on the rare collision. A counter encoded in base62 is shorter and collision-free but enumerable (anyone can walk every link). Custom aliases share the same unique column, with a reserved-word list (`admin`, `api`).
 - **Redirect:** `301` is cached by browsers forever, so later edits, expiry and click counting stop working; use `302` (or `307`) for links you track or may change, `301` only for permanent ones.
-- **Read path:** reads outnumber writes by orders of magnitude. Cache code-to-URL in memory and Redis, and serve redirects from the edge (a CDN worker reading a replicated key-value store) so most requests never reach the origin. Cache misses for unknown codes too (briefly), or scanners hammer the database.
+- **Read path:** reads outnumber writes by orders of magnitude. Cache code-to-URL in memory and Redis, and serve redirects from the edge (a CDN worker reading a replicated key-value store) so most requests never reach the origin. Cache misses for unknown codes too (briefly), or scanners hammer the database; keep this design choice scoped through the [cacheable-result policy](../../backend/performance-and-caching/CACHING.md#cacheable-results).
 - **The viral link:** one key gets millions of requests per minute. Edge caching absorbs it; without an edge, an in-process cache in each instance in front of Redis keeps one hot key from saturating a single Redis node.
 - **Clicks:** never write a row per click synchronously in the redirect. Emit an event to a queue or log and aggregate in batches (counts per link per minute); accept that counts lag. Deduplicate bots by user agent and rate per IP if counts drive anything paid.
 - **Abuse:** check destination URLs against malware and phishing lists at creation and periodically after, rate-limit creation per account, and be able to disable a code instantly (the cache must honor the disable within seconds).
@@ -53,16 +53,7 @@ One command (`placeOrder`) owned by one service; reserve stock before charging (
 
 ## Recovering a data platform
 
-Backups are only worth the restores you've practiced.
-
-- **Point-in-time recovery:** a base snapshot plus the continuous write-ahead log lets you restore to any second before the incident (a bad migration, a mass delete), not just last night. Managed Postgres (including Supabase's PITR add-on) does this; self-hosted, use a tool like pgBackRest or WAL-G with off-site storage. Snapshots alone lose everything since the last one.
-- **Restore beside live data,** never over it: restore into a new instance, verify it, then either copy the lost rows back or switch traffic. Restoring in place destroys the evidence and every good write since the incident.
-- **Rebuild projections from the source of truth:** search indexes, caches and read models are replayed from the restored database or event log. Replay runs separately from live traffic (its own consumers, its own queue or a marked replay stream), so rebuilt events don't trigger emails and charges again.
-- **Fence the old writer:** before promoting a replica or a restored copy, make sure the old primary can't accept writes (revoke its credentials, shut it down, use a fencing token or the platform's failover), or two writers diverge (split brain).
-- **Reconcile before cutover:** row counts, sums and checksums per table or tenant between the restored copy and what you expect; investigate every difference before users see the data.
-- **Erased data stays erased:** a deletion request (privacy law, a user closing an account) must survive a restore. Keep a log of erasures and replay it after every restore, or encrypt each user's data with a per-user key and delete the key (crypto-shredding), which also covers backups you can't edit.
-- **Recover without the control plane:** document and test how to restore when the dashboard, the CI system or the identity provider is the thing that's down: credentials in a break-glass store, restore commands that work from a plain shell, backups in a separate account or provider.
-- **Targets:** state the recovery point objective (how much data you may lose) and recovery time objective (how long you may be down), and measure both in a scheduled restore drill.
+Choose point-in-time recovery for data loss, a replica for failover, and replayable projections for derived stores. State the recovery point and recovery time targets. Execute the canonical [recovery procedure](../../backend/deployment/SKILL.md#recovering-a-data-platform); PostgreSQL backup tools, WAL and promotion are in [Postgres operations](../../backend/postgres/OPERATIONS.md#backups-and-recovery).
 
 ## Fundamentals
 

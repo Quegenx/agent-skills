@@ -11,7 +11,7 @@ Build one artifact, run the same artifact everywhere, and make every change of w
 |---|---|
 | A selected-stack SaaS walking skeleton, identity/data/worker boundaries, environment inventory and incident checklist | [SAAS-BUILDOUT.md](SAAS-BUILDOUT.md) |
 | A Dockerfile, image size and security, a local stack with Compose, migrations in containers, self-hosting a third-party image (loopback port, `env_file`, telemetry opt-out, MCP behind an identity proxy) | [CONTAINERS.md](CONTAINERS.md) |
-| Moving a site or app to a new host or DNS provider; backups | below |
+| Moving a site or app to a new host or DNS provider; backups and recovery | below |
 | Provenance, keyless signing and verification before promotion, offline verification, release transparency, cached build outputs | [RELEASES.md](RELEASES.md) |
 | Creating a monorepo npm package, its exports map, release notes and versions, trusted publishing from CI | [NPM-PACKAGES.md](NPM-PACKAGES.md) |
 
@@ -69,11 +69,23 @@ rm "app-${stamp}.dump"
 
 - Object storage without egress fees suits backups, since restoring means downloading everything.
 - On a managed database (Supabase), the platform's own backups protect against the platform's failures; an off-platform dump protects against losing the account, a bad migration you notice late, or wanting the data somewhere else.
-- **A backup counts once a restore has worked:** restore the latest dump into a scratch database on a schedule and check row counts or a known record. Alert when the nightly job fails or the newest file is older than a day.
+- **A backup counts once a restore has worked:** follow the [recovery procedure](#recovering-a-data-platform). Alert when the nightly job fails or the newest file is older than a day.
 - Encrypt dumps that contain personal data, and limit who can read the bucket.
+
+### Recovering a data platform
+
+- **Restore beside live data,** never over it: restore into a new instance, verify it, then either copy the lost rows back or switch traffic. Restoring in place destroys the evidence and every good write since the incident. Restore the latest dump into a scratch database on a schedule and check row counts or a known record.
+- **Rebuild projections from the source of truth:** search indexes, caches and read models are replayed from the restored database or event log. Replay runs separately from live traffic (its own consumers, its own queue or a marked replay stream), so rebuilt events don't trigger emails and charges again.
+- **Fence the old writer:** before promoting a replica or a restored copy, make sure the old primary can't accept writes (revoke its credentials, shut it down, use a fencing token or the platform's failover), or two writers diverge (split brain).
+- **Reconcile before cutover:** row counts, sums and checksums per table or tenant between the restored copy and what you expect; investigate every difference before users see the data.
+- **Erased data stays erased:** a deletion request (privacy law, a user closing an account) must survive a restore. Keep a log of erasures and replay it after every restore, or encrypt each user's data with a per-user key and delete the key (crypto-shredding), which also covers backups you can't edit.
+- **Recover without the control plane:** document and test how to restore when the dashboard, the CI system or the identity provider is the thing that's down: credentials in a break-glass store, restore commands that work from a plain shell, backups in a separate account or provider.
+- **Targets:** state the recovery point objective (how much data you may lose) and recovery time objective (how long you may be down), and measure both in a scheduled restore drill.
+
+PostgreSQL backup tools, point-in-time recovery and promotion are in [Postgres operations](../postgres/OPERATIONS.md#backups-and-recovery).
 
 ## Prove it
 
 - Before a cutover, write down the one-step rollback and do it once on the preview setup.
 - After moving DNS and before flipping the site: send a test email from and to the domain, check SPF/DKIM/DMARC pass in the headers, and request every old redirect on the new host. After the flip, from a clean browser on the production hostname: robots.txt and the sitemap name production URLs, no page carries a staging `noindex`, `/.env` and `/.git/config` return 404, and `http://` reaches `https://` on the same host in one 301.
-- Restore last night's backup into an empty database and query it.
+- Restore last night's backup into an empty database and query it; measure recovery point and recovery time against the stated targets.

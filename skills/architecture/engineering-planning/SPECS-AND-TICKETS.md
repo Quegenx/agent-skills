@@ -26,7 +26,7 @@ Synthesize what is already known into a stable behavioral specification, then di
 
 [mattpocock/skills, to-tickets/SKILL.md]
 
-A shared rename or retype may break callers across the codebase before any vertical slice can work. Use [system-migration](../system-migration/SKILL.md) for the expand-contract method. In the ticket graph, each bounded caller-migration batch depends on the expansion ticket, and the final removal ticket depends on every caller batch. Explain why ordinary independently deliverable vertical slices cannot work for this change.
+A shared rename or retype may break callers across the codebase before any vertical slice can work. In the ticket graph, each bounded caller-migration batch depends on the expansion ticket, and the final removal ticket depends on every caller batch. Explain why ordinary independently deliverable vertical slices cannot work for this change.
 
 ## Local ticket records
 

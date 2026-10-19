@@ -19,6 +19,8 @@ function twoSum(nums: number[], target: number): [number, number] | null {
 ```
 
 - **Duplicates:** `if (seen.has(v)) return true; seen.add(v)` exits at the first repeat.
+- **Iterable inputs and equality:** constructing a `Set` adds every element of the supplied iterable, rather than stopping at the first repeat. Comparing its size with the input's length requires an input with a known element count. The old FUNCTIONAL.md line instead said "for a one-shot iterator it doesn't work at all". A `Set` compares objects by reference; compare a key when value equality is required. [Set constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/Set), [Set value equality](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set#value_equality)
+- For speed claims, measure your real collection: where the duplicate sits changes how much work the early exit saves. See [performance-and-caching](../../backend/performance-and-caching/SKILL.md).
 - **Pairs counted by index:** keep a frequency map and count partners **before** inserting the current value. Each pair is counted once, when its later item arrives, and three earlier copies of a partner make three pairs. For "difference exactly k" the partners are `v - k` and `v + k` (with k = 0 they coincide and would double count).
 - **Unique means frequency one,** not "distinct": histogram first, then filter by count.
 - **Top k by frequency:** count in one pass, then sort only the distinct values by the full key (`count desc, value asc`). A heap of size k beats the sort only when k is tiny against many distinct values.

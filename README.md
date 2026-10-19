@@ -1,6 +1,6 @@
 # Agent skills
 
-132 skills for coding agents, in ten sets:
+133 skills for coding agents, in ten sets:
 
 | Folder | What it's for |
 |---|---|
@@ -8,13 +8,13 @@
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal), Convex, Firebase and Kapso. 21 skills. |
-| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review, debugging, engineering planning and execution, source research, developer docs, artifact investigation and exact component/animation reconstruction. 14 skills. |
+| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, lint-rule authoring, code review, debugging, engineering planning and execution, source research, developer docs, artifact investigation and exact component/animation reconstruction. 15 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | App and marketing UI, design-system maintenance, motion, SVG, CSS, GSAP, accessibility, colors, Sonner, technical drawings, React with Next.js and React Native, WebGL and consent. 14 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy), k6 load tests and Google Analytics 4 with Tag Manager. 5 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 38 skills. |
-| Total | 132 skills in ten sets. |
+| Total | 133 skills in ten sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -138,13 +138,13 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [background-jobs](./skills/backend/background-jobs/SKILL.md) | Workers, queues, durable workflows, concurrency and external side-effect submission/reconciliation. |
 | [messaging](./skills/backend/messaging/SKILL.md) | Transactional outbox/inbox, idempotent consumers, ordering and brokers. External-effect uncertainty, broker returns and aggregate ordering. |
 | [sql-patterns](./skills/backend/sql-patterns/SKILL.md) | Correct SQL for joins, NULLs, ties, windows, time zones, JSON and hierarchies. |
-| [postgres](./skills/backend/postgres/SKILL.md) | Production schemas, pooling, transactions, WAL, recovery and PlanetScale-specific operations. |
+| [postgres](./skills/backend/postgres/SKILL.md) | Production schemas, pooling, transactions, WAL, backup/replication recovery and PlanetScale operations. |
 | [supabase](./skills/backend/supabase/SKILL.md) | Data API, RLS, Auth, database services, scoped tooling and declarative schemas; Fetch middleware authoring, bridge limits and transaction-scoped Postgres claims. |
 | [effect](./skills/backend/effect/SKILL.md) | Effect v4 code, errors, services, resources, concurrency, Schema and platform APIs. |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Connected accounts, OAuth, provider APIs, sync, webhooks and Kapso; pool identity across credential refresh. |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics, logs, health checks and incident diagnosis. Current semantic attributes, telemetry privacy, SDK buffers and collector limits. |
-| [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, host moves, backups, release verification and npm publishing. Selected-stack SaaS walking skeleton, environment inventory and incident checklist. |
-| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Query tuning, caching, browser performance, runtime tracing and telemetry-led cost/performance audits. |
+| [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, host moves, backups, restore/replay/reconciliation, release verification and npm publishing. |
+| [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Query and browser performance, telemetry audits, cache invalidation and scoped successful-result versus negative-cache policy. |
 | [secure-coding](./skills/backend/secure-coding/SKILL.md) | Trust boundaries, authentication, tenant isolation, parsers, browser boundaries and package installation controls. Atomic one-time-code redemption and encrypted relay fallback. |
 | [stripe](./skills/backend/stripe/SKILL.md) | Payments, Billing, Connect, Tax, Stripe Apps, agent tools and qualified revenue/operations metrics. Provider-specific dispute evidence, final submission and actual recovery states. |
 | [revenuecat](./skills/backend/revenuecat/SKILL.md) | Purchases and subscriptions, current identity, store testing, verification modes, paywalls, experiments and webhooks. |
@@ -160,18 +160,19 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 
 | Skill | Covers |
 |---|---|
-| [software-architecture](./skills/architecture/software-architecture/SKILL.md) | Application structure, module boundaries, data ownership, extraction and question-driven logic prototypes. Transaction scope, source-qualified slice policies, isolation and rollback limits. |
-| [system-design](./skills/architecture/system-design/SKILL.md) | Load balancing, caching, queues, CDNs, feeds, sandboxes; worked designs from URL shorteners to data recovery. Commit-order limits and idempotent feed fan-out. |
+| [software-architecture](./skills/architecture/software-architecture/SKILL.md) | Application shape, layers, module ownership, scaling, service extraction and logic prototypes. |
+| [system-design](./skills/architecture/system-design/SKILL.md) | Components, failure modes, feeds, sandboxes and worked designs, with links to recovery operations. |
 | [domain-modeling](./skills/architecture/domain-modeling/SKILL.md) | Contexts, aggregates, invariants, events, sagas, CQRS, domain glossaries and decision records. Shallow collection protection and projection watermark gaps. |
-| [system-migration](./skills/architecture/system-migration/SKILL.md) | Incremental ports, legacy replacement, dependency changes and jscpd function maps with behavior evidence. |
-| [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving changes, typed errors, deep modules, dependency audits and jscpd, Deslop and truffler duplication/reuse evidence. |
-| [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets. JavaScript midpoint coercion and source-qualified numeric budgets. |
-| [testing](./skills/architecture/testing/SKILL.md) | Behavior tests, real infrastructure, independent oracles and re-auditing results after oracle faults; provider, malformed-fixture and mutation evidence. |
-| [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based reviews, P0 to P3 severity, scanner/security audits and fresh-fact/decision audit policy. |
+| [system-migration](./skills/architecture/system-migration/SKILL.md) | Legacy replacement, synchronization, shadow comparisons, cutover and function maps, with tagged source alternatives. |
+| [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving transformations, typed errors, module boundaries, dependency audits and canonical technique references. |
+| [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Algorithm cues, canonical duplicate-set detection, windows, graphs, dynamic programming and numeric/allocation budgets. |
+| [testing](./skills/architecture/testing/SKILL.md) | Behavior, integration and terminal tests, independent oracles, parser edge cases and canonical fixture references. |
+| [lint-rule-authoring](./skills/architecture/lint-rule-authoring/SKILL.md) | Detector contracts, implementation, corpus validation, fuzzing, FP/FN audits and base/head parity. |
+| [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based reviews, P0 to P3 severity, scanner/security triage, repository audits and reviewer tuning. |
 | [code-research](./skills/architecture/code-research/SKILL.md) | Source investigation, exact anchors, version identity, claim ledgers and coverage limits. |
 | [developer-docs](./skills/architecture/developer-docs/SKILL.md) | Source-verified developer docs, CI-backed snippets, navigation, redirects and generated output. |
 | [debugging](./skills/architecture/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
-| [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specs, work breakdown, handoff, RFCs and selected-plan execution/resume. |
+| [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specs, local work breakdown, handoffs, RFCs and plan execution with explicit caller-transition dependencies. |
 | [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and retained evidence; routes exact UI reconstruction to pixel-reverse-engineer. |
 | [pixel-reverse-engineer](./skills/architecture/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction from live DOM, CSS, assets, JavaScript and behavior. |
 
