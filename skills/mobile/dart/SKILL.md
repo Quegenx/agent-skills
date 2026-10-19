@@ -5,7 +5,9 @@ description: "Writes Dart 3 the way dart.dev and the Dart team's skills prescrib
 
 # Dart
 
-Dart code, its tools and its packages, for pure Dart and for the Dart inside a Flutter app. A package's language version is the lower bound of `environment.sdk` in its `pubspec.yaml`, not the SDK binary you run, and that one value decides which features compile (patterns need 3.0, dot shorthands 3.10, primary constructors 3.13), which breaking changes apply and how `dart format` lays out the code. Current stable is 3.13.5 (2026-09-29). Widgets, Flutter testing, builds and app releases are in [../flutter/SKILL.md](../flutter/SKILL.md).
+Dart code, its tools and its packages, for pure Dart and for the Dart inside a Flutter app. A package's language version is the lower bound of `environment.sdk` in its `pubspec.yaml`, not the SDK binary you run, and that one value decides which features compile (patterns need 3.0, dot shorthands 3.10, primary constructors 3.13), which breaking changes apply and how `dart format` lays out the code. Current stable is 3.13.5 (2026-09-29). Widgets, Flutter testing, builds and app releases are in [flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

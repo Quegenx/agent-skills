@@ -1,6 +1,6 @@
 # Image sizes by platform
 
-Sizes for social posts, profile and listing banners, each marked **verified** (with the official page, checked 2026-10-18) or **source only** ([coreyhaines31/marketingskills, image], not checked against the platform; X's docs could not be reached). Recheck a source-only size on the platform before a launch. Store art: Google Play's feature graphic and App Store screenshots are in [aso](../../mobile/aso/SKILL.md) (its ANDROID.md has the 1024 x 500 feature graphic); paid ad sizes are [ad-creative](../ad-creative/SKILL.md); share images (OG) are [seo LINK-PREVIEWS.md](../seo/LINK-PREVIEWS.md).
+Sizes for social posts, profile and listing banners, each marked **verified** (with the official page, checked 2026-10-18) or **source only** ([coreyhaines31/marketingskills, image], not checked against the platform; X's docs could not be reached). Recheck a source-only size on the platform before a launch. Store art: Google Play's feature graphic and App Store screenshots are in [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md) (its ANDROID.md has the 1024 x 500 feature graphic); paid ad sizes are [ad-creative](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md); share images (OG) are [seo LINK-PREVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md).
 
 ## Social posts
 
@@ -26,7 +26,7 @@ LinkedIn also says (https://www.linkedin.com/help/linkedin/answer/a563309, https
 | LinkedIn Life tab main image | 1128 x 376 | Verified (a563309) |
 | LinkedIn personal cover | 1584 x 396 (4:1, keep the safe zone in the centre) | Source only |
 | X header | 1500 x 500 (3:1), partly covered by the avatar | Source only |
-| Product Hunt gallery | 1270 x 760 (5:3), up to 6 images | Source only; launch assets are [product-launch PRODUCT-HUNT.md](../product-launch/PRODUCT-HUNT.md) |
+| Product Hunt gallery | 1270 x 760 (5:3), up to 6 images | Source only; launch assets are [product-launch PRODUCT-HUNT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/PRODUCT-HUNT.md) |
 | G2 profile | 1280 x 720 (16:9), product screenshots preferred | Source only |
 | GitHub social preview | 1280 x 640 (2:1), shows in link cards | Source only |
 

@@ -8,7 +8,7 @@ Buying a placement in someone else's newsletter. For B2B and prosumer products i
 
 - **Read three recent issues.** Is the content close to your category? Do the other sponsors sell to your buyer? Do readers reply or comment?
 - **Ask for the audience breakdown:** role, seniority, company size, geography. Writers who know their readers can answer quickly.
-- **Ask for clicks per sponsor placement,** as a median across recent sends. Open rates are inflated by Apple Mail Privacy Protection, so treat opens as a ceiling (this repo's line: "Apple Mail Privacy Protection over-reports opens; prefer clicks", [../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md)).
+- **Ask for clicks per sponsor placement,** as a median across recent sends. Open rates are inflated by Apple Mail Privacy Protection, so treat opens as a ceiling (this repo's line: "Apple Mail Privacy Protection over-reports opens; prefer clicks", [onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md)).
 - **Ask how many sponsors renew.** Sponsors that book again are the best evidence the list converts. Ask for one to contact.
 - **Turn the price into a cost per click:** price ÷ median clicks, compared with your best channel's cost per click. The placement has to beat what the same money would buy there.
 - **Test before buying a bundle.** Run one placement, read the result, then negotiate a package.
@@ -54,7 +54,7 @@ The angle has to be recorded with each placement: a click count with no angle at
 - **Fit the newsletter's voice.** Many writers rewrite sponsor copy in their own voice, and those versions usually do better. Send talking points, the required lines (offer, link, disclosure), and permission to rework the rest.
 - **Disclose.** The source asks for a "Sponsored" or "Presented by" label; the FTC names "sponsored" as clear ("So are terms like 'advertisement,' 'ad,' and 'sponsored.'", https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers) and does not name "Presented by", so use "Sponsored".
 
-Copy itself is in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+Copy itself is in [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
 
 ## One file and one tracked link per placement
 
@@ -62,7 +62,7 @@ Copy itself is in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slo
 
 - **One file per send date and placement,** for example `sponsorships/{partner}/2026-04-17-{publication}-primary.md`. Never combine two send dates in one file. Each placement needs its own link, its own checks, and its own record of who approved it.
 - **Record the angle in that file.** That's where the read-past-results step gets it later.
-- **One tracked link per placement,** even for two sends in the same week. A short link makes the copy cleaner and lets you change the destination after the issue ships. Build the UTMs with one newsletter pattern ([../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md)): the campaign rolls up the month, and the content value names the placement and date.
+- **One tracked link per placement,** even for two sends in the same week. A short link makes the copy cleaner and lets you change the destination after the issue ships. Build the UTMs with one newsletter pattern ([google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md)): the campaign rolls up the month, and the content value names the placement and date.
 - **Add a promo code** when the newsletter allows it. It catches readers who type the URL instead of clicking.
 
 ## Reporting
@@ -70,8 +70,8 @@ Copy itself is in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slo
 `[coreyhaines31/marketingskills, influencer-marketing]`
 
 - **Per placement:** clicks, signups, activated or paying users, revenue, cost per click, and cost per signup.
-- **Check that the clicks are people.** B2B lists can pick up clicks from corporate email-security scanners that follow every link. "If clicks far outnumber analytics sessions from that link, discount them." (The same scanners consume single-use sign-in links: [../../backend/supabase/AUTH-SIGN-IN.md](../../backend/supabase/AUTH-SIGN-IN.md).)
-- **Add a "How did you hear about us?" question** to signup. Newsletter readers often search for you later instead of clicking, and that shows up as branded search or direct ([../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md)).
+- **Check that the clicks are people.** B2B lists can pick up clicks from corporate email-security scanners that follow every link. "If clicks far outnumber analytics sessions from that link, discount them." (The same scanners consume single-use sign-in links: [supabase AUTH-SIGN-IN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SIGN-IN.md).)
+- **Add a "How did you hear about us?" question** to signup. Newsletter readers often search for you later instead of clicking, and that shows up as branded search or direct ([marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md)).
 - **Decide after 2 to 3 placements per newsletter:** renew, change the angle or slot, or drop it. One bad send is too little data to judge, unless it never went out.
 - **Feed the results back.** Add each placement's angle and result to the table above, so the next brief starts from it.
 

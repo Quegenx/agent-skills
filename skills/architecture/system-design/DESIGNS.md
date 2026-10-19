@@ -6,7 +6,7 @@ Each design lists the decisions that matter, in the order you'd make them, and w
 
 - **Codes:** short, unguessable when links are private: random base62 strings (7 characters is about 3.5 trillion values) inserted with a unique constraint, retrying on the rare collision. A counter encoded in base62 is shorter and collision-free but enumerable (anyone can walk every link). Custom aliases share the same unique column, with a reserved-word list (`admin`, `api`).
 - **Redirect:** `301` is cached by browsers forever, so later edits, expiry and click counting stop working; use `302` (or `307`) for links you track or may change, `301` only for permanent ones.
-- **Read path:** reads outnumber writes by orders of magnitude. Cache code-to-URL in memory and Redis, and serve redirects from the edge (a CDN worker reading a replicated key-value store) so most requests never reach the origin. Cache misses for unknown codes too (briefly), or scanners hammer the database; keep this design choice scoped through the [cacheable-result policy](../../backend/performance-and-caching/CACHING.md#cacheable-results).
+- **Read path:** reads outnumber writes by orders of magnitude. Cache code-to-URL in memory and Redis, and serve redirects from the edge (a CDN worker reading a replicated key-value store) so most requests never reach the origin. Cache misses for unknown codes too (briefly), or scanners hammer the database; keep this design choice scoped through the [cacheable-result policy](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/CACHING.md#cacheable-results).
 - **The viral link:** one key gets millions of requests per minute. Edge caching absorbs it; without an edge, an in-process cache in each instance in front of Redis keeps one hot key from saturating a single Redis node.
 - **Clicks:** never write a row per click synchronously in the redirect. Emit an event to a queue or log and aggregate in batches (counts per link per minute); accept that counts lag. Deduplicate bots by user agent and rate per IP if counts drive anything paid.
 - **Abuse:** check destination URLs against malware and phishing lists at creation and periodically after, rate-limit creation per account, and be able to disable a code instantly (the cache must honor the disable within seconds).
@@ -53,7 +53,7 @@ One command (`placeOrder`) owned by one service; reserve stock before charging (
 
 ## Recovering a data platform
 
-Choose point-in-time recovery for data loss, a replica for failover, and replayable projections for derived stores. State the recovery point and recovery time targets. Execute the canonical [recovery procedure](../../backend/deployment/SKILL.md#recovering-a-data-platform); PostgreSQL backup tools, WAL and promotion are in [Postgres operations](../../backend/postgres/OPERATIONS.md#backups-and-recovery).
+Choose point-in-time recovery for data loss, a replica for failover, and replayable projections for derived stores. State the recovery point and recovery time targets. Execute the canonical [recovery procedure](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#recovering-a-data-platform); PostgreSQL backup tools, WAL and promotion are in [Postgres operations](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/OPERATIONS.md#backups-and-recovery).
 
 ## Fundamentals
 

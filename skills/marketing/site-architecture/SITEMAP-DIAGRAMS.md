@@ -1,6 +1,6 @@
 # Page trees and sitemap diagrams
 
-Two formats for showing a site's structure, copied from coreyhaines31/marketingskills' `site-architecture` (MIT, SKILL.md and references/mermaid-templates.md): an ASCII tree for quick drafts and text-only contexts, and Mermaid diagrams for presentations, complex relationships, navigation zones and linking patterns. These are visual sitemaps for people; the XML sitemap search engines read is in [../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md).
+Two formats for showing a site's structure, copied from coreyhaines31/marketingskills' `site-architecture` (MIT, SKILL.md and references/mermaid-templates.md): an ASCII tree for quick drafts and text-only contexts, and Mermaid diagrams for presentations, complex relationships, navigation zones and linking patterns. These are visual sitemaps for people; the XML sitemap search engines read is in [seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md).
 
 **Contents:** [ASCII tree](#ascii-tree) · [Basic Hierarchy](#basic-hierarchy) · [Hierarchy with Navigation Zones](#hierarchy-with-navigation-zones) · [Hierarchy with URL Labels](#hierarchy-with-url-labels) · [Hub-and-Spoke Content Model](#hub-and-spoke-content-model) · [Internal Linking Flow](#internal-linking-flow) · [Before/After Restructuring](#beforeafter-restructuring) · [Color-Coding Conventions](#color-coding-conventions) · [Prove it](#prove-it)
 

@@ -49,7 +49,7 @@ const { data, error } = await resend.apiKeys.create({
 - **No retry logic was found in the SDK source** (a code search for "retry" in `src/` found only a test fixture); that is not proof of absence. The vendor skill's retry helpers are in [LIMITS-AND-ERRORS.md](LIMITS-AND-ERRORS.md#retries).
 - **`resend.audiences` is deprecated;** use `segments` (see [CONTACTS-AND-BROADCASTS.md](CONTACTS-AND-BROADCASTS.md)).
 - **Clients on the instance:** `segments`, `apiKeys`, `automations`, `batch`, `broadcasts`, `contactProperties`, `contacts`, `domains`, `emails`, `events`, `inboxes`, `logs`, `oauthGrants`, `suppressions`, `templates`, `topics`, `usage`, `webhooks`.
-- **`react` is Node only.** When `payload.react` is set, the SDK renders it to `html` (`await render(payload.react)`) before posting. Templates as code: [../react-email/SKILL.md](../react-email/SKILL.md).
+- **`react` is Node only.** When `payload.react` is set, the SDK renders it to `html` (`await render(payload.react)`) before posting. Templates as code: [react-email SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/SKILL.md).
 - **Function call or JSX for `react`:** the docs' agent prompt says pass the component as a function call (`react: WelcomeEmail({ name: 'John' })`), not as JSX; the Hono and Cloudflare Workers quickstarts and the SDK README use JSX (`react: <EmailTemplate firstName="John" />`). In files without JSX transpilation the README uses `import { jsx } from 'react/jsx-runtime'` and `react: jsx(EmailTemplate, { firstName: "John", product: "MyApp" })`.
 
 The vendor skill's quick send (Node):

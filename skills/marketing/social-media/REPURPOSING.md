@@ -1,6 +1,6 @@
 # Repurposing long-form into social
 
-Turn one piece of long-form content into many posts. "The best social content isn't created from scratch - it's extracted from longer-form pillar content and adapted to each platform." Text is from coreyhaines31/marketingskills `social` SKILL.md (MIT). Which flagship pieces to make, and the per-flagship atomization checklist, are in [../content-strategy/SKILL.md](../content-strategy/SKILL.md).
+Turn one piece of long-form content into many posts. "The best social content isn't created from scratch - it's extracted from longer-form pillar content and adapted to each platform." Text is from coreyhaines31/marketingskills `social` SKILL.md (MIT). Which flagship pieces to make, and the per-flagship atomization checklist, are in [content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md).
 
 ## Blog post to social
 
@@ -38,7 +38,7 @@ Turn one piece of long-form content into many posts. "The best social content is
 
 **Per episode, aim for:** 3 to 5 short clips or audiograms (15 to 60 s) for Reels, TikTok and Shorts; 1 to 2 LinkedIn text posts from key insights; 1 X thread of takeaways; 1 carousel of the main framework or list; 1 newsletter section or blog post from the best segment.
 
-Clip editing (start inside the conflict, result before the workflow, one CTA) is in [../creator-marketing/UGC-FORMATS.md](../creator-marketing/UGC-FORMATS.md#clips).
+Clip editing (start inside the conflict, result before the workflow, one CTA) is in [creator-marketing UGC-FORMATS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/UGC-FORMATS.md#clips).
 
 ## Webinar or live event to social
 

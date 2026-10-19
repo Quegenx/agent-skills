@@ -30,6 +30,8 @@ Optional engines, only when a brief calls for one (see make-video): `npx skills 
 
 Finish by telling the user what is ready and that `make-video` is the place to start ("make a 15-second launch video for …").
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## Prerequisite correction
 
 The CDP helpers directly use global `WebSocket`. Node documents it as unflagged from 22.0; the old complete-toolchain check accepted Node 20+ without its required flag. This does not raise every independent script minimum. [https://nodejs.org/docs/latest-v22.x/api/globals.html#class-websocket]

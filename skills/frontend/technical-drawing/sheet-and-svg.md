@@ -51,7 +51,7 @@ Keep styles, patterns and markers inside the SVG. Avoid remote fonts, linked ima
 
 Set `fill="none"` on open paths and polylines, including leaders. SVG's default fill otherwise closes a bent leader into a black triangle.
 
-Include an SVG `title` and `desc` summarizing the subject and views. When embedding in a product, hand accessible naming and the parts-list alternative to [svg ACCESSIBILITY.md](../svg/ACCESSIBILITY.md).
+Include an SVG `title` and `desc` summarizing the subject and views. When embedding in a product, hand accessible naming and the parts-list alternative to [svg ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/ACCESSIBILITY.md).
 
 This shell establishes physical units and line roles without prescribing the sheet's composition:
 

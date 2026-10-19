@@ -7,6 +7,8 @@ description: "Models business rules: bounded contexts, ubiquitous language, doma
 
 Put each business rule in one place that every path must go through, and draw boundaries where the language and the rules change. The patterns below are tools, not a template: a settings screen stays simple CRUD, an ordering or billing flow earns the full model. Pick the file:
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Boundaries, language, how contexts relate and translate, running an EventStorming workshop | [STRATEGIC.md](STRATEGIC.md) |

@@ -56,7 +56,7 @@ Radix splits its scales the same way: "Scales designed for dark foreground text:
 - Tinting the neutral toward the accent is "a stylistic option, not a correction": OKLCH chroma `0.005` to `0.02` at the accent's hue. "Enough to measure, not enough to name."
 - "Warm neutrals, hue toward orange, read approachable and editorial; cool ones, toward blue, read technical and precise. Whichever you pick, including none, hold it across the whole ramp." A warm gray border on a cool gray background is visible even when neither color is nameable alone.
 - "Neutrals carry the most roles, so they need the most steps. Never generate fewer neutral steps than accent steps."
-- Open Props' tinted grays from `--gray-hue` and `--gray-chroma` are in [modern-css COLOR.md](../modern-css/COLOR.md#oklch-palettes-from-one-hue); app-ui's dark ramp "leans toward the brand hue" ([app-ui TOKENS.md](../app-ui/TOKENS.md)).
+- Open Props' tinted grays from `--gray-hue` and `--gray-chroma` are in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#oklch-palettes-from-one-hue); app-ui's dark ramp "leans toward the brand hue" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)).
 
 ## Status colors
 
@@ -141,7 +141,7 @@ maxChroma = findMaxChroma(step[i].L, hue, colorSpace)
 step[i].C = (chromaPercentage / 100) * maxChroma
 ```
 
-"High-chroma base colors will have lower chroma at the lightest and darkest ends, this is correct and expected." The skill never defines `findMaxChroma`; the checks behind this file found each maximum by binary search on C against the gamut boundary. Adam Argyle's math versus optical palettes are in [modern-css COLOR.md](../modern-css/COLOR.md#oklch-palettes-from-one-hue).
+"High-chroma base colors will have lower chroma at the lightest and darkest ends, this is correct and expected." The skill never defines `findMaxChroma`; the checks behind this file found each maximum by binary search on C against the gamut boundary. Adam Argyle's math versus optical palettes are in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#oklch-palettes-from-one-hue).
 
 The skill says this step "ensures every step is within gamut", but its own example scale breaks it: steps 500, 600, 700 and 800 (C 0.188, 0.168, 0.138, 0.108 at H 250) are outside sRGB, whose maximums there are 0.176, 0.151, 0.126 and 0.102 (computed). The corrected scale is in [TAILWIND.md](TAILWIND.md#a-custom-scale-with-theme).
 
@@ -162,7 +162,7 @@ The skill says "9 steps is the standard default (matches Tailwind)". Tailwind's 
 With an accent plus status ramps, "the ramps must agree step for step. `red-500` and `blue-500` should read as equally bright and vivid, or a red button looks heavier than a blue one at the same step." [Jakub Krehel, better-colors]
 
 - **Match perceived lightness exactly.** "Same step, same brightness, across every hue."
-- **Match vividness relatively, not absolutely.** Use the same chroma *percentage* of each hue's own maximum, not the same absolute C. "Yellows and cyans are the usual casualties, peaking much lower than reds and blues. Copy the numbers across and the warning color looks weak beside the danger one." [Jakub Krehel, better-colors] Adam Argyle's "Yellow does not generate well" is in [modern-css COLOR.md](../modern-css/COLOR.md#lightness-lch-and-oklch-over-hsl).
+- **Match vividness relatively, not absolutely.** Use the same chroma *percentage* of each hue's own maximum, not the same absolute C. "Yellows and cyans are the usual casualties, peaking much lower than reds and blues. Copy the numbers across and the warning color looks weak beside the danger one." [Jakub Krehel, better-colors] Adam Argyle's "Yellow does not generate well" is in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#lightness-lch-and-oklch-over-hsl).
 
 [Jakub Krehel, oklch-skill] Each value is 80% of its hue's sRGB maximum at L 0.623 (0.176, 0.196, 0.253, computed):
 

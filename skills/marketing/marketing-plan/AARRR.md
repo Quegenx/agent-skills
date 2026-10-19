@@ -2,7 +2,7 @@
 
 AARRR (Dave McClure's "pirate metrics") is the spine of every plan produced by this skill. This doc is the primer + the decision rules for when each stage gets prioritized.
 
-Source: [coreyhaines31/marketingskills, marketing-plan] `references/aarrr-framework.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The activation event itself is not a sign-up and should be validated against retention, not assumed: [app-growth ONBOARDING.md](../../mobile/app-growth/ONBOARDING.md) ("Activation is not sign-up") and [posthog METRICS-MODELING.md](../../monitoring/posthog/METRICS-MODELING.md).
+Source: [coreyhaines31/marketingskills, marketing-plan] `references/aarrr-framework.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The activation event itself is not a sign-up and should be validated against retention, not assumed: [app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ONBOARDING.md) ("Activation is not sign-up") and [posthog METRICS-MODELING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/METRICS-MODELING.md).
 
 ## The five stages
 
@@ -117,7 +117,7 @@ For every client, one or two AARRR stages will be the binding constraint. The pl
 - Support as marketing (high-touch moments that drive stories)
 - Community + practitioner networks
 
-**Sequencing principle:** Ship lifecycle flows in the order their content is most stable (sequence strategy: [email-marketing](../email-marketing/SKILL.md); delivery and consent: [email-practices](../../backend/email-practices/SKILL.md)). Hardware post-purchase flows ship first (they don't reference in-app screens that might change). Onboarding emails ship last (they reference UI that might change). Win-back is a quarterly campaign, not a one-time flow.
+**Sequencing principle:** Ship lifecycle flows in the order their content is most stable (sequence strategy: [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md); delivery and consent: [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md)). Hardware post-purchase flows ship first (they don't reference in-app screens that might change). Onboarding emails ship last (they reference UI that might change). Win-back is a quarterly campaign, not a one-time flow.
 
 ### Referral
 

@@ -1,6 +1,6 @@
 # Architecture
 
-How a Flutter app is split into layers so each piece can change and be tested alone. Separation of concerns is the most important principle: a UI layer (views and view models, MVVM) over a data layer (repositories and services), with an optional domain layer between them. The rules the sources stress: widgets stay free of data logic, the repository is the only class that changes its data (the single source of truth), and dependencies arrive through constructors. The recommendations are guidelines, not steadfast rules: adapt them to your requirements. The language itself is [../dart/SKILL.md](../dart/SKILL.md).
+How a Flutter app is split into layers so each piece can change and be tested alone. Separation of concerns is the most important principle: a UI layer (views and view models, MVVM) over a data layer (repositories and services), with an optional domain layer between them. The rules the sources stress: widgets stay free of data logic, the repository is the only class that changes its data (the single source of truth), and dependencies arrive through constructors. The recommendations are guidelines, not steadfast rules: adapt them to your requirements. The language itself is [dart SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/SKILL.md).
 
 **Contents:** [The layers](#the-layers) · [Recommendations by priority](#recommendations-by-priority) · [Project structure](#project-structure) · [Views](#views) · [View models](#view-models) · [Repositories](#repositories) · [Services](#services) · [Domain layer and use cases](#domain-layer-and-use-cases) · [Dependency injection](#dependency-injection) · [Commands](#commands) · [The Result type](#the-result-type) · [Optimistic state](#optimistic-state) · [State management options](#state-management-options) · [Building a feature, in order](#building-a-feature-in-order) · [The Compass case study](#the-compass-case-study) · [Testing each layer](#testing-each-layer) · [Prove it](#prove-it)
 
@@ -147,7 +147,7 @@ class HomeViewModel {
 
 - **UI state is an immutable snapshot** of the data needed to fully render a view. Expose lists as `UnmodifiableListView<BookingSummary> get bookings => UnmodifiableListView(_bookings);`. For complex state you might create a `HomeUiState` class.
 - **Extend `ChangeNotifier`** (or use `Listenable`) and call `notifyListeners()` when new data arrives (the Compass `_load` example calls it in a `finally` block). The flow: repository provides state, view model updates, `notifyListeners`, view re-renders.
-- **Combine data from two repositories in the view model** (or the domain layer). Repositories never know about each other. A community alternative for one action that many services react to: a global `AppEventsDispatcher` stream each service listens to, tested by publishing events ([../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#global-app-events)).
+- **Combine data from two repositories in the view model** (or the domain layer). Repositories never know about each other. A community alternative for one action that many services react to: a global `AppEventsDispatcher` stream each service listens to, tested by publishing events ([flutter-ux WIDGET-PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/WIDGET-PATTERNS.md#global-app-events)).
 
 The skill's service, repository, view model and view, end to end:
 
@@ -263,7 +263,7 @@ class ProfileView extends StatelessWidget {
 
 ### CQRS variant (community)
 
-One developer's Clean Architecture pattern (Emin Şahin, "CQRS Pattern in Flutter", DEV), community practice and not Flutter team guidance. It puts operations in use cases, including pass-through reads such as `CheckUserExists`, which conflicts with the official advice above to add use cases only when needed. The CQRS idea itself is in [../../architecture/domain-modeling/EVENTS.md](../../architecture/domain-modeling/EVENTS.md#cqrs).
+One developer's Clean Architecture pattern (Emin Şahin, "CQRS Pattern in Flutter", DEV), community practice and not Flutter team guidance. It puts operations in use cases, including pass-through reads such as `CheckUserExists`, which conflicts with the official advice above to add use cases only when needed. The CQRS idea itself is in [domain-modeling EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/domain-modeling/EVENTS.md#cqrs).
 
 - **Type use cases by their nature:** "Name your operations by what they DO, and type them by their NATURE (read vs write)." With a separate base type for reads and writes, the post says, team members "can easily find all write vs read operations".
 - **Not the Compass `Command`:** a CQRS command is a write use case in the domain layer; a Compass [command](#commands) is a view model property that wraps any action, read or write, for the view.
@@ -580,9 +580,9 @@ class SubscribeButtonStyle {
 | `InheritedWidget`, `InheritedModel` | Low level, ancestors to children; what `provider` and many others use under the hood |
 | `ChangeNotifier` | Part of `flutter:foundation`; what the architecture guide's view models extend |
 
-- **Depend or read once.** Choose dependency-creating versus one-shot lookups using the canonical [ancestor lookup rules](../flutter-render-objects/ELEMENTS.md#ancestor-and-descendant-lookups). Keep that lookup fresh across builds; costs are in [PERFORMANCE.md](PERFORMANCE.md#build-cost).
+- **Depend or read once.** Choose dependency-creating versus one-shot lookups using the canonical [ancestor lookup rules](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-render-objects/ELEMENTS.md#ancestor-and-descendant-lookups). Keep that lookup fresh across builds; costs are in [PERFORMANCE.md](PERFORMANCE.md#build-cost).
   - P2 correction: the old line grouped `Form.of` and `Scrollable.of` with the one-shot `Scaffold.of` lookup. The official dependency distinction and original renderobjects source claim are recorded at that owner. [Form.of](https://api.flutter.dev/flutter/widgets/Form/of.html), [Scrollable.of](https://api.flutter.dev/flutter/widgets/Scrollable/of.html)
-- **An `InheritedNotifier` in practice:** a `ThemeProvider` above `MaterialApp` switches the theme mode without a restart ([../flutter-ux/THEMING.md](../flutter-ux/THEMING.md)).
+- **An `InheritedNotifier` in practice:** a `ThemeProvider` above `MaterialApp` switches the theme mode without a restart ([flutter-ux THEMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/THEMING.md)).
 
 - **Community packages.** The state management options page no longer names packages; it points to the pub.dev `state-management` topic and says the best choice depends on the app's complexity, the team's preferences and the problem. The architecture pages name `riverpod`, `flutter_bloc` and `signals` as alternatives to `ChangeNotifier`, and the Compass UI could have used streams or those libraries. One third-party Riverpod architecture, and where it departs from this file, is [RIVERPOD.md](RIVERPOD.md).
 - **Start with `provider`** if you are new to Flutter and have no strong reason for another approach (Redux, Rx, hooks). Install with `flutter pub add provider`, import `package:provider/provider.dart`. Three concepts: `ChangeNotifier`, `ChangeNotifierProvider`, `Consumer`.

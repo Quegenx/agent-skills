@@ -7,6 +7,8 @@ description: "Builds LLM features: vector and hybrid search, RAG with citations,
 
 An AI feature is done when it is measured, not when the output reads well. Every part below has a way it fails quietly, and a check that catches it. Pick the file for the job:
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Search by meaning, embeddings, pgvector, Convex vector search, hybrid search, memory and compression (quantization, coarse-then-exact search, in-process index files) | [VECTOR-SEARCH.md](VECTOR-SEARCH.md) |
@@ -19,7 +21,7 @@ An AI feature is done when it is measured, not when the output reads well. Every
 1. **Measure the part that can be wrong.** Retrieval is measured by whether the right items come back; extraction by whether the fields are correct; generation by whether every claim is supported. Fluent prose proves none of these. Build a small labeled set first (ten to fifty real cases with known answers, including hard and unanswerable ones) and run it on every change.
 2. **Typed output is not correct output.** A schema guarantees shape, not truth. Validate the values against the domain (formats, ranges, checksums, cross-field rules) and allow "unknown".
 3. **Uncertainty is an answer.** The system must be able to say "not found", "unreadable" or "I don't know" and must be tested for it. A plausible invented value is the worst failure because nobody notices.
-4. **One representation end to end.** Queries and stored items use the same embedding model, version, dimensions and preprocessing. Record the model and version with the data; changing models means re-embedding everything.
+4. **For embedding retrieval, one representation end to end.** Queries and stored items use the same embedding model, version, dimensions and preprocessing. Record the model and version with the data; changing models means re-embedding everything.
 5. **Pin and record what produced a result:** provider, model and version, prompt version, parameters. Results without this can't be compared or reproduced.
 6. **Retrieved text and user files are data, never instructions.** Text in a document that tells the model to do something is content to quote or ignore, not a command. Filter by permissions before retrieval, never after generation.
 7. **Paid calls are side effects.** Every call that costs money or can't be undone gets idempotency, a clear state, and a budget. A lost response is "uncertain", not "failed".
@@ -35,6 +37,6 @@ For rewriting or porting an existing system with agents, use the `system-migrati
 
 - A labeled test set exists, includes hard and unanswerable cases, and the current numbers are written down with the model and prompt versions.
 - Uncertain, empty and unsupported cases produce an honest result, shown in the UI.
-- Paid calls are idempotent, budgeted and recoverable from a lost response.
-- Permissions are applied before retrieval.
+- For paid calls: they are idempotent, budgeted and recoverable from a lost response.
+- For retrieval: permissions are applied before retrieval.
 - Report what was measured and what wasn't.

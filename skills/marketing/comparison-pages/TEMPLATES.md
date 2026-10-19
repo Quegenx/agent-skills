@@ -1,6 +1,6 @@
 # Section templates
 
-Ready-to-fill sections for comparison pages, copied from coreyhaines31/marketingskills `competitors` `references/templates.md` (MIT), with dashes replaced and the FTC rules added where quotes and results appear. Fill every bracket from the competitor data file ([DATA-AND-HUB.md](DATA-AND-HUB.md)), never from memory, and pass the finished copy through [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+Ready-to-fill sections for comparison pages, copied from coreyhaines31/marketingskills `competitors` `references/templates.md` (MIT), with dashes replaced and the FTC rules added where quotes and results appear. Fill every bracket from the competitor data file ([DATA-AND-HUB.md](DATA-AND-HUB.md)), never from memory, and pass the finished copy through [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
 
 ## TL;DR
 
@@ -73,7 +73,7 @@ add-ons, implementation]. [Competitor] charges extra for [X], while
 $X/year while [Your product] costs $Y/year, with [key differences in what you get].
 ```
 
-Rules for stating your own prices (reference prices, "free", savings claims) are in [offer-design FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
+Rules for stating your own prices (reference prices, "free", savings claims) are in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md).
 
 ## Service and support
 
@@ -98,7 +98,7 @@ Rules for stating your own prices (reference prices, "free", savings claims) are
 response time, dedicated CSM, implementation help].
 ```
 
-A status page is not an SLA ([web-research COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md#the-fact-check)).
+A status page is not an SLA ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#the-fact-check)).
 
 ## Who it's for
 
@@ -196,7 +196,7 @@ From the FTC's endorsement guidance ([FTC endorsement guides Q&A](https://www.ft
 "Only write "Not available" when the competitor's docs or a trial confirm it. If the evidence is just that their site doesn't mention it, say that."
 
 - **Group by category:** core functionality, collaboration, integrations, security and compliance, support and service.
-- **Ratings where useful:** a category row with star ratings for each side and a notes column. Glyphs like ✓, ✗ and stars need a text equivalent for screen readers ([web-accessibility](../../frontend/web-accessibility/SKILL.md)).
+- **Ratings where useful:** a category row with star ratings for each side and a notes column. Glyphs like ✓, ✗ and stars need a text equivalent for screen readers ([web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md)).
 
 ## Prove it
 

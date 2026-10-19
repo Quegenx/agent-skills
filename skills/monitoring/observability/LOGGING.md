@@ -1,6 +1,6 @@
 # Structured logging
 
-Generic log-event design, accumulated context, levels, schema and privacy guidance from the existing [PostHog logging source](../posthog/INSTRUMENT-LOGS.md), with the existing OpenTelemetry privacy rule and the official trace-sampling boundary. Node logger/OTLP wiring is in [INSTRUMENT.md](INSTRUMENT.md#logs-that-point-to-their-trace); provider SDK options, person/replay fields, drop rules and the PII scrubber remain in PostHog.
+Generic log-event design, accumulated context, levels, schema and privacy guidance from the existing [PostHog logging source](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/INSTRUMENT-LOGS.md), with the existing OpenTelemetry privacy rule and the official trace-sampling boundary. Node logger/OTLP wiring is in [INSTRUMENT.md](INSTRUMENT.md#logs-that-point-to-their-trace); provider SDK options, person/replay fields, drop rules and the PII scrubber remain in PostHog.
 
 ## Wide events
 
@@ -53,7 +53,7 @@ Apply the [configured automatic or manual correlation path](INSTRUMENT.md#logs-t
 
 The OpenTelemetry Collector tail-sampling processor groups spans by trace ID and supports traces, rather than direct log records. Policies operate within its arrival, buffering, loss and policy constraints; they are not a guarantee that every error or slow trace survives. The PostHog source incorrectly directed generic log tail sampling to this trace processor. [Official tail-sampling processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/tailsamplingprocessor/README.md)
 
-For trace sampling, read [INSTRUMENT.md](INSTRUMENT.md#sampling). PostHog log drop/rate-limit policies and their order remain in [INSTRUMENT-LOGS.md](../posthog/INSTRUMENT-LOGS.md#best-practices). [existing PostHog, INSTRUMENT-LOGS.md, Best practices]
+For trace sampling, read [INSTRUMENT.md](INSTRUMENT.md#sampling). PostHog log drop/rate-limit policies and their order remain in [posthog INSTRUMENT-LOGS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/INSTRUMENT-LOGS.md#best-practices). [existing PostHog, INSTRUMENT-LOGS.md, Best practices]
 
 ## Prove it
 

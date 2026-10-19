@@ -15,18 +15,18 @@ When a discount helps and when an offer should replace it. From [coreyhaines31/m
 | Seasonal moments | Black Friday, year-end, an annual-plan push: a real, time-bound, everyone-gets-it window. Not a permanent price cut wearing a costume. |
 
 - **What discounting to acquire does,** per the source: anchors the product as cheap; attracts price-shoppers; trains the market to wait for the next sale.
-- **The source's churn figure is a claim, not a measurement:** it says discount-askers "churn at roughly 2× the rate of full-price customers" and gives no study. Quote it as the source's claim if at all. [../pricing-strategy/MODELS.md](../pricing-strategy/MODELS.md#low-prices-and-retention) carries the same claim with its attribution.
+- **The source's churn figure is a claim, not a measurement:** it says discount-askers "churn at roughly 2× the rate of full-price customers" and gives no study. Quote it as the source's claim if at all. [pricing-strategy MODELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/MODELS.md#low-prices-and-retention) carries the same claim with its attribution.
 
 ## When you do run a sale
 
 - **The "was" price must be real:** offered openly for a reasonably substantial period, and not raised just before the sale; an unstated reduction must not be trivial (16 CFR 233.1, [FTC-PRICING-CLAIMS.md](FTC-PRICING-CLAIMS.md#former-prices-and-sales)).
 - **A deadline must be real** and end when it says ([SCARCITY.md](SCARCITY.md)).
-- **In Stripe,** run a sale as a coupon or promotion code ([../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#coupons-and-promotion-codes)); distinguish changes requiring a new Price from supported maintenance updates in [BILLING.md](../../backend/stripe/BILLING.md#model-the-catalog). The old line said a live Price could not be edited; Stripe permits supported updates, including `active`, `metadata` and `nickname` ([Update a price](https://docs.stripe.com/api/prices/update)).
+- **In Stripe,** run a sale as a coupon or promotion code ([stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#coupons-and-promotion-codes)); distinguish changes requiring a new Price from supported maintenance updates in [stripe BILLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/BILLING.md#model-the-catalog). The old line said a live Price could not be edited; Stripe permits supported updates, including `active`, `metadata` and `nickname` ([Update a price](https://docs.stripe.com/api/prices/update)).
 
 ## Save offers and win-back are a different case
 
-- **A discount in a cancel flow goes to an existing customer,** which is the source's "existing customers" exception. Its limits (20 to 30% for 2 to 3 months, never above 30%, at most two per session) are in [../churn-prevention/CANCEL-FLOWS.md](../churn-prevention/CANCEL-FLOWS.md#save-offers).
-- **A discounted first period at trial end** (an app practice in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#trials), [eronred]) goes to someone who is not yet a customer, so it conflicts with "never discount to acquire". Both views stand: [coreyhaines31/marketingskills, offers] says don't; [eronred] runs one. Test it rather than assume.
+- **A discount in a cancel flow goes to an existing customer,** which is the source's "existing customers" exception. Its limits (20 to 30% for 2 to 3 months, never above 30%, at most two per session) are in [churn-prevention CANCEL-FLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/CANCEL-FLOWS.md#save-offers).
+- **A discounted first period at trial end** (an app practice in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md#trials), [eronred]) goes to someone who is not yet a customer, so it conflicts with "never discount to acquire". Both views stand: [coreyhaines31/marketingskills, offers] says don't; [eronred] runs one. Test it rather than assume.
 
 ## Replace the discount with an offer
 

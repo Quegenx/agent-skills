@@ -163,7 +163,7 @@ The same reference also shows a single-step funnel on `checkout_started`, a clic
 
 - **Example:** p = 0.1, MDE 20%: 3,600 per variant, 7,200 total for 2 variants.
 - **Half the effect needs four times the sample** (inverse square).
-- **The approximation runs a little low:** the exact two-proportion value at p = 0.1, MDE 20% is 3,841 per variant. A table computed from the exact formula, and duration with unequal splits, are in [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md).
+- **The approximation runs a little low:** the exact two-proportion value at p = 0.1, MDE 20% is 3,841 per variant. A table computed from the exact formula, and duration with unequal splits, are in [ab-testing SAMPLE-SIZE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SAMPLE-SIZE.md).
 - **"Target reached" is not "significant".** It doesn't end the experiment either.
 
 ## Statistics
@@ -193,7 +193,7 @@ The same reference also shows a single-step funnel on `checkout_started`, a clic
 | Under 1 week | Too early |
 
 - **Don't** declare failure on early results, ship on borderline significance, ignore guardrails, or hide ambiguity.
-- **"Continue" on a borderline result** fits only before the planned sample is reached or with sequential testing on. [coreyhaines31/marketingskills, ab-testing] says of a finished fixed-horizon test: "do not extend a finished fixed-horizon test until it becomes significant"; report the effect interval and plan a new test ([../../marketing/ab-testing/SKILL.md](../../marketing/ab-testing/SKILL.md#reading-the-result)).
+- **"Continue" on a borderline result** fits only before the planned sample is reached or with sequential testing on. [coreyhaines31/marketingskills, ab-testing] says of a finished fixed-horizon test: "do not extend a finished fixed-horizon test until it becomes significant"; report the effect interval and plan a new test ([ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md#reading-the-result)).
 
 ## Prove it
 

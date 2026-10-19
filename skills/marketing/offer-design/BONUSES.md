@@ -23,7 +23,7 @@ How to add bonuses that raise perceived value without devaluing the core. From [
 | "My situation is more complex than the average buyer" | 1:1 onboarding call to customize the plan |
 | "Will this work in [region/language]?" | Localized version or addendum |
 
-**Find the real objections:** read every refund-request email and sales-call transcript from the last 6 months; read your own sales page aloud and write down every doubt; ask 3 recent buyers "What almost made you not buy?". The answers cluster around 3 to 6 objections; build a bonus for each. Interview method is in [../customer-research/SKILL.md](../customer-research/SKILL.md).
+**Find the real objections:** read every refund-request email and sales-call transcript from the last 6 months; read your own sales page aloud and write down every doubt; ask 3 recent buyers "What almost made you not buy?". The answers cluster around 3 to 6 objections; build a bonus for each. Interview method is in [customer-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md).
 
 ## The stack
 

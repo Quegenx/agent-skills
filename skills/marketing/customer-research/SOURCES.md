@@ -31,9 +31,9 @@ Quick decision guide: a product category, start with G2/Capterra reviews (yours 
 | Theme tag | Pain / trigger / outcome / alternative / language |
 | Customer profile signals | Role, company size, industry hints from the post |
 
-This extends web-research's mention line (`- **[SourceType]** Title | Snippet (source: URL, YYYY-MM-DD)`, [COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md#lanes-and-the-merge)) with context, sentiment, theme and profile. Under GDPR Art. 4(1), personal data is "any information relating to an identified or identifiable natural person", identifiable among other ways by "an online identifier" ([GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj)), so a quote tied to a username is personal data: keep usernames out of the quote bank unless needed and cite the URL.
+This extends web-research's mention line (`- **[SourceType]** Title | Snippet (source: URL, YYYY-MM-DD)`, [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#lanes-and-the-merge)) with context, sentiment, theme and profile. Under GDPR Art. 4(1), personal data is "any information relating to an identified or identifiable natural person", identifiable among other ways by "an online identifier" ([GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj)), so a quote tied to a username is personal data: keep usernames out of the quote bank unless needed and cite the URL.
 
-[more skills, copywriting-playbook.md] For a copywriting quote bank, optionally add the specific emotion expressed and the context in which the quote will be used. The source mixes problem-aware, solution-aware, objection and post-purchase labels; record awareness separately from objection or post-purchase context. An emotion tag adds detail to sentiment rather than replacing it. Awareness is defined in [the Schwartz dossier](../marketing-council/advisors/eugene-schwartz.md#core-frameworks).
+[more skills, copywriting-playbook.md] For a copywriting quote bank, optionally add the specific emotion expressed and the context in which the quote will be used. The source mixes problem-aware, solution-aware, objection and post-purchase labels; record awareness separately from objection or post-purchase context. An emotion tag adds detail to sentiment rather than replacing it. Awareness is defined in [the Schwartz dossier](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-council/advisors/eugene-schwartz.md#core-frameworks).
 
 ## Sales Safari
 
@@ -76,7 +76,7 @@ High-signal posts: "What tools do you use for X?" (alternatives, vocabulary); "F
 
 Extract the job ("use it for"), the hardest or most frustrating part, comparisons ("coming from [X]", "better than [Y]"), and the reviewer's industry and role.
 
-**Competitor 4-star reviews "are gold":** customers who like the product but still complain. G2's prompts map: "What do you like best?" to their strengths, "What do you dislike?" to their weaknesses (your opportunities), "What problems are you solving?" to the job. Capterra is similar; Trustpilot skews B2C; AppSumo suits SMB and prosumer SaaS. These dislikes are the third-party evidence web-research's battle-card landmines prefer ([COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md#battle-cards)).
+**Competitor 4-star reviews "are gold":** customers who like the product but still complain. G2's prompts map: "What do you like best?" to their strengths, "What do you dislike?" to their weaknesses (your opportunities), "What problems are you solving?" to the job. Capterra is similar; Trustpilot skews B2C; AppSumo suits SMB and prosumer SaaS. These dislikes are the third-party evidence web-research's battle-card landmines prefer ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#battle-cards)).
 
 | Category | Notes |
 |---|---|
@@ -86,7 +86,7 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 | Switching context | Did they mention switching from something else? |
 | Unmet need | "I wish it could..." or "It would be better if..." |
 
-**Another selection emphasis.** [more skills, copywriting-playbook.md] emphasizes one-star reviews for fears and objections and five-star reviews for desired transformations. [coreyhaines31/marketingskills, customer-research] uses the ordering above and emphasizes competitor four-star reviews. Keep that existing priority; the other guide is an optional additional pass. Its useful phrase cues include finally, being tired of an old approach and an unexpected outcome. Record the actual sentence, not a polished version of it. Their positioning use is in [From research to a draft](../../anti-ai-slop/anti-slop-copy/DRAFTING.md#from-research-to-a-draft).
+**Another selection emphasis.** [more skills, copywriting-playbook.md] emphasizes one-star reviews for fears and objections and five-star reviews for desired transformations. [coreyhaines31/marketingskills, customer-research] uses the ordering above and emphasizes competitor four-star reviews. Keep that existing priority; the other guide is an optional additional pass. Its useful phrase cues include finally, being tired of an old approach and an unexpected outcome. Record the actual sentence, not a polished version of it. Their positioning use is in [From research to a draft](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/DRAFTING.md#from-research-to-a-draft).
 
 ## Indie Hackers and Product Hunt
 
@@ -100,7 +100,7 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 
 ## LinkedIn and job posts
 
-`[coreyhaines31/marketingskills, customer-research]` Posts: "[Role] at [company size]" plus a problem keyword; "We used to [old way] but now we [new way]" stories; recommendation-request posts draw active buyers. "A job posting is a company's admission of a pain point": tools listed as nice-to-have vs required (stack and adjacent tools), metrics in the description, where the role's time goes. `site:linkedin.com/jobs "[role title]" "[relevant tool or category]"`. Read LinkedIn through search snippets; don't fetch behind its login ([web-research EVIDENCE.md](../../web-automation/web-research/EVIDENCE.md#the-research-loop)).
+`[coreyhaines31/marketingskills, customer-research]` Posts: "[Role] at [company size]" plus a problem keyword; "We used to [old way] but now we [new way]" stories; recommendation-request posts draw active buyers. "A job posting is a company's admission of a pain point": tools listed as nice-to-have vs required (stack and adjacent tools), metrics in the description, where the role's time goes. `site:linkedin.com/jobs "[role title]" "[relevant tool or category]"`. Read LinkedIn through search snippets; don't fetch behind its login ([web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#the-research-loop)).
 
 ## YouTube and X
 
@@ -116,7 +116,7 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 
 ## Comparison posts and communities
 
-`[coreyhaines31/marketingskills, customer-research]` Google `"[competitor 1] vs [competitor 2]"` or `"best [category] software [year]"` and read the comments: people on comparison content are actively evaluating, and their questions are ones your sales process should answer (web-research parses the same titles for competitor names, [COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md#discovery-waves)). Communities: Slack ("[industry] Slack community"), Discord, Facebook Groups (SMB, e-commerce, agencies, coaches and consultants), Circle and Mighty Networks paid communities.
+`[coreyhaines31/marketingskills, customer-research]` Google `"[competitor 1] vs [competitor 2]"` or `"best [category] software [year]"` and read the comments: people on comparison content are actively evaluating, and their questions are ones your sales process should answer (web-research parses the same titles for competitor names, [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#discovery-waves)). Communities: Slack ("[industry] Slack community"), Discord, Facebook Groups (SMB, e-commerce, agencies, coaches and consultants), Circle and Mighty Networks paid communities.
 
 ## Consumer products
 
@@ -160,7 +160,7 @@ web-research also ranks job posts as indirect evidence (`medium`, "Inferred from
 
 The source says nothing on terms of use; these are the platforms' own words.
 - **Reddit:** the Public Content Policy: "you can use Reddit content for non-commercial uses ... but talk to us if you have commercial purposes in mind" ([Public Content Policy](https://support.reddithelp.com/hc/en-us/articles/26410290525844)). The Responsible Builder Policy: "You must not sell, license, share, or otherwise commercialize Reddit data without express written approval. This extends to commercial and non-commercial mining, scraping, or using data for purposes like ads targeting or to train machine learning or AI models." ([Responsible Builder Policy](https://support.reddithelp.com/hc/en-us/articles/42728983564564)). Commercial use or research beyond the rate limits needs a separate agreement ([Data API Terms](https://redditinc.com/policies/data-api-terms)). So: read threads by hand or through search results; bulk automated collection of Reddit content for a company's marketing needs Reddit's written approval.
-- **Review sites** (G2, Capterra, Trustpilot, Amazon) and others: read by hand; check the site's terms before any automated collection. Automated fetching that a site allows follows [web-scraping](../../web-automation/web-scraping/SKILL.md).
+- **Review sites** (G2, Capterra, Trustpilot, Amazon) and others: read by hand; check the site's terms before any automated collection. Automated fetching that a site allows follows [web-scraping](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/SKILL.md).
 - **Never:** CAPTCHA solving or bot-detection evasion.
 
 ## Prove it

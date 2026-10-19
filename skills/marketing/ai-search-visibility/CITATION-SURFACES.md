@@ -1,6 +1,6 @@
 # Citation surfaces off your site
 
-The places besides your own site that answer engines read about you: third-party profiles, LinkedIn, YouTube, podcasts, other languages and markets, shopping feeds, and each engine's index. Sources: [coreyhaines31/marketingskills, ai-seo] (MIT; its multilingual and commerce checklists adapted there from Profound's MIT skills, the YouTube anatomy credited there to Ross Simmonds / Foundation Inc.), and [coreyhaines31/marketingskills, public-relations] for podcasts. Most of it is practitioner experience or dated vendor data, labelled as such. Earning press is [../public-relations/SKILL.md](../public-relations/SKILL.md); social publishing is [../social-media/SKILL.md](../social-media/SKILL.md).
+The places besides your own site that answer engines read about you: third-party profiles, LinkedIn, YouTube, podcasts, other languages and markets, shopping feeds, and each engine's index. Sources: [coreyhaines31/marketingskills, ai-seo] (MIT; its multilingual and commerce checklists adapted there from Profound's MIT skills, the YouTube anatomy credited there to Ross Simmonds / Foundation Inc.), and [coreyhaines31/marketingskills, public-relations] for podcasts. Most of it is practitioner experience or dated vendor data, labelled as such. Earning press is [public-relations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/SKILL.md); social publishing is [social-media SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md).
 
 **Contents:** [Make every profile say the same thing](#make-every-profile-say-the-same-thing) · [Positioning moves slowly](#positioning-moves-slowly) · [LinkedIn](#linkedin) · [YouTube and podcasts](#youtube-and-podcasts) · [Other languages and markets](#other-languages-and-markets) · [AI shopping surfaces](#ai-shopping-surfaces) · [Each engine's index](#each-engines-index) · [Prove it](#prove-it)
 
@@ -10,7 +10,7 @@ The places besides your own site that answer engines read about you: third-party
 - Fill in free profiles fully (what you do, who it's for, which industries), even on platforms you don't pay for.
 - Review text matters as much as profile text; models read what customers say there.
 - If the engine's fan-out queries run `site:` searches on review or analyst sites for your category ([PROMPT-RESEARCH.md](PROMPT-RESEARCH.md#chatgpts-own-fan-out-queries)), those profiles come before another page on your own site.
-- Directory and listing work is [directory submissions](../seo/DIRECTORY-SUBMISSIONS.md); its link-spam limits are in [link rules](../seo/LINKS-AND-OUTREACH.md#what-google-calls-link-spam).
+- Directory and listing work is [directory submissions](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/DIRECTORY-SUBMISSIONS.md); its link-spam limits are in [link rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINKS-AND-OUTREACH.md#what-google-calls-link-spam).
 
 **Managing the "cons" others write.** If a listed con reinforces a weakness models already repeat, ask the publisher to use a different con that is also true and less central. "Never ask for negatives to be removed or for false claims." To repair a repeated weakness, address it in public with specifics from a real person (the source's anecdote: founder posts, real-timeline guides and a concrete "4 to 8 weeks" on an implementation page shifted it over 1.5 to 2 years).
 
@@ -46,9 +46,9 @@ Segment pages: one per core industry you actually serve, with real specifics; ne
 6. **A pinned comment** with the core answer in numbered steps and the key links.
 7. **Thumbnail and engagement** for the click; the text layer earns the citation.
 
-Post product demos publicly with keyword-first titles instead of behind a form. Making the video itself is [../marketing-video/SKILL.md](../marketing-video/SKILL.md).
+Post product demos publicly with keyword-first titles instead of behind a form. Making the video itself is [marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md).
 
-Podcasts work the same way: episodes get transcribed and show notes published. "Coach the guest to say the important things in liftable form: the company name next to the category ('we build X, the Y for Z'), and numbers spoken aloud." [coreyhaines31/marketingskills, public-relations] That transcripts get cited is the source's claim, not a measurement; event talks get the same advice [coreyhaines31/marketingskills, events] ([../event-marketing/SPEAKING.md](../event-marketing/SPEAKING.md), [../public-relations/PODCAST-PREP.md](../public-relations/PODCAST-PREP.md)).
+Podcasts work the same way: episodes get transcribed and show notes published. "Coach the guest to say the important things in liftable form: the company name next to the category ('we build X, the Y for Z'), and numbers spoken aloud." [coreyhaines31/marketingskills, public-relations] That transcripts get cited is the source's claim, not a measurement; event talks get the same advice [coreyhaines31/marketingskills, events] ([event-marketing SPEAKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/event-marketing/SPEAKING.md), [public-relations PODCAST-PREP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/PODCAST-PREP.md)).
 
 ## Other languages and markets
 
@@ -63,7 +63,7 @@ Podcasts work the same way: episodes get transcribed and show notes published. "
 8. Assign native-language review and a freshness owner per localized page.
 9. Report each language, country and engine separately before rolling up.
 
-Hebrew-language specifics are in [../../anti-ai-slop/anti-slop-writing/HEBREW.md](../../anti-ai-slop/anti-slop-writing/HEBREW.md).
+Hebrew-language specifics are in [anti-slop-writing HEBREW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/HEBREW.md).
 
 ## AI shopping surfaces
 
@@ -81,9 +81,9 @@ When the fit is real, audit: canonical title and description, brand and identifi
 ## Each engine's index
 
 You can only be cited from an index that has you. The source's per-engine claims are mostly unsourced; what is and isn't verified:
-- **Google AI Overviews and AI Mode** run on core Search ([CONTENT-BLOCKS.md](CONTENT-BLOCKS.md#googles-limits)); the SEO rules are [../seo/SKILL.md](../seo/SKILL.md).
+- **Google AI Overviews and AI Mode** run on core Search ([CONTENT-BLOCKS.md](CONTENT-BLOCKS.md#googles-limits)); the SEO rules are [seo SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md).
 - **ChatGPT search** needs OAI-SearchBot access (OpenAI's own page, [AI-CRAWLERS.md](AI-CRAWLERS.md#openai)).
-- **Bing and Copilot:** the source says Copilot relies on Bing's index and recommends Bing Webmaster Tools and IndexNow (a published protocol, indexnow.org). No Bing doc was checked here. Its "sub-2-second load" threshold has no source; the speed thresholds with a source are web.dev's Core Web Vitals (LCP 2.5 s, INP 200 ms, CLS 0.1 at the 75th percentile, https://web.dev/articles/vitals), in [../../backend/performance-and-caching/SKILL.md](../../backend/performance-and-caching/SKILL.md).
+- **Bing and Copilot:** the source says Copilot relies on Bing's index and recommends Bing Webmaster Tools and IndexNow (a published protocol, indexnow.org). No Bing doc was checked here. Its "sub-2-second load" threshold has no source; the speed thresholds with a source are web.dev's Core Web Vitals (LCP 2.5 s, INP 200 ms, CLS 0.1 at the 75th percentile, https://web.dev/articles/vitals), in [performance-and-caching SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/SKILL.md).
 - **Claude:** the source's "Claude uses Brave Search as its search backend" appears in no Anthropic doc fetched; treat it as a third-party claim. Anthropic's documented controls are its three bots.
 - **Perplexity:** the source's ranking internals (its own index plus Google's, curated domain lists, a time-decay algorithm, FAQ schema and PDF preferences) name no source; Perplexity's docs describe only PerplexityBot and Perplexity-User.
 

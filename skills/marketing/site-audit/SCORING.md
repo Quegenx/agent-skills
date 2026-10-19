@@ -53,11 +53,11 @@ A hand-scored line per area, each out of 10, then "Overall:" and "Notes:" [audit
 
 ## Lighthouse bands
 
-Lighthouse's own report colours a category "0 to 49 (red): Poor", "50 to 89 (orange): Needs Improvement" and "90 to 100 (green): Good" ([performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring)). Audit Kit tones its Lighthouse numbers at 85 and 65 instead, so an 86 shows green there and orange in Lighthouse: report Lighthouse's bands. Weights, budgets and CI gates: [../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md).
+Lighthouse's own report colours a category "0 to 49 (red): Poor", "50 to 89 (orange): Needs Improvement" and "90 to 100 (green): Good" ([performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring)). Audit Kit tones its Lighthouse numbers at 85 and 65 instead, so an 86 shows green there and orange in Lighthouse: report Lighthouse's bands. Weights, budgets and CI gates: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md).
 
 ## What a score is not
 
-- **Not the work.** "Chasing 100 before fixing the critical path" is a named mistake: a polished total cannot compensate for a blocked form, an exposed secret, a broken canonical or an unusable control [freescan]. Ask for a work order, not a number ([../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md)).
+- **Not the work.** "Chasing 100 before fixing the critical path" is a named mistake: a polished total cannot compensate for a blocked form, an exposed secret, a broken canonical or an unusable control [freescan]. Ask for a work order, not a number ([seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md)).
 - **Not conformance.** An accessibility score is not WCAG conformance, and an automated public check proves neither accessibility nor security; those need human evaluation and, for security, authenticated review or a penetration test [freescan].
 
 ## Benchmarks, disclosed

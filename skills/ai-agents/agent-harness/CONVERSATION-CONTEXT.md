@@ -1,6 +1,6 @@
 # Conversation context
 
-Stored conversation history, replay and compaction within one conversation. Long-term memory across conversations is in [agent-memory](../agent-memory/SKILL.md).
+Stored conversation history, replay and compaction within one conversation. Long-term memory across conversations is in [agent-memory](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-memory/SKILL.md).
 
 ## History the agent can trust
 
@@ -30,7 +30,7 @@ When the conversation nears the window (for example at 85-90%, or the window min
 
 ## Long-term memory
 
-For extraction, profile and search, staying current, forgetting and memory evals, use [agent-memory](../agent-memory/SKILL.md). Its [minimal store](../agent-memory/READ.md#a-minimal-store) keeps the bounded first version.
+For extraction, profile and search, staying current, forgetting and memory evals, use [agent-memory](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-memory/SKILL.md). Its [minimal store](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-memory/READ.md#a-minimal-store) keeps the bounded first version.
 
 ## Prove it
 

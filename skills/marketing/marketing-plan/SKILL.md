@@ -5,7 +5,9 @@ description: "Builds a 12-month marketing plan for a company or client in 13 AAR
 
 # Marketing plan
 
-The deliverable is one markdown document, the kind of strategy artifact a fractional CMO presents to founders: specific to the client, exhaustive across the tactical surface, and "operationally honest (reflects what their team can actually execute with their current stack and headcount)". AARRR gives the plan its structure; "marketing as investing" gives it its spine. Source: [coreyhaines31/marketingskills, marketing-plan] v1.2.2 (MIT, Corey Haines; its investing principles, budget methods, growth patterns and team model credit *Founding Marketing* by Corey Haines; its market sizing credits @imMamdouhaboammar, PR #418), copied with its dashes replaced and its skills mapped to this repo. The source reads `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+The deliverable is one markdown document, the kind of strategy artifact a fractional CMO presents to founders: specific to the client, exhaustive across the tactical surface, and "operationally honest (reflects what their team can actually execute with their current stack and headcount)". AARRR gives the plan its structure; "marketing as investing" gives it its spine. Source: [coreyhaines31/marketingskills, marketing-plan] v1.2.2 (MIT, Corey Haines; its investing principles, budget methods, growth patterns and team model credit *Founding Marketing* by Corey Haines; its market sizing credits @imMamdouhaboammar, PR #418), copied with its dashes replaced and its skills mapped to this repo. The source reads `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -29,7 +31,7 @@ The deliverable is one markdown document, the kind of strategy artifact a fracti
 [coreyhaines31/marketingskills, marketing-plan]
 
 - A new fractional CMO or consulting engagement; a founder who needs a 12-month roadmap to share with the team or investors; scattered marketing work (SEO research, voice docs, audit findings) to consolidate; an existing scored audit to sequence into action.
-- **Not** for a single-channel tactical document (that goes to the channel's skill, such as [email-marketing](../email-marketing/SKILL.md), [paid-ads](../paid-ads/SKILL.md), [seo](../seo/SKILL.md) or [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md)), and not for ideas without a plan ([growth-ideas](../growth-ideas/SKILL.md)).
+- **Not** for a single-channel tactical document (that goes to the channel's skill, such as [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md), [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md), [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md) or [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md)), and not for ideas without a plan ([growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md)).
 - **A "quick, short plan" request** is resisted and explained rather than silently answered with a stripped-down plan: the plan is the comprehensive artifact, and a quick single-channel plan belongs to that channel's skill (the source's eval 6).
 
 ## The three phases
@@ -40,7 +42,7 @@ The deliverable is one markdown document, the kind of strategy artifact a fracti
 2. **REVIEW:** draft Sections 2 to 13 in order, then Section 1; present each in chat ("Approve, adjust, or expand?"), save each confirmed section to `sections/NN.md`, tick it in `progress.md`.
 3. **FINALIZE:** compile `final_plan.md` in order 1 to 13, run the six verification checks, set `phase: finalized`.
 
-State lives in `~/marketing-plans/{client-slug}/` (`materials/`, `research.md`, `progress.md`, `sections/01.md`..., `final_plan.md`), so the plan resumes where it stopped. **A finalized plan is never silently overwritten:** ask whether to revise as v{N+1}, start fresh, or re-open a section. **Path safety:** build `{client-slug}` only by slugifying to lowercase `[a-z0-9-]`, reject `..`, `/` and absolute paths, and never read or write outside `~/marketing-plans/`, which "keeps one client's plan - and their data - from leaking into another client's context" (the same rule as path traversal in [secure-coding](../../backend/secure-coding/SKILL.md)).
+State lives in `~/marketing-plans/{client-slug}/` (`materials/`, `research.md`, `progress.md`, `sections/01.md`..., `final_plan.md`), so the plan resumes where it stopped. **A finalized plan is never silently overwritten:** ask whether to revise as v{N+1}, start fresh, or re-open a section. **Path safety:** build `{client-slug}` only by slugifying to lowercase `[a-z0-9-]`, reject `..`, `/` and absolute paths, and never read or write outside `~/marketing-plans/`, which "keeps one client's plan - and their data - from leaking into another client's context" (the same rule as path traversal in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md)).
 
 ## The 13 sections
 
@@ -68,7 +70,7 @@ The spine, from *Founding Marketing* ch. 1 [coreyhaines31/marketingskills, marke
 - **Audition, not an auction:** marketing is non-deterministic, so the plan runs a portfolio of bets and doubles down on what works.
 - **Hope is not a strategy:** every move names its mechanism and its leading indicator; a move that can't be tied to a measurable is an experiment with a kill criterion.
 
-The same compounding-over-rented idea, from a buyer's side, is in [revenuecat FORECASTING-AND-VALUATION.md](../../backend/revenuecat/FORECASTING-AND-VALUATION.md) (distribution tiers); keep both.
+The same compounding-over-rented idea, from a buyer's side, is in [revenuecat FORECASTING-AND-VALUATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/FORECASTING-AND-VALUATION.md) (distribution tiers); keep both.
 
 ### The market-quality gate
 
@@ -101,7 +103,7 @@ Anything unconfirmed in INIT goes to Section 13's open decisions. "**CAC unknown
 
 Failure modes to avoid [coreyhaines31/marketingskills, marketing-plan]: listing tactics without sequencing; recommending what the team can't execute at its size; pretending paid budget exists before the round closes; glossing over uncomfortable metrics (churn) instead of naming them as open decisions; generic language ("build a community," "improve SEO") without specific moves; ignoring brand voice; padding with skills or ideas the client doesn't need; not acknowledging work already done.
 
-**Tone:** "Write like a thoughtful colleague, not a deck-slide-writer. No jargon for jargon's sake. Direct claims, named tradeoffs, explicit assumptions. When unsure, name the open question rather than guessing." Prose rules: [anti-slop-writing](../../anti-ai-slop/anti-slop-writing/SKILL.md).
+**Tone:** "Write like a thoughtful colleague, not a deck-slide-writer. No jargon for jargon's sake. Direct claims, named tradeoffs, explicit assumptions. When unsure, name the open question rather than guessing." Prose rules: [anti-slop-writing](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/SKILL.md).
 
 ## The rules
 

@@ -1,6 +1,6 @@
 # Agent steps
 
-An agentic runner lets a model drive one goal through the app while the test pins the outcome with an exact check. The model never runs code: the runner validates and authorizes every tool call it proposes. What follows is the `e2e` runner's agent layer (`agent.act`, `assert`, `waitFor`, `extract`, the replay cache); the goal-splitting rules are in WRITING-TESTS.md.
+An agentic runner lets a model drive one goal through the app while the test pins the outcome with an exact check. The model never runs code: the runner validates and authorizes every tool call it proposes. What follows is the `e2e` runner's agent layer (`agent.act`, `assert`, `waitFor`, `extract`, the replay cache); the goal-splitting rules are in WRITING-TESTS.md. [tester-army/e2e, agent steps]
 
 ## How a call runs
 

@@ -1,6 +1,6 @@
 # Prompt research and the prompt portfolio
 
-Which questions people ask AI assistants about a market, who gets cited in the answers, and which prompts to track. The research workflow is [open-seo, ai-prompt-research] (MIT, Ben Senescu), with its product tool names left out; portfolio design and the journey map are [coreyhaines31/marketingskills, ai-seo] (MIT, adapted there from Profound's MIT prompt-portfolio and journey skills). "Keyword research finds what people type into Google; this finds what they ask an AI assistant." Google-side keyword work is [../keyword-research/SKILL.md](../keyword-research/SKILL.md).
+Which questions people ask AI assistants about a market, who gets cited in the answers, and which prompts to track. The research workflow is [open-seo, ai-prompt-research] (MIT, Ben Senescu), with its product tool names left out; portfolio design and the journey map are [coreyhaines31/marketingskills, ai-seo] (MIT, adapted there from Profound's MIT prompt-portfolio and journey skills). "Keyword research finds what people type into Google; this finds what they ask an AI assistant." Google-side keyword work is [keyword-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/SKILL.md).
 
 ## What the data is, and is not
 
@@ -17,7 +17,7 @@ Which questions people ask AI assistants about a market, who gets cited in the a
 Build from real demand, in this order of preference [coreyhaines31/marketingskills, ai-seo]:
 1. Prompts buyers report directly (a "What did you ask the AI?" follow-up on the how-did-you-hear field, sales call notes).
 2. Prompt-demand data from a tracking tool.
-3. Customer research, support tickets, community threads, sales objections ([../customer-research/SKILL.md](../customer-research/SKILL.md)).
+3. Customer research, support tickets, community threads, sales objections ([customer-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md)).
 4. Your search terms, rewritten as someone would phrase them to an assistant. "Don't mechanically turn a keyword list into questions."
 
 ## The research workflow

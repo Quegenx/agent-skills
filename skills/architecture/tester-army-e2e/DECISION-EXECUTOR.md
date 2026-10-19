@@ -1,6 +1,6 @@
 # Decision-model executor
 
-From [tester-army/e2e, docs/decision-models.mdx](https://github.com/tester-army/e2e/blob/main/docs/decision-models.mdx), checked 18 October 2026. This is the optional @e2e-dev/decision executor for the existing runner, not a separate test framework. Shared decision-model definitions remain in [Jev decisions](../../ai-agents/jev-decisions/SKILL.md).
+From [tester-army/e2e, docs/decision-models.mdx](https://github.com/tester-army/e2e/blob/main/docs/decision-models.mdx), checked 18 October 2026. This is the optional @e2e-dev/decision executor for the existing runner, not a separate test framework. Shared decision-model definitions remain in [jev-decisions: Jev decisions](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md).
 
 ## Configure the two roles
 

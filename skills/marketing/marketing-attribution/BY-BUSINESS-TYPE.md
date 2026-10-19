@@ -8,7 +8,7 @@ The same "which channel drives revenue?" question wants a different source of tr
 
 **Shape of the problem:** journeys run weeks to months, span several people (champion, economic buyer, users) and include touches that never appear in web analytics: a conference conversation, a sales call, a community mention, a peer recommendation. Deal values are high and volume low, so every deal matters and averages are noisy. With 15 touches over 3 months across 4 people, "last-touch = direct" and "first-touch = one LinkedIn ad" are both almost useless; the middle and the offline is where the deal was won.
 
-1. **Source of truth = the CRM,** not an analytics tool. Revenue is real in the CRM (closed-won, ARR); everything else explains where those deals came from. Pipeline and revenue attribution live in [../revops/SKILL.md](../revops/SKILL.md).
+1. **Source of truth = the CRM,** not an analytics tool. Revenue is real in the CRM (closed-won, ARR); everything else explains where those deals came from. Pipeline and revenue attribution live in [revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md).
 2. **Models: first-touch and position-based, shown together.** First-touch values demand creation; position-based credits the created-and-closed bookends. Last-touch alone will defund the top of funnel; don't lead with it.
 3. **Self-reported attribution is the strongest signal.** Ask "How did you first hear about us?" on the demo request or signup form and again on sales calls. For word-of-mouth and dark-social-heavy B2B it catches what tracking can't (podcasts, communities, "my old coworker used you"). Weight it heavily.
 4. **Attribute to pipeline stages, not just the conversion.** The useful question is what drove qualified pipeline and closed revenue: break MQL to SQL to closed-won down by first-touch channel. A channel that fills forms but never closes is a trap.
@@ -32,7 +32,7 @@ The same "which channel drives revenue?" question wants a different source of tr
 5. **Incrementality on the biggest channels, especially the "always credited" ones:** geo holdouts and on-off tests earn their keep on retargeting, branded search and Meta prospecting, which platform reporting flatters most. Incremental CPA (spend / incremental orders) should move budget ([MEASUREMENT-PARADIGMS.md](MEASUREMENT-PARADIGMS.md#reading-a-test)).
 6. **Post-purchase survey for dark social and brand demand:** a one-question "How did you hear about us?" on the order-confirmation page reveals touches (podcasts, organic social, word of mouth) that later convert as direct or branded search.
 
-**Tooling:** the store or backend as truth; platform pixels and CAPI for optimization ([../paid-ads/SKILL.md](../paid-ads/SKILL.md)); a reporting connector to pull platform numbers into one place for de-duping; a post-purchase survey; MMM tooling (Robyn, Meridian or a vendor) once spend justifies it.
+**Tooling:** the store or backend as truth; platform pixels and CAPI for optimization ([paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md)); a reporting connector to pull platform numbers into one place for de-duping; a post-purchase survey; MMM tooling (Robyn, Meridian or a vendor) once spend justifies it.
 
 **The trap to name:** summing platform-reported conversions. If Meta claims 100 and Google claims 80 but you had 120 orders, you do not have 180 conversions; you have 120 with overlapping claims. Anchor on the 120 and allocate the overlap with incrementality, not by trusting whichever platform shouts loudest.
 
@@ -42,7 +42,7 @@ The same "which channel drives revenue?" question wants a different source of tr
 
 - The **DTC approach for the self-serve funnel** (fast, high-volume, first-party first touch to conversion, last non-direct plus a survey).
 - The **B2B approach for the sales-assisted funnel** (CRM as truth, position-based, pipeline-stage attribution, self-reported at demo).
-- **Alias identities across the two,** so a self-serve signup who later becomes a sales-assisted expansion keeps one journey ([../../monitoring/posthog/IDENTITY.md](../../monitoring/posthog/IDENTITY.md#alias)).
+- **Alias identities across the two,** so a self-serve signup who later becomes a sales-assisted expansion keeps one journey ([posthog IDENTITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/IDENTITY.md#alias)).
 - **Report them separately.** Blending a $50 self-serve signup and a $50k enterprise deal into one attribution number hides both stories.
 
 ## Prove it

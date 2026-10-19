@@ -13,6 +13,8 @@ Most wrong query results come from a few mistakes: a row that means something ot
 | Previous and next rows, running totals, streaks, sessions, funnels, attribution, cohorts, time zones, months, buckets, business hours, ranges, availability, bitemporal data | [TIME.md](TIME.md) |
 | Hierarchies and graphs, JSON in and out, ordered lists, networks, nearest neighbors, bitmasks, allocating money, brackets, reconciliation, LIKE escaping; routes to partition/CTE plan guidance | [SHAPES.md](SHAPES.md) |
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## The rules
 
 1. **Name the grain before writing the query:** what does one output row mean (one customer, one customer-month, one order line)? Joining a parent to two child tables multiplies every child row by the other's: an order with three lines and two payments produces six rows and doubles or triples both sums. Aggregate each child to the parent's grain first, then join.

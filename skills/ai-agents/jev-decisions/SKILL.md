@@ -16,6 +16,8 @@ gather (code, or an LLM that reads and writes)  ->  compute exact facts (code)
 
 An LLM may think and draft, Jev decides, code acts. Nothing consequential happens because a model said so in text. When an LLM writes the plan Jev's choices follow, the plan names exact values and steps and only what the menus can express; without a detailed plan Jev struggles with even elementary tasks.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Calling `systemOne`, the four question types and their answers, writing instructions and criteria, building the state | [QUESTIONS.md](QUESTIONS.md) |

@@ -5,7 +5,9 @@ description: "Audits whether agents can complete a product's getting-started tas
 
 # Agent developer-experience audit
 
-This skill uses [browserbase/skills, agent-experience], with the existing [c15t, writing-docs], [Vercel, writing-guidelines] and [coreyhaines31/marketingskills, marketing-loops] additions retained from the repository's documentation audit. Several subagents attempt a real task against a named product's docs, SDK or skill; the audit records what they fetched, where they failed and what they actually achieved. Generic evaluation methodology remains in [agent-evals](../agent-evals/SKILL.md).
+This skill uses [browserbase/skills, agent-experience], with the existing [c15t, writing-docs], [Vercel, writing-guidelines] and [coreyhaines31/marketingskills, marketing-loops] additions retained from the repository's documentation audit. Several subagents attempt a real task against a named product's docs, SDK or skill; the audit records what they fetched, where they failed and what they actually achieved. Generic evaluation methodology remains in [agent-evals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

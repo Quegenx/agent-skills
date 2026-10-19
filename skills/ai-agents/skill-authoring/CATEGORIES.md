@@ -21,7 +21,7 @@ Vercel's [State of agent skills](https://vercel.com/blog/state-of-agent-skills) 
 - **They have the most measurable impact:** verification skills have had the most measurable impact on Claude's output quality internally; it can be worth having an engineer spend a week just making them excellent.
 - **Make what was tested visible:** have Claude record a video of its output so you can see exactly what it tested, or enforce programmatic assertions on state at each step. Both are often done by including a variety of scripts in the skill.
 - **Reviewing before a PR runs on skills too:** before opening a PR, many on the Claude Code team run a few internal skills: one hunts for bugs, one simplifies the diff, and one checks the behaviour end to end. Verification and code review were moved out of Claude Code's system prompt into their own skills it calls selectively.
-- **A verification skill takes instructions out of CLAUDE.md:** with several unique instructions on how to verify work, create a verification skill and reference it from CLAUDE.md. To generate one for a project, see [VERIFICATION-SKILL.md](../../web-automation/e2e-testing/VERIFICATION-SKILL.md).
+- **A verification skill takes instructions out of CLAUDE.md:** with several unique instructions on how to verify work, create a verification skill and reference it from CLAUDE.md. To generate one for a project, see [tester-army-e2e VERIFICATION-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/tester-army-e2e/VERIFICATION-SKILL.md).
 
 ## Prove it
 

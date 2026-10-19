@@ -11,10 +11,10 @@ How to pick creators, structure the deal, brief them and measure the result, for
 | Model | What it is | Pay | Best for |
 |---|---|---|---|
 | **Paid influencer** | A creator posts sponsored content for a fee | Cash (flat or hybrid) | Reach and a credibility borrow, fast |
-| **Affiliate creator** | A creator promotes for commission on sales | Performance (CPA, rev-share) | Conversion at scale, low upfront risk ([../referral-programs/SKILL.md](../referral-programs/SKILL.md) for payout mechanics) |
+| **Affiliate creator** | A creator promotes for commission on sales | Performance (CPA, rev-share) | Conversion at scale, low upfront risk ([referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md) for payout mechanics) |
 | **Gifted / seeding** | Free product, no obligation to post | Product only | Physical DTC, nano and micro, volume |
 | **Brand ambassador program** | A cohort of ongoing advocates (paid, gifted or perks) posting over months | Mixed, perks | Sustained presence, community depth ([below](#ambassador-programs)) |
-| **Organic advocate** | A customer who already recommends you unprompted | None | Authenticity, cheapest trust ([community-marketing](../community-marketing/SKILL.md)) |
+| **Organic advocate** | A customer who already recommends you unprompted | None | Authenticity, cheapest trust ([community-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/community-marketing/SKILL.md)) |
 
 The further down the table, the more it is about relationship than transaction: cheaper and more durable trust, slower to scale. Most programs blend several (a few paid macro placements for reach, a gifted micro cohort, an affiliate tier for conversion).
 
@@ -42,7 +42,7 @@ Three more models have their own files:
 
 Other bands in this repo and its sources:
 
-- `[eronred]` in app-growth: "Micro-influencers (10K-100K) often give the best ROI" and a seeding tier of "micro-creators (1k-50k followers)" ([../../mobile/app-growth/LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#creator-and-ugc-marketing)).
+- `[eronred]` in app-growth: "Micro-influencers (10K-100K) often give the best ROI" and a seeding tier of "micro-creators (1k-50k followers)" ([app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#creator-and-ugc-marketing)).
 - `[lightreel]` treats creators under 10K as the strongest for direct-response production but weak for organic reach, and 20K to 250K niche authorities as the strongest organic range; macro only with category authority. Its testing-roster split (explicitly not a universal budget rule): about 40% micro specialists with direct proof, 25% mid-sized niche authorities, 20% age or life-stage matches (notably 40+ for beauty, wellness, fashion and home), 15% credentialed experts or regional voices. Micro creators are production partners, not necessarily distribution partners.
 - `[lightreel]` cast by the product's user, problem and proof mechanism rather than by gender benchmarks, and brief in the audience's shopping culture (retailers, foods, festivals, climate, vocabulary); "Translation alone is weaker than culturally native proof."
 
@@ -60,7 +60,7 @@ For most brands, a portfolio of micro and nano partners out-converts one macro p
 
 ## Outreach
 
-`[coreyhaines31/marketingskills, influencer-marketing]` Reach out 1:1 and personally: reference specific content, say why them, and what is in it for their audience. "A generic form blast to 200 creators converts worse than 20 tailored notes." Lead with the offer and the fit; don't bury the ask. Writing and sending the outreach is in [../cold-outreach/SKILL.md](../cold-outreach/SKILL.md); email to creators is commercial email ([../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md)). The app-growth view for a first program: "70% manual DMs, 30% UGC marketplace" `[eronred]`. `[lightreel]`'s sourcing order for UGC programs, starting with customers, is in [UGC-PROGRAMS.md](UGC-PROGRAMS.md#sourcing-creators).
+`[coreyhaines31/marketingskills, influencer-marketing]` Reach out 1:1 and personally: reference specific content, say why them, and what is in it for their audience. "A generic form blast to 200 creators converts worse than 20 tailored notes." Lead with the offer and the fit; don't bury the ask. Writing and sending the outreach is in [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md); email to creators is commercial email ([email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md)). The app-growth view for a first program: "70% manual DMs, 30% UGC marketplace" `[eronred]`. `[lightreel]`'s sourcing order for UGC programs, starting with customers, is in [UGC-PROGRAMS.md](UGC-PROGRAMS.md#sourcing-creators).
 
 ## Structuring the deal
 
@@ -108,7 +108,7 @@ Ground talking points in real proof (reviews, results); never hand a creator a c
 
 Where the sources disagree on scripting:
 
-- `[appeeky]` in app-growth's TikTok creator brief gives "the exact 2 second hook script" ([../../mobile/app-growth/TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#production)), while the performance-paid program says "Don't hand creators a script" `[influencer-marketing]`.
+- `[appeeky]` in app-growth's TikTok creator brief gives "the exact 2 second hook script" ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#production)), while the performance-paid program says "Don't hand creators a script" `[influencer-marketing]`.
 - `[lightreel]` lists over-scripted authenticity as a mistake, yet its UGC guide says that when a video goes viral everyone should copy it closely, second by second. Read it as copying a proven format fast, not as scripting new work.
 
 Brief shapes for ad creative (one person, situation, promise, proof) are in [CREATOR-AD-PROGRAMS.md](CREATOR-AD-PROGRAMS.md#briefing); the UGC brief order is in [UGC-PROGRAMS.md](UGC-PROGRAMS.md#briefs).
@@ -118,9 +118,9 @@ Brief shapes for ad creative (one person, situation, promise, proof) are in [CRE
 `[coreyhaines31/marketingskills, influencer-marketing]` Fix attribution gaps before the campaign runs:
 
 - **Unique promo codes** (for example `CREATOR20`): the easiest direct-conversion tracker, and essential for podcasts and video where links aren't clickable.
-- **UTM links** on every digital placement, "one per creator per placement", with one fixed pattern per partner type so every deal rolls up the same way ([../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md)).
+- **UTM links** on every digital placement, "one per creator per placement", with one fixed pattern per partner type so every deal rolls up the same way ([google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md)).
 - **Vanity landing pages:** `yourdomain.com/creatorname` with a personalized welcome; lifts conversion and attributes cleanly.
-- **Post-purchase survey:** "How did you hear about us?" catches the halo and branded-search effect that codes and last click miss ([../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md)).
+- **Post-purchase survey:** "How did you hear about us?" catches the halo and branded-search effect that codes and last click miss ([marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md)).
 - **Whitelisting performance:** when creator content runs as an ad, that ad's own metrics are a clean read on the creative's pull.
 
 Judge on cost per qualified outcome and repeat or retained value, not reach, likes or "EMV" ("earned media value is a vanity number"). "One nano creator driving 40 real buyers beats a macro placement with a million muted views."
@@ -132,8 +132,8 @@ Judge on cost per qualified outcome and repeat or retained value, not reach, lik
 `[coreyhaines31/marketingskills, influencer-marketing]` For sustained presence rather than one-off posts:
 
 1. **Define the tier(s) and the ask:** for example 2 posts a month and 1 event; keep it light enough to sustain.
-2. **Build the benefits ladder:** perks that scale with contribution: early access, free or ongoing product, commission ([../referral-programs/SKILL.md](../referral-programs/SKILL.md)), exclusive swag, revenue share, public recognition, a private channel. Every one of these is a material connection that must be disclosed, early access included (16 CFR 255.5(a), [DISCLOSURE.md](DISCLOSURE.md#what-counts-as-a-material-connection)).
-3. **Recruit from evidence:** start with people already advocating unprompted (reviews, mentions, community; [../customer-research/SKILL.md](../customer-research/SKILL.md)); a personal 1:1 ask, never a form.
+2. **Build the benefits ladder:** perks that scale with contribution: early access, free or ongoing product, commission ([referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md)), exclusive swag, revenue share, public recognition, a private channel. Every one of these is a material connection that must be disclosed, early access included (16 CFR 255.5(a), [DISCLOSURE.md](DISCLOSURE.md#what-counts-as-a-material-connection)).
+3. **Recruit from evidence:** start with people already advocating unprompted (reviews, mentions, community; [customer-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md)); a personal 1:1 ask, never a form.
 4. **Equip them:** referral or affiliate links, shareable assets, 2 to 3 talking points, the disclosure requirement, a private Slack or Discord.
 5. **Activate on a cadence:** something to post about monthly (launches, milestones, challenges); a program with nothing to do dies.
 6. **Track and iterate:** attributed traffic and signups per ambassador (codes and links); double down on the top decile and graduate strong ambassadors to paid partnerships.
@@ -183,7 +183,7 @@ Judge on cost per qualified outcome and repeat or retained value, not reach, lik
 
 - `[influencer-marketing]` **SparkToro** for audience intelligence (where your ICP pays attention, and vetting a creator's real audience). Creator discovery and CRM platforms at scale: Modash, GRIN, Aspire, Upfluence; sponsorship marketplaces: Passionfroot. App-growth adds pricing for the platform category: "influencer platforms (Aspire, Grin, Upfluence, $500-5k/mo)" `[eronred]`.
 - `[lightreel]` **Lightreel** (third party, paid) is an AI research agent over TikTok and Instagram (creators, trends, hooks, script and video feedback). Its API is `POST https://api.lightreel.ai/v1/chat` with `Authorization: Bearer lr_live_…` and a body of `question`, optional `conversation_id` and optional `response_fields` (up to 5 fields of type `"string"` or `"array"`, returned nested in `answer`); `GET /v1/chat/:id` and `GET /v1/chats` (latest 50) read results. Errors are non-2xx with `{"error":{"message","type"}}`. Requests can take several minutes, so set a long client timeout. Its MCP connector is `https://api.lightreel.ai/mcp` with OAuth; if the assistant stops polling, ask it to check the existing research rather than start a new request (a new one may spend credits). Its terms forbid using it to bypass access controls or usage limits.
-- Pulling a creator's recent posts is fetching untrusted content ([../../web-automation/web-scraping/UNTRUSTED-CONTENT.md](../../web-automation/web-scraping/UNTRUSTED-CONTENT.md)); collect through official APIs, exports or by hand within each platform's terms.
+- Pulling a creator's recent posts is fetching untrusted content ([web-scraping UNTRUSTED-CONTENT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/UNTRUSTED-CONTENT.md)); collect through official APIs, exports or by hand within each platform's terms.
 
 ## Prove it
 

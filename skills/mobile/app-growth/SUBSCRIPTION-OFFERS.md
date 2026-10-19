@@ -1,6 +1,6 @@
 # Subscription offers
 
-The offer types each store lets you attach to a subscription: Apple's introductory, promotional, win-back offers and offer codes, and Google Play's base plans, offer phases and eligibility rules. Every limit and rule here comes from Apple's and Google's docs; where the [eronred] playbook disagrees, both are given. When to offer what (trials, the cancellation flow, the win-back ladder) is in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md); purchase code and entitlements are in [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md).
+The offer types each store lets you attach to a subscription: Apple's introductory, promotional, win-back offers and offer codes, and Google Play's base plans, offer phases and eligibility rules. Every limit and rule here comes from Apple's and Google's docs; where the [eronred] playbook disagrees, both are given. When to offer what (trials, the cancellation flow, the win-back ladder) is in [RETENTION-AND-MONETIZATION.md](RETENTION-AND-MONETIZATION.md); purchase code and entitlements are in [revenuecat SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/SKILL.md).
 
 ## Apple subscription offers
 
@@ -43,7 +43,7 @@ The offer types each store lets you attach to a subscription: Apple's introducto
 - **Eligibility:** New customer acquisition (never had this subscription, or never had any subscription in the app); Upgrade (a current subscription and optional billing period, with a redemption cap); Developer determined (you decide the business logic; it can't be purchased outside the app; for example limited to past subscribers who canceled, to win them back). Up to 20 offer tags, invisible to users; offers return their own tags and their base plan's.
 - **Select the offer in code:** pass `productDetails.getSubscriptionOfferDetails(selectedOfferIndex).getOfferToken()` to `ProductDetailsParams.setOfferToken(...)` in `BillingFlowParams`.
 - **Win-back on Play:** Google's support and developer docs, as searched, show no separate win-back offer type; the documented routes are developer-determined offers and a winback SKU. Resubscribe from the Play Store subscriptions center is on by default for up to one year after expiration. For a free trial or intro price on a winback SKU, uncheck "Allow one free trial per app"; resubscribing to the same SKU loses trial and intro eligibility. Free trials verify a valid payment method with a temporary hold; cancelling during the trial keeps access to its end. Promo codes can grant extended free trials.
-- **Deadline:** by Aug 31, 2026 all new apps and updates must use Billing Library version 8 or later, with an extension available until Nov 1, 2026. Store-side setup is in [../google-play/SKILL.md](../google-play/SKILL.md).
+- **Deadline:** by Aug 31, 2026 all new apps and updates must use Billing Library version 8 or later, with an extension available until Nov 1, 2026. Store-side setup is in [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md).
 
 ## Prove it
 

@@ -1,6 +1,6 @@
 # Rendering and sending
 
-Any email provider needs the React template converted into an HTML string, which the async `render` utility does; a plain-text version comes from `toPlainText`. Resend's Node SDK is the exception: pass the element as `react` and it renders both for you. The preferred moment to render is the moment of sending, with real data passed in as props. This file covers the React Email side; the Resend API itself (domains, idempotency, batch, webhooks) is in [../resend/SKILL.md](../resend/SKILL.md), and deliverability and compliance are in [../email-practices/SKILL.md](../email-practices/SKILL.md).
+Any email provider needs the React template converted into an HTML string, which the async `render` utility does; a plain-text version comes from `toPlainText`. Resend's Node SDK is the exception: pass the element as `react` and it renders both for you. The preferred moment to render is the moment of sending, with real data passed in as props. This file covers the React Email side; the Resend API itself (domains, idempotency, batch, webhooks) is in [resend SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md), and deliverability and compliance are in [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 **Contents:** [render](#render) · [Plain text](#plain-text) · [Runtimes](#runtimes) · [Sending with Resend](#sending-with-resend) · [Sending with other providers](#sending-with-other-providers) · [Render changes by version](#render-changes-by-version) · [Prove it](#prove-it)
 
@@ -50,7 +50,7 @@ Any email provider needs the React template converted into an HTML string, which
 
 Resend was built by the same team as React Email. Install `npm install resend react-email`.
 
-- **Use a verified domain in `from`.** Ask the user for theirs; if they have none, ask them to verify one with their email service provider. Domain setup is in [../resend/SKILL.md](../resend/SKILL.md).
+- **Use a verified domain in `from`.** Ask the user for theirs; if they have none, ask them to verify one with their email service provider. Domain setup is in [resend SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md).
 - **Node SDK: pass the element as `react`.** The SDK renders HTML and plain text itself. Check `error`:
   ```tsx
   import { Resend } from 'resend';

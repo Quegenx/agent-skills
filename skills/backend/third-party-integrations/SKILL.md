@@ -7,6 +7,8 @@ description: "Builds integrations with the apps your users connect (Gmail, Slack
 
 Your product acts in systems it doesn't own, with credentials users lent it, against APIs that rate-limit, change, go down and revoke tokens. Most integration bugs are not in the API call: they are a connection stored under the wrong user, a token that quietly expired, a sync that marked live records deleted, a webhook from a stranger, or an agent that wrote to the wrong account.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Connections: who owns one, the connect flow, OAuth apps and scopes, storing the connection, several accounts per user, checking which account connected, refresh, revocation and reconnect, credential custody | [CONNECTIONS.md](CONNECTIONS.md) |
@@ -14,7 +16,7 @@ Your product acts in systems it doesn't own, with credentials users lent it, aga
 | An agent acting through connected accounts: scoped tool sets, approvals by effect, connecting mid-chat, errors that say what to do, raw-API escape hatches, standing automations | [AGENT-ACCESS.md](AGENT-ACCESS.md) |
 | Verifying a webhook signature, encrypting stored tokens, SSRF | the `secure-coding` skill |
 | Delivering your own events reliably (outbox, retries) | the `messaging` skill |
-| Kapso WhatsApp onboarding, messages, webhooks, native forms, workflows, Functions and Calling | [kapso](../kapso/SKILL.md) |
+| Kapso WhatsApp onboarding, messages, webhooks, native forms, workflows, Functions and Calling | [kapso](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/kapso/SKILL.md) |
 
 ## Build or buy
 

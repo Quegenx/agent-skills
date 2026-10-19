@@ -1,13 +1,13 @@
 # List compliance
 
-The platform terms and data rules that apply while building a list, before anything is sent [coreyhaines31/marketingskills, prospecting] references/compliance.md, which carries the note: "Operational guidance, not legal advice. For high-volume programs or programs touching EU/UK residents, run your setup past a privacy attorney." The law per country (CAN-SPAM, GDPR and ePrivacy, UK PECR, Germany, Canada, Australia, US phone rules) is in [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md); this file covers what the list must record and what each platform allows.
+The platform terms and data rules that apply while building a list, before anything is sent [coreyhaines31/marketingskills, prospecting] references/compliance.md, which carries the note: "Operational guidance, not legal advice. For high-volume programs or programs touching EU/UK residents, run your setup past a privacy attorney." The law per country (CAN-SPAM, GDPR and ePrivacy, UK PECR, Germany, Canada, Australia, US phone rules) is in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md); this file covers what the list must record and what each platform allows.
 
 ## Provenance
 
 [coreyhaines31/marketingskills, prospecting] "Every contact carries: the source (provider or URL), the collection date, the lawful basis for EU/UK contacts, and the last verification date and result. This answers 'where did you get my email?' and makes data deletion requests possible."
 
 - For EU and UK contacts the source of the data must be told to the person "at the latest at the time of the first communication" (GDPR Art. 14, https://gdpr-info.eu/art-14-gdpr/); the record is what makes that line in the first message true.
-- Keep a written legitimate interests assessment where legitimate interest is the basis; the cases and the UK and EU positions are in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md).
+- Keep a written legitimate interests assessment where legitimate interest is the basis; the cases and the UK and EU positions are in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md).
 - Flag or exclude personal addresses (Gmail, personal Outlook); "Personal addresses raise GDPR risk significantly."
 - Store only what you need and plan when to delete it. The French regulator's 2024 decision against Kaspr found that a five-year retention renewed on each data update (usually a job change) keeps data "for a disproportionately long time" (https://www.cnil.fr/en/data-scraping-kaspr-fined-eu240000).
 
@@ -56,14 +56,14 @@ GitHub's Acceptable Use Policies (https://docs.github.com/en/site-policy/accepta
 - Every contact has a source URL and collection date.
 - No contacts came from scraped LinkedIn data.
 - No Maps content (names, addresses, reviews, ratings, listing copies) is retained beyond Google's terms.
-- The country gate in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) was applied to every row, including the entity type for UK contacts.
+- The country gate in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md) was applied to every row, including the entity type for UK contacts.
 - Phone numbers were scrubbed against Do Not Call lists, and no AI-voice calls are planned without prior express consent.
 - The lawful basis is documented (a legitimate interests assessment for B2B, or the relevant alternative).
 - Email addresses were verified ([ENRICHMENT.md](ENRICHMENT.md#verification)).
 - Personal addresses are flagged or excluded.
 - The providers' contracts permit the intended use.
 - A retention plan says when the list is deleted.
-- The first outreach will carry an opt-out, a postal address and, for EU and UK contacts, where the data came from ([../cold-outreach/SKILL.md](../cold-outreach/SKILL.md#the-rules)).
+- The first outreach will carry an opt-out, a postal address and, for EU and UK contacts, where the data came from ([cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md#the-rules)).
 
 ## Prove it
 

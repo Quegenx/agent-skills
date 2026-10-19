@@ -20,7 +20,7 @@ Prepare a plan a fresh executor can follow without the preceding conversation. O
 - List global constraints once, preserving exact names and behavioral requirements from the accepted specification where ambiguity would matter.
 - Declare what each task consumes and produces. Keep names, parameters, return types, domain terminology and error contracts consistent between producers, consumers and the plan's examples.
 - Give each step one action with a checkable result. Include exact relevant paths and interfaces, while leaving implementation bodies to the executor when a clear contract is sufficient.
-- Derive verification commands from the repository, with the expected observable result for each. Do not invent a command or pretend an unauthorized test/build is available. Test technique remains in [testing](../testing/SKILL.md).
+- Derive verification commands from the repository, with the expected observable result for each. Do not invent a command or pretend an unauthorized test/build is available. Test technique remains in [testing](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md).
 - Self-review requirement coverage, cross-task interface consistency, missing dependencies and proportionality before handing the plan off.
 
 ## Detect drift and stop conditions

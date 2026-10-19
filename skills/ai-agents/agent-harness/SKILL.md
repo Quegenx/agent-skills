@@ -7,6 +7,8 @@ description: "Builds reliable LLM agents: rule placement, prompts, gates, tools,
 
 A model is a probability, not code: the same conversation can go another way on the next run, and a rule it must remember to follow, it will sometimes forget. The harness is everything around the model that makes the critical path near-certain anyway: code that checks the facts that matter, context that arrives only when it applies, tools that refuse the wrong state, and a history the agent can trust. 100% is not reachable with a model; near 100% on the path that costs money or trust is, by backing each rule there with code.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | The system prompt: measuring what is really sent, a stable cached prefix, reminders, skills and their routing, changing a prompt, writing for the model that reads it | [PROMPT.md](PROMPT.md) |
@@ -16,10 +18,10 @@ A model is a probability, not code: the same conversation can go another way on 
 | The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, long runs, observability, the build order | [RUNTIME.md](RUNTIME.md) |
 | Multi-agent workflows: why one context fails, fan-out and its contract (evidence before the spawn, the brief as the whole prompt, a join key with coverage enforced, abstaining as an answer), adversarial verification, tournaments, loop until done, quarantine triage, author and reviewer loops with a round cap, which model each subagent uses | [WORKFLOWS.md](WORKFLOWS.md) |
 | Scheduled and background agents: bookmarks per source, a failed read that isn't a quiet day, re-check before posting, post once, read-only preferences and a ledger, scoped credentials, a spending cap from real runs | [SCHEDULED-AGENTS.md](SCHEDULED-AGENTS.md) |
-| Researching source: exact anchors, evidence lanes, negative-proof limits and localization returns | [code-research](../../architecture/code-research/SKILL.md) |
+| Researching source: exact anchors, evidence lanes, negative-proof limits and localization returns | [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-research/SKILL.md) |
 | Context reductions: measured units, recoverable originals, recall overhead, controlled comparisons, cost per accepted loop result and honest savings claims | [CONTEXT-COSTS.md](CONTEXT-COSTS.md) |
 | Refining the harness itself: observed divergences, scoped proposals, execution probes, parallel or sequential composition, supported lessons and experiment resume | [HARNESS-REFINEMENT.md](HARNESS-REFINEMENT.md) |
-| Executing or resuming a selected plan: shared interfaces, durable progress and phase handoff | [engineering-planning EXECUTION.md](../../architecture/engineering-planning/EXECUTION.md) |
+| Executing or resuming a selected plan: shared interfaces, durable progress and phase handoff | [engineering-planning EXECUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/EXECUTION.md) |
 | Diagnosing a recorded session: identity and record meanings, plan drift, repetitions, cost, coverage and scrubbed evidence | [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Long-term memory across conversations: extraction, profile and search, staying current, forgetting | the `agent-memory` skill |
@@ -57,6 +59,8 @@ For every sentence in the prompt, ask in order:
 
 ## The method
 
+For implementing or refining a full product-agent harness:
+
 1. **Baseline:** an eval suite from real conversations, every case run 3 times, the pass rate recorded with its 95% interval (`agent-evals`).
 2. **Measure what is actually sent:** the rendered prompt and the tool schemas, per section, not the files on disk.
 3. **Critical rules to code first:** list what is costly when wrong (payment, closing an order, handoff, quantities, invented ids, side effects); give each a gate or check ([CHECKS.md](CHECKS.md)) and a unit test, exceptions included.
@@ -68,6 +72,8 @@ For every sentence in the prompt, ask in order:
 9. **After launch:** read the first real conversations; each new failure becomes an eval case, then a fix.
 
 ## Prove it
+
+For a full harness implementation, use the full checklist. For a prompt, tool, history, runtime or classifier change, check the affected contracts. A recorded-session diagnosis reports observed evidence and gaps; it does not require implementing missing infrastructure.
 
 - [ ] Eval suite from real conversations, 3 runs per case, baseline recorded
 - [ ] One lease per conversation, longer than the worst-case run; an explicit step limit above the measured maximum, a last step with tools off, pass, step, stream and tool timeouts, visible retries; a stopped run saved from the abort callback

@@ -1,6 +1,6 @@
 # Podcast pitching and guest prep
 
-Getting onto a podcast and walking in prepared, copied from coreyhaines31/marketingskills `public-relations` (MIT); the prep method is "Distilled and adapted from ai-visibility-skills by Knowatoa (MIT), reused with credit" (https://github.com/Knowatoa/ai-visibility-skills). The source's reason to prep hard: "Episodes get transcribed, show notes get published, and both get crawled and cited by AI assistants". That is the source's claim, not a measured mechanism; how AI answers pick sources is [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
+Getting onto a podcast and walking in prepared, copied from coreyhaines31/marketingskills `public-relations` (MIT); the prep method is "Distilled and adapted from ai-visibility-skills by Knowatoa (MIT), reused with credit" (https://github.com/Knowatoa/ai-visibility-skills). The source's reason to prep hard: "Episodes get transcribed, show notes get published, and both get crawled and cited by AI assistants". That is the source's claim, not a measured mechanism; how AI answers pick sources is [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md).
 
 ## Pitching a podcast
 

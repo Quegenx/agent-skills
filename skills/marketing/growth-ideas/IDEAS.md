@@ -12,7 +12,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 3. **Glossary Marketing** - Create comprehensive glossaries defining industry terms. Each term becomes an SEO-optimized page targeting "what is X" searches.
 
-4. **Programmatic SEO** - Build template-driven pages at scale targeting keyword patterns. Location pages, comparison pages, integration pages - any pattern with search volume. *Note:* Google's spam policies name scaled content abuse, "many pages are generated for the primary purpose of manipulating search rankings and not helping users" (https://developers.google.com/search/docs/essentials/spam-policies); every page needs unique value. How to do it: [seo PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md).
+4. **Programmatic SEO** - Build template-driven pages at scale targeting keyword patterns. Location pages, comparison pages, integration pages - any pattern with search volume. *Note:* Google's spam policies name scaled content abuse, "many pages are generated for the primary purpose of manipulating search rankings and not helping users" (https://developers.google.com/search/docs/essentials/spam-policies); every page needs unique value. How to do it: [seo PAGES-AT-SCALE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md).
 
 5. **Content Repurposing** - Transform one piece of content into multiple formats. Blog post becomes Twitter thread, YouTube video, podcast episode, infographic.
 
@@ -29,7 +29,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 ## Competitor & Comparison (11 to 13)
 
-11. **Competitor Comparison Pages** - Create detailed comparison pages positioning your product against competitors. "[Your Product] vs [Competitor]" pages capture high-intent searchers. How: [comparison-pages](../comparison-pages/SKILL.md).
+11. **Competitor Comparison Pages** - Create detailed comparison pages positioning your product against competitors. "[Your Product] vs [Competitor]" pages capture high-intent searchers. How: [comparison-pages](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md).
 
 12. **Marketing Jiu-Jitsu** - Turn competitor weaknesses into your strengths. When competitors raise prices, launch affordability campaigns.
 
@@ -40,7 +40,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 14. **Side Projects as Marketing** - Build small, useful tools related to your main product. Side projects attract users who may later convert.
 
-15. **Engineering as Marketing** - Build free tools that solve real problems. Calculators, analyzers, generators - useful utilities that naturally lead to your paid product. How: [lead-magnets](../lead-magnets/SKILL.md).
+15. **Engineering as Marketing** - Build free tools that solve real problems. Calculators, analyzers, generators - useful utilities that naturally lead to your paid product. How: [lead-magnets](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md).
 
 16. **Importers as Marketing** - Build import tools for competitor data. "Import from [Competitor]" reduces switching friction.
 
@@ -117,7 +117,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 48. **Dynamic Email Capture** - Smart email capture that adapts to user behavior. Exit intent, scroll depth triggers.
 
-49. **Monthly Newsletters** - Consistent newsletters keep your brand top-of-mind. (Filed under Email; [marketing-plan IDEA-CROSS-REFERENCE.md](../marketing-plan/IDEA-CROSS-REFERENCE.md) files it under Acquisition.)
+49. **Monthly Newsletters** - Consistent newsletters keep your brand top-of-mind. (Filed under Email; [marketing-plan IDEA-CROSS-REFERENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-plan/IDEA-CROSS-REFERENCE.md) files it under Acquisition.)
 
 50. **Inbox Placement** - Technical email optimization for deliverability. Authentication and list hygiene.
 
@@ -132,7 +132,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 54. **Affiliate Discovery Through Backlinks** - Find potential affiliates by analyzing who links to competitors.
 
-55. **Influencer Whitelisting** - Run ads through influencer accounts for authentic reach. Disclose the relationship: FTC "Disclose when you have any financial, employment, personal, or family relationship with a brand" (https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers); [creator-marketing](../creator-marketing/SKILL.md).
+55. **Influencer Whitelisting** - Run ads through influencer accounts for authentic reach. Disclose the relationship: FTC "Disclose when you have any financial, employment, personal, or family relationship with a brand" (https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers); [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md).
 
 56. **Reseller Programs** - Enable agencies to resell your product. White-label options create distribution partners.
 
@@ -146,7 +146,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 61. **Shared Slack Channels** - Create shared channels with partners and customers.
 
-62. **Affiliate Program** - Structured commission programs for referrers. How: [referral-programs](../referral-programs/SKILL.md).
+62. **Affiliate Program** - Structured commission programs for referrers. How: [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md).
 
 63. **Integration Marketing** - Joint marketing with integration partners.
 
@@ -187,7 +187,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 77. **Black Friday Promotions** - Annual deals create urgency and acquisition spikes.
 
-78. **Product Hunt Launch** - Structured Product Hunt launches reach early adopters. How: [product-launch PRODUCT-HUNT.md](../product-launch/PRODUCT-HUNT.md).
+78. **Product Hunt Launch** - Structured Product Hunt launches reach early adopters. How: [product-launch PRODUCT-HUNT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/PRODUCT-HUNT.md).
 
 79. **Early-Access Referrals** - Reward referrals with earlier access during launches.
 
@@ -199,7 +199,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 83. **Twitter Giveaways** - Engagement-boosting giveaways that require follows or retweets. *Platform rules:* X allows prizes "for posting a particular update, for following a particular account" but says "Please don't set rules to encourage lots of duplicate updates (e.g., 'whoever Reposts this the most wins')" and rules out multiple accounts (https://help.x.com/en/rules-and-policies/x-contest-rules).
 
-84. **Giveaways** - Strategic giveaways attract attention and capture leads. *Platform rules:* Meta: "Your promotion must not require or incentivize participants to share, repost, tag others, or in any other way publicize your promotion", with official rules, a release of Meta and a non-affiliation statement (https://www.facebook.com/policies_center/pages_groups_events); LinkedIn: "You may not use LinkedIn to hold lotteries, contests, sweepstakes, or giveaways"; in iOS apps, Apple's 5.3 rules ([app-store-connect REVIEW-GUIDELINES.md](../../mobile/app-store-connect/REVIEW-GUIDELINES.md)).
+84. **Giveaways** - Strategic giveaways attract attention and capture leads. *Platform rules:* Meta: "Your promotion must not require or incentivize participants to share, repost, tag others, or in any other way publicize your promotion", with official rules, a release of Meta and a non-affiliation statement (https://www.facebook.com/policies_center/pages_groups_events); LinkedIn: "You may not use LinkedIn to hold lotteries, contests, sweepstakes, or giveaways"; in iOS apps, Apple's 5.3 rules ([app-store-connect REVIEW-GUIDELINES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/REVIEW-GUIDELINES.md)).
 
 85. **Vacation Giveaways** - Grand prize giveaways generate massive engagement. Same platform rules as #84.
 
@@ -291,7 +291,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 123. **Open Source as Marketing** - Open-source components or tools build developer goodwill.
 
-124. **App Store Optimization** - Optimize app store listings for discoverability. How: [aso](../../mobile/aso/SKILL.md).
+124. **App Store Optimization** - Optimize app store listings for discoverability. How: [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md).
 
 125. **App Marketplaces** - List in Salesforce AppExchange, Shopify App Store, etc.
 
@@ -326,7 +326,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 ## Audience-Specific (137 to 139)
 
-137. **Two-Sided Referrals** - Reward both referrer and referred. How: [referral-programs](../referral-programs/SKILL.md).
+137. **Two-Sided Referrals** - Reward both referrer and referred. How: [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md).
 
 138. **Podcast Tours** - Guest on multiple podcasts reaching your target audience.
 

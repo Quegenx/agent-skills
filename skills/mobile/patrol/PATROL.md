@@ -19,7 +19,7 @@ The first setup covers Android only: the pubspec `patrol:` block plus native And
 
 ## Running and Patrol MCP
 
-- **Run a single test with the Patrol MCP server and all tests with `patrol test`. Never use `flutter test`.**
+- **Use `patrol test` for tests; when Patrol MCP was selected, its server can run a single test. Never use `flutter test` for Patrol native automation.** [leancodepl/patrol, first-time setup and running]
 - **MCP tools:**
   - `patrol-run({ "testFile": "patrol_test/your_test.dart" })` runs a test and waits for it to finish. With no session running it starts one with that file; with a session running it restarts the current tests.
   - `patrol-screenshot({ "platform": "android" })` or `"ios"` captures a screenshot to debug a failure.
@@ -221,4 +221,4 @@ class Keys {
 
 ## Prove it
 
-The self-contained first test passes with `patrol test` on a fully booted emulator; each new test passes once with inline Patrol calls and again after they move into modules; the test file calls only module methods; every widget it finds is found by a key from the shared keys file; and `test_bundle.dart` and `.patrol.env` are gitignored.
+For first-time setup, the self-contained test passes with `patrol test` on a fully booted emulator. When adopting LeanCode's module convention, each new test passes once inline and again after extraction, and the test file calls only module methods. Its shared-Keys convention and ignored `test_bundle.dart`/`.patrol.env` remain scoped to that source suite. Report the selected target, convention and actual checks. [leancodepl/patrol, first-time setup, patrol-write-test and test keys]

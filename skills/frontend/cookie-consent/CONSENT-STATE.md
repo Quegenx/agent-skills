@@ -90,7 +90,7 @@ When a visitor clicks Accept, Reject or Save [c15t, how-consent-works.md, consen
 
 ## Where the landing page differs
 
-The owner's banner ([../landing-page-ui/SECTIONS.md](../landing-page-ui/SECTIONS.md#cookie-banner), `reference/website/widgets/cookie-consent/cookie-consent-storage.ts`) is the design for that skill; these are differences, not fixes:
+The owner's banner ([landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md#cookie-banner), `reference/website/widgets/cookie-consent/cookie-consent-storage.ts`) is the design for that skill; these are differences, not fixes:
 
 - It stores `accepted` or `denied` in localStorage only, read by an inline head script before the tag bootstraps; c15t stores cookie plus localStorage with the cookie authoritative. The head-script read covers the first paint without a cookie.
 - It keeps no backend record; c15t calls offline mode "Not recommended for production environments" (c15t's position, not an official-doc requirement).

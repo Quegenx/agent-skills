@@ -2,7 +2,7 @@
 
 Transcription, long generation, batch extraction: work that takes seconds to hours, costs money per call, and runs in a background job. A web request never waits for it: the request saves the job and returns right away, a worker does the work, and the UI reads the saved status (the async request pattern; see the `background-jobs` skill).
 
-For submission intent, provider IDs, uncertain outcomes, reconciliation and safe retries, read [external side effects](../../backend/background-jobs/EXTERNAL-SIDE-EFFECTS.md#a-job-is-a-state-machine).
+For submission intent, provider IDs, uncertain outcomes, reconciliation and safe retries, read [external side effects](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/EXTERNAL-SIDE-EFFECTS.md#a-job-is-a-state-machine).
 
 ## The provider flow
 
@@ -56,4 +56,4 @@ When one call scores or labels many items (posts, rows, messages):
 
 ## Prove it
 
-Use the failure cases in [external side effects](../../backend/background-jobs/EXTERNAL-SIDE-EFFECTS.md#prove-it) to check the provider flow.
+Use the failure cases in [external side effects](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/EXTERNAL-SIDE-EFFECTS.md#prove-it) to check the provider flow.

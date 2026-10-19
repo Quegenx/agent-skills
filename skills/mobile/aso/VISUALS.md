@@ -1,6 +1,6 @@
 # Visuals: icon, screenshots and preview videos
 
-Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md). Capture assessment, pairings, connected composition and final-image QA are in [SCREENSHOT-PRODUCTION.md](SCREENSHOT-PRODUCTION.md); optional art directions are in [SCREENSHOT-STYLES.md](SCREENSHOT-STYLES.md).
+Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md) and [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md). Capture assessment, pairings, connected composition and final-image QA are in [SCREENSHOT-PRODUCTION.md](SCREENSHOT-PRODUCTION.md); optional art directions are in [SCREENSHOT-STYLES.md](SCREENSHOT-STYLES.md).
 
 **Contents:** [Rules for every asset](#rules-for-every-asset) · [App icon](#app-icon) · [Screenshot specs](#screenshot-specs-app-store) · [Screenshot strategy](#screenshot-strategy) · [App preview specs](#app-preview-specs-app-store) · [Preview strategy](#preview-strategy) · [Product page header and search assets](#product-page-header-and-search-assets-fall-2026) · [Prove it](#prove-it)
 
@@ -47,7 +47,7 @@ Apple's metadata rules are [App Review Guidelines 2.3](https://developer.apple.c
 | Apple Watch (one size across all localizations) | e.g. 422 x 514 (Ultra 4, Ultra 3), 416 x 496 (Series 12, 11, 10), 396 x 484 (Series 9, 8, 7) |
 
 - **Apple's advice:** up to 10 screenshots; the first one to three appear in search results when there's no preview; consider at least one Dark Mode screenshot; localize screenshots per market. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "Apple gives you 10. Use at least 6"; avoid "Dark screenshots that look the same at thumbnail size", stock-photo backgrounds and too much text; design for small size with large text and high contrast. How many to fill is practice, not a rule (Apple requires one): [eronred] scores "all 10 slots", [ApparenceKit] says at least 6, and [coreyhaines31/marketingskills, aso] flags fewer than 5 and calls 4 to 5 optimal for utilities and 5 to 6 for complex apps, with "diminishing returns" past 6 ([BENCHMARKS.md](BENCHMARKS.md#screenshots-and-preview-video)).
-- Resizing and the automated capture pipeline are in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
+- Resizing and the automated capture pipeline are in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 
 ## Screenshot strategy
 
@@ -108,7 +108,7 @@ Source: [eronred].
 - **Checklist:** right resolution; no download CTA, store badge or app-icon overlay; no marketing intro card; audio with captions, or no audio; poster frame not mid-typing; checked both in the search result card and on the product page; top 3 markets localized.
 - **Rejections and fixes:** real people or hands: strip them; logo or intro card: cut the first 1 to 2 s; "Download" CTA: replace with the outcome state; footage doesn't match the current version: re-record after a major UI change; narration without captions: burn in captions or remove the audio.
 - **Localization tiers:** Tier 1 (English, Japanese, German, French, Spanish, Chinese) localize overlays and re-record with localized in-app strings; Tier 2 overlays only; Tier 3 skip. "A localized video typically lifts conversion 8 to 15% in that market vs the default English video."
-- **Capturing Android footage:** `adb shell screenrecord` and the show-touches setting are in [../google-play/LISTING-AND-METADATA.md](../google-play/LISTING-AND-METADATA.md#screenshots-capture-and-upload).
+- **Capturing Android footage:** `adb shell screenrecord` and the show-touches setting are in [google-play LISTING-AND-METADATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/LISTING-AND-METADATA.md#screenshots-capture-and-upload).
 - **Testing:** through Product Page Optimization ([PRODUCT-PAGES.md](PRODUCT-PAGES.md)); primary metric product page conversion rate, secondary video play-through rate.
 
 ## Product page header and search assets (fall 2026)
@@ -116,7 +116,7 @@ Source: [eronred].
 - **New creative assets** (guideline 2.3.14): a product page header and search results assets. They must pertain to the app or brand, be appropriate for all audiences, and contain no misleading references to other apps, no unverifiable claims, "or specific or discounted pricing information".
 - **Images:** product page header 21:9 at 3840 x 1646 (.jpeg, .jpg, .png) or 16:9 at 5244 x 2950 (.png); search results 3:2 from 1920 x 1280 to 3840 x 2560 (.jpeg, .jpg, .png) or 16:9 at 5244 x 2950 (.png); no alpha channels.
 - **Videos:** header 21:9 at 3840 x 1646, search 3:2; 30 or 60 fps; 5 to 30 seconds; .mov, .m4v, .mp4; muted by default (they can't be unmuted in search) and loop continuously.
-- **Asset Library and preview tool** (October 5, 2026): upload and pre-approve assets in the Asset Library in App Store Connect, and use the preview tool (Dark Mode, devices, orientations) to see the product page and search results before submitting. Uploading through the asc CLI is in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
+- **Asset Library and preview tool** (October 5, 2026): upload and pre-approve assets in the Asset Library in App Store Connect, and use the preview tool (Dark Mode, devices, orientations) to see the product page and search results before submitting. Uploading through the asc CLI is in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 
 ## Prove it
 

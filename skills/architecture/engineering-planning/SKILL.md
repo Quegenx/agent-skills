@@ -7,6 +7,8 @@ description: "Turns an engineering request into resolved decisions, a user-cente
 
 Resolve the uncertainty that matters to the requested outcome, then choose the smallest useful planning artifact. Sources are Matt Pocock's grilling, questionnaires, specs, tickets, wayfinder and wizard; obra/superpowers' brainstorming and writing-plans; shadcn's improve planning and reconciliation references; Octocode's RFC and prerequisite references; and React Doctor's developer-tool product-thinking runbook. Source workflows do not expand the user's authorization.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Choose the artifact and define the planning boundary | [SKILL.md](SKILL.md) |
@@ -31,10 +33,10 @@ Resolve the uncertainty that matters to the requested outcome, then choose the s
 
 ## Related owners
 
-- Contract violations and causal diagnosis: [debugging](../debugging/SKILL.md). [bgauryy/octocode, octocode-research/references/problem-framing.md]
-- Domain terms and accepted decision records: [GLOSSARY-AND-ADRS.md](../domain-modeling/GLOSSARY-AND-ADRS.md). [mattpocock/skills, domain-modeling/SKILL.md]
-- A concrete experiment to resolve a logic question: [PROTOTYPES.md](../software-architecture/PROTOTYPES.md). [mattpocock/skills, prototype/LOGIC.md]
-- Worker dispatch packets and merge contracts: [WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets). [obra/superpowers, executing-plans/SKILL.md; bgauryy/octocode, octocode-subagent/references/packets.md]
+- Contract violations and causal diagnosis: [debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/SKILL.md). [bgauryy/octocode, octocode-research/references/problem-framing.md]
+- Domain terms and accepted decision records: [domain-modeling GLOSSARY-AND-ADRS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/domain-modeling/GLOSSARY-AND-ADRS.md). [mattpocock/skills, domain-modeling/SKILL.md]
+- A concrete experiment to resolve a logic question: [software-architecture PROTOTYPES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/software-architecture/PROTOTYPES.md). [mattpocock/skills, prototype/LOGIC.md]
+- Worker dispatch packets and merge contracts: [agent-harness WORKFLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md#delegation-packets). [obra/superpowers, executing-plans/SKILL.md; bgauryy/octocode, octocode-subagent/references/packets.md]
 
 ## Gotchas
 

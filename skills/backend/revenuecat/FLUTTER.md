@@ -389,7 +389,7 @@ try {
 ```
 
 - **One purchase at a time.** Disable buy buttons while a purchase is in flight to prevent double charges.
-- **Meta purchase event.** To send the purchase to Meta, use `result.storeTransaction.transactionIdentifier` as the `eventId`; a third-party snippet that reads `res.purchaserInfo` does not compile on 9.0.0+, where `PurchaseResult` has only `customerInfo` and `storeTransaction` (https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/purchase_result.dart) ([../../mobile/app-growth/META-ADS.md](../../mobile/app-growth/META-ADS.md#facebook-sdk-in-flutter)).
+- **Meta purchase event.** To send the purchase to Meta, use `result.storeTransaction.transactionIdentifier` as the `eventId`; a third-party snippet that reads `res.purchaserInfo` does not compile on 9.0.0+, where `PurchaseResult` has only `customerInfo` and `storeTransaction` (https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/purchase_result.dart) ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#facebook-sdk-in-flutter)).
 
 ```dart
 class BuyButton extends StatefulWidget {

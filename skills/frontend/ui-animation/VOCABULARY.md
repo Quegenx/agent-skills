@@ -40,7 +40,7 @@ How elements appear and disappear. [Emil Kowalski, animation-vocabulary]
 - **Slide in**: Element enters by sliding in from off-screen (left, right, top, or bottom). Built: [TIMING.md](TIMING.md#direction-and-weight).
 - **Scale in**: Element grows from smaller to full size as it appears, often paired with a fade. Built: [PATTERNS.md](PATTERNS.md#enter-and-exit).
 - **Pop in**: Element appears with a slight overshoot, like it bounces into place. Built: the overshoot column in [TIMING.md](TIMING.md#duration-by-element).
-- **Reveal**: Content is uncovered gradually, often by animating a clip-path or mask. Built: [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move), [../svg/CLIP-AND-MASK.md](../svg/CLIP-AND-MASK.md#css-clip-path-and-mask-on-html).
+- **Reveal**: Content is uncovered gradually, often by animating a clip-path or mask. Built: [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move), [svg CLIP-AND-MASK.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/CLIP-AND-MASK.md#css-clip-path-and-mask-on-html).
 - **Enter / Exit**: The animation an element plays when it's added to or removed from the screen. Built: [PATTERNS.md](PATTERNS.md#enter-and-exit), [NATIVE-CSS.md](NATIVE-CSS.md#top-layer-enter-and-exit).
 
 ## Sequencing and timing
@@ -62,9 +62,9 @@ Changing an element's position, size, or angle. [Emil Kowalski, animation-vocabu
 
 - **Translate**: Move an element along the X or Y axis. **Scale**: Make an element bigger or smaller. **Rotate**: Spin an element around a point. Built: [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move).
 - **Skew**: Slant an element along the X or Y axis, shearing it out of its rectangular shape. Built: [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move) ("skew is not an independent transform value").
-- **3D tilt / Flip**: Rotate in 3D space (rotateX / rotateY) to add depth. Built: the tilt card in [MATH.md](MATH.md#face-the-direction-of-travel), [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#morphs-and-other-effects).
-- **Perspective**: How strong the 3D effect looks - a lower value exaggerates depth, like the viewer is closer. Built: [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#morphs-and-other-effects).
-- **Transform origin**: The anchor point a scale or rotation grows or spins from. Built: [PATTERNS.md](PATTERNS.md#modals-sheets-popovers), [../svg/REUSE-AND-TRANSFORMS.md](../svg/REUSE-AND-TRANSFORMS.md#transform-origin-and-transform-box).
+- **3D tilt / Flip**: Rotate in 3D space (rotateX / rotateY) to add depth. Built: the tilt card in [MATH.md](MATH.md#face-the-direction-of-travel), [modern-css VIEW-TRANSITIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/VIEW-TRANSITIONS.md#morphs-and-other-effects).
+- **Perspective**: How strong the 3D effect looks - a lower value exaggerates depth, like the viewer is closer. Built: [modern-css VIEW-TRANSITIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/VIEW-TRANSITIONS.md#morphs-and-other-effects).
+- **Transform origin**: The anchor point a scale or rotation grows or spins from. Built: [PATTERNS.md](PATTERNS.md#modals-sheets-popovers), [svg REUSE-AND-TRANSFORMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/REUSE-AND-TRANSFORMS.md#transform-origin-and-transform-box).
 - **Origin-aware animation**: An element animates out of its trigger, like a popover growing from the button that opened it instead of from its own center which is the default in CSS. Built: "Grow from the trigger" in [PATTERNS.md](PATTERNS.md#modals-sheets-popovers). The CSS default is `transform-origin: 50% 50% 0` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/transform-origin)).
 
 ## Transitions between states
@@ -73,7 +73,7 @@ Connecting one state, view, or element to another. [Emil Kowalski, animation-voc
 
 - **Crossfade**: One element fades out as another fades in, in the same spot. Built: named as a tell when shapes could transform, in [PATTERNS.md](PATTERNS.md#tells-of-template-motion).
 - **Continuity transition**: A change that keeps the user oriented by visually connecting before and after. For example, making the same rectangle bigger and smaller. Built: "what changed, and where did it go?" in [SKILL.md](SKILL.md), [PATTERNS.md](PATTERNS.md#shared-elements-a-thumbnail-becomes-the-detail).
-- **Morph**: One shape smoothly turns into another shape, e.g. Dynamic Island. Built: [PATTERNS.md](PATTERNS.md#a-button-that-grows-into-a-panel), [PATTERNS.md](PATTERNS.md#icons-that-turn-into-each-other), [../svg/MORPHING-ICONS.md](../svg/MORPHING-ICONS.md#three-lines-per-icon).
+- **Morph**: One shape smoothly turns into another shape, e.g. Dynamic Island. Built: [PATTERNS.md](PATTERNS.md#a-button-that-grows-into-a-panel), [PATTERNS.md](PATTERNS.md#icons-that-turn-into-each-other), [svg MORPHING-ICONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/MORPHING-ICONS.md#three-lines-per-icon).
 - **Shared element transition**: An element travels and transforms from one position into another, like a thumbnail expanding into a card. Built: [PATTERNS.md](PATTERNS.md#shared-elements-a-thumbnail-becomes-the-detail).
 - **Layout animation**: When an element's size or position changes, it animates to the new spot instead of snapping. Built: [PATTERNS.md](PATTERNS.md#lists-that-stagger-reorder-and-remove).
 - **Accordion / Collapse**: A section smoothly expands and collapses its height to show or hide content. Built: [PATTERNS.md](PATTERNS.md#height-and-accordions), [NATIVE-CSS.md](NATIVE-CSS.md#details-and-height-auto).
@@ -84,10 +84,10 @@ Connecting one state, view, or element to another. [Emil Kowalski, animation-voc
 Motion tied to scrolling or navigating between views. [Emil Kowalski, animation-vocabulary]
 
 - **Scroll reveal**: Elements fade or slide into place as they enter the viewport. Built: [PATTERNS.md](PATTERNS.md#scroll-linked-motion).
-- **Scroll-driven animation**: An animation whose progress is tied directly to scroll position. Built: [NATIVE-CSS.md](NATIVE-CSS.md#scroll-driven-animations), [../modern-css/SCROLL-ANIMATIONS.md](../modern-css/SCROLL-ANIMATIONS.md#scroll-driven-animation).
+- **Scroll-driven animation**: An animation whose progress is tied directly to scroll position. Built: [NATIVE-CSS.md](NATIVE-CSS.md#scroll-driven-animations), [modern-css SCROLL-ANIMATIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/SCROLL-ANIMATIONS.md#scroll-driven-animation).
 - **Parallax**: Background and foreground move at different speeds while scrolling, creating depth. Built: [PATTERNS.md](PATTERNS.md#scroll-linked-motion).
 - **Page transition**: An animation that plays when navigating from one page or route to another. Built: [TIMING.md](TIMING.md#duration-by-element), [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#screen-transitions).
-- **View transition**: The browser morphs between two states or pages, connecting shared elements. Built: [NATIVE-CSS.md](NATIVE-CSS.md#view-transitions), [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#same-document-transitions).
+- **View transition**: The browser morphs between two states or pages, connecting shared elements. Built: [NATIVE-CSS.md](NATIVE-CSS.md#view-transitions), [modern-css VIEW-TRANSITIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/VIEW-TRANSITIONS.md#same-document-transitions).
 
 ## Feedback and interaction
 
@@ -97,10 +97,10 @@ Responding to the user's actions. [Emil Kowalski, animation-vocabulary]
 - **Press / Tap feedback**: A subtle scale-down when an element is clicked, so it feels physical. Built: [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback) (which also lets professional tools "shift tone" instead of scaling), [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#press-feedback).
 - **Hold to confirm**: A progress effect that fills up while the user holds a button. Built: [REVEALS.md](REVEALS.md#hold-to-confirm).
 - **Drag**: Moving an element by grabbing it, often with momentum when released. Built: [PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap), [PHYSICS.md](PHYSICS.md#the-hand).
-- **Drag to reorder**: Dragging items in a list to rearrange them, while the others shift to make room. Built: board drag and drop in [../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md#boards-and-lists-of-the-same-items).
+- **Drag to reorder**: Dragging items in a list to rearrange them, while the others shift to make room. Built: board drag and drop in [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md#boards-and-lists-of-the-same-items).
 - **Swipe to dismiss**: Dragging an element off-screen to close it, like a drawer or toast. Built: [SHEETS.md](SHEETS.md#a-swipeable-sheet-on-native-scroll), [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#drag-to-dismiss-sheet).
 - **Rubber-banding**: Resistance and snap-back when you drag past a boundary (the iOS overscroll feel). Built: `dragElastic` in [PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap), walls in [PHYSICS.md](PHYSICS.md#walls-and-rubber-banding), `rubberband()` in [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#two-worklets-projection-and-rubber-banding).
-- **Shake / Wiggle**: A quick side-to-side jitter signaling an error or rejected input. Built: [TIMING.md](TIMING.md#duration-by-element), [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback), [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
+- **Shake / Wiggle**: A quick side-to-side jitter signaling an error or rejected input. Built: [TIMING.md](TIMING.md#duration-by-element), [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback), [modern-css GRADIENTS-AND-EFFECTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
 - **Ripple**: A circle expanding from the point of a tap, confirming the press. Built: in part, the `sin` ripples and pulse rings in [MATH.md](MATH.md#waves-sin-and-phase).
 
 ## Easing
@@ -135,7 +135,7 @@ Animations that run on their own. [Emil Kowalski, animation-vocabulary]
 
 - **Marquee**: Text or content that scrolls continuously in a loop. Built: not in these skills; `anti-slop-ui` forbids it on report pages ("Never add auto-scrolling marquees").
 - **Loop**: An animation that repeats, a set number of times or infinitely. Built: [MATH.md](MATH.md#sawtooth-one-way-then-reset), and the pause control in [PERFORMANCE.md](PERFORMANCE.md#reduced-motion).
-- **Alternate (yoyo)**: A loop that plays forward then reverses each iteration, instead of jumping back to the start. Built: only as `infinite alternate` in code in [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#animated-gradient-text).
+- **Alternate (yoyo)**: A loop that plays forward then reverses each iteration, instead of jumping back to the start. Built: only as `infinite alternate` in code in [modern-css GRADIENTS-AND-EFFECTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/GRADIENTS-AND-EFFECTS.md#animated-gradient-text).
 - **Orbit**: An element circling around another in a continuous path. Built: not in these skills.
 - **Pulse**: A gentle repeating scale or opacity change to draw attention. Built: [MATH.md](MATH.md#sawtooth-one-way-then-reset), [PERFORMANCE.md](PERFORMANCE.md#reduced-motion).
 - **Float**: A gentle, continuous up-and-down drift that makes a static element feel alive and weightless. Built: [MATH.md](MATH.md#waves-sin-and-phase); rule 1 in [SKILL.md](SKILL.md) cuts it or keeps it subliminal.
@@ -145,16 +145,16 @@ Animations that run on their own. [Emil Kowalski, animation-vocabulary]
 
 The small touches that separate good from great. [Emil Kowalski, animation-vocabulary]
 
-- **Blur**: A blur filter used to soften an element or mask tiny imperfections. Built: [REVEALS.md](REVEALS.md#blur-bridges-a-crossfade); motion blur is in [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
-- **Clip-path**: Clipping an element to a shape, used for reveals, masks, and before/after sliders. Built: [../svg/CLIP-AND-MASK.md](../svg/CLIP-AND-MASK.md#css-clip-path-and-mask-on-html), [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move).
-- **Mask**: Hiding or revealing parts of an element using a shape or gradient - like clip-path, but with soft, fadeable edges. Built: [../svg/CLIP-AND-MASK.md](../svg/CLIP-AND-MASK.md#clip-or-mask), the text shimmer in [../app-ui/STATES.md](../app-ui/STATES.md#pending).
+- **Blur**: A blur filter used to soften an element or mask tiny imperfections. Built: [REVEALS.md](REVEALS.md#blur-bridges-a-crossfade); motion blur is in [modern-css GRADIENTS-AND-EFFECTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
+- **Clip-path**: Clipping an element to a shape, used for reveals, masks, and before/after sliders. Built: [svg CLIP-AND-MASK.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/CLIP-AND-MASK.md#css-clip-path-and-mask-on-html), [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move).
+- **Mask**: Hiding or revealing parts of an element using a shape or gradient - like clip-path, but with soft, fadeable edges. Built: [svg CLIP-AND-MASK.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/CLIP-AND-MASK.md#clip-or-mask), the text shimmer in [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#pending).
 - **Before / after slider**: A draggable divider that wipes between two overlaid images to compare them. Built: [REVEALS.md](REVEALS.md#a-before-and-after-slider).
-- **Line drawing**: An SVG path that draws itself in, like an invisible pen tracing it. Built: [../svg/CSS-ANIMATION.md](../svg/CSS-ANIMATION.md#line-drawing-with-stroke-dasharray-and-stroke-dashoffset).
-- **Text morph**: Text that animates character by character when it changes, drawing attention to the new value. Built: [../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#text-that-changes), and the "Continue" to "Confirm" label in [PATTERNS.md](PATTERNS.md#numbers).
-- **Skeleton / Shimmer**: A placeholder with a moving sheen shown while content loads. Built: [TIMING.md](TIMING.md#duration-by-element), [../app-ui/STATES.md](../app-ui/STATES.md#pending).
+- **Line drawing**: An SVG path that draws itself in, like an invisible pen tracing it. Built: [svg CSS-ANIMATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/CSS-ANIMATION.md#line-drawing-with-stroke-dasharray-and-stroke-dashoffset).
+- **Text morph**: Text that animates character by character when it changes, drawing attention to the new value. Built: [app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#text-that-changes), and the "Continue" to "Confirm" label in [PATTERNS.md](PATTERNS.md#numbers).
+- **Skeleton / Shimmer**: A placeholder with a moving sheen shown while content loads. Built: [TIMING.md](TIMING.md#duration-by-element), [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#pending).
 - **Number ticker**: Digits rolling or counting up to a value. Built: [PATTERNS.md](PATTERNS.md#numbers).
 - **Tabular numbers**: Fixed-width digits so numbers don't shift around as they change. Essential for tickers, timers, and counters. Built: [PATTERNS.md](PATTERNS.md#numbers).
-- **Typewriter**: Text appearing one character at a time, as if being typed. Built: not as an effect; streamed text is paced in [../../ai-agents/agent-chat-ui/STREAMING.md](../../ai-agents/agent-chat-ui/STREAMING.md#pace-the-text), and `anti-slop-ui` forbids "simulated typing cursors" on report pages.
+- **Typewriter**: Text appearing one character at a time, as if being typed. Built: not as an effect; streamed text is paced in [agent-chat-ui STREAMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-chat-ui/STREAMING.md#pace-the-text), and `anti-slop-ui` forbids "simulated typing cursors" on report pages.
 
 ## Performance
 
@@ -173,7 +173,7 @@ Concepts that guide when and how to animate. [Emil Kowalski, animation-vocabular
 - **Purposeful animation**: Motion should serve a function - orient, give feedback, show relationships - not just decorate. Built: rule 1 in [SKILL.md](SKILL.md).
 - **Anticipation**: A small wind-up in the opposite direction before a move, hinting at what's about to happen. Built: not in these skills.
 - **Follow-through**: Parts of an element keep moving and settle slightly after the main motion stops, adding weight. Built: not by that name; overlapping follow-up moves are in [TIMING.md](TIMING.md#staggers-and-sequencing).
-- **Squash & stretch**: Deforming an element as it moves to convey weight, speed, and flexibility. Built: the held switch in [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback), stretch from speed in [PHYSICS.md](PHYSICS.md#four-worked-components), the segmented pill in [../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#segmented-tabs).
+- **Squash & stretch**: Deforming an element as it moves to convey weight, speed, and flexibility. Built: the held switch in [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback), stretch from speed in [PHYSICS.md](PHYSICS.md#four-worked-components), the segmented pill in [app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#segmented-tabs).
 - **Perceived performance**: The right animation makes an interface feel faster, even when it isn't. Built: rule 2 in [SKILL.md](SKILL.md), [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback) ("Feedback is instant, results can follow").
 - **Frequency of use**: The more often a user sees an animation, the shorter and subtler it should be. Built: rule 2 in [SKILL.md](SKILL.md), the frequency gate in [REACT-NATIVE.md](REACT-NATIVE.md#should-it-animate).
 - **Spatial consistency**: Animating so an element keeps its identity and position across states, so users never lose track of where things went. Built: "What persists, travels" in [PATTERNS.md](PATTERNS.md#shared-elements-a-thumbnail-becomes-the-detail).

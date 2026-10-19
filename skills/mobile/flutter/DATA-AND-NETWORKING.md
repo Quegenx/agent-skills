@@ -1,6 +1,6 @@
 # Data and networking
 
-How a Flutter app fetches data over HTTP, turns JSON into typed models, and keeps data on the device. The rules the sources repeat: every request goes through a service and fails loudly (throw or return an error `Result`, never `null`), JSON is decoded into typed classes with explicit casts, heavy parsing leaves the main isolate, and a repository decides whether the local copy or the network wins. Where these classes sit in the app is in [ARCHITECTURE.md](ARCHITECTURE.md); the Dart language (records, patterns, async) is in [../dart/SKILL.md](../dart/SKILL.md).
+How a Flutter app fetches data over HTTP, turns JSON into typed models, and keeps data on the device. The rules the sources repeat: every request goes through a service and fails loudly (throw or return an error `Result`, never `null`), JSON is decoded into typed classes with explicit casts, heavy parsing leaves the main isolate, and a repository decides whether the local copy or the network wins. Where these classes sit in the app is in [ARCHITECTURE.md](ARCHITECTURE.md); the Dart language (records, patterns, async) is in [dart SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/SKILL.md).
 
 **Contents:** [Setup for http](#setup-for-http) · [Making requests](#making-requests) · [Showing a request in the UI](#showing-a-request-in-the-ui) · [JSON by hand](#json-by-hand) · [Parsing off the main isolate](#parsing-off-the-main-isolate) · [Generated models](#generated-models) · [Choosing local storage](#choosing-local-storage) · [Key-value data](#key-value-data) · [SQL](#sql) · [Offline first](#offline-first) · [Server reachability](#server-reachability) · [Prove it](#prove-it)
 
@@ -152,7 +152,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
 }
 ```
 
-`Image.network` here caches only in memory: "Restart the app and every image downloads again" ([FlutterPro](https://flutterpro.design/details/cache-network-images); disk caching in [../flutter-ux/IMAGES-AND-TYPOGRAPHY.md](../flutter-ux/IMAGES-AND-TYPOGRAPHY.md#cache-network-images-on-disk)).
+`Image.network` here caches only in memory: "Restart the app and every image downloads again" ([FlutterPro](https://flutterpro.design/details/cache-network-images); disk caching in [flutter-ux IMAGES-AND-TYPOGRAPHY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/IMAGES-AND-TYPOGRAPHY.md#cache-network-images-on-disk)).
 
 The Compass app's views instead listen to a view model command with `ListenableBuilder`; see [ARCHITECTURE.md](ARCHITECTURE.md#commands).
 
@@ -250,7 +250,7 @@ Future<List<User>> fetchUsers(http.Client client) async {
 
 - **Rerun the generator** with `dart run build_runner build` "whenever you make changes to your database or tables" ([ApparenceKit](https://apparencekit.dev/flutter-tips/local-database-flutter-drift-guide/), for Drift).
 - **Scope it in a root `build.yaml`** to speed it up: tell the generators which folders to include and which files or folders to skip (tests, already generated `.g.dart` and `.freezed.dart`), "especially helpful in larger projects" ([ApparenceKit](https://apparencekit.dev/flutter-tips/optimize-flutter-code-generation/); the article shows no `build.yaml` content).
-- **The article's command** is `flutter packages pub run build_runner build --delete-conflicting-outputs`; build_runner's package page runs a build with `dart run build_runner build` (https://pub.dev/packages/build_runner), as [../dart/TESTING.md](../dart/TESTING.md) does.
+- **The article's command** is `flutter packages pub run build_runner build --delete-conflicting-outputs`; build_runner's package page runs a build with `dart run build_runner build` (https://pub.dev/packages/build_runner), as [dart TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/TESTING.md) does.
 
 ## Choosing local storage
 
@@ -261,7 +261,7 @@ Future<List<User>> fetchUsers(http.Client client) async {
 | On-device SQL | `sqflite`, `drift` (also `sqlite3`, `firebase_database` as a `DatabaseService` backend) |
 | Key-value | `shared_preferences`, `flutter_secure_storage` |
 
-- **Files to share** (an invoice to send on) go in the app cache from `getTemporaryDirectory()` (`path_provider`), which needs no permission on any platform ([FlutterPro](https://flutterpro.design/details/share-instead-of-download); the share sheet recipe is in [../flutter-ux/PAINTING-AND-MEDIA.md](../flutter-ux/PAINTING-AND-MEDIA.md#share-instead-of-download)).
+- **Files to share** (an invoice to send on) go in the app cache from `getTemporaryDirectory()` (`path_provider`), which needs no permission on any platform ([FlutterPro](https://flutterpro.design/details/share-instead-of-download); the share sheet recipe is in [flutter-ux PAINTING-AND-MEDIA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/PAINTING-AND-MEDIA.md#share-instead-of-download)).
 
 The data layer case study fetches any data the app does not create itself from within service classes, and the key-value recipe's service wraps the plugin, "hiding this third-party dependency from the rest of the application".
 

@@ -1,8 +1,8 @@
 # Idea: finding the one thing only this brand could film
 
-[measured corpus, original idea.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original idea.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
-Order of work here: PAGE, the brand inventory, a first idea, two more of different KINDS, the cover-the-logo and competitor-swap tests, the pick with a reason, then the cues and the copy. Write it in the head of `film/STORYBOARD.md` (the worksheet is in [MEASURED-STORYBOARD.md](../shotlist/MEASURED-STORYBOARD.md)); a plan with no idea line does not get built. Don't stop to ask routine questions: state your assumption in a line and continue.
+Order of work here: PAGE, the brand inventory, a first idea, two more of different KINDS, the cover-the-logo and competitor-swap tests, the pick with a reason, then the cues and the copy. Write it in the head of `film/STORYBOARD.md` (the worksheet is in [shotlist MEASURED-STORYBOARD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/shotlist/MEASURED-STORYBOARD.md)); a plan with no idea line does not get built. Don't stop to ask routine questions: state your assumption in a line and continue.
 
 ## 1. PAGE: what the film is for
 
@@ -45,13 +45,13 @@ Use the [canonical brand inventory](MEASURED-BRAND-SYSTEM.md#05-inventory-what-d
 | A montage of real output | many real results, edited to a rhythm | the product makes things (images, sites, songs, trades) | the output must be real and varied |
 | Stillness that breaks | calm held, then one cause breaks it, then calm again | the brand sells relief, silence, focus | the break must be earned by a visible cause |
 | A transformation chain | A becomes B becomes C becomes the logo | rarely: the chain IS the product | the most over-used shape; the house style in [MEASURED-JUDGMENT.md](MEASURED-JUDGMENT.md) section 7. Do not pick it because it is the film you always make |
-| Claim, cut, proof, cta | a claim in type, a hard cut to the product performing it | a clear one-line promise with a demo | the default skeleton of [MEASURED-DIRECTION.md](../shotlist/MEASURED-DIRECTION.md); just one shape among these |
+| Claim, cut, proof, cta | a claim in type, a hard cut to the product performing it | a clear one-line promise with a demo | the default skeleton of [shotlist MEASURED-DIRECTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/shotlist/MEASURED-DIRECTION.md); just one shape among these |
 
 3. Test each with: **cover the logo** (does it still say which company?) and **swap in a competitor** (would the film work for them with the colours changed?). If it would, it is the category's film, not an idea yet.
 4. Pick the one that could only be this brand AND that you can make well with the assets and renderer you have. Write the reason in a line. The idea is chosen, not averaged: never combine all three.
 5. Scope check: the idea predicts the hero moment ([MEASURED-WORLD.md](MEASURED-WORLD.md), the screenshot test). If you cannot name it, you have a topic, not an idea.
 
-Optional precedent: use [Precedent per beat](../shotlist/SKILL.md#precedent-per-beat), which returns rule-only, ID-cited precedent (also show ID, rules and stats). The original `$SKILL/scripts/precedent.py` assumed the source skill directory; this repo owns the helper and ordered library under shotlist. It is evidence for HOW (timing, sizes), never a picture to copy.
+Optional precedent: use [Precedent per beat](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/shotlist/SKILL.md#precedent-per-beat), which returns rule-only, ID-cited precedent (also show ID, rules and stats). The original `$SKILL/scripts/precedent.py` assumed the source skill directory; this repo owns the helper and ordered library under shotlist. It is evidence for HOW (timing, sizes), never a picture to copy.
 
 ## 4. Metaphor bank: abstract words to images
 

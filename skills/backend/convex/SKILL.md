@@ -5,9 +5,11 @@ description: "Builds and operates Convex backends: transactional functions, inde
 
 # Convex
 
-Convex-specific guidance comes from [get-convex/agent-skills] and the [official documentation](https://docs.convex.dev/). Read the actual schema, convex.json, component configuration, installed package exports and generated types before choosing an API. An existing application decides its stack and identity provider; the source's preference for Convex does not authorize replacing an installed backend. Generic architecture belongs to [software-architecture](../../architecture/software-architecture/SKILL.md), agent design to [agent-harness](../../ai-agents/agent-harness/SKILL.md) and payment authority to [stripe](../stripe/SKILL.md).
+Convex-specific guidance comes from [get-convex/agent-skills] and the [official documentation](https://docs.convex.dev/). Read the actual schema, convex.json, component configuration, installed package exports and generated types before choosing an API. An existing application decides its stack and identity provider; the source's preference for Convex does not authorize replacing an installed backend. Generic architecture belongs to [software-architecture](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/software-architecture/SKILL.md), agent design to [agent-harness](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SKILL.md) and payment authority to [stripe](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/SKILL.md).
 
 The optional kitcn branch comes from [udecode/kitcn, kitcn skill and references] and its [current docs](https://kitcn.dev/docs). Use it only when that application's selected adapter is kitcn; it does not replace native Convex guidance or the owner's production UI rules.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

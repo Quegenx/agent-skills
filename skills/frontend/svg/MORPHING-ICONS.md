@@ -1,6 +1,6 @@
 # Morphing icons
 
-A line-based icon set where any icon morphs into any other, from Benji Taylor's "Morphing icons with Claude" and the `MorphingIcon` component shipped on that page. One structural constraint makes it work: every icon is exactly three SVG `<line>`s, so every pair shares the same underlying structure. Icons that are the same shape at different angles rotate instead of morphing. The first attempt was an `AnimatePresence` wrapper that crossfades between SVGs: "Technically correct, but not what I had in mind. The icons fade out and fade in. There's no sense of *transformation*." The component tweens the line endpoints (`x1`, `y1`, `x2`, `y2`) with Motion; per Motion's docs these are attributes CSS can't animate ([CSS-ANIMATION.md](CSS-ANIMATION.md#the-ways-to-animate-svg)). Durations and curves in general: [../ui-animation/SKILL.md](../ui-animation/SKILL.md).
+A line-based icon set where any icon morphs into any other, from Benji Taylor's "Morphing icons with Claude" and the `MorphingIcon` component shipped on that page. One structural constraint makes it work: every icon is exactly three SVG `<line>`s, so every pair shares the same underlying structure. Icons that are the same shape at different angles rotate instead of morphing. The first attempt was an `AnimatePresence` wrapper that crossfades between SVGs: "Technically correct, but not what I had in mind. The icons fade out and fade in. There's no sense of *transformation*." The component tweens the line endpoints (`x1`, `y1`, `x2`, `y2`) with Motion; per Motion's docs these are attributes CSS can't animate ([CSS-ANIMATION.md](CSS-ANIMATION.md#the-ways-to-animate-svg)). Durations and curves in general: [ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md).
 
 ## Three lines per icon
 
@@ -86,7 +86,7 @@ rotationRef.current = rotate; prevIcon.current = name;
 ```
 
 - **Within a group** the `<svg>` rotates and the lines keep the group's base coordinates. **Across groups** the svg's rotation settles on the nearest multiple of 360 (visually upright) while the lines morph to coordinates with the target's rotation already baked in, so a rotated arrow can morph into a check without spinning back through its accumulated angle.
-- **Timing:** morph and rotation both run `duration: 0.3` on `ease: [0.32, 0.72, 0, 1]`, a tween, not a spring. ui-animation's [TIMING.md](../ui-animation/TIMING.md) gives an icon swap 150 to 250 ms.
+- **Timing:** morph and rotation both run `duration: 0.3` on `ease: [0.32, 0.72, 0, 1]`, a tween, not a spring. ui-animation's [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) gives an icon swap 150 to 250 ms.
 - **Nothing animates on first render:** `initial={false}` on the svg and on every line. An `animate={false}` prop renders a plain static `<svg>` with `transform: rotate(<rotation>deg)` and no Motion.
 - **The architecture in one line:** "three lines per icon, rotation groups for same-shape icons, coordinate morphing for everything else."
 - **Limits:** "With hundreds of possible icon pairs, not every transition takes the ideal path. Some morphs have slightly awkward intermediate states, and some rotations overshoot. Nothing that couldn't be fixed with more iteration."

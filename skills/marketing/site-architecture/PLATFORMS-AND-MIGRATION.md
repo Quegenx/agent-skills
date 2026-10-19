@@ -1,6 +1,6 @@
 # Platforms, new sections and migrations
 
-Where the site gets built, how new pages join an existing site, and how to move platforms without losing search traffic. From coreyhaines31/marketingskills' `site-architecture` (MIT, references/platforms-and-migration.md), copied where quoted, with Google's site-move guide correcting the redirect and sitemap steps. The architecture (pages, hierarchy, URLs, internal links) comes first and doesn't depend on the platform: "Pick the platform that can carry the architecture you planned, not the other way round." The host and DNS side of a move is in [../../backend/deployment/SKILL.md](../../backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime); the launch audit around it is in [../site-audit/LAUNCH.md](../site-audit/LAUNCH.md).
+Where the site gets built, how new pages join an existing site, and how to move platforms without losing search traffic. From coreyhaines31/marketingskills' `site-architecture` (MIT, references/platforms-and-migration.md), copied where quoted, with Google's site-move guide correcting the redirect and sitemap steps. The architecture (pages, hierarchy, URLs, internal links) comes first and doesn't depend on the platform: "Pick the platform that can carry the architecture you planned, not the other way round." The host and DNS side of a move is in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime); the launch audit around it is in [site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md).
 
 ## Choosing where to build
 
@@ -8,7 +8,7 @@ Where the site gets built, how new pages join an existing site, and how to move 
 
 1. **Who edits the site after launch?** A designer, a marketer who never touches code, an engineer, or an AI agent? The best platform for a designer-owned site is rarely the best for an engineer-owned one.
 2. **What does the site have to do?** A marketing site, a blog or resource library, pages at scale from data, a store, logged-in product screens? Marketing builders handle the first three; stores and apps usually belong elsewhere and get linked or proxied.
-3. **How many pages, and from what data?** A few dozen hand-built pages suit almost anything. Hundreds or thousands of templated pages need a CMS or database with the item limits to match ([../seo/PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md)).
+3. **How many pages, and from what data?** A few dozen hand-built pages suit almost anything. Hundreds or thousands of templated pages need a CMS or database with the item limits to match ([seo PAGES-AT-SCALE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md)).
 4. **What has to connect?** CRM, forms, analytics, scheduling, ad pixels, the product's own login. Check the integrations that matter before falling for the editor.
 5. **How much lock-in is acceptable?** Can you export the code and content and host it elsewhere? Hosted builders trade portability for convenience.
 6. **What does it cost at the real size?** Per-site, per-seat, per-CMS-item and usage-based pricing diverge fast as a site grows. Price the plan you'll need in a year.
@@ -51,7 +51,7 @@ Often the job is a new section (a blog, landing pages, a resource library, pages
 - The proxied pages return the main domain in their canonical tags, sitemap and Open Graph URLs, not the origin's.
 - Asset paths (CSS, JS, images, fonts) are routed too, or the pages break.
 - The origin (for example `origin.example.com`) isn't indexed separately: protect it by hostname (a password, an IP allowlist, or an `X-Robots-Tag: noindex` header set only on the origin hostname). Then confirm the proxied production responses carry no `noindex` in their HTML or headers, because "an origin-wide `noindex` can pass straight through the proxy and deindex production". A `robots.txt` block alone doesn't prevent indexing: Google calls robots.txt "not a mechanism for keeping a web page out of Google" and says to block indexing with `noindex` or password protection ([robots intro](https://developers.google.com/search/docs/crawling-indexing/robots/intro)).
-- Analytics and consent run on both systems, configured for one domain ([../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md)).
+- Analytics and consent run on both systems, configured for one domain ([cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md)).
 - Test on a staging subdomain before switching production routing.
 
 A hosted router in front of the whole domain puts the vendor's edge in front of every page, which is the tradeoff to weigh [coreyhaines31/marketingskills, site-architecture].
@@ -63,7 +63,7 @@ A hosted router in front of the whole domain puts the vendor's edge in front of 
 **Before:**
 
 1. **Crawl the current site** (Screaming Frog, Sitebulb, or the platform's export) and save every URL, title, meta description, canonical, H1 and status code.
-2. **Pull the pages that matter** from Search Console and analytics: top pages by clicks, impressions, conversions and backlinks ([../search-console/SKILL.md](../search-console/SKILL.md)). These get the most care.
+2. **Pull the pages that matter** from Search Console and analytics: top pages by clicks, impressions, conversions and backlinks ([search-console SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SKILL.md)). These get the most care.
 3. **Keep URLs where you can.** The safest migration changes the platform and nothing else. If URLs must change, map every old URL to its new one.
 4. **Check what the import carries.** "Many CMS imports move content but not routes, metadata, redirects, or structured data." Plan to rebuild what's missing.
 5. **Build the redirect map:** one-to-one from each old URL to its closest new equivalent, as HTTP permanent redirects "such as `301` and `308`", straight to the final destination; if a chain can't be avoided, "keep the number of redirects in the chain low, ideally no more than 3 and fewer than 5" ([site move](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)). "Don't redirect many old URLs to one irrelevant single URL destination, such as the home page of the new site" (same page). The source said "one-to-one 301s".
@@ -73,13 +73,13 @@ A hosted router in front of the whole domain puts the vendor's edge in front of 
 - Deploy redirects at the same moment as the switch.
 - Submit the new sitemap. Google: the old-URL sitemap will show redirect warnings, and "this is normal and you can ignore these warnings"; once the new sitemap is submitted, "you can remove your old sitemap, since Google will use the new sitemap going forward" ([site move](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)). The source said "keep the old one available briefly so search engines see the redirects".
 - Spot-check the top pages: content, title, meta, canonical, schema, and a 200 status.
-- Confirm analytics, conversion tracking and forms work ([../site-audit/LAUNCH.md](../site-audit/LAUNCH.md)).
+- Confirm analytics, conversion tracking and forms work ([site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md)).
 
 **After:**
 
 - Watch Search Console for 404s and coverage drops daily for two weeks, then weekly; fix missing redirects as they appear [coreyhaines31/marketingskills, site-architecture].
 - Compare traffic to the same period before, by page. "A dip of a few weeks can be normal; a sustained drop on specific pages usually means a missing redirect or lost content." Google also expects temporary ranking fluctuation during a move ([site move](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)).
-- Update internal links to the new URLs instead of relying on redirects: "Change the internal links on the new site from the old URLs to the new URLs" (same page). Docs sites follow the same rule ([../../architecture/developer-docs/WRITING-AND-PUBLISHING.md](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md#moving-and-removing-pages)).
+- Update internal links to the new URLs instead of relying on redirects: "Change the internal links on the new site from the old URLs to the new URLs" (same page). Docs sites follow the same rule ([developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md#moving-and-removing-pages)).
 - Keep the redirects "for as long as possible", "generally at least 1 year" (same page).
 
 ## Prove it

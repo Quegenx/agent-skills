@@ -17,6 +17,8 @@ This skill holds the rules that apply everywhere. Load the one that fits the wor
 | Code, comments, tests, a review of a diff | `anti-slop-code` |
 | Text in Hebrew | `anti-slop-writing`, which carries a Hebrew file, plus the skill for the kind of text |
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## The rules that hold everywhere
 
 1. **Real or nothing.** Never invent a number, a customer, a quote, a testimonial, a source, a date, a feature, a credential or an API. If the work needs one and you don't have it, write a visible placeholder (`[NEED: real customer count]`) or leave it out, and say so. An invented specific is worse than a vague line, because it reads as true.

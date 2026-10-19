@@ -28,7 +28,7 @@ Show the zoom percentage and bound its range. A useful starting range is 25-400%
 
 Keep enlarged artwork in a scrollable viewport so every edge remains reachable with a keyboard or touch. Reserve space for controls, including their wrapped height on narrow screens.
 
-[anti-slop-ui](../../anti-ai-slop/anti-slop-ui/SKILL.md) owns responsive arrangement, [web-accessibility FOCUS-AND-KEYBOARD.md](../web-accessibility/FOCUS-AND-KEYBOARD.md) owns control semantics and keyboard behavior, and [anti-slop-copy MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md) owns control copy.
+[anti-slop-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md) owns responsive arrangement, [web-accessibility FOCUS-AND-KEYBOARD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FOCUS-AND-KEYBOARD.md) owns control semantics and keyboard behavior, and [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) owns control copy.
 
 ## Give the control bar a dark pill shape
 
@@ -59,7 +59,7 @@ Adapt neutral occluding faces with the paper. Lighten preview ink in dark mode w
 
 Keep appearance separate from drawing state. Exports retain the chosen ink colors on white or transparent paper, and the color panel explains this distinction in dark mode.
 
-[color-system CONTRAST.md](../color-system/CONTRAST.md) owns theme tokens and rendered contrast. Inspect the drawing, secondary text, fields and focus indicators in both appearances.
+[color-system CONTRAST.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/CONTRAST.md) owns theme tokens and rendered contrast. Inspect the drawing, secondary text, fields and focus indicators in both appearances.
 
 ## Change the ink without changing the object
 
@@ -95,7 +95,7 @@ Name the edited property explicitly, such as `Line color`. A surface-fill option
 
 Keep color choices in drawing state alongside the selected view. Reset restores the original appearance without changing geometry or zoom.
 
-[color-system PALETTES.md](../color-system/PALETTES.md) owns palette choices and rendered contrast. Decorative part colors do not imply established materials or safety classifications.
+[color-system PALETTES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/PALETTES.md) owns palette choices and rendered contrast. Decorative part colors do not imply established materials or safety classifications.
 
 ## Export the selected view and colors
 

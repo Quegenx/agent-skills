@@ -1,10 +1,10 @@
 # Reliability
 
-Network issues, timeouts or server errors can leave you uncertain whether an email was sent. Derive an idempotency key from the business event, persist critical mail in a queue, and process delivery events once. Provider fields, retention windows, SDK options and payloads belong to the provider: [Resend](../resend/SKILL.md), [OneSignal](../onesignal/REST-API.md). General queue and worker mechanics are in [background-jobs](../background-jobs/SKILL.md).
+Network issues, timeouts or server errors can leave you uncertain whether an email was sent. Derive an idempotency key from the business event, persist critical mail in a queue, and process delivery events once. Provider fields, retention windows, SDK options and payloads belong to the provider: [Resend](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md), [OneSignal](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/REST-API.md). General queue and worker mechanics are in [background-jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md).
 
 ## Idempotency keys
 
-Reuse one key for the same logical send; never generate a fresh random value or `Date.now()` on each retry. Generate a UUID once when there is no natural event key. Check the provider’s key scope and expiration: Resend’s 24-hour cache and both source request-option examples are in [SENDING.md](../resend/SENDING.md#idempotency-keys).
+Reuse one key for the same logical send; never generate a fresh random value or `Date.now()` on each retry. Generate a UUID once when there is no natural event key. Check the provider’s key scope and expiration: Resend’s 24-hour cache and both source request-option examples are in [resend SENDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SENDING.md#idempotency-keys).
 
 | Strategy | Example | When |
 |---|---|---|
@@ -16,11 +16,11 @@ Reuse one key for the same logical send; never generate a fresh random value or 
 
 ## What to retry
 
-Classify the provider’s response before retrying. Transient network timeouts and DNS failures may be retried with the same key; fix invalid payloads, credentials and permissions first. Rate limits and quota exhaustion need different waits. Resend’s named 409, 429, 500 and 503 cases are maintained in [LIMITS-AND-ERRORS.md](../resend/LIMITS-AND-ERRORS.md#retries).
+Classify the provider’s response before retrying. Transient network timeouts and DNS failures may be retried with the same key; fix invalid payloads, credentials and permissions first. Rate limits and quota exhaustion need different waits. Resend’s named 409, 429, 500 and 503 cases are maintained in [resend LIMITS-AND-ERRORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/LIMITS-AND-ERRORS.md#retries).
 
 ## Backoff
 
-Use exponential backoff with jitter to avoid a thundering herd; honor provider retry headers and cap attempts. The source’s 1s, 2s, 4s, 8s convention, 30-second cap and five-attempt helper are preserved with its Resend classification limitations in [LIMITS-AND-ERRORS.md](../resend/LIMITS-AND-ERRORS.md#email-practices-retry-source-examples).
+Use exponential backoff with jitter to avoid a thundering herd; honor provider retry headers and cap attempts. The source’s 1s, 2s, 4s, 8s convention, 30-second cap and five-attempt helper are preserved with its Resend classification limitations in [resend LIMITS-AND-ERRORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/LIMITS-AND-ERRORS.md#email-practices-retry-source-examples).
 
 ## Error handling
 
@@ -38,27 +38,27 @@ For critical emails, use a queue to ensure delivery even if the initial send fai
 
 ## Timeouts
 
-Set a timeout to avoid hanging requests. The source recommends 10 to 30 seconds for email API calls; its Resend timeout snippet and the canonical request-options contract live in [SETUP.md](../resend/SETUP.md#the-node-sdk-contract).
+Set a timeout to avoid hanging requests. The source recommends 10 to 30 seconds for email API calls; its Resend timeout snippet and the canonical request-options contract live in [resend SETUP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SETUP.md#the-node-sdk-contract).
 
 ## Delivery events
 
-Distinguish an API acceptance from delivery to the recipient’s server. Feed delivery status, bounces and complaints back into your data. Event names and payloads are owned by [Resend WEBHOOKS.md](../resend/WEBHOOKS.md#event-types) or [OneSignal](../onesignal/SKILL.md).
+Distinguish an API acceptance from delivery to the recipient’s server. Feed delivery status, bounces and complaints back into your data. Event names and payloads are owned by [Resend WEBHOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/WEBHOOKS.md#event-types) or [OneSignal](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/SKILL.md).
 
 ## The webhook endpoint
 
-Verify signatures before processing, acknowledge quickly (the email-best-practices source says within five seconds), and process duplicates once using the provider’s documented delivery identity. Resend uses the `svix-id` header, not a JSON `event.id`; raw-body verification and the preserved conflicting source examples live in [WEBHOOKS.md](../resend/WEBHOOKS.md#verify-the-signature).
+Verify signatures before processing, acknowledge quickly (the email-best-practices source says within five seconds), and process duplicates once using the provider’s documented delivery identity. Resend uses the `svix-id` header, not a JSON `event.id`; raw-body verification and the preserved conflicting source examples live in [resend WEBHOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/WEBHOOKS.md#verify-the-signature).
 
 ## Handling bounces and complaints
 
-Hard bounces and complaints cause immediate suppression and removal from active lists; the source suppresses after three soft bounces. Delivery updates the recorded status. [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#suppression-list) owns the business policy and helpers; [Resend WEBHOOKS.md](../resend/WEBHOOKS.md#bounce-types) owns its payload mapping and the source’s flat-field expressions.
+Hard bounces and complaints cause immediate suppression and removal from active lists; the source suppresses after three soft bounces. Delivery updates the recorded status. [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#suppression-list) owns the business policy and helpers; [Resend WEBHOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/WEBHOOKS.md#bounce-types) owns its payload mapping and the source’s flat-field expressions.
 
 ## Webhook retries
 
-Persist work and handle retries safely; the provider owns retry timing and replay behavior. Resend’s current eight-attempt schedule and attributed older schedules live in [WEBHOOKS.md](../resend/WEBHOOKS.md#retries-and-replays).
+Persist work and handle retries safely; the provider owns retry timing and replay behavior. Resend’s current eight-attempt schedule and attributed older schedules live in [resend WEBHOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/WEBHOOKS.md#retries-and-replays).
 
 ## Testing and storing events
 
-Log raw events for debugging, alert on processing failures, and queue complex work. Resend’s tunnel, dashboard test-event and storage instructions live in [WEBHOOKS.md](../resend/WEBHOOKS.md#local-development) and [Store the events](../resend/WEBHOOKS.md#store-the-events).
+Log raw events for debugging, alert on processing failures, and queue complex work. Resend’s tunnel, dashboard test-event and storage instructions live in [resend WEBHOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/WEBHOOKS.md#local-development) and [Store the events](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/WEBHOOKS.md#store-the-events).
 
 ## Prove it
 

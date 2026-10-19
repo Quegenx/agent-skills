@@ -12,15 +12,15 @@ Settle these with the owner and write them into the operator brief:
 
 | Setting | What to capture |
 |---------|-----------------|
-| **ICP and tiers** | From `.agents/product-context.md`, plus the tier rules (see [prospecting](../prospecting/SKILL.md)) |
-| **Plays** | Which plays run, with their triggers and offers (see [cold-outreach](../cold-outreach/SKILL.md)) |
+| **ICP and tiers** | From `.agents/product-context.md`, plus the tier rules (see [prospecting](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md)) |
+| **Plays** | Which plays run, with their triggers and offers (see [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md)) |
 | **Approved claims** | The value propositions, proof points, and case studies the agent may use, nothing else |
 | **Volume caps** | Daily new contacts, sends per mailbox, LinkedIn actions per account |
 | **Approval rules** | What the agent sends alone and what waits for a human (defaults below) |
-| **Countries** | Where cold email is allowed. The source writes "exclude Germany; check UK sole traders" without citing a statute; take each country's rule from [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) and [cold-outreach](../cold-outreach/SKILL.md), not from this line |
+| **Countries** | Where cold email is allowed. The source writes "exclude Germany; check UK sole traders" without citing a statute; take each country's rule from [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md) and [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md), not from this line |
 | **Tools and access** | Data provider, verifier, sending tool, LinkedIn approach, CRM, calendar |
 
-Confirm the foundation first: sending domains authenticated and warmed up gradually ([email-practices DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md); warmup networks and domain rotation are filter evasion and are not used), a verifier connected, a suppression list that every sending tool checks, and CRM stages for outbound ([revops](../revops/SKILL.md)).
+Confirm the foundation first: sending domains authenticated and warmed up gradually ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md); warmup networks and domain rotation are filter evasion and are not used), a verifier connected, a suppression list that every sending tool checks, and CRM stages for outbound ([revops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md)).
 
 ## Shared memory
 
@@ -54,12 +54,12 @@ If the CRM already holds suppression and stages, use it as the source of truth a
 | Tier 2 first touches | Agent alone; a human reviews a sample weekly |
 | Tier 1 messages on any channel | Human approves each |
 | Suppress, pause for out-of-office, set not-now reminders | Agent alone |
-| Responses to positive, objection, information, and referral replies | Agent drafts, human sends. Positive-response automation can be reconsidered only with the source's 100+ reply evidence and an explicitly agreed approval policy; the other classes stay human-sent unless explicitly authorized otherwise. See [canonical reply approvals](../cold-outreach/REPLIES.md#what-an-agent-can-handle) |
+| Responses to positive, objection, information, and referral replies | Agent drafts, human sends. Positive-response automation can be reconsidered only with the source's 100+ reply evidence and an explicitly agreed approval policy; the other classes stay human-sent unless explicitly authorized otherwise. See [canonical reply approvals](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/REPLIES.md#what-an-agent-can-handle) |
 | New sequences, new claims, new segments | Human approves |
-| LinkedIn actions | Per the owner's automation decision (within LinkedIn's User Agreement; [cold-outreach](../cold-outreach/SKILL.md)) |
+| LinkedIn actions | Per the owner's automation decision (within LinkedIn's User Agreement; [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md)) |
 | Anything involving pricing, discounts, or legal terms | Human only |
 
-The operator source applies its 100+ reply condition to all four response classes. The [canonical reply matrix](../cold-outreach/REPLIES.md#what-an-agent-can-handle) keeps objection, information and referral responses human-approved. Keep the stricter boundary; an observation count alone does not grant sending permission. [coreyhaines31/marketingskills, marketing-loops, outbound-operator.md; cold-outreach/REPLIES.md]
+The operator source applies its 100+ reply condition to all four response classes. The [canonical reply matrix](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/REPLIES.md#what-an-agent-can-handle) keeps objection, information and referral responses human-approved. Keep the stricter boundary; an observation count alone does not grant sending permission. [coreyhaines31/marketingskills, marketing-loops, outbound-operator.md; cold-outreach/REPLIES.md]
 
 ## Operating rules
 
@@ -91,11 +91,11 @@ The four catalog loops the operator runs [coreyhaines31/marketingskills, marketi
 - **Check cadence**: Daily (product-usage signals: on trigger, within minutes)
 - **Acts when**: A new signal fires on an ICP-fit account that isn't already in a sequence, a customer, or suppressed.
 - **Purpose**: Reach accounts while the reason to reach them is fresh.
-- **Skills used**: [prospecting](../prospecting/SKILL.md), [cold-outreach](../cold-outreach/SKILL.md)
+- **Skills used**: [prospecting](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md), [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md)
 - **Loop body**:
   1. Pull new signals since the last run: job posts, job changes of past champions, identified website visits, funding, product-usage triggers, social engagement.
   2. Drop accounts outside the ICP, already in a sequence, customers, open deals, and anything on the suppression list.
-  3. Use [prospecting's signal and tier rules](../prospecting/SIGNALS.md) to score the rest, then [its enrichment and verification rules](../prospecting/ENRICHMENT.md) for the contact who owns the problem.
+  3. Use [prospecting's signal and tier rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SIGNALS.md) to score the rest, then [its enrichment and verification rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/ENRICHMENT.md) for the contact who owns the problem.
   4. Match each to its play (see the prospecting skill's signal plays reference) and stage the first touch.
 - **Self-check**: Is the signal inside its freshness window? Does the account still pass the ICP check? Is the email verified within the last 7 days?
 - **State / idempotency**: Key on account + signal type + signal date; never enroll the same account twice for the same signal, and respect a cooldown after any previous sequence.
@@ -106,23 +106,23 @@ The four catalog loops the operator runs [coreyhaines31/marketingskills, marketi
 - **Check cadence**: Every 15 to 30 minutes during business hours
 - **Acts when**: A new reply arrives on any outbound channel.
 - **Purpose**: Turn replies into meetings fast and stop every other channel the moment someone answers.
-- **Skills used**: [cold-outreach](../cold-outreach/SKILL.md), [revops](../revops/SKILL.md)
+- **Skills used**: [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md), [revops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md)
 - **Loop body**:
   1. Collect new replies from the sending tool, LinkedIn tool, and dialer notes.
-  2. Classify each using [the canonical reply classes](../cold-outreach/REPLIES.md#classify-every-reply).
+  2. Classify each using [the canonical reply classes](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/REPLIES.md#classify-every-reply).
   3. Stop all sequences for that contact on every channel.
-  4. Use [the canonical per-class actions](../cold-outreach/REPLIES.md#classify-every-reply), within the approval boundary above, and stage responses requiring a person.
+  4. Use [the canonical per-class actions](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/REPLIES.md#classify-every-reply), within the approval boundary above, and stage responses requiring a person.
   5. Alert a human immediately on positive replies.
 - **Self-check**: Is the classification confident? Anything ambiguous goes to a human. Does a draft make any claim not in the approved sources?
 - **State / idempotency**: Track processed message IDs; never answer the same reply twice.
 - **Stop / bail-out**: No new replies → exit quietly. Keep positive, objection, information and referral responses human-sent unless the relevant action has been explicitly authorized under the approval policy above.
-- **Output**: Updated CRM stages, suppression updates, drafted responses, and positive-reply alerts. Reply handling: [cold-outreach](../cold-outreach/SKILL.md).
+- **Output**: Updated CRM stages, suppression updates, drafted responses, and positive-reply alerts. Reply handling: [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md).
 
 ### The cold-domain health loop
 - **Check cadence**: Daily for bounces; weekly for placement and reputation
 - **Acts when**: A sending domain or mailbox crosses a stop-loss threshold.
 - **Purpose**: Protect cold sending infrastructure before a bad week burns domains.
-- **Skills used**: [cold-outreach](../cold-outreach/SKILL.md)
+- **Skills used**: [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md)
 - **Loop body**:
   1. Pull per-mailbox and per-campaign bounce rates, spam complaints, and reply rates.
   2. Weekly: run seed placement tests, check Google Postmaster Tools and Microsoft SNDS, and check blocklists.
@@ -131,13 +131,13 @@ The four catalog loops the operator runs [coreyhaines31/marketingskills, marketi
 - **Self-check**: Is the drop one bad list or the infrastructure? A single campaign's bounces point at the list; every campaign on a domain dropping points at the domain.
 - **State / idempotency**: Track each mailbox's status (active, warming, paused, retired) with dates.
 - **Stop / bail-out**: All healthy → log. Escalate immediately on spam complaints near 0.1% or a primary-domain problem.
-- **Output**: A health table and the actions taken. The 2% bounce and ~70% placement figures are the source's own; Google states no bounce-rate threshold, and Gmail's spam-rate line is "below 0.1%", never "0.3% or higher" (https://support.google.com/a/answer/14229414, repo [email-practices DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md)). Sending rules are in [cold-outreach](../cold-outreach/SKILL.md). (For lifecycle and marketing email, use the email-deliverability loop.)
+- **Output**: A health table and the actions taken. The 2% bounce and ~70% placement figures are the source's own; Google states no bounce-rate threshold, and Gmail's spam-rate line is "below 0.1%", never "0.3% or higher" (https://support.google.com/a/answer/14229414, repo [email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md)). Sending rules are in [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md). (For lifecycle and marketing email, use the email-deliverability loop.)
 
 ### The sequence-retro loop
 - **Check cadence**: Weekly
 - **Acts when**: Sequences have enough new sends to compare (roughly 300+ per variant).
 - **Purpose**: Keep what works, kill what doesn't, and learn which signals, segments, and channels produce meetings.
-- **Skills used**: [cold-outreach](../cold-outreach/SKILL.md), [prospecting](../prospecting/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md)
+- **Skills used**: [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md), [prospecting](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md), [posthog](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md)
 - **Loop body**:
   1. Pull, per sequence, step, segment, signal, and channel: sends, replies, positive replies, meetings.
   2. Compare against the previous period and against each other.
@@ -154,7 +154,7 @@ The four catalog loops the operator runs [coreyhaines31/marketingskills, marketi
 - **No one answers positive replies within the hour.** The loop will produce interest that goes cold.
 - **The sending setup isn't ready.** Fix domains, authentication, and verification first.
 
-Every send also meets the law where the recipient is (CAN-SPAM, GDPR, CASL, PECR): [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md). Spam-filter tricks, warmup networks, domain swapping and bot-detection workarounds are out of scope here and are not used (repo safety rule).
+Every send also meets the law where the recipient is (CAN-SPAM, GDPR, CASL, PECR): [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md). Spam-filter tricks, warmup networks, domain swapping and bot-detection workarounds are out of scope here and are not used (repo safety rule).
 
 ## Prove it
 

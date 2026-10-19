@@ -336,7 +336,7 @@ app.post('/webhooks/resend', (req, res) => {
 - **Bounce:** read `const { email_id, email, bounce_type } = event.data;`. On a hard bounce, `suppressEmail(email, 'hard_bounce')` and `removeFromAllLists(email)`. On a soft bounce, `incrementSoftBounce`, and when `count >= 3`, `suppressEmail(email, 'soft_bounce_limit')`.
 - **Complaint:** "Immediate suppression - no exceptions": `suppressEmail(email, 'complaint')`, `removeFromAllLists`, `logComplaint(event)`.
 - **Delivered:** `updateEmailStatus(email_id, 'delivered')`.
-- **Suppression helpers and rules** are in [LISTS-AND-CAPTURE.md](../email-practices/LISTS-AND-CAPTURE.md#suppression-list).
+- **Suppression helpers and rules** are in [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list).
 
 The email-best-practices event table described `email.bounced` as a hard or soft bounce, whereas [Bounce types](#bounce-types) distinguishes `email.delivery_delayed` from the permanent bounce event. That source claim remains a comparison here.
 

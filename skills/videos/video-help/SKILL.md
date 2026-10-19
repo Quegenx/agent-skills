@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 You don't remember every skill, so ask. Before stating what a skill does or recommending a step be skipped, read that skill's SKILL.md: the summaries here are for orientation only.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## The main flow: idea → film
 
 Most work travels this route. Start it with **`/make-video`**, which runs the gates and calls the rest for you:
@@ -43,4 +45,4 @@ A film is a long job. Every gate leaves a file in `films/<slug>/` (`brief.md`, `
 
 ## Engines
 
-The default is `seek-engine` (one HTML file, `seek(t)`, Playwright and ffmpeg). Remotion and HyperFrames are for briefs that need their specific strengths; `/make-video` says when. Every rule in this set applies whichever engine renders the frames.
+The default is `seek-engine` (one HTML file, `seek(t)`, Playwright and ffmpeg). Remotion and HyperFrames are for briefs that need their specific strengths; `/make-video` says when. The shared brief, story, timing and review gates apply across engines; renderer commands and runtime contracts apply to the selected engine. [Quegenx/agent-skills, make-video/ENGINES.md]

@@ -32,7 +32,7 @@ Node's inspector supports a loopback host and port zero to select an available p
 | Hang | Current screen, active resources and a stack or CPU sample before interruption |
 | Prompt or keyboard regression | Before/after transcripts and the exact action sequence |
 
-Wait for readiness evidence rather than a fixed sleep. If the available harness forces a delay, state why and keep that limitation visible. Broader experimental verdicts and controlled comparisons belong to [debugging verification](../debugging/VERIFICATION.md). [cursor/plugins, control-cli, SKILL.md]
+Wait for readiness evidence rather than a fixed sleep. If the available harness forces a delay, state why and keep that limitation visible. Broader experimental verdicts and controlled comparisons belong to [debugging verification](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/VERIFICATION.md). [cursor/plugins, control-cli, SKILL.md]
 
 ## Prove it
 

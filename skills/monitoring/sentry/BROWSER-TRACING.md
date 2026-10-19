@@ -230,7 +230,7 @@ myCustomRouter.on("routeResolved", (route) => {
 - React source lists wrapCreateMemoryRouterV6 since 8.50.0, ignoreSpans 10.2.0/attribute matching 10.6.0, propagateTraceparent 10.10.0 and async/lazy routes 10.39.0. Router-specific setup remains in REACT-TRACING.md.
 - Browser child spans default flat under the root. parentSpanIsAlwaysRootSpan:false permits nesting but can misattribute concurrent async work; explicit parentSpan with startInactiveSpan is the source's async-gap alternative. React's source calls a thrown startSpan callback error captured and marked; verify automatic capture separately from error status for the installed SDK.
 - React source uses forceTransaction for background work and gives op alternatives db.query, ui.render, ui.load, ui.flow, task, cache.get/cache.set, middleware. Browser source gives db.system, file.upload and resource categories. Preserve source-selected conventions; v11 consolidations belong to UPGRADE.md.
-- WebSocket receiver in React's source uses OpenTelemetry propagation.extract/context.with; Node's Sentry-specific receiver uses continueTrace. Vendor-neutral propagation lives in [observability](../observability/INSTRUMENT.md#tracing-through-queues-and-jobs), and both source paths need their actual registered provider.
+- WebSocket receiver in React's source uses OpenTelemetry propagation.extract/context.with; Node's Sentry-specific receiver uses continueTrace. Vendor-neutral propagation lives in [observability](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/INSTRUMENT.md#tracing-through-queues-and-jobs), and both source paths need their actual registered provider.
 
 ## Filtering spans
 

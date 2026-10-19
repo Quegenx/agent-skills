@@ -92,7 +92,7 @@ Email clients support a narrow, uneven slice of CSS: some strip `<style>` tags, 
 - **Existing React Email default:** the [layout above](#layout-typography-and-images) uses a white centered container on gray. Keep this existing source rule unless the user selects the alternative. [existing React Email, STYLING.md, Layout typography and images]
 - **PostHog source alternative:** the source below discourages the centered white card on gray and prescribes tone-led layout. This generic source disagreement remains explicit. [existing PostHog, EMAIL-TEMPLATES.md, Design guidelines]
 
-React Email's authoring colors remain semantic classes from [Brand config](#brand-config); Tailwind converts styles for the rendered email. PostHog's literal-hex rule belongs to its exported design. The Liquid fallback clause below applies to [PostHog workflow templates](../../monitoring/posthog/EMAIL-TEMPLATES.md), while React Email uses [typed template props](SKILL.md#the-rules). [existing React Email, STYLING.md and SKILL.md], [existing PostHog, EMAIL-TEMPLATES.md]
+React Email's authoring colors remain semantic classes from [Brand config](#brand-config); Tailwind converts styles for the rendered email. PostHog's literal-hex rule belongs to its exported design. The Liquid fallback clause below applies to [PostHog workflow templates](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EMAIL-TEMPLATES.md), while React Email uses [typed template props](SKILL.md#the-rules). [existing React Email, STYLING.md and SKILL.md], [existing PostHog, EMAIL-TEMPLATES.md]
 
 [existing PostHog, EMAIL-TEMPLATES.md, Design guidelines]
 

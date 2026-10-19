@@ -26,7 +26,7 @@ Check in this order ("`position: sticky` fails silently"):
 3. **No inset:** "`top`, `bottom`, `left`, or `right` must be set to a non-`auto` value." MDN: "At least one inset property (top, inset-block-start, right, inset-inline-end, etc.) needs to be set to a non-auto value for the axis on which the element needs to be made sticky."
 4. **As tall as its container:** "Happens in flex/grid without `align-self: start`."
 5. **Stacking context traps:** "`transform`, `filter`, `opacity < 1`, `will-change`, `isolation: isolate` on an ancestor creates a new stacking context. Sticky still works, but z-index is trapped within that context." MDN: sticky "always creates a new stacking context" itself.
-6. **`transform` and `fixed`:** "Not sticky, but often confused with it. Any `transform` on an ancestor makes `fixed` children position relative to that ancestor, not the viewport." The full list of ancestor properties that do this (MDN's, with `filter`, `contain`, `content-visibility` and more) is in [anti-slop-ui DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#stacking-without-z-index-wars).
+6. **`transform` and `fixed`:** "Not sticky, but often confused with it. Any `transform` on an ancestor makes `fixed` children position relative to that ancestor, not the viewport." The full list of ancestor properties that do this (MDN's, with `filter`, `contain`, `content-visibility` and more) is in [anti-slop-ui DETAILS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/DETAILS.md#stacking-without-z-index-wars).
 
 ## Several sticky bars
 
@@ -71,7 +71,7 @@ html { scroll-padding-block-start: var(--header-height); }
 }
 ```
 
-  Which one [responsive-craft]: "**Use `scroll-padding`** when all anchors are in the same container with a consistent offset. **Use `scroll-margin`** when different elements need different offsets." Status: both logical longhands ship in Chrome 69, Firefox 68, Safari 15 (browser-compat-data). anti-slop-ui's check is the same rule: "Sticky header with no `scroll-padding-block-start` | Set it to the header height" ([RESPONSIVE.md](RESPONSIVE.md)); app-ui puts "`scroll-margin-block-start` on rows' controls so keyboard focus clears the sticky head" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+  Which one [responsive-craft]: "**Use `scroll-padding`** when all anchors are in the same container with a consistent offset. **Use `scroll-margin`** when different elements need different offsets." Status: both logical longhands ship in Chrome 69, Firefox 68, Safari 15 (browser-compat-data). anti-slop-ui's check is the same rule: "Sticky header with no `scroll-padding-block-start` | Set it to the header height" ([RESPONSIVE.md](RESPONSIVE.md)); app-ui puts "`scroll-margin-block-start` on rows' controls so keyboard focus clears the sticky head" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
 
 ## Detect the stuck state
 
@@ -112,7 +112,7 @@ observer.observe(sentinel);
 }
 ```
 
-  "Always `observer.disconnect()` in component cleanup." landing-page-ui does the same for its floating nav: "Detect scrolling with a 4px marker (absolute, 1px wide, `visibility: hidden`, `aria-hidden`, prepended to the body) and an `IntersectionObserver`, not a scroll listener" ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md)).
+  "Always `observer.disconnect()` in component cleanup." landing-page-ui does the same for its floating nav: "Detect scrolling with a 4px marker (absolute, 1px wide, `visibility: hidden`, `aria-hidden`, prepended to the body) and an `IntersectionObserver`, not a scroll listener" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md)).
 
 ## Sticky header row and first column
 
@@ -144,7 +144,7 @@ thead th.col-sticky {
 }
 ```
 
-  app-ui's table is its own design: "A scrolling frame with rounded corners (so the header fill never shows square corners)", where "The section and the `<table>` carry an `aria-label` from the view's title" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+  app-ui's table is its own design: "A scrolling frame with rounded corners (so the header fill never shows square corners)", where "The section and the `<table>` carry an `aria-label` from the view's title" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
 
 ## Prove it
 

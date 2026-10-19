@@ -1,6 +1,6 @@
 # AI visibility audit
 
-How a brand shows up in AI answers about its market, and the few changes most likely to get it named or cited. The workflow is [open-seo, ai-visibility-audit] (MIT, Ben Senescu) with its product tool calls left out; the visibility ladder, the listicle risk and the citation-mix classes are [coreyhaines31/marketingskills, ai-seo] (MIT; the mix taxonomy adapted there from Profound's MIT ai-citation-mix-strategist). "Research broadly; recommend selectively." The whole-site technical audit is [../site-audit/SKILL.md](../site-audit/SKILL.md).
+How a brand shows up in AI answers about its market, and the few changes most likely to get it named or cited. The workflow is [open-seo, ai-visibility-audit] (MIT, Ben Senescu) with its product tool calls left out; the visibility ladder, the listicle risk and the citation-mix classes are [coreyhaines31/marketingskills, ai-seo] (MIT; the mix taxonomy adapted there from Profound's MIT ai-citation-mix-strategist). "Research broadly; recommend selectively." The whole-site technical audit is [site-audit SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/SKILL.md).
 
 **Contents:** [Get evidence](#1-get-evidence) · [Where the brand stands](#2-where-the-brand-stands) · [Follow the citations](#3-follow-the-citations) · [The owned side](#4-the-owned-side) · [Shortlist, then choose](#5-shortlist-then-choose) · [The report](#the-report) · [Cited is not recommended](#cited-is-not-recommended) · [Read the citation mix](#read-the-citation-mix) · [Guardrails](#guardrails) · [Prove it](#prove-it)
 
@@ -50,9 +50,9 @@ Read two or three gap answers in full to confirm what the engine says and which 
 ## 5. Shortlist, then choose
 
 [open-seo, ai-visibility-audit] Write five to eight candidate actions from at least two kinds:
-- get onto a recurring third-party source the answers cite ([outreach](../seo/LINKS-AND-OUTREACH.md) and [directory work](../seo/DIRECTORY-SUBMISSIONS.md));
+- get onto a recurring third-party source the answers cite ([outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINKS-AND-OUTREACH.md) and [directory work](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/DIRECTORY-SUBMISSIONS.md));
 - improve an owned page so it answers a gap prompt as well as the cited page does;
-- create a missing owned page, such as a comparison, alternatives or use-case page ([../comparison-pages/SKILL.md](../comparison-pages/SKILL.md));
+- create a missing owned page, such as a comparison, alternatives or use-case page ([comparison-pages SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md));
 - remove an access barrier;
 - join or answer a recurring community thread, "where the community allows it".
 
@@ -101,7 +101,7 @@ A self-ranked "best [category]" guide is a source about the category: the model 
 | Marketplace, directory, or review platform | Review sites, app stores, marketplaces | Community |
 | Other or unknown | Anything you can't classify yet | Unclassified |
 
-Then follow the mix: engines cite company sites and yours lacks the facts, so strengthen owned pages first; editorial or institutional sources dominate, so pursue earned coverage ([../public-relations/SKILL.md](../public-relations/SKILL.md)); communities contribute, so take part honestly in your own name and skip communities the engines don't cite; competitor pages get cited, so read them for the facts you're missing and don't copy them; engines disagree, so plan per engine. Re-measure on the same cohort; mixes shift with retrieval updates.
+Then follow the mix: engines cite company sites and yours lacks the facts, so strengthen owned pages first; editorial or institutional sources dominate, so pursue earned coverage ([public-relations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/SKILL.md)); communities contribute, so take part honestly in your own name and skip communities the engines don't cite; competitor pages get cited, so read them for the facts you're missing and don't copy them; engines disagree, so plan per engine. Re-measure on the same cohort; mixes shift with retrieval updates.
 
 ## Guardrails
 

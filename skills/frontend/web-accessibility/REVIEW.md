@@ -1,6 +1,6 @@
 # Accessibility review
 
-How to review a screen, a component or a change for accessibility: the two walks, what counts as a finding, severity on the repo's P0 to P3 scale, verification, the report and the grep table. Sources: [Jakub Krehel, better-accessibility, SKILL.md] for the method, [Jakub Krehel, better-interface] for the escalation triggers and the fix ladder, [Jakub Krehel, interface-review] for the removed-signals pass, corrected against WCAG 2.2. Severity uses the scale in [code-review/REVIEWER.md](../../architecture/code-review/REVIEWER.md).
+How to review a screen, a component or a change for accessibility: the two walks, what counts as a finding, severity on the repo's P0 to P3 scale, verification, the report and the grep table. Sources: [Jakub Krehel, better-accessibility, SKILL.md] for the method, [Jakub Krehel, better-interface] for the escalation triggers and the fix ladder, [Jakub Krehel, interface-review] for the removed-signals pass, corrected against WCAG 2.2. Severity uses the scale in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md).
 
 **Contents:** [Two walks](#two-walks) · [Criteria, not conventions](#criteria-not-conventions) · [Severity](#severity) · [Fix the cheapest way](#fix-the-cheapest-way) · [Verification](#verification) · [The report](#the-report) · [Reviewing a change: removed signals](#reviewing-a-change-removed-signals) · [Before you finish](#before-you-finish) · [Prove it](#prove-it)
 

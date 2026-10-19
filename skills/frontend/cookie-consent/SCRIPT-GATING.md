@@ -33,7 +33,7 @@ Consent holds back code only when the consent manager owns its loader. Each opti
 | `sendGAEvent`, `sendGTMEvent`, `useGtag().gtag`, a registry script's `proxy` | Calls to the `gtag`, `dataLayer` or vendor global that c15t loads. `sendGAEvent` drops events with a console warning once `GoogleAnalytics` is gone. |
 | `YouTubeEmbed`, `GoogleMapsEmbed`, `ScriptYouTubePlayer`, `ScriptGoogleMaps` | The YouTube or Google Maps guide: your own iframe inside the framework's consent gate |
 
-"Keep the measurement ID, container ID and `dataLayer` name the old code used." `next/script` with `beforeInteractive` runs before any provider can block it: [../react/NEXTJS.md](../react/NEXTJS.md#nextscript).
+"Keep the measurement ID, container ID and `dataLayer` name the old code used." `next/script` with `beforeInteractive` runs before any provider can block it: [react NEXTJS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/NEXTJS.md#nextscript).
 
 ## Picking the mechanism
 
@@ -121,24 +121,24 @@ const clearOnRevocation: ClearOnRevocationConfig = {
 
 ## Google Consent Mode and tag managers
 
-[c15t, integrations/google-tag.md, google-tag-manager.md] The loader side; the Google side is [../../monitoring/google-analytics/CONSENT-MODE.md](../../monitoring/google-analytics/CONSENT-MODE.md). In both modes the helper sends `gtag('consent', 'default', ...)` before `config` and an `update` on each change:
+[c15t, integrations/google-tag.md, google-tag-manager.md] The loader side; the Google side is [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md). In both modes the helper sends `gtag('consent', 'default', ...)` before `config` and an `update` on each change:
 
 | `loadMode` | Until the category is allowed | After the category is allowed |
 |--|--|--|
 | `'always'` (default) | Loads `gtag/js` and sends `consent` `default` with the current permissions, then `config`. | Sends `consent` `update` with the mapped types granted. |
 | `'after-consent'` | Sends nothing to Google. The helper creates no `dataLayer` or `gtag` function. | Loads `gtag/js` once. `consent` `default` carries the current permissions and comes before `config`. Later changes send `update`. |
 
-- `'always'` is what Google calls advanced mode and `'after-consent'` basic mode; Google's definitions, the modeling tradeoff (basic mode loses the advertiser-specific model, not all modeling, which c15t's pages overstate), the late-banner `wait_for_update` and consent settings for tags in a GTM container are in [../../monitoring/google-analytics/CONSENT-MODE.md](../../monitoring/google-analytics/CONSENT-MODE.md#basic-and-advanced-mode).
+- `'always'` is what Google calls advanced mode and `'after-consent'` basic mode; Google's definitions, the modeling tradeoff (basic mode loses the advertiser-specific model, not all modeling, which c15t's pages overstate), the late-banner `wait_for_update` and consent settings for tags in a GTM container are in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md#basic-and-advanced-mode).
 - "`'after-consent'` waits for the category to be allowed, not for a recorded choice." Under `opt-out` or `none`, `gtag/js` loads on the first page; "`category: 'necessary'` loads `gtag/js` before a choice in either mode." [c15t]
 - If the site forbids requests to Google before opt-in, do not keep the default silently: set `loadMode: 'after-consent'` and tell the owner which Consent Mode features that gives up [c15t, SKILL.md §6.2].
 - A GTM container's non-Google tags ignore Consent Mode signals; "If a vendor must make no request before consent, remove it from the container and register its own c15t helper instead." [c15t, google-tag-manager.md]
-- The landing page's design is advanced mode: "analytics storage is denied by default and granted from the first page view only if the visitor already accepted ... The ad consents (ad storage, ad user data, ad personalization) stay denied always." [../landing-page-ui/DISCOVERY.md](../landing-page-ui/DISCOVERY.md#consent-and-analytics)
+- The landing page's design is advanced mode: "analytics storage is denied by default and granted from the first page view only if the visitor already accepted ... The ad consents (ad storage, ad user data, ad personalization) stay denied always." [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md#consent-and-analytics)
 
 ## PostHog
 
 Two views on whether to gate the SDK, both kept:
 
-- The posthog skill: "**Always load posthog-js; don't gate the snippet behind consent.**" so it can count visitors who ignore the banner [../../monitoring/posthog/PROXY-AND-PRIVACY.md](../../monitoring/posthog/PROXY-AND-PRIVACY.md). c15t's helper default `loadMode: 'always'` matches it: it loads `array.js` and calls `opt_out_capturing` until measurement is allowed [c15t, integrations/posthog.md].
+- The posthog skill: "**Always load posthog-js; don't gate the snippet behind consent.**" so it can count visitors who ignore the banner [posthog PROXY-AND-PRIVACY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/PROXY-AND-PRIVACY.md). c15t's helper default `loadMode: 'always'` matches it: it loads `array.js` and calls `opt_out_capturing` until measurement is allowed [c15t, integrations/posthog.md].
 - c15t's quickstarts use `loadMode: 'after-consent'` with `cookieless_mode: 'never'`: "Set `cookieless_mode: 'never'`, as in the example, if a refusal must stop capture." With the helper's default `cookieless_mode: 'on_reject'`, "PostHog keeps capturing without cookies after a refusal. That mode needs cookieless server hashing turned on" [c15t, integrations/posthog.md].
 - Choose by the inventory's answer: may vendors load with denied defaults before consent, or must they send no requests before opt-in [c15t, SKILL.md §6.2].
 - An app that already initializes `posthog-js` keeps it and registers a callback-only script; init the SDK with `opt_out_capturing_by_default: true` and `cookieless_mode: 'never'` [c15t, integrations/posthog.md]:

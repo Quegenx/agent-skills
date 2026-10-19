@@ -1,6 +1,6 @@
 # JavaScript on the main thread
 
-In most cases the speed of the code is not the problem: the code is holding the main thread, and that alone is enough to cause trouble. Ask of every piece of work: does it have to happen, now, here, at all? Measure first ([MEASURE.md](../../backend/performance-and-caching/MEASURE.md)); which properties animate on the compositor is in the `ui-animation` skill's PERFORMANCE.md.
+In most cases the speed of the code is not the problem: the code is holding the main thread, and that alone is enough to cause trouble. Ask of every piece of work: does it have to happen, now, here, at all? Measure first ([performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md)); which properties animate on the compositor is in the `ui-animation` skill's PERFORMANCE.md.
 
 ## What the main thread does
 

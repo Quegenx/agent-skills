@@ -51,7 +51,7 @@ Source: [eronred].
 - **5.1.1:** a live, app-specific privacy policy; App Store Connect App Privacy lists every SDK's data collection; a specific ATT purpose string (not "improve the app"); `NSUsageDescription` strings that explain why.
 - **5.1.5:** "Always" location needs a demonstrable background need; most apps should use "When In Use". Update Info.plist and the prompt copy.
 
-- **Google Play rejection classification and appeals:** [POLICY-AND-PREFLIGHT.md](../google-play/POLICY-AND-PREFLIGHT.md#rejection-recovery).
+- **Google Play rejection classification and appeals:** [google-play POLICY-AND-PREFLIGHT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/POLICY-AND-PREFLIGHT.md#rejection-recovery).
 
 - **Reply in Resolution Center with this template:**
 

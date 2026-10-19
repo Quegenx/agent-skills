@@ -1,6 +1,6 @@
 # Writing posts
 
-Hooks, post templates, the AI tells specific to social, and comment quality. Text is from coreyhaines31/marketingskills `social` (SKILL.md, `references/post-templates.md`, `references/listening.md`; MIT). The full AI-tells list for any text is [../../anti-ai-slop/anti-slop-writing/TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md); carousel slides are in [CAROUSELS.md](CAROUSELS.md); video hooks are in [SHORT-VIDEO.md](SHORT-VIDEO.md#hook-library).
+Hooks, post templates, the AI tells specific to social, and comment quality. Text is from coreyhaines31/marketingskills `social` (SKILL.md, `references/post-templates.md`, `references/listening.md`; MIT). The full AI-tells list for any text is [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md); carousel slides are in [CAROUSELS.md](CAROUSELS.md); video hooks are in [SHORT-VIDEO.md](SHORT-VIDEO.md#hook-library).
 
 ## Hook formulas
 
@@ -110,7 +110,7 @@ CTA (25-30 sec): [Follow, comment, share, link]
 
 ## No AI tells
 
-[coreyhaines31/marketingskills, social] "Readers scroll past posts that read as generated, and on LinkedIn they say so in the comments." Apply the canonical [structure rules](../../anti-ai-slop/anti-slop-writing/TELLS.md#1-structure-the-worst-offenders), [stock phrases](../../anti-ai-slop/anti-slop-writing/TELLS.md#2-openers-transitions-and-closers-ban), [punctuation and emoji rules](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting), and [social-post rules and per-post caps](../../anti-ai-slop/anti-slop-writing/TELLS.md#7-social-posts-and-email).
+[coreyhaines31/marketingskills, social] "Readers scroll past posts that read as generated, and on LinkedIn they say so in the comments." Apply the canonical [structure rules](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#1-structure-the-worst-offenders), [stock phrases](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#2-openers-transitions-and-closers-ban), [punctuation and emoji rules](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting), and [social-post rules and per-post caps](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#7-social-posts-and-email).
 
 X's separate negative-action predictions do not establish a fixed penalty for each engagement-bait phrase ([X-RANKING.md](X-RANKING.md#signal-families)). [coreyhaines31/marketingskills, social; xAI sources in X-RANKING.md]
 

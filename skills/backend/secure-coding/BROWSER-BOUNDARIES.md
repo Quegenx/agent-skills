@@ -1,6 +1,6 @@
 # Browser boundaries
 
-Browser investigation prompts come from [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md and DATA-ISOLATION-AND-LIFECYCLE.md], checked against the linked browser documentation. These are boundary questions, not vulnerabilities established by a missing header or a keyword. HTML/URL controls stay in [CATALOG.md](CATALOG.md), CORS in [PARSERS.md](PARSERS.md#cross-origin-requests-and-proxies), response policies in [HEADERS.md](HEADERS.md) and audit evidence in [SECURITY-AUDITS.md](../../architecture/code-review/SECURITY-AUDITS.md).
+Browser investigation prompts come from [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md and DATA-ISOLATION-AND-LIFECYCLE.md], checked against the linked browser documentation. These are boundary questions, not vulnerabilities established by a missing header or a keyword. HTML/URL controls stay in [CATALOG.md](CATALOG.md), CORS in [PARSERS.md](PARSERS.md#cross-origin-requests-and-proxies), response policies in [HEADERS.md](HEADERS.md) and audit evidence in [code-review SECURITY-AUDITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/SECURITY-AUDITS.md).
 
 ## Messages and windows
 

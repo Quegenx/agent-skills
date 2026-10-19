@@ -45,7 +45,7 @@ This file holds how to approach a template request (what to ask first, props ins
   </Section>
   ```
   The vendor skill's newsletter pattern hardcodes "© 2026 Company Name. All rights reserved." instead of computing the year as the styling reference does.
-- **Unsubscribe and compliance requirements** are in [../email-practices/SKILL.md](../email-practices/SKILL.md) and, for sending with Resend, [../resend/SKILL.md](../resend/SKILL.md).
+- **Unsubscribe and compliance requirements** are in [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md) and, for sending with Resend, [resend SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md).
 
 ## Ready patterns
 

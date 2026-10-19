@@ -18,7 +18,7 @@ Pipeline stages and their hygiene, when deals need a deal desk, keeping CRM data
 | **Closed Won** | Signed contract, payment terms | Handoff to CS complete |
 | **Closed Lost** | Loss reason, competitor (if any) | Post-mortem logged |
 
-Closed-lost reasons feed win-loss analysis, which treats a one-word CRM reason as low-confidence ([../sales-enablement/WIN-LOSS-ANALYSIS.md](../sales-enablement/WIN-LOSS-ANALYSIS.md)).
+Closed-lost reasons feed win-loss analysis, which treats a one-word CRM reason as low-confidence ([sales-enablement WIN-LOSS-ANALYSIS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/WIN-LOSS-ANALYSIS.md)).
 
 ## Stage hygiene
 
@@ -55,7 +55,7 @@ Closed-lost reasons feed win-loss analysis, which treats a one-word CRM reason a
 | 40%+ discount or custom terms | Deal desk review |
 | Multi-year / enterprise | Finance + Legal |
 
-Document every exception. Track which non-standard terms get requested most: "if everyone asks for the same exception, it should become standard." Review quarterly. Published tiers and discount policy are in [../pricing-strategy/SKILL.md](../pricing-strategy/SKILL.md); prices and coupons in billing are in [../../backend/stripe/BILLING.md](../../backend/stripe/BILLING.md).
+Document every exception. Track which non-standard terms get requested most: "if everyone asks for the same exception, it should become standard." Review quarterly. Published tiers and discount policy are in [pricing-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md); prices and coupons in billing are in [stripe BILLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/BILLING.md).
 
 ## Data hygiene
 
@@ -77,7 +77,7 @@ Quarterly audit:
 - Audit lifecycle stage distribution (look for bottlenecks).
 - Verify enrichment data accuracy on a sample set.
 
-Two rules on inactivity, for different objects. The source archives CRM contacts after 12+ months with no activity. The email rule in this repo is stricter for sending: "**Inactive** means no opens or clicks in 45 to 90 days", followed by a re-engagement email and removal of non-responders ([../../backend/email-practices/LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#hygiene-and-re-engagement)). Both hold: a contact can stay in the CRM for a year while it has already left the active mailing list.
+Two rules on inactivity, for different objects. The source archives CRM contacts after 12+ months with no activity. The email rule in this repo is stricter for sending: "**Inactive** means no opens or clicks in 45 to 90 days", followed by a re-engagement email and removal of non-responders ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#hygiene-and-re-engagement)). Both hold: a contact can stay in the CRM for a year while it has already left the active mailing list.
 
 The source's enrichment vendor table (Clay, Apollo, ZoomInfo) is left out as vendor opinion.
 
@@ -96,7 +96,7 @@ The source's enrichment vendor table (Clay, Apollo, ZoomInfo) is left out as ven
 | Speed-to-lead | Time from form fill to first rep contact | "< 5 minutes ideal" |
 | Win rate | Closed-won / total opportunities | 20-30% (varies) |
 
-Where the inputs come from: one PostHog project for site and app gives "full journeys, channel attribution, CAC and LTV" ([../../monitoring/posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md)); Stripe revenue metrics are in [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md), and RevenueCat "cannot compute CAC, LTV/CAC or payback period on its own" ([../../backend/revenuecat/FORECASTING-AND-VALUATION.md](../../backend/revenuecat/FORECASTING-AND-VALUATION.md)). Which touches get credit for a deal is [../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md).
+Where the inputs come from: one PostHog project for site and app gives "full journeys, channel attribution, CAC and LTV" ([posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md)); Stripe revenue metrics are in [stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md), and RevenueCat "cannot compute CAC, LTV/CAC or payback period on its own" ([revenuecat FORECASTING-AND-VALUATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/FORECASTING-AND-VALUATION.md)). Which touches get credit for a deal is [marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 
 ## Dashboards
 
@@ -106,7 +106,7 @@ Where the inputs come from: one PostHog project for site and app gives "full jou
 2. **Sales:** pipeline value, stage conversion, velocity, forecast accuracy.
 3. **Executive:** CAC, LTV:CAC, revenue vs. target, pipeline coverage.
 
-Building them in PostHog: [../../monitoring/posthog/INSIGHTS-AND-DASHBOARDS.md](../../monitoring/posthog/INSIGHTS-AND-DASHBOARDS.md).
+Building them in PostHog: [posthog INSIGHTS-AND-DASHBOARDS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/INSIGHTS-AND-DASHBOARDS.md).
 
 ## Prove it
 

@@ -1,6 +1,6 @@
 # Runtime observation
 
-From [morluto/rea, reverse-engineer-anything/references/runtime-observation.md]. The shared passive-observer contract remains in [browser RUN-TRACING](../../web-automation/browser-automation/RUN-TRACING.md); active scenarios below are a separate effects-labelled workflow.
+From [morluto/rea, reverse-engineer-anything/references/runtime-observation.md]. The shared passive-observer contract remains in [browser RUN-TRACING](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/RUN-TRACING.md); active scenarios below are a separate effects-labelled workflow.
 
 ## Passive observation
 

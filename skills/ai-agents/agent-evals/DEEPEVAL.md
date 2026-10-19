@@ -36,7 +36,7 @@ Local orchestration does not mean local or free inference. Current hosted plans 
 - Automatic instrumentation needs preload plus initialization. Bundled SDKs need their supported manual adapter path.
 - Preserve an application's existing OpenTelemetry provider ownership; do not replace it or silently create a duplicate pipeline.
 - Complete or close streams before shutdown, then flush and inspect the received trace.
-- Content capture defaults on in this source with a 16 KiB limit. Configure redaction or opt out at the capture boundary to preserve the repo's [telemetry privacy rule](../../monitoring/observability/SKILL.md#the-rules); those controls do not automatically govern unrelated native instrumentors.
+- Content capture defaults on in this source with a 16 KiB limit. Configure redaction or opt out at the capture boundary to preserve the repo's [telemetry privacy rule](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md#the-rules); those controls do not automatically govern unrelated native instrumentors.
 - Current default export retains AI spans and their parents. The source's instruction to discard all non-AI spans is too broad and can discard genuine parent context.
 
 ## Raw OTLP and encoding

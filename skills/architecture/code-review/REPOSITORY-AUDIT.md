@@ -47,14 +47,14 @@ if (process.argv[1] && isMain()) {
 
 | Area | Evidence to investigate | Canonical detail |
 | --- | --- | --- |
-| Correctness | A concrete input or state leading to a wrong result, lost error, race, resource leak or inconsistent rule | [Debugging](../debugging/SKILL.md) |
-| Security and data loss | Reachable trust-boundary, authorization, secret, interpreter or persistence defect | [Secure coding](../../backend/secure-coding/SKILL.md) |
-| Expected load and speed | Shared-state assumptions, repeated work, unbounded data or measured hot paths | [Measurement](../../backend/performance-and-caching/MEASURE.md) |
-| Test risk | Critical paths or frequently changed logic with no check that detects their plausible failure | [Testing](../testing/SKILL.md) |
-| Architecture and deletion | Duplication, wrong responsibility boundaries, dead paths, speculative abstractions or hidden coupling | [Refactoring](../refactoring/SKILL.md) |
-| Dependencies and migrations | Reachable advisories, supported-version requirements, confirmed deprecations, duplicate tools and migration blast radius | [System migration](../system-migration/SKILL.md) |
+| Correctness | A concrete input or state leading to a wrong result, lost error, race, resource leak or inconsistent rule | [Debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/SKILL.md) |
+| Security and data loss | Reachable trust-boundary, authorization, secret, interpreter or persistence defect | [Secure coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md) |
+| Expected load and speed | Shared-state assumptions, repeated work, unbounded data or measured hot paths | [Measurement](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md) |
+| Test risk | Critical paths or frequently changed logic with no check that detects their plausible failure | [Testing](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md) |
+| Architecture and deletion | Duplication, wrong responsibility boundaries, dead paths, speculative abstractions or hidden coupling | [Refactoring](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/SKILL.md) |
+| Dependencies and migrations | Reachable advisories, supported-version requirements, confirmed deprecations, duplicate tools and migration blast radius | [System migration](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/system-migration/SKILL.md) |
 | Developer workflow | Broken documented setup, missing required configuration, unusable feedback or misleading errors | The repository's own scripts and runbooks |
-| Documentation | Wrong setup/API guidance or missing decisions with a concrete cost | [Documentation writing](../developer-docs/WRITING-AND-PUBLISHING.md) |
+| Documentation | Wrong setup/API guidance or missing decisions with a concrete cost | [Documentation writing](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md) |
 | Direction | Stated but unfinished intent, useful asymmetries, manual friction or nearby capabilities | Present as maintainer options, separately from defects |
 
 These are investigation prompts, not findings by keyword match. Confirm platform-specific claims against the matching official documentation before recommending a correction. [shadcn/improve, references/audit-playbook.md]
@@ -69,7 +69,7 @@ These are investigation prompts, not findings by keyword match. Confirm platform
 - Treat low-confidence candidates as investigations, not established bugs. Prefer no supported recommendation over padding a report. Keep secret values out of findings and plans; cite only their type and location and include rotation where exposed credentials are confirmed.
 - A selected security audit uses the [boundary, evidence-state and coverage contract](SECURITY-AUDITS.md): current-source revalidation and fresh verification of material replacements supplement this general audit. [cloudflare/security-audit-skill, security-audit/VALIDATION-AND-REPORTING.md]
 - Rank supported defects by impact relative to effort, discounted by confidence and fix risk. Dependency-unblocking work, consequential security defects and corrections with a clear verification story can take precedence. A not-worth-doing verdict is valid when its reason is explicit.
-- [DietrichGebert/ponytail, ponytail-audit] says split by responsibility and never by line count. The existing [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md) treats a file crossing about 1,000 lines as a presumptive structural smell. Keep that threshold as a prompt to inspect responsibilities, not an automatic instruction to create smaller files.
+- [DietrichGebert/ponytail, ponytail-audit] says split by responsibility and never by line count. The existing [anti-slop-code](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/SKILL.md) treats a file crossing about 1,000 lines as a presumptive structural smell. Keep that threshold as a prompt to inspect responsibilities, not an automatic instruction to create smaller files.
 
 ## Report, select and persist only in the selected mode
 
@@ -79,7 +79,7 @@ These are investigation prompts, not findings by keyword match. Confirm platform
 - Show grounded product-direction options separately from defects. Explain evidence, user value, effort and tradeoffs; use a design or investigation plan when direction remains undecided.
 - A plain audit follows the existing [stateless project-audit policy](#only-decisions-persist): facts and verdicts go in the reply, and only approved decisions persist in existing notes or beside the code.
 - [shadcn/improve, SKILL.md] instead maintains a plan index with rejected findings to prevent repeated work. Apply that alternative only to a user-selected planning job: keep the requested plans, their statuses, dependencies and considered/rejected rationale in its agreed artifact. It does not change the stateless default or authorize a new audit file for every run.
-- Select findings before creating plans. The source's noninteractive top-findings default does not bypass the user's selection requirement. Use [handoff plans](../engineering-planning/HANDOFF-PLANS.md) for the selected items; refresh current facts before reusing earlier findings or rejected-decision records.
+- Select findings before creating plans. The source's noninteractive top-findings default does not bypass the user's selection requirement. Use [handoff plans](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/HANDOFF-PLANS.md) for the selected items; refresh current facts before reusing earlier findings or rejected-decision records.
 - Do not present Ponytail's published benchmark as savings on this repository. A hypothetical unbuilt version is not a measured baseline. [DietrichGebert/ponytail, ponytail-gain]
 
 ## Only decisions persist

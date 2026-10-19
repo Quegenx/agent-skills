@@ -1,6 +1,6 @@
 # Next.js (App Router, version 16)
 
-Next.js App Router facts that decide whether code is correct on the current major (16): where the server and client boundary sits, how Server Actions are reached and checked, Cache Components and its directives, Route Handler caching, `proxy.ts`, `after()`, `next/image`, `next/font`, `next/script` and the default browser targets. Every API line was re-checked against the nextjs.org page it cites (fetched 2026-10-18), with the version each feature became stable or changed. Advice comes from Vercel's react-best-practices and vercel-optimize skills (MIT), tagged per bullet; where a source drifted from the docs, the docs' form is written and the line says what the source said. Data flow, waterfalls and bundles are in [DATA-AND-BUNDLES.md](DATA-AND-BUNDLES.md); Effects and hydration-safe reads in [EFFECTS-AND-STATE.md](EFFECTS-AND-STATE.md); Actions, `useActionState` and `use` in [REACT-19.md](REACT-19.md). Severity uses the P0 to P3 scale of [../../architecture/code-review/REVIEWER.md](../../architecture/code-review/REVIEWER.md): Vercel's CRITICAL and HIGH are written as P1, MEDIUM as P2, LOW as P3.
+Next.js App Router facts that decide whether code is correct on the current major (16): where the server and client boundary sits, how Server Actions are reached and checked, Cache Components and its directives, Route Handler caching, `proxy.ts`, `after()`, `next/image`, `next/font`, `next/script` and the default browser targets. Every API line was re-checked against the nextjs.org page it cites (fetched 2026-10-18), with the version each feature became stable or changed. Advice comes from Vercel's react-best-practices and vercel-optimize skills (MIT), tagged per bullet; where a source drifted from the docs, the docs' form is written and the line says what the source said. Data flow, waterfalls and bundles are in [DATA-AND-BUNDLES.md](DATA-AND-BUNDLES.md); Effects and hydration-safe reads in [EFFECTS-AND-STATE.md](EFFECTS-AND-STATE.md); Actions, `useActionState` and `use` in [REACT-19.md](REACT-19.md). Severity uses the P0 to P3 scale of [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md): Vercel's CRITICAL and HIGH are written as P1, MEDIUM as P2, LOW as P3.
 
 **Contents:** [Versions](#versions) · [Server and Client Components](#server-and-client-components) · [Server Actions and their auth](#server-actions-and-their-auth) · [Cache Components](#cache-components) · [use cache](#use-cache) · [cacheLife](#cachelife) · [cacheTag, updateTag and revalidateTag](#cachetag-updatetag-and-revalidatetag) · [Static shell and dynamic holes](#static-shell-and-dynamic-holes) · [Route Handler caching](#route-handler-caching) · [proxy.ts (formerly middleware)](#proxyts-formerly-middleware) · [after()](#after) · [next/image](#nextimage) · [next/font](#nextfont) · [next/script](#nextscript) · [Browser targets](#browser-targets) · [Prove it](#prove-it)
 
@@ -49,7 +49,7 @@ https://nextjs.org/docs/app/getting-started/server-and-client-components (checke
 
 ## Server Actions and their auth
 
-The full rule and the validate, authenticate, authorize, mutate example are in [../../backend/secure-coding/AUTH.md](../../backend/secure-coding/AUTH.md#nextjs-server-actions). What a Next.js reviewer checks (P1, the source's CRITICAL) [Vercel, react-best-practices, server-auth-actions]:
+The full rule and the validate, authenticate, authorize, mutate example are in [secure-coding AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/AUTH.md#nextjs-server-actions). What a Next.js reviewer checks (P1, the source's CRITICAL) [Vercel, react-best-practices, server-auth-actions]:
 
 - **Every action re-checks the caller.** "Server Functions are reachable via direct POST requests, not just through your application's UI. Always verify authentication and authorization inside every Server Function" (https://nextjs.org/docs/app/getting-started/mutating-data). "A page-level authentication check does not extend to the Server Actions defined within it": the page's redirect controls which UI renders, but "the Server Action is a separate entry point and must verify the caller on its own" (https://nextjs.org/docs/app/guides/data-security).
 - **Authorization is per resource,** against IDOR (data-security guide):
@@ -133,7 +133,7 @@ https://nextjs.org/docs/app/api-reference/functions/cacheLife (checked 2026-10-1
 | `max` | 5 minutes | 30 days | 1 year |
 
 - **Set one in every `use cache` scope;** omitting it applies `default` implicitly. "Avoid abstracting it into shared utilities", and "ensure only one call executes per function invocation" (branches may pick different profiles). Custom values inline, as the docs' one-off example: `cacheLife({ stale: 3600, revalidate: 900, expire: 86400 })`; `expire` must be longer than `revalidate`.
-- **`stale` is the client router's cache, not `Cache-Control`.** It travels in `x-nextjs-stale-time`, with "Minimum of 30 seconds is enforced". A revalidation call from a Server Action clears the whole client cache. What this proves for CDN headers is in [../../backend/performance-and-caching/CACHING.md](../../backend/performance-and-caching/CACHING.md#cachelife-in-nextjs-16-what-it-proves-and-what-it-doesnt).
+- **`stale` is the client router's cache, not `Cache-Control`.** It travels in `x-nextjs-stale-time`, with "Minimum of 30 seconds is enforced". A revalidation call from a Server Action clears the whole client cache. What this proves for CDN headers is in [performance-and-caching CACHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/CACHING.md#cachelife-in-nextjs-16-what-it-proves-and-what-it-doesnt).
 - **Short lifetimes leave holes in the prerender:** `revalidate` of `0` or `expire` under 5 minutes is "excluded from prerenders, becoming a 'dynamic hole' resolved at request time"; `stale` under 30 seconds is excluded too; `stale` from 30 seconds to under 5 minutes is prerendered but kept out of the App Shell. Of the presets, only `seconds` falls under these. Wrap such caches in `<Suspense>`.
 - **Nesting:** a short-lived `use cache` inside one without an explicit `cacheLife` "fails the build during prerendering".
 
@@ -190,7 +190,7 @@ https://nextjs.org/docs/app/getting-started/route-handlers (checked 2026-10-18):
   }
   ```
 
-- **CDN headers** for handlers that set `Cache-Control` (`s-maxage`, 404s, `Vary`) are in [../../backend/performance-and-caching/CACHING.md](../../backend/performance-and-caching/CACHING.md#cdn-caching-on-vercel).
+- **CDN headers** for handlers that set `Cache-Control` (`s-maxage`, 404s, `Vary`) are in [performance-and-caching CACHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/CACHING.md#cdn-caching-on-vercel).
 
 ## proxy.ts (formerly middleware)
 
@@ -243,7 +243,7 @@ https://nextjs.org/docs/app/api-reference/functions/after (checked 2026-10-18). 
 - **Request APIs inside the callback:** allowed in Route Handlers and Server Functions (`(await headers()).get('user-agent')`); in Server Components "**cannot** use `cookies`, `headers`, or other Request-time APIs inside `after`": read them before and pass the values in.
 - **It is not a request-time API:** it doesn't make a route dynamic, and on a static page the callback runs at build time or on revalidation.
 - **It runs anyway:** "even if the response didn't complete successfully. Including when an error is thrown or when `notFound` or `redirect` is called." It runs for the route's max duration (`maxDuration`). `React.cache` dedupes inside it, and calls can nest.
-- **Only for work you can lose.** vercel-optimize: "Do not move work that decides the response, must fail the request, changes visible state synchronously, or needs a durable retry guarantee" [Vercel, vercel-optimize, support-topics/post-response-work-waituntil.md]. react-best-practices lists "Sending notifications" and "Cache invalidation" among its uses [Vercel, react-best-practices, server-after-nonblocking]; this repo's rule is "**Accepted means durable.** ... An in-memory queue or a fire-and-forget promise is lost on the next deploy" ([../../backend/background-jobs/SKILL.md](../../backend/background-jobs/SKILL.md)). Keep `after()` to logs and analytics; a notification the user must get goes to a durable job.
+- **Only for work you can lose.** vercel-optimize: "Do not move work that decides the response, must fail the request, changes visible state synchronously, or needs a durable retry guarantee" [Vercel, vercel-optimize, support-topics/post-response-work-waituntil.md]. react-best-practices lists "Sending notifications" and "Cache invalidation" among its uses [Vercel, react-best-practices, server-after-nonblocking]; this repo's rule is "**Accepted means durable.** ... An in-memory queue or a fire-and-forget promise is lost on the next deploy" ([background-jobs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md)). Keep `after()` to logs and analytics; a notification the user must get goes to a durable job.
 
 ## next/image
 
@@ -275,11 +275,11 @@ const inter = Inter({
 - **Preloading follows the file type:** a font called in a page preloads on that route, in a layout on every route under it, in the root layout on all routes.
 - **Call each font once.** Each call is "hosted as one instance", so define fonts in one file (`styles/fonts.ts`) and import the objects.
 - **Fonts as a CLS fix** only "when the route actually loads external font CSS or swaps text after render"; "Do not migrate fonts when CLS is caused by images, ads, embeds, or injected UI." [Vercel, vercel-optimize, support-topics/next-font-cls-self-hosting.md].
-- A hand-written font preload needs `crossorigin`; that is in [../web-performance/BROWSER.md](../web-performance/BROWSER.md#connections-fonts-and-scripts).
+- A hand-written font preload needs `crossorigin`; that is in [web-performance BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/BROWSER.md#connections-fonts-and-scripts).
 
 ## next/script
 
-https://nextjs.org/docs/app/api-reference/components/script (checked 2026-10-18). `next/script` since 11.0.0; `beforeInteractive` and `afterInteractive` support `app` since 13.0.0. Plain `defer` and `async` are in [BROWSER.md](../web-performance/BROWSER.md#connections-fonts-and-scripts).
+https://nextjs.org/docs/app/api-reference/components/script (checked 2026-10-18). `next/script` since 11.0.0; `beforeInteractive` and `afterInteractive` support `app` since 13.0.0. Plain `defer` and `async` are in [web-performance BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/BROWSER.md#connections-fonts-and-scripts).
 
 | `strategy` | When it loads | Docs' examples |
 |---|---|---|
@@ -289,7 +289,7 @@ https://nextjs.org/docs/app/api-reference/components/script (checked 2026-10-18)
 | `worker` (experimental) | in a web worker | "does not yet work with the App Router" |
 
 - **`beforeInteractive` goes in the root layout** ("must be placed inside a root layout, such as `app/layout.tsx`"), "should only be used for critical scripts", is always injected into the `head`, its execution "does not block page hydration", and it runs "once per document load" (not again on client navigation). react-best-practices' example puts a DOM-dependent script in a Page with `beforeInteractive` [Vercel, react-best-practices, rendering-script-defer-async]; that is the wrong place and the wrong job.
-- **A consent manager cannot gate a `beforeInteractive` script.** The docs list "cookie consent managers" as a `beforeInteractive` use, but a consent provider's network blocker "cannot stop" code that runs before the provider renders, "such as `next/script` with `beforeInteractive`"; so load vendors through the consent manager's script loader, never `beforeInteractive` or a plain `next/script` [c15t, https://c15t.com/docs/frameworks/react/network-blocker.md]. The rules are [../cookie-consent/SCRIPT-GATING.md](../cookie-consent/SCRIPT-GATING.md#the-network-blocker).
+- **A consent manager cannot gate a `beforeInteractive` script.** The docs list "cookie consent managers" as a `beforeInteractive` use, but a consent provider's network blocker "cannot stop" code that runs before the provider renders, "such as `next/script` with `beforeInteractive`"; so load vendors through the consent manager's script loader, never `beforeInteractive` or a plain `next/script` [c15t, https://c15t.com/docs/frameworks/react/network-blocker.md]. The rules are [cookie-consent SCRIPT-GATING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SCRIPT-GATING.md#the-network-blocker).
 - **Move a third-party script later only with proof** it blocks rendering, hydration or interaction; "Do not move required bot detection, consent, auth, or payment scripts later without product evidence" [Vercel, vercel-optimize, support-topics/next-script-third-party-strategy.md]. Its marketing playbook's "Cookie banner blocks first paint ... Defer; render after hydration" [Vercel, vercel-optimize, playbooks/marketing.md] contradicts that and the docs' `beforeInteractive` list; don't copy it.
 
 ## Browser targets
@@ -299,7 +299,7 @@ https://nextjs.org/docs/architecture/supported-browsers (checked 2026-10-18):
 - **Zero-config targets:** Chrome 111+, Edge 111+, Firefox 111+, Safari 16.4+, as the default Browserslist `["chrome 111", "edge 111", "firefox 111", "safari 16.4"]`.
 - **Change them in `package.json` `"browserslist"`.** css-modern-features says to check `next.config.*` "for `browserslist` or `transpilePackages`" [css-modern-features]; the docs page names only `package.json` as where Next.js reads a Browserslist configuration.
 - **Polyfills:** Next.js injects `fetch()`, `URL` and `Object.assign()` only for browsers that need them; your own go in `instrumentation-client.ts` (`import './polyfills'`), or load one conditionally (`if (!('structuredClone' in globalThis)) { const mod = await import('polyfills/structured-clone') ... }`).
-- CSS newer than these targets needs a fallback ([../modern-css/SKILL.md](../modern-css/SKILL.md)).
+- CSS newer than these targets needs a fallback ([modern-css SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/SKILL.md)).
 
 ## Prove it
 

@@ -23,7 +23,7 @@ Stripe integrations are tested in sandboxes: isolated environments with their ow
 - **Emails:** Stripe doesn't email customers in sandboxes by default; use a team member's email or `receipt_email`.
 - **Rate limits are stricter than live** (25 requests/second global). Don't load test in sandboxes; mock Stripe instead ([IDEMPOTENCY-AND-ERRORS.md](IDEMPOTENCY-AND-ERRORS.md#rate-limits)).
 - **Webhook retries in sandboxes:** three times over the course of a few hours (live: up to three days).
-- **Auditing a marketing or signup page:** use synthetic identities and sandbox payments, never real customer data or real charges [freescan]; the SaaS audit boundary is in [../../marketing/site-audit/LAUNCH.md](../../marketing/site-audit/LAUNCH.md#saas-audits).
+- **Auditing a marketing or signup page:** use synthetic identities and sandbox payments, never real customer data or real charges [freescan]; the SaaS audit boundary is in [site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md#saas-audits).
 
 ## Test cards and PaymentMethods
 

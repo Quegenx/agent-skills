@@ -9,6 +9,8 @@ When a film is narrated, **the audio is the clock**. Every animation that illust
 
 Copy `scripts/tts.py` from this skill's folder into the film's `scripts/`. It needs `ELEVENLABS_API_KEY` in the environment or the film's `.env`. Never paste a key into a prompt, a file you'll screenshot, or a commit. A key the user pastes into chat is not used: tell them to rotate it, since chat logs aren't a safe place for secrets [coreyhaines31/marketingskills, video].
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## You can't hear it
 
 The agent can check levels, timing and word times, never how a line sounds. Say so in every delivery and have a person listen to the full narration before it ships, especially names, product terms, numbers and foreign words. Fix a mispronunciation by respelling it in the line's `say` field, then regenerate only that line.

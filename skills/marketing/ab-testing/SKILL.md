@@ -5,17 +5,19 @@ description: "Designs and reads A/B tests and runs an experimentation program, t
 
 # A/B testing
 
-A test only answers the question it was designed for: a hypothesis written before launch, one primary metric, a sample size and stopping rule fixed in advance, and an analysis that reads the p-value and interval for what they are. This skill is the tool-agnostic method, from [coreyhaines31/marketingskills, ab-testing] (MIT, (c) 2025 Corey Haines, copied with its notice). Its sample-size tables are replaced by values computed from the standard two-proportion formula (see [SAMPLE-SIZE.md](SAMPLE-SIZE.md)). Running a test in PostHog (flags, exposures, its statistics engine and health checks) is [../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md) and the files it links. Test ideas for a page are [../cro/SKILL.md](../cro/SKILL.md); variant copy is [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md). Store experiments are [../../mobile/aso/SKILL.md](../../mobile/aso/SKILL.md); paywall tests are [../../mobile/app-growth/SKILL.md](../../mobile/app-growth/SKILL.md).
+A test only answers the question it was designed for: a hypothesis written before launch, one primary metric, a sample size and stopping rule fixed in advance, and an analysis that reads the p-value and interval for what they are. This skill is the tool-agnostic method, from [coreyhaines31/marketingskills, ab-testing] (MIT, (c) 2025 Corey Haines, copied with its notice). Its sample-size tables are replaced by values computed from the standard two-proportion formula (see [SAMPLE-SIZE.md](SAMPLE-SIZE.md)). Running a test in PostHog (flags, exposures, its statistics engine and health checks) is [posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md) and the files it links. Test ideas for a page are [cro SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md); variant copy is [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md). Store experiments are [aso SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md); paywall tests are [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
-Product context: read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)) and ask only for what it doesn't cover. The source names this file `.agents/product-marketing.md`.
+Product context: read `.agents/product-context.md` first if it exists (defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)) and ask only for what it doesn't cover. The source names this file `.agents/product-marketing.md`.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
 | The required inputs, a sample-size table computed from the formula, duration with equal and unequal splits, minimum and maximum duration, multiple variants, too-high samples, sequential testing, calculators, the can-I-run-this check | [SAMPLE-SIZE.md](SAMPLE-SIZE.md) |
 | Test plan, results write-up, test repository row, quick brief, stakeholder update, prioritization scorecard, hypothesis bank, playbook entry | [TEMPLATES.md](TEMPLATES.md) |
 | The experiment loop, hypothesis sources, ICE scoring, velocity, cadence, common mistakes, the questions to ask | [PROGRAM.md](PROGRAM.md) |
-| Running it in PostHog: plan, rollout and split, metrics, running time, statistics, health checks | [../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md) |
-| Screening headlines in ads, then proving the winner on the landing page with a fresh randomized test | [../paid-ads/CAMPAIGN-PLANNING.md](../paid-ads/CAMPAIGN-PLANNING.md#landing-page-continuity) |
+| Running it in PostHog: plan, rollout and split, metrics, running time, statistics, health checks | [posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md) |
+| Screening headlines in ads, then proving the winner on the landing page with a fresh randomized test | [paid-ads CAMPAIGN-PLANNING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/CAMPAIGN-PLANNING.md#landing-page-continuity) |
 
 ## Before designing
 
@@ -39,7 +41,7 @@ We'll know this is true when [metrics].
 
 - **Weak:** "Changing the button color might increase clicks."
 - **Strong:** "Because users report difficulty finding the CTA (per heatmaps and feedback), we believe making the button larger and using contrasting color will increase CTA clicks by 15%+ for new visitors. We'll measure click-through rate from page view to signup start."
-- [coreyhaines31/marketingskills, ad-creative] For a creative test the hypothesis names a metric, a comparison (the control, the audience) and a direction, plus a magnitude when a baseline exists: "beats the control on CTR among renters". Ad creative itself is [../ad-creative/SKILL.md](../ad-creative/SKILL.md).
+- [coreyhaines31/marketingskills, ad-creative] For a creative test the hypothesis names a metric, a comparison (the control, the audience) and a direction, plus a magnitude when a baseline exists: "beats the control on CTR among renters". Ad creative itself is [ad-creative SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md).
 
 ## Test types
 
@@ -60,7 +62,7 @@ We'll know this is true when [metrics].
 
 - **Primary:** the single metric that matters most, directly tied to the hypothesis; what you use to call the test.
 - **Secondary:** support the primary's interpretation; explain why or how the change worked.
-- **Guardrail:** things that shouldn't get worse; stop the test if one is significantly negative. PostHog's docs call these "counter metrics" ([../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md#plan-the-experiment)).
+- **Guardrail:** things that shouldn't get worse; stop the test if one is significantly negative. PostHog's docs call these "counter metrics" ([posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md#plan-the-experiment)).
 - **Example, pricing page test:** primary plan selection rate; secondary time on page and plan distribution; guardrail support tickets and refund rate.
 - **Example, longer signup form** (company size and role added): primary form completion rate; secondary lead quality (SQL conversion rate, activation after signup); guardrail total signup volume. The quantity and quality trade off, and the downstream metrics need a longer observation window.
 - [coreyhaines31/marketingskills, marketing-loops] For pricing-page tests: "Judge winners on revenue per visitor, plan mix, refunds, downgrades, churn, and support load - not conversion rate alone." "Do not promote a variant that lifts conversion but lowers revenue-per-visitor or raises refunds/churn."
@@ -68,8 +70,8 @@ We'll know this is true when [metrics].
 ## Traffic allocation
 
 - [coreyhaines31/marketingskills, ab-testing] Standard 50/50 is the default for A/B; conservative 90/10 or 80/20 limits the risk of a bad variant; ramping starts small and increases, for technical risk. Users see the same variant on return; balance exposure across time of day and week.
-- [PostHog, ../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md#rollout-and-split) "Always default to an equal split unless the user explicitly requests otherwise", and limit risk by reducing the overall rollout instead: in PostHog an uneven split with the default "Exclude from analysis" can bias the smaller variant. In PostHog, follow PostHog's rule.
-- [coreyhaines31/marketingskills, ab-testing] Client-side changes the page after load: quick, can flicker. Server-side picks the variant before render: no flicker, needs dev work. PostHog's flicker fixes are [../../monitoring/posthog/FLAG-EVALUATION.md](../../monitoring/posthog/FLAG-EVALUATION.md).
+- [PostHog, ../../monitoring/posthog/EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md#rollout-and-split) "Always default to an equal split unless the user explicitly requests otherwise", and limit risk by reducing the overall rollout instead: in PostHog an uneven split with the default "Exclude from analysis" can bias the smaller variant. In PostHog, follow PostHog's rule.
+- [coreyhaines31/marketingskills, ab-testing] Client-side changes the page after load: quick, can flicker. Server-side picks the variant before render: no flicker, needs dev work. PostHog's flicker fixes are [posthog FLAG-EVALUATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/FLAG-EVALUATION.md).
 
 ## Running the test
 
@@ -87,7 +89,7 @@ We'll know this is true when [metrics].
 - For a pre-specified fixed-horizon test, compare its p-value with the chosen significance level (commonly α = 0.05).
 - A p-value describes how incompatible the data are with the null model: the probability, **assuming that model and its assumptions**, of a result at least as extreme as the observed one. It is not the probability that the result is random, that the null is true, or that a variant will win again.
 - A 95% confidence interval comes from a procedure with 95% coverage over repeated samples under its assumptions. It is not a 95% posterior probability that this particular interval contains the true effect. Report the interval and effect size alongside the p-value.
-- Use the planned analysis and stopping rule. Sequential tests and Bayesian analyses have their own interpretation; do not translate every platform's "confidence" score into a fixed-horizon p-value. PostHog's Bayesian "chance to win" is read in [../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md](../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c5-bayesian-traps-high).
+- Use the planned analysis and stopping rule. Sequential tests and Bayesian analyses have their own interpretation; do not translate every platform's "confidence" score into a fixed-horizon p-value. PostHog's Bayesian "chance to win" is read in [posthog EXPERIMENT-SIGNIFICANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c5-bayesian-traps-high).
 - Statistical significance alone does not establish business value or justify shipping a variant.
 
 Analysis checklist:
@@ -106,8 +108,8 @@ Analysis checklist:
 | No significant difference | Report the effect interval: it may still allow meaningful benefit and harm, or may exclude effects worth pursuing. Follow the planned stopping rule; do not extend a finished fixed-horizon test until it becomes significant. Plan a new test if needed. |
 | Mixed signals | Check data quality and planned metrics; label unplanned segment findings exploratory and confirm them in a new test |
 
-- **Two views on a borderline result.** [coreyhaines31/marketingskills, ab-testing] says the row above. [PostHog agent skills, ../../monitoring/posthog/EXPERIMENT-METRICS.md](../../monitoring/posthog/EXPERIMENT-METRICS.md#interpreting-results) says "Borderline: Continue, or end as inconclusive" and "Recommend shipping only when the result is statistically significant", and allows shipping an inconclusive result under three conditions ([C8](../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c8-shipping-an-inconclusive-result-medium)).
-- **Multiple comparisons.** PostHog applies no correction across metrics or variants ([C4](../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c4-multiple-comparisons-high)); Optimizely's Stats Engine controls the false discovery rate with a tiered Benjamini-Hochberg procedure ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/false-discovery-rate-control)). Bonferroni is the manual correction ([SAMPLE-SIZE.md](SAMPLE-SIZE.md#multiple-variants)).
+- **Two views on a borderline result.** [coreyhaines31/marketingskills, ab-testing] says the row above. [PostHog agent skills, ../../monitoring/posthog/EXPERIMENT-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-METRICS.md#interpreting-results) says "Borderline: Continue, or end as inconclusive" and "Recommend shipping only when the result is statistically significant", and allows shipping an inconclusive result under three conditions ([C8](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c8-shipping-an-inconclusive-result-medium)).
+- **Multiple comparisons.** PostHog applies no correction across metrics or variants ([C4](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c4-multiple-comparisons-high)); Optimizely's Stats Engine controls the false discovery rate with a tiered Benjamini-Hochberg procedure ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/false-discovery-rate-control)). Bonferroni is the manual correction ([SAMPLE-SIZE.md](SAMPLE-SIZE.md#multiple-variants)).
 
 ## The rules
 

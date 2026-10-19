@@ -45,7 +45,7 @@ Which guarantee to offer, how to word it, and how to stress-test it. A guarantee
 | Direct response | Double-your-money-back or comparable risk inversion. | A vanilla 30-day refund. |
 
 - **The source's coaching line** ("we end it and refund the unused balance") sat in the money-back family; the FTC guide reserves that label for a full purchase-price refund ([FTC-PRICING-CLAIMS.md](FTC-PRICING-CLAIMS.md#what-the-sources-got-wrong)).
-- **On the app stores,** refunds belong to the store; don't promise an in-app refund ([../onboarding-and-upgrades/UPGRADE-PROMPTS.md](../onboarding-and-upgrades/UPGRADE-PROMPTS.md#store-rules-for-in-app-upgrades)).
+- **On the app stores,** refunds belong to the store; don't promise an in-app refund ([onboarding-and-upgrades UPGRADE-PROMPTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/UPGRADE-PROMPTS.md#store-rules-for-in-app-upgrades)).
 
 ## Wording
 
@@ -55,7 +55,7 @@ Which guarantee to offer, how to word it, and how to stress-test it. A guarantee
 - **Confident tone:** "We know this works. If it doesn't for you, we don't want your money."
 - **Acknowledge the awkwardness:** "Guarantees feel slimy. Here's ours anyway: if you do the work in modules 1-3 and don't see meaningful traction, we refund."
 - **Patterns that don't work:** "100% satisfaction guaranteed!" (generic, and with no stated conditions it fails 16 CFR 239.3(b)); "Lifetime guarantee" (meaningless without conditions, and 239.4 requires naming the life); multiple stacked guarantees; legalese.
-- **Put it next to the buy button.** The source: "Move it above the buy button." The FTC guide requires the conditions to be "noticed and understood", so the conditions travel with it. The copy side is in [../../anti-ai-slop/anti-slop-copy/PAGES.md](../../anti-ai-slop/anti-slop-copy/PAGES.md) ("the risk reducer that's true").
+- **Put it next to the buy button.** The source: "Move it above the buy button." The FTC guide requires the conditions to be "noticed and understood", so the conditions travel with it. The copy side is in [anti-slop-copy PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/PAGES.md) ("the risk reducer that's true").
 
 ## Common mistakes
 

@@ -7,6 +7,8 @@ description: "Instruments services with OpenTelemetry traces, metrics and struct
 
 When a request fails halfway through three services and a queue, the question is "where, and for whom?". Traces answer where (one tree of timed spans per request), metrics answer how often and how much (counts and distributions over time), logs answer what exactly happened at a point (structured events tied to the trace). OpenTelemetry produces all three in one vendor-neutral format (OTLP), so you instrument once and change backends by configuration. Read the file for the job:
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Wire the Node SDK, custom spans and metrics, log correlation, request context, errors, sampling, tracing through queues | [INSTRUMENT.md](INSTRUMENT.md) |
@@ -29,5 +31,7 @@ When a request fails halfway through three services and a queue, the question is
 9. **Fail loudly on misconfiguration.** A missing exporter endpoint should fail at startup, not run for weeks silently exporting nowhere.
 
 ## Prove it
+
+For tracing implementation, use the HTTP/database/queue and correlated-log check below on the boundaries involved. For metrics, use the label check; for export resilience, use the backend-outage check. Incident response, health-check and log-design tasks use their routed topic's checks without adding unrelated tracing infrastructure.
 
 Send one request that crosses an HTTP hop, a database query and a queue, and show it as a single trace with the consumer's spans under the producer's. From that trace, open its logs and see the same trace ID. Show one business metric with its labels and confirm none of them is unbounded. Stop the telemetry backend: requests still succeed and their latency doesn't change.

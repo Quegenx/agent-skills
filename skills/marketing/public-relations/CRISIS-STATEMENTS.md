@@ -1,6 +1,6 @@
 # Crisis statement templates
 
-Structures for the most common crisis statements, copied from coreyhaines31/marketingskills `public-relations` (MIT), "Adapted from a contribution by @fyscleaning-jpg (PR #381)". Fill in real specifics: "Nothing ships with brackets still in it." When to use each one is in [CRISIS.md](CRISIS.md). Write them plainly ([../../anti-ai-slop/anti-slop-writing/SKILL.md](../../anti-ai-slop/anti-slop-writing/SKILL.md)).
+Structures for the most common crisis statements, copied from coreyhaines31/marketingskills `public-relations` (MIT), "Adapted from a contribution by @fyscleaning-jpg (PR #381)". Fill in real specifics: "Nothing ships with brackets still in it." When to use each one is in [CRISIS.md](CRISIS.md). Write them plainly ([anti-slop-writing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/SKILL.md)).
 
 **Contents:** [Holding statement](#holding-statement) · [Full incident statement](#full-incident-statement) · [Data breach notification](#data-breach-notification) · [Product outage](#product-outage) · [Customer harm apology](#customer-harm-apology) · [Billing or pricing error](#billing-or-pricing-error) · [Public postmortem](#public-postmortem) · [Prove it](#prove-it)
 
@@ -58,7 +58,7 @@ What we're changing: [The process or system change that prevents a repeat.]
 We're sorry for the concern this has caused. If you have questions, contact us at [contact] and we will respond within [timeframe].
 ```
 
-Sending email reliably is [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md).
+Sending email reliably is [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 ## Product outage
 
@@ -114,11 +114,11 @@ This happened because [brief, honest root cause, e.g. "a bug in our billing migr
 We're sorry for the trouble and appreciate your patience.
 ```
 
-Issuing the refunds and credits in billing code is [../../backend/stripe/SKILL.md](../../backend/stripe/SKILL.md).
+Issuing the refunds and credits in billing code is [stripe SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/SKILL.md).
 
 ## Public postmortem
 
-[coreyhaines31/marketingskills, public-relations] For P1 and P0, published once the crisis is resolved and the root cause confirmed. The internal postmortem it draws on (four timestamps, the detection gap, no person as the cause) is [../../monitoring/observability/INCIDENT-RESPONSE.md](../../monitoring/observability/INCIDENT-RESPONSE.md#the-postmortem); the public one keeps that rule too.
+[coreyhaines31/marketingskills, public-relations] For P1 and P0, published once the crisis is resolved and the root cause confirmed. The internal postmortem it draws on (four timestamps, the detection gap, no person as the cause) is [observability INCIDENT-RESPONSE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/INCIDENT-RESPONSE.md#the-postmortem); the public one keeps that rule too.
 
 ```
 # [Incident name]: Postmortem

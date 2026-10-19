@@ -9,7 +9,7 @@ Turn a specific claim into evidence that could disprove it. Cursor's verify-this
 - Restate the claim as a condition, metric and threshold. Replace vague assertions about cleanliness or speed with the concrete behavior or measure being claimed.
 - Select the smallest local surface that could contradict it: a focused behavioral check, CLI transcript, UI evidence, API response, timing/profile or memory evidence, as appropriate to the claim.
 - Capture the baseline and changed state with the same command or procedure, input, warmup and environment. Keep the raw artifacts needed to explain the comparison.
-- Use existing measurement owners: [performance-and-caching](../../backend/performance-and-caching/SKILL.md), [CLI-HARNESS.md](../testing/CLI-HARNESS.md), [e2e-testing](../../web-automation/e2e-testing/SKILL.md) and [BASE-HEAD-PARITY.md](../lint-rule-authoring/BASE-HEAD-PARITY.md). This file defines the verdict, not a second measurement framework.
+- Use existing measurement owners: [performance-and-caching](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/SKILL.md), [testing CLI-HARNESS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/CLI-HARNESS.md), [e2e-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/e2e-testing/SKILL.md) and [lint-rule-authoring BASE-HEAD-PARITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/BASE-HEAD-PARITY.md). This file defines the verdict, not a second measurement framework.
 
 ## Verdict
 

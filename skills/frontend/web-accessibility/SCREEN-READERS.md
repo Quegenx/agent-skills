@@ -1,6 +1,6 @@
 # Screen readers
 
-Visually hidden content, choosing how to announce a change, live regions, `aria-hidden`, alt text and media. Source: [Jakub Krehel, better-accessibility, screen-readers.md], with 1.4.2 restated from WCAG; SVG specifics are in [svg/ACCESSIBILITY.md](../svg/ACCESSIBILITY.md).
+Visually hidden content, choosing how to announce a change, live regions, `aria-hidden`, alt text and media. Source: [Jakub Krehel, better-accessibility, screen-readers.md], with 1.4.2 restated from WCAG; SVG specifics are in [svg ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/ACCESSIBILITY.md).
 
 ## Visually hidden content
 
@@ -40,7 +40,7 @@ Work down this list and stop at the first match:
 3. **Non-urgent, not tied to a control**, such as a toast, "Saved", a result count or a loading state: a polite live region, `role="status"`.
 4. **Urgent and not tied to a control**, such as a form-level failure or session expiry: `role="alert"`.
 
-app-ui does this instead: field errors carry `role="alert"` as well as the shared `aria-describedby` id ([app-ui/CONTROLS.md](../app-ui/CONTROLS.md)).
+app-ui does this instead: field errors carry `role="alert"` as well as the shared `aria-describedby` id ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)).
 
 ## Live regions
 
@@ -99,7 +99,7 @@ A missing `alt` is worse than an empty one, because screen readers fall back to 
 
 An image painted into a `<canvas>` (a generation reveal, a shader effect) has no alt text: "If the result matters to screen readers, render a visually hidden description or an `<img>` elsewhere." [Libraries.dev]
 
-SVG: decorative gets `aria-hidden="true"`; meaningful inline SVG gets `role="img"` plus a name; `<img src="icon.svg" alt="...">` is the most reliable delivery for simple cases. The full treatment is in [svg/ACCESSIBILITY.md](../svg/ACCESSIBILITY.md).
+SVG: decorative gets `aria-hidden="true"`; meaningful inline SVG gets `role="img"` plus a name; `<img src="icon.svg" alt="...">` is the most reliable delivery for simple cases. The full treatment is in [svg ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/ACCESSIBILITY.md).
 
 ## Video and audio
 

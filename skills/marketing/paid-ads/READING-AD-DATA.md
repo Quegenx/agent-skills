@@ -93,7 +93,7 @@ Audits, status docs and proposals were true when written; every performance numb
 
 Keep stale claims out of client-facing sentences unless labeled. **The test before anything reaches a client: can they disprove this in a minute with their own account access?** Volunteer the limits first (the disclosed-clicks ratio, the sample size, the config changes); they'd find them anyway, and it makes the rest credible.
 
-If a claim touches a landing page, open it. Calendar embeds and chat widgets load through JavaScript and won't show in a static fetch, so their absence there isn't evidence; render the page ([browser-automation](../../web-automation/browser-automation/SKILL.md)). When a client challenges a finding and is right, concede the substance plainly and move on; stacked retractions cost more than the original error.
+If a claim touches a landing page, open it. Calendar embeds and chat widgets load through JavaScript and won't show in a static fetch, so their absence there isn't evidence; render the page ([browser-automation](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SKILL.md)). When a client challenges a finding and is right, concede the substance plainly and move on; stacked retractions cost more than the original error.
 
 ## Conclusions that sound right
 

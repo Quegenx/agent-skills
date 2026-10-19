@@ -1,6 +1,6 @@
 # Debugging and flakiness
 
-The commands are the `e2e` runner's. Read the trace page first and fix from what was there (the locator, the expectation or the app), then measure the fix with retries off.
+The commands are the `e2e` runner's. Read the trace page first and fix from what was there (the locator, the expectation or the app), then measure the fix with retries off. [tester-army/e2e, traces and failures]
 
 ## Read the trace first
 

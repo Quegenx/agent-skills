@@ -7,6 +7,8 @@ description: "Teaches a topic across sessions through a concrete mission, cited 
 
 Build lessons around what the learner wants to be able to do, using trusted material and an explicit record of understanding. The source is Matt Pocock's teach skill and its mission, resource, learning-record and glossary formats. Its pedagogical methods are source preferences, without imported claims about neuroscience or guaranteed retention.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Establish the teaching loop and choose the next lesson | [SKILL.md](SKILL.md) |

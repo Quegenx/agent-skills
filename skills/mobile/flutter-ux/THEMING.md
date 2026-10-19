@@ -162,7 +162,7 @@ class UniversalThemeFactory extends ApparenceKitThemeDataFactory {
 ```
 
   The article (no version stated) is out of date here.
-- The same article shows `Theme.of(context).textTheme.headline1`; that name is gone (`headline1` to `displayLarge`, see [../flutter/VERSIONS.md](../flutter/VERSIONS.md)).
+- The same article shows `Theme.of(context).textTheme.headline1`; that name is gone (`headline1` to `displayLarge`, see [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
 
 ## Light and dark without a restart
 
@@ -222,7 +222,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 ```
 
-- `initialRoute: 'home'` is named-route style; the flutter skill routes with go_router ([../flutter/ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)).
+- `initialRoute: 'home'` is named-route style; the flutter skill routes with go_router ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)).
 - Shortcut getters on `BuildContext`, verbatim (the extension is named `ThemeExtension` in the article; see [the naming note](#two-things-called-theme-extension)):
 
 ```dart
@@ -240,7 +240,7 @@ extension ThemeExtension on BuildContext { // See our tip on [creating theme ext
 }
 ```
 
-- Persisting the user's choice across launches is the official `ThemeSwitch` / `ThemeRepository` example in [../flutter/DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md); the provider above is a context-only pattern and does not persist.
+- Persisting the user's choice across launches is the official `ThemeSwitch` / `ThemeRepository` example in [flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md); the provider above is a context-only pattern and does not persist.
 
 ## Tweak one text property
 
@@ -254,7 +254,7 @@ extension ThemeExtension on BuildContext { // See our tip on [creating theme ext
 - **One or two colors:** "Try making your app with one or two colors." "(Please note that black, white, and greys are exceptions and are not considered as colors.)" The article cites Facebook, Instagram, Twitter and Youtube as apps that "don't use a lot of colors". [ApparenceKit](https://apparencekit.dev/blog/flutter-theme-made-easy/)
 - **Two fonts at most:** "Stick to a maximum of two fonts: one for important titles and another for general text." [ApparenceKit](https://apparencekit.dev/flutter-tips/app-design-tips/) ("Our designer at Apparence tend to limit his usage to 2 fonts." [ApparenceKit](https://apparencekit.dev/blog/flutter-theme-made-easy/))
 - **Two or three sizes per page:** "Try to use only 2 or 3 different font sizes on any given page." [ApparenceKit](https://apparencekit.dev/flutter-tips/app-design-tips/)
-- **Hierarchy by weight and color:** "Make important information stand out by using bolder weights or distinct colors. For less crucial details, like descriptions or alternative texts, you can decrease their opacity or use lighter colors." [ApparenceKit](https://apparencekit.dev/flutter-tips/app-design-tips/) Lowered opacity must still pass the contrast values in [../flutter/ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values).
+- **Hierarchy by weight and color:** "Make important information stand out by using bolder weights or distinct colors. For less crucial details, like descriptions or alternative texts, you can decrease their opacity or use lighter colors." [ApparenceKit](https://apparencekit.dev/flutter-tips/app-design-tips/) Lowered opacity must still pass the contrast values in [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#design-values).
 - **The 8pt rule:** "all the measurements in your design (things like the width and height of elements, and the space between them) should be a multiple of 8. This means using values like 8, 16, 24, 32, and so on." [ApparenceKit](https://apparencekit.dev/flutter-tips/spacing-design-8-rule/)
 - **A spacer so code reads `AppSpacer.p16()`** instead of `SizedBox(width: 16)`. Verbatim [ApparenceKit](https://apparencekit.dev/flutter-tips/spacing-design-8-rule/):
 
@@ -280,7 +280,7 @@ class AppSpacer extends StatelessWidget {
 }
 ```
 
-  It compiles; current style passes the key with `super.key` ([../flutter/VERSIONS.md](../flutter/VERSIONS.md)): `const AppSpacer._({super.key, this.width, this.height});`. Each factory sets width and height, so in a `Row` `AppSpacer.p16()` also adds 16 of height.
+  It compiles; current style passes the key with `super.key` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)): `const AppSpacer._({super.key, this.width, this.height});`. Each factory sets width and height, so in a `Row` `AppSpacer.p16()` also adds 16 of height.
 
 ## Prove it
 

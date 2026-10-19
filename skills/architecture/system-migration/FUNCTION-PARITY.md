@@ -1,6 +1,6 @@
 # Function comparison during a migration
 
-Use jscpd's two-tree function report as a map of likely counterparts and work to inspect, not proof that a port behaves correctly. Sources: [kucherenko/jscpd, compare-codebases, code-migration], checked against the [official comparison implementation](https://github.com/kucherenko/jscpd/blob/v5.4.1/rust/crates/cpd/src/compare/mod.rs) and the focused verification in this topic. General scan setup and duplication options live in [DUPLICATION.md](../refactoring/DUPLICATION.md); the migration's unchanged end-to-end contract stays in [SKILL.md](SKILL.md#incremental-ports-new-language-runtime-or-framework).
+Use jscpd's two-tree function report as a map of likely counterparts and work to inspect, not proof that a port behaves correctly. Sources: [kucherenko/jscpd, compare-codebases, code-migration], checked against the [official comparison implementation](https://github.com/kucherenko/jscpd/blob/v5.4.1/rust/crates/cpd/src/compare/mod.rs) and the focused verification in this topic. General scan setup and duplication options live in [refactoring DUPLICATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DUPLICATION.md); the migration's unchanged end-to-end contract stays in [SKILL.md](SKILL.md#incremental-ports-new-language-runtime-or-framework).
 
 ## Scope and model
 
@@ -42,7 +42,7 @@ Use jscpd's two-tree function report as a map of likely counterparts and work to
 - Keep inputs and expected outputs when translating a behavior check. Deliberate target differences require an explicit reason. Verify that a target test actually reaches the new target implementation rather than a mock, helper or retained old path.
 - `readyToPort` lists unmatched source functions whose callees already have counterparts and gives caller counts. Use it as one ordering aid alongside test readiness, not a guaranteed topological plan: mutually unpaired cycles can leave no ready item.
 - Record intentional non-ports, platform-only glue, target-native replacements and user-dropped features separately. A remaining percentage is explainable work, not automatically a defect to erase.
-- **Two source workflows, scoped:** this migration source ports tests first, permits not-yet-runnable target checks, then ports functions with their related checks. Matt's [vertical TDD](../testing/TDD.md) instead completes one behavior slice before imagining later tests. Keep the migration-specific preparation view tagged; it does not change the existing requirement that migration end-to-end checks remain unchanged. [kucherenko/jscpd, code-migration; mattpocock/skills, tdd]
+- **Two source workflows, scoped:** this migration source ports tests first, permits not-yet-runnable target checks, then ports functions with their related checks. Matt's [vertical TDD](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/TDD.md) instead completes one behavior slice before imagining later tests. Keep the migration-specific preparation view tagged; it does not change the existing requirement that migration end-to-end checks remain unchanged. [kucherenko/jscpd, code-migration; mattpocock/skills, tdd]
 
 ## Reports and decisions
 

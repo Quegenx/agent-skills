@@ -1,10 +1,10 @@
 # Three.js and React Three Fiber audit
 
-[React Doctor, improve-threejs] (Modified MIT, notice in [LICENSE-react-doctor.txt](LICENSE-react-doctor.txt)) Audits a Three.js or React Three Fiber (R3F) codebase and fixes what hurts most: work that runs every frame, GPU resources that never get disposed, scene-graph objects rebuilt on every render, and visual defects the user can see. Every API line was checked against threejs.org/docs, the three.js manual (https://github.com/mrdoob/three.js/tree/dev/manual/pages), r3f.docs.pmnd.rs and drei.docs.pmnd.rs; where the source was wrong or stale, the official form is written with its URL and one line on what the source said. Severity uses the repo's P0 to P3 scale ([../../architecture/code-review/REVIEWER.md](../../architecture/code-review/REVIEWER.md)): the source's HIGH, MEDIUM and LOW are written here as P1, P2 and P3, and a finding that blocks the primary task is P0 whatever the tier says.
+[React Doctor, improve-threejs] (Modified MIT, notice in [LICENSE-react-doctor.txt](LICENSE-react-doctor.txt)) Audits a Three.js or React Three Fiber (R3F) codebase and fixes what hurts most: work that runs every frame, GPU resources that never get disposed, scene-graph objects rebuilt on every render, and visual defects the user can see. Every API line was checked against threejs.org/docs, the three.js manual (https://github.com/mrdoob/three.js/tree/dev/manual/pages), r3f.docs.pmnd.rs and drei.docs.pmnd.rs; where the source was wrong or stale, the official form is written with its URL and one line on what the source said. Severity uses the repo's P0 to P3 scale ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md)): the source's HIGH, MEDIUM and LOW are written here as P1, P2 and P3, and a finding that blocks the primary task is P0 whatever the tier says.
 
 ## Severity follows the render loop
 
-"Code inside `useFrame` or a `requestAnimationFrame` callback runs 60 times per second, so a minor inefficiency there outweighs a major one in a settings panel. Rank every finding by where it runs, not by the rule's default severity." The general web rule is the same: [../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md) looks for state updates inside `requestAnimationFrame`, `pointermove`, `scroll` or drag handlers; in R3F that is `setState` inside `useFrame`.
+"Code inside `useFrame` or a `requestAnimationFrame` callback runs 60 times per second, so a minor inefficiency there outweighs a major one in a settings panel. Rank every finding by where it runs, not by the rule's default severity." The general web rule is the same: [ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md) looks for state updates inside `requestAnimationFrame`, `pointermove`, `scroll` or drag handlers; in R3F that is `setState` inside `useFrame`.
 
 ## The audit workflow
 
@@ -62,7 +62,7 @@ Copied from the source. Capture evidence first ([workflow step 4](#the-audit-wor
 | Image stability        | Pan the camera slowly at supported resolutions                         | Silhouettes, thin geometry, or highlights that crawl, sparkle, or ghost                            |
 | Resize and DPR         | Change viewport size, zoom, and device pixel ratio                     | Distortion, blur, stretched output, or content leaving the viewport                                |
 
-The same defects in a rendered film are in [../../videos/frame-review/TELLS.md](../../videos/frame-review/TELLS.md).
+The same defects in a rendered film are in [frame-review TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/TELLS.md).
 
 ## Causes per rubric row
 

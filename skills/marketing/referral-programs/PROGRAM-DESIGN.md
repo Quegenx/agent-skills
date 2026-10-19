@@ -22,7 +22,7 @@ Read `.agents/product-context.md` first, then gather what it lacks:
 | Reward | One-time or limited | An ongoing commission relationship |
 | Trade-off | Higher trust, lower volume | Higher volume, variable trust |
 
-Getting creators to promote a $199-499 course is an affiliate program in the source's eval, with commission, cookie and payout terms [coreyhaines31/marketingskills, referrals evals]. The affiliate playbook is in [AFFILIATES.md](AFFILIATES.md); creator sponsorships and vetting are in [creator-marketing](../creator-marketing/SKILL.md).
+Getting creators to promote a $199-499 course is an affiliate program in the source's eval, with commission, cookie and payout terms [coreyhaines31/marketingskills, referrals evals]. The affiliate playbook is in [AFFILIATES.md](AFFILIATES.md); creator sponsorships and vetting are in [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md).
 
 ## The referral loop
 
@@ -34,7 +34,7 @@ Trigger Moment → Share Action → Convert Referred → Reward → (Loop)
 - **Share mechanism, ranked by the source** (its own ranking, no data given): 1. in-product sharing ("highest conversion"); 2. personalized link; 3. email invitation; 4. social sharing; 5. referral code ("works offline").
 - **Reduce friction:** one-click share, pre-written messages ([VIRAL-LOOPS.md](VIRAL-LOOPS.md#referral-best-practices)).
 
-On iOS, an invite flow that touches Contacts, push reminders or a free subscription period as the reward has App Review rules of its own, collected in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
+On iOS, an invite flow that touches Contacts, push reminders or a free subscription period as the reward has App Review rules of its own, collected in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
 
 ## Rewards
 
@@ -75,7 +75,7 @@ Max Total Reward Cost = max(0, Target CAC - Other Acquisition Cost)
 
 Worked example: lifetime revenue $1,200 at 70% gross margin gives $840 lifetime gross profit; target total referral CAC $200; other acquisition cost $40 per customer; so the maximum combined reward is $200 - $40 = $160 (for example $80 cash to each side), and total referral CAC is $200. "The old $640 reward would produce $680 CAC with these other costs, exceeding the $200 target." "Lifetime gross profit helps assess whether the chosen acquisition budget is viable; it is not the reward budget minus target CAC." "If other costs already meet or exceed target CAC, pause or redesign the program; a zero remaining reward budget does not make an already over-budget acquisition acceptable." Check retention, refunds and cash payback before committing. The source points to [Stripe's CAC guide](https://stripe.com/resources/more/cac-in-saas) for the cost definition.
 
-**The mobile source's formula** [eronred, referral-programs]: `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`, with "Never make rewards larger than CAC". Its mobile delivery and store-specific restrictions remain in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs); the formula is defined here.
+**The mobile source's formula** [eronred, referral-programs]: `Max referral reward (per side) ≤ (LTV × target margin) - other CAC`, with "Never make rewards larger than CAC". Its mobile delivery and store-specific restrictions remain in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs); the formula is defined here.
 
 The differences: the Corey Haines source caps the combined reward of both sides against a target CAC; [eronred, referral-programs] caps each side against LTV times margin. Run both and state which one the plan uses.
 
@@ -100,7 +100,7 @@ Applying this to a referral link posted publicly for a reward is interpretation,
 - **Policy:** clear terms; a maximum number of referrals per period; reward clawback for refunds and chargebacks; manual review of suspicious patterns.
 - **Structural:** the referred user must take a meaningful action; cap lifetime rewards; pay in product credit ("less attractive to fraudsters").
 
-"Shared IPs or devices can be a signal for review, not proof of abuse. Apply rules consistently and retain the evidence for decisions." Legitimate coupon partners "are not automatically fraud" [coreyhaines31/marketingskills, referrals, references/affiliate-operations.md]. On iOS, Apple's privacy rules conflict with device fingerprinting; the conflict and app-growth's fraud table are in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs). Store and process reward events idempotently so a replayed webhook never pays twice ([background-jobs](../../backend/background-jobs/SKILL.md)).
+"Shared IPs or devices can be a signal for review, not proof of abuse. Apply rules consistently and retain the evidence for decisions." Legitimate coupon partners "are not automatically fraud" [coreyhaines31/marketingskills, referrals, references/affiliate-operations.md]. On iOS, Apple's privacy rules conflict with device fingerprinting; the conflict and app-growth's fraud table are in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs). Store and process reward events idempotently so a replayed webhook never pays twice ([background-jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md)).
 
 ## Launch
 
@@ -129,15 +129,15 @@ They get [their reward] too.
 3. You both get [reward]
 ```
 
-The nurture sequence: Day 7, remind about the program; Day 30, "Know anyone who'd benefit?"; Day 60, a success story plus a referral prompt; after a milestone, "You achieved [X] - know others who'd want this?" The success story must be a real, permissioned one ([REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)).
+The nurture sequence: Day 7, remind about the program; Day 30, "Know anyone who'd benefit?"; Day 60, a success story plus a referral prompt; after a milestone, "You achieved [X] - know others who'd want this?" The success story must be a real, permissioned one ([review-management REVIEW-PROGRAMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/review-management/REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)).
 
-These are marketing emails: consent, unsubscribe and frequency rules are in [email-practices](../../backend/email-practices/SKILL.md). Moved to push on iOS, they need the explicit opt-in Apple requires for promotional push (in app-growth's referral section).
+These are marketing emails: consent, unsubscribe and frequency rules are in [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md). Moved to push on iOS, they need the explicit opt-in Apple requires for promotional push (in app-growth's referral section).
 
 ## Fixing a weak program
 
 - **Few customers refer:** ask at better moments; simplify sharing; test incentive types; make the program prominent in the product.
 - **Referrals don't convert:** improve the landing experience for referred users; strengthen the new user's incentive; make the referrer's endorsement visible.
-- **A/B tests:** incentive (amount, type, single or double-sided, timing); messaging (program description, CTA copy, landing page copy); placement (where and when the prompt appears). Test design is in [ab-testing](../ab-testing/SKILL.md).
+- **A/B tests:** incentive (amount, type, single or double-sided, timing); messaging (program description, CTA copy, landing page copy); placement (where and when the prompt appears). Test design is in [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 | Problem | Fix |
 |---|---|

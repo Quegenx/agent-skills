@@ -1,10 +1,10 @@
 # Cold calls and voicemail
 
-Scripts for the first 30 seconds of a cold call, voicemails, and the pushback that comes right after the opener. "Internalize the structure and say it in your own words. Prospects can hear reading." From coreyhaines31/marketingskills, skill `sales-enablement` (references/cold-call-scripts.md, MIT). Where calls fit in a multichannel cadence is in [../cold-outreach/SKILL.md](../cold-outreach/SKILL.md); who to call is in [../prospecting/SKILL.md](../prospecting/SKILL.md).
+Scripts for the first 30 seconds of a cold call, voicemails, and the pushback that comes right after the opener. "Internalize the structure and say it in your own words. Prospects can hear reading." From coreyhaines31/marketingskills, skill `sales-enablement` (references/cold-call-scripts.md, MIT). Where calls fit in a multichannel cadence is in [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md); who to call is in [prospecting SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md).
 
 ## The rules this sits inside
 
-Calls are made only within the law and the platform's rules. The telemarketing and consent rules (honouring a request not to be called, the Do Not Call Registry and its business-call exemption, calling hours, caller ID, prerecorded messages, AI voices under FCC-24-17) are defined in [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#texts-and-calls-us); a script must keep them.
+Calls are made only within the law and the platform's rules. The telemarketing and consent rules (honouring a request not to be called, the Do Not Call Registry and its business-call exemption, calling hours, caller ID, prerecorded messages, AI voices under FCC-24-17) are defined in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#texts-and-calls-us); a script must keep them.
 
 - **No deception:** never pretend you've met, or "follow up" on a conversation that didn't happen. [coreyhaines31/marketingskills, sales-enablement]
 - Do not use caller-ID spoofing, number rotation to dodge call blocking, or anything else that evades Do Not Call scrubbing.
@@ -53,7 +53,7 @@ Deliver the reason in two sentences and ask the question. Then listen. If there'
 | "How did you get my number?" | Tell them the actual source, and offer to remove them. Then do it |
 | "Who are you again?" | Restart with the name and the one-sentence reason, slower |
 
-"Never argue past a second no." Log the reason; it's useful for the weekly sequence review. A "don't call me" goes on the company's own do-not-call list, which the TSR's entity-specific provision requires the seller to honour; in the CRM that contact moves to Suppressed ([../revops/LIFECYCLE.md](../revops/LIFECYCLE.md#outbound-stages)).
+"Never argue past a second no." Log the reason; it's useful for the weekly sequence review. A "don't call me" goes on the company's own do-not-call list, which the TSR's entity-specific provision requires the seller to honour; in the CRM that contact moves to Suppressed ([revops LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/LIFECYCLE.md#outbound-stages)).
 
 ## Voicemail
 
@@ -61,7 +61,7 @@ Deliver the reason in two sentences and ask the question. Then listen. If there'
 
 > Hi Priya, Sam from Acme. I'm calling because you're scaling the SDR team, and I had one idea on keeping new reps' lists clean before they start sending. I'll send a short email with it. Again, Sam from Acme.
 
-Then send the email within minutes, with a subject line tying it to the call ("my voicemail"). A prerecorded or AI-voiced voicemail drop falls under the prerecorded-message and AI-voice rules in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#texts-and-calls-us).
+Then send the email within minutes, with a subject line tying it to the call ("my voicemail"). A prerecorded or AI-voiced voicemail drop falls under the prerecorded-message and AI-voice rules in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#texts-and-calls-us).
 
 ## Gatekeepers
 

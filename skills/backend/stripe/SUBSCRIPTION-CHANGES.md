@@ -175,7 +175,7 @@ const invoice = await stripe.invoices.createPreview({
 - **Resume:** `stripe.subscriptions.update('sub_...', { pause_collection: '' })`, then for drafts `stripe.invoices.list({ subscription, status: 'draft' })` and `stripe.invoices.update(id, { auto_advance: true })`.
 - **Schedule phase transitions don't remove** a `pause_collection` set on the subscription.
 - **`customer.subscription.paused` and `.resumed` are about status `paused`,** not about pausing collection.
-- **Pause as a save offer:** the product policy is in [CANCEL-FLOWS.md](../../marketing/churn-prevention/CANCEL-FLOWS.md#save-offers). Removing access means "Pause subscriptions", not pausing collection. [coreyhaines31/marketingskills, churn-prevention]
+- **Pause as a save offer:** the product policy is in [churn-prevention CANCEL-FLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/CANCEL-FLOWS.md#save-offers). Removing access means "Pause subscriptions", not pausing collection. [coreyhaines31/marketingskills, churn-prevention]
 
 ## Prove it
 

@@ -16,8 +16,12 @@ When the brief leaves the idea open, find the concept first with [CONCEPT.md](CO
 
 [existing shotlist topics; measured corpus, original chapter responsibilities]
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
+| Measured beat roles | [MEASURED-BEAT-ROLES.md](MEASURED-BEAT-ROLES.md) |
+| Measured composition diagrams | [MEASURED-COMPOSITION-DIAGRAMS.md](MEASURED-COMPOSITION-DIAGRAMS.md) |
 | Concept and source inventory | [CONCEPT.md](CONCEPT.md) |
 | Film structures and format budgets | [FORMATS.md](FORMATS.md) |
 | Measured beat direction and importance budget | [MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) |
@@ -48,7 +52,7 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 - **One read at a time.** When two things happen at once, the viewer sees one of them. Put a cause and its reaction in sequence.
 - **Fast actions, slow meanings.** A move can be quick if it is anticipated; what it means needs held time. Spend time on what matters to the story, move fast through what doesn't. That contrast is rhythm.
 - **Lead the eye** before an important read: something moves, lights up or is looked at first.
-- **Holds:** a readable state holds at least the smoke test's reading time, the [canonical reading floor](../video-brief/COPY.md#budget), never under 1 s for a phrase, and 2 s for the final line. Text never moves while it is being read.
+- **Holds:** a readable state holds at least the smoke test's reading time, the [canonical reading floor](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/COPY.md#budget), never under 1 s for a phrase, and 2 s for the final line. Text never moves while it is being read.
 - **Let the reads set the length.** A shot with many reads can't be short; a shot whose reads have landed shouldn't be padded.
 
 ## Rules for every row
@@ -76,7 +80,7 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 
 ## Draw the techniques
 
-[cinetic, assets/library/techniques.json] Evidence counts are source claims; entries with evidence 0 are uncorroborated recipes. Source starter paths and helpers are not bundled here. Current [reading floors](../video-brief/COPY.md#budget) govern readable production text, even where a recipe uses a shorter hold.
+[cinetic, assets/library/techniques.json] Evidence counts are source claims; entries with evidence 0 are uncorroborated recipes. Source starter paths and helpers are not bundled here. Current [reading floors](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/COPY.md#budget) govern readable production text, even where a recipe uses a shorter hold.
 
 Left to choose, every agent picks the same fade-up, push-in and end card. Before designing shots, draw the film's techniques at random from the library, weighted to the format and energy:
 
@@ -97,7 +101,7 @@ One shot is one idea. A 15 s film holds about four visual ideas; three extraordi
 
 ## One carrier
 
-[shotlist, existing house rule; measured corpus, brand.md section 4] This house shape uses one carrier. The measured source treats a carrier as optional for held shots, typographic essays and task documentaries; see [the source alternative](../video-brief/MEASURED-BRAND-SYSTEM.md#4-the-hero--carrier-object-optional). Keep the chosen film shape explicit.
+[shotlist, existing house rule; measured corpus, brand.md section 4] This house shape uses one carrier. The measured source treats a carrier as optional for held shots, typographic essays and task documentaries; see [the source alternative](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-BRAND-SYSTEM.md#4-the-hero--carrier-object-optional). Keep the chosen film shape explicit.
 
 Pick one object that travels through every shot and changes role: the prompt bar, the card, the dot that becomes the logo. Persistent objects make a film feel designed instead of assembled, carry the eye across every cut, and let the story read with the sound off. Every transition is motivated by something on screen. Give the film one hero moment and build to it; don't spend it early.
 

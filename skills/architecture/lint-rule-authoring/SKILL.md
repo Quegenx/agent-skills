@@ -5,7 +5,9 @@ description: "Builds and evaluates lint rules and detectors: a source-grounded c
 
 # Lint rule authoring
 
-Research, implement and evaluate a detector against its stated contract. Sources: React Doctor's rule-research, rule-writing, rule-validate, rde-eval, fuzz, benchmark-fp-fn-audit and run-parity skills. The contract, fixtures and labels are in LINT-RULES.md; paired comparison evidence is in BASE-HEAD-PARITY.md. Consuming a scanner's findings on an application change remains [code-review scanner triage](../code-review/SCANNER-TRIAGE.md).
+Research, implement and evaluate a detector against its stated contract. Sources: React Doctor's rule-research, rule-writing, rule-validate, rde-eval, fuzz, benchmark-fp-fn-audit and run-parity skills. The contract, fixtures and labels are in LINT-RULES.md; paired comparison evidence is in BASE-HEAD-PARITY.md. Consuming a scanner's findings on an application change remains [code-review scanner triage](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/SCANNER-TRIAGE.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

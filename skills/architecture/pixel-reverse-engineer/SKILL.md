@@ -9,13 +9,15 @@ Rebuild a live website section or component in the target project with **1:1 vis
 
 For an explanation-only question, use [INSPECTION.md](INSPECTION.md): report the mechanism, evidence tiers and unknowns without implementing a copy. The reconstruction rules and [WORKFLOW.md](WORKFLOW.md) apply when a recreation is requested. [Jakub Krehel, explain-interface]; [pixel-reverse-engineer, SKILL.md]
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Set fidelity, evidence and target-project constraints | [SKILL.md](SKILL.md) |
 | Inspect, extract, implement and compare the requested live component or animation | [WORKFLOW.md](WORKFLOW.md) |
 | Explain how a live page or effect was built without reconstructing it; inspect styles, layers and motion; distinguish measured, derived and inferred evidence | [INSPECTION.md](INSPECTION.md) |
-| Investigate shipped JS/Electron artifacts or reconcile static and runtime evidence | [Reverse engineering](../reverse-engineering/SKILL.md) |
-| Build from Figma or a design image instead of a live implementation | [Building from a design file](../../anti-ai-slop/anti-slop-ui/FROM-DESIGN.md) |
+| Investigate shipped JS/Electron artifacts or reconcile static and runtime evidence | [Reverse engineering](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/reverse-engineering/SKILL.md) |
+| Build from Figma or a design image instead of a live implementation | [Building from a design file](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/FROM-DESIGN.md) |
 
 ## The rules
 

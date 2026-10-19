@@ -1,6 +1,6 @@
 # Web shell
 
-Flutter web's HTML shell: a progress bar while the engine boots, link preview cards and a browser tab title per page. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice, not Flutter team docs, checked against docs.flutter.dev where a sample needed it. Where a tip differs from the official-docs [flutter](../flutter/SKILL.md) skill, both sides are stated and tagged. Routing itself is in [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md). Native date pickers are in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md#date-picker-that-matches-the-platform), wakelock and social links in [DEVICE-FEATURES.md](DEVICE-FEATURES.md#keep-the-screen-awake-only-where-needed), and native file sharing in [PAINTING-AND-MEDIA.md](PAINTING-AND-MEDIA.md#share-instead-of-download).
+Flutter web's HTML shell: a progress bar while the engine boots, link preview cards and a browser tab title per page. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice, not Flutter team docs, checked against docs.flutter.dev where a sample needed it. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Routing itself is in [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md). Native date pickers are in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md#date-picker-that-matches-the-platform), wakelock and social links in [DEVICE-FEATURES.md](DEVICE-FEATURES.md#keep-the-screen-awake-only-where-needed), and native file sharing in [PAINTING-AND-MEDIA.md](PAINTING-AND-MEDIA.md#share-instead-of-download).
 
 **Contents:** [Version notes](#version-notes) · [Loading progress before the engine paints](#loading-progress-before-the-engine-paints) · [Link previews with Open Graph](#link-previews-with-open-graph) · [Browser tab title per page](#browser-tab-title-per-page) · [Prove it](#prove-it)
 
@@ -88,12 +88,12 @@ _flutter.loader.load({
 
 [FlutterPro](https://flutterpro.design/details/flutter-web-og-image): by default a Flutter web link shares as a bare URL (WhatsApp, Slack, X, anywhere). A few meta tags in the `<head>` of `web/index.html` give it a preview card with a title, description and image: Open Graph plus a few X-specific tags.
 
-The source's HTML block used a real product's identity and URLs. Use the existing [link-preview markup rules](../../marketing/seo/LINK-PREVIEWS.md) for the selected product instead. [FlutterPro](https://flutterpro.design/details/flutter-web-og-image)
+The source's HTML block used a real product's identity and URLs. Use the existing [link-preview markup rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md) for the selected product instead. [FlutterPro](https://flutterpro.design/details/flutter-web-og-image)
 
 - **`og:image` has to be an absolute URL.** A relative path like `og-image.png` gets ignored.
 - **Size it at least 1200×630.** Meta: "Use images that are at least 1200 x 630 pixels", with a ratio "as close to 1.91:1" (https://developers.facebook.com/docs/sharing/webmasters/images). The line said "Size it 1200×630", an exact size where Meta gives a minimum.
-- **`twitter:card` picks the X layout.** The archived X Cards markup says `twitter:image` falls back to `og:image`, and "If an og:type, og:title and og:description exist in the markup but twitter:card is absent, then a summary card may be rendered"; set `twitter:card` to `summary_large_image` for the wide image. The line said X "only sometimes falls back to `og:image`". Per-platform rules are in [../../marketing/seo/LINK-PREVIEWS.md](../../marketing/seo/LINK-PREVIEWS.md#x-cards).
-- The fuller tag set for a marketing site (site name, locale, a share image per language) is in [landing-page-ui DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md).
+- **`twitter:card` picks the X layout.** The archived X Cards markup says `twitter:image` falls back to `og:image`, and "If an og:type, og:title and og:description exist in the markup but twitter:card is absent, then a summary card may be rendered"; set `twitter:card` to `summary_large_image` for the wide image. The line said X "only sometimes falls back to `og:image`". Per-platform rules are in [seo LINK-PREVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md#x-cards).
+- The fuller tag set for a marketing site (site name, locale, a share image per language) is in [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md).
 
 ## Browser tab title per page
 
@@ -148,15 +148,15 @@ class RouteTitle extends StatelessWidget {
 }
 ```
 
-`titleForPath` is yours: map the path to a readable name, with a fallback so the tab is never blank (a list-pattern `switch`, see [LANGUAGE.md](../dart/LANGUAGE.md)):
+`titleForPath` is yours: map the path to a readable name, with a fallback so the tab is never blank (a list-pattern `switch`, see [dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)):
 
 The source's `titleForPath` helper parses `Uri.parse(path).pathSegments`, maps `billing` to Billing, `project/<id>/insights` to Insights plus the ID, and `project/<id>` to that ID, with a nonblank app-name fallback. Its printed helper hardcoded a real product's brand, so that sample block is omitted; supply the selected app's name and route map. [FlutterPro](https://flutterpro.design/details/browser-tab-title)
 
 - **`Title.color` is required and must be opaque** (alpha `0xFF`). It feeds the Android task switcher and is ignored on web.
-- **`onGenerateTitle` can't track routes:** it only reruns on app rebuild, not navigation. The flutter skill uses it for the one localized app title ([LOCALIZATION.md](../flutter/LOCALIZATION.md)); per-route titles need `Title`.
+- **`onGenerateTitle` can't track routes:** it only reruns on app rebuild, not navigation. The flutter skill uses it for the one localized app title ([flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md)); per-route titles need `Title`.
 
 ## Prove it
 
 - **Boot stages:** the bar follows the loader callbacks and disappears when the app paints; describe its 20/50/80 values as stage weights, not measured download completion. [Flutter initialization](https://docs.flutter.dev/platform-integration/web/initialization)
-- **Link previews:** a link pasted into a chat or a card validator shows the title, description and an image of at least 1200×630; `og:image` is absolute, and any explicit `twitter:image` is absolute; X may use its documented OG fallback ([X Cards](../../marketing/seo/LINK-PREVIEWS.md#x-cards)).
+- **Link previews:** a link pasted into a chat or a card validator shows the title, description and an image of at least 1200×630; `og:image` is absolute, and any explicit `twitter:image` is absolute; X may use its documented OG fallback ([X Cards](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md#x-cards)).
 - **Tab titles:** navigating between pages changes the browser tab title each time; an unknown path shows the fallback, never a blank tab; `Title.color` is opaque.

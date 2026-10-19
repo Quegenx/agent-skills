@@ -34,7 +34,7 @@ Runtime contracts from [gokapso/agent-skills, automate-whatsapp/references/funct
 - Event names accept any nonempty name; lowercase dotted snake case is recommended for consistency. The source called that naming convention mandatory.
 - Match project-event triggers by event name and their optional property filter. Event-triggered observer workflows cannot emit Project Events themselves.
 - Current documented quotas are ten emitted events per execution, three per name and five in one Function response. Workflow test mode validates and logs events without persisting them. These are service contracts to recheck before relying on a changed deployment, not generic event-bus limits.
-- General durable publication, idempotency and queue retries remain in [messaging](../messaging/SKILL.md) and [background-jobs](../background-jobs/SKILL.md); a response array alone is not an exactly-once guarantee.
+- General durable publication, idempotency and queue retries remain in [messaging](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/messaging/SKILL.md) and [background-jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md); a response array alone is not an exactly-once guarantee.
 
 ## Prove it
 

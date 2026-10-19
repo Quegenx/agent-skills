@@ -7,13 +7,15 @@ description: "Designs HTTP API contracts: pagination, errors, idempotency keys, 
 
 An API is a promise to clients you don't control. Every decision below is cheap before the first consumer and expensive after. Pick the file for the job:
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Resource shape, names, pagination, status codes, error bodies, compatibility, versioning | [CONTRACT.md](CONTRACT.md) |
 | Safe retries, idempotency keys, deadlines, cancellation, retry/timeout/circuit breaker, rate limits | [RELIABILITY.md](RELIABILITY.md) |
 | Rolling out behind a flag, A/B experiments | [FLAGS.md](FLAGS.md) |
 | Streaming updates to a browser (SSE) | [STREAMING.md](STREAMING.md) |
-| Before changing a developer tool's public surface: the job, reuse, metric, defaults, compatibility and removal brief | [Engineering planning](../../architecture/engineering-planning/PRODUCT-PASS.md) |
+| Before changing a developer tool's public surface: the job, reuse, metric, defaults, compatibility and removal brief | [Engineering planning](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/PRODUCT-PASS.md) |
 
 ## The rules under all of them
 

@@ -7,6 +7,8 @@ description: "Measures and improves browser loading and interaction performance:
 
 Measure the page or interaction, connect the recorded work to its source, then change the part that costs time. Sources are the existing browser guides below: Florian Kiem's loading demos, kciter.so's main-thread article, Vercel's performance rules, React Doctor's performance skill, Lighthouse and Lighthouse CI, with the linked browser and framework documentation and existing source corrections preserved.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Choose the page-loading, responsiveness, tracing or lab-gate task | [SKILL.md](SKILL.md) |
@@ -25,8 +27,8 @@ Measure the page or interaction, connect the recorded work to its source, then c
 
 ## Related owners
 
-- Server timing, query plans, cache validity/invalidation and Vercel production metrics: [performance-and-caching](../../backend/performance-and-caching/SKILL.md).
-- React, Next.js and React Native semantics: the [global React skill](../react/SKILL.md). Motion and compositor choices: [ui-animation](../ui-animation/SKILL.md).
+- Server timing, query plans, cache validity/invalidation and Vercel production metrics: [performance-and-caching](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/SKILL.md).
+- React, Next.js and React Native semantics: the [global React skill](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md). Motion and compositor choices: [ui-animation](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md).
 
 ## Gotchas
 

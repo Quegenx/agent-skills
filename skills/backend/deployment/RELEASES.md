@@ -12,7 +12,7 @@ A production deploy should be able to answer, from evidence and not from trust: 
 
 ## Cached build outputs
 
-[React Doctor, run-parity] A cached artifact (a baseline, a build output reused by later runs) is evidence only while it can be checked again. The complete producer/input identity, per-record verification, exact provenance shape and write-once procedure is owned by [cached baseline provenance](../../architecture/lint-rule-authoring/BASE-HEAD-PARITY.md#cached-baselines).
+[React Doctor, run-parity] A cached artifact (a baseline, a build output reused by later runs) is evidence only while it can be checked again. The complete producer/input identity, per-record verification, exact provenance shape and write-once procedure is owned by [cached baseline provenance](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/BASE-HEAD-PARITY.md#cached-baselines).
 
 ## Sign with the build's identity, not a long-lived key
 

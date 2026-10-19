@@ -24,7 +24,7 @@ Use this before implementing review suggestions, particularly when their meaning
 - For accepted feedback, state what changed and where. If earlier pushback was wrong, state what the new evidence showed and correct the work.
 - For multiple items, resolve dependencies first, then address consequential failures, small isolated corrections and larger logic changes in a deliberate order. Verify each relevant correction within the task's authorized checks; source advice to test each fix does not override a user's no-tests restriction.
 - Keep the existing [round cap and diff-only re-review](TUNING-THE-REVIEWER.md#review-has-to-converge). [obra/superpowers, subagent-driven-development, SKILL.md] allows five repair rounds with a fresh implementer in later rounds; it does not replace this repository's three-round reconsideration policy.
-- [obra/superpowers, receiving-code-review, SKILL.md] prohibits every expression of gratitude. The existing [writing owner](../../anti-ai-slop/anti-slop-writing/SKILL.md) preserves the writer's voice; keep the technical substance and avoid performative agreement without adopting an unrelated universal ban on thanks.
+- [obra/superpowers, receiving-code-review, SKILL.md] prohibits every expression of gratitude. The existing [writing owner](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/SKILL.md) preserves the writer's voice; keep the technical substance and avoid performative agreement without adopting an unrelated universal ban on thanks.
 
 ## Prove it
 

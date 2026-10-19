@@ -1,13 +1,13 @@
 # Exploratory testing and bug bashes
 
-An explorer's finding is a model's claim plus evidence, not a verified reproduction: report confirmed bugs only, each with a repro test that fails on the assertion that encodes it. Triage rejects explorer artifacts, environment gaps, intended design and fixture gaps before any test is written. The commands use the `e2e` runner's `explore`.
+An explorer's finding is a model's claim plus evidence, not a verified reproduction: report confirmed bugs only, each with a repro test that fails on the assertion that encodes it. Triage rejects explorer artifacts, environment gaps, intended design and fixture gaps before any test is written. The commands use the `e2e` runner's `explore`. [tester-army/e2e, bug-bash]
 
 **Contents:** [Exploring by hand](#exploring-by-hand) · [The explore command](#the-explore-command) · [Bug bash: prepare](#bug-bash-prepare) · [Plan charters](#plan-charters) · [Fan out](#fan-out) · [Merge and triage](#merge-and-triage) · [Verify](#verify) · [Report and clean up](#report-and-clean-up) · [Prove it](#prove-it)
 
 ## Exploring by hand
 
 - **Stance:** try to break things, not confirm they work. Don't try to be systematic about coverage; explore like a user would, with the intent to break things.
-- **Loop:** open the page, snapshot it to understand it, screenshot it and look, decide what looks wrong, act, snapshot again, repeat. With the Browserbase `browse` CLI that is `browse open` then `snapshot`, `screenshot`, an action, `snapshot` (ADVERSARIAL-UI-QA.md).
+- **Loop:** open the page, snapshot it to understand it, screenshot it and look, decide what looks wrong, act, snapshot again, repeat. With the Browserbase `browse` CLI that is `browse open` then `snapshot`, `screenshot`, an action, `snapshot` ([browser-ui-qa adversarial workflow](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/ADVERSARIAL-UI-QA.md)).
 - **Checklist:**
   - **First impressions** (30 s): is the purpose clear, the hierarchy right, anything broken, any console errors.
   - **Navigation:** reach every section; back works; breadcrumbs are accurate; no dead ends; the logo goes home.
@@ -66,7 +66,7 @@ const persona = { model: gateway('<provider/model id>'), maxSteps: 40, maxModelC
 | Error paths | `... wrong password, an unknown account, and a locked account; report errors that are missing, misleading, or leak detail` |
 
 - **Give each posture a persona:** a generic agent walks past a stat that contradicts the same stat on another page; the skeptic catches it.
-- **An edge-input charter names its exact matrix** (empty, a 300-character string, unicode, leading spaces, literal special characters), or it spends the whole budget before judging one result. For realistic values (schema limits, names, emails, counts of 0 and 1, time zones) and for stressing one component on its own, see [WORST-CASE-VALUES.md](WORST-CASE-VALUES.md) and [WORST-CASE-DATA.md](WORST-CASE-DATA.md).
+- **An edge-input charter names its exact matrix** (empty, a 300-character string, unicode, leading spaces, literal special characters), or it spends the whole budget before judging one result. For realistic values (schema limits, names, emails, counts of 0 and 1, time zones) and for stressing one component on its own, see [browser-ui-qa: WORST-CASE-VALUES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/WORST-CASE-VALUES.md) and [browser-ui-qa: WORST-CASE-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/WORST-CASE-DATA.md).
 
 ## Fan out
 

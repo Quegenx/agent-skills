@@ -29,7 +29,7 @@ Individual tests are valuable; a continuous program compounds. This file is the 
 | Heatmaps/recordings | Where users hesitate, rage-click, or abandon |
 | Past experiments | "Significant loser" tests often reveal new angles to try |
 
-Funnels and drop-offs are [../../monitoring/posthog/INVESTIGATING-METRICS.md](../../monitoring/posthog/INVESTIGATING-METRICS.md); heatmaps and recordings are [../../monitoring/posthog/WEB-ANALYTICS.md](../../monitoring/posthog/WEB-ANALYTICS.md) and [../../monitoring/posthog/SESSION-REPLAY.md](../../monitoring/posthog/SESSION-REPLAY.md); customer research is [../customer-research/SKILL.md](../customer-research/SKILL.md).
+Funnels and drop-offs are [posthog INVESTIGATING-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/INVESTIGATING-METRICS.md); heatmaps and recordings are [posthog WEB-ANALYTICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/WEB-ANALYTICS.md) and [posthog SESSION-REPLAY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SESSION-REPLAY.md); customer research is [customer-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md).
 
 ## ICE prioritization
 
@@ -71,7 +71,7 @@ Run the highest-scoring experiments first and re-score monthly as context change
 [coreyhaines31/marketingskills, ab-testing]
 
 - **Design:** testing too small a change (undetectable), too many things (can't isolate), no clear hypothesis.
-- **Execution:** stopping early, changing things mid-test, not checking the implementation. Mid-run changes in PostHog are [../../monitoring/posthog/EXPERIMENT-CHANGES.md](../../monitoring/posthog/EXPERIMENT-CHANGES.md).
+- **Execution:** stopping early, changing things mid-test, not checking the implementation. Mid-run changes in PostHog are [posthog EXPERIMENT-CHANGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-CHANGES.md).
 - **Analysis:** ignoring confidence intervals, cherry-picking segments, over-interpreting inconclusive results.
 
 ## Questions to ask

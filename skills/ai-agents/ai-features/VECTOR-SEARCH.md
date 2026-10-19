@@ -26,7 +26,7 @@ Most real products need two of them. See hybrid search below.
 
 ## Postgres with pgvector (Supabase)
 
-See [Supabase/pgvector schema, operators, indexes, filters and RPC contracts](../../backend/supabase/VECTORS.md).
+See [Supabase/pgvector schema, operators, indexes, filters and RPC contracts](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/VECTORS.md).
 
 ## Convex
 

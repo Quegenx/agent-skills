@@ -170,7 +170,7 @@ explain (costs off) with recent as (select * from orders) select * from recent w
 explain (costs off) with recent as materialized (select * from orders) select * from recent where id = 10;
 ```
 
-Use `materialized` deliberately when an expensive CTE is referenced several times or must run exactly once; otherwise it blocks filters from reaching the underlying index. Partition lifecycle/retention belongs to [Postgres](../postgres/SCHEMA.md#partitioning).
+Use `materialized` deliberately when an expensive CTE is referenced several times or must run exactly once; otherwise it blocks filters from reaching the underlying index. Partition lifecycle/retention belongs to [Postgres](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/SCHEMA.md#partitioning).
 
 ## Prove it
 

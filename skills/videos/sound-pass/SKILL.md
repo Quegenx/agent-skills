@@ -9,6 +9,8 @@ Most generated films look finished with the sound off. Turn it on and nothing is
 
 Copy `scripts/mix_audio.py` and `scripts/waveform.py` from this skill's folder into the film's `scripts/`. Run it once picture timing is locked.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## Cues come from the picture
 
 The composition's `cues()` returns `[{ t, kind, weight?, pan?, step? }]`, computed from the same beat-based data that drives the animation (the template's `peakOf`, `settleOf` and `springReach` say exactly where each sound belongs), and `render.mjs` writes it to `out/cues.json` on every run. Never type a sync time by hand: hand-typed times land frames off, and drift the moment anything is retimed.
@@ -73,4 +75,4 @@ Close your eyes and listen: if the sound has no shape without the picture, it is
 
 ## Prove it
 
-Cue timing follows the picture; generated/supplied sources are recorded; the selected loudness profile is passed to both mixer and checker; final measurements and listening still needed are reported. See [the measured source](MEASURED-SOUND-SYNC.md) and [decoded-file checks](../frame-review/DELIVERY-CHECKS.md).
+Cue timing follows the picture; generated/supplied sources are recorded; the selected loudness profile is passed to both mixer and checker; final measurements and listening still needed are reported. See [the measured source](MEASURED-SOUND-SYNC.md) and [decoded-file checks](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/DELIVERY-CHECKS.md).

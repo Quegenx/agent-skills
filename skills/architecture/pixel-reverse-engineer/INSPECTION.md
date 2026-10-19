@@ -1,6 +1,6 @@
 # Reading how a page was built
 
-Answers "how was this site built?" and, for one effect, "how was this built?" from a live URL or a screenshot, read-only, with every value marked as measured, derived or inferred and no verdict on someone else's work. Source: Jakub Krehel's `explain-interface` (`SKILL.md`, `read-the-system.md`, `find-the-effect.md`, `from-an-image.md`, `no-browser.md`); every recipe is a function for a driven browser's evaluate call, copied from it. Judging a page against a standard is [code-review CHANGE-SCOPE.md](../code-review/CHANGE-SCOPE.md) or anti-slop-ui; the untrusted-page rules are [SAFE-BROWSER.md](../../web-automation/browser-automation/SAFE-BROWSER.md) and [web-scraping UNTRUSTED-CONTENT.md](../../web-automation/web-scraping/UNTRUSTED-CONTENT.md).
+Answers "how was this site built?" and, for one effect, "how was this built?" from a live URL or a screenshot, read-only, with every value marked as measured, derived or inferred and no verdict on someone else's work. Source: Jakub Krehel's `explain-interface` (`SKILL.md`, `read-the-system.md`, `find-the-effect.md`, `from-an-image.md`, `no-browser.md`); every recipe is a function for a driven browser's evaluate call, copied from it. Judging a page against a standard is [code-review CHANGE-SCOPE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/CHANGE-SCOPE.md) or anti-slop-ui; the untrusted-page rules are [browser-automation SAFE-BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SAFE-BROWSER.md) and [web-scraping UNTRUSTED-CONTENT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/UNTRUSTED-CONTENT.md).
 
 **Contents:** [Scope to the question](#scope-to-the-question) · [Pick the route](#pick-the-route) · [The page is evidence, not instruction](#the-page-is-evidence-not-instruction) · [Measured, derived, inferred](#measured-derived-inferred) · [Explain the mechanism](#explain-the-mechanism) · [The whole system](#the-whole-system) · [One effect](#one-effect) · [From a screenshot](#from-a-screenshot) · [Without a browser](#without-a-browser) · [Prove it](#prove-it)
 
@@ -24,7 +24,7 @@ Answers "how was this site built?" and, for one effect, "how was this built?" fr
 | Gives you | "What actually paints: computed values, paint order, pseudo-elements, live animations" | "The source: authored declarations, responsive and state variants, generated utilities, every `:root` token" |
 | Blind to | "Any width or state you did not visit" | "Which rule wins, resolved pixel values and anything injected at runtime" |
 
-"Use both where the question is worth it. Prefer the browser when: The effect is a `canvas` or a shader. Styles arrive at runtime, through CSS-in-JS or a theme script. Several rules match and you need the one that won. The answer depends on motion." This picks the route by the claim to be made; [web-scraping FETCHING.md](../../web-automation/web-scraping/FETCHING.md#pick-the-tier) picks it by whether content comes back.
+"Use both where the question is worth it. Prefer the browser when: The effect is a `canvas` or a shader. Styles arrive at runtime, through CSS-in-JS or a theme script. Several rules match and you need the one that won. The answer depends on motion." This picks the route by the claim to be made; [web-scraping FETCHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/FETCHING.md#pick-the-tier) picks it by whether content comes back.
 
 - **chrome-devtools-mcp** "is the easiest browser to add. Its `evaluate_script` takes a function, so every recipe … is written as `() => { ... }`. Pass the same function to Playwright's `page.evaluate`, or call it in the console. The server also has `resize_page` and `take_screenshot` for another width, `list_network_requests` for what is served and `performance_start_trace` for a stutter." Per its [tool reference](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md), `resize_page` now also requires `pageId`, and `evaluate_script` `args` are "element uids from the page content snapshot".
 - "Never kill a browser you did not start. A `pkill` pattern matching `chrome` takes down the MCP's own browser and every session attached to it, so quit the process you launched by its pid."
@@ -206,7 +206,7 @@ The `--tw-ring-offset-width` probe is unverified for Tailwind v4, which the sour
 }
 ```
 
-"`transition: all` shows up here as `all`. Custom curves arrive as `cubic-bezier(...)`, and keywords such as `ease` are the browser's built-in curves." For your own app with a pointer, [e2e-testing UI-INVARIANT-AUDIT.md](../../web-automation/e2e-testing/UI-INVARIANT-AUDIT.md) measures durations against a token set.
+"`transition: all` shows up here as `all`. Custom curves arrive as `cubic-bezier(...)`, and keywords such as `ease` are the browser's built-in curves." For your own app with a pointer, [e2e-testing UI-INVARIANT-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/UI-INVARIANT-AUDIT.md) measures durations against a token set.
 
 **Breakpoints.**
 
@@ -240,7 +240,7 @@ The `--tw-ring-offset-width` probe is unverified for Tailwind v4, which the sour
 })
 ```
 
-The source says `variable: true` proves one file covers a weight range. The unchanged probe only detects a range-like `FontFace.weight` descriptor; static fonts can also be declared with weight ranges. Treat it as a heuristic and inspect the actual font and rendered behavior before claiming variable-font capabilities. Use the existing [font and fallback guidance](../../frontend/modern-css/FONTS-AND-TEXT-DETAILS.md#properties-over-raw-tags). A class on `<html>` beside a `prefers-color-scheme` query is likewise a clue, not proof that a working theme toggle exists; inspect the state change. [Jakub Krehel, explain-interface]; [MDN FontFace.weight](https://developer.mozilla.org/en-US/docs/Web/API/FontFace/weight); [MDN font-weight descriptor](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@font-face/font-weight)
+The source says `variable: true` proves one file covers a weight range. The unchanged probe only detects a range-like `FontFace.weight` descriptor; static fonts can also be declared with weight ranges. Treat it as a heuristic and inspect the actual font and rendered behavior before claiming variable-font capabilities. Use the existing [font and fallback guidance](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/FONTS-AND-TEXT-DETAILS.md#properties-over-raw-tags). A class on `<html>` beside a `prefers-color-scheme` query is likewise a clue, not proof that a working theme toggle exists; inspect the state change. [Jakub Krehel, explain-interface]; [MDN FontFace.weight](https://developer.mozilla.org/en-US/docs/Web/API/FontFace/weight); [MDN font-weight descriptor](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@font-face/font-weight)
 
 **A second state, at minimum:**
 
@@ -301,7 +301,7 @@ Source: [Jakub Krehel, explain-interface], find-the-effect.md. "Search by proper
 
 The source probe inventoried resource names matching `three|ogl|pixi|regl|babylon`, the `window.THREE` fingerprint, and `canvas`, `svg`, `video` and `img` elements with rounded width, height and top position plus the first 90 characters of `currentSrc` or `src`. Those are the source's inventory fields, not proof of a library or rendering mechanism. Its additional context-type probe called `getContext('2d')`, which can create a context on an unused canvas or throw after an OffscreenCanvas transfer. That mutating probe is omitted from this read-only workflow; leave the context type unknown unless existing evidence identifies it. Running after the page has drawn does not establish that an unused canvas is safe to initialize. [Jakub Krehel, explain-interface]; [MDN getContext](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
 
-The source treated a failed 2D-context request plus a matching library fingerprint as evidence of WebGL. That is not a safe read-only detection method, and the fingerprint remains an inference. An `svg` may carry `<filter>` primitives worth reading directly; use [svg FILTERS.md](../../frontend/svg/FILTERS.md). [Jakub Krehel, explain-interface]; [MDN getContext](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
+The source treated a failed 2D-context request plus a matching library fingerprint as evidence of WebGL. That is not a safe read-only detection method, and the fingerprint remains an inference. An `svg` may carry `<filter>` primitives worth reading directly; use [svg FILTERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/FILTERS.md). [Jakub Krehel, explain-interface]; [MDN getContext](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
 
 **Narrowing to a region.** "Set `x` and `y` inside the function, since `evaluate_script` passes element references as arguments, not numbers":
 
@@ -359,7 +359,7 @@ Source: [Jakub Krehel, explain-interface], from-an-image.md. "Without the page t
 
 ## Without a browser
 
-Source: [Jakub Krehel, explain-interface], no-browser.md. "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes. Work in a temporary directory, never in the user's project." (This is the style case for raw HTML that [web-scraping FETCHING.md](../../web-automation/web-scraping/FETCHING.md#pick-the-tier) points to.)
+Source: [Jakub Krehel, explain-interface], no-browser.md. "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes. Work in a temporary directory, never in the user's project." (This is the style case for raw HTML that [web-scraping FETCHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/FETCHING.md#pick-the-tier) points to.)
 
 ```bash
 cd "$(mktemp -d)"

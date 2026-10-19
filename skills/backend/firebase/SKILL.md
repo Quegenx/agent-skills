@@ -7,6 +7,8 @@ description: "Builds Firebase web and Flutter backends and clients: setup, Authe
 
 From [firebase/agent-skills], with corrections checked against Firebase documentation and current SDK source. Flutter Storage downloads also draw on [ApparenceKit](https://apparencekit.dev/flutter-tips/download-file-firebase-flutter-progress/), corrected against the [official download guide](https://firebase.google.com/docs/storage/flutter/download-files). Flutter messaging also draws on [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/) and [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications), with the existing Firebase message-type and handler corrections retained. This skill covers the supplied web, Node and Flutter material. Native-only Swift/Kotlin, Crashlytics and Xcode setup are outside this repository's stack.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Select the service and scope | [SKILL.md](SKILL.md) |
@@ -33,7 +35,7 @@ From [firebase/agent-skills], with corrections checked against Firebase document
 4. **Authenticate and authorize separately.** SQL Connect USER is an authentication floor, not a row-ownership rule; Firestore writes must validate the incoming state. [SQL authorization](https://firebase.google.com/docs/data-connect/authorization-and-security), [Firestore conditions](https://firebase.google.com/docs/firestore/security/rules-conditions)
 5. **Use the generated or installed contract.** Read generated schema/operations and installed SDK types before copying version-sensitive APIs. [firebase/agent-skills, firebase-data-connect/SKILL.md; extension-to-functions-codebase/SKILL.md]
 6. **Keep secrets and attestation distinct.** App Check debug tokens are private credentials. App attestation does not replace user authorization. [firebase/agent-skills, firebase-ai-logic-basics/SKILL.md], [SQL authorization](https://firebase.google.com/docs/data-connect/authorization-and-security)
-7. **Do not turn source templates into invented working applications.** Correct the documented source defects and retain actual error outcomes. Generic [security](../secure-coding/SKILL.md), [SQL](../sql-patterns/SKILL.md) and [background jobs](../background-jobs/SKILL.md) stay with their owners. [firebase/agent-skills, firebase-data-connect/examples.md; firebase-data-connect/templates.md]
+7. **Do not turn source templates into invented working applications.** Correct the documented source defects and retain actual error outcomes. Generic [security](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md), [SQL](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/sql-patterns/SKILL.md) and [background jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md) stay with their owners. [firebase/agent-skills, firebase-data-connect/examples.md; firebase-data-connect/templates.md]
 8. **Keep deployment within the agreed scope.** Prepare a reviewable project/template change before an outward action whose scope is not already authorized. [firebase/agent-skills, firebase-remote-config-basics/SKILL.md]
 
 ## Gotchas

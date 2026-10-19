@@ -24,7 +24,7 @@ The buyer compares Value to Price. **"Price is the comparison, not the value."**
 | Effort & sacrifice ↓ | What it costs them besides money | Done-for-you, simpler process, fewer decisions, lower learning curve |
 
 - **Dream outcome is one or two levels above the surface ask.** The source's table: "I want a website" → "I want more qualified leads I can close"; "I want to learn copywriting" → "I want to write copy clients pay me $5K+ per project for"; "I want a Notion template" → "I want to feel in control of my work for the first time in years"; "I want to lower CAC" → "I want a marketing engine I can step away from for two weeks without things breaking". Name it specifically, connect it to the bigger goal, show the day after in concrete terms. The common mistake is pitching the surface ask.
-- **Perceived likelihood is "the single most underweighted lever".** Raise it with named proof, a named method, a guarantee ([GUARANTEES.md](GUARANTEES.md)), people *like them* who got results, and by pre-empting the failure path. The common mistake: "Stacking more features... instead of stacking more proof. Features address dream outcome. Proof addresses likelihood." This agrees with [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md): outcomes over features, the feature as the proof.
+- **Perceived likelihood is "the single most underweighted lever".** Raise it with named proof, a named method, a guarantee ([GUARANTEES.md](GUARANTEES.md)), people *like them* who got results, and by pre-empting the failure path. The common mistake: "Stacking more features... instead of stacking more proof. Features address dream outcome. Proof addresses likelihood." This agrees with [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md): outcomes over features, the feature as the proof.
 - **Time delay erodes likelihood too.** Engineer the smallest early win into the first 7 days, replace a 60-minute kickoff with a short async intake, give the templates on day 1, compress the timeline only as far as you can credibly deliver, and give an explicit "first thing to do today". Promising a faster timeline than you deliver damages every later buyer's belief.
 - **Effort and sacrifice is everything but money:** time, learning curve, decisions, willpower, social risk, opportunity cost. Done-for-you over do-it-yourself, fewer decisions (bundle, default, recommend), templates and defaults, async over live, less willpower. The common mistake is overestimating how much the buyer enjoys the work; the exception is identity buyers (fitness, learning, mastery), for whom the process is part of the outcome.
 
@@ -101,7 +101,7 @@ Doesn't include:
 
 - **Show the total on an installment plan.** "$6K today" vs "$2K × 3 monthly" converts differently, and the FTC lists showing only the per-payment price as a dark pattern: show the number of payments and the total ([FTC-PRICING-CLAIMS.md](FTC-PRICING-CLAIMS.md#installments-and-per-period-prices)).
 - **A free trial that converts or a plan that renews** carries ROSCA's disclosure and consent duties ([FTC-PRICING-CLAIMS.md](FTC-PRICING-CLAIMS.md#trials-auto-renewal-and-cancellation)).
-- **For self-serve SaaS,** tier structure and the value metric do more work than bonuses and guarantees: start in [../pricing-strategy/SKILL.md](../pricing-strategy/SKILL.md).
+- **For self-serve SaaS,** tier structure and the value metric do more work than bonuses and guarantees: start in [pricing-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
 
 ## The diagnostic loop
 
@@ -120,7 +120,7 @@ Doesn't include:
 [coreyhaines31/marketingskills, offers]
 
 - **Multiply lifts, don't add them:** +20% then +30% = `1.20 × 1.30 = 1.56`, so 2% becomes 3.12%, a 1.12 percentage-point increase.
-- **The source's planning range** is 10 to 40% relative lift from one component change; it says two iterations rarely reach 2 to 3x. That range is the source's heuristic, not a measured effect: treat projections as scenarios, not proven combined effects, and confirm the combined offer with an A/B test ([../ab-testing/SKILL.md](../ab-testing/SKILL.md)).
+- **The source's planning range** is 10 to 40% relative lift from one component change; it says two iterations rarely reach 2 to 3x. That range is the source's heuristic, not a measured effect: treat projections as scenarios, not proven combined effects, and confirm the combined offer with an A/B test ([ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md)).
 
 ## Prove it
 

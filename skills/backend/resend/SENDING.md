@@ -1,6 +1,6 @@
 # Sending
 
-Resend sends transactional email (receipts, confirmations, notifications) through `POST /emails` for one email and `POST /emails/batch` for up to 100 distinct emails in one request. Batch can't carry attachments and fails as a whole if one email is invalid; the sources ask for an idempotency key on every send so a retry doesn't send twice, and for testing with Resend's `@resend.dev` test addresses. Marketing to large lists with unsubscribe links belongs in Broadcasts ([CONTACTS-AND-BROADCASTS.md](CONTACTS-AND-BROADCASTS.md)); hosted templates are in [TEMPLATES.md](TEMPLATES.md), templates as code in [../react-email/SKILL.md](../react-email/SKILL.md), and deliverability practice in [../email-practices/SKILL.md](../email-practices/SKILL.md).
+Resend sends transactional email (receipts, confirmations, notifications) through `POST /emails` for one email and `POST /emails/batch` for up to 100 distinct emails in one request. Batch can't carry attachments and fails as a whole if one email is invalid; the sources ask for an idempotency key on every send so a retry doesn't send twice, and for testing with Resend's `@resend.dev` test addresses. Marketing to large lists with unsubscribe links belongs in Broadcasts ([CONTACTS-AND-BROADCASTS.md](CONTACTS-AND-BROADCASTS.md)); hosted templates are in [TEMPLATES.md](TEMPLATES.md), templates as code in [react-email SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/SKILL.md), and deliverability practice in [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 **Contents:** [Single or batch](#single-or-batch) · [Send one email](#send-one-email) · [Send a batch](#send-a-batch) · [Idempotency keys](#idempotency-keys) · [Attachments and inline images](#attachments-and-inline-images) · [Scheduling](#scheduling) · [Tags and custom headers](#tags-and-custom-headers) · [Test addresses](#test-addresses) · [Email statuses](#email-statuses) · [Manage sent emails](#manage-sent-emails) · [Metrics](#metrics) · [Suppressions](#suppressions) · [Anti-patterns](#anti-patterns) · [Email-practices idempotency source example](#email-practices-idempotency-source-example) · [Prove it](#prove-it)
 
@@ -285,7 +285,7 @@ tags: [{ name: 'user_id', value: 'usr_123' }, { name: 'email_type', value: 'welc
 
 - **Events on an email:** `bounced`, `canceled`, `clicked`, `complained`, `delivered`, `delivery_delayed`, `failed`, `opened`, `queued` (Broadcasts or batches), `scheduled`, `sent`, `suppressed`.
 - **`delivery_delayed`:** Resend retries automatically for up to 14 hours, then marks the email `bounced`.
-- **"Delivered"** means the recipient's server accepted it with `250 OK`; filtering after that is invisible to Resend. Fixes for delivered-but-not-received are in [DOMAINS.md](DOMAINS.md#deliverability-checks) and [../email-practices/SKILL.md](../email-practices/SKILL.md).
+- **"Delivered"** means the recipient's server accepted it with `250 OK`; filtering after that is invisible to Resend. Fixes for delivered-but-not-received are in [DOMAINS.md](DOMAINS.md#deliverability-checks) and [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 - **Bounce types and webhook events** are in [WEBHOOKS.md](WEBHOOKS.md#bounce-types).
 
 ## Manage sent emails
@@ -359,7 +359,7 @@ await resend.emails.send({
 });
 ```
 
-  (The `from` here is the source's; [EMAIL-TYPES.md](../email-practices/EMAIL-TYPES.md#designing-transactional-emails) says to avoid `noreply@` on transactional mail.)
+  (The `from` here is the source's; [email-practices EMAIL-TYPES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/EMAIL-TYPES.md#designing-transactional-emails) says to avoid `noreply@` on transactional mail.)
 
 ## Prove it
 

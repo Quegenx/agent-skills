@@ -97,7 +97,7 @@ Both are Baseline 2026, newly available since August 2026 ([MDN sibling-index()]
     transition-delay: calc(sibling-index() * 100ms);
   }
   ```
-  The 2026 post subtracts 1 "so the first element starts immediately": `transition-delay: calc((sibling-index() - 1) * 100ms);`. The 100ms per item is a demo value; ui-animation keeps a total stagger under about 500 ms and caps how many items animate ([ui-animation TIMING.md](../ui-animation/TIMING.md)). Entry staggers with `@starting-style` are in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md).
+  The 2026 post subtracts 1 "so the first element starts immediately": `transition-delay: calc((sibling-index() - 1) * 100ms);`. The 100ms per item is a demo value; ui-animation keeps a total stagger under about 500 ms and caps how many items animate ([ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md)). Entry staggers with `@starting-style` are in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md).
 - **Stagger anything, not only time.** "Here the hue increments by 50 each element"; add "a `min()` or `clamp()` or trig functions" as needed.
   ```css
   .parent > * {

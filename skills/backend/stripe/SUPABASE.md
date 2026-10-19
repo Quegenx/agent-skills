@@ -1,6 +1,6 @@
 # Stripe with Supabase
 
-Three ways to bring Stripe into a Supabase project: the Stripe Wrapper reads Stripe live from Postgres through a foreign data wrapper (no webhooks, every query is an API call), the Stripe Sync Engine keeps a `stripe` schema in your database current by processing webhooks, and your own Edge Function receives webhooks directly. What decides most outcomes is that the wrapper doesn't do real-time updates, and that webhook functions must verify the raw body with the async, Web Crypto based verifier and run without Supabase JWT verification. Supabase itself (RLS, Edge Functions, Vault, secrets) is in [../supabase/SKILL.md](../supabase/SKILL.md); event handling rules are in [WEBHOOKS.md](WEBHOOKS.md).
+Three ways to bring Stripe into a Supabase project: the Stripe Wrapper reads Stripe live from Postgres through a foreign data wrapper (no webhooks, every query is an API call), the Stripe Sync Engine keeps a `stripe` schema in your database current by processing webhooks, and your own Edge Function receives webhooks directly. What decides most outcomes is that the wrapper doesn't do real-time updates, and that webhook functions must verify the raw body with the async, Web Crypto based verifier and run without Supabase JWT verification. Supabase itself (RLS, Edge Functions, Vault, secrets) is in [supabase SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/SKILL.md); event handling rules are in [WEBHOOKS.md](WEBHOOKS.md).
 
 ## Pick the approach
 

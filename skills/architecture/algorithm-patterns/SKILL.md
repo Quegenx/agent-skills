@@ -27,6 +27,8 @@ Most slow code is a nested loop that asks the same question again: "is the partn
 | Recursion that recomputes the same subproblem; count ways, min cost, can-we-segment | Dynamic programming, often a rolling pair or one row | [GRAPHS-AND-DP.md](GRAPHS-AND-DP.md) |
 | Big numbers, allocation budgets, signed bits, division of negatives | The budgets and numeric traps | [BUDGETS.md](BUDGETS.md) |
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## The rules
 
 1. **Write the honest brute force first** and keep it as the test oracle. Compare the fast version against it on many small random inputs; most pattern bugs (an off-by-one boundary, a missed seed state, a tie counted twice) show up within a few hundred cases.

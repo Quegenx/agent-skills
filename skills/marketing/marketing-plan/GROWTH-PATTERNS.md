@@ -151,7 +151,7 @@ Watch for these signals that a curve is topping out - each is a trigger to shift
 - **Engagement/activation softening at the top of the funnel** - the audience for this channel/message is saturating.
 - **Effort up, output flat** - the team is working harder to hold the line rather than to grow it.
 
-The repo's paid-app version of the same signal is "flat MRR with rising spend means a unit economics problem" ([app-growth BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md)).
+The repo's paid-app version of the same signal is "flat MRR with rising spend means a unit economics problem" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md)).
 
 When two or more fire on the same curve, that's the trigger to accelerate the **20% "next" bucket** - the plateau is the moment between two S-curves, and it should already have a successor ramping.
 

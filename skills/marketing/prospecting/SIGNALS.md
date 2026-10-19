@@ -1,6 +1,6 @@
 # Signals and tiers
 
-"A list tells you who could buy. A signal tells you who might buy now." [coreyhaines31/marketingskills, prospecting] references/signal-plays.md. Signals are a timing and relevance filter; they don't replace ICP fit: "A strong signal at a company outside your ICP is still a skip, and a great-fit account with no signal can still get a well-aimed message built on its situation." The plays a signal fires are in [../cold-outreach/PLAYS.md](../cold-outreach/PLAYS.md).
+"A list tells you who could buy. A signal tells you who might buy now." [coreyhaines31/marketingskills, prospecting] references/signal-plays.md. Signals are a timing and relevance filter; they don't replace ICP fit: "A strong signal at a company outside your ICP is still a skip, and a great-fit account with no signal can still get a well-aimed message built on its situation." The plays a signal fires are in [cold-outreach PLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/PLAYS.md).
 
 ## Rank signals by how close they are to you
 
@@ -19,7 +19,7 @@
 
 "Stack signals before acting on the weaker ones." Hiring a lifecycle marketer plus an email platform in the stack plus a fit score above threshold is worth a sequence; any one alone usually isn't.
 
-Your own product's events for rank 1 come from your analytics ([../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md)).
+Your own product's events for rank 1 come from your analytics ([posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md)).
 
 ## Freshness windows
 
@@ -73,7 +73,7 @@ Keep campaigns small: the source says several vendor and agency datasets show ca
 
 ## Tools for detecting signals
 
-[coreyhaines31/marketingskills, prospecting] Vendor names as the source lists them, not verified: job posts and hiring (TheirStack, PredictLeads, LinkedIn Jobs by hand); job changes (UserGems, Clay job-change tracking, manual checks of past champions); website visitors (RB2B, Warmly, Vector, Koala); social and community engagement (Trigify, Common Room); funding and news (Crunchbase, news search, Exa); tech stack (BuiltWith, Wappalyzer, tech mentions in job posts); product usage (your own analytics and billing events, by webhook into the CRM). A scheduled sweep of these is in [../marketing-loops/SKILL.md](../marketing-loops/SKILL.md).
+[coreyhaines31/marketingskills, prospecting] Vendor names as the source lists them, not verified: job posts and hiring (TheirStack, PredictLeads, LinkedIn Jobs by hand); job changes (UserGems, Clay job-change tracking, manual checks of past champions); website visitors (RB2B, Warmly, Vector, Koala); social and community engagement (Trigify, Common Room); funding and news (Crunchbase, news search, Exa); tech stack (BuiltWith, Wappalyzer, tech mentions in job posts); product usage (your own analytics and billing events, by webhook into the CRM). A scheduled sweep of these is in [marketing-loops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md).
 
 ## Common mistakes
 

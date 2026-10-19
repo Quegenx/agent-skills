@@ -5,7 +5,9 @@ description: "Sets up recurring marketing loops an agent runs on a cadence (week
 
 # Marketing loops
 
-A marketing loop is a repeatable workflow an agent runs on a cadence, "each with a defined trigger, a bounded set of steps, a self-check, and an explicit stopping condition". Ideas say what to try once ([growth-ideas](../growth-ideas/SKILL.md)); loops say what to keep doing on a schedule, wiring the other marketing skills together. Most runs of a good loop check, find nothing worth doing, log it and exit. Source: [coreyhaines31/marketingskills, marketing-loops] v1.6.0 (MIT, Corey Haines), copied with its dashes replaced and its skill names mapped to this repo; scheduling corrected against the Claude Code docs. The source reads `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+A marketing loop is a repeatable workflow an agent runs on a cadence, "each with a defined trigger, a bounded set of steps, a self-check, and an explicit stopping condition". Ideas say what to try once ([growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md)); loops say what to keep doing on a schedule, wiring the other marketing skills together. Most runs of a good loop check, find nothing worth doing, log it and exit. Source: [coreyhaines31/marketingskills, marketing-loops] v1.6.0 (MIT, Corey Haines), copied with its dashes replaced and its skill names mapped to this repo; scheduling corrected against the Claude Code docs. The source reads `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -65,13 +67,13 @@ Every loop has these nine parts; "a loop missing a stop condition, a self-check,
 | Competitor changes | Weekly | Pricing/positioning shifts are infrequent but matter |
 | Social listening / mentions | Daily | Engagement windows close fast |
 
-"Over-frequent loops are the most common failure mode: they generate busywork, burn budget, and train you to ignore the output." The 2 to 3 day check on creative is a check cadence; app-growth's "bi-weekly creative refresh" [eronred] in [BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md) is a refresh cadence, so the two don't conflict.
+"Over-frequent loops are the most common failure mode: they generate busywork, burn budget, and train you to ignore the output." The 2 to 3 day check on creative is a check cadence; app-growth's "bi-weekly creative refresh" [eronred] in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md) is a refresh cadence, so the two don't conflict.
 
 ## When not to loop
 
 [coreyhaines31/marketingskills, marketing-loops]
 
-- **Strategy or creative direction is the real work.** Loops maintain and optimize; they don't set positioning, invent campaigns or make brand calls (that is [marketing-plan](../marketing-plan/SKILL.md) or [marketing-council](../marketing-council/SKILL.md) work; loops such as competitor watch can feed it).
+- **Strategy or creative direction is the real work.** Loops maintain and optimize; they don't set positioning, invent campaigns or make brand calls (that is [marketing-plan](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-plan/SKILL.md) or [marketing-council](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-council/SKILL.md) work; loops such as competitor watch can feed it).
 - **The action publishes or spends without review.** Auto-*drafting* an ad, email or post is fine; auto-*publishing* or auto-*shifting budget* needs a human checkpoint unless the user explicitly authorized it with caps and an allowlist.
 - **The signal is too sparse.** "A weekly conversion-rate loop on 40 visitors/week is measuring noise."
 - **It's a vanity loop.** "If nobody acts on the output, delete the loop."
@@ -80,9 +82,9 @@ Every loop has these nine parts; "a loop missing a stop condition, a self-check,
 
 The loop body works in any agent; the scheduling depends on the environment [coreyhaines31/marketingskills, marketing-loops]. The source's Claude Code line ("`/loop` ... `ScheduleWakeup` ... and `CronCreate` (fixed cron schedule)", with time-of-day cron as the default for weekly reviews) leaves out the limits the docs state, so a weekly loop made with `CronCreate` fires about once and expires. Corrected from https://code.claude.com/docs/en/scheduled-tasks:
 
-- **Use session tasks for in-session work and a durable scheduler for weekly or monthly recurrence.** The exact idle-firing, seven-day expiry, catch-up, jitter and resume rules are canonical in [Scheduling inside Claude Code](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md#scheduling-inside-claude-code). The old source recommendation omitted those limits. [https://code.claude.com/docs/en/scheduled-tasks]
+- **Use session tasks for in-session work and a durable scheduler for weekly or monthly recurrence.** The exact idle-firing, seven-day expiry, catch-up, jitter and resume rules are canonical in [Scheduling inside Claude Code](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SCHEDULED-AGENTS.md#scheduling-inside-claude-code). The old source recommendation omitted those limits. [https://code.claude.com/docs/en/scheduled-tasks]
 - **Manual cadence:** "for high-judgment loops, 'run this skill every Monday' is a perfectly good loop. The value is the repeatable *body*, not the automation." [coreyhaines31/marketingskills, marketing-loops]
-- **Document the kill switch** using the [scheduled-agent guardrails](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md#guardrails). Marketing-specific action caps remain in [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md). [coreyhaines31/marketingskills, marketing-loops]
+- **Document the kill switch** using the [scheduled-agent guardrails](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SCHEDULED-AGENTS.md#guardrails). Marketing-specific action caps remain in [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md). [coreyhaines31/marketingskills, marketing-loops]
 
 ## Anti-patterns and banned words
 
@@ -117,6 +119,6 @@ From the source's nine evals [coreyhaines31/marketingskills, marketing-loops]:
 - How to schedule the loops: scheduling depends on the environment; session tasks for in-session runs, a durable scheduler or cron for weekly loops, manual cadence as a valid option.
 - A loop for positioning and big campaign ideas: identified as a when-not-to-loop case and redirected, with adjacent operational loops offered instead.
 - Failed payments: the dunning loop triggers on a failure or an expiring card, tracks the stage per account, separates involuntary failures from cancels and stops after the final retry.
-- A weekly A/B testing loop: the experiment backlog stays a thin wrapper with ICE ranking and dedupe, and [ab-testing](../ab-testing/SKILL.md) owns design and analysis.
+- A weekly A/B testing loop: the experiment backlog stays a thin wrapper with ICE ranking and dedupe, and [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) owns design and analysis.
 - An agent that runs our SEO: the SEO operator with its five settings, staged changes for review, state in `.agents/seo/`, claim drift, the information-gain gate and drafts for anything outward.
 - An agent that runs our outbound: the outbound operator with approved claims, caps, verification and suppression first, a reply that stops every channel, human approval for Tier 1 and positive replies, replies treated as data, and a sequence proven by hand before it is automated.

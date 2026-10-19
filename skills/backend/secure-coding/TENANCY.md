@@ -51,7 +51,7 @@ export async function withTenant<T>(tenantId: string, work: (tx: Tx) => Promise<
 
 ## Supabase
 
-See [the Supabase platform security checklist and tenant-membership policy](../supabase/SECURITY.md).
+See [the Supabase platform security checklist and tenant-membership policy](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/SECURITY.md).
 
 ## Prove it
 

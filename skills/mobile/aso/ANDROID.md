@@ -1,6 +1,6 @@
 # Google Play ASO
 
-Google Play has no hidden keyword field: per [eronred] it indexes the app name, both descriptions, the developer name, and reviews and replies; Google enforces a strict metadata policy, so Play ASO is natural keyword placement in visible copy that never claims rank, price or promotion. Store listing limits, asset specs and policy come from Google's docs; [eronred] tags third-party practice, and where it differs from Google both are given. Uploading the listing is [../google-play/SKILL.md](../google-play/SKILL.md).
+Google Play has no hidden keyword field: per [eronred] it indexes the app name, both descriptions, the developer name, and reviews and replies; Google enforces a strict metadata policy, so Play ASO is natural keyword placement in visible copy that never claims rank, price or promotion. Store listing limits, asset specs and policy come from Google's docs; [eronred] tags third-party practice, and where it differs from Google both are given. Uploading the listing is [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md).
 
 **Contents:** [How Play differs from the App Store](#how-play-differs-from-the-app-store) · [Listing fields](#listing-fields) · [Writing the copy](#writing-the-copy) · [Graphic assets](#graphic-assets) · [Preview video](#preview-video) · [Metadata policy](#metadata-policy) · [Category and tags](#category-and-tags) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Promotional content](#promotional-content) · [Prove it](#prove-it)
 
@@ -20,7 +20,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 
 - **Backlinks** [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "links to your Play Store listing from websites influence ranking." Google's docs read for this skill don't say so.
 - **"Official" ranking factors:** [coreyhaines31/marketingskills, aso] lists engagement and retention, update frequency, localization ("59% of US apps localize titles") and install velocity as factors "Google confirms"; none of the Google pages fetched for it confirm that list, so treat it as third-party.
-- **App quality counts:** "Your app's core vitals affect your app's visibility on Google Play." The vitals and their thresholds are in [../google-play/SKILL.md](../google-play/SKILL.md).
+- **App quality counts:** "Your app's core vitals affect your app's visibility on Google Play." The vitals and their thresholds are in [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md).
 
 ## Listing fields
 
@@ -88,10 +88,10 @@ Source: [eronred].
 
 - **Up to 50** custom store listing pages. Each customizes the name, icon, descriptions and graphic assets; contact details, privacy policy and category stay shared with the main listing.
 - **Targeting:** country or region ("You can only target a country with one custom store listing at a time"), pre-registration users, inactive users (lapsed = "haven't opened your app in the last 28 days"; churned = uninstalled), a unique URL (a string parameter unique across your custom listings), Google Ads traffic, search keywords.
-- **More segments:** non-buyers, one-time, repeat and lapsed buyers, custom audiences, and the rule that custom listings get no automated translations are in [../google-play/LISTING-AND-METADATA.md](../google-play/LISTING-AND-METADATA.md#custom-store-listings).
-- **Store listing groups** (shared assets across listings): [../google-play/LISTING-AND-METADATA.md](../google-play/LISTING-AND-METADATA.md#custom-store-listings).
+- **More segments:** non-buyers, one-time, repeat and lapsed buyers, custom audiences, and the rule that custom listings get no automated translations are in [google-play LISTING-AND-METADATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/LISTING-AND-METADATA.md#custom-store-listings).
+- **Store listing groups** (shared assets across listings): [google-play LISTING-AND-METADATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/LISTING-AND-METADATA.md#custom-store-listings).
 - **Unverified:** [coreyhaines31/marketingskills, aso]'s "100 for Play partners" and "Gemini AI auto-generates text for CSLs"; Google's page says "up to 50" and mentions neither.
-- **For Google Ads:** the listing must be fully reviewed and approved, then selected as the landing page in Google Ads. Running the campaigns is [../app-growth/SKILL.md](../app-growth/SKILL.md).
+- **For Google Ads:** the listing must be fully reviewed and approved, then selected as the landing page in Google Ads. Running the campaigns is [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
 ## Store listing experiments
 
@@ -99,7 +99,7 @@ Source: [eronred].
 - **Concurrency:** "For each app, you can run one default graphics experiment or up to five localized experiments at the same time." Experiments run on the default and on custom store listings. [coreyhaines31/marketingskills, aso]'s "Cannot run more than 1", "First-time installers + retained first-time installers" metrics and "Signed-in Google Play users only" are stale against [Google's page](https://support.google.com/googleplay/android-developer/answer/6227309).
 - **Variants:** Google says up to 2 variants; [eronred] and [coreyhaines31/marketingskills, aso] say up to 3 per element (icon, feature graphic, screenshots, short description, full description). Confirm in the current Play Console.
 - **Settings:** target metric (Unique user install clicks, Unique user open clicks, Unique user pre-registration clicks), audience percentage, minimum detectable effect, confidence level ("Increasing the confidence level decreases the likelihood of a false positive").
-- **Duration:** experiments stop automatically after 6 months. [eronred]: run at least 7 days or 1,000 impressions; sizing a test from its own baseline is [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md).
+- **Duration:** experiments stop automatically after 6 months. [eronred]: run at least 7 days or 1,000 impressions; sizing a test from its own baseline is [ab-testing SAMPLE-SIZE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SAMPLE-SIZE.md).
 - **Finish:** apply the winning variant from the recommendation, or "Keep current listing". Test one asset at a time. The general test method is in [PRODUCT-PAGES.md](PRODUCT-PAGES.md).
 - **Where:** Play Console > Store listing experiments > New experiment [eronred]; Google reports install conversion rate per variant [eronred].
 

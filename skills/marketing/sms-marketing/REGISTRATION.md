@@ -1,6 +1,6 @@
 # Registration and throughput (US)
 
-Texting from a US 10-digit long code (10DLC) needs a registered brand and campaign with The Campaign Registry (TCR), done through the SMS provider, and the brand's Trust Score then decides how many messages per second (MPS) each carrier accepts. Unregistered 10DLC traffic is blocked, not slowed. The figures below are Twilio's (fees from August 2025, MMS limits from March 2026); other providers pass through the same TCR and carrier rules but may price them differently. OneSignal's sender types, approval times and registration contents are in [../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-registration); consent rules are in [COMPLIANCE.md](COMPLIANCE.md).
+Texting from a US 10-digit long code (10DLC) needs a registered brand and campaign with The Campaign Registry (TCR), done through the SMS provider, and the brand's Trust Score then decides how many messages per second (MPS) each carrier accepts. Unregistered 10DLC traffic is blocked, not slowed. The figures below are Twilio's (fees from August 2025, MMS limits from March 2026); other providers pass through the same TCR and carrier rules but may price them differently. OneSignal's sender types, approval times and registration contents are in [onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md#sms-registration); consent rules are in [COMPLIANCE.md](COMPLIANCE.md).
 
 ## What registration covers
 
@@ -29,7 +29,7 @@ Each tax ID may register up to five Standard or Low-Volume Standard brands; more
 
 ## Throughput by Trust Score
 
-The OneSignal source describes long codes as 3 to 225 MPS; Twilio’s score table below gives a 3.75 MPS low-volume convention and the 225 total at Trust Score 75 to 100 (75 each to AT&T, T-Mobile and Verizon). Keep the source range as a provider summary, and plan from the specific carrier table. OneSignal application timings and registration setup remain in [EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-registration).
+The OneSignal source describes long codes as 3 to 225 MPS; Twilio’s score table below gives a 3.75 MPS low-volume convention and the 225 total at Trust Score 75 to 100 (75 each to AT&T, T-Mobile and Verizon). Keep the source range as a provider summary, and plan from the specific carrier table. OneSignal application timings and registration setup remain in [onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md#sms-registration).
 
 From Twilio (https://support.twilio.com/hc/en-us/articles/1260803225669). The source's table ("Verified brand 75-100+ msg/sec / Standard 4-10 / Unregistered 0.1 msg/sec or blocked") is stale.
 
@@ -60,7 +60,7 @@ Twilio's US page (https://www.twilio.com/en-us/sms/pricing/us) shows $0.0083 per
 
 | Type | Throughput | Notes |
 |---|---|---|
-| Short code (5 to 6 digits) | 100+ MPS ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-model-and-setup)) | Highest trust, weeks to months to approve |
+| Short code (5 to 6 digits) | 100+ MPS ([OneSignal](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md#sms-model-and-setup)) | Highest trust, weeks to months to approve |
 | Toll-free | 3 MPS default, up to 25+ (OneSignal) | One number covers US and Canada |
 | 10DLC | 3.75 to 225 MPS by Trust Score (above) | Needs TCR registration |
 
@@ -78,7 +78,7 @@ The source's 10DLC range "1-250 msg/sec" overstates the top: Twilio's maximum is
 ## Approval time
 
 - **Source:** "Process time: 1-7 business days" [coreyhaines31/marketingskills, sms].
-- **OneSignal:** "10DLC 1 to 3 weeks" ([EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-registration)).
+- **OneSignal:** "10DLC 1 to 3 weeks" ([onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md#sms-registration)).
 - No official page fetched for this round confirms either. Plan for the longer one.
 
 ## What the platform should handle

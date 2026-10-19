@@ -10,7 +10,7 @@ The base recipe (drag, throw, snap to where the throw was heading) is in [PATTER
   - "Larger surfaces should shrink less. A full-width card at `0.97` moves several pixels at the edges" [Craft].
   - `0.96` over `150ms` `ease-out`, never below it [Jakub Krehel, better-ui].
   - `scale(0.97)` over `160ms ease-out`, "Keep it subtle (0.95-0.98)" [Emil Kowalski, emil-design-eng].
-  - app-ui squishes instead: "pressed `scale(1.07, .91)` in 70ms, back over 120ms ease-out" ([CONTROLS.md](../app-ui/CONTROLS.md#buttons)).
+  - app-ui squishes instead: "pressed `scale(1.07, .91)` in 70ms, back over 120ms ease-out" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#buttons)).
 - **Transition `transform` only, and a disabled button doesn't press:** "Transition `transform` only, not `all`, so the press timing does not leak into hover colors." "A disabled button should not press" [Craft]:
 
 ```css
@@ -46,7 +46,7 @@ function onPress() {
 ```
 
 - **Feedback through the whole drag, not at its end:** "avoid methods that are only detected at the end of the gesture, like UISwipeGestureRecognizer" ([WWDC18](https://developer.apple.com/videos/play/wwdc2018/803/)).
-- **How far before it's a drag, four ways:** Apple's hysteresis "is usually 10 points in iOS" ([WWDC18](https://developer.apple.com/videos/play/wwdc2018/803/)); Kiem's rows count a tap up to 12 px ([PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap)); feel starts a drag at 4 px ([PHYSICS.md](PHYSICS.md)); app-ui's boards use "a 5px activation distance (clicks still click)" ([DATA-VIEWS.md](../app-ui/DATA-VIEWS.md#boards-and-lists-of-the-same-items)). Neither wins.
+- **How far before it's a drag, four ways:** Apple's hysteresis "is usually 10 points in iOS" ([WWDC18](https://developer.apple.com/videos/play/wwdc2018/803/)); Kiem's rows count a tap up to 12 px ([PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap)); feel starts a drag at 4 px ([PHYSICS.md](PHYSICS.md)); app-ui's boards use "a 5px activation distance (clicks still click)" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md#boards-and-lists-of-the-same-items)). Neither wins.
 - **Set the transform on the dragged element itself,** not through a CSS variable on its parent: "Driving it through a CSS variable on the parent recalcs styles for every child" [Emil Kowalski, animate]. The cost is in [PERFORMANCE.md](PERFORMANCE.md#traps-that-use-transform-and-still-drop-frames).
 
 ## Let a flick dismiss

@@ -7,6 +7,8 @@ description: "Restructures code without changing behavior, in small tested steps
 
 Refactoring changes the structure of code and keeps its behavior. One step does little; a sequence of small steps transforms the code, and each step is easy to check. For removing AI slop (narrating comments, bloated names, needless wrappers), use the `anti-slop-code` skill; this one is about reshaping working code.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Expected failures as typed values instead of exceptions | [ERRORS.md](ERRORS.md) |
@@ -86,4 +88,4 @@ Complexity per function, nesting depth, function length and duplication are meas
 
 ## Prove it
 
-Refactor a long loan-approval function in at least two separate steps. Keep tests for an approved loan, a rejected one, and each boundary (exactly at the limit, one over). Every step passes the same tests unchanged, and for each extraction you can say in one sentence which responsibility it now owns.
+For the code being refactored, preserve the accepted, rejected and boundary cases across the actual steps. Every step passes the same behavior checks unchanged, and for each extraction you can say in one sentence which responsibility it now owns. Report checks not performed.

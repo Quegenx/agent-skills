@@ -1,6 +1,6 @@
 # Investigating metrics
 
-This is for "why did X change?" on a saved insight, a dashboard tile or a pasted query, and for anomalies in server metrics in PostHog Metrics. It is not for a plain "what is X?". The order of work: first prove the movement is outside normal variance, then find the segment that carries most of the absolute delta, then corroborate it with an independent signal (a flag or release, an error, an annotation) and a segment the cause should not have touched. Building the insights themselves is [INSIGHTS-AND-DASHBOARDS.md](INSIGHTS-AND-DASHBOARDS.md); HogQL syntax is [HOGQL.md](HOGQL.md); vendor-neutral OpenTelemetry instrumentation is the [observability](../observability/SKILL.md) skill.
+This is for "why did X change?" on a saved insight, a dashboard tile or a pasted query, and for anomalies in server metrics in PostHog Metrics. It is not for a plain "what is X?". The order of work: first prove the movement is outside normal variance, then find the segment that carries most of the absolute delta, then corroborate it with an independent signal (a flag or release, an error, an annotation) and a segment the cause should not have touched. Building the insights themselves is [INSIGHTS-AND-DASHBOARDS.md](INSIGHTS-AND-DASHBOARDS.md); HogQL syntax is [HOGQL.md](HOGQL.md); vendor-neutral OpenTelemetry instrumentation is the [observability](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md) skill.
 
 **Contents:** [Classify the metric](#classify-the-metric) · [Opening moves](#opening-moves) · [Variance and attribution rules](#variance-and-attribution-rules) · [Shared techniques](#shared-techniques) · [Playbooks by insight kind](#playbooks-by-insight-kind) · [Cause taxonomy](#cause-taxonomy) · [Report the findings](#report-the-findings) · [Server and infra metric anomalies](#server-and-infra-metric-anomalies) · [Prove it](#prove-it)
 
@@ -62,7 +62,7 @@ This is for "why did X change?" on a saved insight, a dashboard tile or a pasted
 
 ### Compute, don't eyeball
 
-Use the canonical [analytics computation and reconciliation rules](../google-analytics/TRACKING-PLAN.md#reading-the-numbers) before reporting totals, rates, windows or segment deltas. The recurring [analytics-anomaly and tracking-QA loops](../../marketing/marketing-loops/OPS-LOOPS.md) apply those rules. [coreyhaines31/marketingskills, analytics]
+Use the canonical [analytics computation and reconciliation rules](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/TRACKING-PLAN.md#reading-the-numbers) before reporting totals, rates, windows or segment deltas. The recurring [analytics-anomaly and tracking-QA loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/OPS-LOOPS.md) apply those rules. [coreyhaines31/marketingskills, analytics]
 
 ## Shared techniques
 

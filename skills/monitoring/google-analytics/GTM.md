@@ -182,7 +182,7 @@ Event, trigger Custom Event `form_submitted`:
 </script>
 ```
 
-A non-Google tag like this ignores Google's consent signals unless you give it consent settings ([CONSENT-MODE.md](CONSENT-MODE.md#tag-manager)). Pixel and conversions API setup for ad networks is [../../marketing/paid-ads/SKILL.md](../../marketing/paid-ads/SKILL.md).
+A non-Google tag like this ignores Google's consent signals unless you give it consent settings ([CONSENT-MODE.md](CONSENT-MODE.md#tag-manager)). Pixel and conversions API setup for ad networks is [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md).
 
 ## Preview and debug
 

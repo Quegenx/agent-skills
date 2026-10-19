@@ -1,6 +1,6 @@
 # Extract and map an existing system
 
-Inventory the shipped interface before proposing tokens or canonical components. Sources: the supplied `build-design-system` skill and `references/components.md`, `references/tokens.md`, `references/taste.md`; `token-mapping` and `references/mapping-rules.md`; and the inspected `legacy.mjs` and `pixdiff.mjs` scripts. Color theory and naming remain in [color-system](../color-system/SKILL.md).
+Inventory the shipped interface before proposing tokens or canonical components. Sources: the supplied `build-design-system` skill and `references/components.md`, `references/tokens.md`, `references/taste.md`; `token-mapping` and `references/mapping-rules.md`; and the inspected `legacy.mjs` and `pixdiff.mjs` scripts. Color theory and naming remain in [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md).
 
 ## Inventory by surface and state
 
@@ -19,7 +19,7 @@ Inventory the shipped interface before proposing tokens or canonical components.
 
 1. Read the actual token list and its modes. A styling framework's default palette is not the team's semantic system. If the list is absent or unreadable, report that limit rather than reconstructing it from memory.
 2. For each raw value, record file, line, property and job. Follow aliases to the final value in every mode; state disagreements between sources and the project rule that resolves them.
-3. Compare purpose first. An equal-valued border token does not become a text token. Use the existing [token-role definitions](../color-system/TOKENS-AND-NAMING.md#use-a-token-only-in-its-role).
+3. Compare purpose first. An equal-valued border token does not become a text token. Use the existing [token-role definitions](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/TOKENS-AND-NAMING.md#use-a-token-only-in-its-role).
 4. Normalize with code or rendered computed values, and record the basis. Length conversion uses the project's actual root size. Alpha is part of the color; equal opaque channels alone do not establish an equal rendered color.
 5. Classify each row once per mode using the table below. Mark an inferred job as inferred. Report a missing role as a gap without inventing a new token name during an audit.
 6. Report the summary, mapping, equal-valued but wrong-purpose candidates, ambiguous rows, gaps, choices for the owner and source coverage. Nothing changes in read-only mode.
@@ -35,7 +35,7 @@ The source calls delta E OK below 0.5 identical to absorb rounding, but its pixe
 
 The supplied tolerances are author defaults, not standards: color delta E OK 2 on the source's OKLab-distance-times-100 scale; spacing, size and radius 2 px; font size 1 px; line-height ratio 0.05; letter spacing 0.01 em; opacity 0.02; duration 30 ms. Border width, weight, family and easing have no automatic tolerance. Use the project's accepted values and preserve production tokens. The source's gap heuristic, over 30% and at least 12 mapping rows, signals that the wrong token list may have been chosen; it does not prove that diagnosis. [supplied design skills, token-mapping/references/mapping-rules.md; token-mapping/SKILL.md, step 6]
 
-When a palette states no roles, mark matches Value only and group values by inferred role with counts and measured spread. Such a report establishes value reuse, not semantic coverage. Decorative graphics and alpha applied to an existing role are excluded from the source's mapping table; count exclusions and keep any necessary rendered-contrast check with [color-system](../color-system/CONTRAST.md). [supplied design skills, token-mapping/references/mapping-rules.md, Classes and Consistency by role]
+When a palette states no roles, mark matches Value only and group values by inferred role with counts and measured spread. Such a report establishes value reuse, not semantic coverage. Decorative graphics and alpha applied to an existing role are excluded from the source's mapping table; count exclusions and keep any necessary rendered-contrast check with [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/CONTRAST.md). [supplied design skills, token-mapping/references/mapping-rules.md, Classes and Consistency by role]
 
 ## Readiness before adoption
 
@@ -58,7 +58,7 @@ Keep the family on the old implementation while required gaps remain. Before req
 - Use the project's existing checker and lint. A newly adopted rule needs an observed violating case before claiming enforcement; an unexercised rule remains unproven.
 - Do not move a baseline or loosen a threshold to make a change pass. Fix a false-positive rule against the offending case rather than bending correct product code around it.
 - Keep exceptions scoped to their actual literal or element. Payload strings, prompts, clipboard values, quotes, terms and version strings are not ordinary copy; preserve bytes when a style rule would change what a recipient receives.
-- Repeated failures should move to the highest effective owner: architecture, types, a mechanical rule, behavior coverage, then documentation for judgment calls. Existing [app-ui CHECKS.md](../app-ui/CHECKS.md) owns its production checker, allowlist, ratchet and blind spots; do not install a second implementation from this source.
+- Repeated failures should move to the highest effective owner: architecture, types, a mechanical rule, behavior coverage, then documentation for judgment calls. Existing [app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md) owns its production checker, allowlist, ratchet and blind spots; do not install a second implementation from this source.
 - A legacy count that only stays below its initial ceiling is not completion. Require the intended legacy imports and mixed consumers to reach zero, record remaining raw or palette exceptions, and report how many files were scanned. Empty scanning is not a clean result.
 
 ## Prove it

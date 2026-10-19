@@ -182,7 +182,7 @@ MDN's filter tutorial adds a lit surface on top of the shadow:
 
 ## Gooey: blur plus alpha threshold
 
-The goo (blob) effect, from RNDR Realm's "Gooey Dropdown": a button that melts into its dropdown panel, built with "React, Motion and an SVG filter. No canvas, no WebGL", and shipped on the author's landing page. The panel's grow-from-the-trigger timing belongs to [../ui-animation/SKILL.md](../ui-animation/SKILL.md).
+The goo (blob) effect, from RNDR Realm's "Gooey Dropdown": a button that melts into its dropdown panel, built with "React, Motion and an SVG filter. No canvas, no WebGL", and shipped on the author's landing page. The panel's grow-from-the-trigger timing belongs to [ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md).
 
 - **How it works:** "you blur everything, then crank up the alpha contrast so the blurry edges snap back to being sharp. Where two shapes are close enough, their blurred edges merge together before snapping back, and that's what creates the gooey blob effect."
 - **The filter,** in a zero-size host `<svg>`:
@@ -221,7 +221,7 @@ The goo (blob) effect, from RNDR Realm's "Gooey Dropdown": a button that melts i
 
 Aave Design's "Building Glass for the Web" bends the live content itself, not a backdrop, with one SVG filter driven by a generated displacement map. It reports the result working in Chromium, Safari and Firefox, desktop and mobile, with "no flags to turn on and no fallbacks to maintain".
 
-- **Why not `backdrop-filter`:** Aave's table of approaches: SVG `backdrop-filter` works in Chromium only (not Safari or Firefox); the HTML-in-Canvas API is Chromium behind a flag. The video skill's [TECHNIQUES.md](../../videos/seek-engine/TECHNIQUES.md) says `backdrop-filter: url()` misreads displacement maps in Chromium and clones the scene behind each glass element instead. Both avoid building glass on `backdrop-filter: url()`; confirm current support in browser-compat data.
+- **Why not `backdrop-filter`:** Aave's table of approaches: SVG `backdrop-filter` works in Chromium only (not Safari or Firefox); the HTML-in-Canvas API is Chromium behind a flag. The video skill's [seek-engine TECHNIQUES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/TECHNIQUES.md) says `backdrop-filter: url()` misreads displacement maps in Chromium and clones the scene behind each glass element instead. Both avoid building glass on `backdrop-filter: url()`; confirm current support in browser-compat data.
 - **One primitive, two inputs:** `feDisplacementMap` takes the painted content and the map; for each content pixel it reads the matching map pixel and uses its color to decide which way to push. "Nothing is sampled from underneath the glass. The content's own pixels are the ones moving, which is why text under the lens stays selectable and links stay clickable." So the glass "can go on anything made of live DOM: text, images, cards, buttons, whole layouts", where the video skill filters a clone.
 - **The map:** "a small PNG we build on the fly from the glass's shape and size". "Its red and green channels say how far each pixel bends horizontally and vertically, and everywhere outside the lens it sits at a neutral value that leaves those pixels alone, so only the region under the glass moves."
 - **Finishing passes:** after displacement, "a faint color fringe along the edges and a specular highlight that keeps the glass legible, but the displacement is the heart of it."

@@ -1,6 +1,6 @@
 # Payment referrals and merchant migration
 
-The provider-funded introduction and hands-on migration from [more skills, 12-whop-payment-referrals.md]. It has separate local and online research branches, an unpublished mobile demonstration, owner-account handoff and post-launch processing checks. Generic commission definitions and disclosure stay in [AFFILIATES.md](../referral-programs/AFFILIATES.md).
+The provider-funded introduction and hands-on migration from [more skills, 12-whop-payment-referrals.md]. It has separate local and online research branches, an unpublished mobile demonstration, owner-account handoff and post-launch processing checks. Generic commission definitions and disclosure stay in [referral-programs AFFILIATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md).
 
 ## Offer and accepted program terms
 
@@ -33,7 +33,7 @@ Using accurate authorized assets and current offer facts, prepare an unpublished
 
 The claim preview has the business-specific screenshots, actual operator contact and the approved referral CTA. The source proposes prefilled business/industry parameters, but their exact support and draft-transfer procedure remain unverified. Do not fabricate working checkout, deposit or transfer functionality merely to match a screenshot.
 
-Use the [shared postcard packet](DEMO-FIRST.md#prepare-the-mail-packet) with phone checkout on the front, a truthful unpublished-demo invitation and QR on the back, three proofs and approved named-batch sending. The source's exclusive claim path does not replace the [nearby commission disclosure](../referral-programs/AFFILIATES.md#disclosure). Whop's [earnings terms](https://whop.com/earnings-terms/) require disclosure near the affiliate link and prohibit representing the promoter as the seller. [Whop Affiliate terms]
+Use the [shared postcard packet](DEMO-FIRST.md#prepare-the-mail-packet) with phone checkout on the front, a truthful unpublished-demo invitation and QR on the back, three proofs and approved named-batch sending. The source's exclusive claim path does not replace the [nearby commission disclosure](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md#disclosure). Whop's [earnings terms](https://whop.com/earnings-terms/) require disclosure near the affiliate link and prohibit representing the promoter as the seller. [Whop Affiliate terms]
 
 Before a call, prepare one plain-language page: what the business sells, actual current payment path, supported estimated volume, verified present costs, comparable provider costs and three concrete day-one changes. The operator offers to handle the move. Keep the old payment path available until the new one actually works; deposits do not guarantee no-shows stop.
 
@@ -55,7 +55,7 @@ Whop's [Tap to Pay documentation](https://docs.whop.com/payments-and-billing/tap
 
 Maintain referred business, niche, actual processing-start date, monthly volume and actual monthly commission. Monthly review flags processing drops/stops; two weeks after the first payment, remind the operator to ask the owner about peers with the former payment problem. This reminder is not an automatic outbound message.
 
-The source says work is done once processing starts, but its own first-week and monthly checks remain service responsibilities. Preserve those explicit duties. Track actual platform commission state using the existing [reconciliation owner](../referral-programs/AFFILIATES.md#reconciliation-and-payouts), rather than assuming an introduction guarantees attribution or payment.
+The source says work is done once processing starts, but its own first-week and monthly checks remain service responsibilities. Preserve those explicit duties. Track actual platform commission state using the existing [reconciliation owner](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md#reconciliation-and-payouts), rather than assuming an introduction guarantees attribution or payment.
 
 ## Prove it
 

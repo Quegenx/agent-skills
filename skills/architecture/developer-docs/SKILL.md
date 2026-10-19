@@ -5,7 +5,9 @@ description: "Writes and maintains developer documentation: task-focused tutoria
 
 # Developer documentation
 
-This skill uses Vercel's Writing Guidelines and c15t's `writing-docs`, with the existing FixMySlop manifest/link checks, Octocode reader-task distinctions and source corrections retained in [WRITING-AND-PUBLISHING.md](WRITING-AND-PUBLISHING.md). It owns the documentation workflow; prose editing and AI-writing-pattern detection stay in [anti-slop-writing](../../anti-ai-slop/anti-slop-writing/SKILL.md), and attempted onboarding audits stay in [agent-dx-audit](../../ai-agents/agent-dx-audit/SKILL.md). [Vercel, writing-guidelines; c15t, writing-docs; MrSpideyNihal/FixMySlop, fixmyslop/core/slop/rules_docs.py; bgauryy/octocode, octocode-documentation]
+This skill uses Vercel's Writing Guidelines and c15t's `writing-docs`, with the existing FixMySlop manifest/link checks, Octocode reader-task distinctions and source corrections retained in [WRITING-AND-PUBLISHING.md](WRITING-AND-PUBLISHING.md). It owns the documentation workflow; prose editing and AI-writing-pattern detection stay in [anti-slop-writing](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/SKILL.md), and attempted onboarding audits stay in [agent-dx-audit](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-dx-audit/SKILL.md). [Vercel, writing-guidelines; c15t, writing-docs; MrSpideyNihal/FixMySlop, fixmyslop/core/slop/rules_docs.py; bgauryy/octocode, octocode-documentation]
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -22,4 +24,4 @@ This skill uses Vercel's Writing Guidelines and c15t's `writing-docs`, with the 
 
 ## Prove it
 
-The page identifies its reader task and content type; wiring snippets come from checked source regions; examples and screenshots match the documented revision; each moved or removed route has its replacement recorded; and the report states what was verified and what remained unavailable. Run the topic's [Prove it](WRITING-AND-PUBLISHING.md#prove-it) and the prose [check](../../anti-ai-slop/anti-slop-writing/CHECK.md). [Vercel, writing-guidelines; c15t, writing-docs]
+The page identifies its reader task and content type; wiring snippets come from checked source regions; examples and screenshots match the documented revision; each moved or removed route has its replacement recorded; and the report states what was verified and what remained unavailable. Run the topic's [Prove it](WRITING-AND-PUBLISHING.md#prove-it) and the prose [check](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/CHECK.md). [Vercel, writing-guidelines; c15t, writing-docs]

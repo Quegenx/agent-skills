@@ -43,7 +43,7 @@ The source skill's view [coreyhaines31/marketingskills, launch]: pros are an ear
 |---|---|
 | URL | The direct product page (an App Store or GitHub link is allowed). "Shortened links (e.g. bit.ly) and track links (e.g. Google UTMs) are not accepted." |
 | Name | The name only: no description, no emojis |
-| Tagline | At most 60 characters, no gimmicks ("NOT allowed: 'The most ameozing app in the app store'"); write it with [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md) |
+| Tagline | At most 60 characters, no gimmicks ("NOT allowed: 'The most ameozing app in the app store'"); write it with [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md) |
 | Links | App Store, Google Play and others, optional; the X handle is the product's |
 | Description | The launch guide says "max 500 characters"; the help center says "within 260 characters". The two official pages disagree; the launch guide reads as the newer page. Check the live form; 260 fits both |
 | Launch tags | Up to 3 |
@@ -56,7 +56,7 @@ The source skill's view [coreyhaines31/marketingskills, launch]: pros are an ear
 | Status | Mark beta or not available yet |
 | Promo | Offer, code and expiration date are all required |
 
-Gallery and thumbnail images can be made with [../marketing-images/SKILL.md](../marketing-images/SKILL.md).
+Gallery and thumbnail images can be made with [marketing-images SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/SKILL.md).
 
 ## The first comment
 
@@ -74,7 +74,7 @@ Keep it humble, with no marketing-speak, and reply to comments using the product
 - **Paying anyone to hunt or send traffic** "goes against our guidelines and will result in us taking action to remove your product, and you could be permanently banned". [https://www.producthunt.com/launch/how-product-hunt-works]
 - **Asking for upvotes.** "Don't ask for upvotes. Ask for feedback, comments, opinions, help spreading the word"; asking specifically for upvotes "is against our policies". [https://www.producthunt.com/launch/sharing-your-launch]
 - **Contests or giveaways that reward upvotes:** "we may unfeature your product". [https://www.producthunt.com/launch/sharing-your-launch]
-- **Mass messaging and unsolicited email:** don't send the same tweet to many people, and don't scrape addresses and send unsolicited emails [https://www.producthunt.com/launch/sharing-your-launch]. Lawful email rules: [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md).
+- **Mass messaging and unsolicited email:** don't send the same tweet to many people, and don't scrape addresses and send unsolicited emails [https://www.producthunt.com/launch/sharing-your-launch]. Lawful email rules: [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 - **Spam in votes or comments:** the leaderboard changes "based on the number of upvotes, comments, time since submission, and other factors" [https://www.producthunt.com/launch/how-product-hunt-works], and a product ranking "dramatically lower than it should be" may have had spam detected in its upvotes or comments. [https://www.producthunt.com/launch/launch-day-questions]
 
 ## Pre-launch mistakes

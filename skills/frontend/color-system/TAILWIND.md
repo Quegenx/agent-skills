@@ -1,6 +1,6 @@
 # Tailwind
 
-Color scales and semantic tokens in Tailwind v4's `@theme`, what the default palette is (OKLCH, 11 steps), dark mode repointing and `inline`, what the opacity modifier compiles to, and migrating a hex theme. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged, corrected against [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme), [tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors) and Tailwind's source. Namespaces, `--color-*: initial;` and Adam Argyle's adaptive utilities are in [modern-css CUSTOM-PROPERTIES.md](../modern-css/CUSTOM-PROPERTIES.md#your-tokens-in-tailwind-v4).
+Color scales and semantic tokens in Tailwind v4's `@theme`, what the default palette is (OKLCH, 11 steps), dark mode repointing and `inline`, what the opacity modifier compiles to, and migrating a hex theme. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged, corrected against [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme), [tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors) and Tailwind's source. Namespaces, `--color-*: initial;` and Adam Argyle's adaptive utilities are in [modern-css CUSTOM-PROPERTIES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/CUSTOM-PROPERTIES.md#your-tokens-in-tailwind-v4).
 
 ## The default palette is OKLCH
 
@@ -48,7 +48,7 @@ Color scales and semantic tokens in Tailwind v4's `@theme`, what the default pal
 
 The primitives here are v3 hex values. "That yields `bg-accent-solid` and `text-text-secondary` alongside `bg-blue-600`. Tailwind prefixes every `--color-*` name with the utility, so a `text-` token doubles. Accept the doubling, or follow the convention the project already uses." "Templates use the semantic utilities, and a raw `bg-blue-600` in a component is the thing to flag."
 
-- **Owner's design:** app-ui's checker flags the doubling (`rule/doubled-utility`: "`text-text-*`, `bg-bg-*`" → "the role's real name", [app-ui CHECKS.md](../app-ui/CHECKS.md)); in the owner's projects the checker wins.
+- **Owner's design:** app-ui's checker flags the doubling (`rule/doubled-utility`: "`text-text-*`, `bg-bg-*`" → "the role's real name", [app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)); in the owner's projects the checker wins.
 
 ## Dark mode and @theme inline
 
@@ -56,11 +56,11 @@ better-colors says: "Repoint semantics for dark mode in a `.dark` block outside 
 
 - better-colors' advice works only because its `.dark` block redefines the semantic variables themselves.
 - If dark mode repoints the primitives instead, a non-inline semantic token keeps the value resolved at `:root`. Either repoint the semantic variables in `.dark`, or declare the referencing tokens with `@theme inline`.
-- app-ui's dark variant is class-based, `@custom-variant dark (&:is(.dark *))` ([app-ui CHECKS.md](../app-ui/CHECKS.md)).
+- app-ui's dark variant is class-based, `@custom-variant dark (&:is(.dark *))` ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)).
 
 ## The opacity modifier compiles to color-mix()
 
-oklch-skill says `bg-brand-500/50` "Compiles to: `oklch(0.623 0.188 250 / 0.5)`". It does not: Tailwind's source emits `color-mix(in oklab, ${value} ${alpha}, transparent)` (tailwindlabs/tailwindcss `packages/tailwindcss/src/utilities.ts`), and its tests show it under `@supports (color: color-mix(in lab, red, red))`. The docs say only that `/75` "sets the alpha channel of the color to 75%" ([tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors)). The docs' `--alpha()` function compiles the same way: `--alpha(var(--color-lime-300) / 50%)` becomes `color-mix(in oklab, var(--color-lime-300) 50%, transparent)` ([tailwindcss.com/docs/functions-and-directives](https://tailwindcss.com/docs/functions-and-directives)). `color-mix()` with `transparent` is in [modern-css COLOR.md](../modern-css/COLOR.md#color-mix-and-its-space).
+oklch-skill says `bg-brand-500/50` "Compiles to: `oklch(0.623 0.188 250 / 0.5)`". It does not: Tailwind's source emits `color-mix(in oklab, ${value} ${alpha}, transparent)` (tailwindlabs/tailwindcss `packages/tailwindcss/src/utilities.ts`), and its tests show it under `@supports (color: color-mix(in lab, red, red))`. The docs say only that `/75` "sets the alpha channel of the color to 75%" ([tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors)). The docs' `--alpha()` function compiles the same way: `--alpha(var(--color-lime-300) / 50%)` becomes `color-mix(in oklab, var(--color-lime-300) 50%, transparent)` ([tailwindcss.com/docs/functions-and-directives](https://tailwindcss.com/docs/functions-and-directives)). `color-mix()` with `transparent` is in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#color-mix-and-its-space).
 
 ```html
 <div class="bg-brand-500/50"></div>
@@ -80,7 +80,7 @@ oklch-skill says `bg-brand-500/50` "Compiles to: `oklch(0.623 0.188 250 / 0.5)`"
 
 - Step 3: an exact conversion renders the same color; only rounding to 3 decimals changes it, and only slightly.
 - This is a migration, so it runs only when asked or agreed ([FORMATS-AND-OKLCH.md](FORMATS-AND-OKLCH.md#converting)). Step 4's components should end up on role utilities, not converted literals ([TOKENS-AND-NAMING.md](TOKENS-AND-NAMING.md#two-tiers)).
-- **Owner's design:** app-ui's tokens are hex ([tokens.css](../app-ui/reference/styles/base/tokens.css)); steps 1 and 4 do not apply there unless the owner asks.
+- **Owner's design:** app-ui's tokens are hex ([tokens.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/styles/base/tokens.css)); steps 1 and 4 do not apply there unless the owner asks.
 
 ## Prove it
 

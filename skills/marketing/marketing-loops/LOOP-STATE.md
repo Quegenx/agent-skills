@@ -64,7 +64,7 @@ Log at minimum: timestamp, how many items checked, how many acted on, and a shor
 
 ## Resetting and backfilling safely
 
-- **First run, backfill and reset:** start from now, dry-run any backfill, and keep the cooldowns on a reset, as in [agent-harness SCHEDULED-AGENTS.md](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md); here a reset clears `cursor` and `handled` and keeps `cooldowns`.
+- **First run, backfill and reset:** start from now, dry-run any backfill, and keep the cooldowns on a reset, as in [agent-harness SCHEDULED-AGENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SCHEDULED-AGENTS.md); here a reset clears `cursor` and `handled` and keeps `cooldowns`.
 - Never log raw PII in state or run logs - use IDs or hashes (see [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md#pii-handling)).
 
 ## Session end: decisions and learnings
@@ -73,7 +73,7 @@ The state file stops a loop from repeating itself. It doesn't help the rest of t
 
 1. **Write 1 to 3 decisions to the run log.** A decision is something that changes what happens next: "paused the competitor-term ad group pending a new landing page," "kept variant B as control," "dropped Reddit from the listening sources." Routine runs that changed nothing get no decision line; "no action" in the log is enough.
 2. **Note open items** that carry to the next run (a test still collecting data, an approval still pending) in the state file's `in_flight`, so the next run picks them up instead of starting over.
-3. **Propose learnings that will still hold next quarter.** If the run produced a lesson that should change future drafts or plans, propose a row for the **Learnings** table in `.agents/product-context.md` (the file is defined in [anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md), whose Learnings section holds the format and promotion rules). Promote only lessons backed by a finished test or a pattern seen in two or more runs or campaigns. One-off results stay in the run log.
+3. **Propose learnings that will still hold next quarter.** If the run produced a lesson that should change future drafts or plans, propose a row for the **Learnings** table in `.agents/product-context.md` (the file is defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md), whose Learnings section holds the format and promotion rules). Promote only lessons backed by a finished test or a pattern seen in two or more runs or campaigns. One-off results stay in the run log.
 4. **Show proposals to the user.** Learnings are shared context every skill reads, so they're added on approval, never written silently by a scheduled run.
 5. **Retire what the run contradicted.** If a run's result contradicts an active learning, propose marking it `retired` with the reason.
 
@@ -88,7 +88,7 @@ Example run-log line with decisions:
 
 The run log stays the full record. The Learnings table holds the short list of lessons that should shape the next piece of work.
 
-The same patterns for any scheduled agent (bookmarks, ledger, posting once) are in [agent-harness SCHEDULED-AGENTS.md](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md).
+The same patterns for any scheduled agent (bookmarks, ledger, posting once) are in [agent-harness SCHEDULED-AGENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SCHEDULED-AGENTS.md).
 
 ## Prove it
 

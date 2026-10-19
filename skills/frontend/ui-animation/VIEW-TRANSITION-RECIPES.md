@@ -1,6 +1,6 @@
 # View transition recipes
 
-The CSS that React's `<ViewTransition>` class props name (fades, vertical and directional slides, shared and text morphs, scale, isolation, a sliding indicator), and where its durations, curves and reduced-motion block disagree with this skill and app-ui. Source: Vercel's `vercel-react-view-transitions` skill (MIT, version 1.0.0), `references/css-recipes.md` and `references/patterns.md`, checked against the [Next.js view transitions guide](https://nextjs.org/docs/app/guides/view-transitions) on 2026-10-18. The component, types, patterns, Next.js and the audit are in [REACT-VIEW-TRANSITIONS.md](REACT-VIEW-TRANSITIONS.md); the browser API underneath is in [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md).
+The CSS that React's `<ViewTransition>` class props name (fades, vertical and directional slides, shared and text morphs, scale, isolation, a sliding indicator), and where its durations, curves and reduced-motion block disagree with this skill and app-ui. Source: Vercel's `vercel-react-view-transitions` skill (MIT, version 1.0.0), `references/css-recipes.md` and `references/patterns.md`, checked against the [Next.js view transitions guide](https://nextjs.org/docs/app/guides/view-transitions) on 2026-10-18. The component, types, patterns, Next.js and the audit are in [REACT-VIEW-TRANSITIONS.md](REACT-VIEW-TRANSITIONS.md); the browser API underneath is in [modern-css VIEW-TRANSITIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/VIEW-TRANSITIONS.md).
 
 ## CSS recipes
 
@@ -144,7 +144,7 @@ Scale, for `<ViewTransition enter="scale-in" exit="scale-out" />`:
 }
 ```
 
-- app-ui keeps text at its own size another way, with `inline-size: auto; block-size: auto` on old and new ("keep own size: text never stretches", [../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)). The scale recipe starts at 0.85, under the "about 0.9" floor in [TIMING.md](TIMING.md#direction-and-weight).
+- app-ui keeps text at its own size another way, with `inline-size: auto; block-size: auto` on old and new ("keep own size: text never stretches", [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)). The scale recipe starts at 0.85, under the "about 0.9" floor in [TIMING.md](TIMING.md#direction-and-weight).
 
 Clicks through the overlay. "The `::view-transition` overlay captures all pointer events. React shrinks it to zero when the root group doesn't animate, but in-flight animations still block clicks." It "only helps **unnamed** content: named participants are skipped by hit-testing for the transition's duration, no CSS override".
 
@@ -212,15 +212,15 @@ Sliding indicator, for `share="tab-underline"`: "Slide the group; disable old/ne
 }
 ```
 
-- **Live root:** it "removes the main reason to hand-name static chrome; keep names only for elements that must stack above animating groups". It pairs with enter-only reveals: `<ViewTransition enter="auto" default="none">` around the content and nothing on the skeleton, so "the skeleton snaps out live while the content fades in". app-ui uses the same two root rules for its page transitions ([../app-ui/MENUS.md](../app-ui/MENUS.md)).
-- **An empty overlay:** app-ui adds `inline-size: 100vw !important; block-size: 100dvh !important` to `::view-transition`, because at 0 by 0 "the browser then paints none of the groups" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+- **Live root:** it "removes the main reason to hand-name static chrome; keep names only for elements that must stack above animating groups". It pairs with enter-only reveals: `<ViewTransition enter="auto" default="none">` around the content and nothing on the skeleton, so "the skeleton snaps out live while the content fades in". app-ui uses the same two root rules for its page transitions ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md)).
+- **An empty overlay:** app-ui adds `inline-size: 100vw !important; block-size: 100dvh !important` to `::view-transition`, because at 0 by 0 "the browser then paints none of the groups" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
 
 ## Durations, curves and reduced motion, both ways
 
 Each conflict below keeps this skill's rule; the source's view is recorded, and app-ui's lines stay as the owner wrote them.
 
-- **Durations.** The source: "Direct toggle (expand/collapse) 100-200ms", "Route transition (slide) 150-250ms", "Suspense reveal (skeleton → content) 200-400ms", "Shared element morph 300-500ms", with the tokens above (exit 150, enter 210 after a 150 delay, move 400). [TIMING.md](TIMING.md#duration-by-element) has "page or route transition | 400-600 ms | standard". app-ui: "the old content fades in 150ms, the new reveals from an 8px blur over about 800ms ease-out" ([../app-ui/MENUS.md](../app-ui/MENUS.md)), and its item morph runs 600ms ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)). The source's 150ms exit matches app-ui's. Set `--duration-move` and `--duration-enter` from TIMING.md here.
-- **Entrance curve.** The source's `slide-up` reveal enters on `ease-in` (fade and slide both), and the Next guide's matches. This skill eases arrivals out, and app-ui's checker flags "an entrance eased in" (`trap/motion-ease-in-enter`, [../app-ui/CHECKS.md](../app-ui/CHECKS.md)). It is one more data point in the open debate in [TIMING.md](TIMING.md#curves) ("Entrance curve, both ways"); the directional recipes fade in on `ease-out` and slide on `ease-in-out`.
+- **Durations.** The source: "Direct toggle (expand/collapse) 100-200ms", "Route transition (slide) 150-250ms", "Suspense reveal (skeleton → content) 200-400ms", "Shared element morph 300-500ms", with the tokens above (exit 150, enter 210 after a 150 delay, move 400). [TIMING.md](TIMING.md#duration-by-element) has "page or route transition | 400-600 ms | standard". app-ui: "the old content fades in 150ms, the new reveals from an 8px blur over about 800ms ease-out" ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md)), and its item morph runs 600ms ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)). The source's 150ms exit matches app-ui's. Set `--duration-move` and `--duration-enter` from TIMING.md here.
+- **Entrance curve.** The source's `slide-up` reveal enters on `ease-in` (fade and slide both), and the Next guide's matches. This skill eases arrivals out, and app-ui's checker flags "an entrance eased in" (`trap/motion-ease-in-enter`, [app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)). It is one more data point in the open debate in [TIMING.md](TIMING.md#curves) ("Entrance curve, both ways"); the directional recipes fade in on `ease-out` and slide on `ease-in-out`.
 - **Reduced motion.** The source zeroes every view transition:
 
 ```css
@@ -234,7 +234,7 @@ Each conflict below keeps this skill's rule; the source's view is recorded, and 
 }
 ```
 
-  The Next guide calls this the simplest approach and adds: "A more refined approach would preserve crossfades and opacity transitions while removing positional movement." That is this skill's rule 8, "Reduce, don't remove" ([SKILL.md](SKILL.md#the-rules)), and [PERFORMANCE.md](PERFORMANCE.md#reduced-motion)'s "100-150 ms opacity cross-fades": under reduced motion keep the opacity fades and remove the positional movement. app-ui does both: page transitions become "a fade" ([../app-ui/MENUS.md](../app-ui/MENUS.md)), and the board switch gets "no animation" ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+  The Next guide calls this the simplest approach and adds: "A more refined approach would preserve crossfades and opacity transitions while removing positional movement." That is this skill's rule 8, "Reduce, don't remove" ([SKILL.md](SKILL.md#the-rules)), and [PERFORMANCE.md](PERFORMANCE.md#reduced-motion)'s "100-150 ms opacity cross-fades": under reduced motion keep the opacity fades and remove the positional movement. app-ui does both: page transitions become "a fade" ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md)), and the board switch gets "no animation" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
 
 ## Prove it
 

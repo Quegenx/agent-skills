@@ -5,9 +5,11 @@ description: "Plans and runs partnerships: selecting co-marketing partners, join
 
 # Partnerships
 
-"The best partners share your audience but don't compete for the same budget." From coreyhaines31/marketingskills `co-marketing` v2.0.3 (MIT), including references adapted from Corey Haines's *Founding Marketing*, ch. 11. Book figures remain attributed anecdotes; FTC, ISED and merger corrections remain where noted. Community identity, member journeys, support and health belong to [community-marketing](../community-marketing/SKILL.md); referral and affiliate mechanics to [referral-programs](../referral-programs/SKILL.md), creators to [creator-marketing](../creator-marketing/SKILL.md), joint events to [event-marketing](../event-marketing/SKILL.md).
+"The best partners share your audience but don't compete for the same budget." From coreyhaines31/marketingskills `co-marketing` v2.0.3 (MIT), including references adapted from Corey Haines's *Founding Marketing*, ch. 11. Book figures remain attributed anecdotes; FTC, ISED and merger corrections remain where noted. Community identity, member journeys, support and health belong to [community-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/community-marketing/SKILL.md); referral and affiliate mechanics to [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md), creators to [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md), joint events to [event-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/event-marketing/SKILL.md).
 
-Before asking questions, read the shared product context file `.agents/product-context.md` ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); the source calls it `.agents/product-marketing.md`.
+Before asking questions, read the shared product context file `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)); the source calls it `.agents/product-marketing.md`.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -21,7 +23,7 @@ Before asking questions, read the shared product context file `.agents/product-c
 2. **Route the request to the right partnership type** before defaulting to joint content ([PARTNERSHIP-TYPES.md](PARTNERSHIP-TYPES.md)). [coreyhaines31/marketingskills, co-marketing]
 3. **Partner outreach is commercial email:** a physical postal address and a working opt-out in every message, with "no exception for business-to-business email" under CAN-SPAM; in Canada, consent first ([PARTNER-MARKETING.md](PARTNER-MARKETING.md#outreach)). [https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business]
 4. **Agree lead ownership in writing before launch,** and tell registrants at signup who receives their details ([PARTNER-MARKETING.md](PARTNER-MARKETING.md#the-agreement)). [coreyhaines31/marketingskills, co-marketing]
-5. **Anyone you give something to (ambassadors, giveaway entrants, partners' promoters) discloses it clearly,** in words like "#XYZ_Ambassador" or "Gifted by XYZ", and you monitor them ([community ambassador disclosure](../community-marketing/COMMUNITY.md#ambassadors)). [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking]
+5. **Anyone you give something to (ambassadors, giveaway entrants, partners' promoters) discloses it clearly,** in words like "#XYZ_Ambassador" or "Gifted by XYZ", and you monitor them ([community ambassador disclosure](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/community-marketing/COMMUNITY.md#ambassadors)). [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking]
 
 ## Prove it
 

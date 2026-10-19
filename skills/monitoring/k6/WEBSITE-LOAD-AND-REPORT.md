@@ -69,7 +69,7 @@ export async function browserIteration() {
 - **One file per type,** not a `LOAD_TYPE=__ENV.LOAD_TYPE` dispatcher: self-documenting options, per-type tuning, per-file `cloud { distribution }`, one type run at a time, confined git diffs.
 - **No shared `tests/lib/`** (about 8 copies of the body per workflow): readability during incident review, per-file thresholds and tags (`expect` vs `check`), different sleeps, async vs sync bodies, per-file tuning. Share only through `__ENV` or the top of each file: `BASE_URL`, `USER_AGENT`, test credentials, a canonical request body. Never share the iteration body, the threshold dictionary or scenario options. When the workflow body changes, update the files in lock-step.
 
-The source's "No shared `tests/lib/`" is a website-suite review preference [grafana/skills, k6-perf-test-website]. Generic refactoring instead reads both spans and their differences before deciding whether extraction helps, and can retain intentional test boilerplate [kucherenko/jscpd, dry-refactoring]: [DUPLICATION.md](../../architecture/refactoring/DUPLICATION.md#read-before-extracting). Keep each view scoped rather than making either a universal copying or extraction rule.
+The source's "No shared `tests/lib/`" is a website-suite review preference [grafana/skills, k6-perf-test-website]. Generic refactoring instead reads both spans and their differences before deciding whether extraction helps, and can retain intentional test boilerplate [kucherenko/jscpd, dry-refactoring]: [refactoring DUPLICATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DUPLICATION.md#read-before-extracting). Keep each view scoped rather than making either a universal copying or extraction rule.
 
 ## Test type defaults
 
@@ -126,7 +126,7 @@ Local is for validation, cloud is for scale. Trust cloud for measurement and loc
 
 ## Investigating the backend
 
-Only when the user owns the backend and has Grafana access. Don't guess the language, datasources, service label keys (`service_name`, `service`, `app`, `job`, `namespace`, `container`) or metric names: discover them. Vendor-neutral instrumentation is the observability skill ([../observability/SKILL.md](../observability/SKILL.md)).
+Only when the user owns the backend and has Grafana access. Don't guess the language, datasources, service label keys (`service_name`, `service`, `app`, `job`, `namespace`, `container`) or metric names: discover them. Vendor-neutral instrumentation is the observability skill ([observability SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md)).
 
 1. **Datasources:** `mcp-grafana` `list_datasources()`, or `gcx datasources list -o json`. Record UIDs and types. Neither configured: pause and ask the user to authenticate one.
 2. **Labels:** ask for the exact key and value and confirm with `up{<label_key>="<label_value>"}` (no series means the wrong label), or `list_label_names(datasource_uid=...)` and `list_label_values(datasource_uid=..., label="service_name")`.

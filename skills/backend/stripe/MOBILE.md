@@ -1,6 +1,6 @@
 # Mobile
 
-Stripe in a React Native or Flutter app is a native Payment Sheet driven by objects your server creates: the app never creates PaymentIntents, Customers or keys itself, and it never decides that a payment succeeded. Most outcomes are decided before any code: whether what you sell is allowed through Stripe in the app at all. Digital goods consumed in the app (subscriptions, premium content, in-game currency) generally must use Apple's and Google's in-app purchase systems, with exceptions by region (notably the United States). For in-app subscriptions through the stores, use [../revenuecat/SKILL.md](../revenuecat/SKILL.md).
+Stripe in a React Native or Flutter app is a native Payment Sheet driven by objects your server creates: the app never creates PaymentIntents, Customers or keys itself, and it never decides that a payment succeeded. Most outcomes are decided before any code: whether what you sell is allowed through Stripe in the app at all. Digital goods consumed in the app (subscriptions, premium content, in-game currency) generally must use Apple's and Google's in-app purchase systems, with exceptions by region (notably the United States). For in-app subscriptions through the stores, use [revenuecat SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/SKILL.md).
 
 ## Digital goods: what the stores allow
 
@@ -184,7 +184,7 @@ await Stripe.instance.initPaymentSheet(
 
 ## Prove it
 
-- **The store question is answered first:** what you sell is physical, a person-to-person service, or allowed through Stripe in the storefront you ship to; otherwise it goes through in-app purchase ([../revenuecat/SKILL.md](../revenuecat/SKILL.md)).
+- **The store question is answered first:** what you sell is physical, a person-to-person service, or allowed through Stripe in the storefront you ship to; otherwise it goes through in-app purchase ([revenuecat SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/SKILL.md)).
 - **The app bundle holds only a `pk_` key;** PaymentIntents, Customers, CustomerSessions and ephemeral keys come from your server.
 - **Test cards in the sheet:** `4242424242424242` succeeds, `4000002500003155` asks for authentication and returns to the app through the return URL, `4000000000009995` fails (insufficient funds).
 - **The order is fulfilled by `payment_intent.succeeded` on the server,** not by the `presentPaymentSheet` result; killing the app right after paying still fulfills.

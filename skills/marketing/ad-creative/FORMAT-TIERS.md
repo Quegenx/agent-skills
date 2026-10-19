@@ -11,7 +11,7 @@ For any format: **is it a unicorn scaler or a supporting cast member?**
 
 A format is "bad" only when you expect it to scale cold and it structurally can't. Build a portfolio: a few scalers doing the reaching, a bench converting.
 
-**Why creator-fronted formats top the list.** The source's explanation, practitioner and not in Meta's docs: Meta's Andromeda delivery is persona-based, and a creator reaches a persona natively through people who already follow and trust them; a partnership ad's seed audience starts from the creator's own. Watch rolling month-over-month reach: when it falls, deploy creator-fronted formats, especially partnership ads ([META-WEB-ADS.md](../paid-ads/META-WEB-ADS.md#rolling-reach)).
+**Why creator-fronted formats top the list.** The source's explanation, practitioner and not in Meta's docs: Meta's Andromeda delivery is persona-based, and a creator reaches a persona natively through people who already follow and trust them; a partnership ad's seed audience starts from the creator's own. Watch rolling month-over-month reach: when it falls, deploy creator-fronted formats, especially partnership ads ([paid-ads META-WEB-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/META-WEB-ADS.md#rolling-reach)).
 
 **Production complexity:** Low = copy and one asset, makeable today (statics, founder's letter); Med = needs a creator, shoot, script or edit (yapper, green screen, VSL script); High = multi-party, rights or heavy production (celebrity, warehouse shoot, AI animation, press).
 
@@ -20,7 +20,7 @@ A format is "bad" only when you expect it to scale cold and it structurally can'
 | Format | Role | Complexity | When to use or skip |
 |---|---|---|---|
 | **Founder content** | Cold scaler | Low to Med | The reliable first winner at any production level: the story of why you built it connects with same-problem buyers. Use early, before you have proven creative. |
-| **Partnership ads** | Cold scaler | Med | The source's top investment priority and best path to net-new reach. Use always; deploy when rolling reach drops. Skip only if you can't source creators. Setup and disclosure: [creator-marketing](../creator-marketing/SKILL.md). |
+| **Partnership ads** | Cold scaler | Med | The source's top investment priority and best path to net-new reach. Use always; deploy when rolling reach drops. Skip only if you can't source creators. Setup and disclosure: [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md). |
 | **VSL (video sales letter)** | Cold scaler | Med to High | For anything that needs education first (health, wellness, fitness, complex mechanisms). Skip for impulse products. The script is the ad. |
 
 When you contract creators for partnership ads, also have each shoot a few low-fi statics (how they'd post a Story for the brand): a mini-funnel per creator at near-zero extra cost.

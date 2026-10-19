@@ -1,6 +1,6 @@
 # Headless CMS for marketing content
 
-Choosing, modeling and running a CMS for marketing pages. From coreyhaines31/marketingskills `content-strategy` `headless-cms.md` (MIT), with preview facts checked against Sanity, Contentful and Strapi docs and the SEO lengths against Google. The platform opinions ("Generous", "Limited") are the source's, as of its v2.1.3; check current pricing on each vendor's site. landing-page-ui reads its blog from its own database instead of a CMS: "published articles per language, newest first, decoded by a schema at the boundary" ([CONTENT-PAGES.md](../../frontend/landing-page-ui/CONTENT-PAGES.md)).
+Choosing, modeling and running a CMS for marketing pages. From coreyhaines31/marketingskills `content-strategy` `headless-cms.md` (MIT), with preview facts checked against Sanity, Contentful and Strapi docs and the SEO lengths against Google. The platform opinions ("Generous", "Limited") are the source's, as of its v2.1.3; check current pricing on each vendor's site. landing-page-ui reads its blog from its own database instead of a CMS: "published articles per language, newest first, decoded by a schema at the boundary" ([landing-page-ui CONTENT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/CONTENT-PAGES.md)).
 
 ## Headless or traditional
 
@@ -35,7 +35,7 @@ Choosing, modeling and running a CMS for marketing pages. From coreyhaines31/mar
 | Author | name, bio, avatar, social links | Referenced from blog posts |
 | CTA Block | heading, body, buttonText, buttonUrl, variant | Reusable across pages |
 
-The source models a person as the author; landing-page-ui makes the organization the author instead: "`BlogPosting` with its publish date, image and the organization as author" ([DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)).
+The source models a person as the author; landing-page-ui makes the organization the author instead: "`BlogPosting` with its publish date, image and the organization as author" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)).
 
 ## SEO fields
 
@@ -43,8 +43,8 @@ The source models a person as the author; landing-page-ui makes the organization
 
 - **Title length:** Google: "While there's no limit on how long a `<title>` element can be, the title link is truncated in Google Search results as needed, typically to fit the device width." Make titles descriptive and concise, unique per page, with the brand once and no repeated keywords ([title links](https://developers.google.com/search/docs/appearance/title-link)). The source said `metaTitle` "50-60 characters"; treat any number as a truncation heuristic.
 - **Description length:** Google: "There's no limit on how long a meta description can be, but the snippet is truncated in Google Search results as needed, typically to fit the device width." Unique per page ([snippets](https://developers.google.com/search/docs/appearance/snippet)). The source said "150-160 characters".
-- **Social image:** Meta: "Use images that are at least 1200 x 630 pixels", minimum 200 x 200, aspect ratio 1.91:1 ([sharing images](https://developers.facebook.com/docs/sharing/webmasters/images/)). The source's "1200x630px" is that minimum, not an exact size. Link previews in full are [seo LINK-PREVIEWS.md](../seo/LINK-PREVIEWS.md).
-- Structured data rules are in [seo STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md).
+- **Social image:** Meta: "Use images that are at least 1200 x 630 pixels", minimum 200 x 200, aspect ratio 1.91:1 ([sharing images](https://developers.facebook.com/docs/sharing/webmasters/images/)). The source's "1200x630px" is that minimum, not an exact size. Link previews in full are [seo LINK-PREVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md).
+- Structured data rules are in [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md).
 
 ## Editorial workflow
 
@@ -93,7 +93,7 @@ Exact permission models vary: Sanity uses role-based access, Contentful space-le
 - [ ] Sample content for each type before building the frontend
 - [ ] Webhooks on content changes (rebuild triggers)
 - [ ] Editor guidelines (field descriptions, character limits)
-- [ ] Delivery performance tested (CDN, caching, ISR); landing-page-ui's blog sends `Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=86400` ([DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md))
+- [ ] Delivery performance tested (CDN, caching, ISR); landing-page-ui's blog sends `Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=86400` ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md))
 - [ ] A migration plan if moving from an existing CMS
 
 ## Prove it

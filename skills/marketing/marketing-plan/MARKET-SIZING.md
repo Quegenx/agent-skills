@@ -2,7 +2,7 @@
 
 Adapted from a contribution by @imMamdouhaboammar (PR #418).
 
-Source: [coreyhaines31/marketingskills, marketing-plan] `references/market-sizing.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The source credits "a contribution by @imMamdouhaboammar (PR #418)"; its mini-examples use made-up numbers. The attractiveness scorecard is a product-market entry gate; the store-locale weighting in [aso KEYWORDS-AND-METADATA.md](../../mobile/aso/KEYWORDS-AND-METADATA.md) is a different decision, so keep both.
+Source: [coreyhaines31/marketingskills, marketing-plan] `references/market-sizing.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The source credits "a contribution by @imMamdouhaboammar (PR #418)"; its mini-examples use made-up numbers. The attractiveness scorecard is a product-market entry gate; the store-locale weighting in [aso KEYWORDS-AND-METADATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/KEYWORDS-AND-METADATA.md) is a different decision, so keep both.
 
 Use this reference when the market-quality gate raises the question "is this market big enough to plan around?" or when the user asks directly how big a market is. The goal is a defensible range that supports a decision (enter, narrow, validate, or avoid). A precise-looking number with no visible math does more harm than an honest range.
 

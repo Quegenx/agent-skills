@@ -1,6 +1,6 @@
 # Build and release
 
-A Flutter release is two native builds driven by one pubspec: `flutter build appbundle` hands Gradle an Android App Bundle signed with your upload key, and `flutter build ipa` hands Xcode an archive signed through your Apple team. The pubspec `version: 1.0.0+1` feeds both stores' version numbers, flavors become Android product flavors and Xcode schemes, and `--dart-define` bakes compile-time values into the Dart code. Store-side steps (App Store Connect, TestFlight, Play Console tracks and review) are in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
+A Flutter release is two native builds driven by one pubspec: `flutter build appbundle` hands Gradle an Android App Bundle signed with your upload key, and `flutter build ipa` hands Xcode an archive signed through your Apple team. The pubspec `version: 1.0.0+1` feeds both stores' version numbers, flavors become Android product flavors and Xcode schemes, and `--dart-define` bakes compile-time values into the Dart code. Store-side steps (App Store Connect, TestFlight, Play Console tracks and review) are in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md) and [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md).
 
 **Contents:** [Flavors](#flavors) · [Compile-time config](#compile-time-config) · [Version numbers](#version-numbers) · [Android release](#android-release) · [Signing](#signing) · [App bundles and APKs](#app-bundles-and-apks) · [iOS release](#ios-release) · [Obfuscation](#obfuscation) · [SwiftPM and CocoaPods](#swiftpm-and-cocoapods) · [AGP 9 and built-in Kotlin](#agp-9-and-built-in-kotlin) · [UIScene](#uiscene) · [Continuous delivery](#continuous-delivery) · [Secrets](#secrets) · [Prove it](#prove-it)
 
@@ -8,7 +8,7 @@ A Flutter release is two native builds driven by one pubspec: `flutter build app
 
 A flavor can decide which icon, app name, API key, feature flag and logging level go with a version of the app. Flavors on Windows and Linux arrived in 3.47 (`flutter build windows --flavor flavor_a`).
 
-- **Remote config** changes "the behavior of your app without releasing a new version": ApparenceKit uses it to test paywall titles, texts and trigger delay, to "push a maintenance screen to all your users without releasing a new version", and to "enable a feature only when you finished it in production" ([ApparenceKit](https://apparencekit.dev/blog/flutter-template-advantages/); forced and soft updates and maintenance mode in [../flutter-ux/APP-LIFECYCLE.md](../flutter-ux/APP-LIFECYCLE.md#forced-update-soft-update-maintenance-mode)).
+- **Remote config** changes "the behavior of your app without releasing a new version": ApparenceKit uses it to test paywall titles, texts and trigger delay, to "push a maintenance screen to all your users without releasing a new version", and to "enable a feature only when you finished it in production" ([ApparenceKit](https://apparencekit.dev/blog/flutter-template-advantages/); forced and soft updates and maintenance mode in [flutter-ux APP-LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/APP-LIFECYCLE.md#forced-update-soft-update-maintenance-mode)).
 
 - **Build or run one:** `flutter (run | build <subcommand>) --flavor <flavor_name>`, for example `flutter build apk --flavor staging` (subcommand `apk` or `appbundle` on Android).
 - **Read it in Dart:** `import 'package:flutter/services.dart';` and the `appFlavor` constant. It matches the `--flavor` name (the Gradle product flavor on Android, the Xcode scheme name on iOS). With no flavor, `appFlavor` is `null`.
@@ -146,7 +146,7 @@ void log(String message) {
 - **Each iOS upload requires a unique build number.** Example: `flutter build ipa --build-name ... --build-number ...`.
 - **Android:** rebuilding updates `versionName`/`versionCode` in `local.properties`. Split-per-ABI APKs add `ABI_VERSION * 1000` to the version code; force the plain code with `-P force-version-code-ignoring-abi=true`.
 - **Xcode Cloud:** set **Next Build Number** if the existing app's build number is higher than 1.
-- **Show both in the app,** usually at the bottom of the settings page, so QA and support know which build someone runs ([FlutterPro](https://flutterpro.design/details/show-app-version); `package_info_plus` code in [../flutter-ux/APP-LIFECYCLE.md](../flutter-ux/APP-LIFECYCLE.md#show-the-app-version)).
+- **Show both in the app,** usually at the bottom of the settings page, so QA and support know which build someone runs ([FlutterPro](https://flutterpro.design/details/show-app-version); `package_info_plus` code in [flutter-ux APP-LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/APP-LIFECYCLE.md#show-the-app-version)).
 - **A minimum-version gate** [ApparenceKit](https://apparencekit.dev/flutter-tips/compare-app-versions/): `PackageInfo.fromPlatform()` (`package_info_plus`) returns the installed build name, and `Version.parse()` (package `version`) makes it comparable with `<`, `>` and `==`, ordering numeric parts correctly ("2.0 is older than 2.1, and 2.1 is older than 2.10"), which plain string comparison does not. `UpdateRequired` is the app's own exception; the article states no package versions.
 
 ```dart
@@ -165,7 +165,7 @@ Future<void> checkAppVersion(Version minVersion) async {
 }
 ```
 
-  Google Play's own in-app updates are in [../google-play/REVIEWS-AND-REPORTS.md](../google-play/REVIEWS-AND-REPORTS.md).
+  Google Play's own in-app updates are in [google-play REVIEWS-AND-REPORTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/REVIEWS-AND-REPORTS.md).
 
 ## Android release
 
@@ -247,7 +247,7 @@ android {
 - **Icons and launch image** in `Runner/Assets.xcassets` (light, dark and tinted icons per the HIG). Verify the launch image with hot restart, not hot reload.
 - **Build:** `flutter build ipa` writes an `.xcarchive` to `build/ios/archive/` and an `.ipa` to `build/ios/ipa`. Consider `--obfuscate` and `--split-debug-info`. Other exports: `--export-method ad-hoc|development|enterprise`. Reuse options with `flutter build ipa --export-options-plist=path/to/ExportOptions.plist`.
 - **Upload:** drag `build/ios/ipa/*.ipa` into Apple Transporter; or `xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey your_api_key --apiIssuer your_issuer_id`; or Xcode Validate App, then Distribute App. An email arrives within 30 minutes when the build is validated and on TestFlight.
-- **TestFlight and the store:** TestFlight tab > Internal Testing > select build > add testers. For the store: Pricing and Availability, status "1.0 Prepare for Submission", Submit for Review, then release per the **Version Release** setting. Details in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
+- **TestFlight and the store:** TestFlight tab > Internal Testing > select build > add testers. For the store: Pricing and Availability, status "1.0 Prepare for Submission", Submit for Review, then release per the **Version Release** setting. Details in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 
 ### Codemagic CLI tools
 
@@ -341,7 +341,7 @@ upload_to_testflight
 
 ### iOS lanes with an App Store Connect API key
 
-Build the Flutter IPA here, then use the source-qualified [App Store Connect fastlane lanes](../app-store-connect/FASTLANE.md#ios-lanes-with-an-app-store-connect-api-key) for API-key authentication, metadata, delivery, review submission and release.
+Build the Flutter IPA here, then use the source-qualified [App Store Connect fastlane lanes](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/FASTLANE.md#ios-lanes-with-an-app-store-connect-api-key) for API-key authentication, metadata, delivery, review submission and release.
 
 ## Secrets
 

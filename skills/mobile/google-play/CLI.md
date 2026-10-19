@@ -139,7 +139,7 @@ gplay --profile production tracks list --package com.example.app
 
 - **Generate a command reference:** `gplay docs generate --output-file ./GPLAY.md`; `--output-file -` writes to stdout.
 - **Notify a channel:** `gplay notify send --webhook-url https://hooks.slack.com/... --message "Release deployed"`.
-- **Elsewhere in this skill:** purchases and products in [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md), regional prices in [PRICING.md](PRICING.md), reviews and bulk reports in [REVIEWS-AND-REPORTS.md](REVIEWS-AND-REPORTS.md). The App Store side is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
+- **Elsewhere in this skill:** purchases and products in [BILLING-AND-PURCHASES.md](BILLING-AND-PURCHASES.md), regional prices in [PRICING.md](PRICING.md), reviews and bulk reports in [REVIEWS-AND-REPORTS.md](REVIEWS-AND-REPORTS.md). The App Store side is [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 
 ## Prove it
 

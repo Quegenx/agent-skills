@@ -1,6 +1,6 @@
 # AI crawlers and robots.txt
 
-The publisher side of crawler control: which AI user agents exist, what each one is for, and how to write a robots.txt that keeps search discovery while deciding training separately. Every vendor fact below is quoted from that vendor's crawler page; the policy template is from [coreyhaines31/marketingskills, ai-seo] (MIT). The crawler side, obeying robots.txt when you crawl, is in [../../web-automation/web-scraping/CRAWLING.md](../../web-automation/web-scraping/CRAWLING.md#robotstxt).
+The publisher side of crawler control: which AI user agents exist, what each one is for, and how to write a robots.txt that keeps search discovery while deciding training separately. Every vendor fact below is quoted from that vendor's crawler page; the policy template is from [coreyhaines31/marketingskills, ai-seo] (MIT). The crawler side, obeying robots.txt when you crawl, is in [web-scraping CRAWLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/CRAWLING.md#robotstxt).
 
 ## Decide by purpose, not by one allowlist
 
@@ -108,7 +108,7 @@ for UA in Googlebot bingbot OAI-SearchBot; do
 done
 ```
 
-The source says "An absent tag isn't proof it's indexed; confirm with a `site:` search." A positive matching result is useful evidence, but an absent result does not prove noindex or absence from Google's index: site: results are not exhaustive. For a verified owned site, follow up with URL Inspection rather than treating search absence as a diagnosis. [Google site operator](https://developers.google.com/search/docs/monitor-debug/search-operators/all-search-site); [search-console](../search-console/SKILL.md)
+The source says "An absent tag isn't proof it's indexed; confirm with a `site:` search." A positive matching result is useful evidence, but an absent result does not prove noindex or absence from Google's index: site: results are not exhaustive. For a verified owned site, follow up with URL Inspection rather than treating search absence as a diagnosis. [Google site operator](https://developers.google.com/search/docs/monitor-debug/search-operators/all-search-site); [search-console](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SKILL.md)
 
 ## Errors in the sources
 

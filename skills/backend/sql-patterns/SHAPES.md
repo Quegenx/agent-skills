@@ -208,12 +208,12 @@ select name from (values ('50%_off sale'), ('50 percent off'), ('50x off')) v(na
 where name like replace(replace(replace('50%_off', '\', '\\'), '%', '\%'), '_', '\_') || '%' escape '\';
 ```
 
-In TypeScript, escape before binding: `const pattern = input.replace(/[\\%_]/g, (c) => "\\" + c) + "%"`, then `where name like $1 escape '\'`. Index/collation requirements for prefix and case-insensitive searches are in [QUERIES.md](../performance-and-caching/QUERIES.md#predicates-the-index-can-use-sargable).
+In TypeScript, escape before binding: `const pattern = input.replace(/[\\%_]/g, (c) => "\\" + c) + "%"`, then `where name like $1 escape '\'`. Index/collation requirements for prefix and case-insensitive searches are in [performance-and-caching QUERIES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/QUERIES.md#predicates-the-index-can-use-sargable).
 
 ## Partitions and CTEs
 
-See [partition-pruning/CTE plans and Postgres partition lifecycle](../performance-and-caching/QUERIES.md#partitions-and-cte-materialization).
+See [partition-pruning/CTE plans and Postgres partition lifecycle](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/QUERIES.md#partitions-and-cte-materialization).
 
 ## Prove it
 
-Check the changed query against the relevant examples above; for partition pruning or materialization, use the [plan evidence](../performance-and-caching/QUERIES.md#prove-it) at its owner.
+Check the changed query against the relevant examples above; for partition pruning or materialization, use the [plan evidence](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/QUERIES.md#prove-it) at its owner.

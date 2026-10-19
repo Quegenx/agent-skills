@@ -26,13 +26,13 @@ Each can serve several stages; choose by what the reader already knows.
 | **Documented statistic** | One supported number plus its population, period or meaningful qualifier. Keep its real precision; "rounded numbers are not evidence of fakery." |
 | **Pain + outcome** | One named friction and a concrete next action or outcome, usually under ten words. Brevity is a drafting constraint, not permission to drop a material qualifier. |
 
-Read each draft against [TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md). Don't produce six near-identical sentences to fill the menu. Keep customer language where it is permitted and relevant; facts can ground a paraphrase without becoming a fabricated quote.
+Read each draft against [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md). Don't produce six near-identical sentences to fill the menu. Keep customer language where it is permitted and relevant; facts can ground a paraphrase without becoming a fabricated quote.
 
 ## Gather proof before copy
 
 Build a small evidence sheet: source ID, verbatim phrase or product fact, audience, date, allowed usage, limitations. Aim for five useful customer phrases from more than one perspective; with fewer, report the gap and reduce diversity claims rather than inventing quotes. Scaled batches still follow the [grounded inputs](SKILL.md#grounded-inputs) rules.
 
-Separate **language evidence** (a complaint: "the export takes forever") from **claim evidence** (a measured result across a defined pilot). A complaint supports the pain angle; it doesn't substantiate a numerical promise. Keep a pilot's sample size and period in readable copy next to the claim, or drop the statistic when a truthful version can't fit. Never generalize a pilot to "every customer" or into a guarantee [coreyhaines31/marketingskills, ad-creative, evals #19]. The claim tests are in [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md#3-tests-every-headline-and-claim-must-pass).
+Separate **language evidence** (a complaint: "the export takes forever") from **claim evidence** (a measured result across a defined pilot). A complaint supports the pain angle; it doesn't substantiate a numerical promise. Keep a pilot's sample size and period in readable copy next to the claim, or drop the statistic when a truthful version can't fit. Never generalize a pilot to "every customer" or into a guarantee [coreyhaines31/marketingskills, ad-creative, evals #19]. The claim tests are in [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md#3-tests-every-headline-and-claim-must-pass).
 
 ## The headline as the visual
 
@@ -40,7 +40,7 @@ For the Headline Statement and Stat Callout templates ([STATIC-TEMPLATES.md](STA
 
 - One dominant sentence in a bold, legible sans-serif. As a starting point, the headline takes roughly 50 to 70% of the composition; adjust after testing at actual size.
 - Intentional line breaks that keep phrases together; product or logo secondary unless recognizing the product is the job.
-- A dark background with light text, or a strong brand color with contrasting text, from the brand's actual palette, checked for readability ([color-system](../../frontend/color-system/SKILL.md)).
+- A dark background with light text, or a strong brand color with contrasting text, from the brand's actual palette, checked for readability ([color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md)).
 - Include the audience's specific moment, one defensible idea and enough qualification to read truthfully. Leave out competing stock imagery, tiny disclaimers, fake review UI, extra badges and an unsupported second claim.
 - Preview at the **actual mobile feed display size**, not only on a desktop canvas: the whole headline and its material qualifiers must read without zooming. If not, shorten the claim or change the layout; never shrink the required qualification into a footnote.
 - Export sizes, crops, safe areas and text limits come from [PLATFORM-SPECS.md](PLATFORM-SPECS.md). The 50 to 70% suggestion is not a platform rule or a text-coverage threshold.

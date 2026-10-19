@@ -1,6 +1,6 @@
 # Motion video ads (faceless, fully generated)
 
-A 15 to 45 second faceless ad or explainer from nothing but a concept: a styled poster still per beat (image model), brought to life with subtle motion (image-to-video model), narrated (TTS), with word-timed captions. From [coreyhaines31/marketingskills, ad-creative, motion-video-ads.md and generative-tools.md] (MIT), which credits the format to Borja (@borjafat) and Bomx's open `super-video-maker` recipe. The source's cost and time figures (roughly $3 to 6 and ~15 minutes per video) and its tool prices are vendor-dependent and volatile; check current pricing. The still carries the idea, one literal, slightly surreal visual per beat, and the motion only makes it breathe: "this is animated poster design, not filmmaking." Vertical specs: [SHORT-FORM-VIDEO.md](SHORT-FORM-VIDEO.md); generated marketing video in general: [marketing-video](../marketing-video/SKILL.md).
+A 15 to 45 second faceless ad or explainer from nothing but a concept: a styled poster still per beat (image model), brought to life with subtle motion (image-to-video model), narrated (TTS), with word-timed captions. From [coreyhaines31/marketingskills, ad-creative, motion-video-ads.md and generative-tools.md] (MIT), which credits the format to Borja (@borjafat) and Bomx's open `super-video-maker` recipe. The source's cost and time figures (roughly $3 to 6 and ~15 minutes per video) and its tool prices are vendor-dependent and volatile; check current pricing. The still carries the idea, one literal, slightly surreal visual per beat, and the motion only makes it breathe: "this is animated poster design, not filmmaking." Vertical specs: [SHORT-FORM-VIDEO.md](SHORT-FORM-VIDEO.md); generated marketing video in general: [marketing-video](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md).
 
 **Contents:** [When to use](#when-to-use) · [Pipeline](#pipeline) · [Characterful styles](#characterful-styles) · [Brand-token styles](#brand-token-styles) · [Motion prompt](#motion-prompt) · [Gotchas](#gotchas) · [Tools](#tools) · [Compliance](#compliance) · [Prove it](#prove-it)
 
@@ -19,7 +19,7 @@ A 15 to 45 second faceless ad or explainer from nothing but a concept: a styled 
 4. **Voiceover and captions:** one continuous TTS take, transcribed with word timestamps (whisper), beats cut at sentence boundaries, 2 to 3-word caption groups burned in.
 5. **Assemble:** concatenate beats trimmed to their voiceover spans (hold the last frame to pad), loudness-normalize to `I=-16:TP=-1.5:LRA=11`, export per placement.
 
-The source's -16 LUFS target is for social ads; the repo's code-made films master to -14 LUFS ([sound-pass](../../videos/sound-pass/SKILL.md)). Different products, different targets; don't merge them.
+The source's -16 LUFS target is for social ads; the repo's code-made films master to -14 LUFS ([sound-pass](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/sound-pass/SKILL.md)). Different products, different targets; don't merge them.
 
 **Keep one style per campaign** so the account builds a recognizable look.
 
@@ -43,7 +43,7 @@ These are defined by slots, so any brand's tokens drop in and the output reads a
 - `TYPE FEEL`: the typographic voice ("clean modern grotesque sans", "mono captions")
 - per-brand constraints ("gradients only on borders, never fills")
 
-Keep the accent to one element per frame; scarcity is what makes these read as designed. Tokens themselves: [color-system](../../frontend/color-system/SKILL.md).
+Keep the accent to one element per frame; scarcity is what makes these read as designed. Tokens themselves: [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md).
 
 - **F. Monoline editorial:** "Minimal editorial monoline illustration poster: `<SUBJECT>`, drawn entirely in elegant thin single-weight `<INK>` lines on a clean `<FIELD>` background, the style of a premium tech company blog illustration. Sparse composition with generous whitespace, a few small monoline accent details, and ONE restrained `<ACCENT>` element: `<a thin accent underline sweep / a small accent arc>`. A small caption near the bottom reads "`<LABEL>`" in `<TYPE FEEL>`, `<INK>`, letterspaced uppercase, with a thin `<ACCENT>` underline. Precise, technical, refined. No fills except the single accent, no gradients, no 3D, no photorealism, no texture, no extra text."
 - **G. Swiss typographic:** "Swiss International Typographic Style poster: the words "`<LABEL>`" set enormous in a bold `<TYPE FEEL>`, `<INK>` on a `<FIELD>` background, filling the upper two thirds with tight leading and cropped edges. A small black-and-white photographic cutout of `<SUBJECT>` sits on a thin baseline grid in the lower third, aligned to an asymmetric grid with one thin `<ACCENT>` rule line and a small `<ACCENT>` square as the only color. Visible faint grid lines, precise margins, mathematical composition. Flat, printed, matte. No gradients, no 3D, no decoration, no extra text beyond the label and one small letterspaced caption line."

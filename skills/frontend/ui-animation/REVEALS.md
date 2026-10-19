@@ -55,7 +55,7 @@ For a destructive action "where a plain click is too easy to fire by accident" [
 ```
 
 - "The text and background change together, in perfect sync, because they're one element being revealed rather than two colors being interpolated" [Emil Kowalski, animate].
-- app-ui's segmented tabs slide a pill instead: "A white pill on a tinted track springs to the chosen tab and stretches with its speed" ([CONTROLS.md](../app-ui/CONTROLS.md#segmented-tabs)).
+- app-ui's segmented tabs slide a pill instead: "A white pill on a tinted track springs to the chosen tab and stretches with its speed" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#segmented-tabs)).
 
 ## An image revealed on scroll
 
@@ -110,7 +110,7 @@ transitions.dev's generation reveal plays over UI an AI feature just returned: a
 - **Decoration only where there is room:** the optional side text samples `document.elementFromPoint` on a small grid over each candidate area and uses it only where every hit is the page or the element's own containers, falling back from side panels to a strip below, to a single step line, to nothing, so it degrades on narrow screens and dense layouts [transitions.dev].
 - **Wiring:** run it after render at final size, after `await document.fonts.ready` (and images that size the layout); not on `display: none` content (in tabs or accordions, run it after opening); don't animate the element yourself or scroll an `overflow: hidden` parent during the run [transitions.dev]. `document.fonts.ready` "resolves once the document has completed loading fonts, layout operations are completed" ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet/ready)).
 - **Reduced motion:** no drawing; the element fades in over 200 ms ease-out [transitions.dev].
-- **Not the owner's apps:** app-ui motion "finishes within 1s. Nothing animates on first render that the user didn't cause" ([app-ui SKILL.md](../app-ui/SKILL.md#the-rules)). This reveal is for products that choose it.
+- **Not the owner's apps:** app-ui motion "finishes within 1s. Nothing animates on first render that the user didn't cause" ([app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md#the-rules)). This reveal is for products that choose it.
 
 ## Prove it
 

@@ -1,6 +1,6 @@
 # Logs, timelines and health
 
-Logs-first diagnosis from [gokapso/agent-skills, observe-whatsapp/SKILL.md; references/message-debugging-reference.md; references/triage-reference.md; references/health-reference.md]. The general causal method is [debugging](../../architecture/debugging/SKILL.md).
+Logs-first diagnosis from [gokapso/agent-skills, observe-whatsapp/SKILL.md; references/message-debugging-reference.md; references/triage-reference.md; references/health-reference.md]. The general causal method is [debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/SKILL.md).
 
 ## Start with correlation
 

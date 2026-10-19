@@ -6,7 +6,7 @@ The audit-and-recovery service from [more skills, 10-business-bill-audit.md]: co
 
 [more skills, 10-business-bill-audit.md]
 
-The author proposes a free first real-bill audit and a share of actual savings instead of an upfront audit charge. Target card-processing, phone/internet or waste bills where they fit the business. The source supplies no share percentage, attribution period, future-savings treatment or termination terms; these remain owner decisions. Generic pay-on-results design stays in [GUARANTEES.md](../offer-design/GUARANTEES.md).
+The author proposes a free first real-bill audit and a share of actual savings instead of an upfront audit charge. Target card-processing, phone/internet or waste bills where they fit the business. The source supplies no share percentage, attribution period, future-savings treatment or termination terms; these remain owner decisions. Generic pay-on-results design stays in [offer-design GUARANTEES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/GUARANTEES.md).
 
 Candidate niches include HVAC, plumbers, restaurants, auto shops and retail. Optional source settings are rating at least 4.0, at least ten reviews, phone and website. Use the shared [permitted sourcing and candidate approval](DEMO-FIRST.md#choose-and-inspect-one-market), with name, address, phone, site and relevant permitted rating/review evidence in a niche/city audit worksheet.
 
@@ -29,9 +29,9 @@ Keep a rulebook and contract context per client/provider. The six source anomaly
 
 These are candidate checks, not universal refund entitlements. Non-use is not automatically contractual cancellation. Compare every line with agreement, history and applicable fee table; retain correct lines as not-an-overcharge rather than forcing every item into an anomaly category.
 
-The source proposes one decision call per bill, separate per-line overcharge yes/no and type, plus whole-bill dispute-worthiness and savings range. Follow [Jev's independent-question and exact-fact rules](../../ai-agents/jev-decisions/SKILL.md#the-rules): interpretation can be judged, but amounts, rates, comparisons and totals supported by exact records are computed in code. Integration form is linked from [SKILL.md](SKILL.md).
+The source proposes one decision call per bill, separate per-line overcharge yes/no and type, plus whole-bill dispute-worthiness and savings range. Follow [Jev's independent-question and exact-fact rules](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md#the-rules): interpretation can be judged, but amounts, rates, comparisons and totals supported by exact records are computed in code. Integration form is linked from [SKILL.md](SKILL.md).
 
-The author's flagging threshold is strictly above 0.8, with lower values sent to review. Unlike the invoice guide, this guide leaves exact equality undefined. Specify equality and the named output metric before using the proposal; apply existing [calibration](../../ai-agents/jev-decisions/PRODUCTION.md), not a claim that the threshold proves recoverability.
+The author's flagging threshold is strictly above 0.8, with lower values sent to review. Unlike the invoice guide, this guide leaves exact equality undefined. Specify equality and the named output metric before using the proposal; apply existing [calibration](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/PRODUCTION.md), not a claim that the threshold proves recoverability.
 
 **Unresolved source precedence:** its full prompt says never flag a line matching either the contract or the published fee table. A public fee table could permit more than the negotiated contract. Keep that source wording visible and ask which applicable terms govern conflicting evidence; do not silently make one override the other. Preserve suspected amount, requested remedy and actual credit as separate facts.
 

@@ -1,6 +1,6 @@
 # Pitching journalists
 
-Proactive PR, copied from coreyhaines31/marketingskills `public-relations` (MIT): a media list, fit scores, a pitch that gets opened, and follow-up that doesn't burn the relationship. "This is a 4-8 week practice, not a one-shot." Where the app-growth guide [eronred] gives a different number for the same thing, both are stated; pick one per campaign. Words to avoid come from [../../anti-ai-slop/anti-slop-writing/TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#3-vocabulary).
+Proactive PR, copied from coreyhaines31/marketingskills `public-relations` (MIT): a media list, fit scores, a pitch that gets opened, and follow-up that doesn't burn the relationship. "This is a 4-8 week practice, not a one-shot." Where the app-growth guide [eronred] gives a different number for the same thing, both are stated; pick one per campaign. Words to avoid come from [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#3-vocabulary).
 
 **Contents:** [The media list](#the-media-list) · [Fit scoring](#fit-scoring) · [Pitch templates](#pitch-templates) · [Subject lines](#subject-lines) · [Length, structure and voice](#length-structure-and-voice) · [Embargoes and exclusives](#embargoes-and-exclusives) · [Follow-up](#follow-up) · [Pitch killers](#pitch-killers) · [Finding contacts](#finding-contacts) · [Profiles and trackers](#profiles-and-trackers) · [Outlets](#outlets) · [Prove it](#prove-it)
 
@@ -187,7 +187,7 @@ If useful for a follow-up, I'm around all day at this number: [phone].
 [your name]
 ```
 
-The app-growth guide's cold pitch for an app launch (subject "[App Name]: [your angle in 8 words]", four one-sentence lines, an offer of a promo code, press kit or call) is in [../../mobile/app-growth/LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
+The app-growth guide's cold pitch for an app launch (subject "[App Name]: [your angle in 8 words]", four one-sentence lines, an offer of a promo code, press kit or call) is in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
 
 ## Subject lines
 
@@ -208,7 +208,7 @@ The app-growth guide's cold pitch for an app launch (subject "[App Name]: [your 
 - **Length:** "150 words max for the pitch. If you can't say it in 150 words, you don't know what your story is yet." The app-growth guide says "5 sentences max" [eronred]; the two agree in spirit.
 - **Structure:** one-line context (why them: their recent article or beat); the story in one sentence; why it matters to their readers, not to you; proof (data, customer, quote, link); the ask (interview, embargo, quote, link).
 - **Voice:** sound like a person, not a press release; reference their actual recent work; "Don't use emoji unless they do"; "Don't open with 'I hope this finds you well', burn it."
-- **Banned words:** the source bans "Revolutionary, disruptive, game-changing, paradigm shift, leverage, synergy, robust, seamless, holistic, world-class, best-in-class, next-generation, cutting-edge, AI-powered (unless that's the actual differentiation), at-the-end-of-the-day." Most are already on the ban and cap lists in [TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#3-vocabulary); in a pitch, treat every word on the source's list as banned.
+- **Banned words:** the source bans "Revolutionary, disruptive, game-changing, paradigm shift, leverage, synergy, robust, seamless, holistic, world-class, best-in-class, next-generation, cutting-edge, AI-powered (unless that's the actual differentiation), at-the-end-of-the-day." Most are already on the ban and cap lists in [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#3-vocabulary); in a pitch, treat every word on the source's list as banned.
 
 ## Embargoes and exclusives
 
@@ -216,7 +216,7 @@ The app-growth guide's cold pitch for an app launch (subject "[App Name]: [your 
 
 - **Embargo** ("you can write this story, but don't publish until [time]"): offer it only to journalists you've worked with or who have strong reputations for honoring embargoes; state day, time and timezone; "If they break embargo, your relationship with them is over."
 - **Exclusive** ("only you get this story"): first-tier outlets only, since exclusives to tier 2 or 3 outlets "waste the lever"; be honest about scope ("exclusive to [outlet] in the US" is fine); have a parallel plan for what you publish or pitch the day after it runs.
-- The app-growth guide adds for app launches: contact 1 to 2 weeks before, publish on launch day, one journalist per tier, never the same exclusive to two competing outlets [eronred]. A Product Hunt launch can be timed to the embargo lift ([../product-launch/PRODUCT-HUNT.md](../product-launch/PRODUCT-HUNT.md#day-time-and-scheduling)).
+- The app-growth guide adds for app launches: contact 1 to 2 weeks before, publish on launch day, one journalist per tier, never the same exclusive to two competing outlets [eronred]. A Product Hunt launch can be timed to the embargo lift ([product-launch PRODUCT-HUNT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/PRODUCT-HUNT.md#day-time-and-scheduling)).
 
 ## Follow-up
 
@@ -242,9 +242,9 @@ Both cap follow-ups.
 
 ## Finding contacts
 
-- **Use the address the journalist or outlet published** (author page, Muck Rack, About page) or a verification tool such as Hunter.io or RocketReach. The source also suggests to "just guess and bounce-check" [coreyhaines31/marketingskills, public-relations], and the app-growth guide gives the pattern "first@publication.com" [eronred]; don't send to guessed addresses, because hard bounces damage sender reputation ([../../backend/email-practices/DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#bounces-and-complaints)).
-- **A media list of named journalists with emails is personal data** under the GDPR, which defines it as "any information relating to an identified or identifiable natural person" (Art. 4(1), https://gdpr-info.eu/art-4-gdpr/). Record where each address came from, honor "no pitches" and removal requests, and follow [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) for the law that applies; the source does not say whether one-to-one press pitches fall under CAN-SPAM.
-- **Researching recent work:** read a handful of public author pages and profiles within each site's terms; the source's "persistent session, no rate limits" browser approach is not carried over. Driving a browser is [../../web-automation/browser-automation/SKILL.md](../../web-automation/browser-automation/SKILL.md).
+- **Use the address the journalist or outlet published** (author page, Muck Rack, About page) or a verification tool such as Hunter.io or RocketReach. The source also suggests to "just guess and bounce-check" [coreyhaines31/marketingskills, public-relations], and the app-growth guide gives the pattern "first@publication.com" [eronred]; don't send to guessed addresses, because hard bounces damage sender reputation ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#bounces-and-complaints)).
+- **A media list of named journalists with emails is personal data** under the GDPR, which defines it as "any information relating to an identified or identifiable natural person" (Art. 4(1), https://gdpr-info.eu/art-4-gdpr/). Record where each address came from, honor "no pitches" and removal requests, and follow [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md) for the law that applies; the source does not say whether one-to-one press pitches fall under CAN-SPAM.
+- **Researching recent work:** read a handful of public author pages and profiles within each site's terms; the source's "persistent session, no rate limits" browser approach is not carried over. Driving a browser is [browser-automation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SKILL.md).
 
 ## Profiles and trackers
 
@@ -279,9 +279,9 @@ Track each pitch: date sent, subject line, journalist, outlet, response (open, r
 - Tier signals quality, not effort: a small outlet may be perfect for a niche. Don't overlook vertical trade press ("smaller audience, much higher intent"), or local business journals and regional tech news when you have a regional angle.
 - "a journalist's email beats a tip form every time".
 - Verify the outlet still exists and the journalist is still there before pitching.
-- **Not press:** Product Hunt, BetaList and Indie Hackers are directories ([../product-launch/PRODUCT-HUNT.md](../product-launch/PRODUCT-HUNT.md), [directory submissions](../seo/DIRECTORY-SUBMISSIONS.md)); press release wires are "overpriced for early-stage; journalists ignore them. Skip until you have IR / SEC requirements"; paid "As featured in" badge mills are "Worthless and damaging"; guest-post link networks are link spam under Google's spam policies (https://developers.google.com/search/docs/essentials/spam-policies; links in [../seo/SKILL.md](../seo/SKILL.md)).
+- **Not press:** Product Hunt, BetaList and Indie Hackers are directories ([product-launch PRODUCT-HUNT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/PRODUCT-HUNT.md), [directory submissions](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/DIRECTORY-SUBMISSIONS.md)); press release wires are "overpriced for early-stage; journalists ignore them. Skip until you have IR / SEC requirements"; paid "As featured in" badge mills are "Worthless and damaging"; guest-post link networks are link spam under Google's spam policies (https://developers.google.com/search/docs/essentials/spam-policies; links in [seo SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md)).
 
-The app-growth guide's outlet tiers for apps are in [../../mobile/app-growth/LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
+The app-growth guide's outlet tiers for apps are in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
 
 ## Prove it
 

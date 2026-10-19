@@ -148,7 +148,7 @@ Measure weekly:
 - **Contact rate by time of day** (identify coverage gaps).
 - **Conversion rate by response time** (prove the ROI of speed).
 
-Phone steps in an escalation chain follow the calling rules in [../sales-enablement/COLD-CALLS.md](../sales-enablement/COLD-CALLS.md#the-rules-this-sits-inside).
+Phone steps in an escalation chain follow the calling rules in [sales-enablement COLD-CALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/COLD-CALLS.md#the-rules-this-sits-inside).
 
 ## Prove it
 

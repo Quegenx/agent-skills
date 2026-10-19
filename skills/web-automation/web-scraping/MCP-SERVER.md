@@ -1,6 +1,6 @@
 # A scraping MCP server
 
-From [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md], checked against the [current server source](https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py) and [0.5 migration guide](https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md). This is a scraping server, distinct from [first-party WebMCP page tools](../webmcp/SKILL.md).
+From [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md], checked against the [current server source](https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py) and [0.5 migration guide](https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md). This is a scraping server, distinct from [first-party WebMCP page tools](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/webmcp/SKILL.md).
 
 ## Auth on Streamable HTTP
 
@@ -50,7 +50,7 @@ Current Scrapling 0.5 registers sixteen tools. The old source table listed thirt
 
 ### Sessions
 
-- **Run calls in one browser session sequentially.** It has one current page; finish a call before starting the next. Use browser_extract after actions to inspect the result without navigation and use current refs for subsequent actions. General interaction policy remains in [browser-automation](../browser-automation/SKILL.md). [https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py]
+- **Run calls in one browser session sequentially.** It has one current page; finish a call before starting the next. Use browser_extract after actions to inspect the result without navigation and use current refs for subsequent actions. General interaction policy remains in [browser-automation](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SKILL.md). [https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py]
 - **Saved state is a credential.** browser_save_state writes on the MCP host and replaces an existing file; it stores cookies, localStorage and IndexedDB, not sessionStorage, open tabs or browser settings. browser_load_state replaces stored state; fetch/reload before relying on the newly loaded login. Keep the file private and outside shared evidence. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]
 - **Network reads inspect retained traffic without resending requests.** Read needed entries before close_session: closing removes MCP access and does not wait for pending captures. Missing/unfinished/evicted data is a coverage limitation. Python session-history lifetime and MCP accessibility are different contracts. [https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py; https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 - **Close sessions when finished.** Inspect list_sessions so abandoned browser and HTTP sessions are visible. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]

@@ -23,7 +23,7 @@ Choose the smallest model that fits the question: a pure reducer for discrete ac
 - Use domain-language labels and render relevant state as readable fields rather than a raw dump. Update it after every action and make meaningful changes easy to see.
 - Provide free-play actions and guided scenarios. Each scenario explains its starting situation and what to watch, then offers the actual ordered actions. Reset to a known state when starting it.
 - Include the ordinary path, an awkward edge case and an attempted illegal transition where those are the questions being explored. Feedback that an operation should be impossible or differs from the recipient's expectation is evidence about the design.
-- Keep presentation restrained so the question and state stay central. The source's generic styling and UI-variant workflow do not replace this repository's [app-ui](../../frontend/app-ui/SKILL.md), [landing-page-ui](../../frontend/landing-page-ui/SKILL.md) or [agent-chat-ui](../../ai-agents/agent-chat-ui/SKILL.md) production design.
+- Keep presentation restrained so the question and state stay central. The source's generic styling and UI-variant workflow do not replace this repository's [app-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md), [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md) or [agent-chat-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-chat-ui/SKILL.md) production design.
 
 ## Capture the answer
 

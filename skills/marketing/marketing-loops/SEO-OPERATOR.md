@@ -18,7 +18,7 @@ Settle five things with the owner and write them at the top of the operator brie
 | **Ship mode** | Stage site changes for review by default; publishing requires the owner's explicit authorization; see [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md) |
 | **Data access** | Which of Search Console, analytics, a rank or backlink tool, and an AI-visibility tool the agent can read |
 
-Then confirm the foundation: tracking works (the tracking-QA loop), and `.agents/product-context.md` exists. If it doesn't, build it with [anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md) first. The operator reads product facts from there; it doesn't keep a second copy.
+Then confirm the foundation: tracking works (the tracking-QA loop), and `.agents/product-context.md` exists. If it doesn't, build it with [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md) first. The operator reads product facts from there; it doesn't keep a second copy.
 
 ## Shared memory
 
@@ -38,7 +38,7 @@ Agents start every run with no memory, so everything the operator knows lives in
 
 Two rules make the query map work. **Every page owns one primary query**, and **every query has at most one page.** Two pages chasing the same query is a defect: merge them and redirect the weaker one. (This is the source's practice; Google Search Central states no one-query-per-page rule.) A query with no page is a gap and goes in the queue. [coreyhaines31/marketingskills, marketing-loops, seo-operator.md]
 
-The canonical [intent-cluster mapping](../keyword-research/CLUSTERING.md#the-workflow) groups related queries by intent into a page and requires actual query/page evidence before calling cannibalization. Keep the operator's one-primary-query convention as its tagged practice; do not merge or redirect from query overlap alone, and retain the approval boundary for pages with traffic or backlinks below. [open-seo, keyword-clustering]
+The canonical [intent-cluster mapping](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/CLUSTERING.md#the-workflow) groups related queries by intent into a page and requires actual query/page evidence before calling cannibalization. Keep the operator's one-primary-query convention as its tagged practice; do not merge or redirect from query overlap alone, and retain the approval boundary for pages with traffic or backlinks below. [open-seo, keyword-clustering]
 
 Every fact in `claims.md` cites where it came from (a file in the product repo, the live pricing page). Facts from memory don't go in.
 
@@ -50,15 +50,15 @@ The loops it bundles are in [SEO-LOOPS.md](SEO-LOOPS.md) and [OPS-LOOPS.md](OPS-
 |---|---|---|
 | Site health crawl | Striking-distance push | Rebuild the query map (keyword-gap) |
 | Claim drift | Ranking-drop watch | Content decay |
-| Ship the top item in the queue | Indexing check | Comparison-page review ([comparison-pages](../comparison-pages/SKILL.md) asset audit) |
+| Ship the top item in the queue | Indexing check | Comparison-page review ([comparison-pages](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md) asset audit) |
 | Append to the run log | Internal linking | Backlink prospecting + directory submissions |
-| | AI-answer check | One free-tool candidate ([lead-magnets](../lead-magnets/SKILL.md)) |
+| | AI-answer check | One free-tool candidate ([lead-magnets](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md)) |
 | | Competitor watch (sitemap diff) | |
 | | Weekly report | |
 
 Each cell is a catalog loop or a step defined below; run it with that loop's self-check, state, and stop rules. Skip any loop whose data isn't connected and say so in the report.
 
-**Site health crawl.** Fetch the sitemap and request every URL. Flag non-200s, redirect chains, wrong canonicals, stray `noindex`, robots blocks, broken internal links, orphan pages, duplicate or missing titles and descriptions, and pages whose main content isn't in the server-rendered HTML. The [seo](../seo/SKILL.md) skill covers each check.
+**Site health crawl.** Fetch the sitemap and request every URL. Flag non-200s, redirect chains, wrong canonicals, stray `noindex`, robots blocks, broken internal links, orphan pages, duplicate or missing titles and descriptions, and pages whose main content isn't in the server-rendered HTML. The [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md) skill covers each check.
 
 **Indexing check.** Compare the sitemap to what Search Console reports as indexed. For each unindexed URL, find the cause (thin, duplicate, orphaned, blocked, canonicalized elsewhere) and fix that, not the symptom. If indexing can't be verified, report "not verified." Never report a page as indexed without checking.
 
@@ -85,14 +85,14 @@ Each cell is a catalog loop or a step defined below; run it with that loop's sel
 
 ## The writing gate
 
-Before writing any new page, read the current top results for its query and write one sentence on what the new page will have that none of them do: original data, a real example from the product, a working tool, a clearer answer. If you can't write that sentence, don't write the page. This is the same information-gain test as in [content-strategy](../content-strategy/SKILL.md).
+Before writing any new page, read the current top results for its query and write one sentence on what the new page will have that none of them do: original data, a real example from the product, a working tool, a clearer answer. If you can't write that sentence, don't write the page. This is the same information-gain test as in [content-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md).
 
 Then:
 - Answer the query in the first two sentences, then add detail.
 - Use what only this company has: product screenshots, real numbers, the owner's opinions. If none exist for a topic, ask for them in the report rather than writing around the gap.
 - Never invent a statistic, quote, customer, review, price, or benchmark.
-- Ship each new page with the checklist in the source's seo-audit [rankings push reference](https://github.com/coreyhaines31/marketingskills/blob/main/skills/seo-audit/references/rankings-push.md) (this repo's on-page rules: [seo](../seo/SKILL.md)): internal links from at least three existing pages, title, meta description, canonical, sitemap entry, structured data where it fits.
-- Draft one social post per new article, built on its single most useful point ([social-media](../social-media/SKILL.md)).
+- Ship each new page with the checklist in the source's seo-audit [rankings push reference](https://github.com/coreyhaines31/marketingskills/blob/main/skills/seo-audit/references/rankings-push.md) (this repo's on-page rules: [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md)): internal links from at least three existing pages, title, meta description, canonical, sitemap entry, structured data where it fits.
+- Draft one social post per new article, built on its single most useful point ([social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md)).
 
 ## The weekly report
 

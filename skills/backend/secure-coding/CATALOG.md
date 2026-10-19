@@ -45,7 +45,7 @@ The same guide uses a native `<script>`, not `next/script`: JSON-LD "is structur
 JSON.stringify(value).replace(/</g, "\\u003C").replace(/>/g, "\\u003E").replace(/&/g, "\\u0026").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029")
 ```
 
-Which structured data to emit is the [seo skill's STRUCTURED-DATA.md](../../marketing/seo/STRUCTURED-DATA.md).
+Which structured data to emit is the [seo skill's STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md).
 
 ## Links: scheme allowlist
 

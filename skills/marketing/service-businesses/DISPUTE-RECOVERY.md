@@ -1,6 +1,6 @@
 # Managed dispute recovery
 
-The managed-service workflow from [more skills, 09-chargeback-recovery.md]: a last-three-disputes pilot, per-client evidence rulebook, reviewed response packet, daily deadline queue and billing from actual recoveries. Use [DEMO-FIRST.md](DEMO-FIRST.md) for acquisition and [Stripe disputes](../../backend/stripe/DISPUTES.md) for the Stripe response adapter.
+The managed-service workflow from [more skills, 09-chargeback-recovery.md]: a last-three-disputes pilot, per-client evidence rulebook, reviewed response packet, daily deadline queue and billing from actual recoveries. Use [DEMO-FIRST.md](DEMO-FIRST.md) for acquisition and [Stripe disputes](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/DISPUTES.md) for the Stripe response adapter.
 
 ## Offer, candidate and pilot
 
@@ -29,9 +29,9 @@ Preserve the source's concrete candidate evidence, then select the provider's ac
 
 These corrections follow [Shopify's dispute-type guidance](https://help.shopify.com/en/manual/payments/chargebacks/chargeback-process); use the selected provider's actual category rather than merging categories into a universal winning checklist. [more skills, 09-chargeback-recovery.md; Shopify Help Center]
 
-Retain four judgment outputs: fight/accept/gather more; low/medium/high assessed likelihood; evidence complete yes/no; and deadline risk yes/no. Compute the actual deadline/date arithmetic in code and apply existing [Jev gates](../../ai-agents/jev-decisions/SKILL.md#the-rules).
+Retain four judgment outputs: fight/accept/gather more; low/medium/high assessed likelihood; evidence complete yes/no; and deadline risk yes/no. Compute the actual deadline/date arithmetic in code and apply existing [Jev gates](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md#the-rules).
 
-The author's prepare-only gate is strictly above 0.8 and likelihood at least medium. Everything else, including equality, goes to review. It does not authorize submission. The guide does not define the likelihood rubric, which confidence field is compared, unknown handling or a complete rule combining the completeness/deadline answers. Resolve those inputs using [existing calibration](../../ai-agents/jev-decisions/PRODUCTION.md); do not silently treat the source gate as a proven policy.
+The author's prepare-only gate is strictly above 0.8 and likelihood at least medium. Everything else, including equality, goes to review. It does not authorize submission. The guide does not define the likelihood rubric, which confidence field is compared, unknown handling or a complete rule combining the completeness/deadline answers. Resolve those inputs using [existing calibration](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/PRODUCTION.md); do not silently treat the source gate as a proven policy.
 
 Keep the useful failure constraint: only list evidence that exists at submission. A future-only document cannot be required as if it were already available. Record the actual missing evidence and preserve gather-more as a real outcome.
 
@@ -49,7 +49,7 @@ Use the shared [mail packet](DEMO-FIRST.md#prepare-the-mail-packet), retaining t
 
 ## Provider approval boundaries
 
-For Stripe, final submission is a single opportunity and cannot be amended. Review the complete response before that action and follow the [Stripe adapter](../../backend/stripe/DISPUTES.md). The source's generic dashboard-submission step omitted that finality. [https://docs.stripe.com/disputes/responding]
+For Stripe, final submission is a single opportunity and cannot be amended. Review the complete response before that action and follow the [Stripe adapter](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/DISPUTES.md). The source's generic dashboard-submission step omitted that finality. [https://docs.stripe.com/disputes/responding]
 
 **Shopify is a separate adapter:** it automatically collects evidence and sends its response on the due date, even if the merchant adds nothing. Some network-resolution cases have no open response window. Its open/submitted/won/lost/resolved states and actual case due date govern work. Saving evidence is not proof that manual approval controls every submission. Resolve this platform behavior before promising the source's universal no-submission-without-approval invariant. [https://help.shopify.com/en/manual/payments/chargebacks/chargebacks-in-admin]
 

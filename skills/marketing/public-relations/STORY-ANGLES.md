@@ -50,7 +50,7 @@ Core asset (data report / strong POV / founding story)
 - Every format strengthens the next pitch: a journalist who finds your thread, article and podcast on a topic "sees a voice in the space, not an opportunist" ([NEWSJACKING.md](NEWSJACKING.md#the-public-trail)).
 - "Weak assets stall it immediately."
 
-Social posts are [../social-media/SKILL.md](../social-media/SKILL.md); the article is [../content-strategy/SKILL.md](../content-strategy/SKILL.md); the video is [../marketing-video/SKILL.md](../marketing-video/SKILL.md).
+Social posts are [social-media SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md); the article is [content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md); the video is [marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md).
 
 ## Prove it
 

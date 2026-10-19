@@ -1,6 +1,6 @@
 # Data and bundles
 
-How data reaches a React page without waterfalls, how much of it crosses into the client, which client cache to use, and how to keep the JavaScript bundle small: Server Component waterfalls and their fixes, request-scoped dedupe, the RSC serialization boundary, SWR and TanStack Query with their real imports, barrel files and `optimizePackageImports`, and dynamic imports. Rules come from Vercel's react-best-practices skill (MIT, tagged [Vercel, react-best-practices, <rule>]), each checked against nextjs.org, react.dev and swr.vercel.app (fetched 2026-10-18); where a rule disagrees with the docs, the docs' form is written and the line says what the rule said. The general rules for overlapping awaits (start early, await late; never ahead of the auth check; not for CPU-bound work) live in [../../backend/performance-and-caching/MEASURE.md](../../backend/performance-and-caching/MEASURE.md#overlap-independent-waits) and are only pointed to here. Next.js APIs (Cache Components, `use cache`, Route Handlers) are in [NEXTJS.md](NEXTJS.md). Severity uses the P0 to P3 scale of [../../architecture/code-review/REVIEWER.md](../../architecture/code-review/REVIEWER.md): the source's CRITICAL and HIGH are written as P1, MEDIUM as P2, LOW as P3.
+How data reaches a React page without waterfalls, how much of it crosses into the client, which client cache to use, and how to keep the JavaScript bundle small: Server Component waterfalls and their fixes, request-scoped dedupe, the RSC serialization boundary, SWR and TanStack Query with their real imports, barrel files and `optimizePackageImports`, and dynamic imports. Rules come from Vercel's react-best-practices skill (MIT, tagged [Vercel, react-best-practices, <rule>]), each checked against nextjs.org, react.dev and swr.vercel.app (fetched 2026-10-18); where a rule disagrees with the docs, the docs' form is written and the line says what the rule said. The general rules for overlapping awaits (start early, await late; never ahead of the auth check; not for CPU-bound work) live in [performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#overlap-independent-waits) and are only pointed to here. Next.js APIs (Cache Components, `use cache`, Route Handlers) are in [NEXTJS.md](NEXTJS.md). Severity uses the P0 to P3 scale of [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md): the source's CRITICAL and HIGH are written as P1, MEDIUM as P2, LOW as P3.
 
 **Contents:** [Waterfalls in the server tree](#waterfalls-in-the-server-tree) · [Waterfalls inside one function](#waterfalls-inside-one-function) · [Dedupe within a request](#dedupe-within-a-request) · [What crosses the RSC boundary](#what-crosses-the-rsc-boundary) · [Client data: none, SWR or TanStack Query](#client-data-none-swr-or-tanstack-query) · [Barrel files and optimizePackageImports](#barrel-files-and-optimizepackageimports) · [Dynamic imports](#dynamic-imports) · [Paths the bundler can analyze](#paths-the-bundler-can-analyze) · [Prove it](#prove-it)
 
@@ -53,7 +53,7 @@ How data reaches a React page without waterfalls, how much of it crosses into th
   )
   ```
 
-  With data-dependent counts, bound the concurrency ([MEASURE.md](../../backend/performance-and-caching/MEASURE.md#overlap-independent-waits)).
+  With data-dependent counts, bound the concurrency ([performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#overlap-independent-waits)).
 - **Preload a request whose inputs are ready before other blocking work.** "call the data-fetching function without `await` before blocking work, then call the same function in the component that consumes the result"; the function must dedupe matching calls (`fetch` does; wrap an ORM call in `React.cache`; with Cache Components, `'use cache'`) (https://nextjs.org/docs/app/getting-started/fetching-data#preloading-data):
 
   ```tsx
@@ -94,8 +94,8 @@ How data reaches a React page without waterfalls, how much of it crosses into th
 
 ## Waterfalls inside one function
 
-- **Start early, await late (P1).** In API routes and Server Actions, start `auth()` and `fetchConfig()` before awaiting either, then `Promise.all` the config with the session-dependent fetch [Vercel, react-best-practices, async-api-routes]. The code, the longer-chain form (`userPromise.then(user => fetchProfile(user.id))`) and the third-party `better-all` option are in [MEASURE.md](../../backend/performance-and-caching/MEASURE.md#overlap-independent-waits).
-- **Never move a private read ahead of the check that authorizes it:** the rule and its quote are in [MEASURE.md](../../backend/performance-and-caching/MEASURE.md#overlap-independent-waits) [Vercel, vercel-optimize, support-topics/auth-preserving-parallelization.md].
+- **Start early, await late (P1).** In API routes and Server Actions, start `auth()` and `fetchConfig()` before awaiting either, then `Promise.all` the config with the session-dependent fetch [Vercel, react-best-practices, async-api-routes]. The code, the longer-chain form (`userPromise.then(user => fetchProfile(user.id))`) and the third-party `better-all` option are in [performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#overlap-independent-waits).
+- **Never move a private read ahead of the check that authorizes it:** the rule and its quote are in [performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#overlap-independent-waits) [Vercel, vercel-optimize, support-topics/auth-preserving-parallelization.md].
 - **Await inside the branch that uses it (P1).** "Move `await` operations into the branches where they're actually used to avoid blocking code paths that don't need them." [Vercel, react-best-practices, async-defer-await]
 
   ```typescript
@@ -150,7 +150,7 @@ How data reaches a React page without waterfalls, how much of it crosses into th
 - **Pass primitives.** "`React.cache()` uses shallow equality (`Object.is`) to determine cache hits. Inline objects create new references each call, preventing cache hits": `cache(async (uid: number) => ...)` called as `getUser(1)` hits; `getUser({ uid: 1 })` twice misses. To pass an object, pass the same reference (`const params = { uid: 1 }`).
 - **Scope:** react.dev: "`cache` is only for use with React Server Components", "the cache will be invalidated across server requests", and call `cache` outside components (https://react.dev/reference/react/cache). Next.js: "`React.cache` is scoped to the current request only" (https://nextjs.org/docs/app/getting-started/fetching-data). Inside a `'use cache'` scope it is isolated ([NEXTJS.md](NEXTJS.md#use-cache)).
 - **`fetch` needs no wrapper:** "Identical `fetch` requests in a React component tree are memoized by default, so you can fetch data in the component that needs it instead of drilling props" (same page). Use `React.cache` for "Database queries (Prisma, Drizzle, etc.)", "Heavy computations", "Authentication checks", "File system operations" [Vercel, react-best-practices, server-cache-react].
-- **Data shared across requests** is a different tier: a bounded module-level LRU or `'use cache'` ([../../backend/performance-and-caching/CACHING.md](../../backend/performance-and-caching/CACHING.md#module-level-caches)).
+- **Data shared across requests** is a different tier: a bounded module-level LRU or `'use cache'` ([performance-and-caching CACHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/CACHING.md#module-level-caches)).
 
 ## What crosses the RSC boundary
 
@@ -175,7 +175,7 @@ How data reaches a React page without waterfalls, how much of it crosses into th
   }
   ```
 
-  It is also a data-exposure rule: Next.js's data-security guide warns that "it's possible to accidentally expose private data through how data is fetched or passed to components", and offers `experimental.taint` with React's `experimental_taintObjectReference` and `experimental_taintUniqueValue` as "an additional layer of protection" (https://nextjs.org/docs/app/guides/data-security). The same column rule for queries is "Select only the columns the caller uses" ([../../backend/performance-and-caching/QUERIES.md](../../backend/performance-and-caching/QUERIES.md)).
+  It is also a data-exposure rule: Next.js's data-security guide warns that "it's possible to accidentally expose private data through how data is fetched or passed to components", and offers `experimental.taint` with React's `experimental_taintObjectReference` and `experimental_taintUniqueValue` as "an additional layer of protection" (https://nextjs.org/docs/app/guides/data-security). The same column rule for queries is "Select only the columns the caller uses" ([performance-and-caching QUERIES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/QUERIES.md)).
 - **Props must be serializable by React** (https://nextjs.org/docs/app/getting-started/server-and-client-components); a Server Action's return value is serialized the same way, so return `{ success: true }`, not the database row ([NEXTJS.md](NEXTJS.md#server-actions-and-their-auth)).
 - **Don't send the same array twice (P3, unverified).** "RSC→client serialization deduplicates by object reference, not value"; `usernames={usernames} usernamesOrdered={usernames.toSorted()}` sends 6 strings where sorting on the client sends 3. `string[]` duplicates fully, `object[]` only the array; `.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`, `{...obj}`, `Object.assign()`, `structuredClone()` and `JSON.parse(JSON.stringify())` all make new references. "Exception: Pass derived data when transformation is expensive or client doesn't need original." [Vercel, react-best-practices, server-dedup-props] react.dev does not document dedupe by reference.
 
@@ -223,7 +223,7 @@ https://nextjs.org/docs/app/guides/client-side-data-fetching (checked 2026-10-18
   }
   ```
 
-  Render it from the nearest shared layout. TanStack Query's defaults (`staleTime: 0`, `gcTime` 5 minutes, refetch on focus, in-flight dedupe) and `invalidateQueries` are in [CACHING.md](../../backend/performance-and-caching/CACHING.md#layers-in-a-typescript-stack).
+  Render it from the nearest shared layout. TanStack Query's defaults (`staleTime: 0`, `gcTime` 5 minutes, refetch on focus, in-flight dedupe) and `invalidateQueries` are in [performance-and-caching CACHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/CACHING.md#layers-in-a-typescript-stack).
 - **Three cache layers, one identity.** With Cache Components on, the Next.js server cache (`cacheLife` `revalidate`/`expire`), the client router cache (`cacheLife` `stale`) and the library's browser cache keep "independent freshness policies and do not need matching durations. Cache identities and mutation invalidation must stay coordinated across layers." After a mutation, invalidate the server read that provided the initial data: `updateTag(tag)` from a Server Action that must show the change at once, `revalidateTag(tag, 'max')` when stale is fine, `revalidateTag(tag, { expire: 0 })` from a webhook. "An optimistic update should restore the previous browser value if the write fails."
 
 ## Barrel files and optimizePackageImports
@@ -291,7 +291,7 @@ https://nextjs.org/docs/app/guides/lazy-loading (checked 2026-10-18):
   ```
 
   The rules say the `typeof window !== 'undefined'` check "prevents bundling preloaded modules for SSR"; no Next.js page checked says so, so don't count on it for server bundle size.
-- **Check the output.** Confirm the build produced the split chunk; the general rule is in [../web-performance/BROWSER.md](../web-performance/BROWSER.md#bundle).
+- **Check the output.** Confirm the build produced the split chunk; the general rule is in [web-performance BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/BROWSER.md#bundle).
 
 ## Paths the bundler can analyze
 

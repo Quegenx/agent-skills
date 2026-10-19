@@ -1,12 +1,12 @@
 # Pages at scale (programmatic SEO)
 
-Programmatic SEO builds many similar pages from a template and a dataset, one per keyword pattern (`[service] in [city]`, `[x] vs [y]`, `[product] for [audience]`). It works when each page answers a real search with data no other page has, and becomes scaled content abuse when pages differ only by the swapped variable. The playbooks, framework and checklists come from coreyhaines31/marketingskills `programmatic-seo` v2.1.0 (MIT, verbatim where quoted); the playbooks are that author's own frameworks, not Google guidance. Google's spam policies, sitemap rules and crawl-budget guidance are quoted from Search Central where the source is silent or wrong. Hubs, URL hierarchy and navigation are in [../site-architecture/SKILL.md](../site-architecture/SKILL.md); comparison and alternative pages in depth in [../comparison-pages/SKILL.md](../comparison-pages/SKILL.md); markup for the template in [STRUCTURED-DATA.md](STRUCTURED-DATA.md).
+Programmatic SEO builds many similar pages from a template and a dataset, one per keyword pattern (`[service] in [city]`, `[x] vs [y]`, `[product] for [audience]`). It works when each page answers a real search with data no other page has, and becomes scaled content abuse when pages differ only by the swapped variable. The playbooks, framework and checklists come from coreyhaines31/marketingskills `programmatic-seo` v2.1.0 (MIT, verbatim where quoted); the playbooks are that author's own frameworks, not Google guidance. Google's spam policies, sitemap rules and crawl-budget guidance are quoted from Search Central where the source is silent or wrong. Hubs, URL hierarchy and navigation are in [site-architecture SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-architecture/SKILL.md); comparison and alternative pages in depth in [comparison-pages SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md); markup for the template in [STRUCTURED-DATA.md](STRUCTURED-DATA.md).
 
 **Contents:** [Assess first](#assess-first) · [Principles](#principles) · [What Google calls spam](#what-google-calls-spam) · [The 12 playbooks](#the-12-playbooks) · [Choosing a playbook](#choosing-a-playbook) · [Building the set](#building-the-set) · [Linking](#linking) · [Sitemaps](#sitemaps) · [Indexation and crawl budget](#indexation-and-crawl-budget) · [Choosing the platform](#choosing-the-platform) · [Checklists](#checklists) · [Common mistakes](#common-mistakes) · [Prove it](#prove-it)
 
 ## Assess first
 
-[coreyhaines31/marketingskills, programmatic-seo] Read `.agents/product-context.md` first ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md); the source calls it `.agents/product-marketing.md`), then answer:
+[coreyhaines31/marketingskills, programmatic-seo] Read `.agents/product-context.md` first ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md); the source calls it `.agents/product-marketing.md`), then answer:
 
 1. **Business context:** the product or service, the target audience, the conversion goal for these pages.
 2. **Opportunity:** what search patterns exist, how many potential pages, the search volume distribution.
@@ -35,7 +35,7 @@ Quoted from [spam policies](https://developers.google.com/search/docs/essentials
 - **Thin affiliation:** copied merchant descriptions and "cookie-cutter sites or templates".
 - "Sites that violate our policies may rank lower in results or not appear in results at all."
 
-The same pattern applies to AI answers: near-duplicate pages per prompt wording ("prompt-variant doorway pages") are an anti-pattern; build a subject hub with supporting pages that answer materially different questions [freescan, /blog/ai-search-optimization-guide]. More in [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
+The same pattern applies to AI answers: near-duplicate pages per prompt wording ("prompt-variant doorway pages") are an anti-pattern; build a subject hub with supporting pages that answer materially different questions [freescan, /blog/ai-search-optimization-guide]. More in [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md).
 
 ## The 12 playbooks
 
@@ -56,7 +56,7 @@ The same pattern applies to AI answers: near-duplicate pages per prompt wording 
 | Directory | "[category] tools", "[type] software" | Comprehensive coverage; useful filtering and sorting; details per listing (not just names); regular updates | `/directory/[category]/` or `/[category]-directory/` |
 | Profiles | "[person/company name]", "[entity] + [attribute]" | "Accurate, sourced information"; regularly updated; unique insights or aggregation; not a Wikipedia rehash | `/people/[name]/`, `/companies/[name]/` |
 
-Translations need hreflang that Google accepts: each version lists itself and all others, `x-default` as the fallback, fully qualified URLs, an ISO 639-1 language with an optional ISO 3166-1 region (never a country alone), in HTML, an HTTP `Link` header or the sitemap ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). The owner's head design already does this ([../../frontend/landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)). A glossary can carry schema.org `DefinedTerm`; Google has no rich result for it, so it is semantic markup only.
+Translations need hreflang that Google accepts: each version lists itself and all others, `x-default` as the fallback, fully qualified URLs, an ISO 639-1 language with an optional ISO 3166-1 region (never a country alone), in HTML, an HTTP `Link` header or the sitemap ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). The owner's head design already does this ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)). A glossary can carry schema.org `DefinedTerm`; Google has no rich result for it, so it is semantic markup only.
 
 ## Choosing a playbook
 
@@ -80,14 +80,14 @@ Playbooks layer: Locations + Personas ("Marketing agencies for startups in Austi
 
 [coreyhaines31/marketingskills, programmatic-seo]
 
-1. **Keyword pattern.** The repeating structure, the variables, how many unique combinations exist. Validate demand: aggregate search volume, volume distribution (head vs long tail), trend direction. Demand research: [../keyword-research/SKILL.md](../keyword-research/SKILL.md).
-2. **Data.** What data populates each page, where it comes from (first-party, licensed, public), how it is updated. Collect only data you are allowed to use, within the law and the source's terms ([../../web-automation/web-scraping/SKILL.md](../../web-automation/web-scraping/SKILL.md)); scraping other sites' content to fill pages is a listed spam example (above).
+1. **Keyword pattern.** The repeating structure, the variables, how many unique combinations exist. Validate demand: aggregate search volume, volume distribution (head vs long tail), trend direction. Demand research: [keyword-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/SKILL.md).
+2. **Data.** What data populates each page, where it comes from (first-party, licensed, public), how it is updated. Collect only data you are allowed to use, within the law and the source's terms ([web-scraping SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/SKILL.md)); scraping other sites' content to fill pages is a listed spam example (above).
 3. **Template.** Header with the target keyword; a unique intro (not just variables swapped); data-driven sections; related pages and internal links; CTAs matched to intent. Uniqueness comes from conditional content based on the data and original insight or analysis per page.
 4. **Output.** A strategy document (opportunity analysis, implementation plan, content guidelines) and a page template (URL structure, title and meta templates, content outline, schema).
 
 ## Linking
 
-- **Hub and spoke:** use the [canonical linking pattern](../site-architecture/URLS-AND-LINKS.md#hub-and-spoke). No orphans: every page reachable from the main site, in the XML sitemap, with breadcrumbs. [coreyhaines31/marketingskills, programmatic-seo]
+- **Hub and spoke:** use the [canonical linking pattern](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-architecture/URLS-AND-LINKS.md#hub-and-spoke). No orphans: every page reachable from the main site, in the XML sitemap, with breadcrumbs. [coreyhaines31/marketingskills, programmatic-seo]
 - Google learns page importance from "the linkages between pages"; use `<a href>` links rather than JavaScript events, and when linking isn't feasible, sitemaps or Merchant Center feeds ([ecommerce site structure](https://developers.google.com/search/docs/specialty/ecommerce/help-google-understand-your-ecommerce-site-structure)). "Google can only crawl your link if it's an `<a>` HTML element" with an `href` ([crawlable links](https://developers.google.com/search/docs/crawling-indexing/links-crawlable)).
 
 ## Sitemaps
@@ -96,7 +96,7 @@ From [build a sitemap](https://developers.google.com/search/docs/crawling-indexi
 
 - "All formats limit a single sitemap to 50MB (uncompressed) or 50,000 URLs"; a sitemap index groups several. Separate sitemaps per page type make Search Console tracking easier [coreyhaines31/marketingskills, programmatic-seo].
 - "Google ignores `<priority>` and `<changefreq>`". `<lastmod>` is used only if "consistently and verifiably" accurate: the main content, structured data or links changed, not a copyright year.
-- Absolute canonical URLs only. The owner commits a static sitemap that "always name[s] the production origin" ([DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)); these rules apply to it too.
+- Absolute canonical URLs only. The owner commits a static sitemap that "always name[s] the production origin" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); these rules apply to it too.
 
 ## Indexation and crawl budget
 
@@ -137,7 +137,7 @@ The source's platform rows (Webflow CMS, WordPress with custom fields, Framer CM
 
 **Before launch.** Content: each page provides unique value, answers the search intent, is readable and useful. Technical: unique titles and meta descriptions, proper heading structure, schema implemented, page speed acceptable. Linking: connected to the site architecture, related pages linked, no orphans. Indexation: in the XML sitemap, crawlable, "No conflicting noindex".
 
-**After launch.** Track indexation rate, rankings, traffic, engagement and conversion. Watch for thin content warnings, ranking drops, manual actions and crawl errors (Search Console: [../search-console/SKILL.md](../search-console/SKILL.md)). A recurring quality pass that escalates mass-`noindex` or prune decisions is in [../marketing-loops/SKILL.md](../marketing-loops/SKILL.md).
+**After launch.** Track indexation rate, rankings, traffic, engagement and conversion. Watch for thin content warnings, ranking drops, manual actions and crawl errors (Search Console: [search-console SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SKILL.md)). A recurring quality pass that escalates mass-`noindex` or prune decisions is in [marketing-loops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md).
 
 ## Common mistakes
 

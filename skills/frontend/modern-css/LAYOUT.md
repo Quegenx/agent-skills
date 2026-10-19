@@ -72,7 +72,7 @@ visbug-logo {
 }
 ```
 
-- **A bento grid that knows its children:** "A CSS bento-like grid that's aware of the number of children and aspect ratio available thanks to `:has()` and `@container`", and view transitions made the interactive demo "so much more compelling". Demo code not exported (CodePen RwdRaVg). `:has()` is Baseline widely available since 2026-06-19 (newly 2023-12-19; [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has)). On its cost, ui-animation records "a single `:root:has()` selector added 24 ms to every DOM change" and MDN's warning about `:has()` anchored on `body`, `:root` or `*` ([../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md)). [nerdy.dev: Neue Bento Layouts With Grid Has And Container Queries](https://nerdy.dev/neue-bento-layouts-with-grid-has-and-container-queries)
+- **A bento grid that knows its children:** "A CSS bento-like grid that's aware of the number of children and aspect ratio available thanks to `:has()` and `@container`", and view transitions made the interactive demo "so much more compelling". Demo code not exported (CodePen RwdRaVg). `:has()` is Baseline widely available since 2026-06-19 (newly 2023-12-19; [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has)). On its cost, ui-animation records "a single `:root:has()` selector added 24 ms to every DOM change" and MDN's warning about `:has()` anchored on `body`, `:root` or `*` ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md)). [nerdy.dev: Neue Bento Layouts With Grid Has And Container Queries](https://nerdy.dev/neue-bento-layouts-with-grid-has-and-container-queries)
 
 ## A circle layout with trig and sibling-index()
 
@@ -129,7 +129,7 @@ visbug-logo {
 ## Physical against logical
 
 - **"is it time to forget about physical properties like `margin-top` and `left`? Can't throw out the x/y transforms tho"**. [nerdy.dev: Is It Time To Throw Out Physical Properties](https://nerdy.dev/is-it-time-to-throw-out-physical-properties) (2024-01-07)
-- anti-slop-ui's logical rule also keeps an exception for "centring with `left: 50%` and a translate" ([RESPONSIVE.md](RESPONSIVE.md)), and app-ui lists the values it keeps physical by design, such as a measured position placed with `left: 0` plus `translate` ([../app-ui/SKILL.md](../app-ui/SKILL.md)).
+- anti-slop-ui's logical rule also keeps an exception for "centring with `left: 50%` and a translate" ([RESPONSIVE.md](RESPONSIVE.md)), and app-ui lists the values it keeps physical by design, such as a measured position placed with `left: 0` plus `translate` ([app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md)).
 - **Ask models for them.** "I prompt LLMs with logical properties." And: "Even prompting in logical properties, you have to ask for this kind of CSS. These should be CSS tablestakes output from LLMs, but it's not. And even when you ask for it, or provide documentation that spells it out, it's not guaranteed to work." [nerdy.dev: Prompt In Logical Properties](https://nerdy.dev/prompt-in-logical-properties) (2026-01-27), [nerdy.dev: Why AI Sucks At Front End](https://nerdy.dev/why-ai-sucks-at-front-end) (2026-04-12)
 
 ## Notes with no technique

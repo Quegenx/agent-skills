@@ -1,6 +1,6 @@
 # Optimizing and securing SVG
 
-Files from vector editors carry editor metadata, comments, hidden elements and default or suboptimal values that can be removed without changing rendering; SVGO does that, but a few of its plugins change behavior (scaling, accessible names, ids, standalone use), so know which ones run, including through SVGR. On the security side, an SVG is a document that can carry scripts: they never run when it is used as an image (`<img>`, CSS backgrounds, SVG `<image>`), but they do run inline, when the file is opened directly, or when embedded with `<object>`, `<iframe>` or `<embed>`. Treat any SVG not from a trusted source as active content: sanitize it and serve it with headers that stop scripts. General upload rules (type checks, storage, file names) are in [../../backend/secure-coding/SKILL.md](../../backend/secure-coding/SKILL.md).
+Files from vector editors carry editor metadata, comments, hidden elements and default or suboptimal values that can be removed without changing rendering; SVGO does that, but a few of its plugins change behavior (scaling, accessible names, ids, standalone use), so know which ones run, including through SVGR. On the security side, an SVG is a document that can carry scripts: they never run when it is used as an image (`<img>`, CSS backgrounds, SVG `<image>`), but they do run inline, when the file is opened directly, or when embedded with `<object>`, `<iframe>` or `<embed>`. Treat any SVG not from a trusted source as active content: sanitize it and serve it with headers that stop scripts. General upload rules (type checks, storage, file names) are in [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
 
 **Contents:** [Optimizing with SVGO](#optimizing-with-svgo) · [Risky plugins](#risky-plugins) · [SVGR's defaults](#svgrs-defaults) · [Rendering performance](#rendering-performance) · [Where scripts hide in SVG](#where-scripts-hide-in-svg) · [Content-Type and serving](#content-type-and-serving) · [User-uploaded SVG](#user-uploaded-svg) · [Sanitizing with DOMPurify](#sanitizing-with-dompurify) · [Prove it](#prove-it)
 
@@ -50,7 +50,7 @@ export default {
 - **removeHiddenElems:** removes hidden or invisible elements (zero width or height, hidden with CSS); leaves non-rendering elements like `<clipPath>` and `<linearGradient>` alone unless they are unused.
 - **convertShapeToPath, mergePaths, collapseGroups, convertPathData:** turn shapes into `<path>`, merge paths, flatten groups that do nothing (removeEmptyContainers removes empty ones), and rewrite path data (relative or absolute, whichever is shorter; converted and redundant commands removed; delimiters trimmed; numbers rounded).
 - **inlineStyles:** merges `<style>` declarations into `style` attributes.
-- **removeMetadata:** removes `<metadata>`. An export that stores data there, such as [technical-drawing](../technical-drawing/SKILL.md)'s JSON record of the drawing's concept status, parameters and colors [Jakub Krehel, technical-drawing], loses it silently when run through `preset-default`; disable the plugin for those files.
+- **removeMetadata:** removes `<metadata>`. An export that stores data there, such as [technical-drawing](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/technical-drawing/SKILL.md)'s JSON record of the drawing's concept status, parameters and colors [Jakub Krehel, technical-drawing], loses it silently when run through `preset-default`; disable the plugin for those files.
 - **removeDesc:** removes `<desc>` only if it is empty or seems to hold only editor attribution, never indiscriminately, because it is a crucial part of accessibility.
 
 ## Risky plugins
@@ -128,7 +128,7 @@ module.exports = {
 | `contentDispositionType` | v13.2.0 | Default `attachment` since v15.0.0: visiting the image URL directly downloads it |
 
 - **CSP is not a substitute for sanitizing.** Sanitize input and set a CSP, for defense in depth against XSS.
-- **Store and name uploads safely:** keep them on a different server or outside the webroot, generate the file name, and for images decode and re-encode to an allowed format. More in [../../backend/secure-coding/SKILL.md](../../backend/secure-coding/SKILL.md).
+- **Store and name uploads safely:** keep them on a different server or outside the webroot, generate the file name, and for images decode and re-encode to an allowed format. More in [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
 - **[secondary] A header set for serving original SVGs as download-only:**
 
 ```
@@ -166,7 +166,7 @@ const clean = DOMPurify.sanitize(dirty, { NAMESPACE: 'http://www.w3.org/2000/svg
 - **Names survive:** informative SVGs keep `<title>` and non-empty `<desc>` after optimization.
 - **No id clashes:** with several optimized SVGs inlined on one page, every id is unique and each `url(#id)` paints the right gradient, clip or filter; prefixes are reproducible, and an SSR page shows no hydration mismatch.
 - **Standalone files work:** any SVG served to `<img>` or CSS was not run through `removeXMLNS`.
-- **DOM budget:** on pages with many inline icons, Lighthouse 12's `dom-size` audit stays under its warning (about 800 nodes), or `dom-size-insight` passes on Lighthouse 13 ([moving Lighthouse to insights](https://developer.chrome.com/blog/moving-lighthouse-to-insights); this line said "Lighthouse's DOM size audit", an id Lighthouse 13 removed). Gating it in CI: [LIGHTHOUSE-CI.md](../web-performance/LIGHTHOUSE-CI.md#audit-ids-in-lighthouse-12-and-13).
+- **DOM budget:** on pages with many inline icons, Lighthouse 12's `dom-size` audit stays under its warning (about 800 nodes), or `dom-size-insight` passes on Lighthouse 13 ([moving Lighthouse to insights](https://developer.chrome.com/blog/moving-lighthouse-to-insights); this line said "Lighthouse's DOM size audit", an id Lighthouse 13 removed). Gating it in CI: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md#audit-ids-in-lighthouse-12-and-13).
 - **Scripts can't run:** a test upload containing `<script>`, an `onload` attribute and a `javascript:` link is clean after sanitizing (DOMPurify output has no event attributes), and opening its URL directly downloads it (`Content-Disposition: attachment`) or runs nothing under the CSP.
 - **Headers:** the response for an SVG carries `Content-Type: image/svg+xml`; on an uploaded one also the CSP and `Content-Disposition` you set.
 - **Type check ignores the client:** an upload with a spoofed `Content-Type` is rejected by your own file-type validation.

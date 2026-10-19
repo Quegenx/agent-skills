@@ -1,6 +1,6 @@
 # Writing tests
 
-The API below is the `e2e` agentic runner's (packages `e2e`, `@e2e-dev/web`, `@e2e-dev/mobile`), marked where its behavior differs from Playwright. Agent steps in depth are AGENT-STEPS.md; config and the app under test are RUNNER-SETUP.md.
+The API below is the `e2e` agentic runner's (packages `e2e`, `@e2e-dev/web`, `@e2e-dev/mobile`), marked where its behavior differs from Playwright. Agent steps in depth are AGENT-STEPS.md; config and the app under test are RUNNER-SETUP.md. [tester-army/e2e, writing tests]
 
 **Contents:** [Workflow](#workflow) · [Goals and exact steps](#goals-and-exact-steps) · [Habits](#habits) · [Registration and fixtures](#registration-and-fixtures) · [Locators](#locators) · [Actions](#actions) · [Reads](#reads) · [Assertions](#assertions) · [Screenshots](#screenshots) · [Sign-in sessions and secrets](#sign-in-sessions-and-secrets) · [The browser fixture and API checks](#the-browser-fixture-and-api-checks) · [Prove it](#prove-it)
 
@@ -126,7 +126,7 @@ test.setup('authenticate as admin', { sessions: ['admin'] }, async ({ app, scree
 - **Redact after secret entry (pixel taint):** once a secret is filled, model pixels and assertion screenshots are withheld for the rest of the session and `app.screenshot()` is `POLICY_DENIED`. To keep screenshots, sign in without a fill (`browser.setCookies`).
 - **A static password must be 6+ code points at config load,** so an unset variable fails every command. Defer it: `() => process.env.ADMIN_PASSWORD ?? ''`.
 - **Devices have no `state` capability:** no `test.setup` or `session`; sign in per test.
-- **Auditing a SaaS product:** map which parts are public and which need an account first, since a marketing audit gives no permission to look at accounts, tenants or private APIs; use made-up identities and sandbox payments, never real customer data or real charges; and test sign-in for an existing user, not only a new signup [freescan, /blog/how-to-audit-a-saas-website]. The audit side is [site-audit LAUNCH.md](../../marketing/site-audit/LAUNCH.md#saas-audits).
+- **Auditing a SaaS product:** map which parts are public and which need an account first, since a marketing audit gives no permission to look at accounts, tenants or private APIs; use made-up identities and sandbox payments, never real customer data or real charges; and test sign-in for an existing user, not only a new signup [freescan, /blog/how-to-audit-a-saas-website]. The audit side is [site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md#saas-audits).
 
 ## The browser fixture and API checks
 

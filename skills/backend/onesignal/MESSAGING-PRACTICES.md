@@ -144,7 +144,7 @@ The request limits, rolling application message limit and disable/re-enable beha
 - **Cadence signal:** a histogram of messages received per user per week over 30 days. When the top decile gets 3 to 4 times the median, fatigue opt-outs may concentrate there.
 - **Map every campaign and Journey that reaches the same user** (entry, waits, exits, suppression). Review segments not referenced in 90 days. Spot-check the personalization fallbacks of your top 5 templates. Test the full deep-link destination.
 - **Change one thing** with a hypothesis, a success metric and a guardrail metric (e.g. opt-outs).
-- **Channel roles:** push for time-sensitive, email for visual or long, in-app for contextual messages to active users, SMS/RCS for consented direct messages, Live Activities for ongoing changing information. Consent is separate per channel: a yes to push doesn't carry over to texts. For texts: "If it could wait 24 hours, send it via email" [coreyhaines31/marketingskills, sms]; see [../../marketing/sms-marketing/CHANNEL-AND-COPY.md](../../marketing/sms-marketing/CHANNEL-AND-COPY.md#when-sms-beats-email).
+- **Channel roles:** push for time-sensitive, email for visual or long, in-app for contextual messages to active users, SMS/RCS for consented direct messages, Live Activities for ongoing changing information. Consent is separate per channel: a yes to push doesn't carry over to texts. For texts: "If it could wait 24 hours, send it via email" [coreyhaines31/marketingskills, sms]; see [sms-marketing CHANNEL-AND-COPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/CHANNEL-AND-COPY.md#when-sms-beats-email).
 
 ## Prove it
 

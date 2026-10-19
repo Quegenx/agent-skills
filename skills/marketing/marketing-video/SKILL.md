@@ -5,7 +5,9 @@ description: "Produces marketing video with tools rather than code: choosing bet
 
 # Marketing video
 
-Marketing video is four approaches, each good at one job: a film built in code, footage a video model generates, a talking head an avatar delivers, and long recordings cut into short clips. Pick the approach from the video's goal and the assets you have before picking a tool. Anything built in code (a launch film, a product walkthrough, a templated series) is the [make-video](../../videos/make-video/SKILL.md) skill; a scripted recording of your own app is [asset-prep APP-RECORDING.md](../../videos/asset-prep/APP-RECORDING.md). This skill covers the rest. Source: [coreyhaines31/marketingskills, video] v2.2.1 (MIT, (c) 2025 Corey Haines), with its stale specs corrected against ai.google.dev, heygen.com/pricing and developers.openai.com.
+Marketing video is four approaches, each good at one job: a film built in code, footage a video model generates, a talking head an avatar delivers, and long recordings cut into short clips. Pick the approach from the video's goal and the assets you have before picking a tool. Anything built in code (a launch film, a product walkthrough, a templated series) is the [make-video](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/SKILL.md) skill; a scripted recording of your own app is [asset-prep APP-RECORDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/APP-RECORDING.md). This skill covers the rest. Source: [coreyhaines31/marketingskills, video] v2.2.1 (MIT, (c) 2025 Corey Haines), with its stale specs corrected against ai.google.dev, heygen.com/pricing and developers.openai.com.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -15,7 +17,7 @@ Marketing video is four approaches, each good at one job: a film built in code, 
 
 ## Before starting
 
-[coreyhaines31/marketingskills, video] Read `.agents/product-context.md` first when it exists ([anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md) defines it; the source calls the file `.agents/product-marketing.md`) and ask only for what it doesn't cover:
+[coreyhaines31/marketingskills, video] Read `.agents/product-context.md` first when it exists ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md) defines it; the source calls the file `.agents/product-marketing.md`) and ask only for what it doesn't cover:
 
 - **Goal:** the type (product demo, explainer, testimonial, social clip, ad, tutorial), the platform (YouTube, TikTok, Reels, Shorts, website, ads, sales deck) and the length.
 - **Production:** a human presenter or not (AI avatar, voiceover, screen recording); existing footage or assets (screenshots, logos, product UI); whether generated footage is needed (scenes, B-roll); one-off or a template for repeated use.
@@ -27,12 +29,12 @@ Marketing video is four approaches, each good at one job: a film built in code, 
 
 | Approach | Best for | Tools | When |
 |---|---|---|---|
-| Programmatic | Templated, data-driven, batch video | Code-built films: [make-video](../../videos/make-video/SKILL.md) (seek-engine by default, Remotion or HyperFrames when the brief needs them) | Product updates, personalized videos, recurring content |
+| Programmatic | Templated, data-driven, batch video | Code-built films: [make-video](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/SKILL.md) (seek-engine by default, Remotion or HyperFrames when the brief needs them) | Product updates, personalized videos, recurring content |
 | AI generation | Original footage from text or image prompts | Veo, Runway, Kling, Seedance | B-roll, hero shots, visuals you can't film |
 | AI avatars | A talking-head presenter without filming | HeyGen, Synthesia | Explainers, tutorials, multilingual content |
 | Editing and repurposing | Cutting long-form into short clips | Descript, Opus Clip, CapCut | Podcast or webinar to social clips |
 
-The source recommends HyperFrames as the default engine for agents ("Plain HTML/CSS means any coding agent can write a composition"). This repo's make-video keeps its own default instead: "one HTML file with `window.seek(t)` ... Reach for a framework only when the brief needs what it adds". The [make-video licence section](../../videos/make-video/ENGINES.md#remotion-licence) owns Remotion eligibility and its operating-party headcount correction; the source's "Company license for commercial use" and this file's old employees-only shorthand were incomplete.
+The source recommends HyperFrames as the default engine for agents ("Plain HTML/CSS means any coding agent can write a composition"). This repo's make-video keeps its own default instead: "one HTML file with `window.seek(t)` ... Reach for a framework only when the brief needs what it adds". The [make-video licence section](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/ENGINES.md#remotion-licence) owns Remotion eligibility and its operating-party headcount correction; the source's "Company license for commercial use" and this file's old employees-only shorthand were incomplete.
 
 **AI generation or stock** [coreyhaines31/marketingskills, video]:
 
@@ -50,11 +52,11 @@ Product UI is never generated: show the real product from real recordings or a f
 
 [coreyhaines31/marketingskills, video]
 
-- **Product demo:** script the key features and value props ([anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md)), screen-record the product flow, overlay titles, callouts and transitions in code, optionally add generated B-roll for establishing or lifestyle shots, add a voiceover ([voiceover](../../videos/voiceover/SKILL.md)) or an avatar, export at each platform's specs. A flow re-recorded every release: [APP-RECORDING.md](../../videos/asset-prep/APP-RECORDING.md).
+- **Product demo:** script the key features and value props ([anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)), screen-record the product flow, overlay titles, callouts and transitions in code, optionally add generated B-roll for establishing or lifestyle shots, add a voiceover ([voiceover](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/voiceover/SKILL.md)) or an avatar, export at each platform's specs. A flow re-recorded every release: [asset-prep APP-RECORDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/APP-RECORDING.md).
 - **Explainer:** script problem, solution, call to action; choose a presenter (an avatar, or voiceover over visuals); build the visuals (code-built scenes, screen recordings, generated scenes); add captions, always; export landscape for YouTube and the website, vertical for social.
-- **Batch social clips:** one master template, fed with data (features, testimonials, stats), rendered as many variations, captioned per platform, then scheduled ([social-media](../social-media/SKILL.md)).
+- **Batch social clips:** one master template, fed with data (features, testimonials, stats), rendered as many variations, captioned per platform, then scheduled ([social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md)).
 - **Agent pipeline:** the agent writes the script from the product context, then a code-built film, an avatar video (HeyGen's MCP server) and generated B-roll (a video model's API) as needed, and the agent assembles the cut.
-- **Paid video ads** go to [ad-creative](../ad-creative/SKILL.md) and, for apps, mobile/app-growth's [AD-CREATIVES.md](../../mobile/app-growth/AD-CREATIVES.md); an App Store or Play preview goes to [aso](../../mobile/aso/SKILL.md).
+- **Paid video ads** go to [ad-creative](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md) and, for apps, mobile/app-growth's [app-growth AD-CREATIVES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/AD-CREATIVES.md); an App Store or Play preview goes to [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md).
 
 ## Common mistakes
 
@@ -75,7 +77,7 @@ Product UI is never generated: show the real product from real recordings or a f
 4. **Every video with speech ships with captions** (WCAG 2.2 SC 1.2.2, Level A, https://www.w3.org/WAI/WCAG22/Understanding/captions-prerecorded).
 5. **Check a model's limits on its official page before promising a length or resolution:** Veo 3.1 at 1080p or 4k "only supports 8s duration" (https://ai.google.dev/gemini-api/docs/veo), and OpenAI removed the Sora video API on 2026-09-24 (https://developers.openai.com/api/docs/deprecations).
 6. **An avatar or cloned voice is only of the user or someone who consented;** the source scopes custom avatars to "a 2-5 min video of yourself". [coreyhaines31/marketingskills, video]
-7. **Personalized outreach videos are cold messages:** the send follows [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) and the platform's rules ([cold-outreach](../cold-outreach/SKILL.md)).
+7. **Personalized outreach videos are cold messages:** the send follows [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md) and the platform's rules ([cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md)).
 8. **List each paid generation with its estimated cost and wait for approval,** as asset-prep requires before expensive steps.
 
 ## Prove it

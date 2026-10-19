@@ -15,7 +15,7 @@ In **Convex**, every mutation is a serializable transaction with optimistic conc
 
 ## Row locks, timeouts and isolation in Postgres
 
-See [Postgres lock modes, transaction boundaries, timeouts and isolation](../postgres/CONNECTIONS.md#locks-and-deadlocks).
+See [Postgres lock modes, transaction boundaries, timeouts and isolation](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/CONNECTIONS.md#locks-and-deadlocks).
 
 ## Inside one process (JavaScript)
 
@@ -61,7 +61,7 @@ When the invariant can't be expressed in the data, use a shared lock. Typical ca
 
 The options:
 
-- **Postgres advisory locks:** use the [engine contract](../postgres/CONNECTIONS.md#locks-and-deadlocks) for transaction/session scope, hashing, direct connections and failure detection.
+- **Postgres advisory locks:** use the [engine contract](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/CONNECTIONS.md#locks-and-deadlocks) for transaction/session scope, hashing, direct connections and failure detection.
 - **A lease row:** `update locks set owner = $me, expires_at = now() + interval '30 seconds' where name = 'nightly-import' and (owner is null or expires_at < now())`, then check the affected row count. Renew while working; stop if a renewal fails.
 - **Redis:** `SET key token NX PX 30000`, and release only if the value is still your token (an atomic check-and-delete script). Prefer a maintained lock library over hand-rolling expiry, renewal and release. Multi-node schemes like Redlock still rely on timing, so they need fencing or a data-level invariant as much as the single-node form.
 - **Convex:** usually none of these. A mutation that reads the job's state and claims it is already serializable, so "only one worker runs this" is a conditional write in a mutation.

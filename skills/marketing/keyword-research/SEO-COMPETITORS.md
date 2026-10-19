@@ -1,6 +1,6 @@
 # SEO competitors
 
-Who wins a search market, why, and where the openings are; then one named competitor in depth. SEO competitors are whoever keeps showing up in the results for the queries you want; "Distinguish SEO competitors from business competitors" [open-seo, competitive-landscape]. The two workflows are every-app/open-seo's `competitive-landscape` and `competitor-analysis` skills (MIT, Copyright (c) 2026 Ben Senescu), with OpenSEO tool calls reduced to the job they do. Business competitors (feature matrix, pricing, battle cards) are [../../web-automation/web-research/COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md); pages that compare you with them are [../comparison-pages/SKILL.md](../comparison-pages/SKILL.md).
+Who wins a search market, why, and where the openings are; then one named competitor in depth. SEO competitors are whoever keeps showing up in the results for the queries you want; "Distinguish SEO competitors from business competitors" [open-seo, competitive-landscape]. The two workflows are every-app/open-seo's `competitive-landscape` and `competitor-analysis` skills (MIT, Copyright (c) 2026 Ben Senescu), with OpenSEO tool calls reduced to the job they do. Business competitors (feature matrix, pricing, battle cards) are [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md); pages that compare you with them are [comparison-pages SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md).
 
 ## Which workflow
 
@@ -8,14 +8,14 @@ Who wins a search market, why, and where the openings are; then one named compet
 - **Landscape:** "Who is winning this SEO market, what content is working for them, and where are the openings?" Use it for a market-level view across several competitors, or when the market is unclear.
 - **One competitor:** analyze one domain "deeply enough to decide what to learn from, avoid, counter-position against, or outrank." Use it for a named competitor.
 
-Both need competitors from the context file. If none are saved, run the minimal inline setup in [PROJECT-SETUP.md](../seo/PROJECT-SETUP.md#minimal-inline-setup): ask who they compete with, or infer a shortlist from the SERPs and confirm it. When the user's own domain is in the comparison and Search Console is connected, anchor it with first-party clicks, impressions, CTR and position "rather than third-party estimates" ([../search-console/SKILL.md](../search-console/SKILL.md)).
+Both need competitors from the context file. If none are saved, run the minimal inline setup in [seo PROJECT-SETUP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PROJECT-SETUP.md#minimal-inline-setup): ask who they compete with, or infer a shortlist from the SERPs and confirm it. When the user's own domain is in the comparison and Search Console is connected, anchor it with first-party clicks, impressions, CTR and position "rather than third-party estimates" ([search-console SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SKILL.md)).
 
 ## The landscape
 
 [open-seo, competitive-landscape]
 1. **Define the query set:** 5 to 10 representative queries of mixed intent: informational, commercial, comparison, and tool or software terms when they apply. For local SEO, add neighbourhood, city and service-area queries and identify the priority locations or coordinates.
 2. If the query set is already known, validate relative demand and difficulty, and find the domains that recur across it.
-3. **Local:** get local business and local pack results for the highest-priority locations "before synthesizing winners." Organic SERPs complement them; they are not the only local evidence ([../seo/LOCAL.md](../seo/LOCAL.md)).
+3. **Local:** get local business and local pack results for the highest-priority locations "before synthesizing winners." Organic SERPs complement them; they are not the only local evidence ([seo LOCAL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LOCAL.md)).
 4. Inspect live SERPs for representative queries when composition, ranking URLs or SERP features matter (from a licensed provider; keep [Search Console metrics separate](KEYWORDS.md#search-console-and-serp-evidence)). Google's [spam policies](https://developers.google.com/search/docs/essentials/spam-policies) forbid scraping its results for rank checking.
 5. Group the recurring domains by type:
    - direct product competitors;
@@ -43,7 +43,7 @@ Both need competitors from the context file. If none are saved, run the minimal 
 2. When comparing, get the user's domain overview too, and with Search Console connected use it as the user's real baseline.
 3. Pull the competitor's ranked keywords, filtered to keep rows relevant: maximum rank, minimum search volume, brand terms excluded, chosen result types.
 4. When comparing, pull the user's ranked keywords too, or check the shared terms' SERPs "when a lighter check is enough."
-5. **Local:** get local business and local SERP results around the relevant locations "before drawing local-pack conclusions." This file formerly excluded all profile Q&A from the old API's shutdown; use the corrected provider/market/availability distinction in [LOCAL.md](../seo/LOCAL.md#workflow) for optional Q&A evidence. [open-seo, competitor-analysis]
+5. **Local:** get local business and local SERP results around the relevant locations "before drawing local-pack conclusions." This file formerly excluded all profile Q&A from the old API's shutdown; use the corrected provider/market/availability distinction in [seo LOCAL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LOCAL.md#workflow) for optional Q&A evidence. [open-seo, competitor-analysis]
 6. When the user supplied the competitor but its search overlap is unclear, check whether it really competes across the target keyword set.
 7. Group its keywords into themes:
    - product and category terms;
@@ -63,9 +63,9 @@ Both need competitors from the context file. If none are saved, run the minimal 
 4. **Keyword themes:** a table of theme, example keywords, volume, and whether the user competes there; a bar chart when a few themes dominate.
 5. **Content patterns and authority:** prose, "with a note for anything inferred from keyword rows rather than seen on a page."
 6. **What to do next:** an ordered list, shortest useful.
-7. **How this report was made:** which tools reported what, and what you checked yourself ([SEO-REPORTS.md](../seo/SEO-REPORTS.md#how-this-report-was-made)).
+7. **How this report was made:** which tools reported what, and what you checked yourself ([seo SEO-REPORTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SEO-REPORTS.md#how-this-report-was-made)).
 
-**The SEO data a competitor profile pulls** [coreyhaines31/marketingskills, competitor-profiling]: a backlinks summary (domain rank, total backlinks, referring domains, spam score) and the referring domains list; ranked keywords (total, top 3, 10 and 100, estimated traffic); a domain rank overview (traffic value, top keywords); keywords for the site (content gaps); competitors by keyword overlap ("may reveal competitors you haven't considered"); the domain intersection with the user's domain; relevant pages (highest traffic); technology detection. The source maps each to a vendor tool; those names are not verified here, so use whatever SEO data source you have and mark a missing field "unavailable". Business-competitor profiles are [web-research COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md).
+**The SEO data a competitor profile pulls** [coreyhaines31/marketingskills, competitor-profiling]: a backlinks summary (domain rank, total backlinks, referring domains, spam score) and the referring domains list; ranked keywords (total, top 3, 10 and 100, estimated traffic); a domain rank overview (traffic value, top keywords); keywords for the site (content gaps); competitors by keyword overlap ("may reveal competitors you haven't considered"); the domain intersection with the user's domain; relevant pages (highest traffic); technology detection. The source maps each to a vendor tool; those names are not verified here, so use whatever SEO data source you have and mark a missing field "unavailable". Business-competitor profiles are [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md).
 
 ## Guardrails
 

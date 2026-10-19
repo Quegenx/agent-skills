@@ -41,7 +41,7 @@ Walk this checklist:
 
 - **PostHog does NOT correct for multiple comparisons,** across variants (each is compared with the baseline independently) or across metrics.
 - **Frequentist α=0.05:** 5 independent metrics give about a 23% chance of at least one false positive; 10 give about 40%.
-- **Other tools differ:** Optimizely's Stats Engine controls the false discovery rate with a tiered Benjamini-Hochberg procedure ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/false-discovery-rate-control)); with PostHog, apply Bonferroni by hand or keep the metric set small ([../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md#multiple-variants)).
+- **Other tools differ:** Optimizely's Stats Engine controls the false discovery rate with a tiered Benjamini-Hochberg procedure ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/false-discovery-rate-control)); with PostHog, apply Bonferroni by hand or keep the metric set small ([ab-testing SAMPLE-SIZE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SAMPLE-SIZE.md#multiple-variants)).
 - **Bayesian:** significant when the chance to win is above the confidence level OR below 1 minus the level; at 95% that is two 5% tails, so about 1 in 10 comparisons comes out significant when nothing changed, and at least one among 5 metrics about 40% of the time.
 - **Recommend:** a small, planned, hypothesis-driven metric set; read the results as a pattern; guardrails as secondary metrics; an unexpected significant metric is a hypothesis for a follow-up with it as primary. Metrics added after seeing data are p-hacking.
 

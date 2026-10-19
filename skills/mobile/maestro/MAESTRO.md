@@ -1,6 +1,6 @@
 # Maestro for React Native, Expo and Flutter
 
-Maestro is a declarative YAML mobile end-to-end framework with automatic waiting and built-in retry; the source calls it more stable than Detox or Appium for React Native apps. In the source React Native/Expo auth suite, every test waits for a readiness marker that says auth has loaded and handles either auth state, because on iOS `clearState` does not clear the Keychain. Porting Maestro flows to the `e2e` runner's mobile engine is SUITE-MIGRATION.md.
+Maestro is a declarative YAML mobile end-to-end framework with automatic waiting and built-in retry; the source calls it more stable than Detox or Appium for React Native apps. In the source React Native/Expo auth suite, every test waits for a readiness marker that says auth has loaded and handles either auth state, because on iOS `clearState` does not clear the Keychain. Porting to tester-army/e2e is an optional, separately selected migration: [tester-army-e2e migration guide](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/tester-army-e2e/SUITE-MIGRATION.md). This guide is not a Maestro-to-Patrol migration recipe.
 
 Common Maestro setup, selectors, waiting, scrolling, text input and permissions live here. Flutter-specific builds, launch arguments and semantics remain in [FLUTTER.md](FLUTTER.md). Sources: [tovimx/maestro-mobile-testing-skill, maestro-mobile-testing/SKILL.md] and [mobile-dev-inc/maestro-docs, Flutter and command references].
 

@@ -1,6 +1,6 @@
 # Researching code with evidence
 
-Find the source that settles a question, preserve what the tool actually observed, and stop when another read cannot change the answer. Sources: [bgauryy/octocode, octocode-research], [JuliusBrussee/caveman, caveman-explore and cavecrew], and [dzhng/jevgrep, jevgrep]. This is the research method; the [debugging skill](../debugging/SKILL.md) owns the problem contract and causal diagnosis, and [agent-harness WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets) owns delegation.
+Find the source that settles a question, preserve what the tool actually observed, and stop when another read cannot change the answer. Sources: [bgauryy/octocode, octocode-research], [JuliusBrussee/caveman, caveman-explore and cavecrew], and [dzhng/jevgrep, jevgrep]. This is the research method; the [debugging skill](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/SKILL.md) owns the problem contract and causal diagnosis, and [agent-harness WORKFLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md#delegation-packets) owns delegation.
 
 ## Start from the strongest handle
 
@@ -51,7 +51,7 @@ Find the source that settles a question, preserve what the tool actually observe
 
 - A read-only locator returns the relevant path, a range it actually read, the symbol when useful, and a short relevance note. It does not invent line ranges or expand a location request into an architecture proposal.
 - Stop locating once the solver has the decisive sites. If the exact site was supplied, send it directly to the scoped task rather than buying another discovery pass.
-- An honest no-match result states its checked scope. The parent verifies load-bearing locations under the [delegation contract](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets); compressed output does not remove that responsibility.
+- An honest no-match result states its checked scope. The parent verifies load-bearing locations under the [delegation contract](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md#delegation-packets); compressed output does not remove that responsibility.
 
 ## Prove it
 

@@ -124,7 +124,7 @@ In-app CSAT after an action (replace `export_completed` with an event the projec
 }
 ```
 
-Product-market fit survey (Sean Ellis's question, popularized by Superhuman's Rahul Vohra [coreyhaines31/marketingskills, customer-research]; replace `[product]`; run it as a recurring pulse and segment every answer by the "Very disappointed" cohort; [customer-research] treats 40% or more "very disappointed" as likely product/market fit; its follow-ups and order are in [../../marketing/customer-research/INTERVIEWS-AND-SURVEYS.md](../../marketing/customer-research/INTERVIEWS-AND-SURVEYS.md#the-pmf-survey)):
+Product-market fit survey (Sean Ellis's question, popularized by Superhuman's Rahul Vohra [coreyhaines31/marketingskills, customer-research]; replace `[product]`; run it as a recurring pulse and segment every answer by the "Very disappointed" cohort; [customer-research] treats 40% or more "very disappointed" as likely product/market fit; its follow-ups and order are in [customer-research INTERVIEWS-AND-SURVEYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/INTERVIEWS-AND-SURVEYS.md#the-pmf-survey)):
 
 ```json
 {
@@ -156,7 +156,7 @@ Product-market fit survey (Sean Ellis's question, popularized by Superhuman's Ra
 }
 ```
 
-A "How did you hear about us?" question for attribution: ask it at the conversion moment, a pick-list of known channels plus a free-text other ([../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md#self-reported-attribution)).
+A "How did you hear about us?" question for attribution: ask it at the conversion moment, a pick-list of known channels plus a free-text other ([marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md#self-reported-attribution)).
 
 Hosted feedback form:
 

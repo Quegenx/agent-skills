@@ -215,7 +215,7 @@ const pillStyle = useAnimatedStyle(() => ({
 ```
 
 - The sanctioned `width` animation: absolutely positioned, no children, "its corner radius survives". `ease-in-out`, because the pill moves across the screen. Fire `Haptics.selectionAsync()` on the press, not when the pill lands.
-- `app-ui` does its segmented tabs this way instead: "the pill on a spring of 420, 32, 1; at up to 1000px/s it narrows by up to 35% and grows up to 21% taller", and "Only a user's pick springs it, by pointer or keyboard. A saved value arriving, a reset, or a resize places it instantly" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#segmented-tabs)); this recipe also animates on `layouts` changes. app-ui governs app-ui.
+- `app-ui` does its segmented tabs this way instead: "the pill on a spring of 420, 32, 1; at up to 1000px/s it narrows by up to 35% and grows up to 21% taller", and "Only a user's pick springs it, by pointer or keyboard. A saved value arriving, a reset, or a resize places it instantly" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#segmented-tabs)); this recipe also animates on `layouts` changes. app-ui governs app-ui.
 
 ## Screen transitions
 
@@ -236,7 +236,7 @@ const pillStyle = useAnimatedStyle(() => ({
 - **Corrected:** the source gave `settings` `options={{ animation: 'slide_from_right', animationMatchesGesture: true }}`. In React Navigation, `slide_from_right` "falls back to the default animation on iOS", and `animationMatchesGesture` is iOS-only, defaults to false and doesn't affect modals, so the pair adds nothing to the default push. `animationDuration` (iOS only, default 500) can't be set for `default`, `modal` or `formSheet` ([native stack navigator](https://reactnavigation.org/docs/native-stack-navigator/)).
 - **`reduced` comes from `useReducedMotion()`,** which doesn't follow a mid-session change ([Reduced motion](REACT-NATIVE.md#reduced-motion-and-text-size)).
 - Deeper into a hierarchy: `animation: 'default'`. A self-contained task the user can abandon: `presentation: 'modal'`. A short interruption (picker, filter, share): `presentation: 'formSheet'` with detents. Between tabs: `animation: 'none'`. Reduced motion: `animation: 'fade'`.
-- **Native sheet platform limits:** read [React Native sheets and modals](../react/REACT-NATIVE.md#sheets-and-modals) for detents, grabbers, native headers, nested stacks and fitToContents sizing before using this recipe. [Expo modals](https://docs.expo.dev/router/advanced/modals/)
+- **Native sheet platform limits:** read [React Native sheets and modals](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE.md#sheets-and-modals) for detents, grabbers, native headers, nested stacks and fitToContents sizing before using this recipe. [Expo modals](https://docs.expo.dev/router/advanced/modals/)
 
 ## Toast
 

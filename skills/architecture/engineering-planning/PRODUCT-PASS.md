@@ -1,6 +1,6 @@
 # Product pass: before changing a developer tool's public surface
 
-A CLI flag, a score, a config option, a JSON report field, a package API, an exit code or a GitHub Action input is a contract with users you don't control, the same as an endpoint. This is a runbook to work before writing the change: name the job, reuse before adding, wire one metric, pick the default and the compatibility artifacts, update the docs, and write down when the surface gets removed. Source: [React Doctor, product-thinking], React Doctor's runbook for its own CLI, score, config, JSON report, package API and GitHub Action; its file paths, telemetry plumbing and commands are left out. Versioning an HTTP API is [CONTRACT.md](../../backend/api-design/CONTRACT.md); flag owners and removal conditions are [FLAGS.md](../../backend/api-design/FLAGS.md).
+A CLI flag, a score, a config option, a JSON report field, a package API, an exit code or a GitHub Action input is a contract with users you don't control, the same as an endpoint. This is a runbook to work before writing the change: name the job, reuse before adding, wire one metric, pick the default and the compatibility artifacts, update the docs, and write down when the surface gets removed. Source: [React Doctor, product-thinking], React Doctor's runbook for its own CLI, score, config, JSON report, package API and GitHub Action; its file paths, telemetry plumbing and commands are left out. Versioning an HTTP API is [api-design CONTRACT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/CONTRACT.md); flag owners and removal conditions are [api-design FLAGS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/FLAGS.md).
 
 ## When it runs
 
@@ -16,7 +16,7 @@ A CLI flag, a score, a config option, a JSON report field, a package API, an exi
 | GitHub Action input or output | "Versioned independently (`vN`); workflows in other repos break when an input or output changes." |
 | Terminal output | "The first impression and the daily experience; noise or confusion here is what makes people stop running it." |
 
-Internal-only changes "skip the pass entirely; note in one line why the change is internal and move on." Lint rules have their own pipeline: [lint-rule-authoring LINT-RULES.md](../lint-rule-authoring/LINT-RULES.md).
+Internal-only changes "skip the pass entirely; note in one line why the change is internal and move on." Lint rules have their own pipeline: [lint-rule-authoring LINT-RULES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/LINT-RULES.md).
 
 ## The steps
 
@@ -70,7 +70,7 @@ Two filters before building:
 
 ### 6. The kill metric
 
-"Write one line in the brief: the metric from step 3, a threshold, and a horizon, e.g. 'remove if `<metric>` stays under N after 2 releases'. Schedule the check instead of trusting yourself to remember it, and treat deleting unused surface as a win, not an admission of failure." The same idea for flags: every flag has an owner and a removal condition ([FLAGS.md](../../backend/api-design/FLAGS.md)).
+"Write one line in the brief: the metric from step 3, a threshold, and a horizon, e.g. 'remove if `<metric>` stays under N after 2 releases'. Schedule the check instead of trusting yourself to remember it, and treat deleting unused surface as a win, not an admission of failure." The same idea for flags: every flag has an owner and a removal condition ([api-design FLAGS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/FLAGS.md)).
 
 ### 7. Run the checks
 

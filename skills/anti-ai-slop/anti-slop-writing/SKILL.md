@@ -7,36 +7,38 @@ description: "Edits prose to read like a sharp human wrote it, in the writer's o
 
 A sharp human editor, not a humanizer. The job is to make the writing clearer and more alive while it still sounds like the same person. Load `anti-slop` for the shared rules; this skill holds the prose depth. The pattern catalogue is [TELLS.md](TELLS.md); plain swaps for pompous words are [PLAIN-WORDS.md](PLAIN-WORDS.md); Hebrew is [HEBREW.md](HEBREW.md); the final check is [CHECK.md](CHECK.md). Edit modes, the second-generation tells, the social and email tells and the plain-words list come from coreyhaines31/marketingskills (`copy-editing`, `copywriting`, `social`, `emails`; MIT), which credits Profound's and Wispr Flow's skills (MIT) for the modes and the second-generation tells; the reply format is open-seo's `seo-coach` (MIT); Hebrew additions are skills-il's `hebrew-content-writer` (MIT).
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Name a pattern, quote it, fix it: structure, openers and closers, vocabulary, honesty, formatting, second-generation tells, social posts and email, what is not a tell | [TELLS.md](TELLS.md) |
 | Swap a pompous word or phrase for the plain one (prose and marketing copy, not interface verbs) | [PLAIN-WORDS.md](PLAIN-WORDS.md) |
 | Hebrew: its tells, register, bureaucratic forms, gender, punctuation, English inside Hebrew, Hebrew SEO | [HEBREW.md](HEBREW.md) |
 | The final pass before returning any edit or draft | [CHECK.md](CHECK.md) |
-| Write or maintain developer documentation, snippets, demos, navigation, redirects and generated output | [developer-docs](../../architecture/developer-docs/SKILL.md) |
+| Write or maintain developer documentation, snippets, demos, navigation, redirects and generated output | [developer-docs](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/SKILL.md) |
 
 ## Two jobs
 
-**Edit (the default).** The user gives a draft to improve. Make the minimum effective edit and return the full edited text plus a short **What changed**. First decide what you were handed, because "the mode sets how much you're allowed to change" [coreyhaines31/marketingskills, copy-editing]: blank or slop may be rebuilt "from the underlying facts; never invent stats, customers, or results"; a real voice keeps "their argument, vocabulary, and emphasis". The mode table is [REVIEW.md](../anti-slop-copy/REVIEW.md#pick-the-edit-mode).
+**Edit (the default).** The user gives a draft to improve. Make the minimum effective edit and return the full edited text plus a short **What changed**. First decide what you were handed, because "the mode sets how much you're allowed to change" [coreyhaines31/marketingskills, copy-editing]: blank or slop may be rebuilt "from the underlying facts; never invent stats, customers, or results"; a real voice keeps "their argument, vocabulary, and emphasis". The mode table is [anti-slop-copy REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/REVIEW.md#pick-the-edit-mode).
 
-**Point edit.** The user names one line, word or section ("Fix this headline," "is this sentence OK?"): change only that and return only the changed text with a one-line reason per change [coreyhaines31/marketingskills, copy-editing]. This is the one exception to returning the full text; the rules are in [REVIEW.md](../anti-slop-copy/REVIEW.md#pick-the-edit-mode).
+**Point edit.** The user names one line, word or section ("Fix this headline," "is this sentence OK?"): change only that and return only the changed text with a one-line reason per change [coreyhaines31/marketingskills, copy-editing]. This is the one exception to returning the full text; the rules are in [anti-slop-copy REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/REVIEW.md#pick-the-edit-mode).
 
 **Detect.** The user asks whether a text reads as AI, or asks to audit or flag it without rewriting. Name each pattern from [TELLS.md](TELLS.md) that appears, quote the line, give the fix in a few words. Don't rewrite, don't score, and never claim a text was or wasn't written by AI: detectors guess, named patterns are evidence the user can check. Offer to edit afterwards.
 
-**Write from scratch.** Same rules, applied while drafting: know the reader and the point first, then write from the facts you have, then run [CHECK.md](CHECK.md). Before a full rewrite with no draft to restore, build the writer first: the five silent questions and the traits they produce are [DRAFTING.md](../anti-slop-copy/DRAFTING.md#build-a-writer-situation-a) [coreyhaines31/marketingskills, copywriting]. They never license facts: "Never invent experience".
+**Write from scratch.** Same rules, applied while drafting: know the reader and the point first, then write from the facts you have, then run [CHECK.md](CHECK.md). Before a full rewrite with no draft to restore, build the writer first: the five silent questions and the traits they produce are [anti-slop-copy DRAFTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/DRAFTING.md#build-a-writer-situation-a) [coreyhaines31/marketingskills, copywriting]. They never license facts: "Never invent experience".
 
 ## Before touching the text
 
-- If there is no draft, ask for it. If the audience or the outlet is unclear and it matters, ask one question: who reads this, and where?
+- For editing or detection, ask for the draft if it is missing; for an explicit write-from-scratch request, use that branch above. If the audience or the outlet is unclear and it matters, ask one question: who reads this, and where?
 - Find the core point. If you can't state it in one sentence, ask.
 - List the voice traits to keep: vocabulary, sentence length, bluntness, humor, uncertainty, digressions, swearing, level of polish, recurring phrases. If the user gives a sample of their writing, match it; it outranks this skill's style preferences. From a sample, "match its average sentence length, punctuation habits, paragraph openings, and a few words they use that you wouldn't" [coreyhaines31/marketingskills, copywriting].
-- Read taste as well as words: vocabulary, where the writer spent words and what they left out are choices to match ([DRAFTING.md](../anti-slop-copy/DRAFTING.md#read-taste-out-of-the-input-b-and-c)). If a personal voice guide exists for this writer, read it before any brand profile ([VOICE.md](../anti-slop-copy/VOICE.md#personal-voice)).
+- Read taste as well as words: vocabulary, where the writer spent words and what they left out are choices to match ([anti-slop-copy DRAFTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/DRAFTING.md#read-taste-out-of-the-input-b-and-c)). If a personal voice guide exists for this writer, read it before any brand profile ([anti-slop-copy VOICE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/VOICE.md#personal-voice)).
 - "Read through once without editing" [coreyhaines31/marketingskills, copy-editing].
 - Note the language and register. For Hebrew, read [HEBREW.md](HEBREW.md) first.
 
 ## Editing principles
 
-- **Minimum effective edit.** Fix the patterns, errors and tangles. Leave strong human sentences alone. A rough draft with a real voice should still sound like its writer. The leave-it-alone test: "For each change, ask whether it's measurably better or just different. Revert anything you can't give a reason for" [coreyhaines31/marketingskills, copy-editing] ([DRAFTING.md](../anti-slop-copy/DRAFTING.md#the-leave-it-alone-test)).
+- **Minimum effective edit.** Fix the patterns, errors and tangles. Leave strong human sentences alone. A rough draft with a real voice should still sound like its writer. The leave-it-alone test: "For each change, ask whether it's measurably better or just different. Revert anything you can't give a reason for" [coreyhaines31/marketingskills, copy-editing] ([anti-slop-copy DRAFTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/DRAFTING.md#the-leave-it-alone-test)).
 - **Keep the meaning.** Add no claim, example, number, quote or opinion. If a sentence needs a fact to work, ask for it or mark `[NEED: ...]`.
 - **Lead with the point when the setup adds nothing.** Keep a personal aside or story when it gives context, tension or character.
 - **Concrete over abstract.** Names, numbers, dates, mechanisms, examples. "The integration improved efficiency" becomes "Deploys went from 40 minutes to 4", but only if the 40 and the 4 are real.
@@ -59,14 +61,14 @@ Odd, hard-to-invent specifics. Mixed feelings left unresolved. Era-bound referen
 
 ## Replies in a terminal or chat
 
-An answer read in a terminal or chat window, not a document [open-seo, seo-coach]:
+For a reply using the SEO-coaching format, these are the source's terminal/chat conventions, not requirements for every writing task or chat reply [open-seo, seo-coach]:
 - "Lead with the answer or the one next step. Context comes after, not before."
 - "A paragraph is at most two sentences." "One idea per bullet, one line where possible. No nested bullets."
 - "Bold a short label at the start of a bullet when the list has more than three items."
 - "Numbers get a plain-language gloss the first time, in the same bullet: '2,400/mo (people searching it each month)'."
 - "End with a single question or a numbered list of 2-4 choices. Never both."
 - "Don't restate what the user already knows or what a tool call just showed them."
-- "Keep replies under a screen. If it needs more, that is a skill report, not a coach answer." The report rules are [SEO-REPORTS.md](../../marketing/seo/SEO-REPORTS.md).
+- "Keep replies under a screen. If it needs more, that is a skill report, not a coach answer." The report rules are [seo SEO-REPORTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SEO-REPORTS.md).
 
 ## Output
 

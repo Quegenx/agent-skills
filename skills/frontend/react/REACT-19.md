@@ -69,7 +69,7 @@ function App({children}) {
 }
 ```
 
-"New Context providers can use `<Context>` and we will be publishing a codemod to convert existing providers. In future versions we will deprecate `<Context.Provider>`." The createContext page calls `SomeContext.Provider` "a legacy way to provide the context value before React 19" ([https://react.dev/reference/react/createContext](https://react.dev/reference/react/createContext)). It is not deprecated yet. app-ui still uses `<SidebarContext.Provider value={contextValue}>` ([sidebar-context.tsx](../app-ui/reference/components/ui/navigation/sidebar/sidebar-context.tsx)); agent-chat-ui uses the new form, `<AgentChatLinkDetailsContext value={agentChatLinkDetailsOf(messages)}>`.
+"New Context providers can use `<Context>` and we will be publishing a codemod to convert existing providers. In future versions we will deprecate `<Context.Provider>`." The createContext page calls `SomeContext.Provider` "a legacy way to provide the context value before React 19" ([https://react.dev/reference/react/createContext](https://react.dev/reference/react/createContext)). It is not deprecated yet. app-ui still uses `<SidebarContext.Provider value={contextValue}>` ([sidebar-context.tsx](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/components/ui/navigation/sidebar/sidebar-context.tsx)); agent-chat-ui uses the new form, `<AgentChatLinkDetailsContext value={agentChatLinkDetailsOf(messages)}>`.
 
 ## use() reads context conditionally; it does not replace useContext
 
@@ -163,7 +163,7 @@ function UpdateName({}) {
 - What Actions manage: a pending state that "automatically resets when the final state update is committed"; optimistic updates through `useOptimistic`; error handling "so you can display Error Boundaries when a request fails, and revert optimistic updates to their original value automatically"; and forms, whose `action` and `formAction` props take functions.
 - **State set after `await` is not a Transition,** and "Actions within a Transition do not guarantee execution order" ([https://react.dev/reference/react/useTransition](https://react.dev/reference/react/useTransition#react-doesnt-treat-my-state-update-after-await-as-a-transition)); both, with the official form, are in [RERENDERS-AND-COMPILER.md](RERENDERS-AND-COMPILER.md#transitions). The blog's `setError` above sits after an `await` without that wrap.
 
-app-ui owns form pending the same way: "Own pending with a transition (`useTransition`), so it clears however the action ends." ([app-ui STATES.md](../app-ui/STATES.md))
+app-ui owns form pending the same way: "Own pending with a transition (`useTransition`), so it clears however the action ends." ([app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md))
 
 ## useActionState
 
@@ -256,7 +256,7 @@ function ChangeName({currentName, onUpdateName}) {
 - **On failure:** "If the Action throws an error, the Transition still ends, and React renders with whatever `value` currently is." Since the parent usually updates `value` only on success, the UI goes back to what it showed before; "You can catch the error to show a message to the user."
 - With a reducer, `useOptimistic(items, fn)`, "If `items` changes while the Action is pending, React re-runs your `reducer` with the new `items`", keeping the optimistic additions on top of the latest data. The reducer and updater functions must be pure.
 
-app-ui does optimistic state with its own override map instead: "An override map keyed by item id applies a status change over every list and surface that shows the item, until they are read again" ([app-ui STATES.md](../app-ui/STATES.md#optimistic-then-honest)).
+app-ui does optimistic state with its own override map instead: "An override map keyed by item id applies a status change over every list and surface that shows the item, until they are read again" ([app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#optimistic-then-honest)).
 
 ## Prove it
 

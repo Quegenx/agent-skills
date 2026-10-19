@@ -33,7 +33,7 @@ Matt Pocock's teach formats keep the goal, sources and evidence available across
 [mattpocock/skills, teach/GLOSSARY-FORMAT.md, teach/SKILL.md]
 
 - Promote a term only after the learner can use it correctly. This teaching-specific threshold records compressed understanding rather than supplies a dictionary before teaching begins.
-- Reuse the canonical-term, short-definition and avoided-alias form in [GLOSSARY-AND-ADRS.md](../../architecture/domain-modeling/GLOSSARY-AND-ADRS.md#domain-language), applying it to the learning topic. That file owns the glossary technique; the understanding threshold above is the teaching addition.
+- Reuse the canonical-term, short-definition and avoided-alias form in [domain-modeling GLOSSARY-AND-ADRS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/domain-modeling/GLOSSARY-AND-ADRS.md#domain-language), applying it to the learning topic. That file owns the glossary technique; the understanding threshold above is the teaching addition.
 - Use the glossary's vocabulary throughout lessons, exercises and records. Note how this workspace resolves an ambiguous term and revise a definition when understanding improves.
 - Store quick-reference HTML documents under `reference/`, lessons under `lessons/` and actual shared lesson assets under `assets/`. Their design and use are in [LESSONS.md](LESSONS.md).
 

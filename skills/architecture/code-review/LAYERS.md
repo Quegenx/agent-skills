@@ -46,12 +46,12 @@ Every PR gets an AI review before a person looks, and security gets its own auto
 
 The usual: lint, type checks, tests on every platform, and a build. A typical CLI pull request may run dozens of checks before anyone looks at it.
 
-- **A change to a checker itself** (a lint rule, a detector, an evaluator) gets a base-and-head run over pinned inputs with exit codes `0` match, `1` changes, `2` invalid evidence: [BASE-HEAD-PARITY.md](../lint-rule-authoring/BASE-HEAD-PARITY.md). Triage of a scanner's findings on a change, and when its "no findings" may be called clean: [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md).
+- **A change to a checker itself** (a lint rule, a detector, an evaluator) gets a base-and-head run over pinned inputs with exit codes `0` match, `1` changes, `2` invalid evidence: [lint-rule-authoring BASE-HEAD-PARITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/BASE-HEAD-PARITY.md). Triage of a scanner's findings on a change, and when its "no findings" may be called clean: [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md).
 
-- **A Lighthouse CI gate** posts its own GitHub status check; make that check required, and drop the `|| echo` its GitLab example ends with. Tokens and setup: [LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md#upload-tokens-and-status-checks).
+- **A Lighthouse CI gate** posts its own GitHub status check; make that check required, and drop the `|| echo` its GitLab example ends with. Tokens and setup: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md#upload-tokens-and-status-checks).
 
 - **The PR template asks how the change was tested and how to undo it,** under the headings "Testing", "Risk" and "How to revert". The agent can fill it in, but the person who asked for the change signs off on it.
-- **A duplication gate** ([ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)): Deslop (the tool is in [refactoring/DUPLICATION.md](../refactoring/DUPLICATION.md#deslop)) fails the step with exit code 3 above the ceiling, naming the measured percentage and the ceiling. `only-changed` reports only clusters the diff touches, so legacy duplication doesn't block every PR; `upload-artifact` keeps the HTML report. It posts no PR comment: read the `duplication-percent` step output and post it yourself. "Pin the version. Do not float on a tag."
+- **A duplication gate** ([ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)): Deslop (the tool is in [refactoring DUPLICATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DUPLICATION.md#deslop)) fails the step with exit code 3 above the ceiling, naming the measured percentage and the ceiling. `only-changed` reports only clusters the diff touches, so legacy duplication doesn't block every PR; `upload-artifact` keeps the HTML report. It posts no PR comment: read the `duplication-percent` step output and post it yourself. "Pin the version. Do not float on a tag."
 
 ```yaml
 name: deslop

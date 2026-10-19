@@ -1,6 +1,6 @@
 # Deliverability
 
-Deliverability is whether mail reaches the inbox, the spam folder or nothing. Authentication (SPF, DKIM, DMARC with an aligned From: domain) is required by Gmail, Yahoo and Microsoft, which reject or spam-filter unauthenticated mail; after that comes reputation: the spam complaint rate, bounces and steady sending volume. Authentication problems are the most common cause of mail landing in spam. The one-click unsubscribe headers the same providers require are in [COMPLIANCE.md](COMPLIANCE.md); setting up a domain in Resend is in [../resend/SKILL.md](../resend/SKILL.md).
+Deliverability is whether mail reaches the inbox, the spam folder or nothing. Authentication (SPF, DKIM, DMARC with an aligned From: domain) is required by Gmail, Yahoo and Microsoft, which reject or spam-filter unauthenticated mail; after that comes reputation: the spam complaint rate, bounces and steady sending volume. Authentication problems are the most common cause of mail landing in spam. The one-click unsubscribe headers the same providers require are in [COMPLIANCE.md](COMPLIANCE.md); setting up a domain in Resend is in [resend SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md).
 
 **Contents:** [Authentication](#authentication) · [DMARC in detail](#dmarc-in-detail) · [Sender requirements by mailbox provider](#sender-requirements-by-mailbox-provider) · [Gmail error codes](#gmail-error-codes) · [Reputation and thresholds](#reputation-and-thresholds) · [Stop-loss rules](#stop-loss-rules) · [Warming up and volume](#warming-up-and-volume) · [Bounces and complaints](#bounces-and-complaints) · [Infrastructure](#infrastructure) · [Message format and display names](#message-format-and-display-names) · [Debugging mail that lands in spam](#debugging-mail-that-lands-in-spam) · [Prove it](#prove-it)
 
@@ -161,7 +161,7 @@ Decide these before launch and enforce them automatically where your tool allows
 | Reply rate under ~1% after 300+ sends | Stop the campaign; the targeting or offer is wrong, and more volume makes it worse |
 | Rising complaint or bounce rate on any sequence | "Pause and escalate any sequence with rising complaint/bounce rates - that's a deliverability emergency" [coreyhaines31/marketingskills, marketing-loops] |
 
-- **Left out of the source's table:** an inbox-placement row whose action is to pull a mailbox "from rotation" and return it "to warmup", and "retire" as the blocklist action. Mailbox rotation, warmup networks and swapping out burned domains are evasion, named as do-nots in [../../marketing/cold-outreach/SENDING.md](../../marketing/cold-outreach/SENDING.md#out-of-bounds).
+- **Left out of the source's table:** an inbox-placement row whose action is to pull a mailbox "from rotation" and return it "to warmup", and "retire" as the blocklist action. Mailbox rotation, warmup networks and swapping out burned domains are evasion, named as do-nots in [cold-outreach SENDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SENDING.md#out-of-bounds).
 - **Gmail's own consequence** for crossing 0.3% is losing mitigation until 7 consecutive days below it ([Gmail](#gmail) above), so the 0.1% pause comes first.
 
 ## Warming up and volume

@@ -1,6 +1,6 @@
 # B2B paid acquisition
 
-Cross-platform rules for B2B, where sales cycles run 2 to 24 months, in-platform conversions mislead, and lead quality matters more than lead cost. From [coreyhaines31/marketingskills, ads, b2b-paid-playbook.md] (MIT; it credits Ivan Falco's ads-skills, and the thresholds are practitioner starting points to recalibrate on your own first 30 days). Platform detail: [GOOGLE-SEARCH.md](GOOGLE-SEARCH.md), [META-WEB-ADS.md](META-WEB-ADS.md), [LINKEDIN-ADS.md](LINKEDIN-ADS.md). CRM-side lead scoring and routing: [revops](../revops/SKILL.md).
+Cross-platform rules for B2B, where sales cycles run 2 to 24 months, in-platform conversions mislead, and lead quality matters more than lead cost. From [coreyhaines31/marketingskills, ads, b2b-paid-playbook.md] (MIT; it credits Ivan Falco's ads-skills, and the thresholds are practitioner starting points to recalibrate on your own first 30 days). Platform detail: [GOOGLE-SEARCH.md](GOOGLE-SEARCH.md), [META-WEB-ADS.md](META-WEB-ADS.md), [LINKEDIN-ADS.md](LINKEDIN-ADS.md). CRM-side lead scoring and routing: [revops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md).
 
 **Contents:** [The demand lifecycle](#the-demand-lifecycle) · [Budget by stage](#budget-by-stage) · [Leading vs lagging signals](#leading-vs-lagging-signals) · [Breakeven CPL and CPC](#breakeven-cpl-and-cpc) · [Kill heuristics](#kill-heuristics) · [The optimize-to-quality trap](#the-optimize-to-quality-trap) · [Lead quality scoring](#lead-quality-scoring) · [The scaling quadrant](#the-scaling-quadrant) · [Measurement maturity](#measurement-maturity) · [Channel selection](#channel-selection) · [Prove it](#prove-it)
 
@@ -52,7 +52,7 @@ Derive targets from deal math, not platform benchmarks:
 - **Breakeven CPL** = average deal size × lead-to-close rate ($3,000 ACV × 10% = $300).
 - **Breakeven CPC** = target CPL × landing page conversion rate ($300 × 5% = $15).
 
-Set the target below breakeven by your required margin. This is the B2B form of app-growth's "Break-even CPA = LTV × (1 − store fee %)" ([BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md#campaign-profitability)); how long the cash is tied up is in [PAYBACK.md](PAYBACK.md).
+Set the target below breakeven by your required margin. This is the B2B form of app-growth's "Break-even CPA = LTV × (1 − store fee %)" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md#campaign-profitability)); how long the cash is tied up is in [PAYBACK.md](PAYBACK.md).
 
 ## Kill heuristics
 
@@ -104,13 +104,13 @@ Budget but no time → the top row; capped on budget → the bottom row (better 
 
 [coreyhaines31/marketingskills, ads, b2b-paid-playbook.md]
 
-Before scaling, score 1 to 3 each: a blended pipeline dashboard; a per-channel dashboard; conversion tracking (1 none, 2 pixel only, 3 offline conversions flowing); web analytics; a documented, agreed attribution process ([marketing-attribution](../marketing-attribution/SKILL.md)). Under ~6/15, fix visibility before adding budget, lowest score first.
+Before scaling, score 1 to 3 each: a blended pipeline dashboard; a per-channel dashboard; conversion tracking (1 none, 2 pixel only, 3 offline conversions flowing); web analytics; a documented, agreed attribution process ([marketing-attribution](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md)). Under ~6/15, fix visibility before adding budget, lowest score first.
 
 ## Channel selection
 
 [coreyhaines31/marketingskills, ads, b2b-paid-playbook.md]
 
-Five families: paid social, paid search, **paid review listings** (G2, Capterra, Software Advice; often skipped, high intent), programmatic (display, audio, CTV, native) and sponsorships (newsletters, podcasts, events, creators: [creator-marketing](../creator-marketing/SKILL.md)). Judge each on whether it can target your ICP, media cost, reach at your targeting, and its policy for your industry. Before committing, run a ~$100 test to learn the real CPC and CPM for your targeting; the source says platform estimates and published benchmarks are consistently wrong for specific ICPs.
+Five families: paid social, paid search, **paid review listings** (G2, Capterra, Software Advice; often skipped, high intent), programmatic (display, audio, CTV, native) and sponsorships (newsletters, podcasts, events, creators: [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md)). Judge each on whether it can target your ICP, media cost, reach at your targeting, and its policy for your industry. Before committing, run a ~$100 test to learn the real CPC and CPM for your targeting; the source says platform estimates and published benchmarks are consistently wrong for specific ICPs.
 
 Paid ABM list, account-page and cross-channel workflows are in [ABM.md](ABM.md).
 

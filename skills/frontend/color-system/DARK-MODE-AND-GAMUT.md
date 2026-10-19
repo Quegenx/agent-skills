@@ -1,6 +1,6 @@
 # Dark mode and gamut
 
-Building the dark palette, picking one theme-switching mechanism, increased contrast per appearance, and keeping every color inside the gamut it renders in, with P3 as an enhancement. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged; numbers marked "computed" were checked with an sRGB, OKLab and Display P3 implementation (binary search for the maximum chroma). `light-dark()`, `color-scheme` and Adam Argyle's page and component strategies are in [modern-css COLOR.md](../modern-css/COLOR.md#light-dark-and-color-scheme); the `color-gamut` and `prefers-contrast` queries are in [modern-css QUERIES-AND-PREFERENCES.md](../modern-css/QUERIES-AND-PREFERENCES.md#color-scheme-and-contrast).
+Building the dark palette, picking one theme-switching mechanism, increased contrast per appearance, and keeping every color inside the gamut it renders in, with P3 as an enhancement. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged; numbers marked "computed" were checked with an sRGB, OKLab and Display P3 implementation (binary search for the maximum chroma). `light-dark()`, `color-scheme` and Adam Argyle's page and component strategies are in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#light-dark-and-color-scheme); the `color-gamut` and `prefers-contrast` queries are in [modern-css QUERIES-AND-PREFERENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/QUERIES-AND-PREFERENCES.md#color-scheme-and-contrast).
 
 ## A dark palette is not the light one reversed
 
@@ -27,8 +27,8 @@ Three things almost always need hand-tuning after the swap:
 When the product ships a dark appearance, "every custom color needs a dark variant".
 
 - **The other view** [Jakub Krehel, oklch-skill]: reverse the mapping (`:root { --color-bg: var(--color-50); --color-text: var(--color-950); } .dark { --color-bg: var(--color-950); --color-text: var(--color-50); }`), because "oklch's perceptual uniformity means equal L steps in both directions produce equally readable results"; its checklist says "Dark mode with hand-picked colors → Derive from light palette by reversing L mapping". No doc supports the readability claim, and APCA's asymmetry contradicts it; better-colors' checklist flags "Dark tokens equal to the light ramp in reverse step order" as the thing to fix.
-- **Owner's design:** app-ui's dark mode is hand-built and violet-tinted, copied 1:1 from tor-app ([tokens.css](../app-ui/reference/styles/base/tokens.css)); it stays as designed.
-- **Owner's design:** landing-page-ui keeps the brand button fill "the same brand color (it does not lighten)" in dark ([landing-page-ui SYSTEM.md](../landing-page-ui/SYSTEM.md)), and app-ui's solid badge fills "hold one value in both themes" ([app-ui TOKENS.md](../app-ui/TOKENS.md)); the owner wins over "a step or two less vivid" there.
+- **Owner's design:** app-ui's dark mode is hand-built and violet-tinted, copied 1:1 from tor-app ([tokens.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/styles/base/tokens.css)); it stays as designed.
+- **Owner's design:** landing-page-ui keeps the brand button fill "the same brand color (it does not lighten)" in dark ([landing-page-ui SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SYSTEM.md)), and app-ui's solid badge fills "hold one value in both themes" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)); the owner wins over "a step or two less vivid" there.
 
 ## Choosing the switching mechanism
 
@@ -45,7 +45,7 @@ When the product ships a dark appearance, "every custom color needs a dark varia
 }
 ```
 
-"A media query setting some tokens and a class setting others gives a half-themed interface the moment a user overrides their system preference." The owner's landing head script sets the dark class, `data-theme` and `color-scheme` on `<html>` before paint ([landing-page-ui SYSTEM.md](../landing-page-ui/SYSTEM.md#theme-before-paint)).
+"A media query setting some tokens and a class setting others gives a half-themed interface the moment a user overrides their system preference." The owner's landing head script sets the dark class, `data-theme` and `color-scheme` on `<html>` before paint ([landing-page-ui SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SYSTEM.md#theme-before-paint)).
 
 ## Increased contrast, per appearance
 
@@ -118,7 +118,7 @@ The same applies after a contrast fix: moving L toward either end at a fixed C c
 }
 ```
 
-"Order matters. The sRGB value comes first, so an sRGB screen shows a color you chose rather than one the browser clipped. The P3 rule overrides only where it will render." Adam Argyle's cascade double declaration (`background: yellow; background: color(display-p3 1 1 0);`) is in [modern-css COLOR.md](../modern-css/COLOR.md#wide-gamut-p3-with-an-srgb-fallback).
+"Order matters. The sRGB value comes first, so an sRGB screen shows a color you chose rather than one the browser clipped. The P3 rule overrides only where it will render." Adam Argyle's cascade double declaration (`background: yellow; background: color(display-p3 1 1 0);`) is in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#wide-gamut-p3-with-an-srgb-fallback).
 
 [Jakub Krehel, oklch-skill] The skill's version of this pattern uses `oklch(0.7 0.2 150)` as the sRGB value and `oklch(0.7 0.3 150)` as the P3 value; both are outside their gamut (maximums 0.193 sRGB and 0.269 P3, computed). In-gamut values, rounded down:
 
@@ -152,7 +152,7 @@ For browser matrices predating `oklch()`, the same layering works with `@support
 }
 ```
 
-"Check the project's actual browser matrix before adding this. On a modern baseline it is dead weight." `oklch()` is Baseline widely available since May 2023 ([modern-css COLOR.md](../modern-css/COLOR.md#lightness-lch-and-oklch-over-hsl)).
+"Check the project's actual browser matrix before adding this. On a modern baseline it is dead weight." `oklch()` is Baseline widely available since May 2023 ([modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#lightness-lch-and-oklch-over-hsl)).
 
 oklch-skill's version gives `#4ade80` as the hex fallback for `oklch(0.7 0.2 150)`, but `#4ade80` is `oklch(0.800 0.182 151.711)`, a different color (computed). The hex of the in-gamut `oklch(0.7 0.192 150)` is `#04be58` (computed; it round-trips to `oklch(0.701 0.192 149.954)`):
 

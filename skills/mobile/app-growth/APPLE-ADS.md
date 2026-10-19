@@ -148,7 +148,7 @@ Source: [appeeky, eronred].
 - **Create:** Ad Groups > ad group > Create Ad > name > select custom product page > preview > Save.
 - **Align pages with keyword themes and audiences:** a flights page for flight-booking keywords, deep-linking to the booking screen.
 - **Naming differs:** [eronred] calls this "Creative Product Sets / CPP routing" (App Store Connect > Custom Product Pages > create > ASA > Ad Group > select CPP) and claims "TTR and CVR both improve (typically +15 to 30%)". Apple deprecated Creative Sets in Campaign Management API 5.0 (May 2024); today's term is ad variations.
-- **When TTR is low [appeeky]:** if TTR < 3% on a high-volume ad group, check the page routing, add a page variant matching the keyword intent, and re-test 7 days before changing bids. Creating the pages themselves is [../aso/PRODUCT-PAGES.md](../aso/PRODUCT-PAGES.md).
+- **When TTR is low [appeeky]:** if TTR < 3% on a high-volume ad group, check the page routing, add a page variant matching the keyword intent, and re-test 7 days before changing bids. Creating the pages themselves is [aso PRODUCT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/PRODUCT-PAGES.md).
 
 ## Metrics and benchmarks
 

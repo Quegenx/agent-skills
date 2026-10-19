@@ -1,6 +1,6 @@
 # SMS sequences
 
-Copy templates with timing and segmentation for each common flow, from the source's sequence templates [coreyhaines31/marketingskills, sms, references/sequence-templates.md]. The timings, caps and suppression windows are the source's opinion, not platform or legal rules. Three repo rules change how the templates go out: every message carries an opt-out instruction (the source shows it only on some; see [COMPLIANCE.md](COMPLIANCE.md#the-opt-out-footer)); US cart texts need double opt-in ([COMPLIANCE.md](COMPLIANCE.md#the-opt-in-disclosure)); and `[short.link]` means a branded or platform domain, never a public shortener ([CHANNEL-AND-COPY.md](CHANNEL-AND-COPY.md#one-cta-one-link)). Every urgency or expiry line ("selling fast", "expires tonight") goes out only when it is true; false scarcity and fake deadlines are in [../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md). Building these flows in OneSignal Journeys is in [../../backend/onesignal/JOURNEYS.md](../../backend/onesignal/JOURNEYS.md).
+Copy templates with timing and segmentation for each common flow, from the source's sequence templates [coreyhaines31/marketingskills, sms, references/sequence-templates.md]. The timings, caps and suppression windows are the source's opinion, not platform or legal rules. Three repo rules change how the templates go out: every message carries an opt-out instruction (the source shows it only on some; see [COMPLIANCE.md](COMPLIANCE.md#the-opt-out-footer)); US cart texts need double opt-in ([COMPLIANCE.md](COMPLIANCE.md#the-opt-in-disclosure)); and `[short.link]` means a branded or platform domain, never a public shortener ([CHANNEL-AND-COPY.md](CHANNEL-AND-COPY.md#one-cta-one-link)). Every urgency or expiry line ("selling fast", "expires tonight") goes out only when it is true; false scarcity and fake deadlines are in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md). Building these flows in OneSignal Journeys is in [onesignal JOURNEYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/JOURNEYS.md).
 
 **Contents:** [Welcome](#welcome) · [Abandoned cart](#abandoned-cart) · [Browse abandonment](#browse-abandonment) · [Post-purchase](#post-purchase) · [Win-back](#win-back) · [Promotional sends](#promotional-sends) · [Transactional](#transactional) · [Re-engagement](#re-engagement) · [Replenishment](#replenishment) · [VIP and loyalty](#vip-and-loyalty) · [Segmentation rules](#segmentation-rules) · [Prove it](#prove-it)
 
@@ -101,7 +101,7 @@ Send 4, 2 days after delivery (marketing consent required):
 ```
 From [Brand]: How are you liking your [product]? Share a review for 15% off next order: [short.link]
 ```
-~108 chars / 1 segment. The FTC's review rule bars incentives conditioned on the review "expressing a particular sentiment, whether positive or negative" (16 CFR 465.4). That does not authorize a platform-prohibited incentive: do not use this discount template for Google reviews, which prohibit review incentives regardless of sentiment. Follow the destination's rules in [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md). The old line mentioned only the FTC sentiment condition. [https://support.google.com/business/answer/16816815?hl=en]
+~108 chars / 1 segment. The FTC's review rule bars incentives conditioned on the review "expressing a particular sentiment, whether positive or negative" (16 CFR 465.4). That does not authorize a platform-prohibited incentive: do not use this discount template for Google reviews, which prohibit review incentives regardless of sentiment. Follow the destination's rules in [review-management REVIEW-PROGRAMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/review-management/REVIEW-PROGRAMS.md). The old line mentioned only the FTC sentiment condition. [https://support.google.com/business/answer/16816815?hl=en]
 
 Send 5, 14 days after delivery (cross-sell, marketing consent):
 
@@ -135,7 +135,7 @@ From [Brand]: Last chance - 20% off ends tonight: COMEBACK20. We'll stop texting
 
 - "After Send 3 with no engagement, suppress for 90 days minimum."
 - "After two full win-back cycles with no engagement, sunset (remove from active list)."
-- Win-back across SMS and email together is in [../churn-prevention/SKILL.md](../churn-prevention/SKILL.md).
+- Win-back across SMS and email together is in [churn-prevention SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/SKILL.md).
 
 ## Promotional sends
 
@@ -171,7 +171,7 @@ From [Brand]: Last 6 hours of BFCM savings. Don't miss out: [short.link]
 
 ## Transactional
 
-Order updates, shipping, auth codes and account alerts are a separate compliance bucket: generally fine without marketing consent when tied to a transaction the user started [source]. Apply the actual [sender-type registration](REGISTRATION.md#what-registration-covers), which corrects the source's blanket US 10DLC requirement. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc] OneSignal wants a dedicated sender per program type ([EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-model-and-setup)).
+Order updates, shipping, auth codes and account alerts are a separate compliance bucket: generally fine without marketing consent when tied to a transaction the user started [source]. Apply the actual [sender-type registration](REGISTRATION.md#what-registration-covers), which corrects the source's blanket US 10DLC requirement. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc] OneSignal wants a dedicated sender per program type ([onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md#sms-model-and-setup)).
 
 ```
 [Brand]: Order #12345 confirmed. Total $XX.XX. Track at [short.link]. Reply HELP for help.

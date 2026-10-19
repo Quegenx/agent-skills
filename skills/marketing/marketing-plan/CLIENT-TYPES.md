@@ -2,7 +2,7 @@
 
 The 13-section plan structure stays consistent across client types. What changes is the **content emphasis** within each section. This doc names the dominant patterns by client archetype.
 
-Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. "Quietude" is the source's anonymized example client. Where an archetype recommends cold email or "Cold outbound to seed supply", it runs only under the consent and opt-out rules in [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) and [cold-outreach](../cold-outreach/SKILL.md), and LinkedIn outreach within LinkedIn's User Agreement (repo rule). For apps, the store, Apple Ads and paywall detail is in [aso](../../mobile/aso/SKILL.md) and [app-growth](../../mobile/app-growth/SKILL.md).
+Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. "Quietude" is the source's anonymized example client. Where an archetype recommends cold email or "Cold outbound to seed supply", it runs only under the consent and opt-out rules in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md) and [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md), and LinkedIn outreach within LinkedIn's User Agreement (repo rule). For apps, the store, Apple Ads and paywall detail is in [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md) and [app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
 
 **Contents:** [Archetype 1 - B2B SaaS](#archetype-1---b2b-saas) · [Archetype 2 - D2C Consumer App (Subscription)](#archetype-2---d2c-consumer-app-subscription) · [Archetype 3 - Hybrid Hardware + Software](#archetype-3---hybrid-hardware--software) · [Archetype 4 - Marketplace](#archetype-4---marketplace) · [Archetype 5 - Developer Tool / Open Source](#archetype-5---developer-tool--open-source) · [Archetype 6 - Deep-Tech / Scientific / Clinical](#archetype-6---deep-tech--scientific--clinical) · [Archetype 7 - Commerce / DTC (non-subscription)](#archetype-7---commerce--dtc-non-subscription) · [How to use this doc when drafting a plan](#how-to-use-this-doc-when-drafting-a-plan) · [When the client doesn't fit cleanly](#when-the-client-doesnt-fit-cleanly) · [Prove it](#prove-it)
@@ -45,10 +45,10 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - Tier upgrades, seat expansion, usage-based add-ons
 
 ### Skills emphasis
-- [cold-outreach](../cold-outreach/SKILL.md), [seo PAGES-AT-SCALE](../seo/PAGES-AT-SCALE.md), [comparison-pages](../comparison-pages/SKILL.md), [seo](../seo/SKILL.md), [ai-search-visibility](../ai-search-visibility/SKILL.md)
-- [paid-ads](../paid-ads/SKILL.md) weighted toward LinkedIn + Google
-- [email-marketing](../email-marketing/SKILL.md) for trial nurture + lifecycle
-- [pricing-strategy](../pricing-strategy/SKILL.md) for tier optimization
+- [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md), [seo PAGES-AT-SCALE](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md), [comparison-pages](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md), [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md), [ai-search-visibility](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md)
+- [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md) weighted toward LinkedIn + Google
+- [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md) for trial nurture + lifecycle
+- [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) for tier optimization
 
 ### Tier-1 budget priority
 - SEO + content > everything else
@@ -96,10 +96,10 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - In-app upsells
 
 ### Skills emphasis
-- [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md) (the source's `onboarding` and `paywalls`), [email-marketing](../email-marketing/SKILL.md)
-- [paid-ads](../paid-ads/SKILL.md), [ad-creative](../ad-creative/SKILL.md) (heavy creative iteration)
-- [referral-programs](../referral-programs/SKILL.md)
-- [pricing-strategy](../pricing-strategy/SKILL.md) for annual default + tier consolidation
+- [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md) (the source's `onboarding` and `paywalls`), [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md)
+- [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md), [ad-creative](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md) (heavy creative iteration)
+- [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md)
+- [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) for annual default + tier consolidation
 
 ### Tier-1 budget priority
 - ASO first (highest organic leverage)
@@ -144,11 +144,11 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - Annual plan default for software
 
 ### Skills emphasis
-- [seo](../seo/SKILL.md) for Shopify product pages
-- [email-marketing](../email-marketing/SKILL.md) for both hardware post-purchase and software lifecycle
-- [referral-programs](../referral-programs/SKILL.md) with gifting layer
-- [pricing-strategy](../pricing-strategy/SKILL.md) for blended-bundle math
-- [paid-ads](../paid-ads/SKILL.md) with creative-heavy Meta presence
+- [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md) for Shopify product pages
+- [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md) for both hardware post-purchase and software lifecycle
+- [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md) with gifting layer
+- [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) for blended-bundle math
+- [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md) with creative-heavy Meta presence
 
 ### Tier-1 budget priority
 - Shopify product page optimization
@@ -193,10 +193,10 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - Lead-gen vs. transaction-fee monetization
 
 ### Skills emphasis
-- [seo PAGES-AT-SCALE](../seo/PAGES-AT-SCALE.md) for city pages, vertical pages
-- [cold-outreach](../cold-outreach/SKILL.md) for supply-side recruitment
-- [referral-programs](../referral-programs/SKILL.md) for both sides
-- [pricing-strategy](../pricing-strategy/SKILL.md) for take-rate decisions
+- [seo PAGES-AT-SCALE](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md) for city pages, vertical pages
+- [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md) for supply-side recruitment
+- [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md) for both sides
+- [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) for take-rate decisions
 
 ### Tier-1 budget priority
 - Programmatic SEO build for one side
@@ -240,10 +240,10 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - Support / SLA upsells
 
 ### Skills emphasis
-- [seo PAGES-AT-SCALE](../seo/PAGES-AT-SCALE.md) for docs
-- Less emphasis on traditional [paid-ads](../paid-ads/SKILL.md)
-- Heavy [content-strategy](../content-strategy/SKILL.md) + technical content
-- [cold-outreach](../cold-outreach/SKILL.md) to engineering leads at target companies
+- [seo PAGES-AT-SCALE](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md) for docs
+- Less emphasis on traditional [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md)
+- Heavy [content-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md) + technical content
+- [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md) to engineering leads at target companies
 
 ### Tier-1 budget priority
 - Docs + technical content production
@@ -289,8 +289,8 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 
 ### Skills emphasis
 - Light traditional marketing
-- Heavy [product context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md), [sales-enablement](../sales-enablement/SKILL.md), [pricing-strategy](../pricing-strategy/SKILL.md)
-- [cold-outreach](../cold-outreach/SKILL.md) to specific researchers / practitioners
+- Heavy [product context](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md), [sales-enablement](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md), [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md)
+- [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md) to specific researchers / practitioners
 - PR + investor marketing
 
 ### Tier-1 budget priority
@@ -335,10 +335,10 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - Subscription option for repeat purchases
 
 ### Skills emphasis
-- [paid-ads](../paid-ads/SKILL.md) + [ad-creative](../ad-creative/SKILL.md) (heavy weight)
-- [email-marketing](../email-marketing/SKILL.md) for post-purchase + abandoned cart
-- [referral-programs](../referral-programs/SKILL.md) with gifting
-- [pricing-strategy](../pricing-strategy/SKILL.md) for bundles + subscription option
+- [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md) + [ad-creative](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md) (heavy weight)
+- [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md) for post-purchase + abandoned cart
+- [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md) with gifting
+- [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) for bundles + subscription option
 
 ### Tier-1 budget priority
 - Shopify storefront optimization

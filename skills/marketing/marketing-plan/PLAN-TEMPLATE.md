@@ -165,7 +165,7 @@ Week-by-week breakdown of the ships in the first quarter.
 Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 
 ### Skills + tools
-- **Skills:** list relevant marketing-skills repo skills ([seo](../seo/SKILL.md), [ai-search-visibility](../ai-search-visibility/SKILL.md), [paid-ads](../paid-ads/SKILL.md), [social-media](../social-media/SKILL.md), [comparison-pages](../comparison-pages/SKILL.md), etc.)
+- **Skills:** list relevant marketing-skills repo skills ([seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md), [ai-search-visibility](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md), [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md), [social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md), [comparison-pages](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md), etc.)
 - **MCPs / APIs:** list connections (Ahrefs API, GA4 MCP, Typefully MCP, Stripe MCP for LTV math, etc.)
 
 ## Section 5 - Activation
@@ -184,7 +184,7 @@ Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 - Paywall + pricing review (often Activation × Revenue)
 
 ### Skills + tools
-[onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [cro SIGNUP](../cro/SIGNUP.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), [landing-page-ui](../../frontend/landing-page-ui/SKILL.md), [ab-testing](../ab-testing/SKILL.md), etc.
+[onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [cro SIGNUP](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SIGNUP.md), [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md), [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), etc.
 
 ## Section 6 - Retention
 
@@ -202,7 +202,7 @@ Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 - Annual plan default tests (cross-references to Revenue)
 
 ### Skills + tools
-[email-marketing](../email-marketing/SKILL.md), [churn-prevention](../churn-prevention/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), etc. Delivery and consent: [email-practices](../../backend/email-practices/SKILL.md).
+[email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md), [churn-prevention](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/SKILL.md), [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), etc. Delivery and consent: [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 ## Section 7 - Referral
 
@@ -220,7 +220,7 @@ Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 - Gifting flows (for consumer / hardware)
 
 ### Skills + tools
-[referral-programs](../referral-programs/SKILL.md), [social-media](../social-media/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (for ambassador lifecycle), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), etc.
+[referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md), [social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md), [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md) (for ambassador lifecycle), [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), etc.
 
 ## Section 8 - Revenue
 
@@ -252,7 +252,7 @@ Required table:
 These feed the budget math in Section 10. If any of these are unknown, flag in Section 13 as top open decision.
 
 ### Skills + tools
-[pricing-strategy](../pricing-strategy/SKILL.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [sales-enablement](../sales-enablement/SKILL.md), [revops](../revops/SKILL.md), [ab-testing](../ab-testing/SKILL.md), etc.
+[pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md), [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [sales-enablement](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md), [revops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md), [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), etc.
 
 ## Section 9 - 90-day roadmap
 
@@ -362,7 +362,7 @@ Pull from [FUNDING-STAGES.md](FUNDING-STAGES.md).
 
 ## Section 12 - Tactical idea bank
 
-**Purpose:** Cross-reference all 139 ideas from the [growth-ideas](../growth-ideas/SKILL.md) skill against AARRR stages, with client-specific status.
+**Purpose:** Cross-reference all 139 ideas from the [growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md) skill against AARRR stages, with client-specific status.
 
 **Length:** Long - tables can easily total 150+ rows.
 

@@ -1,6 +1,6 @@
 # Captures and retained evidence
 
-From [morluto/rea, reverse-engineer-anything/references/evidence-workflows.md; references/runtime-observation.md]. Shared proof standards remain in [debugging/VERIFICATION.md](../debugging/VERIFICATION.md).
+From [morluto/rea, reverse-engineer-anything/references/evidence-workflows.md; references/runtime-observation.md]. Shared proof standards remain in [debugging VERIFICATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/VERIFICATION.md).
 
 ## Inspect a saved recording
 
@@ -54,8 +54,8 @@ For the separate Browserbase workflow that infers an OpenAPI document and client
 
 - When the requested reconstruction calls for independent implementation from behavior, separate the reader and builder sessions/workspaces. The reader produces a specification of behavior, inputs, outputs, edge cases and explicit unknowns; the builder receives that specification alone, excluding original code, addresses, identifiers and assets.
 - The setup article instead labels findings `CONFIRMED` when seen in code, otherwise `GUESS`. Keep the existing [observation/inference/unknown distinction](SKILL.md#the-rules): source-code presence does not establish runtime confirmation. [art, How To Turn Opus 5.5 Into Your Personal Reverse Engineer (Full Setup Included) .md]; [morluto/rea, reverse-engineer-anything/SKILL.md]
-- This is a chosen project constraint, not a conclusion that a reconstruction is lawful or a replacement for a requested [pixel reconstruction](../pixel-reverse-engineer/SKILL.md). Preserve the actual target rights and the user's requested fidelity/scope.
-- Derive acceptance checks from the behavior specification and use the existing [independent-evidence](../testing/INTEGRATION.md#independent-evidence) and [mutation](../testing/SKILL.md#the-rules) guidance. Do not create another definition of an oracle or impose the article's example test/turn quotas.
+- This is a chosen project constraint, not a conclusion that a reconstruction is lawful or a replacement for a requested [pixel reconstruction](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/pixel-reverse-engineer/SKILL.md). Preserve the actual target rights and the user's requested fidelity/scope.
+- Derive acceptance checks from the behavior specification and use the existing [independent-evidence](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/INTEGRATION.md#independent-evidence) and [mutation](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md#the-rules) guidance. Do not create another definition of an oracle or impose the article's example test/turn quotas.
 - The article's prompts run tests and builds. Apply task authorization: this skills repo permits reading and `node --check` for changed JavaScript, with tests/builds only when asked. Report unperformed checks rather than claiming reconstruction equivalence. [owner standing rules, verification]
 
 ## Prove it

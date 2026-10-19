@@ -42,7 +42,7 @@ All [appeeky].
 - **Monthly churn:** `Monthly churn % ≈ canceled_in_30d / (active_start + new_in_30d) × 100`.
 - **Benchmark:** under 5% monthly is good for SMB SaaS; under 2% is excellent.
 - **If involuntary churn exceeds 40% of churn,** audit payment failures ([BILLING.md](BILLING.md#audits-over-the-stripe-mcp)).
-- **A second formula** [coreyhaines31/marketingskills, churn-prevention]: monthly churn = churned customers / start-of-month customers, with targets of under 5% for B2C and under 2% for B2B, and net revenue churn = (lost MRR - expansion MRR) / start MRR. The denominators differ from the [appeeky] formula above, so a report names which it uses. Save rate, offer acceptance and the health score are in [../../marketing/churn-prevention/HEALTH-SCORE.md](../../marketing/churn-prevention/HEALTH-SCORE.md#metrics).
+- **A second formula** [coreyhaines31/marketingskills, churn-prevention]: monthly churn = churned customers / start-of-month customers, with targets of under 5% for B2C and under 2% for B2B, and net revenue churn = (lost MRR - expansion MRR) / start MRR. The denominators differ from the [appeeky] formula above, so a report names which it uses. Save rate, offer acceptance and the health score are in [churn-prevention HEALTH-SCORE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/HEALTH-SCORE.md#metrics).
 
 ## Cohorts
 
@@ -98,7 +98,7 @@ All [appeeky].
 
 - **Test design** [appeeky]: a new Price object; split traffic at checkout (price ID by cohort or flag); grandfather existing subscriptions on the old price; compare conversion %, ARPU and churn at 30 and 60 days.
 - **Price increase playbook** [appeeky]: (1) create the new higher price; (2) send new customers to it; (3) keep existing customers or migrate them with notice (email plus `subscriptions.update`); (4) measure the churn delta. When migrating, replace the subscription item by `id` and resend the quantity ([SUBSCRIPTION-CHANGES.md](SUBSCRIPTION-CHANGES.md#upgrades-and-downgrades)).
-- **Grandfathering: the sources differ.** [appeeky] grandfathers existing subscriptions on the old price during a test. [coreyhaines31/marketingskills, pricing] grandfathers "as a *transition* (a grace period), not a permanent exemption" and migrates existing customers in waves, 5 to 10% first, with the reason explained months ahead ([../../marketing/pricing-strategy/PRICE-CHANGES.md](../../marketing/pricing-strategy/PRICE-CHANGES.md#rollout)). Both views stand, each for its own job (testing a price versus migrating the base).
+- **Grandfathering: the sources differ.** [appeeky] grandfathers existing subscriptions on the old price during a test. [coreyhaines31/marketingskills, pricing] grandfathers "as a *transition* (a grace period), not a permanent exemption" and migrates existing customers in waves, 5 to 10% first, with the reason explained months ahead ([pricing-strategy PRICE-CHANGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/PRICE-CHANGES.md#rollout)). Both views stand, each for its own job (testing a price versus migrating the base).
 - **Catalog audit** [appeeky]: `GetProducts` with `active: true`; `GetPrices` with `active: true`, `type: recurring`; count active subscriptions per `price.id`; flag orphan prices (no active subscriptions), legacy prices still in use, and the annual vs monthly mix.
 - **Checkout conversion** [appeeky]: from `GetCheckoutSessions` (paginated), `Conversion % = complete / (complete + expired) × 100`. Segment sessions by `status` (`complete`, `expired`, `open`) over a recent window; for `mode: subscription` link the `subscription` id; check `payment_status` on completed sessions. Cross-check the code for `/api/checkout`, `checkout.sessions.create`, `success_url`, `cancel_url`; common issues are missing customer reuse (double subscription risk) and no promotion code tracking.
 
@@ -110,7 +110,7 @@ All [appeeky].
 - **Proration with discounts:** prorations use the discounted price and proration lines are `discountable=false`; changing coupons or discounts alone creates no prorations.
 - **Billing credits apply after discounts,** before taxes.
 - **Cancellation deflection:** the Customer Portal can offer a coupon and collect cancellation reasons.
-- **Portal cancellation reasons and retention-coupon settings:** see [Customer portal](BILLING.md#customer-portal); matching offers to reasons remains in [CANCEL-FLOWS.md](../../marketing/churn-prevention/CANCEL-FLOWS.md#match-the-offer-to-the-reason).
+- **Portal cancellation reasons and retention-coupon settings:** see [Customer portal](BILLING.md#customer-portal); matching offers to reasons remains in [churn-prevention CANCEL-FLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/CANCEL-FLOWS.md#match-the-offer-to-the-reason).
 
 ## Health dashboard
 

@@ -45,11 +45,11 @@ Positions are rounded and clamped to 1 to 10, with 0.01 when nothing matches.
 
 ## Query coverage check
 
-[iannuttall/seo, opportunity-primitives.ts] Checks whether the query's tokens longer than 2 characters appear in the title, meta description, H1 and opening copy. For scripts where no token qualifies it reports `coverage_not_evaluated_for_script` and gives no verdict. When every field already matches: "Avoid a blind rewrite; compare SERP intent, snippets, and competing titles before changing the page." Title and snippet rules themselves are in [../seo/SKILL.md](../seo/SKILL.md).
+[iannuttall/seo, opportunity-primitives.ts] Checks whether the query's tokens longer than 2 characters appear in the title, meta description, H1 and opening copy. For scripts where no token qualifies it reports `coverage_not_evaluated_for_script` and gives no verdict. When every field already matches: "Avoid a blind rewrite; compare SERP intent, snippets, and competing titles before changing the page." Title and snippet rules themselves are in [seo SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md).
 
 ## Questions worth asking the data
 
-[openseo.so, /google-search-console-mcp] Page-two queries close to page one (striking distance); impressions up while clicks stay flat (a title or meta problem to check); posts competing for the same query (cannibalization; mapping the fix is [../keyword-research/CLUSTERING.md](../keyword-research/CLUSTERING.md)); "Is /pricing indexed?"; the biggest click losers over 28 days. The data is clicks, impressions, CTR and position by query, page, country, device and date, and the most recent few days "can be incomplete".
+[openseo.so, /google-search-console-mcp] Page-two queries close to page one (striking distance); impressions up while clicks stay flat (a title or meta problem to check); posts competing for the same query (cannibalization; mapping the fix is [keyword-research CLUSTERING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/CLUSTERING.md)); "Is /pricing indexed?"; the biggest click losers over 28 days. The data is clicks, impressions, CTR and position by query, page, country, device and date, and the most recent few days "can be incomplete".
 
 ## Prove it
 

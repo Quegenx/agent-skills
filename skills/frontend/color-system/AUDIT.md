@@ -54,7 +54,7 @@ oklch-skill's rows "Hex/rgb/hsl color in new code → Convert to `oklch()`", "He
 
 ## Severity
 
-This skill uses the one P0 to P3 scale from [code-review REVIEWER.md](../../architecture/code-review/REVIEWER.md#tags-and-output). better-colors' three levels map onto it: `HIGH` ("makes content unreadable or assigns a misleading semantic color") is P0 when it blocks the primary task or is a severe accessibility failure, else P1; `MEDIUM` ("a noticeable theme, token or gamut failure") is P2; `LOW` ("isolated polish") is P3.
+This skill uses the one P0 to P3 scale from [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output). better-colors' three levels map onto it: `HIGH` ("makes content unreadable or assigns a misleading semantic color") is P0 when it blocks the primary task or is a severe accessibility failure, else P1; `MEDIUM` ("a noticeable theme, token or gamut failure") is P2; `LOW` ("isolated polish") is P3.
 
 [Jakub Krehel, better-colors] Three symptoms are P0 or P1 on sight, whatever the surface: body or control text whose rendered pair fails its required ratio, state or meaning carried by color alone, and a semantic color used against its meaning.
 

@@ -1,8 +1,8 @@
 # Listing and Metadata
 
-The store listing is the page users see on Google Play: name, descriptions, icon, feature graphic, screenshots and video, per language, plus up to 50 custom listings and A/B experiments on top. What decides most outcomes is Google's metadata policy (no ranking, price or promotional claims, no emoji or repeated keywords) and the asset specs; files kept in version control and pushed through an edit keep it repeatable. Google's Help Center is the authority; facts from the gplay CLI's third-party author are marked as the CLI's where they differ. Google's values here were rechecked against the raw Help Center pages on 2026-10-17. Keyword and conversion strategy is [../aso/SKILL.md](../aso/SKILL.md); edits and CLI auth are [CLI.md](CLI.md).
+The store listing is the page users see on Google Play: name, descriptions, icon, feature graphic, screenshots and video, per language, plus up to 50 custom listings and A/B experiments on top. What decides most outcomes is Google's metadata policy (no ranking, price or promotional claims, no emoji or repeated keywords) and the asset specs; files kept in version control and pushed through an edit keep it repeatable. Google's Help Center is the authority; facts from the gplay CLI's third-party author are marked as the CLI's where they differ. Google's values here were rechecked against the raw Help Center pages on 2026-10-17. Keyword and conversion strategy is [aso SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md); edits and CLI auth are [CLI.md](CLI.md).
 
-**Contents:** [Text fields and limits](#text-fields-and-limits) · [Metadata policy](../aso/ANDROID.md#metadata-policy) · [Graphic assets](../aso/ANDROID.md#graphic-assets) · [Preview video](../aso/ANDROID.md#preview-video) · [Metadata as files](#metadata-as-files) · [Screenshots: capture and upload](#screenshots-capture-and-upload) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Prove it](#prove-it)
+**Contents:** [Text fields and limits](#text-fields-and-limits) · [Metadata policy](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#metadata-policy) · [Graphic assets](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#graphic-assets) · [Preview video](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#preview-video) · [Metadata as files](#metadata-as-files) · [Screenshots: capture and upload](#screenshots-capture-and-upload) · [Custom store listings](#custom-store-listings) · [Store listing experiments](#store-listing-experiments) · [Prove it](#prove-it)
 
 ## Text fields and limits
 
@@ -25,17 +25,17 @@ The main listing lives at Grow users > Store presence > Main store listing; grap
 
 ## Metadata policy
 
-The canonical [Play metadata policy](../aso/ANDROID.md#metadata-policy), [copy constraints](../aso/ANDROID.md#writing-the-copy) and [asset-specific rules](../aso/ANDROID.md#graphic-assets) distinguish metadata elements and mandatory requirements from promotion recommendations. The listing must also meet the general-audience policy collected there. Validate each field under its actual scope, not a blanket word/emoji blacklist across every full description. The old local acceptance check imposed that blanket blacklist. [Google Play metadata and asset policy]
+The canonical [Play metadata policy](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#metadata-policy), [copy constraints](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#writing-the-copy) and [asset-specific rules](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#graphic-assets) distinguish metadata elements and mandatory requirements from promotion recommendations. The listing must also meet the general-audience policy collected there. Validate each field under its actual scope, not a blanket word/emoji blacklist across every full description. The old local acceptance check imposed that blanket blacklist. [Google Play metadata and asset policy]
 
 ## Graphic assets
 
-Use [ASO Android asset specifications](../aso/ANDROID.md#graphic-assets) for required/promotion counts, device classes, formats, dimensions, alpha, real-experience rules and the general-audience boundary. Actual CLI image types and historical payload limits remain below. [Google Play asset specifications; gplay]
+Use [ASO Android asset specifications](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#graphic-assets) for required/promotion counts, device classes, formats, dimensions, alpha, real-experience rules and the general-audience boundary. Actual CLI image types and historical payload limits remain below. [Google Play asset specifications; gplay]
 
 - **Where the CLI's author differs from Google:** it lists image types `phoneScreenshots` (required), `sevenInchScreenshots`, `tenInchScreenshots`, `tvScreenshots`, `wearScreenshots`, `icon` (512x512), `featureGraphic` (1024x500), `promoGraphic` (180x120), `tvBanner` (1280x720), with phone screenshots 2 to 8, and says "PNG or JPEG required (PNG recommended), max 8 MB per image". Google caps the icon at 1024 KB and requires 24-bit PNG without alpha for feature graphics and screenshots; follow Google's spec.
 
 ## Preview video
 
-The YouTube URL, visibility, advertising/embedding, footage, autoplay and cover rules have one owner: [ASO Play preview video](../aso/ANDROID.md#preview-video), including its distinct permission for Google Play award references. Recording and uploading remain below. [Google Play asset specifications]
+The YouTube URL, visibility, advertising/embedding, footage, autoplay and cover rules have one owner: [ASO Play preview video](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#preview-video), including its distinct permission for Google Play award references. Recording and uploading remain below. [Google Play asset specifications]
 
 ## Metadata as files
 
@@ -105,14 +105,14 @@ EDIT_ID=$(gplay edits create --package com.example.app | jq -r '.id')
 - **Concurrency:** "For each app, you can run one default graphics experiment or up to five localized experiments at the same time"; up to 2 variants.
 - **Target metric:** Unique user install clicks, Unique user open clicks, or Unique user pre-registration clicks.
 - **Settings:** audience percentage, minimum detectable effect, confidence level ("Increasing the confidence level decreases the likelihood of a false positive").
-- **Scope:** experiments run on default and custom store listings. Test one asset at a time. Hypotheses, sample size and reading results in general: [../../marketing/ab-testing/SKILL.md](../../marketing/ab-testing/SKILL.md).
+- **Scope:** experiments run on default and custom store listings. Test one asset at a time. Hypotheses, sample size and reading results in general: [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 - **End:** "Store listing experiments stop automatically after running for 6 months"; then traffic reverts to the current listing and no variant is applied. Apply the winning variant from the recommendation, or "Keep current listing".
 
 ## Prove it
 
 - **Text fits:** `gplay validate listing --dir ... --locale <locale>` passes for every locale; title at most 30 characters, short description at most 80, full description at most 4000.
-- **Policy scope:** each field and asset passes its [actual Play metadata/asset rules](../aso/ANDROID.md#metadata-policy); full-description formatting/keyword restrictions, short-description rules and title/icon/developer-name restrictions are checked separately, not by one blanket word blacklist. [Google Play metadata policy]
-- **Assets meet spec:** the files satisfy [ASO Android asset specs](../aso/ANDROID.md#graphic-assets), with mandatory device/count/format requirements distinguished from promotion eligibility. [Google Play asset specifications]
+- **Policy scope:** each field and asset passes its [actual Play metadata/asset rules](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#metadata-policy); full-description formatting/keyword restrictions, short-description rules and title/icon/developer-name restrictions are checked separately, not by one blanket word blacklist. [Google Play metadata policy]
+- **Assets meet spec:** the files satisfy [ASO Android asset specs](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/ANDROID.md#graphic-assets), with mandatory device/count/format requirements distinguished from promotion eligibility. [Google Play asset specifications]
 - **Screenshots pass:** `gplay validate screenshots --dir ./metadata --output table` reports no errors and the files sort in the intended order.
 - **The edit is clean:** `gplay edits validate` passes before `gplay edits commit`.
 - **Nothing got cleared:** after a listing change, `gplay sync diff-listings` shows only the fields you meant to change.

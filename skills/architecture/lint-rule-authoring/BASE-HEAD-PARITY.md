@@ -1,6 +1,6 @@
 # Base and head parity: run a checker on both sides and diff its output
 
-When a change touches a checker (a lint rule, a detector, an evaluator) the question is whether the change made the checker's output worse, and the answer is a differential run: the checker at the pull request's base commit and at its head commit, over the same pinned inputs, with the two outputs diffed. Source: [React Doctor, run-parity], React Doctor's own skill and scripts for comparing its diagnostics on a pull request (`compare-parity.mjs`, `find-impacted-rules.mjs`, `baseline-cache-provenance.mjs`, `verify-matrix-artifact.mjs`, `compare-parity-performance.mjs`, `validate-parity-input.jq` and their tests). Their evaluator flags, corpus and report schema are left out; the method is kept. Resolving the reviewed range and its blast radius for reading is [CHANGE-SCOPE.md](../code-review/CHANGE-SCOPE.md); this file is the run-it-twice version for deciding what changed in a tool's output.
+When a change touches a checker (a lint rule, a detector, an evaluator) the question is whether the change made the checker's output worse, and the answer is a differential run: the checker at the pull request's base commit and at its head commit, over the same pinned inputs, with the two outputs diffed. Source: [React Doctor, run-parity], React Doctor's own skill and scripts for comparing its diagnostics on a pull request (`compare-parity.mjs`, `find-impacted-rules.mjs`, `baseline-cache-provenance.mjs`, `verify-matrix-artifact.mjs`, `compare-parity-performance.mjs`, `validate-parity-input.jq` and their tests). Their evaluator flags, corpus and report schema are left out; the method is kept. Resolving the reviewed range and its blast radius for reading is [code-review CHANGE-SCOPE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/CHANGE-SCOPE.md); this file is the run-it-twice version for deciding what changed in a tool's output.
 
 **Contents:** [Pin both sides](#pin-both-sides) · [Run the pair](#run-the-pair) · [Canonical identity](#canonical-identity) · [Coverage before diagnostics](#coverage-before-diagnostics) · [Exit codes](#exit-codes) · [Scope by import trace](#scope-by-import-trace) · [Cached baselines](#cached-baselines) · [Slowdown thresholds](#slowdown-thresholds) · [Running it in Vercel Sandbox](#running-it-in-vercel-sandbox) · [Testing the comparator](#testing-the-comparator) · [Prove it](#prove-it)
 
@@ -15,7 +15,7 @@ gh pr view <pr-number-or-url> \
   --json number,url,baseRefOid,headRefOid,headRepository,headRepositoryOwner
 ```
 
-- "Derive the base repository from the pull request URL. Derive the head repository from `headRepositoryOwner.login` and `headRepository.name`." That is what makes a fork's head runnable, not only diffable ([CHANGE-SCOPE.md](../code-review/CHANGE-SCOPE.md#pull-requests) reads `baseRefOid` for the diff).
+- "Derive the base repository from the pull request URL. Derive the head repository from `headRepositoryOwner.login` and `headRepository.name`." That is what makes a fork's head runnable, not only diffable ([code-review CHANGE-SCOPE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/CHANGE-SCOPE.md#pull-requests) reads `baseRefOid` for the diff).
 - **Pin the inputs as well as the tool.** Every target record carries an org, a name, a 40-character `ref` and a `rootDir`; unpinned refs such as `HEAD` or `main` are rejected. "The baseline records resolved repository hashes. Reusing the baseline as the candidate corpus prevents default branches from moving between runs." The head run reads the baseline's own output as its list of targets.
 - **A path inside a record is untrusted input.** `rootDir` must be non-empty, relative, already normalized (`posix.normalize(x) === x`), not `..` or under `../`, and free of shell metacharacters (`"`, `'`, backtick, `$`, `;`, `&`, `|`, `<`, `>`, backslash) and of CR or LF.
 - **Keep the run directory.** "Create `tmp/parity-pr-<number>-<head-short-sha>` and preserve it after the run."
@@ -56,7 +56,7 @@ Source: [React Doctor, run-parity].
 
 - **An absent result is not a clean result unless coverage proves the thing was looked at.** Each project gets a coverage fingerprint (directory, package root, framework, the sorted list of analyzed files and their counts). A head run that silently drops a zero-hit file or a zero-hit project is "coverage differs", which is invalid input, never "no new diagnostics". A different file order is fine.
 - **Validate completeness, not just shape:** `ok === true`, `error === null`, at least one project, every project complete, no skipped checks or skip reasons, scanned file count equal to analyzed file count, and the stored summary equal to the counts recomputed from the diagnostics. "The comparator validates both inputs again and exits with invalid-input status if either side contains an evaluation error, a malformed report, a missing completion marker, or a partial legacy report."
-- The same rule for a scanner's "no findings" in one change is in [SCANNER-TRIAGE.md](../code-review/SCANNER-TRIAGE.md#when-a-scan-may-be-called-clean).
+- The same rule for a scanner's "no findings" in one change is in [code-review SCANNER-TRIAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/SCANNER-TRIAGE.md#when-a-scan-may-be-called-clean).
 
 ## Exit codes
 
@@ -72,7 +72,7 @@ Invalid evidence outranks a diff: any skipped project forces `2` even when diffe
 
 ## Scope by import trace
 
-Source: [React Doctor, run-parity], `find-impacted-rules.mjs`. When only some checks changed, run only those, but decide that mechanically and fall back to the full run on any doubt. [CHANGE-SCOPE.md](../code-review/CHANGE-SCOPE.md#blast-radius) expands one hop by hand for reading; this is the transitive version for deciding what to run.
+Source: [React Doctor, run-parity], `find-impacted-rules.mjs`. When only some checks changed, run only those, but decide that mechanically and fall back to the full run on any doubt. [code-review CHANGE-SCOPE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/CHANGE-SCOPE.md#blast-radius) expands one hop by hand for reading; this is the transitive version for deciding what to run.
 
 1. **List changed paths both ways,** `git diff --name-only -z` base to head and head to base, unioned; docs, changesets, tests and snapshots are ignored.
 2. **Build the runtime import graph of both trees** from `git ls-tree` and `git show`, never the working tree, with the TypeScript parser: static imports (type-only imports excluded), `import x = require()`, `export ... from`, dynamic `import()` and `require()`, side-effect imports, `.js` resolved to `.ts`/`.tsx`, extensionless and `index.*` paths, JSON modules.
@@ -111,7 +111,7 @@ Preconditions, or exit `2`: complete reports, identical project coverage, rule s
 
 It reports the median and p95 per-project ratio (nearest-rank percentile) and echoes the thresholds in its output. Exit `0` within thresholds, `1` a project or aggregate regression, `2` invalid evidence. Its tests: 10 s to 16 s fails; 0.5 s to 2 s is ignored as too small; ten projects each 25% slower fail on the aggregate though none fails alone. "Inspect the emitted measurements before attributing a cause."
 
-Two views, each under its own conditions: [performance-and-caching MEASURE.md](../../backend/performance-and-caching/MEASURE.md#deterministic-counts-and-ratchets) prefers deterministic counts for a CI gate because milliseconds are too flaky; run-parity gates on wall clock only from paired sequential runs with a ratio and an absolute floor together, a minimum base duration and a minimum project count.
+Two views, each under its own conditions: [performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#deterministic-counts-and-ratchets) prefers deterministic counts for a CI gate because milliseconds are too flaky; run-parity gates on wall clock only from paired sequential runs with a ratio and an absolute floor together, a minimum base duration and a minimum project count.
 
 ## Running it in Vercel Sandbox
 

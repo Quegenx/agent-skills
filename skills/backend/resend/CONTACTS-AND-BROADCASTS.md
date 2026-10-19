@@ -457,8 +457,8 @@ const { data, error } = await resend.broadcasts.recipients('bc_abc123', {
 - **Unsubscribed contacts are not removed automatically;** delete them for audience hygiene.
 - **Suppression is not unsubscription.** Resend suppresses an address after a hard bounce or complaint but does not unsubscribe the contact; use webhooks to unsubscribe proactively ([WEBHOOKS.md](WEBHOOKS.md)).
 - **Transactional email is generally exempt** from unsubscribe links; FTC and GDPR prioritize clear consent withdrawal for marketing.
-- **Marketing consent and records:** [COMPLIANCE.md](../email-practices/COMPLIANCE.md#consent-records) owns the unchecked, optional consent and unsubscribe requirements.
-- **Transactional unsubscribe headers:** Resend does not manage transactional lists. The RFC 8058 headers, POST/GET behavior, blank 200/202 response and 48-hour endpoint rule are owned by [COMPLIANCE.md](../email-practices/COMPLIANCE.md#the-unsubscribe-endpoint); Gmail and Yahoo scope is owned by [DELIVERABILITY.md](../email-practices/DELIVERABILITY.md#sender-requirements-by-mailbox-provider).
+- **Marketing consent and records:** [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#consent-records) owns the unchecked, optional consent and unsubscribe requirements.
+- **Transactional unsubscribe headers:** Resend does not manage transactional lists. The RFC 8058 headers, POST/GET behavior, blank 200/202 response and 48-hour endpoint rule are owned by [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#the-unsubscribe-endpoint); Gmail and Yahoo scope is owned by [email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#sender-requirements-by-mailbox-provider).
 - **Custom unsubscribe page:** Settings > Unsubscribe Page sets title, description, logo, background, text and accent color; one page serves every domain on the team. Pro plan or higher can remove "Powered by Resend".
 
 ## Webhook events

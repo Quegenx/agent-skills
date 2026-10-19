@@ -1,6 +1,6 @@
 # SVG from JavaScript and React
 
-Script reaches SVG three ways: the Web Animations API (`element.animate()`, the CSS engine driven from JS), a `requestAnimationFrame` loop that writes attributes or styles each frame, and the geometry methods (`getTotalLength()`, `getPointAtLength()`) that measure paths. What decides most outcomes: Motion's docs say WAAPI can't animate attributes that never became CSS properties (`viewBox`, `points`), a rAF loop must compute progress from its timestamp, and inline SVG in React is JSX (SVGR can generate it) with camelCase attribute names. Autoplaying motion that lasts over five seconds alongside other content needs a way to pause it (WCAG 2.2.2). Property support: [STYLING.md](STYLING.md); CSS-only animation: [CSS-ANIMATION.md](CSS-ANIMATION.md); SMIL: [SMIL.md](SMIL.md); timing and easing: [../ui-animation/SKILL.md](../ui-animation/SKILL.md); elements and paths: [BASICS.md](BASICS.md), [PATHS.md](PATHS.md).
+Script reaches SVG three ways: the Web Animations API (`element.animate()`, the CSS engine driven from JS), a `requestAnimationFrame` loop that writes attributes or styles each frame, and the geometry methods (`getTotalLength()`, `getPointAtLength()`) that measure paths. What decides most outcomes: Motion's docs say WAAPI can't animate attributes that never became CSS properties (`viewBox`, `points`), a rAF loop must compute progress from its timestamp, and inline SVG in React is JSX (SVGR can generate it) with camelCase attribute names. Autoplaying motion that lasts over five seconds alongside other content needs a way to pause it (WCAG 2.2.2). Property support: [STYLING.md](STYLING.md); CSS-only animation: [CSS-ANIMATION.md](CSS-ANIMATION.md); SMIL: [SMIL.md](SMIL.md); timing and easing: [ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md); elements and paths: [BASICS.md](BASICS.md), [PATHS.md](PATHS.md).
 
 ## Create SVG elements
 
@@ -34,7 +34,7 @@ svg.animate({ viewBox: ["0 0 100 100", "0 0 50 50"] }, 1000)
 - **Line drawing:** `path.animate({ strokeDashoffset: [length, 0] }, 2000)` after measuring (below).
 - **Motion along a path:** `ball.animate({ offsetDistance: [0, "100%"] }, { duration: 1500, iterations: 4, easing: "cubic-bezier(.667,0.01,.333,.99)", direction: "alternate" })`.
 - **No native springs.** Motion's docs: neither CSS nor WAAPI has them; both rely on pre-generated `linear()` easing.
-  - Generators for that curve, and why `linear()` suits transitions more than keyframes: [TIMING.md](../ui-animation/TIMING.md) in ui-animation.
+  - Generators for that curve, and why `linear()` suits transitions more than keyframes: [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) in ui-animation.
 - **Off the main thread.** Motion's docs: `transform`/`opacity` through CSS, WAAPI or Motion is GPU-accelerated; through GSAP or plain JS it is "animated on the main thread".
 
 ## requestAnimationFrame

@@ -1,6 +1,6 @@
 # Custom advisors
 
-Users can extend the bench ("add my own advisor"). A custom dossier has the same fields as the built-in ones in [advisors/](advisors/): lens, frameworks, documented positions with sources, signature questions, best for and blind spots, voice notes, key works. Source: [coreyhaines31/marketingskills, marketing-council] `references/advisor-template.md` and SKILL.md "Adding a Custom Advisor" (MIT, Corey Haines), copied with its dashes replaced.
+Users can extend the bench ("add my own advisor"). A custom dossier has the same fields as the built-in ones in [advisors/](advisors): lens, frameworks, documented positions with sources, signature questions, best for and blind spots, voice notes, key works. Source: [coreyhaines31/marketingskills, marketing-council] `references/advisor-template.md` and SKILL.md "Adding a Custom Advisor" (MIT, Corey Haines), copied with its dashes replaced.
 
 ## Where the file lives
 

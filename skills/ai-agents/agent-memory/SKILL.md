@@ -7,6 +7,8 @@ description: "Designs long-term memory for LLM agents: what to remember and wher
 
 Memory is what lets the next conversation start from what the last ones established: the user's setup, their constraints, the decision taken last week. It fails in three ways, and every rule here answers one of them: the agent **forgets** what it was told, **ignores** a preference it holds, or **holds on to what stopped being true** ("still in Singapore" a month after the trip). The third is the one simple systems get worst, and the one users notice.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Writing memory: what to extract, who said it, grounding dates, preference atoms from parent-conversation evidence, artifact choice, duplicates, links and consolidation | [WRITE.md](WRITE.md) |
@@ -24,7 +26,7 @@ Memory is what lets the next conversation start from what the last ones establis
 | material someone would look up by meaning | documents, searched | the planning doc, past tickets, the changelog |
 | the state of the current conversation | the conversation | the draft being edited right now |
 
-Memory is not a system of record: no joins, no totals, no lookup by key. Keep the rows in the database and remember the story around them ("disputed invoice 4821 and nearly left over it"). Work the agent already paid for is a project file too: a research log in the project context records "What's already been researched, so the next session checks before buying the same data twice" [openseo.so]; the harness side is [TOOLS.md](../agent-harness/TOOLS.md).
+Memory is not a system of record: no joins, no totals, no lookup by key. Keep the rows in the database and remember the story around them ("disputed invoice 4821 and nearly left over it"). Work the agent already paid for is a project file too: a research log in the project context records "What's already been researched, so the next session checks before buying the same data twice" [openseo.so]; the harness side is [agent-harness TOOLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/TOOLS.md).
 
 ## The shape
 

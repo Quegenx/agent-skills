@@ -7,6 +7,8 @@ description: "Extracts and maintains a design system from an app's shipped UI, m
 
 Start from the interface the app already ships. This skill consolidates its tokens, components and adoption evidence; it supplies no visual direction. Sources: the supplied `build-design-system`, `component-docs`, `design-system-boss`, `migrate-design-system`, `token-mapping` and `ui-review` skills, their references and scripts, tagged by source file below. The scripts were read as source, not imported or executed.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Scope the work and preserve the installed system | [SKILL.md](SKILL.md) |
@@ -14,7 +16,7 @@ Start from the interface the app already ships. This skill consolidates its toke
 | Write one component's documentation from its implementation and real uses | [COMPONENT-DOCS.md](COMPONENT-DOCS.md) |
 | Move screens onto the system with captured visual and behavior evidence | [MIGRATION.md](MIGRATION.md) |
 
-Color notation and token definitions remain in [color-system](../color-system/SKILL.md), general behavior comparison in [system-migration](../../architecture/system-migration/SKILL.md), rendered critique in [anti-slop-ui REVIEW.md](../../anti-ai-slop/anti-slop-ui/REVIEW.md), and accessibility requirements in [web-accessibility](../web-accessibility/SKILL.md).
+Color notation and token definitions remain in [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md), general behavior comparison in [system-migration](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/system-migration/SKILL.md), rendered critique in [anti-slop-ui REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/REVIEW.md), and accessibility requirements in [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md).
 
 ## The rules
 
@@ -27,11 +29,11 @@ Color notation and token definitions remain in [color-system](../color-system/SK
 
 ## Source conflicts kept explicit
 
-- The supplied component rules keep the idle label, add a spinner and use `aria-disabled` while pending. The production app instead morphs the running label, uses words and shimmer, disables the button and disables an in-flight form's fieldset. Keep [app-ui STATES.md](../app-ui/STATES.md#pending). [supplied design skills, build-design-system/references/components.md, Variants and states; app-ui/STATES.md]
-- The supplied traps require a focus ring. The production app records no focus ring, including the browser default. Keep that design and report the accessibility conflict through the existing [focus guidance](../web-accessibility/FOCUS-AND-KEYBOARD.md). [supplied design skills, build-design-system/references/traps.md, trap/focus-ring-shape; app-ui/SKILL.md, rule 6]
-- The supplied token and trap rules allow only transform and opacity animation. The production systems include deliberate layout and blur animation; keep their own [app](../app-ui/SKILL.md), [site](../landing-page-ui/SKILL.md) and [chat](../../ai-agents/agent-chat-ui/SKILL.md) motion contracts. [supplied design skills, build-design-system/references/tokens.md, Motion; references/traps.md, trap/motion-layout-property]
+- The supplied component rules keep the idle label, add a spinner and use `aria-disabled` while pending. The production app instead morphs the running label, uses words and shimmer, disables the button and disables an in-flight form's fieldset. Keep [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#pending). [supplied design skills, build-design-system/references/components.md, Variants and states; app-ui/STATES.md]
+- The supplied traps require a focus ring. The production app records no focus ring, including the browser default. Keep that design and report the accessibility conflict through the existing [focus guidance](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FOCUS-AND-KEYBOARD.md). [supplied design skills, build-design-system/references/traps.md, trap/focus-ring-shape; app-ui/SKILL.md, rule 6]
+- The supplied token and trap rules allow only transform and opacity animation. The production systems include deliberate layout and blur animation; keep their own [app](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md), [site](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md) and [chat](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-chat-ui/SKILL.md) motion contracts. [supplied design skills, build-design-system/references/tokens.md, Motion; references/traps.md, trap/motion-layout-property]
 - The supplied review says user-chosen identifying text never truncates. The production app explicitly supports a truncated name as a tooltip trigger; keep that behavior instead of applying a global no-truncation rule. [supplied design skills, ui-review/references/criteria.md, criterion 11; app-ui/CONTROLS.md, Tooltips]
-- The supplied button trap prescribes a non-wrapping label at narrow widths. The production app's ordinary button labels wrap, with a deliberate one-line exception inside table cells; keep [app-ui CONTROLS.md](../app-ui/CONTROLS.md#buttons). [supplied design skills, build-design-system/references/traps.md, trap/button-label-wrap; app-ui/CONTROLS.md, Buttons]
+- The supplied button trap prescribes a non-wrapping label at narrow widths. The production app's ordinary button labels wrap, with a deliberate one-line exception inside table cells; keep [app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#buttons). [supplied design skills, build-design-system/references/traps.md, trap/button-label-wrap; app-ui/CONTROLS.md, Buttons]
 
 ## Prove it
 

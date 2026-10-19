@@ -1,6 +1,6 @@
 # Refining a harness from execution evidence
 
-Use recorded executions to improve the instructions, tools and orchestration around a model. This file paraphrases [google-research/harness2, README.md, docs/EXPERIMENTS.md and harness2/core/]. It covers the refinement method, with model weights held fixed. [FIX-LOOP.md](../agent-evals/FIX-LOOP.md) owns measured optimization against an eval; [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) owns investigating an existing session.
+Use recorded executions to improve the instructions, tools and orchestration around a model. This file paraphrases [google-research/harness2, README.md, docs/EXPERIMENTS.md and harness2/core/]. It covers the refinement method, with model weights held fixed. [agent-evals FIX-LOOP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/FIX-LOOP.md) owns measured optimization against an eval; [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) owns investigating an existing session.
 
 ## Fix the editable surface
 
@@ -22,7 +22,7 @@ Use recorded executions to improve the instructions, tools and orchestration aro
 - Distinguish incorrect arguments, timeout, missing capability, permission denial and an unread result before prescribing recovery. Prefer a bounded fallback with a stop condition over repeated identical calls.
 - A verified workspace fact can help the current execution, but label it as local to that workspace. Recheck mappings, thresholds and other local facts before reusing an earlier harness on a different task; an earlier task's fact is a hypothesis there.
 
-**Conflict:** the source's aggregate prompt calls a defect seen in only one of the base executions "noise". The existing rule remains: an occasional failure can be real, and a case passing two of three runs still has a problem. Keep the observed failure and investigate it; [repetitions and intervals](../agent-evals/HARNESS.md#repetitions-and-intervals) own uncertainty in comparisons. [google-research/harness2, harness2/core/prompts.py, aggregate; existing agent-harness, SKILL.md, Why agents fail rule 1]
+**Conflict:** the source's aggregate prompt calls a defect seen in only one of the base executions "noise". The existing rule remains: an occasional failure can be real, and a case passing two of three runs still has a problem. Keep the observed failure and investigate it; [repetitions and intervals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/HARNESS.md#repetitions-and-intervals) own uncertainty in comparisons. [google-research/harness2, harness2/core/prompts.py, aggregate; existing agent-harness, SKILL.md, Why agents fail rule 1]
 
 ## Probe, then compose
 
@@ -38,7 +38,7 @@ Use recorded executions to improve the instructions, tools and orchestration aro
 - Record both gains and regressions, including a run that produced no deliverable. A polished proposal does not compensate for an execution that did not finish the requested work.
 - In sequential refinement, "keep current" preserves the current checkpoint; restoring the original harness is a different action. Preserve earlier states so later drift can be reversed to a named checkpoint, and state which rounds' edits survive.
 - Record candidate collapse as well as candidate count: identical component trees are not distinct edits merely because they have different labels. Textual diversity does not itself prove useful behavioral diversity.
-- Treat a probe as evidence for this task. A selected output and an apparent trajectory contrast do not establish that the harness improved generally; use the existing [eval fix loop](../agent-evals/FIX-LOOP.md) before making that claim.
+- Treat a probe as evidence for this task. A selected output and an apparent trajectory contrast do not establish that the harness improved generally; use the existing [eval fix loop](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/FIX-LOOP.md) before making that claim.
 
 ## Separate output selection from measurement
 
@@ -47,7 +47,7 @@ Use recorded executions to improve the instructions, tools and orchestration aro
 - Give an artifact selector the task, authorized source material and anonymous, shuffled outputs. Hide the producing harnesses and their persuasive decision notes during this selection. Judge the artifact's required coverage, source fidelity, internal consistency and practical usability, rather than its length or the elaborateness of its harness.
 - State exactly which outputs are eligible. This release selects among composed finals, not the original reference outputs; at a single-final budget it delivers that final without a selector call. An unchanged harness can still be a composition, but that is a new execution, not selection of the original base output.
 - Record dropped candidates, extraction failures, the selected artifact's identity and any selector fallback. A fallback after a selector error is not a successful comparative judgment.
-- Keep selection and held-out grading separate. The source selects before reading benchmark scores. The broader leakage and network boundaries remain in [HARNESS.md](../agent-evals/HARNESS.md#the-cases); a prompt saying that no answer key is present does not establish that boundary.
+- Keep selection and held-out grading separate. The source selects before reading benchmark scores. The broader leakage and network boundaries remain in [agent-evals HARNESS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/HARNESS.md#the-cases); a prompt saying that no answer key is present does not establish that boundary.
 - Describe the evidence actually served. Preserve the original artifacts and identify extracted text, name-only listings, unavailable content and renderer truncation. A comparison marker inserted by a renderer is not an omission by the executing agent, and a filename alone does not establish the file's contents.
 
 ## Retain supported lessons
@@ -68,7 +68,7 @@ Use recorded executions to improve the instructions, tools and orchestration aro
 - Preserve task order and the selected task set, method version, executor, improver, judge and endpoint configuration with the run. A task-order seed records ordering, not deterministic model sampling. Refuse incompatible resumes instead of silently sharing results or learned entries.
 - Verify that a cached run has an explicit completion record, the expected harness fingerprint and intact adopted artifacts. An output directory's existence alone is insufficient. A fingerprint identifies bytes; it does not prove that those bytes satisfy the request.
 - On resume, restore only the experience that preceded the current task in that stream. Do not let entries left by later tasks leak backward into an earlier retry.
-- Use the shared [run-record and resume rules](../agent-evals/HARNESS.md#run-records) for terminal statuses, retries and missing measurements. Resource accounting for this method belongs in [CONTEXT-COSTS.md](CONTEXT-COSTS.md#a-bounded-comparison).
+- Use the shared [run-record and resume rules](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/HARNESS.md#run-records) for terminal statuses, retries and missing measurements. Resource accounting for this method belongs in [CONTEXT-COSTS.md](CONTEXT-COSTS.md#a-bounded-comparison).
 
 ## Prove it
 

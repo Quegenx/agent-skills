@@ -1,6 +1,6 @@
 # Transitions and @starting-style
 
-Entry and exit effects written as CSS transitions: `@starting-style` for where an element enters from, `transition-behavior: allow-discrete` so `display` (and `content-visibility`) wait for the exit, `overlay` so a top-layer element stays rendered while it leaves, `[hidden]` as a shared exit state, `<details>` that open and close smoothly with `::details-content` and `interpolate-size`, `calc-size()`, staggered entries, and removing a node once its transitions finish with `getAnimations()`. The source is Adam Argyle's nerdy.dev; each section names its post and date. Support status comes from MDN (index data checked 2026-10-17) and webstatus.dev, stated once in [Support](#support). The ready-made dialog and popover kits are in [POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md#starter-kits). Code is copied from the posts; the "👈" markers in the originals are dropped, a dash in one quoted sentence is replaced with a colon, and the one broken snippet is marked where it is fixed. Durations, curves and stagger rules in general are [ui-animation](../ui-animation/TIMING.md)'s job; this file covers the CSS mechanics.
+Entry and exit effects written as CSS transitions: `@starting-style` for where an element enters from, `transition-behavior: allow-discrete` so `display` (and `content-visibility`) wait for the exit, `overlay` so a top-layer element stays rendered while it leaves, `[hidden]` as a shared exit state, `<details>` that open and close smoothly with `::details-content` and `interpolate-size`, `calc-size()`, staggered entries, and removing a node once its transitions finish with `getAnimations()`. The source is Adam Argyle's nerdy.dev; each section names its post and date. Support status comes from MDN (index data checked 2026-10-17) and webstatus.dev, stated once in [Support](#support). The ready-made dialog and popover kits are in [POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md#starter-kits). Code is copied from the posts; the "👈" markers in the originals are dropped, a dash in one quoted sentence is replaced with a colon, and the one broken snippet is marked where it is fixed. Durations, curves and stagger rules in general are [ui-animation](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md)'s job; this file covers the CSS mechanics.
 
 **Contents:** [Support](#support) · [Why top-layer elements are hard to animate](#why-top-layer-elements-are-hard-to-animate) · [@starting-style](#starting-style) · [transition-behavior: allow-discrete](#transition-behavior-allow-discrete) · [overlay](#overlay) · [Enter and exit stage for any element](#enter-and-exit-stage-for-any-element) · [Remove a node after its exit](#remove-a-node-after-its-exit) · [Opt in to motion](#opt-in-to-motion) · [details that open and close](#details-that-open-and-close) · [An exclusive accordion](#an-exclusive-accordion) · [interpolate-size and calc-size()](#interpolate-size-and-calc-size) · [Staggered entries](#staggered-entries) · [The same pattern elsewhere](#the-same-pattern-elsewhere) · [Where other skills differ](#where-other-skills-differ) · [Prove it](#prove-it)
 
@@ -214,7 +214,7 @@ The enter and exit post puts its transitions inside `@media (prefers-reduced-mot
 }
 ```
 
-The `<details>` boilerplate below gates `interpolate-size` the same way. [ui-animation PERFORMANCE.md](../ui-animation/PERFORMANCE.md#reduced-motion) calls the opposite pattern, a global `prefers-reduced-motion: reduce` override, "a blunt fallback" and asks for a deliberate reduced version of each animation.
+The `<details>` boilerplate below gates `interpolate-size` the same way. [ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md#reduced-motion) calls the opposite pattern, a global `prefers-reduced-motion: reduce` override, "a blunt fallback" and asks for a deliberate reduced version of each animation.
 
 ## details that open and close
 
@@ -256,7 +256,7 @@ details {
 - It "needs a `max-inline-size` (or placement inside a grid) to prevent the content from being as wide as the page"; the post uses `inline-size: 50ch`.
 - What works where: the post (2024-09) said the effect "needs `transition-behavior`, `::details-content` and `interpolate-size` to work". Today `::details-content` is Baseline 2025, `interpolate-size` is Chromium only, and transitioning `content-visibility` is missing in Firefox (see [Support](#support)).
 - 1s is the demo duration. More styled versions: [nerdy.dev: Nice Details](https://nerdy.dev/nice-details) (2025-04-25), "Beautiful `<details>` are possible ... Lots of fun micro interactions" ([demo](https://codepen.io/argyleink/pen/MYYpVjJ), code not exported), and the [accordion notebook](https://nerdy.dev/notebook/accordion.html).
-- Next to [ui-animation PATTERNS.md](../ui-animation/PATTERNS.md#height-and-accordions), which animates grid rows `0fr` to `1fr` or uses Motion's `height: "auto"`, this is a third, native option for a `<details>`.
+- Next to [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#height-and-accordions), which animates grid rows `0fr` to `1fr` or uses Motion's `height: "auto"`, this is a third, native option for a `<details>`.
 
 ## An exclusive accordion
 
@@ -345,7 +345,7 @@ li {
 }
 ```
 
-- 100ms per item with no cap is the post's demo value; [ui-animation TIMING.md](../ui-animation/TIMING.md#staggers-and-sequencing) keeps a whole stagger "under about 500 ms", list items "30-60 ms apart", and caps how many items animate. Apply that cap when copying.
+- 100ms per item with no cap is the post's demo value; [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#staggers-and-sequencing) keeps a whole stagger "under about 500 ms", list items "30-60 ms apart", and caps how many items animate. Apply that cap when copying.
 
 ## The same pattern elsewhere
 
@@ -354,13 +354,13 @@ li {
 
 ## Where other skills differ
 
-- **Easing direction.** The post enters on `ease-in` and exits on `ease-out`. [ui-animation TIMING.md](../ui-animation/TIMING.md#curves) eases arrivals out and exits in (its `exit` curve "accelerates away"); the same page records kciter's view that an element that appeared with ease-in "should disappear with ease-out", which matches the post. Both agree the two directions need different curves.
-- **Exit length.** The post's exit is .4s against a .5s entry. [ui-animation TIMING.md](../ui-animation/TIMING.md#staggers-and-sequencing) wants "Entrances run 30-50% longer than exits"; .5s over .4s is 25% longer.
-- **Durations.** The posts' 0.5s and 1s are demo values; ui-animation's [Duration by element](../ui-animation/TIMING.md#duration-by-element) table is the recommendation.
-- **Load-in motion.** The Switch load-in animates on first render; app-ui does not ("Nothing animates on first render that the user didn't cause", [app-ui SKILL.md](../app-ui/SKILL.md)). That is the owner's rule for the product UI.
-- **interpolate-size scope.** app-ui sets `interpolate-size: allow-keywords` on `:root` as an enhancement ([app-ui TOKENS.md](../app-ui/TOKENS.md)), like the interpolate-size post; the `<details>` post sets it per element inside `prefers-reduced-motion: no-preference`. [modern-css RESPONSIVE.md](RESPONSIVE.md#enhancements-not-the-base) wants it "Inside `@supports` only".
-- **Accordions.** The owner's landing pages build each accordion row as "the question as a button inside a heading" and "the answer as a region", opening "on springs", with "One row open at a time per list" ([landing-page-ui SECTIONS.md](../landing-page-ui/SECTIONS.md#questions)), not `<details name>`.
-- **Library route.** The owner's app animates headless popups with `data-[starting-style]` attributes ([ui-animation PATTERNS.md](../ui-animation/PATTERNS.md#modals-sheets-popovers), [app-ui TOKENS.md](../app-ui/TOKENS.md)); native `@starting-style` is the no-library equivalent.
+- **Easing direction.** The post enters on `ease-in` and exits on `ease-out`. [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#curves) eases arrivals out and exits in (its `exit` curve "accelerates away"); the same page records kciter's view that an element that appeared with ease-in "should disappear with ease-out", which matches the post. Both agree the two directions need different curves.
+- **Exit length.** The post's exit is .4s against a .5s entry. [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#staggers-and-sequencing) wants "Entrances run 30-50% longer than exits"; .5s over .4s is 25% longer.
+- **Durations.** The posts' 0.5s and 1s are demo values; ui-animation's [Duration by element](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#duration-by-element) table is the recommendation.
+- **Load-in motion.** The Switch load-in animates on first render; app-ui does not ("Nothing animates on first render that the user didn't cause", [app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md)). That is the owner's rule for the product UI.
+- **interpolate-size scope.** app-ui sets `interpolate-size: allow-keywords` on `:root` as an enhancement ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)), like the interpolate-size post; the `<details>` post sets it per element inside `prefers-reduced-motion: no-preference`. [modern-css RESPONSIVE.md](RESPONSIVE.md#enhancements-not-the-base) wants it "Inside `@supports` only".
+- **Accordions.** The owner's landing pages build each accordion row as "the question as a button inside a heading" and "the answer as a region", opening "on springs", with "One row open at a time per list" ([landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md#questions)), not `<details name>`.
+- **Library route.** The owner's app animates headless popups with `data-[starting-style]` attributes ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#modals-sheets-popovers), [app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)); native `@starting-style` is the no-library equivalent.
 
 ## Prove it
 
@@ -373,4 +373,4 @@ li {
 - Code that removes a node after an exit sets the state before calling `getAnimations()`, and logs a non-empty array during the exit.
 - With reduced motion turned on in the OS, elements still appear and disappear, without transitions.
 - `<details name>` groups: opening one closes the others; every `name="` attribute has its closing quote.
-- Staggers: the last item's delay stays within the cap in [ui-animation TIMING.md](../ui-animation/TIMING.md#staggers-and-sequencing).
+- Staggers: the last item's delay stays within the cap in [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#staggers-and-sequencing).

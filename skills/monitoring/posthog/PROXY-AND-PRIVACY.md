@@ -244,7 +244,7 @@ function onConsentChange(hasConsented) {
 }
 ```
 
-- **Two views on gating the SDK.** PostHog's rule is the one above. [c15t]'s `posthog` helper defaults to `loadMode: 'always'`, which matches it (loads `array.js` before a choice and calls `opt_out_capturing()` while `measurement` has no consent), but its examples use `loadMode: 'after-consent'` with `initOptions: { cookieless_mode: 'never' }`, which waits for measurement permission before requesting the SDK. Pick by whether the site may make any PostHog request before opt-in. Consent managers in general are [../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md).
+- **Two views on gating the SDK.** PostHog's rule is the one above. [c15t]'s `posthog` helper defaults to `loadMode: 'always'`, which matches it (loads `array.js` before a choice and calls `opt_out_capturing()` while `measurement` has no consent), but its examples use `loadMode: 'after-consent'` with `initOptions: { cookieless_mode: 'never' }`, which waits for measurement permission before requesting the SDK. Pick by whether the site may make any PostHog request before opt-in. Consent managers in general are [cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md).
 - **Guard your own capture calls** [c15t]: "The `posthog` global exists before the SDK loads, so its presence does not mean measurement is allowed."
 
 ```ts
@@ -254,7 +254,7 @@ export function trackSignupStarted(measurementAllowed: boolean) {
 }
 ```
 
-- **An SDK you already initialize, under c15t** [c15t]: init it with `opt_out_capturing_by_default: true` and `cookieless_mode: 'never'` and let a callback-only consent script call `opt_in_capturing()` / `opt_out_capturing()`; "`loadMode: 'disabled'` is not a substitute, because it syncs nothing." The script itself is in [../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md).
+- **An SDK you already initialize, under c15t** [c15t]: init it with `opt_out_capturing_by_default: true` and `cookieless_mode: 'never'` and let a callback-only consent script call `opt_in_capturing()` / `opt_out_capturing()`; "`loadMode: 'disabled'` is not a substitute, because it syncs nothing." The script itself is in [cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md).
 - **Show the banner only while `posthog.get_explicit_consent_status()` returns `'pending'`** (it returns `'granted' | 'denied' | 'pending'` and ignores the default config).
 - **`reset()` clears consent too.** With `opt_out_capturing_by_default`, calling `reset()` after `opt_in_capturing()` silently stops capturing: always `reset()` first, then opt in.
 - **Consent across subdomains:** consent lives in `localStorage` (one origin) by default. Set `opt_out_capturing_persistence_type: "cookie"` on every subdomain, keep `cross_subdomain_cookie` (default on), the same project token, and the same `consent_persistence_name` if you set one.

@@ -136,7 +136,7 @@ CSS nesting and the `&` selector are Baseline widely available since 2026-06-11 
 
 ## Has and selectors
 
-`:has()` is Baseline widely available since 2026-06-19 (newly available 2023-12-19). MDN: `:has()` cannot nest inside another `:has()`, and broad anchors (`body`, `:root`, `*`) with unconstrained inner selectors can hurt performance ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has)). The repo's measurement: one `:root:has()` selector added 24 ms to every DOM change ([../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md)).
+`:has()` is Baseline widely available since 2026-06-19 (newly available 2023-12-19). MDN: `:has()` cannot nest inside another `:has()`, and broad anchors (`body`, `:root`, `*`) with unconstrained inner selectors can hurt performance ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has)). The repo's measurement: one `:root:has()` selector added 24 ms to every DOM change ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md)).
 
 - **Style what an element lacks with `:not(:has())`.** [nerdy.dev: CSS Has Not Combo](https://nerdy.dev/css-has-not-combo) (2022-11-30): "use `:has()` for when an element doesn't have some other element as a child, like a card without a heading":
 
@@ -164,7 +164,7 @@ CSS nesting and the `&` selector are Baseline widely available since 2026-06-11 
 
   This anchors `:has()` on the root, the pattern the 24 ms measurement above warns about. Scroll snapping itself is in [SCROLL.md](SCROLL.md).
 - **Count and kind of children.** [nerdy.dev: Web elements know about the user, device, variables, layout and more](https://nerdy.dev/components-can-know) (2025-10-30) lists "how many items they contain" (quantity queries with `:has()`) and "what kind of items they contain" (`:has()`); the bento grid that combines this with `@container` is in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md#container-size-queries).
-- **A single picker from a radio group.** [nerdy.dev: A Squishy Radio Group](https://nerdy.dev/a-squishy-radio-group) (2024-01-11): "Combine them with `:has()`, animated `grid-template-columns` and `linear()` easing and you've got yourself a neat little single picker UX." Demo code not exported ([demo](https://codepen.io/argyleink/pen/ExMgWLe)). A second view: ui-animation says animating `width`, `height` and other layout properties "recalculates layout every frame" and to prefer `transform` and `opacity` ([../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md)); a grid track is a layout property.
+- **A single picker from a radio group.** [nerdy.dev: A Squishy Radio Group](https://nerdy.dev/a-squishy-radio-group) (2024-01-11): "Combine them with `:has()`, animated `grid-template-columns` and `linear()` easing and you've got yourself a neat little single picker UX." Demo code not exported ([demo](https://codepen.io/argyleink/pen/ExMgWLe)). A second view: ui-animation says animating `width`, `height` and other layout properties "recalculates layout every frame" and to prefer `transform` and `opacity` ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md)); a grid track is a layout property.
 - **The UA rule for `[hidden]` is weak.** [nerdy.dev: Using @starting-style and transition-behavior for enter and exit stage effects](https://nerdy.dev/using-starting-style-and-transition-behavior-for-enter-and-exit-stage-effects) (2024-05-20) writes `display: none !important` on `&[hidden]`: "The browser provides that automatically for the attribute, but it's specificity is weak. If elements have any custom display type set, none isn't applied and the effect is lost." The full exit rule is in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md).
 
 ## Focus by demotion
@@ -239,7 +239,7 @@ CSS nesting and the `&` selector are Baseline widely available since 2026-06-11 
   }
   ```
 
-  `abs()` is Baseline newly available since 2025-06-26 (Chrome 138 was last) ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/abs)). Durations here (1s, 2s springs) are demo values; ui-animation's timing tables are in [../ui-animation/TIMING.md](../ui-animation/TIMING.md).
+  `abs()` is Baseline newly available since 2025-06-26 (Chrome 138 was last) ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/abs)). Durations here (1s, 2s springs) are demo values; ui-animation's timing tables are in [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md).
 
 ## Custom names
 
@@ -311,7 +311,7 @@ CSS nesting and the `&` selector are Baseline widely available since 2026-06-11 
 ```
 
 - **"I think it's a good idea to `--` all your custom names, just to make it really clear they aren't internal CSS keywords."** Both forms are valid where a `<custom-ident>` is allowed: MDN `container-name` takes a case-sensitive `<custom-ident>`, dashed allowed, not `or`, `and`, `not` or `default`, never quoted ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container-name)). Same post.
-- app-ui names containers without dashes (`@container main (inline-size >= 48rem)` in [page-layout.css](../app-ui/reference/styles/layout/shell/page-layout.css)). anti-slop-code's emoji rule is listed under comments: "decorative banners and emoji" ([SKILL.md](../../anti-ai-slop/anti-slop-code/SKILL.md)).
+- app-ui names containers without dashes (`@container main (inline-size >= 48rem)` in [page-layout.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/styles/layout/shell/page-layout.css)). anti-slop-code's emoji rule is listed under comments: "decorative banners and emoji" ([anti-slop-code SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/SKILL.md)).
 - Naming layers is covered in [Cascade layers](#cascade-layers); anchors and view transitions are covered in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md) and [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md).
 
 ## Specificity
@@ -336,7 +336,7 @@ The specificity facts from the sections above, in one place:
 - **Boneless:** "Just styles; BYO bones and life." Bootstrap, Tailwind, Bulma, Open Props, Tachyons, Foundation, Materialize; their value "is a system, consistency, or premade combinations".
 - **Skinless:** "Just the markup; BYO skin and life." Unstyled functioning components: ArkUI, React Aria, AriaKit.
 - **Lifeless:** "Just the life; BYO bones and skin." TanStack describes its offerings as "typesafe hooks" that don't "render or supply any actual UI elements": TanStack, ZagJS, FloatingUI, Downshift, React Aria Hooks, MeltUI.
-- **The platform now covers some of this.** The post closes with Nils: it "doesn't even cover how much JS work that HTML and CSS are covering: popover, anchor, dialog, view transitions, scroll driven animation and custom select" ([POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md), [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md), [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md), [SCROLL.md](SCROLL.md), [SELECT-AND-FORMS.md](SELECT-AND-FORMS.md)). app-ui instead uses "headless primitives for focus and dismissal" ([../app-ui/SKILL.md](../app-ui/SKILL.md)).
+- **The platform now covers some of this.** The post closes with Nils: it "doesn't even cover how much JS work that HTML and CSS are covering: popover, anchor, dialog, view transitions, scroll driven animation and custom select" ([POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md), [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md), [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md), [SCROLL.md](SCROLL.md), [SELECT-AND-FORMS.md](SELECT-AND-FORMS.md)). app-ui instead uses "headless primitives for focus and dismissal" ([app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md)).
 
 ## Prove it
 

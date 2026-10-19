@@ -1,6 +1,6 @@
 # Accessibility
 
-Emails must be readable by screen readers, dark-mode clients, translation tools and AI agents, and "most emails fail basic accessibility checks." The rules are mechanical: apply them every time, and when you can't fix everything, fix them in the priority order below. Template components that apply some of these by default are in [../react-email/SKILL.md](../react-email/SKILL.md).
+Emails must be readable by screen readers, dark-mode clients, translation tools and AI agents, and "most emails fail basic accessibility checks." The rules are mechanical: apply them every time, and when you can't fix everything, fix them in the priority order below. Template components that apply some of these by default are in [react-email SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/SKILL.md).
 
 **Contents:** [Rules by severity](#rules-by-severity) · [Language and direction](#language-and-direction) · [Layout tables](#layout-tables) · [Headings](#headings) · [Links](#links) · [Images and alt text](#images-and-alt-text) · [The title tag](#the-title-tag) · [Contrast and dark mode](#contrast-and-dark-mode) · [Plain text](#plain-text) · [React Email defaults](#react-email-defaults) · [Testing](#testing) · [Prove it](#prove-it)
 
@@ -92,7 +92,7 @@ Emails must be readable by screen readers, dark-mode clients, translation tools 
 - **Meaningful images** (product shots, charts, screenshots, anything carrying information): give the purpose and the key details. Wrong: `alt="image"`, `alt="photo of a bike"`. Right: `alt="Red bicycle leaning against a brick wall on a rainy street"`.
 - **Decorative images** (spacers, dividers, background flourishes, pure branding ornaments): `alt=""`, which tells screen readers to skip them, for example `<img src="divider.png" alt="" role="presentation">`. Omitting `alt` is not the same: some screen readers announce the filename. An image that conveys no information not already in the surrounding text is decorative; an image inside an `<a>` is not.
 
-The React Email source’s meaningful-image example is `alt="Red bicycle leaning against a brick wall"` rather than `alt="image"`; a linked image uses `alt="View order #123"` [resend/react-email]. Component defaults remain in [COMPONENTS.md](../react-email/COMPONENTS.md#accessibility).
+The React Email source’s meaningful-image example is `alt="Red bicycle leaning against a brick wall"` rather than `alt="image"`; a linked image uses `alt="View order #123"` [resend/react-email]. Component defaults remain in [react-email COMPONENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/COMPONENTS.md#accessibility).
 
 ## The title tag
 
@@ -112,7 +112,7 @@ The React Email source’s meaningful-image example is `alt="Red bicycle leaning
 
 ## React Email defaults
 
-Component defaults and their limits are maintained in [COMPONENTS.md](../react-email/COMPONENTS.md#accessibility); the author still applies the content rules above.
+Component defaults and their limits are maintained in [react-email COMPONENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/COMPONENTS.md#accessibility); the author still applies the content rules above.
 
 ## Testing
 

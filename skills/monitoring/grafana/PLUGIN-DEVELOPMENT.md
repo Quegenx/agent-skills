@@ -1,6 +1,6 @@
 # Grafana plugin frontend
 
-Sources: [grafana/skills, plugin-bundle-size, grafana-scenes and react-19-plugin-migration], checked against Grafana Plugin Tools, React and Scenes documentation. These rules apply inside a Grafana-hosted plugin. They do not replace the owner's app-ui, landing-page-ui or agent-chat-ui design; generic React behavior stays in [react](../../frontend/react/SKILL.md).
+Sources: [grafana/skills, plugin-bundle-size, grafana-scenes and react-19-plugin-migration], checked against Grafana Plugin Tools, React and Scenes documentation. These rules apply inside a Grafana-hosted plugin. They do not replace the owner's app-ui, landing-page-ui or agent-chat-ui design; generic React behavior stays in [react](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md).
 
 ## Measure the startup graph
 
@@ -50,7 +50,7 @@ Custom scene objects extend SceneObjectBase, expose a renderer through Component
 
 [https://grafana.com/developers/plugin-tools/key-concepts/best-practices]
 
-Use Grafana UI components, Emotion and Grafana theme tokens inside a plugin so it follows its host. Avoid global styles that affect other plugins. This is a host-specific contract, not a generic product-design replacement. Use the existing [package installation boundary](../../backend/secure-coding/PACKAGE-INSTALLS.md) for any dependency change.
+Use Grafana UI components, Emotion and Grafana theme tokens inside a plugin so it follows its host. Avoid global styles that affect other plugins. This is a host-specific contract, not a generic product-design replacement. Use the existing [package installation boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/PACKAGE-INSTALLS.md) for any dependency change.
 
 ## Prove it
 

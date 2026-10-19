@@ -18,6 +18,8 @@ Every rule here comes down to one decision: trust nothing that crossed the bound
 | Browser boundaries: window messages, cross-tab identity, service-worker caches, DOM gadgets and cross-site observations | [BROWSER-BOUNDARIES.md](BROWSER-BOUNDARIES.md) |
 | Package installation boundaries: version-specific lifecycle-script policies, direct and transitive execution, dependency sources, evidence and exceptions | [PACKAGE-INSTALLS.md](PACKAGE-INSTALLS.md) |
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## The rules
 
 1. **Allowlist, don't blocklist.** Name the fields a request may set, the schemes a link may use, the hosts a fetch may reach, the characters a file name may contain, the columns a sort may use. Anything new is denied until someone adds it.

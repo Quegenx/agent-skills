@@ -1,18 +1,18 @@
 # Director: how a motion designer thinks before animating
 
-[measured corpus, original director.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original director.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
-[measured corpus, original director.md; seek-engine, SKILL.md#render] Source render commands using `--subframes` are historical. The current form is in [Render](../seek-engine/SKILL.md#render), using the `full` subcommand and `--sub`; no flag equivalence beyond the recorded translation is assumed.
+[measured corpus, original director.md; seek-engine, SKILL.md#render] Source render commands using `--subframes` are historical. The current form is in [Render](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/SKILL.md#render), using the `full` subcommand and `--sub`; no flag equivalence beyond the recorded translation is assumed.
 
-Read [the shotlist router](SKILL.md) for measured composition, type, transitions, demos and endings; [the brief router](../video-brief/SKILL.md) for idea, brand and world decisions; and [the tool map](../seek-engine/measured/README.md#their-tools-in-this-skill-set) for current helper owners.
+Read [the shotlist router](SKILL.md) for measured composition, type, transitions, demos and endings; [the brief router](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/SKILL.md) for idea, brand and world decisions; and [the tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md#their-tools-in-this-skill-set) for current helper owners.
 
-**Contents:** [0. Start here: PAGE, script cues, importance budget](#0-start-here-page-script-cues-importance-budget) · [1. The four beat roles](#1-the-four-beat-roles) · [2. "What does this beat buy?"](#2-what-does-this-beat-buy) · [3. Film architecture](#3-film-architecture) · [4. Film-level SYSTEM decisions (made once, before any beat)](#4-film-level-system-decisions-made-once-before-any-beat) · [5. Continuity: the last frame of beat N is the first frame of beat N+1](#5-continuity-the-last-frame-of-beat-n-is-the-first-frame-of-beat-n1) · [6. Energy and attention curve](#6-energy-and-attention-curve) · [Prove it](#prove-it)
+**Contents:** [0. Start here: PAGE, script cues, importance budget](#0-start-here-page-script-cues-importance-budget) · [1. The four beat roles](MEASURED-BEAT-ROLES.md#1-the-four-beat-roles) · [2. "What does this beat buy?"](#2-what-does-this-beat-buy) · [3. Film architecture](#3-film-architecture) · [4. Film-level SYSTEM decisions (made once, before any beat)](#4-film-level-system-decisions-made-once-before-any-beat) · [5. Continuity: the last frame of beat N is the first frame of beat N+1](#5-continuity-the-last-frame-of-beat-n-is-the-first-frame-of-beat-n1) · [6. Energy and attention curve](#6-energy-and-attention-curve) · [Prove it](#prove-it)
 
 Read this before opening any editor or writing any code. A film is a short chain of beats. Each beat has a job, the jobs are ordered, and the seams between beats are planned before the beats are. The 53 reference moments (M913-M974) are the evidence; IDs in brackets point at them. Rules are written WHEN situation, DO decision with numbers, *because* what it buys the viewer. Numbers: frames at 30 fps with seconds in brackets (0.1 s = 3 f); positions as frame fractions (x right, y down); type as % of frame height H, widths as % of W. The source clips run at 24/25/29.97/30/60 fps; all numbers here are converted to 30 fps.
 
 Where the reference films disagree, the section says so and names the condition that decides.
 
-**Order of thinking.** The idea comes first ([MEASURED-IDEATION.md](../video-brief/MEASURED-IDEATION.md)), then the world and the time (sections 3a, 4), then the beats and seams (sections 1, 2, 5), then the measured numbers ([motion.md](../seek-engine/measured/motion.md), [MEASURED-TYPOGRAPHY.md](MEASURED-TYPOGRAPHY.md), [MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md)). The 53 reference moments are a corpus of short SaaS moments, so every skeleton below is *one* film shape among several (section 3a). Judgment decides WHAT the film is; measured craft decides HOW each beat moves.
+**Order of thinking.** The idea comes first ([video-brief MEASURED-IDEATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md)), then the world and the time (sections 3a, 4), then the beats and seams (sections 1, 2, 5), then the measured numbers ([seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md), [MEASURED-TYPOGRAPHY.md](MEASURED-TYPOGRAPHY.md), [MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md)). The 53 reference moments are a corpus of short SaaS moments, so every skeleton below is *one* film shape among several (section 3a). Judgment decides WHAT the film is; measured craft decides HOW each beat moves.
 
 ---
 
@@ -22,11 +22,11 @@ Where the reference films disagree, the section says so and names the condition 
 
 Write these three things at the top of `STORYBOARD.md` before any beat. They take about fifteen lines and decide most of what follows.
 
-**PAGE:** use the four-line [definition in ideation](../video-brief/MEASURED-IDEATION.md#1-page-what-the-film-is-for), then write the script cues and importance budget below.
+**PAGE:** use the four-line [definition in ideation](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md#1-page-what-the-film-is-for), then write the script cues and importance budget below.
 
 Lock decisions in this order: story, then frames, then style, then copy, then motion. A film styled before its story is a template.
 
-**Script cues.** Read the script (or the claim list) once and mark every number, abstract noun, name and contrast word ("not", "instead", "before / after"). Each marked word gets a visual of its own: a number becomes a physical quantity, an abstract noun becomes an object ([MEASURED-IDEATION.md](../video-brief/MEASURED-IDEATION.md) metaphor bank), a name becomes the real mark, a contrast becomes a before/after cut or a swap in place. Not every word goes on screen: the screen shows the one or two words that matter and the picture carries the rest. Test: mute the film and read the picture alone; does it tell the same story?
+**Script cues.** Read the script (or the claim list) once and mark every number, abstract noun, name and contrast word ("not", "instead", "before / after"). Each marked word gets a visual of its own: a number becomes a physical quantity, an abstract noun becomes an object ([video-brief MEASURED-IDEATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md) metaphor bank), a name becomes the real mark, a contrast becomes a before/after cut or a swap in place. Not every word goes on screen: the screen shows the one or two words that matter and the picture carries the rest. Test: mute the film and read the picture alone; does it tell the same story?
 
 **Importance budget.** Give every beat (and every line inside it) an importance of 1, 2 or 3. The judgment source defines 1 as connective (fast, small, a cut or word swap), 2 as supporting, and 3 as the point (slower, larger, held to reading time plus 0.5-1 s, with its own sound). **At most 25% of beats are importance 3.** Importance 3 gets the scale, the camera move, the sound and the hardest work; importance 1 is small and quick. Animating every line as if it were important is the most common AI tell, because then nothing arrives. When two elements fight for attention, delete one before you restyle either. A line with a number: the number is the hero, at least 2x the line's scale.
 
@@ -34,97 +34,7 @@ Lock decisions in this order: story, then frames, then style, then copy, then mo
 
 ## 1. The four beat roles
 
-[measured corpus, original director.md]
-
-The 53 moments split 13 hook, 9 turn, 25 proof, 6 cta. Proof beats are about half of all runtime; that is the point of the film.
-
-| Role | The viewer must come to believe | Length seen (30 f = 1 s) | Typical content | Typical mechanics (tag counts) | Examples |
-|---|---|---|---|---|---|
-| **hook** | A specific, concrete promise was just made, and the people who made it are competent. | 3.1-6.3 s (93-189 f), median 5.0 s; one 1.05 s identity sting (M973) | 3-6 words assembled one at a time, or one oversized thesis word; a credentials object; a drafting-diagram flash; a scene already in motion at frame 0 | stagger 12/13, text_morph 5, typewriter 5, layout_motion 4 | M921, M930, M936, M937, M947, M953, M962, M964, M967 |
-| **turn** | The problem, question or claim just seen has an answer, and its name is this. | 3.5-5.6 s (106-169 f), median 4.6 s | A question or pile of material resolving into a mark and name; a ground flip; a mode switch inside the product; a metaphor beat | stagger 5/9, mask_reveal 4, layout_motion 4, camera_push 3, logo_reveal 2 | M916, M926, M934, M938, M954, M957, M965, M966, M968 |
-| **proof** | The claim is operable: a person types, clicks, drags, and the result appears in real-looking UI. | 3.2-7.5 s (95-225 f), median 5.0 s | A cropped UI fragment, a typed request, a cursor, a state change that visibly causes a second change, a number moving, a result | ui_transition 15/25, camera_push 15, layout_motion 12, stagger 7, typewriter 5, cursor_click 4 | M913, M919, M922, M923, M931, M935, M939, M943, M944, M956, M974 |
-| **cta** | The next action belongs to me, and this brand is where it ends. | 2.2-6.4 s (65-193 f), median 4.9 s; the two shortest end on the action itself (M949, M959) | A two-phrase offer, an icon, a lockup, a button about to be pressed, a prompt about to be sent | mask_reveal 4/6, stagger 3, logo_reveal 2, typewriter 2, lockup 1 | M920, M929, M932, M946, M949, M959 |
-
-**WHEN** choosing a role for a beat **DO** write the belief sentence first and cut anything on screen that does not serve it **because** the viewer has ~5 s per beat and keeps one idea per beat; the film is a stack of single beliefs (all).
-
-**WHEN** a beat could be either hook or proof (a typed prompt at the start) **DO** call it by what it must make believable: a claim made by type is a hook, a claim made by operation is a proof **because** the role decides the budget: hooks spend on type rhythm, proofs on cause and effect (M914 proof vs M921 hook).
-
-### All 53 moments by role (mechanic, not brand)
-
-**Hook (13)**
-
-| ID | s | Mechanic |
-|---|---|---|
-| M921 | 4.08 | Hard-cut word-by-word claim over pillars, into credential module |
-| M925 | 3.53 | Rows land on spoken words; frosted folders orbit and hand over |
-| M930 | 3.1 | Word pops from blur, selection boxes, title cuts into exploding card |
-| M933 | 5.71 | One click; switch cascade down list; card shrinks, headline, loop |
-| M936 | 6.0 | Hairline rings become a dial; timer rolls to a figure |
-| M937 | 5.7 | Giant thesis word shrinks and blurs; logo grid pulls back |
-| M941 | 5.07 | Mirrored perspective stacks spin, cut to card orbit round headline |
-| M947 | 4.13 | Oversized words land and re-centre; glyph scramble resolves product name |
-| M953 | 3.17 | Oversized words converge; named cursors then edit a live dashboard |
-| M962 | 5.7 | Two-frame drafting flash, typed title, constant-cadence CAD state cuts |
-| M964 | 6.29 | Whole-word pops into growing pixel-block cluster, hard scale cuts |
-| M967 | 5.0 | Words rise tinted then white; card reel flips; act-two cut |
-| M973 | 1.05 | Per-glyph flip rewrites a name while the icon spins |
-
-**Turn (9)**
-
-| ID | s | Mechanic |
-|---|---|---|
-| M916 | 4.8 | Card rises over teaser; dark flip; per-letter word morph |
-| M926 | 4.28 | Orbiting cards round into a dot; masks swap question for name |
-| M934 | 5.62 | Whip pan across lattice; badge wave completes; zoomed headline |
-| M938 | 4.6 | Shapes tumble and pile; feathered wash resolves into bar mark |
-| M954 | 4.63 | Counter rolls to round value; pill becomes a swallowing character |
-| M957 | 4.24 | Stepped camera dives through device; mascot beat; coin metaphor |
-| M965 | 3.67 | Pixel field dissolves off wordmark; line, waveform, circuit grow |
-| M966 | 4.6 | Two-push pan with parallax; phrases type beside central orb |
-| M968 | 3.53 | Typed word shrinks; mosaic wipe; emblem blur-lands beside typed name |
-
-**Proof (25)**
-
-| ID | s | Mechanic |
-|---|---|---|
-| M913 | 5.5 | Checklist state machine at 3.3x; completion releases the camera |
-| M914 | 4.7 | Word-level title handoff; prompt typed; stepped zoom; send click |
-| M917 | 6.1 | Dashboard punch-in, kinetic words, split around two output cards |
-| M918 | 4.5 | Drag footage into modal; tile cascade; rack-focus headline |
-| M919 | 6.4 | Typed brief; zoom to send; agent status stream; result cards |
-| M922 | 4.88 | Macro app card; button press; growing bead flips ground white |
-| M923 | 3.3 | One slider drag moves four numbers; track collapses to caret |
-| M924 | 3.23 | True-perspective button push; hard cut to ever-growing result card |
-| M927 | 6.17 | Four data cards born identically, each with one live proof |
-| M928 | 4.06 | Typed prompt bar, whip-pan to send, click, smeared exit |
-| M931 | 3.17 | Drag asset into prompt, whip to send button, press |
-| M935 | 6.92 | Token lattice becomes cards; hover; toggles; typed prompt |
-| M939 | 6.4 | Accelerating log scroll, feathered wipe, zoom-out canvas, result card |
-| M940 | 5.0 | Cards pushed down in jerks; shared-track timeline pan |
-| M942 | 4.97 | Typed prompt, cursor click, card row slides, one selected |
-| M943 | 4.1 | Chosen card collapses to a disc that flies back into form |
-| M944 | 5.93 | Slit unfolds window; disc docks; tip-back; stepped light; roll |
-| M945 | 5.0 | Number resolves through pixels; tile orbit; integration pipeline builds |
-| M948 | 5.57 | Glyph swells into style strobe; references dragged; spring dock |
-| M955 | 4.43 | Cropped 3D device in held poses; word-swap integration line |
-| M956 | 4.33 | Cursor click, ring of tokens, typed prompt, macro send |
-| M958 | 6.03 | Words open gaps for icon badges; dumbbell; terminal; counter |
-| M963 | 7.5 | Fixed dot lattice demonstrates six parameters; scrolling menu |
-| M969 | 4.47 | Typed two-line claim; hard cut to typing bar; container replaces it |
-| M974 | 4.5 | Logo feature zooms into app; wave-typed prompt; cross-colour send |
-
-**CTA (6)**
-
-| ID | s | Mechanic |
-|---|---|---|
-| M920 | 5.38 | Card exits hard; two phrases; character-built lockup with sweep |
-| M929 | 5.44 | Rising phrase, sliding phrase, shrinking icon, crash-in wordmark |
-| M932 | 3.74 | Fanned cards breathe; glitch bridge; stem-built mark; slammed name |
-| M946 | 6.43 | Stair wipe made of scene motif; pixel-resolve logo; living hold |
-| M949 | 2.17 | Prompt typed at human cadence; hard scale cuts; ends at send |
-| M959 | 4.5 | Button blooms; oversized cursor clicks; cut before release; icon |
-
----
+See [Measured beat roles](MEASURED-BEAT-ROLES.md) for this complete section. [measured corpus, original director.md]
 
 ## 2. "What does this beat buy?"
 
@@ -155,7 +65,7 @@ A good sentence names a **viewer state change**, not an effect. Bad: "buys visua
 
 [measured corpus, original director.md]
 
-The source films share one skeleton in different clothes: **claim in type, hard cut, the product performing the claim**, then one resolving brand close. Treat **claim -> cut -> proof -> cta as ONE film shape** (the one the corpus happens to contain), not as the structure of every film: section 3a lists the others, and the shape is chosen in [MEASURED-IDEATION.md](../video-brief/MEASURED-IDEATION.md) before any beat exists.
+The source films share one skeleton in different clothes: **claim in type, hard cut, the product performing the claim**, then one resolving brand close. Treat **claim -> cut -> proof -> cta as ONE film shape** (the one the corpus happens to contain), not as the structure of every film: section 3a lists the others, and the shape is chosen in [video-brief MEASURED-IDEATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md) before any beat exists.
 
 Observed patterns:
 
@@ -174,20 +84,20 @@ Observed patterns:
 
 **WHEN** setting beat lengths **DO** keep every beat at 3-7 s (90-210 f) and add beats rather than stretching them for longer films **because** the corpus never holds a beat longer than 7.5 s; the hold lives at the end of a beat, not across it.
 
-### 3a. Film shapes (choose one on purpose, in [MEASURED-IDEATION.md](../video-brief/MEASURED-IDEATION.md))
+### 3a. Film shapes (choose one on purpose, in [video-brief MEASURED-IDEATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md))
 
 Write the first idea you have, then find at least two more of *different kinds* from this table. Pick the one that could only be this brand and that you can make well. Cover the logo: if the film could advertise a competitor, it is not an idea yet.
 
 | Shape | What the film is | Works when | Watch out |
 |---|---|---|---|
 | **Claim -> cut -> proof -> cta** | the corpus skeleton (sections 1-3): claim in type, product performs it, brand lands | the product has one operable action and a sentence that names it | the default; if it is the only shape you considered, you reached for it |
-| **Held shot** | one continuous shot (a camera move over one scene) that slowly changes; no cuts | the product is a place or an object with a lot to see | needs a world ([MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)); one idea, no tour |
+| **Held shot** | one continuous shot (a camera move over one scene) that slowly changes; no cuts | the product is a place or an object with a lot to see | needs a world ([video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)); one idea, no tour |
 | **Joke with a character** | a small comic situation with a character, the product as the punchline | the brand voice is dry or playful and the joke is specific to its users | the product must still be literal and visible; no puns on the name |
 | **UI documentary of one real task** | one real task from start to finish in the real UI, filmed by a camera | the product is operable and the task has stakes ([MEASURED-PRODUCT-DEMO.md](MEASURED-PRODUCT-DEMO.md), case section) | recipes are mechanics, not the film; no feature tour |
 | **Typographic essay** | the words are the picture, set in the brand's own voice and type, acting out their meaning ([MEASURED-TYPOGRAPHY.md](MEASURED-TYPOGRAPHY.md) section 0) | the brand is a voice (editorial, tools for writers, finance with a point of view) | a big claim on an empty flat field is the failure mode; the words must do something |
 | **Montage of real output** | many real outputs (the things the product makes) in a built rhythm | the product's output is beautiful or varied and real material exists | needs the real material from the capture; never invented thumbnails |
 | **Stillness that breaks** | a calm held world, then one event breaks it, then it settles smaller | the brand promise is calm, and the product removes a disturbance | the held part is a designed breath (law 8), not an empty frame |
-| **Transformation chain** | X becomes Y becomes Z becomes the logo | rarely: the product is itself a transformation and each link is true | **the most over-used shape.** A chain of "dot becomes the logo's dot" is a house style ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) Part 0) |
+| **Transformation chain** | X becomes Y becomes Z becomes the logo | rarely: the product is itself a transformation and each link is true | **the most over-used shape.** A chain of "dot becomes the logo's dot" is a house style ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) Part 0) |
 
 Whichever shape wins, the beat table, handoffs, importance budget and honest look (sections 2, 5, 7) still apply. A shape with no cuts (held shot) has handoffs inside the shot: each change is caused by the last. **Know when to stop**: one ending; if the film already felt like the end, it is.
 
@@ -213,7 +123,7 @@ Whichever shape wins, the beat table, handoffs, importance budget and honest loo
 
 [measured corpus, original director.md]
 
-Write these into the top of the storyboard. Each is one decision held for the whole film; mixing them is the strongest AI-made tell. Decisions 4 and 8 are about what each frame is *made of* ([MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)), and decision 6 is optional.
+Write these into the top of the storyboard. Each is one decision held for the whole film; mixing them is the strongest AI-made tell. Decisions 4 and 8 are about what each frame is *made of* ([video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)), and decision 6 is optional.
 
 **1. One clock.** *Pick a frame rhythm and keep every layer on it.*
 
@@ -226,7 +136,7 @@ Write these into the top of the storyboard. Each is one decision held for the wh
 
 Mixed step rates inside one moment read as a bug, not a style (M962-M974).
 
-**2. One motion grammar.** *Smear/blur on fast moves, crisp hard steps, or camera shutter blur: one of the three per film, never mixed.* Smear film: directional smear along the travel vector for 1-6 f (3 to 65 px) on every fast move (M916-M920, M926, M929, M931, M937). Crisp film: flat vector, no motion blur, camera snaps in one frame then a 0.3-0.6 s tail (M913, M914, M921, M934, M939, M962-M969). Smear film IDs and the implementation are in [motion.md](../seek-engine/measured/motion.md) R4.1, R4.2. Condition that decides: a hand-made, fast, energetic film wants smear; a dense UI film that must stay legible wants crisp steps. The third option is **shutter blur**: render with `scripts/render.mjs --shutter 180 --subframes 8` so every moving thing gets real motion blur from the camera model (smooth, continuous films only; it replaces per-element smear, [motion.md](../seek-engine/measured/motion.md) R4.8, and is wrong for a stepped on-twos film).
+**2. One motion grammar.** *Smear/blur on fast moves, crisp hard steps, or camera shutter blur: one of the three per film, never mixed.* Smear film: directional smear along the travel vector for 1-6 f (3 to 65 px) on every fast move (M916-M920, M926, M929, M931, M937). Crisp film: flat vector, no motion blur, camera snaps in one frame then a 0.3-0.6 s tail (M913, M914, M921, M934, M939, M962-M969). Smear film IDs and the implementation are in [seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md) R4.1, R4.2. Condition that decides: a hand-made, fast, energetic film wants smear; a dense UI film that must stay legible wants crisp steps. The third option is **shutter blur**: render with `scripts/render.mjs --shutter 180 --subframes 8` so every moving thing gets real motion blur from the camera model (smooth, continuous films only; it replaces per-element smear, [seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md) R4.8, and is wrong for a stepped on-twos film).
 
 **3. One type family and a role scale.** Follow the brand's own type (the face its site loads, in `brand/fonts/`); when the brand has none, a neo-grotesk at weights 400-550 (600 on the wordmark, 650 on one word) is the measured default (the corpus is all Inter-class). Sentence case, tracking -1.5 to -5% em at display sizes. Bold only on a wordmark or one numeral. Scale is the hierarchy, not weight (M921-M974; the full table with weights and tracking is [MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md) section 4):
 
@@ -240,9 +150,9 @@ Mixed step rates inside one moment read as a bug, not a style (M962-M974).
 | Hero figure | 22-29 (opening thesis word 33) |
 | Wordmark | 9-14 (ink 0.22-0.38 W) |
 
-If the brand's own heading face is a serif, it is the film's voice in that role everywhere (a serif used only as one accent word in a sans line is a 2023 reel habit, [MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N12). A serif against a sans UI as a deliberate second voice is acceptable for one emotional line per film (M933-M935).
+If the brand's own heading face is a serif, it is the film's voice in that role everywhere (a serif used only as one accent word in a sans line is a 2023 reel habit, [frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N12). A serif against a sans UI as a deliberate second voice is acceptable for one emotional line per film (M933-M935).
 
-**4. Ground strategy: a surface per act, not a swatch per scene.** A ground is made of something (a plate from the capture, a product screen, a material, a light with a source, a gradient that is the brand's own) and is lit and textured unless the brand is genuinely flat. A flat single-colour ground per scene is a slop pattern (a deck of swatches: [MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N4); a flat colour is allowed for a flood or a dive under about 1 s. Between acts the measured grammar still holds: light to dark to light (M921-M924, hard cut or growing object between), dark bookends around a light middle (M930-M932), light world / claim colour / near-black sign-off (M925-M929). The ground only changes at a hard cut or by a growing object; never by a flash or crossfade (M922 bead to disc, M924 sweeping band). Where a ground must change inside a scene, ramp one straight colour track over 0.5-0.7 s (15-21 f) timed to what leaves (M926). Light is as premium as dark: pick the ground the brand's own surface is, not the one that feels expensive.
+**4. Ground strategy: a surface per act, not a swatch per scene.** A ground is made of something (a plate from the capture, a product screen, a material, a light with a source, a gradient that is the brand's own) and is lit and textured unless the brand is genuinely flat. A flat single-colour ground per scene is a slop pattern (a deck of swatches: [frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N4); a flat colour is allowed for a flood or a dive under about 1 s. Between acts the measured grammar still holds: light to dark to light (M921-M924, hard cut or growing object between), dark bookends around a light middle (M930-M932), light world / claim colour / near-black sign-off (M925-M929). The ground only changes at a hard cut or by a growing object; never by a flash or crossfade (M922 bead to disc, M924 sweeping band). Where a ground must change inside a scene, ramp one straight colour track over 0.5-0.7 s (15-21 f) timed to what leaves (M926). Light is as premium as dark: pick the ground the brand's own surface is, not the one that feels expensive.
 
 **5. One accent, one meaning.** Greys plus one hue spent only where that meaning is true. Meanings seen:
 
@@ -258,11 +168,11 @@ If the brand's own heading face is a serif, it is the film's voice in that role 
 
 Never two meanings in one hue; never the accent on more than one element per scene (M930-M938).
 
-**6. A recurring carrier object (optional).** One object that survives cuts: a dot (M962-M963), a disc (M942-M944), a card (M930-M931), a caret (M948-M949), a headline string (M918-M919), a five-dot ring (M926-M927), a mascot that marks the agent's position in the job (M916-M920), a bead (M922). Choose it at the system stage if the film shape is a chain of handoffs, so every seam has something to carry. It must move, scale or change role at every seam (never pinned at the same coordinates across shots: [MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N8). **House-style warning:** a small dot that becomes the logo's dot, full stop or "o", and a lockup built from the carrier's motif, are the signature of one over-used generation of films ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) Part 0). Use them only when the idea is exactly that; otherwise the logo arrives by cause (a click, a result, a camera move), not by default.
+**6. A recurring carrier object (optional).** One object that survives cuts: a dot (M962-M963), a disc (M942-M944), a card (M930-M931), a caret (M948-M949), a headline string (M918-M919), a five-dot ring (M926-M927), a mascot that marks the agent's position in the job (M916-M920), a bead (M922). Choose it at the system stage if the film shape is a chain of handoffs, so every seam has something to carry. It must move, scale or change role at every seam (never pinned at the same coordinates across shots: [frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N8). **House-style warning:** a small dot that becomes the logo's dot, full stop or "o", and a lockup built from the carrier's motif, are the signature of one over-used generation of films ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) Part 0). Use them only when the idea is exactly that; otherwise the logo arrives by cause (a click, a result, a camera move), not by default.
 
 **7. Cursor art.** One designed cursor per film, vector, never the OS arrow: custom arrowhead (M914), white glove on dark / black arrow on pale, switched by ground (M930-M933), paper-plane (M959), glossy 3D arrow (M956), flat arrow with name pill (M953). Decide hand vs arrow once: hand-swap-before-click suits playful hand-posed films (M928, M930, M931); a single persistent arrow, never a hand, suits product-demo films (M914, M942, M969).
 
-**8. The world per act (ground, light, depth, texture, sound).** For each act (not each beat) write five words about what the frame is made of. This is the decision most AI films skip, and it is where "a small card on a void" comes from. Details and the hero-moment toolbox (real 3D, a generated surface plate, a physical sim, a dense composition) are in [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md).
+**8. The world per act (ground, light, depth, texture, sound).** For each act (not each beat) write five words about what the frame is made of. This is the decision most AI films skip, and it is where "a small card on a void" comes from. Details and the hero-moment toolbox (real 3D, a generated surface plate, a physical sim, a dense composition) are in [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md).
 
 | Act | Ground (a surface from the capture or a made one) | Light (one source, direction, falloff) | Depth (what is near / far, what is defocused) | Texture (grain, paper, glass, none on purpose) | Sound (bed, silence, the first big hit) |
 |---|---|---|---|---|---|
@@ -271,7 +181,7 @@ Never two meanings in one hue; never the accent on more than one element per sce
 
 Restraint means one focal point *inside* a built world, not an empty world: every frame is ground + light + depth/texture with one hero. A frame is empty only when the emptiness does a job (a breath before a payoff, isolation after a matched cut, about 1.5 s at most).
 
-**9. The hero moment.** Name the one frame someone would screenshot and send to a friend, and the beat it lives in (the strongest frame of the energy curve, section 6). It gets the hardest work in the film. If you cannot name it, the film has no centre; go back to [MEASURED-IDEATION.md](../video-brief/MEASURED-IDEATION.md).
+**9. The hero moment.** Name the one frame someone would screenshot and send to a friend, and the beat it lives in (the strongest frame of the energy curve, section 6). It gets the hardest work in the film. If you cannot name it, the film has no centre; go back to [video-brief MEASURED-IDEATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md).
 
 ---
 
@@ -304,7 +214,7 @@ Seven devices, in order of strength:
 
 **WHEN** a chapter or act changes **DO** make the break a ground change plus a carried object ([MEASURED-TRANSITIONS.md](MEASURED-TRANSITIONS.md) T1 + T15), never a title, number or label **because** a numbered chapter is page furniture ([MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md), Page chrome is never part of the film). If the logo is the last frame it should arrive by cause, not by default (optional carrier, section 4 item 6).
 
-**WHEN** a beat must end **DO** end it mid-motion (a line still sliding, a lockup still contracting, a cursor still arriving) **because** the next beat inherits the momentum and the cut becomes a beat, not a pause (M913, M914, M916, M920, M929, M932, M936, M944). The exception is a brand close with a living hold: lingering 0.6-1.4 s (gate G3) with something alive (flame sway of +/-1% W, a sweep every 0.7 s) (M920, M946). Calm endings are also valid for calm brands (about 22 of 51 human films end quietly): the condition table is in [MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) Part 1b.
+**WHEN** a beat must end **DO** end it mid-motion (a line still sliding, a lockup still contracting, a cursor still arriving) **because** the next beat inherits the momentum and the cut becomes a beat, not a pause (M913, M914, M916, M920, M929, M932, M936, M944). The exception is a brand close with a living hold: lingering 0.6-1.4 s (gate G3) with something alive (flame sway of +/-1% W, a sweep every 0.7 s) (M920, M946). Calm endings are also valid for calm brands (about 22 of 51 human films end quietly): the condition table is in [frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) Part 1b.
 
 ---
 
@@ -316,13 +226,13 @@ Plan the curve as a line over the whole film, then place one peak.
 
 **WHEN** designing the curve **DO** put the single strongest frame at about 60-75% of the way through the film, the brand slam or the biggest push, and make everything before it rise: beats shorten, entrances travel less, cadences tighten (M947 beats 1.3, 1.07, 0.70, 0.43 s; M929 scenes 1.7, 1.5, 0.8, 1.44 s; M936 word gaps 5,5,3,3 f) **because** acceleration reads as arrival.
 
-**WHEN** a held frame is needed **DO** hold only after the payoff, for the length of the read: a list 0.8 s (24 f) (M939), a number 0.47 s (14 f) (M945), a lockup 0.67 s (20 f) (M968, M969), a pile of shapes 0.8-1.0 s (M938), one measured outlier, a 3.7 s brand hold with a living mark (M946; it is not licence to pass the 1.4 s end-hold gate). Everywhere else keep micro-drift: 1-2 px/frame line drift, 0.4% shrink steps, counters ticking, dot-grid drift 0.02 W over 3 s (M913, M914, M929, M955, M966) **because** a perfectly static frame reads as a slide. The rule is **no dead frame**, not constant motion: a held frame keeps one living thing on it, and a *designed breath* (0.6-1.5 s, with a reason you can state, before a payoff) is wanted. The 99%-of-frames figure in [motion.md](../seek-engine/measured/motion.md) was measured on 3-7 s moments; it is not a target for a whole film.
+**WHEN** a held frame is needed **DO** hold only after the payoff, for the length of the read: a list 0.8 s (24 f) (M939), a number 0.47 s (14 f) (M945), a lockup 0.67 s (20 f) (M968, M969), a pile of shapes 0.8-1.0 s (M938), one measured outlier, a 3.7 s brand hold with a living mark (M946; it is not licence to pass the 1.4 s end-hold gate). Everywhere else keep micro-drift: 1-2 px/frame line drift, 0.4% shrink steps, counters ticking, dot-grid drift 0.02 W over 3 s (M913, M914, M929, M955, M966) **because** a perfectly static frame reads as a slide. The rule is **no dead frame**, not constant motion: a held frame keeps one living thing on it, and a *designed breath* (0.6-1.5 s, with a reason you can state, before a payoff) is wanted. The 99%-of-frames figure in [seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md) was measured on 3-7 s moments; it is not a target for a whole film.
 
 **WHEN** placing the strongest frame inside a beat **DO** use these positions from the corpus: hook at the first full assembled line or the cut into the product (M921, M930 at 71%); turn at the brand pop (M926 at 30%, M968 at the mosaic); proof at the cause-effect frame (M913 snap at 57%, M919 click at 42%, M924 cut at 57%, M922 disc flip at 85%); cta at the sign-off slam (M929 at 74%, M932 at 68%) or the cut before release (M959 at 34% of the beat, then a 3 s lingering icon) **because** a beat needs one frame the eye is waiting for.
 
 **WHEN** spending scale **DO** spend it once: one or two moments per film where something is bigger than the frame, and everything else small (most type under a quarter of the frame height); the ending usually gets *smaller* than the climax **because** scale is intonation, and a film shouted at one volume has no emphasis (law 7 is about how big things arrive, decelerating; it is not a recipe for a giant cropped first word).
 
-**WHEN** spending overshoot **DO** allow at most one visible springy payoff in the whole film, a few percent to 12% on one object (M948 dock 0.06 H; M914 button 1.055; M918 tiles 1.12; M973 badge 4%; M963 bullet 4.7%), and decelerate everything else with no overshoot beyond the small late `popOver` leans of [motion.md](../seek-engine/measured/motion.md) R1.10 **because** bounce spent everywhere is bounce spent nowhere. Most films use none or exactly one.
+**WHEN** spending overshoot **DO** allow at most one visible springy payoff in the whole film, a few percent to 12% on one object (M948 dock 0.06 H; M914 button 1.055; M918 tiles 1.12; M973 badge 4%; M963 bullet 4.7%), and decelerate everything else with no overshoot beyond the small late `popOver` leans of [seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md) R1.10 **because** bounce spent everywhere is bounce spent nowhere. Most films use none or exactly one.
 
 **WHEN** the film nears the end **DO** make the final beat the *shortest transition and the longest lingering object*: scenes get shorter, then the closing lockup lingers (M929 4.0 s of scenes then a 1.4 s wordmark; your end hold stays within 0.6-1.4 s, gate G3) **because** the sign-off then feels thrown at the viewer and then left with them.
 

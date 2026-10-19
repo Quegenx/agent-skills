@@ -1,16 +1,16 @@
 # Navigation and sheets
 
-Modal sheets as routes (a spring sheet, scroll-to-dismiss, the iOS 26 sheet, popups that fit their content), dialog and sheet results, the Android back flag, tab reselect, keeping scroll position and page transitions. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), both community material, not Flutter-team docs. The official routing guidance is in [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md); where these sources disagree with it, or with [VERSIONS.md](../flutter/VERSIONS.md) or the `ui-animation` skill, both sides are stated and marked. A form inside a bottom sheet with the keyboard open is in [KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md#forms-in-a-bottom-sheet); nested navigators, the sidebar shell and route guards are in [ROUTE-GUARDS-AND-SHELLS.md](ROUTE-GUARDS-AND-SHELLS.md).
+Modal sheets as routes (a spring sheet, scroll-to-dismiss, the iOS 26 sheet, popups that fit their content), dialog and sheet results, the Android back flag, tab reselect, keeping scroll position and page transitions. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), both community material, not Flutter-team docs. The official routing guidance is in [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md); where these sources disagree with it, or with [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md) or the `ui-animation` skill, both sides are stated and marked. A form inside a bottom sheet with the keyboard open is in [KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md#forms-in-a-bottom-sheet); nested navigators, the sidebar shell and route guards are in [ROUTE-GUARDS-AND-SHELLS.md](ROUTE-GUARDS-AND-SHELLS.md).
 
 **Contents:** [Where the sources disagree](#where-the-sources-disagree) · [Pick the sheet](#pick-the-sheet) · [Spring bottom sheet](#spring-bottom-sheet) · [Swipe down at the top to close](#swipe-down-at-the-top-to-close) · [iOS 26 adaptive sheet](#ios-26-adaptive-sheet) · [Popup that fits its content](#popup-that-fits-its-content) · [Dialog and sheet results](#dialog-and-sheet-results) · [Android back does not close modals](#android-back-does-not-close-modals) · [Tab reselect](#tab-reselect) · [Keep scroll position across tabs](#keep-scroll-position-across-tabs) · [Page transitions](#page-transitions) · [Date picker that matches the platform](#date-picker-that-matches-the-platform) · [Prove it](#prove-it)
 
 ## Where the sources disagree
 
-- **Android default page transition (official, version fact).** Both sources' code names `ZoomPageTransitionsBuilder` for Android ([FlutterPro](https://flutterpro.design/details/web-page-transitions), [ApparenceKit](https://apparencekit.dev/flutter-tips/add-custom-page-transitions-gorouter/)); neither states a Flutter version. Since Flutter 3.38 the default is `PredictiveBackPageTransitionsBuilder`, so naming Zoom in `pageTransitionsTheme` keeps the old transition, and "you won't get predictive back route transitions" ([VERSIONS.md](../flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). The sources' snippets are correct for pre-3.38 apps; on 3.38+ put `PredictiveBackPageTransitionsBuilder` in the Android entry unless you mean to keep Zoom.
-- **Page transitions on the web (opinion).** FlutterPro: "no transition on web and desktop" ([FlutterPro](https://flutterpro.design/details/web-page-transitions)). The `ui-animation` skill: "a page transition 400-600 ms" ([ui-animation SKILL.md](../../frontend/ui-animation/SKILL.md)). Both views are kept.
+- **Android default page transition (official, version fact).** Both sources' code names `ZoomPageTransitionsBuilder` for Android ([FlutterPro](https://flutterpro.design/details/web-page-transitions), [ApparenceKit](https://apparencekit.dev/flutter-tips/add-custom-page-transitions-gorouter/)); neither states a Flutter version. Since Flutter 3.38 the default is `PredictiveBackPageTransitionsBuilder`, so naming Zoom in `pageTransitionsTheme` keeps the old transition, and "you won't get predictive back route transitions" ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). The sources' snippets are correct for pre-3.38 apps; on 3.38+ put `PredictiveBackPageTransitionsBuilder` in the Android entry unless you mean to keep Zoom.
+- **Page transitions on the web (opinion).** FlutterPro: "no transition on web and desktop" ([FlutterPro](https://flutterpro.design/details/web-page-transitions)). The `ui-animation` skill: "a page transition 400-600 ms" ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md)). Both views are kept.
 - **Guards, router rebuilds and named routes:** see [ROUTE-GUARDS-AND-SHELLS.md](ROUTE-GUARDS-AND-SHELLS.md#where-the-sources-disagree).
-- **`IntrinsicHeight` (tension).** ApparenceKit fits a popup with `IntrinsicHeight`; the Flutter performance docs say "Avoid intrinsics" for list and grid cells ([PERFORMANCE.md](../flutter/PERFORMANCE.md)). The article applies it to one popup, not to list cells.
-- **Dot shorthands.** FlutterPro code uses `.iOS`, `.android`, `.transparency`, `.vertical(...)`, which need Dart 3.10+ ([LANGUAGE.md](../dart/LANGUAGE.md)). The articles state no Dart or Flutter version.
+- **`IntrinsicHeight` (tension).** ApparenceKit fits a popup with `IntrinsicHeight`; the Flutter performance docs say "Avoid intrinsics" for list and grid cells ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)). The article applies it to one popup, not to list cells.
+- **Dot shorthands.** FlutterPro code uses `.iOS`, `.android`, `.transparency`, `.vertical(...)`, which need Dart 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). The articles state no Dart or Flutter version.
 
 ## Pick the sheet
 
@@ -18,7 +18,7 @@ Modal sheets as routes (a spring sheet, scroll-to-dismiss, the iOS 26 sheet, pop
 - **Sheet with a list:** a `stupid_simple_sheet` route, which hands a swipe at the top of the list over to closing the sheet. [FlutterPro](https://flutterpro.design/details/scroll-to-close-sheet)
 - **Full-screen content:** an iOS 26 style sheet. [FlutterPro](https://flutterpro.design/details/smooth-draggable-bottom-sheets)
 - **Close, not back:** "modals (the ones opening from the bottom) get a close (X) at the top left, not a back arrow." [FlutterPro](https://flutterpro.design/details/adaptive-sheet-route)
-- **Sheets pushed with `Navigator.of(context).push` are pageless,** so they are not deep-linkable, and removing a page-backed route removes the pageless routes after it ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)).
+- **Sheets pushed with `Navigator.of(context).push` are pageless,** so they are not deep-linkable, and removing a page-backed route removes the pageless routes after it ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)).
 
 ## Spring bottom sheet
 
@@ -34,7 +34,7 @@ showSpringBottomSheet<bool>(
 ```
 
 - **Technique:** a `PopupRoute<T>` whose `createAnimationController()` returns `AnimationController.unbounded(...)` and whose `createSimulation({required bool forward})` returns a `SpringSimulation` seeded with the release velocity. Dragging writes `controller.value` directly, so "the velocity of a released fling is carried into the open or close spring".
-- **Spring numbers:** "SwiftUI's .smooth spring written out as plain numbers: critically damped, stiffness 4pi^2 / duration^2, at 300ms in and 200ms out". Enter `SpringDescription(mass: 1, stiffness: 438.6, damping: 41.9)`, exit `SpringDescription(mass: 1, stiffness: 987.0, damping: 62.8)`, `snapToEnd: true` on every simulation. Web springs for comparison: [MATH.md](../../frontend/ui-animation/MATH.md#a-spring-by-hand) ("A spring has no duration") and [PATTERNS.md](../../frontend/ui-animation/PATTERNS.md) (a sheet "slides in from its edge with the `enter` spring and closes faster").
+- **Spring numbers:** "SwiftUI's .smooth spring written out as plain numbers: critically damped, stiffness 4pi^2 / duration^2, at 300ms in and 200ms out". Enter `SpringDescription(mass: 1, stiffness: 438.6, damping: 41.9)`, exit `SpringDescription(mass: 1, stiffness: 987.0, damping: 62.8)`, `snapToEnd: true` on every simulation. Web springs for comparison: [ui-animation MATH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/MATH.md#a-spring-by-hand) ("A spring has no duration") and [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md) (a sheet "slides in from its edge with the `enter` spring and closes faster").
 - **Close rule:** a fling faster than 0.9 sheet heights per second down closes, faster than 0.9 up keeps it open; otherwise it closes when it rests below half its height.
 - **Overdrag:** past fully open the drag meets resistance 100 (`delta *= 1 / (1 + overshoot * _overdragResistance)`), and on release the velocity is damped by the same factor before springing back to 1.
 - **One coordinate space:** drag deltas and velocity are divided by the sheet's own height, "so the gesture and the route animation share one coordinate space".
@@ -324,7 +324,7 @@ Navigator.of(context).push(
 
 - **Keeping your own sheet:** the handoff alone is `scroll_drag_detector` (https://pub.dev/packages/scroll_drag_detector, same author). It gives the combined gesture; moving the sheet, the resistance and the close-or-snap-back decision stay on you. Working example: https://github.com/whynotmake-it/rivership/blob/main/packages/stupid_simple_sheet/lib/stupid_simple_sheet.dart
 - **"Don't set a custom `ScrollConfiguration`"** on the sheet content: the package needs Flutter's default scroll behavior to catch the moment the list hits the top.
-- The web counterpart (scroll chaining with `overscroll-behavior: auto`) is in [SHEETS.md](../../frontend/ui-animation/SHEETS.md).
+- The web counterpart (scroll chaining with `overscroll-behavior: auto`) is in [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md).
 
 ## iOS 26 adaptive sheet
 
@@ -358,8 +358,8 @@ Navigator.of(context).push(
 );
 ```
 
-- **Platform switch:** this picks the route by `defaultTargetPlatform`. The official rule against `Platform.isAndroid` covers "layout decisions or assumptions about what a device can do" ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)), and the same file lists bottom navigation per platform (`NavigationBar` on Android, `CupertinoTabBar` on iOS).
-- **Official alternative:** Flutter 3.44 added `CupertinoSheetRoute.scrollableBuilder` and deprecated its `builder`/`pageBuilder` ([VERSIONS.md](../flutter/VERSIONS.md)). The article does not mention it or say whether it gives the iOS 26 look.
+- **Platform switch:** this picks the route by `defaultTargetPlatform`. The official rule against `Platform.isAndroid` covers "layout decisions or assumptions about what a device can do" ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)), and the same file lists bottom navigation per platform (`NavigationBar` on Android, `CupertinoTabBar` on iOS).
+- **Official alternative:** Flutter 3.44 added `CupertinoSheetRoute.scrollableBuilder` and deprecated its `builder`/`pageBuilder` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)). The article does not mention it or say whether it gives the iOS 26 look.
 
 ## Popup that fits its content
 
@@ -374,13 +374,13 @@ showCupertinoModalPopup<void>(
 );
 ```
 
-- **Tension:** `IntrinsicHeight` runs an intrinsic pass, which the Flutter performance docs say to avoid when all list or grid cells must match ([PERFORMANCE.md](../flutter/PERFORMANCE.md)). The article uses it on one popup.
+- **Tension:** `IntrinsicHeight` runs an intrinsic pass, which the Flutter performance docs say to avoid when all list or grid cells must match ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)). The article uses it on one popup.
 
 ## Dialog and sheet results
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/handle-flutter-dialog-result-correctly/): code placed right after `Navigator.of(context).pop();` in a dialog button "might not finish or even start reliably because the context or widget tree state is changing rapidly as the dialog disappears."
 
-- **Pass the value to `pop`** (`Navigator.of(context).pop(yourResult)`). `showDialog` and `showModalBottomSheet` return a `Future` that completes with it; `await` it and act after the dialog is gone. The go_router form for pages is `await context.push<bool>('/page2')` with `context.pop(true)` ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)).
+- **Pass the value to `pop`** (`Navigator.of(context).pop(yourResult)`). `showDialog` and `showModalBottomSheet` return a `Future` that completes with it; `await` it and act after the dialog is gone. The go_router form for pages is `await context.push<bool>('/page2')` with `context.pop(true)` ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)).
 
 ```dart
 Future<void> _showMyDialog(BuildContext context) async {
@@ -424,7 +424,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     android:enableOnBackInvokedCallback="true">
 ```
 
-- **"Watch out: this flag breaks `WillPopScope`. Migrate to `PopScope` first"** (https://docs.flutter.dev/release/breaking-changes/android-predictive-back). `WillPopScope` is deprecated; its replacement is `PopScope(canPop:, onPopInvokedWithResult:)` ([VERSIONS.md](../flutter/VERSIONS.md)).
+- **"Watch out: this flag breaks `WillPopScope`. Migrate to `PopScope` first"** (https://docs.flutter.dev/release/breaking-changes/android-predictive-back). `WillPopScope` is deprecated; its replacement is `PopScope(canPop:, onPopInvokedWithResult:)` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
 - **The logcat warning does not prove the bug.** An app whose back works shows the same lines:
 
 ```text
@@ -515,8 +515,8 @@ ListView(
 
 - **Shape is free:** a map, enum keys instead of an `int`; "only the idea matters: detect the reselect, then scroll to top or focus a search field."
 - **Lifecycle:** the controllers and focus nodes live as long as the app because the bottom nav is always on screen. Optionally add a `dispose` called from the root widget that holds the nav. "Never dispose them while in use."
-- **Material 3:** the article uses M2 `BottomNavigationBar`; the M3 replacement is `NavigationBar` ([VERSIONS.md](../flutter/VERSIONS.md)), which the article does not show.
-- **With go_router tabs,** the official shell resets the branch when the active tab is tapped (`goBranch(index, initialLocation: index == navigationShell.currentIndex)`, [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)); scroll-to-top and the second-tap search focus are this source's addition.
+- **Material 3:** the article uses M2 `BottomNavigationBar`; the M3 replacement is `NavigationBar` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)), which the article does not show.
+- **With go_router tabs,** the official shell resets the branch when the active tab is tapped (`goBranch(index, initialLocation: index == navigationShell.currentIndex)`, [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)); scroll-to-top and the second-tap search focus are this source's addition.
 
 ## Keep scroll position across tabs
 
@@ -536,7 +536,7 @@ Scaffold(
 );
 ```
 
-- This is for hand-rolled tab switching. go_router's `StatefulShellRoute.indexedStack` "keeps each branch's state" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)).
+- This is for hand-rolled tab switching. go_router's `StatefulShellRoute.indexedStack` "keeps each branch's state" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)).
 
 ## Page transitions
 
@@ -595,9 +595,9 @@ MaterialApp(
 );
 ```
 
-- **Android entry on Flutter 3.38+:** the default is `PredictiveBackPageTransitionsBuilder`, not Zoom ([VERSIONS.md](../flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). To keep the native default there, put `PredictiveBackPageTransitionsBuilder` in the non-web branch of the `.android` entry instead of `ZoomPageTransitionsBuilder`.
+- **Android entry on Flutter 3.38+:** the default is `PredictiveBackPageTransitionsBuilder`, not Zoom ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). To keep the native default there, put `PredictiveBackPageTransitionsBuilder` in the non-web branch of the `.android` entry instead of `ZoomPageTransitionsBuilder`.
 - **Text versus code:** the article's rule says "native defaults on Android and iOS, even in a mobile browser", but its code uses the no-op builder for `.android` and `.iOS` whenever `kIsWeb`, so a mobile browser gets no transition too.
-- **The other view:** the `ui-animation` skill gives a page transition 400-600 ms ([ui-animation SKILL.md](../../frontend/ui-animation/SKILL.md)). More web guidance is in [WEB-SHELL.md](WEB-SHELL.md).
+- **The other view:** the `ui-animation` skill gives a page transition 400-600 ms ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md)). More web guidance is in [WEB-SHELL.md](WEB-SHELL.md).
 
 ### Per route with go_router
 
@@ -639,18 +639,18 @@ pageTransitionsTheme: PageTransitionsTheme(
 ),
 ```
 
-- On Flutter 3.38+ the Android line above opts out of the new default; for the default name `PredictiveBackPageTransitionsBuilder` there ([VERSIONS.md](../flutter/VERSIONS.md)).
+- On Flutter 3.38+ the Android line above opts out of the new default; for the default name `PredictiveBackPageTransitionsBuilder` there ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
 
 ## Date picker that matches the platform
 
-- Dot shorthands in these samples need Dart language version 3.10+ ([LANGUAGE.md](../dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
-- The samples import `package:flutter/material.dart` and `package:flutter/cupertino.dart`; Material and Cupertino are moving to their own packages ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time. [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+- Dot shorthands in these samples need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+- The samples import `package:flutter/material.dart` and `package:flutter/cupertino.dart`; Material and Cupertino are moving to their own packages ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time. [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
 
 [FlutterPro](https://flutterpro.design/details/adaptive-date-picker): `CupertinoDatePicker` looks polished, but it's iOS-native. Android users don't expect a scroll-wheel picker for dates, and "An iOS widget dropped into Android can even read as cheap." Use the scroll picker on iOS and the default Material one (`showDatePicker`) on Android.
 
 - **Custom design is no reason to skip it.** The Material picker is platform UI, so users read the exception as normal. You can still theme it; keep the skeleton layout, "which is muscle memory for Android users."
 - **Packages:** the author has "yet to find one neutral enough to justify mixing with a custom design."
-- **Fits the official rules:** Flutter's `.adaptive()` constructors substitute Cupertino on iOS for switches, sliders, dialogs and more ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)); this tip does the same by hand for the date picker. It branches a platform-idiom widget on `defaultTargetPlatform`, which [PLATFORM-INTEGRATION.md](../flutter/PLATFORM-INTEGRATION.md) names; [SKILL.md](../flutter/SKILL.md) rule 2 forbids branching *layout* on `Platform.isAndroid`, a different thing.
+- **Fits the official rules:** Flutter's `.adaptive()` constructors substitute Cupertino on iOS for switches, sliders, dialogs and more ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#platform-adaptations)); this tip does the same by hand for the date picker. It branches a platform-idiom widget on `defaultTargetPlatform`, which [flutter PLATFORM-INTEGRATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PLATFORM-INTEGRATION.md) names; [flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) rule 2 forbids branching *layout* on `Platform.isAndroid`, a different thing.
 
 Call it and await the picked date. It returns `null` when the user dismisses the sheet, so keep the old value then:
 

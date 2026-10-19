@@ -69,7 +69,7 @@ Third-party conversion, rating, screenshot, video, custom page and event figures
 | 2-5% | Marginal winner |
 | <2% | Noise -- not significant |
 
-Apple's rule for applying a treatment is the confidence it reports, at least 90% ([PRODUCT-PAGES.md](PRODUCT-PAGES.md#product-page-optimization)); sizing a test from a baseline and the lift to detect is [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md).
+Apple's rule for applying a treatment is the confidence it reports, at least 90% ([PRODUCT-PAGES.md](PRODUCT-PAGES.md#product-page-optimization)); sizing a test from a baseline and the lift to detect is [ab-testing SAMPLE-SIZE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SAMPLE-SIZE.md).
 
 ## Prove it
 

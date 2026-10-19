@@ -1,6 +1,6 @@
 # Testing and verification boundaries
 
-Convex-specific expectations come from [get-convex/agent-skills, convex-test, convex-verify, convex-create-component/references/packaged-components.md] and [official convex-test documentation](https://docs.convex.dev/testing/convex-test). Generic integration-testing policy remains in [testing/INTEGRATION.md](../../architecture/testing/INTEGRATION.md).
+Convex-specific expectations come from [get-convex/agent-skills, convex-test, convex-verify, convex-create-component/references/packaged-components.md] and [official convex-test documentation](https://docs.convex.dev/testing/convex-test). Generic integration-testing policy remains in [testing INTEGRATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/INTEGRATION.md).
 
 ## Mock backend scope
 

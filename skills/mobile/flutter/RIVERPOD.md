@@ -16,7 +16,7 @@ Riverpod is a third-party state management and dependency package, not part of F
 [ApparenceKit](https://apparencekit.dev/flutter-tips/riverpod-asyncstate-state-management/)
 
 - The notifier "should return a `Future` of your state. This `Future` is what Riverpod watches to know if your data is loading, done, or has an error."
-- "After creating your notifier, don't forget to run the `build_runner` command. This tool generates the necessary Riverpod code from the annotations (like `@Riverpod`) you've added." (The skill's generator command is `dart run build_runner build`, [../dart/TESTING.md](../dart/TESTING.md).)
+- "After creating your notifier, don't forget to run the `build_runner` command. This tool generates the necessary Riverpod code from the annotations (like `@Riverpod`) you've added." (The skill's generator command is `dart run build_runner build`, [dart TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/TESTING.md).)
 
 ```dart
 part 'tasks_list_notifier.g.dart';
@@ -96,7 +96,7 @@ extension UserSessionRepositoryProvider on Ref {
 
 ## Listening to app events in a notifier
 
-[ApparenceKit](https://apparencekit.dev/blog/flutter-app-events/). The dispatcher itself is stack-neutral and lives in [../flutter-ux/WIDGET-PATTERNS.md](../flutter-ux/WIDGET-PATTERNS.md#global-app-events).
+[ApparenceKit](https://apparencekit.dev/blog/flutter-app-events/). The dispatcher itself is stack-neutral and lives in [flutter-ux WIDGET-PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/WIDGET-PATTERNS.md#global-app-events).
 
 ```dart
 part 'lobby_notifier.g.dart';
@@ -119,7 +119,7 @@ class LobbyNotifier extends _$LobbyNotifier {
 
 ## A paginated list
 
-[ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/). This is the notifier half; the page state, scroll-end detection, pull to refresh and skeleton tiles are in [../flutter-ux/PAGINATION-AND-LOADING.md](../flutter-ux/PAGINATION-AND-LOADING.md#pagination-and-skeletons). The article's Firestore query is out of scope here.
+[ApparenceKit](https://apparencekit.dev/blog/flutter-pagination-riverpod/). This is the notifier half; the page state, scroll-end detection, pull to refresh and skeleton tiles are in [flutter-ux PAGINATION-AND-LOADING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/PAGINATION-AND-LOADING.md#pagination-and-skeletons). The article's Firestore query is out of scope here.
 
 - **First page in `build`.** `build` can also take parameters (`build(String userId)`).
 
@@ -255,21 +255,21 @@ Future<void> loadNextPage() async {
 ```
 
   Check before copying: the `error` branch returns a box widget (`Center`) inside `slivers:`, where a box widget needs a `SliverToBoxAdapter`, "A sliver that contains a single box widget" (https://api.flutter.dev/flutter/widgets/SliverToBoxAdapter-class.html); and the article names the provider `inboxPageStateProvider` in its refresh snippet but `inboxNotifierProvider` here.
-- **One loading state for both loads, two views.** The article sets the whole state to `AsyncValue.loading()` for the next page and uses `state is AsyncLoading` as the in-flight guard, so a failed next page replaces the list with the error branch. Against it, the repo's web interface rules: ""Loading more" is a separate flag from "loading", so the next page's pending state never touches the list" and "A failed refetch keeps what is shown until a later read succeeds; only a failed first read goes to the error state" ([../../frontend/app-ui/STATES.md](../../frontend/app-ui/STATES.md)).
-- **Artificial delay, two views.** "We add a short delay to show the loading indicator even if the loading is fast" (`Future.delayed(const Duration(seconds: 1))` in both loads). Against it: the same site calls `Future.delayed(Duration(seconds: 1))` "unreliable" ([ApparenceKit](https://apparencekit.dev/flutter-tips/wait-for-view-ready-flutter-app/)), and "Feedback is instant, results can follow" ([../../frontend/ui-animation/PATTERNS.md](../../frontend/ui-animation/PATTERNS.md)).
+- **One loading state for both loads, two views.** The article sets the whole state to `AsyncValue.loading()` for the next page and uses `state is AsyncLoading` as the in-flight guard, so a failed next page replaces the list with the error branch. Against it, the repo's web interface rules: ""Loading more" is a separate flag from "loading", so the next page's pending state never touches the list" and "A failed refetch keeps what is shown until a later read succeeds; only a failed first read goes to the error state" ([app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md)).
+- **Artificial delay, two views.** "We add a short delay to show the loading indicator even if the loading is fast" (`Future.delayed(const Duration(seconds: 1))` in both loads). Against it: the same site calls `Future.delayed(Duration(seconds: 1))` "unreliable" ([ApparenceKit](https://apparencekit.dev/flutter-tips/wait-for-view-ready-flutter-app/)), and "Feedback is instant, results can follow" ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md)).
 
 ## Toasts from notifiers
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/toast-riverpod/) (the article's code is an image only)
 
 - "By utilizing a GlobalKey attached to your app's navigator, you gain access to a root BuildContext. A Riverpod Provider then encapsulates the toast display logic" (the example uses the `another_flushbar` package). Notifiers can then show a toast "after an asynchronous operation, without needing to manually manage or pass a widget's BuildContext."
-- **Two views.** ApparenceKit [community]: trigger toasts from notifiers. The skill [official]: keep the SnackBar in the view, shown from a listener and cleared first so it shows once ([ARCHITECTURE.md](ARCHITECTURE.md#optimistic-state)). The toast look and the "don't show the same snack bar twice" rule are in [../flutter-ux/MOTION-AND-FEEDBACK.md](../flutter-ux/MOTION-AND-FEEDBACK.md).
+- **Two views.** ApparenceKit [community]: trigger toasts from notifiers. The skill [official]: keep the SnackBar in the view, shown from a listener and cleared first so it shows once ([ARCHITECTURE.md](ARCHITECTURE.md#optimistic-state)). The toast look and the "don't show the same snack bar twice" rule are in [flutter-ux MOTION-AND-FEEDBACK.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/MOTION-AND-FEEDBACK.md).
 
 ## Routing and guards
 
-- **Rebuilding `GoRouter` from a provider** that watches the user state, with a global `navigatorKey` and the previous location restored, and the article's own drawback that "it rebuilds the Router on any user state changes": code and the `refreshListenable` comparison are in [../flutter-ux/ROUTE-GUARDS-AND-SHELLS.md](../flutter-ux/ROUTE-GUARDS-AND-SHELLS.md) ([ApparenceKit](https://apparencekit.dev/blog/flutter-riverpod-gorouter-redirect/)).
-- **An `AuthGuard` is a `ConsumerWidget`** whose `build(BuildContext context, WidgetRef ref)` watches the user state and hands a `canActivate` future to a `Guard` widget (same file). `WidgetRef ref` belongs to `ConsumerWidget`; a plain `StatelessWidget.build` takes only a `BuildContext` ([../flutter-ux/THEMING.md](../flutter-ux/THEMING.md) notes a source that mixed them up).
-- **Error reporting:** Sentry hooks Riverpod through `ProviderScope(observers: [SentryProviderObserver()])` ([../../monitoring/sentry/FLUTTER.md](../../monitoring/sentry/FLUTTER.md)).
+- **Rebuilding `GoRouter` from a provider** that watches the user state, with a global `navigatorKey` and the previous location restored, and the article's own drawback that "it rebuilds the Router on any user state changes": code and the `refreshListenable` comparison are in [flutter-ux ROUTE-GUARDS-AND-SHELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/ROUTE-GUARDS-AND-SHELLS.md) ([ApparenceKit](https://apparencekit.dev/blog/flutter-riverpod-gorouter-redirect/)).
+- **An `AuthGuard` is a `ConsumerWidget`** whose `build(BuildContext context, WidgetRef ref)` watches the user state and hands a `canActivate` future to a `Guard` widget (same file). `WidgetRef ref` belongs to `ConsumerWidget`; a plain `StatelessWidget.build` takes only a `BuildContext` ([flutter-ux THEMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/THEMING.md) notes a source that mixed them up).
+- **Error reporting:** Sentry hooks Riverpod through `ProviderScope(observers: [SentryProviderObserver()])` ([sentry FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/sentry/FLUTTER.md)).
 
 ## Prove it
 

@@ -7,6 +7,8 @@ description: "Exposes a web app's user-visible capabilities as WebMCP tools that
 
 The job is to let an agent do in the page what a user can already do there, through tools registered with the browser's `modelContext`, without opening a new door. Two routes: from **source code**, where the tools live in the app itself, call the same client or service boundary as the UI and ship with it (no hosted proxy or third-party runtime); and from a **live URL**, where a manifest compiles into a `webmcp.init.js` injected into the page and no source changes. Three defects pass discovery and still fail the agent: a schema closed at discovery but backed by a permissive runtime parser, a handler that echoes its input instead of reading the app's state, and an annotation that misstates the tool's risk. With only a URL, take the init-script route and do not pretend to analyze source that was not provided.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Finding what to expose in a codebase: the boundary, tracing each capability, search signals, exclusions, the inventory table | [INVENTORY.md](INVENTORY.md) |
@@ -32,4 +34,4 @@ The job is to let an agent do in the page what a user can already do there, thro
 
 ## Prove it
 
-Tests, typecheck and production build pass; Stagehand discovers every expected tool from the built app without an injected init script and invokes at least one read-only or reversible tool with a verified structured result; consequential tools are discovered only; then every tool survives the hand probes in PROBING.md, with each effect checked in the app's own state. Report what was considered, excluded and not tested (AUDIT.md).
+For a source-app implementation, report the authorized tests, typecheck and production build actually performed; Stagehand discovers every expected tool from the built app without an injected init script. For the live-URL route, use INIT-SCRIPT.md's injected-script validation instead. In the selected route, invoke at least one read-only or reversible tool with a verified structured result; consequential tools are discovered only. For hand-probing, check every effect in the app's own state through PROBING.md. For an audit, use AUDIT.md and report what was considered, excluded and not tested. [browserbase/skills, add-webmcp and webmcp-gen; VALIDATION.md, INIT-SCRIPT.md and AUDIT.md]

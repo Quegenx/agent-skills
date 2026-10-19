@@ -95,7 +95,7 @@ The six components ([OFFER-ANATOMY.md](OFFER-ANATOMY.md#the-six-components)) ass
 | Name | Internal-stable ("Enterprise Plan") + a named engagement type ("Strategic Onboarding") |
 | Price | Annual contract with quarterly payment, often custom |
 
-- **A buying committee, not a buyer:** the offer lands with the champion, the economic buyer and the influencer at once. **Procurement is the offer:** payment terms, NET 60, security review and MSA are part of it. **Pilots convert sophisticated buyers:** "30-day paid pilot, decide to continue at end". Sales collateral is in [../sales-enablement/SKILL.md](../sales-enablement/SKILL.md).
+- **A buying committee, not a buyer:** the offer lands with the champion, the economic buyer and the influencer at once. **Procurement is the offer:** payment terms, NET 60, security review and MSA are part of it. **Pilots convert sophisticated buyers:** "30-day paid pilot, decide to continue at end". Sales collateral is in [sales-enablement SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md).
 
 ## Agency retainer
 
@@ -125,7 +125,7 @@ The six components ([OFFER-ANATOMY.md](OFFER-ANATOMY.md#the-six-components)) ass
 | Name | Tier-named ("Starter", "Pro", "Team", "Enterprise") |
 | Price | Monthly or annual with a discount, value-metric-based |
 
-- **Packaging and the value metric do more work here** than guarantees and bonuses: read [../pricing-strategy/SKILL.md](../pricing-strategy/SKILL.md) first. **Free trial design is offer design:** length, gated features, card required or not, automatic conversion ([../onboarding-and-upgrades/ACTIVATION-MODELS.md](../onboarding-and-upgrades/ACTIVATION-MODELS.md)). **The annual plan is an offer lever.** Discounts follow [DISCOUNTS.md](DISCOUNTS.md).
+- **Packaging and the value metric do more work here** than guarantees and bonuses: read [pricing-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) first. **Free trial design is offer design:** length, gated features, card required or not, automatic conversion ([onboarding-and-upgrades ACTIVATION-MODELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/ACTIVATION-MODELS.md)). **The annual plan is an offer lever.** Discounts follow [DISCOUNTS.md](DISCOUNTS.md).
 
 ## Direct response
 

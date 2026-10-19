@@ -85,7 +85,7 @@ gtag('config', 'GA_MEASUREMENT_ID', {
 });
 ```
 
-In a typed codebase, route every call through one helper that does nothing on the server or without the tag, as the owner's website does with `trackAnalyticsEvent` ([google-analytics.ts](../../frontend/landing-page-ui/reference/website/shared/site/google-analytics.ts)). The dataLayer form of these calls is in [GTM.md](GTM.md#datalayer-patterns).
+In a typed codebase, route every call through one helper that does nothing on the server or without the tag, as the owner's website does with `trackAnalyticsEvent` ([google-analytics.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/shared/site/google-analytics.ts)). The dataLayer form of these calls is in [GTM.md](GTM.md#datalayer-patterns).
 
 ## Key events
 
@@ -152,18 +152,18 @@ Real-time reports [coreyhaines31/marketingskills, analytics]: Reports, Real-time
 
 ## Google Ads
 
-[coreyhaines31/marketingskills, analytics] Link under Admin, Product links, Google Ads links; enable auto-tagging in Google Ads; import key events into Google Ads. GA4 audiences can be used in Google Ads for remarketing and customer match. The source also listed "Similar audiences"; Google Ads now says that "If you've been using similar segments in Awareness and Reach or Consideration Video campaigns", you can "include your first-party data segments in your ad groups and enable audience expansion" (https://support.google.com/google-ads/answer/12463119). Campaign work is [../../marketing/paid-ads/SKILL.md](../../marketing/paid-ads/SKILL.md).
+[coreyhaines31/marketingskills, analytics] Link under Admin, Product links, Google Ads links; enable auto-tagging in Google Ads; import key events into Google Ads. GA4 audiences can be used in Google Ads for remarketing and customer match. The source also listed "Similar audiences"; Google Ads now says that "If you've been using similar segments in Awareness and Reach or Consideration Video campaigns", you can "include your first-party data segments in your ad groups and enable audience expansion" (https://support.google.com/google-ads/answer/12463119). Campaign work is [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md).
 
 ## Privacy
 
-[coreyhaines31/marketingskills, analytics] No PII in analytics properties; set data retention; have user deletion capabilities; use consent mode ([CONSENT-MODE.md](CONSENT-MODE.md)); collect only what you need; integrate with a consent management platform ([../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md)). The source also listed "IP anonymization"; Google: "In Google Analytics 4, IP masking is not necessary since IP addresses are not logged or stored" (https://support.google.com/analytics/answer/2763052).
+[coreyhaines31/marketingskills, analytics] No PII in analytics properties; set data retention; have user deletion capabilities; use consent mode ([CONSENT-MODE.md](CONSENT-MODE.md)); collect only what you need; integrate with a consent management platform ([cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md)). The source also listed "IP anonymization"; Google: "In Google Analytics 4, IP masking is not necessary since IP addresses are not logged or stored" (https://support.google.com/analytics/answer/2763052).
 
 ## Reading GA4 from an agent
 
 Google's GA4 MCP server (https://github.com/googleanalytics/google-analytics-mcp, marked "Experimental") exposes `get_account_summaries`, `get_property_details`, `list_google_ads_links`, `run_report`, `run_funnel_report`, `get_custom_dimensions_and_metrics` and `run_realtime_report`; its setup uses Application Default Credentials from user OAuth or service account impersonation, with the `analytics.readonly` scope. Google: "The MCP server is available for read requests only. It can't edit your Google Analytics configuration or settings." (https://developers.google.com/analytics/devguides/MCP). Numbers it returns still go through [TRACKING-PLAN.md](TRACKING-PLAN.md#reading-the-numbers).
 
 - **Your own OAuth client** [open-seo, SELF_HOSTING_GOOGLE_ANALYTICS.md]: enable the Analytics Admin API (it lists properties) and the Analytics Data API (it runs reports), and register the redirect `<origin>/api/ga4/oauth/callback`. The Search Console client can be reused, but "GA4 still asks for a separate consent grant". "OAuth apps left in Google's Testing status can receive short-lived refresh grants."
-- **From a CLI** [iannuttall/seo, README.md]: `seo analytics google properties`, then `seo ai-referrals --property 123456789`; the property must be the numeric id ([../../marketing/search-console/SEO-CLI.md](../../marketing/search-console/SEO-CLI.md)).
+- **From a CLI** [iannuttall/seo, README.md]: `seo analytics google properties`, then `seo ai-referrals --property 123456789`; the property must be the numeric id ([search-console SEO-CLI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SEO-CLI.md)).
 
 ## Prove it
 

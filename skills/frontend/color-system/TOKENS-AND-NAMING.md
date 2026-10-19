@@ -1,6 +1,6 @@
 # Tokens and naming
 
-The two token tiers, the roles a system needs, one naming grammar, using each token only in its role, and how color carries meaning and emphasis. Source: Jakub Krehel's better-colors, each section tagged. The owner's own token design ([app-ui TOKENS.md](../app-ui/TOKENS.md), [landing-page-ui SYSTEM.md](../landing-page-ui/SYSTEM.md)) wins wherever it differs; each difference is one note below. Tailwind's `@theme` side is in [TAILWIND.md](TAILWIND.md).
+The two token tiers, the roles a system needs, one naming grammar, using each token only in its role, and how color carries meaning and emphasis. Source: Jakub Krehel's better-colors, each section tagged. The owner's own token design ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md), [landing-page-ui SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SYSTEM.md)) wins wherever it differs; each difference is one note below. Tailwind's `@theme` side is in [TAILWIND.md](TAILWIND.md).
 
 ## Two tiers
 
@@ -25,7 +25,7 @@ The two token tiers, the roles a system needs, one naming grammar, using each to
 
 - "The tiering is what makes theming possible. Dark mode, a white-label theme and an increased-contrast variant all repoint the semantic tier, leaving the primitives and every component untouched." A codebase applying `--blue-600` in components "has no theming seam".
 - **A component tier** (`--color-button-danger-bg`) only where a component genuinely and intentionally diverges. "One component token is a documented exception; twenty mean the semantic tier is missing roles."
-- app-ui's checker already flags raw values and palette utilities in components (`rule/raw-value`, `rule/palette-use` in [app-ui CHECKS.md](../app-ui/CHECKS.md)).
+- app-ui's checker already flags raw values and palette utilities in components (`rule/raw-value`, `rule/palette-use` in [app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)).
 
 ## The role inventory
 
@@ -64,7 +64,7 @@ The two token tiers, the roles a system needs, one naming grammar, using each to
 | Brand color | `accent` | `primary`, `brand`, `theme` used interchangeably |
 
 - "Reserve `primary` for exactly one meaning. `--color-text-primary` for body text beside `--color-primary` for the brand is the most common naming collision there is." Use `accent` for the brand and let `primary` mean "the most prominent of its group".
-- **Owner's design:** app-ui names its roles `--foreground`, `--muted-foreground`, `--primary`, `--primary-soft` and `--destructive` ([app-ui TOKENS.md](../app-ui/TOKENS.md)), and landing-page-ui uses accent for the brand with "foreground strong, primary, secondary, tertiary" for text ([landing-page-ui SYSTEM.md](../landing-page-ui/SYSTEM.md)); the owner's names win, and neither defines both `--primary` and `--text-primary`, so the collision rule still holds.
+- **Owner's design:** app-ui names its roles `--foreground`, `--muted-foreground`, `--primary`, `--primary-soft` and `--destructive` ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)), and landing-page-ui uses accent for the brand with "foreground strong, primary, secondary, tertiary" for text ([landing-page-ui SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SYSTEM.md)); the owner's names win, and neither defines both `--primary` and `--text-primary`, so the collision rule still holds.
 
 ### Anti-patterns
 

@@ -21,7 +21,7 @@ Account-based marketing with ads: named-account qualification, LinkedIn and Meta
 
 [coreyhaines31/marketingskills, ads, abm-playbook.md] Meta has no company targeting; bring your own matched audience.
 
-- **Match rates:** raw work emails match under ~5% on Meta; identity-graph enrichment providers raise that to ~40 to 85% (practitioner). Uploading enriched personal data needs a lawful basis and notice under GDPR (Art. 6) and the advertiser's right to use the data under Meta's Custom Audience terms; record the basis before uploading, and route the consent and privacy side through [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md). Workflow: firmographic criteria → identity match → Custom Audience → target directly or seed a 1% lookalike.
+- **Match rates:** raw work emails match under ~5% on Meta; identity-graph enrichment providers raise that to ~40 to 85% (practitioner). Uploading enriched personal data needs a lawful basis and notice under GDPR (Art. 6) and the advertiser's right to use the data under Meta's Custom Audience terms; record the basis before uploading, and route the consent and privacy side through [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md). Workflow: firmographic criteria → identity match → Custom Audience → target directly or seed a 1% lookalike.
 - **Sizes:** account-list audiences ~1,000 companies (5 to 10K optimal); retargeting slices down to ~100 accounts; lookalike seeds 500+.
 - **Advantage+ won't stay locked to a list:** run ABM manual, or hybrid (manual for the list, Advantage+ for the broad layer).
 - Meta's ABM role is cheap air cover and reaching the buying committee beyond the champion, while LinkedIn does precision.
@@ -42,11 +42,11 @@ Account-based marketing with ads: named-account qualification, LinkedIn and Meta
 2. On Meta, build a website Custom Audience with the rule **"URL contains `utm_source=linkedin`"** (or `utm_source=google`).
 3. Retarget it on Meta: LinkedIn-grade audience quality at Meta-grade CPMs (the source says 50 to 70% cheaper reach).
 
-It works in reverse (search clickers → LinkedIn), which the source says pays above roughly $30K a month search spend. It needs enough source traffic to clear minimum audience sizes; keep a consistent account or campaign token in the UTMs so attribution survives the hop. UTM conventions: [marketing-attribution](../marketing-attribution/SKILL.md).
+It works in reverse (search clickers → LinkedIn), which the source says pays above roughly $30K a month search spend. It needs enough source traffic to clear minimum audience sizes; keep a consistent account or campaign token in the UTMs so attribution survives the hop. UTM conventions: [marketing-attribution](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 
 ## Sales follow-up
 
-[coreyhaines31/marketingskills, ads, abm-playbook.md] ABM ads without sales follow-up are billboard spend. Pipe engagement signals to the CRM and treat a spike as a sales trigger, with outreach within ~48 hours; post new leads to a shared channel with a per-campaign quality reaction as the cheapest feedback loop; hold a monthly sales and marketing session on the list itself (who engages, who's dark, who closed) and re-cut it. The source expects ~7 to 10 cross-channel touches before a sales conversation. Outreach itself: [cold-outreach](../cold-outreach/SKILL.md).
+[coreyhaines31/marketingskills, ads, abm-playbook.md] ABM ads without sales follow-up are billboard spend. Pipe engagement signals to the CRM and treat a spike as a sales trigger, with outreach within ~48 hours; post new leads to a shared channel with a per-campaign quality reaction as the cheapest feedback loop; hold a monthly sales and marketing session on the list itself (who engages, who's dark, who closed) and re-cut it. The source expects ~7 to 10 cross-channel touches before a sales conversation. Outreach itself: [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md).
 
 ## Measuring ABM
 

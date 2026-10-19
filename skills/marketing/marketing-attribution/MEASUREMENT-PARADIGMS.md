@@ -1,6 +1,6 @@
 # Measurement paradigms
 
-Models split credit inside tracked data ([ATTRIBUTION-MODELS.md](ATTRIBUTION-MODELS.md)); these three paradigms are increasingly rigorous, increasingly expensive ways to get closer to causality. This file helps pick one and read a test honestly, not run the statistics. From [coreyhaines31/marketingskills, attribution] (references/measurement-paradigms.md, MIT). The statistics of a controlled test are [../ab-testing/SKILL.md](../ab-testing/SKILL.md); holdouts on PostHog experiments are [../../monitoring/posthog/EXPERIMENT-CHANGES.md](../../monitoring/posthog/EXPERIMENT-CHANGES.md).
+Models split credit inside tracked data ([ATTRIBUTION-MODELS.md](ATTRIBUTION-MODELS.md)); these three paradigms are increasingly rigorous, increasingly expensive ways to get closer to causality. This file helps pick one and read a test honestly, not run the statistics. From [coreyhaines31/marketingskills, attribution] (references/measurement-paradigms.md, MIT). The statistics of a controlled test are [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md); holdouts on PostHog experiments are [posthog EXPERIMENT-CHANGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-CHANGES.md).
 
 ## The three, compared
 
@@ -48,7 +48,7 @@ Models split credit inside tracked data ([ATTRIBUTION-MODELS.md](ATTRIBUTION-MOD
 - **Ghost ads:** the platform runs the auction but withholds your ad from the control group and logs the impression that would have served (the control user may see another advertiser's ad). Cleaner and cheaper than PSAs, and the modern default where the platform supports it. Logging would-have-served opportunities identifies the comparison set; it is separate from intent-to-treat.
 - **Intent-to-treat analysis:** compare outcomes by the groups people were randomly assigned to, whether or not they saw an ad. It estimates the effect of assignment and preserves the randomized comparison; it is not a synonym for switching a channel off ([Cochrane handbook, chapter 8](https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-08)).
 - **On-off (pulse) tests:** switch a channel off for a defined window and examine total outcomes. A simple before/after can be confounded by seasonality, demand changes and other campaigns; use randomized regions or time blocks when feasible ([Google's geo-experiment research](https://research.google.com/pubs/archive/38355.pdf)), and account for carryover and spillover before calling the change causal.
-- **Holdout audiences:** withhold a random share from a retargeting or email program; the delta is the program's true lift. OneSignal's Journeys equivalent is in [../../backend/onesignal/JOURNEYS.md](../../backend/onesignal/JOURNEYS.md).
+- **Holdout audiences:** withhold a random share from a retargeting or email program; the delta is the program's true lift. OneSignal's Journeys equivalent is in [onesignal JOURNEYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/JOURNEYS.md).
 
 ### Reading a test
 
@@ -57,7 +57,7 @@ Models split credit inside tracked data ([ATTRIBUTION-MODELS.md](ATTRIBUTION-MOD
 1. **Lift = exposed rate minus control rate.** Exposed geos at 4.2% and control at 3.6% is about 0.6 points of incremental lift; the rest of the 4.2% would have converted anyway. This is why last-click ROAS is almost always overstated: it counts the whole 4.2%.
 2. **Check the confidence interval.** "5% lift, interval -2% to +12%" includes zero and losses: you can't claim a win. Compare the interval to the smallest lift that changes your decision; if it straddles it, the test was too small to decide.
 3. **Watch for contamination.** Control users reached anyway (cross-device, spillover between geos) shrink the measured gap; a "no lift" result can be a leaky test, not a dead channel.
-4. **Translate to a decision.** Incremental CPA = spend / *incremental* conversions (not total). This is the number that should move budget, and it's usually worse than the platform's reported CPA. The ROAS formulas for apps are in [../../mobile/app-growth/BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md).
+4. **Translate to a decision.** Incremental CPA = spend / *incremental* conversions (not total). This is the number that should move budget, and it's usually worse than the platform's reported CPA. The ROAS formulas for apps are in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md).
 
 **Use it for** the highest-stakes questions and tiebreakers: does retargeting do anything; is paid branded search buying clicks you'd get free; which of two big channels really drives growth. You can only test a few things at a time, so spend tests on the decisions that matter most.
 

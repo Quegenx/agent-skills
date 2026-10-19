@@ -1,6 +1,6 @@
 # Signup flows
 
-Signup CRO cuts what stands between a visitor and a working account, and sets them up to activate. This file covers free-trial, freemium, paid and waitlist signups, B2B and B2C. The source is [coreyhaines31/marketingskills, signup] v2.0.1 (MIT), corrected against NIST SP 800-63B-4 and WCAG 2.2. What happens after signup is [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md); lead and contact forms are [FORMS.md](FORMS.md). The auth implementation is [supabase/AUTH-SIGN-IN.md](../../backend/supabase/AUTH-SIGN-IN.md); the owner's auth screens are [app-ui/AUTH.md](../../frontend/app-ui/AUTH.md), whose design applies in the owner's apps; mobile apps' sign-up deferral and Apple's sign-in rules are [app-growth](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md) and [app-store-connect](../../mobile/app-store-connect/SKILL.md).
+Signup CRO cuts what stands between a visitor and a working account, and sets them up to activate. This file covers free-trial, freemium, paid and waitlist signups, B2B and B2C. The source is [coreyhaines31/marketingskills, signup] v2.0.1 (MIT), corrected against NIST SP 800-63B-4 and WCAG 2.2. What happens after signup is [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md); lead and contact forms are [FORMS.md](FORMS.md). The auth implementation is [supabase AUTH-SIGN-IN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SIGN-IN.md); the owner's auth screens are [app-ui AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/AUTH.md), whose design applies in the owner's apps; mobile apps' sign-up deferral and Apple's sign-in rules are [app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md) and [app-store-connect](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 
 **Contents:** [Before the audit](#before-the-audit) · [Principles](#principles) · [Fields](#fields) · [Passwords](#passwords) · [Social sign-in](#social-sign-in) · [Single or multi-step](#single-or-multi-step) · [Trust and errors](#trust-and-errors) · [Mobile](#mobile) · [After submit](#after-submit) · [Enrichment](#enrichment) · [Patterns](#patterns) · [Measurement and output](#measurement-and-output) · [Prove it](#prove-it)
 
@@ -28,9 +28,9 @@ Signup CRO cuts what stands between a visitor and a working account, and sets th
 
 | Field | Guidance |
 |---|---|
-| Email | "Single field (no email confirmation field)"; inline validation for format; "Check for common typos (gmial.com → gmail.com)"; clear errors ([email-practices/LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses)) |
+| Email | "Single field (no email confirmation field)"; inline validation for format; "Check for common typos (gmial.com → gmail.com)"; clear errors ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses)) |
 | Name | "Single 'Full name' field vs. First/Last split (test this)"; "Only require if immediately used (personalization)"; consider optional |
-| Phone | "Defer unless essential (SMS verification, calling leads)"; if required, explain why; country code handling; format as they type. Supabase discourages phone as a password identifier ([supabase/AUTH-SIGN-IN.md](../../backend/supabase/AUTH-SIGN-IN.md)); texting consent is [sms-marketing](../sms-marketing/SKILL.md) |
+| Phone | "Defer unless essential (SMS verification, calling leads)"; if required, explain why; country code handling; format as they type. Supabase discourages phone as a password identifier ([supabase AUTH-SIGN-IN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SIGN-IN.md)); texting consent is [sms-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/SKILL.md) |
 | Company | Defer if possible; auto-suggest; "Infer from email domain when possible" |
 | Use case or role | "Defer to onboarding if possible"; if needed at signup, "keep to one question"; progressive disclosure |
 
@@ -44,9 +44,9 @@ The source: "Show password toggle (eye icon) / Show requirements upfront, not af
 - **No periodic changes:** "SHALL NOT require subscribers to change passwords periodically", but force a change on evidence of compromise.
 - **Paste and managers:** NIST requires allowing password managers and autofill and recommends permitting paste and an option to display the password, as the source does.
 - **"Passphrase hints"** means guidance on choosing a strong passphrase, never a stored hint: NIST "SHALL NOT permit the subscriber to store a hint (e.g., a reminder of how the password was created) that is accessible to an unauthenticated claimant", nor prompt for "knowledge-based authentication (KBA)" or security questions when choosing passwords.
-- **Accessible authentication:** WCAG 2.2 SC 3.3.8 (AA) applies to every signup step that sets or enters a password or code; its rules are in [web-accessibility/FORMS.md](../../frontend/web-accessibility/FORMS.md#multi-step-forms-and-sign-in).
-- **Real-time requirement indicators** are the source's view; the owner's apps validate on submit and show the first issue ([app-ui/AUTH.md](../../frontend/app-ui/AUTH.md)). The owner's rule applies in the owner's apps.
-- **Passwordless.** The source suggests "Magic link as alternative to password". WCAG 3.3.8 and NIST 800-63B-4 disagree on email links; both views are in [web-accessibility/FORMS.md](../../frontend/web-accessibility/FORMS.md#multi-step-forms-and-sign-in). Supabase's magic link and email OTP are in [supabase/AUTH-SIGN-IN.md](../../backend/supabase/AUTH-SIGN-IN.md#magic-link-and-email-otp).
+- **Accessible authentication:** WCAG 2.2 SC 3.3.8 (AA) applies to every signup step that sets or enters a password or code; its rules are in [web-accessibility FORMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FORMS.md#multi-step-forms-and-sign-in).
+- **Real-time requirement indicators** are the source's view; the owner's apps validate on submit and show the first issue ([app-ui AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/AUTH.md)). The owner's rule applies in the owner's apps.
+- **Passwordless.** The source suggests "Magic link as alternative to password". WCAG 3.3.8 and NIST 800-63B-4 disagree on email links; both views are in [web-accessibility FORMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FORMS.md#multi-step-forms-and-sign-in). Supabase's magic link and email OTP are in [supabase AUTH-SIGN-IN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SIGN-IN.md#magic-link-and-email-otp).
 
 ## Social sign-in
 
@@ -55,7 +55,7 @@ The source: "Show password toggle (eye icon) / Show requirements upfront, not af
 - Place it prominently and show the options that fit the audience: "B2C: Google, Apple, Facebook / B2B: Google, Microsoft, SSO".
 - "Clear visual separation from email signup"; "Consider 'Sign up with Google' as primary".
 - The source says social auth is "often higher conversion than email" with no data; test it with the social-to-email ratio ([Measurement and output](#measurement-and-output)).
-- iOS apps that offer third-party sign-in fall under App Review guideline 4.8 ([app-store-connect](../../mobile/app-store-connect/SKILL.md)).
+- iOS apps that offer third-party sign-in fall under App Review guideline 4.8 ([app-store-connect](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md)).
 
 ## Single or multi-step
 
@@ -70,26 +70,26 @@ The source: "Show password toggle (eye icon) / Show requirements upfront, not af
 
 [coreyhaines31/marketingskills, signup]
 
-- **At the form:** "No credit card required" (if true), "Free forever" or "14-day free trial", "We'll never share your email", security badges if relevant, a testimonial. Each must be true; free and trial claims follow [offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
-- **Errors:** specific messages, "Don't clear the form on error", "Focus on the problem field". Focus and announcement: [web-accessibility/FORMS.md](../../frontend/web-accessibility/FORMS.md#error-messaging).
-- **"Email already registered" + recovery path.** The source recommends it. email-practices says otherwise: "for accounts, don't reveal whether an account exists: answer a sign-up with an existing address the same way as a new one" ([LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses)), and Supabase returns an obfuscated user with email and phone confirmation on ([supabase/AUTH-SIGN-IN.md](../../backend/supabase/AUTH-SIGN-IN.md)). The owner's apps map the provider's code to their own message ([app-ui/AUTH.md](../../frontend/app-ui/AUTH.md)).
+- **At the form:** "No credit card required" (if true), "Free forever" or "14-day free trial", "We'll never share your email", security badges if relevant, a testimonial. Each must be true; free and trial claims follow [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md).
+- **Errors:** specific messages, "Don't clear the form on error", "Focus on the problem field". Focus and announcement: [web-accessibility FORMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FORMS.md#error-messaging).
+- **"Email already registered" + recovery path.** The source recommends it. email-practices says otherwise: "for accounts, don't reveal whether an account exists: answer a sign-up with an existing address the same way as a new one" ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses)), and Supabase returns an obfuscated user with email and phone confirmation on ([supabase AUTH-SIGN-IN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SIGN-IN.md)). The owner's apps map the provider's code to their own message ([app-ui AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/AUTH.md)).
 - **Labels:** visible, with placeholders as examples and help text close to its field.
 
 ## Mobile
 
-[coreyhaines31/marketingskills, signup]: appropriate keyboard types, autofill, less typing (social auth, pre-fill), a single column, a sticky CTA button, testing on real devices. The sticky button must clear the on-screen keyboard. The source's "Larger touch targets (44px+ height)" is a heuristic: the AA floor is 24 by 24 CSS px ([web-accessibility/HIT-AREAS.md](../../frontend/web-accessibility/HIT-AREAS.md)).
+[coreyhaines31/marketingskills, signup]: appropriate keyboard types, autofill, less typing (social auth, pre-fill), a single column, a sticky CTA button, testing on real devices. The sticky button must clear the on-screen keyboard. The source's "Larger touch targets (44px+ height)" is a heuristic: the AA floor is 24 by 24 CSS px ([web-accessibility HIT-AREAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/HIT-AREAS.md)).
 
 ## After submit
 
 [coreyhaines31/marketingskills, signup]
 
 - **Success:** a clear confirmation and an immediate next step.
-- **If email verification is required,** the waiting screen explains what to do, has an easy resend, a "Check spam reminder", and an "Option to change email if wrong". Resend timing is [email-practices](../../backend/email-practices/SKILL.md).
-- **Verification:** "Consider delaying verification until necessary", "Let users explore while awaiting verification", and re-engage if verification stalls. With Supabase, sign-up starts a session at once when email confirmation is off ([supabase/AUTH-SIGN-IN.md](../../backend/supabase/AUTH-SIGN-IN.md)).
+- **If email verification is required,** the waiting screen explains what to do, has an easy resend, a "Check spam reminder", and an "Option to change email if wrong". Resend timing is [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
+- **Verification:** "Consider delaying verification until necessary", "Let users explore while awaiting verification", and re-engage if verification stalls. With Supabase, sign-up starts a session at once when email confirmation is off ([supabase AUTH-SIGN-IN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SIGN-IN.md)).
 
 ## Enrichment
 
-"Keep account creation separate from enrichment availability; a timeout or ambiguous company match must not become an implicit signup rejection." [coreyhaines31/marketingskills, signup]. Sales-assisted routing is [revops](../revops/SKILL.md).
+"Keep account creation separate from enrichment availability; a timeout or ambiguous company match must not become an implicit signup rejection." [coreyhaines31/marketingskills, signup]. Sales-assisted routing is [revops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md).
 
 ## Patterns
 
@@ -107,7 +107,7 @@ The source: "Show password toggle (eye icon) / Show requirements upfront, not af
 [coreyhaines31/marketingskills, signup]
 
 - **Metrics:** use the [shared form measurement definitions](FORMS.md#measurement) for form starts, completion, field drop-off, elapsed time, errors and the device split.
-- **Track:** each field's focus, blur and error, step progression, the social-to-email signup ratio, time between steps. No field values in events ([posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md#naming-events-and-properties)).
+- **Track:** each field's focus, blur and error, step progression, the social-to-email signup ratio, time between steps. No field values in events ([posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md#naming-events-and-properties)).
 - **Audit findings,** per issue: Issue, Impact (why it matters), Fix, Priority, with High, Medium and Low written as P1, P2 and P3 and P0 for anything that stops signup ([SKILL.md](SKILL.md#the-rules), rule 8).
 - **Recommended changes:** quick wins (same-day fixes), high-impact changes (week-level effort), test hypotheses ([EXPERIMENTS.md](EXPERIMENTS.md#signup)).
 - **Form redesign, if asked:** the field set with rationale, field order, copy for labels, placeholders, buttons and errors, layout.
@@ -119,4 +119,4 @@ The source: "Show password toggle (eye icon) / Show requirements upfront, not af
 - An email-and-password form that still underperforms is checked beyond its fields: the page's value proposition, trust lines, error handling and password UX [eval 3].
 - Required verification is delayed or the product is explorable while it is pending; if it stays, the waiting screen has resend, a spam reminder and a change-email option [eval 4].
 - A password rule set has no composition rules, a length that matches whether MFA exists (15 alone, 8 with MFA), accepts at least 64 characters, checks a blocklist, and allows paste and password managers.
-- An activation problem after signup goes to [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), not to this file [eval 6].
+- An activation problem after signup goes to [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), not to this file [eval 6].

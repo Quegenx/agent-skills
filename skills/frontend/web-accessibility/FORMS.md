@@ -1,6 +1,6 @@
 # Forms
 
-Labels, required fields, error messaging, autocomplete, input types, paste, redundant entry, accessible authentication and submit behavior. Source: [Jakub Krehel, better-accessibility, forms.md]. Label, error and hint wording is in [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+Labels, required fields, error messaging, autocomplete, input types, paste, redundant entry, accessible authentication and submit behavior. Source: [Jakub Krehel, better-accessibility, forms.md]. Label, error and hint wording is in [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
 
 ## Labels
 
@@ -46,7 +46,7 @@ Validate on submit, never by disabling submit until the form is valid. The compl
 - Accept free text and validate after. Never block typing or filter characters as the user types. Trim values before validating, because autocomplete and text expansion add trailing spaces.
 - `role="alert"` is for a form-level error not tied to a field ([SCREEN-READERS.md](SCREEN-READERS.md#choosing-how-to-announce-a-change)).
 
-app-ui does this instead: "**Errors under the field:** one error as text, several as a list, deduplicated, `role="alert"`; the description and the error share one `aria-describedby` id" ([app-ui/CONTROLS.md](../app-ui/CONTROLS.md)).
+app-ui does this instead: "**Errors under the field:** one error as text, several as a list, deduplicated, `role="alert"`; the description and the error share one `aria-describedby` id" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)).
 
 ## Autocomplete and input types
 
@@ -88,7 +88,7 @@ Phone fields (`type="tel"`, `autocomplete="tel"`, storing E.164, validating with
 
 - **3.3.7 Redundant Entry (A):** "Information previously entered by or provided to the user that is required to be entered again in the same process" is auto-populated or available to select; "The autocomplete feature of browsers is not considered sufficient" ([Understanding 3.3.7](https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html)).
 - **3.3.8 Accessible Authentication (Minimum) (AA):** no cognitive function test in any step of an authentication process unless that step offers an alternative, a mechanism that assists, or one of the two exceptions. Password managers and paste satisfy it, so blocking paste or autofill on a password or code field fails; one-time codes must be pasteable. Object-recognition and personal-content tests are excepted at AA but not at AAA (3.3.9); an audio CAPTCHA the user must transcribe "cannot be used to meet the Alternative exception" ([Understanding 3.3.8](https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html)).
-- **Email links, two views:** WCAG lists "Email link authentication" (technique G218) as sufficient for 3.3.8; NIST SP 800-63B-4 says "Email SHALL NOT be used for out-of-band authentication", exempting codes that confirm an address and recovery codes ([SP 800-63B-4](https://pages.nist.gov/800-63-4/sp800-63b.html)). NIST is the US federal assurance baseline; WCAG is about access. Sign-up flow design is in [marketing/cro/SIGNUP.md](../../marketing/cro/SIGNUP.md).
+- **Email links, two views:** WCAG lists "Email link authentication" (technique G218) as sufficient for 3.3.8; NIST SP 800-63B-4 says "Email SHALL NOT be used for out-of-band authentication", exempting codes that confirm an address and recovery codes ([SP 800-63B-4](https://pages.nist.gov/800-63-4/sp800-63b.html)). NIST is the US federal assurance baseline; WCAG is about access. Sign-up flow design is in [cro SIGNUP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SIGNUP.md).
 
 ## Submit behavior
 
@@ -99,7 +99,7 @@ Phone fields (`type="tel"`, `autocomplete="tel"`, storing E.164, validating with
 - Announce results. Success goes through a polite live region. On failure, focus the first invalid field, which is itself the announcement.
 - Warn on unsaved changes before navigation: "`beforeunload` or router guard" [Vercel, web-design-guidelines]. A re-render or hydration must never reset a field's typed value or move focus out of it.
 
-app-ui does this instead: the pending "button is disabled and `aria-busy`", and "A form in flight disables its `fieldset`" ([app-ui/STATES.md](../app-ui/STATES.md)).
+app-ui does this instead: the pending "button is disabled and `aria-busy`", and "A form in flight disables its `fieldset`" ([app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md)).
 
 ## Prove it
 

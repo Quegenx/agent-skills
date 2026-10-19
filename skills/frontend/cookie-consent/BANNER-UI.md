@@ -1,6 +1,6 @@
 # Banner UI
 
-The banner shows the actions the visitor's policy allows, in a shape that suits the region, without hiding the page more than the policy needs. Source: c15t's ConsentBanner page (https://c15t.com/docs/frameworks/react/components/consent-banner.md), motion page (https://c15t.com/docs/customization/motion.md), Content Security Policy page (https://c15t.com/docs/frameworks/react/content-security-policy.md), verify-consent.md and banner-experiments.md, all `[c15t]`. Focus rules in general are [../web-accessibility/FOCUS-AND-KEYBOARD.md](../web-accessibility/FOCUS-AND-KEYBOARD.md); motion in general is [../ui-animation/SKILL.md](../ui-animation/SKILL.md).
+The banner shows the actions the visitor's policy allows, in a shape that suits the region, without hiding the page more than the policy needs. Source: c15t's ConsentBanner page (https://c15t.com/docs/frameworks/react/components/consent-banner.md), motion page (https://c15t.com/docs/customization/motion.md), Content Security Policy page (https://c15t.com/docs/frameworks/react/content-security-policy.md), verify-consent.md and banner-experiments.md, all `[c15t]`. Focus rules in general are [web-accessibility FOCUS-AND-KEYBOARD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FOCUS-AND-KEYBOARD.md); motion in general is [ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md).
 
 **Contents:** [What each prompt shows](#what-each-prompt-shows) · [Equal prominence](#equal-prominence) · [Variants and positions](#variants-and-positions) · [Blocking and non-blocking](#blocking-and-non-blocking) · [Motion](#motion) · [Keyboard, width and contrast](#keyboard-width-and-contrast) · [Content Security Policy](#content-security-policy) · [Banner experiments](#banner-experiments) · [Where the landing page differs](#where-the-landing-page-differs) · [Prove it](#prove-it)
 
@@ -38,7 +38,7 @@ The banner shows the actions the visitor's policy allows, in a shape that suits 
 
 - "`blocking` controls the backdrop, scroll lock, and focus trap together" [c15t].
 - "Blocking banners carry `role="dialog"` and `aria-modal="true"`. Non-blocking banners leave page controls usable by keyboard and pointer." "Notices always stay non-blocking." [c15t]
-- A fixed non-blocking banner can cover the focused element; the scroll-padding rule is [../web-accessibility/FOCUS-AND-KEYBOARD.md](../web-accessibility/FOCUS-AND-KEYBOARD.md#focus-not-obscured).
+- A fixed non-blocking banner can cover the focused element; the scroll-padding rule is [web-accessibility FOCUS-AND-KEYBOARD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FOCUS-AND-KEYBOARD.md#focus-not-obscured).
 
 ## Motion
 
@@ -70,7 +70,7 @@ The banner shows the actions the visitor's policy allows, in a shape that suits 
 - With a nonce on the provider the style elements "render next to each component with the nonce. React 19 would otherwise move them into `<head>` and drop the nonce." Or set `styles: false` and import `c15t/react/styles.css` under `style-src 'self'`.
 - "Scripts that a vendor script adds itself, such as a tag manager's tags, need their own hosts too, or `'strict-dynamic'` with a nonce."
 - Verify "with the policy enforced, not in report-only mode"; read each script's `nonce` property in the console, because "Browsers hide the attribute from `getAttribute`." Test against a production build: Vite's dev server and the DevTools panel add `<style>` elements without a nonce.
-- Security headers in general are [../../backend/secure-coding/HEADERS.md](../../backend/secure-coding/HEADERS.md).
+- Security headers in general are [secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/HEADERS.md).
 
 ## Banner experiments
 
@@ -80,15 +80,15 @@ The banner shows the actions the visitor's policy allows, in a shape that suits 
 - "The opt-in rate of an arm is visitors with an `accept_all` choice under that arm, divided by visitors whose session reports carry the arm. Count visitors, not requests: an undecided visitor sends a report on every page until they choose."
 - "Time to decision is the median `timeToDecisionMs` per arm over the choices. Use the median, not the mean: a visitor who leaves the tab open skews the mean without saying anything about the arm."
 - "An impression fires before any consent exists. If your analytics tool loads only after consent, it never sees a decliner's impression, and its opt-in rate trends towards 100%."
-- "Run a sample-size calculator against your own base rate before you start, decide the stop date up front, and do not stop early on a good-looking day." (c15t's page also gives per-arm visitor counts for a 30% base rate; the standard two-proportion formula gives smaller ones, so use the calculator, not those numbers.) The sample-size method is [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md).
+- "Run a sample-size calculator against your own base rate before you start, decide the stop date up front, and do not stop early on a good-looking day." (c15t's page also gives per-arm visitor counts for a 30% base rate; the standard two-proportion formula gives smaller ones, so use the calculator, not those numbers.) The sample-size method is [ab-testing SAMPLE-SIZE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SAMPLE-SIZE.md).
 - "For a clean analysis, change `id` rather than editing the arms of a running experiment." Under an opt-out policy with a notice, "compare arms on opt-outs instead".
 - Catch a rejected arm before deploying with `validateExperiment(bannerExperiment, euPolicy, { presentation })` in a test.
 
 ## Where the landing page differs
 
-The owner's banner ([../landing-page-ui/SECTIONS.md](../landing-page-ui/SECTIONS.md#cookie-banner)) is that skill's design; differences, not fixes:
+The owner's banner ([landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md#cookie-banner)) is that skill's design; differences, not fixes:
 
-- Motion: landing-page-ui's banner appears "after 1s, rises 20px over .5s on the site ease (opacity only over .2s with reduced motion); leaves with a fade and `scale(.94)` over .2s" ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md)); c15t's banner never slides in and a late one fades over 150ms. Both honour reduced motion.
+- Motion: landing-page-ui's banner appears "after 1s, rises 20px over .5s on the site ease (opacity only over .2s with reduced motion); leaves with a fade and `scale(.94)` over .2s" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md)); c15t's banner never slides in and a late one fades over 150ms. Both honour reduced motion.
 - Both use a non-blocking banner; landing-page-ui's is "a `section` with an `aria-label` and `aria-live="polite"`".
 
 ## Prove it

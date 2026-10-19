@@ -1,6 +1,6 @@
 # npm packages in a monorepo
 
-How to add a workspace package, give it an exports map that resolves the same everywhere, version it from release notes, and publish it from CI with npm trusted publishing instead of a token. The method comes from c15t's own maintainer skills (`creating-a-package`, `releasing`; Apache-2.0), checked against the npm and Node docs. Signing and verifying other release artifacts is in [RELEASES.md](RELEASES.md); the Dart side of the same job is [../../mobile/dart/PACKAGES.md](../../mobile/dart/PACKAGES.md).
+How to add a workspace package, give it an exports map that resolves the same everywhere, version it from release notes, and publish it from CI with npm trusted publishing instead of a token. The method comes from c15t's own maintainer skills (`creating-a-package`, `releasing`; Apache-2.0), checked against the npm and Node docs. Signing and verifying other release artifacts is in [RELEASES.md](RELEASES.md); the Dart side of the same job is [dart PACKAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/PACKAGES.md).
 
 ## Create a package
 

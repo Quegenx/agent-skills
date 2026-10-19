@@ -64,7 +64,7 @@ Other bars, practitioner: Lead Gen Form fill rate > 8% (below = form too long, o
 Ads promoted from a person's profile rather than the company page; the source calls them the platform's biggest efficiency arbitrage:
 
 - TLAs typically deliver ~3 to 6× the CTR of company-page ads at a fraction of the CPC (practitioner).
-- Non-employee creator TLAs often beat employee TLAs; the source puts them at 30 to 50% of TLA budget where available. A paid creator's post needs a clear paid-partnership disclosure ([creator-marketing](../creator-marketing/SKILL.md)).
+- Non-employee creator TLAs often beat employee TLAs; the source puts them at 30 to 50% of TLA budget where available. A paid creator's post needs a clear paid-partnership disclosure ([creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md)).
 - **Organic first:** posts that reach ~2 to 3% organic CTR are the TLA candidates.
 - **The 72-hour edit:** organic reach concentrates in the first ~3 days; let the post run organically, then add the CTA or product mention and promote it.
 - Single-image ads face the most auction competition; document, conversation and TLA formats often buy cheaper reach because fewer advertisers use them.
@@ -87,7 +87,7 @@ Budget optimization across a group tends to favor cheap audiences and video: don
 - **Conversation ads:** subject 2 to 4 words; 3 to 5 short lines per message; specific numbers over vague claims; a soft CTA ("see how it works") over "book a demo"; route the main CTA to a Lead Gen Form, not a scheduling link. Benchmarks: 35 to 50%+ open, 2 to 5% CTR.
 - **CTV:** Brand Awareness objective only, auto-bid only, ~$50 a day minimum, limited geos; completion metrics mean nothing (forced view); the source says it pays only above roughly $15K a month total spend.
 
-Character limits and image sizes: [PLATFORM-SPECS.md](../ad-creative/PLATFORM-SPECS.md#linkedin).
+Character limits and image sizes: [ad-creative PLATFORM-SPECS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/PLATFORM-SPECS.md#linkedin).
 
 ## Retargeting starts when the audience exists
 

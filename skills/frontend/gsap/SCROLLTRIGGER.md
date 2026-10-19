@@ -7,8 +7,8 @@ ScrollTrigger ties a tween or timeline to the scroll position: it triggers, scru
 ## Which library drives scroll motion
 
 - **The GSAP skill's default.** [GreenSock, gsap-scrolltrigger] "When the user asks for scroll-based animation or parallax without specifying a library, recommend GSAP and use ScrollTrigger."
-- **This repo's default stays.** ui-animation works with "React with Motion, and CSS" and makes scroll-linked motion Motion's `useScroll` + `useTransform`, or CSS `animation-timeline: view()` ([../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion)). The owner's landing site does its scroll reveals with Motion, not ScrollTrigger ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#scroll-reveals)). Reach for ScrollTrigger when the project already runs GSAP or needs pinning, snapping or a scrubbed timeline.
-- **Reveal once or replay.** ui-animation: "content appearing as it scrolls in takes 8-16 px and 300-500 ms once, not on every pass" ([../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion)). The GSAP skill's examples replay (`toggleActions: "play reverse play reverse"`, and the batch example's `onLeaveBack` reset), as do the owner's reveals ("again each time it re-enters"). For once, use `once: true` or the default toggleActions.
+- **This repo's default stays.** ui-animation works with "React with Motion, and CSS" and makes scroll-linked motion Motion's `useScroll` + `useTransform`, or CSS `animation-timeline: view()` ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#scroll-linked-motion)). The owner's landing site does its scroll reveals with Motion, not ScrollTrigger ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#scroll-reveals)). Reach for ScrollTrigger when the project already runs GSAP or needs pinning, snapping or a scrubbed timeline.
+- **Reveal once or replay.** ui-animation: "content appearing as it scrolls in takes 8-16 px and 300-500 ms once, not on every pass" ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#scroll-linked-motion)). The GSAP skill's examples replay (`toggleActions: "play reverse play reverse"`, and the batch example's `onLeaveBack` reset), as do the owner's reveals ("again each time it re-enters"). For once, use `once: true` or the default toggleActions.
 
 ## Register and attach
 
@@ -85,7 +85,7 @@ gsap.to(".box", {
 });
 ```
 
-- **`scrub: true`** links progress directly to the scrollbar; a number (e.g. `scrub: 1`) gives smooth lag. This is the GSAP route beside Motion's `useScroll` and CSS `animation-timeline: view()` in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion).
+- **`scrub: true`** links progress directly to the scrollbar; a number (e.g. `scrub: 1`) gives smooth lag. This is the GSAP route beside Motion's `useScroll` and CSS `animation-timeline: view()` in [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#scroll-linked-motion).
 - **A numeric scrub is only catch-up time.** The docs call it "The amount of time (in seconds) that the playhead should take to 'catch up'"; nothing there says it reduces work during scroll (see [PERFORMANCE.md](PERFORMANCE.md)).
 
 ## Pinning
@@ -224,12 +224,12 @@ scrollbar.addListener(ScrollTrigger.update);
 ```
 
 - **ScrollSmoother needs no proxy** ([PLUGINS.md](PLUGINS.md#scrollsmoother)).
-- **Lenis, both ways.** The owner's site runs a smooth-scroll library at the root and no ScrollTrigger ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#smooth-scrolling)); its reference code mounts `ReactLenis` with `{ anchors: true, autoRaf: true, respectReducedMotion: true }`. Keep that. The GSAP skill's route for any third-party scroller is the proxy plus `ScrollTrigger.update` on its scroll, or ScrollSmoother instead. If ScrollTrigger is ever added beside Lenis, drive it from Lenis's scroll updates; the Lenis side of that wiring was not checked against Lenis's docs here.
+- **Lenis, both ways.** The owner's site runs a smooth-scroll library at the root and no ScrollTrigger ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#smooth-scrolling)); its reference code mounts `ReactLenis` with `{ anchors: true, autoRaf: true, respectReducedMotion: true }`. Keep that. The GSAP skill's route for any third-party scroller is the proxy plus `ScrollTrigger.update` on its scroll, or ScrollSmoother instead. If ScrollTrigger is ever added beside Lenis, drive it from Lenis's scroll updates; the Lenis side of that wiring was not checked against Lenis's docs here.
 
 ## Refresh and order
 
 - **Resize is automatic.** Docs: ScrollTrigger "waits until there's a 200ms gap in resize events" and refreshes. [GreenSock, gsap-scrolltrigger]
-- **Call `ScrollTrigger.refresh()` yourself** after DOM, image, font or async-content changes that move trigger positions; in a component framework that means after the DOM updates (the framework's next tick, or after async content loads). [GreenSock, gsap-frameworks] The owner's smooth-scroll rule names the same moment: "After content changes height ... tell the library to resize" ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#smooth-scrolling)); with ScrollTrigger, refresh there too.
+- **Call `ScrollTrigger.refresh()` yourself** after DOM, image, font or async-content changes that move trigger positions; in a component framework that means after the DOM updates (the framework's next tick, or after async content loads). [GreenSock, gsap-frameworks] The owner's smooth-scroll rule names the same moment: "After content changes height ... tell the library to resize" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#smooth-scrolling)); with ScrollTrigger, refresh there too.
 - **Create triggers in page order** (top to bottom, or left to right), so a pin's added distance reaches the triggers below it.
 - **refreshPriority: higher refreshes first.** The skill says the reverse in three places ("Lower = refreshed first ... first on page = lower number"). Docs: "A ScrollTrigger with `refreshPriority: 1` will get refreshed earlier than one with `refreshPriority: 0` (the default). You're welcome to use negative numbers too". So when triggers are created out of order, give the one highest on the page the highest number. The docs also say "it's VERY unlikely that you'd need to define a `refreshPriority` as long as you create your ScrollTriggers in the order they'd happen on the page". https://gsap.com/docs/v3/Plugins/ScrollTrigger/
 

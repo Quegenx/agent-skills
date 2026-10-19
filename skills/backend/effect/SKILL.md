@@ -7,6 +7,8 @@ description: "Writes Effect v4 TypeScript the way its own guide prescribes: setu
 
 Effect ships its own agent guide (`node_modules/effect/AGENTS.md`) and its full source in the installed package; that guide sets the style this skill follows. Everything here targets v4, where every package shares one 4.x version and the HTTP, SQL, RPC, AI and CLI modules live in `effect` itself (`effect/http`, `effect/sql`, ...). Code written from memory of v3 names (`Either`, `catchAll`, `Context.Tag`, `effect/unstable/*`) is the most common source of APIs that don't exist; each file maps the v3 names it replaces.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Installing Effect and pointing agents at the shipped guide and source | [SETUP.md](SETUP.md) |

@@ -5,7 +5,9 @@ description: "Runs honest review requests, public replies, moderation, reputatio
 
 # Review management
 
-From coreyhaines31/marketingskills `referrals` v2.2.1 (MIT), including review-programs, review-program-operations and review-platform-rules, credited there to @Adi29102000-s. The complete existing playbook preserves its FTC, Google Maps and Trustpilot corrections and its unverified G2/Capterra qualifications. Customer referral and affiliate rewards stay in [referral-programs](../referral-programs/SKILL.md); store ratings and prompts in [ASO](../../mobile/aso/RATINGS-AND-REVIEWS.md); research from reviews in [customer-research](../customer-research/SKILL.md).
+From coreyhaines31/marketingskills `referrals` v2.2.1 (MIT), including review-programs, review-program-operations and review-platform-rules, credited there to @Adi29102000-s. The complete existing playbook preserves its FTC, Google Maps and Trustpilot corrections and its unverified G2/Capterra qualifications. Customer referral and affiliate rewards stay in [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md); store ratings and prompts in [ASO](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/RATINGS-AND-REVIEWS.md); research from reviews in [customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

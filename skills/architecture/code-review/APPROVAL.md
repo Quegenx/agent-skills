@@ -27,7 +27,7 @@ Human approval is scaled by risk. Pulling a senior engineer out of deep work to 
 
 People moved from reading every diff to the decisions machines are bad at:
 
-- **Should we build this at all?** Direction, taste and scope. (The "should it exist" checks for one diff are in [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md).)
+- **Should we build this at all?** Direction, taste and scope. (The "should it exist" checks for one diff are in [anti-slop-code](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/SKILL.md).)
 - **Risky code** such as billing, the auto-updater and CI workflows.
 - **Architecture** that sets a pattern others will copy.
 - **Reading the evidence.** Test output, the command that ran and what it returned, a screenshot, the reviewer's findings. If you can't say what the checks would miss, ask for a real review rather than a quick approval.

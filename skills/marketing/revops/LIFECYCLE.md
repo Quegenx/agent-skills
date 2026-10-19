@@ -34,7 +34,7 @@ Outbound contacts follow their own stages ([Outbound stages](#outbound-stages)).
 | Customer | Closed-won deal; contract signed and payment terms set | Churns, expands, or renews | Customer Success / Account Management | Trigger onboarding sequence; assign CS manager; schedule kickoff call; **remove from all sales sequences** |
 | Evangelist | NPS score 9-10, or active referral behavior; agreed to case study, testimonial, or referral program | Ongoing program participation | Customer Success + Marketing | Add to advocacy program; request case study or testimonial; invite to referral program; feature in marketing campaigns (with permission) |
 
-Referral program mechanics are in [../referral-programs/SKILL.md](../referral-programs/SKILL.md); case studies in [../sales-enablement/SALES-ASSETS.md](../sales-enablement/SALES-ASSETS.md#case-study-briefs-sales-format).
+Referral program mechanics are in [referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md); case studies in [sales-enablement SALES-ASSETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SALES-ASSETS.md#case-study-briefs-sales-format).
 
 ## The MQL
 
@@ -124,7 +124,7 @@ Recycling workflow:
 5. If the lead re-engages and crosses the MQL threshold, re-route to sales with a "Recycled MQL" flag.
 6. Track recycled MQL conversion rate separately.
 
-Recycling nurture: bi-weekly or monthly (lower frequency than initial nurture); industry insights, case studies, product updates; 6 months, then archive if no engagement; re-MQL on a high-intent action (demo request, pricing page revisit). Sequence design and copy follow [email-marketing](../email-marketing/SEQUENCES.md); marketing consent and delivery follow [email-practices](../../backend/email-practices/SKILL.md).
+Recycling nurture: bi-weekly or monthly (lower frequency than initial nurture); industry insights, case studies, product updates; 6 months, then archive if no engagement; re-MQL on a high-intent action (demo request, pricing page revisit). Sequence design and copy follow [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SEQUENCES.md); marketing consent and delivery follow [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 ## Outbound stages
 
@@ -142,7 +142,7 @@ Recycling nurture: bi-weekly or monthly (lower frequency than initial nurture); 
 | **Not now** | Asked to be contacted later | Reminder date reached → back to Targeted | SDR |
 | **Suppressed** | Opted out, bounced, hostile, customer, or competitor | Never (unless they opt back in) | System |
 
-The email side of suppression is [../../backend/email-practices/LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list), and the phone side is the do-not-call list in [../sales-enablement/COLD-CALLS.md](../sales-enablement/COLD-CALLS.md).
+The email side of suppression is [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list), and the phone side is the do-not-call list in [sales-enablement COLD-CALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/COLD-CALLS.md).
 
 Fields to capture on every outbound contact, so meetings can be attributed and sequences compared:
 
@@ -151,10 +151,10 @@ Fields to capture on every outbound contact, so meetings can be attributed and s
 - Tier
 - Sequence and step that produced the reply
 - Channel of the reply (email, LinkedIn, phone, other)
-- Reply type (reply handling is in [../cold-outreach/SKILL.md](../cold-outreach/SKILL.md))
+- Reply type (reply handling is in [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md))
 - Last verification date and result
 
-These are the record that prospect research feeds ([../prospecting/SKILL.md](../prospecting/SKILL.md), [../../web-automation/web-research/EVENTS.md](../../web-automation/web-research/EVENTS.md)).
+These are the record that prospect research feeds ([prospecting SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md), [web-research EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVENTS.md)).
 
 **Handoff SLA:** positive replies get a human response within minutes during business hours, with a meeting proposal in that first response. Meetings booked by an SDR transfer to the AE with the account brief and the full thread attached.
 

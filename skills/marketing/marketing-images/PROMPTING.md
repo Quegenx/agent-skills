@@ -1,6 +1,6 @@
 # Prompting image models
 
-How to pick an image model and write a prompt that gets a usable marketing image on the first few tries. From [coreyhaines31/marketingskills, image] `SKILL.md` and `references/ai-image-prompting.md` (MIT). The model comparison and tips are the source's opinion, not checked against each vendor; only OpenAI's dates were checked (developers.openai.com, 2026-10-18). Generated plates inside a video (one locked prompt skeleton per set, no text, logos or UI) are asset-prep's "Generated base footage" in [../../videos/asset-prep/SKILL.md](../../videos/asset-prep/SKILL.md).
+How to pick an image model and write a prompt that gets a usable marketing image on the first few tries. From [coreyhaines31/marketingskills, image] `SKILL.md` and `references/ai-image-prompting.md` (MIT). The model comparison and tips are the source's opinion, not checked against each vendor; only OpenAI's dates were checked (developers.openai.com, 2026-10-18). Generated plates inside a video (one locked prompt skeleton per set, no text, logos or UI) are asset-prep's "Generated base footage" in [asset-prep SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md).
 
 ## OpenAI's image models
 
@@ -91,7 +91,7 @@ modern SaaS product presentation style,
 - **Photorealistic:** "commercial photography", "shot on Canon EOS R5", "editorial style", "natural lighting", "shallow depth of field".
 - **Clean, corporate:** "clean modern aesthetic", "minimal design", "professional corporate style", "bright and airy", "white background".
 - **Illustrative:** "flat vector illustration", "isometric 3D render", "hand-drawn sketch style", "watercolor illustration", "line art".
-- **The source's abstract and tech lists** ("flowing gradient", "particle effects", "holographic iridescent", "neon accent lighting", "glassmorphism", and its announcement template's "abstract flowing gradient in deep purple and electric blue") are the generic looks [anti-slop-ui](../../anti-ai-slop/anti-slop-ui/SKILL.md) exists to avoid. Use one only when the brand's own direction calls for it.
+- **The source's abstract and tech lists** ("flowing gradient", "particle effects", "holographic iridescent", "neon accent lighting", "glassmorphism", and its announcement template's "abstract flowing gradient in deep purple and electric blue") are the generic looks [anti-slop-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md) exists to avoid. Use one only when the brand's own direction calls for it.
 
 | Lighting | Effect | Best for |
 |---|---|---|

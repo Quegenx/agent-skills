@@ -5,7 +5,9 @@ description: "Builds and runs observability on the Grafana stack: dashboards, al
 
 # Grafana
 
-Grafana is the front end of the LGTM stack: metrics in Prometheus or Mimir, logs in Loki, traces in Tempo, profiles in Pyroscope, all collected by Alloy (Grafana Labs' OpenTelemetry Collector distribution and its recommended path for every signal) and read through dashboards, alerts and Explore. Most outcomes are decided by labels: a series or stream is one unique label set, so the labels you attach decide memory, query speed and the Grafana Cloud bill, and the labels a rule produces decide which notification policy routes it and how alerts group. The vendor skills and the official docs disagree in places (keys, defaults, endpoints); each file states both values, and the current docs decide. Load testing is the sibling [k6 skill](../k6/SKILL.md); vendor-neutral OpenTelemetry instrumentation and collectors are the [observability skill](../observability/SKILL.md).
+Grafana is the front end of the LGTM stack: metrics in Prometheus or Mimir, logs in Loki, traces in Tempo, profiles in Pyroscope, all collected by Alloy (Grafana Labs' OpenTelemetry Collector distribution and its recommended path for every signal) and read through dashboards, alerts and Explore. Most outcomes are decided by labels: a series or stream is one unique label set, so the labels you attach decide memory, query speed and the Grafana Cloud bill, and the labels a rule produces decide which notification policy routes it and how alerts group. The vendor skills and the official docs disagree in places (keys, defaults, endpoints); each file states both values, and the current docs decide. Load testing is the sibling [k6 skill](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/k6/SKILL.md); vendor-neutral OpenTelemetry instrumentation and collectors are the [observability skill](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -44,5 +46,7 @@ Grafana is the front end of the LGTM stack: metrics in Prometheus or Mimir, logs
 8. **A synthetic check must fail when the journey breaks.** A bare failed `check()` leaves `probe_success` at 1; use `expect()` or `check(...) || fail(...)`, assert every step, and prove the check fails by breaking one assertion.
 
 ## Prove it
+
+Apply each check to its selected branch: dashboards/data sources, Alloy, remote write, tracing, alerting, label changes, synthetic monitoring or MCP access. A task for one Grafana product does not require configuring every product below.
 
 Every data source health check returns `"status": "OK"` and every dashboard's `datasource.uid` exists; `alloy validate` passes and no Alloy component is unhealthy; `prometheus_remote_storage_samples_total` rises with zero retries; TraceQL `{ resource.service.name = "<service>" }` returns spans and the service appears in Service Inventory with its environment; a forced test alert reaches the intended receiver; `prometheus_tsdb_head_series` is flat or falling after a label change and `rate()` on the changed metric returns sane magnitudes; a deliberately broken synthetic assertion fails the execution; `/mcp` lists the Grafana tools with writes still disabled unless asked for; and every file's own Prove it checks pass for the parts you touched.

@@ -1,6 +1,6 @@
 # Forms and input
 
-Text fields, formatters, autofill and password managers, the clipboard, edit forms with Save and Discard, tappable links inside translated sentences, checkbox lists and repeated taps. The keyboard itself (action key, focus, dismissing it, watching it, forms under it and in bottom sheets, shortcuts) is in [KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md). Sources are community material, not docs.flutter.dev: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips (apparencekit.dev), checked against api.flutter.dev and dart.dev where a line is wrong. No article states a Flutter, Dart or package version. Several FlutterPro blocks use dot shorthands, which need Dart 3.10 ([LANGUAGE.md](../dart/LANGUAGE.md#dot-shorthands)); write the full type names on older SDKs. Official layout rules are in [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md); dialogs, sheets and their results in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
+Text fields, formatters, autofill and password managers, the clipboard, edit forms with Save and Discard, tappable links inside translated sentences, checkbox lists and repeated taps. The keyboard itself (action key, focus, dismissing it, watching it, forms under it and in bottom sheets, shortcuts) is in [KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md). Sources are community material, not docs.flutter.dev: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips (apparencekit.dev), checked against api.flutter.dev and dart.dev where a line is wrong. No article states a Flutter, Dart or package version. Several FlutterPro blocks use dot shorthands, which need Dart 3.10 ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md#dot-shorthands)); write the full type names on older SDKs. Official layout rules are in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md); dialogs, sheets and their results in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
 
 **Contents:** [Formatters see paste and autofill](#formatters-see-paste-and-autofill) · [Amount limits](#amount-limits) · [Autofill and password managers](#autofill-and-password-managers) · [Clipboard](#clipboard) · [Edit forms: Save](#edit-forms-save) · [Edit forms: Discard changes](#edit-forms-discard-changes) · [Links inside a translated sentence](#links-inside-a-translated-sentence) · [Fields that grow with their content](#fields-that-grow-with-their-content) · [Checkbox lists](#checkbox-lists) · [Repeated taps](#repeated-taps) · [Prove it](#prove-it)
 
@@ -196,7 +196,7 @@ if (success) {
 }
 ```
 
-- **iOS: tie the credential to your domain.** By default it is saved under the app's name. So the same login also fills on your site in Safari, add the Associated Domains capability in Xcode with `webcredentials:yourdomain.com` and serve `yourdomain.com/.well-known/apple-app-site-association` with the `application/json` content type. The `webcredentials` key has an `apps` array, a different shape from the `applinks` entry in [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#ios-universal-links), which covers only `applinks`.
+- **iOS: tie the credential to your domain.** By default it is saved under the app's name. So the same login also fills on your site in Safari, add the Associated Domains capability in Xcode with `webcredentials:yourdomain.com` and serve `yourdomain.com/.well-known/apple-app-site-association` with the `application/json` content type. The `webcredentials` key has an `apps` array, a different shape from the `applinks` entry in [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#ios-universal-links), which covers only `applinks`.
 
 ```json
 {
@@ -234,7 +234,7 @@ Future<void> copyToClipboard(String text) async {
 }
 ```
 
-The `print` line trips `avoid_print`, which `flutter_lints` enables ([ANALYSIS-AND-LINTS.md](../dart/ANALYSIS-AND-LINTS.md)); replace it with the article's own suggestion, a "Copied!" message.
+The `print` line trips `avoid_print`, which `flutter_lints` enables ([dart ANALYSIS-AND-LINTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ANALYSIS-AND-LINTS.md)); replace it with the article's own suggestion, a "Copied!" message.
 - **Check the text is not empty before copying, and confirm with feedback ("Copied!").**
 - **Images:** `Clipboard` "doesn't handle images directly"; use a plugin, "A popular choice for this is `pasteboard`."
 
@@ -356,8 +356,8 @@ class _ClipboardSuggestionState extends State<ClipboardSuggestion> {
 [FlutterPro](https://flutterpro.design/details/disable-unchanged-save)
 
 - **On edit forms (a profile page), disable "Save" until something changes.** The user sees there is nothing to save, and when the button turns on after an edit they know the change counts. It also saves network requests that save nothing.
-- **Don't hide it and don't grey it out with opacity.** A page without the button "looks not editable"; "a half-transparent colored button still looks tappable". Use solid grey: background `#F1F5F9` with text `#64748B` ("shadcn's muted colors"), "but style it however fits your app". This differs from the owner's web design, where a disabled submit is "opacity .6 with `not-allowed`" ([AUTH.md](../../frontend/app-ui/AUTH.md)); that file stays as it is, and the solid-grey rule is FlutterPro's for Flutter screens.
-- **Compare each field with its initial value (trimmed in the article's code),** so typing a letter and deleting it disables the button again. Rebuild from controller listeners. "Here's the simplest way, adapt it to your state management" (the official architecture keeps this in a view model, see [ARCHITECTURE.md](../flutter/ARCHITECTURE.md#view-models)):
+- **Don't hide it and don't grey it out with opacity.** A page without the button "looks not editable"; "a half-transparent colored button still looks tappable". Use solid grey: background `#F1F5F9` with text `#64748B` ("shadcn's muted colors"), "but style it however fits your app". This differs from the owner's web design, where a disabled submit is "opacity .6 with `not-allowed`" ([app-ui AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/AUTH.md)); that file stays as it is, and the solid-grey rule is FlutterPro's for Flutter screens.
+- **Compare each field with its initial value (trimmed in the article's code),** so typing a letter and deleting it disables the button again. Rebuild from controller listeners. "Here's the simplest way, adapt it to your state management" (the official architecture keeps this in a view model, see [flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md#view-models)):
 
 ```dart
 late String _initialName = widget.profile.name;
@@ -410,11 +410,11 @@ Future<void> _save() async {
 
 [FlutterPro](https://flutterpro.design/details/discard-changes-prompt)
 
-- **Ask only when something changed:** `canPop: !_hasChanges`, the same flag as the Save button. "If nothing changed, just go back, a prompt there is annoying." This differs from the `PopScope` example in [VERSIONS.md](../flutter/VERSIONS.md), which uses `canPop: false` and so prompts on every back.
+- **Ask only when something changed:** `canPop: !_hasChanges`, the same flag as the Save button. "If nothing changed, just go back, a prompt there is annoying." This differs from the `PopScope` example in [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md), which uses `canPop: false` and so prompts on every back.
 - **Name the buttons after what they do:** "Discard changes" in red and "Keep editing". "Don't use Yes / No / Cancel, the user can't tell what cancels what." Both ways, untouched in their files:
-  - [VERSIONS.md](../flutter/VERSIONS.md) labels its dialog buttons `'Cancel'` and `'Discard'`; FlutterPro says "Keep editing" and "Discard changes".
-  - [MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md) says confirm buttons "are verb plus object ("Delete report", "Cancel")"; FlutterPro rejects "Cancel" here. MICROCOPY's "Buttons start with a verb and name the action ... Never "OK", "Yes"" agrees with FlutterPro.
-- **Return on `didPop`, await the dialog, check `context.mounted`, then pop.** ([VERSIONS.md](../flutter/VERSIONS.md) instead captures `navigator` before the await and passes `result` on.)
+  - [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md) labels its dialog buttons `'Cancel'` and `'Discard'`; FlutterPro says "Keep editing" and "Discard changes".
+  - [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) says confirm buttons "are verb plus object ("Delete report", "Cancel")"; FlutterPro rejects "Cancel" here. MICROCOPY's "Buttons start with a verb and name the action ... Never "OK", "Yes"" agrees with FlutterPro.
+- **Return on `didPop`, await the dialog, check `context.mounted`, then pop.** ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md) instead captures `navigator` before the await and passes `result` on.)
 
 ```dart
 PopScope(
@@ -469,13 +469,13 @@ class DiscardChangesDialog {
 - **Compose screens (a post, an email) need the same guard with different buttons.** The work can be kept, so offer "Save draft" next to "Discard", as LinkedIn does. If the app can save drafts by itself, do that and skip the prompt, as Gmail does. The check is simpler there: just that the field isn't empty.
 - **A custom back button must call `Navigator.maybePop`;** a plain `pop` skips `PopScope`.
 - **On iOS the swipe-back gesture turns off while `canPop` is false;** the user goes through the back button, "that's the price of the guard".
-- **go_router:** the article uses `Navigator` only. The official docs say "You cannot block navigation from page-backed screens with `PopScope`" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#navigator-or-router)); don't assume the guard covers every navigation in a Router app.
+- **go_router:** the article uses `Navigator` only. The official docs say "You cannot block navigation from page-backed screens with `PopScope`" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#navigator-or-router)); don't assume the guard covers every navigation in a Router app.
 
 ## Links inside a translated sentence
 
 [FlutterPro](https://flutterpro.design/details/linked-text)
 
-- **Each language puts inline links in a different spot.** English ends with them ("I agree to the **Terms of Use** and **Privacy Policy**"); Turkish starts with them ("**Kullanım Koşullarını** ve **Gizlilik Politikasını** kabul ediyorum"). Separate widgets glued together in code "can't move like that". Keep one string, mark the links with tags, and put it in the localization files as is: translators move the tags, and the tag name says which link was tapped in every language. This applies MICROCOPY's "Never assemble a sentence around a variable" rule to links; [LOCALIZATION.md](../flutter/LOCALIZATION.md) has no rich-text guidance.
+- **Each language puts inline links in a different spot.** English ends with them ("I agree to the **Terms of Use** and **Privacy Policy**"); Turkish starts with them ("**Kullanım Koşullarını** ve **Gizlilik Politikasını** kabul ediyorum"). Separate widgets glued together in code "can't move like that". Keep one string, mark the links with tags, and put it in the localization files as is: translators move the tags, and the tag name says which link was tapped in every language. This applies MICROCOPY's "Never assemble a sentence around a variable" rule to links; [flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md) has no rich-text guidance.
 
 ```dart
 LinkedText(
@@ -644,21 +644,21 @@ class _LinkedTextState extends State<LinkedText> {
 }
 ```
 
-- **Not shown by the article:** the tagged string inside an ARB file through gen-l10n. Check it against [LOCALIZATION.md](../flutter/LOCALIZATION.md#escaping) (`use-escaping`) before relying on "as is".
+- **Not shown by the article:** the tagged string inside an ARB file through gen-l10n. Check it against [flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md#escaping) (`use-escaping`) before relying on "as is".
 
 ## Fields that grow with their content
 
-Owner's rule: CSS `field-sizing: content` maps to `IntrinsicWidth` / `IntrinsicHeight`; use them carefully, and prefer `minLines` / `maxLines` in `TextField` ([RESPONSIVE-UNITS.md](../flutter/RESPONSIVE-UNITS.md#the-parallel-list)).
+Owner's rule: CSS `field-sizing: content` maps to `IntrinsicWidth` / `IntrinsicHeight`; use them carefully, and prefer `minLines` / `maxLines` in `TextField` ([flutter RESPONSIVE-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/RESPONSIVE-UNITS.md#the-parallel-list)).
 
 - **Height:** `TextField(maxLines: null)`, or `minLines` with a higher `maxLines`, grows the field line by line with no intrinsics. The return key then inserts a line break ([KEYBOARD-AND-FOCUS.md](KEYBOARD-AND-FOCUS.md)).
-- **Width:** only growing sideways needs `IntrinsicWidth`, which is "relatively expensive, because it adds a speculative layout pass" and can be O(N²) in the depth of the tree ([IntrinsicWidth](https://api.flutter.dev/flutter/widgets/IntrinsicWidth-class.html)); keep it off list items ([PERFORMANCE.md](../flutter/PERFORMANCE.md)).
+- **Width:** only growing sideways needs `IntrinsicWidth`, which is "relatively expensive, because it adds a speculative layout pass" and can be O(N²) in the depth of the tree ([IntrinsicWidth](https://api.flutter.dev/flutter/widgets/IntrinsicWidth-class.html)); keep it off list items ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)).
 
 ## Checkbox lists
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/how-to-create-checkbox-list-using-checkboxlisttile-flutter/)
 
 - **`CheckboxListTile` combines label and checkbox:** `title` (the item's text), `value` (`true` checked, `false` unchecked), `onChanged` (flip the item's state, then update the screen). Build the list with `ListView.separated`, one tile per item. No code in the article.
-- **"Using `shrinkWrap: true` on your `ListView` is a good practice if this list is nested inside another scrollable view."** The official fix for a list inside an unconstrained `Column` is `Expanded` or a `SizedBox` with a height ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#fix-layout-errors)).
+- **"Using `shrinkWrap: true` on your `ListView` is a good practice if this list is nested inside another scrollable view."** The official fix for a list inside an unconstrained `Column` is `Expanded` or a `SizedBox` with a height ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#fix-layout-errors)).
 
 ## Repeated taps
 
@@ -666,7 +666,7 @@ Owner's rule: CSS `field-sizing: content` maps to `IntrinsicWidth` / `IntrinsicH
 
 - **The problem:** a user can tap "10 times in just 1 second", repeating a server request or an animation.
 - **ApparenceKit: RxDart `debounceTime`.** It waits for a pause longer than the duration after the last tap; new taps reset the timer. Capture taps in a `BehaviorSubject`, apply `.debounceTime()` to its stream (example: 1000 ms), `.listen()` runs the action, and cancel the subscription in `dispose()` to prevent leaks. No code. Adds the `rxdart` package, and the action fires only after the pause.
-- **Official alternative:** a command-backed button: "While `running` is true the command cannot start again, which stops users triggering it by tapping a button rapidly" ([ARCHITECTURE.md](../flutter/ARCHITECTURE.md#commands)). Both are kept: the command is the official route, debounce is ApparenceKit's.
+- **Official alternative:** a command-backed button: "While `running` is true the command cannot start again, which stops users triggering it by tapping a button rapidly" ([flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md#commands)). Both are kept: the command is the official route, debounce is ApparenceKit's.
 
 ## Prove it
 

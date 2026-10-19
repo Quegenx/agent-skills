@@ -2,7 +2,7 @@
 
 A job that does one thing fits a queue and a worker ([WORKERS.md](WORKERS.md)). Work with several side effects in a row, waits in between, or a run longer than a request (an import, an onboarding sequence, an AI agent researching for twenty minutes) needs a durable workflow: code written as one function, run as a series of steps whose results are saved, so a crash, deploy or timeout resumes at the next step instead of starting over. Use a workflow engine for this (Inngest, Vercel Workflow, Convex's workflow component, Temporal), not a hand-rolled state machine, unless the flow is two steps.
 
-For Convex-specific component isolation, app wrappers and generated APIs, see [convex/COMPONENTS.md](../convex/COMPONENTS.md); retain this file as the generic workflow owner. [get-convex/agent-skills, convex-design, convex-suggest]
+For Convex-specific component isolation, app wrappers and generated APIs, see [convex COMPONENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/convex/COMPONENTS.md); retain this file as the generic workflow owner. [get-convex/agent-skills, convex-design, convex-suggest]
 
 ## How a step function runs
 
@@ -28,7 +28,7 @@ The engine calls your function again and again. Each call replays it from the to
 
 - **Sleep** for a duration or until a time, without holding a worker. Sleeping for a week costs nothing.
 - **Wait for an event** (a payment confirmed, a reply from a person) matched on an id from the run's own input (`order_id` equals `order_id`), with a timeout. A timeout returns nothing, and the code must handle that branch ("no reply in 4 hours: escalate").
-- **A result that lands after the timeout branch ran** (a slow enrichment, a late reply) guards its write with the current state: [../third-party-integrations/CALLS-AND-SYNC.md](../third-party-integrations/CALLS-AND-SYNC.md) [coreyhaines31/marketingskills, revops].
+- **A result that lands after the timeout branch ran** (a slow enrichment, a late reply) guards its write with the current state: [third-party-integrations CALLS-AND-SYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/CALLS-AND-SYNC.md) [coreyhaines31/marketingskills, revops].
 - **An event sent before the wait began is missed.** If the other side can answer quickly, have it also record the answer in the database, and check the database first, then wait.
 - **A named signal** (one key, one waiter) suits approvals: decide what happens when a second wait for the same key starts (replace the old one, or fail).
 - **Cancel on an event** (the user deleted the project, the order was cancelled) so a sleeping run doesn't wake up and act on something gone.

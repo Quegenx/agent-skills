@@ -1,17 +1,17 @@
 # Images and typography
 
-How images and text arrive on screen without popping, jumping or looking off-brand in Flutter: a disk cache for network images, placeholders and cross-fades, preloading icons and Google Fonts during the splash screen, tabular figures, the yellow-underline default text style, and selection colors. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice that leans on pub packages (`extended_image`, `image_fade`, `flutter_svg`, `google_fonts`), not Flutter team docs. Where a tip differs from the official-docs [flutter](../flutter/SKILL.md) skill, both sides are stated and tagged. Reserving an image's box so the layout does not jump is in [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md#reserve-image-space).
+How images and text arrive on screen without popping, jumping or looking off-brand in Flutter: a disk cache for network images, placeholders and cross-fades, preloading icons and Google Fonts during the splash screen, tabular figures, the yellow-underline default text style, and selection colors. Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice that leans on pub packages (`extended_image`, `image_fade`, `flutter_svg`, `google_fonts`), not Flutter team docs. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Reserving an image's box so the layout does not jump is in [SCROLLING-AND-LAYOUT.md](SCROLLING-AND-LAYOUT.md#reserve-image-space).
 
 **Contents:** [Version notes](#version-notes) · [Cache network images on disk](#cache-network-images-on-disk) · [Cross-fade images in](#cross-fade-images-in) · [Preload icons during the splash](#preload-icons-during-the-splash) · [Preload Google Fonts](#preload-google-fonts) · [Tabular figures](#tabular-figures) · [Yellow underlines](#yellow-underlines) · [Selection color](#selection-color) · [Line height, wrapping and trim](#line-height-wrapping-and-trim) · [Prove it](#prove-it)
 
 ## Version notes
 
 - No article states a Flutter, Dart or package version. Check `svg.cache`, `SvgAssetLoader`, `cacheKey(null)` and `loadBytes(null)` against the current `flutter_svg`, and `GoogleFonts.pendingFonts` and `extended_image`'s `cache: true` against their current packages, before copying.
-- `Colors.purple.withValues(alpha: 0.3)` uses the current API (`withOpacity` is deprecated, [VERSIONS.md](../flutter/VERSIONS.md)).
+- `Colors.purple.withValues(alpha: 0.3)` uses the current API (`withOpacity` is deprecated, [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
 
 ## Cache network images on disk
 
-[FlutterPro](https://flutterpro.design/details/cache-network-images): "Network images in Flutter are only cached in memory. Restart the app and every image downloads again." (The flutter skill's networking samples use bare `Image.network`, [DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md).)
+[FlutterPro](https://flutterpro.design/details/cache-network-images): "Network images in Flutter are only cached in memory. Restart the app and every image downloads again." (The flutter skill's networking samples use bare `Image.network`, [flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md).)
 
 Disk cache with [`extended_image`](https://pub.dev/packages/extended_image), `cache: true`:
 
@@ -83,7 +83,7 @@ class SmartNetworkImage extends StatelessWidget {
 
 **Two ways to fade:**
 
-- **[Flutter docs, via flutter skill]:** "Avoid `Opacity` in an animation; use `AnimatedOpacity`, or `FadeInImage` for fading images (a GPU fragment shader)" ([PERFORMANCE.md](../flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips)). `FadeInImage` is built in, no package.
+- **[Flutter docs, via flutter skill]:** "Avoid `Opacity` in an animation; use `AnimatedOpacity`, or `FadeInImage` for fading images (a GPU fragment shader)" ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips)). `FadeInImage` is built in, no package.
 - **[FlutterPro]:** the third-party `image_fade` package, for the same fade plus a placeholder and an error cross-fade.
 
 ```dart
@@ -172,7 +172,7 @@ Future<void> preloadAssets(BuildContext context) async {
 }
 ```
 
-"If you use asset codegen like `flutter_gen`, you can use `Assets.icons.values` instead of listing paths manually." [FlutterPro](https://flutterpro.design/details/precache-icons) Here `flutter_gen` means the FlutterGen asset codegen package, not the synthetic `package:flutter_gen` for localization that the flutter skill says was removed after 3.32 ([LOCALIZATION.md](../flutter/LOCALIZATION.md)). Same name, different thing.
+"If you use asset codegen like `flutter_gen`, you can use `Assets.icons.values` instead of listing paths manually." [FlutterPro](https://flutterpro.design/details/precache-icons) Here `flutter_gen` means the FlutterGen asset codegen package, not the synthetic `package:flutter_gen` for localization that the flutter skill says was removed after 3.32 ([flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md)). Same name, different thing.
 
 ## Preload Google Fonts
 
@@ -197,7 +197,7 @@ Future<void> _preloadOtherFonts() async {
 ```
 
 - "`GoogleFonts.inter()` doesn't load the whole font. It only loads weight 400, normal style. So when preloading, specify the exact weights and styles you've used in your app. If you used `w700` on a heading and `w400` italic on a caption, preload both." [FlutterPro](https://flutterpro.design/details/google-fonts-glitch)
-- The rule: "preload fonts you need immediately, then load the rest in the background." [FlutterPro](https://flutterpro.design/details/google-fonts-glitch) [SCALE-KIT.md](../flutter/SCALE-KIT.md) sets `GoogleFonts.inter` as a default font and says nothing about preloading.
+- The rule: "preload fonts you need immediately, then load the rest in the background." [FlutterPro](https://flutterpro.design/details/google-fonts-glitch) [flutter SCALE-KIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SCALE-KIT.md) sets `GoogleFonts.inter` as a default font and says nothing about preloading.
 
 ## Tabular figures
 
@@ -259,11 +259,11 @@ ThemeData(
 )
 ```
 
-"Your accent or brand color works best here. Selection sits behind text, so contrast matters. Light brand colors usually work as is. Dark ones can clash with the text, so add some opacity until it reads cleanly. Cursor and handles can stay at full color, they're small enough." The article gives no contrast ratio; the flutter skill's ratios are in [ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values). [FlutterPro](https://flutterpro.design/details/selection-color)
+"Your accent or brand color works best here. Selection sits behind text, so contrast matters. Light brand colors usually work as is. Dark ones can clash with the text, so add some opacity until it reads cleanly. Cursor and handles can stay at full color, they're small enough." The article gives no contrast ratio; the flutter skill's ratios are in [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#design-values). [FlutterPro](https://flutterpro.design/details/selection-color)
 
 ## Line height, wrapping and trim
 
-Owner's rules, checked against api.flutter.dev; the full CSS-to-Flutter list is [RESPONSIVE-UNITS.md](../flutter/RESPONSIVE-UNITS.md#the-parallel-list).
+Owner's rules, checked against api.flutter.dev; the full CSS-to-Flutter list is [flutter RESPONSIVE-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/RESPONSIVE-UNITS.md#the-parallel-list).
 
 - **Space by the line, not magic numbers** (CSS `lh`). A line is `fontSize * TextStyle.height` tall; `StrutStyle` fixes the line height for a whole paragraph ([StrutStyle](https://api.flutter.dev/flutter/painting/StrutStyle-class.html)); `leadingDistribution: TextLeadingDistribution.even` splits the extra leading above and below like CSS, where the default `proportional` does not ([TextLeadingDistribution](https://api.flutter.dev/flutter/dart-ui/TextLeadingDistribution.html)). `TextStyle` has no `cap` unit.
 - **No `text-wrap: balance` or `pretty`.** Don't truncate headings without a reason: wrapping is already the default (`DefaultTextStyle.softWrap` is `true`, [softWrap](https://api.flutter.dev/flutter/widgets/DefaultTextStyle/softWrap.html)), so leave `maxLines` and `TextOverflow.ellipsis` off headings. For chat bubbles and tags that should hug their text, `textWidthBasis: TextWidthBasis.longestLine`: "The width will be exactly enough to contain the longest line" ([TextWidthBasis](https://api.flutter.dev/flutter/painting/TextWidthBasis.html)).

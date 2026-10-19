@@ -65,7 +65,7 @@ What works: email subject lines, landing pages, ad copy, CTAs, onboarding flows,
 - **Video:** 3-5 videos, 5-15 minutes each; hosted on unlisted YouTube, Loom or a course platform; links delivered by email drip; worksheets or exercises per lesson.
 - **Cadence:** every 1-2 days. "Each lesson should deliver standalone value. If someone only watches lesson 2, they should still learn something useful."
 
-The signup form states this schedule: Yahoo's rule, as this repo records it, is to "honor the frequency the list promised" ([email-practices LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)).
+The signup form states this schedule: Yahoo's rule, as this repo records it, is to "honor the frequency the list promised" ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)).
 
 ## Quizzes and assessments
 
@@ -83,7 +83,7 @@ Building the quiz as an interactive tool is in [FREE-TOOLS.md](FREE-TOOLS.md).
 - **Evergreen:** pre-recorded, on demand; the same structure with tighter editing; gated with email registration; an automated follow-up sequence.
 - **Follow-up:** "Send replay link + summary + CTA within 24 hours", then the nurture sequence.
 
-"Teach something genuinely useful. A webinar that's just a sales pitch will damage trust." Event promotion, registration and attendance work is in [event-marketing](../event-marketing/SKILL.md).
+"Teach something genuinely useful. A webinar that's just a sales pitch will damage trust." Event promotion, registration and attendance work is in [event-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/event-marketing/SKILL.md).
 
 ## Prove it
 

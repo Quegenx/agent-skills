@@ -1,8 +1,8 @@
 # Idea cross-reference
 
-The [growth-ideas](../growth-ideas/SKILL.md) skill catalogs 139 proven marketing tactics. This doc is the source-of-truth mapping: every idea assigned to a primary AARRR stage, with notes for when it's typically active and what category constraints apply.
+The [growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md) skill catalogs 139 proven marketing tactics. This doc is the source-of-truth mapping: every idea assigned to a primary AARRR stage, with notes for when it's typically active and what category constraints apply.
 
-Source: [coreyhaines31/marketingskills, marketing-plan] `references/idea-cross-reference.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The idea text and the platform notes are in [growth-ideas IDEAS.md](../growth-ideas/IDEAS.md).
+Source: [coreyhaines31/marketingskills, marketing-plan] `references/idea-cross-reference.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The idea text and the platform notes are in [growth-ideas IDEAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/IDEAS.md).
 
 The plan's Section 12 ("Tactical idea bank") uses this mapping as the base, then layers client-specific filters: brand voice rules might skip some ideas; funding stage might shift Q-status; client category might rule out others.
 
@@ -12,8 +12,8 @@ The plan's Section 12 ("Tactical idea bank") uses this mapping as the base, then
 ## How to read this doc
 
 - **139 unique ideas, 143 entries.** Four ideas appear in more than one section (#79 Early-Access Referrals, #91 In-App Upsells, #114 Moneyball Marketing, #117 Product Competitions). These counts come from the tables below; #86 Lifetime Deals appears only under Acquisition, as its Revenue exclusion explains.
-- **"Entries" counts rows; idea IDs are unique.** Section header counts reflect rows in this doc, not unique ideas from [growth-ideas](../growth-ideas/SKILL.md).
-- **Numbers correspond exactly to the [growth-ideas](../growth-ideas/SKILL.md) skill ordering.** If [growth-ideas](../growth-ideas/SKILL.md) reorders or expands, update this doc.
+- **"Entries" counts rows; idea IDs are unique.** Section header counts reflect rows in this doc, not unique ideas from [growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md).
+- **Numbers correspond exactly to the [growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md) skill ordering.** If [growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md) reorders or expands, update this doc.
 
 ## AARRR assignment for all 139 ideas
 
@@ -32,7 +32,7 @@ These ideas primarily serve top-of-funnel awareness, traffic, and lead generatio
 | 7 | Internal Linking | Content & SEO | Now |
 | 8 | Content Refreshing | Content & SEO | Q2+ (after content base exists) |
 | 9 | Knowledge Base SEO | Content & SEO | Q3+ (after help docs exist) |
-| 10 | Parasite SEO | Content & SEO | Now (only as publishing where the audience reads; borrowed ranking is Google site reputation abuse, see [IDEAS.md](../growth-ideas/IDEAS.md)) |
+| 10 | Parasite SEO | Content & SEO | Now (only as publishing where the audience reads; borrowed ranking is Google site reputation abuse, see [growth-ideas IDEAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/IDEAS.md)) |
 | 11 | Competitor Comparison Pages | Competitor | Q2+ |
 | 12 | Marketing Jiu-Jitsu | Competitor | Now |
 | 13 | Competitive Ad Research | Competitor | Pre-paid |
@@ -65,7 +65,7 @@ These ideas primarily serve top-of-funnel awareness, traffic, and lead generatio
 | 40 | Instagram Audience | Social & Community | Q2+ |
 | 41 | X Audience | Social & Community | Depends on founder bandwidth |
 | 42 | Short Form Video | Social & Community | Q3+ |
-| 43 | Engagement Pods | Social & Community | Skip: against LinkedIn's Professional Community Policies ([IDEAS.md](../growth-ideas/IDEAS.md)) |
+| 43 | Engagement Pods | Social & Community | Skip: against LinkedIn's Professional Community Policies ([growth-ideas IDEAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/IDEAS.md)) |
 | 44 | Comment Marketing | Social & Community | Q2+ |
 | 49 | Monthly Newsletters | Email | Q2+ (Acquisition use: subscriber capture) |
 | 54 | Affiliate Discovery via Backlinks | Partnerships | Q2+ |
@@ -151,7 +151,7 @@ These ideas primarily serve top-of-funnel awareness, traffic, and lead generatio
 | 91 | In-App Upsells | Product-Led | Q2+ (cross-cuts Revenue) |
 | 95 | Concierge Setup | Product-Led | Q3+ (high-value users) |
 | 96 | Onboarding Optimization | Product-Led | Now |
-| 124 | App Store Optimization | Platforms | Now (App Store products). The source files ASO here while its plan template puts it under Acquisition (Move 2), and [aso](../../mobile/aso/SKILL.md) treats the listing as acquisition; assign by the move's primary impact ([AARRR.md](AARRR.md#how-to-assign-a-move-to-a-stage)) |
+| 124 | App Store Optimization | Platforms | Now (App Store products). The source files ASO here while its plan template puts it under Acquisition (Move 2), and [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md) treats the listing as acquisition; assign by the move's primary impact ([AARRR.md](AARRR.md#how-to-assign-a-move-to-a-stage)) |
 
 ### Retention (8 entries)
 
@@ -258,15 +258,15 @@ After all five AARRR tables + skip list:
 
 ## How to maintain this doc
 
-If [growth-ideas](../growth-ideas/SKILL.md) adds new ideas (it's a living skill - the 139 may become 145 or 160 over time):
-1. Read [growth-ideas IDEAS.md](../growth-ideas/IDEAS.md)
+If [growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md) adds new ideas (it's a living skill - the 139 may become 145 or 160 over time):
+1. Read [growth-ideas IDEAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/IDEAS.md)
 2. Assign each new idea to a primary AARRR stage using the rules above
 3. Add to this doc's tables
 4. Update SKILL.md's idea-count reference
 
 ## Sources
 
-- [growth-ideas SKILL.md](../growth-ideas/SKILL.md) and [IDEAS.md](../growth-ideas/IDEAS.md) (from marketingskills `marketing-ideas`)
+- [growth-ideas SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md) and [growth-ideas IDEAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/IDEAS.md) (from marketingskills `marketing-ideas`)
 
 ## Prove it
 

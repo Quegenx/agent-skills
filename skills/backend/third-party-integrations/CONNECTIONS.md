@@ -29,7 +29,7 @@ A platform's shared OAuth app gets you started in minutes. Before launch, regist
 - **Quota:** shared apps share rate limits (and polling intervals) with everyone else.
 - **Survival and portability:** a provider can revoke a shared app, and only your own app's tokens can move with you if you change platforms.
 - **The callback on your own domain** (a redirect that forwards the browser to the platform, query intact) set before real users connect; changing it later breaks reconnects until every provider app is updated.
-- **Provider reviews:** some providers limit unverified apps (test-mode tokens that expire within days, "app blocked" warnings for sensitive scopes); plan the review into the launch. A worked Google example (External consent screen, test users or `access_denied`, a redirect URI that matches exactly with no trailing slash, tokens encrypted at rest) is in [../../marketing/search-console/API.md](../../marketing/search-console/API.md#a-self-hosted-oauth-app) [open-seo, SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md].
+- **Provider reviews:** some providers limit unverified apps (test-mode tokens that expire within days, "app blocked" warnings for sensitive scopes); plan the review into the launch. A worked Google example (External consent screen, test users or `access_denied`, a redirect URI that matches exactly with no trailing slash, tokens encrypted at rest) is in [search-console API.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/API.md#a-self-hosted-oauth-app) [open-seo, SELF_HOSTING_GOOGLE_SEARCH_CONSOLE.md].
 
 **Scopes change only for new connections.** Users connected under the old set keep it until they reconnect, so a feature needing a new scope ships with a reconnect prompt.
 

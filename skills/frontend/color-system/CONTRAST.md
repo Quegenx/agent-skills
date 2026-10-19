@@ -7,8 +7,8 @@ Measuring a foreground against the background it actually renders on, the WCAG 2
 [Jakub Krehel, better-colors] Contrast is measured between a foreground (text, an icon or a UI element) and "the background color it actually renders against, usually the nearest ancestor that paints one. Identify that background first. Measuring against the page background when the element sits on a card gives the wrong answer."
 
 - "Never report a contrast value you did not measure, and never estimate a color you could compute."
-- Which requirement applies to a pair is an accessibility decision ([web-accessibility](../web-accessibility/SKILL.md)). "Where neither that skill nor the project names a standard, report the WCAG 2 result and add the APCA value."
-- **Two views on the default metric.** oklch-skill: "Use APCA as the default", with WCAG 2 "still required when making formal WCAG 2.x conformance claims" [Jakub Krehel, oklch-skill]. anti-slop-ui makes WCAG 2 the absolute rule ("text at least 4.5:1 ... Compute it, never eyeball it", [anti-slop-ui SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md)), and better-colors reports WCAG 2 first. VisBug shows both and finds "moments where they disagree" ([modern-css COLOR.md](../modern-css/COLOR.md#contrast-scores-apca-and-l)).
+- Which requirement applies to a pair is an accessibility decision ([web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md)). "Where neither that skill nor the project names a standard, report the WCAG 2 result and add the APCA value."
+- **Two views on the default metric.** oklch-skill: "Use APCA as the default", with WCAG 2 "still required when making formal WCAG 2.x conformance claims" [Jakub Krehel, oklch-skill]. anti-slop-ui makes WCAG 2 the absolute rule ("text at least 4.5:1 ... Compute it, never eyeball it", [anti-slop-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md)), and better-colors reports WCAG 2 first. VisBug shows both and finds "moments where they disagree" ([modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#contrast-scores-apca-and-l)).
 
 For hex pairs, use [scripts/contrast.py](scripts/contrast.py): `python3 <color-system>/scripts/contrast.py "#777777" "#ffffff"`. Several colors after the first check each against it; verdicts compare the unrounded ratio. [contrast.py](scripts/contrast.py), moved from anti-slop-ui's contrast helper.
 
@@ -99,7 +99,7 @@ Computed: 1.46:1 before, 5.11:1 after.
 
 - "WCAG 2's neutral crossover is near 56% OKLCH lightness" (computed 0.564). "At `oklch(65% 0 0)`, black measures about `6.49:1` and white `3.23:1`. Only black passes AA for normal text. For colored backgrounds or other foregrounds, measure the actual pair rather than applying a crossover."
 - oklch-skill's shortcut: "if L > 0.6 → use dark text on this background; if L <= 0.6 → use light text" [Jakub Krehel, oklch-skill]. A neutral at L 0.6 gives 3.95:1 against white and 5.32:1 against black (computed), and the WCAG crossover sits lower, near 0.564, so measure rather than branch on L.
-- `contrast-color()` picks white or black in CSS, and "mid-tone backgrounds often contrast poorly with both" ([modern-css COLOR.md](../modern-css/COLOR.md#contrast-color)).
+- `contrast-color()` picks white or black in CSS, and "mid-tone backgrounds often contrast poorly with both" ([modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md#contrast-color)).
 
 ## What to check
 
@@ -108,7 +108,7 @@ Computed: 1.46:1 before, 5.11:1 after.
 - **Every pair, in every appearance.** "APCA scores mirrored pairs differently, so a pair passing in light mode can fail in dark."
 - **Translucent surfaces.** A color on a `backdrop-filter` header or an overlay "shifts with whatever scrolls behind it. Test against the lightest and darkest content it can sit over, or make the surface opaque enough that the shift cannot break the pair."
 - **Computed colors.** "`color-mix()`, relative color syntax and opacity modifiers resolve at render time; measure the rendered result, not the declaration."
-- **Text on a color with alpha** (`/50`, `rgba(`, `color-mix(` with `transparent`): "Measure the rendered result, or use a solid token." Owner's design: app-ui sets quieter text as alpha tokens (`--muted-foreground: rgb(var(--ink) / 0.5)`, [app-ui TOKENS.md](../app-ui/TOKENS.md)); keep them and measure the rendered result.
+- **Text on a color with alpha** (`/50`, `rgba(`, `color-mix(` with `transparent`): "Measure the rendered result, or use a solid token." Owner's design: app-ui sets quieter text as alpha tokens (`--muted-foreground: rgb(var(--ink) / 0.5)`, [app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)); keep them and measure the rendered result.
 - **Text over images.** "There is no single background color. Measure the worst region, or guarantee one with a scrim."
 
 ## Prove it

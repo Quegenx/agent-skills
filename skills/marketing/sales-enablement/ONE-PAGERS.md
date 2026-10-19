@@ -163,7 +163,7 @@ Why it works: written in the champion's voice, not yours; answers the questions 
 
 ## Layout
 
-[coreyhaines31/marketingskills, sales-enablement] These are print sizes; screen type rules are in [../../anti-ai-slop/anti-slop-ui/SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md).
+[coreyhaines31/marketingskills, sales-enablement] These are print sizes; screen type rules are in [anti-slop-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md).
 
 Visual hierarchy: (1) headline, largest text, top of page, immediately communicates value; (2) section headers, bold and clear, scannable anchors; (3) body text, short sentences, bullets preferred over paragraphs; (4) proof elements, metrics and quotes stand out (larger font, color, or a callout box); (5) CTA, prominent, bottom of page or bottom-right.
 

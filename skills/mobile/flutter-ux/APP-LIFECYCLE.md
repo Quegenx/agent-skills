@@ -1,14 +1,14 @@
 # App lifecycle and diagnostics
 
-What the running app shows users across failures and versions: a friendly error view in place of the red or grey screen, breaking on handled exceptions in debug, a version line, a changelog after each update, forced update, soft update and maintenance mode, real screen names in analytics, a debug-only admin panel, lifecycle observers and first-frame work. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and release notes (apparencekit.dev), third-party community advice, not Flutter team docs. Where a tip differs from the official-docs [flutter](../flutter/SKILL.md) skill, both sides are stated and tagged. Crash reporting itself is in the [sentry](../../monitoring/sentry/FLUTTER.md) skill.
+What the running app shows users across failures and versions: a friendly error view in place of the red or grey screen, breaking on handled exceptions in debug, a version line, a changelog after each update, forced update, soft update and maintenance mode, real screen names in analytics, a debug-only admin panel, lifecycle observers and first-frame work. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and release notes (apparencekit.dev), third-party community advice, not Flutter team docs. Where a tip differs from the official-docs [flutter](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) skill, both sides are stated and tagged. Crash reporting itself is in the [sentry](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/sentry/FLUTTER.md) skill.
 
 **Contents:** [Version notes](#version-notes) · [Replace the default error view](#replace-the-default-error-view) · [Break on handled exceptions](#break-on-handled-exceptions) · [Show the app version](#show-the-app-version) · [Changelog after update](#changelog-after-update) · [Forced update, soft update, maintenance mode](#forced-update-soft-update-maintenance-mode) · [Real screen names in analytics](#real-screen-names-in-analytics) · [Debug-only admin panel](#debug-only-admin-panel) · [App lifecycle states](#app-lifecycle-states) · [After the first frame](#after-the-first-frame) · [Prove it](#prove-it)
 
 ## Version notes
 
 - No article states a Flutter, Dart or package version. [FlutterPro](https://flutterpro.design/details/friendly-error-view)
-- `FriendlyErrorView` uses dot shorthands (`mainAxisSize: .min`, `mainAxisAlignment: .center`), which need Dart language version 3.10+ ([LANGUAGE.md](../dart/LANGUAGE.md)), and `Color.withValues(alpha:)`, which replaces `withOpacity` ([VERSIONS.md](../flutter/VERSIONS.md)).
-- The samples import `package:flutter/material.dart`; Material is moving to its own package ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
+- `FriendlyErrorView` uses dot shorthands (`mainAxisSize: .min`, `mainAxisAlignment: .center`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)), and `Color.withValues(alpha:)`, which replaces `withOpacity` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
+- The samples import `package:flutter/material.dart`; Material is moving to its own package ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
 
 ## Replace the default error view
 
@@ -29,7 +29,7 @@ ErrorWidget.builder = (details) => FriendlyErrorView(details: details);
 
 - "To stop Flutter from showing the default red/grey screen, you can remove the `presentError` function call in `FlutterError.onError`."
 - Instead of an error widget: "Redirect the user to a safe screen." or "Show a small message like a "toast" notification."
-- Interplay not covered by the article: `SentryFlutter.init()` installs `FlutterErrorIntegration` on `FlutterError.onError` ([sentry FLUTTER.md](../../monitoring/sentry/FLUTTER.md)). Check how a custom `FlutterError.onError` coexists with it before editing that handler.
+- Interplay not covered by the article: `SentryFlutter.init()` installs `FlutterErrorIntegration` on `FlutterError.onError` ([sentry FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/sentry/FLUTTER.md)). Check how a custom `FlutterError.onError` coexists with it before editing that handler.
 
 **What `FriendlyErrorView` does [FlutterPro]:**
 
@@ -39,7 +39,7 @@ ErrorWidget.builder = (details) => FriendlyErrorView(details: details);
 - **Any size:** it adapts to the space the broken widget occupied. Full layout when `maxHeight >= 320` and `maxWidth >= 300` (both finite), else an icon-only badge (48 px instead of 104 px). It fills only bounded axes (`c.hasBoundedWidth ? c.maxWidth : null`), so under unbounded constraints (lists, `FittedBox`) it sizes to its content.
 - **No ancestors assumed:** the view can land where no `Material` or `Directionality` exists, so it provides `Directionality(textDirection: TextDirection.ltr)` and `Material(type: MaterialType.transparency)`; the transparent Material also prevents the yellow "missing Material" text underlines. Padding reads `MediaQuery.maybePaddingOf(context)?.top ?? 0`, since there is no `Scaffold` or `SafeArea` above it and possibly no `MediaQuery`.
 - **Centered while the content fits, scrollable once it doesn't:** `CustomScrollView` with `SliverFillRemaining(hasScrollBody: false)` around a centered `Column`, so a long debug stack trace grows past the viewport.
-- **Screen readers:** `Semantics(container: true, label: 'Something went wrong. Restarting the app should fix it.', child: ExcludeSemantics(...))` ([ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#semantics-and-screen-readers) has the official Semantics rules).
+- **Screen readers:** `Semantics(container: true, label: 'Something went wrong. Restarting the app should fix it.', child: ExcludeSemantics(...))` ([flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#semantics-and-screen-readers) has the official Semantics rules).
 - **Badge shape:** the SDK's `StarBorder(points: 12, innerRadiusRatio: 0.8, pointRounding: 0.7, valleyRounding: 0.3)`, "so this file needs no shape package".
 
 The whole file, verbatim ("Copy it, localize and adapt to your taste") [FlutterPro]:
@@ -367,10 +367,10 @@ void getUser() {
 
 [FlutterPro](https://flutterpro.design/details/show-app-version): show the version somewhere users can reach it, usually at the bottom of the settings or account page. QA always knows which version they are debugging, you can ask a user which one they are on, and with [Shorebird](https://shorebird.dev/) the patch number tells you whether your patch actually landed.
 
-- Show the **build number**, not just the version ([BUILD-AND-RELEASE.md](../flutter/BUILD-AND-RELEASE.md) has build name and build number).
+- Show the **build number**, not just the version ([flutter BUILD-AND-RELEASE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/BUILD-AND-RELEASE.md) has build name and build number).
 - No patch number means the user is on the store build.
 - Keep it dim: "This line should whisper to users."
-- It reads `PackageInfo.fromPlatform()` (`package_info_plus`) and `ShorebirdUpdater().readCurrentPatch()` in parallel with a record `.wait` ([ASYNC.md](../dart/ASYNC.md)), and sets tabular figures for the digits. The article names `ShorebirdUpdater` and `Patch` but not their package.
+- It reads `PackageInfo.fromPlatform()` (`package_info_plus`) and `ShorebirdUpdater().readCurrentPatch()` in parallel with a record `.wait` ([dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md)), and sets tabular figures for the digits. The article names `ShorebirdUpdater` and `Patch` but not their package.
 
 Verbatim (put `VersionIndicator()` wherever you want it):
 
@@ -427,7 +427,7 @@ class _VersionIndicatorState extends State<VersionIndicator> {
 
 ## Changelog after update
 
-[FlutterPro](https://flutterpro.design/details/in-app-changelog): show a changelog after every update. "Without one, shipped features and fixed bugs stay in the shadow. And when changes came from user feedback, users get to see they were heard." This is the in-app sheet, not the store's What's New field ([app-store-connect](../app-store-connect/SKILL.md), [aso](../aso/SKILL.md)).
+[FlutterPro](https://flutterpro.design/details/in-app-changelog): show a changelog after every update. "Without one, shipped features and fixed bugs stay in the shadow. And when changes came from user feedback, users get to see they were heard." This is the in-app sheet, not the store's What's New field ([app-store-connect](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md), [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md)).
 
 [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/) ships the same pattern as an "update log bottom sheet" to "show once to users what's new in the latest version of your app".
 
@@ -536,7 +536,7 @@ Future<void> dismiss() async {
 
 **Layering (two views, both tagged):**
 
-- **[Flutter docs, via flutter skill]:** wrap third-party plugins such as `SharedPreferences` in a service, and give view models their repositories through constructors ([ARCHITECTURE.md](../flutter/ARCHITECTURE.md), [DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md#key-value-data), [SKILL.md](../flutter/SKILL.md) rule 1).
+- **[Flutter docs, via flutter skill]:** wrap third-party plugins such as `SharedPreferences` in a service, and give view models their repositories through constructors ([flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md), [flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md#key-value-data), [flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) rule 1).
 - **[FlutterPro]:** the Cubit calls `SharedPreferences.getInstance()` directly. Keep the logic, move the storage behind a service if the app follows the official layering.
 
 ## Forced update, soft update, maintenance mode
@@ -549,17 +549,17 @@ Future<void> dismiss() async {
 - **One server config** holds the minimum versions, the maintenance flag and message, and the store URLs. Don't hardcode the store URLs: they can change, for example when the app moves to another developer account.
 - **Per platform:** set versions, even the maintenance flag, separately for Android and iOS. A bug can be Android-only, and store reviews finish at different times.
 - **Check on startup, in the background.** The check can take seconds on a slow network; no app open should be delayed for it.
-- **When the result says forced update or maintenance,** open that screen with a fade, not a regular transition, and disable the back gesture. Users shouldn't be able to close those pages. The article does not say how to disable back. The official routing rule: "You cannot block navigation from page-backed screens with `PopScope`" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#navigator-or-router)), so do not assume `PopScope` on a go_router page does it.
+- **When the result says forced update or maintenance,** open that screen with a fade, not a regular transition, and disable the back gesture. Users shouldn't be able to close those pages. The article does not say how to disable back. The official routing rule: "You cannot block navigation from page-backed screens with `PopScope`" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#navigator-or-router)), so do not assume `PopScope` on a go_router page does it.
 - **Package:** [versionarte](https://pub.dev/packages/versionarte) handles all of it. It is the article author's own package.
 
-Related: Google Play's native In-App Updates (Immediate mode is "best for cases where an update is critical") in [google-play REVIEWS-AND-REPORTS.md](../google-play/REVIEWS-AND-REPORTS.md#in-app-updates), a PostHog flag with a version payload as another config source ([posthog IDENTITY.md](../../monitoring/posthog/IDENTITY.md)), and remote config that pushes a maintenance screen without a release ([BUILD-AND-RELEASE.md](../flutter/BUILD-AND-RELEASE.md#flavors)).
+Related: Google Play's native In-App Updates (Immediate mode is "best for cases where an update is critical") in [google-play REVIEWS-AND-REPORTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/REVIEWS-AND-REPORTS.md#in-app-updates), a PostHog flag with a version payload as another config source ([posthog IDENTITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/IDENTITY.md)), and remote config that pushes a maintenance screen without a release ([flutter BUILD-AND-RELEASE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/BUILD-AND-RELEASE.md#flavors)).
 
 ## Real screen names in analytics
 
 [FlutterPro](https://flutterpro.design/details/analytics-screen-names): analytics tools often show a Flutter app as one screen, with every page counted as `FlutterViewController`. That is the native view Flutter draws the whole app into; analytics SDKs track native views, and the app has only this one. Turn the native reporting off (the article gives Firebase's switches, out of scope here), then report screens from Flutter, where every screen is a route.
 
-- **Add your SDK's navigator observer.** It reports the route's `settings.name` on every push and pop. "No name, no event. So the job is to name every route." PostHog's observer is in [posthog SETUP-FLUTTER.md](../../monitoring/posthog/SETUP-FLUTTER.md), Sentry's in [sentry FLUTTER-FEATURES.md](../../monitoring/sentry/FLUTTER-FEATURES.md).
-- **Named routes** already have one: `pushNamed('/cart')` reports as `/cart`. This is a fact about naming only. [Flutter docs, via flutter skill]: "Do not use named routes for most apps" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#navigator-or-router)).
+- **Add your SDK's navigator observer.** It reports the route's `settings.name` on every push and pop. "No name, no event. So the job is to name every route." PostHog's observer is in [posthog SETUP-FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SETUP-FLUTTER.md), Sentry's in [sentry FLUTTER-FEATURES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/sentry/FLUTTER-FEATURES.md).
+- **Named routes** already have one: `pushNamed('/cart')` reports as `/cart`. This is a fact about naming only. [Flutter docs, via flutter skill]: "Do not use named routes for most apps" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#navigator-or-router)).
 - **go_router** fills the name from the route's `name` or path. Pass the observer to `GoRouter(observers: [...])` instead of `MaterialApp`.
 - **Custom `pageBuilder`:** you build the page yourself, so set its `name` too:
 
@@ -575,7 +575,7 @@ GoRoute(
 ),
 ```
 
-- **Shell branches:** a `ShellRoute` or `StatefulShellRoute` branch runs its own inner navigator, so it needs its own `observers` list ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)).
+- **Shell branches:** a `ShellRoute` or `StatefulShellRoute` branch runs its own inner navigator, so it needs its own `observers` list ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)).
 - **Plain `Navigator.push`** has no name, so pass it:
 
 ```dart

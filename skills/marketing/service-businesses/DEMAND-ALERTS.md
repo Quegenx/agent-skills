@@ -10,7 +10,7 @@ Start with one locality and a selected source list. The author's discovery works
 
 Keep observation read-only: no likes, comments, posts, reactions or messages from the watcher. A later business-service demonstration and its separately approved outreach are distinct steps, not permission to contact the people requesting recommendations.
 
-Keep the existing [public-source boundaries](../prospecting/FIRST-CUSTOMERS.md) and [list compliance](../prospecting/LIST-COMPLIANCE.md). The source proposes logged-in group collection; private/gated community collection remains excluded, and current Meta automation permission is unresolved. No bot-detection bypass or simulated-human evasion. [more skills, 05-facebook-group-service-requests.md; coreyhaines31/marketingskills, prospecting]
+Keep the existing [public-source boundaries](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/FIRST-CUSTOMERS.md) and [list compliance](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LIST-COMPLIANCE.md). The source proposes logged-in group collection; private/gated community collection remains excluded, and current Meta automation permission is unresolved. No bot-detection bypass or simulated-human evasion. [more skills, 05-facebook-group-service-requests.md; coreyhaines31/marketingskills, prospecting]
 
 For permitted observations, keep two linked views:
 
@@ -25,7 +25,7 @@ The source asks for exact comments and every named person; the existing public-s
 
 [more skills, 05-facebook-group-service-requests.md]
 
-Match business name and locality, recording permitted address/phone, relevant rating/review evidence, place ID where used and website status. An uncertain match stays uncertain. The source labels an unconfident match no listing; keep the existing [confidence and website cross-check](../prospecting/LOCAL-SMB.md) instead.
+Match business name and locality, recording permitted address/phone, relevant rating/review evidence, place ID where used and website status. An uncertain match stays uncertain. The source labels an unconfident match no listing; keep the existing [confidence and website cross-check](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LOCAL-SMB.md) instead.
 
 The proposed gap labels are no website, fewer than 30 reviews, storefront and phone-based booking. The last two describe product fit rather than necessarily a defect. The source routes the biggest gap to:
 
@@ -52,9 +52,9 @@ Build nothing until the operator selects a business. Show each selected demonstr
 
 Onboard business name, trade, served area, explicit request-alert subscription and approved owner destination/channel. Match permitted requests to that trade in or near the chosen area; the source provides no radius. Alert fields are source name, trade, short job summary and original post link. Do not send the same post twice to the same subscriber. Give the operator the weekly alert count.
 
-The source promises alerts within minutes while inspecting only a few times daily, and separately proposes 15 minutes after flagging. Those do not establish a publication-to-alert SLA. Define check cadence separately from detection-to-send targets; use the existing [marketing-loop state and cadence](../marketing-loops/SKILL.md). No source selling price, billing interval or cancellation term is supplied.
+The source promises alerts within minutes while inspecting only a few times daily, and separately proposes 15 minutes after flagging. Those do not establish a publication-to-alert SLA. Define check cadence separately from detection-to-send targets; use the existing [marketing-loop state and cadence](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md). No source selling price, billing interval or cancellation term is supplied.
 
-Twilio's [Messaging Policy](https://www.twilio.com/en-us/legal/messaging-policy) requires consent even for informational notifications, scoped to the agreed sender and subject. The source's signed-up alert customer is useful onboarding evidence; purchasing a different service alone is not the alert subscription. Channel implementation stays with [SMS](../sms-marketing/COMPLIANCE.md). [Twilio Messaging Policy; more skills, 05-facebook-group-service-requests.md]
+Twilio's [Messaging Policy](https://www.twilio.com/en-us/legal/messaging-policy) requires consent even for informational notifications, scoped to the agreed sender and subject. The source's signed-up alert customer is useful onboarding evidence; purchasing a different service alone is not the alert subscription. Channel implementation stays with [SMS](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/COMPLIANCE.md). [Twilio Messaging Policy; more skills, 05-facebook-group-service-requests.md]
 
 ## Prove it
 

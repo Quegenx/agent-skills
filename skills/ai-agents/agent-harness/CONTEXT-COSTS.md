@@ -30,7 +30,7 @@ Reduce what an agent repeatedly reads while preserving the evidence and constrai
 - For moving context out of the always-loaded text, verify the original at its real source and fingerprint, keep a discoverable pointer, and prove retrieval returns the needed material. A candidate locator is not the content itself.
 - Include both the pointer and actual recall overhead in the after measurement. If recovery fails or the combined cost does not improve, restore the source and remove only the candidate change.
 - Report how to undo the edit. Do not silently replace exact originals with another generated summary.
-- The source's fragment style is not this repository's writing policy. Preserve the writer's voice and meaningful uncertainty under [anti-slop-writing](../../anti-ai-slop/anti-slop-writing/SKILL.md); do not impose a compressed mode on the user's replies.
+- The source's fragment style is not this repository's writing policy. Preserve the writer's voice and meaningful uncertainty under [anti-slop-writing](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/SKILL.md); do not impose a compressed mode on the user's replies.
 
 ## A bounded comparison
 
@@ -41,7 +41,7 @@ Reduce what an agent repeatedly reads while preserving the evidence and constrai
 - Reject the comparison when inputs or measurement differ. Treat missing instrumentation, an inconclusive resource result and a quality regression explicitly; do not soften them into a small win.
 - A repeated procedure distilled into a skill adds load where the skill is available and may repay it only when used. Recounting one file cannot measure that trade; compare the affected sessions and retain an insufficient-data verdict when appropriate.
 - Check attribution: does the target still exist and carry the candidate edit, has someone changed it since, or was it never fingerprinted? Do not assign an old delta to an intervention the current evidence no longer identifies.
-- A local result remains scoped to its fixture. It does not establish production savings or a causal rollout outcome. Use [agent-evals](../agent-evals/SKILL.md) for the shared comparison and guardrail definitions.
+- A local result remains scoped to its fixture. It does not establish production savings or a causal rollout outcome. Use [agent-evals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md) for the shared comparison and guardrail definitions.
 
 For an autonomous loop, compare **cost per accepted result**: the time, compute and human review needed to produce a verified, useful change. Counts of agents, prompts or candidate patches are activity, not accepted outcomes. Use the measurement basis above rather than treating token use alone as the result. [supplied article, How to Build AI Loops That Are Replacing Prompt Engineering.md, section 7]
 

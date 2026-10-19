@@ -1,6 +1,6 @@
 # Setup and connection ownership
 
-Kapso CLI, project/customer onboarding and inbox contracts from [gokapso/agent-skills, integrate-whatsapp/SKILL.md; references/platform-api-reference.md; references/setup-links.md; references/detecting-whatsapp-connection.md; references/whatsapp-cloud-api-js.md]. General OAuth and connection ownership remain in [third-party-integrations](../third-party-integrations/SKILL.md).
+Kapso CLI, project/customer onboarding and inbox contracts from [gokapso/agent-skills, integrate-whatsapp/SKILL.md; references/platform-api-reference.md; references/setup-links.md; references/detecting-whatsapp-connection.md; references/whatsapp-cloud-api-js.md]. General OAuth and connection ownership remain in [third-party-integrations](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/SKILL.md).
 
 ## Choose the surface
 
@@ -18,7 +18,7 @@ Kapso CLI, project/customer onboarding and inbox contracts from [gokapso/agent-s
 - Resolve the intended project with `kapso projects list` and `kapso projects use <project-id>`, then the customer. The direct flow creates a customer with `POST /platform/v1/customers` and a setup link with `POST /platform/v1/customers/:id/setup_links`.
 - `kapso setup` and `kapso whatsapp numbers new` prefer dedicated connection plus provisioning. The raw API and CLI defaults are separate contracts; select dedicated/coexistence, provisioning, country/area code, language and redirects for the actual task. Current setup parameters are in [Kapso setup links](https://docs.kapso.ai/docs/platform/setup-links).
 - Store the setup-link attempt against the authenticated customer before showing its hosted URL. Preserve its returned identity and expiration; an expired/replaced attempt and a reconnect are not interchangeable connection successes.
-- Use the signed project event `whatsapp.phone_number.created` to detect connection. A success redirect is a UI hint: confirm through the project-scoped API, match the saved attempt and customer, then update ownership. The existing [callback ownership rule](../third-party-integrations/CONNECTIONS.md) still applies.
+- Use the signed project event `whatsapp.phone_number.created` to detect connection. A success redirect is a UI hint: confirm through the project-scoped API, match the saved attempt and customer, then update ownership. The existing [callback ownership rule](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/CONNECTIONS.md) still applies.
 - Discover connected numbers with `kapso whatsapp numbers list --output json`; resolve the actual display number with `kapso whatsapp numbers resolve --phone-number "<display-number>" --output json`. Use `phone_number_id` for sends and uploads, WABA `business_account_id` for template management.
 - Parse a Fetch Response with `response.json()` before reading decoded properties. The source setup-link full example accessed an unparsed Response; [MDN Response.json](https://developer.mozilla.org/en-US/docs/Web/API/Response/json) defines the parsing step. No broken sample is retained here.
 

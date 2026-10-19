@@ -1,6 +1,6 @@
 # Win-loss analysis
 
-Win-loss analysis turns CRM outcomes, call transcripts, and buyer interviews into an evidence-backed answer to "why do we win and lose, against whom?" It is the evidence that battle cards and "why we win" sections need. From coreyhaines31/marketingskills, skill `sales-enablement` (SKILL.md and references/win-loss-analysis.md, MIT). Running buyer interviews in general is in [../customer-research/SKILL.md](../customer-research/SKILL.md).
+Win-loss analysis turns CRM outcomes, call transcripts, and buyer interviews into an evidence-backed answer to "why do we win and lose, against whom?" It is the evidence that battle cards and "why we win" sections need. From coreyhaines31/marketingskills, skill `sales-enablement` (SKILL.md and references/win-loss-analysis.md, MIT). Running buyer interviews in general is in [customer-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md).
 
 ## Workflow
 
@@ -89,7 +89,7 @@ For lost deals, push past "price": "What would you have needed to see to choose 
 | Criteria that decided deals | Discovery questions ([DEMO-SCRIPTS.md](DEMO-SCRIPTS.md#discovery-call)) |
 | Missing capability, repeated | Product team, with deal count and revenue lost |
 
-The closed-lost reason and competitor are required fields on the CRM's Closed Lost stage ([../revops/PIPELINE-AND-METRICS.md](../revops/PIPELINE-AND-METRICS.md)).
+The closed-lost reason and competitor are required fields on the CRM's Closed Lost stage ([revops PIPELINE-AND-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/PIPELINE-AND-METRICS.md)).
 
 ## Prove it
 

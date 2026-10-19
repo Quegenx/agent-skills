@@ -1,6 +1,6 @@
 # Editing an actual subject
 
-Reference-photo preservation and subject-specific acceptance contracts, paraphrased from [more skills, 14-solar-rooftop-renders.md], [more skills, 15-restaurant-food-visuals.md], [more skills, 16-guest-house-systems.md], [more skills, 17-estate-agent-listings.md], [more skills, 18-motor-trade-visuals.md], [more skills, 19-shop-storefront-visuals.md] and [more skills, 20-trades-lead-systems.md]. These guides propose editing real supplied photographs, rather than inventing a similar subject. Their generation methods remain subject to the existing policies below. Service packaging and sales belong to [service-businesses](../service-businesses/SKILL.md).
+Reference-photo preservation and subject-specific acceptance contracts, paraphrased from [more skills, 14-solar-rooftop-renders.md], [more skills, 15-restaurant-food-visuals.md], [more skills, 16-guest-house-systems.md], [more skills, 17-estate-agent-listings.md], [more skills, 18-motor-trade-visuals.md], [more skills, 19-shop-storefront-visuals.md] and [more skills, 20-trades-lead-systems.md]. These guides propose editing real supplied photographs, rather than inventing a similar subject. Their generation methods remain subject to the existing policies below. Service packaging and sales belong to [service-businesses](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/service-businesses/SKILL.md).
 
 ## Start with permission and the original
 
@@ -27,7 +27,7 @@ Choose the matching branch below. A proposed installation or treatment must read
 - Match the existing sky reflections and shadow direction. Keep walls, doors, windows, garden, boundary, vehicles, sky, exposure, grain and framing unchanged. Compare a chimney shadow with the new array's shadows. Reject a uniform blue slab, conflicting light, impossible overhang or covered obstacle.
 - Commercial concept: use an authorized overhead photograph and describe the visible building and roof bays. Align dark panel blocks with the existing long axis and bays, with separate maintenance gaps and visible rooflight/vent/plant exclusions. The source proposes approximately 1 m gangways and 1.5 m perimeter/obstacle gaps; neither is a verified engineering requirement.
 - Match overhead angle, resolution, image softness, color and light; vary reflections rather than painting one flat rectangle. Preserve the yard, vehicles, materials, roads, trees and neighboring buildings. Visually inspect for glass areas and already installed panels before approving.
-- Count the visible panels against the caption; an illustration cannot claim the count, capacity or production of a different configuration. Show the measurement source/date and an installation-design disclaimer as specified by [SOLAR-PREVIEWS.md](../service-businesses/SOLAR-PREVIEWS.md).
+- Count the visible panels against the caption; an illustration cannot claim the count, capacity or production of a different configuration. Show the measurement source/date and an installation-design disclaimer as specified by [service-businesses SOLAR-PREVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/service-businesses/SOLAR-PREVIEWS.md).
 
 ## Food and cafe premises
 
@@ -36,13 +36,13 @@ Choose the matching branch below. A proposed installation or treatment must read
 - Dish inputs: actual photograph and dish identity. Preserve every ingredient, portion, arrangement, untidy detail, plate, cup, cutlery and table. No added garnish, herbs, sauce, steam, props or extra saturation. The proposed changes are light, viewpoint and crop only.
 - The source's food direction is soft one-sided light, gentle falloff, a lower/closer view, less empty frame, soft background and level horizon. Reject a studio restyling. Acceptance question: can this kitchen serve the exact plate shown today?
 - Cafe premises: retain building, sign, windows, door, furniture, fittings, neighboring shops and actual seating. No invented plants, furniture, people or lights. Proposed changes are warm late-afternoon light, straight verticals, level horizon, tighter crop, restrained shadow lift and pavement-litter cleanup. Someone who knows the premises must recognize them.
-- A four-image set and exact menu transcription have different acceptance contracts. Their ordered deliverables, menu uncertainty marker and proofreading/signoff gate are in [FOOD-VISUALS.md](../service-businesses/FOOD-VISUALS.md).
+- A four-image set and exact menu transcription have different acceptance contracts. Their ordered deliverables, menu uncertainty marker and proofreading/signoff gate are in [service-businesses FOOD-VISUALS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/service-businesses/FOOD-VISUALS.md).
 
 ## Guest bedrooms
 
 [more skills, 16-guest-house-systems.md]
 
-Preserve walls, ceiling, windows, beams/slopes, bed position, headboard, furniture, fittings and floor. Do not repaint, replace carpet, move or replace furniture, enlarge the room or add artwork, plants, throws, cushions or other props. Permitted preparation is making the existing bed, squaring duvet/pillows, removing personal clutter, switching existing bedside/table lamps on, soft warm window daylight and landscape framing from a corner at chest height with straight verticals. A previous guest must recognize the same room, rather than a renovation. The [hospitality offer](../service-businesses/HOSPITALITY.md) owns delivery and room-film decisions.
+Preserve walls, ceiling, windows, beams/slopes, bed position, headboard, furniture, fittings and floor. Do not repaint, replace carpet, move or replace furniture, enlarge the room or add artwork, plants, throws, cushions or other props. Permitted preparation is making the existing bed, squaring duvet/pillows, removing personal clutter, switching existing bedside/table lamps on, soft warm window daylight and landscape framing from a corner at chest height with straight verticals. A previous guest must recognize the same room, rather than a renovation. The [hospitality offer](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/service-businesses/HOSPITALITY.md) owns delivery and room-film decisions.
 
 ## Empty-property staging
 
@@ -92,7 +92,7 @@ The existing rules remain in force. The following are attributed alternative vie
 | Image prompt length | 40 to 80 words, specific over comprehensive, with size/ratio. [coreyhaines31/marketingskills, image, PROMPTING.md] | Long prompts enumerate invariants and exclusions. Preserve these constraints as a briefing/review contract; no blanket prompt-length exception is approved. [more skills, 14-solar-rooftop-renders.md; 15-restaurant-food-visuals.md; 17-estate-agent-listings.md; 18-motor-trade-visuals.md; 19-shop-storefront-visuals.md] |
 | Generated real-location/product footage | No generated footage for real locations or specific products. [coreyhaines31/marketingskills, video, marketing-video/SKILL.md] | Animate actual bedroom/property photographs or vehicle imagery. Keep the current rule; film design and acceptance requirements remain useful separately. [more skills, 16-guest-house-systems.md; 17-estate-agent-listings.md; 18-motor-trade-visuals.md] |
 
-Canonical policies are [image rules](SKILL.md#the-rules), [image prompting](PROMPTING.md#the-prompt) and [video rules](../marketing-video/SKILL.md#the-rules). None of these alternatives changes the owner's production UI designs.
+Canonical policies are [image rules](SKILL.md#the-rules), [image prompting](PROMPTING.md#the-prompt) and [video rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md#the-rules). None of these alternatives changes the owner's production UI designs.
 
 ## Prove it
 

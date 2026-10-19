@@ -5,7 +5,9 @@ description: "Writes and reviews website, marketing and product copy, including 
 
 # Anti-slop copy
 
-Copy that a buyer believes: specific, built from facts, in the customer's words, with one clear next step. Load `anti-slop` for the shared rules and `anti-slop-writing` for the prose patterns (in Hebrew, its [HEBREW.md](../anti-slop-writing/HEBREW.md)). Drafting, review, voice and the context file add rules from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) (MIT, Corey Haines; its copywriting and copy-editing modes credit Profound and Wispr Flow, MIT), tagged where they appear.
+Copy that a buyer believes: specific, built from facts, in the customer's words, with one clear next step. Load `anti-slop` for the shared rules and `anti-slop-writing` for the prose patterns (in Hebrew, its [anti-slop-writing HEBREW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/HEBREW.md)). Drafting, review, voice and the context file add rules from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) (MIT, Corey Haines; its copywriting and copy-editing modes credit Profound and Wispr Flow, MIT), tagged where they appear.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -15,8 +17,8 @@ Copy that a buyer believes: specific, built from facts, in the customer's words,
 | The brand voice profile and tone by context | [VOICE.md](VOICE.md) |
 | The product context file every copy task reads | [CONTEXT.md](CONTEXT.md) |
 | Interface text: buttons, errors, empty states, confirmations | [MICROCOPY.md](MICROCOPY.md) |
-| Turning merged code into a changelog and announcement drafts | [product-launch SHIPPED-CHANGES.md](../../marketing/product-launch/SHIPPED-CHANGES.md) |
-| Ad copy formulas, search headlines, social hooks, CTAs by stage and test order | [ad-creative COPY-FORMULAS.md](../../marketing/ad-creative/COPY-FORMULAS.md) |
+| Turning merged code into a changelog and announcement drafts | [product-launch SHIPPED-CHANGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/SHIPPED-CHANGES.md) |
+| Ad copy formulas, search headlines, social hooks, CTAs by stage and test order | [ad-creative COPY-FORMULAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/COPY-FORMULAS.md) |
 
 ## 1. Facts before words
 
@@ -30,7 +32,7 @@ Copy is only as specific as what you know. Before writing:
 
 - **Clear beats clever.** If the reader has to decode a line, it failed.
 - **Specific beats vague.** "Cut weekly reporting from 4 hours to 15 minutes" (if true), never "save time".
-- **The customer's words over the company's.** Mine reviews, support tickets, sales calls and interviews for the exact phrases people use ([customer-research](../../marketing/customer-research/SKILL.md) is how).
+- **The customer's words over the company's.** Mine reviews, support tickets, sales calls and interviews for the exact phrases people use ([customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md) is how).
 - **Outcomes over features**, then the feature as the proof of the outcome.
 - **One idea per section**, in the order the reader's doubts arise.
 - **The reader as the subject.** "Your team ships experiments without filing a ticket", not "the platform empowers teams".
@@ -46,8 +48,8 @@ Copy is only as specific as what you know. Before writing:
 - **Proof test:** every number, logo, quote and badge (SOC 2, "trusted by") is real and sourced, or it isn't on the page.
 - **The three-question gate** (picture it, prove it, could a competitor say it) scores every line: [DRAFTING.md](DRAFTING.md#the-three-question-gate).
 - **Language evidence isn't claim evidence.** "Separate **language evidence** ('the export takes forever') from **claim evidence** (a measured reduction across a defined pilot). A complaint supports the pain angle; it does not substantiate a numerical performance promise." Keep a pilot's "sample size and period in adjacent readable copy", never in a footnote; "rounded numbers are not evidence of fakery" [coreyhaines31/marketingskills, ad-creative].
-- **Urgency only when it's real.** Scarcity and deadlines: "Only use when genuine" [coreyhaines31/marketingskills, marketing-psychology]. A fake countdown, false low stock or a deadline that resets is a dark pattern the FTC names; the rules are in [FTC-PRICING-CLAIMS.md](../../marketing/offer-design/FTC-PRICING-CLAIMS.md#scarcity-urgency-and-dark-patterns), with prices, "free", "worth $X" and guarantees.
-- **Lead with the larger number** for a reward or discount [coreyhaines31/marketingskills, referrals]: "Rule of thumb: under ~$100, lead with the dollar amount; over ~$100, test the percentage." The claim must match the real offer ([referral-programs VIRAL-LOOPS.md](../../marketing/referral-programs/VIRAL-LOOPS.md)).
+- **Urgency only when it's real.** Scarcity and deadlines: "Only use when genuine" [coreyhaines31/marketingskills, marketing-psychology]. A fake countdown, false low stock or a deadline that resets is a dark pattern the FTC names; the rules are in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md#scarcity-urgency-and-dark-patterns), with prices, "free", "worth $X" and guarantees.
+- **Lead with the larger number** for a reward or discount [coreyhaines31/marketingskills, referrals]: "Rule of thumb: under ~$100, lead with the dollar amount; over ~$100, test the percentage." The claim must match the real offer ([referral-programs VIRAL-LOOPS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/VIRAL-LOOPS.md)).
 
 ## 4. CTAs
 
@@ -55,8 +57,8 @@ A CTA says the action and what the person gets: "Start my free trial", "See pric
 
 - **The formula:** "[Action Verb] + [What They Get] + [Qualifier if needed]", as in "Get the Complete Checklist" or "See Pricing for My Team" [coreyhaines31/marketingskills, copywriting]. The source writes CTAs in Title Case; this repo uses sentence case ([MICROCOPY.md](MICROCOPY.md#rules)).
 - **Placement:** "Make the CTA obvious, early, and repeated" [coreyhaines31/marketingskills, copy-editing]. Check: "Is it visible without scrolling?", "Is there a logical primary vs. secondary CTA structure?", "Are CTAs repeated at key decision points?" [coreyhaines31/marketingskills, cro]. Trust signals go "Near CTAs and after benefit claims".
-- **"Sign up":** marketingskills lists "Sign Up" among weak CTAs. landing-page-ui does it differently: its hero has "the two app buttons (sign up solid, log in soft)" ([SECTIONS.md](../../frontend/landing-page-ui/SECTIONS.md)); in the owner's sites that is the design.
-- **In a 1:1 email the ask is a reply, not a button.** Two views: [coreyhaines31/marketingskills, cold-email] says "Interest-based CTAs ('Worth exploring?' / 'Would this be useful?') beat meeting requests"; this section's rule is for page buttons. Cold email copy is in [cold-outreach COPY.md](../../marketing/cold-outreach/COPY.md); email sequences, and the structure, button text and length of each email, in [email-marketing SEQUENCES.md](../../marketing/email-marketing/SEQUENCES.md#writing-each-email).
+- **"Sign up":** marketingskills lists "Sign Up" among weak CTAs. landing-page-ui does it differently: its hero has "the two app buttons (sign up solid, log in soft)" ([landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md)); in the owner's sites that is the design.
+- **In a 1:1 email the ask is a reply, not a button.** Two views: [coreyhaines31/marketingskills, cold-email] says "Interest-based CTAs ('Worth exploring?' / 'Would this be useful?') beat meeting requests"; this section's rule is for page buttons. Cold email copy is in [cold-outreach COPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/COPY.md); email sequences, and the structure, button text and length of each email, in [email-marketing SEQUENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SEQUENCES.md#writing-each-email).
 
 ## 5. Copy slop specific to pages
 
@@ -82,7 +84,7 @@ On top of the prose patterns in `anti-slop-writing`:
 - **Label headings:** "Features", "Why us", "How it works" as the whole heading. Write headings that make a claim.
 - **Exclamation marks and hype punctuation** in body copy.
 - **Automation hype:** "set it and forget it," "fully autonomous marketing," "AI does everything," "10x on autopilot," "growth hacking machine" [coreyhaines31/marketingskills, marketing-loops].
-- **Ads:** use the [ad-specific writing tells](../../marketing/ad-creative/SKILL.md#writing-the-copy), including the source disagreement about TikTok hooks. [coreyhaines31/marketingskills, ad-creative]
+- **Ads:** use the [ad-specific writing tells](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md#writing-the-copy), including the source disagreement about TikTok hooks. [coreyhaines31/marketingskills, ad-creative]
 - **Selling an SEO product:** "SEO-tool marketing that promises rankings, traffic, or 'guaranteed results', or that invents scores without showing the method behind them." and "Fear-based upsells that turn observations into emergencies. A `noindex` is an observation until intent says otherwise." [iannuttall/seo].
 
 ## 6. Output
@@ -92,7 +94,7 @@ For page copy, deliver:
 2. For the headline and the main CTA, two or three real alternatives, each with a one-line rationale (which reader, which doubt it answers).
 3. Short annotations only for non-obvious choices.
 4. If it's a web page: the page title (descriptive and concise, topic first) and meta description (a short, unique summary of what the page gives). Google sets no length for either: "there's no limit on how long a `<title>` element can be", and the title link "is truncated in Google Search results as needed, typically to fit the device width" ([title links](https://developers.google.com/search/docs/appearance/title-link)); "There's no limit on how long a meta description can be" ([snippets](https://developers.google.com/search/docs/appearance/snippet)). Google asks for every page to have a title, no "unnecessarily long or verbose text" and no "repeated or boilerplate text", and a description per page that is a "short, relevant summary", not a keyword list. Front-load what matters so a cut doesn't lose it. This line said "about 55 to 60 characters" and "under about 155 characters" before; those are truncation heuristics, not Google rules.
-5. Run the check in [CHECK](../anti-slop-writing/CHECK.md) and the proof test above before handing it over. List the open `[NEED]` items at the end.
+5. Run the check in [CHECK](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/CHECK.md) and the proof test above before handing it over. List the open `[NEED]` items at the end.
 
 A point edit returns only the changed lines, each with a one-line reason ([DRAFTING.md](DRAFTING.md#output-for-a-point-edit)).
 

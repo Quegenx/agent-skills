@@ -289,13 +289,13 @@ if (res.purchaserInfo.entitlements.all.isNotEmpty) {
 }
 ```
 
-  It does not compile against purchases_flutter 9.0.0+: `PurchaseResult` has `customerInfo` and `storeTransaction`, no `purchaserInfo` (https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/purchase_result.dart, and [../../backend/revenuecat/FLUTTER.md](../../backend/revenuecat/FLUTTER.md#purchase-flow)). `entitlements.all.isNotEmpty` is also true for an expired entitlement; RevenueCat gates on `isActive`. The check from RevenueCat's docs (https://www.revenuecat.com/docs/getting-started/making-purchases), where `result` is the `PurchaseResult` (the article's `res`; it states no SDK version):
+  It does not compile against purchases_flutter 9.0.0+: `PurchaseResult` has `customerInfo` and `storeTransaction`, no `purchaserInfo` (https://github.com/RevenueCat/purchases-flutter/blob/main/lib/models/purchase_result.dart, and [revenuecat FLUTTER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/FLUTTER.md#purchase-flow)). `entitlements.all.isNotEmpty` is also true for an expired entitlement; RevenueCat gates on `isActive`. The check from RevenueCat's docs (https://www.revenuecat.com/docs/getting-started/making-purchases), where `result` is the `PurchaseResult` (the article's `res`; it states no SDK version):
 
 ```dart
 if (result.customerInfo.entitlements.all["my_entitlement_identifier"]?.isActive ?? false) {
 ```
 
-- **Client plus server, one event.** The app sends the event through the SDK with an `eventId`; the backend sends the same event through the Conversions API with the same id; Meta keeps one. With RevenueCat, forward its purchase webhooks to the Conversions API with the same transaction ID ([../../backend/revenuecat/BACKEND-AND-WEBHOOKS.md](../../backend/revenuecat/BACKEND-AND-WEBHOOKS.md)). Reason: "Some events get lost due to network issues, app crashes, or ad blockers." Without `eventId`, "You either miss events or double-count them."
+- **Client plus server, one event.** The app sends the event through the SDK with an `eventId`; the backend sends the same event through the Conversions API with the same id; Meta keeps one. With RevenueCat, forward its purchase webhooks to the Conversions API with the same transaction ID ([revenuecat BACKEND-AND-WEBHOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/BACKEND-AND-WEBHOOKS.md)). Reason: "Some events get lost due to network issues, app crashes, or ad blockers." Without `eventId`, "You either miss events or double-count them."
 - **Events Manager error "Volume of Advertiser Tracking Enabled parameter out of range".** The article says it appears "when plugin is not properly implementing AEM protocol", and that with it "you can't start a campaign to optimize for purchases. You can only optimize for install or user SKAdNetwork events." Its fix is to switch to the author's own `facebook_flutter_sdk`.
 
 ### Conversions API for app events
@@ -361,7 +361,7 @@ meta_ads_insights
 
 - **Winning:** CPA under target (for example $14 versus $20) → scale; CPA < LTV × 0.5 → aggressive scale; 15+ conversions is minimum confidence, 25+ high confidence; CTR > 1% with CPA on target = creative validated.
 - **Scale:** +20% per day until CPA rises 15%+ above target; one variable per day; duplicate a winner to a new ad set only after 50+ conversions at stable CPA; refresh creative every 2 to 3 weeks even on winners. [coreyhaines31/marketingskills, ads] paces it slower, "+20% every 5 days"; Meta only says to avoid frequent budget changes (https://www.facebook.com/business/help/112167992830700).
-- **Kill:** spend > 2× target CPA with 0 conversions → pause now; after 48 hours, batch CPA > 1.5× target → pause the weakest, keep the 1 to 2 best; CPA > 2× target after 20+ conversions → pause; CTR < 0.5% after 5K impressions → hook failure; frequency > 4 with CTR down 40%+ → replace the creative. [coreyhaines31/marketingskills, ads] warns against pausing on a fixed CPA multiple alone ("A doubled CPA on 6 conversions with a 14-day conversion lag is noise"): check sample size, conversion lag and learning state first ([paid-ads AUDIT-GUARDRAILS.md](../../marketing/paid-ads/AUDIT-GUARDRAILS.md#recommendation-safety)).
+- **Kill:** spend > 2× target CPA with 0 conversions → pause now; after 48 hours, batch CPA > 1.5× target → pause the weakest, keep the 1 to 2 best; CPA > 2× target after 20+ conversions → pause; CTR < 0.5% after 5K impressions → hook failure; frequency > 4 with CTR down 40%+ → replace the creative. [coreyhaines31/marketingskills, ads] warns against pausing on a fixed CPA multiple alone ("A doubled CPA on 6 conversions with a 14-day conversion lag is noise"): check sample size, conversion lag and learning state first ([paid-ads AUDIT-GUARDRAILS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/AUDIT-GUARDRAILS.md#recommendation-safety)).
 - **Hold:** CPA 0.8 to 1.2× target; fewer than 15 conversions; iOS days 1 to 2.
 - **Pause, never delete:** deleting loses learning history.
 
@@ -374,7 +374,7 @@ meta_ads_insights
 | High | High | Low | Low | Listing issue | Screenshots, ratings |
 | Even delivery, all bad CPA | Medium | Medium | Low | Wrong audience or event | Verify MMP setup + optimization goal |
 
-For video, read one funnel stage at a time, as in [ad-creative's diagnostic funnel](../../marketing/ad-creative/HOOKS.md#the-diagnostic-funnel); for an app, the post-click page is the store listing.
+For video, read one funnel stage at a time, as in [ad-creative's diagnostic funnel](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/HOOKS.md#the-diagnostic-funnel); for an app, the post-click page is the store listing.
 
 | Frequency | CTR trend | Action |
 |---|---|---|
@@ -383,7 +383,7 @@ For video, read one funnel stage at a time, as in [ad-creative's diagnostic funn
 | 3 to 4 | Drop 20%+ | A′ edit or new variant |
 | > 4 | Drop 40%+ | Pause, new creative mandatory |
 
-Per-campaign-type frequency bands (cold prospecting, retargeting, ABM) are in [../../marketing/paid-ads/META-WEB-ADS.md](../../marketing/paid-ads/META-WEB-ADS.md#fatigue) [coreyhaines31/marketingskills, ads]; both tables are practitioner.
+Per-campaign-type frequency bands (cold prospecting, retargeting, ABM) are in [paid-ads META-WEB-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/META-WEB-ADS.md#fatigue) [coreyhaines31/marketingskills, ads]; both tables are practitioner.
 
 | Benchmark (Meta app campaigns) | Weak | OK | Strong |
 |---|---|---|---|
@@ -396,7 +396,7 @@ Per-campaign-type frequency bands (cold prospecting, retargeting, ABM) are in [.
 Frequency before fatigue on statics is OK at 2.5 to 3.5; refresh at 3+. "CTR alone does not win."
 
 - **Actions:** `meta_ads_update_ad ad_id status "PAUSED"`; `meta_ads_update_adset adset_id daily_budget_minor: 6000`; `meta_ads_update_adset status "PAUSED"`. Each write costs 2 Appeeky API credits.
-- **Playbook.** Week 1: 3 to 5 ads at $30 to 50/day, kill at 2× CPA with 0 conversions, identify 1 to 2 winners by day 5. Week 2: +20% daily, A′ variations, no new geos. Week 3+: a new batch every 2 to 3 weeks, expand geo when US CPA has been stable 7+ days, cross-check profitability against RevenueCat (`rc_overview`, see [../../backend/revenuecat/SKILL.md](../../backend/revenuecat/SKILL.md)).
+- **Playbook.** Week 1: 3 to 5 ads at $30 to 50/day, kill at 2× CPA with 0 conversions, identify 1 to 2 winners by day 5. Week 2: +20% daily, A′ variations, no new geos. Week 3+: a new batch every 2 to 3 weeks, expand geo when US CPA has been stable 7+ days, cross-check profitability against RevenueCat (`rc_overview`, see [revenuecat SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/SKILL.md)).
 - **Audit mistakes:** optimizing on CTR alone; killing at 12 hours on iOS; scaling an ad set with losers still active; +50% jumps; no frequency check; deleting ads.
 
 ## Budget optimization

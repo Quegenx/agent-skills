@@ -12,6 +12,8 @@ A brief separates **facts** about the product from **choices** about the film. T
 
 [existing video-brief topics; measured corpus, original chapter responsibilities]
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Video copy budgets, reading floor and string audit | [COPY.md](COPY.md) |

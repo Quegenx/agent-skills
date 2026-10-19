@@ -8,7 +8,7 @@ What to track, the formulas, and how to report a return without claiming more th
 - **Business impact:** % of new customers from referrals; CAC via referral against other channels; LTV of referred customers; program ROI.
 - **Separately:** cost per referred customer; LTV of referred customers; payback period for rewards.
 
-Event names for an app (`invite_sent` through `reward_issued`) are in [app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs); funnels and cohorts are built in [posthog](../../monitoring/posthog/SKILL.md); attribution models are in [marketing-attribution](../marketing-attribution/SKILL.md).
+Event names for an app (`invite_sent` through `reward_issued`) are in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs); funnels and cohorts are built in [posthog](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md); attribution models are in [marketing-attribution](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 
 ## K-factor
 
@@ -39,8 +39,8 @@ Program costs = Reward economic cost + Allocated tool / campaign costs + Managem
 ```
 
 - Use the same cohort and window for revenue and costs. Net revenue accounts for refunds and discounts; don't subtract a discount in both net revenue and reward cost. With zero program cost the ratio is undefined: report contribution and costs separately.
-- **Revenue is not profit:** $10,000 net referred revenue at 20% contribution margin is $2,000; with $3,000 program cost the return is ($2,000 - $3,000) / $3,000 = -33.3%, "despite a revenue-minus-program-cost ratio of +233.3%". The source cites [Google's ROI explanation](https://support.google.com/google-ads/answer/1722066?hl=en). Revenue-based ROAS for paid channels is in [app-growth BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md).
-- **Attribution is not incrementality:** "Referral attribution does not prove all referred sales are incremental. Estimate the counterfactual with a suitable holdout or other defensible design. If you only have attributed sales, label the result attributed contribution return, state the incrementality assumption, and do not claim causal program ROI." Separate observed cash recovery from projected lifetime contribution. Holdout design is in [ab-testing](../ab-testing/SKILL.md).
+- **Revenue is not profit:** $10,000 net referred revenue at 20% contribution margin is $2,000; with $3,000 program cost the return is ($2,000 - $3,000) / $3,000 = -33.3%, "despite a revenue-minus-program-cost ratio of +233.3%". The source cites [Google's ROI explanation](https://support.google.com/google-ads/answer/1722066?hl=en). Revenue-based ROAS for paid channels is in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md).
+- **Attribution is not incrementality:** "Referral attribution does not prove all referred sales are incremental. Estimate the counterfactual with a suitable holdout or other defensible design. If you only have attributed sales, label the result attributed contribution return, state the incrementality assumption, and do not claim causal program ROI." Separate observed cash recovery from projected lifetime contribution. Holdout design is in [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 ## Claimed outcomes
 

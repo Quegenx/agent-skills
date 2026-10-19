@@ -1,10 +1,10 @@
 # UGC hooks
 
-Openings for creator and UGC short-form video on TikTok and Instagram Reels. Everything here is `[lightreel]`: lightreel.ai's UGC playbook (April 2026) and its weekly October 2026 reports on talking-head, trending, consumer-app, skincare, K-beauty, fitness and food videos, paraphrased with short quoted hook lines. The reports are one-week observational samples that measure likes and views, not sales; the site itself calls them directional, so treat every pattern as a hypothesis to test. "The formula creates eligibility, not guaranteed virality." Hooks for your own posts and organic video scripts are in [../social-media/POSTS.md](../social-media/POSTS.md) and [../social-media/SHORT-VIDEO.md](../social-media/SHORT-VIDEO.md); paid-ad hook rules are in [../../mobile/app-growth/TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#hooks).
+Openings for creator and UGC short-form video on TikTok and Instagram Reels. Everything here is `[lightreel]`: lightreel.ai's UGC playbook (April 2026) and its weekly October 2026 reports on talking-head, trending, consumer-app, skincare, K-beauty, fitness and food videos, paraphrased with short quoted hook lines. The reports are one-week observational samples that measure likes and views, not sales; the site itself calls them directional, so treat every pattern as a hypothesis to test. "The formula creates eligibility, not guaranteed virality." Hooks for your own posts and organic video scripts are in [social-media POSTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/POSTS.md) and [social-media SHORT-VIDEO.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SHORT-VIDEO.md); paid-ad hook rules are in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#hooks).
 
 ## The spine
 
-Every video: a hook in the first 3 seconds whose only job is to stop the scroll, then the problem, then the solution presented naturally, not as an ad. App-growth and the video skills say the same about the opening ("a hook on frame 0", [../../videos/make-video/SKILL.md](../../videos/make-video/SKILL.md)); app-growth's TikTok formats put "0 to 2 s hook text" first `[appeeky]`.
+Every video: a hook in the first 3 seconds whose only job is to stop the scroll, then the problem, then the solution presented naturally, not as an ad. App-growth and the video skills say the same about the opening ("a hook on frame 0", [make-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/SKILL.md)); app-growth's TikTok formats put "0 to 2 s hook text" first `[appeeky]`.
 
 ## Hook types
 
@@ -55,7 +55,7 @@ Seen in beauty, fitness and food reports:
 - **Skeptical:** "Overhyped"
 - **Decision rule:** "When to use hot and when to use cold"
 - **One regret:** "If I could go back and train for my first marathon and change one thing…"
-- **Mild social jeopardy:** "pls like this so we don't get in trouble" (a like request; [../social-media/POSTS.md](../social-media/POSTS.md#no-ai-tells) counts asks like this as engagement bait for your own posts)
+- **Mild social jeopardy:** "pls like this so we don't get in trouble" (a like request; [social-media POSTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/POSTS.md#no-ai-tells) counts asks like this as engagement bait for your own posts)
 
 ## App hooks
 

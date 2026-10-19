@@ -1,6 +1,6 @@
 # Trace one slow interaction
 
-One interaction, recorded in the browser and read end to end: what the user did, which long animation frames it produced, what the browser and React did inside them, and which source line owns the cost. The method is React Doctor's `performance` skill ([React Doctor, performance]; millionco/react-doctor, © 2026 Million Software, Inc., Modified MIT License), each browser fact checked against the W3C, MDN, web.dev, Chrome and react.dev page linked beside it. It works with any recorder: React Doctor's `scan`, the DevTools Performance panel, or chrome-devtools-mcp's `performance_start_trace` ([INSPECTION.md](../../architecture/pixel-reverse-engineer/INSPECTION.md) in pixel-reverse-engineer). Loading, media and lists are in [BROWSER.md](BROWSER.md), fixes for a busy main thread in [MAIN-THREAD.md](MAIN-THREAD.md), server and benchmark timing in [MEASURE.md](../../backend/performance-and-caching/MEASURE.md).
+One interaction, recorded in the browser and read end to end: what the user did, which long animation frames it produced, what the browser and React did inside them, and which source line owns the cost. The method is React Doctor's `performance` skill ([React Doctor, performance]; millionco/react-doctor, © 2026 Million Software, Inc., Modified MIT License), each browser fact checked against the W3C, MDN, web.dev, Chrome and react.dev page linked beside it. It works with any recorder: React Doctor's `scan`, the DevTools Performance panel, or chrome-devtools-mcp's `performance_start_trace` ([pixel-reverse-engineer INSPECTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/pixel-reverse-engineer/INSPECTION.md) in pixel-reverse-engineer). Loading, media and lists are in [BROWSER.md](BROWSER.md), fixes for a busy main thread in [MAIN-THREAD.md](MAIN-THREAD.md), server and benchmark timing in [performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md).
 
 "Measure one reproducible interaction, connect browser work to React renders, and report only conclusions supported by the trace." [React Doctor, performance]
 
@@ -37,7 +37,7 @@ npx react-doctor@latest scan https://app.example.com \
   --format json
 ```
 
-- **Tracing covers the whole browser:** "Use a dedicated debug profile for CDP because Chrome tracing is browser-wide. Sign in, close every non-blank tab, and then start the scan." "Never request cookies, copy a browser profile, or close an externally managed browser." (Cookies as credentials: [SIGNED-IN-SESSIONS.md](../../web-automation/browser-automation/SIGNED-IN-SESSIONS.md).)
+- **Tracing covers the whole browser:** "Use a dedicated debug profile for CDP because Chrome tracing is browser-wide. Sign in, close every non-blank tab, and then start the scan." "Never request cookies, copy a browser profile, or close an externally managed browser." (Cookies as credentials: [browser-automation SIGNED-IN-SESSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SIGNED-IN-SESSIONS.md).)
 - **The trace is sensitive data:** "The compressed `.json.gz` trace can contain URLs, source paths, and application behavior. Keep it local unless an upload is explicitly approved."
 
 ## Read it in this order
@@ -147,7 +147,7 @@ Name the layout-shift row "total layout shift during the recording" when it come
 4. Compare medians for interaction, blocking, and component duration
 5. Confirm behavior and accessibility did not regress
 
-"Reject improvements that only move work outside the recorded window or disable useful behavior." The server-side version of the same trap is in [MEASURE.md](../../backend/performance-and-caching/MEASURE.md#compare-honestly).
+"Reject improvements that only move work outside the recorded window or disable useful behavior." The server-side version of the same trap is in [performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#compare-honestly).
 
 ## Prove it
 

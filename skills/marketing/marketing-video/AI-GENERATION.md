@@ -1,6 +1,6 @@
 # Generating footage with a video model
 
-Use a video model for B-roll, hero visuals and scenes you can't practically film; never for product UI, recognizable real places or specific products ([SKILL.md](SKILL.md#choosing-the-approach)). The prompt material is from [coreyhaines31/marketingskills, video] `references/ai-video-prompting.md` (MIT); model limits are from each vendor's official page, checked 2026-10-18. Generated material inside a code-built film (blockouts as motion references, tracing it in code, the five-slot prompt for subject, motion, scene, space and camera) is asset-prep's "Generated base footage" in [../../videos/asset-prep/SKILL.md](../../videos/asset-prep/SKILL.md).
+Use a video model for B-roll, hero visuals and scenes you can't practically film; never for product UI, recognizable real places or specific products ([SKILL.md](SKILL.md#choosing-the-approach)). The prompt material is from [coreyhaines31/marketingskills, video] `references/ai-video-prompting.md` (MIT); model limits are from each vendor's official page, checked 2026-10-18. Generated material inside a code-built film (blockouts as motion references, tracing it in code, the five-slot prompt for subject, motion, scene, space and camera) is asset-prep's "Generated base footage" in [asset-prep SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md).
 
 ## Veo: the official limits
 
@@ -95,13 +95,13 @@ Style keywords by family: cinematic ("cinematic color grading", "anamorphic lens
 | No camera direction | Random or static camera | Always specify the movement, or "static" |
 | "Realistic" alone | Not specific enough | "Photorealistic, natural lighting, shot on RED camera" |
 
-On length the repo has a second view: asset-prep's "Prompting a video model" says "some reward 200-400 structured words for a hero shot, others degrade past about 60-80" ([../../videos/asset-prep/SKILL.md](../../videos/asset-prep/SKILL.md#generated-base-footage-optional)).
+On length the repo has a second view: asset-prep's "Prompting a video model" says "some reward 200-400 structured words for a hero shot, others degrade past about 60-80" ([asset-prep SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md#generated-base-footage-optional)).
 
 ## Workflow and cost
 
 [coreyhaines31/marketingskills, video]
 
-1. **Reference first:** find a real video that looks like what you want, then break it down into subject, action, camera, style and mood ([video-brief](../../videos/video-brief/SKILL.md) has the reference method).
+1. **Reference first:** find a real video that looks like what you want, then break it down into subject, action, camera, style and mood ([video-brief](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/SKILL.md) has the reference method).
 2. **Generate 3-4 variations** of the same concept with different angles or styles, then iterate on the best.
 3. **Composite:** combine the generated footage with text and overlays set in code.
 

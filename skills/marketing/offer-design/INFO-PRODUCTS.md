@@ -1,6 +1,6 @@
 # Research, validate and sell a paid knowledge product
 
-An ordered paid-product guide from [more skills, info-product-playbook.md]: discover a problem, validate it, build the smallest complete solution, distribute complete useful answers and invite an opted-in audience to return. This is a paid guide, template pack, system or course workflow. A free chapter is an acquisition option, not a reason to move the paid-product job into lead-magnets. Read the shared [.agents/product-context.md contract](../../anti-ai-slop/anti-slop-copy/CONTEXT.md) first.
+An ordered paid-product guide from [more skills, info-product-playbook.md]: discover a problem, validate it, build the smallest complete solution, distribute complete useful answers and invite an opted-in audience to return. This is a paid guide, template pack, system or course workflow. A free chapter is an acquisition option, not a reason to move the paid-product job into lead-magnets. Read the shared [.agents/product-context.md contract](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md) first.
 
 ## Choose the entry path
 
@@ -18,7 +18,7 @@ Return concrete artifacts as the work progresses: research file, ranked candidat
 
 Keep one research record per finding: problem, exact audience wording, source link and evidence of money being spent. Group related findings and rank the clusters on three separate questions: does the problem recur across people, do people pay for an alternative, and do those alternatives attract repeated specific complaints? A crowded category or visible price alone does not establish profit.
 
-Use the existing [source playbooks](../customer-research/SOURCES.md) for collection and evidence handling. The source proposes these topic-discovery exercises when the channel fits:
+Use the existing [source playbooks](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SOURCES.md) for collection and evidence handling. The source proposes these topic-discovery exercises when the channel fits:
 
 | Input | Look for |
 |---|---|
@@ -53,9 +53,9 @@ Choose the format by what the buyer needs to do: a guide for an ordered knowledg
 
 Open with the actual outcome and audience. Put the actions in execution order, with enough detail to perform them. Include common mistakes and the branches for when a step fails. End with the author's five-action quick start. The user verifies every drafted claim, number and step against real expertise and supplies their own stories and data; an agent draft is not that verification.
 
-Use existing [value-based pricing](../pricing-strategy/SKILL.md) and [offer components](OFFER-ANATOMY.md). The source's optional ladder is a complete core product, a higher tier with usable tools/templates/extras, then later access or updates. Price research comes from the actual alternatives and buyer conversations, not page count. Existing guarantee, discount and renewal rules remain in their canonical owners.
+Use existing [value-based pricing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md) and [offer components](OFFER-ANATOMY.md). The source's optional ladder is a complete core product, a higher tier with usable tools/templates/extras, then later access or updates. Price research comes from the actual alternatives and buyer conversations, not page count. Existing guarantee, discount and renewal rules remain in their canonical owners.
 
-Start with an existing checkout suited to the actual product rather than building custom checkout for an unvalidated offer. Confirm the selected delivery mechanism as well as payment: a payment link alone does not establish that a buyer receives the digital asset. The source's named-provider capabilities are not verified by this guide. Checkout mechanisms remain in [the Stripe payment owner](../../backend/stripe/PAYMENTS.md). [more skills, info-product-playbook.md]
+Start with an existing checkout suited to the actual product rather than building custom checkout for an unvalidated offer. Confirm the selected delivery mechanism as well as payment: a payment link alone does not establish that a buyer receives the digital asset. The source's named-provider capabilities are not verified by this guide. Checkout mechanisms remain in [the Stripe payment owner](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/PAYMENTS.md). [more skills, info-product-playbook.md]
 
 ## Distribute complete answers
 
@@ -63,7 +63,7 @@ Start with an existing checkout suited to the actual product rather than buildin
 
 The free answer should work on its own. The paid product offers organization, completeness and ready-made artifacts for a person who wants the shortcut. Reuse the actual questions found in research rather than inventing a new content calendar disconnected from demand.
 
-- **Community posts and inbound replies:** use the complete-method and conversation workflow in [../social-media/REDDIT.md](../social-media/REDDIT.md). Keep human publication approval and community rules.
+- **Community posts and inbound replies:** use the complete-method and conversation workflow in [social-media REDDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/REDDIT.md). Keep human publication approval and community rules.
 - **Question sites:** answer the actual research questions completely over time. On Quora, disclose relevant affiliations, make the answer understandable without leaving the site, and do not use affiliate links. The source's relevant end-link suggestion is conditional on these rules, not a platform exemption. [https://help.quora.com/hc/en-us/articles/9456583756180-Question-and-Answer-Policies]
 - **Groups:** give useful permitted answers, respecting the individual group's link and promotion rules; a private group is not automatically a permissible collection source.
 - **Search wording:** use natural buyer terms when they fit the answer and channel. The source promised durable rankings and sales; those outcomes are not guaranteed. [https://developers.google.com/search/help/crawling-index-faq]
@@ -74,7 +74,7 @@ The free answer should work on its own. The paid product offers organization, co
 
 [more skills, info-product-playbook.md, phase 5]
 
-Invite buyers and interested correspondents to a clearly described newsletter, optionally with a chapter, template or promised update. The source says the incentive makes the ask natural; it does not establish automatic enrollment. Follow the existing [capture and consent owner](../../backend/email-practices/LISTS-AND-CAPTURE.md) for permission, confirmation and suppression.
+Invite buyers and interested correspondents to a clearly described newsletter, optionally with a chapter, template or promised update. The source says the incentive makes the ask natural; it does not establish automatic enrollment. Follow the existing [capture and consent owner](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md) for permission, confirmation and suppression.
 
 Plan useful niche emails with relevant product/tier invitations within what subscribers agreed to receive. The source's recurring earnings and easier-second-launch anecdotes are not a subscription contract, forecast or guaranteed result.
 

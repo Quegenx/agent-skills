@@ -47,7 +47,7 @@ Container queries are Baseline widely available since 2025-08-14 (newly availabl
 - **Write the threshold in the unit the content cares about.** [nerdy.dev: A CSS Container Query Pattern](https://nerdy.dev/a-css-container-query-pattern) (2023-10-10): "nice inline flex layout when there's room in it's `Column` container", and if not, "switch to a nice block layout and center the text". "I like the `ch` unit for this since I'm wanting to switch based on available reading length for the text." The exported note has no code.
 - **`calc()` works inside the condition.** [nerdy.dev: A powerful container query](https://nerdy.dev/carousel-adaptive-anchor-positioning-with-calc-in-a-container-query) (2024-12-19): anchored outside the carousel, its scroll buttons have "potential for them to be off screen or out of bounds", so `@container (inline-size >= calc(100cqi - 120px))` moves them inside; the code and its support are in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md#carousel-buttons-that-move-inside-or-outside).
 - **Container queries rescue layouts that media queries make hard.** [nerdy.dev: New Year, New Site](https://nerdy.dev/new-year-new-site) (2023-01-01), on its logical properties: "Turned out Media Queries made this hard though, and Container Queries saved the day." The promised follow-up post is not in the export.
-- **Count-aware grids combine `:has()` and `@container`.** [nerdy.dev: Neue Bento Layouts With Grid Has And Container Queries](https://nerdy.dev/neue-bento-layouts-with-grid-has-and-container-queries) (2024-01-08): "A CSS bento-like grid that's aware of the number of children and aspect ratio available thanks to `:has()` and `@container`", with view transitions animating the changes. Demo code not exported ([demo](https://codepen.io/argyleink/pen/RwdRaVg)). The post does not discuss cost; the repo's own measurement is that one `:root:has()` selector added 24 ms to every DOM change ([../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md)).
+- **Count-aware grids combine `:has()` and `@container`.** [nerdy.dev: Neue Bento Layouts With Grid Has And Container Queries](https://nerdy.dev/neue-bento-layouts-with-grid-has-and-container-queries) (2024-01-08): "A CSS bento-like grid that's aware of the number of children and aspect ratio available thanks to `:has()` and `@container`", with view transitions animating the changes. Demo code not exported ([demo](https://codepen.io/argyleink/pen/RwdRaVg)). The post does not discuss cost; the repo's own measurement is that one `:root:has()` selector added 24 ms to every DOM change ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md)).
 
 ### Container queries in Tailwind v4
 
@@ -227,7 +227,7 @@ Range syntax is Baseline widely available since 2025-09-27 (newly available 2023
   ```
 
   The same guard wraps the hover-demotion effects ([CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md#focus-by-demotion)), the `<details>` and enter/exit transitions ([TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md)) and smooth `scroll-behavior` in the Switch homescreen post ([SCROLL.md](SCROLL.md)). As a named query: `@custom-media --motionOK (prefers-reduced-motion: no-preference);` (above).
-- **A second view.** ui-animation: under `reduce`, "slides, zooms, parallax and large movements become 100-150 ms opacity cross-fades", and it calls a global `prefers-reduced-motion: reduce` override "a blunt fallback; better, write the reduced version of each animation deliberately" ([../ui-animation/PERFORMANCE.md](../ui-animation/PERFORMANCE.md)).
+- **A second view.** ui-animation: under `reduce`, "slides, zooms, parallax and large movements become 100-150 ms opacity cross-fades", and it calls a global `prefers-reduced-motion: reduce` override "a blunt fallback; better, write the reduced version of each animation deliberately" ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md)).
 
 ## Reduced transparency
 
@@ -265,9 +265,9 @@ Range syntax is Baseline widely available since 2025-09-27 (newly available 2023
 
 `prefers-color-scheme` is Baseline widely available since 2022-07-15 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme)); `prefers-contrast` since 2024-11-30, with values `no-preference`, `more`, `less` and `custom` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-contrast)).
 
-- **Answer the query once, high in the stack.** [nerdy.dev: BYO CSS tokens to Tailwind v4's new CSS centric config](https://nerdy.dev/BYO-CSS-tokens-to-tailwind-v4s-new-CSS-centric-config) (2024-03-18): after setting the surface and ink tokens inside one `@media (prefers-color-scheme: dark)` block, "no noise about light or dark, that's configured higher up in the stack and templates don't need to deal with it." The token code is in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md). app-ui instead uses "A class-based dark variant (`@custom-variant dark (&:is(.dark *))`), so the head script's class decides the theme" ([../app-ui/CHECKS.md](../app-ui/CHECKS.md)).
+- **Answer the query once, high in the stack.** [nerdy.dev: BYO CSS tokens to Tailwind v4's new CSS centric config](https://nerdy.dev/BYO-CSS-tokens-to-tailwind-v4s-new-CSS-centric-config) (2024-03-18): after setting the surface and ink tokens inside one `@media (prefers-color-scheme: dark)` block, "no noise about light or dark, that's configured higher up in the stack and templates don't need to deal with it." The token code is in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md). app-ui instead uses "A class-based dark variant (`@custom-variant dark (&:is(.dark *))`), so the head script's class decides the theme" ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)).
 - **Combine scheme and contrast.** The irradiation post combines `(prefers-color-scheme: dark) and (prefers-contrast: more)` to set a font's `GRAD` axis; that recipe is in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md).
-- **Increased contrast as color tokens,** set separately for light and dark, is in [../color-system/DARK-MODE-AND-GAMUT.md](../color-system/DARK-MODE-AND-GAMUT.md#increased-contrast-per-appearance).
+- **Increased contrast as color tokens,** set separately for light and dark, is in [color-system DARK-MODE-AND-GAMUT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/DARK-MODE-AND-GAMUT.md#increased-contrast-per-appearance).
 - **Sections with their own scheme:** the three strategies are in [COLOR.md](COLOR.md#page-and-component-light-and-dark).
 
 ## Forced colors
@@ -337,7 +337,7 @@ The interaction media queries (`hover`, `any-hover`, `pointer`, `any-pointer`) a
   }
   ```
 
-  Status: not Baseline. web-features lists only Chrome 47 and Firefox for Android 116; browser-compat-data has the query itself from Chrome 42, Firefox 47 and Safari 13. The source rated it safe for most targets with "Chrome 45, Safari 13, Firefox 89". OneSignal's web setup reads the same query from JS with `matchMedia` ([../../backend/onesignal/SETUP-WEB.md](../../backend/onesignal/SETUP-WEB.md)).
+  Status: not Baseline. web-features lists only Chrome 47 and Firefox for Android 116; browser-compat-data has the query itself from Chrome 42, Firefox 47 and Safari 13. The source rated it safe for most targets with "Chrome 45, Safari 13, Firefox 89". OneSignal's web setup reads the same query from JS with `matchMedia` ([onesignal SETUP-WEB.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/SETUP-WEB.md)).
 
 ## Prove it
 

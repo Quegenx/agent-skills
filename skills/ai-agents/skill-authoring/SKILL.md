@@ -9,6 +9,8 @@ A skill is a folder of instructions, scripts and resources that an agent discove
 
 Branch-triggered references and observable completion also draw on [mattpocock/skills, writing-for-agents]; pressure checks on [obra/superpowers, writing-skills]; navigation and routing negatives on [bgauryy/octocode, octocode-skills]. Official description requirements take precedence over source preferences.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Choosing what the skill is: the nine categories, examples of each, finding gaps in a library | [CATEGORIES.md](CATEGORIES.md) |
@@ -27,9 +29,11 @@ Branch-triggered references and observable completion also draw on [mattpocock/s
 4. **Build a Gotchas section** from the failure points Claude actually hits, and keep adding to it.
 5. **Make the folder do the work:** tell Claude which files the skill has and when to read each; split long skills into many files.
 6. **State the goal and the constraints, not every step;** constrain hard only in highly important areas.
-7. **Give it code:** scripts and helper libraries, so Claude spends its turns on composition instead of reconstructing boilerplate.
+7. **Give it code when the job needs it:** scripts and helper libraries, so Claude spends its turns on composition instead of reconstructing boilerplate.
 8. **Measure it:** log usage to find skills that are popular or under-triggering, and improve a skill against an eval, not a hunch; a skill earns its place only if the agent does the job better with it than without it.
 
 ## Prove it
+
+Check the authoring decisions and resources used by this skill. Measurement guidance describes the evaluation branch; report unperformed evaluations rather than treating authoring as permission to run them.
 
 The description reads as when to trigger, with literal trigger phrases, and the skill sits in one category; SKILL.md names every file in the folder and the case for each; a Gotchas section exists and each entry traces to a failure Claude hit; no section restates what Claude does by default; instructions state goals and constraints rather than numbered steps outside high-risk spots; and every file's own Prove it checks pass for the parts you touched.

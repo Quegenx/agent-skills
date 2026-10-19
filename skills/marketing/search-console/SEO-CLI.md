@@ -50,7 +50,7 @@ A tool an agent can call to read a site's own Search Console, Bing Webmaster Too
 
 ## Analytics and Clicky
 
-[iannuttall/seo, README.md] `seo analytics google properties`, then `seo ai-referrals --property 123456789`; the property must be the numeric id (`api.ts` rejects anything else with "The Google Analytics property must be its numeric id."). Clicky: `seo data --source clicky --site example.com`. The installed skill lists neither `ai-referrals` nor `analytics google properties`. "A Clicky visit is not a Google Analytics session or user" [AGENTS.md]. Google Analytics itself is [../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md).
+[iannuttall/seo, README.md] `seo analytics google properties`, then `seo ai-referrals --property 123456789`; the property must be the numeric id (`api.ts` rejects anything else with "The Google Analytics property must be its numeric id."). Clicky: `seo data --source clicky --site example.com`. The installed skill lists neither `ai-referrals` nor `analytics google properties`. "A Clicky visit is not a Google Analytics session or user" [AGENTS.md]. Google Analytics itself is [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md).
 
 ## In CI with a service account
 

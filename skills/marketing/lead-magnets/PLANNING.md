@@ -1,6 +1,6 @@
 # Planning a lead magnet
 
-What to ask, what makes a magnet work, which format fits which stage, and what to hand back. All from [coreyhaines31/marketingskills, lead-magnets] unless tagged otherwise; read `.agents/product-context.md` first ([CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)) and ask only what it leaves open.
+What to ask, what makes a magnet work, which format fits which stage, and what to hand back. All from [coreyhaines31/marketingskills, lead-magnets] unless tagged otherwise; read `.agents/product-context.md` first ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)) and ask only what it leaves open.
 
 ## Before planning
 
@@ -47,7 +47,7 @@ Effort and time are the source's estimates [coreyhaines31/marketingskills, lead-
 | Resource library | Ongoing value, return visits | High | Ongoing |
 | Free trial or community access | Product experience | Varies | Varies |
 
-How to build each one is in [FORMATS.md](FORMATS.md). An interactive tool (calculator, grader) is in [FREE-TOOLS.md](FREE-TOOLS.md); a content archive packaged as an agent skill is in [skill-authoring CONTENT-TO-SKILL.md](../../ai-agents/skill-authoring/CONTENT-TO-SKILL.md).
+How to build each one is in [FORMATS.md](FORMATS.md). An interactive tool (calculator, grader) is in [FREE-TOOLS.md](FREE-TOOLS.md); a content archive packaged as an agent skill is in [skill-authoring CONTENT-TO-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/skill-authoring/CONTENT-TO-SKILL.md).
 
 **A static magnet or a free tool:** the source's eval expects the answer to separate static content from an interactive tool, compare the effort to build, compare SEO and shareability, and choose on speed against investment [coreyhaines31/marketingskills, lead-magnets evals].
 

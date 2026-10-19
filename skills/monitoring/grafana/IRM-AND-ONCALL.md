@@ -115,7 +115,7 @@ resource "grafana_oncall_on_call_shift" "weekday" {
 ### Slack, incidents, roles, limits
 
 - **Slack:** install at OnCall Settings > Chat Ops > Slack; users connect in Profile; set a default channel. Message actions: Acknowledge, Resolve, Silence, Add responders, Add note. Slash commands: `/escalate`, `/oncall`.
-- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; source severity P1 to P4, mapped here to P0 to P3 respectively; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [INCIDENT-RESPONSE.md](../observability/INCIDENT-RESPONSE.md#the-postmortem)).
+- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; source severity P1 to P4, mapped here to P0 to P3 respectively; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [observability INCIDENT-RESPONSE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/INCIDENT-RESPONSE.md#the-postmortem)).
 - **RBAC roles:** `oncall-admin`, `oncall-editor`, `oncall-viewer`, `oncall-notifications-receiver`. Assign integrations and schedules to teams.
 - **Rate limits:** 300 alerts per integration per 5 min; 500 alerts per org per 5 min; 300 API requests per key per 5 min.
 - **Always `send_resolved: true` and `max_alerts: 100`** on Alertmanager webhooks.

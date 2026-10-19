@@ -1,6 +1,6 @@
 # Solar preview services
 
-Two installer-facing offers and their operating contract, paraphrased from [more skills, 14-solar-rooftop-renders.md]. This is a service guide, not a Google Solar API tutorial. Shared discovery, demonstration, approval and authorized delivery follow [DEMO-FIRST.md](DEMO-FIRST.md); roof-edit constraints are defined once in [REAL-PHOTO-EDITING.md](../marketing-images/REAL-PHOTO-EDITING.md#solar-roof-illustrations).
+Two installer-facing offers and their operating contract, paraphrased from [more skills, 14-solar-rooftop-renders.md]. This is a service guide, not a Google Solar API tutorial. Shared discovery, demonstration, approval and authorized delivery follow [DEMO-FIRST.md](DEMO-FIRST.md); roof-edit constraints are defined once in [marketing-images REAL-PHOTO-EDITING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#solar-roof-illustrations).
 
 ## Choose the buyer and pilot
 
@@ -27,7 +27,7 @@ Use only numbers traceable to the actual reviewed configuration. Capacity is cou
 [more skills, 14-solar-rooftop-renders.md]
 
 1. Confirm the building identity, appropriate photo rights, usable visible roof and supported measurements. Center the asset on the actual building rather than trusting an entrance/car-park pin.
-2. Use the [roof illustration contract](../marketing-images/REAL-PHOTO-EDITING.md#solar-roof-illustrations), including matching visible count, obstacles, existing arrays, materials, light and unchanged surroundings.
+2. Use the [roof illustration contract](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#solar-roof-illustrations), including matching visible count, obstacles, existing arrays, materials, light and unchanged surroundings.
 3. Make a one-page asset: large illustration, supported count/capacity/approximate annual production beneath it, legible measurement provenance/date and a clear illustration-not-installation-design statement. The source proposes PNG/PDF exports.
 4. Review every final asset. The operator can compare original/result and provenance, edit the message, approve, reject or regenerate. Repeating the same render is the author's first retry option, not a success guarantee or permission for unbounded paid attempts.
 5. Use only an approved final asset in a separately authorized send, and monitor the reply inbox. A corrected bounced address is not itself a new permission to contact.
@@ -36,7 +36,7 @@ Use only numbers traceable to the actual reviewed configuration. Capacity is cou
 
 [more skills, 14-solar-rooftop-renders.md]
 
-Supply only property address, supported panel count, capacity/production, measurement source/date and actual sender identity. Draft fewer than 60 words in plain language, optionally lowercase. Open by explaining the illustration, state production once, identify the source briefly, disclose its illustrative status and end with one easy question. No invented visit, survey, prior request, relationship or financial saving; no greeting formula, compliment or energy-bill question. Return message text only, or email subject/body with a subject under 50 characters. Generic inflated sales language is checked under [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), not a second phrase dictionary here.
+Supply only property address, supported panel count, capacity/production, measurement source/date and actual sender identity. Draft fewer than 60 words in plain language, optionally lowercase. Open by explaining the illustration, state production once, identify the source briefly, disclose its illustrative status and end with one easy question. No invented visit, survey, prior request, relationship or financial saving; no greeting formula, compliment or energy-bill question. Return message text only, or email subject/body with a subject under 50 characters. Generic inflated sales language is checked under [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), not a second phrase dictionary here.
 
 ## Operating records and handoff
 
@@ -44,17 +44,17 @@ Supply only property address, supported panel count, capacity/production, measur
 
 Keep building identity/location and residential/commercial type, supported roof metrics and imagery date, asset references, exact model/prompt, subject/body, review status and send history with recipient/channel/provider ID/time. Use permitted retention, not the source's keep-raw-data-forever instruction. The source distinguishes prospect list, side-by-side review/detail and send log, with prospect-stage filters and largest-roof-first sorting as optional operator choices.
 
-Checkpoint each stage so a failure resumes from the last completed step. The author proposes weekday-morning preparation, one active job and three retries after 1, 5 and 25 minutes, then parking/alerting. Durable work and duplicate prevention belong to [background-jobs](../../backend/background-jobs/SKILL.md); ownership and private asset access belong to [Supabase security](../../backend/supabase/SECURITY.md). A pending/approved column alone does not prove unauthorized sending impossible. The source also leaves insert-only send rows versus delivery updates/cascade deletion and storage-write permissions unresolved.
+Checkpoint each stage so a failure resumes from the last completed step. The author proposes weekday-morning preparation, one active job and three retries after 1, 5 and 25 minutes, then parking/alerting. Durable work and duplicate prevention belong to [background-jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md); ownership and private asset access belong to [Supabase security](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/SECURITY.md). A pending/approved column alone does not prove unauthorized sending impossible. The source also leaves insert-only send rows versus delivery updates/cascade deletion and storage-write permissions unresolved.
 
 Managed option: agency keeps code/keys and a named human reviewer, with monthly billing per lead or booked appointment. Client branding/domain requires actual authorization. Handoff option: build in client accounts, teach a reviewer to approve and agree setup plus ongoing support. The source prefers managed visual QA; it gives no basis for assuming every client reviewer is incapable.
 
 ## Input and evidence limits
 
-Use the existing [list-compliance rules](../prospecting/LIST-COMPLIANCE.md#google-maps) rather than a retained raw Maps prospect database. In the fetched non-EEA Solar-specific terms, marketing as a Downstream Transaction requires user opt-in; raw Building Insights/Data Layers caching is limited to 30 days, with a fixed-media exception for valid Downstream Transactions. The source instead prescribed cold-property campaigns and permanent raw/photo retention. Check the terms applicable to the billing region and the attribution requirements before using provider data. [Service-specific terms, section 20](https://cloud.google.com/maps-platform/terms/maps-service-terms), [Solar policies](https://developers.google.com/maps/documentation/solar/policies)
+Use the existing [list-compliance rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LIST-COMPLIANCE.md#google-maps) rather than a retained raw Maps prospect database. In the fetched non-EEA Solar-specific terms, marketing as a Downstream Transaction requires user opt-in; raw Building Insights/Data Layers caching is limited to 30 days, with a fixed-media exception for valid Downstream Transactions. The source instead prescribed cold-property campaigns and permanent raw/photo retention. Check the terms applicable to the billing region and the attribution requirements before using provider data. [Service-specific terms, section 20](https://cloud.google.com/maps-platform/terms/maps-service-terms), [Solar policies](https://developers.google.com/maps/documentation/solar/policies)
 
-Street View is not a general-purpose printable/editable marketing-photo source: [the shared rights correction](../marketing-images/REAL-PHOTO-EDITING.md#start-with-permission-and-the-original) applies.
+Street View is not a general-purpose printable/editable marketing-photo source: [the shared rights correction](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#start-with-permission-and-the-original) applies.
 
-[more skills, 14-solar-rooftop-renders.md] The author reports trying input APIs and illustrations, but no real prospect send, deployed dashboard or scheduled run, and no measured reply rate. Model identifiers, prices, coverage counts, sizing fallbacks and global channel claims are not adopted here. Generic image-prompt/product-generation conflicts remain in [REAL-PHOTO-EDITING.md](../marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods).
+[more skills, 14-solar-rooftop-renders.md] The author reports trying input APIs and illustrations, but no real prospect send, deployed dashboard or scheduled run, and no measured reply rate. Model identifiers, prices, coverage counts, sizing fallbacks and global channel claims are not adopted here. Generic image-prompt/product-generation conflicts remain in [marketing-images REAL-PHOTO-EDITING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods).
 
 ## Prove it
 

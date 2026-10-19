@@ -24,7 +24,7 @@ Source use cases are recurring cleanup/analytics, post-signup mail, timed subscr
 - Keep [mutation scheduling atomicity and mutation/action execution guarantees](FUNCTIONS-AND-DATA.md#native-scheduling-guarantees) with their canonical owner. A schedule made from an action is not rolled back when that action later fails.
 - Authentication is not propagated to the scheduled function. Pass the required user/org context explicitly from an already authorized boundary, then check the current target/conditions when work executes; the target may have been deleted. Prefer internal entrypoints for scheduled work. [udecode/kitcn, references/features/scheduling.md, Auth context and Best practices]
 - One function can schedule at most 1000 functions with 8 MB total argument size. Completed scheduling records/results are retained for seven days.
-- The source's blanket reminder that scheduled work "might run multiple times" does not override Convex's mutation/action-specific guarantees. Application-level manual retries and repeated cron runs still need the intended effect policy; generic retry design remains in [background jobs](../background-jobs/WORKERS.md#retries-and-failure).
+- The source's blanket reminder that scheduled work "might run multiple times" does not override Convex's mutation/action-specific guarantees. Application-level manual retries and repeated cron runs still need the intended effect policy; generic retry design remains in [background jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/WORKERS.md#retries-and-failure).
 
 ## Recurring jobs
 

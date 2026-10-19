@@ -15,7 +15,7 @@ Examples and build tips per tool type, concepts by industry, and the case librar
 | Libraries and resources | Icons, templates, code snippets, example gallery, industry directory, resource list, swipe files, font pairing | High SEO value, ongoing traffic, establishes authority, linkable asset | Searchable and filterable; easy copying and downloading; update regularly; accept community submissions |
 | Interactive educational | Tutorials, code playgrounds, visual explainers, quizzes and assessments, simulators, comparison tools, decision trees, configurators | Engages deeply, demonstrates expertise, shareable, memory-creating | Hands-on; immediate feedback; lead to deeper resources; capture engaged users |
 
-A meta tag preview or share-card checker overlaps with this repo's own share-preview rules in [seo](../seo/SKILL.md); a site grader or auditor maps to the checks in [site-audit](../site-audit/SKILL.md).
+A meta tag preview or share-card checker overlaps with this repo's own share-preview rules in [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md); a site grader or auditor maps to the checks in [site-audit](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/SKILL.md).
 
 ## Concepts by industry
 

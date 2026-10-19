@@ -18,7 +18,7 @@ For [Sales Safari](SOURCES.md#sales-safari), observe the audience before recruit
 
 `[coreyhaines31/marketingskills, customer-research]` $50 per call (about 30 minutes), $5 per survey response, offered up front; gift cards work. "Aim for 10 calls, be happy with 5"; by call 5 or 6 the same themes repeat.
 
-These are payments for research, never for public reviews: Apple lists "paid, incentivized, filtered, or fake feedback" as review manipulation, and aso's rule is never to "offer incentives for reviews" ([aso RATINGS-AND-REVIEWS.md](../../mobile/aso/RATINGS-AND-REVIEWS.md)). Don't tie a gift card to leaving a store, G2 or Capterra review.
+These are payments for research, never for public reviews: Apple lists "paid, incentivized, filtered, or fake feedback" as review manipulation, and aso's rule is never to "offer incentives for reviews" ([aso RATINGS-AND-REVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/RATINGS-AND-REVIEWS.md)). Don't tie a gift card to leaving a store, G2 or Capterra review.
 
 ## The outreach email
 
@@ -42,7 +42,7 @@ Thanks either way,
 [Name]
 ```
 
-Keep it a research request. The FTC applies a primary-purpose test: a message that mixes commercial and relationship content is commercial if the subject line would make a recipient think it advertises, or if the relationship content isn't mainly at the beginning ([CAN-SPAM guide](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)). Add a pitch and the commercial-email duties apply ([email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md)).
+Keep it a research request. The FTC applies a primary-purpose test: a message that mixes commercial and relationship content is commercial if the subject line would make a recipient think it advertises, or if the relationship content isn't mainly at the beginning ([CAN-SPAM guide](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)). Add a pitch and the commercial-email duties apply ([email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md)).
 
 ## Keep asking why
 
@@ -70,13 +70,13 @@ The benchmark is Ellis's practitioner rule, not a standard: 40% or more "very di
 - "What is the main benefit you receive from [product]?" (positioning, in their words)
 - "How can we improve [product] for you?" (from the fence-sitters)
 
-Segment every answer by the "very disappointed" cohort against the rest. Building it as an in-app survey is [posthog SURVEYS.md](../../monitoring/posthog/SURVEYS.md).
+Segment every answer by the "very disappointed" cohort against the rest. Building it as an in-app survey is [posthog SURVEYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SURVEYS.md).
 
 ## Survey guardrails
 
 `[coreyhaines31/marketingskills, customer-research]` Keep it short (each extra question drops completion); "Prefer open-ended for language mining; multiple-choice answers are artifacts of the options you gave"; don't lead; deliver the $5 on submit.
 
-Two views on the first question: this source prefers open text for language; PostHog's survey data shows a single-choice first question at 8.0% response against 0.8% for open text ([posthog SURVEYS.md](../../monitoring/posthog/SURVEYS.md#design-for-responses)). They fit together: open with a choice question for the response rate, follow with open text for the language.
+Two views on the first question: this source prefers open text for language; PostHog's survey data shows a single-choice first question at 8.0% response against 0.8% for open text ([posthog SURVEYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SURVEYS.md#design-for-responses)). They fit together: open with a choice question for the response rate, follow with open text for the language.
 
 ## Case anchors
 

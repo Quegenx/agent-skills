@@ -9,7 +9,7 @@ Local SEO works out why a business does or doesn't show in Google Maps and the l
 - The business by `cid` or `placeId` ("most reliable"), or its name.
 - Its coordinate. Derive it from a local search result row; ask only when that is ambiguous.
 - "One to three keywords customers actually search (e.g. "emergency plumber", not the brand name)".
-- What the business does and where it operates, from `.agents/product-context.md` ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); this decides the keywords and the radius.
+- What the business does and where it operates, from `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)); this decides the keywords and the radius.
 
 ## Workflow
 
@@ -52,7 +52,7 @@ The source's guardrail is "Never recommend review gating, fake reviews, or keywo
 - "Including unnecessary information in your business name isn't permitted, and could result in the suspension" of the profile: no taglines, store codes, trademark signs or all caps ([Business Profile guidelines](https://support.google.com/business/answer/3038177)).
 - Review stars in markup have their own rules (self-serving reviews are ineligible): [STRUCTURED-DATA.md](STRUCTURED-DATA.md).
 
-Apple's equivalent rules for app reviews are in [../../mobile/aso/RATINGS-AND-REVIEWS.md](../../mobile/aso/RATINGS-AND-REVIEWS.md).
+Apple's equivalent rules for app reviews are in [aso RATINGS-AND-REVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/RATINGS-AND-REVIEWS.md).
 
 ## Report
 

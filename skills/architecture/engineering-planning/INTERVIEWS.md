@@ -8,7 +8,7 @@ Use a conversation to resolve decisions, or prepare questions for a recipient wh
 
 - Read the relevant code and existing decisions. Identify the user's intent, desired outcome, non-goals, constraints, prior art and resources.
 - Separate decisions the user has made from implementation choices left to the builder. Label open questions rather than silently convert assumptions into requirements.
-- When an experiment would settle the question better than more discussion, agree the question and use a small [prototype](../software-architecture/PROTOTYPES.md).
+- When an experiment would settle the question better than more discussion, agree the question and use a small [prototype](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/software-architecture/PROTOTYPES.md).
 - For a builder handoff, have the intended executor inspect whether the brief leaves a material decision unanswered. Fill discoverable facts from the repository, make and label routine implementation choices, and return only consequential user decisions to the user.
 
 ## Work the unsettled frontier

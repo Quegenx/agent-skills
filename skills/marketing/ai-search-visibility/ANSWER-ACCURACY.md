@@ -1,6 +1,6 @@
 # Answer accuracy: what AI says about you
 
-Visibility counts whether you appear; this checks what the answer says once you do. A brand can show up in every answer and still be described with last year's pricing, a missing integration or a limit it fixed months ago. The ledger, verdicts and fix order are [coreyhaines31/marketingskills, ai-seo, answer-accuracy] (MIT; adapted there from Profound's MIT ai-answer-accuracy-auditor). The scheduled version of this audit is a loop in [../marketing-loops/SKILL.md](../marketing-loops/SKILL.md).
+Visibility counts whether you appear; this checks what the answer says once you do. A brand can show up in every answer and still be described with last year's pricing, a missing integration or a limit it fixed months ago. The ledger, verdicts and fix order are [coreyhaines31/marketingskills, ai-seo, answer-accuracy] (MIT; adapted there from Profound's MIT ai-answer-accuracy-auditor). The scheduled version of this audit is a loop in [marketing-loops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md).
 
 ## When to run it
 
@@ -40,7 +40,7 @@ Check first-party facts against your current product material and claims about t
 
 ## Severity
 
-The source's Critical, High, Medium and Low are written here as P0 to P3, the repo's scale ([../../architecture/code-review/REVIEWER.md](../../architecture/code-review/REVIEWER.md)).
+The source's Critical, High, Medium and Low are written here as P0 to P3, the repo's scale ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md)).
 
 | Level | Examples |
 |---|---|

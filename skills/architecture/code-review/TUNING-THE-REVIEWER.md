@@ -1,6 +1,6 @@
 # Tuning the reviewer
 
-The reviewer improves in a loop: every incident becomes a case, every change to the reviewer is scored against all of them, and noise and review rounds are measured beside recall. Building the eval itself (harness, judges, the fix loop, gates) is the [agent-evals](../../ai-agents/agent-evals/SKILL.md) skill; this file is what to measure for a code reviewer.
+The reviewer improves in a loop: every incident becomes a case, every change to the reviewer is scored against all of them, and noise and review rounds are measured beside recall. Building the eval itself (harness, judges, the fix loop, gates) is the [agent-evals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md) skill; this file is what to measure for a code reviewer.
 
 ## Incidents are the eval
 

@@ -12,15 +12,17 @@ Architecture is the set of decisions that are expensive to change: where the bou
 
 The macro decision constrains how modules talk to each other. The micro decision is local: each module can choose its own, because its public boundary protects everyone else.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Clean Architecture layers, the dependency rule, transactions, authorization, logging, caching, mapping, errors, the cost of abstractions | [LAYERS.md](LAYERS.md) |
 | Vertical slices: folder structure from 5 to 50+ features, endpoints, validation, cross-cutting wrappers, shared code, testing slices | [SLICES.md](SLICES.md) |
 | Modular monolith: boundaries, public APIs, data isolation per module, communication, shared kernel, refactoring an overgrown module | [MODULES.md](MODULES.md) |
 | Scaling a monolith, deciding to split, extracting a module into a service | [EVOLVE.md](EVOLVE.md) |
-| Legacy replacement: routing seam, source of truth, synchronization, shadow reads and cutover | [System migration](../system-migration/SKILL.md#rewriting-a-legacy-system) |
+| Legacy replacement: routing seam, source of truth, synchronization, shadow reads and cutover | [System migration](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/system-migration/SKILL.md#rewriting-a-legacy-system) |
 | Answering a logic question with a portable model, visible state and guided scenarios | [PROTOTYPES.md](PROTOTYPES.md) |
-| Deep module interfaces and dependency seams | [DEEP-MODULES.md](../refactoring/DEEP-MODULES.md) |
+| Deep module interfaces and dependency seams | [refactoring DEEP-MODULES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DEEP-MODULES.md) |
 
 Related: bounded contexts and context maps are in the `domain-modeling` skill's STRATEGIC.md; domain vs integration events, sagas and CQRS in its EVENTS.md; outbox, inbox and brokers in the `messaging` skill; import-graph rules and breaking cycles in the `refactoring` skill's DEPENDENCIES.md; whole-system components (load balancers, caches, CDNs, queues) in the `system-design` skill.
 

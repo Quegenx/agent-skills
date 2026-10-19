@@ -1,6 +1,6 @@
 # Reading monitoring graphs
 
-How to read monitoring graphs and diagnose the patterns they show. Incident response, deploy observation and postmortems are in [INCIDENT-RESPONSE.md](INCIDENT-RESPONSE.md). Building the panels and alerts is in the `grafana` skill ([DASHBOARDS.md](../grafana/DASHBOARDS.md), [ALERTING.md](../grafana/ALERTING.md)).
+How to read monitoring graphs and diagnose the patterns they show. Incident response, deploy observation and postmortems are in [INCIDENT-RESPONSE.md](INCIDENT-RESPONSE.md). Building the panels and alerts is in the `grafana` skill ([grafana DASHBOARDS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/grafana/DASHBOARDS.md), [grafana ALERTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/grafana/ALERTING.md)).
 
 Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/server-monitoring-analysis-guide/en/ (the four signals cite the Google SRE book, https://sre.google/sre-book/monitoring-distributed-systems/).
 
@@ -21,7 +21,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 - **A vertical drop** means requests are failing to arrive (the load balancer, DNS or gateway out front), not that the server went idle. "If every server metric looks clean in the middle of an incident, that itself is the biggest anomaly signal."
 - **A vertical rise** means a viral surge, crawler traffic or an attack. Regular early-morning spikes "are almost always batch jobs or cron. If the spikes are regular, suspect an internal job first."
 - **Traffic is the denominator.** "The same 500 errors mean very different things at a million requests per minute and at a thousand." Divide any count (errors, slow queries) by traffic and read it as a rate.
-- **A spike after an incident starts is usually a retry storm,** "the same users knocking again and again", not more users. Clients and gateways retrying at once push traffic to 2 to 3 times normal. Retries need exponential backoff, jitter and a budget on total retrying ([RELIABILITY.md](../../backend/api-design/RELIABILITY.md#retry-timeout-circuit-breaker)): "A well-built retry absorbs a transient failure. A badly built one amplifies the incident."
+- **A spike after an incident starts is usually a retry storm,** "the same users knocking again and again", not more users. Clients and gateways retrying at once push traffic to 2 to 3 times normal. Retries need exponential backoff, jitter and a budget on total retrying ([api-design RELIABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/RELIABILITY.md#retry-timeout-circuit-breaker)): "A well-built retry absorbs a transient failure. A badly built one amplifies the incident."
 
 ## Latency
 
@@ -61,7 +61,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 - **The connection pool runs dry first.** The article cites defaults of 200 for Tomcat's thread pool and 10 for HikariCP's connection pool: with 200 threads sharing 10 connections, "the connection pool runs dry before the thread pool does whenever the DB slows even slightly."
 - **A vertical P99 jump means a pool ran dry.** A queued request's time is its own processing plus everyone ahead of it. "If P99 on a graph didn't degrade gradually but jumped vertically at some point, it is likely that a pool somewhere just ran dry."
 - **Read the slope of active threads,** not the absolute utilization. A steep climb that does not follow traffic means "the cause is usually not the pool itself but a delay somewhere else."
-- **Bigger pools lengthen the line.** When the app logs "connection timeout", "adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow before asking whether the pool is too small: put the connection wait time metric next to the DB's slow query log ([CONNECTIONS.md](../../backend/postgres/CONNECTIONS.md)).
+- **Bigger pools lengthen the line.** When the app logs "connection timeout", "adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow before asking whether the pool is too small: put the connection wait time metric next to the DB's slow query log ([postgres CONNECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/CONNECTIONS.md)).
 - **Health checks spread the failure.** Threads blocked on the DB make health checks time out, the load balancer removes the server, and the rest absorb its traffic and run dry faster: "One slow query toppling the whole cluster like dominoes is the most common scenario for a cascading failure." Restarting the dead servers is wasted effort; they reattach to the same slow DB ([HEALTH.md](HEALTH.md)).
 
 ## Event-loop servers
@@ -79,7 +79,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 ## Queues, backpressure, load shedding
 
 - **A growing queue is "debt that lengthens everyone's wait":** 100 queued at 100/s is a 1s wait, 10,000 queued is 100s. Once the wait passes the client timeout, every successful run "just produces a response nobody is left to receive", and the queue eats memory until OOM. Traffic exceeding throughput like this is called backpressure.
-- **Shed load.** Flow control means telling the stage in front and explicitly refusing the traffic you cannot digest right now, instead of hiding the backpressure inside the queue. The simplest form, load shedding: cap the queue and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly". Without it, "everyone dies slowly and fairly, together" ([RELIABILITY.md](../../backend/api-design/RELIABILITY.md#rate-limits)).
+- **Shed load.** Flow control means telling the stage in front and explicitly refusing the traffic you cannot digest right now, instead of hiding the backpressure inside the queue. The simplest form, load shedding: cap the queue and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly". Without it, "everyone dies slowly and fairly, together" ([api-design RELIABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/RELIABILITY.md#rate-limits)).
 - **The signature of missing flow control:** "If the queue length or wait time graph will not stop trending upward, flow control is missing or insufficient. A healthy system's queue graph may slosh, but it always returns to equilibrium."
 
 ## Cache hit rate
@@ -89,7 +89,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 
 ## When two dashboards disagree
 
-- **A timeout above the work records a success nobody received.** Gateway timeout 3s, backend query 5s: the user gets a 504 at 3s while the backend finishes and "proudly records a success". "The backend metrics show no failures, and the gateway metrics show no successes", and under overload the wasted work delays recovery. Give the inner layer a shorter timeout than the outer (gateway 3s, backend DB timeout about 2.5s), the article's "timeout budget" ([RELIABILITY.md](../../backend/api-design/RELIABILITY.md#deadlines-and-cancellation)).
+- **A timeout above the work records a success nobody received.** Gateway timeout 3s, backend query 5s: the user gets a 504 at 3s while the backend finishes and "proudly records a success". "The backend metrics show no failures, and the gateway metrics show no successes", and under overload the wasted work delays recovery. Give the inner layer a shorter timeout than the outer (gateway 3s, backend DB timeout about 2.5s), the article's "timeout budget" ([api-design RELIABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/RELIABILITY.md#deadlines-and-cancellation)).
 - "When one layer's error rate and another layer's success rate contradict each other, look at the timeout settings before the code."
 
 ## The diagnosis table

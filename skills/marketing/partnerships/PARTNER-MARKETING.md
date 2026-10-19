@@ -59,13 +59,13 @@ The source's eval for scoring adds: weight the criteria by the goal of the campa
 |---|---|---|---|
 | Co-authored blog post | Low | Shared byline, link exchange | Thought leadership, SEO |
 | Joint ebook or guide | Medium | Gated, split leads | Lead gen, deeper topic |
-| Research report | High | Gated, split leads | Authority, PR ([../public-relations/STORY-ANGLES.md](../public-relations/STORY-ANGLES.md#data-stories)) |
+| Research report | High | Gated, split leads | Authority, PR ([public-relations STORY-ANGLES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/STORY-ANGLES.md#data-stories)) |
 | Guest newsletter swap | Low | Each keeps own leads | Audience exposure |
 | Podcast guest exchange | Low | Each keeps own leads | Relationship building |
 
 | Event format | Effort | Best for |
 |---|---|---|
-| Joint webinar | Medium | Lead gen, product education ([../event-marketing/WEBINAR-FUNNEL.md](../event-marketing/WEBINAR-FUNNEL.md)) |
+| Joint webinar | Medium | Lead gen, product education ([event-marketing WEBINAR-FUNNEL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/event-marketing/WEBINAR-FUNNEL.md)) |
 | Virtual summit panel | Medium | Multi-partner exposure |
 | Co-hosted workshop | High | Hands-on education, deeper engagement |
 | Conference booth sharing | Medium | Cost splitting, audience overlap |
@@ -73,7 +73,7 @@ The source's eval for scoring adds: weight the criteria by the goal of the campa
 
 | Product and integration format | Effort | Best for |
 |---|---|---|
-| Integration launch | Medium | Existing integration partners ([../product-launch/LAUNCH-PLAN.md](../product-launch/LAUNCH-PLAN.md#ongoing-launches)) |
+| Integration launch | Medium | Existing integration partners ([product-launch LAUNCH-PLAN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/LAUNCH-PLAN.md#ongoing-launches)) |
 | Joint case study | Medium | Shared customers |
 | "Better together" landing page | Low | Integration discovery |
 | Bundle or discount | Medium | Conversion boost, cross-sell |
@@ -86,7 +86,7 @@ The source's eval for scoring adds: weight the criteria by the goal of the campa
 | Slack or Discord community collab | Low | Community building |
 | Joint AMA or X Space | Low | Thought leadership |
 
-A takeover, giveaway or contest needs the FTC disclosure wording (a contest post carries "#XYZ_Contest" or "#XYZ_Sweepstakes", and the brand tells entrants where to put it): [COMMUNITY.md](../community-marketing/COMMUNITY.md#ambassadors) and [../creator-marketing/DISCLOSURE.md](../creator-marketing/DISCLOSURE.md). [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking]
+A takeover, giveaway or contest needs the FTC disclosure wording (a contest post carries "#XYZ_Contest" or "#XYZ_Sweepstakes", and the brand tells entrants where to put it): [community-marketing COMMUNITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/community-marketing/COMMUNITY.md#ambassadors) and [creator-marketing DISCLOSURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/DISCLOSURE.md). [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking]
 
 ## Brainstorming with a partner
 
@@ -125,8 +125,8 @@ Would you be open to a quick call to explore?
 ```
 
 - **US:** CAN-SPAM covers every commercial message and "makes no exception for business-to-business email"; each violating email can cost "up to $53,088". A pitch whose primary purpose is promoting a joint campaign is commercial. [https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business]
-- **Canada:** CASL requires consent "before sending them commercial electronic messages". Consent is implied when the address was "conspicuously published" without a statement refusing unsolicited messages, and only when "the message is relevant to the person's business, role, functions or duties" (CASL s.10(9)(b), [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email)); so email a Canadian partner contact only at an address they published, and only about their role. [https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en/getting-consent-send-email; https://laws-lois.justice.gc.ca/eng/acts/E-1.6/page-2.html]
-- The full rules, and the EU and UK, are in [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md); outreach volume and sequences are [../cold-outreach/SKILL.md](../cold-outreach/SKILL.md). Send one-to-one, never a mass blast, and never to a scraped list.
+- **Canada:** CASL requires consent "before sending them commercial electronic messages". Consent is implied when the address was "conspicuously published" without a statement refusing unsolicited messages, and only when "the message is relevant to the person's business, role, functions or duties" (CASL s.10(9)(b), [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email)); so email a Canadian partner contact only at an address they published, and only about their role. [https://ised-isde.canada.ca/site/canada-anti-spam-legislation/en/getting-consent-send-email; https://laws-lois.justice.gc.ca/eng/acts/E-1.6/page-2.html]
+- The full rules, and the EU and UK, are in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md); outreach volume and sequences are [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md). Send one-to-one, never a mass blast, and never to a scraped list.
 
 **Prepare for the call** [coreyhaines31/marketingskills, co-marketing]: account overlap data (from Crossbeam, if available); 2 to 3 specific campaign ideas ("not just 'let's do something'"); your audience metrics (list size, traffic, engagement); examples of past partnerships; a clear ask (what you want, what you'll provide).
 
@@ -147,13 +147,13 @@ The outline:
 7. **Costs:** who pays for what, if anything.
 8. **Metrics sharing:** what data you'll share after the campaign.
 
-If registrants' details go to the partner, the signup form says so and gets consent for it; consent must be "specific, informed" under GDPR Art. 4(11) (https://gdpr-info.eu/art-4-gdpr/; [../../backend/email-practices/LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#consent-checkboxes-and-forms)). When one email promotes both companies, CAN-SPAM lets them "designate one of the marketers as the 'sender'" for compliance. [https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business]
+If registrants' details go to the partner, the signup form says so and gets consent for it; consent must be "specific, informed" under GDPR Art. 4(11) (https://gdpr-info.eu/art-4-gdpr/; [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#consent-checkboxes-and-forms)). When one email promotes both companies, CAN-SPAM lets them "designate one of the marketers as the 'sender'" for compliance. [https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business]
 
 ## Metrics
 
 [coreyhaines31/marketingskills, co-marketing]
 
-- **Quantitative:** leads generated (total and per partner); lead quality (MQL and SQL conversion rate); revenue attributed ([../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md)); audience growth (new subscribers, followers); content engagement (views, downloads, shares).
+- **Quantitative:** leads generated (total and per partner); lead quality (MQL and SQL conversion rate); revenue attributed ([marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md)); audience growth (new subscribers, followers); content engagement (views, downloads, shares).
 - **Qualitative:** ease of collaboration; partner responsiveness; audience reception; brand lift; a relationship strengthened for future campaigns.
 
 ## Checklist

@@ -2,7 +2,7 @@
 
 Email templates in the PostHog workflows library feed broadcast campaigns and `function_email` workflow steps. You author the template's design JSON with Liquid personalization, save it over MCP, and round-trip edit it. How a step references a template is in [WORKFLOWS.md](WORKFLOWS.md#function_email).
 
-**Contents:** [Authoring](#authoring) · [Create](#create) · [Edit](#edit) · [Images](#images) · [Unlayer design JSON](#unlayer-design-json) · [Design guidelines](../../backend/react-email/STYLING.md#email-design-alternatives) · [Prove it](#prove-it)
+**Contents:** [Authoring](#authoring) · [Create](#create) · [Edit](#edit) · [Images](#images) · [Unlayer design JSON](#unlayer-design-json) · [Design guidelines](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/STYLING.md#email-design-alternatives) · [Prove it](#prove-it)
 
 ## Authoring
 
@@ -134,7 +134,7 @@ Minimal working example (one row, one column, one `text` block; adapted from [un
 
 ## Design guidelines
 
-See the tagged [email design alternatives](../../backend/react-email/STYLING.md#email-design-alternatives). Liquid fallbacks and the render check remain part of this template workflow.
+See the tagged [email design alternatives](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/react-email/STYLING.md#email-design-alternatives). Liquid fallbacks and the render check remain part of this template workflow.
 
 ## Prove it
 

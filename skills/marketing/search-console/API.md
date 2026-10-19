@@ -42,7 +42,7 @@ The two endpoints SEO work reads (Search Analytics for clicks, impressions, CTR 
 
 - "Presently only the status of the version in the Google index is available; you cannot test the indexability of a live URL." [iannuttall/seo, SKILL.md] That tool's `seo index` pairs it with a live check of each page ("checked live and with URL Inspection").
 - A URL-prefix `siteUrl` "must include a trailing /"; a domain property is `sc-domain:example.com`.
-- Using inspection on a sample to size index bloat (unknown to Google, canonicalised away, crawled but not indexed, indexed) is in [../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md).
+- Using inspection on a sample to size index bloat (unknown to Google, canonicalised away, crawled but not indexed, indexed) is in [seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md).
 
 ## Errors
 
@@ -78,7 +78,7 @@ Also query and page combinations when possible, and countries or devices if rele
 | "Search Console API isn't enabled" | Enable it, wait a minute |
 | No properties to pick | Verify the site in Search Console first |
 
-Reading Google Analytics with the same client is [../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md). OAuth app setup in general is [../../backend/third-party-integrations/SKILL.md](../../backend/third-party-integrations/SKILL.md).
+Reading Google Analytics with the same client is [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md). OAuth app setup in general is [third-party-integrations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/SKILL.md).
 
 ## Prove it
 

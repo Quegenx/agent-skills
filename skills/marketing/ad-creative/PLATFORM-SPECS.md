@@ -1,6 +1,6 @@
 # Platform specs
 
-Character limits, sizes and placement rules per ad platform. Platforms reject or truncate copy that exceeds them, so count every line before delivering. Where [coreyhaines31/marketingskills, ad-creative] (platform-specs.md, generative-tools.md) disagreed with the platform's current help page, the platform's figure is given with its URL and the source's number is noted; those pages were checked in October 2026 for this skill, and they change, so re-check before a big push. App-install creative for Meta (the API's 1024×1024 output and the Appeeky pipeline) is in [AD-CREATIVES.md](../../mobile/app-growth/AD-CREATIVES.md#meta-static-specs-and-copy); TikTok app creative in [TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#creative-strategy).
+Character limits, sizes and placement rules per ad platform. Platforms reject or truncate copy that exceeds them, so count every line before delivering. Where [coreyhaines31/marketingskills, ad-creative] (platform-specs.md, generative-tools.md) disagreed with the platform's current help page, the platform's figure is given with its URL and the source's number is noted; those pages were checked in October 2026 for this skill, and they change, so re-check before a big push. App-install creative for Meta (the API's 1024×1024 output and the Appeeky pipeline) is in [app-growth AD-CREATIVES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/AD-CREATIVES.md#meta-static-specs-and-copy); TikTok app creative in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#creative-strategy).
 
 **Contents:** [Google Ads](#google-ads) · [Meta](#meta) · [LinkedIn](#linkedin) · [TikTok](#tiktok) · [X](#x) · [Counting characters](#counting-characters) · [Writing for several platforms](#writing-for-several-platforms) · [Prove it](#prove-it)
 
@@ -15,7 +15,7 @@ Character limits, sizes and placement rules per ad platform. Platforms reject or
 | Display path 1 and 2 | 15 characters each | optional |
 | Final URL | | required |
 
-"Every character in a double width language like Korean, Japanese, or Chinese counts as 2 characters"; "a minimum of one headline and one description will be selected"; the source adds that Google shows up to 3 headlines and 2 descriptions together. An ad group takes "3 enabled responsive search ads" (https://support.google.com/google-ads/answer/6372658). The output spec with ad groups, negatives, sitelinks and callouts is in [GOOGLE-SEARCH.md](../paid-ads/GOOGLE-SEARCH.md#rsa-output-spec).
+"Every character in a double width language like Korean, Japanese, or Chinese counts as 2 characters"; "a minimum of one headline and one description will be selected"; the source adds that Google shows up to 3 headlines and 2 descriptions together. An ad group takes "3 enabled responsive search ads" (https://support.google.com/google-ads/answer/6372658). The output spec with ad groups, negatives, sitelinks and callouts is in [paid-ads GOOGLE-SEARCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/GOOGLE-SEARCH.md#rsa-output-spec).
 
 RSA writing rules [coreyhaines31/marketingskills, ad-creative]:
 
@@ -50,7 +50,7 @@ RSA writing rules [coreyhaines31/marketingskills, ad-creative]:
 
 **Placements** (source, not re-checked): right column shows only the headline; Audience Network varies by publisher.
 
-**Lead ads (instant form)** (https://www.facebook.com/business/help/1664458123767694): "Below Greeting, enter a Headline no longer than 60 characters"; with rich creative, intro headline 45, description 81, each benefit 57, list bullets 80. Custom disclaimers "have no character limit" (https://www.facebook.com/business/help/179258984144385). The source's "Greeting description 360" and "Privacy policy text 200" weren't found on Meta's page. Form type and qualifiers: [META-WEB-ADS.md](../paid-ads/META-WEB-ADS.md#lead-forms).
+**Lead ads (instant form)** (https://www.facebook.com/business/help/1664458123767694): "Below Greeting, enter a Headline no longer than 60 characters"; with rich creative, intro headline 45, description 81, each benefit 57, list bullets 80. Custom disclaimers "have no character limit" (https://www.facebook.com/business/help/179258984144385). The source's "Greeting description 360" and "Privacy policy text 200" weren't found on Meta's page. Form type and qualifiers: [paid-ads META-WEB-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/META-WEB-ADS.md#lead-forms).
 
 ## LinkedIn
 
@@ -58,7 +58,7 @@ RSA writing rules [coreyhaines31/marketingskills, ad-creative]:
 
 **Carousel and video** (https://www.linkedin.com/help/lms/answer/a424737): carousel intro text "up to 150 characters to avoid truncation (a maximum of 255)", 2 to 10 cards, 1080 × 1080 recommended and "scaled to 312 x 312px", card headline "a maximum of two lines before being truncated" (the source's 45 characters appears only in an old LinkedIn PDF); video headline 70 / 200, intro 150 / 3,000.
 
-**Message and text ads** (source, not verified on a current page): message subject 60, body 1,500, CTA button 20; text ad headline 25, description 75. Document ads are 1080 × 1350 portrait ([LINKEDIN-ADS.md](../paid-ads/LINKEDIN-ADS.md#formats)).
+**Message and text ads** (source, not verified on a current page): message subject 60, body 1,500, CTA button 20; text ad headline 25, description 75. Document ads are 1080 × 1350 portrait ([paid-ads LINKEDIN-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/LINKEDIN-ADS.md#formats)).
 
 **Tone** [coreyhaines31/marketingskills, ad-creative]: professional but not dull; job-specific language the audience recognizes; data points; no consumer hype ("Amazing!"); first-person peer testimonials, real ones only.
 

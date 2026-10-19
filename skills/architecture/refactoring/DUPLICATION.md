@@ -1,6 +1,6 @@
 # Duplication and maintenance hotspots
 
-Use jscpd to find candidate copies and rank maintenance work, then read the actual code before changing it. Sources: [kucherenko/jscpd, jscpd, dry-refactoring, codebase-refactoring], checked against the [official CLI](https://github.com/kucherenko/jscpd/blob/v5.4.1/rust/crates/cpd/src/cli.rs) and the version qualifications below. Deslop and truffler references come from [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) and [React Doctor, find-similar-functions], respectively. This is a tool reference; the [reuse test](../../anti-ai-slop/anti-slop-code/RULES.md#structure) and [refactoring transformations](SKILL.md#techniques-smallest-first) keep their definitions at those owners.
+Use jscpd to find candidate copies and rank maintenance work, then read the actual code before changing it. Sources: [kucherenko/jscpd, jscpd, dry-refactoring, codebase-refactoring], checked against the [official CLI](https://github.com/kucherenko/jscpd/blob/v5.4.1/rust/crates/cpd/src/cli.rs) and the version qualifications below. Deslop and truffler references come from [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) and [React Doctor, find-similar-functions], respectively. This is a tool reference; the [reuse test](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/RULES.md#structure) and [refactoring transformations](SKILL.md#techniques-smallest-first) keep their definitions at those owners.
 
 ## Establish the scan
 
@@ -44,7 +44,7 @@ npx jscpd --reporters ai <path>
 
 - Read both original spans and name their behavior, side effects and differences. Skip generated code, intentional model/configuration/route/test boilerplate, unrelated reducers or switches, and candidates whose shared abstraction cannot receive a precise name.
 - A small candidate or weak structural match may be a shared idiom rather than a shared implementation. Record why it stays separate. The source's approximate size/score heuristics are triage preferences, not automatic merge rules.
-- Use the existing [reuse test](../../anti-ai-slop/anti-slop-code/RULES.md#structure) and [transformations](SKILL.md#techniques-smallest-first) to choose an extraction. For a gap match, decide whether the unmatched step belongs with the caller or is a real variation in the shared behavior. If it changes the meaning, keep the distinct functions and consider only their shared parts.
+- Use the existing [reuse test](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/RULES.md#structure) and [transformations](SKILL.md#techniques-smallest-first) to choose an extraction. For a gap match, decide whether the unmatched step belongs with the caller or is a real variation in the shared behavior. If it changes the meaning, keep the distinct functions and consider only their shared parts.
 - A cross-format copy can be an incomplete move: find the canonical implementation before creating a third copy. Several renamed copies may share one real seam; inspect the group before extracting each pair independently.
 - Update every caller through the existing canonical reuse workflow. Remeasure with the same detector and flags that found the candidate; an exact-only scan cannot show that a renamed candidate disappeared.
 - Report rejected candidates separately from refactored ones, with their reason. A falling duplicate percentage does not establish preserved behavior; use the project's authorized verification separately.
@@ -60,7 +60,7 @@ npx jscpd --reporters ai <path>
 - Categories are unused file, export, module-private symbol and import. `--dead-code-categories` narrows them; `--include-entry-exports` includes entry-file exports normally treated as public API; `--min-confidence` sets a reporting floor, not deletion permission.
 - Inspect dynamic lookup, string-based routing, unsupported files and parse failures before deleting a finding. The JSON `statistics.unparsedFiles` field helps identify incomplete analysis. Keep intentionally public exports and unresolved findings visible rather than deleting them to improve the score.
 - `--complexity` reports a token-based branching estimate. Read it as a ranking signal. A split that moves the same branching into another file has not simplified the function. The tool's health calibration uses a complexity threshold of 50; that setting is not a project-wide maximum.
-- After an approved change, recheck the affected dimension with its original settings and retain the before/after evidence. For two-tree function comparison, use [FUNCTION-PARITY.md](../system-migration/FUNCTION-PARITY.md).
+- After an approved change, recheck the affected dimension with its original settings and retain the before/after evidence. For two-tree function comparison, use [system-migration FUNCTION-PARITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/system-migration/FUNCTION-PARITY.md).
 
 ## Corrections to the supplied reference
 
@@ -92,9 +92,9 @@ report_hide = ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart"]
 max_duplication_percent = 5.0
 ```
 
-For an agent, Deslop's MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in [code-review LAYERS.md](../code-review/LAYERS.md#4-automated-checks-that-block).
+For an agent, Deslop's MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in [code-review LAYERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/LAYERS.md#4-automated-checks-that-block).
 
-Two tools share the name: Nimblesite's **Deslop** above is a tree-sitter duplicate finder (`deslop .`, `deslop-mcp`); React Doctor's **deslop** is a simplification prompt (the source of the rules tagged [React Doctor, deslop] in [anti-slop code](../../anti-ai-slop/anti-slop-code/RULES.md)), and it runs truffler for the search.
+Two tools share the name: Nimblesite's **Deslop** above is a tree-sitter duplicate finder (`deslop .`, `deslop-mcp`); React Doctor's **deslop** is a simplification prompt (the source of the rules tagged [React Doctor, deslop] in [anti-slop code](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/RULES.md)), and it runs truffler for the search.
 
 ## truffler
 

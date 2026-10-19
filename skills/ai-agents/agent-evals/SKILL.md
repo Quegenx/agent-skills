@@ -7,13 +7,15 @@ description: "Builds eval suites that run the real agent with outside services f
 
 An agent is probabilistic, so a test is a sample: every case runs several times, and a fix counts only when it holds across the repetitions. The suite runs the **real** agent (the production prompt, tools and model) with every outside service replaced by fixtures, grades exact facts in code and meaning with a judge, and keeps records good enough to read a failed run turn by turn.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | The harness: end result, path and part checks, graph outcomes/node diagnostics, explicit trajectory comparison modes, cases and splits, simulated users, fixtures, records, fingerprints, repetitions and snapshots | [HARNESS.md](HARNESS.md) |
 | Grading: code checks, mechanical checks of the claims in an agent's findings, a rubric scored in code with a 0.55 floor, one grader shape, judge prompts, decision-tree rubrics, turn and conversation judges, strict and mean rules, judge self-tests, calibrating new and reworded judges | [JUDGES.md](JUDGES.md) |
 | Auditing an eval (including whether it can tell a better agent from a worse one), release gates and the baseline, gates that lie, gating an agent's findings (re-run thresholds, hard triggers, accepting a re-run), production sampling and alerts | [GATES.md](GATES.md) |
 | Finding unnamed failures in real traffic, then taking it to a clean run: the loop, its frame and rounds, hillclimbing with keep or revert, triage, fix patterns, mistakes to avoid, safety | [FIX-LOOP.md](FIX-LOOP.md) |
-| Audit whether agents can onboard using a product's docs, SDK or skill | [agent-dx-audit](../agent-dx-audit/SKILL.md) |
+| Audit whether agents can onboard using a product's docs, SDK or skill | [agent-dx-audit](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-dx-audit/SKILL.md) |
 | Human-led open notes, accepted failure definitions versus accepted assignments, unresolved evidence and taxonomy lineage | [REVIEW-AND-TAXONOMY.md](REVIEW-AND-TAXONOMY.md) |
 | Preserving source exports, reviewed labels and versions across managed/local tools, operation schemas and migration evidence | [MANAGED-AND-LOCAL.md](MANAGED-AND-LOCAL.md) |
 | DeepEval TypeScript modes and metric boundaries, confident-trace Node instrumentation and raw OTLP contracts | [DEEPEVAL.md](DEEPEVAL.md) |

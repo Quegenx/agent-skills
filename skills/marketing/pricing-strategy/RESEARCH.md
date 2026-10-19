@@ -1,6 +1,6 @@
 # Pricing research
 
-How to learn what buyers will pay and which features belong in which tier: Van Westendorp with its limits, MaxDiff, willingness-to-pay methods, and usage-value correlation. From [coreyhaines31/marketingskills, pricing] `references/research-methods.md` (MIT, Copyright (c) 2025 Corey Haines), checked against the source it cites, Sawtooth Software (https://sawtoothsoftware.com/resources/blog/posts/van-westendorp-pricing-sensitivity-meter). Interviews and surveys in general are in [../customer-research/SKILL.md](../customer-research/SKILL.md); live price tests in [../ab-testing/SKILL.md](../ab-testing/SKILL.md) and [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases).
+How to learn what buyers will pay and which features belong in which tier: Van Westendorp with its limits, MaxDiff, willingness-to-pay methods, and usage-value correlation. From [coreyhaines31/marketingskills, pricing] `references/research-methods.md` (MIT, Copyright (c) 2025 Corey Haines), checked against the source it cites, Sawtooth Software (https://sawtoothsoftware.com/resources/blog/posts/van-westendorp-pricing-sensitivity-meter). Interviews and surveys in general are in [customer-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md); live price tests in [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) and [stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases).
 
 **Contents:** [Van Westendorp](#van-westendorp) · [What Van Westendorp can't tell you](#what-van-westendorp-cant-tell-you) · [MaxDiff](#maxdiff) · [Willingness to pay](#willingness-to-pay) · [Usage-value correlation](#usage-value-correlation) · [Prove it](#prove-it)
 
@@ -85,11 +85,11 @@ Compute a change on the current price: $39 → $49 is +25.6%.
 
 [coreyhaines31/marketingskills, pricing]
 
-1. **Instrument usage:** feature frequency, volume metrics (users, records, API calls), outcome metrics (revenue generated, time saved). Event capture is in [../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md).
+1. **Instrument usage:** feature frequency, volume metrics (users, records, API calls), outcome metrics (revenue generated, time saved). Event capture is in [posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md).
 2. **Correlate with success:** which patterns predict retention, which predict expansion, which customers pay most and why.
 3. **Find thresholds:** the usage level where customers "get it", where they expand, and where price should rise.
 
-The source's example: high-LTV customers (>$10k ARR) average 15 monthly active users, 8 projects and 4 integrations; churned ones 3, 2 and 0; insight, value follows team adoption and depth of use; recommendation, "Price per user, gate integrations to higher tiers". A correlation is a hypothesis: confirm it on a later cohort ([../onboarding-and-upgrades/ACTIVATION.md](../onboarding-and-upgrades/ACTIVATION.md#find-the-aha-moment)).
+The source's example: high-LTV customers (>$10k ARR) average 15 monthly active users, 8 projects and 4 integrations; churned ones 3, 2 and 0; insight, value follows team adoption and depth of use; recommendation, "Price per user, gate integrations to higher tiers". A correlation is a hypothesis: confirm it on a later cohort ([onboarding-and-upgrades ACTIVATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/ACTIVATION.md#find-the-aha-moment)).
 
 ## Prove it
 

@@ -6,7 +6,7 @@ Dossier from [coreyhaines31/marketingskills, marketing-council] (MIT, Corey Hain
 
 ## Core frameworks
 
-- **Value Equation** (*$100M Offers*, 2021): Apply [the canonical equation and four levers](../../offer-design/OFFER-ANATOMY.md#the-value-equation); this lens seeks more outcome/certainty and less delay/effort to raise willingness to pay. [coreyhaines31/marketingskills, marketing-council]
+- **Value Equation** (*$100M Offers*, 2021): Apply [the canonical equation and four levers](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/OFFER-ANATOMY.md#the-value-equation); this lens seeks more outcome/certainty and less delay/effort to raise willingness to pay. [coreyhaines31/marketingskills, marketing-council]
 - **Grand Slam Offer** (*$100M Offers*, 2021): An offer "so good people feel stupid saying no" - starving-crowd market, stacked value that solves every objection, premium price, risk-reversing guarantee. His leverage order: market > offer strength > persuasion skills.
 - **Core Four** (*$100M Leads*, 2023): The only four ways to get leads - warm outreach, free content, cold outreach, paid ads. Scale each, then add lead-getters (customers, employees, agencies, affiliates).
 - **Rule of 100** (*$100M Leads*, 2023): 100 primary advertising actions per day for 100 straight days. Volume beats optimization for beginners.

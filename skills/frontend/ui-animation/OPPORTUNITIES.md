@@ -1,6 +1,6 @@
 # Animation opportunities: find, gate, reject
 
-A read-only search for places that don't animate but should, and a filter that rejects most of what it finds. It reports exact recipes and never implements them. It is built from Emil Kowalski's `find-animation-opportunities` ([emilkowalski/skills](https://github.com/emilkowalski/skills), SKILL.md, its only file). Reviewing and fixing motion that already exists is [AUDIT.md](AUDIT.md), which also turns a surviving suggestion into a plan (`plan <description>`). How much motion a page should carry at all is the MOTION dial in [../../anti-ai-slop/anti-slop-ui/SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md).
+A read-only search for places that don't animate but should, and a filter that rejects most of what it finds. It reports exact recipes and never implements them. It is built from Emil Kowalski's `find-animation-opportunities` ([emilkowalski/skills](https://github.com/emilkowalski/skills), SKILL.md, its only file). Reviewing and fixing motion that already exists is [AUDIT.md](AUDIT.md), which also turns a surviving suggestion into a plan (`plan <description>`). How much motion a page should carry at all is the MOTION dial in [anti-slop-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md).
 
 **Contents:** [Posture](#posture) · [Hard rules](#hard-rules) · [The gate](#the-gate) · [Where to hunt](#where-to-hunt) · [Workflow](#workflow) · [Output](#output) · [Where this differs](#where-this-differs) · [Prove it](#prove-it)
 
@@ -87,7 +87,7 @@ Does motion help or hinder here? "Decoration on functional, information-dense UI
 
 - Rare, high-emotion moments rendered flat: first-run, empty states, success and completion, celebration. "These are the only places bounce, stagger generosity, or a longer beat are welcome."
 
-**Sweeps.** Grep for conditional renders with no transition (`{isOpen &&`, `display: none` toggles), `onClick` handlers on elements with no `:active` or transition styles, `details` and accordion markup, drag handlers, `.map(` renders of entering lists, empty-state and success components. The owner's app names the first as a defect too: mounting a dialog with `{open && <Dialog/>}` "cuts its exit animation and breaks focus return" ([../app-ui/OVERLAYS.md](../app-ui/OVERLAYS.md#the-backdrop-and-the-dialog)).
+**Sweeps.** Grep for conditional renders with no transition (`{isOpen &&`, `display: none` toggles), `onClick` handlers on elements with no `:active` or transition styles, `details` and accordion markup, drag handlers, `.map(` renders of entering lists, empty-state and success components. The owner's app names the first as a defect too: mounting a dialog with `{open && <Dialog/>}` "cuts its exit animation and breaks focus return" ([app-ui OVERLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/OVERLAYS.md#the-backdrop-and-the-dialog)).
 
 ## Workflow
 
@@ -129,11 +129,11 @@ Tone: "When feel can't be judged from code alone, say so instead of guessing." "
 Both views, each tagged; this skill's existing rule stays the default.
 
 - **Delight only at the rare tier.** [Emil Kowalski] forbids delight elsewhere. Family puts small touches in frequent flows ("the commas shift place as an amount is typed") and Honk says "Not everything needed a purpose" ([PATTERNS.md](PATTERNS.md#delight-where-flourish-goes)).
-- **Keyboard actions.** [Emil Kowalski] rejects them at any frequency. The owner's help search (⌘K) animates: the panel "rises from `scale(.9)` and 1.25rem" over .2s ([../landing-page-ui/CONTENT-PAGES.md](../landing-page-ui/CONTENT-PAGES.md)); report, never fix.
-- **Modals stay centered.** [Emil Kowalski] exempts them from grow-from-trigger. The owner's dialogs that open something new grow out of the button just pressed ([../app-ui/OVERLAYS.md](../app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)); report, never fix.
-- **Bounce at frequent controls.** [Emil Kowalski] keeps bounce for rare moments. The owner's switch slides on a sanctioned overshoot curve and an avatar returns from hover on `--ease-bounce-strong` ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#switch), [../app-ui/TOKENS.md](../app-ui/TOKENS.md#motion-tokens)); report, never fix.
-- **Entrance scale.** [Emil Kowalski] starts at 0.95-0.97. The owner's custom pills enter at .8 and the large dialog from .94 ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#badges-counts-and-avatars), [../app-ui/OVERLAYS.md](../app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)); report, never fix.
-- **Hover gate.** [Emil Kowalski] requires `(hover: hover) and (pointer: fine)`. The owner's checker accepts `(hover: hover)` alone ([../app-ui/CHECKS.md](../app-ui/CHECKS.md)); a difference, not a conflict.
+- **Keyboard actions.** [Emil Kowalski] rejects them at any frequency. The owner's help search (⌘K) animates: the panel "rises from `scale(.9)` and 1.25rem" over .2s ([landing-page-ui CONTENT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/CONTENT-PAGES.md)); report, never fix.
+- **Modals stay centered.** [Emil Kowalski] exempts them from grow-from-trigger. The owner's dialogs that open something new grow out of the button just pressed ([app-ui OVERLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)); report, never fix.
+- **Bounce at frequent controls.** [Emil Kowalski] keeps bounce for rare moments. The owner's switch slides on a sanctioned overshoot curve and an avatar returns from hover on `--ease-bounce-strong` ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#switch), [app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md#motion-tokens)); report, never fix.
+- **Entrance scale.** [Emil Kowalski] starts at 0.95-0.97. The owner's custom pills enter at .8 and the large dialog from .94 ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md#badges-counts-and-avatars), [app-ui OVERLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)); report, never fix.
+- **Hover gate.** [Emil Kowalski] requires `(hover: hover) and (pointer: fine)`. The owner's checker accepts `(hover: hover)` alone ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)); a difference, not a conflict.
 
 ## Prove it
 

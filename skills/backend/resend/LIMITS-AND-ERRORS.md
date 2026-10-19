@@ -42,7 +42,7 @@ Resend limits requests per second per team (shared by every key), emails per day
 - **Bounce rate under 4%, spam complaint rate under 0.08%.** Exceeding them may pause sending temporarily. Monitor at https://resend.com/metrics, with `resend.emails.metrics()` (`bounce_rate`, `complaint_rate`; [SENDING.md](SENDING.md#metrics)) or webhooks.
 - **Suppressed sends don't count toward the bounce rate.**
 - **Audience hygiene (docs):** block bot sign-ups with CAPTCHA (Google reCAPTCHA, hCaptcha, Friendly Captcha); use double opt-in; check deliverability with a verification service (Emailable, ZeroBounce, Kickbox); limit non-transactional sends to recipients who opened or clicked in the past 6 months; sunset recipients unengaged for 6+ months; unsubscribe bounced and complaining recipients from webhooks, since Resend suppresses them but does not unsubscribe them.
-- **List hygiene and warm-up:** [DOMAINS.md](DOMAINS.md#warm-up-and-dedicated-ips) and [../email-practices/SKILL.md](../email-practices/SKILL.md).
+- **List hygiene and warm-up:** [DOMAINS.md](DOMAINS.md#warm-up-and-dedicated-ips) and [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 ## Error codes
 

@@ -25,7 +25,7 @@ All workflows on this page come from a third-party skill set (appeeky/stripe-ski
 4. **Compute fees:** sum `fee` across the balance transactions and express it as an effective percentage of gross. Break the composition down by type (charges, refunds, adjustments) with count, gross, fees and net.
 5. **Flag discrepancies** between the payout net and the expected bank deposit.
 
-- **Affiliate commissions reconcile on their own states:** pending, approved or due, paid, refunded or adjusted, disputed. "Marking a commission paid is not necessarily a money transfer", and "Replayed webhooks and exports must not count a conversion or payment twice" [coreyhaines31/marketingskills, referrals]; the program side is in [../../marketing/referral-programs/AFFILIATES.md](../../marketing/referral-programs/AFFILIATES.md#reconciliation-and-payouts).
+- **Affiliate commissions reconcile on their own states:** pending, approved or due, paid, refunded or adjusted, disputed. "Marking a commission paid is not necessarily a money transfer", and "Replayed webhooks and exports must not count a conversion or payment twice" [coreyhaines31/marketingskills, referrals]; the program side is in [referral-programs AFFILIATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md#reconciliation-and-payouts).
 
 ## Health dashboard
 
@@ -41,7 +41,7 @@ Run in this order:
 8. Available balance from `GetBalance`.
 
 - **Headline:** MRR, active subscriptions, and past-due count with the amount at risk.
-- **Use shared product context for relevant marketing targets:** `.agents/product-context.md`, as defined in [CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). Do not create another required billing-context file. [user shared-context rule]
+- **Use shared product context for relevant marketing targets:** `.agents/product-context.md`, as defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md). Do not create another required billing-context file. [user shared-context rule]
 - **Report a traffic light per area:** MRR trend; churn and past due; payment failures; webhooks and emails (a manual or code check, see [WEBHOOKS.md](WEBHOOKS.md)); fraud and Radar.
 - **Close with "Top 3 actions this week".**
 

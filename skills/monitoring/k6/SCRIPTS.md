@@ -96,7 +96,7 @@ export function handleSummary(data) {
   - The report has graphs only when the test runs longer than three times the aggregation period.
   - k6 waits to exit while a browser window has the dashboard open; in CI set the port to `-1` to disable it.
 - **OpenTelemetry output:** set `K6_OTEL_EXPORTER_PROTOCOL` (`grpc` or `http/protobuf`; it replaced `K6_OTEL_EXPORTER_TYPE` in v2.0.0); basic auth on the HTTP exporter through `K6_OTEL_HTTP_EXPORTER_USERNAME` and `K6_OTEL_HTTP_EXPORTER_PASSWORD`. Rate metrics export as one counter with a `condition` attribute (`nonzero` or `zero`). The v1.7.0 notes recommend the OpenTelemetry output over InfluxDB ([k6 release notes](https://github.com/grafana/k6/tree/master/release%20notes)).
-- **Prometheus remote write:** `--out experimental-prometheus-rw`, with static labels from `K6_PROMETHEUS_RW_LABELS="environment=production,server=srv1"` ([k6 release notes](https://github.com/grafana/k6/tree/master/release%20notes)). Querying and dashboarding those metrics is the grafana skill ([../grafana/SKILL.md](../grafana/SKILL.md)).
+- **Prometheus remote write:** `--out experimental-prometheus-rw`, with static labels from `K6_PROMETHEUS_RW_LABELS="environment=production,server=srv1"` ([k6 release notes](https://github.com/grafana/k6/tree/master/release%20notes)). Querying and dashboarding those metrics is the grafana skill ([grafana SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/grafana/SKILL.md)).
 - **REST API server:** off by default since v2.0.0 (it used to listen on `localhost:6565`); enable it with `--address=localhost:6565` or `K6_ADDRESS`. From v2.3.0 `/v1/status` includes `execution_result.exit_code`; pair it with `--linger` ([VERSIONS.md](VERSIONS.md)).
 
 ## Secrets

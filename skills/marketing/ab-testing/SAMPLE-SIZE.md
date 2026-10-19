@@ -1,6 +1,6 @@
 # Sample size and duration
 
-How many units a test needs and how long collecting them takes, fixed before launch. The method is [coreyhaines31/marketingskills, ab-testing] (references/sample-size-guide.md, MIT); the table of values is recomputed from the standard formula because the source's own tables were wrong. PostHog's running-time calculator and its `N = (16 × variance) / d²` approximation are in [../../monitoring/posthog/EXPERIMENT-METRICS.md](../../monitoring/posthog/EXPERIMENT-METRICS.md#sample-size-and-running-time).
+How many units a test needs and how long collecting them takes, fixed before launch. The method is [coreyhaines31/marketingskills, ab-testing] (references/sample-size-guide.md, MIT); the table of values is recomputed from the standard formula because the source's own tables were wrong. PostHog's running-time calculator and its `N = (16 × variance) / d²` approximation are in [posthog EXPERIMENT-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-METRICS.md#sample-size-and-running-time).
 
 **Contents:** [Required inputs](#required-inputs) · [Sample per variant](#sample-per-variant) · [Duration](#duration) · [Minimum and maximum duration](#minimum-and-maximum-duration) · [Multiple variants](#multiple-variants) · [Common sample-size mistakes](#common-sample-size-mistakes) · [When the sample is too high](#when-the-sample-is-too-high) · [Sequential testing](#sequential-testing) · [Calculators](#calculators) · [Can I run this test?](#can-i-run-this-test) · [Prove it](#prove-it)
 
@@ -9,7 +9,7 @@ How many units a test needs and how long collecting them takes, fixed before lau
 [coreyhaines31/marketingskills, ab-testing]
 
 1. **Baseline conversion rate:** your current rate. If the page converts at 5%, that's the baseline.
-2. **Minimum detectable effect (MDE):** the smallest improvement you care about detecting. Set it from business impact (is a 5% lift meaningful?), implementation cost (worth the effort?) and realistic expectations (what have past tests shown?). PostHog's default MDE is 30% where the project sets none ([../../monitoring/posthog/EXPERIMENT-METRICS.md](../../monitoring/posthog/EXPERIMENT-METRICS.md#sample-size-and-running-time)).
+2. **Minimum detectable effect (MDE):** the smallest improvement you care about detecting. Set it from business impact (is a 5% lift meaningful?), implementation cost (worth the effort?) and realistic expectations (what have past tests shown?). PostHog's default MDE is 30% where the project sets none ([posthog EXPERIMENT-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-METRICS.md#sample-size-and-running-time)).
 3. **Significance level, usually α = 0.05:** for the planned test and its assumptions, it limits the long-run probability of rejecting a true null hypothesis to 5%. It is not the probability that an observed difference is "due to chance." Repeated unadjusted looks or multiple comparisons do not retain that error rate ([ASA statement](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf)).
 4. **Statistical power, usually 80% (β = 0.20):** if there's a real effect of size MDE, you have an 80% chance of detecting it.
 
@@ -48,7 +48,7 @@ Total collection time = longest arm duration
 - **Medium-traffic page:** 30,000 per variant (60,000 total), 2,000 a day, 100% exposed: **30 days**.
 - **Low traffic, partial exposure:** 15,000 per variant (30,000 total), 500 a day, 50% exposed (250 effective a day): **120 days**, too long.
 - **Unequal split check:** 2,000 participants required per arm and 1,000 eligible a day: two arms at 50/50 with full exposure take four days, not two; at 50% exposure, eight days; with full exposure at 90/10, the smaller arm needs 20 days to reach 2,000. These are collection estimates; honor planned business cycles and the analysis stopping rule.
-- In PostHog the same arithmetic is `exposure_rate_per_day` times the rollout share ([../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md#running-time)).
+- In PostHog the same arithmetic is `exposure_rate_per_day` times the rollout share ([posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md#running-time)).
 
 ## Minimum and maximum duration
 
@@ -63,7 +63,7 @@ Total collection time = longest arm duration
 
 - **Total sample grows with the number of arms** at the same per-arm n: 3 arms need 1.5 times the total of 2, 4 arms need 2 times. With 5 or more, consider reducing variants.
 - **Correcting for multiple comparisons raises the per-arm n on top of that.** More comparisons (A vs B, A vs C, sometimes B vs C) raise the chance of a false positive. With Bonferroni at α/2 for two comparisons, 5% at +10% rises from about 31,200 to about 37,800 per arm (about 1.2 times; recomputed). The source's table ("3 variants ~1.5x, 4 ~2x") blended the two increases and attributed them to false positives.
-- Apply Bonferroni or use a tool that handles it; PostHog applies no correction ([../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md](../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c4-multiple-comparisons-high)).
+- Apply Bonferroni or use a tool that handles it; PostHog applies no correction ([posthog EXPERIMENT-SIGNIFICANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c4-multiple-comparisons-high)).
 
 ## Common sample-size mistakes
 
@@ -92,9 +92,9 @@ Total collection time = longest arm duration
 - [coreyhaines31/marketingskills, ab-testing] A method that adjusts for multiple looks at the data. Use it for high-risk changes, to stop bad variants early, or for time-sensitive decisions. The trade-off: more flexibility to stop early, a slightly larger sample, a more complex analysis.
 - **Which tools have it.** The source listed "Optimizely (Stats Accelerator), VWO (SmartStats), PostHog (Bayesian approach)"; two of those are wrong:
   - **Optimizely:** "Stats Accelerator's statistical model is a variation of a multi-armed bandit" ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/experimentation-distribution-methods)), and its modes "dynamically change a test's traffic allocation" ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/history-of-stats-accelerator-and-multi-armed-bandits)); "Sequential testing at Optimizely is based on Optimizely's proprietary Stats Engine" ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/statistical-analysis-methods-overview)), which controls the false discovery rate ([Optimizely](https://docs.optimizely.com/experimentation-strategy/docs/false-discovery-rate-control)).
-  - **PostHog:** sequential testing is a Frequentist option that produces confidence sequences, based on Waudby-Smith et al. 2023 ([posthog.com](https://posthog.com/docs/experiments/statistics-frequentist)); Bayesian has no sequential mode ([../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md](../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c1-peeking-high)).
+  - **PostHog:** sequential testing is a Frequentist option that produces confidence sequences, based on Waudby-Smith et al. 2023 ([posthog.com](https://posthog.com/docs/experiments/statistics-frequentist)); Bayesian has no sequential mode ([posthog EXPERIMENT-SIGNIFICANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c1-peeking-high)).
   - **VWO SmartStats** is VWO's Bayesian engine; whether it is sequential was not checked against VWO's docs.
-- Turn sequential testing on before launch ([../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md](../../monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c1-peeking-high)).
+- Turn sequential testing on before launch ([posthog EXPERIMENT-SIGNIFICANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-SIGNIFICANCE.md#c1-peeking-high)).
 
 ## Calculators
 

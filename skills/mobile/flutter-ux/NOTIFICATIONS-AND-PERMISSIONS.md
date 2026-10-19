@@ -1,6 +1,6 @@
 # Notifications and permissions
 
-How a Flutter app asks for runtime permissions without losing users, picks photos with no permission at all, primes the notification prompt, routes FCM delivery to its Firebase owner, marks iOS notifications time-sensitive, and keeps scheduled notifications right when the timezone or clock changes. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), checked against pub.dev and Firebase docs where a snippet was flagged. Device timezone lookup, status bar, screenshots and home widgets are in [DEVICE-FEATURES.md](DEVICE-FEATURES.md). OneSignal's own prompt flow is [backend/onesignal/PERMISSIONS.md](../../backend/onesignal/PERMISSIONS.md).
+How a Flutter app asks for runtime permissions without losing users, picks photos with no permission at all, primes the notification prompt, routes FCM delivery to its Firebase owner, marks iOS notifications time-sensitive, and keeps scheduled notifications right when the timezone or clock changes. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips and blog posts (apparencekit.dev), checked against pub.dev and Firebase docs where a snippet was flagged. Device timezone lookup, status bar, screenshots and home widgets are in [DEVICE-FEATURES.md](DEVICE-FEATURES.md). OneSignal's own prompt flow is [onesignal PERMISSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/PERMISSIONS.md).
 
 **Contents:** [Runtime permissions](#runtime-permissions) · [Denied: explain, then open Settings](#denied-explain-then-open-settings) · [Pick photos without a permission](#pick-photos-without-a-permission) · [When to ask for notifications](#when-to-ask-for-notifications) · [The priming screen](#the-priming-screen) · [FCM delivery](#fcm-delivery) · [Time-sensitive notifications on iOS](#time-sensitive-notifications-on-ios) · [Reschedule on timezone or clock change](#reschedule-on-timezone-or-clock-change) · [Prove it](#prove-it)
 
@@ -65,7 +65,7 @@ final microphonePermission = await Permission.microphone.status;
     openAppSettings();
   }
   ```
-- **Notifications too:** "Every OS now handles notifications permissions for each apps. If a user refuse them, he has to go in his OS settings to enable them", so you don't need your own notification settings page for the permission itself [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/). OneSignal's equivalent is `requestPermission(fallbackToSettings: true)` ([PERMISSIONS.md](../../backend/onesignal/PERMISSIONS.md#mobile-programmatic-prompting)).
+- **Notifications too:** "Every OS now handles notifications permissions for each apps. If a user refuse them, he has to go in his OS settings to enable them", so you don't need your own notification settings page for the permission itself [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/). OneSignal's equivalent is `requestPermission(fallbackToSettings: true)` ([onesignal PERMISSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/PERMISSIONS.md#mobile-programmatic-prompting)).
 
 ## Pick photos without a permission
 
@@ -89,9 +89,9 @@ final XFile? photo = await ImagePicker().pickImage(
 );
 ```
 
-- **`source: .gallery`** is a dot shorthand, which needs Dart 3.10 ([dart/LANGUAGE.md](../dart/LANGUAGE.md#dot-shorthands)); on older SDKs write `ImageSource.gallery`.
+- **`source: .gallery`** is a dot shorthand, which needs Dart 3.10 ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md#dot-shorthands)); on older SDKs write `ImageSource.gallery`.
 - **Android versions** ([image_picker_android 0.8.13+25](https://pub.dev/packages/image_picker_android)): "On Android 16 and above, gallery image, video, and mixed-media picks always use the Android Photo Picker. `ImagePickerAndroid.useAndroidPhotoPicker` has no effect on those versions." On Android 15 and below the flag turns it on; set it "before calling any `image_picker` APIs", and it is also required for the `limit` option. The imports are `package:image_picker_android/image_picker_android.dart` and `package:image_picker_platform_interface/image_picker_platform_interface.dart`.
-- **Ask for gallery permission only when the app needs the whole library,** like a backup app [FlutterPro](https://flutterpro.design/details/native-photo-picker). Google Play says the same for `READ_MEDIA_IMAGES` ([google-play/POLICY-AND-PREFLIGHT.md](../google-play/POLICY-AND-PREFLIGHT.md)).
+- **Ask for gallery permission only when the app needs the whole library,** like a backup app [FlutterPro](https://flutterpro.design/details/native-photo-picker). Google Play says the same for `READ_MEDIA_IMAGES` ([google-play POLICY-AND-PREFLIGHT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/POLICY-AND-PREFLIGHT.md)).
 
 ## When to ask for notifications
 
@@ -99,12 +99,12 @@ You get one shot at the system dialog. "On iOS, after "Don't Allow" it never sho
 
 - **After a value moment** [FlutterPro](https://flutterpro.design/details/notification-permission-priming): "Don't ask for notification permission when the app opens. The user just got here, they have no reason to say yes." Ask when the benefit is obvious: right after an order is placed, for "Get order status updates"; in the author's prayer-times app, when the user configures prayer times, with examples of the daily reminders for the 5 prayers.
 - **At launch or after sign-in** [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/): "For notifications I like to ask it right after app launches or after he has signed in. And that's the same on iOS, Android and web."
-- **After a value moment, never first launch** (OneSignal, [PERMISSIONS.md](../../backend/onesignal/PERMISSIONS.md#principles)) and **after activation, never on cold open** ([app-growth/RETENTION-AND-MONETIZATION.md](../app-growth/RETENTION-AND-MONETIZATION.md)).
+- **After a value moment, never first launch** (OneSignal, [onesignal PERMISSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/PERMISSIONS.md#principles)) and **after activation, never on cold open** ([app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md)).
 
 How often to re-ask also differs:
 
 - **Stop after two skips** [FlutterPro](https://flutterpro.design/details/notification-permission-priming): "If the user skips twice, stop asking. They can turn notifications on from your settings page when they want them."
-- **Re-ask on a cadence** (OneSignal, [PERMISSIONS.md](../../backend/onesignal/PERMISSIONS.md#mobile-in-app-soft-prompt)): e.g. every 2 weeks, up to `20` times.
+- **Re-ask on a cadence** (OneSignal, [onesignal PERMISSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/PERMISSIONS.md#mobile-in-app-soft-prompt)): e.g. every 2 weeks, up to `20` times.
 
 ## The priming screen
 
@@ -121,7 +121,7 @@ Future<void> _onEnableTap() async {
 
 ## FCM delivery
 
-Registration tokens, foreground/background/terminated handlers, delivery, topics and tap routing are in [Firebase Flutter messaging](../../backend/firebase/MESSAGING-FLUTTER.md). [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/)
+Registration tokens, foreground/background/terminated handlers, delivery, topics and tap routing are in [Firebase Flutter messaging](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/firebase/MESSAGING-FLUTTER.md). [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/)
 
 ## Time-sensitive notifications on iOS
 
@@ -143,8 +143,8 @@ Registration tokens, foreground/background/terminated handlers, delivery, topics
   );
   ```
   The [flutter_local_notifications 22.3.2 README](https://pub.dev/packages/flutter_local_notifications) shows `show` both with positional `id, title, body, details` and, in its grouping example, with named `id:` and `notificationDetails:`; match the signature of the version you install.
-- **FCM push payload:** the server-side APNs payload and the source's Firebase sending qualifications are in [Firebase Flutter messaging](../../backend/firebase/MESSAGING-FLUTTER.md#time-sensitive-fcm-payload). [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications)
-- **Use it for events that expire in minutes:** a courier arriving, a ride pulling up, a login code, a reservation about to be released. "Order shipped", price drops and likes are not time-sensitive; send them as normal notifications. OneSignal's field for the same level is in [MESSAGING-PRACTICES.md](../../backend/onesignal/MESSAGING-PRACTICES.md#ios-interruption-levels-and-relevance).
+- **FCM push payload:** the server-side APNs payload and the source's Firebase sending qualifications are in [Firebase Flutter messaging](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/firebase/MESSAGING-FLUTTER.md#time-sensitive-fcm-payload). [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications)
+- **Use it for events that expire in minutes:** a courier arriving, a ride pulling up, a login code, a reservation about to be released. "Order shipped", price drops and likes are not time-sensitive; send them as normal notifications. OneSignal's field for the same level is in [onesignal MESSAGING-PRACTICES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/MESSAGING-PRACTICES.md#ios-interruption-levels-and-relevance).
 
 ## Reschedule on timezone or clock change
 

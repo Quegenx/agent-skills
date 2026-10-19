@@ -19,7 +19,7 @@ Function and data rules come from [get-convex/agent-skills, convex-expert, conve
 
 - **Use HTTP actions and explicit routes for external requests.** Validate method, body and provider authentication at the route; keep application database changes behind the app's own authorized functions. Components' current HTTP support is in [COMPONENTS.md](COMPONENTS.md#http-and-environment). [get-convex/agent-skills, convex-quickstart, convex-create-component; https://docs.convex.dev/functions/http-actions]
 - **Keep storage identifiers and access checks explicit.** Store storage IDs rather than assuming a public URL is the durable identity; check resource access in the wrapper that issues an upload or retrieval capability. [get-convex/agent-skills, convex-expert, convex-reviewer]
-- **Register cron work with the actual generated function reference.** Separate recurring schedules from delayed work and from durable multi-step orchestration; the generic workflow choice remains in [background-jobs](../background-jobs/DURABLE-WORKFLOWS.md). [get-convex/agent-skills, convex-crons, convex-design]
+- **Register cron work with the actual generated function reference.** Separate recurring schedules from delayed work and from durable multi-step orchestration; the generic workflow choice remains in [background-jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/DURABLE-WORKFLOWS.md). [get-convex/agent-skills, convex-crons, convex-design]
 - **Environment access is not actions-only.** It is supported in queries, mutations, actions and HTTP actions; declare typed environment where supported and keep values out of logs and reports. The old convex-env rule prohibited process.env in queries and mutations. Components have a separate declared environment boundary. [https://docs.convex.dev/production/environment-variables; COMPONENTS.md]
 
 ## Native scheduling guarantees
@@ -30,7 +30,7 @@ Function and data rules come from [get-convex/agent-skills, convex-expert, conve
 - Recurring work goes in `crons.ts`. A cron that might overlap a still-running previous run must check job state before starting.
 - For many parallel actions with limits and retries, use a work pool component rather than scheduling unbounded actions at once.
 
-Use the [generic first-run watermark policy](../background-jobs/WORKERS.md#convex-scheduler-and-crons) when that recurring job needs it. Native guarantees come from the existing worker/provider guidance. [https://docs.convex.dev/scheduling/scheduled-functions; https://docs.convex.dev/scheduling/cron-jobs]
+Use the [generic first-run watermark policy](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/WORKERS.md#convex-scheduler-and-crons) when that recurring job needs it. Native guarantees come from the existing worker/provider guidance. [https://docs.convex.dev/scheduling/scheduled-functions; https://docs.convex.dev/scheduling/cron-jobs]
 
 ## Prove it
 

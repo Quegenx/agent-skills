@@ -5,7 +5,9 @@ description: "Instruments and operates Langfuse for LLM applications: traces and
 
 # Langfuse
 
-This skill uses [langfuse/skills, langfuse and migrate-to-langfuse], checked against Langfuse's official documentation and current public API definitions. Use it for a selected Langfuse integration. Generic evaluation methodology stays in [agent-evals](../agent-evals/SKILL.md), and OpenTelemetry instrumentation stays in [observability](../../monitoring/observability/SKILL.md).
+This skill uses [langfuse/skills, langfuse and migrate-to-langfuse], checked against Langfuse's official documentation and current public API definitions. Use it for a selected Langfuse integration. Generic evaluation methodology stays in [agent-evals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md), and OpenTelemetry instrumentation stays in [observability](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -21,8 +23,8 @@ This skill uses [langfuse/skills, langfuse and migrate-to-langfuse], checked aga
 2. **Discover the actual supported operation before using it.** Prefer the current official API or the connected tool's declared schema over a remembered wrapper spelling. Current CLI documentation recommends `npx @langfuse/cli`; the source used `npx langfuse-cli`. An explicit host prevents destination ambiguity, although the CLI documents an EU default. [https://langfuse.com/docs/api-and-data-platform/features/cli]
 3. **Keep credentials in the supported environment configuration,** out of prompts, reports and exported examples. Confirm the selected project before a write. [langfuse/skills, langfuse, references/cli.md]
 4. **Inspect bounded evidence.** Observation-first reads use time bounds, cursor pagination and requested field groups. An unrequested field is unavailable evidence, not a measured null; one trace can contain many matching observations. [https://langfuse.com/faq/all/deprecated-api-migration]
-5. **Measure the user's task before choosing a metric or changing a prompt.** Use the existing [evaluation contract](../agent-evals/HARNESS.md); Langfuse is the storage and operation layer, not evidence that a metric measures correctness. [langfuse/skills, langfuse, references/setting-up-evals.md]
-6. **Retain consent and content controls at capture time.** Follow the existing [telemetry privacy rule](../../monitoring/observability/SKILL.md#the-rules) and inspect what each instrumentor actually emits. [langfuse/skills, langfuse, references/instrumentation.md]
+5. **Measure the user's task before choosing a metric or changing a prompt.** Use the existing [evaluation contract](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/HARNESS.md); Langfuse is the storage and operation layer, not evidence that a metric measures correctness. [langfuse/skills, langfuse, references/setting-up-evals.md]
+6. **Retain consent and content controls at capture time.** Follow the existing [telemetry privacy rule](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md#the-rules) and inspect what each instrumentor actually emits. [langfuse/skills, langfuse, references/instrumentation.md]
 
 ## Prove it
 

@@ -1,6 +1,6 @@
 # World: what a frame is made of
 
-[measured corpus, original world.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original world.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
 A film is not a layout with animation on it; it is a place with light in it. This file is the richness half of "one focal point inside a built world". Restraint decides where emphasis goes; it does not mean an empty frame. The user said it directly: "It should have more stuff than this, but it should use the animations, the fonts, the logos" (`taste/verdicts.md`), and v2 builds beat flat silent vector "in everyone" (the 09-30 u3/u6 rounds). The opposite failure is real too: clutter, and everything lit at once. The test is one focal point, many layers.
 
@@ -8,7 +8,7 @@ A film is not a layout with animation on it; it is a place with light in it. Thi
 
 [measured corpus, original world.md]
 
-Decide these per act, write them in the storyboard ([MEASURED-DIRECTION.md](../shotlist/MEASURED-DIRECTION.md) worksheet), and keep them consistent inside the act:
+Decide these per act, write them in the storyboard ([shotlist MEASURED-DIRECTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/shotlist/MEASURED-DIRECTION.md) worksheet), and keep them consistent inside the act:
 
 | Layer | Question | Sources, best first |
 |---|---|---|
@@ -17,7 +17,7 @@ Decide these per act, write them in the storyboard ([MEASURED-DIRECTION.md](../s
 | Depth | What is near, what is far? | 2-3 planes: a blurred or cropped foreground, the lit subject, a quieter background; parallax in camera moves; depth of field spent once |
 | Texture | What does the surface feel like? | grain, paper tooth, brushed metal, fabric; a little temporal grain in render (section 5) |
 | Material | What are the objects made of? | brand plastic (colour + low roughness + clearcoat), satin or anodised, glass, paper, ink; UI with real chrome |
-| Sound | What do you hear? | room tone or a bed that changes where the picture changes; close dry UI sounds; silence before the hit ([MEASURED-SOUND-SYNC.md](../sound-pass/MEASURED-SOUND-SYNC.md)) |
+| Sound | What do you hear? | room tone or a bed that changes where the picture changes; close dry UI sounds; silence before the hit ([sound-pass MEASURED-SOUND-SYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/sound-pass/MEASURED-SOUND-SYNC.md)) |
 
 A frame that is "a card on a flat colour" has only one of six. A frame with all six and one lit subject is a world. Flat swatch grounds per scene (cream, ink, lavender, green) are a slop pattern: five swatches in 19 s was a v1 test film; it reads as a deck. One light logic and one lens per film: assets in four rendering styles read as stock however good each is.
 
@@ -65,7 +65,7 @@ Rule: a ground has light, texture or material; the exception is a flood or a div
 - Camera like a lens: narrow FOV (about 25-35 degrees), moves with weight, depth of field spent on one rack focus.
 - Slop 3D: default grey material, a spinning logo for no reason, orbiting an object when the film isn't about its form, 3D on every beat, bloom haze, lens flares, glossy clip-art icons (shield, trophy, rocket, lightbulb).
 
-**imagegen surface plates** (`scripts/imagegen.py`, Codex image tool; flags in [README.md](../seek-engine/measured/README.md#their-tools-in-this-skill-set)). WHEN a surface the brand doesn't have a photo of is missing: a photographic plate, a texture, a material, an environment, a physical prop. Never text, logos, UI or people presented as real; code owns every letter and every interface. Inspect each image at full size (text leaks, anatomy, style drift) and check the md5 against the previous take (a stale re-use is the usual failure). A plate must PERFORM: be revealed, travelled through, lit, cut out; not sit behind a centred headline. Illustrative imagery is declared in NOTE.md, never captioned on screen. One judged music-app round picked the build with real-looking generated material ("C is very good") because it carried prompt to feed to logo.
+**imagegen surface plates** (`scripts/imagegen.py`, Codex image tool; flags in [seek-engine measured/README.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md#their-tools-in-this-skill-set)). WHEN a surface the brand doesn't have a photo of is missing: a photographic plate, a texture, a material, an environment, a physical prop. Never text, logos, UI or people presented as real; code owns every letter and every interface. Inspect each image at full size (text leaks, anatomy, style drift) and check the md5 against the previous take (a stale re-use is the usual failure). A plate must PERFORM: be revealed, travelled through, lit, cut out; not sit behind a centred headline. Illustrative imagery is declared in NOTE.md, never captioned on screen. One judged music-app round picked the build with real-looking generated material ("C is very good") because it carried prompt to feed to logo.
 
 **shutter blur** (`node scripts/render.mjs ... --shutter 180 --subframes 8`). Code is perfectly sharp and frozen between frames, and the eye reads that as "computer". Shutter blur integrates sub-frames in one pass (4 sub-frames leave double outlines on fast moves; 8 is the floor). Use it for SMOOTH-clock films. One blur grammar per film: shutter blur, OR per-element directional smear, OR crisp steps (twos clock, hard steps). Never stack real blur on fake smear copies, and never use `--shutter` on a stepped film.
 

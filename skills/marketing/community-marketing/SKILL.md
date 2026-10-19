@@ -5,9 +5,11 @@ description: "Builds and runs communities around shared identity: member value, 
 
 # Community marketing
 
-From coreyhaines31/marketingskills `community-marketing` v2.0.1 (MIT), with references adapted from Corey Haines's *Founding Marketing*, ch. 12. The complete existing community playbook, its attributed book cases, Slack limits and FTC disclosure corrections are in the topic below. Co-marketing and distribution partnerships are [partnerships](../partnerships/SKILL.md); paid creator programs are [creator-marketing](../creator-marketing/SKILL.md).
+From coreyhaines31/marketingskills `community-marketing` v2.0.1 (MIT), with references adapted from Corey Haines's *Founding Marketing*, ch. 12. The complete existing community playbook, its attributed book cases, Slack limits and FTC disclosure corrections are in the topic below. Co-marketing and distribution partnerships are [partnerships](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/partnerships/SKILL.md); paid creator programs are [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md).
 
-Read `.agents/product-context.md` before asking questions, using [the shared context definition](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). [coreyhaines31/marketingskills, community-marketing]
+Read `.agents/product-context.md` before asking questions, using [the shared context definition](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md). [coreyhaines31/marketingskills, community-marketing]
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

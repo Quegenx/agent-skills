@@ -1,6 +1,6 @@
 # Property-listing services
 
-Listing observation, a one-room demonstration and managed recurring production, paraphrased from [more skills, 17-estate-agent-listings.md]. The buyer is the responsible estate agent, not the property seller. Shared discovery, approval and authorized outreach belong to [DEMO-FIRST.md](DEMO-FIRST.md); the staging technique is defined in [REAL-PHOTO-EDITING.md](../marketing-images/REAL-PHOTO-EDITING.md#empty-property-staging).
+Listing observation, a one-room demonstration and managed recurring production, paraphrased from [more skills, 17-estate-agent-listings.md]. The buyer is the responsible estate agent, not the property seller. Shared discovery, approval and authorized outreach belong to [DEMO-FIRST.md](DEMO-FIRST.md); the staging technique is defined in [marketing-images REAL-PHOTO-EDITING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#empty-property-staging).
 
 ## Offer sequence and observation record
 
@@ -8,7 +8,7 @@ Listing observation, a one-room demonstration and managed recurring production, 
 
 The author proposes listing observation first, one staged main reception room as the entry demonstration, then listing films as continuing work. Work one town/postcode and contact the named agent handling the listing through the permitted business channel. Do not contact the seller to undermine their agent.
 
-For a permitted radar, keep one snapshot per listing per day with price, status and photo count; compare today with 30 days earlier and retain first_seen. The manual starter option is weekly observation of six target agents' own sites. Prefer an authorized feed/API and apply [web-scraping](../../web-automation/web-scraping/SKILL.md) before collecting portal data. Low frequency or observing robots rules alone does not override platform terms.
+For a permitted radar, keep one snapshot per listing per day with price, status and photo count; compare today with 30 days earlier and retain first_seen. The manual starter option is weekly observation of six target agents' own sites. Prefer an authorized feed/API and apply [web-scraping](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/SKILL.md) before collecting portal data. Low frequency or observing robots rules alone does not override platform terms.
 
 Prioritize observed price reduction, longer observation age relative to the local observed sample, and thin/empty photography as the author's hypotheses. First_seen is observation age, not verified original listing date; a median observed age is not proven local time to sale. A missing 30-day snapshot does not establish unchanged price. Alert on a zero-result snapshot day so a broken collector is visible.
 
@@ -34,9 +34,9 @@ The source permits unknown fields and a null previous snapshot but requires nume
 
 [more skills, 17-estate-agent-listings.md]
 
-Use one authorized actual empty main reception-room photograph and an explicit furniture list. Follow the [staging preservation/disclosure contract](../marketing-images/REAL-PHOTO-EDITING.md#empty-property-staging), including full-size comparison for removed defects, suitable ordinary furniture, correct scale and a disclosure inset against cropping. Give the agent one clear original/result demonstration rather than an unsolicited complete property set.
+Use one authorized actual empty main reception-room photograph and an explicit furniture list. Follow the [staging preservation/disclosure contract](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#empty-property-staging), including full-size comparison for removed defects, suitable ordinary furniture, correct scale and a disclosure inset against cropping. Give the agent one clear original/result demonstration rather than an unsolicited complete property set.
 
-Photo commissioning alone does not establish the agent's copyright ownership, and a two-word label alone does not discharge every local disclosure obligation. The [official corrections](../marketing-images/REAL-PHOTO-EDITING.md#start-with-permission-and-the-original) and [California-specific disclosure correction](../marketing-images/REAL-PHOTO-EDITING.md#empty-property-staging) apply.
+Photo commissioning alone does not establish the agent's copyright ownership, and a two-word label alone does not discharge every local disclosure obligation. The [official corrections](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#start-with-permission-and-the-original) and [California-specific disclosure correction](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#empty-property-staging) apply.
 
 ## Film brief and policy conflict
 
@@ -46,13 +46,13 @@ Preserve the useful film brief independently from its proposed generation method
 
 The source proposes constant slow motion without acceleration, easing or an end settle, holding the last frame without fade. No geometry/object changes, added people/pets, opening doors, moving curtains/trees/clouds/water/lights, changing reflections or decorative film effects. Review each clip at quarter speed, watching door frames, worktop edges and fence horizons for warping or room expansion; reject uncertain shots.
 
-**Current policy remains.** The source explicitly animates real listing photographs with image-to-video. [more skills, 17-estate-agent-listings.md] The existing rule prohibits generated footage of recognizable real locations or specific products and requires recording/building from the real thing. [coreyhaines31/marketingskills, video, marketing-video/SKILL.md] Keep the existing rule; this film brief is not an exception. The long source prompts also differ from current image/video prompt-length guidance; [the shared conflict record](../marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods) preserves both views.
+**Current policy remains.** The source explicitly animates real listing photographs with image-to-video. [more skills, 17-estate-agent-listings.md] The existing rule prohibits generated footage of recognizable real locations or specific products and requires recording/building from the real thing. [coreyhaines31/marketingskills, video, marketing-video/SKILL.md] Keep the existing rule; this film brief is not an exception. The long source prompts also differ from current image/video prompt-length guidance; [the shared conflict record](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods) preserves both views.
 
 ## Message and commercial handoff
 
 [more skills, 17-estate-agent-listings.md]
 
-Supply agent first name, agency, street only, exact work, supported observation age and known reduction status. Draft fewer than 65 words, plain and optionally lowercase. Name the street and free deliverable; mention age at most once neutrally. Never mention seller, asking price or reduction in the message; never imply a visit or criticize the agent's marketing. Disclose staging, avoid a call/meeting/package pitch and end with one easy question about further rooms. Return the message only; use [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md) for generic copy checks.
+Supply agent first name, agency, street only, exact work, supported observation age and known reduction status. Draft fewer than 65 words, plain and optionally lowercase. Name the street and free deliverable; mention age at most once neutrally. Never mention seller, asking price or reduction in the message; never imply a visit or criticize the agent's marketing. Disclose staging, avoid a call/meeting/package pitch and end with one easy question about further rooms. Return the message only; use [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md) for generic copy checks.
 
 Measure actual complete-property production cost, including rejected attempts, before quoting. The source bills each staged set and film per property, with the provider carrying reroll risk, then offers an agreed monthly property volume. No monetary price is supplied. A 60-second/four-second plan is 15 accepted clips; its illustrative 20 attempts is not a bound on repeated failures. Retain human review of every staged room and clip rather than selling unreviewed automation.
 

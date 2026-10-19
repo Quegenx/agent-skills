@@ -20,7 +20,7 @@ The source's one-page content brief, in order:
 
 Add a slim proposal banner identifying the actual builder and callback number. Approve the first niche template after phone inspection, then keep its layout fixed while changing each business's data. The source suggests five random batch previews, especially inspecting sparse-photo cases; five is a sample, not proof every site is correct.
 
-**Image and review differences:** the source substitutes niche stock imagery when fewer than three business photos exist and displays reviewer first names. Stock cannot be presented as that business's actual people, work or premises; keep the existing [real-image rules](../marketing-images/REAL-PHOTO-EDITING.md). Google requires applicable review author/source attribution, not merely first names, under its [Places policies](https://developers.google.com/maps/documentation/places/web-service/policies). [more skills, 01-website-sales-postcard-pipeline.md; Google Places policies]
+**Image and review differences:** the source substitutes niche stock imagery when fewer than three business photos exist and displays reviewer first names. Stock cannot be presented as that business's actual people, work or premises; keep the existing [real-image rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md). Google requires applicable review author/source attribution, not merely first names, under its [Places policies](https://developers.google.com/maps/documentation/places/web-service/policies). [more skills, 01-website-sales-postcard-pipeline.md; Google Places policies]
 
 After acceptance, move the approved site to the client's authorized domain, configure SSL and update the Profile website link only with actual access and approval. If a domain must be purchased, the source proposes buying it in the business's name; purchase still requires the agreed authority and spend. A Profile edit does not guarantee Google will index or show the site: [Google recrawl guidance](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl). The source said the edit would make the site appear when people search. [more skills, 01-website-sales-postcard-pipeline.md; Google Search Central]
 
@@ -30,7 +30,7 @@ For agreed monthly maintenance, update actual services, permitted new reviews an
 
 [more skills, 07-free-website-affiliate.md]
 
-The operator charges nothing for the build in this model. The owner pays any required platform plan and domain costs; the operator earns only an eligible referral commission. This guide supplies neither recurring maintenance scope nor recurring affiliate income. Generic program economics, disclosure and reconciliation stay in [AFFILIATES.md](../referral-programs/AFFILIATES.md).
+The operator charges nothing for the build in this model. The owner pays any required platform plan and domain costs; the operator earns only an eligible referral commission. This guide supplies neither recurring maintenance scope nor recurring affiliate income. Generic program economics, disclosure and reconciliation stay in [referral-programs AFFILIATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md).
 
 1. Apply to the selected program and read accepted terms before building: eligible customers, allowed promotion channels, attribution window, refunds, payout requirements and ownership transfer. Keep the approved referral link available to the workflow.
 2. Select the permitted niche/city list. The author proposes no site, 10 to 200 reviews and strictly above 4.0. Get list approval.
@@ -44,7 +44,7 @@ The author proposes checking dashboards every few hours and transferring within 
 
 The [Base44 affiliate page](https://base44.com/affiliates) advertises $100, a 30-day cookie, monthly processing and a $300 threshold, but describes paid conversion relative to its lock-in day. The source anchored a month to signup. Use the accepted current program terms rather than resetting an attribution clock at signup or transfer. Cross-account draft transfer and this campaign's eligibility remain unresolved implementation inputs. [more skills, 07-free-website-affiliate.md; Base44 affiliates]
 
-For US offers, state the conditions of receiving and keeping a free item clearly at the outset under the [FTC Free guide](https://www.ftc.gov/legal-library/browse/rules/guide-concerning-use-word-free-similar-representations), and follow the existing [commission disclosure rule](../referral-programs/AFFILIATES.md#disclosure). The source's free headline and claim button omitted those nearby conditions and disclosure. [FTC Free guide; FTC Endorsement Guides FAQ]
+For US offers, state the conditions of receiving and keeping a free item clearly at the outset under the [FTC Free guide](https://www.ftc.gov/legal-library/browse/rules/guide-concerning-use-word-free-similar-representations), and follow the existing [commission disclosure rule](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md#disclosure). The source's free headline and claim button omitted those nearby conditions and disclosure. [FTC Free guide; FTC Endorsement Guides FAQ]
 
 ## Optional expansion review
 

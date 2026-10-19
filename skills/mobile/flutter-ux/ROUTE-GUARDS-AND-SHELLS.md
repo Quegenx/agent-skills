@@ -1,15 +1,15 @@
 # Route guards and shells
 
-Nested navigators and `rootNavigator`, a sidebar built on a go_router `StatefulShellRoute`, and guarding routes (the `redirect` function, rebuilding the router from a Riverpod provider, guard widgets per route). Source: ApparenceKit tips and blog posts (apparencekit.dev), community material, not Flutter-team docs. The official routing guidance is in [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md); where ApparenceKit disagrees with it, both sides are stated and marked. Sheets, dialog results and page transitions are in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
+Nested navigators and `rootNavigator`, a sidebar built on a go_router `StatefulShellRoute`, and guarding routes (the `redirect` function, rebuilding the router from a Riverpod provider, guard widgets per route). Source: ApparenceKit tips and blog posts (apparencekit.dev), community material, not Flutter-team docs. The official routing guidance is in [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md); where ApparenceKit disagrees with it, both sides are stated and marked. Sheets, dialog results and page transitions are in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
 
 **Contents:** [Where the sources disagree](#where-the-sources-disagree) · [Nested navigators](#nested-navigators) · [Sidebar shell](#sidebar-shell) · [Route guards](#route-guards) · [Prove it](#prove-it)
 
 ## Where the sources disagree
 
-- **Auth in a guard widget or in `redirect` (opinion).** ApparenceKit puts each route's condition in a `Guard` widget ([ApparenceKit](https://apparencekit.dev/blog/flutter-riverpod-gorouter-redirect/)); the official go_router docs handle auth with `redirect` and re-run it with `refreshListenable` ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#redirects-and-auth)). Details under [Route guards](#route-guards).
+- **Auth in a guard widget or in `redirect` (opinion).** ApparenceKit puts each route's condition in a `Guard` widget ([ApparenceKit](https://apparencekit.dev/blog/flutter-riverpod-gorouter-redirect/)); the official go_router docs handle auth with `redirect` and re-run it with `refreshListenable` ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#redirects-and-auth)). Details under [Route guards](#route-guards).
 - **Rebuilding the router from a provider (opinion).** ApparenceKit shows a community workaround that builds a new `GoRouter` on every user-state change; the official route keeps one router and notifies `refreshListenable`.
-- **Named routes in examples (official).** The `rootNavigator` and Navigator 1.0 guard examples use `pushNamed` / `pushReplacementNamed`; the Flutter docs say "Do not use named routes for most apps" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)). Keep the technique, not the named route.
-- **Deprecated color API in the sidebar (official).** The sidebar code calls `withOpacityCpy`, which is not a Flutter API and which the article does not define. Flutter's own `Color.withOpacity` is deprecated in Flutter 3.22 for `Color.withValues(alpha: o)` ([VERSIONS.md](../flutter/VERSIONS.md)). The article states no Flutter version.
+- **Named routes in examples (official).** The `rootNavigator` and Navigator 1.0 guard examples use `pushNamed` / `pushReplacementNamed`; the Flutter docs say "Do not use named routes for most apps" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)). Keep the technique, not the named route.
+- **Deprecated color API in the sidebar (official).** The sidebar code calls `withOpacityCpy`, which is not a Flutter API and which the article does not define. Flutter's own `Color.withOpacity` is deprecated in Flutter 3.22 for `Color.withValues(alpha: o)` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)). The article states no Flutter version.
 
 ## Nested navigators
 
@@ -19,8 +19,8 @@ Nested navigators and `rootNavigator`, a sidebar built on a go_router `StatefulS
 Navigator.of(context, rootNavigator: true).pushNamed("premium")
 ```
 
-- The example uses a named route, which the Flutter docs advise against for most apps ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)); keep `rootNavigator: true` and push a `MaterialPageRoute` or go through go_router.
-- **go_router branches** are nested navigators too: each `StatefulShellBranch` "works like its own mini-navigator" with its own stack, so switching away and back returns where you left off [ApparenceKit](https://apparencekit.dev/flutter-tips/nested-navigation-go-router/). Setup: [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs).
+- The example uses a named route, which the Flutter docs advise against for most apps ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)); keep `rootNavigator: true` and push a `MaterialPageRoute` or go through go_router.
+- **go_router branches** are nested navigators too: each `StatefulShellBranch` "works like its own mini-navigator" with its own stack, so switching away and back returns where you left off [ApparenceKit](https://apparencekit.dev/flutter-tips/nested-navigation-go-router/). Setup: [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs).
 
 ## Sidebar shell
 
@@ -181,7 +181,7 @@ SideBarCategoryItem(
 - **Container:** width 280, full height from `LayoutBuilder` (`constraints.maxHeight`) rather than `MediaQuery.of(context).size.height`, "For performance reasons"; a right border at 5% opacity of the foreground color; a `Column` with `CrossAxisAlignment.stretch`. [ApparenceKit](https://apparencekit.dev/blog/how-to-build-flutter-sidebar-menu/)
 - **Category heading:** top padding 16; title padding vertical 10, horizontal 24; uppercase `bodySmall`, color `0xFF666666`, size 11, bold. The author's own improvements: take the color and the text style from the theme.
 - **Item:** three states (active, hovered, inactive). `Material(color: Colors.transparent)` so `InkWell` gives the ripple and `onHover`; outer horizontal padding 16; `Ink` height 40, padding vertical 6 and horizontal 12, radius 12. Active: background color, foreground text at `w600`. Hovered: primary at 30% opacity. Inactive: transparent, text at 80% opacity, `w300`. Icon right padding 12; title on one line with `TextOverflow.ellipsis`. The article says `onHover` fires "only for web".
-- The article shows the sidebar always (tablet and web); it does not switch at a breakpoint. Breakpoints and the navigation rail are in [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md).
+- The article shows the sidebar always (tablet and web); it does not switch at a breakpoint. Breakpoints and the navigation rail are in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md).
 
 ```dart
 class SideBar extends StatelessWidget {
@@ -357,7 +357,7 @@ class _SideBarCategoryItemState2 extends State<SideBarCategoryItem2> {
 }
 ```
 
-- **Before copying:** `context.colors`, `context.textTheme`, `withOpacityCpy` and `SidebarItemIcon` are ApparenceKit's own helpers, not Flutter APIs. For opacity, Flutter's `Color.withOpacity` is deprecated in 3.22 for `Color.withValues(alpha: o)` ([VERSIONS.md](../flutter/VERSIONS.md)). The item copies `widget.status` into state only in `initState`, so a status change from the parent shows only after the next hover ends (the article has no `didUpdateWidget`). The usage snippets call `SideBarCategoryItem` while the class is `SideBarCategoryItem2`.
+- **Before copying:** `context.colors`, `context.textTheme`, `withOpacityCpy` and `SidebarItemIcon` are ApparenceKit's own helpers, not Flutter APIs. For opacity, Flutter's `Color.withOpacity` is deprecated in 3.22 for `Color.withValues(alpha: o)` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)). The item copies `widget.status` into state only in `initState`, so a status change from the parent shows only after the next hover ends (the article has no `didUpdateWidget`). The usage snippets call `SideBarCategoryItem` while the class is `SideBarCategoryItem2`.
 
 ## Route guards
 
@@ -414,7 +414,7 @@ final routerProvider = Provider((ref) {
 ```
 
 - **The article's own drawbacks:** "it rebuilds the Router on any user state changes" (renaming the user rebuilds the whole router), and one function for every redirect gets hard in complex apps.
-- **Official way:** one router whose `redirect` re-runs when `refreshListenable` notifies ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#redirects-and-auth)), which avoids the rebuild. The article states no go_router version.
+- **Official way:** one router whose `redirect` re-runs when `refreshListenable` notifies ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#redirects-and-auth)), which avoids the rebuild. The article states no go_router version.
 
 ### Guard widgets per route
 
@@ -518,9 +518,9 @@ Route<dynamic> route(RouteSettings settings) {
 ```
 
 - **Where the official docs differ:**
-  - Auth placement: the Flutter docs "Handle auth and state-based routing with `redirect`" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#redirects-and-auth)); ApparenceKit uses a widget per route. Both are sources; choose one per app.
-  - Future created in build: `AuthGuard.build` creates a new `canActivate` future on every build and hands it to `FutureBuilder`; the Flutter docs say "Create the Future once in `initState`, so rebuilds do not fetch again" ([DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md)).
-  - Imperative redirect: `pushReplacement` is imperative navigation, which "is known to cause issues with the browser history" ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md)); matters on the web.
+  - Auth placement: the Flutter docs "Handle auth and state-based routing with `redirect`" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#redirects-and-auth)); ApparenceKit uses a widget per route. Both are sources; choose one per app.
+  - Future created in build: `AuthGuard.build` creates a new `canActivate` future on every build and hands it to `FutureBuilder`; the Flutter docs say "Create the Future once in `initState`, so rebuilds do not fetch again" ([flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md)).
+  - Imperative redirect: `pushReplacement` is imperative navigation, which "is known to cause issues with the browser history" ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md)); matters on the web.
   - Named routes: the Navigator 1.0 form routes on `settings.name` and falls back with `pushReplacementNamed`; the Flutter docs advise against named routes for most apps.
 
 ## Prove it

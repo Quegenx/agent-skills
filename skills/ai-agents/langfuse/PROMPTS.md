@@ -1,6 +1,6 @@
 # Prompt management
 
-Source: [langfuse/skills, langfuse, references/prompt-migration.md and prompt-engineering.md], with the current [JS/TS prompt-management documentation](https://langfuse.com/docs/prompt-management/get-started). Prompt quality and causal changes remain in the existing [fix loop](../agent-evals/FIX-LOOP.md).
+Source: [langfuse/skills, langfuse, references/prompt-migration.md and prompt-engineering.md], with the current [JS/TS prompt-management documentation](https://langfuse.com/docs/prompt-management/get-started). Prompt quality and causal changes remain in the existing [fix loop](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/FIX-LOOP.md).
 
 ## Inventory the callers
 
@@ -24,7 +24,7 @@ Source: [langfuse/skills, langfuse, references/prompt-migration.md and prompt-en
 
 [langfuse/skills, langfuse, references/prompt-engineering.md]
 
-Diagnose an observed failure class before editing the prompt, make an attributable change and compare it under the same evaluation contract. Do not import the source's broad GPT-versus-Claude prompting table or promise a universal prompting improvement. Generic method: [FIX-LOOP.md](../agent-evals/FIX-LOOP.md).
+Diagnose an observed failure class before editing the prompt, make an attributable change and compare it under the same evaluation contract. Do not import the source's broad GPT-versus-Claude prompting table or promise a universal prompting improvement. Generic method: [agent-evals FIX-LOOP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/FIX-LOOP.md).
 
 ## Prove it
 

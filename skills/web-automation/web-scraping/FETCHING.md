@@ -1,6 +1,6 @@
 # Fetching pages
 
-From [browserbase/skills, fetch and search] and [D4Vinci/Scrapling, scrapling-official], with the source research extractor below. Fetching page data is separate from [driving a browser](../browser-automation/SKILL.md) and [reconstructing an API from recorded traffic](../../architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md).
+From [browserbase/skills, fetch and search] and [D4Vinci/Scrapling, scrapling-official], with the source research extractor below. Fetching page data is separate from [driving a browser](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SKILL.md) and [reconstructing an API from recorded traffic](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md).
 
 **Contents:** [Pick the tier](#pick-the-tier) · [Safety: TLS and redirects](#safety-tls-and-redirects) · [Option: Browserbase Fetch API](#option-browserbase-fetch-api-vendor) · [Research extractor helper](#option-research-extractor-helper-vendor) · [Option: Scrapling CLI](#option-scrapling-cli-vendor) · [Option: Scrapling HTTP fetcher](#option-scrapling-http-fetcher-vendor) · [Option: Scrapling browser fetcher](#option-scrapling-browser-fetcher-vendor) · [Stealth fetchers](#stealth-fetchers) · [Capturing XHR data](#capturing-xhr-data) · [Prove it](#prove-it)
 
@@ -11,7 +11,7 @@ From [browserbase/skills, fetch and search] and [D4Vinci/Scrapling, scrapling-of
 - **Step up on empty content.** Empty content from a plain fetch means the page probably needs rendering. When unsure, start with plain fetch; if it fails or returns empty, escalate to a browser fetch.
 - **A crawler** when it is many pages from a site (CRAWLING.md).
 - **Check `statusCode` before you process content.**
-- **Style questions need raw bytes:** for how a page was built, "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes" [Jakub Krehel, explain-interface]. That is the "`.html` only to parse structure" case below; the greps for utility classes, inline gradients, tokens, `@layer`, breakpoints and stack fingerprints are in [pixel-reverse-engineer INSPECTION.md](../../architecture/pixel-reverse-engineer/INSPECTION.md#without-a-browser).
+- **Style questions need raw bytes:** for how a page was built, "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes" [Jakub Krehel, explain-interface]. That is the "`.html` only to parse structure" case below; the greps for utility classes, inline gradients, tokens, `@layer`, breakpoints and stack fingerprints are in [pixel-reverse-engineer INSPECTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/pixel-reverse-engineer/INSPECTION.md#without-a-browser).
 
 | Use case | Plain fetch | Browser |
 |---|---|---|
@@ -62,7 +62,7 @@ Fetches a URL with no browser session; faster and cheaper than one.
 
 [browserbase/skills, company-research/scripts/extract_page.mjs; competitor-analysis/references/research-patterns.md]
 
-**Upstream workspace prerequisite:** [extract_page.mjs](https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/extract_page.mjs) is not installed by this Markdown skill. The source command `node extract_page.mjs <url> [--max-chars N]` assumes that inspected helper is present in its workspace. Keep research character budgets, output fields and thin-evidence decisions in [web-research/EVIDENCE.md](../web-research/EVIDENCE.md#extracting-a-page).
+**Upstream workspace prerequisite:** [extract_page.mjs](https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/extract_page.mjs) is not installed by this Markdown skill. The source command `node extract_page.mjs <url> [--max-chars N]` assumes that inspected helper is present in its workspace. Keep research character budgets, output fields and thin-evidence decisions in [web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#extracting-a-page).
 
 - **Small structured files fetch raw:** the source uses `browse cloud fetch --allow-redirects` for `sitemap.xml`, `robots.txt` and `llms.txt`. HTML intended for a model goes through an extractor and remains [untrusted content](UNTRUSTED-CONTENT.md).
 - **Company-research source view:** without `--output`, its instructions describe a JSON envelope containing escaped HTML and warn against piping it through `sed`, which can remove the meta tags that are the only available copy on a page. The helper itself writes `browse cloud fetch --allow-redirects <url> --output <tmpfile>` to a `mkdtemp` directory and deletes that directory afterwards. [browserbase/skills, company-research/references/research-patterns.md; company-research/scripts/extract_page.mjs]
@@ -102,7 +102,7 @@ Current contracts below target Scrapling 0.5. Read the installed help/schema bef
 
 - **Current browser classes:** StealthyFetcher, StealthySession and AsyncStealthySession. DynamicFetcher, DynamicSession and AsyncDynamicSession were removed in 0.5. Use this browser API only for permitted rendering and interaction; its class name is not permission to evade a site's controls. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 - **Readiness is an observable result.** `load_dom` waits for DOMContentLoaded; that event does not wait for async scripts, images or subframes. The source incorrectly described it as all JavaScript loaded/executed. Wait for the intended result element rather than treating that lifecycle event as complete application readiness. [https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event; D4Vinci/Scrapling, scrapling-official/references/fetching/stealthy.md]
-- **Use explicit sessions for related interactions and network history.** Current-page extraction and actions are in [MCP-SERVER.md](MCP-SERVER.md#which-tool); general browser safety and credentials are owned by [browser-automation](../browser-automation/SKILL.md). [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]
+- **Use explicit sessions for related interactions and network history.** Current-page extraction and actions are in [MCP-SERVER.md](MCP-SERVER.md#which-tool); general browser safety and credentials are owned by [browser-automation](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/SKILL.md). [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]
 
 ## Stealth fetchers
 
@@ -112,7 +112,7 @@ Do not use CAPTCHA solving, bot-detection bypass, impersonation or identity/prox
 
 - **Use explicit browser-session network history in 0.5.** Enable `record_requests` on the session and inspect `session.network`; one-shot fetches do not return a capture list. `capture_xhr` and `response.captured_xhr` were removed, even when the old option was None. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 - **History is retained completed traffic across the session, not only the last page.** Search filters apply after collection; search returns at most 100 retained matches by default, while `limit=None` requests all retained matches without expanding retention. Unfinished requests and unavailable bodies are not proof of absent traffic. Read needed MCP history before closing its session. [D4Vinci/Scrapling, scrapling-official/references/fetching/stealthy.md; https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py]
-- **Captured traffic remains sensitive evidence.** Review headers, bodies and generated clients for credentials before sharing; the separate [traffic-to-OpenAPI workflow](../../architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md) owns spec/client generation. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md; existing traffic owner]
+- **Captured traffic remains sensitive evidence.** Review headers, bodies and generated clients for credentials before sharing; the separate [traffic-to-OpenAPI workflow](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md) owns spec/client generation. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md; existing traffic owner]
 
 ## Prove it
 

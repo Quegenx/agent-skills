@@ -1,6 +1,6 @@
 # Response security headers
 
-The headers a site sends tell the browser how strictly to treat it: HTTPS only, which scripts may run, who may frame it, what to sniff, what to leak in `Referer`. This file sets them by value and checks them by value. The rules come from MDN's practical implementation guides ([index](https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides)) and MDN's header reference; where an audit tool says otherwise, both are named. The tools: Audit Kit (`ak security`, MIT, [audit-kit]) and FreeScan's public security checks ([freescan], no licence, restated). A site audit that runs these checks is in [../../marketing/site-audit/SKILL.md](../../marketing/site-audit/SKILL.md); consent-banner scripts under a CSP are in [../../frontend/cookie-consent/BANNER-UI.md](../../frontend/cookie-consent/BANNER-UI.md).
+The headers a site sends tell the browser how strictly to treat it: HTTPS only, which scripts may run, who may frame it, what to sniff, what to leak in `Referer`. This file sets them by value and checks them by value. The rules come from MDN's practical implementation guides ([index](https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides)) and MDN's header reference; where an audit tool says otherwise, both are named. The tools: Audit Kit (`ak security`, MIT, [audit-kit]) and FreeScan's public security checks ([freescan], no licence, restated). A site audit that runs these checks is in [site-audit SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/SKILL.md); consent-banner scripts under a CSP are in [cookie-consent BANNER-UI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/BANNER-UI.md).
 
 ## Order of work
 
@@ -101,7 +101,7 @@ MDN's rules ([cookies guide](https://developer.mozilla.org/en-US/docs/Web/Securi
 Set-Cookie: __Host-session=...; Max-Age=2592000; Path=/; Secure; HttpOnly; SameSite=Lax
 ```
 
-Classify each cookie by purpose before flagging it: `HttpOnly` belongs on every cookie client code doesn't need, and a CDN may set a separate, harmless cookie [freescan]. Audit Kit's rule is blunter, "Add Secure, HttpOnly, and SameSite to every cookie" [audit-kit]. The repo keeps the purpose-based rule, because Supabase's browser client must read its session cookie: "With client JavaScript the browser must read and refresh the session (it needs the refresh token), so HttpOnly is not necessary" ([../supabase/AUTH-SESSIONS.md](../supabase/AUTH-SESSIONS.md)). A blanket `HttpOnly` check flags that cookie.
+Classify each cookie by purpose before flagging it: `HttpOnly` belongs on every cookie client code doesn't need, and a CDN may set a separate, harmless cookie [freescan]. Audit Kit's rule is blunter, "Add Secure, HttpOnly, and SameSite to every cookie" [audit-kit]. The repo keeps the purpose-based rule, because Supabase's browser client must read its session cookie: "With client JavaScript the browser must read and refresh the session (it needs the refresh token), so HttpOnly is not necessary" ([supabase AUTH-SESSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SESSIONS.md)). A blanket `HttpOnly` check flags that cookie.
 
 ## Headers to drop or narrow
 
@@ -113,8 +113,8 @@ Classify each cookie by purpose before flagging it: `HttpOnly` belongs on every 
 A deployed `.env` or `.git` directory hands out secrets and source [freescan]:
 
 - **Probe, on a site you own or are authorized to test:** `GET /.env` and `GET /.git/config` should return 404 (or a WAF block, which is also a safe result). A custom error page served with status 200 can look like exposure, so read the body before calling it one.
-- **Fix:** remove the files from the web root, block dotfiles and repository paths at the edge ([../deployment/SKILL.md](../deployment/SKILL.md#moving-to-a-new-host-without-downtime) ports such rules on a host move), and **rotate every credential that may have been retrievable**; deleting the file does not un-leak it ([SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md)).
-- Probing paths on someone else's site is a different act: see the probe-by-ownership rule in [../../web-automation/web-scraping/CRAWLING.md](../../web-automation/web-scraping/CRAWLING.md#guardrails).
+- **Fix:** remove the files from the web root, block dotfiles and repository paths at the edge ([deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime) ports such rules on a host move), and **rotate every credential that may have been retrievable**; deleting the file does not un-leak it ([SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md)).
+- Probing paths on someone else's site is a different act: see the probe-by-ownership rule in [web-scraping CRAWLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/CRAWLING.md#guardrails).
 
 ## Checking headers
 

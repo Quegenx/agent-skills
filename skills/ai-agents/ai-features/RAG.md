@@ -40,7 +40,7 @@ export function chunkText(sentences: string[], maxChars = 2000, overlapChars = 2
 - **Give chunks deterministic ids** (`${documentId}:${chunkIndex}`) and upsert, so re-indexing the same document doesn't duplicate it.
 - **Re-index by replacing, not only upserting:** delete all chunks for the document, then insert the new ones, in one transaction. Upsert alone leaves stale chunks behind when a document gets shorter, and a deleted document must lose all its chunks. Stale chunks produce confident wrong answers.
 - **Embed in batches** (one call with many chunks, such as `embedMany`), not one request per chunk, and index large uploads in a background job ([AI-JOBS.md](AI-JOBS.md)) instead of inside the upload request.
-- Embed and store as in [VECTOR-SEARCH.md](VECTOR-SEARCH.md), with [pgvector index timing](../../backend/supabase/VECTORS.md#indexes) at its provider owner. Use hybrid search when questions include names, codes or exact terms; give each list more candidates than the final count, or fusion has little to work with.
+- Embed and store as in [VECTOR-SEARCH.md](VECTOR-SEARCH.md), with [pgvector index timing](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/VECTORS.md#indexes) at its provider owner. Use hybrid search when questions include names, codes or exact terms; give each list more candidates than the final count, or fusion has little to work with.
 
 ## Answering
 

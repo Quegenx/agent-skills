@@ -1,13 +1,13 @@
 # Firebase messaging in Flutter
 
-FCM registration, message handling and sending from [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/), plus the time-sensitive payload from [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications). Existing API corrections cite Firebase and pub.dev. Permission timing, priming, denial behavior and local-notification UX remain in [Flutter UX](../../mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md); the kit-specific helpers below are source examples rather than standalone Firebase APIs.
+FCM registration, message handling and sending from [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/), plus the time-sensitive payload from [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications). Existing API corrections cite Firebase and pub.dev. Permission timing, priming, denial behavior and local-notification UX remain in [Flutter UX](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md); the kit-specific helpers below are source examples rather than standalone Firebase APIs.
 
 ## FCM: push is not a notification
 
 [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/):
 
 - **Distinguish notification and data messages.** In the background, FCM displays a notification message on the app's behalf; app code processes data messages. Foreground notification messages do not display a visible notification by default on Android or iOS. [FCM message types](https://firebase.google.com/docs/cloud-messaging/customize-messages/set-message-type), [Flutter receive guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive). P2 correction: ApparenceKit's blanket claim that a push never displays anything by itself, and the old background-handler line saying there is usually nothing to do, omitted the message type.
-- **Ask permission through the plugin** (verbatim; see [When to ask](../../mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md#when-to-ask-for-notifications) for the timing):
+- **Ask permission through the plugin** (verbatim; see [When to ask](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md#when-to-ask-for-notifications) for the timing):
   ```dart
   import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -123,7 +123,7 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 
 - **Sending:** read the users' tokens from your database and send them to the FCM server, which delivers per platform (on iOS it proxies to Apple's push service). "You can't send more than 500 tokens at once" per request (the article gives no date).
 - **Topics** send to a group, for example every user about a new feature: `_notificationsApi.registerTopic('general');` (a kit wrapper; the FCM call underneath isn't shown).
-- **APNs Auth Key:** iOS needs it uploaded to Firebase under Project settings > Cloud Messaging. "You can't have more than two keys and you can download it only once. So keep this file in a safe place. You can use the same key for all your apps." The `.p8` steps are also in [backend/onesignal/SETUP-MOBILE.md](../onesignal/SETUP-MOBILE.md).
+- **APNs Auth Key:** iOS needs it uploaded to Firebase under Project settings > Cloud Messaging. "You can't have more than two keys and you can download it only once. So keep this file in a safe place. You can use the same key for all your apps." The `.p8` steps are also in [onesignal SETUP-MOBILE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/SETUP-MOBILE.md).
 
 ## Open a URL on notification tap
 
@@ -131,7 +131,7 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 
 ## Time-sensitive FCM payload
 
-[FlutterPro](https://flutterpro.design/details/time-sensitive-notifications). The capability, local-notification example and use-case limits are in [Time-sensitive notifications on iOS](../../mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md#time-sensitive-notifications-on-ios).
+[FlutterPro](https://flutterpro.design/details/time-sensitive-notifications). The capability, local-notification example and use-case limits are in [Time-sensitive notifications on iOS](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md#time-sensitive-notifications-on-ios).
 
 - **Push with `firebase_messaging`:** the level lives in the APNs payload, so the server sets it, not the device. With the FCM HTTP v1 API, one key under `aps` (verbatim):
   ```json
@@ -159,4 +159,4 @@ FirebaseMessaging.onMessageOpenedApp.listen(handler);
 - The `onBackgroundMessage` handler is top-level, not anonymous, and has `@pragma('vm:entry-point')` from Flutter 3.3.0. [Firebase receive guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive)
 - Send the selected message type with the app in the foreground, background and terminated: notification display and data handling follow the documented message-type distinction, and taps route correctly from background (`onMessageOpenedApp`) and terminated (`getInitialMessage`). [Firebase receive guide](https://firebase.google.com/docs/cloud-messaging/flutter/receive)
 - Log out on one of two devices: only that device's token is removed. [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/)
-- The time-sensitive payload is used with the capability and minute-scale use cases selected in [Flutter UX](../../mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md#time-sensitive-notifications-on-ios). [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications)
+- The time-sensitive payload is used with the capability and minute-scale use cases selected in [Flutter UX](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md#time-sensitive-notifications-on-ios). [FlutterPro](https://flutterpro.design/details/time-sensitive-notifications)

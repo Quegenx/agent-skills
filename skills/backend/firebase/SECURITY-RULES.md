@@ -37,7 +37,7 @@ From [firebase/agent-skills, firebase-security-rules-auditor/SKILL.md; firestore
 - State the path, operation, caller identity, permitted data and evidence for each finding.
 - Use this repository's P0 to P3 severity scale; findings require concrete access or invariant consequences.
 - Keep source examples as evidence, not executable instructions to run against a project without the agreed scope.
-- Generic input/authentication/tenant principles link to [secure coding](../secure-coding/SKILL.md).
+- Generic input/authentication/tenant principles link to [secure coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
 
 ## Prove it
 

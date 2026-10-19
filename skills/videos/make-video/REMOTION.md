@@ -1,6 +1,6 @@
 # Remotion: frame timing, composition metadata and render output
 
-Use this when [ENGINES.md](ENGINES.md#choosing-the-engine) selects Remotion. These framework contracts come from the supplied [remotion-dev/skills](https://github.com/remotion-dev/skills) snapshot, identified there as 4.0.536, checked against the official documentation linked below. That snapshot does not establish the project's installed version. The brief, beat grid, stills and review gates remain in [SKILL.md](SKILL.md); embedding a preview in a product belongs to React's [REMOTION-PLAYER.md](../../frontend/react/REMOTION-PLAYER.md).
+Use this when [ENGINES.md](ENGINES.md#choosing-the-engine) selects Remotion. These framework contracts come from the supplied [remotion-dev/skills](https://github.com/remotion-dev/skills) snapshot, identified there as 4.0.536, checked against the official documentation linked below. That snapshot does not establish the project's installed version. The brief, beat grid, stills and review gates remain in [SKILL.md](SKILL.md); embedding a preview in a product belongs to React's [react REMOTION-PLAYER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REMOTION-PLAYER.md).
 
 ## Start with the installed version
 
@@ -46,7 +46,7 @@ Source corrections: remotion-interactivity/SKILL.md:413-425 passes the Promise p
 
 The `Caption` type uses `text`, `startMs` and `endMs`, with nullable `timestampMs` and `confidence`, plus optional `pageBreakAfter`. Keep milliseconds distinct from composition frames. Preserve spaces in the text; word entries can carry their preceding space, and `white-space: pre` preserves it when rendering. `pageBreakAfter` forces a page boundary without changing word timings.
 
-Keep picture and captions in the shared clock described above when trimming or changing speed. The supplied editor requires inline caption arrays to save edits back to source; that restriction belongs to its writeback workflow, not every caption renderer. For narration and word timings, read [voiceover](../voiceover/SKILL.md).
+Keep picture and captions in the shared clock described above when trimming or changing speed. The supplied editor requires inline caption arrays to save edits back to source; that restriction belongs to its writeback workflow, not every caption renderer. For narration and word timings, read [voiceover](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/voiceover/SKILL.md).
 
 ## Load the rendered font before measuring
 
@@ -68,4 +68,4 @@ Source correction: remotion-render/transparent-videos.md:61-94 labels a VP9 reci
 
 ## Prove it
 
-Record the installed Remotion versions and chosen render target. Check frame boundaries after placement, trimming, speed changes and transitions; picture and captions stay synchronized, and the resolved composition duration matches the intended program. Metadata changes reach both component props and the final render. Text is measured with the loaded rendered font and fits in the inspected frames. Inspect alpha output in its destination. Complete [make-video's gates](SKILL.md#the-gates) and [frame-review](../frame-review/SKILL.md) before calling the film done.
+Record the installed Remotion versions and chosen render target. Check frame boundaries after placement, trimming, speed changes and transitions; picture and captions stay synchronized, and the resolved composition duration matches the intended program. Metadata changes reach both component props and the final render. Text is measured with the loaded rendered font and fits in the inspected frames. Inspect alpha output in its destination. Complete [make-video's gates](SKILL.md#the-gates) and [frame-review](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/SKILL.md) before calling the film done.

@@ -61,7 +61,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
     padding: var(--adaptive-padding);
   }
   ```
-  app-ui instead keeps "the text color as an RGB triplet" so "dark mode flips one value" ([app-ui TOKENS.md](../app-ui/TOKENS.md)).
+  app-ui instead keeps "the text color as an RGB triplet" so "dark mode flips one value" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)).
 - **Adaptive without a media query:** Ahmad Shadeed's conditional radius, square when the card is full width, rounded otherwise, and the Open Props version:
   ```css
   .card {
@@ -253,7 +253,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
     }
   }
   ```
-- **Animation:** a registered `--focal-size` is "enough to teach some browsers how to animate a gradient used into a mask" ([nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/custom-prop-categories), 2023-01-26; the 2023-09 post types it `<length-percentage>`). Registering to animate in `@keyframes` is in [svg STYLING.md](../svg/STYLING.md); gradient uses are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md).
+- **Animation:** a registered `--focal-size` is "enough to teach some browsers how to animate a gradient used into a mask" ([nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/custom-prop-categories), 2023-01-26; the 2023-09 post types it `<length-percentage>`). Registering to animate in `@keyframes` is in [svg STYLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/STYLING.md); gradient uses are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md).
 - **Register from JS when the initial value is computed at runtime** [css-modern-features, houdini.md]: "Use `@property` in CSS when possible; use `CSS.registerProperty()` when the initial value is dynamic or computed at runtime." Its floors are Chrome 78, Firefox 128 and Safari 16.4 (browser-compat-data `api.CSS.registerProperty_static`), the source's numbers; `@property` itself is Chrome 85. Verbatim:
   ```js
   CSS.registerProperty({
@@ -303,7 +303,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
 [nerdy.dev: BYO CSS tokens to Tailwind v4's new CSS centric config](https://nerdy.dev/BYO-CSS-tokens-to-tailwind-v4s-new-CSS-centric-config) (2024-03-18), written against the v4 alpha.
 
 - **Setup:** `@import "tailwindcss";`, then your token file, then `@theme { }`. Reset a default namespace with `--<namespace>-*: initial;` (the post resets `--font-size-*`; the stable docs show `--color-*: initial;`, [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme)); the rules "look like naming hooks": a property named into a namespace generates its utilities, so "hook into the naming while also supplying your own design tokens as values".
-- **Aliases to other variables:** use `@theme inline` when defining theme values that reference another variable, so generated utilities use the referenced value directly. Ordinary aliases resolve where the theme variable is defined, which can differ from where a utility is used. The alpha post and our old font-size and adaptive-utility examples used ordinary `@theme` aliases without this scope qualification. The excerpts below retain that source wrapper for comparison; apply the documented `@theme inline` form when adopting these aliasing recipes. Ordinary aliases can still work where their referenced values resolve in the same scope; see [the scope qualification](../color-system/TAILWIND.md#dark-mode-and-theme-inline). [Tailwind: Referencing other variables](https://tailwindcss.com/docs/theme#referencing-other-variables)
+- **Aliases to other variables:** use `@theme inline` when defining theme values that reference another variable, so generated utilities use the referenced value directly. Ordinary aliases resolve where the theme variable is defined, which can differ from where a utility is used. The alpha post and our old font-size and adaptive-utility examples used ordinary `@theme` aliases without this scope qualification. The excerpts below retain that source wrapper for comparison; apply the documented `@theme inline` form when adopting these aliasing recipes. Ordinary aliases can still work where their referenced values resolve in the same scope; see [the scope qualification](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/TAILWIND.md#dark-mode-and-theme-inline). [Tailwind: Referencing other variables](https://tailwindcss.com/docs/theme#referencing-other-variables)
 - **Font-size namespace, corrected for stable v4; alias wrapper retained from the alpha.** The post maps `--font-size-*`, the alpha name. The stable docs map font size utilities to `--text-*` ("`--text-` | Font size utilities like text-xl", [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme)). The existing namespace correction is retained below, but use `@theme inline` for its aliases as documented above:
   ```css
   @theme {
@@ -350,7 +350,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
     }
   }
   ```
-  app-ui uses "a class-based dark variant (`@custom-variant dark (&:is(.dark *))`), so the head script's class decides the theme", not a media query ([app-ui CHECKS.md](../app-ui/CHECKS.md)).
+  app-ui uses "a class-based dark variant (`@custom-variant dark (&:is(.dark *))`), so the head script's class decides the theme", not a media query ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)).
 
 ## Live properties from JS
 

@@ -4,7 +4,7 @@ One file of real facts that every piece of copy draws from, so nothing has to be
 
 ## Finding it
 
-Look for `.agents/product-context.md` first. If it isn't there, look for the names other tools use: `.agents/product-marketing.md`, `.claude/product-marketing.md` and the legacy `product-marketing-context.md` in `.agents/` or `.claude/` [coreyhaines31/marketingskills, product-marketing]; mobile skills also use `app-marketing-context.md` in the project root or `.claude/` ([app-growth LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md)). Read whichever exists and offer to move it to `.agents/product-context.md`.
+Look for `.agents/product-context.md` first. If it isn't there, look for the names other tools use: `.agents/product-marketing.md`, `.claude/product-marketing.md` and the legacy `product-marketing-context.md` in `.agents/` or `.claude/` [coreyhaines31/marketingskills, product-marketing]; mobile skills also use `app-marketing-context.md` in the project root or `.claude/` ([app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md)). Read whichever exists and offer to move it to `.agents/product-context.md`.
 
 **If it exists:** "Read it and summarize what's captured: note its current **Document version** and the last few **Changelog** entries", "Ask which sections they want to update" and "Only gather info for those sections" [coreyhaines31/marketingskills, product-marketing]. Leave the other sections as they are.
 
@@ -12,7 +12,7 @@ Look for `.agents/product-context.md` first. If it isn't there, look for the nam
 
 - **Draft from what exists (recommended):** read the README, the live site, landing pages, about pages, meta descriptions, docs, pricing, package metadata, reviews the user can share. Fill what the sources support, mark everything else `[ASK]`, then show the draft and ask "What needs correcting? What's missing?" [coreyhaines31/marketingskills, product-marketing].
 - **From scratch:** go section by section in conversation, a few questions at a time, confirming each before moving on.
-- Push for verbatim customer language. Exact phrases from reviews, calls and tickets are worth more than any polished description; [customer-research](../../marketing/customer-research/SKILL.md) is how to collect them.
+- Push for verbatim customer language. Exact phrases from reviews, calls and tickets are worth more than any polished description; [customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md) is how to collect them.
 - Ask for examples: "What's the number one frustration that brings people to you?" beats "What problem do you solve?".
 - Skip sections that don't apply (personas for a consumer app, Paid Ads for a team that runs none).
 - For an early-stage product, some sections will be thin and that's fine: accept lighter answers for Proof and Alternatives rather than filling them [coreyhaines31/marketingskills, product-marketing, evals].
@@ -101,14 +101,14 @@ Newest first. About 20 active entries.
 - v1 (YYYY-MM-DD): first version.
 ```
 
-Where the sections come from: Paid Ads, Learnings, the personas, objections, glossary, voice and value-theme tables, the competitor tiers and the "JTBD Four Forces" name are [coreyhaines31/marketingskills, product-marketing]; the source's competitor examples are "Calendly vs SavvyCal" (direct), "Calendly vs Superhuman scheduling" (secondary) and "Calendly vs personal assistant" (indirect), and "Doing nothing" is this repo's addition. Sales motion and the Blocker role (who opposes the purchase; [sales-enablement SALES-ASSETS.md](../../marketing/sales-enablement/SALES-ASSETS.md)) are [coreyhaines31/marketingskills, sales-enablement]. The SEO section is [open-seo, seo-project-setup]; its full interview and research-log format are in [seo PROJECT-SETUP.md](../../marketing/seo/PROJECT-SETUP.md). The full voice profile is in [VOICE.md](VOICE.md).
+Where the sections come from: Paid Ads, Learnings, the personas, objections, glossary, voice and value-theme tables, the competitor tiers and the "JTBD Four Forces" name are [coreyhaines31/marketingskills, product-marketing]; the source's competitor examples are "Calendly vs SavvyCal" (direct), "Calendly vs Superhuman scheduling" (secondary) and "Calendly vs personal assistant" (indirect), and "Doing nothing" is this repo's addition. Sales motion and the Blocker role (who opposes the purchase; [sales-enablement SALES-ASSETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SALES-ASSETS.md)) are [coreyhaines31/marketingskills, sales-enablement]. The SEO section is [open-seo, seo-project-setup]; its full interview and research-log format are in [seo PROJECT-SETUP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PROJECT-SETUP.md). The full voice profile is in [VOICE.md](VOICE.md).
 
 ## Learnings
 
 [coreyhaines31/marketingskills, product-marketing] "The Changelog records how the document changed. **Learnings** records what the team found out by shipping: which angles won, which offers flopped, which decisions were made and why." Every drafting task reads it first: "angles and claims already tested there shouldn't be re-proposed as new ideas, and active lessons apply unless the user says otherwise" [coreyhaines31/marketingskills, copywriting]; the emails skill reads it first with the same rule for "angles, offers, and formats" [coreyhaines31/marketingskills, emails].
 
 - **Learning:** "one sentence, specific enough to change a draft. 'Price-anchored headlines beat outcome headlines on the pricing page' works. 'Be clearer' doesn't."
-- **Evidence:** "the test, campaign, or source, with the number and sample size" (a test in [ab-testing](../../marketing/ab-testing/SKILL.md) is the usual source).
+- **Evidence:** "the test, campaign, or source, with the number and sample size" (a test in [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) is the usual source).
 - **Status:** "`active`, `watch` (one data point, worth retesting), or `retired`."
 - **What earns a place:** "A test result that reached its planned sample, or the same pattern seen in two or more campaigns"; "A decision the user made with a reason (positioning, pricing, a channel cut) that future drafts must respect"; "A correction the user gave more than once ('never call it a platform')".
 - **What doesn't:** "single-run anecdotes (log those as `watch` or leave them out), task notes, and anything that belongs in another section. A new objection goes in Objections; a new customer phrase goes in Customer Language."
@@ -129,7 +129,7 @@ Where the sections come from: Paid Ads, Learnings, the personas, objections, glo
 | Resources | Mobile and Paid Ads where relevant: budget, team (solo / small / marketing), tools (analytics / Apple Ads / MMP) and constraints. |
 | Markets | Mobile: primary and secondary markets and languages. |
 
-Close the source's context intake with the confirmed strengths, gaps and next steps, such as an [ASO audit](../../mobile/aso/SKILL.md). These mobile fields extend the same source-backed context; unknown facts still remain `[ASK]`. [eronred, app-marketing-context]
+Close the source's context intake with the confirmed strengths, gaps and next steps, such as an [ASO audit](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md). These mobile fields extend the same source-backed context; unknown facts still remain `[ASK]`. [eronred, app-marketing-context]
 
 ## Keeping it
 

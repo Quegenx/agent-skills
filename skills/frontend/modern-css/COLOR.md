@@ -1,6 +1,6 @@
 # Color
 
-Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes from one hue, `color-mix()` and the space it mixes in, relative colour syntax with OKLCH's real channel ranges, `alpha()`, `contrast-color()`, `light-dark()` with page and component light/dark strategies, system and accent colours, P3 with an sRGB fallback, APCA contrast and forced colours. Source: Adam Argyle's nerdy.dev posts, each tagged; current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Gradient interpolation spaces and hue routes are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); colour tokens as custom properties are in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md); building and auditing a whole colour system (ramps, roles, token names, WCAG and APCA levels, gamut clamping) is in [color-system](../color-system/SKILL.md).
+Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes from one hue, `color-mix()` and the space it mixes in, relative colour syntax with OKLCH's real channel ranges, `alpha()`, `contrast-color()`, `light-dark()` with page and component light/dark strategies, system and accent colours, P3 with an sRGB fallback, APCA contrast and forced colours. Source: Adam Argyle's nerdy.dev posts, each tagged; current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Gradient interpolation spaces and hue routes are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); colour tokens as custom properties are in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md); building and auditing a whole colour system (ramps, roles, token names, WCAG and APCA levels, gamut clamping) is in [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md).
 
 **Contents:** [Lightness: LCH and OKLCH over HSL](#lightness-lch-and-oklch-over-hsl) · [OKLCH palettes from one hue](#oklch-palettes-from-one-hue) · [color-mix() and its space](#color-mix-and-its-space) · [Relative colour syntax](#relative-colour-syntax) · [alpha()](#alpha) · [contrast-color()](#contrast-color) · [light-dark() and color-scheme](#light-dark-and-color-scheme) · [Page and component light and dark](#page-and-component-light-and-dark) · [System and accent colours](#system-and-accent-colours) · [Wide gamut: P3 with an sRGB fallback](#wide-gamut-p3-with-an-srgb-fallback) · [Contrast scores: APCA and L*](#contrast-scores-apca-and-l) · [Forced colours](#forced-colours) · [Prove it](#prove-it)
 
@@ -9,7 +9,7 @@ Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes f
 `lch()` and `oklch()` are Baseline widely available, across browsers since May 2023 ([MDN oklch()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/oklch)). The posts' "Try in Canary or Safari TP with color web experiments on" (2022) and "You'll need a browser with oklch() support" (2023) are out of date.
 
 - **HSL lightness is not perceived lightness** [nerdy.dev: LCH Luminance vs HSL Lightness](https://nerdy.dev/lch-luminance-vs-hsl-lightness) (2022-12-02): "50% lightness in HSL is almost never 50% as humans see it; it's just 50% lightness in that color space. 50% lightness in LCH is built around human lightness perception." HSL 50% yellow "is perceptually 97% lightness", "and it will totally bite you when you go to measure color contrast". LCH at 50% may look muted, but "it's a middle of the road color". The rule: "LCH type color spaces should be your colorspace for manipulation."
-- **Two views on deriving variants:** ui-animation quotes a chart source that converts any colour to HSL and derives every variant from it ([ui-animation PATTERNS.md](../ui-animation/PATTERNS.md)); this post says derive in LCH-type spaces.
+- **Two views on deriving variants:** ui-animation quotes a chart source that converts any colour to HSL and derives every variant from it ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md)); this post says derive in LCH-type spaces.
 - **OKLCH hues are not HSL hues** [nerdy.dev: Open Props okLCH beta](https://nerdy.dev/open-props-oklch-palettes-beta) (2023-03-31): "`oklch` has a slightly different hue angle setup than the others, so you can't just straight transfer from `hsl` or `hwb`". Open Props ships named hues for that reason (`--hue-pink`, `--hue-indigo`).
 - **OKLCH pitfalls** (same post): "Yellow does not generate well"; it's "def funky under `10%` lightness"; "if chroma is high and lightness is `100%`, it might not be white like you'd think."
 - **Chroma takes a percentage** [nerdy.dev: Percentage Chroma](https://nerdy.dev/percentage-chroma) (2023-11-27):
@@ -60,7 +60,7 @@ Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes f
   }
   ```
 - **A stepped OKLCH palette with a bit of hue rotate** is the subject of [nerdy.dev: Oklch Stepped Palette With A Bit Of A Hue Rotate](https://nerdy.dev/oklch-stepped-palette-with-a-bit-of-a-hue-rotate) (2023-09-20); the code is only on CodePen. His framing of the choice: "Math color palettes = letter spacing / Optical color palettes = kerning" [nerdy.dev: Color Palettes And Typography](https://nerdy.dev/color-palettes-and-typography) (2023-02-08).
-- app-ui's checker flags raw `oklch()` "outside a token definition line in a token source file" ([app-ui CHECKS.md](../app-ui/CHECKS.md)).
+- app-ui's checker flags raw `oklch()` "outside a token definition line in a token source file" ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)).
 
 ## color-mix() and its space
 
@@ -86,7 +86,7 @@ Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes f
   }
   ```
   "Result is `rgb(255 0 0 / 5%)`."
-- **The space matters, in his words:** "I chose `oklab` very specifically here, it gave me the mix I expected. Other color spaces did not." His own second example mixes `in srgb` and gets the exact expected result. app-ui's reference code fades brand colours `in srgb` (`color-mix(in srgb, var(--primary) 25%, transparent)` in [date-range-picker.module.css](../app-ui/reference/components/ui/forms/date-range/date-range-picker.module.css)).
+- **The space matters, in his words:** "I chose `oklab` very specifically here, it gave me the mix I expected. Other color spaces did not." His own second example mixes `in srgb` and gets the exact expected result. app-ui's reference code fades brand colours `in srgb` (`color-mix(in srgb, var(--primary) 25%, transparent)` in [date-range-picker.module.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/components/ui/forms/date-range/date-range-picker.module.css)).
 - **The space is optional now:** it defaults to `oklab`, so `color-mix(red, blue)` equals `color-mix(in oklab, red, blue)` (MDN). The post always names it.
 - **Scheme-aware mixes:** a `color-mix(in srgb, Canvas, CanvasText 15%)` stop reads in both themes [nerdy.dev: LLM chat prototype](https://nerdy.dev/llm-chat-prototype) (2025-07-28), and a scrollbar thumb mixes `light-dark()` with `#0000 50%` ([SCROLLBARS.md](SCROLLBARS.md)).
 
@@ -248,7 +248,7 @@ button {
   }
   ```
 - **Choosing:** colour only, `light-dark()`; any style, `@scope`; logic per context, style queries with wrappers.
-- **Whole-page dark:** these posts switch on `prefers-color-scheme` or `color-scheme`. landing-page-ui's head script "sets the dark class, `data-theme` and `color-scheme` on `<html>` before anything paints" ([landing-page-ui SYSTEM.md](../landing-page-ui/SYSTEM.md)); in app-ui "the head script's class decides the theme" ([app-ui CHECKS.md](../app-ui/CHECKS.md)).
+- **Whole-page dark:** these posts switch on `prefers-color-scheme` or `color-scheme`. landing-page-ui's head script "sets the dark class, `data-theme` and `color-scheme` on `<html>` before anything paints" ([landing-page-ui SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SYSTEM.md)); in app-ui "the head script's class decides the theme" ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)).
 
 ## System and accent colours
 

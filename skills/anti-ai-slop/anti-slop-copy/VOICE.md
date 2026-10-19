@@ -16,7 +16,7 @@ Sources, strongest first:
 1. **"Copy that performed.** The email with the best reply rate, the ad that scaled, the landing page that converts. Pick by the numbers. What the team likes is a weaker signal."
 2. **"The founder's or team's own writing.** Posts, memos, talks, sales emails they wrote themselves. Early-stage brands usually sound like the founder, whether or not anyone decided that."
 3. **"Sales and support conversations.** How the team explains the product out loud is often clearer than the website."
-4. **"Customer reviews and interviews.** These give vocabulary more than voice": they feed the Customer language section of the context file ([customer-research](../../marketing/customer-research/SKILL.md) is how to mine them).
+4. **"Customer reviews and interviews.** These give vocabulary more than voice": they feed the Customer language section of the context file ([customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md) is how to mine them).
 5. **"Copy you'd never write.** A competitor page or a draft that felt wrong. Saying why it's wrong defines the edges of your voice faster than describing the middle."
 
 Steps:
@@ -59,7 +59,7 @@ The source's example profile, for "a fictional invoicing tool for freelancers":
 
 ## Brand words
 
-[coreyhaines31/marketingskills, product-marketing] General AI-sounding words are in [TELLS](../anti-slop-writing/TELLS.md); the brand list is for this brand's terms.
+[coreyhaines31/marketingskills, product-marketing] General AI-sounding words are in [TELLS](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md); the brand list is for this brand's terms.
 
 | List | What goes in it | Example |
 |---|---|---|

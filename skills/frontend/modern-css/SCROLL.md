@@ -1,6 +1,6 @@
 # Scroll
 
-Scrollers, snapping, scroll events, `scroll-state()` queries and CSS carousels, from Adam Argyle's [nerdy.dev](https://nerdy.dev). Each fact is tagged with its post and date; each feature's status is from MDN (or MDN's browser-compat-data where MDN has no page), checked October 2026. Code is copied from the posts; where a line differs (an emoji pointer removed, a typo fixed, a stale syntax replaced) the text says so. Scroll-driven and scroll-triggered animation, including edge-aware fades, is in [SCROLL-ANIMATIONS.md](SCROLL-ANIMATIONS.md). Sticky positioning (why it fails, coordinated offsets, anchor offsets, stuck detection, two-axis tables) is in [STICKY.md](STICKY.md). Motion timing for scroll-linked effects and the Motion (`useScroll`) route are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#scroll-linked-motion); a sheet swiped away on native scroll is in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll).
+Scrollers, snapping, scroll events, `scroll-state()` queries and CSS carousels, from Adam Argyle's [nerdy.dev](https://nerdy.dev). Each fact is tagged with its post and date; each feature's status is from MDN (or MDN's browser-compat-data where MDN has no page), checked October 2026. Code is copied from the posts; where a line differs (an emoji pointer removed, a typo fixed, a stale syntax replaced) the text says so. Scroll-driven and scroll-triggered animation, including edge-aware fades, is in [SCROLL-ANIMATIONS.md](SCROLL-ANIMATIONS.md). Sticky positioning (why it fails, coordinated offsets, anchor offsets, stuck detection, two-axis tables) is in [STICKY.md](STICKY.md). Motion timing for scroll-linked effects and the Motion (`useScroll`) route are in [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#scroll-linked-motion); a sheet swiped away on native scroll is in [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll).
 
 **Contents:** [Scroller structure and essentials](#scroller-structure-and-essentials) · [Snapping](#snapping) · [Pull to refresh](#pull-to-refresh) · [Scroll events](#scroll-events) · [scroll-state() queries](#scroll-state-queries) · [CSS carousels](#css-carousels) · [Prove it](#prove-it)
 
@@ -35,7 +35,7 @@ Scrollers, snapping, scroll events, `scroll-state()` queries and CSS carousels, 
 ```
 
   Status: `scroll-padding` Baseline widely available (since October 2023, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-padding)); `scroll-behavior` Baseline widely available (since September 2024, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-behavior)). MDN marks `overscroll-behavior` Limited availability ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overscroll-behavior)); the `contain` value itself is in Chrome 63, Firefox 59 and Safari 16 (browser-compat-data `css.properties.overscroll-behavior.contain`). MDN on `contain`: "Prevents scrolling from continuing outside the scroll container. "Bounce" effects may still occur." Nice Select uses `overscroll-behavior-block: contain`, which "prevents scroll chaining" in its picker ([nerdy.dev: Nice Select](https://nerdy.dev/nice-select), 2026-02-03).
-- **Where it differs:** the swipeable sheet in [../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll) sets `overscroll-behavior: auto` on the sheet's inner content on purpose, because scroll chaining is its dismiss gesture.
+- **Where it differs:** the swipeable sheet in [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll) sets `overscroll-behavior: auto` on the sheet's inner content on purpose, because scroll chaining is its dismiss gesture.
 - **Nested scrollers bounce everywhere now:** "Chrome 145 joins WebKit and Firefox in supporting **overscroll effects** on nested scrollers. No more bonk UX, get the same soft edge bounce as the main page has always had!" ([nerdy.dev: Overscroll Effects On Nested Scrollers In All Browsers](https://nerdy.dev/overscroll-effects-on-nested-scrollers-in-all-browsers), 2026-01-21).
 - **Never stop overscroll with `touchmove` and `preventDefault()`.** [Emil Kowalski, mobile-native] "Never reach for a `touchmove` + `preventDefault()` listener for this - it blocks scrolling entirely and makes the listener non-passive, which costs frames." Use `overscroll-behavior`: "Use `none` on the root, `contain` on children."
 - **`touch-action` names the axes the browser keeps.** [Emil Kowalski, mobile-native] A horizontal swipe on a carousel "is ambiguous to the browser", so tell it which axes the element owns; "The values name what the *browser* may still do." Verbatim:
@@ -69,7 +69,7 @@ Scrollers, snapping, scroll events, `scroll-state()` queries and CSS carousels, 
 }
 ```
 
-  landing-page-ui's capability carousel uses proximity snap and its own buttons instead ([../landing-page-ui/SECTIONS.md](../landing-page-ui/SECTIONS.md#carousel-of-capability-cards)).
+  landing-page-ui's capability carousel uses proximity snap and its own buttons instead ([landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md#carousel-of-capability-cards)).
 - **`mandatory` or `proximity`** [responsive-craft, sticky-scroll-patterns.md]: "`mandatory` - always snaps. Can trap users if snap points are far apart. Only use when items fit the viewport." "`proximity` - snaps only when close to a snap point. Safer for variable-height content."
 - **An elastic overscroll from snap alone** (same post): invisible `::before` and `::after` spacers have no `scroll-snap-align`, so under `x mandatory` "the scroller will never rest on these invisible overscroll spacers". The start spacer is `25cqi` ("a 25% overscroll vibe"); the end one is `90cqi`, "ensuring the last game can be snapped to the start".
 
@@ -228,7 +228,7 @@ window.addEventListener('scrollend', e => {
 })
 ```
 
-  The post (2023-06) said "It's best in Chrome Canary until SDA has better support"; scroll-driven animation is still Limited availability (below). The ingredients are the swipeable sheet's: "combining scroll snapping, view timeline animations, overscroll-behavior, and dynamic viewport units" ([../ui-animation/SHEETS.md](../ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll)).
+  The post (2023-06) said "It's best in Chrome Canary until SDA has better support"; scroll-driven animation is still Limited availability (below). The ingredients are the swipeable sheet's: "combining scroll snapping, view timeline animations, overscroll-behavior, and dynamic viewport units" ([ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md#a-swipeable-sheet-on-native-scroll)).
 
 ## Scroll events
 
@@ -366,7 +366,7 @@ scroller.onscrollsnapchange = () =>
 }
 ```
 
-  Its outline animation sits outside the motion query; ui-animation's rule 8 is "Reduce, don't remove: with reduced motion, movement becomes short fades" ([../ui-animation/SKILL.md](../ui-animation/SKILL.md)).
+  Its outline animation sits outside the motion query; ui-animation's rule 8 is "Reduce, don't remove: with reduced motion, movement becomes short fades" ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md)).
 
 ## CSS carousels
 
@@ -427,7 +427,7 @@ scroller.onscrollsnapchange = () =>
 ```
 
 - **Tools:** the [Carousel Configurator](https://chrome.dev/carousel-configurator/) to "directly see the relationship of a feature you want and the related CSS", and the [Carousel Gallery](https://chrome.dev/carousel/) (Chrome 135 post, 2025-03-20; [nerdy.dev: Carousels On Shoptalk](https://nerdy.dev/carousels-on-shoptalk), 2025-04-07).
-- **Other carousels in this repo:** the JS carousels and rings in [../ui-animation/COLLECTIONS.md](../ui-animation/COLLECTIONS.md#galleries-carousels-and-rings), and landing-page-ui's capability carousel with its own buttons ([../landing-page-ui/SECTIONS.md](../landing-page-ui/SECTIONS.md#carousel-of-capability-cards)). The CSS carousel above is the native route, Chrome only today.
+- **Other carousels in this repo:** the JS carousels and rings in [ui-animation COLLECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/COLLECTIONS.md#galleries-carousels-and-rings), and landing-page-ui's capability carousel with its own buttons ([landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md#carousel-of-capability-cards)). The CSS carousel above is the native route, Chrome only today.
 
 ## Prove it
 

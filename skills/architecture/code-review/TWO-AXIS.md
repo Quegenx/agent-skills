@@ -20,7 +20,7 @@ Use this when a change must be checked against both repository conventions and i
 | Specification | The same change and the authoritative requirements | Quote the requirement and identify missing, partial, incorrect or unrequested behavior. |
 
 - When parallel reviewers are available and authorized, give each lane independent context and its complete brief. The source limits each lane's returned report to 400 words; preserve the evidence rather than fill that allowance.
-- The standards lane uses code smells as hypotheses, with repository standards taking precedence. Reuse the [refactoring techniques](../refactoring/SKILL.md), [design principles](../refactoring/DESIGN.md) and [anti-slop rules](../../anti-ai-slop/anti-slop-code/RULES.md), rather than adding a second definition. A smell needs the affected hunk and a reason it matters in this change.
+- The standards lane uses code smells as hypotheses, with repository standards taking precedence. Reuse the [refactoring techniques](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/SKILL.md), [design principles](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DESIGN.md) and [anti-slop rules](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/RULES.md), rather than adding a second definition. A smell needs the affected hunk and a reason it matters in this change.
 - Skip a mechanical standards observation already reliably enforced by the project's tooling; concentrate the review on judgments the tool does not settle. A failed or unavailable tool is not evidence that it enforced the rule.
 
 ## Report without hiding either result

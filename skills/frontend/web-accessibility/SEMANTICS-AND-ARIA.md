@@ -45,7 +45,7 @@ Where a native element is truly impossible, the full polyfill is `role="button"`
 
 - `<header>`, `<nav>`, `<main>`, `<aside>` and `<footer>` map to landmarks screen-reader users jump between. Expose one visible primary `<main>`.
 - Multiple landmarks of the same type need distinguishing labels: `<nav aria-label="Primary">`, `<nav aria-label="Breadcrumbs">`.
-- **Breadcrumbs:** the APG pattern marks the link to the current page with `aria-current="page"`; "If the element representing the current page is not a link, aria-current is optional" ([APG breadcrumb](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/)). Which pages the trail lists is in [marketing/site-architecture](../../marketing/site-architecture/SKILL.md).
+- **Breadcrumbs:** the APG pattern marks the link to the current page with `aria-current="page"`; "If the element representing the current page is not a link, aria-current is optional" ([APG breadcrumb](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/)). Which pages the trail lists is in [marketing/site-architecture](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-architecture/SKILL.md).
 - Headings are structure, not styling. Style a heading level with CSS instead of picking the tag by size. Headings describe their sections and form a coherent outline; one `<h1>` and no skipped levels are conventions, not WCAG criteria ([REVIEW.md](REVIEW.md#criteria-not-conventions)).
 - A component reused in several places takes its heading level from where it sits, not a fixed tag, so the outline stays coherent on every page that uses it [freescan].
 - `<title>` matches the current context, most specific first: `Billing · Settings · Acme` (2.4.2 Page Titled).
@@ -56,7 +56,7 @@ Where a native element is truly impossible, the full polyfill is `role="button"`
 
 - **3.1.1 Language of Page (A):** "The default human language of each web page can be programmatically determined." Understanding 3.1.1: "Screen readers can load the correct pronunciation rules", and on a page with several languages the default is "the language which is used most" ([Understanding 3.1.1](https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html)). Set it on the root from the active locale as a BCP 47 tag [freescan], with the direction beside it: `<html lang="he" dir="rtl">`, in the markup, not only in CSS [skills-il, hebrew-rtl-best-practices].
 - **3.1.2 Language of Parts (AA):** "The human language of each passage or phrase in the content can be programmatically determined", except "proper names, technical terms, words of indeterminate language" and words that have become part of the surrounding language ([Understanding 3.1.2](https://www.w3.org/WAI/WCAG22/Understanding/language-of-parts.html)). An English passage inside a Hebrew page carries `lang="en"` as well as `dir="ltr"`: `dir` fixes the order, `lang` fixes the pronunciation. The source's own log lists "lang+dir pairing on embedded spans" as deferred; this is that pairing.
-- A route per language sets its own `lang`, taken from the active locale [freescan]. Direction in CSS (logical properties, `:dir()`, isolating values) is in [modern-css/RESPONSIVE.md](../modern-css/RESPONSIVE.md#direction).
+- A route per language sets its own `lang`, taken from the active locale [freescan]. Direction in CSS (logical properties, `:dir()`, isolating values) is in [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE.md#direction).
 
 ## Accessible names
 
@@ -80,7 +80,7 @@ Name precedence: `aria-labelledby` > `aria-label` > native label (`<label>`, tex
 </button>
 ```
 
-SVG icons and their names are covered in depth in [svg/ACCESSIBILITY.md](../svg/ACCESSIBILITY.md#icons-in-buttons).
+SVG icons and their names are covered in depth in [svg ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/ACCESSIBILITY.md#icons-in-buttons).
 
 ## Common ARIA mistakes
 
@@ -94,7 +94,7 @@ SVG icons and their names are covered in depth in [svg/ACCESSIBILITY.md](../svg/
 | `role="menu"` on a nav list | `menu` promises app-style arrow-key behavior; site navigation is `<nav>` with a list |
 | `role="switch"` with no `aria-checked` | MDN: "The `aria-checked` attribute is required when using the `switch` role" ([MDN switch role](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/switch_role)). [transitions.dev] |
 | A toggle button (a like button) with no `aria-pressed` | The on state is visible only. [transitions.dev] |
-| `aria-current="true"` on buttons that choose an option | Valid for "the current item within a set", but MDN: "When something is selected rather than current ... use `aria-selected`" ([MDN aria-current](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-current)). [Emil Kowalski, prototype] uses `aria-current`; app-ui's preset tags are "toggle pills (`aria-pressed`)" ([app-ui/CONTROLS.md](../app-ui/CONTROLS.md)), and "A router marks every link to the current page `aria-current="page"`" ([app-ui/MENUS.md](../app-ui/MENUS.md)) |
+| `aria-current="true"` on buttons that choose an option | Valid for "the current item within a set", but MDN: "When something is selected rather than current ... use `aria-selected`" ([MDN aria-current](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-current)). [Emil Kowalski, prototype] uses `aria-current`; app-ui's preset tags are "toggle pills (`aria-pressed`)" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)), and "A router marks every link to the current page `aria-current="page"`" ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md)) |
 
 A switch built on `<button role="switch" aria-checked>` toggles on Space and Enter; [feel]'s heavy toggle adds ArrowRight for on and ArrowLeft for off. A slider built on `role="slider"` carries `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and a human `aria-valuetext` (feel's knob: `"i+1 of n"` over its 11 detents), with arrows and Home/End. [feel]
 
@@ -111,7 +111,7 @@ Native `disabled` supplies the platform's complete disabled behavior. It removes
 - Never set both `disabled` and `aria-disabled` on the same element.
 - Disabled controls are exempt from contrast minimums. Understanding 1.4.3: "User Interface Components that are not available for user interaction (e.g., a disabled control in HTML) are not required to meet contrast requirements" ([Understanding Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)). [Jakub Krehel, break] lists "Contrast collapse" under Disabled as a break; under WCAG it is a design choice, and only the focus behavior of a disabled control is a finding.
 
-app-ui does this instead: "Search submit is disabled until the query has non-space text" ([app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+app-ui does this instead: "Search submit is disabled until the query has non-space text" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
 
 ## Prove it
 

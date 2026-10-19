@@ -24,7 +24,7 @@ Calling integration from [gokapso/agent-skills, integrate-whatsapp-calling/SKILL
 - Choose the actual provider bridge, such as Pipecat or ElevenLabs, rather than mixing their session/artifact APIs. Confirm WebRTC reachability and negotiated audio, including the required ICE/TURN path for that environment.
 - Gate greeting and end-call timing on the documented accepted/media/provider state. A provider session, signaling acceptance and actual speech playback establish different facts.
 - Release only the resources owned by this call. Keep failed call actions and cleanup failures visible; an artifact-completion event must not start a new agent or revive terminated media work.
-- Do not blindly redial after an ambiguous connect result. Inspect exact state/history using the saved attempt and call identities. General uncertain-write policy remains in [third-party-integrations](../third-party-integrations/SKILL.md).
+- Do not blindly redial after an ambiguous connect result. Inspect exact state/history using the saved attempt and call identities. General uncertain-write policy remains in [third-party-integrations](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/SKILL.md).
 
 ## Saved history
 

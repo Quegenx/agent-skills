@@ -1,6 +1,6 @@
 # AI avatars
 
-An AI avatar delivers a script as a talking head, with lip-sync, expressions and gestures, so nobody has to film. It suits recurring and multilingual content; it is the wrong tool for authentic founder content and for showing the product. From [coreyhaines31/marketingskills, video] (MIT); plans and counts from heygen.com/pricing, checked 2026-10-18. A talking portrait built in code from one still and three mouth patches is asset-prep's "A talking portrait" in [../../videos/asset-prep/SKILL.md](../../videos/asset-prep/SKILL.md).
+An AI avatar delivers a script as a talking head, with lip-sync, expressions and gestures, so nobody has to film. It suits recurring and multilingual content; it is the wrong tool for authentic founder content and for showing the product. From [coreyhaines31/marketingskills, video] (MIT); plans and counts from heygen.com/pricing, checked 2026-10-18. A talking portrait built in code from one still and three mouth patches is asset-prep's "A talking portrait" in [asset-prep SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md).
 
 ## When an avatar fits
 
@@ -12,7 +12,7 @@ An AI avatar delivers a script as a talking head, with lip-sync, expressions and
 | Multilingual versions | Yes | |
 | Personalized outreach at scale | Yes, within the law (below) | |
 | Authentic founder content | No | Film yourself |
-| Product UI walkthrough | No | Screen recording ([APP-RECORDING.md](../../videos/asset-prep/APP-RECORDING.md)) |
+| Product UI walkthrough | No | Screen recording ([asset-prep APP-RECORDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/APP-RECORDING.md)) |
 | Creative or artistic video | No | AI generation ([AI-GENERATION.md](AI-GENERATION.md)) |
 
 ## HeyGen
@@ -39,13 +39,13 @@ Recheck the page before quoting a price: plans change.
 
 ## Weekly update videos
 
-[coreyhaines31/marketingskills, video] eval 2: for recurring 60-second updates with nobody on camera, the source's setup is a script written from `.agents/product-context.md`, the avatar video generated from it (through the MCP server when an agent runs it), optional overlays of real screens and callouts built in code ([make-video](../../videos/make-video/SKILL.md)), then export and distribution. If authentic founder content matters more than scale, film yourself instead.
+[coreyhaines31/marketingskills, video] eval 2: for recurring 60-second updates with nobody on camera, the source's setup is a script written from `.agents/product-context.md`, the avatar video generated from it (through the MCP server when an agent runs it), optional overlays of real screens and callouts built in code ([make-video](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/SKILL.md)), then export and distribution. If authentic founder content matters more than scale, film yourself instead.
 
 ## Personalized outreach videos
 
 [coreyhaines31/marketingskills, video] eval 5 (50 intro videos, each naming a different company and pain point): write one master script with variables, loop over the list, check the first 5 by hand before generating the rest, caption every video, and track replies against plain cold email, since the videos cost more to make and must earn it.
 
-Every one of these is a cold message. The send follows the law and the channel's rules: CAN-SPAM, GDPR and CASL in [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md), and the outreach rules in [cold-outreach](../cold-outreach/SKILL.md).
+Every one of these is a cold message. The send follows the law and the channel's rules: CAN-SPAM, GDPR and CASL in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md), and the outreach rules in [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md).
 
 ## Prove it
 

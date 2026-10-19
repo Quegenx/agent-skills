@@ -1,6 +1,6 @@
 # Type: numbers, morphs, reading time and the decision table
 
-[measured corpus, original type-numbers-and-decisions.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original type-numbers-and-decisions.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
 Originally split from [type.md](MEASURED-TYPOGRAPHY.md) to keep each file under the size cap. Sections 8 to 12 (counters and numbers, identity and name morphs, reading time, no dead frame while holding, the decision table) and the slop tells
 
@@ -36,7 +36,7 @@ Originally split from [type.md](MEASURED-TYPOGRAPHY.md) to keep each file under 
 
 [measured corpus, original type-numbers-and-decisions.md]
 
-[measured corpus, original type.md R10; video-brief, COPY.md#budget] The source timing table and 0.45 s/0.2 s-per-word preference below are measured-source views. Current production uses the [house reading floor](../video-brief/COPY.md#budget), which remains in force when the recipe is shorter. These are not interchangeable smoke-check guarantees.
+[measured corpus, original type.md R10; video-brief, COPY.md#budget] The source timing table and 0.45 s/0.2 s-per-word preference below are measured-source views. Current production uses the [house reading floor](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/COPY.md#budget), which remains in force when the recipe is shorter. These are not interchangeable smoke-check guarantees.
 
 Observed holds (fully assembled to departure) and total life:
 

@@ -1,6 +1,6 @@
 # Respond to a Stripe dispute
 
-Provider mechanics from Stripe's [response guide](https://docs.stripe.com/disputes/responding) and [category guidelines](https://docs.stripe.com/disputes/categories), checked while reviewing [more skills, 09-chargeback-recovery.md]. The paid recovery service, client rulebook, review queue and actual-recovery billing belong once in [the service guide](../../marketing/service-businesses/DISPUTE-RECOVERY.md). Read-only account reporting remains in [OPERATIONS.md](OPERATIONS.md#disputes-and-refunds).
+Provider mechanics from Stripe's [response guide](https://docs.stripe.com/disputes/responding) and [category guidelines](https://docs.stripe.com/disputes/categories), checked while reviewing [more skills, 09-chargeback-recovery.md]. The paid recovery service, client rulebook, review queue and actual-recovery billing belong once in [the service guide](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/service-businesses/DISPUTE-RECOVERY.md). Read-only account reporting remains in [OPERATIONS.md](OPERATIONS.md#disputes-and-refunds).
 
 ## Identify the actual case and deadline
 
@@ -32,7 +32,7 @@ Follow the actual status after submission. A closed `won` dispute records a bank
 
 ## Keep the Shopify boundary separate
 
-Shopify's automatic due-date submission, early-submission finality, network-resolution exceptions and distinct file limits are defined in [the service guide's provider boundary](../../marketing/service-businesses/DISPUTE-RECOVERY.md#provider-approval-boundaries); do not substitute Stripe's submission controls. [https://help.shopify.com/en/manual/payments/chargebacks/chargebacks-in-admin]
+Shopify's automatic due-date submission, early-submission finality, network-resolution exceptions and distinct file limits are defined in [the service guide's provider boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/service-businesses/DISPUTE-RECOVERY.md#provider-approval-boundaries); do not substitute Stripe's submission controls. [https://help.shopify.com/en/manual/payments/chargebacks/chargebacks-in-admin]
 
 ## Prove it
 

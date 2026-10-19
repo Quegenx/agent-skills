@@ -26,7 +26,7 @@ From [browserbase/skills, browser-to-api/SKILL.md and scripts], with its source-
 
 This Markdown skill does not install the [browser-to-api generator and modules](https://github.com/browserbase/skills/tree/main/skills/browser-to-api/scripts) or the sibling [browser-trace scripts](https://github.com/browserbase/skills/tree/main/skills/browser-trace/scripts). Commands below are source-layout examples: inspect the obtained upstream workspace and installed `browse` contract before using them. Do not execute these paths as if the helpers shipped beside this file.
 
-The [browser-automation capture workflow](../../web-automation/browser-automation/RUN-TRACING.md#capture) owns the tracer setup and run lifecycle. The example below preserves this generator's body-snapshot and input-layout prerequisites, rather than defining another generic observer. Use only authorized traffic and review private captures before sharing. [browserbase/skills, browser-to-api/SKILL.md; existing browser capture owner]
+The [browser-automation capture workflow](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-automation/RUN-TRACING.md#capture) owns the tracer setup and run lifecycle. The example below preserves this generator's body-snapshot and input-layout prerequisites, rather than defining another generic observer. Use only authorized traffic and review private captures before sharing. [browserbase/skills, browser-to-api/SKILL.md; existing browser capture owner]
 
 ## Capture
 
@@ -162,7 +162,7 @@ These are source-reading defects in the supplied generator, not an executed vali
 - **Generated report HTML still needs output encoding.** Most report fields call escHtml, but the Client usage variable JSON is interpolated into an HTML code element without that encoding. Treat capture-controlled values as untrusted and repair their output boundary before opening or sharing the report; JSON.stringify alone is not HTML encoding. No replacement template or payload is invented here. [browserbase/skills, browser-to-api/scripts/emit.mjs]
 - **Client and curl examples choose the primary origin.** The spec can list several servers and x-origin values while generated requests use servers[0]. Inspect each operation's observed origin and any collisions; do not assume the client exercises every captured origin. Redirect joins need the separate qualification above. [browserbase/skills, browser-to-api/scripts/emit.mjs, scripts/load.mjs]
 
-The shared HTML and JSON-in-HTML boundary is defined in [secure-coding/CATALOG.md](../../backend/secure-coding/CATALOG.md); keep one definition rather than treating a generated report as trusted. [existing security owner]
+The shared HTML and JSON-in-HTML boundary is defined in [secure-coding CATALOG.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/CATALOG.md); keep one definition rather than treating a generated report as trusted. [existing security owner]
 
 ## Troubleshooting
 

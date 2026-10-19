@@ -7,6 +7,8 @@ description: "Makes messages between services reliable: transactional outbox and
 
 A message system gives you one of two guarantees: **at most once** (nothing is stored, a message sent while nobody listens is gone) or **at least once** (stored and retried, so duplicates will arrive). Exactly-once *delivery* isn't on offer; exactly-once *effects* are something you build, with an outbox on the sending side and idempotent handling on the receiving side. Read the file for the job:
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | A use case touches several systems and can half-succeed; per-aggregate ordering; whether you need a saga | [FAILURE-AND-ORDER.md](FAILURE-AND-ORDER.md) |

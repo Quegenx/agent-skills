@@ -16,7 +16,7 @@ WWDC17: "Mapping is about designing controls to resemble the objects that they a
 
 ## Feedback
 
-apple-design, from the same WWDC17 talk: "Feedback comes in four kinds: status, completion, warning, error. Confirm meaningful actions, expose ongoing status, warn before problems, validate inline (not on submit)" [Emil Kowalski, apple-design]. The words for each are in anti-slop-copy's [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md); the states a screen can reach are in [SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these).
+apple-design, from the same WWDC17 talk: "Feedback comes in four kinds: status, completion, warning, error. Confirm meaningful actions, expose ongoing status, warn before problems, validate inline (not on submit)" [Emil Kowalski, apple-design]. The words for each are in anti-slop-copy's [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md); the states a screen can reach are in [SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these).
 
 ## Labels
 

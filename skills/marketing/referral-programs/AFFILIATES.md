@@ -1,6 +1,6 @@
 # Affiliate programs
 
-Commission-based partners who may not be customers: structures, recruitment, economics, terms, disclosure, reconciliation and measurement. From [coreyhaines31/marketingskills, referrals, references/affiliate-programs.md, affiliate-operations.md and viral-mechanisms.md] unless tagged. Creator sponsorships and audience vetting are in [creator-marketing](../creator-marketing/SKILL.md); finding partners is in [prospecting](../prospecting/SKILL.md); co-marketing with partner companies is in [partnerships](../partnerships/SKILL.md).
+Commission-based partners who may not be customers: structures, recruitment, economics, terms, disclosure, reconciliation and measurement. From [coreyhaines31/marketingskills, referrals, references/affiliate-programs.md, affiliate-operations.md and viral-mechanisms.md] unless tagged. Creator sponsorships and audience vetting are in [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md); finding partners is in [prospecting](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md); co-marketing with partner companies is in [partnerships](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/partnerships/SKILL.md).
 
 **Contents:** [Commission structures](#commission-structures) · [Cookie windows](#cookie-windows) · [Economics before a rate](#economics-before-a-rate) · [Recruiting](#recruiting) · [Enablement](#enablement) · [Terms](#terms) · [Disclosure](#disclosure) · [Reconciliation and payouts](#reconciliation-and-payouts) · [Measuring](#measuring) · [Power law, buyouts and launches](#power-law-buyouts-and-launches) · [Tools](#tools) · [Prove it](#prove-it)
 
@@ -71,11 +71,11 @@ Would you be open to learning more?
 [Your name]
 ```
 
-"Draft outreach without claiming familiarity with work you have not reviewed. Apply existing user authorization before sending." An unsolicited email is cold outreach: its legal rules (CAN-SPAM, GDPR, CASL and others) are in [email-practices COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) and the practice is in [cold-outreach](../cold-outreach/SKILL.md).
+"Draft outreach without claiming familiarity with work you have not reviewed. Apply existing user authorization before sending." An unsolicited email is cold outreach: its legal rules (CAN-SPAM, GDPR, CASL and others) are in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md) and the practice is in [cold-outreach](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md).
 
 ## Enablement
 
-Give affiliates: unique tracking links or codes; a product overview and key benefits; the target audience description; a comparison to competitors; creative assets (logos, banners, images); sample copy and talking points; case studies and testimonials (permissioned ones, [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)); demo access or a free account; FAQ and objection handling; payment terms and schedule.
+Give affiliates: unique tracking links or codes; a product overview and key benefits; the target audience description; a comparison to competitors; creative assets (logos, banners, images); sample copy and talking points; case studies and testimonials (permissioned ones, [review-management REVIEW-PROGRAMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/review-management/REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)); demo access or a free account; FAQ and objection handling; payment terms and schedule.
 
 Test the customer journey and attribution "with authorized test data before inviting a broad cohort", and give each partner a tested link or code, truthful positioning, approved assets, disclosure guidance, a first-placement plan and a support contact.
 
@@ -108,7 +108,7 @@ Match the wording to the real relationship; "do not fabricate personal use or au
 ## Reconciliation and payouts
 
 - Reconcile each eligible conversion to the platform's real states: pending, approved or due, paid, refunded or adjusted, disputed. Keep stable order, customer and partner IDs and the effective policy version.
-- "Replayed webhooks and exports must not count a conversion or payment twice." Idempotent event handling is in [stripe](../../backend/stripe/SKILL.md) and [background-jobs](../../backend/background-jobs/SKILL.md).
+- "Replayed webhooks and exports must not count a conversion or payment twice." Idempotent event handling is in [stripe](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/SKILL.md) and [background-jobs](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md).
 - Choose the hold period from actual refund and cancellation exposure and the agreed terms.
 - "Marking a commission paid is not necessarily a money transfer." Check whether the tool only calculates commissions or also sends payouts; the source cites Rewardful's [commission payment workflow](https://help.rewardful.com/en/articles/2773351-how-do-i-pay-commissions) and [refund handling](https://www.rewardful.com/automated-refund-handling) as one tool's behavior, not every platform's.
 - Handle a disputed sale with the attribution record, the policy and the refund state. "Do not silently retroactively change earned commissions to make a report look better."

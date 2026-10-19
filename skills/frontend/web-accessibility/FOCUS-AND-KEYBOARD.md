@@ -35,11 +35,11 @@ The browser's unmodified indicator adapts to platform and forced-color settings 
 - **Why the default ring is the safe choice:** Understanding 1.4.11 says "the default focus style is exempt from contrast requirements (but must still be visible)" ([Understanding Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)). An author-styled ring is not exempt.
 - **Check a custom ring's whole perimeter** against every adjacent color it crosses: component fills, page surfaces, images, gradients, and hover and selected states, at 3:1 (1.4.11). A token, brand color or `currentColor` passes only when that rendered check does.
 - **The AAA target** (2.4.13 Focus Appearance) is a perimeter at least 2 CSS px thick with a 3:1 contrast change between focused and unfocused states. It is a recommendation, not a finding ([REVIEW.md](REVIEW.md#criteria-not-conventions)).
-- **Forced colors.** In `forced-colors: active` (Windows High Contrast), keep the default color adjustment or name a system color such as `Highlight`. `forced-color-adjust: none` freezes the authored color, so use it only where you have checked the control stays perceivable. The transparent-border technique for forced colors is in [modern-css/QUERIES-AND-PREFERENCES.md](../modern-css/QUERIES-AND-PREFERENCES.md#forced-colors).
+- **Forced colors.** In `forced-colors: active` (Windows High Contrast), keep the default color adjustment or name a system color such as `Highlight`. `forced-color-adjust: none` freezes the authored color, so use it only where you have checked the control stays perceivable. The transparent-border technique for forced colors is in [modern-css QUERIES-AND-PREFERENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/QUERIES-AND-PREFERENCES.md#forced-colors).
 - **Group with `:focus-within`** when a wrapper should light up while an inner input has focus, such as a search box with an icon inside the border.
 - **One indicator for pointer and keyboard** in a menu or list: the highlighted row is the focus indicator, so keyboard and pointer focus look identical. [fluid-functionalism]
 
-app-ui does this instead: "No control shows a focus ring, outline or focus border, the browser default included: a standing decision recorded in the design doc" ([app-ui/TOKENS.md](../app-ui/TOKENS.md)).
+app-ui does this instead: "No control shows a focus ring, outline or focus border, the browser default included: a standing decision recorded in the design doc" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)).
 
 ## Focus not obscured
 
@@ -55,9 +55,9 @@ html {
 
 A sticky footer or cookie banner needs `scroll-padding-bottom` the same way.
 
-A non-modal overlay (a slide-in, a sticky bar, a cookie notice) passes 2.4.11 when it is modal, when scroll padding reserves its space, or, for a notification that needs no action, when it closes on losing focus; one that neither takes focus nor closes when focus leaves "will be at risk of failing" where it can cover focusable items ([Understanding 2.4.11](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)). Popup rules beyond focus are in [marketing/cro/POPUPS.md](../../marketing/cro/POPUPS.md#accessibility).
+A non-modal overlay (a slide-in, a sticky bar, a cookie notice) passes 2.4.11 when it is modal, when scroll padding reserves its space, or, for a notification that needs no action, when it closes on losing focus; one that neither takes focus nor closes when focus leaves "will be at risk of failing" where it can cover focusable items ([Understanding 2.4.11](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)). Popup rules beyond focus are in [cro POPUPS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/POPUPS.md#accessibility).
 
-**Cookie banners** [c15t]: provider-specific blocking, notice behavior and release checks are in [cookie-consent BANNER-UI.md](../cookie-consent/BANNER-UI.md#blocking-and-non-blocking) and [VERIFY-CONSENT.md](../cookie-consent/VERIFY-CONSENT.md). Apply the generic focus-obscuration rule above to any non-blocking banner.
+**Cookie banners** [c15t]: provider-specific blocking, notice behavior and release checks are in [cookie-consent BANNER-UI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/BANNER-UI.md#blocking-and-non-blocking) and [cookie-consent VERIFY-CONSENT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/VERIFY-CONSENT.md). Apply the generic focus-obscuration rule above to any non-blocking banner.
 
 ## Skip link
 
@@ -152,9 +152,9 @@ Either way:
 - On close, return focus to the trigger, or to the nearest logical container if the trigger is gone.
 - A dialog that opened on its own (a timed, scroll or exit popup) has no trigger. For a missing invoker the APG says "focus is set on another element that provides logical work flow"; reading, not stated by the APG: for a popup that is where focus was before it opened.
 - When an inline element (a banner, a chip) is dismissed, focus moves to the next focusable element after it, else the one before, "not back to the top of the page". [fluid-functionalism]
-- A closed menu, panel or toast hidden only with `opacity: 0` and `pointer-events: none` stays focusable and in the accessibility tree; hide the closed state with `visibility: hidden` or `inert` as well, as app-ui's disclosure panel does ("Closed panels also get `inert`", [app-ui/reference/styles/ui/display/disclosure-panel.css](../app-ui/reference/styles/ui/display/disclosure-panel.css), which also sets `visibility: hidden` once closed). [transitions.dev]
+- A closed menu, panel or toast hidden only with `opacity: 0` and `pointer-events: none` stays focusable and in the accessibility tree; hide the closed state with `visibility: hidden` or `inert` as well, as app-ui's disclosure panel does ("Closed panels also get `inert`", [app-ui/reference/styles/ui/display/disclosure-panel.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/styles/ui/display/disclosure-panel.css), which also sets `visibility: hidden` once closed). [transitions.dev]
 
-The `<dialog>`, `closedby` and `inert` details and their browser support are in [modern-css/POPOVER-AND-DIALOG.md](../modern-css/POPOVER-AND-DIALOG.md).
+The `<dialog>`, `closedby` and `inert` details and their browser support are in [modern-css POPOVER-AND-DIALOG.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/POPOVER-AND-DIALOG.md).
 
 ## Keyboard patterns (ARIA APG)
 

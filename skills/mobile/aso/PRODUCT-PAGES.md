@@ -1,6 +1,6 @@
 # Product pages, tests, events, App Clips and featuring
 
-Beyond the default listing, the App Store gives four more surfaces: custom product pages (alternate pages with their own URL, and now their own keywords), product page optimization (A/B tests of the default page's visuals), in-app events (timed cards in search, the product page and the Today tab) and App Clips. Custom product pages, in-app events and new metadata in a test treatment must be approved by App Review before they show, and Apple recommends applying a treatment only once it performs better or worse with at least 90% confidence. Limits come from Apple's docs; [eronred] and [ApparenceKit] (a Flutter starter-kit author) tag third-party practice and lift claims, and several of its numbers differ from Apple's: both are given. The Play equivalents (custom store listings, store listing experiments) are in [ANDROID.md](ANDROID.md); sending paid traffic to these pages is [../app-growth/SKILL.md](../app-growth/SKILL.md).
+Beyond the default listing, the App Store gives four more surfaces: custom product pages (alternate pages with their own URL, and now their own keywords), product page optimization (A/B tests of the default page's visuals), in-app events (timed cards in search, the product page and the Today tab) and App Clips. Custom product pages, in-app events and new metadata in a test treatment must be approved by App Review before they show, and Apple recommends applying a treatment only once it performs better or worse with at least 90% confidence. Limits come from Apple's docs; [eronred] and [ApparenceKit] (a Flutter starter-kit author) tag third-party practice and lift claims, and several of its numbers differ from Apple's: both are given. The Play equivalents (custom store listings, store listing experiments) are in [ANDROID.md](ANDROID.md); sending paid traffic to these pages is [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
 **Contents:** [Custom product pages](#custom-product-pages) · [Product page optimization](#product-page-optimization) · [Running a store test](#running-a-store-test) · [In-app events](#in-app-events) · [App Clips](#app-clips) · [Getting featured](#getting-featured) · [Submitting them for review](#submitting-them-for-review) · [Prove it](#prove-it)
 
@@ -48,7 +48,7 @@ Source: [eronred].
 - **What to test first:** the first screenshot (15 to 30% lift possible), then the icon (10 to 20%), screenshot order (5 to 15%, low effort), screenshot style (5 to 15%, high effort), preview video (5 to 10%). "Always start with the first screenshot"; "80% of users never scroll past the first 3 screenshots". [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/) orders it differently: "**A/B test quarterly.** Icon first, then screenshots, then description", and "Run at least one test per quarter" (a 10% lift from a screenshot test means 10% more free downloads every day).
 - **Hypothesis:** `If we [change], then [metric] will [improve/increase] because [reason].`
 - **Variants:** change ONE thing ("if you're testing icons, don't change your app screenshots at the same time" [ApparenceKit](https://apparencekit.dev/flutter-tips/ab-test-apple-app-icons/)), make it a significant change, and use at most 3 variants including the control. [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/): "when starting out: create 3 completely different screenshots to test different angles. Don't just change the colors or captions. Test different value propositions."
-- **Sample size:** at least 1,000 impressions per variant (a fixed floor from the source; to size a test from your own baseline and the lift you need to detect, use [../../marketing/ab-testing/SAMPLE-SIZE.md](../../marketing/ab-testing/SAMPLE-SIZE.md)). Duration by daily impressions: under 1,000, 30 to 90 days; 1,000 to 5,000, 14 to 30 days; over 5,000, 7 to 14 days.
+- **Sample size:** at least 1,000 impressions per variant (a fixed floor from the source; to size a test from your own baseline and the lift you need to detect, use [ab-testing SAMPLE-SIZE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SAMPLE-SIZE.md)). Duration by daily impressions: under 1,000, 30 to 90 days; 1,000 to 5,000, 14 to 30 days; over 5,000, 7 to 14 days.
 - **While it runs:** monitor, but don't stop early.
 - **Reading results:** the primary metric is install conversion rate (impressions to installs); read the confidence interval, not the point estimate; check segments (new vs returning, country, source).
 - **Test ideas and expected impact:** first screenshot feature- vs benefit-focused 10 to 30% CVR; a "5M+ users" badge 5 to 15%; video vs none 5 to 15%; 30 s vs 15 s video 3 to 8%; icon color 5 to 20% TTR.
@@ -80,7 +80,7 @@ Source: [eronred].
 - **Which badge by app type** [eronred]: games Challenge, Competition, Major Update; fitness Challenge, Live Event, Major Update; productivity Major Update, Premiere; social Live Event, Challenge; streaming Premiere, Special Event; utility Major Update, Special Event.
 - **Timing:** Apple allows publishing up to 14 days before the start. [eronred] says review takes "typically 24 to 48 hours" and to submit 3 to 5 days before the start (4 to 5 elsewhere in the same skill; its featuring skill says 2+ weeks).
 - **Cadence** [eronred]: "Run at least one event per month"; the Today tab favors timely, high-quality, engaging, consistent events, and events shorter than 7 days miss Today tab consideration.
-- **Where:** App Store Connect > App > In-App Events > `+` [eronred]. Creating events with the asc CLI is in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md).
+- **Where:** App Store Connect > App > In-App Events > `+` [eronred]. Creating events with the asc CLI is in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 
 ## App Clips
 
@@ -107,7 +107,7 @@ Source: [eronred].
 
 - Custom product pages, product page optimization tests and in-app events are items you add to a submission, with an app version or on their own.
 - "Each platform can have one app version submission under review at a time." At most two submissions per platform can be under review: one that includes an app version and one with items only (in-app events, custom product pages). Submissions may not be reviewed in order.
-- "All items submitted together must be Accepted to complete the submission." The submission steps are in [../app-store-connect/TESTFLIGHT-AND-RELEASE.md](../app-store-connect/TESTFLIGHT-AND-RELEASE.md).
+- "All items submitted together must be Accepted to complete the submission." The submission steps are in [app-store-connect TESTFLIGHT-AND-RELEASE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/TESTFLIGHT-AND-RELEASE.md).
 
 ## Prove it
 

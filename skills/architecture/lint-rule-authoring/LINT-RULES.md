@@ -1,6 +1,6 @@
 # Lint rules and detectors: contract, cases, real code, fuzzing and FP/FN audits
 
-A lint rule is code whose bugs are false positives and missed cases, so it needs its own test design: a written contract before the code, adversarial fixtures on both sides of it, hits on real code read and labelled, a before-and-after run over a fixed corpus, fuzzing, and an audit of false positives and false negatives with a second pass. Source: React Doctor's rule pipeline skills, tagged by skill: [React Doctor, rule-research], [React Doctor, rule-writing], [React Doctor, rule-validate], [React Doctor, rde-eval], [React Doctor, fuzz] and [React Doctor, benchmark-fp-fn-audit]. Their commands, paths and corpus names are left out. Running the checker on a pull request's base and head and diffing its output is [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md); triaging a scanner's findings on a change is [code-review SCANNER-TRIAGE.md](../code-review/SCANNER-TRIAGE.md).
+A lint rule is code whose bugs are false positives and missed cases, so it needs its own test design: a written contract before the code, adversarial fixtures on both sides of it, hits on real code read and labelled, a before-and-after run over a fixed corpus, fuzzing, and an audit of false positives and false negatives with a second pass. Source: React Doctor's rule pipeline skills, tagged by skill: [React Doctor, rule-research], [React Doctor, rule-writing], [React Doctor, rule-validate], [React Doctor, rde-eval], [React Doctor, fuzz] and [React Doctor, benchmark-fp-fn-audit]. Their commands, paths and corpus names are left out. Running the checker on a pull request's base and head and diffing its output is [BASE-HEAD-PARITY.md](BASE-HEAD-PARITY.md); triaging a scanner's findings on a change is [code-review SCANNER-TRIAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/SCANNER-TRIAGE.md).
 
 ## The rule contract
 
@@ -60,7 +60,7 @@ Open questions:
 
 ## Edge cases to write before the detector
 
-Source: [React Doctor, rule-writing], [React Doctor, rule-validate]. "State the diagnostic condition, required syntax and bindings, unsupported cases, and adversarial tests." Then write detector pseudocode, add adversarial valid and invalid tests, and implement "only the contract's supported behavior". This is rule 3 of [testing SKILL.md](../testing/SKILL.md), partitioning the contract, applied to a detector. Account for:
+Source: [React Doctor, rule-writing], [React Doctor, rule-validate]. "State the diagnostic condition, required syntax and bindings, unsupported cases, and adversarial tests." Then write detector pseudocode, add adversarial valid and invalid tests, and implement "only the contract's supported behavior". This is rule 3 of [testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md), partitioning the contract, applied to a detector. Account for:
 
 - "import aliases and shadowed bindings"
 - "nested functions that do not execute immediately"
@@ -134,7 +134,7 @@ The pull request copy:
 
 ## Fuzzing a rule
 
-Source: [React Doctor, fuzz]. Fuzz after focused tests pass. This extends the random-input fuzzer in rule 16 of [testing SKILL.md](../testing/SKILL.md).
+Source: [React Doctor, fuzz]. Fuzz after focused tests pass. This extends the random-input fuzzer in rule 16 of [testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md).
 
 - "Confirm that the target rule fires. A silent rule only exercises early exits." If it stays silent, add a triggering shape to the generator and rerun.
 - Every finding replays from its seed, one iteration with that fixed seed.

@@ -1,6 +1,6 @@
 # Audit Kit, test links and FreeScan
 
-Two smaller tools besides squirrelscan ([SQUIRRELSCAN.md](SQUIRRELSCAN.md)): Audit Kit, a free MIT CLI that writes a client-audit workspace ([Danilaa1/auditkit](https://github.com/Danilaa1/auditkit), audit-kit.dev, 0.1.8), and FreeScan, a hosted 40-check public-page audit with an MCP server (freescan.app, no licence: restated, short quotes). Running Lighthouse yourself, with budgets and CI, is in [../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md).
+Two smaller tools besides squirrelscan ([SQUIRRELSCAN.md](SQUIRRELSCAN.md)): Audit Kit, a free MIT CLI that writes a client-audit workspace ([Danilaa1/auditkit](https://github.com/Danilaa1/auditkit), audit-kit.dev, 0.1.8), and FreeScan, a hosted 40-check public-page audit with an MCP server (freescan.app, no licence: restated, short quotes). Running Lighthouse yourself, with budgets and CI, is in [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md).
 
 ## Audit Kit
 
@@ -40,7 +40,7 @@ Audit Kit writes these into each workspace, with the site URL passed through `en
 - Rich Results Test: `https://search.google.com/test/rich-results?url=<url>`
 - metatags.io (third party, a social preview): `https://metatags.io/?url=<url>`
 
-What each structured-data result means is in [../seo/STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md); link previews per platform are in [../seo/LINK-PREVIEWS.md](../seo/LINK-PREVIEWS.md).
+What each structured-data result means is in [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md); link previews per platform are in [seo LINK-PREVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md).
 
 ## FreeScan
 

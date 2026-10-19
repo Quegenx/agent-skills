@@ -14,7 +14,7 @@ URLs and links are the structure search engines and people actually walk. This f
 6. **Short but descriptive:** `/blog/landing-page-conversions` over `/blog/how-to-improve-landing-page-conversion-rates` (the source's opinion).
 7. **Trim parameters that don't change the content** ([url-structure](https://developers.google.com/search/docs/crawling-indexing/url-structure)).
 
-On the owner's sites, "The default language has no path prefix, the second lives under its code (`/en`)" ([../../frontend/landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)); the patterns below say nothing about locale and must not override it. The canonical host (apex or `www`) is decided in [../../backend/deployment/SKILL.md](../../backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime).
+On the owner's sites, "The default language has no path prefix, the second lives under its code (`/en`)" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); the patterns below say nothing about locale and must not override it. The canonical host (apex or `www`) is decided in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime).
 
 ## Patterns by page type
 
@@ -35,7 +35,7 @@ On the owner's sites, "The default language has no path prefix, the second lives
 | Integration | `/integrations/{name}` | `/integrations/slack` |
 | Template | `/templates/{slug}` | `/templates/marketing-plan` |
 
-The owner's reference site differs on purpose: features at the top level (`/ai-agent`, `/monitoring`), legal pages with full names (`/privacy-policy`, `/terms-of-service`), one `/competitors` page and `/help/{topic}` ([site-navigation-items.ts](../../frontend/landing-page-ui/reference/website/shared/navigation/site-navigation-items.ts), [site-footer-links.ts](../../frontend/landing-page-ui/reference/website/widgets/footer/site-footer-links.ts), [routes](../../frontend/landing-page-ui/reference/routes)). On those sites the house routes win; on a new site, pick one pattern per page type and keep it.
+The owner's reference site differs on purpose: features at the top level (`/ai-agent`, `/monitoring`), legal pages with full names (`/privacy-policy`, `/terms-of-service`), one `/competitors` page and `/help/{topic}` ([site-navigation-items.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/shared/navigation/site-navigation-items.ts), [site-footer-links.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/widgets/footer/site-footer-links.ts), [routes](https://github.com/Quegenx/agent-skills/tree/main/skills/frontend/landing-page-ui/reference/routes)). On those sites the house routes win; on a new site, pick one pattern per page type and keep it.
 
 ## Common URL mistakes
 
@@ -59,7 +59,7 @@ Google: "We recommend providing breadcrumbs that represent a typical user path t
 | `/docs/api/auth` | Home > Docs > API > Authentication |
 
 - Every segment is a link except the current page; be consistent with the separator (`>` or `/`) [coreyhaines31/marketingskills, site-architecture].
-- In structured data, a `BreadcrumbList` needs at least two `ListItem`s, and a `ListItem` for the top-level path or for the page itself is not required; "If `item` isn't included for the last item, Google uses the URL of the containing page" ([breadcrumb](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb)). The markup is in [NAVIGATION.md](NAVIGATION.md#breadcrumbs) and [../seo/STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md).
+- In structured data, a `BreadcrumbList` needs at least two `ListItem`s, and a `ListItem` for the top-level path or for the page itself is not required; "If `item` isn't included for the last item, Google uses the URL of the containing page" ([breadcrumb](https://developers.google.com/search/docs/appearance/structured-data/breadcrumb)). The markup is in [NAVIGATION.md](NAVIGATION.md#breadcrumbs) and [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md).
 
 ## Internal linking
 
@@ -93,7 +93,7 @@ Hub: /blog/seo-guide (comprehensive overview)
 └── Spoke: /blog/link-building (links back to hub)
 ```
 
-Each spoke links back to the hub. The hub links to all spokes. Spokes link to each other where relevant. Scaled pages (integrations, comparisons) get a hub each (`/integrations`, `/compare`) and stay out of the main nav [coreyhaines31/marketingskills, site-architecture evals]. Topic clusters as a content plan: [../content-strategy/SKILL.md](../content-strategy/SKILL.md).
+Each spoke links back to the hub. The hub links to all spokes. Spokes link to each other where relevant. Scaled pages (integrations, comparisons) get a hub each (`/integrations`, `/compare`) and stay out of the main nav [coreyhaines31/marketingskills, site-architecture evals]. Topic clusters as a content plan: [content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md).
 
 ### Link audit checklist
 
@@ -107,7 +107,7 @@ Each spoke links back to the hub. The hub links to all spokes. Spokes link to ea
 - [ ] Related content links exist on blog posts
 - [ ] Cross-section links connect features to case studies, blog to product pages
 
-Running it across a whole site with a crawler: [../site-audit/SKILL.md](../site-audit/SKILL.md) and [../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md).
+Running it across a whole site with a crawler: [site-audit SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/SKILL.md) and [seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md).
 
 ## Prove it
 

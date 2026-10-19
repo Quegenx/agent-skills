@@ -7,7 +7,9 @@ description: "Works out which marketing caused conversions and revenue: choosing
 
 Attribution answers which efforts caused a conversion and its revenue, and every answer is a model built from incomplete data: platforms claim the same sale, "direct" and branded search hide where demand was created, and each model encodes an opinion. The work has two pillars: **(A) interpretation**, choosing a model or measurement approach and reconciling conflicting numbers, which applies to everyone with no engineering; and **(B) owning first-party attribution**, instrumenting and stitching it yourself when you control the site or app. Most requests start with A. Sources: [coreyhaines31/marketingskills, attribution] v1.1.5 (MIT, (c) 2025 Corey Haines, copied with its notice); its first-party method is adapted from Tessa Kriesel's PostHog attribution approach, and her production refinements are credited where they appear. Errors the source carries are corrected against the official pages and say what the source said.
 
-Product context: read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); business type, sales cycle and primary conversion drive almost every recommendation here. The source names this file `.agents/product-marketing.md`.
+Product context: read `.agents/product-context.md` first if it exists (defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)); business type, sales cycle and primary conversion drive almost every recommendation here. The source names this file `.agents/product-marketing.md`.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -20,12 +22,12 @@ Product context: read `.agents/product-context.md` first if it exists (defined i
 
 [coreyhaines31/marketingskills, attribution] Attribution assumes tracking exists. The line: analytics is "what events and how to fire them"; attribution is "how touches join to conversions and survive to revenue."
 
-- **Event tracking, tracking plans, UTMs, GA4 and GTM:** [../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md) and [../../monitoring/posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md).
-- **Ad-platform pixels, CAPI, server-side conversion tracking:** [../paid-ads/SKILL.md](../paid-ads/SKILL.md); for app campaigns, [../../mobile/app-growth/META-ADS.md](../../mobile/app-growth/META-ADS.md). Attribution consumes platform-reported numbers and corrects for their bias.
-- **Pipeline stages, lead lifecycle, CRM revenue dashboards:** [../revops/SKILL.md](../revops/SKILL.md). Attribution feeds it the source dimension.
-- **Showing up in and measuring AI search:** [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md). Attribution names AI traffic as a blind spot only.
-- **Mobile install attribution** (ATT, AdAttributionKit, SKAdNetwork, AdServices, MMPs, the Play Install Referrer): [../../mobile/app-growth/ANALYTICS-AND-ATTRIBUTION.md](../../mobile/app-growth/ANALYTICS-AND-ATTRIBUTION.md).
-- **Controlled experiments on site changes:** [../ab-testing/SKILL.md](../ab-testing/SKILL.md), the incrementality mindset applied to on-site changes.
+- **Event tracking, tracking plans, UTMs, GA4 and GTM:** [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md) and [posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md).
+- **Ad-platform pixels, CAPI, server-side conversion tracking:** [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md); for app campaigns, [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md). Attribution consumes platform-reported numbers and corrects for their bias.
+- **Pipeline stages, lead lifecycle, CRM revenue dashboards:** [revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md). Attribution feeds it the source dimension.
+- **Showing up in and measuring AI search:** [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md). Attribution names AI traffic as a blind spot only.
+- **Mobile install attribution** (ATT, AdAttributionKit, SKAdNetwork, AdServices, MMPs, the Play Install Referrer): [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ANALYTICS-AND-ATTRIBUTION.md).
+- **Controlled experiments on site changes:** [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), the incrementality mindset applied to on-site changes.
 
 ## What attribution can and can't tell you
 
@@ -44,7 +46,7 @@ Product context: read `.agents/product-context.md` first if it exists (defined i
 - **Ask at the moment of conversion** (signup, first purchase, demo request): highest recall, before memory fades.
 - **Wording:** open-ended ("How did you first hear about us?") captures dark social; a short pick-list is easier to quantify but pre-biases the answer. Best practice: a pick-list of your known channels plus a free-text "other/tell us more." [coreyhaines31/marketingskills, ai-seo] adds an AI option with a "What did you ask?" follow-up.
 - **Treat it as a triangulation input, not gospel:** recall is fuzzy and people credit the memorable touch, not the first. Discount survey share when turning it into credit (22% recall of YouTube is evidence of awareness, not a claim that YouTube deserves 22% of conversions). Pair it with incrementality or platform deltas before writing an allocation rule.
-- **On the build side** it's a form field written to the CRM and analytics as a person property ([FIRST-PARTY-STITCH.md](FIRST-PARTY-STITCH.md#the-last-mile-into-the-crm)). A PostHog survey can ask it ([../../monitoring/posthog/SURVEYS.md](../../monitoring/posthog/SURVEYS.md)).
+- **On the build side** it's a form field written to the CRM and analytics as a person property ([FIRST-PARTY-STITCH.md](FIRST-PARTY-STITCH.md#the-last-mile-into-the-crm)). A PostHog survey can ask it ([posthog SURVEYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SURVEYS.md)).
 
 ## Reconciling conflicting sources
 
@@ -64,7 +66,7 @@ Product context: read `.agents/product-context.md` first if it exists (defined i
 5. **Expect and budget for the gap.** Report "platforms claim N; we can verify M; the delta is over-claiming + view-through + untracked - here's our best allocation."
 6. **Operationalize triangulation as documented rules** once a holdout or a trusted survey band exists ([MEASUREMENT-PARADIGMS.md](MEASUREMENT-PARADIGMS.md#triangulated-overrides)).
 
-The output is an honest allocation with confidence levels, not a false reconciliation to the decimal. For apps, the same rule: never add up per-network installs; the store or RevenueCat count is the total ([../../mobile/app-growth/BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md)).
+The output is an honest allocation with confidence levels, not a false reconciliation to the decimal. For apps, the same rule: never add up per-network installs; the store or RevenueCat count is the total ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md)).
 
 ## The blind spots
 
@@ -73,7 +75,7 @@ The output is an honest allocation with confidence levels, not a false reconcili
 - **Direct:** the junk drawer. Bookmarks and typed URLs, but also stripped referrers, app-to-web, dark social and any touch your tracking dropped. A large direct share can include genuine direct visits, repeat users and measurement loss; investigate its composition before treating it as a tracking defect.
 - **Branded search:** people who discovered you elsewhere and searched your name. Last-touch hands the credit to branded search; the real driver was whatever made them search. Segment branded vs non-branded, or you'll defund the top of funnel.
 - **Dark social:** sharing that carries no referrer (DMs, Slack and Discord, podcasts, newsletters, screenshots). Structurally invisible to tracking; self-reported is the only way to see it.
-- **AI traffic:** assistants and AI search influence buyers who then arrive via branded search or direct, so the AI touch is invisible in analytics. [coreyhaines31/marketingskills, ai-seo] groups known AI referrers (chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com, claude.ai) into one channel and expects it to undercount; deeper work is [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
+- **AI traffic:** assistants and AI search influence buyers who then arrive via branded search or direct, so the AI touch is invisible in analytics. [coreyhaines31/marketingskills, ai-seo] groups known AI referrers (chatgpt.com, perplexity.ai, gemini.google.com, copilot.microsoft.com, claude.ai) into one channel and expects it to undercount; deeper work is [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md).
 - When direct and branded search dominate, the most common explanation is a working top of funnel that attribution hides. Confirm before concluding: rule out existing customers, lost referrers and offline discovery, then check self-reported attribution or run an incrementality test. Say which way the evidence points.
 
 ## The readout

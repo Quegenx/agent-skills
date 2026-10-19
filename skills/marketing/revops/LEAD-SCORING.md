@@ -71,7 +71,7 @@ Building a model:
 | PLG usage | Connected integration | +15 | None |
 | PLG usage | Daily active for 5+ days | +20 | -10 per 2 weeks inactive |
 
-On email opens, Google notes that low open rates "aren't necessarily an accurate indicator of deliverability" ([../../backend/email-practices/DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md)). Product-usage events come from the product analytics ([../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md)).
+On email opens, Google notes that low open rates "aren't necessarily an accurate indicator of deliverability" ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md)). Product-usage events come from the product analytics ([posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md)).
 
 ## Negative signals
 
@@ -91,7 +91,7 @@ On email opens, Google notes that low open rates "aren't necessarily an accurate
 | Invalid phone number | -10 | Data quality signal |
 | Careers page visitor only | -30 | Likely a job seeker |
 
-An unsubscribe, hard bounce or complaint is also a suppression, not only a score change: the CRM mirrors the email suppression list ([../../backend/email-practices/LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list)) and the contact moves to Suppressed ([LIFECYCLE.md](LIFECYCLE.md#outbound-stages)).
+An unsubscribe, hard bounce or complaint is also a suppression, not only a score change: the CRM mirrors the email suppression list ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list)) and the contact moves to Suppressed ([LIFECYCLE.md](LIFECYCLE.md#outbound-stages)).
 
 ## Example models
 
@@ -126,7 +126,7 @@ The lifecycle templates in [LIFECYCLE.md](LIFECYCLE.md#mql-criteria-templates) u
 
 **Leakage example (illustrative):** a lead has 20 points at qualification, then earns 20 for onboarding and 25 for inviting a teammate after becoming a customer. Scoring today's record yields 65 and seems to clear a 60-point threshold. The historical qualification score was 20; the later 45 points cannot be used to claim the rule would have identified that win.
 
-The same holdout discipline for agent evals and product experiments is in [../../ai-agents/agent-evals/SKILL.md](../../ai-agents/agent-evals/SKILL.md) and [../ab-testing/SKILL.md](../ab-testing/SKILL.md).
+The same holdout discipline for agent evals and product experiments is in [agent-evals SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md) and [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 ## Recalibration
 

@@ -77,7 +77,7 @@ Coloring and sizing scrollbars with `scrollbar-color` and `scrollbar-width`, the
   Status: `scrollbar-color` is Baseline 2025, newly available since December 2025 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-color)); `scrollbar-width` (`auto | thin | none`) Baseline 2024, newly available since December 2024 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-width)). MDN: browsers "ignore the non-standard ::-webkit-scrollbar family of pseudo-elements on any element whose computed scrollbar-color value is anything other than auto", so a `scrollbar-color` outside the `@supports` branch would turn off the `::-webkit-scrollbar` rules above. `light-dark()` and `color-mix()` are in [COLOR.md](COLOR.md).
 - **Thin, with a fade on hover-out:** Nice Select's list uses `scrollbar-width: thin` and `scrollbar-color` "with fade on hover-out" ([nerdy.dev: Nice Select](https://nerdy.dev/nice-select), 2026-02-03; code not in the post).
 - **There is no `scrollbar-size`:** the "scrollbar-color and scrollbar-size" slip in One List To Rule Them All is covered in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md); the property is `scrollbar-width`.
-- app-ui sets thin scrollbars once in its base layer, a thumb at ink 18% on no track ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#cursors-scrollbars-hit-areas)).
+- app-ui sets thin scrollbars once in its base layer, a thumb at ink 18% on no track ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md#cursors-scrollbars-hit-areas)).
 
 ## Prove it
 

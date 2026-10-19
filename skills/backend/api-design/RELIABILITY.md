@@ -15,7 +15,7 @@ GET, HEAD, OPTIONS, PUT and DELETE are idempotent by definition: repeating them 
 - **Decide what a failure stores.** Not storing 4xx and 5xx results lets the client retry the same key after a failure, which also means a failed attempt followed by a successful one succeeds; storing deterministic 4xx results makes the key answer the same every time. Never store a result for a transient failure (timeout, 503), or the retry can never succeed.
 - **Keep keys long enough to cover real retry windows** (minutes to 24 to 48 hours), in a store every instance shares (the database, Redis), not in process memory.
 - When the effect is a database write, write the effect and mark the key `completed` with its response in the same transaction. Caching a response after the work finished is not enough: two concurrent first attempts can both do the work.
-- If the operation calls an external paid or irreversible service, treat it as a job with an "uncertain" state (see [external side effects](../background-jobs/EXTERNAL-SIDE-EFFECTS.md)).
+- If the operation calls an external paid or irreversible service, treat it as a job with an "uncertain" state (see [external side effects](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/EXTERNAL-SIDE-EFFECTS.md)).
 - A natural unique key (one active loan per copy, one payment per order id) is often simpler and stronger than a generic key. Use both where it matters.
 
 ```sql
@@ -124,6 +124,6 @@ const lookup = fetchCatalog(id).pipe(
 - A reasonable starting point for a public API is around 1,000 requests per hour per key, then per-endpoint limits, higher tiers for paying customers, and a lower one for a client that misbehaves.
 - Keep counters in a shared store (Redis, the database) when there is more than one instance; an in-memory limiter gives each instance its own budget, so the real limit is the limit times the instance count. In a distributed system, enforce limits at the gateway or reverse proxy, before requests reach the services.
 - Respond 429 with `Retry-After`, and document the limits.
-- **Shed load when overloaded.** A queue in front of a saturated server is "debt that lengthens everyone's wait". Cap it and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly", instead of "everyone dies slowly and fairly, together" ([DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#queues-backpressure-load-shedding)).
+- **Shed load when overloaded.** A queue in front of a saturated server is "debt that lengthens everyone's wait". Cap it and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly", instead of "everyone dies slowly and fairly, together" ([observability DIAGNOSE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/DIAGNOSE.md#queues-backpressure-load-shedding)).
 
 **Prove it:** two users each get their own budget; repeated requests hit 429 at the documented point; a request with a forged `X-Forwarded-For` lands in the same bucket as the real address.

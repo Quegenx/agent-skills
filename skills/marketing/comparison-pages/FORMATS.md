@@ -1,6 +1,6 @@
 # The four formats
 
-Search intent, URL pattern, keywords and page structure for each format, from coreyhaines31/marketingskills `competitors` (MIT). The section templates are in [TEMPLATES.md](TEMPLATES.md); keyword volume and SERP data are [keyword-research](../keyword-research/SKILL.md).
+Search intent, URL pattern, keywords and page structure for each format, from coreyhaines31/marketingskills `competitors` (MIT). The section templates are in [TEMPLATES.md](TEMPLATES.md); keyword volume and SERP data are [keyword-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/SKILL.md).
 
 ## Format 1: [Competitor] alternative (singular)
 
@@ -18,7 +18,7 @@ Search intent, URL pattern, keywords and page structure for each format, from co
 - **Keywords:** "[Competitor] alternatives", "best [Competitor] alternatives", "tools like [Competitor]".
 - **Structure:** 1 why people look for alternatives (common pain points); 2 what to look for (a criteria framework); 3 the list (you first, but real options); 4 a summary comparison table; 5 a breakdown of each; 6 a recommendation by use case; 7 CTA.
 - "Include 4-7 real alternatives. Being genuinely helpful builds trust and ranks better."
-- **AI answers,** the source's claim: these pages "often earn *citations* in AI answers, but whether AI *recommends* your brand from them depends on offsite consensus (reviews, forums, analysts)"; for an emerging brand "a self-ranked list can surface the competitors in the AI answer while you get only the citation." Measuring that is [ai-search-visibility](../ai-search-visibility/SKILL.md).
+- **AI answers,** the source's claim: these pages "often earn *citations* in AI answers, but whether AI *recommends* your brand from them depends on offsite consensus (reviews, forums, analysts)"; for an emerging brand "a self-ranked list can surface the competitors in the AI answer while you get only the citation." Measuring that is [ai-search-visibility](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md).
 
 ## Format 3: You vs [Competitor]
 
@@ -61,7 +61,7 @@ Principles behind them: depth over surface (explain why a difference matters, wi
 | You vs Competitor | [You] vs [Competitor], [Competitor] vs [You] |
 | Competitor vs Competitor | [A] vs [B], [B] vs [A] |
 
-Plan the page set in priority order by search volume. web-research's discovery wave C already mines `"{X} vs"` titles ([COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md#discovery-waves)), which also shows which vs pages the market already has.
+Plan the page set in priority order by search volume. web-research's discovery wave C already mines `"{X} vs"` titles ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#discovery-waves)), which also shows which vs pages the market already has.
 
 ## Prove it
 

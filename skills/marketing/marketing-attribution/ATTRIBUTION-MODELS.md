@@ -1,6 +1,6 @@
 # Attribution models
 
-Attribution models split credit *within* your tracked data; they can't say what would have happened anyway (that is [MEASUREMENT-PARADIGMS.md](MEASUREMENT-PARADIGMS.md)). This file is the model table, what Google still offers, one journey scored six ways and data-driven attribution in plain words, from [coreyhaines31/marketingskills, attribution] (SKILL.md and references/attribution-models.md, MIT). PostHog's first-touch, last-touch and per-step breakdown choice for funnels is [../../monitoring/posthog/METRICS-MODELING.md](../../monitoring/posthog/METRICS-MODELING.md#conversion).
+Attribution models split credit *within* your tracked data; they can't say what would have happened anyway (that is [MEASUREMENT-PARADIGMS.md](MEASUREMENT-PARADIGMS.md)). This file is the model table, what Google still offers, one journey scored six ways and data-driven attribution in plain words, from [coreyhaines31/marketingskills, attribution] (SKILL.md and references/attribution-models.md, MIT). PostHog's first-touch, last-touch and per-step breakdown choice for funnels is [posthog METRICS-MODELING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/METRICS-MODELING.md#conversion).
 
 ## The models
 

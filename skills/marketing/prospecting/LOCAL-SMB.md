@@ -34,7 +34,7 @@ For selling to local small businesses: shops, gyms, restaurants, salons, clinics
 5. Classify the website status.
 6. Mark confidence: High (2+ sources), Medium (1 source plus consistent evidence), Low (incomplete or ambiguous).
 
-Once you have a candidate's own website URL, a fetch or a browser on that one URL can speed up the status check (live, modern, mobile-friendly, has a contact flow). "Strict line: use these on the individual business's URL. Don't point them at Google Maps, Yelp, or any platform whose ToS prohibits bulk extraction; discovery stays manual." Fetch tiers are in [../../web-automation/web-scraping/SKILL.md](../../web-automation/web-scraping/SKILL.md).
+Once you have a candidate's own website URL, a fetch or a browser on that one URL can speed up the status check (live, modern, mobile-friendly, has a contact flow). "Strict line: use these on the individual business's URL. Don't point them at Google Maps, Yelp, or any platform whose ToS prohibits bulk extraction; discovery stays manual." Fetch tiers are in [web-scraping SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/SKILL.md).
 
 When the user asks for subagents and they're available, split candidates into non-overlapping batches that verify only website, social and contact status.
 

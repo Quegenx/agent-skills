@@ -18,7 +18,7 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 
 - **Four ways to build:** native (you build and maintain a direct connection; best UX, highest cost); through an iPaaS such as Zapier or Make (covers the long tail); API-first (a clean public API partners build toward); embedded (your product runs inside theirs as a widget, SDK or iframe).
 - **Build in order of buyer intent,** as in the book's Calendly ladder: calendar (Google, Outlook: table stakes), then the sales stack (CRM, dialers), then the marketing stack (forms, ESP, automation). "Each rung deepens the account and widens who inside the company depends on you."
-- **Treat a marketplace listing like an app store listing:** optimize title, keywords, screenshots, reviews and category the way App Store Optimization does ([../../mobile/aso/SKILL.md](../../mobile/aso/SKILL.md) has the method for Apple and Google Play). Shopify App Store and Salesforce AppExchange "are discovery engines".
+- **Treat a marketplace listing like an app store listing:** optimize title, keywords, screenshots, reviews and category the way App Store Optimization does ([aso SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md) has the method for Apple and Google Play). Shopify App Store and Salesforce AppExchange "are discovery engines".
 - The book claims "83% of enterprise buyers cite integrations as a purchase-decision factor", with no source given.
 
 ## Resellers
@@ -27,15 +27,15 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 
 - **Economics (the book's claim):** resellers earn "20-40% of LTV" on the software plus "2-3x that amount in services" (implementation, training, retainers). "The services margin is what makes the partner care."
 - **HubSpot's agency playbook (Peter Caputa),** per the book: give agencies a product to sell, certifications to differentiate on, and a co-selling motion.
-- **Enablement is the work:** onboarding, certification, sales collateral ([../sales-enablement/SKILL.md](../sales-enablement/SKILL.md)), deal registration, co-selling support and a partner portal. "Signing partners is easy; getting them to actually sell requires you to train and equip them."
+- **Enablement is the work:** onboarding, certification, sales collateral ([sales-enablement SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md)), deal registration, co-selling support and a partner portal. "Signing partners is easy; getting them to actually sell requires you to train and equip them."
 
 ## Affiliates
 
 [coreyhaines31/marketingskills, co-marketing] Promoters earn commission on conversions, so you pay only on results.
 
-- **Top-promoter investment and recurring-commission buyouts:** use the canonical [affiliate operations](../referral-programs/AFFILIATES.md#power-law-buyouts-and-launches). The co-marketing chapter also attributes the 20/80 and roughly 12-month figures to its book cases; neither is a benchmark. [coreyhaines31/marketingskills, co-marketing; referrals]
+- **Top-promoter investment and recurring-commission buyouts:** use the canonical [affiliate operations](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/AFFILIATES.md#power-law-buyouts-and-launches). The co-marketing chapter also attributes the 20/80 and roughly 12-month figures to its book cases; neither is a benchmark. [coreyhaines31/marketingskills, co-marketing; referrals]
 - The book's examples (ConvertKit with Pat Flynn, Demio's 50% commissions, Cometly's launch day with Rewardful) are anecdotes.
-- Commission structures, cookie windows, fraud and tooling are [../referral-programs/SKILL.md](../referral-programs/SKILL.md); affiliate disclosure is [../creator-marketing/DISCLOSURE.md](../creator-marketing/DISCLOSURE.md).
+- Commission structures, cookie windows, fraud and tooling are [referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md); affiliate disclosure is [creator-marketing DISCLOSURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/DISCLOSURE.md).
 
 ## Co-marketing
 
@@ -47,7 +47,7 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 ## App stores and marketplaces
 
 - **Inherit the platform's distribution.** The book's example: Grammarly's Chrome Web Store extension "from 0 to 10M users". [coreyhaines31/marketingskills, co-marketing]
-- **Model the fee from the actual contract.** The source puts typical cuts at 15 to 30% and Apple at 15% for small businesses and for subscriptions after year one, 30% standard. Apple's own terms: 15% "on paid apps and Apple In-App Purchases" for developers with "up to 1 million USD in proceeds in the prior calendar year" or new to the store; the standard rate applies to future sales once proceeds pass $1M in the current year; a developer can requalify the year after falling below; Associated Developer Accounts count toward proceeds. [https://developer.apple.com/app-store/small-business-program/] Apple's rates in full are in [../../mobile/app-store-connect/SKILL.md](../../mobile/app-store-connect/SKILL.md).
+- **Model the fee from the actual contract.** The source puts typical cuts at 15 to 30% and Apple at 15% for small businesses and for subscriptions after year one, 30% standard. Apple's own terms: 15% "on paid apps and Apple In-App Purchases" for developers with "up to 1 million USD in proceeds in the prior calendar year" or new to the store; the standard rate applies to future sales once proceeds pass $1M in the current year; a developer can requalify the year after falling below; Associated Developer Accounts count toward proceeds. [https://developer.apple.com/app-store/small-business-program/] Apple's rates in full are in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md).
 - **A fee on every renewal is a recurring distribution cost,** not a one-time acquisition cost. "Include it in contribution margin and cash payback, then add actual upfront acquisition costs separately. For example, a $100 monthly subscription with a $30 marketplace fee and $20 serving cost contributes $50 per month; a separate $300 acquisition cost takes six months to recover before churn or cash delays. Avoid counting the same fee in both CAC and recurring costs." [coreyhaines31/marketingskills, co-marketing]
 - **Go all-in on one platform when it maps to your ICP:** "if a single platform owns your buyer's daily workflow, being *inside* it beats trying to pull users out to your own site" (the book's example: Arrows on HubSpot). [coreyhaines31/marketingskills, co-marketing]
 

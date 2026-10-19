@@ -1,6 +1,6 @@
 # Flutter APK build evidence
 
-From [morluto/rea, docs/flutter-analysis.md; src/contracts/flutter/flutterToolContracts.ts; src/flutter/FlutterBuildProvider.ts]. Use these advertised REA tools to identify a supplied Flutter APK and inspect bounded Dart AOT facts. Flutter development remains in the global [Flutter skill](../../mobile/flutter/SKILL.md).
+From [morluto/rea, docs/flutter-analysis.md; src/contracts/flutter/flutterToolContracts.ts; src/flutter/FlutterBuildProvider.ts]. Use these advertised REA tools to identify a supplied Flutter APK and inspect bounded Dart AOT facts. Flutter development remains in the global [Flutter skill](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md).
 
 ## Identify the build
 

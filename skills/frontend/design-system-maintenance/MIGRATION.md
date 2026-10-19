@@ -1,6 +1,6 @@
 # Adopt a system without changing behavior
 
-Move one ready family and representative flow at a time, with visual and behavior evidence kept separate. Sources: the supplied `migrate-design-system` skill, its incident lessons, parity and multi-agent references, `build-design-system` capture and pixel-diff scripts, and `ui-review`. General migration and function comparison remain in [system-migration](../../architecture/system-migration/SKILL.md); rendered critique remains in [anti-slop-ui REVIEW.md](../../anti-ai-slop/anti-slop-ui/REVIEW.md).
+Move one ready family and representative flow at a time, with visual and behavior evidence kept separate. Sources: the supplied `migrate-design-system` skill, its incident lessons, parity and multi-agent references, `build-design-system` capture and pixel-diff scripts, and `ui-review`. General migration and function comparison remain in [system-migration](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/system-migration/SKILL.md); rendered critique remains in [anti-slop-ui REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/REVIEW.md).
 
 ## Plan from current consumers
 
@@ -10,7 +10,7 @@ Move one ready family and representative flow at a time, with visual and behavio
 - Inventory the old imports, raw values, palette usage and consumers mixing both systems. Map every finding to a surface and record excluded paths.
 - Establish baselines before edits with fixture data, a fixed clock, matching widths and themes, and a no-change control capture. An absent baseline does not establish parity.
 - Give the shared layout and providers one owner. Complete and inspect the pilot by hand before deriving a codemod; compare generated output with the hand migration and check that a second application makes no changes.
-- Give each worker exact editable paths and keep shared files under one owner. A retry receives the original brief, later directives and prior evidence. General delegation lives in [agent-harness WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md).
+- Give each worker exact editable paths and keep shared files under one owner. A retry receives the original brief, later directives and prior evidence. General delegation lives in [agent-harness WORKFLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md).
 - Treat missing component capabilities as system gaps. Do not create a consumer workaround that conceals an incomplete family.
 
 ## Capture without changing shared data
@@ -68,9 +68,9 @@ An HTML `accept` value may list extensions, MIME types or supported wildcards. I
 
 [supplied design skills, ui-review/SKILL.md; references/criteria.md; migrate-design-system/SKILL.md, Close]
 
-Use the existing [interface review](../../anti-ai-slop/anti-slop-ui/REVIEW.md), with the installed system's rules first. Add findable role/name, capture, width, criterion and observed effect to each finding. Merge shared root causes. The source's blocking, should-fix and note buckets map here to P1, P2 and P3; reserve P0 for the repository's highest-impact cases. Unverified checks remain coverage limits rather than invented findings.
+Use the existing [interface review](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/REVIEW.md), with the installed system's rules first. Add findable role/name, capture, width, criterion and observed effect to each finding. Merge shared root causes. The source's blocking, should-fix and note buckets map here to P1, P2 and P3; reserve P0 for the repository's highest-impact cases. Unverified checks remain coverage limits rather than invented findings.
 
-The source proposes checking press feedback with Event Timing durations under 100 ms. Event Timing's `duration` measures event creation to the next rendering paint, rounded to 8 ms; default observation exposes durations of at least 104 ms and the minimum configurable threshold is 16 ms. A missing entry or a short event duration does not by itself establish that the intended visible feedback appeared. Use [the existing runtime trace method](../web-performance/RUNTIME-TRACE.md#event-timing-and-interactions) and record what was actually measured. [MDN PerformanceEventTiming](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEventTiming), [supplied design skills, ui-review/SKILL.md, step 5]
+The source proposes checking press feedback with Event Timing durations under 100 ms. Event Timing's `duration` measures event creation to the next rendering paint, rounded to 8 ms; default observation exposes durations of at least 104 ms and the minimum configurable threshold is 16 ms. A missing entry or a short event duration does not by itself establish that the intended visible feedback appeared. Use [the existing runtime trace method](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/RUNTIME-TRACE.md#event-timing-and-interactions) and record what was actually measured. [MDN PerformanceEventTiming](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceEventTiming), [supplied design skills, ui-review/SKILL.md, step 5]
 
 At close, tie verdicts to the final state of the files; an earlier revision's evidence is stale after relevant edits. Report remaining legacy usage, exceptions, unverified states and unfixed findings. Inspect repeated failure classes and move enforcement to their shared owner rather than adding more prose bans. Remove an obsolete implementation only when its callers and compatibility obligations have been accounted for. [supplied design skills, migrate-design-system/SKILL.md, steps 8 and 9; references/correct.md]
 

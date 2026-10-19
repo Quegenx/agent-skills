@@ -21,9 +21,9 @@ Native form lifecycle and endpoint contracts from [gokapso/agent-skills, integra
 [gokapso/agent-skills, integrate-whatsapp/references/whatsapp-flows-spec.md; repository secure-coding and api-design rules]
 
 - Verify the trusted forwarding boundary. signature_valid is meaningful only from the authenticated Kapso wrapper; caller-supplied JSON cannot establish signature validity.
-- flow_token alone is not proof of customer identity. Bind the session/Flow to server-side ownership and authorize every requested resource or mutation, as in [api-design](../api-design/SKILL.md).
-- Source examples log request bodies, data and external responses. The existing integration rule excludes bodies/auth headers; keep bounded, redacted diagnostics and exact IDs/statuses instead. [CALLS-AND-SYNC.md](../third-party-integrations/CALLS-AND-SYNC.md)
-- A protocol-scoped business-validation response is not permission to return success for forged signatures or unauthorized access. Preserve the existing fail-closed boundary. [secure-coding](../secure-coding/SKILL.md)
+- flow_token alone is not proof of customer identity. Bind the session/Flow to server-side ownership and authorize every requested resource or mutation, as in [api-design](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/SKILL.md).
+- Source examples log request bodies, data and external responses. The existing integration rule excludes bodies/auth headers; keep bounded, redacted diagnostics and exact IDs/statuses instead. [third-party-integrations CALLS-AND-SYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/CALLS-AND-SYNC.md)
+- A protocol-scoped business-validation response is not permission to return success for forged signatures or unauthorized access. Preserve the existing fail-closed boundary. [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md)
 
 ## Prove it
 

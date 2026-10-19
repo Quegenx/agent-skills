@@ -13,7 +13,7 @@ Infinity recipes from Adam Argyle's [CSS Infinity Use Cases](https://nerdy.dev/c
     z-index: calc(infinity);
   }
   ```
-  For pills it replaces the old `1e9px`. app-ui's `--radius-full` is `calc(infinity * 1rem)`, "a pill at any height" ([app-ui TOKENS.md](../app-ui/TOKENS.md)).
+  For pills it replaces the old `1e9px`. app-ui's `--radius-full` is `calc(infinity * 1rem)`, "a pill at any height" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)).
 - **The post's observed maximum:** its counter demonstration reports `2147483647`, and it also applies infinity to `z-index`. CSS does not prescribe that number for every engine or property: supported numeric ranges and precision are implementation dependent, and infinite results are clamped for their context. The post and our old line called it "the browser's max int". [CSS Values: Numeric types](https://drafts.csswg.org/css-values-4/#numeric-types), [infinities](https://drafts.csswg.org/css-values-4/#calc-infinities)
   ```css
   .css-max-int {
@@ -24,7 +24,7 @@ Infinity recipes from Adam Argyle's [CSS Infinity Use Cases](https://nerdy.dev/c
     }
   }
   ```
-  Two views on using it for stacking: the post offers it to "beat `z-index: 999999999`"; anti-slop-ui says "Escalating to `z-index: 9999` only moves the fight" and sends floating layers to the top layer ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md), [POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md)).
+  Two views on using it for stacking: the post offers it to "beat `z-index: 999999999`"; anti-slop-ui says "Escalating to `z-index: 9999` only moves the fight" and sends floating layers to the top layer ([anti-slop-ui DETAILS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/DETAILS.md), [POPOVER-AND-DIALOG.md](POPOVER-AND-DIALOG.md)).
 - **No floor, no ceiling:**
   ```css
   div {

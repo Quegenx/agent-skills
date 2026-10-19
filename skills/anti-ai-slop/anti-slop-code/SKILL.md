@@ -7,13 +7,15 @@ description: "Removes AI code slop (narrating comments, bloated names, needless 
 
 The cost of writing code collapsed; the cost of reading it didn't. Code that's slow to understand is slop even when it works. Load `anti-slop` for the shared rules (do what was asked, verify before claiming). The rule catalogue with examples is [RULES.md](RULES.md).
 
-Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md) agent (Apache-2.0), tagged [Anthropic, code-simplifier]; React Doctor's `deslop` skill, which is that agent's text with additions (indirection, inlining single-use functions, leftover scaffolding, consolidating duplicates with truffler), tagged [React Doctor, deslop] for the additions only; and React Doctor's `find-similar-functions`, which comes from the [truffler](https://github.com/rayhanadev/truffler) repo (MIT), tagged [React Doctor, find-similar-functions]. React Doctor's `deslop` is not Nimblesite's Deslop duplicate finder; the [duplication reference](../../architecture/refactoring/DUPLICATION.md#deslop) tells the two apart.
+Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md) agent (Apache-2.0), tagged [Anthropic, code-simplifier]; React Doctor's `deslop` skill, which is that agent's text with additions (indirection, inlining single-use functions, leftover scaffolding, consolidating duplicates with truffler), tagged [React Doctor, deslop] for the additions only; and React Doctor's `find-similar-functions`, which comes from the [truffler](https://github.com/rayhanadev/truffler) repo (MIT), tagged [React Doctor, find-similar-functions]. React Doctor's `deslop` is not Nimblesite's Deslop duplicate finder; the [duplication reference](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DUPLICATION.md#deslop) tells the two apart.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
 | Review or remove code slop without changing behavior | [RULES.md](RULES.md) |
 | Use FixMySlop when selected, with its rule controls, baseline and source-version limits | [FIXMYSLOP.md](FIXMYSLOP.md) |
-| Select Deslop, truffler or jscpd for duplication and reuse evidence | [Duplication tools](../../architecture/refactoring/DUPLICATION.md) |
+| Select Deslop, truffler or jscpd for duplication and reuse evidence | [Duplication tools](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DUPLICATION.md) |
 
 ## Guardrails
 
@@ -70,7 +72,7 @@ I checked for existing symbols with `truffler` using queries like `normalize`, `
 I searched with `truffler` for `parse`, `config`, and `loadConfig` across `src/`; the matches were unrelated, so I added a new helper in the nearest module.
 ```
 
-**Review:** start with a count of findings, and say plainly when there's nothing to fix. Then findings most damaging first, one per root cause, each with `file:line` (read, not guessed from a name), the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. Use [P0 to P3 severity](../../architecture/code-review/REVIEWER.md#tags-and-output), and record **Pre-existing** separately as a [status by cause](../../architecture/code-review/CHANGE-SCOPE.md#status-by-cause), so a bug the change didn't introduce doesn't look like the author's fault. The old output mixed **Important**, **Nit** and **Pre-existing** as alternative tags; impact and origin are separate. Name the class of bug, so the author fixes every instance, not one line. End with a per-file verdict:
+**Review:** start with a count of findings, and say plainly when there's nothing to fix. Then findings most damaging first, one per root cause, each with `file:line` (read, not guessed from a name), the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. Use [P0 to P3 severity](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output), and record **Pre-existing** separately as a [status by cause](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/CHANGE-SCOPE.md#status-by-cause), so a bug the change didn't introduce doesn't look like the author's fault. The old output mixed **Important**, **Nit** and **Pre-existing** as alternative tags; impact and origin are separate. Name the class of bug, so the author fixes every instance, not one line. End with a per-file verdict:
 
 | File | Verdict | Main findings | Action |
 |---|---|---|---|

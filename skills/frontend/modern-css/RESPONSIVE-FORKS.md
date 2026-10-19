@@ -2,7 +2,7 @@
 
 Some desktop layouts have no single right phone version. responsive-craft (kylezantos/responsive-craft, MIT) names eight of them, and its rule is to "present 2-3 options with tradeoffs and ask the user to choose", never to "default silently" [responsive-craft]. This file holds those forks, the behaviour specs written before any CSS, and the audit that stops and waits for the user.
 
-**Scope: projects other than the owner's own apps.** app-ui and landing-page-ui have already decided their forks: the app's script "reads `matchMedia` in `rem`" to "swap the sidebar for a sheet" ([TOKENS.md](../app-ui/TOKENS.md)), and its table is "A scrolling frame with rounded corners" whose row actions "stack when narrow (a container query)" ([DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)). Don't reopen those. The units still follow the owner's rules in [RESPONSIVE.md](RESPONSIVE.md#units): the source's px widths below are quoted as written, and a port writes them in `rem` or as container widths ([where the source differs](RESPONSIVE.md#where-other-responsive-skills-differ)).
+**Scope: projects other than the owner's own apps.** app-ui and landing-page-ui have already decided their forks: the app's script "reads `matchMedia` in `rem`" to "swap the sidebar for a sheet" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)), and its table is "A scrolling frame with rounded corners" whose row actions "stack when narrow (a container query)" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)). Don't reopen those. The units still follow the owner's rules in [RESPONSIVE.md](RESPONSIVE.md#units): the source's px widths below are quoted as written, and a port writes them in `rem` or as container widths ([where the source differs](RESPONSIVE.md#where-other-responsive-skills-differ)).
 
 **Contents:** [Two levels](#two-levels) · [Audit, then wait](#audit-then-wait) · [Behaviour specs](#behaviour-specs) · [The eight forks](#the-eight-forks) · [Prove it](#prove-it)
 
@@ -34,7 +34,7 @@ Some desktop layouts have no single right phone version. responsive-craft (kylez
 
 "If the codebase is a mess: Don't try to fix everything at once. Identify the 2-3 pages or components with the worst responsive behavior, fix those first, and establish patterns that can spread. Present this triage to the user."
 
-**The eight checks:** viewport meta (with `viewport-fit=cover` "if safe areas are used"), breakpoint strategy, layout approach ("Intrinsic patterns (`auto-fit`, `flex-wrap`, `clamp()`) or breakpoint-dependent?"), container queries ("Are components adapting to their container or the viewport?"), sticky and scroll ("overflow ancestors, missing align-self, z-index issues"), typography, images ("`width`/`height` attributes? `max-width: 100%`? `object-fit` where needed? Responsive loading (`srcset`, `<picture>`) for large images?") and touch targets. Two of them differ from this skill: the source asks whether breakpoints are mobile-first, which the owner's model doesn't require, and it wants "Interactive elements at least 44x44px", where web-accessibility says "never report a target between 24px and 44px as a failure ... the AA floor is 24px" ([HIT-AREAS.md](../web-accessibility/HIT-AREAS.md#target-sizes)).
+**The eight checks:** viewport meta (with `viewport-fit=cover` "if safe areas are used"), breakpoint strategy, layout approach ("Intrinsic patterns (`auto-fit`, `flex-wrap`, `clamp()`) or breakpoint-dependent?"), container queries ("Are components adapting to their container or the viewport?"), sticky and scroll ("overflow ancestors, missing align-self, z-index issues"), typography, images ("`width`/`height` attributes? `max-width: 100%`? `object-fit` where needed? Responsive loading (`srcset`, `<picture>`) for large images?") and touch targets. Two of them differ from this skill: the source asks whether breakpoints are mobile-first, which the owner's model doesn't require, and it wants "Interactive elements at least 44x44px", where web-accessibility says "never report a target between 24px and 44px as a failure ... the AA floor is 24px" ([web-accessibility HIT-AREAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/HIT-AREAS.md#target-sizes)).
 
 **The report, then the gate:**
 
@@ -54,7 +54,7 @@ Design forks identified:
 - [Pattern] → needs a decision (see Step 2)
 ```
 
-"**Wait gate:** Present the audit and wait for the user to confirm before proceeding." The source's three grades map onto [the one scale](../../anti-ai-slop/anti-slop-ui/SKILL.md#6-delivery-report): Critical is P1, or P0 where it blocks the primary task; Important is P2; Minor is P3.
+"**Wait gate:** Present the audit and wait for the user to confirm before proceeding." The source's three grades map onto [the one scale](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md#6-delivery-report): Critical is P1, or P0 where it blocks the primary task; Important is P2; Minor is P3.
 
 **Then the forks, a few at a time.** For each one found: "Describe what exists in the codebase", "Present 2-3 mobile approaches with tradeoffs", "Ask the user to choose." "Don't batch all forks at once: present them one at a time or in groups of 2-3 max. Let the user make each decision before moving on." While building, the same stop applies: "Stop implementing", "Describe what you're seeing and why there's no single right answer", "Present the options with tradeoffs", "Ask the user to decide", "Continue implementing with their choice" [responsive-craft, build-responsive.md].
 
@@ -233,7 +233,7 @@ The question: "This navigation has [N] items across [M] categories. On mobile, i
 
 Signals: "content-heavy site with defined categories (e-commerce, docs) → hamburger + accordion (A)"; "app with 3-5 core flows (dashboard, messages, settings, profile) → bottom tabs (B)"; "content is highly searchable and users have intent (knowledge base, marketplace) → search-first (C)"; "3+ nesting levels → hamburger (A): bottom tabs can't handle depth"; "navigation items have icons → bottom tabs (B): icon + label fits the tab bar pattern".
 
-Rules per option [coreyhaines31/marketingskills, site-architecture, navigation-patterns.md]: a hamburger keeps the "CTA button visible without opening the menu (sticky header)", has "Search accessible from mobile menu" and uses an "Accordion pattern for nested items"; a bottom tab bar has "3-5 items max", "Icons + labels (not just icons)", "Active state clearly indicated" and the "Most important action in the center". In the owner's sites "One list of navigation items (title, description, two icon styles, address) feeds both the header menu and the footer" ([landing-page-ui MOTION.md](../landing-page-ui/MOTION.md)).
+Rules per option [coreyhaines31/marketingskills, site-architecture, navigation-patterns.md]: a hamburger keeps the "CTA button visible without opening the menu (sticky header)", has "Search accessible from mobile menu" and uses an "Accordion pattern for nested items"; a bottom tab bar has "3-5 items max", "Icons + labels (not just icons)", "Active state clearly indicated" and the "Most important action in the center". In the owner's sites "One list of navigation items (title, description, two icon styles, address) feeds both the header menu and the footer" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md)).
 
 ### 7. Form layout with complex fields
 
@@ -261,7 +261,7 @@ Desktop: "Bento grid or masonry layout with hero cards, standard cards, and wide
 
 The question: "The desktop grid uses varying card sizes for visual hierarchy. On mobile, do you want to (a) stack everything full-width (simplest), (b) group into horizontal scroll sections (preserves variety), or (c) keep a 2-column mini-grid (preserves density)?"
 
-Signals: "hierarchy matters (featured vs. regular) → Option C with hero card full-width"; "all cards are equal → Option A"; "cards are grouped by category → Option B". A bento grid by default is also a sign on [the scan](../../anti-ai-slop/anti-slop-ui/PATTERNS.md#layout-and-components).
+Signals: "hierarchy matters (featured vs. regular) → Option C with hero card full-width"; "all cards are equal → Option A"; "cards are grouped by category → Option B". A bento grid by default is also a sign on [the scan](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/PATTERNS.md#layout-and-components).
 
 ## Prove it
 

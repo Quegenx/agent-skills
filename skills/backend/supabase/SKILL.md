@@ -7,6 +7,8 @@ description: "Builds on Supabase without the platform's silent traps: which tabl
 
 Supabase puts Postgres directly behind an HTTP API the browser can call. That makes the database's own permissions (grants and row-level security) the application's access control, and most Supabase security bugs are places where Postgres quietly allows more than you meant: a view, a function, a policy that checks who you are but not what you own. Postgres itself is the `postgres` skill; tenant isolation in general is the `secure-coding` skill's TENANCY.md.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Data API exposure, grants, RLS policies, views, functions, keys, auth sessions, storage, dependencies: the security checklist | [SECURITY.md](SECURITY.md) |
@@ -39,5 +41,7 @@ Supabase puts Postgres directly behind an HTTP API the browser can call. That ma
 7. **Confirm before destructive actions** on a project: dropping tables, resetting the database, rotating keys.
 
 ## Prove it
+
+The role-based table checks below apply to changed tables, policies, views, exposed functions and database access. Auth, Storage, Realtime, Edge Functions and CLI tasks use the selected topic's checks; an isolated service task does not require an account-wide table or advisor audit.
 
 As `anon` and as two different signed-in users: each table returns only the rows that user should see, updates and deletes on another user's row affect zero rows, inserts with another user's ID are rejected, every view and exposed function obeys the same rules, and the security advisor reports nothing new.

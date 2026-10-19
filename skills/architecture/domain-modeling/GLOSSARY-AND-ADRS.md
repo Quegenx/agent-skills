@@ -35,7 +35,7 @@ Offer an architectural decision record when all three apply: changing the choice
 - Matt's minimum is a title and a short paragraph stating context, decision and reason. Add status, considered alternatives and consequences when they help; find the highest current number before assigning the next one.
 - Octocode instead defaults to `docs/decisions/ADR-NNN-short-title.md` and requires Status, Date, Context, Decision, Alternatives considered and Consequences. Both are source conventions, not standards. Keep an established local convention; the lightweight form above is the default here when none exists.
 - Keep accepted decisions accurate. When a later decision replaces one, link the replacement and mark the old record superseded or deprecated rather than erase why it existed. Link decision records from relevant architecture documentation or agent guidance when that prevents reopening settled questions.
-- Store the rationale, not pasted implementation. An [RFC](../engineering-planning/RFC.md) can investigate a choice; the ADR retains the accepted decision and its lasting context.
+- Store the rationale, not pasted implementation. An [RFC](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/RFC.md) can investigate a choice; the ADR retains the accepted decision and its lasting context.
 
 ## Prove it
 

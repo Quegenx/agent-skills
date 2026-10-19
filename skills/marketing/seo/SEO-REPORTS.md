@@ -1,6 +1,6 @@
 # SEO reports
 
-How every SEO workflow here hands over its result: one self-contained HTML page with the verdict first, and a chat reply that only points at it. The rules and the starter template are every-app/open-seo's `seo-report` skill (MIT, Copyright (c) 2026 Ben Senescu); the template is copied as [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html) with OpenSEO's names and links replaced by placeholders. OpenSEO saves reports into its app with `save_report`; the HTML constraints below are what its sandboxed viewer enforces, and they keep any report portable. General prose rules are in [../../anti-ai-slop/anti-slop-writing/SKILL.md](../../anti-ai-slop/anti-slop-writing/SKILL.md).
+How every SEO workflow here hands over its result: one self-contained HTML page with the verdict first, and a chat reply that only points at it. The rules and the starter template are every-app/open-seo's `seo-report` skill (MIT, Copyright (c) 2026 Ben Senescu); the template is copied as [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html) with OpenSEO's names and links replaced by placeholders. OpenSEO saves reports into its app with `save_report`; the HTML constraints below are what its sandboxed viewer enforces, and they keep any report portable. General prose rules are in [anti-slop-writing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/SKILL.md).
 
 ## Writing rules
 

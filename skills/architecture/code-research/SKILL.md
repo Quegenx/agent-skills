@@ -5,7 +5,9 @@ description: "Investigates code questions from exact source, callers, history an
 
 # Code research
 
-Find the source that settles the question and report what the evidence supports. Sources: [bgauryy/octocode, octocode-research], [JuliusBrussee/caveman, caveman-explore and cavecrew], and [dzhng/jevgrep, jevgrep]. The [debugging skill](../debugging/SKILL.md) owns causal diagnosis; [agent-harness WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md#delegation-packets) owns delegation.
+Find the source that settles the question and report what the evidence supports. Sources: [bgauryy/octocode, octocode-research], [JuliusBrussee/caveman, caveman-explore and cavecrew], and [dzhng/jevgrep, jevgrep]. The [debugging skill](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/SKILL.md) owns causal diagnosis; [agent-harness WORKFLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md#delegation-packets) owns delegation.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

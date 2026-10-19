@@ -1,6 +1,6 @@
 # Outbound plays
 
-"A play is a repeatable outbound motion: a trigger, an offer, a sequence, and a definition of success. Plays keep outbound from becoming a pile of one-off emails." [coreyhaines31/marketingskills, cold-email] references/outbound-plays.md. The signals that fire each play are in [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md).
+"A play is a repeatable outbound motion: a trigger, an offer, a sequence, and a definition of success. Plays keep outbound from becoming a pile of one-off emails." [coreyhaines31/marketingskills, cold-email] references/outbound-plays.md. The signals that fire each play are in [prospecting SIGNALS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SIGNALS.md).
 
 ## 1. Value-first teardown (services and agencies)
 
@@ -26,7 +26,7 @@ Why ask first: no link in the first email, a "yes" filters for real interest, an
 
 [coreyhaines31/marketingskills, cold-email] Reach people already using the product when their usage shows they're ready for more.
 
-**Triggers,** roughly strongest first: hitting a plan, credit or usage limit; a much larger job or upload than usual; inviting teammates; signing up from a company domain that matches the ICP; returning repeatedly to pricing or upgrade pages. The events behind these are in [../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md).
+**Triggers,** roughly strongest first: hitting a plan, credit or usage limit; a much larger job or upload than usual; inviting teammates; signing up from a company domain that matches the ICP; returning repeatedly to pricing or upgrade pages. The events behind these are in [posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md).
 
 **Sequence**
 
@@ -36,7 +36,7 @@ Why ask first: no link in the first email, a "yes" filters for real interest, an
 3. **One follow-up** with a specific resource for their use case.
 4. **Stop** if they upgrade, go quiet for two weeks, or say no.
 
-**Rules:** speed matters most here ("the trigger loses most of its value within a day"); "Never make the tracking feel like surveillance. Talk about the job they're doing and leave the logged events out of it."; help first, upgrade second; route accounts that exceed self-serve limits to a person ([../revops/SKILL.md](../revops/SKILL.md)).
+**Rules:** speed matters most here ("the trigger loses most of its value within a day"); "Never make the tracking feel like surveillance. Talk about the job they're doing and leave the logged events out of it."; help first, upgrade second; route accounts that exceed self-serve limits to a person ([revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md)).
 
 **Measure:** trigger-to-reply rate, trigger-to-upgrade rate within 14 days, expansion revenue per triggered account.
 
@@ -44,7 +44,7 @@ Why ask first: no link in the first email, a "yes" filters for real interest, an
 
 [coreyhaines31/marketingskills, cold-email] The default for accounts with no product usage: lead with a problem the segment is known to have, prove you understand it, offer something small.
 
-**Trigger:** a signal from [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md), or a tightly defined segment.
+**Trigger:** a signal from [prospecting SIGNALS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SIGNALS.md), or a tightly defined segment.
 
 **Offer something smaller than a meeting:** a sample of the work (verify a sample of their list, audit one page, benchmark one metric), a relevant resource, or a quick answer to a question they're probably asking.
 
@@ -59,7 +59,7 @@ Why ask first: no link in the first email, a "yes" filters for real interest, an
 - Short, personal, specific to the recipient. No templates.
 - Ask for advice or feedback as often as for a meeting. "People answer founders."
 - 10 to 20 a week, done consistently, beats occasional bursts.
-- Pairs with the founder posting on LinkedIn, so the name is familiar ([../social-media/SKILL.md](../social-media/SKILL.md)).
+- Pairs with the founder posting on LinkedIn, so the name is familiar ([social-media SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md)).
 
 ## Choosing a play
 

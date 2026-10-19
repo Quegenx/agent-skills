@@ -1,6 +1,6 @@
 # Auditing agent experience: docs, SDKs and skills
 
-Sources: [browserbase/skills, agent-experience], with the existing [c15t, writing-docs], [Vercel, writing-guidelines] and [coreyhaines31/marketingskills, marketing-loops] additions and source corrections retained from the repository's former `agent-evals/DX-AUDIT.md`. This file owns the onboarding audit workflow; generic evaluation methodology stays in [agent-evals](../agent-evals/SKILL.md).
+Sources: [browserbase/skills, agent-experience], with the existing [c15t, writing-docs], [Vercel, writing-guidelines] and [coreyhaines31/marketingskills, marketing-loops] additions and source corrections retained from the repository's former `agent-evals/DX-AUDIT.md`. This file owns the onboarding audit workflow; generic evaluation methodology stays in [agent-evals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md).
 
 Several subagents each attempt one real task against a product's docs, SDK or a SKILL.md; the audit traces what they fetched and where they failed, scores the run, and writes it up.
 
@@ -97,7 +97,7 @@ Several subagents each attempt one real task against a product's docs, SDK or a 
 | `GUESS · 404` | It was guessed and returned 404 |
 | `UNTRACED` | No observed discovery source in this trace; origin is unknown |
 
-- **Which vendor agents pick, tracked over time:** the same subagent panel, phrased without vendor names and rerun monthly against the previous release's baseline, is the agent-default check in [ai-search-visibility AGENT-DEFAULTS.md](../../marketing/ai-search-visibility/AGENT-DEFAULTS.md) and [marketing-loops SEO-LOOPS.md](../../marketing/marketing-loops/SEO-LOOPS.md#the-agent-default-check-loop) [coreyhaines31/marketingskills, marketing-loops].
+- **Which vendor agents pick, tracked over time:** the same subagent panel, phrased without vendor names and rerun monthly against the previous release's baseline, is the agent-default check in [ai-search-visibility AGENT-DEFAULTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/AGENT-DEFAULTS.md) and [marketing-loops SEO-LOOPS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SEO-LOOPS.md#the-agent-default-check-loop) [coreyhaines31/marketingskills, marketing-loops].
 - **Read the labels within their evidence.** The source called an unexplained URL TRAINING PRIOR and inferred a training-data head start. A trace cannot establish that origin: retain UNTRACED, the actual URL/outcome and missing provenance. Repeated 404s or an observed llms.txt discovery are evidence of those events, not proof of their sole cause. [browserbase/skills, agent-experience/SKILL.md]
 - **Review across agents in 3-5 sentences:** convergent mistakes (3 of 3 agents on the wrong package is a doc-quality disaster), hallucinated artifacts, inconsistent end states, silent workarounds, and contradictions between tool output and narrative (grep for `error`, `404`, `401`, `deprecated`, `warning`).
 

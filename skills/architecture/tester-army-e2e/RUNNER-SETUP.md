@@ -1,6 +1,6 @@
 # Runner setup, running and CI
 
-The specifics below are the `e2e` runner's. Prefer letting the runner start the app under test: it probes it for readiness, logs it to a file when told to, and tears it down on every exit path.
+The specifics below are the `e2e` runner's. Prefer letting the runner start the app under test: it probes it for readiness, logs it to a file when told to, and tears it down on every exit path. [tester-army/e2e, runner setup]
 
 **Contents:** [Install](#install) · [Config](#config) · [The app under test](#the-app-under-test) · [Browsers](#browsers) · [Mobile targets](#mobile-targets) · [Environment variables](#environment-variables) · [Running](#running) · [Output and reports](#output-and-reports) · [Exit codes and signals](#exit-codes-and-signals) · [CI](#ci) · [Prove it](#prove-it)
 

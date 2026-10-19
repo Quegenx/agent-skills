@@ -1,8 +1,8 @@
 # UI demo: more beats and the recipes
 
-[measured corpus, original ui-demo-recipes.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original ui-demo-recipes.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
-[measured corpus, captured-identity view; asset-prep, SKILL.md#working-inside-an-existing-product-repo] This source asks for real captured sender/time/content identity. The current repo instead requires clearly synthetic, demo-safe customer values and forbids personal, test-user or production information on screen. Preserve product geometry and approved copy; the [existing privacy rule](../asset-prep/SKILL.md#working-inside-an-existing-product-repo) governs customer identity.
+[measured corpus, captured-identity view; asset-prep, SKILL.md#working-inside-an-existing-product-repo] This source asks for real captured sender/time/content identity. The current repo instead requires clearly synthetic, demo-safe customer values and forbids personal, test-user or production information on screen. Preserve product geometry and approved copy; the [existing privacy rule](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md#working-inside-an-existing-product-repo) governs customer identity.
 
 Moved from [ui-demo.md](MEASURED-PRODUCT-DEMO.md) to keep each file under the size cap. Sections 7 to 13 (cards and carousels, agent work, phones, dense scrolls, counters, the demo beat recipes and the slop tells)
 
@@ -162,7 +162,7 @@ Each is a mechanic, not a film; swap content and scale, and choose the film shap
 | AI default | Pro decision |
 |---|---|
 | Demonstrate three features in a row, each in its own card | One specific case with stakes, from trigger to result (0.1) |
-| Fill the UI with "Project Alpha", lorem ipsum, a stock name, "Good morning" and a status dot | The real sender, icon, time and sentence from the capture; specific, slightly odd, well-designed content (0.2, [MEASURED-BRAND-SYSTEM.md](../video-brief/MEASURED-BRAND-SYSTEM.md) section 3) |
+| Fill the UI with "Project Alpha", lorem ipsum, a stock name, "Good morning" and a status dot | The real sender, icon, time and sentence from the capture; specific, slightly odd, well-designed content (0.2, [video-brief MEASURED-BRAND-SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-BRAND-SYSTEM.md) section 3) |
 | Show the product thinking as an orb, sparkles, a neural net or scrambled glyphs | An object from the customer's world, or the real log (0.3) |
 | Caption the capability in type over a thumbnail | Show the consequence: the line crosses, the alert fires (0.4) |
 | Make every film "prompt box + send arrow + cursor click" | A recipe only when the product is typed into; otherwise another shape (0.5, [MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) section 3a) |

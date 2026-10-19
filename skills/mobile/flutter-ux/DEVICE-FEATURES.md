@@ -1,6 +1,6 @@
 # Device features
 
-App-level device features a Flutter app reaches through existing plugins rather than its own platform channel: the status bar style, blocking screenshots, the device's IANA timezone, showing the app version, iOS home-screen widgets, a portrait lock and platform detection. Sources: ApparenceKit tips and blog posts (apparencekit.dev) and FlutterPro tips by Kamran Bekirov (flutterpro.design), checked against api.flutter.dev and pub.dev where a snippet was flagged. Where the source disagrees with the Flutter skill ([mobile/flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md)), both are stated. Permissions and notifications are in [NOTIFICATIONS-AND-PERMISSIONS.md](NOTIFICATIONS-AND-PERMISSIONS.md); writing your own channel is [mobile/flutter/PLATFORM-INTEGRATION.md](../flutter/PLATFORM-INTEGRATION.md).
+App-level device features a Flutter app reaches through existing plugins rather than its own platform channel: the status bar style, blocking screenshots, the device's IANA timezone, showing the app version, iOS home-screen widgets, a portrait lock and platform detection. Sources: ApparenceKit tips and blog posts (apparencekit.dev) and FlutterPro tips by Kamran Bekirov (flutterpro.design), checked against api.flutter.dev and pub.dev where a snippet was flagged. Where the source disagrees with the Flutter skill ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md)), both are stated. Permissions and notifications are in [NOTIFICATIONS-AND-PERMISSIONS.md](NOTIFICATIONS-AND-PERMISSIONS.md); writing your own channel is [flutter PLATFORM-INTEGRATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PLATFORM-INTEGRATION.md).
 
 **Contents:** [Status bar style](#status-bar-style) · [Block screenshots](#block-screenshots) · [Device timezone](#device-timezone) · [Show the app version](#show-the-app-version) · [iOS home-screen widgets](#ios-home-screen-widgets) · [Portrait lock](#portrait-lock) · [Detect the platform](#detect-the-platform) · [Keep the screen awake only where needed](#keep-the-screen-awake-only-where-needed) · [Open social media apps](#open-social-media-apps) · [Prove it](#prove-it)
 
@@ -26,7 +26,7 @@ SystemChrome.setSystemUIOverlayStyle(
   ```
   Only the comments change; the values are the article's.
 - **iOS: status bar hidden at launch or ignoring the style.** In `Info.plist` set `View controller-based status bar appearance` to `NO` [ApparenceKit](https://apparencekit.dev/flutter-tips/change-system-bar-brightness/).
-- **Edge-to-edge:** Flutter 3.27 made Edge-to-Edge the default `SystemUiMode` ([mobile/flutter/VERSIONS.md](../flutter/VERSIONS.md)); the article (undated) does not cover how `statusBarColor` behaves under it.
+- **Edge-to-edge:** Flutter 3.27 made Edge-to-Edge the default `SystemUiMode` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)); the article (undated) does not cover how `statusBarColor` behaves under it.
 
 ## Block screenshots
 
@@ -91,7 +91,7 @@ _currentTimeZone = await FlutterTimezone.getLocalTimezone();
 
 ## Show the app version
 
-[ApparenceKit](https://apparencekit.dev/flutter-tips/show-your-app-version/) (the article has no code): showing the version and build number helps customer support and helps you when testing builds downloaded from the stores. Get them with `package_info_plus` in an `async` function and render them with a `FutureBuilder`, for example on a settings page or at the bottom of a legal section. FlutterPro's version of this tip is in [APP-LIFECYCLE.md](APP-LIFECYCLE.md); the numbers come from `version:` in `pubspec.yaml` ([mobile/flutter/BUILD-AND-RELEASE.md](../flutter/BUILD-AND-RELEASE.md)).
+[ApparenceKit](https://apparencekit.dev/flutter-tips/show-your-app-version/) (the article has no code): showing the version and build number helps customer support and helps you when testing builds downloaded from the stores. Get them with `package_info_plus` in an `async` function and render them with a `FutureBuilder`, for example on a settings page or at the bottom of a legal section. FlutterPro's version of this tip is in [APP-LIFECYCLE.md](APP-LIFECYCLE.md); the numbers come from `version:` in `pubspec.yaml` ([flutter BUILD-AND-RELEASE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/BUILD-AND-RELEASE.md)).
 
 ## iOS home-screen widgets
 
@@ -101,7 +101,7 @@ _currentTimeZone = await FlutterTimezone.getLocalTimezone();
 - **Two processes, one shared store.** The app and the Widget Extension can't share memory, so they share an App Group: the Flutter app fetches data and saves it to `UserDefaults` through the App Group; the extension wakes up, reads `UserDefaults` and renders with SwiftUI.
 - **Create the target:** open `ios/Runner.xcworkspace`; File > New > Target > "Widget Extension"; name it (e.g. `HomeWidget`). For a basic widget do not check "Include Live Activity" or "Configuration App Intent".
 - **Fix the "Thin Binary" build error.** After adding the target the build often fails because "The Flutter build script interferes with the extension build process." Runner target > Build Phases: drag the "Thin Binary" script to the very bottom.
-- **App Groups on both targets.** Runner > Signing & Capabilities > + Capability > App Groups; the ID convention is `group.<bundle identifier>` (e.g. `group.io.apparence.my_app`); repeat on the Widget Extension with the exact same group. "If you don't prefix the App Group with the same identifier of your app, it won't work." Creating and assigning App Groups from the CLI, and the provisioning-profile catch, are in [app-store-connect/BUILD-AND-SIGNING.md](../app-store-connect/BUILD-AND-SIGNING.md); the privacy-manifest reason for App Group `UserDefaults` (`1C8F.1`) is in [app-store-connect/PRIVACY-AND-COMPLIANCE.md](../app-store-connect/PRIVACY-AND-COMPLIANCE.md).
+- **App Groups on both targets.** Runner > Signing & Capabilities > + Capability > App Groups; the ID convention is `group.<bundle identifier>` (e.g. `group.io.apparence.my_app`); repeat on the Widget Extension with the exact same group. "If you don't prefix the App Group with the same identifier of your app, it won't work." Creating and assigning App Groups from the CLI, and the provisioning-profile catch, are in [app-store-connect BUILD-AND-SIGNING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/BUILD-AND-SIGNING.md); the privacy-manifest reason for App Group `UserDefaults` (`1C8F.1`) is in [app-store-connect PRIVACY-AND-COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/PRIVACY-AND-COMPLIANCE.md).
 - **Dart side with `home_widget`** (https://pub.dev/packages/home_widget): set the group at startup, then save data and ask iOS to refresh (verbatim):
   ```dart
   import 'package:home_widget/home_widget.dart';
@@ -170,7 +170,7 @@ The sources disagree; this is a product decision, so both are tagged.
   }
   ```
   It keeps the app from rotating to landscape "no matter how the user holds their device".
-- **Do not lock** (Flutter docs, [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#orientation)): "The Material Guidelines encourage you to never _portrait lock_ your app"; a lock letterboxes the app on foldables, and for apps targeting Android 17+ `SystemChrome.setPreferredOrientations` is ignored on displays of 600dp or more ([VERSIONS.md](../flutter/VERSIONS.md)). The article is undated and does not mention either.
+- **Do not lock** (Flutter docs, [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#orientation)): "The Material Guidelines encourage you to never _portrait lock_ your app"; a lock letterboxes the app on foldables, and for apps targeting Android 17+ `SystemChrome.setPreferredOrientations` is ignored on displays of 600dp or more ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)). The article is undated and does not mention either.
 
 ## Detect the platform
 
@@ -205,11 +205,11 @@ class PlatformUtils {
   }
   ```
 - **On web, don't import `dart:io`;** "It won't work there." `package:flutter/foundation.dart` is web-friendly and provides `defaultTargetPlatform` and `kIsWeb` [ApparenceKit](https://apparencekit.dev/flutter-tips/detect-flutter-running-platform/).
-- **What to branch on is disputed.** The article uses it for "a different layout for desktop or a feature only for mobile" [ApparenceKit](https://apparencekit.dev/flutter-tips/detect-flutter-running-platform/). Flutter docs ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)): "Avoid using `Platform.isAndroid` and similar functions to make layout decisions or assumptions about what a device can do"; base layout on window size and put platform rules in `Capability` and `Policy` classes. Both allow a platform check for a platform feature or policy; they differ on layout.
+- **What to branch on is disputed.** The article uses it for "a different layout for desktop or a feature only for mobile" [ApparenceKit](https://apparencekit.dev/flutter-tips/detect-flutter-running-platform/). Flutter docs ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#capabilities-and-policies)): "Avoid using `Platform.isAndroid` and similar functions to make layout decisions or assumptions about what a device can do"; base layout on window size and put platform rules in `Capability` and `Policy` classes. Both allow a platform check for a platform feature or policy; they differ on layout.
 
 ## Keep the screen awake only where needed
 
-Dot shorthands in these recipes, including `rootTab == .compass` and `mode: .externalApplication`, need Dart language version 3.10+ ([LANGUAGE.md](../dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+Dot shorthands in these recipes, including `rootTab == .compass` and `mode: .externalApplication`, need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
 
 [FlutterPro](https://flutterpro.design/details/keep-screen-awake): on some pages users look at the screen for a long time without touching it: a video player, a live call, navigation, a reading page. Keep the screen awake there with [wakelock_plus](https://pub.dev/packages/wakelock_plus).
 
@@ -268,7 +268,7 @@ void dispose() {
 }
 ```
 
-- **Pitfall, tabs:** bottom bar tabs in an `IndexedStack` are built once and never disposed, so the `dispose` pattern never turns the wakelock off. `StatefulShellRoute.indexedStack` keeps each branch alive the same way ([ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)). Pass the handler a stream that tells whether any visible page needs the wakelock right now. In the author's prayer times app it stays on in the "Compass" tab and the "Read" tab inside "Quran", so the stream combines the bottom tab with the inner tab:
+- **Pitfall, tabs:** bottom bar tabs in an `IndexedStack` are built once and never disposed, so the `dispose` pattern never turns the wakelock off. `StatefulShellRoute.indexedStack` keeps each branch alive the same way ([flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#shell-routes-and-tabs)). Pass the handler a stream that tells whether any visible page needs the wakelock right now. In the author's prayer times app it stays on in the "Compass" tab and the "Read" tab inside "Quran", so the stream combines the bottom tab with the inner tab:
 
 ```dart
 Stream<bool> _stayAwake$() {
@@ -295,7 +295,7 @@ When the user opens the compass the wakelock turns on; when they leave, it turns
 
 ## Open social media apps
 
-[FlutterPro](https://flutterpro.design/details/launch-social-media-apps): social links should open the respective app directly if installed. Use `.externalApplication` mode and let the system take care of it; if the domain is claimed (App Links, Universal Links: [ROUTING-AND-DEEP-LINKS.md](../flutter/ROUTING-AND-DEEP-LINKS.md#android-app-links)), it opens that app directly.
+[FlutterPro](https://flutterpro.design/details/launch-social-media-apps): social links should open the respective app directly if installed. Use `.externalApplication` mode and let the system take care of it; if the domain is claimed (App Links, Universal Links: [flutter ROUTING-AND-DEEP-LINKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ROUTING-AND-DEEP-LINKS.md#android-app-links)), it opens that app directly.
 
 The source imports `package:url_launcher/url_launcher.dart` and calls `launchUrl` with `mode: .externalApplication`; its sample link names a real account, so that sample block is omitted. [FlutterPro](https://flutterpro.design/details/launch-social-media-apps)
 

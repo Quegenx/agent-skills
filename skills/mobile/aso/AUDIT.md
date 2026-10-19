@@ -7,12 +7,12 @@ An audit scores a store listing field by field, finds wasted characters and repe
 ## Inputs
 
 - **Identify the app and scope:** App ID (Apple numeric ID or Google Play package name), target country (default US), platform (iOS, Android or both). [eronred]
-- **Read the shared product context first,** including its [mobile app fields](../../anti-ai-slop/anti-slop-copy/CONTEXT.md#mobile-app-context). The [eronred] source used `app-marketing-context.md`; recognize that legacy name through the shared context's discovery rules rather than creating a second file. [eronred, app-marketing-context]
+- **Read the shared product context first,** including its [mobile app fields](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md#mobile-app-context). The [eronred] source used `app-marketing-context.md`; recognize that legacy name through the shared context's discovery rules rather than creating a second file. [eronred, app-marketing-context]
 - **Find the listing** [coreyhaines31/marketingskills, aso]: `apps.apple.com/{country}/app/{name}/id{digits}` is Apple, `play.google.com/store/apps/details?id={package}` is Google; given only a name, search `site:apps.apple.com "{app name}"` or `site:play.google.com "{app name}"`.
 - **Fields to read from a live listing** [coreyhaines31/marketingskills, aso]: Apple: name, subtitle, description, promotional text, primary and secondary category, screenshots (count, order, captions), preview, rating and count, visible reviews, price and IAPs, developer, last updated, version notes, age rating, size, languages, in-app events. Play: name, short and full description, category and tags, feature graphic, screenshots, preview, rating and count, visible reviews, price and IAPs, developer, last updated, What's New, downloads range, content rating, Data safety, languages.
 - **What a fetch misses** [coreyhaines31/marketingskills, aso]: stores render client-side, so "note gaps and work with what's available. Ask the user to paste missing fields if critical." A page fetch can't read screenshot images or caption text: capture a full-page screenshot of the listing (or ask the user for one). Apple's promotional text "is often indistinguishable from [the description] in scraped HTML. If you cannot confirm its presence, note this and recommend the user check App Store Connect."
 - **Pull the data.** With the Appeeky MCP or API (third-party), fetch metadata, keyword rankings, the top 3 to 5 competitors, category chart position and review sentiment; without it, ask the user. [eronred]
-- **For the offline checks, start from canonical files:** `./metadata` from `asc metadata pull`. Normalize `asc migrate export` or `asc localizations download` output into that layout first. Read the latest version directory under `metadata/version/` (highest semantic version) for version fields, and treat `en-US` as the primary locale unless the user says otherwise. The app name may be missing from an export: fetch it with `asc apps info list` or ask, and flag it only when the app-info JSON has a `name` key with an empty value. Uploading the fixed metadata is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) (iOS) and [../google-play/SKILL.md](../google-play/SKILL.md) (Play). [rorkai]
+- **For the offline checks, start from canonical files:** `./metadata` from `asc metadata pull`. Normalize `asc migrate export` or `asc localizations download` output into that layout first. Read the latest version directory under `metadata/version/` (highest semantic version) for version fields, and treat `en-US` as the primary locale unless the user says otherwise. The app name may be missing from an export: fetch it with `asc apps info list` or ask, and flag it only when the app-info JSON has a `name` key with an empty value. Uploading the fixed metadata is [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md) (iOS) and [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md) (Play). [rorkai]
 
 ## The weighted score
 
@@ -42,7 +42,7 @@ An audit scores a store listing field by field, finds wasted characters and repe
 
 [rorkai] Run per locale on the pulled `./metadata` files; they read local files only, with no network calls. The source introduces them as "these 5 checks" but lists six; all six are kept.
 
-Source severity mapping: Error becomes P1, Warning P2 and Info P3 in this report, using the [shared severity convention](../../architecture/code-review/REVIEWER.md#tags-and-output). These labels do not imply P0 urgency. [rorkai]
+Source severity mapping: Error becomes P1, Warning P2 and Info P3 in this report, using the [shared severity convention](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output). These labels do not imply P0 urgency. [rorkai]
 
 | # | Check | Rule | Severity |
 |---|---|---|---|
@@ -93,7 +93,7 @@ Source severity mapping: Error becomes P1, Warning P2 and Info P3 in this report
 - **[rorkai] template:** Field Utilization (Name 30, Subtitle 30, Keywords 100, Promotional Text 170, Description 4000), an Offline Checks table, a Keyword Gap table, then Recommendations ordered errors, keyword waste, utilization, gaps.
 - **[coreyhaines31/marketingskills, aso] template:** header with the brand tier, score card, three quick wins with current text, exact replacement and character count, per-dimension findings, a keyword table, a competitor table, a week/month/quarter plan and an always-present Limitations block ([AUDIT-RUBRIC.md](AUDIT-RUBRIC.md#report-template)).
 - **[eronred] template:** a score card with bars; Quick Wins (today, 3 to 5); High-Impact Changes (this week, 3 to 5); Strategic Recommendations (this month, 3 to 5); a comparison against the top 3 competitors.
-- **[rorkai] keyword follow-up:** `asc metadata keywords diff`, then `asc metadata keywords apply ... --confirm` (or `keywords sync --input "./keywords.csv"` for external research), then re-run the audit to verify the fixes. Other fixes go out through the metadata workflow in [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) or [../google-play/SKILL.md](../google-play/SKILL.md).
+- **[rorkai] keyword follow-up:** `asc metadata keywords diff`, then `asc metadata keywords apply ... --confirm` (or `keywords sync --input "./keywords.csv"` for external research), then re-run the audit to verify the fixes. Other fixes go out through the metadata workflow in [app-store-connect SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md) or [google-play SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/SKILL.md).
 
 ## Reading your own numbers
 
@@ -106,7 +106,7 @@ Data here comes from App Store Connect through Appeeky Connect (third-party): co
 - **Countries:** top 5 by downloads and by revenue; high downloads with low revenue, or low downloads with high revenue, is a localization candidate.
 - **Benchmarks** (third-party; more in [BENCHMARKS.md](BENCHMARKS.md)): ARPD (revenue / downloads) above $0.05 good, above $0.20 excellent; trial rate (trials / downloads) above 20% means strong paywall reach; subscription conversion (subs / trials) above 25% strong.
 - **"Why did my downloads drop?":** find the start date in the daily trend, check whether an update shipped that day, then keyword rankings, then competitor activity.
-- **Revenue, paywall and paid acquisition problems** leave ASO: see [../app-growth/SKILL.md](../app-growth/SKILL.md).
+- **Revenue, paywall and paid acquisition problems** leave ASO: see [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
 ## Prove it
 

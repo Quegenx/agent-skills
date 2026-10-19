@@ -1,8 +1,8 @@
 # Analysis and lints
 
-Static analysis catches type, null safety and style problems before code runs, and `dart fix` repairs many of them automatically. What the analyzer reports is decided by one file, `analysis_options.yaml`: the lint set it includes, the strict modes it turns on and the severities it assigns. `dart fix` only fixes diagnostics that are enabled, so a thin options file means fewer automatic fixes. The style rules these lints enforce are in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md); the language features behind the errors are in [LANGUAGE.md](LANGUAGE.md); Flutter specifics are in [../flutter/SKILL.md](../flutter/SKILL.md).
+Static analysis catches type, null safety and style problems before code runs, and `dart fix` repairs many of them automatically. What the analyzer reports is decided by one file, `analysis_options.yaml`: the lint set it includes, the strict modes it turns on and the severities it assigns. `dart fix` only fixes diagnostics that are enabled, so a thin options file means fewer automatic fixes. The style rules these lints enforce are in [STYLE-AND-DOCS.md](STYLE-AND-DOCS.md); the language features behind the errors are in [LANGUAGE.md](LANGUAGE.md); Flutter specifics are in [flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md).
 
-**Contents:** [analysis_options.yaml](#analysis_optionsyaml) · [Strict modes](#strict-modes) · [Lint sets](#lint-sets) · [Rules, severities and suppression](#rules-severities-and-suppression) · [Formatter settings](#formatter-settings) · [Analyzer plugins](#analyzer-plugins) · [dart analyze](#dart-analyze) · [dart fix](#dart-fix) · [dart format](#dart-format) · [Fixing analysis errors](#fixing-analysis-errors) · [The Dart and Flutter MCP server](../flutter/AGENT-TOOLING.md#the-mcp-server) · [VM inlining hints](#vm-inlining-hints) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
+**Contents:** [analysis_options.yaml](#analysis_optionsyaml) · [Strict modes](#strict-modes) · [Lint sets](#lint-sets) · [Rules, severities and suppression](#rules-severities-and-suppression) · [Formatter settings](#formatter-settings) · [Analyzer plugins](#analyzer-plugins) · [dart analyze](#dart-analyze) · [dart fix](#dart-fix) · [dart format](#dart-format) · [Fixing analysis errors](#fixing-analysis-errors) · [The Dart and Flutter MCP server](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/AGENT-TOOLING.md#the-mcp-server) · [VM inlining hints](#vm-inlining-hints) · [Changes by version](#changes-by-version) · [Prove it](#prove-it)
 
 ## analysis_options.yaml
 
@@ -202,7 +202,7 @@ Workflow from the dart-lang error-fixing skill:
 - **Null safety:** `?` for nullable types, `!` for null assertion, the [required-argument rule](LANGUAGE.md#null-safety) for named arguments. Use `late` for a non-nullable top-level or instance variable that is set before use where flow analysis cannot prove it. Use the `_` wildcard (Dart 3.7+) for non-binding locals or parameters to avoid unused-variable warnings.
   - P2 correction: the old null-safety line said `required` was for named parameters that cannot be null; see the official distinction in [Dart null safety](https://dart.dev/null-safety/understanding-null-safety).
 - **Error handling:** catch `Exception` subtypes for failures you can recover from. Never explicitly catch `Error` or its subtypes (`TypeError`, `ArgumentError`): they are bugs to fix; enforce with the `avoid_catching_errors` lint. `rethrow` inside `catch` keeps the original stack trace.
-- **Runtime errors in a running app:** the skill's description says it "Uses get_runtime_errors and lsp to fetch an active stack trace, locate the failing line, apply a fix, and verify resolution via hot_reload", but its body covers only `dart analyze`, `dart fix` and manual fixes and never mentions those tools again. The MCP tools are in [Flutter agent tooling](../flutter/AGENT-TOOLING.md#tools).
+- **Runtime errors in a running app:** the skill's description says it "Uses get_runtime_errors and lsp to fetch an active stack trace, locate the failing line, apply a fix, and verify resolution via hot_reload", but its body covers only `dart analyze`, `dart fix` and manual fixes and never mentions those tools again. The MCP tools are in [Flutter agent tooling](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/AGENT-TOOLING.md#tools).
 
 The fixed forms:
 
@@ -242,7 +242,7 @@ Before the fixes these were `final list = [];` (inferred `List<dynamic>`, can't 
 
 ## The Dart and Flutter MCP server
 
-Install clients, connect through DTD and choose tools using the canonical [Dart and Flutter MCP setup](../flutter/AGENT-TOOLING.md#the-mcp-server). Analysis-specific analyze_files and dart_fix workflows remain above.
+Install clients, connect through DTD and choose tools using the canonical [Dart and Flutter MCP setup](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/AGENT-TOOLING.md#the-mcp-server). Analysis-specific analyze_files and dart_fix workflows remain above.
 
 ## VM inlining hints
 

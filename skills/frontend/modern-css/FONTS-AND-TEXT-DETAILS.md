@@ -93,7 +93,7 @@ CSS for what a font file can do and for the small text details around it: synthe
 }
 ```
 
-- "What each slot does differs font to font, which is why they are numbered, not named. Check the font's docs. In Inter, `ss01` switches to open digits and `cv11` swaps in a single-story `a`." landing-page-ui's reset "sets the face's preferred `"cv11"` on everything and a display role that sets `"ss07"` replaces it", because font features don't merge ([../landing-page-ui/SYSTEM.md](../landing-page-ui/SYSTEM.md)).
+- "What each slot does differs font to font, which is why they are numbered, not named. Check the font's docs. In Inter, `ss01` switches to open digits and `cv11` swaps in a single-story `a`." landing-page-ui's reset "sets the face's preferred `"cv11"` on everything and a display role that sets `"ss07"` replaces it", because font features don't merge ([landing-page-ui SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SYSTEM.md)).
 
 ## Optical sizes
 
@@ -112,10 +112,10 @@ CSS for what a font file can do and for the small text details around it: synthe
 ## Tabular and proportional figures
 
 - "**Proportional figures** use the natural width of each shape: `1` is narrow, while `8` is wide. **Tabular figures** give every digit the same width." "Use proportional figures when numbers sit inside a sentence. They read more naturally." Use tabular "for clocks, counters, scores, prices, and live metrics" and numeric columns. [Craft] ([Tabular Numbers](https://craft.gustavofior.com/tabular-numbers), 2026-07-15)
-- "The usual instinct here is to switch to a monospace font, but you don't need to. A mono font changes the whole voice of the interface." [Craft] app-ui does the other: "A count or detail at the row end in a muted .75rem monospace stack, so digits line up" ([../app-ui/MENUS.md](../app-ui/MENUS.md)).
-- "Right-align numeric columns as well." [Craft] app-ui's tables center cells by default ([../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md)).
+- "The usual instinct here is to switch to a monospace font, but you don't need to. A mono font changes the whole voice of the interface." [Craft] app-ui does the other: "A count or detail at the row end in a muted .75rem monospace stack, so digits line up" ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md)).
+- "Right-align numeric columns as well." [Craft] app-ui's tables center cells by default ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
 - **Check the font has `tnum`:** "If `tabular-nums` makes no visible difference, drop the font file into [Wakamai Fondue](https://wakamaifondue.com) and check whether it lists `tnum` among its features." [Craft]
-- "Apply `font-variant-numeric: tabular-nums` to timers, counters, prices and numeric table columns ... Leave figures in prose proportional." [Jakub Krehel, better-typography] Animated numbers are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md).
+- "Apply `font-variant-numeric: tabular-nums` to timers, counters, prices and numeric table columns ... Leave figures in prose proportional." [Jakub Krehel, better-typography] Animated numbers are in [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md).
 
 ## Font smoothing
 
@@ -140,7 +140,7 @@ body {
 }
 ```
 
-- "Apply `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` once on the root, never per component. Tailwind's `antialiased` sets both." [Jakub Krehel, better-typography] app-ui sets both in its base typography ([../app-ui/reference/styles/base/typography.css](../app-ui/reference/styles/base/typography.css)).
+- "Apply `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` once on the root, never per component. Tailwind's `antialiased` sets both." [Jakub Krehel, better-typography] app-ui sets both in its base typography ([../app-ui/reference/styles/base/typography.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/styles/base/typography.css)).
 - **Official status:** MDN `font-smooth` is non-standard, "It only works on macOS", and "We do not recommend using non-standard features in production" ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-smooth)). Craft says "Since Firefox 128, Firefox on macOS treats the WebKit property as its own, so the `-moz-osx-font-smoothing` line is only there for older versions." That is not in browser-compat-data, which lists Firefox only as `-moz-osx-font-smoothing`, nor in MDN's [Firefox 128 release notes](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/128): keep the `-moz-osx-font-smoothing` line.
 
 ## Hanging punctuation
@@ -193,14 +193,14 @@ a:hover {
 ```
 
 - The review row: "`text-decoration-skip-ink: none`" becomes "Remove it; set `text-underline-offset` or `from-font` instead".
-- Status: the `from-font` values ship in Chrome 87, Firefox 70 and 74, Safari 12.1, all Baseline widely available ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-thickness)). landing-page-ui's content links use the same `from-font` thickness with a color transition over 200ms ([../landing-page-ui/CONTENT-PAGES.md](../landing-page-ui/CONTENT-PAGES.md)).
+- Status: the `from-font` values ship in Chrome 87, Firefox 70 and 74, Safari 12.1, all Baseline widely available ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-decoration-thickness)). landing-page-ui's content links use the same `from-font` thickness with a color transition over 200ms ([landing-page-ui CONTENT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/CONTENT-PAGES.md)).
 
 ## Selection
 
 [Jakub Krehel, better-typography]
 
 - "Keep text selectable by default. `::selection` can carry brand into the reading experience, as long as the selected combination stays legible." "`::target-text` styles the phrase a shared link scrolls to." "The Custom Highlight API styles ranges you pick yourself, like search matches, without extra markup."
-- "`user-select: none` belongs on a draggable or gesture-driven surface where accidental selection interferes. Never across the interface and never because a button label can be highlighted." app-ui decides otherwise for its controls: "Labels ... are `user-select: none`" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)). mobile-native puts it on buttons, tabs, chips and drag handles ([anti-slop-ui DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#pressed-states)). [Emil Kowalski, mobile-native]
+- "`user-select: none` belongs on a draggable or gesture-driven surface where accidental selection interferes. Never across the interface and never because a button label can be highlighted." app-ui decides otherwise for its controls: "Labels ... are `user-select: none`" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)). mobile-native puts it on buttons, tabs, chips and drag handles ([anti-slop-ui DETAILS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/DETAILS.md#pressed-states)). [Emil Kowalski, mobile-native]
 - **Status, and what the source leaves out:**
   - `::target-text` is Baseline newly available since 2024-12-11 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::target-text)).
   - The Custom Highlight API is Baseline newly available since 2026-03-24 (Firefox 149 full, 140 partial) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API)).
@@ -212,7 +212,7 @@ a:hover {
 [Jakub Krehel, better-typography]
 
 - "`::placeholder` styles the hint in an empty field." "`caret-color` colors the blinking insertion bar. A fully custom caret is hard to build and rarely worth it." `caret-color` is Baseline widely available ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/caret-color)).
-- landing-page-ui builds the custom caret anyway: "A caret that glides" ([../landing-page-ui/CONTENT-PAGES.md](../landing-page-ui/CONTENT-PAGES.md)).
+- landing-page-ui builds the custom caret anyway: "A caret that glides" ([landing-page-ui CONTENT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/CONTENT-PAGES.md)).
 
 ## The iOS input zoom
 
@@ -232,7 +232,7 @@ a:hover {
 ```
 
 - "The transform shrinks the whole box, not only the glyphs, so let a wrapper draw the field's surface and keep the input transparent. A background, border or ring on the scaled element shrinks with the text and misses the intended hit area."
-- app-ui switches on input capability, not width: "Inputs under 16px get 1rem on touch screens (iOS zooms otherwise); never disable zoom" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)), and it draws no focus ring ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#focus)), unlike the example's `focus-within:outline`.
+- app-ui switches on input capability, not width: "Inputs under 16px get 1rem on touch screens (iOS zooms otherwise); never disable zoom" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)), and it draws no focus ring ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md#focus)), unlike the example's `focus-within:outline`.
 
 ## Decorative text
 
@@ -346,16 +346,16 @@ Jakub Krehel's better-typography, for reviewing how text renders [Jakub Krehel, 
 - **Fonts and weights:** "Rarely use more than three fonts; marketing pages can carry more than apps." "A serif headline over a sans body reads as deliberate, two near-identical sans-serifs read as a mistake." "Weights `100` to `300` belong at `28px` and up, checked against the background even there."
 - **Line-height by role:** "Display text `1.1`, headings `1.2` to `1.3`, body copy `1.5` to `1.6`." "Anything that wraps to three or more lines needs at least `1.4`, even in a height-constrained row." app-ui runs tighter: its base, small and extra-small text are ".9375 / 1.3333, .8125 / 1.2308, .75 / 1.5".
 - **Tracking by size:** "Headings at `24px` and up take `-0.01em` to `-0.02em`. Uppercase labels at `14px` or smaller take `0.05em`. Body copy stays at `0`. Use `em` so tracking scales with the size." "`font-kerning: none` is never a fix." The owner's apps differ: app-ui sets `letter-spacing: 0` on `h1` to `h4`, and landing-page-ui says "Fixed tracking is in px, from -0.16px to -1.44px" and resets negative tracking in right-to-left ("Negative tracking is for Latin only").
-- **Measure:** "`65ch` measures characters directly, one `ch` being the width of the `0`"; "At a `16px` body size the 60 to 75 character range lands roughly between `560px` and `680px`." Vercel's report pages keep "near" 60 to 68 ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#report-and-evidence-page-layout)).
+- **Measure:** "`65ch` measures characters directly, one `ch` being the width of the `0`"; "At a `16px` body size the 60 to 75 character range lands roughly between `560px` and `680px`." Vercel's report pages keep "near" 60 to 68 ([anti-slop-ui DETAILS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/DETAILS.md#report-and-evidence-page-layout)).
 - **Size floors:** "Start long-form body text at `16px`, the browser default." "UI text can go smaller. Start inputs and menus at `14px` and captions at `13px`, and rarely go below `12px`."
 - **Headings descend:** "A heading is never smaller than body text unless it is a deliberate overline"; deep levels may share a size "as long as weight or letter-spacing keeps them distinct".
 - **Case and alignment:** "Store text in natural case and set case with `text-transform`, so a redesign never means rewriting copy." "Keep interface text at `text-align: start`. `justify` belongs only in specific editorial layouts."
 - **Figures:** check the [tabular and proportional figure rule](#tabular-and-proportional-figures), including numeric columns and prose. [Jakub Krehel, better-typography]
 - **Wrapping:** better-typography calls `text-wrap: pretty` "Safe on any paragraph, long-form included", and make-interfaces-feel-better says to skip it on text of 10 or more lines. MDN: `pretty` "is intended for body copy" and "has a negative effect on performance, so it should be only used for longer blocks of text when the layout is more important than speed" ([text-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-wrap)); it is not Baseline ([TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#text-wrap-balance)).
 - **Selection:** check [Selection](#selection) for the better-typography rule, Safari support and the recorded owner/mobile-native alternatives.
-- **Punctuation:** the source says rendered strings use the ellipsis character for `...` and a real dash for `--` [Jakub Krehel, better-typography]. Before replacing the aside, ask whether it belongs at all. The owner's rule forbids em and en dashes at every length; use " - ", commas or "to" ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting)). The old line cited "none in short copy"; the source's real-dash view remains a disagreement, not permission under the owner rule.
+- **Punctuation:** the source says rendered strings use the ellipsis character for `...` and a real dash for `--` [Jakub Krehel, better-typography]. Before replacing the aside, ask whether it belongs at all. The owner's rule forbids em and en dashes at every length; use " - ", commas or "to" ([anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting)). The old line cited "none in short copy"; the source's real-dash view remains a disagreement, not permission under the owner rule.
 - **Quotes and spaces that hold:** "Curly quotes `“` `”` not straight `"`" and "Non-breaking spaces: `10&nbsp;MB`, `⌘&nbsp;K`, brand names" [Vercel, web-interface-guidelines]; writing-guidelines extends the curly rule to single quotes, "not straight `"` or `'`" [Vercel, writing-guidelines].
-- **The severity** (mapped once in [SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md#6-delivery-report)): "`HIGH` makes text unreadable, truncates content with no way back to it or clips text at 320px width or 200% zoom"; `MEDIUM` "breaks the type system or the visual heading hierarchy"; `LOW` "is isolated polish". "Without a browser, check declared size and weight per heading level, descending within each semantic section. Check declared line-height, units and measure. Check truncation rules against realistic string lengths."
+- **The severity** (mapped once in [anti-slop-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md#6-delivery-report)): "`HIGH` makes text unreadable, truncates content with no way back to it or clips text at 320px width or 200% zoom"; `MEDIUM` "breaks the type system or the visual heading hierarchy"; `LOW` "is isolated polish". "Without a browser, check declared size and weight per heading level, descending within each semantic section. Check declared line-height, units and measure. Check truncation rules against realistic string lengths."
 
 The patterns a script can find are in [Typography review checks](#typography-review-checks).
 

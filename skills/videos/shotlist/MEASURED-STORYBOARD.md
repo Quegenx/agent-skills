@@ -1,6 +1,6 @@
 # Director: storyboard worksheet and slop tells
 
-[measured corpus, original director-worksheet.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original director-worksheet.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
 Originally split from [director.md](MEASURED-DIRECTION.md) to keep each file under the size cap. Section 7 (the storyboard worksheet) and the slop tells
 
@@ -48,14 +48,14 @@ Checks after filling:
 2. Every row has a Buys sentence without "and".
 3. Every seam has a carried object and a state at both ends (section 5).
 4. Each beat introduces one new thing; the accent appears on at most one element per scene.
-4b. **Hard gate (proof beats): each proof names its readable object, one per frame, at >= 0.55 W with text >= 0.04 H, and sitting in a world** ([MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md) R5.1b, R3.5; [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)): magnify with the camera, not by resizing the UI. If a proof needs two objects (code, then result), write them as two shots or one camera move, not two panels.
+4b. **Hard gate (proof beats): each proof names its readable object, one per frame, at >= 0.55 W with text >= 0.04 H, and sitting in a world** ([MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md) R5.1b, R3.5; [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)): magnify with the camera, not by resizing the UI. If a proof needs two objects (code, then result), write them as two shots or one camera move, not two panels.
 5. The strongest frame sits at 60-75% of the film; the last beat lingers; no beat ends on a settle unless the lockup is alive.
-6. VO lines are one running sentence across seams where possible; copy on screen carries the next fragment only (see [MEASURED-SOUND-SYNC.md](../sound-pass/MEASURED-SOUND-SYNC.md)).
+6. VO lines are one running sentence across seams where possible; copy on screen carries the next fragment only (see [sound-pass MEASURED-SOUND-SYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/sound-pass/MEASURED-SOUND-SYNC.md)).
 7. **Chrome audit.** List every on-screen text that is not the claim, the product's own UI words, or the logo. Delete the list ([MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md), Page chrome is never part of the film; `scripts/chrome_lint.mjs`, gate G5).
 8. **Picture audit.** For each beat, write what the frame shows with the text covered. If the answer is a flat colour, a card on a flat colour, or a block of text, redesign the beat.
 9. **Carrier audit** (only if the film has a carrier): its position, scale or role differs at every seam.
-10. **Decided or reached for?** For the film shape, the ground, the type, the ending, the sound and the transitions, say in one sentence why this brand and this idea chose it. Anything you cannot justify is a default ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) Part 0).
-11. **Could this be another brand's film?** Swap the logo and colours. If the film still works unchanged for a competitor, the idea came from the category ([MEASURED-IDEATION.md](../video-brief/MEASURED-IDEATION.md), cover-the-logo).
+10. **Decided or reached for?** For the film shape, the ground, the type, the ending, the sound and the transitions, say in one sentence why this brand and this idea chose it. Anything you cannot justify is a default ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) Part 0).
+11. **Could this be another brand's film?** Swap the logo and colours. If the film still works unchanged for a competitor, the idea came from the category ([video-brief MEASURED-IDEATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-IDEATION.md), cover-the-logo).
 12. **Importance budget:** at most 25% of beats are importance 3; the hero moment is one of them.
 
 ---

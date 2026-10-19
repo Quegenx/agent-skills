@@ -42,7 +42,7 @@ Template tiers and the scaler-versus-supporting-cast distinction are defined in 
 | 19 | **Educational Infographic** | B, supporting cast; reads as content, under-used | A diagram, cycle or labeled cross-section, brand minimal until the anchor | One genuine, checkable teaching point | Mechanism questions in comments and documented product facts; educational framing raises the bar on truth |
 | 20 | **Challenging Your Beliefs** | B, supporting cast; needs known persona beliefs | The belief up top, the correcting fact below, product as proof | The belief in the customer's words, then the fact. State the fact; don't stage a "You don't need X. You need Y." reveal | Objections and misconceptions in comments and reviews |
 | 21 | **Tweet / Reddit Screenshot** | B, supporting cast, strongest as a first frame | A pixel-accurate post card with avatar, handle, timestamp, counts | A real post, verbatim | Real mentions, your own organic posts, `inputs/comments/`, with permission where required. Never fabricate a social screenshot |
-| 22 | **Ugly / Handwriting / Post-it** | B, a sales-period specialist; not an always-on default | One scrappy element (post-it, marker note, screenshot) over product or plain ground | A blunt, human line: the offer or the reason | The offer itself, phrased the way a customer reminds a friend. FTC rules on sale and scarcity claims: [FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md) |
+| 22 | **Ugly / Handwriting / Post-it** | B, a sales-period specialist; not an always-on default | One scrappy element (post-it, marker note, screenshot) over product or plain ground | A blunt, human line: the offer or the reason | The offer itself, phrased the way a customer reminds a friend. FTC rules on sale and scarcity claims: [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md) |
 
 ## Per-concept output
 
@@ -56,7 +56,7 @@ Template tiers and the scaler-versus-supporting-cast distinction are defined in 
 **Grounded in**: [which review / winning ad / comment this traces to, quoted or named]
 ```
 
-A batch gets an `INDEX.md` listing every concept with template, tier and grounding source, so a reviewer scans 50 in two minutes; a review page for someone else's approval is in [REVIEW-PAGE.md](REVIEW-PAGE.md). Text-led headlines follow [HEADLINES.md](HEADLINES.md#the-headline-as-the-visual); image generation for marketing is in [marketing-images](../marketing-images/SKILL.md).
+A batch gets an `INDEX.md` listing every concept with template, tier and grounding source, so a reviewer scans 50 in two minutes; a review page for someone else's approval is in [REVIEW-PAGE.md](REVIEW-PAGE.md). Text-led headlines follow [HEADLINES.md](HEADLINES.md#the-headline-as-the-visual); image generation for marketing is in [marketing-images](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/SKILL.md).
 
 ## Batch distribution
 

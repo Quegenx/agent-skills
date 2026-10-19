@@ -97,7 +97,7 @@ The skill's table lists an `element` option "for scroll-into-view"; the docs hav
 ```
 
 - **It needs no `scrollerProxy`**; any other smooth scroller does ([SCROLLTRIGGER.md](SCROLLTRIGGER.md#scrollerproxy-and-smooth-scrollers)).
-- **The owner uses Lenis instead.** landing-page-ui puts "A smooth-scroll library at the root" ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#smooth-scrolling)), mounted as `ReactLenis`. Keep it; ScrollSmoother is the GSAP-native alternative, and ScrollTrigger beside Lenis follows the proxy rule in SCROLLTRIGGER.md.
+- **The owner uses Lenis instead.** landing-page-ui puts "A smooth-scroll library at the root" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#smooth-scrolling)), mounted as `ReactLenis`. Keep it; ScrollSmoother is the GSAP-native alternative, and ScrollTrigger beside Lenis follows the proxy rule in SCROLLTRIGGER.md.
 
 ## Flip
 
@@ -111,7 +111,7 @@ const state = Flip.getState(".item");
 Flip.from(state, { duration: 0.5, ease: "power2.inOut" });
 ```
 
-- **A third route beside Motion.** ui-animation animates reordering with Motion's `layout`, and "Without Motion, the same thing is FLIP (First, Last, Invert, Play)" hand-rolled ([../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#lists-that-stagger-reorder-and-remove)). Flip is GSAP's own API for that technique.
+- **A third route beside Motion.** ui-animation animates reordering with Motion's `layout`, and "Without Motion, the same thing is FLIP (First, Last, Invert, Play)" hand-rolled ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#lists-that-stagger-reorder-and-remove)). Flip is GSAP's own API for that technique.
 - **Options, as the docs give them** (the skill gets three of four wrong; https://gsap.com/docs/v3/Plugins/Flip/):
 
 | Option | What it does |
@@ -145,7 +145,7 @@ Options as the docs give them (https://gsap.com/docs/v3/Plugins/Draggable/):
 | `onDragStart`, `onDrag`, `onDragEnd` | Drag callbacks |
 | `onThrowUpdate`, `onThrowComplete` | After release only, while inertia runs |
 
-The owner's preview drag uses Motion with "elastic .22, no momentum" ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#image-preview)); ui-animation's drag and throw rules are in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md#gestures-drag-throw-snap).
+The owner's preview drag uses Motion with "elastic .22, no momentum" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#image-preview)); ui-animation's drag and throw rules are in [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#gestures-drag-throw-snap).
 
 ## InertiaPlugin
 
@@ -227,7 +227,7 @@ SplitText.create(".split", {
 
 - **The mask's clipping property is unsettled.** The skill says the wrapper gets `overflow: clip`. The official page says `visibility: clip` in the mask description and `overflow: clip` in its config example. Inspect the generated wrapper in your version rather than relying on either. https://gsap.com/docs/v3/Plugins/SplitText/
 - **Tips** (all verified on the docs page): don't split chars only without words or lines unless `smartWrap` is on. Split after `document.fonts.ready`, or use `autoSplit` with `onSplit()`. Use `font-kerning: none; text-rendering: optimizeSpeed;` to avoid a kerning shift when splitting chars. SplitText doesn't support SVG `<text>`.
-- **`text-wrap: balance`, both ways.** The skill and docs: "Avoid `text-wrap: balance`; it can interfere with splitting." modern-css gives "Balanced headings in one line" and balance's own limits ([../modern-css/TYPOGRAPHY-AND-UNITS.md](../modern-css/TYPOGRAPHY-AND-UNITS.md#text-wrap-balance)). app-ui sets "`text-wrap: balance` on every role and on h1 to h4" ([../app-ui/TOKENS.md](../app-ui/TOKENS.md)), and the owner's hero splits its title with its own `Intl.Segmenter` splitter at render time, not SplitText ([../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#the-hero-assembles-once)). Whether the SplitText caveat reaches a React-rendered split is not settled by the sources.
+- **`text-wrap: balance`, both ways.** The skill and docs: "Avoid `text-wrap: balance`; it can interfere with splitting." modern-css gives "Balanced headings in one line" and balance's own limits ([modern-css TYPOGRAPHY-AND-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/TYPOGRAPHY-AND-UNITS.md#text-wrap-balance)). app-ui sets "`text-wrap: balance` on every role and on h1 to h4" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)), and the owner's hero splits its title with its own `Intl.Segmenter` splitter at render time, not SplitText ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-hero-assembles-once)). Whether the SplitText caveat reaches a React-rendered split is not settled by the sources.
 - **The aria pattern matches the owner's.** landing-page-ui: "The animated letters are `aria-hidden`; the full title ... sits beside them as screen-reader text", the same shape as `aria: "none"` plus a duplicate.
 
 ## ScrambleText
@@ -256,12 +256,12 @@ gsap.to(".el", { x: 100, ease: ease, duration: 1 });
 ```
 
 - **Only the bare-number form parses; a CSS `cubic-bezier()` string does not.** Measured in GSAP 3.15.0 source (`_configEaseFromString`, `_parseEase`, `_customEaseExp = /^[\d.\-M][\d.\-,\s]/`): `gsap.parseEase("cubic-bezier(0.23, 1, 0.32, 1)")` returns `undefined` and the tween silently falls back to the default `power1.out`, with or without CustomEase. With CustomEase registered, `"0.23,1,0.32,1"` works (progress 0.5 gives 0.9659 against 0.7500 for the cubic-bezier string and for `power1.out`). The CustomEase docs don't say the wrapped form works. To carry a CSS curve over, strip the wrapper: `CustomEase.create("site", "0.23,1,0.32,1")`.
-- **The owner's header menu was fixed in the reference with CustomEase.** It used to pass `ease: "cubic-bezier(0.23, 1, 0.32, 1)"`, which per the measurement above ran on `power1.out`; it now registers CustomEase and passes `CustomEase.create("site-header-menu", "0.23,1,0.32,1")`, the curve landing-page-ui documents as "Nav height | .22s `cubic-bezier(.23, 1, .32, 1)`" ([site-header-menu-motion.ts](../landing-page-ui/reference/website/widgets/header/bar/site-header-menu-motion.ts), [../landing-page-ui/MOTION.md](../landing-page-ui/MOTION.md#the-floating-header)).
+- **The owner's header menu was fixed in the reference with CustomEase.** It used to pass `ease: "cubic-bezier(0.23, 1, 0.32, 1)"`, which per the measurement above ran on `power1.out`; it now registers CustomEase and passes `CustomEase.create("site-header-menu", "0.23,1,0.32,1")`, the curve landing-page-ui documents as "Nav height | .22s `cubic-bezier(.23, 1, .32, 1)`" ([site-header-menu-motion.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/widgets/header/bar/site-header-menu-motion.ts), [landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-floating-header)).
 - **EasePack** adds named eases such as SlowMo, RoughEase and ExpoScaleEase. **CustomWiggle** is a wiggle or shake ease (several oscillations); **CustomBounce** a bounce ease with configurable strength. Register each and use the names in tweens.
 
 ## Physics
 
-[GreenSock, gsap-plugins] Hand-written physics for the same jobs is in [../ui-animation/MATH.md](../ui-animation/MATH.md).
+[GreenSock, gsap-plugins] Hand-written physics for the same jobs is in [ui-animation MATH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/MATH.md).
 
 ```javascript
 gsap.registerPlugin(Physics2DPlugin);

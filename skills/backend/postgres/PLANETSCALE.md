@@ -1,6 +1,6 @@
 # PlanetScale Postgres operations
 
-Sources: [planetscale/database-skills, postgres, ps-connection-pooling, ps-insights, ps-cli-api-insights and ps-extensions], checked against PlanetScale's current Postgres and CLI documentation. Generic pool semantics remain in [CONNECTIONS.md](CONNECTIONS.md); query plans and index choices remain in [QUERIES.md](../performance-and-caching/QUERIES.md).
+Sources: [planetscale/database-skills, postgres, ps-connection-pooling, ps-insights, ps-cli-api-insights and ps-extensions], checked against PlanetScale's current Postgres and CLI documentation. Generic pool semantics remain in [CONNECTIONS.md](CONNECTIONS.md); query plans and index choices remain in [performance-and-caching QUERIES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/QUERIES.md).
 
 ## Identify the connection target
 
@@ -15,7 +15,7 @@ Sources: [planetscale/database-skills, postgres, ps-connection-pooling, ps-insig
 
 [planetscale/database-skills, postgres, ps-insights and ps-cli-api-insights]
 
-Start with the selected database's schema and query evidence, current permissions and actual slow-query symptoms. Use existing [monitoring queries](MONITORING.md) and [query-plan discipline](../performance-and-caching/QUERIES.md#the-rules) for generic diagnosis; provider reports supplement that evidence.
+Start with the selected database's schema and query evidence, current permissions and actual slow-query symptoms. Use existing [monitoring queries](MONITORING.md) and [query-plan discipline](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/QUERIES.md#the-rules) for generic diagnosis; provider reports supplement that evidence.
 
 [https://planetscale.com/docs/cli/insights]
 

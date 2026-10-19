@@ -1,6 +1,6 @@
 # Distribution
 
-Making a piece is half the job; getting it seen is the other half. From coreyhaines31/marketingskills `content-strategy` and its `content-distribution.md` reference (MIT). Platform-native posting is [social-media](../social-media/SKILL.md); launch-day channel playbooks are [product-launch](../product-launch/SKILL.md); sending to the list is [email-practices](../../backend/email-practices/SKILL.md).
+Making a piece is half the job; getting it seen is the other half. From coreyhaines31/marketingskills `content-strategy` and its `content-distribution.md` reference (MIT). Platform-native posting is [social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md); launch-day channel playbooks are [product-launch](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/SKILL.md); sending to the list is [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 ## Create Once, Distribute Twice
 
@@ -14,7 +14,7 @@ The flagship is the master; every channel gets a cut derived from it.
 
 ## ORB as a funnel
 
-`[coreyhaines31/marketingskills, content-strategy]` Use the [ORB channel definitions](../product-launch/LAUNCH-PLAN.md#the-orb-channels) with this distribution-specific funnel mapping:
+`[coreyhaines31/marketingskills, content-strategy]` Use the [ORB channel definitions](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/LAUNCH-PLAN.md#the-orb-channels) with this distribution-specific funnel mapping:
 
 | Layer | Funnel role |
 |---|---|
@@ -24,7 +24,7 @@ The flagship is the master; every channel gets a cut derived from it.
 
 The source's "Everything, the durable asset" is ownership shorthand, not an exemption from the rules of a platform hosting the channel; keep the canonical owner's qualification.
 
-"Use borrowed and rented reach to funnel strangers into owned channels." Moving people into the email list needs their consent ([email-practices LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md)).
+"Use borrowed and rented reach to funnel strangers into owned channels." Moving people into the email list needs their consent ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md)).
 
 ## Failure modes
 

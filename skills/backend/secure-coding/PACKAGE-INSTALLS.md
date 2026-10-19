@@ -1,6 +1,6 @@
 # Package installation boundaries
 
-Sources: [grafana/skills, check-npm, its managers, protocols and fix-snippets references], corrected against current package-manager documentation. This file owns installation policy; footprint/removal decisions stay in [DEPENDENCY-AUDIT.md](../../architecture/refactoring/DEPENDENCY-AUDIT.md).
+Sources: [grafana/skills, check-npm, its managers, protocols and fix-snippets references], corrected against current package-manager documentation. This file owns installation policy; footprint/removal decisions stay in [refactoring DEPENDENCY-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DEPENDENCY-AUDIT.md).
 
 ## Identify what will execute
 

@@ -21,7 +21,7 @@ For each cache, write down:
 
 - Include every input: the identifiers, query parameters, the user or tenant when results differ per user, locale, permissions, feature flags, and the version of the code or template that produced it. A key missing the user serves one user's data to another.
 - Use one function to build each kind of key, so every reader and writer agrees.
-- **Paid third-party lookups** (enrichment) need exact keys and their own hit, miss and negative rules: [ENRICHMENT.md](../../marketing/prospecting/ENRICHMENT.md#exact-cache-keys) [coreyhaines31/marketingskills, prospecting].
+- **Paid third-party lookups** (enrichment) need exact keys and their own hit, miss and negative rules: [prospecting ENRICHMENT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/ENRICHMENT.md#exact-cache-keys) [coreyhaines31/marketingskills, prospecting].
 
 ## Content-addressed keys
 
@@ -94,7 +94,7 @@ async function getOrLoad<T>(key: string, load: () => Promise<T>, ttlMs: number):
 - **Coordinate per key, never globally.** One lock or queue for the whole cache makes a refresh of one key block requests for every other key.
 - **Prefer a maintained library over this snippet in production.** `lru-cache` with a `fetchMethod` coalesces concurrent `fetch` calls for the same key, bounds size with `max`, expires with `ttl`, and can serve the stale value while refreshing or when the refresh fails (`allowStaleOnFetchRejection`, `allowStaleOnFetchAbort`). Write your own only when you understand which of those edge cases you're taking on.
 - This coordinates one process. Across instances, either accept one refresh per instance, or serve slightly stale data while one instance refreshes (stale-while-revalidate), or use a short shared lock in Redis.
-- **Put a cache hit-rate graph on the dashboard:** use the canonical [hit-rate and database-load interpretation](../../monitoring/observability/DIAGNOSE.md#cache-hit-rate) when diagnosing a sudden load increase.
+- **Put a cache hit-rate graph on the dashboard:** use the canonical [hit-rate and database-load interpretation](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/DIAGNOSE.md#cache-hit-rate) when diagnosing a sudden load increase.
 
 ## Invalidation across instances
 
@@ -195,11 +195,11 @@ Facts from https://vercel.com/docs/caching/cache-control-headers (checked 2026-1
 `cacheLife` and `cacheTag` became stable in Next.js 16.0.0, with Cache Components (https://nextjs.org/docs/app/api-reference/functions/cacheLife, checked 2026-10-18).
 
 - **It does not set the CDN header.** "The `stale` property controls the Client Cache, not the `Cache-Control` header"; "The server sends the stale time via the `x-nextjs-stale-time` response header". Don't claim a missing `cacheLife` alone makes a route run per request "without production header evidence" [Vercel, vercel-optimize, lib/verify-claim.mjs]. Check the response headers in production.
-- **Profiles, the implicit `default` and the one-call rule** are in [NEXTJS.md](../../frontend/react/NEXTJS.md#cachelife).
-- **A longer lifetime on content-derived data needs its invalidation path.** Lengthening to `hours`, `days`, `weeks` or `max` requires a `cacheTag` and a matching `revalidateTag(tag, profile)` or `updateTag(tag)` call in the repo for the exact tags, literal or through a config `tags: [...]` array; "near-matches do not count", and "A cacheTag() in the cached function is not proof that CMS edits invalidate it". [Vercel, vercel-optimize, lib/verify-claim.mjs, support-topics/isr-revalidation-static-generation.md] The `revalidateTag` forms are in [NEXTJS.md](../../frontend/react/NEXTJS.md#cachetag-updatetag-and-revalidatetag).
+- **Profiles, the implicit `default` and the one-call rule** are in [react NEXTJS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/NEXTJS.md#cachelife).
+- **A longer lifetime on content-derived data needs its invalidation path.** Lengthening to `hours`, `days`, `weeks` or `max` requires a `cacheTag` and a matching `revalidateTag(tag, profile)` or `updateTag(tag)` call in the repo for the exact tags, literal or through a config `tags: [...]` array; "near-matches do not count", and "A cacheTag() in the cached function is not proof that CMS edits invalidate it". [Vercel, vercel-optimize, lib/verify-claim.mjs, support-topics/isr-revalidation-static-generation.md] The `revalidateTag` forms are in [react NEXTJS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/NEXTJS.md#cachetag-updatetag-and-revalidatetag).
 - **A clock inside a cached scope costs ISR writes.** vercel-optimize's scanner flags `new Date()`, `Date.now()` or `Math.random()` in a `'use cache'` file: a timestamp baked into the cached output "forces a fresh ISR write on every regeneration even when the underlying data is unchanged". Its fix: a build-time constant or a client component, and "Do not pass dates as arguments to `'use cache'` functions" [Vercel, vercel-optimize, lib/scanners/use-cache-date-stamp.mjs].
-  The Next.js docs allow it: "you can **cache the result** so all users see the same value until revalidation" (`'use cache'` with `crypto.randomUUID()`), or call `await connection()` inside `<Suspense>` for a value per request (https://nextjs.org/docs/app/getting-started/caching#random-values-and-timestamps). So the scanner's line is a cost warning, not a correctness rule ([NEXTJS.md](../../frontend/react/NEXTJS.md#use-cache)).
-- **`'use cache'` is in memory per instance** on serverless; `'use cache: remote'` and the rest are in [NEXTJS.md](../../frontend/react/NEXTJS.md#use-cache).
+  The Next.js docs allow it: "you can **cache the result** so all users see the same value until revalidation" (`'use cache'` with `crypto.randomUUID()`), or call `await connection()` inside `<Suspense>` for a value per request (https://nextjs.org/docs/app/getting-started/caching#random-values-and-timestamps). So the scanner's line is a cost warning, not a correctness rule ([react NEXTJS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/NEXTJS.md#use-cache)).
+- **`'use cache'` is in memory per instance** on serverless; `'use cache: remote'` and the rest are in [react NEXTJS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/NEXTJS.md#use-cache).
 
 ## Module-level caches
 
@@ -275,7 +275,7 @@ document.addEventListener('visibilitychange', () => {
 - **The staleness budget** (rule 4 in [SKILL.md](SKILL.md)) is set by the two listeners: another tab's write fires `storage`, and the whole cache clears when the tab becomes visible again.
 - **Wrap the storage calls in try/catch** where storage can be blocked. The source's companion rule (client-localstorage-schema) gives the reason as "`getItem()` and `setItem()` throw in incognito/private browsing (Safari, Firefox)". MDN (https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) lists `SecurityError` for an invalid origin or when "the user has configured the browsers to prevent the page from persisting data", and says of private browsing only that its data "is cleared when the last 'private' tab is closed". Blocked storage is the documented reason to catch.
 - **The source's cookie parser** (`document.cookie.split('; ').map(c => c.split('='))`) keeps only the first two parts of each `split('=')`, so a cookie value that contains `=` comes back cut short.
-- landing-page-ui does a guarded read in its theme bootstrap instead (`try{stored=localStorage.getItem(...)}catch{}`, [site-theme.ts](../../frontend/landing-page-ui/reference/website/widgets/header/theme/site-theme.ts)).
+- landing-page-ui does a guarded read in its theme bootstrap instead (`try{stored=localStorage.getItem(...)}catch{}`, [site-theme.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/widgets/header/theme/site-theme.ts)).
 
 ## Caching as a wrapper
 

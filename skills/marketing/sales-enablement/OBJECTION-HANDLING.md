@@ -29,7 +29,7 @@ Objection docs for training and live calls, plus how to answer one objection fro
 
 Two formats: a **quick-reference table** for live calls (objection, one-line response, proof point) that fits on one screen, and a **detailed doc** for prep and training (full context, talk tracks, role-play scenarios). The objection doc's deliverable is a table: objection, response, proof point, follow-up.
 
-The product context file already has a slot for "the top objections and the true answers" ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); start from it.
+The product context file already has a slot for "the top objections and the true answers" ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)); start from it.
 
 ## Live deal objection
 

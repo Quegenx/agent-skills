@@ -54,7 +54,7 @@ Think of skills as lightweight guides that let Claude find information when need
 
   Manual-only suits a workflow with side effects that stops for the user: Emil Kowalski's `prototype` (it builds 3 variants by default, up to 5, behind a picker, then promotes one and deletes the prototype surface; its description ends "Only runs when explicitly invoked; it does not trigger on its own.") and Jakub Krehel's `state-machine`, `break`, `interface-review` and `explain-interface` all set `disable-model-invocation: true`. So does React Doctor's `ship`, a chain of other skills that "commits, pushes, and opens a PR" ([DISTRIBUTION.md](DISTRIBUTION.md#composing-skills)). The Jakub Krehel skills also ship `agents/openai.yaml` with `policy: allow_implicit_invocation: false` for Codex; that key was not checked against OpenAI's docs.
 - **Namespace a skill's commands:** transitions.dev's skill exposes four verbs as `transitions reveal`, `transitions review`, `transitions apply` and `transitions refine`, so they never collide with other skills' verbs; `review` and `refine` are read-only and end in a list, and `apply` proposes one change and waits for "Confirm to install?" [transitions.dev]. Claude Code namespaces plugin skills itself: "A plugin skill and a skill at any of the locations above … Both load, because plugin skills are namespaced as `/plugin-name:skill-name`"; between enterprise, personal and project skills of the same name, "Enterprise over personal, and personal over project", and a project skill named like a bundled command replaces it "but not its aliases" ([Claude Code skills docs](https://code.claude.com/docs/en/skills)).
-- **For skills inside your own product's agent,** the listing budget, visibility rules and routing evals are in [agent-harness PROMPT.md](../agent-harness/PROMPT.md#skills).
+- **For skills inside your own product's agent,** the listing budget, visibility rules and routing evals are in [agent-harness PROMPT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/PROMPT.md#skills).
 
 ## The folder and progressive disclosure
 
@@ -73,7 +73,7 @@ Think of skills as lightweight guides that let Claude find information when need
           Never use Confirm, OK, or a bare verb.
   ```
 - **Split long skills:** for long skills use progressive disclosure as much as possible: divide them into many files.
-- **Nesting:** Claude reads skill files that reference other files recursively, and has grown to nested search across several layers of files to find the exact context it needs. The [agent-harness](../agent-harness/PROMPT.md#skills) skill keeps each file one link from the main text instead; both ways are in use.
+- **Nesting:** Claude reads skill files that reference other files recursively, and has grown to nested search across several layers of files to find the exact context it needs. The [agent-harness](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/PROMPT.md#skills) skill keeps each file one link from the main text instead; both ways are in use.
 - **Route by a distinct case:** a pointer says what the target contains and which branch requires it. If required guidance is repeatedly missed, sharpen that condition before inlining the whole reference. Keep common material in the main file and disclose details used only by particular branches; merge synonyms that describe the same branch. [mattpocock/skills, writing-for-agents, SKILL.md]
 - **Keep constraints beside their concept:** put its definition, caveats and rules under the same heading. A reader should not need a second distant section to discover the qualification that changes the first one. Splitting is justified by a distinct branch or sequence, not by making more files. [mattpocock/skills, writing-for-agents, SKILL.md]
 - **Make each route verifiable:** name when and why a reference is needed, give the target its own entry cue, and make the next relevant route or completion point apparent. [bgauryy/octocode, octocode-skills/references/skill-anatomy.md] proposes references capped at 50 lines and standalone folders without sibling-file links; this repository keeps its own file limits and canonical cross-skill pointers instead of duplicating shared definitions.
@@ -113,7 +113,7 @@ Think of skills as lightweight guides that let Claude find information when need
   For either path, add an example or eval that can catch regressions.
   ```
   "If a rule cannot stay reliable without many exceptions, move it back to agent guidance."
-  For the rule itself (its contract, false positives treated as correctness bugs, edge cases, real-code hits, fuzzing and FP/FN audits): [lint-rule-authoring LINT-RULES.md](../../architecture/lint-rule-authoring/LINT-RULES.md).
+  For the rule itself (its contract, false positives treated as correctness bugs, edge cases, real-code hits, fuzzing and FP/FN audits): [lint-rule-authoring LINT-RULES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/LINT-RULES.md).
 
 ## Rule files: one rule, an Incorrect and a Correct
 
@@ -151,7 +151,7 @@ Vercel's React and React Native skills keep each rule in its own file and compil
 
   Reference: [Link to documentation or resource](https://example.com)
   ````
-- **Ranked by impact, in the file name:** SKILL.md is an index whose table orders the sections by priority, each with an impact level and its file prefix, then one line per rule (`async-parallel - Use Promise.all() for independent operations`). The levels run `CRITICAL`, `HIGH`, `MEDIUM-HIGH`, `MEDIUM`, `LOW-MEDIUM`, `LOW`; the React Native skill defines `CRITICAL` as "causes crashes or broken UI". On this repo's one scale ([code-review REVIEWER.md](../../architecture/code-review/REVIEWER.md#tags-and-output)), `HIGH`, `MEDIUM` and `LOW` are P1, P2 and P3 and a crash-level `CRITICAL` is P0; the two in-between levels are the source's own.
+- **Ranked by impact, in the file name:** SKILL.md is an index whose table orders the sections by priority, each with an impact level and its file prefix, then one line per rule (`async-parallel - Use Promise.all() for independent operations`). The levels run `CRITICAL`, `HIGH`, `MEDIUM-HIGH`, `MEDIUM`, `LOW-MEDIUM`, `LOW`; the React Native skill defines `CRITICAL` as "causes crashes or broken UI". On this repo's one scale ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output)), `HIGH`, `MEDIUM` and `LOW` are P1, P2 and P3 and a crash-level `CRITICAL` is P0; the two in-between levels are the source's own.
 - **The pairs double as eval cases:** the build compiles the rules into one `AGENTS.md` and a `test-cases.json` of "Test cases for LLM evaluation" extracted from the Incorrect and Correct pairs.
 - **Code blocks carry a language tag** ("Code blocks need a language tag for syntax highlighting" [Vercel, writing-guidelines]).
 

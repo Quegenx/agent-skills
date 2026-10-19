@@ -1,6 +1,6 @@
 # Formats and OKLCH
 
-Which notation to write colors in, what OKLCH's channels mean, how to convert without side effects, and how a gradient's interpolation space changes its look. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged. The browser-feature side of `oklch()`, `color-mix()`, relative color and `light-dark()` (support, syntax, Adam Argyle's recipes) is in [modern-css COLOR.md](../modern-css/COLOR.md); gamut and P3 are in [DARK-MODE-AND-GAMUT.md](DARK-MODE-AND-GAMUT.md#gamut).
+Which notation to write colors in, what OKLCH's channels mean, how to convert without side effects, and how a gradient's interpolation space changes its look. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged. The browser-feature side of `oklch()`, `color-mix()`, relative color and `light-dark()` (support, syntax, Adam Argyle's recipes) is in [modern-css COLOR.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/COLOR.md); gamut and P3 are in [DARK-MODE-AND-GAMUT.md](DARK-MODE-AND-GAMUT.md#gamut).
 
 ## Choosing a notation
 
@@ -16,7 +16,7 @@ Which notation to write colors in, what OKLCH's channels mean, how to convert wi
 - **Match whatever the project already uses.** "Notation is not a defect: a project on hex is not doing it wrong." "A consistent hex system beats hex with `oklch()` scattered through it." [Jakub Krehel, better-colors]
 - **For a genuinely new color system, `oklch()` is the best default.** "Even lightness steps stay even, and a fixed hue stays fixed." Everywhere else, a color library produces the same ramp in the project's own notation ([PALETTES.md](PALETTES.md#use-a-color-library)). [Jakub Krehel, better-colors]
 - **oklch-skill goes further:** its checklist row is "Hex/rgb/hsl color in new code → Convert to `oklch()`". better-colors keeps the project's notation. [Jakub Krehel, oklch-skill]
-- **Owner's design:** app-ui writes its tokens in hex (`--background: #ffffff;`, `--primary: #0866ff;` in [tokens.css](../app-ui/reference/styles/base/tokens.css)) and its checker accepts "hex, `rgb()`, `hsl()`, `oklch()`" on token definition lines ([app-ui CHECKS.md](../app-ui/CHECKS.md)); the owner's notation wins there.
+- **Owner's design:** app-ui writes its tokens in hex (`--background: #ffffff;`, `--primary: #0866ff;` in [tokens.css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/styles/base/tokens.css)) and its checker accepts "hex, `rgb()`, `hsl()`, `oklch()`" on token definition lines ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md)); the owner's notation wins there.
 
 ## Why OKLCH
 
@@ -69,7 +69,7 @@ hsl(240, 80%, 90%)  →  oklch H ≈ 285  /* shifted 18° */
 
 The three H values are correct (computed 269.3, 266.7, 285.2). The 10° threshold is the skill's own; it cites no source.
 
-- **ui-animation's chart source derives every variant from HSL** ([ui-animation PATTERNS.md](../ui-animation/PATTERNS.md)): "`color` takes any CSS colour, converted to HSL, and every variant (line, fill gradient, glow, badge, grid labels) is derived from it." better-colors' checklist says "`hsl(` ramp values that differ only in lightness → Rebuild in OKLCH with a constant hue". That file already records "Neither wins"; keep it that way.
+- **ui-animation's chart source derives every variant from HSL** ([ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md)): "`color` takes any CSS colour, converted to HSL, and every variant (line, fill gradient, glow, badge, grid labels) is derived from it." better-colors' checklist says "`hsl(` ramp values that differ only in lightness → Rebuild in OKLCH with a constant hue". That file already records "Neither wins"; keep it that way.
 
 ## Converting
 
@@ -132,11 +132,11 @@ border: 1px solid oklch(0 0 0 / 0.1);
 - **Relative color syntax** adjusts one channel: `oklch(from var(--color-accent-solid) calc(l - 0.1) c h)` darkens the accent by hand. "Powerful and easy to overuse, since a token defined by three chained derivations is unreadable."
 - **`light-dark()`** puts both appearances in one declaration ([DARK-MODE-AND-GAMUT.md](DARK-MODE-AND-GAMUT.md#choosing-the-switching-mechanism)).
 - "All three resolve at render time. Compute the resolved value with a color library, or measure the rendered result, before reporting contrast."
-- **Owner's design:** app-ui keeps opaque tints as `color-mix()` tokens (`color-mix(in srgb, var(--foreground) 5%, var(--background))`, [app-ui TOKENS.md](../app-ui/TOKENS.md)) and mixes `in srgb`; the owner's tokens win there.
+- **Owner's design:** app-ui keeps opaque tints as `color-mix()` tokens (`color-mix(in srgb, var(--foreground) 5%, var(--background))`, [app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)) and mixes `in srgb`; the owner's tokens win there.
 
 ## Gradient interpolation spaces
 
-[Jakub Krehel, better-colors] "The interpolation space is a look, not a correctness setting." Default to `in oklab`, and reach for `in oklch` when a two-hue gradient goes gray in the middle. Hue routes and `@supports` for `in oklch` are in [modern-css GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#interpolation-routes).
+[Jakub Krehel, better-colors] "The interpolation space is a look, not a correctness setting." Default to `in oklab`, and reach for `in oklch` when a two-hue gradient goes gray in the middle. Hue routes and `@supports` for `in oklch` are in [modern-css GRADIENTS-AND-EFFECTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/GRADIENTS-AND-EFFECTS.md#interpolation-routes).
 
 ```css
 /* sRGB: the default and the classic. Midpoint darkens and mutes. */

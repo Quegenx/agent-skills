@@ -1,6 +1,6 @@
 # Performance-paid creator ad programs
 
-Creators make videos for your paid accounts and are paid on how those ads perform. It differs from the volume UGC program in [UGC-PROGRAMS.md](UGC-PROGRAMS.md): there, creators post organically from brand-affiliated accounts; here every video is a paid-ad candidate and the creator's audience size doesn't matter. Text is from coreyhaines31/marketingskills `influencer-marketing` (`references/paid-ads-creator-program.md`, MIT); payment models and contract terms are from lightreel.ai's program guide, tagged `[lightreel]`. Campaign setup, Meta's grouping of similar ads, and creative testing are in [../paid-ads/SKILL.md](../paid-ads/SKILL.md) and [../ad-creative/SKILL.md](../ad-creative/SKILL.md).
+Creators make videos for your paid accounts and are paid on how those ads perform. It differs from the volume UGC program in [UGC-PROGRAMS.md](UGC-PROGRAMS.md): there, creators post organically from brand-affiliated accounts; here every video is a paid-ad candidate and the creator's audience size doesn't matter. Text is from coreyhaines31/marketingskills `influencer-marketing` (`references/paid-ads-creator-program.md`, MIT); payment models and contract terms are from lightreel.ai's program guide, tagged `[lightreel]`. Campaign setup, Meta's grouping of similar ads, and creative testing are in [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md) and [ad-creative SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md).
 
 ## The source case
 
@@ -64,7 +64,7 @@ The minimum lets you recruit good creators before you have history, reviews or p
 3. **The promise:** the one product truth this video argues.
 4. **One piece of proof** that ties it together.
 
-"One problem, one person, one way." A 15-second ad that tries to carry five value propositions to five audiences carries none. Give each video an assignment, like "show the workflow that answers *why pay when dictation is built in and free?*" Mine those objections from reviews, Reddit, support tickets and your own ad comments. App-growth's TikTok creator brief hands creators "the exact 2 second hook script" `[appeeky]` ([../../mobile/app-growth/TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#production)); the two views are compared in [PROGRAMS.md](PROGRAMS.md#the-creative-brief).
+"One problem, one person, one way." A 15-second ad that tries to carry five value propositions to five audiences carries none. Give each video an assignment, like "show the workflow that answers *why pay when dictation is built in and free?*" Mine those objections from reviews, Reddit, support tickets and your own ad comments. App-growth's TikTok creator brief hands creators "the exact 2 second hook script" `[appeeky]` ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#production)); the two views are compared in [PROGRAMS.md](PROGRAMS.md#the-creative-brief).
 
 ## Keep creators off the copy treadmill
 
@@ -80,7 +80,7 @@ The minimum lets you recruit good creators before you have history, reviews or p
 | Retainer | Capacity, not results |
 | Performance | A % of paid-media spend or of attributable GMV, with creator-specific tracking parameters; shifts risk to creators who don't control the offer, landing page, targeting or auction |
 | Hybrid "smart retainer" | A guarantee that is a floor against performance earnings (above) |
-| Affiliate | Commission on attributed sales ([../referral-programs/SKILL.md](../referral-programs/SKILL.md)) |
+| Affiliate | Commission on attributed sales ([referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md)) |
 | In-kind | Product; should not replace production fees and ad rights |
 | Equity or token | Experimental: vesting, dilution, liquidity, tax |
 

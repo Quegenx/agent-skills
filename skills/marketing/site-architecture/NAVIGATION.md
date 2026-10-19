@@ -1,6 +1,6 @@
 # Navigation
 
-Navigation patterns for headers, footers, sidebars, breadcrumbs and mobile, from coreyhaines31/marketingskills' `site-architecture` (MIT, references/navigation-patterns.md), copied where quoted, with Google's crawlable-links doc and the WAI-ARIA breadcrumb pattern where they apply. The owner's own marketing header and footer are a house pattern with their own rules ([../../frontend/landing-page-ui/MOTION.md](../../frontend/landing-page-ui/MOTION.md#the-floating-header)); where the source disagrees, both views are below and the house pattern wins on those sites. Responsive navigation forks for app screens are in [RESPONSIVE-FORKS.md](../../frontend/modern-css/RESPONSIVE-FORKS.md#6-complex-navigation).
+Navigation patterns for headers, footers, sidebars, breadcrumbs and mobile, from coreyhaines31/marketingskills' `site-architecture` (MIT, references/navigation-patterns.md), copied where quoted, with Google's crawlable-links doc and the WAI-ARIA breadcrumb pattern where they apply. The owner's own marketing header and footer are a house pattern with their own rules ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-floating-header)); where the source disagrees, both views are below and the house pattern wins on those sites. Responsive navigation forks for app screens are in [modern-css RESPONSIVE-FORKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE-FORKS.md#6-complex-navigation).
 
 ## Navigation types
 
@@ -21,7 +21,7 @@ Navigation patterns for headers, footers, sidebars, breadcrumbs and mobile, from
 - **CTA button rightmost** ("Start Free Trial", "Get Started"), visually distinct.
 - **Logo links to the homepage,** on the left.
 - **Order by priority:** most important or most visited first.
-- **Active page** gets a visual indicator (underline, bold, colour). For assistive tech, the current link carries `aria-current="page"`, as the owner's menu does ([../../frontend/landing-page-ui/MOTION.md](../../frontend/landing-page-ui/MOTION.md#the-floating-header)).
+- **Active page** gets a visual indicator (underline, bold, colour). For assistive tech, the current link carries `aria-current="page"`, as the owner's menu does ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-floating-header)).
 
 Simple header (4 to 6 items), for small businesses, simple SaaS and portfolios:
 
@@ -43,7 +43,7 @@ Split navigation, for apps with both marketing and product nav: page links on th
 [Logo]   Features   Pricing   Blog        [Login]   [Sign Up]
 ```
 
-**Where the house pattern differs.** The source lists "Hidden primary nav: burying important pages in hamburger menus on desktop" as an anti-pattern. The owner's header puts its navigation in section cards opened from the bar: "The menu grows out of the bar: closed, the nav is the bar's height" ([../../frontend/landing-page-ui/MOTION.md](../../frontend/landing-page-ui/MOTION.md#the-floating-header)); read that file for which links show at which width on the owner's sites.
+**Where the house pattern differs.** The source lists "Hidden primary nav: burying important pages in hamburger menus on desktop" as an anti-pattern. The owner's header puts its navigation in section cards opened from the bar: "The menu grows out of the bar: closed, the nav is the bar's height" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-floating-header)); read that file for which links show at which width on the owner's sites.
 
 ## Footer
 
@@ -54,7 +54,7 @@ Split navigation, for apps with both marketing and product nav: page links on th
 - **Company:** About, Careers, Contact, Press
 - **Legal:** Privacy, Terms, Security
 
-Variants: a **column footer** for most sites; a **minimal footer** (logo, copyright, Privacy, Terms, Contact) for simple sites and landing pages; an **expanded footer** for sites that use it for comparison, location and resource links. The owner's sites feed one navigation list to both the header menu and the footer, with the footer groups being the nav sections plus Legal: "One list of navigation items (title, description, two icon styles, address) feeds both the header menu and the footer" ([../../frontend/landing-page-ui/MOTION.md](../../frontend/landing-page-ui/MOTION.md#the-floating-header)).
+Variants: a **column footer** for most sites; a **minimal footer** (logo, copyright, Privacy, Terms, Contact) for simple sites and landing pages; an **expanded footer** for sites that use it for comparison, location and resource links. The owner's sites feed one navigation list to both the header menu and the footer, with the footer groups being the nav sections plus Legal: "One list of navigation items (title, description, two icon styles, address) feeds both the header menu and the footer" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-floating-header)).
 
 ## Sidebars
 
@@ -90,7 +90,7 @@ Home > Docs > API Reference > Authentication
 
 - One separator, `>` or `/`, used consistently.
 - Every segment is a link except the current page.
-- The source shows the current page as plain text and says to drop it "if the title is already visible as an H1". The WAI-ARIA pattern links the current page with `aria-current="page"`, and "If the element representing the current page is not a link, aria-current is optional" ([APG breadcrumb](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/)). Wrap the trail in a labelled nav landmark ([../../frontend/web-accessibility/SEMANTICS-AND-ARIA.md](../../frontend/web-accessibility/SEMANTICS-AND-ARIA.md#landmarks-and-headings)).
+- The source shows the current page as plain text and says to drop it "if the title is already visible as an H1". The WAI-ARIA pattern links the current page with `aria-current="page"`, and "If the element representing the current page is not a link, aria-current is optional" ([APG breadcrumb](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/)). Wrap the trail in a labelled nav landmark ([web-accessibility SEMANTICS-AND-ARIA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SEMANTICS-AND-ARIA.md#landmarks-and-headings)).
 - The trail follows a typical user path, not necessarily the URL ([URLS-AND-LINKS.md](URLS-AND-LINKS.md#breadcrumbs)).
 
 The source's JSON-LD (it recommends JSON-LD over microdata), where the last item omits `item` and Google uses the page's own URL:
@@ -107,7 +107,7 @@ The source's JSON-LD (it recommends JSON-LD over microdata), where the last item
 }
 ```
 
-Serializing it safely and tying it into the page's graph: [../seo/STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md).
+Serializing it safely and tying it into the page's graph: [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md).
 
 ## Mobile
 
@@ -123,7 +123,7 @@ Serializing it safely and tying it into the page's graph: [../seo/STRUCTURED-DAT
 
 - **Too many header items** (8+): decision paralysis, unreadable on smaller screens.
 - **Dropdown inception:** dropdowns inside dropdowns inside dropdowns.
-- **Mystery icons:** icons without labels. Icon-only controls also need an accessible name ([../../frontend/web-accessibility/SEMANTICS-AND-ARIA.md](../../frontend/web-accessibility/SEMANTICS-AND-ARIA.md#accessible-names)).
+- **Mystery icons:** icons without labels. Icon-only controls also need an accessible name ([web-accessibility SEMANTICS-AND-ARIA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SEMANTICS-AND-ARIA.md#accessible-names)).
 - **Inconsistent nav between pages:** the nav should be identical across the site, except app versus marketing.
 - **No mobile consideration:** a desktop nav that doesn't translate to mobile.
 - **Footer as sitemap dump:** 50+ links in the footer with no organization.

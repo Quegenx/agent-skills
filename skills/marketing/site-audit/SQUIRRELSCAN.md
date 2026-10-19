@@ -1,6 +1,6 @@
 # squirrelscan
 
-squirrelscan is a website audit CLI built for agents: it crawls a site like a search engine, checks every page against 300+ rules in 22 categories, and returns a health score plus fixable issues, in a token-compact format for LLMs. This file covers operating it, from squirrelscan's own skills (`squirrelscan` v1.14 and `audit-website` v2.6, MIT, "Copyright (c) 2025 squirrelscan", [squirrelscan/skills](https://github.com/squirrelscan/skills)) and the CLI's README ([squirrelscan/squirrelscan](https://github.com/squirrelscan/squirrelscan), MIT). Docs: https://docs.squirrelscan.com; any rule: `https://docs.squirrelscan.com/rules/{rule_category}/{rule_id}`. The fix workflow it drives is the one in [SKILL.md](SKILL.md#the-rules); fixing its `schema/entity-*` findings is in [../seo/STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md).
+squirrelscan is a website audit CLI built for agents: it crawls a site like a search engine, checks every page against 300+ rules in 22 categories, and returns a health score plus fixable issues, in a token-compact format for LLMs. This file covers operating it, from squirrelscan's own skills (`squirrelscan` v1.14 and `audit-website` v2.6, MIT, "Copyright (c) 2025 squirrelscan", [squirrelscan/skills](https://github.com/squirrelscan/skills)) and the CLI's README ([squirrelscan/squirrelscan](https://github.com/squirrelscan/squirrelscan), MIT). Docs: https://docs.squirrelscan.com; any rule: `https://docs.squirrelscan.com/rules/{rule_category}/{rule_id}`. The fix workflow it drives is the one in [SKILL.md](SKILL.md#the-rules); fixing its `schema/entity-*` findings is in [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md).
 
 **Contents:** [What it checks](#what-it-checks) · [Install](#install) · [Commands](#commands) · [Run an audit](#run-an-audit) · [Levels](#levels) · [Probing intensity](#probing-intensity) · [Accounts, credits and keys](#accounts-credits-and-keys) · [Reports and publishing](#reports-and-publishing) · [Regression diffs](#regression-diffs) · [The llm format](#the-llm-format) · [The entity map](#the-entity-map) · [Configuration and headers](#configuration-and-headers) · [MCP](#mcp) · [Channel events](#channel-events) · [Maintenance](#maintenance) · [Troubleshooting](#troubleshooting) · [CI](#ci) · [Prove it](#prove-it)
 
@@ -9,7 +9,7 @@ squirrelscan is a website audit CLI built for agents: it crawls a site like a se
 The 22 categories with their rule counts, which its README orders "by how much a failure usually costs you" [squirrelscan README]: Crawlability 20, Core SEO 14, Agent Experience 17, Site Integrity 9, Security 22, Links 16, Content 24, Performance 30, Reliability 2, Images 15, Structured Data 25, Accessibility 61, Mobile 8, Social 5, URL Structure 9, E-E-A-T 15, Legal 4, i18n 2, Local SEO 3, Video 3, Analytics 2, Blocking 3.
 
 - It detects leaked secrets ("96 patterns: OpenAI, Anthropic, AWS, Stripe, and more") [audit-website README].
-- Agent Experience asks whether GPTBot and Claude-User get the same content a browser does, and covers AGENTS.md, llms.txt, Markdown responses, API and MCP discovery, licensing and noai signals, pay-per-crawl and response token weight [squirrelscan README]. What these files do and don't do for AI search is in [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
+- Agent Experience asks whether GPTBot and Claude-User get the same content a browser does, and covers AGENTS.md, llms.txt, Markdown responses, API and MCP discovery, licensing and noai signals, pay-per-crawl and response token weight [squirrelscan README]. What these files do and don't do for AI search is in [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md).
 
 ## Install
 
@@ -185,7 +185,7 @@ squirrel entities -f jsonld -o graph.json      # export
 squirrel entities --diff                       # what changed since the previous audit
 ```
 
-Problems: `no-id`, `conflict`, `dangling`, `single-page`, `split-identity`. To prove a fix landed, re-audit and run `squirrel entities --diff`: an entity that gains an `@id` changes key, so a naive comparison shows a removal plus an addition; read the `gainedId` rows, each with `coverage: proven`, and check `notCrawled` is empty. Change the identifier first, confirm, then rename. What the findings mean, and where Google's placement guidance differs from squirrelscan's `entity-dangling` rule: [../seo/STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md).
+Problems: `no-id`, `conflict`, `dangling`, `single-page`, `split-identity`. To prove a fix landed, re-audit and run `squirrel entities --diff`: an entity that gains an `@id` changes key, so a naive comparison shows a removal plus an addition; read the `gainedId` rows, each with `coverage: proven`, and check `notCrawled` is empty. Change the identifier first, confirm, then rename. What the findings mean, and where Google's placement guidance differs from squirrelscan's `entity-dangling` rule: [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md).
 
 ## Configuration and headers
 
@@ -228,12 +228,12 @@ With the opt-in `squirrelscan-channel` plugin, cloud audit events arrive in the 
 - **Redirect or block behind an access gateway** (Cloudflare Access, Vercel deployment protection): send the gateway's header, such as a Cloudflare Access service token (`CF-Access-Client-Id`, `CF-Access-Client-Secret`), with `-H`. Custom headers are not sent on cloud browser renders, so use `--http` (or rendering off for the website), and audit the exact `https://` origin the gateway protects, since a redirect to another origin drops the headers. Gateways with no header route (Okta, Entra ID) need the CLI on a network they admit.
 - **Anything else:** inspect `squirrel self doctor` and prepare a local diagnostic summary. Send feedback only when the user explicitly requests or approves it: `squirrel feedback` and `send_feedback` are outward writes, and `--message` / `--json` can send without prompting. The old line directed automatic feedback. Exclude secrets from any authorized report. [Feedback CLI](https://docs.squirrelscan.com/cli/feedback), [MCP](https://docs.squirrelscan.com/developers/mcp)
 
-These are for sites the user owns or is authorized to audit; on anyone else's site a block is the answer, not a problem to route around ([../../web-automation/web-scraping/CRAWLING.md](../../web-automation/web-scraping/CRAWLING.md#guardrails)).
+These are for sites the user owns or is authorized to audit; on anyone else's site a block is the answer, not a problem to route around ([web-scraping CRAWLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/CRAWLING.md#guardrails)).
 
 ## CI
 
 - `--fail-on "score<90"` (repeatable) exits non-zero when a threshold trips; run it with an org key in `SQUIRRELSCAN_API_KEY`, or signed out for a free local audit.
-- A gate on rule findings and score is deterministic, unlike a gate on milliseconds ([../../backend/performance-and-caching/MEASURE.md](../../backend/performance-and-caching/MEASURE.md#deterministic-counts-and-ratchets)).
+- A gate on rule findings and score is deterministic, unlike a gate on milliseconds ([performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#deterministic-counts-and-ratchets)).
 
 ## Prove it
 

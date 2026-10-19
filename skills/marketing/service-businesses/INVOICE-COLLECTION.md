@@ -1,6 +1,6 @@
 # Invoice collection service
 
-The results-based invoice service from [more skills, 08-overdue-invoice-collection.md]. Preserve the client rulebook, exception handling, first-batch pilot, daily review and actual-recovery statement together. Shared demonstration acquisition is [DEMO-FIRST.md](DEMO-FIRST.md); judgment mechanics belong to [jev-decisions](../../ai-agents/jev-decisions/SKILL.md).
+The results-based invoice service from [more skills, 08-overdue-invoice-collection.md]. Preserve the client rulebook, exception handling, first-batch pilot, daily review and actual-recovery statement together. Shared demonstration acquisition is [DEMO-FIRST.md](DEMO-FIRST.md); judgment mechanics belong to [jev-decisions](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md).
 
 ## Offer, qualification and client intake
 
@@ -34,11 +34,11 @@ Keep a base policy and an approved copy per client. The source's example timing 
 | Same customer contacted within seven days | No second contact |
 | Customer asks what the invoice is for | Answer the question before resuming reminder decisions |
 
-These are author business rules, not legal safe harbors or calibrated defaults. A client may choose a call at 30 days or remove calls altogether. Compute exact amounts, dates, authoritative paid state and cooldowns in code; use the model only for judgments such as the meaning of an actual reply, following [the existing code/judgment boundary](../../ai-agents/jev-decisions/SKILL.md#the-rules). [more skills, 08-overdue-invoice-collection.md; jev-decisions/SKILL.md]
+These are author business rules, not legal safe harbors or calibrated defaults. A client may choose a call at 30 days or remove calls altogether. Compute exact amounts, dates, authoritative paid state and cooldowns in code; use the model only for judgments such as the meaning of an actual reply, following [the existing code/judgment boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md#the-rules). [more skills, 08-overdue-invoice-collection.md; jev-decisions/SKILL.md]
 
 Preserve the distinction between pausing collection and answering a service question. The author's failure case stopped an invoice when the customer asked what it covered, leaving the question unanswered. Add observed failures to the policy and retain the real reply history rather than treating stop as permanent silence.
 
-Retaining that client history does not mean sending the entire archive to the classifier. Supply only the decision-relevant evidence under the existing [Jev privacy boundary](../../ai-agents/jev-decisions/PRODUCTION.md#jev-inside-a-product). [jev-decisions/PRODUCTION.md]
+Retaining that client history does not mean sending the entire archive to the classifier. Supply only the decision-relevant evidence under the existing [Jev privacy boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/PRODUCTION.md#jev-inside-a-product). [jev-decisions/PRODUCTION.md]
 
 ## Decision record and review boundary
 
@@ -52,7 +52,7 @@ For each invoice, retain five judgments:
 4. Whether evidence indicates it may already be paid, alongside authoritative record state.
 5. Tone: friendly, firm or neutral.
 
-The author's proposed bars are a stop strictly above 0.8 taking precedence, other actions only strictly above 0.8, everything else for review, and a separate possible-paid hold even at 0.5. Equality at 0.8 reaches review under the source's everything-else rule. These are illustrative asymmetric gates; use the existing [calibration and named output metric](../../ai-agents/jev-decisions/PRODUCTION.md), not an assertion that 0.8 proves correctness.
+The author's proposed bars are a stop strictly above 0.8 taking precedence, other actions only strictly above 0.8, everything else for review, and a separate possible-paid hold even at 0.5. Equality at 0.8 reaches review under the source's everything-else rule. These are illustrative asymmetric gates; use the existing [calibration and named output metric](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/PRODUCTION.md), not an assertion that 0.8 proves correctness.
 
 **Approval difference:** the prose suggests reviewing every first-batch message and later only uncertain cases. Its full prompt instead reviews every decision/message and preserves approval until explicitly changed. Keep that explicit approval boundary. A completed pilot or high score does not grant autonomous customer contact. Exact API form and shared source corrections are in [SKILL.md](SKILL.md).
 

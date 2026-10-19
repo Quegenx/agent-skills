@@ -1,6 +1,6 @@
 # First-party attribution: the stitch
 
-How to instrument and stitch attribution yourself when you control the site or app: join anonymous browsing to the eventual conversion, including a conversion that completes on a domain you don't own (a booking tool, a hosted checkout). From [coreyhaines31/marketingskills, attribution] (references/first-party-tracking.md, MIT). The core method, closing the `identify()` gap so conversions join to anonymous history, is adapted from Tessa Kriesel's PostHog attribution approach, and several production refinements are hers, credited inline. PostHog and SavvyCal are the worked example; the pattern maps to any tool with identify and merge and any third-party domain with a metadata passthrough and a webhook. PostHog's own identity rules are [../../monitoring/posthog/IDENTITY.md](../../monitoring/posthog/IDENTITY.md); webhook signatures and retries are [../../backend/third-party-integrations/SKILL.md](../../backend/third-party-integrations/SKILL.md).
+How to instrument and stitch attribution yourself when you control the site or app: join anonymous browsing to the eventual conversion, including a conversion that completes on a domain you don't own (a booking tool, a hosted checkout). From [coreyhaines31/marketingskills, attribution] (references/first-party-tracking.md, MIT). The core method, closing the `identify()` gap so conversions join to anonymous history, is adapted from Tessa Kriesel's PostHog attribution approach, and several production refinements are hers, credited inline. PostHog and SavvyCal are the worked example; the pattern maps to any tool with identify and merge and any third-party domain with a metadata passthrough and a webhook. PostHog's own identity rules are [posthog IDENTITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/IDENTITY.md); webhook signatures and retries are [third-party-integrations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/SKILL.md).
 
 **Contents:** [The one idea](#the-one-idea) · [Step 0: audit before you build](#step-0-audit-before-you-build) · [Step 1: identify at each real conversion](#step-1-identify-at-each-real-conversion) · [Step 2: stitch a conversion on another domain](#step-2-stitch-a-conversion-on-another-domain) · [Step 3: the guardrails](#step-3-the-guardrails) · [Step 4: report](#step-4-report) · [The last mile into the CRM](#the-last-mile-into-the-crm) · [Other stacks](#other-stacks) · [Prove it](#prove-it)
 
@@ -43,7 +43,7 @@ export function identifyUser(email) {
 ```
 
 - With `person_profiles: 'identified_only'` this is the moment the person is created and first-touch properties are stamped. Fire it on form success, signup, first purchase: any moment you learn who the visitor is.
-- **Two views on the ID.** The source's worked example identifies by email. The [PostHog skill's rule 4](../../monitoring/posthog/SKILL.md#the-rules) says to use a stable auth ID, never an email, and two ID schemes (email vs database ID) are a named cause of refused merges ([../../monitoring/posthog/INGESTION-FIXES.md](../../monitoring/posthog/INGESTION-FIXES.md#cannot_merge_already_identified)). Use the app's one canonical scheme; if that is email, normalize it the same way everywhere, client and webhook.
+- **Two views on the ID.** The source's worked example identifies by email. The [PostHog skill's rule 4](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md#the-rules) says to use a stable auth ID, never an email, and two ID schemes (email vs database ID) are a named cause of refused merges ([posthog INGESTION-FIXES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/INGESTION-FIXES.md#cannot_merge_already_identified)). Use the app's one canonical scheme; if that is email, normalize it the same way everywhere, client and webhook.
 
 ## Step 2: stitch a conversion on another domain
 
@@ -80,7 +80,7 @@ document.addEventListener("auxclick", decorate, true);
 - An early return when the guard rejects the current ID leaves previously added metadata on the anchor. Remove that one parameter instead, preserving the booking path, other parameters and fragment. Check both `click` and `auxclick` after an identity change.
 - SavvyCal's passthrough, verbatim: "We'll parse any query string parameters named like this: `metadata[KEY]=VALUE`... Any metadata you set will be included in the event payload"; embeds take "an object of metadata" ([docs.savvycal.com/article/71](https://docs.savvycal.com/article/71-storing-custom-metadata-on-events)).
 - **Inline embed** (a `/demo` page with an embedded calendar): pass the same ID in the embed's metadata config; poll briefly (about 2 s) for the ID on fresh visits, but never block the calendar from rendering.
-- The web-to-app deep-link version of this (`ph_distinct_id` in a universal link) is in [../../monitoring/posthog/IDENTITY.md](../../monitoring/posthog/IDENTITY.md#across-platforms-and-environments).
+- The web-to-app deep-link version of this (`ph_distinct_id` in a universal link) is in [posthog IDENTITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/IDENTITY.md#across-platforms-and-environments).
 
 ### 2b. Read the anonymous ID safely
 
@@ -114,7 +114,7 @@ export function getPostHogDistinctId() {
 
 The booking tool returns your metadata in its webhook. Fire an identity merge plus a conversion event to the ingestion endpoint:
 
-- **Event names.** SavvyCal's webhook type is `event.created` (`event.requested` when the booking needs approval) ([savvycal.com/docs/api/webhooks/payloads](https://savvycal.com/docs/api/webhooks/payloads)); Stripe hosted Checkout fulfils on `checkout.session.completed` ([../../backend/stripe/CHECKOUT-NEXTJS.md](../../backend/stripe/CHECKOUT-NEXTJS.md)). The source said "`booking.created` (or `checkout.completed`)", neither of which is those providers' name.
+- **Event names.** SavvyCal's webhook type is `event.created` (`event.requested` when the booking needs approval) ([savvycal.com/docs/api/webhooks/payloads](https://savvycal.com/docs/api/webhooks/payloads)); Stripe hosted Checkout fulfils on `checkout.session.completed` ([stripe CHECKOUT-NEXTJS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/CHECKOUT-NEXTJS.md)). The source said "`booking.created` (or `checkout.completed`)", neither of which is those providers' name.
 
 ```js
 // Normalize the booking email the same way the app does (Step 1), or the
@@ -153,7 +153,7 @@ try {
 }
 ```
 
-- **A 200 is not proof of acceptance either:** PostHog's capture docs say some invalid events still return "200: OK", and the body must be under 20MB ([posthog.com/docs/api/capture](https://posthog.com/docs/api/capture)). Verify the merged person in PostHog. The same `$anon_distinct_id` merge from `posthog-node` is in [../../monitoring/posthog/SETUP-SERVER.md](../../monitoring/posthog/SETUP-SERVER.md).
+- **A 200 is not proof of acceptance either:** PostHog's capture docs say some invalid events still return "200: OK", and the body must be under 20MB ([posthog.com/docs/api/capture](https://posthog.com/docs/api/capture)). Verify the merged person in PostHog. The same `$anon_distinct_id` merge from `posthog-node` is in [posthog SETUP-SERVER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SETUP-SERVER.md).
 - **Fallback:** when no ID survives (the link bypassed the decorator, such as a booking link inside a generated email or PDF), capture email-only with `journey_linked: false`. You still get the conversion, not the journey.
 - **First-touch survival caveat (PostHog):** the `$anon_distinct_id` merge carries the anonymous person's *event* history, but with `person_profiles: 'identified_only'` the anonymous visitor may never have had a person profile, so `$initial_*` properties aren't guaranteed to land on the merged person. Two fixes: call `posthog.createPersonProfile()` client-side *before* the visitor leaves for the third-party domain, or capture the first-touch values client-side, pass them through the same metadata passthrough and re-assert them in the webhook with `$set_once` (which never overwrites an existing value). Verify on a real booking ([posthog-js#1524](https://github.com/PostHog/posthog-js/issues/1524)).
 
@@ -193,11 +193,11 @@ The rule in one line: **when identity is ambiguous, send nothing.** A missing jo
 - **Self and subdomain referrals:** `yourdomain.com`, `app.yourdomain.com`, `auth.yourdomain.com`
 - **Dev and internal traffic:** `localhost`, `127.0.0.1`, test accounts
 
-The source calls this the "highest-trust-per-effort" fix and "usually a *settings* change in the analytics tool, not code"; whether a given tool exposes a referrer-exclusion setting was not checked. Filtering internal users in PostHog is in [../../monitoring/posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md#filtering-internal-users).
+The source calls this the "highest-trust-per-effort" fix and "usually a *settings* change in the analytics tool, not code"; whether a given tool exposes a referrer-exclusion setting was not checked. Filtering internal users in PostHog is in [posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md#filtering-internal-users).
 
 ### Cross-subdomain stitching
 
-[coreyhaines31/marketingskills, attribution] A marketing site and an app on a subdomain must share **one analytics project** and a **cross-subdomain cookie** (PostHog's `cross_subdomain_cookie` defaults to on; [../../monitoring/posthog/CONFIG-WEB.md](../../monitoring/posthog/CONFIG-WEB.md)). Verify the journey survives the handoff, or every signup looks like it started at the app.
+[coreyhaines31/marketingskills, attribution] A marketing site and an app on a subdomain must share **one analytics project** and a **cross-subdomain cookie** (PostHog's `cross_subdomain_cookie` defaults to on; [posthog CONFIG-WEB.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/CONFIG-WEB.md)). Verify the journey survives the handoff, or every signup looks like it started at the app.
 
 **Expect near-zero numbers until the stitch is verified in production** (production note from Tessa Kriesel): journeys break at the handoff and everything looks direct, then flip to real numbers the week the stitch ships. Through that window:
 
@@ -211,7 +211,7 @@ The source calls this the "highest-trust-per-effort" fix and "usually a *setting
 
 - **Verify the provider's signature.** SavvyCal signs with the header `x-savvycal-signature: sha256=...` ([savvycal.com/docs/api/webhooks/payloads](https://savvycal.com/docs/api/webhooks/payloads)).
 - **Validate the carried ID** (a string, at most 100 characters, no `@`) before merging.
-- **Run analytics after the business-critical work,** bounded by a timeout and non-fatal on failure; check the HTTP status and catch timeouts and network rejections, as in 2c. If delivery needs retry guarantees, enqueue analytics separately with idempotency rather than failing or replaying the booking ([../../backend/background-jobs/SKILL.md](../../backend/background-jobs/SKILL.md)).
+- **Run analytics after the business-critical work,** bounded by a timeout and non-fatal on failure; check the HTTP status and catch timeouts and network rejections, as in 2c. If delivery needs retry guarantees, enqueue analytics separately with idempotency rather than failing or replaying the booking ([background-jobs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/SKILL.md)).
 - **Dedupe the conversion on the booking ID** (or the payload `id`). SavvyCal asks you to "respond quickly with a `200 OK`... enqueue the body in a job queue" and says "If we receive a non-2xx response code, we will retry with exponential backoff", so the same booking can arrive more than once ([savvycal.com/docs/api/webhooks/payloads](https://savvycal.com/docs/api/webhooks/payloads)). The source didn't name the duplicate.
 - **Log the booking ID, never the email.**
 
@@ -219,8 +219,8 @@ The source calls this the "highest-trust-per-effort" fix and "usually a *setting
 
 [coreyhaines31/marketingskills, attribution]
 
-- **Config check:** many tools default to last-touch. PostHog's Marketing Analytics scene defaults to last-touch with a 90-day window, verified in PostHog's source code, not its docs ([../../monitoring/posthog/WEB-ANALYTICS.md](../../monitoring/posthog/WEB-ANALYTICS.md#marketing-analytics)). First-party attribution wants first-touch: build insights on `$initial_*` explicitly, or switch the default.
-- **The payoff insight:** the conversion event broken down by `$initial_utm_source` / `$initial_referring_domain` ([../../monitoring/posthog/METRICS-MODELING.md](../../monitoring/posthog/METRICS-MODELING.md#conversion) has the `argMin` query).
+- **Config check:** many tools default to last-touch. PostHog's Marketing Analytics scene defaults to last-touch with a 90-day window, verified in PostHog's source code, not its docs ([posthog WEB-ANALYTICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/WEB-ANALYTICS.md#marketing-analytics)). First-party attribution wants first-touch: build insights on `$initial_*` explicitly, or switch the default.
+- **The payoff insight:** the conversion event broken down by `$initial_utm_source` / `$initial_referring_domain` ([posthog METRICS-MODELING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/METRICS-MODELING.md#conversion) has the `argMin` query).
 - **Channel to revenue:** the conversion event by channel, joined to revenue or MRR person properties. Some tools compute revenue properties at ingest (person-on-events), so historical events may read 0; use the persons table for current MRR, or tier by plan.
 - **Track coverage:** the `journey_linked: false` rate tells you how many conversions bypassed the stitch. Watch it after launch.
 - **Store the full touch path, not just `$initial_*`** (refinement from Tessa Kriesel). First-touch alone can't run the multi-touch models; persisting the ordered sequence of touches per person (channel and timestamp each, from an events query or a `touch_path` array) lets you score the same journey position-based, linear or time-decay on your own data ([ATTRIBUTION-MODELS.md](ATTRIBUTION-MODELS.md)).
@@ -230,12 +230,12 @@ The source calls this the "highest-trust-per-effort" fix and "usually a *setting
 [coreyhaines31/marketingskills, attribution] (This whole step is a production refinement from Tessa Kriesel.) A channel breakdown in an analytics tool is a report; sales and lifecycle act on attribution written onto the record in the CRM, per account.
 
 - **A `source` field, plus `source_confidence` and `source_basis`.** `basis` is the evidence type: `journey_linked` (verified stitch), `self_reported` (survey) or `campaign_window` (the heuristic fallback). `confidence` comes from evidence quality, not the basis alone: a journey-linked touch with clean UTMs is high, the same touch with dirty or missing UTMs lower; a specific self-report can be high, a vague one low.
-- **Paid vs non-paid off the medium.** Mark a touch `paid` only from explicit paid mediums (`cpc`, `ppc`, `paid-social`, `display`, `paid`); classify the rest into a small configurable taxonomy rather than a blunt "organic": `owned` (email, push, SMS, though a sponsored newsletter is paid), `earned` (organic search and social, referral, though a partner or affiliate referral is closer to paid), `direct` (no medium: unknown, not organic), `unknown`. UTM conventions are [../../monitoring/google-analytics/UTM.md](../../monitoring/google-analytics/UTM.md).
-- **Hand the record to revops:** how pipeline and lifecycle use source, confidence, basis and paid vs non-paid (routing, scoring, nurture, revenue reporting) is [../revops/SKILL.md](../revops/SKILL.md).
+- **Paid vs non-paid off the medium.** Mark a touch `paid` only from explicit paid mediums (`cpc`, `ppc`, `paid-social`, `display`, `paid`); classify the rest into a small configurable taxonomy rather than a blunt "organic": `owned` (email, push, SMS, though a sponsored newsletter is paid), `earned` (organic search and social, referral, though a partner or affiliate referral is closer to paid), `direct` (no medium: unknown, not organic), `unknown`. UTM conventions are [google-analytics UTM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/UTM.md).
+- **Hand the record to revops:** how pipeline and lifecycle use source, confidence, basis and paid vs non-paid (routing, scoring, nurture, revenue reporting) is [revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md).
 
 ### Account rollup
 
-[coreyhaines31/marketingskills, attribution] One org is several people with mixed work and personal emails, so person-level attribution scatters the story. Roll each person's source up to the account. Match on email domain, but exclude free-mail domains (`gmail.com`, `yahoo.com`, `outlook.com`, ...), which would collapse unrelated people into one bogus account; for personal-email signups fall back to enrichment, the CRM's contact-to-account link or manual matching. PostHog group analytics is in [../../monitoring/posthog/IDENTITY.md](../../monitoring/posthog/IDENTITY.md#group-analytics).
+[coreyhaines31/marketingskills, attribution] One org is several people with mixed work and personal emails, so person-level attribution scatters the story. Roll each person's source up to the account. Match on email domain, but exclude free-mail domains (`gmail.com`, `yahoo.com`, `outlook.com`, ...), which would collapse unrelated people into one bogus account; for personal-email signups fall back to enrichment, the CRM's contact-to-account link or manual matching. PostHog group analytics is in [posthog IDENTITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/IDENTITY.md#group-analytics).
 
 ## Other stacks
 

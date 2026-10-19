@@ -1,6 +1,6 @@
 # Semantics
 
-How a custom render object describes itself to screen readers (TalkBack, VoiceOver), switch devices and widget tests: `describeSemanticsConfiguration`, labels, values and hints, flags, actions, merging, boundaries, exclusion, blocking, `markNeedsSemanticsUpdate` and `semanticBounds`. Sources: the renderobjects.com semantics guide and API pages (Matt Carroll; no Flutter version stated), checked against api.flutter.dev and Flutter master source. Where the source is wrong, the official form comes first, then one line on what renderobjects.com says. Widget-level semantics are in [../flutter/ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md).
+How a custom render object describes itself to screen readers (TalkBack, VoiceOver), switch devices and widget tests: `describeSemanticsConfiguration`, labels, values and hints, flags, actions, merging, boundaries, exclusion, blocking, `markNeedsSemanticsUpdate` and `semanticBounds`. Sources: the renderobjects.com semantics guide and API pages (Matt Carroll; no Flutter version stated), checked against api.flutter.dev and Flutter master source. Where the source is wrong, the official form comes first, then one line on what renderobjects.com says. Widget-level semantics are in [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md).
 
 **Contents:** [Widget layer first](#widget-layer-first) · [The entry point](#the-entry-point) · [Labels, values and hints](#labels-values-and-hints) · [Flags](#flags) · [Actions](#actions) · [Merging, boundaries and explicit children](#merging-boundaries-and-explicit-children) · [Excluding, blocking and hiding](#excluding-blocking-and-hiding) · [Keeping it fresh](#keeping-it-fresh) · [Coordinates and order](#coordinates-and-order) · [semanticBounds](#semanticbounds) · [Pitfalls](#pitfalls) · [Prove it](#prove-it)
 
@@ -58,7 +58,7 @@ void describeSemanticsConfiguration(SemanticsConfiguration config) {
 ```
 
   The API page hardcodes `TextDirection.ltr` in its examples. [ELEMENTS.md](ELEMENTS.md#inherited-widgets-from-elements-and-render-objects) shows how a render object receives `Directionality`.
-- **Strings are spoken verbatim, so localize them.** Take them as inputs from the widget (which localizes through `Intl` or `AppLocalizations`); never hardcode English in a library render object [renderobjects](https://renderobjects.com/guides/semantics/). See [../flutter/LOCALIZATION.md](../flutter/LOCALIZATION.md).
+- **Strings are spoken verbatim, so localize them.** Take them as inputs from the widget (which localizes through `Intl` or `AppLocalizations`); never hardcode English in a library render object [renderobjects](https://renderobjects.com/guides/semantics/). See [flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md).
 - **`increasedValue` / `decreasedValue`** are the value after an increment or decrement, announced on the action; some platforms preview them [renderobjects](https://renderobjects.com/guides/semantics/). Official rule (Flutter master `semantics.dart`): one of `increasedValue` or `attributedIncreasedValue` "must be set if a handler for [SemanticsAction.increase] is provided and one of the [value] or [attributedValue] is set" (likewise for decrease), and `SemanticsNode` asserts "A SemanticsNode with action \"increase\" needs to be annotated with either both \"value\" and \"increasedValue\" or neither".
 - **Value and range** [renderobjects](https://renderobjects.com/api/semantics/describeSemanticsConfiguration/):
 
@@ -76,7 +76,7 @@ void describeSemanticsConfiguration(SemanticsConfiguration config) {
 ```
 
   Fix to the source: this example sets `value` and `onIncrease` / `onDecrease` without `increasedValue` / `decreasedValue`, so it trips the `SemanticsNode` assert quoted above in debug; set both (Flutter master `semantics.dart`).
-  For progress indicators, [../flutter/ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md) records a percentage `SemanticsValue` (Flutter 3.44); the source's string `value` does not use it.
+  For progress indicators, [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md) records a percentage `SemanticsValue` (Flutter 3.44); the source's string `value` does not use it.
 
 ## Flags
 
@@ -85,8 +85,8 @@ void describeSemanticsConfiguration(SemanticsConfiguration config) {
   - renderobjects.com (no version stated) says to pair `isChecked` with an `isCheckbox` flag, which does not exist.
 - **Live regions: `config.liveRegion`** announces changes while focus is elsewhere; it controls the `SemanticsFlag.isLiveRegion` flag. https://api.flutter.dev/flutter/semantics/SemanticsConfiguration/liveRegion.html
   - renderobjects.com (no version stated) names the config property `isLiveRegion`, which is the flag, not the setter.
-- **Focus:** set `isFocused` (`bool?`). `isFocusable` is deprecated after v3.36.0-0.0.pre ("Setting isFocused automatically set this to true", Flutter master `semantics.dart`); the widget side is in [../flutter/VERSIONS.md](../flutter/VERSIONS.md).
-- **Headers.** The guide uses `isHeader` [renderobjects](https://renderobjects.com/guides/semantics/). Since Flutter 3.47 `header` is a no-op on iOS and Android; use heading levels, which at render-object level is `config.headingLevel = n` (asserts 0 to 6), and a level above 0 maps to an iOS and Android heading (breaking-change page https://docs.flutter.dev/release/breaking-changes/semantics-header-heading-level and the engine source). The api.flutter.dev page for `SemanticsConfiguration.headingLevel` still says "only used for web semantics"; it is stale. Details: [../flutter/VERSIONS.md](../flutter/VERSIONS.md#breaking-change-details).
+- **Focus:** set `isFocused` (`bool?`). `isFocusable` is deprecated after v3.36.0-0.0.pre ("Setting isFocused automatically set this to true", Flutter master `semantics.dart`); the widget side is in [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md).
+- **Headers.** The guide uses `isHeader` [renderobjects](https://renderobjects.com/guides/semantics/). Since Flutter 3.47 `header` is a no-op on iOS and Android; use heading levels, which at render-object level is `config.headingLevel = n` (asserts 0 to 6), and a level above 0 maps to an iOS and Android heading (breaking-change page https://docs.flutter.dev/release/breaking-changes/semantics-header-heading-level and the engine source). The api.flutter.dev page for `SemanticsConfiguration.headingLevel` still says "only used for web semantics"; it is stale. Details: [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md#breaking-change-details).
 - **Set flags honestly:** "if you set a role flag, provide the corresponding action" [renderobjects](https://renderobjects.com/guides/semantics/). Tappable, with `isEnabled` so assistive technology knows whether the action is available [renderobjects](https://renderobjects.com/api/semantics/describeSemanticsConfiguration/):
 
 ```dart
@@ -166,7 +166,7 @@ void describeSemanticsConfiguration(SemanticsConfiguration config) {
 }
 ```
 
-  Official meaning: when true, children may contribute only by introducing their own explicit `SemanticsNode`s, not by annotating the parent; "often used in combination with [isSemanticBoundary]" (Flutter master `semantics.dart` doc comment). The widget form is in [../flutter/ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md).
+  Official meaning: when true, children may contribute only by introducing their own explicit `SemanticsNode`s, not by annotating the parent; "often used in combination with [isSemanticBoundary]" (Flutter master `semantics.dart` doc comment). The widget form is in [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md).
 - **Mental model:** merge = collapse everything below me into my node; boundary = I form my own node and my information does not leak into my parent (see above for merges); explicitChildNodes = preserve child structure [renderobjects](https://renderobjects.com/guides/semantics/), corrected per the official docs above.
 - **Over-merging absorbs inner controls; under-merging gives three focus stops for one button** [renderobjects](https://renderobjects.com/guides/semantics/).
 
@@ -201,7 +201,7 @@ set label(String value) {
 ## semanticBounds
 
 - **Contract:** "a `Rect` that defines the region the accessibility framework associates with a semantic node, expressed in the render object's own local coordinate space. Screen readers use it to position highlight overlays, and the framework uses it to route accessibility gestures". "Unlike `paintBounds`, which must be a conservative overestimate, `semanticBounds` should be accurate." Override it for a small icon that needs a larger target, padded containers or clipped content [renderobjects](https://renderobjects.com/api/semantics/semanticBounds/). The `RenderBox` default is `Rect get semanticBounds => Offset.zero & size;` (Flutter master `box.dart`; https://api.flutter.dev/flutter/rendering/RenderBox/semanticBounds.html).
-- **Minimum target:** "Elements smaller than the platform-recommended minimum (48 × 48 logical pixels on Material platforms) should expand their semantic bounds" [renderobjects](https://renderobjects.com/api/semantics/semanticBounds/). Pointer hits are separate: `RenderBox.hitTest` checks `_size!.contains(position)` (Flutter master `box.dart`), see [HIT-TESTING.md](HIT-TESTING.md). Target sizes: [../flutter/ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md).
+- **Minimum target:** "Elements smaller than the platform-recommended minimum (48 × 48 logical pixels on Material platforms) should expand their semantic bounds" [renderobjects](https://renderobjects.com/api/semantics/semanticBounds/). Pointer hits are separate: `RenderBox.hitTest` checks `_size!.contains(position)` (Flutter master `box.dart`), see [HIT-TESTING.md](HIT-TESTING.md). Target sizes: [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md).
 
 ```dart
 static const double _minTargetSize = 48.0;

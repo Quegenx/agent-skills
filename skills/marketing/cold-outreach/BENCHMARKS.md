@@ -41,7 +41,7 @@ Origins not named in the source.
 | Length | Shorter, blunt | Longer, insight-led | Detail-oriented | Concise but substantive |
 | Social proof | Outcome numbers | Research-led credibility | Technical precision | Shared values |
 
-Region decides more than tone: whether a cold email may be sent at all in the EU, the UK, Germany, Canada or Australia is in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email). The source's only legal remark here was "GDPR affects European tone."
+Region decides more than tone: whether a cold email may be sent at all in the EU, the UK, Germany, Canada or Australia is in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email). The source's only legal remark here was "GDPR affects European tone."
 
 ## The top mistakes
 

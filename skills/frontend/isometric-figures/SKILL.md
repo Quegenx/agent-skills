@@ -5,9 +5,11 @@ description: "Builds live interactive explanatory figures with the bundled isoki
 
 # Isometric figures
 
-From the bundled isokit reference manuals and example source, previously routed through seek-engine. A live figure uses its own interaction loop; the [video adapter](../../videos/seek-engine/ISOMETRIC.md#into-seekt) replaces that clock with a pure seek(t). Static printable sheets keep their distinct rules in [technical-drawing](../technical-drawing/SKILL.md); general React and Next.js guidance stays in [react](../react/SKILL.md). [isokit, references/craft.md; references/motion.md; original seek-engine ISOMETRIC.md]
+From the bundled isokit reference manuals and example source, previously routed through seek-engine. A live figure uses its own interaction loop; the [video adapter](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/ISOMETRIC.md#into-seekt) replaces that clock with a pure seek(t). Static printable sheets keep their distinct rules in [technical-drawing](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/technical-drawing/SKILL.md); general React and Next.js guidance stays in [react](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md). [isokit, references/craft.md; references/motion.md; original seek-engine ISOMETRIC.md]
 
 Copy the whole templates/isokit subtree to the working project before building a standalone example, keeping its inner kit, scripts, references and examples paths. Generated pages belong in that workspace. The original React examples require absent kit/iso-kit.ts and kit/react/draw.tsx/live.tsx dependencies; their described API is preserved as a [source prerequisite](templates/isokit/references/kit.md#9-react-components), not a bundled implementation. The turning renderer remains beta, and the stress example is not audit-clean. [isokit, example imports; references/kit.md; references/3d.md]
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -17,7 +19,7 @@ Copy the whole templates/isokit subtree to the working project before building a
 | Build turning groups and select their runtime | [3D](templates/isokit/references/3d.md) and [3D checks and limits](templates/isokit/references/3d-checks.md) |
 | Put shader fields inside the drawing | [WebGL](templates/isokit/references/webgl.md) and [light theme](templates/isokit/references/webgl-light-theme.md) |
 | Verify the figure and report the actual coverage | [Verify](templates/isokit/references/verify.md) and [review checklist](templates/isokit/references/verify-checklist.md) |
-| Adapt a figure to a deterministic film clock | [seek-engine ISOMETRIC.md](../../videos/seek-engine/ISOMETRIC.md#into-seekt) |
+| Adapt a figure to a deterministic film clock | [seek-engine ISOMETRIC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/ISOMETRIC.md#into-seekt) |
 | Toolkit source: LICENSE | [LICENSE](templates/isokit/LICENSE) |
 | Example source: examples/arcade-cabinet/arcade-cabinet.css | [examples/arcade-cabinet/arcade-cabinet.css](templates/isokit/examples/arcade-cabinet/arcade-cabinet.css) |
 | Example source: examples/arcade-cabinet/build.mjs | [examples/arcade-cabinet/build.mjs](templates/isokit/examples/arcade-cabinet/build.mjs) |
@@ -114,9 +116,9 @@ Copy the whole templates/isokit subtree to the working project before building a
 ## The rules
 
 1. Resolve the mechanism and its pure model before drawing; the visible readout and motion use the same model state. [isokit, references/craft.md; references/motion.md]
-2. Keep the existing camera, parts, tone and line vocabulary together in [Craft](templates/isokit/references/craft.md). The real-object film branch uses the [faithful reconstruction rules](../../videos/seek-engine/REAL-OBJECTS.md) instead of inventing a metaphor. [isokit, references/craft.md; original seek-engine REAL-OBJECTS.md]
+2. Keep the existing camera, parts, tone and line vocabulary together in [Craft](templates/isokit/references/craft.md). The real-object film branch uses the [faithful reconstruction rules](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/REAL-OBJECTS.md) instead of inventing a metaphor. [isokit, references/craft.md; original seek-engine REAL-OBJECTS.md]
 3. Draw and record the same geometry, including the real contacts, gaps, route ownership and explode state; keep numerical checks within their recorded shapes, sampled states and tolerances. [isokit, references/kit-audit.md; references/verify.md]
-4. Follow the [live motion contract](templates/isokit/references/motion.md) for input, settling, visibility, reduced motion and announcements; keep those live clocks out of the [film adapter](../../videos/seek-engine/ISOMETRIC.md#into-seekt). [isokit, references/motion.md; original seek-engine ISOMETRIC.md]
+4. Follow the [live motion contract](templates/isokit/references/motion.md) for input, settling, visibility, reduced motion and announcements; keep those live clocks out of the [film adapter](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/ISOMETRIC.md#into-seekt). [isokit, references/motion.md; original seek-engine ISOMETRIC.md]
 5. Use [turning groups](templates/isokit/references/3d.md) only when their motion explains the mechanism. Preserve the separate general and fixed-camera runtime contracts; the fixed backend supplies the canvas path. [isokit, references/3d.md; references/3d-checks.md; kit/turn.mjs; kit/turn-fixed.mjs]
 6. Put [shader fields inside the drawing's camera and layer stack](templates/isokit/references/webgl.md), with an SVG fallback. For paper, read the [light-ink rules](templates/isokit/references/webgl-light-theme.md); the Raptor's older light branch is a known counterexample. [isokit, references/webgl.md; references/webgl-light-theme.md]
 7. Use the canonical [kit API](templates/isokit/references/kit.md), and preserve complete dependency closures when inlining the split modules. Keep each example's DATA fields, output names and selected runtime together. [isokit, references/kit.md; scripts/inline-kit.mjs; example builders]
@@ -124,4 +126,4 @@ Copy the whole templates/isokit subtree to the working project before building a
 
 ## Prove it
 
-[isokit, references/verify.md; references/verify-checklist.md; references/3d-checks.md] The figure explains its named mechanism, its readout agrees with the same model instant, contacts and texture ends survive close review in both themes, and the selected geometry, line and browser checks report their actual coverage and results. Input remains usable with reduced motion and WebGL unavailable. Do not claim unrun checks, missing React dependencies, a quick audit or an omitted optional check as a full pass. For a film, use the deterministic acceptance in [seek-engine ISOMETRIC.md](../../videos/seek-engine/ISOMETRIC.md#check).
+[isokit, references/verify.md; references/verify-checklist.md; references/3d-checks.md] The figure explains its named mechanism, its readout agrees with the same model instant, contacts and texture ends survive close review in both themes, and the selected geometry, line and browser checks report their actual coverage and results. Input remains usable with reduced motion and WebGL unavailable. Do not claim unrun checks, missing React dependencies, a quick audit or an omitted optional check as a full pass. For a film, use the deterministic acceptance in [seek-engine ISOMETRIC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/ISOMETRIC.md#check).

@@ -130,7 +130,7 @@ Keep the whole copied kit and scripts dependency tree: the inliner removes modul
 
 ## 9. React components
 
-[isokit, references/kit.md; examples/test-rig and examples/spot-plate] This is the original adapter contract, not a list of shipped files: `kit/react/draw.tsx`, `kit/react/live.tsx` and `kit/iso-kit.ts` are absent. Supply the original source dependencies before using the React examples; do not infer API parity from the standalone JavaScript kit. Global React and Next.js behavior belongs in [react](../../../../react/SKILL.md).
+[isokit, references/kit.md; examples/test-rig and examples/spot-plate] This is the original adapter contract, not a list of shipped files: `kit/react/draw.tsx`, `kit/react/live.tsx` and `kit/iso-kit.ts` are absent. Supply the original source dependencies before using the React examples; do not infer API parity from the standalone JavaScript kit. Global React and Next.js behavior belongs in [react](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md).
 
 The source describes `kit/react/draw.tsx` as server-safe:
 

@@ -1,6 +1,6 @@
 # Judgment: what good is, and when the "slop" thing is right
 
-[measured corpus, original judgment.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original judgment.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
 Craft (curves, coordinates, sizes) is in the other references and decides HOW. This file decides WHAT is worth making. It comes from ~50 designer-made films, ~30 AI-made ones, 52 ranked human films, the user's own picks and rejections (`taste/verdicts.md`) and the before/after fixes in `taste/edits.md`. In the whole study the tools were the same everywhere (push-ins, cursors, typed text, gradients, 3D). What separated films was a decision about meaning. Examples are described, not named: borrow the reasoning, never the look.
 
@@ -38,7 +38,7 @@ Each: when, prefer, because, evidence, and where it stops being true.
 
 **6. It sounds like the brand.** WHEN you write words or score, ask how this brand would say or play it. PREFER real phrasing, sentence case, an aside; phrase-level sound (a section change where the picture changes, silence before the hit, 1-3 hand-placed hits). BECAUSE copy and sound are where templates are recognised fastest.
 - Evidence: the no-skill copy was often the best part of AI films ("We were done before the logo was."), and v1's rules silenced the writer; official launch lines beat stock ones 7 to 4; music that ignored the edit scored 5 against 7.
-- Details in [MEASURED-IDEATION.md](MEASURED-IDEATION.md) (copy voice) and [MEASURED-SOUND-SYNC.md](../sound-pass/MEASURED-SOUND-SYNC.md). Measured delivery band: about -14 LUFS integrated, true peak at or under -1 dBTP, a small loudness range.
+- Details in [MEASURED-IDEATION.md](MEASURED-IDEATION.md) (copy voice) and [sound-pass MEASURED-SOUND-SYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/sound-pass/MEASURED-SOUND-SYNC.md). Measured delivery band: about -14 LUFS integrated, true peak at or under -1 dBTP, a small loudness range.
 
 **7. One world.** WHEN you invent anything, draw it in the brand's grammar (its corner radius, stroke weight, type, colour meanings, pace) and under one light logic, one lens, one rendering style. PREFER a world with ground, light, depth and texture over a swatch. BECAUSE assets in four styles (flat icon, stock 3D, photo, glass) read as stock however polished each is, and blur, grain, aberration and bloom belong to the camera, so they apply consistently and appear with motion.
 - Evidence: "Left is better in everyone": photographic plates, a paper ground, a 3D object, real shutter blur and designed sound beat the same films in flat silent vector (v2 over v1, three reels). Six of ten no-skill AI films sat on near-black; under a third of human films did and 22 of 52 were bright. A light ground is as premium as a dark one.
@@ -76,7 +76,7 @@ Specific, slightly odd, well-designed demo content (a shop for vintage Japanese 
 
 [measured corpus, original judgment.md]
 
-Use the [importance budget](../shotlist/MEASURED-DIRECTION.md#0-start-here-page-script-cues-importance-budget) for beat levels, emphasis and the hero number. The 60/30/10 colour split: the accent marks the one thing that matters, and it keeps one meaning ("AI acting", "on", "done"). Colour reports state changes (blue = speaking, red = falling, green = solved); ration the brand colour so it arrives as the brand; treat it as light more often than paint; never place it on a word because of its position.
+Use the [importance budget](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/shotlist/MEASURED-DIRECTION.md#0-start-here-page-script-cues-importance-budget) for beat levels, emphasis and the hero number. The 60/30/10 colour split: the accent marks the one thing that matters, and it keeps one meaning ("AI acting", "on", "done"). Colour reports state changes (blue = speaking, red = falling, green = solved); ration the brand colour so it arrives as the brand; treat it as light more often than paint; never place it on a word because of its position.
 
 ## 6. Honest seeing
 

@@ -1,6 +1,6 @@
 # Sequences
 
-A sequence is a set of automated emails that starts on a trigger (a signup, a download, a trial, inactivity) and stops on a goal or an exit condition. This file designs the flow and writes the emails; it follows the coreyhaines31/marketingskills `emails` skill (MIT), copied with its tag, and the official pages each correction names. Every email after a transactional welcome is marketing: it needs recorded consent and an unsubscribe ([COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md), [LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)). The single lifecycle emails (billing, usage, win-back, campaigns) are in [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md); cold outreach sequences are in [../cold-outreach/SEQUENCES.md](../cold-outreach/SEQUENCES.md); in-app onboarding is in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md).
+A sequence is a set of automated emails that starts on a trigger (a signup, a download, a trial, inactivity) and stops on a goal or an exit condition. This file designs the flow and writes the emails; it follows the coreyhaines31/marketingskills `emails` skill (MIT), copied with its tag, and the official pages each correction names. Every email after a transactional welcome is marketing: it needs recorded consent and an unsubscribe ([email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md), [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)). The single lifecycle emails (billing, usage, win-back, campaigns) are in [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md); cold outreach sequences are in [cold-outreach SEQUENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SEQUENCES.md); in-app onboarding is in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md).
 
 **Contents:** [Before you write](#before-you-write) · [Principles](#principles) · [Length and timing](#length-and-timing) · [Triggers and exit conditions](#triggers-and-exit-conditions) · [Welcome](#welcome) · [Lead nurture](#lead-nurture) · [Onboarding](#onboarding) · [Re-engagement](#re-engagement) · [Writing each email](#writing-each-email) · [Campaign copy conventions](#campaign-copy-conventions) · [Subject and preview](#subject-and-preview) · [Personalization and segments](#personalization-and-segments) · [Testing and metrics](#testing-and-metrics) · [The output](#the-output) · [Prove it](#prove-it)
 
@@ -8,7 +8,7 @@ A sequence is a set of automated emails that starts on a trigger (a signup, a do
 
 [coreyhaines31/marketingskills, emails]
 
-- **Read the product context file first:** `.agents/product-context.md`, defined in [../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). The source names it `.agents/product-marketing.md` (or `.claude/product-marketing.md`, or the legacy `product-marketing-context.md`). Check its **Learnings** section: "angles, offers, and formats already tested there shouldn't be re-proposed as new ideas".
+- **Read the product context file first:** `.agents/product-context.md`, defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md). The source names it `.agents/product-marketing.md` (or `.claude/product-marketing.md`, or the legacy `product-marketing-context.md`). Check its **Learnings** section: "angles, offers, and formats already tested there shouldn't be re-proposed as new ideas".
 - **Then ask only what the file doesn't answer:**
   1. What triggers entry to this sequence?
   2. What's the primary goal/conversion action?
@@ -51,7 +51,7 @@ Length depends on the sales cycle, product complexity and relationship stage.
 
 ## Welcome
 
-[coreyhaines31/marketingskills, emails] 5-7 emails over 12-14 days. Goal: activate, build trust, convert. The first email may be the transactional welcome, which must not be promotional ([EMAIL-TYPES.md](../../backend/email-practices/EMAIL-TYPES.md#keep-the-two-apart)); everything after it is marketing.
+[coreyhaines31/marketingskills, emails] 5-7 emails over 12-14 days. Goal: activate, build trust, convert. The first email may be the transactional welcome, which must not be promotional ([email-practices EMAIL-TYPES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/EMAIL-TYPES.md#keep-the-two-apart)); everything after it is marketing.
 
 | # | Send | Subject | Job |
 |---|---|---|---|
@@ -63,7 +63,7 @@ Length depends on the sales cycle, product complexity and relationship stage.
 | 6 | Day 9-11 | Have you tried [Feature] yet? | Highlight an underused capability; direct CTA to try it |
 | 7 | Day 12-14 | Ready to [upgrade/buy/commit]? | Summarize value; clear offer; urgency if appropriate; risk reversal (guarantee, trial) |
 
-"Urgency if appropriate" means a real deadline only; fake countdowns and false limited-time claims are FTC dark patterns ([../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md)).
+"Urgency if appropriate" means a real deadline only; fake countdowns and false limited-time claims are FTC dark patterns ([offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md)).
 
 ## Lead nurture
 
@@ -80,7 +80,7 @@ Length depends on the sales cycle, product complexity and relationship stage.
 | 7 | Day 15-18 | Objection handler: FAQ or myth-busting |
 | 8 | Day 19-21 | Direct offer: clear pitch, specific CTA, urgency if available |
 
-The lead magnet's email joins a marketing sequence only with marketing consent ([COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#the-laws), GDPR Art. 7(4)); without it, email 1 is the delivery and the sequence stops there.
+The lead magnet's email joins a marketing sequence only with marketing consent ([email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#the-laws), GDPR Art. 7(4)); without it, email 1 is the delivery and the sequence stops there.
 
 [more skills, copywriting-playbook.md] Another optional narrative arc is problem, agitation, solution, proof and offer across the sequence. These are ordered beats, not a prescribed five-email count or one beat per send. Keep this file's consent, entry and exit rules and choose timing for the actual sequence; the guide supplies no additional schedule.
 
@@ -98,7 +98,7 @@ The lead magnet's email joins a marketing sequence only with marketing consent (
 | 6 | Day 10-12 | Advanced tip: a power feature, for engaged users |
 | 7 | Day 14+ | Upgrade or expand: trial users a conversion push, free users an upgrade prompt, paid users an expansion |
 
-The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md); the series for paying customers is in [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md#onboarding).
+The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md); the series for paying customers is in [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md#onboarding).
 
 ## Re-engagement
 
@@ -111,8 +111,8 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
 | 3 | Day 5-7 after | We miss you. Here's something special | An offer if appropriate |
 | 4 | Day 10-14 after | Should we stop emailing you? | Honest and direct; "One-click to stay or go"; "Clean the list if no response" |
 
-- **The trigger differs between sources:** this one says 30-60 days, its eval 90; the repo's hygiene rule says no opens or clicks in 45 to 90 days, with one "We miss you" email before removal ([LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#hygiene-and-re-engagement)). Pick one and write it down.
-- **Subject lines stay honest here too.** The source's eval expected "aggressive subject lines to break through"; CAN-SPAM says "The subject line must accurately reflect the content of the message" (https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business), and Gmail bans `Re:` or `Fwd:` bait ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#message-format-and-display-names)).
+- **The trigger differs between sources:** this one says 30-60 days, its eval 90; the repo's hygiene rule says no opens or clicks in 45 to 90 days, with one "We miss you" email before removal ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#hygiene-and-re-engagement)). Pick one and write it down.
+- **Subject lines stay honest here too.** The source's eval expected "aggressive subject lines to break through"; CAN-SPAM says "The subject line must accurately reflect the content of the message" (https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business), and Gmail bans `Re:` or `Fwd:` bait ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#message-format-and-display-names)).
 - **Sunset non-responders** after the last email; inactive subscribers hurt deliverability.
 
 ## Writing each email
@@ -128,13 +128,13 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
   - "**Subject-line bait**: fake 'Re:' or 'Fwd:', 'You won't believe...', '🔥 Big news.' The subject should hold up if it's the only line they read."
   - "**Stock openers**: 'I hope this email finds you well,' 'Just checking in,' 'Great news!' Open with the reason you're writing."
   - "**Sign-off filler**: 'Feel free to reach out if you have any questions.' Ask for one specific action, or end."
-  - The general tells (contrast reveals, negation lists, pile-ons, colon reveals, em dashes in subject and preview) are in [../../anti-ai-slop/anti-slop-writing/TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md).
+  - The general tells (contrast reveals, negation lists, pile-ons, colon reveals, em dashes in subject and preview) are in [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md).
 
 ## Campaign copy conventions
 
 [resend/email-best-practices] These conventions retain the source’s multiple-CTA structure alongside the one-primary-CTA sequence rule above, and its mobile subject limit alongside the range below. Test for the actual audience.
 
-- **Subject lines:** clear, specific, 50 characters or less for mobile (the emails source says "40-60 characters ideal", [SEQUENCES.md](SEQUENCES.md#subject-and-preview)); curiosity without misleading; A/B test. Right: "Your weekly digest: 5 productivity tips". Wrong: "You won't believe what happened!"
+- **Subject lines:** clear, specific, 50 characters or less for mobile (the emails source says "40-60 characters ideal", [SEQUENCES.md](#subject-and-preview)); curiosity without misleading; A/B test. Right: "Your weekly digest: 5 productivity tips". Wrong: "You won't believe what happened!"
 - **Structure:** above the fold, a value proposition, a primary call to action and an engaging visual; a scannable body (short paragraphs, bullets) with a clear hierarchy and multiple calls to action; a footer with unsubscribe, company info, physical address (CAN-SPAM) and social links.
 - **Mobile-first:** single column, buttons at least 44x44px, text at least 16px; test on iOS, Android and in dark mode.
 - **Segment** by behavior (purchases, activity), demographics, preferences, engagement level and signup source, for higher open and click rates, lower unsubscribes and a better experience.
@@ -148,8 +148,8 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
 
 - **Subject:** "Clear > Clever", "Specific > Vague", benefit or curiosity, "40-60 characters ideal". The repo's line says "50 characters or less for mobile" ([Campaign copy conventions](#campaign-copy-conventions)); both are source conventions, so test.
 - **Patterns:** question ("Still struggling with X?"), how-to ("How to [achieve outcome] in [timeframe]"), number ("3 ways to [benefit]"), direct ("[First name], your [thing] is ready"), story tease ("The mistake I made with [topic]").
-- **Emoji:** the source says "Test emoji (they're polarizing)"; Gmail bans emoji that imitate verification, and display names carry none ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#message-format-and-display-names)).
-- **Preview text** extends the subject, "~90-140 characters", and doesn't repeat it. Transactional pre-headers stay under 90 characters ([EMAIL-TYPES.md](../../backend/email-practices/EMAIL-TYPES.md#designing-transactional-emails)).
+- **Emoji:** the source says "Test emoji (they're polarizing)"; Gmail bans emoji that imitate verification, and display names carry none ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#message-format-and-display-names)).
+- **Preview text** extends the subject, "~90-140 characters", and doesn't repeat it. Transactional pre-headers stay under 90 characters ([email-practices EMAIL-TYPES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/EMAIL-TYPES.md#designing-transactional-emails)).
 
 ## Personalization and segments
 
@@ -161,10 +161,10 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
 
 ## Testing and metrics
 
-- **What to test** [coreyhaines31/marketingskills, emails]: subject lines "(highest impact)", send times, length, CTA placement and copy, personalization level, sequence timing; one variable at a time, a sufficient sample, statistical significance, and documented learnings. Sample size and significance are in [../ab-testing/SKILL.md](../ab-testing/SKILL.md).
-- **Opens are not a reliable metric.** Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), and Google says low open rates "aren't necessarily an accurate indicator of deliverability" ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#gmail)). The source's "Open rate (benchmark: 20-40%)" is left out as a target.
+- **What to test** [coreyhaines31/marketingskills, emails]: subject lines "(highest impact)", send times, length, CTA placement and copy, personalization level, sequence timing; one variable at a time, a sufficient sample, statistical significance, and documented learnings. Sample size and significance are in [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
+- **Opens are not a reliable metric.** Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), and Google says low open rates "aren't necessarily an accurate indicator of deliverability" ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#gmail)). The source's "Open rate (benchmark: 20-40%)" is left out as a target.
 - **Track instead** [coreyhaines31/marketingskills, emails]: click rate (the source's benchmark: 2-5%), unsubscribe rate (the source: "keep under 0.5%"), conversion rate against the sequence goal, revenue per email if applicable. The benchmarks are the source's, not measured.
-- **Complaints and bounces** stop a sequence: the stop-loss rules are in [DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#stop-loss-rules).
+- **Complaints and bounces** stop a sequence: the stop-loss rules are in [email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#stop-loss-rules).
 
 ## The output
 

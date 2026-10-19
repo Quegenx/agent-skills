@@ -8,7 +8,7 @@ The sample-to-sale service from [more skills, 03-nfc-review-cards.md]: send a fr
 
 Choose a city and counter-based niche: cafes, restaurants, salons, barbers, gyms, dentists or retail. Look for actual storefront foot traffic, a physical counter and a published phone rather than a service-area-only listing. The author proposes rating at least 4.0 and treats review count as less central than in the website offer.
 
-The source worksheet contains business name, address, phone, rating, review count, opening hours and place ID. Use permissioned sourcing, show the total and first 20 rows, and obtain list approval. Its blanket chain/franchise exclusion differs from the existing [local marketing-authority check](../prospecting/LOCAL-SMB.md#common-mistakes), which remains in force. [more skills, 03-nfc-review-cards.md; coreyhaines31/marketingskills, prospecting]
+The source worksheet contains business name, address, phone, rating, review count, opening hours and place ID. Use permissioned sourcing, show the total and first 20 rows, and obtain list approval. Its blanket chain/franchise exclusion differs from the existing [local marketing-authority check](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LOCAL-SMB.md#common-mistakes), which remains in force. [more skills, 03-nfc-review-cards.md; coreyhaines31/marketingskills, prospecting]
 
 ## Controlled destination and acceptance
 
@@ -18,7 +18,7 @@ Program a redirect on the operator's domain rather than writing the final destin
 
 The source's prose requires checking every link on a phone before ordering; its prompt instead opens five. Retain the stronger every-link acceptance, and label any five-link sample as additional spot checking rather than complete acceptance. Confirm destination identity and record which links were actually checked.
 
-Use the actual owner's supported review destination. The source promises instant ready-to-rate access; [Google's review help](https://support.google.com/business/answer/3474122?hl=en) says reviewers need to sign in to a Google Account. Device coverage, supplier programming and any printed Google icon permission must be established for the selected product, not assumed. Review eligibility and counter behavior follow [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#platform-rules). [Google Business Profile help; more skills, 03-nfc-review-cards.md]
+Use the actual owner's supported review destination. The source promises instant ready-to-rate access; [Google's review help](https://support.google.com/business/answer/3474122?hl=en) says reviewers need to sign in to a Google Account. Device coverage, supplier programming and any printed Google icon permission must be established for the selected product, not assumed. Review eligibility and counter behavior follow [review-management REVIEW-PROGRAMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/review-management/REVIEW-PROGRAMS.md#platform-rules). [Google Business Profile help; more skills, 03-nfc-review-cards.md]
 
 ## Sample order and envelope
 

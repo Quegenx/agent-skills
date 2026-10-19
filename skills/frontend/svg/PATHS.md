@@ -160,7 +160,7 @@ Transitions and keyframes are in [CSS-ANIMATION.md](CSS-ANIMATION.md); `<animate
 
 ## Smoothed corners (squircles) as a path
 
-[corner-smoothing] (gabrielobholz/corner-smoothing-skill, `references/implementation.md`). "CSS `border-radius` alone cannot express this shape": "Apple-like smoothing keeps the same radius but eases the transition between straight edges and the corner." The skill draws it as path data, usable in SVG, `clip-path: path()` and Canvas `Path2D`. In a CSS box, `corner-shape: squircle` is the native route where it ships ([../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#corner-shape-and-superellipse)); the path covers the other browsers, SVG icons, Canvas and shapes outside a CSS box. Verbatim generator:
+[corner-smoothing] (gabrielobholz/corner-smoothing-skill, `references/implementation.md`). "CSS `border-radius` alone cannot express this shape": "Apple-like smoothing keeps the same radius but eases the transition between straight edges and the corner." The skill draws it as path data, usable in SVG, `clip-path: path()` and Canvas `Path2D`. In a CSS box, `corner-shape: squircle` is the native route where it ships ([modern-css GRADIENTS-AND-EFFECTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/GRADIENTS-AND-EFFECTS.md#corner-shape-and-superellipse)); the path covers the other browsers, SVG icons, Canvas and shapes outside a CSS box. Verbatim generator:
 
 ```js
 function appleCornerPath({ width, height, radius, smoothing = 60 }) {

@@ -117,7 +117,7 @@ useGSAP((context, contextSafe) => {
 },{ scope: container });
 ```
 
-landing-page-ui's title letters run `gsap.to(event.currentTarget, ...)` from plain pointer-enter and pointer-leave handlers, outside any context ([animated-title-text.tsx](../landing-page-ui/reference/website/shared/motion/animated-title-text.tsx); "Hover in (pointer enter on each letter ...) | ... .22s `back.out(2.8)`", [MOTION.md](../landing-page-ui/MOTION.md#the-hero-assembles-once)). By the rule above those tweens are not reverted on unmount; contextSafe is the GreenSock form. The two tweens also share properties under the default `overwrite: false` ([CORE.md](CORE.md#common-vars)).
+landing-page-ui's title letters run `gsap.to(event.currentTarget, ...)` from plain pointer-enter and pointer-leave handlers, outside any context ([animated-title-text.tsx](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/shared/motion/animated-title-text.tsx); "Hover in (pointer enter on each letter ...) | ... .22s `back.out(2.8)`", [landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-hero-assembles-once)). By the rule above those tweens are not reverted on unmount; contextSafe is the GreenSock form. The two tweens also share properties under the default `overwrite: false` ([CORE.md](CORE.md#common-vars)).
 
 ## Scope every selector
 
@@ -134,7 +134,7 @@ landing-page-ui scopes with refs and `querySelectorAll` on the ref (`contentRef.
 
 The framework-neutral principle is "**Kill or revert** them in the unmount cleanup". The React rule is narrower: "prefer useGSAP() ... use gsap.context() + ctx.revert() in useEffect when useGSAP is not an option" and "**Always** return a cleanup that calls ctx.revert()". The difference that matters: `ctx.revert()` also reverts inline styles; `kill()` stops the animation and, per its docs, says nothing about styles (https://gsap.com/docs/v3/GSAP/Timeline/kill()).
 
-landing-page-ui sets up GSAP in plain `useLayoutEffect` and `useEffect` (`@gsap/react` is not in its package table) and now cleans up through `gsap.context()` and `context.revert()`: the menu builds its timelines inside one context, so the inline `height` and `overflow` its `gsap.set(nav, ...)` wrote are reverted, and the title letters run their entrances in a context and kill the pointer-started hover tweens by target ([site-header-menu-motion.ts](../landing-page-ui/reference/website/widgets/header/bar/site-header-menu-motion.ts), [animated-title-text.tsx](../landing-page-ui/reference/website/shared/motion/animated-title-text.tsx)).
+landing-page-ui sets up GSAP in plain `useLayoutEffect` and `useEffect` (`@gsap/react` is not in its package table) and now cleans up through `gsap.context()` and `context.revert()`: the menu builds its timelines inside one context, so the inline `height` and `overflow` its `gsap.set(nav, ...)` wrote are reverted, and the title letters run their entrances in a context and kill the pointer-started hover tweens by target ([site-header-menu-motion.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/widgets/header/bar/site-header-menu-motion.ts), [animated-title-text.tsx](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/shared/motion/animated-title-text.tsx)).
 
 ## ScrollTriggers in a context
 

@@ -1,6 +1,6 @@
 # App Store analytics reports and crash triage
 
-Pulling App Store Connect Analytics reports and triaging TestFlight crashes, feedback and performance diagnostics with the `asc` CLI. Analytics reports are confidential bulk files that arrive in segments: a run is only complete when every segment of every instance is downloaded and its size and checksum match. Crash triage ranks signatures by count across builds, devices and OS versions. `asc` CLI facts come from its third-party authors (rorkai). For product analytics inside the app, read [../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md); for crash reporting SDKs, [../../monitoring/sentry/SKILL.md](../../monitoring/sentry/SKILL.md).
+Pulling App Store Connect Analytics reports and triaging TestFlight crashes, feedback and performance diagnostics with the `asc` CLI. Analytics reports are confidential bulk files that arrive in segments: a run is only complete when every segment of every instance is downloaded and its size and checksum match. Crash triage ranks signatures by count across builds, devices and OS versions. `asc` CLI facts come from its third-party authors (rorkai). For product analytics inside the app, read [posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md); for crash reporting SDKs, [sentry SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/sentry/SKILL.md).
 
 ## Analytics reports
 

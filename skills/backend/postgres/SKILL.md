@@ -7,6 +7,8 @@ description: "Runs Postgres well in production: schema and column types, migrati
 
 Most production Postgres trouble is not a slow query but the machinery around it: a migration that takes a lock for ten minutes, a pool that leaks session settings, one forgotten open transaction that stops vacuum for the whole database, a column type chosen once and paid for forever. Query correctness is the `sql-patterns` skill; query speed and index design are the `performance-and-caching` skill's QUERIES.md; row-level security is the `secure-coding` skill's TENANCY.md and, on Supabase, the `supabase` skill.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Tables, keys, column types, constraints, names, partitioning | [SCHEMA.md](SCHEMA.md) |
@@ -28,5 +30,7 @@ Most production Postgres trouble is not a slow query but the machinery around it
 8. **Platform settings change:** on a managed host (Supabase, PlanetScale, Neon, RDS), check its docs for which settings, extensions and ports you control before relying on them.
 
 ## Prove it
+
+Use the checks for the selected operation. The million-row table is an index exercise, not required setup for every index task. A restore applies to backup/recovery work; other operations use the relevant topic's evidence and audit queries.
 
 For a schema change: the migration on a copy of production-sized data, its lock taken and its duration, and a rollback. For a performance change: before and after numbers from `pg_stat_statements` or the plan; for an index, the throwaway million-row table in the `performance-and-caching` skill's QUERIES.md (Prove it). For operations: a restore from the latest backup into a scratch database, and the audit queries in MONITORING.md run with their results read.

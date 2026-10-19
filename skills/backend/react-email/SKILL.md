@@ -5,7 +5,9 @@ description: "Builds HTML emails with React Email: install and the preview serve
 
 # React Email
 
-React Email builds emails from React and TypeScript components and turns them into the table-based, inline-styled HTML email clients accept. Since 6.0 (April 16, 2026) everything comes from one package, `react-email`, with the preview server in `@react-email/ui`; the old `@react-email/components` imports, `renderAsync` (removed) and the `plainText` render option (deprecated) belong to earlier versions. The styling rules exist because email clients support only part of CSS. Sending through the Resend API is the [resend](../resend/SKILL.md) skill; deliverability, unsubscribe and compliance are the [email-practices](../email-practices/SKILL.md) skill.
+React Email builds emails from React and TypeScript components and turns them into the table-based, inline-styled HTML email clients accept. Since 6.0 (April 16, 2026) everything comes from one package, `react-email`, with the preview server in `@react-email/ui`; the old `@react-email/components` imports, `renderAsync` (removed) and the `plainText` render option (deprecated) belong to earlier versions. The styling rules exist because email clients support only part of CSS. Sending through the Resend API is the [resend](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md) skill; deliverability, unsubscribe and compliance are the [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md) skill.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|

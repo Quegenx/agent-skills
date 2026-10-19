@@ -17,7 +17,7 @@ From [firebase/agent-skills, firebase-ai-logic-basics/SKILL.md; references/usage
 
 - Use a one-shot generation for one response, a chat session for conversation history and streaming for partial response display.
 - Supply the actual MIME type and supported input representation for multimodal content. Check provider/model limits before choosing inline versus referenced media.
-- Use the model's supported schema configuration for structured output. Generic extraction and validation discipline belongs in [AI features](../../ai-agents/ai-features/SKILL.md).
+- Use the model's supported schema configuration for structured output. Generic extraction and validation discipline belongs in [AI features](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/ai-features/SKILL.md).
 - Treat image generation, search grounding and hybrid/on-device inference as capability-specific branches. Do not infer cross-platform availability from one native example.
 - Remote Config can select a supported model without a client-code release; keep safe local defaults and review the actual template. See [REMOTE-CONFIG.md](REMOTE-CONFIG.md).
 

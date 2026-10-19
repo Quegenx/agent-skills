@@ -7,6 +7,8 @@ description: "Lays out an LLM agent's codebase: the folder tree (transport, core
 
 An agent grows fast: tools, gates, notes, memory, playbooks. Without a fixed place for each, the factory turns into a 2,000-line file and every fix lands somewhere new. This layout gives every piece one home, decided by one question, and keeps the parts that change often (tools, playbooks) away from the parts that must stay stable (the loop, the prompt, the history).
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | What each module owns and its contract: the factory, step preparation, the tool runtime, a tool file, turn modules, the transport pipeline, memory, skills, seams | [MODULES.md](MODULES.md) |
@@ -79,7 +81,7 @@ Rules that keep it that way:
 ## Comments at the definition
 
 - Put the natural-language phrase someone would search for beside a non-obvious constraint, with ordinary spaced words as well as the identifier. A source excerpt should make sense without opening its imports: precise imported names and definition context carry the meaning. The source asks for a comment on every export; this repository keeps comments for constraints the signature and code do not already explain, and follows the project's existing test-location convention. [modem-dev/skills, write-discoverable-code/SKILL.md]
-- Locating behavior and proving its connections use the shared [code research method](../../architecture/code-research/SOURCE-RESEARCH.md); do not duplicate discovery instructions in each module guide. [bgauryy/octocode, octocode-research/references/code-research.md]
+- Locating behavior and proving its connections use the shared [code research method](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-research/SOURCE-RESEARCH.md); do not duplicate discovery instructions in each module guide. [bgauryy/octocode, octocode-research/references/code-research.md]
 
 Each constant or rule says why it exists, what it was measured on and when, and which established pattern it follows: "calibrated on 149 stored answers, 0 false alarms", "the model left the follow-ups out of 11 of 28 answers". A deliberate shortcut names its ceiling and upgrade path ("cut results kept in this process's memory, the newest 100; upgrade: a table"). A rule that was tried and removed says so where someone would add it again. A helper library the agent composes into one-off scripts records its data gotchas in the docstrings (`user_id` is null until after signup), so the agent spends its turns on composition, not on reconstructing boilerplate.
 
@@ -87,12 +89,14 @@ Each constant or rule says why it exists, what it was measured on and when, and 
 
 Write SDK calls from the documentation and type definitions that ship inside the installed package (for the AI SDK, `node_modules/ai/docs` and its `.d.ts`), never from memory: option names move between major versions (instructions for system, `toolApproval` for a per-tool flag, renamed callbacks), and an old name can still type-check in a loose spot. Run the type check after each change, and set every loop option explicitly rather than relying on a default you haven't read.
 
-AI SDK 7 needs Node.js 22 or later ("for production workloads, prefer Node.js 24 (LTS) or Node.js 26") and every package is ESM-only; `npx @ai-sdk/codemod v7` migrates v6 code. Its v7 migration guide also deprecates the result's stream response helpers (`result.toUIMessageStreamResponse` and its siblings) for the top-level `toUIMessageStream({ stream: result.stream, ... })` with `createUIMessageStreamResponse({ stream })`, and renames `fullStream` to `stream`.
+For an AI SDK 7 project, AI SDK 7 needs Node.js 22 or later ("for production workloads, prefer Node.js 24 (LTS) or Node.js 26") and every package is ESM-only; `npx @ai-sdk/codemod v7` migrates v6 code. Its v7 migration guide also deprecates the result's stream response helpers (`result.toUIMessageStreamResponse` and its siblings) for the top-level `toUIMessageStream({ stream: result.stream, ... })` with `createUIMessageStreamResponse({ stream })`, and renames `fullStream` to `stream`.
 
 ## Prove it
+
+Apply these checks to the modules and contracts changed by the task; the SDK paragraph applies only when the project uses AI SDK 7.
 
 - [ ] Every file sits in the folder the table above gives it; no `utils`, `helpers` or `types` files
 - [ ] Imports checked mechanically: no domain-to-domain edge, no core-to-transport edge, no core import of a `tools/<domain>/` folder outside the registry (a gate may read the input schema of the agent's own conversation tool it checks, such as the plan), no cycle among value imports
 - [ ] Tool names, traits, deferred namespaces and error next steps each defined once, the others derived or checked by type (a tool with no trait fails to compile)
 - [ ] Every outside action reaches tools through an injected interface with the real one as default
-- [ ] Tests mirror the source tree; the prompt, tool schemas and rebuilt histories pinned as snapshot files
+- [ ] Tests follow the project's existing test-location convention; changed prompt, tool schemas and rebuilt histories pinned as snapshot files

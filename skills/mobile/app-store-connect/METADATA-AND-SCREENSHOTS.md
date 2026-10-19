@@ -1,8 +1,8 @@
 # App Store metadata and screenshots
 
-The text, screenshots, previews and creative assets of an App Store product page, kept in files and synced with the `asc` CLI. Two things decide most outcomes: whether a field belongs to the app-info record (name, subtitle, privacy URLs) or to a version (description, keywords, What's New, screenshots), and whether every write was pulled, validated and dry-run against explicit IDs before it went remote. Version fields only reach users through a submission, except promotional text. For keyword choice and listing optimization read [../aso/SKILL.md](../aso/SKILL.md); for Apple Ads read [../app-growth/SKILL.md](../app-growth/SKILL.md). Facts about the `asc` CLI come from its third-party authors (rorkai); where they differ from Apple's docs, both are given.
+The text, screenshots, previews and creative assets of an App Store product page, kept in files and synced with the `asc` CLI. Two things decide most outcomes: whether a field belongs to the app-info record (name, subtitle, privacy URLs) or to a version (description, keywords, What's New, screenshots), and whether every write was pulled, validated and dry-run against explicit IDs before it went remote. Version fields only reach users through a submission, except promotional text. For keyword choice and listing optimization read [aso SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md); for Apple Ads read [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md). Facts about the `asc` CLI come from its third-party authors (rorkai); where they differ from Apple's docs, both are given.
 
-**Contents:** [asc ground rules](#asc-ground-rules) · [Field limits](#field-limits) · [Review rules for metadata](#review-rules-for-metadata) · [Sync metadata with asc metadata](#sync-metadata-with-asc-metadata) · [Localize metadata](#localize-metadata) · [What's New and promotional text](#whats-new-and-promotional-text) · [Screenshots](#screenshots) · [App previews](../aso/VISUALS.md#app-preview-specs-app-store) · [Creative assets and the Asset Library](#creative-assets-and-the-asset-library) · [Custom product pages](#custom-product-pages) · [Prove it](#prove-it)
+**Contents:** [asc ground rules](#asc-ground-rules) · [Field limits](#field-limits) · [Review rules for metadata](#review-rules-for-metadata) · [Sync metadata with asc metadata](#sync-metadata-with-asc-metadata) · [Localize metadata](#localize-metadata) · [What's New and promotional text](#whats-new-and-promotional-text) · [Screenshots](#screenshots) · [App previews](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/VISUALS.md#app-preview-specs-app-store) · [Creative assets and the Asset Library](#creative-assets-and-the-asset-library) · [Custom product pages](#custom-product-pages) · [Prove it](#prove-it)
 
 ## asc ground rules
 
@@ -36,7 +36,7 @@ The text, screenshots, previews and creative assets of an App Store product page
 
 ## Review rules for metadata
 
-Use [App Review metadata policy](REVIEW-GUIDELINES.md#23-accurate-metadata) and [ASO asset policy](../aso/VISUALS.md#rules-for-every-asset) before syncing. The old local 2.3.10 summary omitted the approved interactive-functionality exception; the policy owner preserves it. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
+Use [App Review metadata policy](REVIEW-GUIDELINES.md#23-accurate-metadata) and [ASO asset policy](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/VISUALS.md#rules-for-every-asset) before syncing. The old local 2.3.10 summary omitted the approved interactive-functionality exception; the policy owner preserves it. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
 
 ## Sync metadata with asc metadata
 
@@ -166,7 +166,7 @@ asc migrate import --app "APP_ID" --version-id "VERSION_ID" --fastlane-dir "./fa
 
 ## Screenshots
 
-Apple's screenshot counts, formats, required device classes and full size matrix have one owner: [ASO screenshot specs](../aso/VISUALS.md#screenshot-specs-app-store). Check the [current official specification](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications) and the installed CLI's size list before choosing upload targets.
+Apple's screenshot counts, formats, required device classes and full size matrix have one owner: [ASO screenshot specs](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/VISUALS.md#screenshot-specs-app-store). Check the [current official specification](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications) and the installed CLI's size list before choosing upload targets.
 
 ### Validate, fix and upload with asc
 
@@ -257,13 +257,13 @@ xcrun simctl spawn "$UDID" defaults write NSGlobalDomain AppleLocale -string "$A
 
 ## App previews
 
-Counts, placement, codec/audio requirements, accepted resolutions, poster frame and processing limits are defined in [ASO preview specs](../aso/VISUALS.md#app-preview-specs-app-store); use the [current official spec](https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications). Metadata export/reuse and HLS-reference handling remain in [the asc sync workflow](#sync-metadata-with-asc-metadata).
+Counts, placement, codec/audio requirements, accepted resolutions, poster frame and processing limits are defined in [ASO preview specs](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/VISUALS.md#app-preview-specs-app-store); use the [current official spec](https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications). Metadata export/reuse and HLS-reference handling remain in [the asc sync workflow](#sync-metadata-with-asc-metadata).
 
 ## Creative assets and the Asset Library
 
 Product page headers and search results assets are new in fall 2026 (guideline 2.3.14). The Asset Library in App Store Connect (October 5, 2026) uploads and pre-approves assets, with a preview tool for Dark Mode, devices and orientations before you submit.
 
-Header/search image and video sizes, ratios, formats, alpha/audio/looping constraints and 2.3.14 policy are in [ASO creative asset specs](../aso/VISUALS.md#product-page-header-and-search-assets-fall-2026), checked against the [official specification](https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications). The upload, localization placement and review operations below remain separate stages.
+Header/search image and video sizes, ratios, formats, alpha/audio/looping constraints and 2.3.14 policy are in [ASO creative asset specs](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/VISUALS.md#product-page-header-and-search-assets-fall-2026), checked against the [official specification](https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications). The upload, localization placement and review operations below remain separate stages.
 
 - **Run only the stages asked for.** Upload, assign, submit for review and publish are separate operations.
 - **Inspect:**
@@ -300,7 +300,7 @@ asc localizations placements create --localization-id "LOC_ID" --video-id "VIDEO
 - **Prerequisites:** the app must be Ready for Distribution in at least one country, and each page must be approved before it shows. Its metadata is reviewed independently of an app update. Role: Account Holder, Admin, App Manager or Marketing.
 - **Keywords:** assign them from the latest approved version and "select a unique set of keywords for each page".
 - **Deep link (optional):** a universal link or custom URL for users on iOS 18 / iPadOS 18 and later; it must be approved; avoid URL shorteners.
-- **Linking from ads:** ad networks pass `customProductPageIdentifier` with `SKOverlay`, or `SKStoreProductParameterCustomProductPageIdentifier` with `SKStoreProductViewController`. Apple Ads can use custom product pages (Today tab, Search tab, search results ad variations); see [../app-growth/SKILL.md](../app-growth/SKILL.md).
+- **Linking from ads:** ad networks pass `customProductPageIdentifier` with `SKOverlay`, or `SKStoreProductParameterCustomProductPageIdentifier` with `SKStoreProductViewController`. Apple Ads can use custom product pages (Today tab, Search tab, search results ad variations); see [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 - **Metrics** appear in App Analytics after at least five first-time downloads. Disabled or deleted page URLs redirect to the default page.
 - **Placements via asc:** `product-pages custom-pages localizations placements` (see the Asset Library section).
 - **Configure guide:** https://developer.apple.com/help/app-store-connect/create-custom-product-pages/configure-multiple-product-page-versions

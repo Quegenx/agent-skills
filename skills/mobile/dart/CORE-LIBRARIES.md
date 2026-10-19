@@ -147,7 +147,7 @@ Both from [ApparenceKit](https://apparencekit.dev/flutter-tips/6-ways-copy-list-
 // var newList = IList.orNull(oldList); // creates a new immutable list pointing to the same data initially
 ```
 
-Immutable model classes (freezed, built_value) are in [../flutter/ARCHITECTURE.md](../flutter/ARCHITECTURE.md); value equality for your own classes is in [USAGE-AND-DESIGN.md](USAGE-AND-DESIGN.md#equality).
+Immutable model classes (freezed, built_value) are in [flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md); value equality for your own classes is in [USAGE-AND-DESIGN.md](USAGE-AND-DESIGN.md#equality).
 
 ## Pretty-printing JSON
 

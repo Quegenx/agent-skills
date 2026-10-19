@@ -76,7 +76,7 @@ export const orderValidatorFor = (country: "US" | "EU" | "other") =>
 
 ## Choosing the data structure
 
-Use the canonical [hash-map and set patterns](../algorithm-patterns/PATTERNS.md#hash-map-or-set-remember-instead-of-rescanning) for duplicate detection, iterable inputs and equality choices.
+Use the canonical [hash-map and set patterns](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/algorithm-patterns/PATTERNS.md#hash-map-or-set-remember-instead-of-rescanning) for duplicate detection, iterable inputs and equality choices.
 
 ## Prove it
 

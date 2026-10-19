@@ -1,6 +1,6 @@
 # Migrating an existing suite
 
-A migration is never one change. Each session ports one slice, proves it, and leaves both suites green; the old runner keeps every test, and a progress file lets any later session resume. The user decides when an old test goes. The target below is the `e2e` runner.
+A migration is never one change. Each session ports one slice, proves it, and leaves both suites green; the old runner keeps every test, and a progress file lets any later session resume. The user decides when an old test goes. The target below is the `e2e` runner. [tester-army/e2e, migrate-to-e2e/SKILL.md]
 
 ## Detect and resume
 

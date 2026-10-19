@@ -1,6 +1,6 @@
 # Account research
 
-"Research before outreach has one job: find a true, specific reason this account should care right now, and the person who owns that problem." [coreyhaines31/marketingskills, prospecting] references/account-research.md. Competitor dossiers and feature matrices are in [../../web-automation/web-research/COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md); the anti-hallucination rules for any research field are in [../../web-automation/web-research/EVIDENCE.md](../../web-automation/web-research/EVIDENCE.md).
+"Research before outreach has one job: find a true, specific reason this account should care right now, and the person who owns that problem." [coreyhaines31/marketingskills, prospecting] references/account-research.md. Competitor dossiers and feature matrices are in [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md); the anti-hallucination rules for any research field are in [web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md).
 
 ## Research per tier
 
@@ -25,7 +25,7 @@ Tiers are defined in [SIGNALS.md](SIGNALS.md#account-tiers).
 5. **Filings and reports.** For public companies, the 10-K risk factors and earnings calls name priorities explicitly.
 6. **Reviews of their product.** What their customers complain about shows what they're under pressure to fix.
 
-Read the original public page, not a search snippet, before qualifying on it ([FIRST-CUSTOMERS.md](FIRST-CUSTOMERS.md#step-2-mine-the-five-signal-buckets)). web-research's rule for auth-walled sites, "for LinkedIn and YouTube, read the search snippet; don't fetch" ([EVIDENCE.md](../../web-automation/web-research/EVIDENCE.md#the-research-loop)), fits with it: a snippet can locate an account but can't qualify it.
+Read the original public page, not a search snippet, before qualifying on it ([FIRST-CUSTOMERS.md](FIRST-CUSTOMERS.md#step-2-mine-the-five-signal-buckets)). web-research's rule for auth-walled sites, "for LinkedIn and YouTube, read the search snippet; don't fetch" ([web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#the-research-loop)), fits with it: a snippet can locate an account but can't qualify it.
 
 ## The Tier 1 brief
 

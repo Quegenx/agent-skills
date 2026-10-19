@@ -122,7 +122,7 @@ return MaterialApp(
 - **Or use the generated list:** `supportedLocales: AppLocalizations.supportedLocales`.
 - **The individual delegates** are `AppLocalizations.delegate`, `GlobalMaterialLocalizations.delegate`, `GlobalWidgetsLocalizations.delegate` and `GlobalCupertinoLocalizations.delegate` (the skill lists all four). `GlobalWidgetsLocalizations.delegate` defines the LTR or RTL text direction. Owner's rule: write `EdgeInsetsDirectional`, `AlignmentDirectional` and `start` / `end` (CSS logical properties); they are mandatory in Hebrew, and a physical `left` / `right` there does not mirror ([RESPONSIVE-UNITS.md](RESPONSIVE-UNITS.md#the-parallel-list)). Cupertino apps use `GlobalCupertinoLocalizations.delegates`; a plain `WidgetsApp` uses `GlobalWidgetsLocalizations.delegate`.
 - **Read strings** with `AppLocalizations.of(context)!.helloWorld`. The widget calling it must be a descendant of `MaterialApp`: the app has to have started to initialize `AppLocalizations`, otherwise you get a null exception.
-- **Localize the app title** the OS shows with `MaterialApp.onGenerateTitle: (context) => DemoLocalizations.of(context).title`. It reruns only when the app rebuilds, not on navigation, so it cannot track routes; a per-route browser tab title needs a `Title` widget ([FlutterPro](https://flutterpro.design/details/browser-tab-title), [../flutter-ux/WEB-SHELL.md](../flutter-ux/WEB-SHELL.md#browser-tab-title-per-page)).
+- **Localize the app title** the OS shows with `MaterialApp.onGenerateTitle: (context) => DemoLocalizations.of(context).title`. It reruns only when the app rebuilds, not on navigation, so it cannot track routes; a per-route browser tab title needs a `Title` widget ([FlutterPro](https://flutterpro.design/details/browser-tab-title), [flutter-ux WEB-SHELL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/WEB-SHELL.md#browser-tab-title-per-page)).
 - **A subtree in another locale:** `Localizations.override(context: context, locale: const Locale('es'), child: Builder(...))`.
 
 ## ARB files
@@ -193,7 +193,7 @@ return MaterialApp(
 }
 ```
 
-- **Links inside a sentence:** each language puts the Terms and Privacy links in a different spot, so don't glue the sentence together from separate widgets. Keep one string, mark the links with tags (`'I agree to the <terms>Terms of Use</terms> and <privacy>Privacy Policy</privacy>'`) and let translators move the tags; the tag name says which link was tapped in every language ([FlutterPro](https://flutterpro.design/details/linked-text); the `LinkedText` widget is in [../flutter-ux/FORMS-AND-INPUT.md](../flutter-ux/FORMS-AND-INPUT.md#links-inside-a-translated-sentence)). The article doesn't show the tagged string inside an ARB file; check it against [Escaping](#escaping) before relying on it.
+- **Links inside a sentence:** each language puts the Terms and Privacy links in a different spot, so don't glue the sentence together from separate widgets. Keep one string, mark the links with tags (`'I agree to the <terms>Terms of Use</terms> and <privacy>Privacy Policy</privacy>'`) and let translators move the tags; the tag name says which link was tapped in every language ([FlutterPro](https://flutterpro.design/details/linked-text); the `LinkedText` widget is in [flutter-ux FORMS-AND-INPUT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/FORMS-AND-INPUT.md#links-inside-a-translated-sentence)). The article doesn't show the tagged string inside an ARB file; check it against [Escaping](#escaping) before relying on it.
 - **In a widget,** the skill's "Complete Widget Implementation" (same `package:flutter_gen` import conflict as above):
 
 ```dart
@@ -244,8 +244,8 @@ Set `"format"` on a `num` placeholder. Output for 1200000:
 
 - **Optional parameters** look like `"decimalDigits": 2`.
 - **Dates:** `DateTime` placeholders use `DateFormat`, with 41 format variations. `"format": "yMd"` gives "7/9/1959" in en_US and "9.07.1959" in ru.
-- **Outside ARB messages,** call `NumberFormat` and `DateFormat` from Dart (initialize date locale data once with `initializeDateFormatting()`): FlutterPro's patterns by context and the "how much" vs "which one" rule are in [../flutter-ux/FORMATTING.md](../flutter-ux/FORMATTING.md) ([FlutterPro](https://flutterpro.design/details/format-numbers-for-humans), [FlutterPro](https://flutterpro.design/details/format-date-times)).
-- **Time zones are not formats:** `DateTime.timeZoneName` and `timeZoneOffset` carry no history of time zone rules, so scheduled notifications can fire at the wrong time across future DST shifts; the device's IANA zone (`Europe/Paris`) comes from `flutter_timezone` ([ApparenceKit](https://apparencekit.dev/flutter-tips/getting-device-timezone/), [../flutter-ux/DEVICE-FEATURES.md](../flutter-ux/DEVICE-FEATURES.md#device-timezone)).
+- **Outside ARB messages,** call `NumberFormat` and `DateFormat` from Dart (initialize date locale data once with `initializeDateFormatting()`): FlutterPro's patterns by context and the "how much" vs "which one" rule are in [flutter-ux FORMATTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/FORMATTING.md) ([FlutterPro](https://flutterpro.design/details/format-numbers-for-humans), [FlutterPro](https://flutterpro.design/details/format-date-times)).
+- **Time zones are not formats:** `DateTime.timeZoneName` and `timeZoneOffset` carry no history of time zone rules, so scheduled notifications can fire at the wrong time across future DST shifts; the device's IANA zone (`Europe/Paris`) comes from `flutter_timezone` ([ApparenceKit](https://apparencekit.dev/flutter-tips/getting-device-timezone/), [flutter-ux DEVICE-FEATURES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/DEVICE-FEATURES.md#device-timezone)).
 
 ## Escaping
 
@@ -256,7 +256,7 @@ Set `"format"` on a `num` placeholder. Output for 1200000:
 - **Prefer `Locale.fromSubtags`,** which supports `scriptCode`. To cover Chinese fully, list `zh`, `zh_Hans`, `zh_Hant`, `zh_Hans_CN`, `zh_Hant_TW`, `zh_Hant_HK`; differentiate `fr_FR` and `fr_CA` the same way.
 - **Flutter only resolves to locales in `supportedLocales`.** The order: an exact match, then the first locale with a matching `languageCode`, then the first element of `supportedLocales`. Override with `localeResolutionCallback: (locale, supportedLocales) { return locale; }`.
 - **Current locale:** `Localizations.localeOf(context)`.
-- **Semantics labels are spoken verbatim,** so localize them too; a custom render object takes them as inputs from its widget instead of hardcoding English ([renderobjects](https://renderobjects.com/guides/semantics/), [../flutter-render-objects/SEMANTICS.md](../flutter-render-objects/SEMANTICS.md)).
+- **Semantics labels are spoken verbatim,** so localize them too; a custom render object takes them as inputs from its widget instead of hardcoding English ([renderobjects](https://renderobjects.com/guides/semantics/), [flutter-render-objects SEMANTICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-render-objects/SEMANTICS.md)).
 - **How it works:** `Localizations` behaves like an `InheritedWidget`; each `LocalizationsDelegate.load()` produces the localized objects, for example `MaterialLocalizations.of(context).backButtonTooltip`.
 - **A language `GlobalMaterialLocalizations` lacks** needs about 70 translations plus date patterns and symbols (the docs' Nynorsk example defines `NnMaterialLocalizations` and a delegate returning a `SynchronousFuture`).
 

@@ -5,7 +5,9 @@ description: "Builds and maintains public competitor comparison and alternative 
 
 # Comparison pages
 
-A comparison page is a public claim about another company that its buyers and its own team will read and check. Most of this skill comes from coreyhaines31/marketingskills `competitors` v2.3.0 (MIT), tagged `[coreyhaines31/marketingskills, competitors]`, with the evidence rules shared with its `competitor-profiling` v2.1.3; Google's review guidance and the FTC's endorsement guidance are quoted where they apply. Researching competitors from scratch (discovery, lanes, feature matrix) is [web-research COMPETITORS.md](../../web-automation/web-research/COMPETITORS.md); internal battle cards are [sales-enablement](../sales-enablement/SKILL.md) and web-research's battle-card lane, never a public page; the copy itself is [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+A comparison page is a public claim about another company that its buyers and its own team will read and check. Most of this skill comes from coreyhaines31/marketingskills `competitors` v2.3.0 (MIT), tagged `[coreyhaines31/marketingskills, competitors]`, with the evidence rules shared with its `competitor-profiling` v2.1.3; Google's review guidance and the FTC's endorsement guidance are quoted where they apply. Researching competitors from scratch (discovery, lanes, feature matrix) is [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md); internal battle cards are [sales-enablement](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md) and web-research's battle-card lane, never a public page; the copy itself is [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -16,7 +18,7 @@ A comparison page is a public claim about another company that its buyers and it
 
 ## Before writing
 
-`[coreyhaines31/marketingskills, competitors]` Read the product context file, `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md); the source calls it `.agents/product-marketing.md`). Its "Alternatives", "What's different", "Objections and poor fits" and "Switching" sections feed these pages. Then establish:
+`[coreyhaines31/marketingskills, competitors]` Read the product context file, `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md); the source calls it `.agents/product-marketing.md`). Its "Alternatives", "What's different", "Objections and poor fits" and "Switching" sections feed these pages. Then establish:
 - **Your product:** core value proposition, key differentiators, ideal customer, pricing model, strengths and honest weaknesses.
 - **The landscape:** direct and indirect competitors, each one's positioning, search volume for competitor terms.
 - **Goals:** SEO traffic, sales enablement, converting competitor users, brand positioning.
@@ -41,7 +43,7 @@ Google's guidance for review content backs the same habits ([write high-quality 
 `[coreyhaines31/marketingskills, competitors]` Per competitor:
 1. **Product:** sign up, use it, document features, UX and limitations (a trial is what can confirm an absence).
 2. **Pricing:** current pricing, what's included, hidden costs.
-3. **Reviews:** G2, Capterra, TrustRadius for praise and complaint themes, read within each site's terms (methods in [customer-research SOURCES.md](../customer-research/SOURCES.md)).
+3. **Reviews:** G2, Capterra, TrustRadius for praise and complaint themes, read within each site's terms (methods in [customer-research SOURCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SOURCES.md)).
 4. **Switchers:** talk to customers who switched, in both directions.
 5. **Content:** their positioning, their own comparison pages, their changelog.
 

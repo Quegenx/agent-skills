@@ -1,12 +1,12 @@
 # [MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md): where things go
 
-[measured corpus, original layout.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](../seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](../seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
+[measured corpus, original layout.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
-[measured corpus, captured-identity view; asset-prep, SKILL.md#working-inside-an-existing-product-repo] This source asks for real captured sender/time/content identity. The current repo instead requires clearly synthetic, demo-safe customer values and forbids personal, test-user or production information on screen. Preserve product geometry and approved copy; the [existing privacy rule](../asset-prep/SKILL.md#working-inside-an-existing-product-repo) governs customer identity.
+[measured corpus, captured-identity view; asset-prep, SKILL.md#working-inside-an-existing-product-repo] This source asks for real captured sender/time/content identity. The current repo instead requires clearly synthetic, demo-safe customer values and forbids personal, test-user or production information on screen. Preserve product geometry and approved copy; the [existing privacy rule](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md#working-inside-an-existing-product-repo) governs customer identity.
 
-See also: [MEASURED-TYPOGRAPHY.md](MEASURED-TYPOGRAPHY.md) (word entry and timing; meaning on the word), [motion.md](../seek-engine/measured/motion.md) (eases, camera), [MEASURED-PRODUCT-DEMO.md](MEASURED-PRODUCT-DEMO.md) (cursor and UI behaviour), [MEASURED-ENDINGS.md](MEASURED-ENDINGS.md) (lockup builds and holds), [MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) (film system, film shapes), [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md) (what the ground, light and depth are made of), [MEASURED-BRAND-SYSTEM.md](../video-brief/MEASURED-BRAND-SYSTEM.md) (using the capture's real screens and photos), [MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) (Part 0 on the plan; patterns N1-N25), [README.md](../seek-engine/measured/README.md#their-tools-in-this-skill-set) (`scripts/chrome_lint.mjs`, gate G5).
+See also: [MEASURED-TYPOGRAPHY.md](MEASURED-TYPOGRAPHY.md) (word entry and timing; meaning on the word), [seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md) (eases, camera), [MEASURED-PRODUCT-DEMO.md](MEASURED-PRODUCT-DEMO.md) (cursor and UI behaviour), [MEASURED-ENDINGS.md](MEASURED-ENDINGS.md) (lockup builds and holds), [MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) (film system, film shapes), [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md) (what the ground, light and depth are made of), [video-brief MEASURED-BRAND-SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-BRAND-SYSTEM.md) (using the capture's real screens and photos), [frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) (Part 0 on the plan; patterns N1-N25), [seek-engine measured/README.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md#their-tools-in-this-skill-set) (`scripts/chrome_lint.mjs`, gate G5).
 
-**Contents:** [0. Page chrome is never part of the film (gate G5)](#0-page-chrome-is-never-part-of-the-film-gate-g5) · [1. The frame as coordinates](#1-the-frame-as-coordinates) · [2. Off-centre layouts and when to use them](#2-off-centre-layouts-and-when-to-use-them) · [3. How many things, how much empty](#3-how-many-things-how-much-empty) · [4. Type size by role (em, % of H)](#4-type-size-by-role-em--of-h) · [5. UI framing](#5-ui-framing) · [6. Cards, grids, rings, orbits (geometry seen)](#6-cards-grids-rings-orbits-geometry-seen) · [7. Lockup geometry (icon / wordmark / tagline)](#7-lockup-geometry-icon--wordmark--tagline) · [8. Depth and layer order](#8-depth-and-layer-order) · [9. Edge cropping as a device](#9-edge-cropping-as-a-device) · [10. Aspect ratios](#10-aspect-ratios) · [Diagrams](#diagrams) · [Slop tells for layout](#slop-tells-for-layout) · [Prove it](#prove-it)
+**Contents:** [0. Page chrome is never part of the film (gate G5)](#0-page-chrome-is-never-part-of-the-film-gate-g5) · [1. The frame as coordinates](#1-the-frame-as-coordinates) · [2. Off-centre layouts and when to use them](#2-off-centre-layouts-and-when-to-use-them) · [3. How many things, how much empty](#3-how-many-things-how-much-empty) · [4. Type size by role (em, % of H)](#4-type-size-by-role-em--of-h) · [5. UI framing](#5-ui-framing) · [6. Cards, grids, rings, orbits (geometry seen)](#6-cards-grids-rings-orbits-geometry-seen) · [7. Lockup geometry (icon / wordmark / tagline)](#7-lockup-geometry-icon--wordmark--tagline) · [8. Depth and layer order](#8-depth-and-layer-order) · [9. Edge cropping as a device](#9-edge-cropping-as-a-device) · [10. Aspect ratios](#10-aspect-ratios) · [Diagrams](MEASURED-COMPOSITION-DIAGRAMS.md#diagrams) · [Slop tells for layout](#slop-tells-for-layout) · [Prove it](#prove-it)
 
 Placement rules for a motion-graphics film, measured from 53 short launch/explainer moments (IDs M913-M974). Use it to put every element on the frame without guessing: anchor, extent, size, how many things share the frame, what overlaps what.
 
@@ -20,7 +20,7 @@ Conventions. Frame = 1.0 x 1.0, origin top-left, x right, y down. W = frame widt
 
 A film is not a web page, a slide or a design-tool screenshot. Anything that makes the frame look like a page layout (labels, counters, headers, footers, kickers, brand strips) is page chrome. It comes from the renderer's house style and from the urge to look designed; viewers read it as a template, and this user rejects it hardest. The only text on screen is the claim, the product's own UI words (inside the UI fragment), and the logo once. Nothing is "justified": delete the element.
 
-**Detectable patterns** (each one is a FAIL; `scripts/chrome_lint.mjs <index.html>` finds them on rendered DOM, see [README.md](../seek-engine/measured/README.md#their-tools-in-this-skill-set); you find the rest on the contact sheet):
+**Detectable patterns** (each one is a FAIL; `scripts/chrome_lint.mjs <index.html>` finds them on rendered DOM, see [seek-engine measured/README.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/README.md#their-tools-in-this-skill-set); you find the rest on the contact sheet):
 
 | Pattern | What it looks like | Typical origin |
 |---|---|---|
@@ -34,13 +34,13 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 | Corner brackets / crop marks | L-shaped marks in the four corners | "HUD" decoration |
 | Scene label chip | "Messages", "Mail", "Editor" above a shot to name it | looks informative; the UI should show what it is |
 | Deck layout | a left-aligned headline block at x < 0.2 (with or without a sub-line) beside right-side media; title-then-content | web and keynote priors |
-| Pinned element | a pill, dock or caption at identical coordinates through 3+ shots | "recurring carrier" taken literally ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N8) |
+| Pinned element | a pill, dock or caption at identical coordinates through 3+ shots | "recurring carrier" taken literally ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N8) |
 
 **The pro alternatives, stated:**
 - A statement is **one centred line** at y 0.52-0.54 paced to speech (R1.1), or a **split phrase** whose far half becomes an object (section 2), on screen briefly, handing off to something already moving.
 - Identity comes from the **logo placed once, at the end**, and from the world looking like the brand (its surfaces, type, colour logic), never from a label.
 - A chapter or act break is a **ground change plus a carried object** ([MEASURED-TRANSITIONS.md](MEASURED-TRANSITIONS.md) T1 + T15), never a number.
-- The product is a **camera-magnified fragment** of its real UI inside a built world (R5.1, [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)), and the UI names itself by showing its real icon, layout and words.
+- The product is a **camera-magnified fragment** of its real UI inside a built world (R5.1, [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)), and the UI names itself by showing its real icon, layout and words.
 - A number is a **physical quantity inside a beat** ([MEASURED-TYPE-DECISIONS.md](MEASURED-TYPE-DECISIONS.md) section 8), not a caption in a corner.
 - Edge cropping is of *content* (R9): figures, cards, a device. Text, labels and logos stay out of the outer 12% W / 10% H band unless the crop is the point.
 
@@ -56,7 +56,7 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 | Optical centre x | 0.46-0.50 | Centred text. Final titles sit left of true centre | M947 .47, M957 .46, M973/M974 lockup spans .33-.67 |
 | Upper band | y 0.14-0.28 | Heading stacked above a hero visual (square film only, where heading and card fan read as one picture; in 16:9 a heading over content is a title-then-content slide) | M932 |
 | Sub-line | y 0.57-0.61 | One line under a *name or lockup* (R7.3), 0.05 H, light grey; never a sub-line under a held headline (that is a slide) | M916 |
-| Lower caption band | y 0.86-0.95 | Voice-synced caption pill, small italic subtitle: only when it is the film's own idea (a caption that is part of the product's UI), never a recurring caption at the same y on every beat (feature-tour tell, [MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N6) | M954 (pill top .86, 0.08 H tall; subtitle .92-.95) |
+| Lower caption band | y 0.86-0.95 | Voice-synced caption pill, small italic subtitle: only when it is the film's own idea (a caption that is part of the product's UI), never a recurring caption at the same y on every beat (feature-tour tell, [frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N6) | M954 (pill top .86, 0.08 H tall; subtitle .92-.95) |
 | Left text margin | x 0.10-0.14 | ONLY a one-line phrase with no sub-line and no kicker, on screen under 1.2 s, handing off to an object already moving on the right (a split phrase). Never a held headline block | M920 .14, M938 .14, M966 .10 |
 | Content margin | 0.04-0.12 W | Nothing nearer the edge unless the crop is the point (section 9). No text, label, logo, counter or brand name lives in the outer 0.12 W / 0.10 H band; it is empty or it is cropped content (section 0) | M913 card x .12-.88 |
 
@@ -64,7 +64,7 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 
 **R1.1** WHEN a statement is one line and centred -> DO put its baseline at y 0.52-0.54, ink span 0.30-0.56 W for 3-5 words at 6.5-10% H, up to 0.72-0.78 W for 5-6 word lines at 10% -- *because* the eye's rest point is slightly above geometric centre and 40-57% of the frame stays empty above and below (M914, M919, M920, M936, M941, M947).
 **R1.2** WHEN the thing is a final title or last word card -> DO set it off-centre at x 0.46-0.47, y 0.50-0.53 -- *because* an exact-centre title reads as a default template; a 0.03 W offset reads as placed (M947, M957).
-**R1.3** WHEN the opening word is the thesis -> DO centre it at (0.50, 0.49), 33% H em, ink 0.75-0.91 W, then shrink -- *because* one oversized noun fixes the subject before anything else exists (M937; M947 glyph-ring cluster 33% H). This is an arrival that decelerates ([motion.md](../seek-engine/measured/motion.md) 3.3), not a recipe for a giant cropped first word in every film: spend scale once ([MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) section 6) and give the word a physical cause or surface.
+**R1.3** WHEN the opening word is the thesis -> DO centre it at (0.50, 0.49), 33% H em, ink 0.75-0.91 W, then shrink -- *because* one oversized noun fixes the subject before anything else exists (M937; M947 glyph-ring cluster 33% H). This is an arrival that decelerates ([seek-engine measured/motion.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion.md) 3.3), not a recipe for a giant cropped first word in every film: spend scale once ([MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) section 6) and give the word a physical cause or surface.
 **R1.4** WHEN a phrase must be left-aligned (a split phrase whose far half becomes an object: M958, M965, M966) -> DO anchor its ink-left at x 0.10-0.14 (two-phrase splits: left phrase at .10-.14, right phrase at .72-.78), keep it to one line, give it no sub-line or kicker, and cut or move it within 1.2 s -- *because* the empty right side gives the next object a landing zone, whereas a held left-aligned block with anything under it is a slide (M920, M938, M966; rejected as "like slides" by the user).
 
 ## 2. Off-centre layouts and when to use them
@@ -89,7 +89,7 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 [measured corpus, original layout.md]
 
 **R3.1** WHEN you compose any beat -> DO put 1 hero + at most 2 supporting elements on screen (statement frames: 1-2; UI frames: card + 3 rows; hook peaks: up to 4 groups for under 0.5 s) -- *because* the viewer reads one thing at a time; a 4th element must replace one (M913, M914, M930, M939, M947, M962).
-**R3.2** WHEN you judge density -> DO budget ink + objects at 5-44% of frame area; the corpus's statement frames leave 85-95% of the frame free of ink (CTA lockup ~95%: M920; top and bottom ~40% empty every beat: M947; top 28% and bottom 28% empty around a magnified card: M913; top 0.27 H empty and nothing below y .56: M930; right 30% empty: M963) -- *because* free space is what makes a single 7% H line feel loud. "Free of ink" is not "flat": the free part is a ground made of something (a plate, a lit surface, texture, depth: [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)), with one focal point inside it. A frame that is only a flat swatch with a small element is the "minimalism as a hiding place" default; empty is allowed only when it does a job (a breath before a payoff, isolation after a matched cut) and for under about 1.5 s.
+**R3.2** WHEN you judge density -> DO budget ink + objects at 5-44% of frame area; the corpus's statement frames leave 85-95% of the frame free of ink (CTA lockup ~95%: M920; top and bottom ~40% empty every beat: M947; top 28% and bottom 28% empty around a magnified card: M913; top 0.27 H empty and nothing below y .56: M930; right 30% empty: M963) -- *because* free space is what makes a single 7% H line feel loud. "Free of ink" is not "flat": the free part is a ground made of something (a plate, a lit surface, texture, depth: [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)), with one focal point inside it. A frame that is only a flat swatch with a small element is the "minimalism as a hiding place" default; empty is allowed only when it does a job (a breath before a payoff, isolation after a matched cut) and for under about 1.5 s.
 **R3.3** WHEN a long log/page scrolls past -> DO let the viewport run empty (M939 at 2.40 s: mostly empty below the last card) instead of inventing filler -- *because* a legible landing after volume reads as competence.
 **R3.4** WHEN the claim IS a comparison (before/after, us/them) -> DO give the two things equal height and a shared baseline (Diagrams, comparison frame) -- *because* equal weight reads as a fair comparison (M936). This is the only case for equal side-by-side panels; in a proof see R3.5.
 **R3.5 (HARD GATE, G4)** WHEN a proof or demo shows two panels (code + result, form + email, before + after) -> DO put them side by side in one frame ONLY if one is clearly the hero (>= 2x the other's area, the other a supporting texture) or the camera moves between them (a pan / push from A to B). Otherwise show ONE object per frame and cut or move the camera between them, carrying one edge or position across the cut. -- *because* two equal panels side by side read as a slide and each ends up at half the size it needs to be read; a test film with two 0.43 W panels failed this. Check: count the panels in every proof frame and compare areas.
@@ -124,10 +124,10 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 [measured corpus, original layout.md]
 
 **R5.1** WHEN the UI is proof -> DO crop to a magnified fragment: modal/dashboard/rail 1.4-2x (M914 1.6, M916 1.5, M917 1.675, M918 1.42, M931 2), one card or one button 2.3-4.4x (M913 3.3, M943 2.33, M949 3.86, M919 4.39; M956 button .04 -> .27 W is an outlier at 6.8x), then pull back to reveal the product -- *because* one readable object at a time, and the pull-back becomes the "it was inside a real product" beat.
-**R5.2** WHEN you show a screen -> DO show no *browser* chrome (no browser frame, URL bar, bezel, OS menu; the surface is a floating card, rail, modal or dashboard plane in a built world, [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)) -- *because* chrome says screenshot; a floating plane says designed (M913-M920, M939-M946). The plane still needs **identity**: the real icon, sender, time and sentence from the product, real density, a surface that contrasts with its ground. A generic white rounded card with a toolbar of three circles and a send arrow, or a dark card saying "Good morning" with a status dot and "label - value", is vibe-coded UI ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N5); build from the capture's real screens ([MEASURED-BRAND-SYSTEM.md](../video-brief/MEASURED-BRAND-SYSTEM.md) section 3).
+**R5.2** WHEN you show a screen -> DO show no *browser* chrome (no browser frame, URL bar, bezel, OS menu; the surface is a floating card, rail, modal or dashboard plane in a built world, [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)) -- *because* chrome says screenshot; a floating plane says designed (M913-M920, M939-M946). The plane still needs **identity**: the real icon, sender, time and sentence from the product, real density, a surface that contrasts with its ground. A generic white rounded card with a toolbar of three circles and a send arrow, or a dark card saying "Good morning" with a status dot and "label - value", is vibe-coded UI ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N5); build from the capture's real screens ([video-brief MEASURED-BRAND-SYSTEM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-BRAND-SYSTEM.md) section 3).
 **R5.1b (G1)** Check the [canonical measured UI readability gate](MEASURED-PRODUCT-DEMO.md#1-framing-real-ui), including its establishing-shot exception and world requirement; magnify the camera rather than independently resizing text.
 **R5.3** WHEN you choose what to make readable -> DO make exactly one object readable at 0.04-0.12 H (prompt .04-.05, row text .05, tab label .05-.07, modal header .055, status .11 then .055, headline .10-.12) and set everything else at 1.3-1.9% H as texture -- *because* texture proves "real product" without competing (M913 editor labels 1.4-1.7%; M939 9-14 px).
-**R5.4** For the shared physical-camera mechanics, use [one camera group](../seek-engine/measured/motion-camera.md#61-one-group-not-many-tweens). Observed window scale: 0.70 -> 0.78 W over 1.2 s (M913, M918, M919, M953, M958).
+**R5.4** For the shared physical-camera mechanics, use [one camera group](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/measured/motion-camera.md#61-one-group-not-many-tweens). Observed window scale: 0.70 -> 0.78 W over 1.2 s (M913, M918, M919, M953, M958).
 **R5.5** WHEN a container's real size is bigger than the frame -> DO let it overflow: box 1.78 W (M974), dropzone 1.36x its settled size (M918), prompt box end off-frame (M931), status line overflowing right on purpose (M919), card 0.90 W with lower half cropped (M922) -- *because* the viewer infers a larger system from the part.
 **R5.6** WHEN text sits in a field wider than the box -> DO crop it by the box edge instead of wrapping (M974, M913 clipped chip labels) -- *because* clipped labels read as real data.
 **R5.7** WHEN one clip hands to the next -> DO carry geometry across the cut: same right edge x 0.20, same 5 rows at y .06/.28/.50/.72/.94 (M933 -> M934); same lattice cols .18/.39/.62/.83, rows .12/.50/.88 (M934 -> M935); same prompt card x .23, y .50, .54 x .27 (M941 -> M942); same title ink x .25-.69 (M947 -> M948) -- *because* a pixel-matched cut disappears.
@@ -186,8 +186,8 @@ A film is not a web page, a slide or a design-tool screenshot. Anything that mak
 
 Back to front:
 
-1. Ground (a surface: a plate or screen from the capture, a material, a lit gradient with a source; flat only when the brand is flat or for a flood under 1 s. [MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)).
-2. Texture: dot grid, lattice, grain, small sparkles, or a real material from the capture. Screen-fixed, never inside the camera group, never above text (M913 dot grid screen-fixed; M964 tiles never scale with blocks; M967 lattice delayed 0.2 s). No ghost decoratives: faint giant words at 3-9% opacity, hairline rules, grid patterns used as "depth" are house-style slop ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N20).
+1. Ground (a surface: a plate or screen from the capture, a material, a lit gradient with a source; flat only when the brand is flat or for a flood under 1 s. [video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)).
+2. Texture: dot grid, lattice, grain, small sparkles, or a real material from the capture. Screen-fixed, never inside the camera group, never above text (M913 dot grid screen-fixed; M964 tiles never scale with blocks; M967 lattice delayed 0.2 s). No ghost decoratives: faint giant words at 3-9% opacity, hairline rules, grid patterns used as "depth" are house-style slop ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N20).
 3. Background UI/panels, defocused 4-11 px or dimmed (M918 peak 11 px; M942 4 px; M956 7-15 px).
 4. Hero object / camera group.
 5. Claim text (headline). Screen-fixed, not parented to the camera, never blurred while the UI behind it is (M918, M958).
@@ -214,7 +214,7 @@ Allowed inversions (condition in brackets):
 **R9.3** WHEN a second figure arrives to compare -> DO leave it cropped and moving at the cut (the second figure and its unit cropped at the right edge, never centred) -- *because* motion at the edge implies more (M936).
 **R9.4** WHEN a device is the hero -> DO crop its top corners off-frame, bottom at y .97, screen ~.39 W (M955) -- *because* a fully visible phone is a mock-up; a cropped one is a hand-held object.
 **R9.5** WHEN a late element enters from an edge -> DO have it arrive already filled as the pull-back reveals its cell (M937) -- *because* it reads as "the grid was always bigger".
-**R9.6** WHEN you place type near an edge -> DO let a first word start oversized and clipped at the left edge as it shrinks (M918 first word at 1.39x, M947 first word at 0.39 H, M937 ink .91 W) -- *because* the crop reads as impact. Use it as an *arrival* (decelerating from oversize), once per film, and only when the idea wants that word to be huge: a giant cropped word in every film is the house style of one over-used generation ([MEASURED-REVIEW.md](../frame-review/MEASURED-REVIEW.md) N15), and a giant word on a flat ground with no object is a slide.
+**R9.6** WHEN you place type near an edge -> DO let a first word start oversized and clipped at the left edge as it shrinks (M918 first word at 1.39x, M947 first word at 0.39 H, M937 ink .91 W) -- *because* the crop reads as impact. Use it as an *arrival* (decelerating from oversize), once per film, and only when the idea wants that word to be huge: a giant cropped word in every film is the house style of one over-used generation ([frame-review MEASURED-REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/MEASURED-REVIEW.md) N15), and a giant word on a flat ground with no object is a slide.
 
 ## 10. Aspect ratios
 
@@ -238,72 +238,7 @@ Allowed inversions (condition in brackets):
 
 ## Diagrams
 
-[measured corpus, original layout.md]
-
-The diagrams show the *geometry of the ink*. Every empty area in them is a built ground ([MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)), not a flat swatch, and none of them has a label, counter or caption in a corner (section 0).
-
-Statement frame (3-5 words, M914/M919/M941):
-```
-x 0      .25      .50      .75      1.0
-y0 +----------------------------------------+
-   |                                        |   top 40% empty
-.25|                                        |
-   |                                        |
-.43|        .---------------------.         |   ink band
-.53|        |  three to five words|  drift  |   baseline y .52-.54
-.55|        '---------------------'  <--    |   x .23-.77, drifts left 1-2%/s
-   |                                        |
-.75|                                        |   bottom 40% empty
-y1 +----------------------------------------+
-```
-
-Lockup frame (M946, M974, M920):
-```
-x 0      .25      .50      .75      1.0
-y0 +----------------------------------------+
-   |                                        |
-.41|            Try it now   (CTA line)      |   x .40-.66, top y .41 (M920 only)
-.50|       [icon] Wordmark                  |   icon .33-.47 | word .49-.67
-.54|         ^ gap .02 W                     |   y centre .50
-   |                                        |
-y1 +----------------------------------------+   95% empty, glow/sweep alive
-```
-
-UI-proof frame (M913, one magnified card, camera = one group):
-```
-x 0      .25      .50      .75      1.0
-y0 +----------------------------------------+
-   |   (top 28% empty, dot grid screen-fixed)
-.28|     .--------------------------------.  |
-.38|     | o  row one       (.17 | .20)    |  |   rows 0.05 H, pitch .11 H
-.49|     | o  row two                      |  |
-.60|     | o  row three                    |  |
-.72|     '--------------------------------'  |   card x .12-.88, 44% H tall
-   |   (bottom 28% empty)                   |
-y1 +----------------------------------------+   cursor above everything
-```
-
-Comparison frame (M936, 30:00 vs the next figure):
-```
-x 0      .25      .50      .75      1.0
-y0 +----------------------------------------+
-   |                                        |
-.33|            30:00      (0.22 H em)      |   claim figure, pure black
-.50|                                        |   same baseline, same height
-.66|            unit label (0.067 H)         |   label fades in 0.2 s after figure lands
-   |                                        |
-   |  later: [6] slides left  | weeks ->    |   second figure same 0.22 H, cropped at
-y1 +----------------------------------------+   right edge, never settles
-```
-
-Menu + hero (M963):
-```
-.50  (.27,.50) disk r .16 W               * Item A     x .70, 2.4% H
-                                            Item B     bullet at x .69 fixed,
-                                            Item C     list scrolls behind it
-```
-
----
+See [Measured composition diagrams](MEASURED-COMPOSITION-DIAGRAMS.md) for this complete section. [measured corpus, original layout.md]
 
 ## Slop tells for layout
 
@@ -313,7 +248,7 @@ Menu + hero (M963):
 |---|---|
 | Put a brand label, counter, timecode, kicker, header or footer on the frame | Nothing: the frame holds the claim, the product and the logo once (section 0, `scripts/chrome_lint.mjs`) |
 | Left-align a headline with a sub-line and put a grid or device on the right | One centred line, a split phrase whose far half is an object, or a headline behind a cropped device (R8.1) |
-| A flat swatch plus one small element as the whole frame | One focal point inside a built world: ground, light, depth, texture ([MEASURED-WORLD.md](../video-brief/MEASURED-WORLD.md)) |
+| A flat swatch plus one small element as the whole frame | One focal point inside a built world: ground, light, depth, texture ([video-brief MEASURED-WORLD.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/video-brief/MEASURED-WORLD.md)) |
 | Name each shot with a small chip or caption ("Messages", "Mail") | The UI shows what it is through its real icon, layout and words |
 | Centre everything at exactly (0.50, 0.50) | Statement baseline .52-.54; final titles at x .46-.47; lockup bounding box centred, not wordmark |
 | Fill the frame with a full app screenshot plus browser chrome | One magnified fragment (1.4-4.4x), floating, no browser chrome, one readable object, built from the capture's real screen with its real identity |

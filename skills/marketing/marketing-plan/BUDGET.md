@@ -142,7 +142,7 @@ For an established CAC calculation, **CAC must be blended.** Include:
 - SDR / BDR salaries if doing outbound
 - Tools (CRM, marketing automation, analytics)
 
-Then divide by the number of new customers acquired in the period. (This blended CAC is fully loaded; the "Blended CPA = Total spend / Total conversions" in [app-growth BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md) is ad spend only. Keep both, named differently.) That blended number is the one to use in either budgeting method.
+Then divide by the number of new customers acquired in the period. (This blended CAC is fully loaded; the "Blended CPA = Total spend / Total conversions" in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md) is ad spend only. Keep both, named differently.) That blended number is the one to use in either budgeting method.
 
 The mistake to avoid: calculating CAC from paid ad spend alone. A company that "doesn't run ads" still has a CAC - it's just hidden in the content team, the founder's time, the SEO contractor, the conference booth.
 

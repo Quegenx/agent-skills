@@ -31,7 +31,7 @@ Source for this section: [Jakub Krehel, interface-review].
 
 "Never report a review of nothing as `Approve`." `gh pr status`, per the source, "succeeds when no pull request is open. It omits `currentBranch`, so an empty result is an answer, not an error. It fails outright without `gh`, without authentication and on a repository with no GitHub remote. Treat any failure as 'no pull request found', say so and offer the remaining routes rather than stopping." The `currentBranch` detail and the no-PR behaviour are not on the [official manual page](https://cli.github.com/manual/gh_pr_status).
 
-**Both views on the default:** [ADVERSARIAL-UI-QA.md](../../web-automation/e2e-testing/ADVERSARIAL-UI-QA.md#testing-a-diff) starts QA from `git diff --name-only HEAD~1` (or `main...HEAD`), and [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md) says "otherwise ask, or start with the most recently changed files"; interface-review asks, with the facts gathered first. Both rules stay where they are.
+**Both views on the default:** [browser-ui-qa ADVERSARIAL-UI-QA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/ADVERSARIAL-UI-QA.md#testing-a-diff) starts QA from `git diff --name-only HEAD~1` (or `main...HEAD`), and [anti-slop-code](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/SKILL.md) says "otherwise ask, or start with the most recently changed files"; interface-review asks, with the facts gathered first. Both rules stay where they are.
 
 **Default branch.** "Try `refs/remotes/origin/HEAD`, then `gh repo view --json defaultBranchRef`. If the ref is missing, ask the remote with `git remote set-head origin --auto` rather than guessing. It needs the network and writes only a ref under `.git`, so it is permitted; note it in Verification. With no remote at all, fall back to a local `main` or `master` and state which base you assumed."
 
@@ -60,7 +60,7 @@ Source: [Jakub Krehel, interface-review]. "Everything else fails loudly at `merg
 
 - "**Detached HEAD.** Use the merge base against the default branch and name the SHA, not a branch, in the scope block."
 - "**Shallow clone**, the CI default, where `merge-base` returns nothing. Fetch `--deepen=50`, retry, then `--deepen=200`, then report the scope as unresolvable. Deepening writes to `.git` and not to the working tree, so it is permitted; note it in Verification."
-  - Lighthouse CI hits the same problem as "Ancestor hash not determinable" and documents its own fetch-depth fix: [LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md#troubleshooting).
+  - Lighthouse CI hits the same problem as "Ancestor hash not determinable" and documents its own fetch-depth fix: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md#troubleshooting).
 - "**Mid-rebase or mid-merge**, the one that does not fail loudly. `git diff` succeeds and returns something that is not the change, so the review looks fine and is wrong." Detect it with `git rev-parse --git-path` against `rebase-merge`, `rebase-apply`, `MERGE_HEAD` and `CHERRY_PICK_HEAD`; "Do not test `.git/` paths directly, because they are not directories inside a linked worktree. Stop and say the tree is mid-operation." Caveat from git-rev-parse(1) and a test: `--git-path` resolves a path and does not check that it exists, and takes one path per flag (`git rev-parse --git-path rebase-merge MERGE_HEAD` fails with "ambiguous argument"). Run one `--git-path` per name, then test each returned path.
 
 ## Excluded paths
@@ -121,21 +121,21 @@ git blame -L <line>,<line> "$BASE"..<head-ref> -- path/to/file
 
 ## UI changes: removed signals and absent states
 
-Source: [Jakub Krehel, interface-review]. "Regressions are invisible in the post-change state. Read the `-` side of every hunk." "A signal is a lead, not a finding. A removal is a regression only when nothing in the change replaces it". A checker that scans changed lines reads the `+` side ([app-ui CHECKS.md](../../frontend/app-ui/CHECKS.md#a-checker-in-ci)); this is the other half. The Owner column names this repo's skill; the source routes to its own `better-*` skills.
+Source: [Jakub Krehel, interface-review]. "Regressions are invisible in the post-change state. Read the `-` side of every hunk." "A signal is a lead, not a finding. A removal is a regression only when nothing in the change replaces it". A checker that scans changed lines reads the `+` side ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md#a-checker-in-ci)); this is the other half. The Owner column names this repo's skill; the source routes to its own `better-*` skills.
 
 | Removed from the `-` side | Owner here | What to check |
 | --- | --- | --- |
-| `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `role=` | [web-accessibility](../../frontend/web-accessibility/SKILL.md) | The control or region lost its accessible name, description or announcement |
+| `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `role=` | [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md) | The control or region lost its accessible name, description or announcement |
 | `alt=`, `<label`, `for=`, `htmlFor`, `scope=` | web-accessibility | Image, field or table cell lost its programmatic association |
 | `<button>`, `<a>`, `<nav>`, `<main>`, `<ul>` replaced by `div` or `span` | web-accessibility | Keyboard and assistive-technology behavior was traded for styling |
 | `:focus-visible`, `:focus`, `outline`, `tabindex` | web-accessibility | Keyboard users lost the focus indicator or the element left the tab order |
 | `prefers-reduced-motion` | web-accessibility | Motion now ignores the user's system preference |
-| `prefers-contrast` | [color-system](../../frontend/color-system/SKILL.md) | Colors now ignore the user's contrast preference |
-| Logical properties swapped for `left` / `right` | [modern-css RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md), with its exceptions (centring with `left: 50%` and a translate, code blocks, parts measured in physical pixels at runtime) | Direction-aware layout was dropped |
-| `lang=`, `dir=` | [modern-css](../../frontend/modern-css/SKILL.md) | Language metadata or text direction was dropped |
+| `prefers-contrast` | [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md) | Colors now ignore the user's contrast preference |
+| Logical properties swapped for `left` / `right` | [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE.md), with its exceptions (centring with `left: 50%` and a translate, code blocks, parts measured in physical pixels at runtime) | Direction-aware layout was dropped |
+| `lang=`, `dir=` | [modern-css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/SKILL.md) | Language metadata or text direction was dropped |
 | `text-wrap`, `line-clamp`, `overflow-wrap`, `tabular-nums`, `font-feature-settings` | modern-css | Text rendering, wrapping or numeral alignment silently changed |
 | A color token swapped for a literal, or a token swapped for a lighter one | color-system | The rendered contrast pair may now fail; measure it |
-| A user-facing string deleted or shortened | [anti-slop-copy MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md) | A label, error or empty state lost the information it carried |
+| A user-facing string deleted or shortened | [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) | A label, error or empty state lost the information it carried |
 
 **Equivalent replacements** "clear the signal. Drop a removal one of them explains before routing anything":
 
@@ -172,7 +172,7 @@ Source: [Jakub Krehel, interface-review]. "A change review is read-only, includi
 
 "Mark visual and runtime claims **Not verified** unless the project exposes a cheap preview or the user asks for a rendered review. For `working` and `branch`, the checkout already is the head, so render it in place. For any other target, render an isolated worktree such as `git worktree add /tmp/review-<n> refs/remotes/pr/<n>` and remove it when done."
 
-**Both views on checking out:** QA that runs the app says "check the branch, check out the PR branch, reinstall dependencies" ([ADVERSARIAL-UI-QA.md](../../web-automation/e2e-testing/ADVERSARIAL-UI-QA.md#testing-a-diff)); a review never checks out. The worktree route above satisfies both.
+**Both views on checking out:** QA that runs the app says "check the branch, check out the PR branch, reinstall dependencies" ([browser-ui-qa ADVERSARIAL-UI-QA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/ADVERSARIAL-UI-QA.md#testing-a-diff)); a review never checks out. The worktree route above satisfies both.
 
 ## The report
 

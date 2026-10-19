@@ -226,7 +226,7 @@ Defaults React Email gives you (since 6.5.0, 2026-05-27; upgrade with `npm insta
 - `<Markdown>` renders layout tables with `role="presentation"`.
 - `<Preview>` also emits a `<title>`.
 
-The author applies [ACCESSIBILITY.md](../email-practices/ACCESSIBILITY.md) to the rendered content. Component-specific mappings remain:
+The author applies [email-practices ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/ACCESSIBILITY.md) to the rendered content. Component-specific mappings remain:
 
 - **Linked images are never decorative:** inside a `<Link>` or `<Button>` the alt describes where the link goes (`alt="View order #123"`); `alt=""` leaves the link without an accessible name.
 - **Link text names the destination:** `<Button>Read the report</Button>`, not "click here".

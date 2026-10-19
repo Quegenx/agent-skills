@@ -32,13 +32,13 @@ returning *;
 
 ## Supabase Queues (pgmq)
 
-See [Supabase queue APIs, visibility, permissions and consumers](../supabase/CRON-AND-QUEUES.md#queues-consumers).
+See [Supabase queue APIs, visibility, permissions and consumers](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/CRON-AND-QUEUES.md#queues-consumers).
 
 ## Convex scheduler and crons
 
-Use [native Convex scheduling guarantees](../convex/FUNCTIONS-AND-DATA.md#native-scheduling-guarantees) for durable API calls, atomicity, execution/retry guarantees and cron registration.
+Use [native Convex scheduling guarantees](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/convex/FUNCTIONS-AND-DATA.md#native-scheduling-guarantees) for durable API calls, atomicity, execution/retry guarantees and cron registration.
 
-- **A recurring job's first run sets its watermark to "now"** rather than processing all history; backfills and resets: [../../marketing/marketing-loops/LOOP-STATE.md](../../marketing/marketing-loops/LOOP-STATE.md#resetting-and-backfilling-safely) [coreyhaines31/marketingskills, marketing-loops].
+- **A recurring job's first run sets its watermark to "now"** rather than processing all history; backfills and resets: [marketing-loops LOOP-STATE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/LOOP-STATE.md#resetting-and-backfilling-safely) [coreyhaines31/marketingskills, marketing-loops].
 
 ## Retries and failure
 

@@ -119,7 +119,7 @@ void applyParentData(RenderObject renderObject) {
 }
 ```
 
-- `debugTypicalAncestorWidgetClass` names the expected ancestor. If a `GridCell` is put inside a `Column`, "the framework produces a helpful error pointing at the mismatch"; this is the "Incorrect use of ParentData widget" error in [../flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md). [renderobjects](https://renderobjects.com/guides/children/parent-data/) Official: `ParentDataWidget` also has `debugTypicalAncestorWidgetDescription` and `debugIsValidRenderObject` (https://api.flutter.dev/flutter/widgets/ParentDataWidget-class.html).
+- `debugTypicalAncestorWidgetClass` names the expected ancestor. If a `GridCell` is put inside a `Column`, "the framework produces a helpful error pointing at the mismatch"; this is the "Incorrect use of ParentData widget" error in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md). [renderobjects](https://renderobjects.com/guides/children/parent-data/) Official: `ParentDataWidget` also has `debugTypicalAncestorWidgetDescription` and `debugIsValidRenderObject` (https://api.flutter.dev/flutter/widgets/ParentDataWidget-class.html).
 
 A positioned child for the list-model stack ([renderobjects](https://renderobjects.com/guides/children/list-of-children/)), and its use:
 

@@ -1,6 +1,6 @@
 # Onboarding and upgrade experiments
 
-A catalogue of tests for activation and in-product upgrades, with the store and legal limits marked. From [coreyhaines31/marketingskills, onboarding] `references/experiments.md` and [coreyhaines31/marketingskills, paywalls] `references/experiments.md` (MIT, Copyright (c) 2025 Corey Haines). Design, sample size and significance are in [../ab-testing/SKILL.md](../ab-testing/SKILL.md); running them on flags in [../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md).
+A catalogue of tests for activation and in-product upgrades, with the store and legal limits marked. From [coreyhaines31/marketingskills, onboarding] `references/experiments.md` and [coreyhaines31/marketingskills, paywalls] `references/experiments.md` (MIT, Copyright (c) 2025 Corey Haines). Design, sample size and significance are in [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md); running them on flags in [posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md).
 
 **Contents:** [Onboarding experiments](#onboarding-experiments) · [Upgrade prompt experiments](#upgrade-prompt-experiments) · [What to measure](#what-to-measure) · [Prove it](#prove-it)
 
@@ -28,8 +28,8 @@ A catalogue of tests for activation and in-product upgrades, with the store and 
 | Mobile | Touch targets; swipe navigation; fewer screens; mobile-friendly inputs; permission timing |
 | Accessibility | Screen reader support; keyboard navigation; color contrast; font sizing |
 
-- **Already decided elsewhere, don't re-test blindly:** permission timing on mobile has an in-context rule in app-growth ([../../mobile/app-growth/ONBOARDING.md](../../mobile/app-growth/ONBOARDING.md)); accessibility items are requirements, not variants ([../../frontend/web-accessibility/SKILL.md](../../frontend/web-accessibility/SKILL.md)).
-- **A "trial time remaining" or "urgency" variant** must show the real remaining time ([../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md#scarcity-urgency-and-dark-patterns)).
+- **Already decided elsewhere, don't re-test blindly:** permission timing on mobile has an in-context rule in app-growth ([app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ONBOARDING.md)); accessibility items are requirements, not variants ([web-accessibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md)).
+- **A "trial time remaining" or "urgency" variant** must show the real remaining time ([offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md#scarcity-urgency-and-dark-patterns)).
 
 ## Upgrade prompt experiments
 
@@ -66,4 +66,4 @@ A catalogue of tests for activation and in-product upgrades, with the store and 
 
 ## Prove it
 
-Each running test names its metric and guardrail (retention or post-upgrade churn), and has no arm that breaks a store rule on its platform or shows a deadline, count or "value" that isn't real. The source favors changing one thing to attribute an effect to that component; [ab-testing](../ab-testing/SKILL.md) also supports deliberately testing whole variants, whose result estimates the aggregate variant effect. This file formerly made one change mandatory for every test. Keep those scopes distinct instead of calling a whole-variant result uninterpretable. [coreyhaines31/marketingskills, onboarding/references/experiments.md; Yuzzyuk/marketing-os, references/analytics.md]
+Each running test names its metric and guardrail (retention or post-upgrade churn), and has no arm that breaks a store rule on its platform or shows a deadline, count or "value" that isn't real. The source favors changing one thing to attribute an effect to that component; [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) also supports deliberately testing whole variants, whose result estimates the aggregate variant effect. This file formerly made one change mandatory for every test. Keep those scopes distinct instead of calling a whole-variant result uninterpretable. [coreyhaines31/marketingskills, onboarding/references/experiments.md; Yuzzyuk/marketing-os, references/analytics.md]

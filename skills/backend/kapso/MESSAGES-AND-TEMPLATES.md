@@ -1,6 +1,6 @@
 # Messages, media and templates
 
-Payload distinctions from [gokapso/agent-skills, integrate-whatsapp/references/whatsapp-api-reference.md; references/templates-reference.md; references/whatsapp-cloud-api-js.md]. Consent, the customer-service window, categories and market policy have one definition in [WhatsApp marketing](../../marketing/sms-marketing/WHATSAPP.md).
+Payload distinctions from [gokapso/agent-skills, integrate-whatsapp/references/whatsapp-api-reference.md; references/templates-reference.md; references/whatsapp-cloud-api-js.md]. Consent, the customer-service window, categories and market policy have one definition in [WhatsApp marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/WHATSAPP.md).
 
 ## Send and read
 
@@ -23,7 +23,7 @@ Payload distinctions from [gokapso/agent-skills, integrate-whatsapp/references/w
 
 ## Authentication corrections
 
-- Use the [authentication-category policy](../../marketing/sms-marketing/WHATSAPP.md#template-categories) for identity OTPs. The supplied templates reference's UTILITY fallback for custom OTP text was wrong. [Meta template categorization](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization)
+- Use the [authentication-category policy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/WHATSAPP.md#template-categories) for identity OTPs. The supplied templates reference's UTILITY fallback for custom OTP text was wrong. [Meta template categorization](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization)
 - Keep add_security_recommendation in BODY and code_expiration_minutes in FOOTER. The supplied authentication reference/asset incorrectly placed expiration in BODY. [Meta copy-code authentication templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/copy-code-button-authentication-templates)
 - Meta's current copy-code examples use a send-time URL button subtype and allow optional button text. The Kapso authentication guide instead demonstrates otp and says text is removed; follow the linked Meta form and check the actual proxy/SDK schema before retaining code. [Meta copy-code authentication templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/copy-code-button-authentication-templates)
 

@@ -121,7 +121,7 @@ await Posthog().capture(
 ```
 
 - **Name routes:** `settings: const RouteSettings(name: 'Home Screen')`. **go_router:** `GoRouter(routes: [...], observers: [PosthogObserver()])` with `MaterialApp.router(routerConfig: _router)`, and name routes `GoRoute(name: 'Home Screen', ...)`.
-- **Shell routes and custom pages** ([FlutterPro](https://flutterpro.design/details/analytics-screen-names), [../../mobile/flutter-ux/APP-LIFECYCLE.md](../../mobile/flutter-ux/APP-LIFECYCLE.md#real-screen-names-in-analytics)): a `ShellRoute` or `StatefulShellRoute` branch runs its own inner navigator, so it needs its own `observers` list; with a custom `pageBuilder` you build the page, so set its name too:
+- **Shell routes and custom pages** ([FlutterPro](https://flutterpro.design/details/analytics-screen-names), [flutter-ux APP-LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/APP-LIFECYCLE.md#real-screen-names-in-analytics)): a `ShellRoute` or `StatefulShellRoute` branch runs its own inner navigator, so it needs its own `observers` list; with a custom `pageBuilder` you build the page, so set its name too:
 
 ```dart
 GoRoute(

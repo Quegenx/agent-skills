@@ -1,6 +1,6 @@
 # Painting and media
 
-Drawing with `CustomPainter` (redraw from a `ChangeNotifier`, round progress and timers, hit testing, `save`/`restore`, text and images on a canvas), turning a painter or a widget into an image, sharing it with `share_plus`, resizing and edge detection with `package:image`, cropping, playing sounds with `audioplayers`, and fullscreen video with `video_player`. Sources: ApparenceKit Flutter tips (apparencekit.dev) and FlutterPro's native-sharing tip (flutterpro.design), which state no Flutter, Dart or package version. Several blocks do not compile as published; each is followed by a labelled correction, with the official URL for API errors. Animation timing, springs and the neutral spinner's painter are in [MOTION-AND-FEEDBACK.md](MOTION-AND-FEEDBACK.md); paint cost (`saveLayer`, clips, `RepaintBoundary`) is in the [flutter skill's PERFORMANCE.md](../flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips).
+Drawing with `CustomPainter` (redraw from a `ChangeNotifier`, round progress and timers, hit testing, `save`/`restore`, text and images on a canvas), turning a painter or a widget into an image, sharing it with `share_plus`, resizing and edge detection with `package:image`, cropping, playing sounds with `audioplayers`, and fullscreen video with `video_player`. Sources: ApparenceKit Flutter tips (apparencekit.dev) and FlutterPro's native-sharing tip (flutterpro.design), which state no Flutter, Dart or package version. Several blocks do not compile as published; each is followed by a labelled correction, with the official URL for API errors. Animation timing, springs and the neutral spinner's painter are in [MOTION-AND-FEEDBACK.md](MOTION-AND-FEEDBACK.md); paint cost (`saveLayer`, clips, `RepaintBoundary`) is in the [flutter skill's PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips).
 
 **Contents:** [Pick a capture route](#pick-a-capture-route) · [Redraw from a model](#redraw-from-a-model) · [Round progress and timers](#round-progress-and-timers) · [Hit testing a painter](#hit-testing-a-painter) · [Save and restore](#save-and-restore) · [Text on a canvas](#text-on-a-canvas) · [An image on a canvas](#an-image-on-a-canvas) · [Export a painter without showing it](#export-a-painter-without-showing-it) · [Capture an on-screen widget](#capture-an-on-screen-widget) · [Capture an offscreen widget](#capture-an-offscreen-widget) · [Share a file or a widget](#share-a-file-or-a-widget) · [Thumbnails and edges](#thumbnails-and-edges) · [Crop an image](#crop-an-image) · [Play a sound](#play-a-sound) · [Fullscreen video](#fullscreen-video) · [Share instead of download](#share-instead-of-download) · [Prove it](#prove-it)
 
@@ -114,7 +114,7 @@ canvas.restore(); // Restore the canvas state back to what it was before the tra
 // now any drawing here will happen relative to the original origin
 ```
 
-- **[Flutter docs]:** `Canvas.save` "Saves a copy of the current transform and clip on the save stack" ([api.flutter.dev](https://api.flutter.dev/flutter/dart-ui/Canvas/save.html)); it is a different call from the expensive `saveLayer()` in the [flutter skill's PERFORMANCE.md](../flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips).
+- **[Flutter docs]:** `Canvas.save` "Saves a copy of the current transform and clip on the save stack" ([api.flutter.dev](https://api.flutter.dev/flutter/dart-ui/Canvas/save.html)); it is a different call from the expensive `saveLayer()` in the [flutter skill's PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips).
 
 ## Text on a canvas
 
@@ -150,7 +150,7 @@ final offset = Offset(50, 100); // Position (x, y)
 textPainter.paint(canvas, offset);
 ```
 
-- The source hard-codes `ui.TextDirection.ltr`; LTR and RTL text direction is in the [flutter skill's LOCALIZATION.md](../flutter/LOCALIZATION.md).
+- The source hard-codes `ui.TextDirection.ltr`; LTR and RTL text direction is in the [flutter skill's LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md).
 
 ## An image on a canvas
 
@@ -288,7 +288,7 @@ Future<void> exportImage() async {
 import 'dart:ui' as ui; // Import for Image type
 ```
 
-- Golden tests also wrap a widget in a `RepaintBoundary` to focus the capture ([flutter skill's TESTING.md](../flutter/TESTING.md)). This source does not mention permissions; ApparenceKit's permissions tip says iOS and Android require asking before the app saves to the photo gallery ([NOTIFICATIONS-AND-PERMISSIONS.md](NOTIFICATIONS-AND-PERMISSIONS.md)).
+- Golden tests also wrap a widget in a `RepaintBoundary` to focus the capture ([flutter skill's TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/TESTING.md)). This source does not mention permissions; ApparenceKit's permissions tip says iOS and Android require asking before the app saves to the photo gallery ([NOTIFICATIONS-AND-PERMISSIONS.md](NOTIFICATIONS-AND-PERMISSIONS.md)).
 
 ## Capture an offscreen widget
 
@@ -386,7 +386,7 @@ Future<void> shareMyWidget(BuildContext context) async {
 }
 ```
 
-- `SharePlus.instance.share(ShareParams(...))` is the API form the source uses; it states no `share_plus` version. `share_plus` is also on Apple's privacy-manifest SDK list in the [app-store-connect privacy file](../app-store-connect/PRIVACY-AND-COMPLIANCE.md).
+- `SharePlus.instance.share(ShareParams(...))` is the API form the source uses; it states no `share_plus` version. `share_plus` is also on Apple's privacy-manifest SDK list in the [app-store-connect privacy file](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/PRIVACY-AND-COMPLIANCE.md).
 
 ## Thumbnails and edges
 
@@ -403,7 +403,7 @@ Future<List<int>> createJpg(File file, int maxWidth, int quality) async {
 }
 ```
 
-- The source runs this on the calling isolate. The [flutter skill's PERFORMANCE.md](../flutter/PERFORMANCE.md#isolates) lists "processing or compressing photos" among the common uses for another isolate when it causes jank.
+- The source runs this on the calling isolate. The [flutter skill's PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md#isolates) lists "processing or compressing photos" among the common uses for another isolate when it causes jank.
 - **Edge detection:** apply a Laplacian kernel to every pixel with the `image` package's convolution function; it highlights where colors change quickly, usually the borders. No code or kernel values in the source. [ApparenceKit](https://apparencekit.dev/flutter-tips/extract-borders-from-image/)
 
 ## Crop an image
@@ -427,7 +427,7 @@ Container(
 )
 ```
 
-- A static crop like this is fine; the [flutter skill's PERFORMANCE.md](../flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips) says "Avoid clipping in an animation; pre-clip the image."
+- A static crop like this is fine; the [flutter skill's PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md#paint-cost-savelayer-opacity-clips) says "Avoid clipping in an animation; pre-clip the image."
 
 ## Play a sound
 
@@ -449,7 +449,7 @@ player.setReleaseMode(ReleaseMode.stop);
 ```
 
 - The source never shows how `player` is created, and states no `audioplayers` version.
-- ui-animation [PATTERNS.md](../../frontend/ui-animation/PATTERNS.md) has a web example of a sound on completion (Honk).
+- ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md) has a web example of a sound on completion (Honk).
 
 ## Fullscreen video
 
@@ -497,8 +497,8 @@ Future<void> shareFile(String url) async {
 
 - No `permission_handler`, no folders per platform, no "where did my file go". Show a loading state while the file downloads.
 - **The rule:** "if "download" really means "let me do something with this file", let the OS show the options."
-- **Status codes (two views, both tagged):** [Flutter docs, via flutter skill]: throw on any unexpected status code ([SKILL.md](../flutter/SKILL.md) rule 4, [DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md#making-requests)). [FlutterPro]: the sample writes `response.bodyBytes` without checking `response.statusCode`, so a 404 page would be shared as `invoice.pdf`. Add the check when copying.
-- **Store side:** this is the Flutter form of App Review's "use the out-of-process picker or a share sheet rather than requesting full access" ([REVIEW-GUIDELINES.md](../app-store-connect/REVIEW-GUIDELINES.md)) and avoids Google Play's access review for `MANAGE_EXTERNAL_STORAGE` ([POLICY-AND-PREFLIGHT.md](../google-play/POLICY-AND-PREFLIGHT.md)).
+- **Status codes (two views, both tagged):** [Flutter docs, via flutter skill]: throw on any unexpected status code ([flutter SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/SKILL.md) rule 4, [flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md#making-requests)). [FlutterPro]: the sample writes `response.bodyBytes` without checking `response.statusCode`, so a 404 page would be shared as `invoice.pdf`. Add the check when copying.
+- **Store side:** this is the Flutter form of App Review's "use the out-of-process picker or a share sheet rather than requesting full access" ([app-store-connect REVIEW-GUIDELINES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/REVIEW-GUIDELINES.md)) and avoids Google Play's access review for `MANAGE_EXTERNAL_STORAGE` ([google-play POLICY-AND-PREFLIGHT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/POLICY-AND-PREFLIGHT.md)).
 
 ## Prove it
 

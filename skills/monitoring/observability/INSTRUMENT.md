@@ -130,7 +130,7 @@ log.info({ orderId: order.id, customerId: order.customerId, totalCents: order.to
 
 ### Trace IDs in logs (pino)
 
-The source's manual pino helper uses `traceId` and `spanId` keys; the automatic wiring above uses `trace_id` and `span_id`. Retain the project's correlation convention and configure the backend to match. Generic logging policy is in [LOGGING.md](LOGGING.md); Loki label/storage requirements stay in [LOKI.md](../grafana/LOKI.md). [existing Grafana, OPENTELEMETRY-AND-BEYLA.md, Trace IDs in logs]
+The source's manual pino helper uses `traceId` and `spanId` keys; the automatic wiring above uses `trace_id` and `span_id`. Retain the project's correlation convention and configure the backend to match. Generic logging policy is in [LOGGING.md](LOGGING.md); Loki label/storage requirements stay in [grafana LOKI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/grafana/LOKI.md). [existing Grafana, OPENTELEMETRY-AND-BEYLA.md, Trace IDs in logs]
 
 ```javascript
 const { trace } = require('@opentelemetry/api');

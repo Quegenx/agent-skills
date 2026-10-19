@@ -54,9 +54,9 @@ Evaluate, negotiate, work the floor and follow up, copied from coreyhaines31/mar
 
 - **Hot** (real conversation, next step agreed): a personal email referencing the conversation, with a calendar link, the same or next day.
 - **Warm** (conversation, no commitment): a personal note plus one asset matched to what they said.
-- **Scan-only:** one light "we were both at [event]" touch, or nothing. "Never dump scans into a sales sequence": it "burns domain reputation and brand on people who don't remember you" ([../../backend/email-practices/DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#reputation-and-thresholds)).
+- **Scan-only:** one light "we were both at [event]" touch, or nothing. "Never dump scans into a sales sequence": it "burns domain reputation and brand on people who don't remember you" ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md#reputation-and-thresholds)).
 - Whoever worked the booth writes or reviews the follow-up.
-- The not-nows go to nurture with event source tags; routing and scoring are [../revops/SKILL.md](../revops/SKILL.md).
+- The not-nows go to nurture with event source tags; routing and scoring are [revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md).
 
 ## Lawful follow-up
 
@@ -64,7 +64,7 @@ The source's scan-only touch assumes the US or Canada. Where the recipient is de
 
 - **US:** CAN-SPAM is opt-out, covers every commercial message, and "makes no exception for business-to-business email": accurate headers, a physical postal address and a working opt-out in every follow-up. [https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business]
 - **Canada:** CASL s.10(9)(c) implies consent when the person "has disclosed, to the person who sends the message ... the electronic address ... without indicating a wish not to receive" messages, and "the message is relevant to the person's business, role, functions or duties"; s.10(9)(b) covers an address the person conspicuously published. A card handed to you, or a scan the person agreed to, fits only for a message about their role. [https://laws-lois.justice.gc.ca/eng/acts/E-1.6/page-2.html]
-- **EU and UK:** this repo's email rule is explicit, recorded consent for marketing, following the strictest applicable law ([../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email), which also holds the CASL 10(9) and CAN-SPAM business-to-business rules). Without that consent, a scan-only contact there gets nothing.
+- **EU and UK:** this repo's email rule is explicit, recorded consent for marketing, following the strictest applicable law ([email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#cold-and-unsolicited-email), which also holds the CASL 10(9) and CAN-SPAM business-to-business rules). Without that consent, a scan-only contact there gets nothing.
 
 The repo rule and the source agree on the hot and warm tiers (a real conversation and a personal reply); they differ only on the scan-only touch, which is lawful in the US and Canada under the conditions above.
 
@@ -74,7 +74,7 @@ The repo rule and the source agree on the hot and warm tiers (a real conversatio
 
 - Tag every touched contact with the event source and measure **qualified conversations, meetings, opportunities, pipeline, closed-won influenced**, on an influence window matching your sales cycle (the source: "90 days is common for B2B; long cycles need longer windows", with no data given).
 - Report **cost per qualified meeting and cost per opportunity** against your other channels: "this is the renewal decision for next year".
-- Self-reported attribution ("met you at [event]") catches what source tags miss ([../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md)); badge-scan counts and booth traffic are activity, never results.
+- Self-reported attribution ("met you at [event]") catches what source tags miss ([marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md)); badge-scan counts and booth traffic are activity, never results.
 - Judge a first-time event at a discount: "A promising-but-unprofitable first year is a redesign signal, not necessarily a no."
 
 ## Prove it

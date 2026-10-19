@@ -119,7 +119,7 @@ Navigator.push(
 - **Breaking change in `sentry_flutter` 9.19.0:** `enableNewTraceOnNavigation` now defaults to false (it was true). Set it to true for a fresh trace on each push, pop or replace.
 - **Routes must have names** for TTID and TTFD spans and navigation breadcrumbs; unnamed routes show as `null`.
 - **GoRouter:** pass the observer and name every `GoRoute`. GoRouter doesn't propagate observers across same-level tab transitions, so bottom-tab navigation may not be tracked.
-  - FlutterPro, for analytics navigator observers in general: each `ShellRoute` or `StatefulShellRoute` branch runs its own inner navigator, so give it its own `observers` list; with a custom `pageBuilder`, set the page's `name` yourself, `MaterialPage(name: state.name ?? state.path, child: ...)` ([FlutterPro](https://flutterpro.design/details/analytics-screen-names), [../../mobile/flutter-ux/APP-LIFECYCLE.md](../../mobile/flutter-ux/APP-LIFECYCLE.md#real-screen-names-in-analytics)).
+  - FlutterPro, for analytics navigator observers in general: each `ShellRoute` or `StatefulShellRoute` branch runs its own inner navigator, so give it its own `observers` list; with a custom `pageBuilder`, set the page's `name` yourself, `MaterialPage(name: state.name ?? state.path, child: ...)` ([FlutterPro](https://flutterpro.design/details/analytics-screen-names), [flutter-ux APP-LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/APP-LIFECYCLE.md#real-screen-names-in-analytics)).
 
 ```dart
 import 'package:go_router/go_router.dart';

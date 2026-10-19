@@ -9,7 +9,7 @@ From [firebase/agent-skills, firebase-hosting-basics/SKILL.md; references/config
 - Firebase Hosting serves configured static assets and supports rewrites to dynamic backends.
 - App Hosting is a separate application-backend/deployment workflow. Inspect the supported framework, backend and configuration rather than treating it as another Hosting target.
 - Reuse existing configuration and selected project. Deploy only the product/backend in the agreed task.
-- Generic React/Next.js behavior belongs in [React](../../frontend/react/SKILL.md); generic containers/host migration belongs in [deployment](../deployment/SKILL.md).
+- Generic React/Next.js behavior belongs in [React](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md); generic containers/host migration belongs in [deployment](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md).
 
 ## Hosting route precedence
 

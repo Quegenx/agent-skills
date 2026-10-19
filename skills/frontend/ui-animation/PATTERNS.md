@@ -55,7 +55,7 @@ export function Panel({ open, children }: { open: boolean; children: React.React
 - `mode="popLayout"` when removing an item from a list whose neighbours should close the gap immediately; the parent needs a non-static `position` (for example `relative`).
 - Entrances start close to the final state: 4-12 px of travel and opacity from 0, or scale from 0.96. A card flying in from 100 px reads as a template.
 - **Never from `scale(0)`:** "Nothing in the real world appears from nothing." Start from `scale(0.9-0.97)` + `opacity: 0` [Emil Kowalski, animate].
-  - The owner's site does otherwise on purpose: landing tiles "spring in from scale 0" ([landing-page-ui MOTION.md](../landing-page-ui/MOTION.md#decorative-motion)).
+  - The owner's site does otherwise on purpose: landing tiles "spring in from scale 0" ([landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#decorative-motion)).
 - **`initial={false}` only around a swap:** set it on an `AnimatePresence` that wraps a state swap, "Never set it around an intentional entrance such as a staggered hero" [Jakub Krehel, better-ui].
 - **A target that flips instead of unmounting picks its transition from state:** `transition={isOpen ? spring.fast : spring.fast.exit}` (its own tokens) [fluid-functionalism].
 - **Hand-rolled presence reads `safeToRemove` through a ref:** "AnimatePresence hands out a new one on every render while a child leaves, so depending on it would restart the close on every parent re-render" [fluid-functionalism].
@@ -113,7 +113,7 @@ el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }]
 
 - **Grow from the trigger:** a popover scales from 0.96 to 1 with its `transform-origin` at the anchor side; a modal fades its backdrop (200 ms) and lifts the panel 8-16 px with `emphasized`; a sheet slides in from its edge with the `enter` spring and closes faster.
 - **Modals keep a centred origin:** "Modals should keep `transform-origin: center` because they are not anchored to a specific trigger" [Emil Kowalski, emil-design-eng].
-  - app-ui does otherwise: "A dialog that opens something new (create, search, settings) grows out of the button just pressed and shrinks back into it" ([OVERLAYS.md](../app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)).
+  - app-ui does otherwise: "A dialog that opens something new (create, search, settings) grows out of the button just pressed and shrinks back into it" ([app-ui OVERLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/OVERLAYS.md#grow-from-the-button-that-opened-it)).
 - **Offsets in percent for edge-anchored surfaces:** `translateY(100%)` moves an element by its own height; "This is how Sonner positions toasts and how Vaul hides the drawer" [Emil Kowalski, emil-design-eng]. Toasts and tooltips have their own file: [TOASTS-AND-TOOLTIPS.md](TOASTS-AND-TOOLTIPS.md).
 - **Focus moves with it:** into the dialog when it opens, back to the trigger when it closes; motion never delays focus or input.
 - **Dismiss mid-animation:** Escape or a backdrop click during the entrance reverses from where it is.
@@ -121,7 +121,7 @@ el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }]
 - **A popup in CSS alone:** the Base UI select popup on Florian Kiem's "Tips to improve your product" page is `origin-[var(--transform-origin)] transition-all duration-150 ease-out data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0`, the origin taken from the anchor. Native `@starting-style`, `allow-discrete` and `overlay`: [NATIVE-CSS.md](NATIVE-CSS.md#top-layer-enter-and-exit).
   - Name the properties instead of `transition-all` ([PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move)).
 - **A sheet swiped away on native scroll** (scroll snap and view timelines, no JavaScript touch handling) is in [SHEETS.md](SHEETS.md).
-- **Flutter sheets** (the spring sheet, swipe down at the top to close, the iOS 26 sheet) are in [../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md](../../mobile/flutter-ux/NAVIGATION-AND-SHEETS.md#pick-the-sheet).
+- **Flutter sheets** (the spring sheet, swipe down at the top to close, the iOS 26 sheet) are in [flutter-ux NAVIGATION-AND-SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/NAVIGATION-AND-SHEETS.md#pick-the-sheet).
 
 ## Trays: a flow in steps over the current screen
 
@@ -137,7 +137,7 @@ Family's "dynamic tray system" (inspired by Craft): components "that can effortl
 - **Reveal gradually:** the fundamentals stay at hand and "everything else would appear as it became most relevant".
 - **The motion:** "trays morphing into full screen views, buttons gliding across trays, buttons morphing into trays and back again".
 
-Family is an iOS app; the `app-ui` skill's web dialogs and side sheets are in [OVERLAYS.md](../app-ui/OVERLAYS.md).
+Family is an iOS app; the `app-ui` skill's web dialogs and side sheets are in [app-ui OVERLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/OVERLAYS.md).
 
 ## A button that grows into a panel
 
@@ -161,10 +161,10 @@ exit={{ width: 52, height: 52, borderRadius: 26, y: 0, x: "-50%",
   } }}
 ```
 
-- **Stagger the properties:** "That stagger is what gives it that organic feel where it slides down and then opens up ... If you animate all the properties at the same time it feels stiff." The `app-ui` skill's morphing menu ([MENUS.md](../app-ui/MENUS.md)) does the opposite: width, height, radius and shadow on one spring.
+- **Stagger the properties:** "That stagger is what gives it that organic feel where it slides down and then opens up ... If you animate all the properties at the same time it feels stiff." The `app-ui` skill's morphing menu ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md)) does the opposite: width, height, radius and shadow on one spring.
 - **Content waits for the shape:** `initial={{ opacity: 0 }} animate={{ opacity: 1 }}` with `transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}`, out with `opacity: 0, transition: { duration: 0.15, ease: "easeIn" }`; rows rise after it with `initial={{ opacity: 0, y: 8 }}`, `animate={{ opacity: 1, y: 0 }}`, `transition={{ duration: 0.25, delay: 0.2 + i * 0.05, ease: [0.4, 0, 0.2, 1] }}`.
 - **Layout properties, both ways:** the article animates `width`, `height` and `borderRadius` directly and says nothing about cost; rule 7 and [PERFORMANCE.md](PERFORMANCE.md) move only transform and opacity and resize with `scale` or Motion's `layout`. Its timing also runs past this skill's dropdown row and exit rule ([TIMING.md](TIMING.md)).
-- **The goo:** the button and the panel overlap inside one wrapper with an SVG filter that blends their edges while the shape changes. The filter is in [the `svg` skill](../svg/SKILL.md).
+- **The goo:** the button and the panel overlap inside one wrapper with an SVG filter that blends their edges while the shape changes. The filter is in [the `svg` skill](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/SKILL.md).
 
 ## Height and accordions
 
@@ -180,7 +180,7 @@ Animating `height` runs layout every frame; fine for a small accordion, costly f
 Or in Motion, `animate={{ height: open ? "auto" : 0 }}` for small content, and `layout` on the surrounding blocks so what's below moves with transforms.
 
 - **Not to `"auto"` under a scaled ancestor:** "framer measures 'auto' visually, so under a scaled ancestor the open would overshoot to scale× the real height and snap back"; animate to a self-measured `offsetHeight` [fluid-functionalism] (the author's measurement, not in Motion's docs).
-  - app-ui measures differently: "Size from a `ResizeObserver` border box, which is fractional. `offsetWidth` rounds down half a pixel and ellipsizes the label" ([MENUS.md](../app-ui/MENUS.md#a-menu-that-is-its-trigger-grown)).
+  - app-ui measures differently: "Size from a `ResizeObserver` border box, which is fractional. `offsetWidth` rounds down half a pixel and ellipsizes the label" ([app-ui MENUS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/MENUS.md#a-menu-that-is-its-trigger-grown)).
 - **Never stack two measured-height collapses:** "a wrapper animating to a ResizeObserver-measured height springs only when it itself toggles and snaps (`{duration: 0}`) when a child's collapse changed the measurement"; before that guard "the sub-menu landed in 218ms while its group wrapper took 326ms, diverging ~80px mid-flight" [fluid-functionalism].
 - **Opacity runs ahead of height** (0.06s in, 0.04s out) "so the body dissolves rather than being sliced by the clip edge"; a growing item opens its height first and fades its content in 0.08s later: "space opens first, then content appears" [fluid-functionalism].
 
@@ -214,7 +214,7 @@ playful: [transition:background-color_180ms_ease-out,scale_420ms_var(--press-spr
 
   Use a real `<button role="switch" aria-checked>`, so it works with Space and Enter, With reduced motion, keep the stretch (it is feedback) and make the travel instant.
 - **Kiem's switch, for numbers:** a 72×32 track with a 40px pill thumb placed by `left` and `right` (`left-[29px] right-[3px]` on, `left-[3px] right-[29px]` off), so stretching moves one edge. Travel is `transition-[left,right] duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)]`; while held, `group-active:duration-[160ms] group-active:ease-out` moves the far edge 9px toward the travel side (`group-active:left-[20px]` on, `group-active:right-[20px]` off); the track colour is `transition-colors duration-200 ease-out`. With reduced motion, `motion-reduce:transition-none` on track and thumb makes the stretch instant too, where the line above animates it. `left` and `right` are layout properties, which [PERFORMANCE.md](PERFORMANCE.md) keeps out of animations.
-- **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in [web-performance/BROWSER.md](../web-performance/BROWSER.md#loading-states).
+- **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in [web-performance BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/BROWSER.md#loading-states).
 - Success lands once (a check that draws in 200-300 ms), errors shake horizontally 2-3 times over 300-400 ms with no bounce, and the message stays.
 
 ## Feedback where it happened
@@ -229,7 +229,7 @@ From Honk, a real-time chat app (Benji Taylor's "Honkish"); no durations given.
 ## Icons that turn into each other
 
 - **Same shape at another angle: rotate, don't morph.** Arrows (four directions, 90° apart), chevrons, and plus and cross (45° apart) share coordinates and differ only by a rotation. Morphing arrow-right into arrow-down "looked janky… the lines bend and warp. When you rotate, it just works." (Benji Taylor, "Morphing icons with Claude").
-- The three-line icon geometry, rotation groups and complete transition algorithm have one owner: [MORPHING-ICONS.md](../svg/MORPHING-ICONS.md#cross-group-morphs-and-the-transition). [Benji Taylor, Morphing icons with Claude]
+- The three-line icon geometry, rotation groups and complete transition algorithm have one owner: [svg MORPHING-ICONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/MORPHING-ICONS.md#cross-group-morphs-and-the-transition). [Benji Taylor, Morphing icons with Claude]
 - **Which icons animate, both ways:** animate "Infrequent state swaps such as play to pause, like to liked or copy to copied", not "Hover-revealed actions in list rows" or "Tab and navigation icon swaps" [Jakub Krehel, better-ui].
   - The same author's other skill animates "Icons that appear on hover (action buttons)" [Jakub Krehel, make-interfaces-feel-better].
 - **Not every pair takes the ideal path:** "Some morphs have slightly awkward intermediate states, and some rotations overshoot." Play the pairs ([SKILL.md](SKILL.md#prove-it)).
@@ -256,7 +256,7 @@ export function Count({ value }: { value: number }) {
 
 `tabular-nums` keeps the width steady while digits change. Digit-by-digit rolling counters exist as paid components (Motion+ `AnimateNumber`) and free ones (NumberFlow). A counter or progress bar that chases a value arriving in chunks is in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).
 
-- **A label that marks a step in commitment morphs:** Family's "Continue" becomes "Confirm" through the shared "Con", because an instant change "could leave the user unaware of the significant step they're about to take". The text-morph component is in the `app-ui` skill's [CONTROLS.md](../app-ui/CONTROLS.md).
+- **A label that marks a step in commitment morphs:** Family's "Continue" becomes "Confirm" through the shared "Con", because an instant change "could leave the user unaware of the significant step they're about to take". The text-morph component is in the `app-ui` skill's [app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md).
 
 ## Live values and charts
 

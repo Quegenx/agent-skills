@@ -4,18 +4,20 @@ Make videos with a coding agent, where every frame is code. Start with `make-vid
 
 11 skills. The HTML `seek(t)` engine remains the default; use the framework references when the brief requires them.
 
+Entry points apply only the selected job's routes and checks. Cross-skill references use named public sources and the installed skill when available; framework-specific guides are independent choices.
+
 ## Skills
 
 | Skill | Covers |
 |---|---|
-| [video-help](./video-help/SKILL.md) | Choosing a skill and navigating the film workflow |
-| [video-setup](./video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |
-| [make-video](./make-video/SKILL.md) | Gated production with separate engine selection and delivery contracts, preserving source-specific review profiles. |
-| [video-brief](./video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
-| [asset-prep](./asset-prep/SKILL.md) | Screens, brand extraction, recording and prepared assets; renderer integration links to seek-engine. |
-| [beat-grid](./beat-grid/SKILL.md) | Measured music and the shared picture/sound clock |
-| [voiceover](./voiceover/SKILL.md) | Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing. |
-| [shotlist](./shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions and ordered technique/precedent catalogues with evidence limits. |
-| [seek-engine](./seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
-| [frame-review](./frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
-| [sound-pass](./sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |
+| [video-help](video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
+| [video-setup](video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |
+| [make-video](make-video/SKILL.md) | Gated film production with engine selection before setup; shared story/review gates and engine-specific runtime contracts. |
+| [video-brief](video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
+| [asset-prep](asset-prep/SKILL.md) | Screens, brand extraction, recording and prepared assets; renderer integration links to seek-engine. |
+| [beat-grid](beat-grid/SKILL.md) | Measured music and the shared picture/sound clock |
+| [voiceover](voiceover/SKILL.md) | Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing. |
+| [shotlist](shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. |
+| [seek-engine](seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
+| [frame-review](frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
+| [sound-pass](sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |

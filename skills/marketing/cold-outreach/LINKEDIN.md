@@ -1,6 +1,6 @@
 # LinkedIn outreach
 
-LinkedIn is the second channel in most B2B outreach, and people who ignore cold email often accept a relevant connection request; it also carries the tightest limits and the highest account risk [coreyhaines31/marketingskills, cold-email] references/linkedin-outreach.md. The source says its figures "come mostly from LinkedIn automation vendors' and agencies' own datasets (2025-26). Use them as ranges." LinkedIn's own limits were not fetched. Data-protection rules for LinkedIn contacts are in [../prospecting/LIST-COMPLIANCE.md](../prospecting/LIST-COMPLIANCE.md#linkedin).
+LinkedIn is the second channel in most B2B outreach, and people who ignore cold email often accept a relevant connection request; it also carries the tightest limits and the highest account risk [coreyhaines31/marketingskills, cold-email] references/linkedin-outreach.md. The source says its figures "come mostly from LinkedIn automation vendors' and agencies' own datasets (2025-26). Use them as ranges." LinkedIn's own limits were not fetched. Data-protection rules for LinkedIn contacts are in [prospecting LIST-COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LIST-COMPLIANCE.md#linkedin).
 
 ## Fix the profile first
 

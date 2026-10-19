@@ -5,7 +5,9 @@ description: "Finds the right marketing ideas for a product's stage, budget and 
 
 # Growth ideas
 
-A starting point when someone doesn't know how to market a product: suggest the 3 to 5 ideas that fit their stage, budget and team, explain how to start each, and hand execution to the skill that owns the channel. A full plan with every idea mapped to funnel stages is [marketing-plan](../marketing-plan/SKILL.md); repeating an idea on a schedule is [marketing-loops](../marketing-loops/SKILL.md). Sources: [coreyhaines31/marketingskills, marketing-ideas] v2.0.1 (its guerrilla reference credits Corey Haines, *Founding Marketing*, ch. 13) and [coreyhaines31/marketingskills, marketing-psychology] v2.0.0 (MIT, Corey Haines), copied with their dashes replaced. Both source skills read `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+A starting point when someone doesn't know how to market a product: suggest the 3 to 5 ideas that fit their stage, budget and team, explain how to start each, and hand execution to the skill that owns the channel. A full plan with every idea mapped to funnel stages is [marketing-plan](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-plan/SKILL.md); repeating an idea on a schedule is [marketing-loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md). Sources: [coreyhaines31/marketingskills, marketing-ideas] v2.0.1 (its guerrilla reference credits Corey Haines, *Founding Marketing*, ch. 13) and [coreyhaines31/marketingskills, marketing-psychology] v2.0.0 (MIT, Corey Haines), copied with their dashes replaced. Both source skills read `.agents/product-marketing.md`; this repo's file is `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -78,7 +80,7 @@ For each recommended idea [coreyhaines31/marketingskills, marketing-ideas]:
 
 ## Handoffs
 
-Where each idea is carried out in this repo: programmatic SEO (#4) to [seo PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md); comparison pages (#11) to [comparison-pages](../comparison-pages/SKILL.md); email sequences and campaign copy to [email-marketing](../email-marketing/SKILL.md), delivery/authentication/list operations to [email-practices](../../backend/email-practices/SKILL.md); free tools (#15) to [lead-magnets](../lead-magnets/SKILL.md); referrals and viral growth (#93, #137) to [referral-programs](../referral-programs/SKILL.md); paid ads to [paid-ads](../paid-ads/SKILL.md); social to [social-media](../social-media/SKILL.md); launches to [product-launch](../product-launch/SKILL.md); app listings (#124) to [aso](../../mobile/aso/SKILL.md). A request to design a referral program or an A/B test is that skill's job, not an idea list (the source's evals).
+Where each idea is carried out in this repo: programmatic SEO (#4) to [seo PAGES-AT-SCALE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md); comparison pages (#11) to [comparison-pages](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md); email sequences and campaign copy to [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md), delivery/authentication/list operations to [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md); free tools (#15) to [lead-magnets](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md); referrals and viral growth (#93, #137) to [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md); paid ads to [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md); social to [social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md); launches to [product-launch](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/SKILL.md); app listings (#124) to [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md). A request to design a referral program or an A/B test is that skill's job, not an idea list (the source's evals).
 
 ## The rules
 
@@ -86,7 +88,7 @@ Where each idea is carried out in this repo: programmatic SEO (#4) to [seo PAGES
 2. **Suggest 3 to 5 ideas filtered by stage, budget, timeline and use case,** each in the output format, unless the user asks for more [coreyhaines31/marketingskills, marketing-ideas].
 3. **Carry each idea's platform note:** no parasite SEO for borrowed ranking, no engagement pods, giveaways within each platform's rules, unique value on programmatic pages, disclosure on paid or incentivized reviews and creator posts ([IDEAS.md](IDEAS.md)).
 4. **Psychology claims are the source's, uncited:** never present a model's number as measured, and keep the repo and official limits noted under each model ([PSYCHOLOGY.md](PSYCHOLOGY.md)).
-5. **Scarcity and urgency only when real;** the legal rules are in [offer-design FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md) [coreyhaines31/marketingskills, marketing-psychology].
+5. **Scarcity and urgency only when real;** the legal rules are in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md) [coreyhaines31/marketingskills, marketing-psychology].
 6. **Guerrilla plays start from a story, a qualified list and a small test** ([GUERRILLA.md](GUERRILLA.md)) [coreyhaines31/marketingskills, marketing-ideas].
 7. **Hand execution to the owning skill** once an idea is chosen (Handoffs above).
 
@@ -99,7 +101,7 @@ From the source's seven idea evals [coreyhaines31/marketingskills, marketing-ide
 - A freemium PLG company with no ad budget: PLG, virality and referral ideas, none that depend on ads.
 - A new HR tech company wanting authority: original research, content, community and media appearances, flagged as long-term.
 - "Give me 20 ideas": about 20, across categories, each with brief context.
-- "Set up a referral program": routed to [referral-programs](../referral-programs/SKILL.md), no full program design here.
+- "Set up a referral program": routed to [referral-programs](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md), no full program design here.
 - A guerrilla request: handled with [GUERRILLA.md](GUERRILLA.md)'s Prove it.
 
 The psychology evals are in [PSYCHOLOGY.md](PSYCHOLOGY.md#prove-it).

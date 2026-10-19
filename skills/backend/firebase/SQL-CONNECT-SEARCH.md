@@ -1,6 +1,6 @@
 # SQL Connect search
 
-From [firebase/agent-skills, firebase-data-connect/reference/search.md], checked against the official SQL Connect search and generated query references. Shared embedding/RAG design remains in [AI features](../../ai-agents/ai-features/SKILL.md); general SQL tuning remains in [performance](../performance-and-caching/SKILL.md).
+From [firebase/agent-skills, firebase-data-connect/reference/search.md], checked against the official SQL Connect search and generated query references. Shared embedding/RAG design remains in [AI features](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/ai-features/SKILL.md); general SQL tuning remains in [performance](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/SKILL.md).
 
 ## Choose by matching behavior
 

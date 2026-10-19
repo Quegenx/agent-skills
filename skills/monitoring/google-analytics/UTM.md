@@ -1,6 +1,6 @@
 # UTM parameters
 
-How campaign links are tagged so each visit lands in the right source, medium and channel: the five parameters, the naming rules, fixed patterns per partner type, where GA4 puts each medium, and traffic from AI assistants. Rules are from the analytics skill of coreyhaines31/marketingskills (MIT; the partner table is "adapted from Wispr Flow's link-creator skill (MIT), published in the skills.marketing library"); channel rules are from Google's default channel group page (https://support.google.com/analytics/answer/9756891). Paid-campaign tagging per ad network is [../../marketing/paid-ads/SKILL.md](../../marketing/paid-ads/SKILL.md); measuring creator deals is [../../marketing/creator-marketing/SKILL.md](../../marketing/creator-marketing/SKILL.md).
+How campaign links are tagged so each visit lands in the right source, medium and channel: the five parameters, the naming rules, fixed patterns per partner type, where GA4 puts each medium, and traffic from AI assistants. Rules are from the analytics skill of coreyhaines31/marketingskills (MIT; the partner table is "adapted from Wispr Flow's link-creator skill (MIT), published in the skills.marketing library"); channel rules are from Google's default channel group page (https://support.google.com/analytics/answer/9756891). Paid-campaign tagging per ad network is [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md); measuring creator deals is [creator-marketing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md).
 
 ## The five parameters
 
@@ -66,7 +66,7 @@ The source says "GA4's default grouping sends mediums like `newsletter`, `creato
 
 - GA4's default channel group now has **AI Assistant**: "users arrive at your site from sources like ChatGPT, Gemini, Deepseek, Copilot, or Grok. It excludes Google's AI Overviews and AI Mode", which count as Organic Search (https://support.google.com/analytics/answer/9756891). The source said to "Add a GA4 channel group rule that matches known assistant referrers and sources into an 'AI assistants' channel"; with the default channel in place, a custom rule is only needed for an assistant missing from Google's list.
 - "Treat that channel as the floor. Assistant-driven visits that show up as direct or branded search can be most of the effect, and they won't carry the referrer."
-- Measuring the full effect of AI search is [../../marketing/ai-search-visibility/SKILL.md](../../marketing/ai-search-visibility/SKILL.md); reconciling it with other sources is [../../marketing/marketing-attribution/SKILL.md](../../marketing/marketing-attribution/SKILL.md).
+- Measuring the full effect of AI search is [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md); reconciling it with other sources is [marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 
 ## Prove it
 

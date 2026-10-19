@@ -1,6 +1,6 @@
 # Launch plan
 
-The strategy layer of a web or SaaS launch, copied and adapted from coreyhaines31/marketingskills `launch` (MIT). The source's company case studies (Superhuman, Notion, TRMNL, SavvyCal, Reform) are left out: they are anecdotes with no citation. Its vendor plugs (Introw, Navattic) are left out too. For an app store launch, use [../../mobile/app-growth/LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md), which has the store-specific calendar.
+The strategy layer of a web or SaaS launch, copied and adapted from coreyhaines31/marketingskills `launch` (MIT). The source's company case studies (Superhuman, Notion, TRMNL, SavvyCal, Reform) are left out: they are anecdotes with no citation. Its vendor plugs (Introw, Navattic) are left out too. For an app store launch, use [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md), which has the store-specific calendar.
 
 **Contents:** [Ask first](#ask-first) · [Readiness gate](#readiness-gate) · [The ORB channels](#the-orb-channels) · [Five phases](#five-phases) · [After the launch](#after-the-launch) · [Ongoing launches](#ongoing-launches) · [Checklist](#checklist) · [Prove it](#prove-it)
 
@@ -50,9 +50,9 @@ Product Hunt's guide describes the same choice as three camps of founders: ship 
 | **Rented** | Visibility on platforms you don't control; algorithms shift, rules change, pay-to-play rises | Social (X, LinkedIn, Instagram), app stores and marketplaces, YouTube, Reddit | Pick 1-2 where the audience is active; use them to drive traffic to owned channels; never the only strategy. X threads link to the newsletter; LinkedIn posts lead to gated content or email signup; marketplace listings (Shopify, Slack) drive to the site |
 | **Borrowed** | Someone else's audience | Guest posts, podcast interviews, newsletter features; webinars, co-marketing, social takeovers; conferences, panels, virtual summits; influencer partnerships | List the leaders your audience follows, pitch win-win collaborations, find audience overlap with SparkToro or Listen Notes, set up affiliate or referral incentives |
 
-"Rented channels give speed, not stability." "Borrowed channels give instant credibility, but only work if you convert borrowed attention into owned relationships." Partner work is [partnerships](../partnerships/SKILL.md); community work is [community-marketing](../community-marketing/SKILL.md); press and podcasts are [../public-relations/SKILL.md](../public-relations/SKILL.md); creators are [../creator-marketing/SKILL.md](../creator-marketing/SKILL.md); referral and affiliate mechanics are [../referral-programs/SKILL.md](../referral-programs/SKILL.md).
+"Rented channels give speed, not stability." "Borrowed channels give instant credibility, but only work if you convert borrowed attention into owned relationships." Partner work is [partnerships](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/partnerships/SKILL.md); community work is [community-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/community-marketing/SKILL.md); press and podcasts are [public-relations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/SKILL.md); creators are [creator-marketing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md); referral and affiliate mechanics are [referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md).
 
-The source's owned-channel definition said "no algorithm or platform rules" while including hosted communities. Slack's terms still bind workspace users to its User Terms and Acceptable Use Policy, and [mailbox rules](../../backend/email-practices/DELIVERABILITY.md) still apply to email. Keep owned as the source's direct-relationship category, not a platform-policy exemption. The recurring-content funnel application is in [DISTRIBUTION.md](../content-strategy/DISTRIBUTION.md#orb-as-a-funnel). [https://slack.com/terms-of-service/user; coreyhaines31/marketingskills, launch]
+The source's owned-channel definition said "no algorithm or platform rules" while including hosted communities. Slack's terms still bind workspace users to its User Terms and Acceptable Use Policy, and [mailbox rules](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md) still apply to email. Keep owned as the source's direct-relationship category, not a platform-policy exemption. The recurring-content funnel application is in [content-strategy DISTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/DISTRIBUTION.md#orb-as-a-funnel). [https://slack.com/terms-of-service/user; coreyhaines31/marketingskills, launch]
 
 ## Five phases
 
@@ -68,7 +68,7 @@ The source's owned-channel definition said "no algorithm or platform rules" whil
 
 Full-launch touchpoints: customer emails; in-app popups and product tours; a website banner linking to launch assets; a "New" sticker in the dashboard navigation; a blog post; social posts; Product Hunt ([PRODUCT-HUNT.md](PRODUCT-HUNT.md)), BetaList, Hacker News. A recruitment ask to friends and investors in phase 3 is for testing and sharing; on Product Hunt it must never become an upvote ask ([PRODUCT-HUNT.md](PRODUCT-HUNT.md#what-gets-a-launch-removed)).
 
-Sending the invite and onboarding emails lawfully and reliably is [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md).
+Sending the invite and onboarding emails lawfully and reliably is [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 
 ## After the launch
 
@@ -76,7 +76,7 @@ Sending the invite and onboarding emails lawfully and reliably is [../../backend
 
 - **Educate new users:** an automated onboarding email sequence introducing key features and use cases.
 - **Reinforce the launch:** include the announcement in your weekly, biweekly or monthly roundup email to catch people who missed it.
-- **Differentiate:** publish comparison pages ([../comparison-pages/SKILL.md](../comparison-pages/SKILL.md)).
+- **Differentiate:** publish comparison pages ([comparison-pages SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md)).
 - **Update web pages:** add sections about the new feature or product across the site.
 - **Offer a hands-on preview:** a no-code interactive demo visitors can explore before signing up.
 
@@ -103,7 +103,7 @@ Sending the invite and onboarding emails lawfully and reliably is [../../backend
 [coreyhaines31/marketingskills, launch]
 
 **Pre-launch**
-- [ ] Landing page with a clear value proposition ([../cro/SKILL.md](../cro/SKILL.md))
+- [ ] Landing page with a clear value proposition ([cro SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md))
 - [ ] Email capture or waitlist signup
 - [ ] Early-access list built
 - [ ] Owned channels established (email, blog, community)
@@ -113,7 +113,7 @@ Sending the invite and onboarding emails lawfully and reliably is [../../backend
 - [ ] Launch assets created (screenshots, demo video, GIFs)
 - [ ] Onboarding flow ready
 - [ ] Analytics and tracking in place
-- [ ] Site launch audit done if the launch includes a new site, redesign or migration ([../site-audit/LAUNCH.md](../site-audit/LAUNCH.md))
+- [ ] Site launch audit done if the launch includes a new site, redesign or migration ([site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md))
 
 **Launch day**
 - [ ] Announcement email to the list

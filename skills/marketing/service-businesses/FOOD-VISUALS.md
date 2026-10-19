@@ -1,6 +1,6 @@
 # Restaurant and cafe visual services
 
-Four related offers, paraphrased from [more skills, 15-restaurant-food-visuals.md]. Use [DEMO-FIRST.md](DEMO-FIRST.md) for the shared acquisition/delivery loop and [REAL-PHOTO-EDITING.md](../marketing-images/REAL-PHOTO-EDITING.md#food-and-cafe-premises) for the canonical dish/premises fidelity contract.
+Four related offers, paraphrased from [more skills, 15-restaurant-food-visuals.md]. Use [DEMO-FIRST.md](DEMO-FIRST.md) for the shared acquisition/delivery loop and [marketing-images REAL-PHOTO-EDITING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#food-and-cafe-premises) for the canonical dish/premises fidelity contract.
 
 ## Offer order and buyer
 
@@ -22,7 +22,7 @@ The source states no selling price. It favors operator-run production and sellin
 
 [more skills, 15-restaurant-food-visuals.md]
 
-The author's starting filters are rating at least 4.5 and roughly fewer than 150 reviews, with one-site independents preferred. These are targeting hypotheses, not proof of food quality. The detailed prompt additionally rejects fewer than 5 reviews and apparent chains, but says uncertain chain matches should be kept/flagged. Existing [local SMB guidance](../prospecting/LOCAL-SMB.md#common-mistakes) checks franchisees' marketing authority instead of categorical exclusion.
+The author's starting filters are rating at least 4.5 and roughly fewer than 150 reviews, with one-site independents preferred. These are targeting hypotheses, not proof of food quality. The detailed prompt additionally rejects fewer than 5 reviews and apparent chains, but says uncertain chain matches should be kept/flagged. Existing [local SMB guidance](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LOCAL-SMB.md#common-mistakes) checks franchisees' marketing authority instead of categorical exclusion.
 
 Assess each offer independently: actual food photograph for dish work; low review count plus more than one year in business for the review-gap prose; a genuinely thin photo set; or an absent/unreadable/menu-image-only menu. The source priority is review card, dish, photo set, then menu. Proposed output fields are decision, reason, rating, review_count, photo_count, four needs flags, lead_with and one factual owner observation.
 
@@ -30,13 +30,13 @@ Do not deploy the literal selector unchanged: its prompt omits the business-age 
 
 Google's supporting APIs return up to 10 photographs, so returned array length is not a verified listing inventory. The source instead treated it as the total. Verify a thin-photo claim with appropriate evidence. [Google Place Photos](https://developers.google.com/maps/documentation/places/web-service/place-photos)
 
-Missing website data also requires the existing [exact-name cross-check](../prospecting/LOCAL-SMB.md#website-status); it is not proof no site/menu exists. Retained evidence follows [LIST-COMPLIANCE.md](../prospecting/LIST-COMPLIANCE.md#google-maps).
+Missing website data also requires the existing [exact-name cross-check](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LOCAL-SMB.md#website-status); it is not proof no site/menu exists. Retained evidence follows [prospecting LIST-COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LIST-COMPLIANCE.md#google-maps).
 
 ## Dish and four-image production
 
 [more skills, 15-restaurant-food-visuals.md]
 
-Obtain permissioned actual photographs, follow the [food/premises branches](../marketing-images/REAL-PHOTO-EDITING.md#food-and-cafe-premises), put original and result together, and inspect every output for restyling. Keep the four-image sequence and common presentation without changing actual food, signage, neighbors, seating or premises. The author's preparation exercise is at least 10 inspected dish edits before the first send. It is not a validated sample size or reliability guarantee.
+Obtain permissioned actual photographs, follow the [food/premises branches](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#food-and-cafe-premises), put original and result together, and inspect every output for restyling. Keep the four-image sequence and common presentation without changing actual food, signage, neighbors, seating or premises. The author's preparation exercise is at least 10 inspected dish edits before the first send. It is not a validated sample size or reliability guarantee.
 
 ## Exact menu reconstruction
 
@@ -46,21 +46,21 @@ Preserve every item and price, section heading, order and item-to-section member
 
 The source's optional visual direction is warm off-white, serif section headings, sans-serif items, generous spacing, right-aligned prices and a narrow section rule, without decorative assets. Aim for a phone-readable and A4-readable deliverable. This is a menu proposal, not a replacement for owner UI design.
 
-Keep proofread=false initially and block approval for menu assets while it remains false. Asset approval remains separate from authorized sending. The source asks an image model to generate the entire menu; the existing words-in-post policy remains in force, with [both views recorded here](../marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods). The transcription contract does not approve that conflicting rendering method.
+Keep proofread=false initially and block approval for menu assets while it remains false. Asset approval remains separate from authorized sending. The source asks an image model to generate the entire menu; the existing words-in-post policy remains in force, with [both views recorded here](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods). The transcription contract does not approve that conflicting rendering method.
 
 ## First message and handoff
 
 [more skills, 15-restaurant-food-visuals.md]
 
-Allowed facts are business name, exact work, checked rating/review/photo information and chosen channel. Use fewer than 55 words, plain language and optionally lowercase. Open with the finished work being their own photograph, use one supported listing number once, offer the gift without reply/purchase condition and end with one easy question. No call, meeting, audit or package pitch; no invented meal, local identity or relationship. Apply [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md) rather than repeating a phrase list. The source's example used both rating and count and claimed a sole cause without evidence; do not copy it.
+Allowed facts are business name, exact work, checked rating/review/photo information and chosen channel. Use fewer than 55 words, plain language and optionally lowercase. Open with the finished work being their own photograph, use one supported listing number once, offer the gift without reply/purchase condition and end with one easy question. No call, meeting, audit or package pitch; no invented meal, local identity or relationship. Apply [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md) rather than repeating a phrase list. The source's example used both rating and count and claimed a sole cause without evidence; do not copy it.
 
-Start with a spreadsheet for a small local batch. If ongoing work justifies an app, the source separates a prospect list sorted by review count, a before/after detail with editable message, and a send history. Business records carry identity, supported metrics, offer flags and selected lead; assets carry kind, originals/results, draft message, exact model/prompt, proofreading and pending/approved/rejected state; send records identify asset, channel, recipient and time. Ownership/access follows [Supabase security](../../backend/supabase/SECURITY.md). Raw Places retention, incomplete storage-write rules and insert-only history erased by cascades are unresolved source implementation defects, not a ready migration.
+Start with a spreadsheet for a small local batch. If ongoing work justifies an app, the source separates a prospect list sorted by review count, a before/after detail with editable message, and a send history. Business records carry identity, supported metrics, offer flags and selected lead; assets carry kind, originals/results, draft message, exact model/prompt, proofreading and pending/approved/rejected state; send records identify asset, channel, recipient and time. Ownership/access follows [Supabase security](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/SECURITY.md). Raw Places retention, incomplete storage-write rules and insert-only history erased by cascades are unresolved source implementation defects, not a ready migration.
 
 ## Evidence boundary
 
 [more skills, 15-restaurant-food-visuals.md]
 
-The author reports live search/photo pulls/edits, but no business outreach, physical-card trial or measured reply rate. Universal device support, photo reuse permission, channel superiority and vendor free-tier claims are not established. Apply the [photo-rights correction](../marketing-images/REAL-PHOTO-EDITING.md#start-with-permission-and-the-original); public customer photos are not automatically licensed to the depicted business.
+The author reports live search/photo pulls/edits, but no business outreach, physical-card trial or measured reply rate. Universal device support, photo reuse permission, channel superiority and vendor free-tier claims are not established. Apply the [photo-rights correction](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#start-with-permission-and-the-original); public customer photos are not automatically licensed to the depicted business.
 
 ## Prove it
 

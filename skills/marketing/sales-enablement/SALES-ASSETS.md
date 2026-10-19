@@ -1,6 +1,6 @@
 # ROI calculators, personas, case studies, proposals and playbooks
 
-The smaller sales assets. From coreyhaines31/marketingskills, skill `sales-enablement` (SKILL.md, MIT), plus the FTC Endorsement Guides FAQ for results claims. Persona facts start from the Buyers section of the product context file ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); pricing and packaging decisions are in [../pricing-strategy/SKILL.md](../pricing-strategy/SKILL.md).
+The smaller sales assets. From coreyhaines31/marketingskills, skill `sales-enablement` (SKILL.md, MIT), plus the FTC Endorsement Guides FAQ for results claims. Persona facts start from the Buyers section of the product context file ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)); pricing and packaging decisions are in [pricing-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
 
 ## ROI calculators
 
@@ -16,7 +16,7 @@ Implementation options:
 - **Web tool:** more polished, captures leads, scales better. Worth building if deal volume is high.
 - **Slide-based:** the ROI story embedded in the deck ([SALES-DECKS.md](SALES-DECKS.md)). Good for executive presentations.
 
-"Show the math, not just the conclusion" and "use conservative estimates (executives discount inflated numbers)"; "ROI without showing your math" is an anti-pattern on the ROI slide. The deliverable is input fields, formulas and the output display with sample data. Lead capture in general: [../lead-magnets/SKILL.md](../lead-magnets/SKILL.md).
+"Show the math, not just the conclusion" and "use conservative estimates (executives discount inflated numbers)"; "ROI without showing your math" is an anti-pattern on the ROI slide. The deliverable is input fields, formulas and the output display with sample data. Lead capture in general: [lead-magnets SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md).
 
 ## Value proposition by persona
 
@@ -66,7 +66,7 @@ The context file's buyer row lists user, champion, decision maker, budget holder
 
 Organize them so reps find the right one instantly: by industry ("Show me a case study for healthcare"), by use case ("Show me someone who used us for X"), by company size ("Show me an enterprise example").
 
-Only real customers who agreed to be named, and results claims that reach prospects (in decks, one-pagers and proposals) follow the FTC typical-results rule, both defined on the Testimonials line of [../../anti-ai-slop/anti-slop-copy/PAGES.md](../../anti-ai-slop/anti-slop-copy/PAGES.md). The source does not cover this; the FTC rules for pricing, free, guarantee and scarcity claims are in [../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
+Only real customers who agreed to be named, and results claims that reach prospects (in decks, one-pagers and proposals) follow the FTC typical-results rule, both defined on the Testimonials line of [anti-slop-copy PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/PAGES.md). The source does not cover this; the FTC rules for pricing, free, guarantee and scarcity claims are in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md).
 
 ## Proposals
 
@@ -86,19 +86,19 @@ Common mistakes:
 - **Too generic:** templated proposals signal low effort. Customize the exec summary at minimum.
 - **Burying the price:** don't make them hunt for it. Be transparent and confident.
 
-Non-standard discounts or terms in a proposal go through the deal desk ([../revops/PIPELINE-AND-METRICS.md](../revops/PIPELINE-AND-METRICS.md#deal-desk)).
+Non-standard discounts or terms in a proposal go through the deal desk ([revops PIPELINE-AND-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/PIPELINE-AND-METRICS.md#deal-desk)).
 
 ## Sales playbooks
 
 [coreyhaines31/marketingskills, sales-enablement] What goes in:
 
 - **Buyer profile:** who you're selling to, their goals and pains.
-- **Qualification criteria:** BANT, MEDDIC, or your framework. The source names these without defining them; the revops SQL stage asks for budget, authority, need or timeline confirmed (at least 2 of 4) ([../revops/LIFECYCLE.md](../revops/LIFECYCLE.md#stage-templates)).
+- **Qualification criteria:** BANT, MEDDIC, or your framework. The source names these without defining them; the revops SQL stage asks for budget, authority, need or timeline confirmed (at least 2 of 4) ([revops LIFECYCLE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/LIFECYCLE.md#stage-templates)).
 - **Discovery questions:** organized by topic, not a script ([DEMO-SCRIPTS.md](DEMO-SCRIPTS.md#discovery-call)).
 - **Objection handling:** top 10 objections with responses.
 - **Competitive positioning:** how you win against each competitor ([BATTLE-CARDS.md](BATTLE-CARDS.md)).
 - **Demo flow:** recommended sequence for each persona.
-- **Email templates:** follow-up, proposal, check-in, breakup ([../cold-outreach/SKILL.md](../cold-outreach/SKILL.md)).
+- **Email templates:** follow-up, proposal, check-in, breakup ([cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md)).
 
 When to build: a new product launch (reps need a single source of truth); a new market segment (different buyers need different approaches); new hire ramp (the source says playbooks "cut ramp time significantly", with no figure).
 

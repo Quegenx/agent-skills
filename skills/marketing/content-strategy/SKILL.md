@@ -5,7 +5,9 @@ description: "Plans what content to make and how it spreads: intake questions, t
 
 # Content strategy
 
-A content plan decides which pieces to make, in what order, and how each one reaches people. Most of this skill comes from coreyhaines31/marketingskills `content-strategy` v2.1.3 (MIT), tagged `[coreyhaines31/marketingskills, content-strategy]`; where Google Search Central, Meta for Developers or a CMS vendor's docs say something different, the official page wins and the line says what the source said. Writing the piece itself is [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md); SEO rules and existing-content refreshes are [seo](../seo/SKILL.md); keyword data and clustering are [keyword-research](../keyword-research/SKILL.md); research on what customers say is [customer-research](../customer-research/SKILL.md); vs and alternative pages are [comparison-pages](../comparison-pages/SKILL.md).
+A content plan decides which pieces to make, in what order, and how each one reaches people. Most of this skill comes from coreyhaines31/marketingskills `content-strategy` v2.1.3 (MIT), tagged `[coreyhaines31/marketingskills, content-strategy]`; where Google Search Central, Meta for Developers or a CMS vendor's docs say something different, the official page wins and the line says what the source said. Writing the piece itself is [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md); SEO rules and existing-content refreshes are [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md); keyword data and clustering are [keyword-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/SKILL.md); research on what customers say is [customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md); vs and alternative pages are [comparison-pages](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -16,7 +18,7 @@ A content plan decides which pieces to make, in what order, and how each one rea
 
 ## Before planning
 
-`[coreyhaines31/marketingskills, content-strategy]` Read the product context file first, `.agents/product-context.md`, defined in [anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md) (the source calls it `.agents/product-marketing.md`, with `.claude/product-marketing.md` and the legacy `product-marketing-context.md`). Ask only for what it doesn't cover:
+`[coreyhaines31/marketingskills, content-strategy]` Read the product context file first, `.agents/product-context.md`, defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md) (the source calls it `.agents/product-marketing.md`, with `.claude/product-marketing.md` and the legacy `product-marketing-context.md`). Ask only for what it doesn't cover:
 
 - **Business:** what the company does; the ideal customer; the primary goal for content (traffic, leads, brand awareness, thought leadership); the problems the product solves.
 - **Customer research:** questions customers ask before buying; objections in sales calls; topics that repeat in support tickets; the language customers use for their problems.
@@ -35,7 +37,7 @@ Task-specific questions, verbatim: "What patterns emerge from your last 10 custo
 - Target a specific keyword or question and match its search intent exactly.
 - Titles that match search queries; headings that mirror search patterns.
 - Comprehensive coverage, with data, examples and links to authoritative sources.
-- AI discovery: clear positioning, structured content, brand consistency across the web (the methods are in [ai-search-visibility](../ai-search-visibility/SKILL.md)).
+- AI discovery: clear positioning, structured content, brand consistency across the web (the methods are in [ai-search-visibility](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md)).
 - Keywords and URLs: Google says "the keywords in the name of the domain (or URL path) alone have hardly any effect beyond appearing in breadcrumbs", "Excessively repeating the same words over and over (even in variations) is tiring for users, and keyword stuffing is against Google's spam policies", and of headings, "it doesn't matter if you're using them out of order" ([SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)). Keep URLs descriptive for people. The source said: "Place keywords in title, headings, first paragraph, URL".
 - Length: "The length of the content alone doesn't matter for ranking purposes" (same Google page). Set no word count; the source's eval asked for a "3000+ word" pillar guide.
 
@@ -94,4 +96,4 @@ Topic A sums to 3.2 + 2.7 + 1.4 + 0.6 = 7.9; the source's table printed 8.0. Ran
 
 ## Prove it
 
-Every priority topic has a stage, a type, a keyword and a research citation; every searchable topic has its one-sentence information gain written against the current top results; the scoring table recomputes (weights times scores equal the total); 3 to 5 pillars, each with clusters; no topic carries a word-count target; each flagship lists its atomized outputs. A request to write one blog post goes to [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), not here.
+Every priority topic has a stage, a type, a keyword and a research citation; every searchable topic has its one-sentence information gain written against the current top results; the scoring table recomputes (weights times scores equal the total); 3 to 5 pillars, each with clusters; no topic carries a word-count target; each flagship lists its atomized outputs. A request to write one blog post goes to [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), not here.

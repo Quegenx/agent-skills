@@ -9,6 +9,8 @@ description: "Captures and prepares what a video animates: site screenshots, bra
 
 Everything lands in the film's `assets/`, and every file is listed in `brief.md` under ASSETS with where it came from. List what you found **before** animating anything. A screen the story needs and you don't have is a blocker: ask for it.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## Capture a product from its site
 
 **Helper prerequisite:** the bundled Chrome/CDP helpers used by brand capture and logo fetching require unflagged global `WebSocket`, available in Node 22+. The old helper docs had no specific Node prerequisite. This does not change the separate app-recording source's Node requirement. [Node globals, WebSocket](https://nodejs.org/api/globals.html#class-websocket); [asset-prep, scripts/_cdp.mjs]
@@ -25,7 +27,7 @@ Writes 2x viewport and full-page screenshots to `assets/screens/` for every page
 
 Capture every surface the story might use: key pages, the mobile view (`--sizes 390x844`) and dark mode (`--dark`). Break screenshots into components (icons, cards, rows, buttons) so each can animate; a raw screenshot sliding around reads as a screen recording.
 
-Logged-in product UI and design-system components: the user's own repo is the best source (real components, tokens, icons, the logo file). Inspect it before designing anything; when a screen must be motion-separated, rebuild it faithfully from the real design system instead of scaling a giant screenshot. When there is no product UI yet, build it from a real component library (21st.dev components are made by design engineers) rather than inventing chrome on the spot. A Figma file: use its frames, tokens and assets as the source of truth (through a Figma connector when one is available) and add only the motion. Fabric.js and Rive assets need a deterministic renderer adapter: [seek-engine TECHNIQUES.md](../seek-engine/TECHNIQUES.md#fabricjs-and-rive-assets).
+Logged-in product UI and design-system components: the user's own repo is the best source (real components, tokens, icons, the logo file). Inspect it before designing anything; when a screen must be motion-separated, rebuild it faithfully from the real design system instead of scaling a giant screenshot. When there is no product UI yet, build it from a real component library (21st.dev components are made by design engineers) rather than inventing chrome on the spot. A Figma file: use its frames, tokens and assets as the source of truth (through a Figma connector when one is available) and add only the motion. Fabric.js and Rive assets need a deterministic renderer adapter: [seek-engine TECHNIQUES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/TECHNIQUES.md#fabricjs-and-rive-assets).
 
 ## Working inside an existing product repo
 

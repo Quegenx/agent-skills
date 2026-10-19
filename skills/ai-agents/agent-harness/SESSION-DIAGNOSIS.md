@@ -1,6 +1,6 @@
 # Diagnosing an agent session
 
-Explain an expensive, repetitive or drifting run from its recorded evidence. Source: [obra/superpowers, diagnosing-superpowers], especially session-discovery, context-safety, analyst prompts, case/report templates and redaction-policy. This is a read-only investigation of the session; [code-research](../../architecture/code-research/SOURCE-RESEARCH.md) owns source proof and [CONTEXT-COSTS.md](CONTEXT-COSTS.md) owns savings claims.
+Explain an expensive, repetitive or drifting run from its recorded evidence. Source: [obra/superpowers, diagnosing-superpowers], especially session-discovery, context-safety, analyst prompts, case/report templates and redaction-policy. This is a read-only investigation of the session; [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-research/SOURCE-RESEARCH.md) owns source proof and [CONTEXT-COSTS.md](CONTEXT-COSTS.md) owns savings claims.
 
 ## Identify the case
 

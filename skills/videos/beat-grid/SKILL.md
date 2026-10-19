@@ -9,6 +9,8 @@ Sound is a timeline input, not a file dropped under the video at the end. One cl
 
 Copy `scripts/analyze_audio.py` from this skill's folder into the film's `scripts/`. It needs only ffmpeg and numpy; run it with `uv run`, which installs numpy for that run.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## Pick the source
 
 | Situation | Do |

@@ -10,7 +10,7 @@ From [firebase/agent-skills, firebase-data-connect/SKILL.md; reference/schema.md
 - Inspect both user schema and generated schema extensions before choosing operation fields.
 - Use actual @table/@col/default/reference definitions and their generated types. A referenced key must match the schema's type and identity.
 - Prefer the typed GraphQL operation route for ordinary CRUD and relationships. The source reserves native SQL for requested/required advanced database work.
-- Treat schema migration, operation deployment and generated SDK compatibility as one reviewed contract change. Generic database migration discipline belongs in [Postgres](../postgres/SKILL.md).
+- Treat schema migration, operation deployment and generated SDK compatibility as one reviewed contract change. Generic database migration discipline belongs in [Postgres](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/SKILL.md).
 
 ## Authorize each operation
 

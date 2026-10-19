@@ -30,7 +30,7 @@ Use this when test-first development is requested or already authorized for a fe
 
 ## Refactoring and evidence
 
-[mattpocock/skills, tdd, SKILL.md] puts refactoring outside the red-to-green loop and into review. [obra/superpowers, test-driven-development, SKILL.md] uses red, green, then refactor. The existing [refactoring policy](../refactoring/SKILL.md) keeps behavior pinned and changes structure in small verified steps; neither source changes that requirement or authorizes unrelated cleanup.
+[mattpocock/skills, tdd, SKILL.md] puts refactoring outside the red-to-green loop and into review. [obra/superpowers, test-driven-development, SKILL.md] uses red, green, then refactor. The existing [refactoring policy](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/SKILL.md) keeps behavior pinned and changes structure in small verified steps; neither source changes that requirement or authorizes unrelated cleanup.
 
 - Prefer real behavior through the chosen boundary; mock external boundaries only as described by the existing [integration policy](INTEGRATION.md). A test dominated by mock wiring can indicate that the boundary is wrong. [mattpocock/skills, tdd, mocking.md], [obra/superpowers, test-driven-development, writing-good-tests.md]
 - Keep test-only behavior out of production objects and avoid fake setups that hide required effects. Read the real dependency path before stubbing it. [obra/superpowers, test-driven-development, writing-good-tests.md]

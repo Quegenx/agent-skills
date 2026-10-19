@@ -19,7 +19,7 @@ From [firebase/agent-skills, firebase-data-connect/reference/sdk_web.md; referen
 - Flutter uses the generated connector and operation execution methods; optional operation arguments use the generated builder contract.
 - Preserve unknown enumeration values when schema/client versions differ. Web requires an explicit unknown branch; Flutter's generated enum wrapper exposes known/unknown representation.
 - Subscriptions and cache policies are installed-SDK contracts. Inspect their actual observer names, unsubscribe/cancel behavior and query reference types before use.
-- The source offers TanStack-generated React hooks and native caching/subscriptions as alternative client approaches. Keep one owner for a given operation's state and link general React rules to [React](../../frontend/react/SKILL.md).
+- The source offers TanStack-generated React hooks and native caching/subscriptions as alternative client approaches. Keep one owner for a given operation's state and link general React rules to [React](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md).
 - Do not copy unverified polling intervals, caching storage promises or new API minima. Source native-only SDK examples remain excluded.
 
 ## Privileged Node operations

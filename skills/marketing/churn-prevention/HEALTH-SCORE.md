@@ -1,6 +1,6 @@
 # Health score, risk signals and churn metrics
 
-The save that happens before the customer clicks Cancel: leading risk signals, a health score built so its parts can be added, interventions, and the metrics and tests that tell you whether retention work pays. From [coreyhaines31/marketingskills, churn-prevention] `SKILL.md` (MIT, Copyright (c) 2025 Corey Haines), which cites Gainsight on weights for unavailable measures. Event capture and funnels are in [../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md); billing-side risk (`delinquent`, `past_due`) and Stripe's churn and NRR formulas in [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#churn); mobile signals in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md#subscription-lifecycle).
+The save that happens before the customer clicks Cancel: leading risk signals, a health score built so its parts can be added, interventions, and the metrics and tests that tell you whether retention work pays. From [coreyhaines31/marketingskills, churn-prevention] `SKILL.md` (MIT, Copyright (c) 2025 Corey Haines), which cites Gainsight on weights for unavailable measures. Event capture and funnels are in [posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md); billing-side risk (`delinquent`, `past_due`) and Stripe's churn and NRR formulas in [stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#churn); mobile signals in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md#subscription-lifecycle).
 
 ## Risk signals
 
@@ -53,7 +53,7 @@ Health Score = (
 | Trigger | Intervention |
 |---|---|
 | Usage drop >50% for 2 weeks | "We noticed you haven't used [feature]. Need help?" email |
-| Approaching plan limit | Upgrade nudge, not a wall ([../onboarding-and-upgrades/UPGRADE-PROMPTS.md](../onboarding-and-upgrades/UPGRADE-PROMPTS.md)) |
+| Approaching plan limit | Upgrade nudge, not a wall ([onboarding-and-upgrades UPGRADE-PROMPTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/UPGRADE-PROMPTS.md)) |
 | No login for 14 days | Re-engagement email with recent product updates |
 | Detractor (0-6) | Personal follow-up within 24 hours |
 | Support ticket unresolved >48h | Escalation + proactive status update |
@@ -73,7 +73,7 @@ Health Score = (
 | Dunning recovery rate | Recovered / Total failed payments |
 | Time to cancel | Days from first churn signal to cancel (track the trend) |
 
-- **Two churn formulas.** The Stripe skill's [appeeky] formula divides by `(active_start + new_in_30d)` and calls "under 5% monthly... good for SMB SaaS; under 2%... excellent" ([../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#churn)); this source divides by start-of-month customers and splits B2C and B2B. Say which one a report uses.
+- **Two churn formulas.** The Stripe skill's [appeeky] formula divides by `(active_start + new_in_30d)` and calls "under 5% monthly... good for SMB SaaS; under 2%... excellent" ([stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#churn)); this source divides by start-of-month customers and splits B2C and B2B. Say which one a report uses.
 - **"A 'saved' customer who churns 30 days later wasn't really saved."** Track the LTV of saved customers, not only the save rate.
 - **Cohorts:** segment churn by acquisition channel, plan, tenure (30, 60, 90 days), cancel reason and save-offer type.
 
@@ -89,7 +89,7 @@ Health Score = (
 | Offer presentation (modal vs full page) | Full page gets more attention | Save rate |
 | Copy tone (empathetic vs direct) | Empathetic reduces friction | Save rate |
 
-The source suggests PostHog: feature flags split users into flows server-side and funnels track survey → offer → accept or decline → confirm ([../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md)). Test design and significance are in [../ab-testing/SKILL.md](../ab-testing/SKILL.md).
+The source suggests PostHog: feature flags split users into flows server-side and funnels track survey → offer → accept or decline → confirm ([posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md)). Test design and significance are in [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 ## Prove it
 

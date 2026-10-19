@@ -9,7 +9,7 @@ Get booked, design a talk that lands, and harvest the recording, copied from cor
 - **Pitch the audience's takeaway, not your company.** A CFP that reads like the attendee's problem gets accepted; a product story gets filtered. The product appears inside the talk only as evidence.
 - **Title formula:** a specific outcome, a specific audience, and a tension or number. The source's example: "How we cut CAC 40% by killing our best channel" beats "Rethinking Growth."
 - **The abstract carries three things:** the problem as the audience feels it; 2 to 3 concrete things they'll walk away knowing; why *you* (numbers, scars). Keep it under 150 words: "organizers skim hundreds."
-- **Ladder:** local meetups, then niche conference tracks, then main stages. Recordings of small talks are the portfolio for bigger ones; podcast appearances feed the same ladder ([../public-relations/PODCAST-PREP.md](../public-relations/PODCAST-PREP.md)).
+- **Ladder:** local meetups, then niche conference tracks, then main stages. Recordings of small talks are the portfolio for bigger ones; podcast appearances feed the same ladder ([public-relations PODCAST-PREP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/PODCAST-PREP.md)).
 - **Off-cycle:** many events fill panels and replacement slots late, so a short note to organizers with a tight topic and proof you can speak "lands surprisingly often."
 
 ## Designing the talk
@@ -35,7 +35,7 @@ Then check the journey: does the sequence of feelings *earn* the Monday takeaway
 
 [coreyhaines31/marketingskills, events] "The room holds 200 people for 25 minutes; the recording works for years."
 
-- **Say important things in liftable form:** your company name next to your category ("we build X, the Y for Z"), numbers spoken aloud rather than shown on a slide, and the quotable line "on a beat the room will feel". The source holds that transcripts get "crawled and cited by AI assistants"; that is its claim ([../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md)).
+- **Say important things in liftable form:** your company name next to your category ("we build X, the Y for Z"), numbers spoken aloud rather than shown on a slide, and the quotable line "on a beat the room will feel". The source holds that transcripts get "crawled and cited by AI assistants"; that is its claim ([ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md)).
 - **"Slides are not the asset."** Anything only visual (the key number, the framework name) doesn't exist for the transcript, the podcast version, or an attendee retelling it: speak it.
 - **Get the recording:** confirm before accepting the slot that you'll receive it and may republish. If the event doesn't record, record your own re-delivery within a week.
 
@@ -44,8 +44,8 @@ Then check the journey: does the sequence of feelings *earn* the Monday takeaway
 [coreyhaines31/marketingskills, events]
 
 - **Before:** post the "why this topic now" angle; invite specific people to the session; plan to meet the other speakers ("speaker-to-speaker is the strongest networking lane at any event").
-- **During:** end with one low-friction pointer, a memorable URL to the slides plus a related asset, which doubles as a lead magnet ([../lead-magnets/SKILL.md](../lead-magnets/SKILL.md)). Note every Q&A question: it is content research.
-- **After:** publish the recording and a written version ([../content-strategy/SKILL.md](../content-strategy/SKILL.md)), clip the peak beats ([../marketing-video/SKILL.md](../marketing-video/SKILL.md)), and follow up within 24 to 48 hours with everyone who asked a question or approached you: "the warmest leads an event produces".
+- **During:** end with one low-friction pointer, a memorable URL to the slides plus a related asset, which doubles as a lead magnet ([lead-magnets SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md)). Note every Q&A question: it is content research.
+- **After:** publish the recording and a written version ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), clip the peak beats ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md)), and follow up within 24 to 48 hours with everyone who asked a question or approached you: "the warmest leads an event produces".
 - **Roll the talk forward:** the same core talk, sharpened by each Q&A, can run a season. "Retire it when the Q&A stops surprising you."
 
 ## Prove it

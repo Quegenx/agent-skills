@@ -13,7 +13,7 @@ Read `.agents/product-context.md` first. Then [coreyhaines31/marketingskills, ma
 3. Provide specific marketing applications
 4. Suggest how to implement ethically
 
-Applying psychology to a page goes with [cro](../cro/SKILL.md); copy with [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md); popups with [cro POPUPS.md](../cro/POPUPS.md); testing one model against another with [ab-testing](../ab-testing/SKILL.md), which owns the test design.
+Applying psychology to a page goes with [cro](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md); copy with [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md); popups with [cro POPUPS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/POPUPS.md); testing one model against another with [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), which owns the test design.
 
 ## Foundational thinking models
 
@@ -166,7 +166,7 @@ People tend to accept pre-selected options. Defaults are powerful.
 
 **Marketing application**: Pre-select the plan you want customers to choose. Opt-out beats opt-in for subscriptions (ethically applied).
 
-**Correction** (official): for marketing subscriptions the opt-out line is wrong. GDPR Recital 32: "Silence, pre-ticked boxes or inactivity should not therefore constitute consent" (https://gdpr-info.eu/recitals/no-32/); [email-practices LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md) already lists "pre-checked boxes, an opt-out model" as not consent. Keep the plan pre-select; drop the opt-out default.
+**Correction** (official): for marketing subscriptions the opt-out line is wrong. GDPR Recital 32: "Silence, pre-ticked boxes or inactivity should not therefore constitute consent" (https://gdpr-info.eu/recitals/no-32/); [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md) already lists "pre-checked boxes, an opt-out model" as not consent. Keep the plan pre-select; drop the opt-out default.
 
 ### Paradox of Choice
 *Status: states a number or effect size with no source; the source's claim, not a measurement.*
@@ -174,7 +174,7 @@ Too many options overwhelm and paralyze. Fewer choices often lead to more decisi
 
 **Marketing application**: Limit options. Three pricing tiers beat seven. Recommend a single "best for most" option.
 
-**Two views.** The source above [coreyhaines31/marketingskills, marketing-psychology]; this repo: "Recommend a plan only if it's a real recommendation for a stated reader. Not always three tiers with a highlighted middle" ([anti-slop-copy PAGES.md](../../anti-ai-slop/anti-slop-copy/PAGES.md)). The repo rule stands; the source's framing applies only when that many real plans exist.
+**Two views.** The source above [coreyhaines31/marketingskills, marketing-psychology]; this repo: "Recommend a plan only if it's a real recommendation for a stated reader. Not always three tiers with a highlighted middle" ([anti-slop-copy PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/PAGES.md)). The repo rule stands; the source's framing applies only when that many real plans exist.
 
 ### Goal-Gradient Effect
 People accelerate effort as they approach a goal. Progress visualization motivates action.
@@ -209,7 +209,7 @@ People treat money differently based on its source or intended use, even though 
 
 **Pricing application**: "$1/day" feels cheaper than "$30/month." "Less than your morning coffee" reframes the expense. This is the source's price-framing application alongside the money-source/use definition above. [coreyhaines31/marketingskills, marketing-psychology]
 
-**Apple's limit** (official): for in-app subscriptions "the amount that will be billed must be the most prominent pricing element in the layout", and a breakdown price "should be displayed in a subordinate position and size" (https://developer.apple.com/app-store/subscriptions/, quoted in [app-growth PAYWALLS.md](../../mobile/app-growth/PAYWALLS.md)). A daily figure never outranks the billed amount in an app.
+**Apple's limit** (official): for in-app subscriptions "the amount that will be billed must be the most prominent pricing element in the layout", and a breakdown price "should be displayed in a subordinate position and size" (https://developer.apple.com/app-store/subscriptions/, quoted in [app-growth PAYWALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/PAYWALLS.md)). A daily figure never outranks the billed amount in an app.
 
 ### Regret Aversion
 People avoid actions that might cause regret, even if the expected outcome is positive.
@@ -219,7 +219,7 @@ People avoid actions that might cause regret, even if the expected outcome is po
 ### Bandwagon Effect / Social Proof
 People follow what others are doing. Popularity signals quality and safety.
 
-**Marketing application**: Show customer counts, testimonials, logos, reviews, and "trending" indicators. Numbers create confidence. Under the repo's proof test: every number, logo, quote and badge "is real and sourced, or it isn't on the page" ([anti-slop-copy SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md)).
+**Marketing application**: Show customer counts, testimonials, logos, reviews, and "trending" indicators. Numbers create confidence. Under the repo's proof test: every number, logo, quote and badge "is real and sourced, or it isn't on the page" ([anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)).
 
 
 ## Influence and persuasion
@@ -239,7 +239,7 @@ Once people commit to something, they want to stay consistent with that commitme
 ### Authority Bias
 People defer to experts and authority figures. Credentials and expertise create trust.
 
-**Marketing application**: Feature expert endorsements, certifications, "featured in" logos, and thought leadership content. Only real ones: "No invented ... certifications" ([anti-slop-ui SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md)).
+**Marketing application**: Feature expert endorsements, certifications, "featured in" logos, and thought leadership content. Only real ones: "No invented ... certifications" ([anti-slop-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/SKILL.md)).
 
 ### Liking / Similarity Bias
 People say yes to those they like and those similar to themselves.
@@ -256,7 +256,7 @@ Limited availability increases perceived value. Scarcity signals desirability.
 
 **Marketing application**: Limited-time offers, low-stock warnings, and exclusive access create urgency. Only use when genuine.
 
-The source's eval draws the line: "distinguish ethical scarcity (real constraints) from manufactured urgency (fake countdown timers, artificial limits)". The legal rules for scarcity and urgency claims are defined once in [offer-design FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
+The source's eval draws the line: "distinguish ethical scarcity (real constraints) from manufactured urgency (fake countdown timers, artificial limits)". The legal rules for scarcity and urgency claims are defined once in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md).
 
 ### Foot-in-the-Door Technique
 Start with a small request, then escalate. Compliance with small requests leads to compliance with larger ones.
@@ -321,7 +321,7 @@ People judge prices relative to options presented. A middle tier seems reasonabl
 
 **Marketing application**: Three tiers where the middle is your target. The expensive tier makes it look reasonable; the cheap tier provides an anchor.
 
-**Two views.** The source above; this repo's anti-slop-ui lists "Three tiers, middle highlighted" as a pattern to replace with "Whatever the real pricing is" ([anti-slop-ui PATTERNS.md](../../anti-ai-slop/anti-slop-ui/PATTERNS.md)) and anti-slop-copy says "Not always three tiers with a highlighted middle". Keep the repo rule; use this framing only when three real plans exist. Pricing structure is in [pricing-strategy](../pricing-strategy/SKILL.md).
+**Two views.** The source above; this repo's anti-slop-ui lists "Three tiers, middle highlighted" as a pattern to replace with "Whatever the real pricing is" ([anti-slop-ui PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/PATTERNS.md)) and anti-slop-copy says "Not always three tiers with a highlighted middle". Keep the repo rule; use this framing only when three real plans exist. Pricing structure is in [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
 
 ### Mental Accounting (Pricing)
 The source's same-price framing application and Apple's billed-amount prominence limit are kept once under [Mental Accounting](#mental-accounting), alongside the separate money-source/use definition. [coreyhaines31/marketingskills, marketing-psychology]
@@ -462,4 +462,4 @@ When facing a marketing challenge, consider:
 
 ## Prove it
 
-From the source's six evals [coreyhaines31/marketingskills, marketing-psychology]: a $29/$79/$199 pricing page gets anchoring, charm pricing, the Rule of 100 and loss aversion named and applied to those prices, with the three-tier framing used only because three real plans exist and every proof element real; scarcity is explained with the line between real constraints and manufactured urgency; an onboarding flow gets goal-gradient, Hick's law, IKEA or endowment and Zeigarnik or commitment, each with an action; trial versus freemium is explained through loss aversion, endowment and the zero-price effect; a scarcity-versus-social-proof CTA test is handed to [ab-testing](../ab-testing/SKILL.md). No answer presents a *states a number* claim as measured, recommends an opt-out default for marketing consent, or puts a daily price above the billed amount in an app.
+From the source's six evals [coreyhaines31/marketingskills, marketing-psychology]: a $29/$79/$199 pricing page gets anchoring, charm pricing, the Rule of 100 and loss aversion named and applied to those prices, with the three-tier framing used only because three real plans exist and every proof element real; scarcity is explained with the line between real constraints and manufactured urgency; an onboarding flow gets goal-gradient, Hick's law, IKEA or endowment and Zeigarnik or commitment, each with an action; trial versus freemium is explained through loss aversion, endowment and the zero-price effect; a scarcity-versus-social-proof CTA test is handed to [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md). No answer presents a *states a number* claim as measured, recommends an opt-out default for marketing consent, or puts a daily price above the billed amount in an app.

@@ -284,7 +284,7 @@ jq -r '
 ' /tmp/trace_${TRACE_ID}.json
 ```
 
-  TraceQL in general is in [../grafana/TEMPO.md](../grafana/TEMPO.md).
+  TraceQL in general is in [grafana TEMPO.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/grafana/TEMPO.md).
 
 ## Insights audits
 

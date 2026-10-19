@@ -1,6 +1,6 @@
 # PostHog tracing
 
-PostHog Node span instrumentation and APM investigation. Client creation and shutdown stay in [SETUP-SERVER.md](SETUP-SERVER.md); generic OpenTelemetry stays in [observability](../observability/SKILL.md). [PostHog skills, SETUP-SERVER.md; LOGS-AND-APM.md]
+PostHog Node span instrumentation and APM investigation. Client creation and shutdown stay in [SETUP-SERVER.md](SETUP-SERVER.md); generic OpenTelemetry stays in [observability](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/SKILL.md). [PostHog skills, SETUP-SERVER.md; LOGS-AND-APM.md]
 
 ## Distributed tracing
 

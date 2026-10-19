@@ -99,7 +99,7 @@ Why a custom render object for something this small: "even simple widgets can so
       : 0;
 ```
 
-Two sides, both true for different readers: [renderobjects] above is about implementers (report intrinsics so the object works inside widgets that ask for them); "**Avoid intrinsics.**" in [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md) is about callers that trigger an intrinsic pass (a second layout pass). For each `compute*Intrinsic*` method the docs say "Do not call this function directly" and to call the matching `get*` method instead, as this code does (https://api.flutter.dev/flutter/rendering/RenderBox-class.html).
+Two sides, both true for different readers: [renderobjects] above is about implementers (report intrinsics so the object works inside widgets that ask for them); "**Avoid intrinsics.**" in [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md) is about callers that trigger an intrinsic pass (a second layout pass). For each `compute*Intrinsic*` method the docs say "Do not call this function directly" and to call the matching `get*` method instead, as this code does (https://api.flutter.dev/flutter/rendering/RenderBox-class.html).
 
 ## Paint
 

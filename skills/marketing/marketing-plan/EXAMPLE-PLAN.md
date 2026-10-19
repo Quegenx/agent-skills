@@ -34,7 +34,7 @@ The source ships a full worked plan (973 lines) for an anonymized client, "Quiet
 ## What not to copy
 
 - **The idea-bank counts.** The example's Section 12.1 is headed "88 mapped" and its summary says "88 ideas applicable to Acquisition", but the section has 120 rows (97 without skips); across 12.1 to 12.6 there are 145 rows covering the 139 ideas. Its "roughly 30% of the available tactical surface area" rests on those counts. Derive counts from your own tables.
-- **Its kickoff fixes** (a "CAN-SPAM footer" on a draft flow, a subscription center that "Improves deliverability (lower complaint rates)"): the rules are in [email-practices](../../backend/email-practices/SKILL.md).
+- **Its kickoff fixes** (a "CAN-SPAM footer" on a draft flow, a subscription center that "Improves deliverability (lower complaint rates)"): the rules are in [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 - **Its client claims** (the email tool's MCP letting a "non-technical team ship flows", category retention averages, revenue per venue): the example client's statements, not measurements.
 
 ## Prove it

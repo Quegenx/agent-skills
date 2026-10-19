@@ -5,7 +5,9 @@ description: "Reviews code at the volume agents write it: the review layers from
 
 # Code review
 
-When agents write the code, the number of changes goes up fast, and manual, line-by-line review becomes incredibly difficult if not impossible. Review still does two jobs: find and fix issues before they ship, and build shared context across the team. "Did a human read the code?" is an imprecise proxy for "what could go wrong with this change, and which check, automated or human, is the right one to catch it?" Most of the reading moves to machines, human time goes where the risk is, and mistakes are made fast and easy to undo. What to look for inside one diff (slop, defenses in the wrong places, should it exist, the per-file verdict table) is [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md); whether the tests can catch a bug is [testing](../testing/SKILL.md).
+When agents write the code, the number of changes goes up fast, and manual, line-by-line review becomes incredibly difficult if not impossible. Review still does two jobs: find and fix issues before they ship, and build shared context across the team. "Did a human read the code?" is an imprecise proxy for "what could go wrong with this change, and which check, automated or human, is the right one to catch it?" Most of the reading moves to machines, human time goes where the risk is, and mistakes are made fast and easy to undo. What to look for inside one diff (slop, defenses in the wrong places, should it exist, the per-file verdict table) is [anti-slop-code](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-code/SKILL.md); whether the tests can catch a bug is [testing](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md).
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -14,7 +16,7 @@ When agents write the code, the number of changes goes up fast, and manual, line
 | Setting up and running the AI reviewer: what it reads, CLAUDE.md and REVIEW.md, review depth, verifying findings, P0 to P3 severity with origin/status separate, output, review prompts, security review, rule-by-rule and fan-out reviews | [REVIEWER.md](REVIEWER.md) |
 | Reviewing one change: resolving the range and its base, pull request refs, excluded paths, blast radius to consumers, Introduced, Regression and Pre-existing by cause with `git blame`, removed UI signals, absent states, the read-only rule, the scope block and report | [CHANGE-SCOPE.md](CHANGE-SCOPE.md) |
 | Running a scanner or linter on a change: scopes with per-rule ownership, baseline scans and pre-edit check baselines, one pinned tool, warning exit codes, the narrowest rule control, triaging its findings by leverage, a verdict per finding, when a fix counts and when a scan may be called clean | [SCANNER-TRIAGE.md](SCANNER-TRIAGE.md) |
-| Creating or evaluating a lint rule or detector, including comparisons of checker revisions | [lint-rule-authoring](../lint-rule-authoring/SKILL.md) |
+| Creating or evaluating a lint rule or detector, including comparisons of checker revisions | [lint-rule-authoring](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/SKILL.md) |
 | Making the reviewer better: incidents as an eval, measuring noise, round caps and convergence, fixing repeated findings at the source | [TUNING-THE-REVIEWER.md](TUNING-THE-REVIEWER.md) |
 | Checking repository standards and requested behavior as independent review lanes, with separate evidence and verdicts | [TWO-AXIS.md](TWO-AXIS.md) |
 | Receiving feedback: verifying a suggestion, preserving accepted decisions, resolving dependent uncertainty and correcting evidence-based pushback | [RECEIVING-FEEDBACK.md](RECEIVING-FEEDBACK.md) |
@@ -34,5 +36,7 @@ When agents write the code, the number of changes goes up fast, and manual, line
 8. **Whoever prompted the change is on the hook for it.** Changes stay small and reversible, blast radius sets the bar, and the person who lands a change usually fixes it.
 
 ## Prove it
+
+For one change, use the selected review lane's evidence, findings and scope limits. The team-wide metrics, merge controls and reviewer evals below apply when setting up or evaluating the review process; they are not setup requirements for reviewing one diff.
 
 Human time per PR is measured (human approvals per PR at the median and 95th percentile, human comments, how long a PR waits on a person) and revert and incident rates have not risen; every review thread on a merged PR is resolved; the paths that always need a person are enforced by CODEOWNERS and branch protection; the reviewer's incident eval runs and rounds-to-pass is tracked alongside recall; and every file's own Prove it checks pass for the parts you touched.

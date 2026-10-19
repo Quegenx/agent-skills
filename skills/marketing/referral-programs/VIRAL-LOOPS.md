@@ -1,6 +1,6 @@
 # Viral loops
 
-"Virality can be engineered through product design, not just bought with reward programs. But don't force it - decide whether virality fits your product before building anything." From [coreyhaines31/marketingskills, referrals, references/viral-mechanisms.md] unless tagged. Growth loops as a planning model are in [marketing-loops](../marketing-loops/SKILL.md).
+"Virality can be engineered through product design, not just bought with reward programs. But don't force it - decide whether virality fits your product before building anything." From [coreyhaines31/marketingskills, referrals, references/viral-mechanisms.md] unless tagged. Growth loops as a planning model are in [marketing-loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md).
 
 ## The viral potential spectrum
 
@@ -16,7 +16,7 @@
 - **Competitive-advantage tools:** "users *hide* that they use them (their edge)".
 - **Internal-only tools:** never leave the org.
 
-"If you're on the limited end, invest in referral programs, content, and partnerships instead of embedding viral loops that won't fire." For a collaborative product, the source's eval expects product-embedded virality first, with a reward program as the incentive-driven fallback [coreyhaines31/marketingskills, referrals evals]. app-growth sorts mobile apps the same way (strong: network effects, high LTV, show-off content; weak: solo utilities, low-ARPU free apps, embarrassing apps) in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
+"If you're on the limited end, invest in referral programs, content, and partnerships instead of embedding viral loops that won't fire." For a collaborative product, the source's eval expects product-embedded virality first, with a reward program as the incentive-driven fallback [coreyhaines31/marketingskills, referrals evals]. app-growth sorts mobile apps the same way (strong: network effects, high LTV, show-off content; weak: solo utilities, low-ARPU free apps, embarrassing apps) in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
 
 ## The seven viral mechanisms
 
@@ -32,7 +32,7 @@ Most are non-incentive: the loop is built into the product, not paid for.
 
 ## Referral best practices
 
-- **Lead with the larger number:** frame the reward with whichever number looks bigger. On a $25 product, say "$10 off", not "40% off"; on a $500 product, "20% off" rather than "$100 off" "if the percentage frames better". "Rule of thumb: under ~$100, lead with the dollar amount; over ~$100, test the percentage." The claim must match the real offer ([offer-design FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md)). The source's "larger number" label conflicts with its literal examples ($10 rather than 40, then 20 rather than 100); keep them as attributed framing choices to test, not a consistent numerical rule. [coreyhaines31/marketingskills, referrals, references/viral-mechanisms.md]
+- **Lead with the larger number:** frame the reward with whichever number looks bigger. On a $25 product, say "$10 off", not "40% off"; on a $500 product, "20% off" rather than "$100 off" "if the percentage frames better". "Rule of thumb: under ~$100, lead with the dollar amount; over ~$100, test the percentage." The claim must match the real offer ([offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md)). The source's "larger number" label conflicts with its literal examples ($10 rather than 40, then 20 rather than 100); keep them as attributed framing choices to test, not a consistent numerical rule. [coreyhaines31/marketingskills, referrals, references/viral-mechanisms.md]
 - **Reward timing:** ask and reward at the aha moment or a milestone (first success, upgrade, streak). "Motivation to share peaks right after value is experienced, not at signup."
 - **Double-sided rewards:** both referrer and referred get value; "Higher conversion than single-sided, and gives the referrer a generous, non-selfish reason to share".
 - **Friction:** "Every extra step kills share rate." One-click sharing with a pre-generated link and no form; pre-written messages so the user just hits send; in-product placement at the trigger moment, "not buried in settings".

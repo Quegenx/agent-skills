@@ -1,6 +1,6 @@
 # gsap.utils: clamp, mapRange, random, snap, distribute, wrap and the rest
 
-**gsap.utils** are helpers, with no registration, used in tween vars (function-based values), in ScrollTrigger or Observer callbacks, or in any JS that drives GSAP; all live on `gsap.utils` [GreenSock, gsap-utils]. Hand-written per-frame math (lerp, sawtooth loops, controlled randomness) is in [../ui-animation/MATH.md](../ui-animation/MATH.md). Full list: https://gsap.com/docs/v3/HelperFunctions
+**gsap.utils** are helpers, with no registration, used in tween vars (function-based values), in ScrollTrigger or Observer callbacks, or in any JS that drives GSAP; all live on `gsap.utils` [GreenSock, gsap-utils]. Hand-written per-frame math (lerp, sawtooth loops, controlled randomness) is in [ui-animation MATH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/MATH.md). Full list: https://gsap.com/docs/v3/HelperFunctions
 
 **Contents:** [The function form](#the-function-form) · [clamp](#clampmin-max-value) · [mapRange](#maprangeinmin-inmax-outmin-outmax-value) · [normalize](#normalizemin-max-value) · [interpolate](#interpolatestart-end-progress) · [random](#randomminimum-maximum-snapincrement-returnfunction--randomarray-returnfunction) · [snap](#snapsnapto-value) · [shuffle](#shufflearray) · [distribute](#distributeconfig) · [getUnit](#getunitvalue) · [unitize](#unitizefunction-unit) · [splitColor](#splitcolorcolor-returnhsl) · [selector](#selectorscope) · [toArray](#toarrayvalue-scope) · [pipe](#pipefunctions) · [wrap](#wrapmin-max-value) · [wrapYoyo](#wrapyoyomin-max-value) · [Prove it](#prove-it)
 
@@ -60,7 +60,7 @@ normFn(50); // 0.5
 
 ## interpolate(start, end, progress?)
 
-[GreenSock, gsap-utils] Interpolates between two values at a progress (0 to 1): numbers, colors, and objects with matching keys. ui-animation's hand-written `lerp(a, b, t)` is in [../ui-animation/MATH.md](../ui-animation/MATH.md).
+[GreenSock, gsap-utils] Interpolates between two values at a progress (0 to 1): numbers, colors, and objects with matching keys. ui-animation's hand-written `lerp(a, b, t)` is in [ui-animation MATH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/MATH.md).
 
 ```javascript
 gsap.utils.interpolate(0, 100, 0.5);       // 50
@@ -100,7 +100,7 @@ gsap.to(".box", { x: "random(-100, 100, 5)", duration: 1 });
 gsap.to(".item", { backgroundColor: "random([red, blue, green])" });
 ```
 
-landing-page-ui gives each title letter its own tilt with `rotate: () => gsap.utils.random(-8, 8)` ("a random tilt per letter in -8 to 8 degrees", [MOTION.md](../landing-page-ui/MOTION.md#the-hero-assembles-once)).
+landing-page-ui gives each title letter its own tilt with `rotate: () => gsap.utils.random(-8, 8)` ("a random tilt per letter in -8 to 8 degrees", [landing-page-ui MOTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/MOTION.md#the-hero-assembles-once)).
 
 ## snap(snapTo, value?)
 
@@ -135,7 +135,7 @@ gsap.utils.shuffle([1, 2, 3, 4]); // e.g. [3, 1, 4, 2]
 
 [GreenSock, gsap-utils]
 
-**Returns a function** that assigns each target a value from its position in the array or grid. GSAP uses it internally for advanced staggers; use it for any value spread across many elements (scale, opacity, x, delay). The function gets `(index, target, targets)`: call it yourself or pass it straight into a tween. ui-animation's "stagger by distance from a focal point" is in [../ui-animation/TIMING.md](../ui-animation/TIMING.md#staggers-and-sequencing).
+**Returns a function** that assigns each target a value from its position in the array or grid. GSAP uses it internally for advanced staggers; use it for any value spread across many elements (scale, opacity, x, delay). The function gets `(index, target, targets)`: call it yourself or pass it straight into a tween. ui-animation's "stagger by distance from a focal point" is in [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#staggers-and-sequencing).
 
 | Property | Type | Description |
 |---|---|---|

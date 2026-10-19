@@ -1,6 +1,6 @@
 # Agent defaults: when the agent picks the vendor
 
-A developer tells a coding agent "deploy this", "add auth" or "send a welcome email", and the agent chooses a vendor, installs it and moves on; "Whatever the agent reaches for first wins." This applies most to developer tools, APIs, infrastructure and SaaS with a CLI or SDK. Everything here is [coreyhaines31/marketingskills, ai-seo, agent-defaults] (MIT; the docs audit adapted there from Profound's MIT claude-code-discoverability-auditor). The source's company case numbers are a podcast anecdote it calls unverified, so they are left out. The scheduled version of the panel is a loop in [../marketing-loops/SKILL.md](../marketing-loops/SKILL.md); the repo's developer-experience audit of agent docs (which URLs an agent guesses, and whether llms.txt carried it) is [agent-dx-audit](../../ai-agents/agent-dx-audit/ONBOARDING-AUDIT.md).
+A developer tells a coding agent "deploy this", "add auth" or "send a welcome email", and the agent chooses a vendor, installs it and moves on; "Whatever the agent reaches for first wins." This applies most to developer tools, APIs, infrastructure and SaaS with a CLI or SDK. Everything here is [coreyhaines31/marketingskills, ai-seo, agent-defaults] (MIT; the docs audit adapted there from Profound's MIT claude-code-discoverability-auditor). The source's company case numbers are a podcast anecdote it calls unverified, so they are left out. The scheduled version of the panel is a loop in [marketing-loops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md); the repo's developer-experience audit of agent docs (which URLs an agent guesses, and whether llms.txt carried it) is [agent-dx-audit](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-dx-audit/ONBOARDING-AUDIT.md).
 
 ## Measure your share of defaults
 
@@ -21,13 +21,13 @@ A developer tells a coding agent "deploy this", "add auth" or "send a welcome em
 | Agent setup in one step | An agent with your MCP server, CLI or skill installed uses it instead of guessing |
 | Presence inside the assistants | A native connector or plugin means the task never leaves the chat |
 | Task-shaped pages per stack | A page that matches the exact task ("deploy Django") and ends in a working result gets followed |
-| Template pages per popular tool | Setup queries are a long tail that pages at scale cover ([../seo/PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md)) |
+| Template pages per popular tool | Setup queries are a long tail that pages at scale cover ([seo PAGES-AT-SCALE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md)) |
 | Migration guides per competitor | An agent moving a project follows steps |
 | Docs agents can read | An `llms.txt` index with one-line summaries plus a Markdown version of every page ([LLMS-TXT.md](LLMS-TXT.md)) |
 | Fresh, dated changes | Recent docs and changelogs keep answers current |
 | CLI output an agent can recover from | "Non-interactive flags, JSON output, and errors that say what to run next keep the run alive past a failure" (general practice) |
 
-"Fix the stall points from your measurement first. Content won't help if the agent picks you and then can't finish." The CLI row is the same contract the repo's harness rules describe for agent-run commands ([../../ai-agents/agent-harness/WORKFLOWS.md](../../ai-agents/agent-harness/WORKFLOWS.md)).
+"Fix the stall points from your measurement first. Content won't help if the agent picks you and then can't finish." The CLI row is the same contract the repo's harness rules describe for agent-run commands ([agent-harness WORKFLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md)).
 
 ## Audit your docs for coding agents
 
@@ -40,7 +40,7 @@ Treat a coding agent as its own answer engine; the source cites a Profound sampl
 | Install in a Next.js app | /docs/nextjs | Package name, minimum version, env vars, one working example | Example uses a deprecated import |
 | Estimate cost | /pricing | Pricing unit, free tier limits, overage rate | Overage only in a PDF |
 
-**2. Check retrieval** for each canonical page: the title and headings name the task and the stack; the answer or command comes before background; prerequisites, versions and dates are explicit; examples are copyable and current; anchors and URLs stay stable between releases; the text renders without JavaScript and a Markdown version exists. Question-shaped headings only where they match a real task; don't stuff product names into docs. The docs writing rules are [../../architecture/developer-docs/WRITING-AND-PUBLISHING.md](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md).
+**2. Check retrieval** for each canonical page: the title and headings name the task and the stack; the answer or command comes before background; prerequisites, versions and dates are explicit; examples are copyable and current; anchors and URLs stay stable between releases; the text renders without JavaScript and a Markdown version exists. Question-shaped headings only where they match a real task; don't stuff product names into docs. The docs writing rules are [developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md).
 
 **3. Keep a technical fact ledger.** One row per fact an agent might act on: supported versions and runtimes, regions, rate limits, pricing units, auth methods, data handling, deprecations, each with its canonical source and owner. Check the same fact everywhere it appears: docs, pricing page, README, package registry descriptions (npm, PyPI), examples and changelog. "An agent that finds two different rate limits will guess, or pick a vendor whose docs agree with themselves."
 

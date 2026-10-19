@@ -1,6 +1,6 @@
 # Cross-discipline interface review
 
-One review of a screen, flow or feature across accessibility, layout, writing, type, color, and UI polish and motion, ending in one ranked table and one verdict. It is Jakub Krehel's `better-interface` skill (jakubkrehel/skills: SKILL.md and review-format.md), which owns no rules of its own: "Orchestration is all it owns." Here its six `better-*` domain skills are mapped to this repo's skills, and its HIGH, MEDIUM and LOW scale is mapped onto P0 to P3 as in [SKILL.md section 6](SKILL.md#6-delivery-report). A branch or pull request review is code-review's job ([Change reviews](#change-reviews)); a Flutter app's whole-app audit is [flutter-ux REVIEW.md](../../mobile/flutter-ux/REVIEW.md).
+One review of a screen, flow or feature across accessibility, layout, writing, type, color, and UI polish and motion, ending in one ranked table and one verdict. It is Jakub Krehel's `better-interface` skill (jakubkrehel/skills: SKILL.md and review-format.md), which owns no rules of its own: "Orchestration is all it owns." Here its six `better-*` domain skills are mapped to this repo's skills, and its HIGH, MEDIUM and LOW scale is mapped onto P0 to P3 as in [SKILL.md section 6](SKILL.md#6-delivery-report). A branch or pull request review is code-review's job ([Change reviews](#change-reviews)); a Flutter app's whole-app audit is [flutter-ux REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/REVIEW.md).
 
 ## Evidence, not taste
 
@@ -19,7 +19,7 @@ One review of a screen, flow or feature across accessibility, layout, writing, t
 - Identify the framework, styling system, component library, design tokens, supported viewports and any preview or test command. "Write every fix in the project's own idiom, never as a request to adopt a different stack."
 - Read what the project wrote about its interface: `CONTRIBUTING.md`, `CODING_STANDARDS.md`, `AGENTS.md`, `CLAUDE.md`, a design-system doc, Storybook docs and interface ADRs. "Name which you found, or that there are none."
 - "A documented convention settles matters of taste but never excuses a trigger or a domain rule violation. What it changes is **where** you report. When a guideline or shared token is the cause, report it once against that source, with the components as its locations."
-- In the owner's app, `app-ui` is that documented convention: its recorded decisions (for example "no focus ring anywhere (a recorded design decision ...)", [app-ui SKILL.md](../../frontend/app-ui/SKILL.md#the-rules)) settle what they cover.
+- In the owner's app, `app-ui` is that documented convention: its recorded decisions (for example "no focus ring anywhere (a recorded design decision ...)", [app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md#the-rules)) settle what they cover.
 
 ## 3. Domain passes, in order
 
@@ -27,12 +27,12 @@ One review of a screen, flow or feature across accessibility, layout, writing, t
 
 | # | Domain (source skill) | Owning skill here |
 |---|---|---|
-| 1 | Accessibility (`better-accessibility`) | [web-accessibility](../../frontend/web-accessibility/SKILL.md), with this skill's absolutes ([SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these)) |
-| 2 | Layout (`better-layout`) | [RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md) and [modern-css](../../frontend/modern-css/SKILL.md) |
-| 3 | Writing (`better-writing`) | [anti-slop-copy](../anti-slop-copy/SKILL.md), its [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md) for interface text |
-| 4 | Typography (`better-typography`) | [TYPOGRAPHY-AND-UNITS.md](../../frontend/modern-css/TYPOGRAPHY-AND-UNITS.md) in modern-css, and [PATTERNS.md](PATTERNS.md#decoration-and-type) |
-| 5 | Color (`better-colors`) | [color-system](../../frontend/color-system/SKILL.md), with [scripts/contrast.py](../../frontend/color-system/scripts/contrast.py) for every pair |
-| 6 | UI polish and motion (`better-ui`) | This skill ([PATTERNS.md](PATTERNS.md), [DETAILS.md](DETAILS.md)), [ui-animation](../../frontend/ui-animation/SKILL.md) for motion, and [app-ui](../../frontend/app-ui/SKILL.md) for the owner's app components |
+| 1 | Accessibility (`better-accessibility`) | [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md), with this skill's absolutes ([SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these)) |
+| 2 | Layout (`better-layout`) | [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE.md) and [modern-css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/SKILL.md) |
+| 3 | Writing (`better-writing`) | [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), its [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) for interface text |
+| 4 | Typography (`better-typography`) | [modern-css TYPOGRAPHY-AND-UNITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/TYPOGRAPHY-AND-UNITS.md) in modern-css, and [PATTERNS.md](PATTERNS.md#decoration-and-type) |
+| 5 | Color (`better-colors`) | [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md), with [color-system scripts/contrast.py](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/scripts/contrast.py) for every pair |
+| 6 | UI polish and motion (`better-ui`) | This skill ([PATTERNS.md](PATTERNS.md), [DETAILS.md](DETAILS.md)), [ui-animation](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md) for motion, and [app-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md) for the owner's app components |
 
 - **A missing owner:** "mark that domain `Not reviewed`, name it and continue with the rest. Do not recreate its rules from memory, substitute a neighbour or claim holistic coverage."
 - **Overlap:** "When two skills appear to cover one issue, assign it to the owner of the underlying rule and note secondary effects in the **Why** cell."
@@ -43,7 +43,7 @@ One review of a screen, flow or feature across accessibility, layout, writing, t
 
 ## 5. Severity: P0 to P3
 
-The source ranks HIGH, MEDIUM and LOW and ends in `Block` or `Approve`; the mapping onto P0 to P3 is "One scale" in [SKILL.md section 6](SKILL.md#6-delivery-report); [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#review-format) already uses P0 to P3.
+The source ranks HIGH, MEDIUM and LOW and ends in `Block` or `Approve`; the mapping onto P0 to P3 is "One scale" in [SKILL.md section 6](SKILL.md#6-delivery-report); [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md#review-format) already uses P0 to P3.
 
 The source's definitions, for placing a finding [Jakub Krehel, better-interface]:
 - HIGH: "blocks a task, misleads the user, hides content or controls, causes data-loss risk or creates a repeated systemic failure."
@@ -68,8 +68,8 @@ The thirteen triggers, the cap rule and the WCAG notes on them are "Escalation t
 
 "When the code under review adds what **Delete** would fix, that is a finding, and its **After** is the deletion."
 
-- **Animations on frequent interactions, both ways.** This ladder deletes them [Jakub Krehel, better-interface]. ui-animation keeps them short: "Anything a user triggers dozens of times a day stays near the bottom of its range" ([ui-animation SKILL.md](../../frontend/ui-animation/SKILL.md#the-rules)). ui-animation's rule stands in this repo; the ladder's rung applies where the motion explains no change.
-- **The browser's focus ring, both ways.** Rung 2 names "the browser's own focus ring". app-ui does without one: "no focus ring anywhere (a recorded design decision, the browser default included ...) while focus still reveals what hover reveals" ([app-ui SKILL.md](../../frontend/app-ui/SKILL.md#the-rules)). In the owner's app that recorded decision settles it (section 2).
+- **Animations on frequent interactions, both ways.** This ladder deletes them [Jakub Krehel, better-interface]. ui-animation keeps them short: "Anything a user triggers dozens of times a day stays near the bottom of its range" ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md#the-rules)). ui-animation's rule stands in this repo; the ladder's rung applies where the motion explains no change.
+- **The browser's focus ring, both ways.** Rung 2 names "the browser's own focus ring". app-ui does without one: "no focus ring anywhere (a recorded design decision, the browser default included ...) while focus still reveals what hover reveals" ([app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md#the-rules)). In the owner's app that recorded decision settles it (section 2).
 
 ## 8. Consolidate
 
@@ -83,7 +83,7 @@ Treat a review as read-only. "Do not edit source unless the user also asks you t
 
 ## Change reviews
 
-[Jakub Krehel, better-interface] A request that names a branch, pull request, commit range or uncommitted changes is a change review: "Never resolve a change scope yourself, because a guessed diff gives the report a scope nobody can check." The source hands those to its `interface-review` skill; here the change review is [REVIEWER.md](../../architecture/code-review/REVIEWER.md#tags-and-output), with P0 to P3 severity and a separate [status by cause](../../architecture/code-review/CHANGE-SCOPE.md#status-by-cause). When a UI pass runs inside one, "The cap and the verdict cover `Introduced` and `Regression` findings only, so a change whose only findings are `Pre-existing` is an `Approve`."
+[Jakub Krehel, better-interface] A request that names a branch, pull request, commit range or uncommitted changes is a change review: "Never resolve a change scope yourself, because a guessed diff gives the report a scope nobody can check." The source hands those to its `interface-review` skill; here the change review is [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output), with P0 to P3 severity and a separate [status by cause](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/CHANGE-SCOPE.md#status-by-cause). When a UI pass runs inside one, "The cap and the verdict cover `Introduced` and `Regression` findings only, so a change whose only findings are `Pre-existing` is an `Approve`."
 
 ## Output
 

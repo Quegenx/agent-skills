@@ -24,7 +24,7 @@ Ask only what `.agents/product-context.md` doesn't answer [coreyhaines31/marketi
 | X | Tech audiences, thought leadership | The audience is active on X, timely content |
 | TikTok | Younger demographics, video creative | The audience skews 18 to 34, video capacity |
 
-[coreyhaines31/marketingskills, ads]. Search harvests existing demand and cannot create it: with near-zero search volume, put the budget upstream on social ([GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#capture-before-you-create)). Before committing to a new channel, run a ~$100 test to learn its real CPC and CPM for your targeting ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#channel-selection)). App installs: [app-growth](../../mobile/app-growth/SKILL.md).
+[coreyhaines31/marketingskills, ads]. Search harvests existing demand and cannot create it: with near-zero search volume, put the budget upstream on social ([GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#capture-before-you-create)). Before committing to a new channel, run a ~$100 test to learn its real CPC and CPM for your targeting ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#channel-selection)). App installs: [app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
 ## Audience knowledge goes into creative first
 
@@ -90,7 +90,7 @@ Naming: `[Platform]_[Objective]_[Audience]_[Offer]_[Date]`, for example `META_Co
 | Warm (key pages) | 7 to 30 days | 3 to 5 a week |
 | Cold (any visit) | 30 to 90 days | 1 to 2 a week |
 
-Exclude existing customers (unless upselling), recent converters (7 to 14 days), visitors who bounced in under 10 seconds, and careers and support visitors [coreyhaines31/marketingskills, ads]. Urgency only when it is genuine: the FTC rules on scarcity and deadlines are in [FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
+Exclude existing customers (unless upselling), recent converters (7 to 14 days), visitors who bounced in under 10 seconds, and careers and support visitors [coreyhaines31/marketingskills, ads]. Urgency only when it is genuine: the FTC rules on scarcity and deadlines are in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md).
 
 - **Retarget with a different offer, not the same one harder.** Sabri Suby's principle, as the source quotes it: the main reason someone didn't buy is that the offer wasn't right for them. Visitor viewed pricing and didn't sign up → a free audit; downloaded a lead magnet and didn't book → a different lead magnet [coreyhaines31/marketingskills, ads]. The source adds that "a 2-3 ROAS audience on the original offer can hit 6+ ROAS on a different offer"; that is an unsourced practitioner claim, not a forecast.
 - **Four retargeting ads at once:** an objection-handling ad (call the leads who didn't convert, ask why, use their words as the headline); a proof carousel of testimonials that support the original ad's claims; your other best ads for other offers in one CBO; a value-first audit or assessment ad [coreyhaines31/marketingskills, ads].
@@ -102,7 +102,7 @@ Wherever people can search your name, split brand from non-brand before you eval
 
 - **Report blended, optimize on non-brand.** Blended ROAS or CAC is the honest top-line number for the whole account; targets, bids and budgets are set on non-brand ROAS, or cheap brand conversions loosen every target and hide non-brand waste.
 - **Never report a low brand CPA as a win** unless you measure incrementality, for example a brand-campaign holdout. The brand pause test for Search is in [GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#brand-bidding-and-the-pause-test).
-- app-growth's Apple Ads scale gate uses "brand ROAS > 1.0×" ([APPLE-ADS-OPTIMIZATION.md](../../mobile/app-growth/APPLE-ADS-OPTIMIZATION.md)); the same caution applies there: brand ROAS is not incremental.
+- app-growth's Apple Ads scale gate uses "brand ROAS > 1.0×" ([app-growth APPLE-ADS-OPTIMIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/APPLE-ADS-OPTIMIZATION.md)); the same caution applies there: brand ROAS is not incremental.
 
 ## Scaling on net cash
 
@@ -119,14 +119,14 @@ The source calls ad-to-page congruence the most underrated lever and tells you t
 
 1. Screen a manageable set of headline hypotheses with enough traffic each; compare CTR with qualified conversions, cost and sample sizes, since a high-CTR headline can attract visitors who don't buy.
 2. Treat the apparent winner as a candidate. Ordinary ad variations with optimized delivery are exploratory; use a randomized ad experiment for a causal comparison, and account for multiple comparisons. Meta's A/B testing randomizes comparable exposure (https://www.facebook.com/business/help/1738164643098669).
-3. Mirror the candidate's promise in a truthful landing-page variant and run a fresh randomized test against the unchanged page, with ads and traffic split held constant and the primary metric, guardrails, sample size and stopping rule fixed in advance ([ab-testing](../ab-testing/SKILL.md)).
+3. Mirror the candidate's promise in a truthful landing-page variant and run a fresh randomized test against the unchanged page, with ads and traffic split held constant and the primary metric, guardrails, sample size and stopping rule fixed in advance ([ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md)).
 4. Report the effect and its uncertainty. "There is no guaranteed minimum conversion lift"; keep the original page when the evidence doesn't justify replacing it.
 
-The source also says to keep "at least 3 split tests running" because "3 × ~10-20% lift each (compounding)" builds a better funnel; that arithmetic contradicts its own no-guaranteed-lift line and is left out here. Page message match is in [landing-page-ui](../../frontend/landing-page-ui/SKILL.md) and [cro](../cro/SKILL.md).
+The source also says to keep "at least 3 split tests running" because "3 × ~10-20% lift each (compounding)" builds a better funnel; that arithmetic contradicts its own no-guaranteed-lift line and is left out here. Page message match is in [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md) and [cro](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md).
 
 ## Setup checklists
 
-From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], corrected where marked. Tracking code is in [CONVERSION-TRACKING-WEB.md](CONVERSION-TRACKING-WEB.md); current image sizes and text limits in [PLATFORM-SPECS.md](../ad-creative/PLATFORM-SPECS.md) (the source's own creative size lists are left out here so the sizes have one definition).
+From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], corrected where marked. Tracking code is in [CONVERSION-TRACKING-WEB.md](CONVERSION-TRACKING-WEB.md); current image sizes and text limits in [ad-creative PLATFORM-SPECS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/PLATFORM-SPECS.md) (the source's own creative size lists are left out here so the sizes have one definition).
 
 **Google Ads**
 
@@ -142,7 +142,7 @@ From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], correct
 
 - Foundation: the source says "Business Manager"; business verification if the ad types need it, ad account, payment, roles.
 - Pixel: on all pages; standard events PageView, ViewContent, Lead, Purchase, AddToCart and InitiateCheckout for ecommerce; Conversions API; test events in Events Manager. The source's "Event Match Quality score > 6" is a practitioner bar: no Meta threshold was found.
-- Aggregated Event Measurement: the source requires domain verification and "Top 8 events prioritized ... for iOS 14+". Jon Loomer (jonloomer.com) reports that in 2025 Meta stopped requiring web event prioritization and domain verification and removed the AEM tab; no Meta help page confirmed it, so check Events Manager before doing either. App campaigns are separate ([META-ADS.md](../../mobile/app-growth/META-ADS.md#ios-14-skadnetwork-and-aem)).
+- Aggregated Event Measurement: the source requires domain verification and "Top 8 events prioritized ... for iOS 14+". Jon Loomer (jonloomer.com) reports that in 2025 Meta stopped requiring web event prioritization and domain verification and removed the AEM tab; no Meta help page confirmed it, so check Events Manager before doing either. App campaigns are separate ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#ios-14-skadnetwork-and-aem)).
 - Audiences: website visitors (30, 60, 90, 180 days), key pages, video viewers, engagers, customer list; lookalikes (1%, 1 to 3%); saved audiences.
 - Catalog (ecommerce): connected, feed updating, catalog sales and dynamic product ads.
 - Compliance: the source lists Special Ad Categories as "housing, credit, employment, politics". Meta: "The Credit Special Ad Category has been replaced by the Financial Products and Services category", required since January 21, 2025 for advertisers based in the US or targeting the US (https://www.facebook.com/business/help/399587795372584). Ads about social issues, elections or politics go through their own authorization. The landing page and ads must follow Meta's policies.
@@ -161,7 +161,7 @@ From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], correct
 
 **TikTok:** Ads Manager account, business verification, payment; pixel with ViewContent and Purchase and the Events API; custom and lookalike audiences, interest categories; vertical 9:16 creative that feels native, a hook in the first 3 seconds, captions, licensed music.
 
-**Pre-launch, any platform:** conversion tracking tested with a real conversion; landing page mobile-friendly and fast; UTMs working; budget type, start and end dates correct; targeting matches the intended audience; creative approved; team told; reporting ready [coreyhaines31/marketingskills, ads]. The source's "loads fast (<3 sec)" is not a Core Web Vitals threshold: use web.dev's Core Web Vitals instead, LCP of 2.5 seconds or less (https://web.dev/articles/vitals); measuring it is in [web-performance](../../frontend/web-performance/SKILL.md).
+**Pre-launch, any platform:** conversion tracking tested with a real conversion; landing page mobile-friendly and fast; UTMs working; budget type, start and end dates correct; targeting matches the intended audience; creative approved; team told; reporting ready [coreyhaines31/marketingskills, ads]. The source's "loads fast (<3 sec)" is not a Core Web Vitals threshold: use web.dev's Core Web Vitals instead, LCP of 2.5 seconds or less (https://web.dev/articles/vitals); measuring it is in [web-performance](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/SKILL.md).
 
 ## Audience options per platform
 

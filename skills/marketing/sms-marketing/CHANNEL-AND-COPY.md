@@ -4,7 +4,7 @@ When a text earns the interruption, how to write one that fits a segment, and wh
 
 ## Before starting
 
-Read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md); the source names it `.agents/product-marketing.md`), and ask only what it doesn't cover [coreyhaines31/marketingskills, sms]:
+Read `.agents/product-context.md` first if it exists (defined in [anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md); the source names it `.agents/product-marketing.md`), and ask only what it doesn't cover [coreyhaines31/marketingskills, sms]:
 
 1. **Business type:** B2C ecom/DTC, B2B SaaS, mobile app, services, fintech; order volume or list size; geographic mix ("US, EU, both - compliance differs dramatically").
 2. **Current state:** existing SMS program (platform, list size, opt-in rate, opt-out rate, revenue per send); the email program ("SMS works best as a layer on top, not a replacement"); number type (short code, toll-free, 10DLC).
@@ -25,7 +25,7 @@ Read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-
 | Win-back lapsed customers | **Both** | SMS for the strong nudge, email for the offer detail |
 | Post-purchase upsell | **SMS** | Ride the purchase momentum |
 
-"SMS earns the right to interrupt because of opt-in. Use it for messages that genuinely benefit from immediacy. If it could wait 24 hours, send it via email." [coreyhaines31/marketingskills, sms]. Outside the US, check [WHATSAPP.md](WHATSAPP.md) first. Email sequences are in [../email-marketing/SKILL.md](../email-marketing/SKILL.md).
+"SMS earns the right to interrupt because of opt-in. Use it for messages that genuinely benefit from immediacy. If it could wait 24 hours, send it via email." [coreyhaines31/marketingskills, sms]. Outside the US, check [WHATSAPP.md](WHATSAPP.md) first. Email sequences are in [email-marketing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md).
 
 ## Principles
 
@@ -46,7 +46,7 @@ Read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-
 
 ### One CTA, one link
 
-The source says "Short links are mandatory (`klvy.co`, `txt.attn.tv`, branded short domain)" and "Track UTM params on every link". OneSignal adds: "Don't use `bit.ly`, `tinyurl.com` or `goo.gl` (US carriers block them); use UTM parameters or branded domains" ([EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#composing-sms-mms-rcs)). Both hold together: shorten only on a branded or platform-owned domain.
+The source says "Short links are mandatory (`klvy.co`, `txt.attn.tv`, branded short domain)" and "Track UTM params on every link". OneSignal adds: "Don't use `bit.ly`, `tinyurl.com` or `goo.gl` (US carriers block them); use UTM parameters or branded domains" ([onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md#composing-sms-mms-rcs)). Both hold together: shorten only on a branded or platform-owned domain.
 
 ### Length and segments
 
@@ -63,7 +63,7 @@ The source says "Short links are mandatory (`klvy.co`, `txt.attn.tv`, branded sh
 - "Conversational, not corporate." No subject line, no formatting, no marketing-speak.
 - Emojis in moderation (one per message, situationally); ALL CAPS only for explicit codes ("Use ACME10").
 - First-name token if available (the source claims it "boosts CTR ~20%"), recent browse, location where it applies. "Don't fake intimacy ('Hey friend!') - it backfires."
-- Text copy in general: [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+- Text copy in general: [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
 
 ## Measurement
 
@@ -78,10 +78,10 @@ The source's "healthy range (ecom DTC)" column is its own benchmark, not a platf
 | Opt-out rate per send | Audience fatigue | <2% per send, <0.5% for promotional |
 | List growth rate | Audience momentum | 5-15%/month early, 1-3% steady-state |
 
-- **Tag every link:** `utm_source=sms&utm_medium=sms&utm_campaign=[campaign-name]`. Attribution across channels is in [../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md).
+- **Tag every link:** `utm_source=sms&utm_medium=sms&utm_campaign=[campaign-name]`. Attribution across channels is in [marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 - **Compare** SMS subscribers' LTV with email-only subscribers' (the source claims "typically 1.5-3x").
 - **Rising opt-outs** usually mean over-sending: cut frequency, segment by engagement, and run the re-engagement flow in [SEQUENCES.md](SEQUENCES.md#re-engagement). Each send's opt-outs shrink the list for every later send.
-- **What to A/B test:** send time (afternoon versus evening, local), copy length (SMS versus MMS), discount amount and trigger, first-name token or not, CTA copy. Test design is in [../ab-testing/SKILL.md](../ab-testing/SKILL.md).
+- **What to A/B test:** send time (afternoon versus evening, local), copy length (SMS versus MMS), discount amount and trigger, first-name token or not, CTA copy. Test design is in [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 ## The plan to return
 
@@ -90,7 +90,7 @@ When asked for an SMS plan [coreyhaines31/marketingskills, sms]:
 1. **Compliance check:** selected sender type [registered as applicable](REGISTRATION.md#what-registration-covers)? Opt-in compliant? "Flag blockers first." [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
 2. **Strategy:** which flows to build first, ranked for the business model.
 3. **Sequence designs:** trigger, delay, copy with character counts, CTA, segmentation per flow.
-4. **Platform:** from the stack, list size and complexity. The source's vendor comparisons (Klaviyo, Postscript, Attentive, Twilio, Brevo, SimpleTexting, Plivo, AudienceTap, Customer.io) were not checked against vendor pages and are left out; OneSignal setup is in [../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md).
+4. **Platform:** from the stack, list size and complexity. The source's vendor comparisons (Klaviyo, Postscript, Attentive, Twilio, Brevo, SimpleTexting, Plivo, AudienceTap, Customer.io) were not checked against vendor pages and are left out; OneSignal setup is in [onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md).
 5. **Measurement plan:** KPIs, the source's benchmarks labelled as such, an A/B test queue.
 6. **Required disclosures** and STOP/HELP replies ([COMPLIANCE.md](COMPLIANCE.md#stop-and-help-replies)).
 

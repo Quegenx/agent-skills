@@ -1,6 +1,6 @@
 # Sequences and cadences
 
-A sequence is the series of emails to one person; a cadence coordinates email, LinkedIn, calls and the occasional video or package so each touch builds on the last "and nobody gets hit on four channels in one afternoon" [coreyhaines31/marketingskills, cold-email]. Lifecycle sequences to people who opted in are in [../email-marketing/SEQUENCES.md](../email-marketing/SEQUENCES.md). Account tiers are defined in [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md#account-tiers).
+A sequence is the series of emails to one person; a cadence coordinates email, LinkedIn, calls and the occasional video or package so each touch builds on the last "and nobody gets hit on four channels in one afternoon" [coreyhaines31/marketingskills, cold-email]. Lifecycle sequences to people who opted in are in [email-marketing SEQUENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SEQUENCES.md). Account tiers are defined in [prospecting SIGNALS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SIGNALS.md#account-tiers).
 
 **Contents:** [How many and when](#how-many-and-when) · [Angle rotation](#angle-rotation) · [The breakup email](#the-breakup-email) · [Phrases that kill replies](#phrases-that-kill-replies) · [Channels by tier](#channels-by-tier) · [A 21-day Tier 1 cadence](#a-21-day-tier-1-cadence) · [Rules that hold any cadence together](#rules-that-hold-any-cadence-together) · [Calls](#calls) · [Video, direct mail and ads](#video-direct-mail-and-ads) · [SMS and WhatsApp](#sms-and-whatsapp) · [Measure by channel](#measure-by-channel) · [Prove it](#prove-it)
 
@@ -88,13 +88,13 @@ Tier 2: email and LinkedIn over about 14 days. Tier 3: the email sequence alone.
 [coreyhaines31/marketingskills, cold-email]
 
 1. **A reply on any channel stops every channel.** "This needs one shared record of who has replied, checked before each touch."
-2. **An opt-out on one channel is an opt-out on all of them.** Key the suppression list on email, LinkedIn URL and phone together ([../prospecting/ENRICHMENT.md](../prospecting/ENRICHMENT.md#suppression-list)). The repo's email rule, "Hard bounces and complaints suppress across all email types", covers email types ([LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list)); this extends it across channels.
+2. **An opt-out on one channel is an opt-out on all of them.** Key the suppression list on email, LinkedIn URL and phone together ([prospecting ENRICHMENT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/ENRICHMENT.md#suppression-list)). The repo's email rule, "Hard bounces and complaints suppress across all email types", covers email types ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list)); this extends it across channels.
 3. **One sender per account at a time.** Two reps, or a rep and an agent, on the same company "looks disorganized and doubles the annoyance".
 4. **Each touch may reference the last** ("Following up on the voicemail I left Tuesday") but must make sense alone.
 5. **At most 5 emails and at most 3 LinkedIn messages.** The source's multichannel reference instead says 4 to 7 emails; keep the existing five-email cap from its follow-up reference, including emailed videos and voicemail recaps. "More touches don't rescue the wrong offer." [coreyhaines31/marketingskills, cold-email, follow-up-sequences.md and multichannel-cadence.md]
 6. **Space touches across days.** Never two channels on one day except a voicemail and its recap email.
 
-When email, LinkedIn and calls run in different tools, connect them with shared state (the CRM or a table keyed on the contact) and webhooks that pause every sequence when any reply arrives. Webhook handling is in [../../backend/third-party-integrations/CALLS-AND-SYNC.md](../../backend/third-party-integrations/CALLS-AND-SYNC.md#webhooks-from-providers).
+When email, LinkedIn and calls run in different tools, connect them with shared state (the CRM or a table keyed on the contact) and webhooks that pause every sequence when any reply arrives. Webhook handling is in [third-party-integrations CALLS-AND-SYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/CALLS-AND-SYNC.md#webhooks-from-providers).
 
 ## Calls
 
@@ -104,10 +104,10 @@ When email, LinkedIn and calls run in different tools, connect them with shared 
 - **Attempts:** 3 per contact across the cadence, on different days and times.
 - **Openers:** say who you are and why you're calling, then ask permission to continue. Avoid "Did I catch you at a bad time?".
 - **Voicemail:** 20 to 30 seconds, your name, one specific reason, "I'll send you a note too", then send it.
-- **Do Not Call:** scrub against the Do Not Call lists before calling; the rules are in [COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#texts-and-calls-us).
+- **Do Not Call:** scrub against the Do Not Call lists before calling; the rules are in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md#texts-and-calls-us).
 - **AI voice needs consent.** FCC 24-17: the TCPA's "artificial or prerecorded voice" restrictions "encompass current AI technologies that generate human voices" and such calls "therefore require the prior express consent of the called party to initiate such calls absent an emergency purpose or exemption" (https://docs.fcc.gov/public/attachments/FCC-24-17A1.pdf). The source said "never use AI voice on US mobile numbers without consent"; the ruling is not limited to mobile numbers (the TCPA's artificial-voice prohibition it cites also covers "any residential telephone line").
 
-Call scripts, gatekeepers and objection handling are in [../sales-enablement/SKILL.md](../sales-enablement/SKILL.md).
+Call scripts, gatekeepers and objection handling are in [sales-enablement SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md).
 
 ## Video, direct mail and ads
 
@@ -115,11 +115,11 @@ Call scripts, gatekeepers and objection handling are in [../sales-enablement/SKI
 
 - **Video:** 60 to 120 seconds for outreach, 2 to 4 minutes for a teardown. Show their site, product or dashboard in the first seconds; send a thumbnail or GIF of their page linked to the video, never the file. Tier 1 only, or after a reply.
 - **Direct mail and gifts:** for Tier 1 accounts that engaged and stalled; something tied to the conversation (a book you mentioned, a printed teardown) beats a generic gift. Check company gift policies, which often cap or ban gifts in regulated industries and government.
-- **Ads to target accounts:** upload account and contact lists to the ad platform's matched audiences and run light awareness ads during the cadence, so the name is familiar when the email lands ([../paid-ads/SKILL.md](../paid-ads/SKILL.md)).
+- **Ads to target accounts:** upload account and contact lists to the ad platform's matched audiences and run light awareness ads during the cadence, so the name is familiar when the email lands ([paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md)).
 
 ## SMS and WhatsApp
 
-[coreyhaines31/marketingskills, cold-email] Not for cold outreach. US SMS needs consent and the applicable [sender-type registration](../sms-marketing/REGISTRATION.md#what-registration-covers); WhatsApp business messaging needs an opt-in. Use them only after a prospect engaged and agreed, for scheduling and reminders. SMS consent is in [../sms-marketing/SKILL.md](../sms-marketing/SKILL.md). The source required 10DLC for all US mobile SMS; the registration owner records Twilio's official scope and that correction. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
+[coreyhaines31/marketingskills, cold-email] Not for cold outreach. US SMS needs consent and the applicable [sender-type registration](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/REGISTRATION.md#what-registration-covers); WhatsApp business messaging needs an opt-in. Use them only after a prospect engaged and agreed, for scheduling and reminders. SMS consent is in [sms-marketing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/SKILL.md). The source required 10DLC for all US mobile SMS; the registration owner records Twilio's official scope and that correction. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
 
 ## Measure by channel
 

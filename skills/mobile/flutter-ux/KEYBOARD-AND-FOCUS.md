@@ -1,6 +1,6 @@
 # Keyboard and focus
 
-The software keyboard and focus in Flutter forms: the keyboard action key, autofocus on single-field pages, dismissing the keyboard (on scroll, on a tap outside, before a modal), watching its visibility, a centered form that stays above it, forms in bottom sheets, and keyboard shortcuts. Sources are community material, not docs.flutter.dev: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips (apparencekit.dev), checked against api.flutter.dev where a line is wrong. No article states a Flutter or package version. Fields, autofill, the clipboard and edit forms are in [FORMS-AND-INPUT.md](FORMS-AND-INPUT.md); official layout rules in [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md); sheet sizing and results in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
+The software keyboard and focus in Flutter forms: the keyboard action key, autofocus on single-field pages, dismissing the keyboard (on scroll, on a tap outside, before a modal), watching its visibility, a centered form that stays above it, forms in bottom sheets, and keyboard shortcuts. Sources are community material, not docs.flutter.dev: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit tips (apparencekit.dev), checked against api.flutter.dev where a line is wrong. No article states a Flutter or package version. Fields, autofill, the clipboard and edit forms are in [FORMS-AND-INPUT.md](FORMS-AND-INPUT.md); official layout rules in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md); sheet sizing and results in [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
 
 **Contents:** [The keyboard action key](#the-keyboard-action-key) · [Autofocus single-field pages](#autofocus-single-field-pages) · [Dismissing the keyboard](#dismissing-the-keyboard) · [Watching keyboard visibility](#watching-keyboard-visibility) · [A centered form above the keyboard](#a-centered-form-above-the-keyboard) · [Forms in a bottom sheet](#forms-in-a-bottom-sheet) · [Keyboard shortcuts](#keyboard-shortcuts) · [Prove it](#prove-it)
 
@@ -108,7 +108,7 @@ KeyboardVisibility(
 )
 ```
 
-- **Accessor:** the repo prefers the narrow `MediaQuery` accessors ([LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md): "Use `MediaQuery.sizeOf`, not `MediaQuery.of`"). The insets have one: `static EdgeInsets viewInsetsOf(BuildContext context)`, which rebuilds "only ... when this specific attribute changes" ([api.flutter.dev](https://api.flutter.dev/flutter/widgets/MediaQuery/viewInsetsOf.html)). Read `MediaQuery.viewInsetsOf(context).bottom` wherever these articles write `MediaQuery.of(context).viewInsets.bottom`.
+- **Accessor:** the repo prefers the narrow `MediaQuery` accessors ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md): "Use `MediaQuery.sizeOf`, not `MediaQuery.of`"). The insets have one: `static EdgeInsets viewInsetsOf(BuildContext context)`, which rebuilds "only ... when this specific attribute changes" ([api.flutter.dev](https://api.flutter.dev/flutter/widgets/MediaQuery/viewInsetsOf.html)). Read `MediaQuery.viewInsetsOf(context).bottom` wherever these articles write `MediaQuery.of(context).viewInsets.bottom`.
 
 ## A centered form above the keyboard
 
@@ -116,7 +116,7 @@ KeyboardVisibility(
 
 - **Use the actual viewport constraints:** follow Flutter's [spaced-items recipe](https://docs.flutter.dev/cookbook/lists/spaced-items) and [SingleChildScrollView guidance](https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html): `LayoutBuilder` outside the scroll view, then `ConstrainedBox` with a minimum height from `constraints.maxHeight`. Fixed-height children can use the Column's alignment without flex; the documented `Spacer`/`Expanded` variation adds `IntrinsicHeight`, which can require laying out the contents twice.
 - **P2 correction:** ApparenceKit prescribes a full-screen-height `SizedBox` and says the `Spacer`s shrink when the keyboard reduces the viewport. That box bounds the Column, so it is not inherently an unbounded-flex error, but full window height is not the available scroll viewport height. Use the official recipe above rather than promising the source's keyboard behavior. [ApparenceKit](https://apparencekit.dev/flutter-tips/center-form-flutter-keyboard-safe/), [SingleChildScrollView](https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html)
-- **Width:** keep the existing [large-screen form width rule](../flutter/LAYOUT-AND-RESPONSIVE.md#large-screens-and-foldables); the source specifies no width limit. [ApparenceKit](https://apparencekit.dev/flutter-tips/center-form-flutter-keyboard-safe/)
+- **Width:** keep the existing [large-screen form width rule](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#large-screens-and-foldables); the source specifies no width limit. [ApparenceKit](https://apparencekit.dev/flutter-tips/center-form-flutter-keyboard-safe/)
 
 ## Forms in a bottom sheet
 
@@ -191,15 +191,15 @@ Widget build(BuildContext context) {
 }
 ```
 
-- **The article applies the keyboard inset through `SafeArea.minimum`** ("A SafeArea widget is often a convenient way to apply this"). The official `SafeArea` line (notches, cutouts, status bar, rounded corners) is in [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#safearea-and-mediaquery).
+- **The article applies the keyboard inset through `SafeArea.minimum`** ("A SafeArea widget is often a convenient way to apply this"). The official `SafeArea` line (notches, cutouts, status bar, rounded corners) is in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#safearea-and-mediaquery).
 - **Author's view:** "I believe this should be the default behavior of the bottom sheet, but for now, this is the best way to handle it."
-- **Web equivalent** (keyboard over a sheet, `padding-bottom: calc(100dvh - var(--visual-viewport-height))`): [SHEETS.md](../../frontend/ui-animation/SHEETS.md). Sheet sizing and results: [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
+- **Web equivalent** (keyboard over a sheet, `padding-bottom: calc(100dvh - var(--visual-viewport-height))`): [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md). Sheet sizing and results: [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
 
 ## Keyboard shortcuts
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/handle-keyboard-shortcuts/)
 
-- **For desktop and web:** `Shortcuts` maps key combinations to actions; `Actions` lets children trigger actions defined higher up, and works without `Shortcuts`; an `Intent` represents the intention, an `Action` holds the logic. No code in the article. This names the widgets behind "Support mice, trackpads and keyboard shortcuts" in [LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md) and [ACCESSIBILITY.md](../flutter/ACCESSIBILITY.md#design-values).
+- **For desktop and web:** `Shortcuts` maps key combinations to actions; `Actions` lets children trigger actions defined higher up, and works without `Shortcuts`; an `Intent` represents the intention, an `Action` holds the logic. No code in the article. This names the widgets behind "Support mice, trackpads and keyboard shortcuts" in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md) and [flutter ACCESSIBILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ACCESSIBILITY.md#design-values).
 
 ## Prove it
 

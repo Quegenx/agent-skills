@@ -240,7 +240,7 @@ asc workflow run release --resume "release-20260312T120000Z-deadbeef"
 
 ## Apple Ads through asc
 
-Apple Ads credentials are separate from App Store Connect auth. For the API versions, IDs, request bodies, pagination, CLI commands and spend-sensitive confirmation rules, read [APPLE-ADS-API.md](../app-growth/APPLE-ADS-API.md#asc-ads). [rorkai]
+Apple Ads credentials are separate from App Store Connect auth. For the API versions, IDs, request bodies, pagination, CLI commands and spend-sensitive confirmation rules, read [app-growth APPLE-ADS-API.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/APPLE-ADS-API.md#asc-ads). [rorkai]
 
 ## Removed and deprecated
 

@@ -4,7 +4,7 @@ Where most customers live outside the US, WhatsApp often beats SMS for the same 
 
 **Contents:** [When WhatsApp fits](#when-whatsapp-fits) · [App or platform](#app-or-platform) · [The 24-hour window](#the-24-hour-window) · [Template categories](#template-categories) · [Opt-in and opt-out](#opt-in-and-opt-out) · [Quality rating and limits](#quality-rating-and-limits) · [Formats and copy](#formats-and-copy) · [Phone numbers](#phone-numbers) · [Pricing](#pricing) · [Click-to-WhatsApp ads](#click-to-whatsapp-ads) · [Playbooks](#playbooks) · [Sources](#sources) · [Prove it](#prove-it)
 
-Kapso implementation, onboarding, webhook, native form and Calling contracts are in [kapso](../../backend/kapso/SKILL.md); this file remains the marketing-policy owner.
+Kapso implementation, onboarding, webhook, native form and Calling contracts are in [kapso](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/kapso/SKILL.md); this file remains the marketing-policy owner.
 
 ## When WhatsApp fits
 
@@ -90,7 +90,7 @@ Copy [source]: 1 to 3 short sentences per bubble (roughly under 60 words); butto
 
 ## Phone numbers
 
-Meta's Cloud API reference (https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers/): "We highly recommend that you include both the plus sign and country calling code"; "If the plus sign is omitted, your business phone number's country calling code is prepended"; and "Plus signs (`+`), hyphens (`-`), parenthesis (`(`,`)`), and spaces are supported in send message requests." Store numbers in E.164 and send them with the `+`. Never route a message or bill by the number's prefix: "The prefix in a mobile number reflects the **issuing** carrier, not the active SIM provider"; use an HLR or portability lookup for the live carrier [skills-il, israeli-phone-formatter] ([PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md#the-prefix-is-not-the-carrier)).
+Meta's Cloud API reference (https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers/): "We highly recommend that you include both the plus sign and country calling code"; "If the plus sign is omitted, your business phone number's country calling code is prepended"; and "Plus signs (`+`), hyphens (`-`), parenthesis (`(`,`)`), and spaces are supported in send message requests." Store numbers in E.164 and send them with the `+`. Never route a message or bill by the number's prefix: "The prefix in a mobile number reflects the **issuing** carrier, not the active SIM provider"; use an HLR or portability lookup for the live carrier [skills-il, israeli-phone-formatter] ([web-accessibility PHONE-NUMBERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/PHONE-NUMBERS.md#the-prefix-is-not-the-carrier)).
 
 ## Pricing
 
@@ -111,7 +111,7 @@ Per-message pricing since **July 1, 2025**: you pay per delivered message, at a 
 ## Click-to-WhatsApp ads
 
 - **Free entry point window:** when someone messages you from a CTWA ad or a Facebook Page call-to-action button and you reply within 24 hours, a window opens from your reply; Meta says it may stay open up to 7 days. While open, marketing, utility, authentication and service messages are free; Meta Business Agent messages are still charged. "Check the window's actual expiry in your delivery data rather than assuming the maximum."
-- **How to use it** [source]: hook the ad on a reason to chat (a quiz, sizing help, a quote, a code to claim); pre-fill the first message ("Hi! I'd like my 15% welcome code."); reply fast with 2 to 3 qualifying reply buttons; convert or hand off while the window is open; ask for marketing opt-in in the chat. Ads themselves are in [../paid-ads/SKILL.md](../paid-ads/SKILL.md).
+- **How to use it** [source]: hook the ad on a reason to chat (a quiz, sizing help, a quote, a code to claim); pre-fill the first message ("Hi! I'd like my 15% welcome code."); reply fast with 2 to 3 qualifying reply buttons; convert or hand off while the window is open; ask for marketing opt-in in the chat. Ads themselves are in [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md).
 
 ## Playbooks
 
@@ -128,7 +128,7 @@ Footer: Reply STOP to opt out
 Buttons: [URL: Finish checkout] [Quick reply: I have a question]
 ```
 
-"We're holding it" and "stock is limited" go out only when both are true; false scarcity is in [../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md). "I have a question" opens a service window; route it to the support handoff.
+"We're holding it" and "stock is limited" go out only when both are true; false scarcity is in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md). "I have a question" opens a service window; route it to the support handoff.
 
 ### Welcome (after opt-in or CTWA)
 

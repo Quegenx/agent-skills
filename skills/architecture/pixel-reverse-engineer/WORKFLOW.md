@@ -104,7 +104,7 @@ Extract all values from the source. Never substitute remembered, conventional, f
 
 Do not replace width, height, margin, positional, path, or layout-affecting animations with transforms merely for performance. Do not replace source semantics with layout/scaling/opacity approximations if rendered behavior changes. Fidelity takes precedence over optimization.
 
-**Conflict, both views.** This source preserves the original animated properties when substitution changes the result. The generic motion rule says "Only transform and opacity move" ([ui-animation rule 7](../../frontend/ui-animation/SKILL.md#the-rules)). Retain that generic rule and report the concrete conflict before a conflicting recreation; do not silently rewrite the source animation or change a protected owner design. [pixel-reverse-engineer, SKILL.md]; [ui-animation, SKILL.md]; [owner standing rules]
+**Conflict, both views.** This source preserves the original animated properties when substitution changes the result. The generic motion rule says "Only transform and opacity move" ([ui-animation rule 7](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md#the-rules)). Retain that generic rule and report the concrete conflict before a conflicting recreation; do not silently rewrite the source animation or change a protected owner design. [pixel-reverse-engineer, SKILL.md]; [ui-animation, SKILL.md]; [owner standing rules]
 
 ### Animation sequences
 
@@ -152,7 +152,7 @@ Use exact literals or arbitrary values when necessary. Do not force rules into t
 
 Reuse target-project components only when they reproduce source geometry and behavior exactly. Do not force an existing button/card/typography/icon/layout primitive when built-in behavior alters the recreation. A local faithful implementation is preferable to approximate design-system reuse.
 
-**Conflict, both views.** This source allows exact literals, arbitrary values and a faithful local component. The existing [design-file workflow](../../anti-ai-slop/anti-slop-ui/FROM-DESIGN.md#2-map-the-design-onto-the-project) instead maps unmatched values to the nearest existing token and says "Never add a token, a component variant or an arbitrary value to hit a number"; it reuses the project component variant. Keep that workflow's rule in its domain and report any concrete conflict. The owner's [app UI](../../frontend/app-ui/SKILL.md), [landing page UI](../../frontend/landing-page-ui/SKILL.md) and [agent chat UI](../../ai-agents/agent-chat-ui/SKILL.md) retain their production designs unless the owner approves the specific change. Exact reconstruction of another component does not authorize changing them. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, build-design]; [owner standing rules]
+**Conflict, both views.** This source allows exact literals, arbitrary values and a faithful local component. The existing [design-file workflow](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/FROM-DESIGN.md#2-map-the-design-onto-the-project) instead maps unmatched values to the nearest existing token and says "Never add a token, a component variant or an arbitrary value to hit a number"; it reuses the project component variant. Keep that workflow's rule in its domain and report any concrete conflict. The owner's [app UI](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md), [landing page UI](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md) and [agent chat UI](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-chat-ui/SKILL.md) retain their production designs unless the owner approves the specific change. Exact reconstruction of another component does not authorize changing them. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, build-design]; [owner standing rules]
 
 ## 8. Responsive behavior
 
@@ -231,7 +231,7 @@ Do not replace unusual source behavior with a cleaner approximation because it i
 
 Do not copy irrelevant production implementation details when they have no effect on rendered result or behavior.
 
-This hierarchy chooses between faithful implementations within the requested scope. It does not silently override the existing [domain-conflict rule](../../anti-ai-slop/anti-slop-ui/FROM-DESIGN.md#the-design-decides), accessibility requirements or protected owner designs: state both tagged positions, retain the existing rule and obtain the specific decision where they conflict. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, build-design]; [owner standing rules]
+This hierarchy chooses between faithful implementations within the requested scope. It does not silently override the existing [domain-conflict rule](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/FROM-DESIGN.md#the-design-decides), accessibility requirements or protected owner designs: state both tagged positions, retain the existing rule and obtain the specific decision where they conflict. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, build-design]; [owner standing rules]
 
 The goal is:
 

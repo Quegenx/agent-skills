@@ -32,7 +32,7 @@ Two rows of the source's table are corrected here. It listed "Google Places API 
 
 ## Visitor identification
 
-[coreyhaines31/marketingskills, prospecting] Pixel-based tools that identify anonymous site visitors as companies or people (the source names RB2B for person-level US identification, Warmly, Vector, Koala) feed the "high-intent visit" signal ([SIGNALS.md](SIGNALS.md#rank-signals-by-how-close-they-are-to-you)). The source's cautions: "verify your privacy policy disclosures"; "Person-level identification raises higher concerns than company-level". A vendor's claim that its identification needs no consent banner is the vendor's claim; consent for tracking scripts is in [../../frontend/cookie-consent/SKILL.md](../../frontend/cookie-consent/SKILL.md). Never mention an identified visit to the prospect ([SIGNALS.md](SIGNALS.md#common-mistakes)).
+[coreyhaines31/marketingskills, prospecting] Pixel-based tools that identify anonymous site visitors as companies or people (the source names RB2B for person-level US identification, Warmly, Vector, Koala) feed the "high-intent visit" signal ([SIGNALS.md](SIGNALS.md#rank-signals-by-how-close-they-are-to-you)). The source's cautions: "verify your privacy policy disclosures"; "Person-level identification raises higher concerns than company-level". A vendor's claim that its identification needs no consent banner is the vendor's claim; consent for tracking scripts is in [cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md). Never mention an identified visit to the prospect ([SIGNALS.md](SIGNALS.md#common-mistakes)).
 
 ## Vendor facts
 

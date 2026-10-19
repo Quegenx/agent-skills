@@ -7,7 +7,7 @@ Postgres forks one operating system process per connection: a few MB of base mem
 - **Pool, then size:** a pooler (PgBouncer, the platform's pooler, or the driver's pool in a long-lived server) multiplexes many application connections onto a few backends. 1,000 clients often fit in 20 to 50 backends. A starting point is about two connections per CPU core; then size from observed concurrency and query memory, not from cores alone.
 - **Serverless and edge functions** open many short-lived connections, which a driver's pool can't cover: always go through a server-side pooler there.
 - **Alert at 80% of `max_connections`, page at 95%.** `too many clients already` means a leak or a missing pooler, not a limit to raise.
-- **A client-side `connection timeout` is not a reason to enlarge the pool.** "Adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow first: put the connection wait time metric next to the DB's slow query log ([DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#pools-and-queueing)).
+- **A client-side `connection timeout` is not a reason to enlarge the pool.** "Adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow first: put the connection wait time metric next to the DB's slow query log ([observability DIAGNOSE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/DIAGNOSE.md#pools-and-queueing)).
 
 ## Pool modes and what they forbid
 
@@ -54,7 +54,7 @@ returning *;
 
 ## Locks and deadlocks
 
-Choose by contention: **optimistic** (a version check) when conflicts are rare and retrying is cheap; **`for update`** when specific rows are contended and the operation isn't safely retryable (payments, stock decrements); **`skip locked`** for workers competing over queue rows ([WORKERS.md](../background-jobs/WORKERS.md)); **advisory locks** when there's no row to lock (a singleton job, an external resource, "create if not exists"). [Existing background-jobs/CONCURRENCY.md, Row locks, timeouts and isolation in Postgres]
+Choose by contention: **optimistic** (a version check) when conflicts are rare and retrying is cheap; **`for update`** when specific rows are contended and the operation isn't safely retryable (payments, stock decrements); **`skip locked`** for workers competing over queue rows ([background-jobs WORKERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/WORKERS.md)); **advisory locks** when there's no row to lock (a singleton job, an external resource, "create if not exists"). [Existing background-jobs/CONCURRENCY.md, Row locks, timeouts and isolation in Postgres]
 
 - **Slow every time is a plan problem; usually instant but sometimes hanging is a lock problem.** A hung statement is not slow, it is waiting. The usual shape: a transaction updates a row, then does something long (an API call, user input) before committing, and every other writer of that row queues behind it. Find the blocker with the query in MONITORING.md.
 - **Plain `insert`, `update` and `delete` take light table locks plus row locks** on the rows they change, held until commit or rollback. DDL is the dangerous kind (MIGRATIONS.md).

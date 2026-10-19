@@ -1,6 +1,6 @@
 # Hooks
 
-The first three seconds decide whether the rest of the ad exists. Hooks are the highest-leverage unit of paid creative work, and hook *diversity* is what earns new learning: distinct hooks reach distinct pockets of the audience, while near-identical openings re-test what you already know. A system for generating, diagnosing and iterating hooks, from [coreyhaines31/marketingskills, ad-creative, hook-system.md] (MIT; practitioner). Use it inside generation (hooks for new concepts), iteration (why an ad underperforms) and the [creative strategy loop](CREATIVE-ROADMAP.md). App-ad hook scripts are in [TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#hooks).
+The first three seconds decide whether the rest of the ad exists. Hooks are the highest-leverage unit of paid creative work, and hook *diversity* is what earns new learning: distinct hooks reach distinct pockets of the audience, while near-identical openings re-test what you already know. A system for generating, diagnosing and iterating hooks, from [coreyhaines31/marketingskills, ad-creative, hook-system.md] (MIT; practitioner). Use it inside generation (hooks for new concepts), iteration (why an ad underperforms) and the [creative strategy loop](CREATIVE-ROADMAP.md). App-ad hook scripts are in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#hooks).
 
 **Contents:** [A hook is three components](#a-hook-is-three-components) · [The generation pipeline](#the-generation-pipeline) · [Opening moves](#opening-moves) · [The diagnostic funnel](#the-diagnostic-funnel) · [The on-ramp](#the-on-ramp) · [Fidelity laddering](#fidelity-laddering) · [Grounding](#grounding) · [Failure modes](#failure-modes) · [Prove it](#prove-it)
 
@@ -54,7 +54,7 @@ Cycle through them; don't cluster on favorites.
 | **False assumption** | Challenge something the buyer thinks they need: "You can cancel ClickFunnels" | Draws angry reactions too; keep the body fair, and get legal review before naming a competitor in paid ads |
 | **Declaration, then question** | State what they agree with, then doubt it: "You need to spend $20K a month recruiting on Indeed. Or do you?" | The doubt needs a real answer; the source says practitioners were still testing it in October 2026 |
 
-The last five are one family, contrast: people understand a thing by comparing it with something else. That is also why AI copy leans on "it's not X, it's Y"; the difference is that a good contrast hook compares two things the audience actually weighs, while the AI tell negates a claim nobody made ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md)). Contrast hooks suit education and decisions; for impulse products lead with proof or POV.
+The last five are one family, contrast: people understand a thing by comparing it with something else. That is also why AI copy leans on "it's not X, it's Y"; the difference is that a good contrast hook compares two things the audience actually weighs, while the AI tell negates a claim nobody made ([anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md)). Contrast hooks suit education and decisions; for impulse products lead with proof or POV.
 
 ## The diagnostic funnel
 
@@ -65,12 +65,12 @@ Each metric isolates a component. Fix the part that failed instead of scrapping 
 | Stop | Thumbstop / 3-second view rate | The visual action (and caption) | New visual opening, everything else the same |
 | Stay | Hold rate (3 s → 15 s or 50% view) | The on-ramp after the hook | Rework seconds 3 to 15, not the hook |
 | Click | CTR | Desire or offer clarity mid-ad | Sharpen the promise, CTA or proof |
-| Convert | CVR after the click | Congruence: the page doesn't continue the ad | Fix the page or the claim ([cro](../cro/SKILL.md)) |
+| Convert | CVR after the click | Congruence: the page doesn't continue the ad | Fix the page or the claim ([cro](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md)) |
 
 - **A great thumbstop is not a great ad.** Clickbait that attracts the wrong viewers shows as high thumbstop with collapsed hold and CVR. Read the whole funnel before declaring a winning hook.
 - **One component per iteration:** the visual, or the on-ramp, or the offer framing.
 
-This sharpens app-growth's diagnosis rows ("Weak hook / thumb-stop") in [META-ADS.md](../../mobile/app-growth/META-ADS.md#decide) and [TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#audits).
+This sharpens app-growth's diagnosis rows ("Weak hook / thumb-stop") in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#decide) and [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#audits).
 
 ## The on-ramp
 
@@ -89,7 +89,7 @@ Testing a hunch with an expensive shoot and a proven angle with a throwaway stat
 
 Hooks inherit every grounding rule ([SKILL.md](SKILL.md#grounded-inputs)): each cites the corpus source of its motivation; no invented claims, stats or testimonials; verbatim customer language over paraphrase. Also mine organic content in the niche for the audience's actual vocabulary (the slang for the pain, the term they use instead of the clinical one); the source mines it by scraping and social listening, done here within each site's terms ([CREATIVE-ROADMAP.md](CREATIVE-ROADMAP.md#research-workflows)). It's language research, not copying: take the vocabulary and visual conventions, never a creator's specific creative.
 
-Yuzzyuk/marketing-os permits labelled "ungrounded hypotheses" without a corpus; this repo keeps its existing grounding requirement and does not manufacture customer language or evidence. Its borrowed-enemy tactic routes to the system/norm guardrails in [STORY-ANGLES.md](../public-relations/STORY-ANGLES.md), rather than defining another hook taxonomy here. [Yuzzyuk/marketing-os, references/hooks.md]
+Yuzzyuk/marketing-os permits labelled "ungrounded hypotheses" without a corpus; this repo keeps its existing grounding requirement and does not manufacture customer language or evidence. Its borrowed-enemy tactic routes to the system/norm guardrails in [public-relations STORY-ANGLES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/STORY-ANGLES.md), rather than defining another hook taxonomy here. [Yuzzyuk/marketing-os, references/hooks.md]
 
 ## Failure modes
 

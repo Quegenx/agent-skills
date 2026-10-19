@@ -60,7 +60,7 @@ Members join → get value → engage → create content/help others
   3. **Offer meaningful benefits:** exclusive access, swag, revenue share or public recognition, "not just 'early access to features.'"
   4. **Give them tools:** referral links, shareable assets, key talking points, a private channel.
   5. **Measure** referral traffic, signups and engagement driven by advocates, and double down on what works.
-- **They disclose what they get.** The source leaves this out. FTC: "#ambassador" or "partner" alone "is ambiguous and confusing", while "#XYZ_Ambassador" or "#XYZ_Partner" "will likely be more understandable"; "Gifted" alone is ambiguous, and "Gifted by XYZ" is enough for a free product. The brand shares responsibility ("the ultimate responsibility ... rests with the influencer and the brand ... not the platform"), so add your own disclosure instruction even when a platform offers a tool, and monitor the people you have a deal with during the deal and "a reasonable time, such as a few months" after it. [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking] The full disclosure rules are [../creator-marketing/DISCLOSURE.md](../creator-marketing/DISCLOSURE.md); referral rewards are [../referral-programs/SKILL.md](../referral-programs/SKILL.md).
+- **They disclose what they get.** The source leaves this out. FTC: "#ambassador" or "partner" alone "is ambiguous and confusing", while "#XYZ_Ambassador" or "#XYZ_Partner" "will likely be more understandable"; "Gifted" alone is ambiguous, and "Gifted by XYZ" is enough for a free product. The brand shares responsibility ("the ultimate responsibility ... rests with the influencer and the brand ... not the platform"), so add your own disclosure instruction even when a platform offers a tool, and monitor the people you have a deal with during the deal and "a reasonable time, such as a few months" after it. [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking] The full disclosure rules are [creator-marketing DISCLOSURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/DISCLOSURE.md); referral rewards are [referral-programs SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/referral-programs/SKILL.md).
 - The book's benchmark for an ambassador program at scale is Notion: "300+ ambassadors", "1M+ template downloads", "25% of new users come from community referrals". The source itself says to use these "as the 'what great looks like' north star ... not as day-one targets".
 
 ## Community-led support
@@ -69,8 +69,8 @@ Members join → get value → engage → create content/help others
 
 1. **Build a searchable knowledge base** from the top community questions.
 2. **Recognize members who help:** "Community Expert" badges, leaderboards, shoutouts.
-3. **Close the loop with product:** when community feedback drives a change, announce it publicly and credit the members who raised it ([../product-launch/LAUNCH-PLAN.md](../product-launch/LAUNCH-PLAN.md#ongoing-launches)).
-4. **Monitor sentiment weekly** for patterns in complaints or confusion before they become churn signals ([../churn-prevention/SKILL.md](../churn-prevention/SKILL.md)).
+3. **Close the loop with product:** when community feedback drives a change, announce it publicly and credit the members who raised it ([product-launch LAUNCH-PLAN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/LAUNCH-PLAN.md#ongoing-launches)).
+4. **Monitor sentiment weekly** for patterns in complaints or confusion before they become churn signals ([churn-prevention SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/SKILL.md)).
 
 On a free Slack plan, history is visible for 90 days and content older than a year is deleted: see the Slack row in [Platforms](#platforms).
 
@@ -112,7 +112,7 @@ On a free Slack plan, history is visible for 90 days and content older than a ye
 | Facebook Groups | Consumer brands; older demographics | Declining organic reach; algorithm dependent |
 | Forum (Discourse) | Long-form technical communities; SEO-rich | Slower velocity; higher effort to post |
 
-In subreddits you don't run, "contribute before promoting" [eronred, ../../mobile/app-growth/LAUNCH-AND-MARKETING.md]; social posting is [../social-media/SKILL.md](../social-media/SKILL.md).
+In subreddits you don't run, "contribute before promoting" [eronred, ../../mobile/app-growth/LAUNCH-AND-MARKETING.md]; social posting is [social-media SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md).
 
 ## Health metrics
 
@@ -126,7 +126,7 @@ In subreddits you don't run, "contribute before promoting" [eronred, ../../mobil
 
 **Warning signs:** most posts are from the company team; questions go unanswered for more than 24 hours; the same 5 people account for 80%+ of engagement; new members stop posting after their intro.
 
-If the community emits events into product analytics, these can be computed there ([../../monitoring/posthog/SKILL.md](../../monitoring/posthog/SKILL.md)).
+If the community emits events into product analytics, these can be computed there ([posthog SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md)).
 
 ## Outputs
 

@@ -1,6 +1,6 @@
 # Cold email copy
 
-The goal is an email that reads as if a sharp, thoughtful person wrote it to one reader, not a sales machine filling a template [coreyhaines31/marketingskills, cold-email]. Generic AI-writing tells and how to edit them out are in [../../anti-ai-slop/anti-slop-writing/TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md); page and product copy is in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md). What the email must legally contain is in [SENDING.md](SENDING.md#the-email-itself).
+The goal is an email that reads as if a sharp, thoughtful person wrote it to one reader, not a sales machine filling a template [coreyhaines31/marketingskills, cold-email]. Generic AI-writing tells and how to edit them out are in [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md); page and product copy is in [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md). What the email must legally contain is in [SENDING.md](SENDING.md#the-email-itself).
 
 **Contents:** [Writing principles](#writing-principles) · [Voice per audience](#voice-per-audience) · [Structures](#structures) · [Frameworks](#frameworks) · [Personalization](#personalization) · [Personalizing with AI](#personalizing-with-ai) · [Subject lines](#subject-lines) · [What to avoid](#what-to-avoid) · [Quality check](#quality-check) · [Prove it](#prove-it)
 
@@ -13,7 +13,7 @@ The goal is an email that reads as if a sharp, thoughtful person wrote it to one
 - **Personalization connects to the problem.** "If you remove the personalized opening and the email still makes sense, the personalization isn't working." The observation should lead naturally into why you're writing.
 - **Lead with their world.** "You/your" dominates over "I/we". Don't open with who you are or what your company does.
 - **One ask, low friction.** Interest-based CTAs ("Worth exploring?", "Would this be useful?") beat meeting requests. One CTA per email, answerable with a one-line reply. No 30-minute call in the first touch.
-- **Two views on CTAs.** anti-slop-copy's rule for page buttons: "A CTA says the action and what the person gets" and not "Learn more" or "Get started" ([../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md)). This source's rule is for a reply ask in one-to-one email, where the action is always "reply"; keep each rule to its medium.
+- **Two views on CTAs.** anti-slop-copy's rule for page buttons: "A CTA says the action and what the person gets" and not "Learn more" or "Get started" ([anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)). This source's rule is for a reply ask in one-to-one email, where the action is always "reply"; keep each rule to its medium.
 
 ## Voice per audience
 
@@ -31,7 +31,7 @@ It should not read like a template with fields swapped in, a pitch deck compress
 
 - **Observation → Problem → Proof → Ask.** You noticed X, which usually means Y; we helped Z with that; interested?
 - **Question → Value → Ask.** Struggling with X? We do Y. Company Z saw a result. Worth a look?
-- **Trigger → Insight → Ask.** X happened; that usually creates Y; we've helped similar companies. Curious? (Use the trigger to pick the angle, not as the opener: see [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md#from-signal-to-play).)
+- **Trigger → Insight → Ask.** X happened; that usually creates Y; we've helped similar companies. Curious? (Use the trigger to pick the angle, not as the opener: see [prospecting SIGNALS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SIGNALS.md#from-signal-to-play).)
 - **Story → Bridge → Ask.** A similar company had a problem and solved it this way. Relevant to you?
 
 ## Frameworks
@@ -85,7 +85,7 @@ Justin Michael's method also says: spend at most a minute on personalization, us
 | Podcasts and talks | Search, YouTube, podcasts | A specific point from the talk |
 | Website changes | Manual review | "Your new pricing page caught my eye" |
 
-Freshness windows for each signal, and why "Congrats on the raise" is a weak opener, are in [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md#freshness-windows).
+Freshness windows for each signal, and why "Congrats on the raise" is a weak opener, are in [prospecting SIGNALS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SIGNALS.md#freshness-windows).
 
 **The 3-minute system** (from "30 Minutes to President's Club", as the source credits it):
 
@@ -93,7 +93,7 @@ Freshness windows for each signal, and why "Congrats on the raise" is a weak ope
 2. Build a 3x3 template: personalization attached to a problem; the problem you solve; a one-sentence solution plus a low-friction CTA.
 3. Write 5 trigger templates: a pre-written personalization paragraph per trigger, with a segue into the problem. The rest of the email stays constant.
 
-**The four -graphic principles (Becc Holland):** demographic (age, profession, background), technographic (stack, tools), firmographic (size, funding, industry, stage), psychographic (values, passions, beliefs; the source calls it the "highest-impact dimension"). The prospecting rules forbid targeting sensitive traits even when public ([../prospecting/LIST-COMPLIANCE.md](../prospecting/LIST-COMPLIANCE.md#sensitive-traits)).
+**The four -graphic principles (Becc Holland):** demographic (age, profession, background), technographic (stack, tools), firmographic (size, funding, industry, stage), psychographic (values, passions, beliefs; the source calls it the "highest-impact dimension"). The prospecting rules forbid targeting sensitive traits even when public ([prospecting LIST-COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LIST-COMPLIANCE.md#sensitive-traits)).
 
 **Openers that work:** a trigger event tied to the challenge it creates; an observation from their own post with a specific detail; an industry insight framed as a question ("Curious if that matches your experience at [Company]").
 
@@ -110,7 +110,7 @@ Freshness windows for each signal, and why "Congrats on the raise" is a weak ope
 - **Allow "no hook found"** and fall back to the segment message.
 - **Review before sending** for Tier 1 and a sample of Tier 2.
 
-The full research rules and the brief template are in [../prospecting/ACCOUNT-RESEARCH.md](../prospecting/ACCOUNT-RESEARCH.md).
+The full research rules and the brief template are in [prospecting ACCOUNT-RESEARCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/ACCOUNT-RESEARCH.md).
 
 ## Subject lines
 
@@ -124,7 +124,7 @@ The full research rules and the brief template are in [../prospecting/ACCOUNT-RE
 - **Avoid:** salesy words ("increase", "boost", "ROI"), urgency ("ASAP", "urgent"), excessive punctuation, numbers and percentages, emojis, pitching the product and an empty subject. The source also advised avoiding words to influence spam filters; do not use word substitution for filter evasion. [coreyhaines31/marketingskills, cold-email; owner safety rule 9]
 - **C-suite:** ultra-concise, human, understated ("thank you", "an update", "a question", or a specific project or trigger).
 
-The repo's "50 characters or less" for marketing subject lines in [email-marketing/SEQUENCES.md](../email-marketing/SEQUENCES.md#campaign-copy-conventions) is for opted-in newsletters; this is a different medium.
+The repo's "50 characters or less" for marketing subject lines in [email-marketing SEQUENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SEQUENCES.md#campaign-copy-conventions) is for opted-in newsletters; this is a different medium.
 
 ## What to avoid
 
@@ -133,7 +133,7 @@ The repo's "50 characters or less" for marketing subject lines in [email-marketi
 - Opening with "I hope this email finds you well" or "My name is X and I work at Y".
 - Jargon: "synergy", "leverage", "circle back", "best-in-class", "leading provider".
 - Feature dumps; one proof point beats ten features.
-- AI tells prospects spot in the first line: contrast reveals ("It's not about X, it's about Y") and "no X, no Y, no Z" lists; a claim followed by a comma and more restating clauses; self-answered questions and colon reveals (a real question you want answered is fine); stock phrases ("Here's the thing", "I'll be honest", "Quick question" as an opener, "Say goodbye to", "Unlock", "Take it to the next level"); em dashes. These match [TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md), whose em-dash rule is none in short copy; a cold email is short copy.
+- AI tells prospects spot in the first line: contrast reveals ("It's not about X, it's about Y") and "no X, no Y, no Z" lists; a claim followed by a comma and more restating clauses; self-answered questions and colon reveals (a real question you want answered is fine); stock phrases ("Here's the thing", "I'll be honest", "Quick question" as an opener, "Say goodbye to", "Unlock", "Take it to the next level"); em dashes. These match [anti-slop-writing TELLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-writing/TELLS.md), whose em-dash rule is none in short copy; a cold email is short copy.
 - HTML, images or multiple links.
 - Fake "Re:" or "Fwd:" subject lines (a Gmail guideline, not only style: [SKILL.md](SKILL.md#the-rules) rule 6).
 - Identical templates with only `{{FirstName}}` swapped.

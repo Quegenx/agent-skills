@@ -59,6 +59,8 @@ A goal evaluator checks the rules were met; it does not judge whether the film i
 
 ## Read next
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Decoded output, sound, loop contracts and verification limits | [DELIVERY-CHECKS.md](DELIVERY-CHECKS.md) |

@@ -1,6 +1,6 @@
 # GSAP SVG plugins
 
-DrawSVG for stroke drawing, MorphSVG for shape morphs, and MotionPath for moving along a path. Source: GreenSock's official gsap-plugins skill (MIT), checked against https://gsap.com/docs/v3/Plugins/MorphSVGPlugin/ and https://gsap.com/docs/v3/Plugins/MotionPathPlugin/. Each is the library route over a technique the svg skill covers by hand: line drawing in [../svg/CSS-ANIMATION.md](../svg/CSS-ANIMATION.md#line-drawing-with-stroke-dasharray-and-stroke-dashoffset), morphing in [../svg/MORPHING-ICONS.md](../svg/MORPHING-ICONS.md) and [../svg/CSS-ANIMATION.md](../svg/CSS-ANIMATION.md#animate-d-with-path), motion along a path in [../svg/JS-AND-REACT.md](../svg/JS-AND-REACT.md#web-animations-api). Registration is in [PLUGINS.md](PLUGINS.md#registering-plugins), tweens in [CORE.md](CORE.md), timelines in [TIMELINES.md](TIMELINES.md), cleanup in [REACT-AND-LIFECYCLE.md](REACT-AND-LIFECYCLE.md), cost in [PERFORMANCE.md](PERFORMANCE.md).
+DrawSVG for stroke drawing, MorphSVG for shape morphs, and MotionPath for moving along a path. Source: GreenSock's official gsap-plugins skill (MIT), checked against https://gsap.com/docs/v3/Plugins/MorphSVGPlugin/ and https://gsap.com/docs/v3/Plugins/MotionPathPlugin/. Each is the library route over a technique the svg skill covers by hand: line drawing in [svg CSS-ANIMATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/CSS-ANIMATION.md#line-drawing-with-stroke-dasharray-and-stroke-dashoffset), morphing in [svg MORPHING-ICONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/MORPHING-ICONS.md) and [svg CSS-ANIMATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/CSS-ANIMATION.md#animate-d-with-path), motion along a path in [svg JS-AND-REACT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/JS-AND-REACT.md#web-animations-api). Registration is in [PLUGINS.md](PLUGINS.md#registering-plugins), tweens in [CORE.md](CORE.md), timelines in [TIMELINES.md](TIMELINES.md), cleanup in [REACT-AND-LIFECYCLE.md](REACT-AND-LIFECYCLE.md), cost in [PERFORMANCE.md](PERFORMANCE.md).
 
 ## DrawSVG
 
@@ -26,7 +26,7 @@ gsap.to("#path", { duration: 1, drawSVG: "20% 80%" });
 
 [GreenSock, gsap-plugins] Morphs one shape into another by animating `d`. Options verified against https://gsap.com/docs/v3/Plugins/MorphSVGPlugin/.
 
-- **The two shapes don't need the same number of points.** MorphSVG converts to cubic beziers and adds points as needed. That drops the constraint the hand-built icon set depends on, "every icon is exactly three SVG `<line>`s, so every pair shares the same underlying structure" ([../svg/MORPHING-ICONS.md](../svg/MORPHING-ICONS.md)), and the CSS `path()` rule that both ends need the same commands.
+- **The two shapes don't need the same number of points.** MorphSVG converts to cubic beziers and adds points as needed. That drops the constraint the hand-built icon set depends on, "every icon is exactly three SVG `<line>`s, so every pair shares the same underlying structure" ([svg MORPHING-ICONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/MORPHING-ICONS.md)), and the CSS `path()` rule that both ends need the same commands.
 - **Targets:** `<path>`, `<polyline>` and `<polygon>` directly. `MorphSVGPlugin.convertToPath("circle, rect, ellipse, line")` replaces the other primitives with `<path>` in the DOM.
 - **The value:** a selector (`"#lightning"`), an element, raw path data, or a points string for polygon and polyline. The object form needs only `shape`.
 
@@ -62,7 +62,7 @@ gsap.to("#diamond", {
 
 ## MotionPath
 
-[GreenSock, gsap-plugins] Moves an element along an SVG path. The hand-written route is WAAPI on `offsetDistance` ([../svg/JS-AND-REACT.md](../svg/JS-AND-REACT.md#web-animations-api)).
+[GreenSock, gsap-plugins] Moves an element along an SVG path. The hand-written route is WAAPI on `offsetDistance` ([svg JS-AND-REACT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/JS-AND-REACT.md#web-animations-api)).
 
 ```javascript
 gsap.registerPlugin(MotionPathPlugin);

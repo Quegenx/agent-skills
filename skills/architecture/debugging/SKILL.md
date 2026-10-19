@@ -7,6 +7,8 @@ description: "Diagnoses bugs from a reproducible contract violation, traces the 
 
 Find where observed behavior first departs from its contract before choosing a repair. This workflow combines Matt Pocock's diagnosing-bugs, obra/superpowers' systematic-debugging, Octocode's problem framing and causal receipts, and Cursor's verify-this. Their process choices are attributed below; they are not guarantees about debugging speed or success.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 | The job | Read |
 |---|---|
 | Classify the request, build a reproducer, trace the cause and choose a repair | [SKILL.md](SKILL.md) |
@@ -28,7 +30,7 @@ Find where observed behavior first departs from its contract before choosing a r
 | What the evidence shows | Route |
 |---|---|
 | Supported current behavior is violated | Reproduce and diagnose the bug |
-| A desired capability creates a new contract | Define acceptance in [engineering-planning](../engineering-planning/SKILL.md) |
+| A desired capability creates a new contract | Define acceptance in [engineering-planning](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/SKILL.md) |
 | The contract holds but a quality target should improve | Establish a baseline, bottleneck and target with [VERIFICATION.md](VERIFICATION.md) |
 | Actual behavior, authority or desired outcome is unresolved | Identify the missing fact and cheapest decisive check, or ask a focused question |
 
@@ -57,17 +59,17 @@ Find where observed behavior first departs from its contract before choosing a r
 
 - Matt's preparation preference is a ranked set of three to five falsifiable hypotheses; obra asks for one explicit hypothesis at a time. Keep the alternatives visible, then test one prediction at a time. The count is a source workflow preference, not a scientific minimum.
 - Prefer debugger or REPL inspection when available; otherwise add focused instrumentation at the boundaries that distinguish causes. Give temporary debug output a unique searchable prefix and remove it before completion.
-- For performance regressions, establish measurements first. Profiling, timings and query plans belong to [performance-and-caching](../../backend/performance-and-caching/SKILL.md); avoid replacing measurement with a large log dump.
+- For performance regressions, establish measurements first. Profiling, timings and query plans belong to [performance-and-caching](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/SKILL.md); avoid replacing measurement with a large log dump.
 - If both explanations survive, name the runtime input, log or configuration fact needed to separate them. Say what remains unknown.
 
 ## Repair and close
 
 [mattpocock/skills, diagnosing-bugs/SKILL.md] [obra/superpowers, systematic-debugging/SKILL.md] [bgauryy/octocode, octocode-research/references/workflow-debug.md]
 
-- Put a regression check at a seam that exercises the actual caller pattern. When no suitable seam exists, report that architectural limitation instead of adding a shallow check that cannot catch the bug. Test design remains in [testing](../testing/SKILL.md).
+- Put a regression check at a seam that exercises the actual caller pattern. When no suitable seam exists, report that architectural limitation instead of adding a shallow check that cannot catch the bug. Test design remains in [testing](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/testing/SKILL.md).
 - Fix the demonstrated cause, verify the minimized and original scenarios, and remove temporary instrumentation and throwaway debugging artifacts.
 - Obra uses three failed fixes as a prompt to question the architecture, especially when each attempt reveals coupling elsewhere or demands a broad refactor. Treat that as a discussion trigger, not proof that the architecture is wrong.
-- Obra's defense-in-depth source asks for validation at every layer. This repository keeps the shared root fix first; use additional guards only where a distinct trust boundary or invariant requires them, as described in [secure-coding](../../backend/secure-coding/SKILL.md).
+- Obra's defense-in-depth source asks for validation at every layer. This repository keeps the shared root fix first; use additional guards only where a distinct trust boundary or invariant requires them, as described in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
 - Report the mechanism and trigger, violated contract and first divergence, exact evidence, an alternative disconfirmed, why the failure appeared now, repair and verification limits. Environmental or external causes still need the investigation record and an explicit handling decision.
 
 ## Gotchas

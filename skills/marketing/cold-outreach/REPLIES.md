@@ -1,6 +1,6 @@
 # Handling replies
 
-"The sequence's job ends when someone replies. What happens in the next hour decides whether that reply becomes a meeting." [coreyhaines31/marketingskills, cold-email] references/reply-handling.md. Deal-stage objections (pricing negotiation, security reviews, bake-offs) are in [../sales-enablement/SKILL.md](../sales-enablement/SKILL.md); lead routing and the outbound stage model are in [../revops/SKILL.md](../revops/SKILL.md).
+"The sequence's job ends when someone replies. What happens in the next hour decides whether that reply becomes a meeting." [coreyhaines31/marketingskills, cold-email] references/reply-handling.md. Deal-stage objections (pricing negotiation, security reviews, bake-offs) are in [sales-enablement SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md); lead routing and the outbound stage model are in [revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md).
 
 ## Classify every reply
 
@@ -46,7 +46,7 @@ Every reply of any type stops all other channels for that person ([SEQUENCES.md]
 | "Send me more info" | Send one specific thing (a one-pager or a two-minute video) and one easy question |
 | "How did you get my email?" | Answer honestly with the actual source, and offer to remove them |
 
-The last row is a courtesy in the source and a legal duty for EU and UK contacts: GDPR Art. 14 requires the source of data not collected from the person to be given "at the latest at the time of the first communication" (https://gdpr-info.eu/art-14-gdpr/), which is why the source is recorded per contact ([../prospecting/LIST-COMPLIANCE.md](../prospecting/LIST-COMPLIANCE.md#provenance)).
+The last row is a courtesy in the source and a legal duty for EU and UK contacts: GDPR Art. 14 requires the source of data not collected from the person to be given "at the latest at the time of the first communication" (https://gdpr-info.eu/art-14-gdpr/), which is why the source is recorded per contact ([prospecting LIST-COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LIST-COMPLIANCE.md#provenance)).
 
 ## What an agent can handle
 
@@ -64,13 +64,13 @@ The last row is a courtesy in the source and a legal duty for EU and UK contacts
 | Referral | | Yes |
 | Hostile | Suppress | Any reply at all |
 
-**Source approval conflict:** the source's acceptance expectation and original [outbound-operator approval table](../marketing-loops/OUTBOUND-OPERATOR.md#approval-rules-defaults) extended the 100+ reply condition to positive, information, objection and referral replies. This source's reply table only gave that exception to positive replies; the other three remain human-sent. Keep that stricter table boundary until an explicitly approved policy changes it. A reply count alone neither proves accuracy nor grants sending permission. [coreyhaines31/marketingskills, cold-email and marketing-loops; owner standing rule 15]
+**Source approval conflict:** the source's acceptance expectation and original [outbound-operator approval table](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/OUTBOUND-OPERATOR.md#approval-rules-defaults) extended the 100+ reply condition to positive, information, objection and referral replies. This source's reply table only gave that exception to positive replies; the other three remain human-sent. Keep that stricter table boundary until an explicitly approved policy changes it. A reply count alone neither proves accuracy nor grants sending permission. [coreyhaines31/marketingskills, cold-email and marketing-loops; owner standing rule 15]
 
-Before an agent sends anything alone: every claim in the draft matches an approved source, nothing from your banned-phrase list appears, and a daily cap applies. Sample-review a share of autonomous replies every week. Building these as code gates around the agent's send tool is in [../../ai-agents/agent-harness/CHECKS.md](../../ai-agents/agent-harness/CHECKS.md).
+Before an agent sends anything alone: every claim in the draft matches an approved source, nothing from your banned-phrase list appears, and a daily cap applies. Sample-review a share of autonomous replies every week. Building these as code gates around the agent's send tool is in [agent-harness CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/CHECKS.md).
 
 ## Log it
 
-[coreyhaines31/marketingskills, cold-email] On the CRM contact: reply type, date, the sequence and step that produced it, the signal and channel, and the outcome. That makes a weekly sequence review possible ([../marketing-loops/SKILL.md](../marketing-loops/SKILL.md)).
+[coreyhaines31/marketingskills, cold-email] On the CRM contact: reply type, date, the sequence and step that produced it, the signal and channel, and the outcome. That makes a weekly sequence review possible ([marketing-loops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md)).
 
 ## Prove it
 

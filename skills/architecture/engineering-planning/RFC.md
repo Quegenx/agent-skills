@@ -1,6 +1,6 @@
 # Proposals and RFC audits
 
-Octocode's RFC reference organizes a consequential proposal around the decision, evidence, contracts and alternatives. Its RFC audit checks the implementation against the proposal's continuing intent. An accepted architectural decision is recorded using the single [ADR definition](../domain-modeling/GLOSSARY-AND-ADRS.md#when-to-record-a-decision). [bgauryy/octocode, octocode-rfc-generator/references/rfc-template.md, octocode-rfc-generator/references/rfc-audit.md]
+Octocode's RFC reference organizes a consequential proposal around the decision, evidence, contracts and alternatives. Its RFC audit checks the implementation against the proposal's continuing intent. An accepted architectural decision is recorded using the single [ADR definition](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/domain-modeling/GLOSSARY-AND-ADRS.md#when-to-record-a-decision). [bgauryy/octocode, octocode-rfc-generator/references/rfc-template.md, octocode-rfc-generator/references/rfc-audit.md]
 
 ## Frame the decision
 

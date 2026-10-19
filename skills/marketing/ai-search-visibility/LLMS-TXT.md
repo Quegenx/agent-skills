@@ -6,7 +6,7 @@ What the llms.txt format is, where the file and a page's Markdown copy live, how
 
 - The spec: llms.txt "is instead used on demand, when an agent needs information ... mainly useful for *inference* rather than *training*". robots.txt is what "lets automated tools know what access ... is considered acceptable". [https://llmstxt.org/]
 - Google Search ignores it: "You don't need to create new machine readable files, AI text files, markup, or Markdown to appear in Google Search"; on llms.txt, "Doing so will neither harm nor help your site's visibility or rankings in Google Search, as Google Search ignores them." [https://developers.google.com/search/docs/fundamentals/ai-optimization-guide, updated 2026-07-10] The changelog entry of 2026-06-15: "these files aren't needed for Google Search" [https://developers.google.com/search/updates].
-- The repo's docs rule says the same: "`llms.txt`, page Markdown and package bundles serve agents. They do not promise search rankings or citations." ([../../architecture/developer-docs/WRITING-AND-PUBLISHING.md](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md#frontmatter-for-search-and-agents))
+- The repo's docs rule says the same: "`llms.txt`, page Markdown and package bundles serve agents. They do not promise search rankings or citations." ([developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md#frontmatter-for-search-and-agents))
 - "Not having llms.txt is not an SEO failure." Add one only if it will be kept accurate; link canonical resources instead of duplicating pages; it never replaces crawlable HTML or structured data. [freescan]
 - No vendor crawler page (OpenAI, Anthropic, Google, Perplexity) mentions llms.txt. [aeo.js]'s docs say llms.txt "is the first file AI crawlers look for", and its hints say "ChatGPT uses this to understand your site content" and "Claude uses this to understand your site's purpose and structure". None of the fetched official pages supports any of the three; quote them only as aeo.js's own claims.
 
@@ -43,7 +43,7 @@ Plain prose about the product goes here, before any H2.
 - The file can sit at the root or at any path ("/docs/llms.txt covers everything in /docs/"). When more than one applies, "agents should use the most specific one." The spec rejected well-known URIs (RFC 8615) because they exist only at the origin root. [https://llmstxt.org/] FreeScan checks both `/llms.txt` and `/.well-known/llms.txt`. [freescan]
 - **Markdown copies of pages:** serve each page as Markdown at the same URL with `.md` appended (`page.html.md`) or with the extension replaced (`page.md`); URLs without a file name use `index.html.md` or `index.md`. The links in llms.txt "should therefore point to LLM-friendly content, such as the markdown versions." [https://llmstxt.org/]
 - **`llms-full.txt`** (all site content in one file) is not in llmstxt.org v2. It is a vendor convention; [coreyhaines31/marketingskills, ai-seo] calls it "emerging, cheap to generate alongside llms.txt".
-- Committed discovery files always name the production origin ([../../frontend/landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)).
+- Committed discovery files always name the production origin ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)).
 
 ## How agents find them
 

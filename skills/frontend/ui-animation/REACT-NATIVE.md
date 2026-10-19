@@ -25,7 +25,7 @@ Two failure modes, the first worse: animating something that shouldn't animate, 
 | Occasional: sheets, modals, toasts, onboarding steps | Standard animation |
 | Rare / first-time: success states, empty-state illustrations, celebration | The delight budget lives here |
 
-- **"Tab switches never slide."** "Tabs are peers, not a hierarchy: sliding implies depth that isn't there, and the user pays for it dozens of times a session. `animation: 'none'`." `app-ui` does this instead on the web: `--duration-fast` 250ms is for "menus and modals opening, icon swaps, tabs sliding, page slides" ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#motion-tokens)). app-ui governs app-ui.
+- **"Tab switches never slide."** "Tabs are peers, not a hierarchy: sliding implies depth that isn't there, and the user pays for it dozens of times a session. `animation: 'none'`." `app-ui` does this instead on the web: `--duration-fast` 250ms is for "menus and modals opening, icon swaps, tabs sliding, page slides" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md#motion-tokens)). app-ui governs app-ui.
 - **Name the purpose in one word:** feedback, spatial consistency, state indication, preventing a jarring change, explanation, or delight (rare tier only). "Can't name it? Don't build it."
 - **Frequency, both ways:** the 100+ tier says no animation at all; [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback) still animates a press "under 100 ms in: some buttons are pressed hundreds of times a day". Neither wins.
 
@@ -49,9 +49,9 @@ Walk down; stop at the first that fits. [Emil Kowalski, animate-expo]
 | Vector illustration, celebration, empty state | **Lottie**, "for illustration only, never for UI state" |
 | A huge animated scene, freeform drawing | **`@shopify/react-native-skia`**, "for when the view hierarchy itself is the bottleneck" |
 
-- **Native tabs:** the [SDK-specific imports and API](../react/REACT-NATIVE.md#navigation) live in the global React guide. All tab screens render eagerly, and that can't be changed ([Expo native tabs](https://docs.expo.dev/router/advanced/native-tabs/)).
-- **Native preview and menu:** use the [Link.Preview, Link.Menu and Link.Trigger restrictions](../react/REACT-NATIVE.md#pressables-and-menus) before choosing the native route. [Emil Kowalski, animate-expo]
-- **Large-title header:** use the [native header option and its platform/name qualification](../react/REACT-NATIVE.md#navigation), rather than a scroll worklet. [Emil Kowalski, animate-expo]
+- **Native tabs:** the [SDK-specific imports and API](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE.md#navigation) live in the global React guide. All tab screens render eagerly, and that can't be changed ([Expo native tabs](https://docs.expo.dev/router/advanced/native-tabs/)).
+- **Native preview and menu:** use the [Link.Preview, Link.Menu and Link.Trigger restrictions](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE.md#pressables-and-menus) before choosing the native route. [Emil Kowalski, animate-expo]
+- **Large-title header:** use the [native header option and its platform/name qualification](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE.md#navigation), rather than a scroll worklet. [Emil Kowalski, animate-expo]
 - "Reach for a shared value only when the value is continuous or interruptible. A press scale is a CSS transition; a drag is a shared value."
 
 **Install with `npx expo install <package>`**, which "resolves the version that matches the project's SDK, which plain `npm install` won't". Animation needs `react-native-reanimated` + `react-native-worklets`.
@@ -137,7 +137,7 @@ const EASE_SHEET = Easing.bezier(0.32, 0.72, 0, 1);    // iOS sheet curve
 
 **Android, corrected** ([expo-haptics](https://docs.expo.dev/versions/latest/sdk/haptics/)): the source says haptics are "silent on most Android hardware". The docs say Android plays them through `Vibrator`, which Android does "not recommend … for implementing haptics feedback", and offer the Android-only `Haptics.performAndroidHapticsAsync(AndroidHaptics.Confirm | Reject | Toggle_On | Long_Press …)`, which needs no `VIBRATE` permission. On iOS, Taptic feedback does nothing in Low Power Mode, with Taptic disabled, or while the Camera or dictation is active. Also available: `ImpactFeedbackStyle.Heavy`, `Rigid`, `Soft`, `NotificationFeedbackType.Warning`; `impactAsync` defaults to Medium.
 
-**Pairings, both ways:** FlutterPro's table pairs "medium" with "slider reaches a snap point" and "pull-to-refresh triggers", and "heavy" with "confirm account deletion" ([../../mobile/flutter-ux/MOTION-AND-FEEDBACK.md](../../mobile/flutter-ux/MOTION-AND-FEEDBACK.md#haptics)); this file uses selection for detents, Light for pull-to-refresh arming and Medium for destructive actions. Neither wins.
+**Pairings, both ways:** FlutterPro's table pairs "medium" with "slider reaches a snap point" and "pull-to-refresh triggers", and "heavy" with "confirm account deletion" ([flutter-ux MOTION-AND-FEEDBACK.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter-ux/MOTION-AND-FEEDBACK.md#haptics)); this file uses selection for detents, Light for pull-to-refresh arming and Medium for destructive actions. Neither wins.
 
 ## Reduced motion and text size
 

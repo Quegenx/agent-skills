@@ -1,6 +1,6 @@
 # Business Profile management service
 
-The ongoing client service from [more skills, 13-google-maps-local-seo.md]: prepare the first month, onboard delegated access, clear the approved backlog, deliver weekly work and report actual monthly performance. The diagnosis and priority rules remain in [local SEO](../seo/LOCAL.md); this file owns the commercial delivery workflow.
+The ongoing client service from [more skills, 13-google-maps-local-seo.md]: prepare the first month, onboard delegated access, clear the approved backlog, deliver weekly work and report actual monthly performance. The diagnosis and priority rules remain in [local SEO](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LOCAL.md); this file owns the commercial delivery workflow.
 
 ## Offer and maintenance-gap packet
 
@@ -26,11 +26,11 @@ For each approved business, prepare:
 4. Accurate revised services and description using supported customer vocabulary.
 5. Three example images, each visibly labelled Example, never presented as actual jobs or premises.
 
-Show the first business's complete month before batching. Real owner job photos replace examples after onboarding. Existing image rules and [review response/privacy rules](../review-management/REVIEW-PROGRAMS.md#replying-to-a-review) still apply.
+Show the first business's complete month before batching. Real owner job photos replace examples after onboarding. Existing image rules and [review response/privacy rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/review-management/REVIEW-PROGRAMS.md#replying-to-a-review) still apply.
 
 The preview is marked Sample, with authorized identity assets, lawful peer comparison, current/proposed profile and full month of drafts. Its before/after is proposed work, not a completed result. End with the offer to publish the already-written month and the actual operator callback. The mail front uses the observed photo/post/reply comparison; the back can use an actual verified last-post date, never an invented one. Follow [DEMO-FIRST.md](DEMO-FIRST.md#prepare-the-mail-packet), retaining this source's three demo pages and three postcard samples.
 
-The source includes Q&A throughout the service. Google discontinued the My Business Q&A API on November 3, 2025, which does not establish that all manual/provider Q&A disappeared. Follow [LOCAL.md's market/provider/runtime gate](../seo/LOCAL.md#workflow); exclude unavailable Q&A from this client's executable scope. [https://developers.google.com/my-business/content/sunset-dates; open-seo, local-seo]
+The source includes Q&A throughout the service. Google discontinued the My Business Q&A API on November 3, 2025, which does not establish that all manual/provider Q&A disappeared. Follow [LOCAL.md's market/provider/runtime gate](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LOCAL.md#workflow); exclude unavailable Q&A from this client's executable scope. [https://developers.google.com/my-business/content/sunset-dates; open-seo, local-seo]
 
 ## Manager onboarding and first week
 
@@ -46,7 +46,7 @@ Send the owner short phone-readable instructions with the exact email to invite.
 
 On the chosen weekday, draft the seasonal post and new-review replies, handle questions only where available, file/add owner-supplied real photos and check services, regular hours and upcoming holiday hours. Give the owner one easy photo-submission number. Show the operator the complete package before publication.
 
-Separately, a new review below four stars triggers same-day operator notification rather than waiting for the weekly queue. Apply the existing [reputation response rules](../review-management/REVIEW-PROGRAMS.md), not automatic admissions, invented resolutions or disclosure of private account facts.
+Separately, a new review below four stars triggers same-day operator notification rather than waiting for the weekly queue. Apply the existing [reputation response rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/review-management/REVIEW-PROGRAMS.md), not automatic admissions, invented resolutions or disclosure of private account facts.
 
 ## Monthly report and second-offer review
 

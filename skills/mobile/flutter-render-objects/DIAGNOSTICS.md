@@ -375,7 +375,7 @@ From [renderobjects](https://renderobjects.com/guides/diagnostics/):
 - Omitting `defaultValue`.
 - Expensive work in `debugFillProperties`.
 - Asserting things that are not invariants.
-- **Sensitive data in diagnostics:** no passwords, tokens or raw user content. Expose presence ("has value: true") or a redacted summary. See [../../backend/secure-coding/SKILL.md](../../backend/secure-coding/SKILL.md).
+- **Sensitive data in diagnostics:** no passwords, tokens or raw user content. Expose presence ("has value: true") or a redacted summary. See [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
 - Skipping diagnostics entirely.
 
 ## Prove it

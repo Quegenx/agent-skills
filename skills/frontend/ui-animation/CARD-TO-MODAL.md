@@ -51,7 +51,7 @@ useEffect(() => {
 }, []);
 ```
 
-- **Closing, both ways:** the article pushes an entry on close too, so Back after open and close goes into the detail again; the `app-ui` skill's [OVERLAYS.md](../app-ui/OVERLAYS.md#a-settings-dialog) pushes on open and replaces on close, "so Back never reopens a closed dialog".
+- **Closing, both ways:** the article pushes an entry on close too, so Back after open and close goes into the detail again; the `app-ui` skill's [app-ui OVERLAYS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/OVERLAYS.md#a-settings-dialog) pushes on open and replaces on close, "so Back never reopens a closed dialog".
 - **A real route for refresh and shared links,** rendering the same `Content`; an unknown id redirects to the list. Arriving there has no shared element, so no morph: "Animations work best for in-app transitions, not initial page loads."
 
 ```tsx

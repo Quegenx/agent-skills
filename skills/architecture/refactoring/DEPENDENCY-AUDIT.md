@@ -1,6 +1,6 @@
 # Dependency audit
 
-Source: [grafana/skills, audit-and-reduce-dependencies]. This is an evidence-based package-footprint audit. Module direction remains in [DEPENDENCIES.md](DEPENDENCIES.md), and installation policy in [PACKAGE-INSTALLS.md](../../backend/secure-coding/PACKAGE-INSTALLS.md).
+Source: [grafana/skills, audit-and-reduce-dependencies]. This is an evidence-based package-footprint audit. Module direction remains in [DEPENDENCIES.md](DEPENDENCIES.md), and installation policy in [secure-coding PACKAGE-INSTALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/PACKAGE-INSTALLS.md).
 
 ## Establish the package contract
 

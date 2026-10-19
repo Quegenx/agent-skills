@@ -33,7 +33,7 @@ Everyone merges small changes to the main branch at least daily instead of keepi
 
 ## Experiments (A/B)
 
-Use the canonical [A/B testing method](../../marketing/ab-testing/SKILL.md) for the hypothesis, metrics, sample size, stopping rule and result. Keep the flag's implementation contract here. [existing api-design, FLAGS.md, Experiments (A/B)]
+Use the canonical [A/B testing method](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) for the hypothesis, metrics, sample size, stopping rule and result. Keep the flag's implementation contract here. [existing api-design, FLAGS.md, Experiments (A/B)]
 
 - Log exposure when the user actually sees the variant, not when the flag was evaluated somewhere they never reached.
 - Keep assignment stable for the whole experiment, and don't change the split mid-way without restarting the analysis.

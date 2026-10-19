@@ -1,6 +1,6 @@
 # Generating a project verification skill
 
-A coding agent that changes an app should prove the change the way a user would see it. A verification skill (`.agents/skills/verify-<app>/`) tells the next agent, reading it cold mid-task, exactly how to launch, check, drive and clean up this app. Verification skills have had the most measurable impact on Claude's output quality inside the Claude Code team; it can be worth an engineer spending a week making them excellent. It is generated from observation of the repo, and it is a deliverable only once it has been executed end to end. The commands use the `e2e` runner.
+A coding agent that changes an app should prove the change the way a user would see it. A verification skill (`.agents/skills/verify-<app>/`) tells the next agent, reading it cold mid-task, exactly how to launch, check, drive and clean up this app. Verification skills have had the most measurable impact on Claude's output quality inside the Claude Code team; it can be worth an engineer spending a week making them excellent. It is generated from observation of the repo, and it is a deliverable only once it has been executed end to end. The commands use the `e2e` runner. [tester-army/e2e, verification-skill]
 
 ## Interview the repo, not the user
 

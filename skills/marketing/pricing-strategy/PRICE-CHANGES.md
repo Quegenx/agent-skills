@@ -1,6 +1,6 @@
 # Price changes
 
-When to raise prices, the ways to do it, and how to roll a change out without a churn spike. From [coreyhaines31/marketingskills, pricing] `SKILL.md` (MIT, Copyright (c) 2025 Corey Haines). Stripe amount changes and supported maintenance updates follow [BILLING.md](../../backend/stripe/BILLING.md#model-the-catalog); price-test mechanics are in [REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases). On the app stores the store, not you, sets the notice and consent rules (below).
+When to raise prices, the ways to do it, and how to roll a change out without a churn spike. From [coreyhaines31/marketingskills, pricing] `SKILL.md` (MIT, Copyright (c) 2025 Corey Haines). Stripe amount changes and supported maintenance updates follow [stripe BILLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/BILLING.md#model-the-catalog); price-test mechanics are in [stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases). On the app stores the store, not you, sets the notice and consent rules (below).
 
 ## Signs it's time
 
@@ -30,8 +30,8 @@ When to raise prices, the ways to do it, and how to roll a change out without a 
 
 Expect some churn; the source says the accounts most likely to leave over a justified increase are usually the least profitable, highest-support, most price-sensitive ones.
 
-- **This conflicts with a line in the Stripe skill.** [appeeky] in [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases) designs price tests to "grandfather existing subscriptions on the old price"; the pricing source grandfathers only as a transition. Both views stand, each for its own job (testing a price versus migrating the base).
-- **Measure** conversion, ARPU and churn at 30 and 60 days per cohort ([../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases)); test design is in [../ab-testing/SKILL.md](../ab-testing/SKILL.md).
+- **This conflicts with a line in the Stripe skill.** [appeeky] in [stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases) designs price tests to "grandfather existing subscriptions on the old price"; the pricing source grandfathers only as a transition. Both views stand, each for its own job (testing a price versus migrating the base).
+- **Measure** conversion, ARPU and churn at 30 and 60 days per cohort ([stripe REVENUE-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases)); test design is in [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 ## App Store and Google Play subscriptions
 
@@ -39,11 +39,11 @@ The rollout above is for prices you bill yourself. For store subscriptions the s
 
 - **Apple** asks subscribers to consent to an increase in some cases (a region that requires it, an increase above set thresholds, or a second increase within 12 months) and otherwise notifies them before renewal ([Apple, Manage pricing for auto-renewable subscriptions](https://developer.apple.com/help/app-store-connect/manage-subscriptions/manage-pricing-for-auto-renewable-subscriptions)).
 - **Google Play:** "By default, price increases are opt-in changes for existing subscribers. Users must explicitly accept the higher price before it is first charged, or Google Play automatically cancels their subscription" ([Google Play, Change subscription prices](https://developer.android.com/google/play/billing/price-changes)).
-- **The exact thresholds and notice periods** belong in [../../mobile/app-store-connect/PRICING-AND-SUBSCRIPTIONS.md](../../mobile/app-store-connect/PRICING-AND-SUBSCRIPTIONS.md#price-increases-for-existing-subscribers) and [../../mobile/google-play/PRICING.md](../../mobile/google-play/PRICING.md#existing-subscribers). Store churn from an increase shows up as the `PRICE_INCREASE` reason in RevenueCat ([../../backend/revenuecat/BILLING-AND-RECOVERY.md](../../backend/revenuecat/BILLING-AND-RECOVERY.md)).
+- **The exact thresholds and notice periods** belong in [app-store-connect PRICING-AND-SUBSCRIPTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/PRICING-AND-SUBSCRIPTIONS.md#price-increases-for-existing-subscribers) and [google-play PRICING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/PRICING.md#existing-subscribers). Store churn from an increase shows up as the `PRICE_INCREASE` reason in RevenueCat ([revenuecat BILLING-AND-RECOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/BILLING-AND-RECOVERY.md)).
 
 ## A scheduled increase is a claim
 
-Announcing "on November 1 the price moves to $X" is an advance-sale claim under 16 CFR 233.5: raise it when you said you would ([../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md#advance-sales-and-limited-offers)).
+Announcing "on November 1 the price moves to $X" is an advance-sale claim under 16 CFR 233.5: raise it when you said you would ([offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md#advance-sales-and-limited-offers)).
 
 ## Prove it
 

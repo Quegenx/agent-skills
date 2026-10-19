@@ -1,6 +1,6 @@
 # Meta ads for web conversions
 
-Meta campaigns that send people to a website or a lead form: what Meta documents about learning, a kill, keep and scale system anchored on one number, fatigue, lead forms, Advantage+, partnership ads and the creative-volume practice practitioners call the Andromeda playbook. From [coreyhaines31/marketingskills, ads, meta-decision-system.md and meta-andromeda-playbook.md] (MIT; the decision system credits Ivan Falco's ads-skills, destination testing Alexander Pauwelyn, and the creator-volume section Wispr Flow's head of performance marketing). Every threshold here is a practitioner starting point; Meta's own lines are quoted with URLs and win. App campaigns, the SDK and SKAN are in [META-ADS.md](../../mobile/app-growth/META-ADS.md).
+Meta campaigns that send people to a website or a lead form: what Meta documents about learning, a kill, keep and scale system anchored on one number, fatigue, lead forms, Advantage+, partnership ads and the creative-volume practice practitioners call the Andromeda playbook. From [coreyhaines31/marketingskills, ads, meta-decision-system.md and meta-andromeda-playbook.md] (MIT; the decision system credits Ivan Falco's ads-skills, destination testing Alexander Pauwelyn, and the creator-volume section Wispr Flow's head of performance marketing). Every threshold here is a practitioner starting point; Meta's own lines are quoted with URLs and win. App campaigns, the SDK and SKAN are in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md).
 
 **Contents:** [What Meta says about learning](#what-meta-says-about-learning) · [TCPL, the anchor](#tcpl-the-anchor) · [The ad-count ceiling](#the-ad-count-ceiling) · [Two campaigns: scaling and testing](#two-campaigns-scaling-and-testing) · [Destination testing](#destination-testing) · [Stage 1: delivery check](#stage-1-delivery-check) · [Stage 2: quality evaluation](#stage-2-quality-evaluation) · [Graduation](#graduation) · [Fatigue](#fatigue) · [Swap rules](#swap-rules) · [Creative production math](#creative-production-math) · [Scaling protocol](#scaling-protocol) · [Weekly cadence](#weekly-cadence) · [Lead forms](#lead-forms) · [Advantage+](#advantage) · [Partnership ads](#partnership-ads) · [Rolling reach](#rolling-reach) · [Andromeda practice](#andromeda-practice) · [Creator ads at volume](#creator-ads-at-volume) · [Benchmarks and seasonality](#benchmarks-and-seasonality) · [Prove it](#prove-it)
 
@@ -10,7 +10,7 @@ Meta campaigns that send people to a website or a lead form: what Meta documents
 - **Budget changes:** Meta says only to "avoid frequent budget changes (which can cause an ad set to re-enter the learning phase)" (same page). It publishes no percentage.
 - **Significant edits** that re-enter learning include "Any change to ad creative", "Adding a new ad to your ad set", "Pausing your ad set for 7 days or longer (the ad set reenters the learning phase once you unpause the ad set)" and "Changing bid strategy" (https://www.facebook.com/business/help/316478108955072).
 
-**Corrections to the source.** Its rotation rule said "never edit creative inside a performing ad... Launch new ads alongside existing ones, or spin up a new ad set with the same targeting. Pausing doesn't reset; editing does." Against Meta's list, adding an ad to the same ad set also resets learning, and a pause of 7 days or longer does too; only a new ad set leaves the old one's learning alone. Its scaling rule said "+20% every 5 days. Never +30% or more in one move, that resets learning"; the percentages are practitioner, not Meta's. app-growth's [appeeky] lines (+20% per day on winners, "Never increase > 20% per day on campaigns under $500/day") are practitioner too ([META-ADS.md](../../mobile/app-growth/META-ADS.md#budget-optimization)); the two sources disagree on cadence (every 5 days vs per day), and neither is Meta's rule.
+**Corrections to the source.** Its rotation rule said "never edit creative inside a performing ad... Launch new ads alongside existing ones, or spin up a new ad set with the same targeting. Pausing doesn't reset; editing does." Against Meta's list, adding an ad to the same ad set also resets learning, and a pause of 7 days or longer does too; only a new ad set leaves the old one's learning alone. Its scaling rule said "+20% every 5 days. Never +30% or more in one move, that resets learning"; the percentages are practitioner, not Meta's. app-growth's [appeeky] lines (+20% per day on winners, "Never increase > 20% per day on campaigns under $500/day") are practitioner too ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#budget-optimization)); the two sources disagree on cadence (every 5 days vs per day), and neither is Meta's rule.
 
 ## TCPL, the anchor
 
@@ -26,7 +26,7 @@ More active ads than the budget can feed means every ad starves. **Ceiling = (da
 
 ## Two campaigns: scaling and testing
 
-Two CBO campaigns over the **same audience**: Scaling (~80% of budget, graduated ads only) and Testing (~20%, new concepts and iterations, budget protected). Inside one CBO, proven ads starve new ones. The source on ABO: "equal forced distribution keeps spending on ads Meta has already deprioritized." app-growth's [appeeky] does the opposite, "keeps CBO off for testing (ABO gives control per test)" ([META-ADS.md](../../mobile/app-growth/META-ADS.md#advantage-app-campaigns)); both are practitioner.
+Two CBO campaigns over the **same audience**: Scaling (~80% of budget, graduated ads only) and Testing (~20%, new concepts and iterations, budget protected). Inside one CBO, proven ads starve new ones. The source on ABO: "equal forced distribution keeps spending on ads Meta has already deprioritized." app-growth's [appeeky] does the opposite, "keeps CBO off for testing (ABO gives control per test)" ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#advantage-app-campaigns)); both are practitioner.
 
 **Image first:** launch new concepts as statics; produce the video, carousel or UGC version only after the image passes. Exception: concepts that are inherently video (testimonial, demo, UGC).
 
@@ -82,7 +82,7 @@ The existing swap rule below recommends a fresh execution of the same concept. T
 | Retargeting | 2.0 to 4.0 | 4.0 to 6.0 | > 6.0 |
 | ABM (small audiences) | 2.0 to 5.0 | 5.0 to 8.0 | > 8.0 |
 
-These per-type bands sharpen app-growth's single frequency table ([META-ADS.md](../../mobile/app-growth/META-ADS.md#decide)); both are practitioner. Other signals, most urgent first: CTR down 20%+ from baseline over 7 days; CPM up 30%+ over 2 weeks (it moves before CTR); relevance rankings "below average"; CPA up with stable targeting.
+These per-type bands sharpen app-growth's single frequency table ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#decide)); both are practitioner. Other signals, most urgent first: CTR down 20%+ from baseline over 7 days; CPM up 30%+ over 2 weeks (it moves before CTR); relevance rankings "below average"; CPA up with stable targeting.
 
 - **Scaling-campaign ads** get a stricter bar: warning at frequency 3.0 to 3.5 or cost +20% → start 2 iterations now (about 14 days to be ready); swap at > 3.5, cost +40%, or > 1.5× TCPL for 2 weeks.
 - **B2B lifespans:** statics 14 to 28 days; short video and carousels 21 to 35; UGC and testimonials 28 to 42. Small audiences build frequency fast; plan a refresh every 14 to 21 days.
@@ -97,7 +97,7 @@ Never pause without a replacement: keep 2 to 3 iterations staged, live within 7 
 - **Test throughput** ≈ (monthly budget × 0.20) ÷ (3 × TCPL) a month; delivery kills free budget early, so actual runs ~1.5 to 2× that.
 - **Win rates:** iterations on winners ~25%, new concepts ~10%, blended ~1 in 6; plan ~6 tests per winner wanted.
 - **Minimum proven-ad inventory** ≈ monthly budget ÷ $5,000 (each proven B2B ad absorbs about $5K a month before fatiguing). You cannot scale budget ahead of creative supply.
-- **Iteration priority** on a winner: hook (changes who stops) → visual treatment → format → body copy and CTA. Making those concepts: [ad-creative](../ad-creative/SKILL.md).
+- **Iteration priority** on a winner: hook (changes who stops) → visual treatment → format → body copy and CTA. Making those concepts: [ad-creative](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md).
 
 ## Scaling protocol
 
@@ -120,7 +120,7 @@ The main B2B Meta lead-quality problem: auto-filled forms produce leads who don'
 - 1 to 3 multiple-choice qualifiers (4+ spikes abandonment), easiest first.
 - The confirmation message says what happens next.
 
-Form or page: page converting ≥ 5% → use the page; under ~2% → the form; demos and trials → page; content and webinars → form. Lead form text limits: [PLATFORM-SPECS.md](../ad-creative/PLATFORM-SPECS.md#meta).
+Form or page: page converting ≥ 5% → use the page; under ~2% → the form; demos and trials → page; content and webinars → form. Lead form text limits: [ad-creative PLATFORM-SPECS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/PLATFORM-SPECS.md#meta).
 
 ## Advantage+
 
@@ -137,7 +137,7 @@ Everything above optimizes conversion inside an audience Meta already reaches; p
 3. **Deal basics:** branded-content partner access to run ads from the creator's handle, usage rights for a defined window (typically 3 to 6 months, renewable) plus paid-amplification rights, a flat content fee with per-deliverable pricing for extra cuts; avoid pure revenue share on cold creators.
 4. **Commission low-fi statics per creator** (screenshot-style, "how they'd post it to their own story"): the video reaches cold viewers, the statics convert mid-funnel under the same face.
 
-Disclosure, contracts, usage rights and Meta's partnership-ad setup are in [creator-marketing](../creator-marketing/SKILL.md); app-growth's creator plan is in [LAUNCH-AND-MARKETING.md](../../mobile/app-growth/LAUNCH-AND-MARKETING.md). Which creator formats to run: [FORMAT-TIERS.md](../ad-creative/FORMAT-TIERS.md).
+Disclosure, contracts, usage rights and Meta's partnership-ad setup are in [creator-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/SKILL.md); app-growth's creator plan is in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md). Which creator formats to run: [ad-creative FORMAT-TIERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/FORMAT-TIERS.md).
 
 ## Rolling reach
 
@@ -145,7 +145,7 @@ Rolling **month-over-month reach** (unique people reached) is the account's net-
 
 ## Andromeda practice
 
-The source says Meta "launched the Andromeda algorithm in 2025"; Meta's engineering blog announced it on 2024-12-02 (https://engineering.fb.com/2024/12/02/production-engineering/meta-andromeda-advantage-automation-next-gen-personalized-ads-retrieval-engine/). Everything in this section is practitioner [coreyhaines31/marketingskills, ads, meta-andromeda-playbook.md]; it sharpens app-growth's "Interest targeting shrinks over time on Meta: creative matters more" [appeeky] ([META-ADS.md](../../mobile/app-growth/META-ADS.md#audiences-and-placements)).
+The source says Meta "launched the Andromeda algorithm in 2025"; Meta's engineering blog announced it on 2024-12-02 (https://engineering.fb.com/2024/12/02/production-engineering/meta-andromeda-advantage-automation-next-gen-personalized-ads-retrieval-engine/). Everything in this section is practitioner [coreyhaines31/marketingskills, ads, meta-andromeda-playbook.md]; it sharpens app-growth's "Interest targeting shrinks over time on Meta: creative matters more" [appeeky] ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#audiences-and-placements)).
 
 - **Creative volume is the constraint.** Statics often beat video because Meta can show more per session and they're far cheaper to make; the source reports advertisers whose native statics beat long-production VSLs. It sets aside an hour a week for fresh creative on the winning offer.
 - **Creative is the targeting.** Target broadly (just the country) and let the creative find the buyer; long-form copy gives delivery more context. Test: duplicate your best interest-stacked ad, remove all targeting except country, run both 7 days, compare CPA.
@@ -160,11 +160,11 @@ Wispr Flow went from about 100 to over 3,500 ads in its Meta account in nine mon
 
 - **Meta groups ads it judges too similar** (practitioners put the line at roughly 60% similarity) and limits their delivery. A hundred creators making the same talking-head video are one concept, and copies of a winner pull reach from it.
 - **Plan on three axes:** one **concept** (a single product truth), one **angle** (saves time at work, works with my tools), one **awareness level** (new to the category, or a power user). The matrix shows which feature, said which way, to whom, is winning.
-- **Optimize for a quality event:** the action that predicts a retained user (Wispr Flow uses words dictated past a habit threshold); too rare to optimize on → optimize up-funnel and judge on it anyway. Apps make the same rule: [app-growth](../../mobile/app-growth/SKILL.md#the-rules).
+- **Optimize for a quality event:** the action that predicts a retained user (Wispr Flow uses words dictated past a habit threshold); too rare to optimize on → optimize up-funnel and judge on it anyway. Apps make the same rule: [app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md#the-rules).
 - **Test the funnel inside Instagram's in-app browser before spending:** swipe up from a real preview on a phone; the page loads, the promise matches the creator, every event lands in analytics. Desktop Safari doesn't count.
 - **Read the funnel stage by stage:** strong hook and hold but no clicks → the ad didn't earn the swipe; clicks but no conversions → the page breaks the creator's promise; low-quality customers → targeting and structure, try cost caps.
 - **About five days per ad before judging;** a Friday launch meets a different audience than a Monday one. A testing winner can die at a scaling budget an order of magnitude larger: graduate in steps.
-- **Keep a lessons file that feeds the briefs** ([marketing-loops](../marketing-loops/SKILL.md)).
+- **Keep a lessons file that feeds the briefs** ([marketing-loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md)).
 
 ## Benchmarks and seasonality
 

@@ -17,7 +17,7 @@ A north star is one metric that captures the business-model thesis at the highes
 
 Don't default to "ARR" or "MRR" alone. Those are outcomes, not norths. Pick something that captures the business model.
 
-**Every rate divides matching closed windows** [coreyhaines31/marketingskills, marketing-plan, SKILL.md]: "an activation rate counts only cohorts whose observation window has ended (a trial still inside its window is pending, not failed - keep it out of the denominator and label it pending)." The same rule in tools: [posthog EXPERIMENT-CHANGES.md](../../monitoring/posthog/EXPERIMENT-CHANGES.md) (`only_count_matured_users`) and [revenuecat CHARTS-AND-METRICS.md](../../backend/revenuecat/CHARTS-AND-METRICS.md) (`incomplete: true` points).
+**Every rate divides matching closed windows** [coreyhaines31/marketingskills, marketing-plan, SKILL.md]: "an activation rate counts only cohorts whose observation window has ended (a trial still inside its window is pending, not failed - keep it out of the denominator and label it pending)." The same rule in tools: [posthog EXPERIMENT-CHANGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-CHANGES.md) (`only_count_matured_users`) and [revenuecat CHARTS-AND-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/revenuecat/CHARTS-AND-METRICS.md) (`incomplete: true` points).
 
 ## North-star patterns by business model
 
@@ -68,7 +68,7 @@ After the north star, every plan needs leading indicators per AARRR stage. These
 ### Activation leading indicators
 - Day 1 / Day 7 / Day 35 → paid conversion rate
 - Onboarding session-completion rate
-- First key-action completion (post-signup activation event; pick the event by retention, not by assumption: [posthog METRICS-MODELING.md](../../monitoring/posthog/METRICS-MODELING.md))
+- First key-action completion (post-signup activation event; pick the event by retention, not by assumption: [posthog METRICS-MODELING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/METRICS-MODELING.md))
 - App Store conversion rate (install → trial → paid)
 - Trial → paid conversion rate
 
@@ -172,9 +172,9 @@ For every channel or initiative, the plan should specify when to stop. Often mis
 Examples:
 - "If a paid channel has CAC > 2× target after 30 days at meaningful spend, pause."
 - "If onboarding Variant 3 doesn't show statistically meaningful lift (or directional lift + congruent qualitative signal) after 4 weeks, move to Variant 1."
-- "If lifecycle Flow 4 has open rate < 12% after 6 weeks, redo subject lines + audience segmentation." (Opens are unreliable: Google says low open rates "aren't necessarily an accurate indicator of deliverability", quoted in [email-practices DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md); [SEQUENCES.md](../email-marketing/SEQUENCES.md) reports "clicks, conversions, unsubscribes and complaints, not opens".)
+- "If lifecycle Flow 4 has open rate < 12% after 6 weeks, redo subject lines + audience segmentation." (Opens are unreliable: Google says low open rates "aren't necessarily an accurate indicator of deliverability", quoted in [email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md); [email-marketing SEQUENCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SEQUENCES.md) reports "clicks, conversions, unsubscribes and complaints, not opens".)
 
-**Two scopes, both kept.** The source's "CAC > 2× target after 30 days at meaningful spend" is a plan-level, blended-CAC rule. [app-growth BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md) has a per-channel test rule [appeeky]: "spend > 2× target CPA with 0 conversions = pause channel" with a 48-hour first kill window. Use each at its own scope. Likewise the source's "Blended LTV/CAC > 3" is a plan health check, while app-growth's "CPA < 0.5× LTV to scale aggressively" is a paid-scaling gate on a different denominator.
+**Two scopes, both kept.** The source's "CAC > 2× target after 30 days at meaningful spend" is a plan-level, blended-CAC rule. [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md) has a per-channel test rule [appeeky]: "spend > 2× target CPA with 0 conversions = pause channel" with a 48-hour first kill window. Use each at its own scope. Likewise the source's "Blended LTV/CAC > 3" is a plan health check, while app-growth's "CPA < 0.5× LTV to scale aggressively" is a paid-scaling gate on a different denominator.
 
 ## Guardrail metrics
 
@@ -193,11 +193,11 @@ The plan should name where each metric comes from. This makes it auditable.
 |---|---|
 | Organic traffic | GA4 / Ahrefs |
 | App Store conversion | App Store Connect |
-| Funnel conversion (Day N → paid) | Internal analytics (Mixpanel / Amplitude; this repo: [posthog](../../monitoring/posthog/SKILL.md)) or App Store Connect cohort export |
+| Funnel conversion (Day N → paid) | Internal analytics (Mixpanel / Amplitude; this repo: [posthog](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md)) or App Store Connect cohort export |
 | Retention | Customer.io segments + product analytics |
 | MRR / ARR | Stripe (via MCP if wired) |
 | Plan mix | Stripe |
-| Lifecycle email metrics | Customer.io (this repo's stacks: [resend](../../backend/resend/SKILL.md), [onesignal](../../backend/onesignal/SKILL.md)) |
+| Lifecycle email metrics | Customer.io (this repo's stacks: [resend](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/resend/SKILL.md), [onesignal](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/SKILL.md)) |
 | Ambassador attribution | Dub.co |
 | Hardware → app activation | Shopify + App Store + internal join |
 | NPS | Survey tool (Customer.io / Typeform / SurveyMonkey) |

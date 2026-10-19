@@ -1,6 +1,6 @@
 # What to inspect, and in what order
 
-An audit is a review of whether a page can be discovered, trusted, understood and used, not a pile of warnings [freescan]. Start from the outcome the page exists for, check what can take the whole page down first, and record the evidence behind each result. This file holds the order, Audit Kit's checklists (MIT, [Danilaa1/auditkit](https://github.com/Danilaa1/auditkit), copied verbatim where quoted), and the places where a tool's check differs from the official docs. The SEO checks themselves are in [../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md).
+An audit is a review of whether a page can be discovered, trusted, understood and used, not a pile of warnings [freescan]. Start from the outcome the page exists for, check what can take the whole page down first, and record the evidence behind each result. This file holds the order, Audit Kit's checklists (MIT, [Danilaa1/auditkit](https://github.com/Danilaa1/auditkit), copied verbatim where quoted), and the places where a tool's check differs from the official docs. The SEO checks themselves are in [seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md).
 
 ## Start with the outcome
 
@@ -10,7 +10,7 @@ An audit is a review of whether a page can be discovered, trusted, understood an
 - Capture a baseline: the public URL and scan time, screenshots, category scores, failed checks, console state and the conversion path. It is the comparison point and the rollback signal.
 - Test the primary action without submitting sensitive or destructive data, and name the routes and services that cannot regress.
 
-Audit Kit asks the same at intake [audit-kit, `ak new`]: "Client name" and "Website URL" (required), "Main goal" (default "Improve website results"), "Pages" (default "/, /contact"), then optionally "Business type", "Target customer", "Main conversion action", "Known concerns" and "Competitors". When the project has `.agents/product-context.md`, read it first and ask only for what it lacks ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)).
+Audit Kit asks the same at intake [audit-kit, `ak new`]: "Client name" and "Website URL" (required), "Main goal" (default "Improve website results"), "Pages" (default "/, /contact"), then optionally "Business type", "Target customer", "Main conversion action", "Known concerns" and "Competitors". When the project has `.agents/product-context.md`, read it first and ask only for what it lacks ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)).
 
 ## The order
 
@@ -19,10 +19,10 @@ Audit Kit asks the same at intake [audit-kit, `ak new`]: "Client name" and "Webs
 | Area | What to verify |
 |---|---|
 | Availability | The page loads at its intended public URL with no redirect loop, certificate error or runtime failure. A broken foundation makes every later check irrelevant. |
-| Discovery | Robots rules, canonical, sitemap routing, title, description, headings and structured data agree ([../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md)). |
-| Public security | HTTPS, response headers, mixed content, form transport, exposed files ([../../backend/secure-coding/HEADERS.md](../../backend/secure-coding/HEADERS.md)). |
-| Accessibility | Semantics, labels, keyboard, alternatives, contrast, reflow and errors, automated and manual ([../../frontend/web-accessibility/REVIEW.md](../../frontend/web-accessibility/REVIEW.md)). |
-| Design and runtime | Hierarchy, primary action, responsive layout, stability, performance and console health ([../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md)). |
+| Discovery | Robots rules, canonical, sitemap routing, title, description, headings and structured data agree ([seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md)). |
+| Public security | HTTPS, response headers, mixed content, form transport, exposed files ([secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/HEADERS.md)). |
+| Accessibility | Semantics, labels, keyboard, alternatives, contrast, reflow and errors, automated and manual ([web-accessibility REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/REVIEW.md)). |
+| Design and runtime | Hierarchy, primary action, responsive layout, stability, performance and console health ([web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md)). |
 
 Mistakes FreeScan names: chasing 100 before fixing the critical path; treating automated output as final truth ("Public scanners have bounded access", so reproduce findings and add manual testing where the tool cannot see context); bundling unrelated fixes, which hides which change caused which result.
 
@@ -38,7 +38,7 @@ Per-page review fields, one block per page reviewed: "First impression:", "CTA:"
 
 Status checklist for the whole audit: Intake complete; Pages reviewed; Performance checked; SEO checked; Findings prioritised; Report drafted; Sent to client.
 
-The copy and CTA wording itself is judged with [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md); Audit Kit's CTA check is only a word list (below).
+The copy and CTA wording itself is judged with [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md); Audit Kit's CTA check is only a word list (below).
 
 ## HTML checks and what Google actually says
 
@@ -49,11 +49,11 @@ Audit Kit scores the HTML from 100 down (floor 0) [audit-kit, `analyzeHtml`]. Wh
 | Title | Missing costs 15 (critical); outside "roughly 10 to 65" characters costs 8 | "there's no limit on how long a `<title>` element can be"; title links are truncated "as needed, typically to fit the device width"; avoid "unnecessarily long or verbose text" ([title-link](https://developers.google.com/search/docs/appearance/title-link)). The band is Audit Kit's. |
 | Meta description | Missing costs 12; length not checked | Google gives no character count: "typically a succinct, one- or two-sentence summary" ([SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)); "There's no limit on how long a meta description can be" ([snippet](https://developers.google.com/search/docs/appearance/snippet)). |
 | Keywords meta | Not checked | "Google Search doesn't use the keywords meta tag" ([SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)). |
-| H1 | None costs 12; more than one costs 8 ("Keep one primary page heading") | "There's also no magical, ideal amount of headings a given page should have", and "it doesn't matter if you're using them out of order" ([SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)). One H1 is a convention, not a Google rule; heading order for screen readers is an accessibility question ([../../frontend/web-accessibility/SEMANTICS-AND-ARIA.md](../../frontend/web-accessibility/SEMANTICS-AND-ARIA.md#landmarks-and-headings)). |
-| Images | Each `<img>` with no `alt` attribute costs 8, capped at 15; `alt=""` counts as present | Matches the accessibility rule: `alt=""` when decorative, otherwise describe the purpose ([../../frontend/web-accessibility/REVIEW.md](../../frontend/web-accessibility/REVIEW.md)). |
-| Viewport | Missing viewport meta costs 10 | Never lock zoom ([../../frontend/web-accessibility/MOTION-AND-ZOOM.md](../../frontend/web-accessibility/MOTION-AND-ZOOM.md)). |
-| Canonical | Missing `<link rel=canonical>` costs 4, "when duplicate URLs are possible" | [../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md) |
-| CTA | No CTA language costs 10, by the regex below on text with `script`, `style` and `noscript` stripped | A fixed English word list, not a judgement of the CTA ([../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md)). |
+| H1 | None costs 12; more than one costs 8 ("Keep one primary page heading") | "There's also no magical, ideal amount of headings a given page should have", and "it doesn't matter if you're using them out of order" ([SEO starter guide](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)). One H1 is a convention, not a Google rule; heading order for screen readers is an accessibility question ([web-accessibility SEMANTICS-AND-ARIA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SEMANTICS-AND-ARIA.md#landmarks-and-headings)). |
+| Images | Each `<img>` with no `alt` attribute costs 8, capped at 15; `alt=""` counts as present | Matches the accessibility rule: `alt=""` when decorative, otherwise describe the purpose ([web-accessibility REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/REVIEW.md)). |
+| Viewport | Missing viewport meta costs 10 | Never lock zoom ([web-accessibility MOTION-AND-ZOOM.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/MOTION-AND-ZOOM.md)). |
+| Canonical | Missing `<link rel=canonical>` costs 4, "when duplicate URLs are possible" | [seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md) |
+| CTA | No CTA language costs 10, by the regex below on text with `script`, `style` and `noscript` stripped | A fixed English word list, not a judgement of the CTA ([anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)). |
 | HTML weight | A response over 200,000 bytes costs 7 ("Check markup, scripts, and inline payloads") | Audit Kit's own threshold, no official source. |
 | HTTP status | 200 to 399 shown as positive, anything else critical | |
 
@@ -69,18 +69,18 @@ Audit Kit's security score starts at 100 [audit-kit, `analyzeSecurity`]: no HTTP
 
 - **It checks presence, not value.** Every header is tested with `headers.has(...)`, so `max-age=0` HSTS and an `unsafe-inline` CSP pass, and cookie flags are matched by substring (`value.includes("secure")` also matches a cookie named `insecure_x`). Read each header's value and parse each cookie's attributes.
 - **It requires `X-Frame-Options` even when CSP covers framing.** MDN: "For more comprehensive options than offered by this header, see the `frame-ancestors` directive in a `Content-Security-Policy` header"; `ALLOW-FROM` "is an obsolete directive"; the header "has no effect" in `<meta>` ([MDN X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options)). A site with `frame-ancestors` and no XFO is not a failure.
-- **It wants HttpOnly on every cookie.** The repo keeps its own rule: secure-coding prefers `HttpOnly`, `Secure`, `SameSite` cookies ([../../backend/secure-coding/AUTH.md](../../backend/secure-coding/AUTH.md)), and a Supabase app using client JavaScript must read the session, so "HttpOnly is not necessary" there ([../../backend/supabase/AUTH-SESSIONS.md](../../backend/supabase/AUTH-SESSIONS.md)). Classify each cookie by purpose before flagging it [freescan].
+- **It wants HttpOnly on every cookie.** The repo keeps its own rule: secure-coding prefers `HttpOnly`, `Secure`, `SameSite` cookies ([secure-coding AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/AUTH.md)), and a Supabase app using client JavaScript must read the session, so "HttpOnly is not necessary" there ([supabase AUTH-SESSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SESSIONS.md)). Classify each cookie by purpose before flagging it [freescan].
 
-The header checklist itself, sourced from MDN, is [../../backend/secure-coding/HEADERS.md](../../backend/secure-coding/HEADERS.md).
+The header checklist itself, sourced from MDN, is [secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/HEADERS.md).
 
 ## Performance, lab and field
 
-Audit Kit runs one headless Lighthouse lab run and saves the raw JSON, with no field data and no repeated runs [audit-kit]. Lab numbers let an agent iterate; field data confirms the win ([../../backend/performance-and-caching/MEASURE.md](../../backend/performance-and-caching/MEASURE.md#lab-to-field-one-slow-spot-at-a-time)). Two corrections to its labels:
+Audit Kit runs one headless Lighthouse lab run and saves the raw JSON, with no field data and no repeated runs [audit-kit]. Lab numbers let an agent iterate; field data confirms the win ([performance-and-caching MEASURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/MEASURE.md#lab-to-field-one-slow-spot-at-a-time)). Two corrections to its labels:
 
-- Audit Kit lists TBT as a Core Web Vital and always applies the mobile TBT bands; TBT is the lab proxy for INP, with separate desktop bands ([LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md#reading-a-lighthouse-result)).
+- Audit Kit lists TBT as a Core Web Vital and always applies the mobile TBT bands; TBT is the lab proxy for INP, with separate desktop bands ([web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md#reading-a-lighthouse-result)).
 - Its score colours (85 and 65) are not Lighthouse's ([SCORING.md](SCORING.md#lighthouse-bands)), and 8 of the 14 audit ids it reads no longer exist in Lighthouse 13 ([TOOLS.md](TOOLS.md#audit-kit)).
 
-How to run Lighthouse, read it and gate on it: [../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md).
+How to run Lighthouse, read it and gate on it: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md).
 
 ## Prove it
 

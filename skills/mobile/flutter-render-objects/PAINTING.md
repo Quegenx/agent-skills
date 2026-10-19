@@ -85,7 +85,7 @@ void paint(PaintingContext context, Offset offset) {
 bool get isRepaintBoundary => true;
 ```
 
-The framework then gives the render object its own layer, cached apart from the surrounding tree; on repaint only its own `paint` runs and ancestor layers reuse their cached output. App-level guidance on `RepaintBoundary` is in [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md).
+The framework then gives the render object its own layer, cached apart from the surrounding tree; on repaint only its own `paint` runs and ancestor layers reuse their cached output. App-level guidance on `RepaintBoundary` is in [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md).
 
 - **A boundary always gets `Offset.zero`** [renderobjects](https://renderobjects.com/guides/painting/): its content lives in its own layer, and the parent's position is applied to the layer, not to your draw commands. Code written as `offset + localPoint` works either way. Zero means "your layer's origin", not the screen origin. Official ([updateCompositedLayer](https://api.flutter.dev/flutter/rendering/RenderObject/updateCompositedLayer.html)): "The [OffsetLayer.offset] property will be managed by the framework".
 - **Gotchas** [renderobjects](https://renderobjects.com/guides/painting/):

@@ -16,7 +16,7 @@ Count every word of the film's own voice: statements, captions, the end-card lin
 | Logo sting | the name + ≤ 4 | ≤ 4 | 1 line |
 | Walkthrough | ≤ 6 per caption | ≤ 6 | 1 caption |
 
-**Check that it fits before the shot list.** Add up each line's [canonical reading floor](../frame-review/SKILL.md#the-loop), plus the [additional comprehension target](../seek-engine/KINETIC-TYPE.md#reading-time-is-arithmetic) for any line that must land on its own, and compare the sum with the film's length minus its pure-picture shots. Over budget: cut words or lengthen the film, with the user, now; finding it after the build means re-timing everything.
+**Check that it fits before the shot list.** Add up each line's [canonical reading floor](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/frame-review/SKILL.md#the-loop), plus the [additional comprehension target](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/seek-engine/KINETIC-TYPE.md#reading-time-is-arithmetic) for any line that must land on its own, and compare the sum with the film's length minus its pure-picture shots. Over budget: cut words or lengthen the film, with the user, now; finding it after the build means re-timing everything.
 
 A viewer reads about 3 words a second while also watching motion; every word steals attention from the picture that should carry the idea. One line on screen at a time.
 

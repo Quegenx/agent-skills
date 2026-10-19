@@ -1,6 +1,6 @@
 # Trade quotes and customer win-back
 
-The paired service from [more skills, 11-trades-instant-quotes-winback.md]: a website quote widget for new inquiries and a permissioned past-customer reactivation queue, with source-tagged bookings and a per-booking fee. The owner-confirmed pricebook and existing [Jev](../../ai-agents/jev-decisions/SKILL.md) and [SMS](../sms-marketing/COMPLIANCE.md) rules govern production.
+The paired service from [more skills, 11-trades-instant-quotes-winback.md]: a website quote widget for new inquiries and a permissioned past-customer reactivation queue, with source-tagged bookings and a per-booking fee. The owner-confirmed pricebook and existing [Jev](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md) and [SMS](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/COMPLIANCE.md) rules govern production.
 
 ## Offer, fit and unresolved commercial terms
 
@@ -18,9 +18,9 @@ The table has one row per job type, base price, modifiers and exclusions. The so
 
 For production, use the actual owner's rates. If no document exists, the author proposes a ten-minute price interview, then transcription from authorized recording or notes, a plain-language table returned for corrections and explicit owner confirmation before loading it.
 
-Per request, preserve four outputs: job type, whether the owner table can quote it, applicable modifiers and whether a human must look first, including emergency, damage or commercial-context cases. Code selects exact table values and computes the amount under the existing [code/judgment boundary](../../ai-agents/jev-decisions/SKILL.md#the-rules).
+Per request, preserve four outputs: job type, whether the owner table can quote it, applicable modifiers and whether a human must look first, including emergency, damage or commercial-context cases. Code selects exact table values and computes the amount under the existing [code/judgment boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md#the-rules).
 
-The author's quote threshold is strictly above 0.8; anything else becomes a callback with submitted answers saved, which includes equality. The guide does not specify a complete combination rule for all four outputs. Do not silently ignore a human-first flag or treat a high score as calibrated permission. Apply [existing Jev calibration](../../ai-agents/jev-decisions/PRODUCTION.md).
+The author's quote threshold is strictly above 0.8; anything else becomes a callback with submitted answers saved, which includes equality. The guide does not specify a complete combination rule for all four outputs. Do not silently ignore a human-first flag or treat a high score as calibrated permission. Apply [existing Jev calibration](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/PRODUCTION.md).
 
 ## Widget and paired demonstration
 
@@ -40,9 +40,9 @@ The proposed acquisition demo combines a working quote illustration with three s
 
 Import customer name, phone, email, actual last job, job date and amount. The source excludes complaints, refunds, unresolved issues, contact within the previous 90 days and last-job value below owner-selected `[$x]`. Rank eligible candidates by actual service history and substantiated service timing; elapsed time alone does not prove an individual customer needs maintenance.
 
-Draft one message per eligible customer in the authorized business voice, referencing the actual prior job and supported due work, with the booking link. Show the top 50 candidates and every draft before sending. An owner export and operator approval do not establish promotional SMS consent; use [SMS consent and suppression](../sms-marketing/COMPLIANCE.md). [Twilio's Messaging Policy](https://www.twilio.com/en-us/legal/messaging-policy) requires promotional written consent and proof, appropriate sender/subject scope and opt-out handling. [more skills, 11-trades-instant-quotes-winback.md; Twilio Messaging Policy]
+Draft one message per eligible customer in the authorized business voice, referencing the actual prior job and supported due work, with the booking link. Show the top 50 candidates and every draft before sending. An owner export and operator approval do not establish promotional SMS consent; use [SMS consent and suppression](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/COMPLIANCE.md). [Twilio's Messaging Policy](https://www.twilio.com/en-us/legal/messaging-policy) requires promotional written consent and proof, appropriate sender/subject scope and opt-out handling. [more skills, 11-trades-instant-quotes-winback.md; Twilio Messaging Policy]
 
-**Cadence differences:** this guide says one message per customer and skip already-contacted people, yet later reenqueues customers next season. It does not define whether one means ever or per service cycle. The existing [win-back sequence](../sms-marketing/SEQUENCES.md#win-back) also has a second-send option from its own source. Keep both tagged views and the existing sequence; do not enable recurring contact under this single-message recipe until cycle scope and authorization are resolved. [more skills, 11-trades-instant-quotes-winback.md; coreyhaines31/marketingskills, sms]
+**Cadence differences:** this guide says one message per customer and skip already-contacted people, yet later reenqueues customers next season. It does not define whether one means ever or per service cycle. The existing [win-back sequence](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/SEQUENCES.md#win-back) also has a second-send option from its own source. Keep both tagged views and the existing sequence; do not enable recurring contact under this single-message recipe until cycle scope and authorization are resolved. [more skills, 11-trades-instant-quotes-winback.md; coreyhaines31/marketingskills, sms]
 
 ## Onboarding, continued delivery and fee statement
 

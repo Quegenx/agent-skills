@@ -5,14 +5,16 @@ description: "Makes events produce pipeline, authority and content, not just att
 
 # Event marketing
 
-Events are "the most expensive, riskiest, hardest-to-measure channel", so the leverage is in choosing which ones to do, and the event itself is the small part: pipeline is made in the weeks before (meetings booked, a target list) and won or lost in the 24 to 48 hours after. This skill is built from coreyhaines31/marketingskills `events` (MIT, version 1.0.0), which credits Knowatoa's ai-visibility-skills (MIT) for the talk storyboard method and alirezarezvani/claude-skills (MIT) for the webinar idea, and distils the portfolio from Corey Haines's *Founding Marketing*; its case numbers are the book's anecdotes and its benchmarks are directional, as the source says itself. Consent rules for follow-up come from the FTC, CASL and the email skill. A launch announcement is [../product-launch/SKILL.md](../product-launch/SKILL.md); joint webinars' partner terms are [../partnerships/PARTNER-MARKETING.md](../partnerships/PARTNER-MARKETING.md); press and podcasts are [../public-relations/SKILL.md](../public-relations/SKILL.md).
+Events are "the most expensive, riskiest, hardest-to-measure channel", so the leverage is in choosing which ones to do, and the event itself is the small part: pipeline is made in the weeks before (meetings booked, a target list) and won or lost in the 24 to 48 hours after. This skill is built from coreyhaines31/marketingskills `events` (MIT, version 1.0.0), which credits Knowatoa's ai-visibility-skills (MIT) for the talk storyboard method and alirezarezvani/claude-skills (MIT) for the webinar idea, and distils the portfolio from Corey Haines's *Founding Marketing*; its case numbers are the book's anecdotes and its benchmarks are directional, as the source says itself. Consent rules for follow-up come from the FTC, CASL and the email skill. A launch announcement is [product-launch SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/SKILL.md); joint webinars' partner terms are [partnerships PARTNER-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/partnerships/PARTNER-MARKETING.md); press and podcasts are [public-relations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/SKILL.md).
 
-Before asking questions, read the shared product context file `.agents/product-context.md` ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)); the source calls it `.agents/product-marketing.md`. Then ask in one batch [coreyhaines31/marketingskills, events]:
+Before asking questions, read the shared product context file `.agents/product-context.md` ([anti-slop-copy CONTEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md)); the source calls it `.agents/product-marketing.md`. Then ask in one batch [coreyhaines31/marketingskills, events]:
 
 1. **Which role?** Hosting, sponsoring or exhibiting, speaking, or attending.
 2. **What outcome?** Pipeline and meetings, authority and brand, community, or content. Pick one: "events that try to do everything measure nothing."
 3. **Who must be in the room?** The ICP segment, and roughly how many of them attend.
 4. **Budget and team:** money, and who can actually work the event.
+
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
@@ -34,5 +36,7 @@ Before asking questions, read the shared product context file `.agents/product-c
 8. **Urgency must be true:** no fake scarcity, no countdowns that reset ([WEBINAR-FUNNEL.md](WEBINAR-FUNNEL.md#stage-3-live-to-close)). [https://www.ftc.gov/system/files/ftc_gov/pdf/P214800%20Dark%20Patterns%20Report%209.14.2022%20-%20FINAL.pdf]
 
 ## Prove it
+
+Apply these checks to the selected role and format: in-person meeting preparation, tiered lead follow-up, sponsorship economics, speaker recording rights and webinar deadlines belong to their corresponding branches. Do not require every role's deliverables for one event task. [coreyhaines31/marketingskills, events; EVENT-ARC.md; SPONSORSHIP.md; SPEAKING.md; WEBINAR-FUNNEL.md]
 
 The plan names one role per motion, one primary outcome and the number of ICP attendees; meetings are booked before the event; every conversation has a context note; follow-up went out within 48 hours by tier, with no scan dumped into a sequence and every message lawful where its recipient is; the report leads with qualified meetings, opportunities and cost per qualified meeting against another channel; every talk and webinar has a recording you may republish; every deadline in the webinar offer is real; and each file's own Prove it checks pass for the parts you used.

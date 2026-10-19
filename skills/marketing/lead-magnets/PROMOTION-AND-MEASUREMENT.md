@@ -9,10 +9,10 @@ Where a lead magnet gets promoted, what to measure, how to tell good leads from 
 [coreyhaines31/marketingskills, lead-magnets]
 
 - **Blog CTAs and content upgrades:** relevant CTAs inside posts (inline, end of post); post-specific content upgrades (a bonus checklist for a how-to post). The source claims "Content upgrades convert 2-5x better than generic sidebar CTAs", uncited.
-- **Exit intent and popups:** trigger on exit intent or scroll depth; match the popup's offer to the page. Building popups is in [cro](../cro/SKILL.md).
-- **Social:** snippets and teasers, carousel posts from the key points, the magnet as the CTA in your bio or profile ([social-media](../social-media/SKILL.md)).
-- **Paid:** Facebook and Instagram lead ads for top-funnel magnets, Google Ads for high-intent ones (templates, tools), LinkedIn for B2B, retargeting blog visitors ([paid-ads](../paid-ads/SKILL.md), where each platform's lead-ad rules belong).
-- **Partners:** cross-promote with complementary brands, guest webinars with partner audiences, partner newsletters, bundles in resource collections ([partnerships](../partnerships/SKILL.md)).
+- **Exit intent and popups:** trigger on exit intent or scroll depth; match the popup's offer to the page. Building popups is in [cro](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md).
+- **Social:** snippets and teasers, carousel posts from the key points, the magnet as the CTA in your bio or profile ([social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md)).
+- **Paid:** Facebook and Instagram lead ads for top-funnel magnets, Google Ads for high-intent ones (templates, tools), LinkedIn for B2B, retargeting blog visitors ([paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md), where each platform's lead-ad rules belong).
+- **Partners:** cross-promote with complementary brands, guest webinars with partner audiences, partner newsletters, bundles in resource collections ([partnerships](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/partnerships/SKILL.md)).
 
 ## Key metrics
 
@@ -24,16 +24,16 @@ Where a lead magnet gets promoted, what to measure, how to tell good leads from 
 | Email engagement | Content relevance | "30-50% open, 2-5% click" (see below on opens) |
 | Time to conversion | Nurture effectiveness | Track by lead magnet source |
 
-Tag every address with the magnet that brought it, so time to conversion and lead-to-customer rate can be read per magnet; this repo's lists already "Segment by ... signup source" ([email-practices LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)). Funnels and experiments are built in [posthog](../../monitoring/posthog/SKILL.md); attribution across channels is in [marketing-attribution](../marketing-attribution/SKILL.md).
+Tag every address with the magnet that brought it, so time to conversion and lead-to-customer rate can be read per magnet; this repo's lists already "Segment by ... signup source" ([email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)). Funnels and experiments are built in [posthog](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/SKILL.md); attribution across channels is in [marketing-attribution](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 
 ## Lead quality
 
 The source's signals [coreyhaines31/marketingskills, lead-magnets, references/benchmarks.md]:
 
 - **High quality:** "Open first 3 emails at 40%+ rate"; click through to content or product pages; return to the site within 30 days; match ICP demographics (role, company size, industry); progress to trial, demo or purchase within 90 days.
-- **Low quality:** unsubscribe within the first 3 emails; never open beyond the delivery email; disposable email addresses (this repo's server-side validation can detect them, [LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses)); don't match the target customer profile; downloaded for the content with no product interest.
+- **Low quality:** unsubscribe within the first 3 emails; never open beyond the delivery email; disposable email addresses (this repo's server-side validation can detect them, [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses)); don't match the target customer profile; downloaded for the content with no product interest.
 
-**Opens: two views.** The source sets open-rate targets. This repo records that "Google doesn't track open rates; low open rates 'aren't necessarily an accurate indicator of deliverability.'" ([email-practices DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md)) and that "Apple Mail Privacy Protection over-reports opens; prefer clicks." ([onesignal EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md)). Judge quality on clicks, return visits and progress to trial or purchase; treat opens as a rough signal at most.
+**Opens: two views.** The source sets open-rate targets. This repo records that "Google doesn't track open rates; low open rates 'aren't necessarily an accurate indicator of deliverability.'" ([email-practices DELIVERABILITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/DELIVERABILITY.md)) and that "Apple Mail Privacy Protection over-reports opens; prefer clicks." ([onesignal EMAIL-AND-SMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/EMAIL-AND-SMS.md)). Judge quality on clicks, return visits and progress to trial or purchase; treat opens as a rough signal at most.
 
 **Quality against volume** [coreyhaines31/marketingskills, lead-magnets, references/benchmarks.md]:
 
@@ -58,7 +58,7 @@ The source's signals [coreyhaines31/marketingskills, lead-magnets, references/be
 - **CTA copy:** "Download Free Guide" against "Get Your Copy".
 - **Delivery:** instant download against email delivery.
 
-Sample sizes and stopping rules are in [ab-testing](../ab-testing/SKILL.md).
+Sample sizes and stopping rules are in [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md).
 
 ## The source's benchmarks
 

@@ -28,7 +28,7 @@ CircleAvatar(
 [ApparenceKit](https://apparencekit.dev/flutter-tips/create-clean-round-button/)
 
 - A custom `CircleButton` is built from `Opacity` (disabled look), `ClipOval` (round child), `Material` + `Ink` (ripple feedback), `BoxDecoration` (circle shape, background, border) and `InkWell` (`onTap`, checking `disabled`). The article's code is an image only.
-- Flutter's performance guidance says "use `Opacity` only when necessary"; a semitransparent color is usually cheaper ([../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md)). An `Opacity` around every disabled button is the case it warns about.
+- Flutter's performance guidance says "use `Opacity` only when necessary"; a semitransparent color is usually cheaper ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)). An `Opacity` around every disabled button is the case it warns about.
 
 ## Custom app bar
 
@@ -157,7 +157,7 @@ InteractiveViewer(
 
 ## Flex and row height
 
-- **Flex allocation and the correction to ApparenceKit's fixed-flex claim:** [the canonical `Expanded` / `Flexible` rule](../flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint), checked against the [Expanded constructor](https://api.flutter.dev/flutter/widgets/Expanded/Expanded.html). [ApparenceKit](https://apparencekit.dev/blog/flutter-flex/)
+- **Flex allocation and the correction to ApparenceKit's fixed-flex claim:** [the canonical `Expanded` / `Flexible` rule](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint), checked against the [Expanded constructor](https://api.flutter.dev/flutter/widgets/Expanded/Expanded.html). [ApparenceKit](https://apparencekit.dev/blog/flutter-flex/)
 
 ```dart
 Column(
@@ -176,7 +176,7 @@ Column(
 )
 ```
 
-- **A Row inside a Column, two views.** ApparenceKit: a Row in a Column gets unbounded height, and children such as `Expanded` "struggle when they receive infinite constraints in the cross-axis (which is height for a Row)"; "the simple fix" is `IntrinsicHeight`, which "forces its child (your Row, in this case) to take on the minimum height that its children need". [ApparenceKit](https://apparencekit.dev/flutter-tips/size-row-height-in-column/) Flutter's performance guidance: "Avoid intrinsics", an intrinsic pass is a second layout pass; prefer a fixed cell size up front ([../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md)).
+- **A Row inside a Column, two views.** ApparenceKit: a Row in a Column gets unbounded height, and children such as `Expanded` "struggle when they receive infinite constraints in the cross-axis (which is height for a Row)"; "the simple fix" is `IntrinsicHeight`, which "forces its child (your Row, in this case) to take on the minimum height that its children need". [ApparenceKit](https://apparencekit.dev/flutter-tips/size-row-height-in-column/) Flutter's performance guidance: "Avoid intrinsics", an intrinsic pass is a second layout pass; prefer a fixed cell size up front ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)).
 
 ```dart
 Column(
@@ -324,9 +324,9 @@ class _DeviceSizeBuilderState extends State<DeviceSizeBuilder>
 }
 ```
 
-- **`MediaQuery.of` vs `sizeOf`.** Flutter recommends `MediaQuery.sizeOf(context)` over `MediaQuery.of` "for performance reasons", since `sizeOf` rebuilds only when the size changes ([../flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#measure-the-window)). The getter becomes `double get viewportWidth => MediaQuery.sizeOf(context).width;`.
-- **Breakpoints and names, two views.** ApparenceKit: buckets named `DeviceType` at 768 / 1024 / 1280. Flutter: the Material breakpoints (600 for compact) and "Never branch on hardware type" ([../flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint)). The builder branches on window width, not hardware, so only the naming and the values differ.
-- ApparenceKit's `ResponsiveLayout` widget uses `LayoutBuilder` constraints and predefined breakpoints to pick a child (small, medium, large); its code is only in an external gist. [ApparenceKit](https://apparencekit.dev/flutter-tips/responsive-layout/) The `LayoutBuilder` breakpoint workflow is in [../flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint).
+- **`MediaQuery.of` vs `sizeOf`.** Flutter recommends `MediaQuery.sizeOf(context)` over `MediaQuery.of` "for performance reasons", since `sizeOf` rebuilds only when the size changes ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#measure-the-window)). The getter becomes `double get viewportWidth => MediaQuery.sizeOf(context).width;`.
+- **Breakpoints and names, two views.** ApparenceKit: buckets named `DeviceType` at 768 / 1024 / 1280. Flutter: the Material breakpoints (600 for compact) and "Never branch on hardware type" ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint)). The builder branches on window width, not hardware, so only the naming and the values differ.
+- ApparenceKit's `ResponsiveLayout` widget uses `LayoutBuilder` constraints and predefined breakpoints to pick a child (small, medium, large); its code is only in an external gist. [ApparenceKit](https://apparencekit.dev/flutter-tips/responsive-layout/) The `LayoutBuilder` breakpoint workflow is in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#branch-at-a-breakpoint).
 
 ## Draw outside a Stack
 
@@ -349,13 +349,13 @@ return Stack(
 );
 ```
 
-- **Official default:** `Stack.clipBehavior` "Defaults to `Clip.hardEdge`", so the article is right for `Stack`. The general line "By default, clipping is disabled (`Clip.none`)" in [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md) does not hold for `Stack`. [Stack.clipBehavior](https://api.flutter.dev/flutter/widgets/Stack/clipBehavior.html)
+- **Official default:** `Stack.clipBehavior` "Defaults to `Clip.hardEdge`", so the article is right for `Stack`. The general line "By default, clipping is disabled (`Clip.none`)" in [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md) does not hold for `Stack`. [Stack.clipBehavior](https://api.flutter.dev/flutter/widgets/Stack/clipBehavior.html)
 - **Taps do not follow the paint:** "Even when this is set to `Clip.none`, the stack itself does not extend its hit-test region: pointer events that fall outside the stack's own bounds will not reach a child even if that child is painted in that area." A tappable badge must sit inside the Stack's bounds. Also, "Stacks only clip children whose geometry overflows the stack"; a child's shadow or a `Transform` that paints outside is not clipped either way. [Stack.clipBehavior](https://api.flutter.dev/flutter/widgets/Stack/clipBehavior.html)
 
 ## Keys
 
 - "Most of the time you don't need to use a widget key in Flutter. A new widget will only be used to update an existing element if its key is the same as the key of the current widget associated with that element." "Key allows Flutter to link an element from the ElementTree and a widget. If you ... swap two widgets with keys in the widget tree, Flutter will also swap these in the element tree." [ApparenceKit](https://apparencekit.dev/flutter-tips/why-use-flutter-widget-keys/)
-- Use keys to clone a widget state across pages or tabs, change a widget's order inside a list, preserve scroll position (`PageStorageKey`, [../flutter/LAYOUT-AND-RESPONSIVE.md](../flutter/LAYOUT-AND-RESPONSIVE.md#input-and-state)), identify widgets and their state, and identify widgets in tests ([../flutter/TESTING.md](../flutter/TESTING.md)). [ApparenceKit](https://apparencekit.dev/flutter-tips/why-use-flutter-widget-keys/)
+- Use keys to clone a widget state across pages or tabs, change a widget's order inside a list, preserve scroll position (`PageStorageKey`, [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#input-and-state)), identify widgets and their state, and identify widgets in tests ([flutter TESTING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/TESTING.md)). [ApparenceKit](https://apparencekit.dev/flutter-tips/why-use-flutter-widget-keys/)
 - A `GlobalKey` is unique across the whole app: "you should not create a new GlobalKey every time your widget builds. Instead, think of it as a long-lasting object that belongs to a widget's state." [ApparenceKit](https://apparencekit.dev/flutter-tips/understanding-keys-flutter/)
 - Reach a `StatefulWidget`'s state from outside, for example to validate a `Form` [ApparenceKit](https://apparencekit.dev/flutter-tips/understanding-keys-flutter/):
 
@@ -371,7 +371,7 @@ bool isFormValid() {
 }
 ```
 
-- **Move a widget without losing its state** with a `GlobalKey` and `KeyedSubtree` (wrap the widget or its parent); Flutter recognizes it after it moves. `Hero` does this. This is the mechanism behind "If depth must change, use a `GlobalKey` / `KeyedSubtree`" in [../flutter/PERFORMANCE.md](../flutter/PERFORMANCE.md). Flutter's Hero source as quoted [ApparenceKit](https://apparencekit.dev/flutter-tips/understanding-keys-flutter/):
+- **Move a widget without losing its state** with a `GlobalKey` and `KeyedSubtree` (wrap the widget or its parent); Flutter recognizes it after it moves. `Hero` does this. This is the mechanism behind "If depth must change, use a `GlobalKey` / `KeyedSubtree`" in [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md). Flutter's Hero source as quoted [ApparenceKit](https://apparencekit.dev/flutter-tips/understanding-keys-flutter/):
 
 ```dart
 class _HeroState extends State<Hero> {
@@ -483,8 +483,8 @@ Future<void> onEvent(AppEvent? event) async {
 }
 ```
 
-- The author prefers `sealed` because "it has the advantage to force me handling any new cases I add"; the article's own `default:` branch turns that exhaustiveness check off (exhaustiveness: [../dart/LANGUAGE.md](../dart/LANGUAGE.md)). `_onNotificationEventsSubscriber` is only ever cleared.
-- **Buffering, two views.** The article's single-subscription `StreamController()` accepts `publish` calls with no listener, and `asBroadcastStream` subscribes only on its first listen, so earlier events are buffered. The Dart guidance says "A `StreamController` must wait for a subscriber before starting work (it buffers events with no subscriber, which risks a memory leak)" ([../dart/ASYNC.md](../dart/ASYNC.md)); the flutter skill's own key-value recipe uses `StreamController<bool>.broadcast()` ([../flutter/DATA-AND-NETWORKING.md](../flutter/DATA-AND-NETWORKING.md)). The article's design keeps services unaware of each other, which also fits "Repositories never know about each other" ([../flutter/ARCHITECTURE.md](../flutter/ARCHITECTURE.md)).
+- The author prefers `sealed` because "it has the advantage to force me handling any new cases I add"; the article's own `default:` branch turns that exhaustiveness check off (exhaustiveness: [dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). `_onNotificationEventsSubscriber` is only ever cleared.
+- **Buffering, two views.** The article's single-subscription `StreamController()` accepts `publish` calls with no listener, and `asBroadcastStream` subscribes only on its first listen, so earlier events are buffered. The Dart guidance says "A `StreamController` must wait for a subscriber before starting work (it buffers events with no subscriber, which risks a memory leak)" ([dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md)); the flutter skill's own key-value recipe uses `StreamController<bool>.broadcast()` ([flutter DATA-AND-NETWORKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/DATA-AND-NETWORKING.md)). The article's design keeps services unaware of each other, which also fits "Repositories never know about each other" ([flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md)).
 - "Getting further" (no code): events with a priority, consumed by the first service that needs them; a queue consumed one by one; a replayable queue; "make sure something will only be done once." "Don't forget to close the stream subscription" when the listener does not stay alive.
 
 ## Prove it

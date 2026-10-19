@@ -1,6 +1,6 @@
 # Typography and units
 
-Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`), drop caps, rhythm that follows the writing mode, `text-wrap: balance` and its limits, `text-box` trimming, the variable-font `GRAD` axis for dark mode and contrast, `text-grow`, `text-emphasis-style`. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN and web-features (checked 2026-10-17). Code is copied from the posts; where a post's code is wrong today, the corrected form is given with the MDN link and the change is named. Spacing by line and text measure for whole layouts are in [RESPONSIVE.md](RESPONSIVE.md); the source's custom naming convention is in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md#emoji-in-custom-names); SVG text is in [../svg/SHAPES-AND-TEXT.md](../svg/SHAPES-AND-TEXT.md).
+Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`), drop caps, rhythm that follows the writing mode, `text-wrap: balance` and its limits, `text-box` trimming, the variable-font `GRAD` axis for dark mode and contrast, `text-grow`, `text-emphasis-style`. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN and web-features (checked 2026-10-17). Code is copied from the posts; where a post's code is wrong today, the corrected form is given with the MDN link and the change is named. Spacing by line and text measure for whole layouts are in [RESPONSIVE.md](RESPONSIVE.md); the source's custom naming convention is in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md#emoji-in-custom-names); SVG text is in [svg SHAPES-AND-TEXT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/svg/SHAPES-AND-TEXT.md).
 
 ## Line-height units: lh and rlh
 
@@ -88,7 +88,7 @@ h1, p, button {
 }
 ```
 
-- app-ui trims only h1 and h2, inside `@supports` ([../app-ui/TOKENS.md](../app-ui/TOKENS.md)), and anti-slop-ui puts it "on large headings" ([RESPONSIVE.md](RESPONSIVE.md)).
+- app-ui trims only h1 and h2, inside `@supports` ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md)), and anti-slop-ui puts it "on large headings" ([RESPONSIVE.md](RESPONSIVE.md)).
 
 ## Variable fonts: GRAD for dark mode and contrast
 
@@ -111,7 +111,7 @@ body {
 ```
 
 - **It only works if the font has a `GRAD` axis:** "Time to check if your favorite font has a `GRAD` axis." The post calls this "a foot in the door" and suggests learning the relationship between grade and weight before tuning values. Support: `font-variation-settings` is Baseline widely available since 2021-03-05 (newly 2018-09-05; [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/font-variation-settings)); `prefers-contrast` is Baseline widely available since 2024-11-30 (newly 2022-05-31), values `no-preference`, `more`, `less`, `custom` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-contrast)). Same post.
-- The dark-mode query here is `prefers-color-scheme`; in app-ui "A head script applies the saved theme before first paint" ([../app-ui/TOKENS.md](../app-ui/TOKENS.md#theme-switching)).
+- The dark-mode query here is `prefers-color-scheme`; in app-ui "A head script applies the saved theme before first paint" ([app-ui TOKENS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/TOKENS.md#theme-switching)).
 
 ## text-grow: fit-width text (prototype)
 

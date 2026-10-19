@@ -22,7 +22,7 @@ Use the shared replay manual control guidance in [BROWSER-REPLAY-AND-PROFILING.m
 
 The retained server init example uses the SDK 10 contract. SDK 11 removes enableLogs; [UPGRADE.md](UPGRADE.md#v10-to-v11) records that boundary. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#logs-and-metrics]
 
-Use [structured logging](../observability/LOGGING.md) for generic event design, accumulated context, levels and privacy; the Sentry APIs, logger integrations and SDK-specific attributes stay here. [existing observability, LOGGING.md; getsentry/sentry-for-ai, shared Logs reference]
+Use [structured logging](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/observability/LOGGING.md) for generic event design, accumulated context, levels and privacy; the Sentry APIs, logger integrations and SDK-specific attributes stay here. [existing observability, LOGGING.md; getsentry/sentry-for-ai, shared Logs reference]
 
 - **Versions (JS):** supported from SDK `9.41.0`, on by default from `10.71.0`; below that set `enableLogs: true`. CDN and Loader need a logs bundle, for example `bundle.logs.metrics.min.js`. Logs are high-cardinality: any attributes, all searchable.
 - **API:** `Sentry.logger.trace|debug|info|warn|error|fatal(message, attributes)`; the message is required. Levels: trace (fine-grained debugging), debug (development diagnostics), info (normal operations, milestones), warn (potential issues), error (failures needing attention), fatal (critical, system down). Prefer a real error event for exceptions that should become Issues.

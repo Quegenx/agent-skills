@@ -1,6 +1,6 @@
 # Test templates
 
-Templates for planning, documenting and sharing experiments, copied from [coreyhaines31/marketingskills, ab-testing] (references/test-templates.md and SKILL.md, MIT, (c) 2025 Corey Haines). PostHog's `conclusion` values on end or ship (`won`, `lost`, `inconclusive`, `stopped_early`, `invalid`; [../../monitoring/posthog/EXPERIMENTS.md](../../monitoring/posthog/EXPERIMENTS.md#lifecycle)) fill the Result field.
+Templates for planning, documenting and sharing experiments, copied from [coreyhaines31/marketingskills, ab-testing] (references/test-templates.md and SKILL.md, MIT, (c) 2025 Corey Haines). PostHog's `conclusion` values on end or ship (`won`, `lost`, `inconclusive`, `stopped_early`, `invalid`; [posthog EXPERIMENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md#lifecycle)) fill the Result field.
 
 **Contents:** [Test plan](#test-plan) · [Results write-up](#results-write-up) · [Test repository row](#test-repository-row) · [Quick test brief](#quick-test-brief) · [Stakeholder update](#stakeholder-update) · [Prioritization scorecard](#prioritization-scorecard) · [Hypothesis bank](#hypothesis-bank) · [Playbook entry](#playbook-entry) · [Prove it](#prove-it)
 

@@ -20,7 +20,7 @@ This is the outside view: what the apps you compete with rank for and change, ho
 | Growth signals | chart position, download and revenue estimates, update frequency, in-app events, custom product pages, Apple Ads |
 | Monetization | price model, trial length, IAP count, paywall timing |
 
-- **Reading a competitor's reviews** [coreyhaines31/marketingskills, customer-research]: 1 to 2 stars first, then 3-star, then 5-star; "Sort by 'Most Recent' to get fresh signal, then 'Most Critical' for pain themes"; extract "I use this to...", the moment it stopped working, what they switched from. The full playbook is [../../marketing/customer-research/SOURCES.md](../../marketing/customer-research/SOURCES.md#consumer-products).
+- **Reading a competitor's reviews** [coreyhaines31/marketingskills, customer-research]: 1 to 2 stars first, then 3-star, then 5-star; "Sort by 'Most Recent' to get fresh signal, then 'Most Critical' for pain themes"; extract "I use this to...", the moment it stopped working, what they switched from. The full playbook is [customer-research SOURCES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SOURCES.md#consumer-products).
 - **Output:** an executive summary, a position map, the top opportunities, the threats.
 - **Gap analysis per store and locale** with Astro MCP (`extract_competitors_keywords`) is in [AUDIT.md](AUDIT.md).
 - **Then:** competitor analysis feeds keyword research, then metadata ("Beat my competitor" = competitor-analysis, keyword-research, metadata-optimization); see [KEYWORDS-AND-METADATA.md](KEYWORDS-AND-METADATA.md).
@@ -53,7 +53,7 @@ This is the outside view: what the apps you compete with rank for and change, ho
   done
   ```
 
-- **Raising bids and other paid moves** are [../app-growth/SKILL.md](../app-growth/SKILL.md).
+- **Raising bids and other paid moves** are [app-growth SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
 
 ## Market movers and pulse
 

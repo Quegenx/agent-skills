@@ -1,6 +1,6 @@
 # Short-form video (organic)
 
-Organic short video for TikTok, Instagram Reels and YouTube Shorts on your own accounts. Text is from coreyhaines31/marketingskills `social` (SKILL.md and `references/short-form-video.md`, MIT); lengths, best times and frequencies are the source's opinion. Paid TikTok and Meta creative (the 6-ad matrix, Spark Ads) is in [../../mobile/app-growth/TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#creative-strategy); creator and UGC hooks and formats (talking head, before/after, day in the life, AI UGC) are in [../creator-marketing/UGC-HOOKS.md](../creator-marketing/UGC-HOOKS.md) and [../creator-marketing/UGC-FORMATS.md](../creator-marketing/UGC-FORMATS.md); producing the video is in [../marketing-video/SKILL.md](../marketing-video/SKILL.md).
+Organic short video for TikTok, Instagram Reels and YouTube Shorts on your own accounts. Text is from coreyhaines31/marketingskills `social` (SKILL.md and `references/short-form-video.md`, MIT); lengths, best times and frequencies are the source's opinion. Paid TikTok and Meta creative (the 6-ad matrix, Spark Ads) is in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#creative-strategy); creator and UGC hooks and formats (talking head, before/after, day in the life, AI UGC) are in [creator-marketing UGC-HOOKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/UGC-HOOKS.md) and [creator-marketing UGC-FORMATS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/UGC-FORMATS.md); producing the video is in [marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md).
 
 Research, script delivery and iteration additions are paraphrased from [more skills, shortform-playbook.md]. Its batch sizes, pacing and duration choices are practitioner options, not platform requirements or measured performance thresholds.
 
@@ -8,7 +8,7 @@ Research, script delivery and iteration additions are paraphrased from [more ski
 
 ## Research before scripting
 
-[more skills, shortform-playbook.md] Confirm the product, primary platform and existing audience research before writing. Use the evidence-based profile in [customer-research](../customer-research/PERSONAS.md); missing income, routines or other details stay unknown. Pick the platform from where the actual audience spends time, not a blanket age rule.
+[more skills, shortform-playbook.md] Confirm the product, primary platform and existing audience research before writing. Use the evidence-based profile in [customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/PERSONAS.md); missing income, routines or other details stay unknown. Pick the platform from where the actual audience spends time, not a blanket age rule.
 
 The source proposes a research batch of 20 to 30 well-performing videos from competitors and adjacent creators. Apply the existing [collection rules](STRATEGY.md#study-what-works-in-your-niche); per video, record:
 
@@ -19,7 +19,7 @@ The source proposes a research batch of 20 to 30 well-performing videos from com
 | Format and length | How the video is presented and its duration |
 | Audience reaction | What comments respond to, including the audience's actual wording |
 
-Keep the research available while drafting and update it with observed vocabulary, formats and topics from later posts. Shared customer findings belong in the [product context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). A recurring format is a research lead, not proof of demand.
+Keep the research available while drafting and update it with observed vocabulary, formats and topics from later posts. Shared customer findings belong in the [product context](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/CONTEXT.md). A recurring format is a research lead, not proof of demand.
 
 ## Specs
 
@@ -31,7 +31,7 @@ Keep the research available while drafting and update it with observed vocabular
 | Reels | 15 to 30 s | 9:16 | Polished content, rewards saves and shares |
 | Shorts | 30 to 60 s | 9:16 | YouTube search applies; searchable titles |
 
-App-growth's paid spec is "9:16 vertical, 15 to 30 s" `[appeeky]`; lightreel's organic sample found 40 to 75 s talking-head videos the most repeatable ([../creator-marketing/UGC-FORMATS.md](../creator-marketing/UGC-FORMATS.md#talking-head)). Paid and organic differ; test length on your own account.
+App-growth's paid spec is "9:16 vertical, 15 to 30 s" `[appeeky]`; lightreel's organic sample found 40 to 75 s talking-head videos the most repeatable ([creator-marketing UGC-FORMATS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/UGC-FORMATS.md#talking-head)). Paid and organic differ; test length on your own account.
 
 ## The 3-second rule
 
@@ -92,7 +92,7 @@ Ideas by business type: SaaS (feature demos with the outcome first, before/after
 
 [more skills, shortform-playbook.md] Choose the promised reward before drafting: a complete usable lesson, a true before/after, an emotional experience or a real product demonstration. Fulfill the opening promise; a teaser does not replace the useful content. The source rotates pain-point relief, demo proof, a complete tactic, a true founder story and an actual old/new comparison through the existing structures above.
 
-Its pacing recipe offers cuts every 2 to 3 seconds and a fresh visual, sound or text beat every 10 to 15 seconds. Use these as edit options; a longer static shot does not automatically fail. Put useful material early, remove dispensable opening material within the first 5 seconds, and try ending without an announced wrap-up. For midpoint use of the existing open-loop technique, see [ad-creative's VSL structure](../ad-creative/SHORT-FORM-VIDEO.md#creator-formats); deliver the promised payoff.
+Its pacing recipe offers cuts every 2 to 3 seconds and a fresh visual, sound or text beat every 10 to 15 seconds. Use these as edit options; a longer static shot does not automatically fail. Put useful material early, remove dispensable opening material within the first 5 seconds, and try ending without an announced wrap-up. For midpoint use of the existing open-loop technique, see [ad-creative's VSL structure](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SHORT-FORM-VIDEO.md#creator-formats); deliver the promised payoff.
 
 The source requires engagement bait as a fourth pillar [more skills, shortform-playbook.md]; the existing rule rejects mechanical bait and allows a real question [coreyhaines31/marketingskills, social] ([POSTS.md](POSTS.md#no-ai-tells)). Keep that existing rule. A useful save request tied to a later use, or a genuine question, can serve the single CTA without promising an algorithm benefit. Resource-request comments already have a scoped home in [STRATEGY.md](STRATEGY.md#study-what-works-in-your-niche); they do not make mechanical bait mandatory.
 

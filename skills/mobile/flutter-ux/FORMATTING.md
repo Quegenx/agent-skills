@@ -1,6 +1,6 @@
 # Formatting values for humans
 
-Formatting values in Dart code before they reach the screen: dates with `DateFormat`, counts, money and big numbers with `NumberFormat`, phone numbers while typing and on display, and never showing "null". Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice, not Flutter team docs. The official way to format numbers and dates inside ARB messages (the `"format"` value on a gen-l10n placeholder) is in [LOCALIZATION.md](../flutter/LOCALIZATION.md#number-and-date-formats); this file covers direct `intl` calls for values that are not in ARB messages. Text fields in general are in [FORMS-AND-INPUT.md](FORMS-AND-INPUT.md).
+Formatting values in Dart code before they reach the screen: dates with `DateFormat`, counts, money and big numbers with `NumberFormat`, phone numbers while typing and on display, and never showing "null". Source: FlutterPro tips by Kamran Bekirov (flutterpro.design), third-party community advice, not Flutter team docs. The official way to format numbers and dates inside ARB messages (the `"format"` value on a gen-l10n placeholder) is in [flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md#number-and-date-formats); this file covers direct `intl` calls for values that are not in ARB messages. Text fields in general are in [FORMS-AND-INPUT.md](FORMS-AND-INPUT.md).
 
 **Contents:** [Version notes](#version-notes) · [Dates](#dates) · [Numbers](#numbers) · [Phone numbers](#phone-numbers) · [Never show null](#never-show-null) · [Prove it](#prove-it)
 
@@ -44,7 +44,7 @@ Text(
 | Recent dates | `Today` / `Yesterday`, then the date | Today |
 | Requests to the backend, never shown | `yyyy-MM-dd`, `''` for null | 2016-07-24 |
 
-For recent dates, `Today` reads better than `24 July`: check today and yesterday first, then fall back to the date. "Run the labels through your translations too." The file below hard-codes `'Today'`, `'Yesterday'` and `'N/A'`; that is the article's simplification, so route them through your localizations ([LOCALIZATION.md](../flutter/LOCALIZATION.md)).
+For recent dates, `Today` reads better than `24 July`: check today and yesterday first, then fall back to the date. "Run the labels through your translations too." The file below hard-codes `'Today'`, `'Yesterday'` and `'N/A'`; that is the article's simplification, so route them through your localizations ([flutter LOCALIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LOCALIZATION.md)).
 
 The whole file, ready to copy:
 
@@ -121,7 +121,7 @@ extension DateTimeX on DateTime? {
 }
 ```
 
-The web version of the same idea (`Intl.DateTimeFormat` styles and `Intl.RelativeTimeFormat` for "yesterday") is in [app-ui DATA-VIEWS.md](../../frontend/app-ui/DATA-VIEWS.md).
+The web version of the same idea (`Intl.DateTimeFormat` styles and `Intl.RelativeTimeFormat` for "yesterday") is in [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md).
 
 ## Numbers
 
@@ -259,7 +259,7 @@ api.updatePhone(
 )
 ```
 
-**Store E.164 with the `+`, not bare digits.** The mask `+### ## ### ## ##` unmasks to digits without the `+`. Store and send one E.164 value (`+`, country code, national number) and render separators only for display; Meta's WhatsApp Cloud API: "We highly recommend that you include both the plus sign and country calling code" ([phone numbers](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers/)). The Israeli case (trunk `0`, `+972`), the ranges, special numbers and what the Israeli source got wrong are in [web-accessibility/PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md) [skills-il, israeli-phone-formatter].
+**Store E.164 with the `+`, not bare digits.** The mask `+### ## ### ## ##` unmasks to digits without the `+`. Store and send one E.164 value (`+`, country code, national number) and render separators only for display; Meta's WhatsApp Cloud API: "We highly recommend that you include both the plus sign and country calling code" ([phone numbers](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers/)). The Israeli case (trunk `0`, `+972`), the ranges, special numbers and what the Israeli source got wrong are in [web-accessibility PHONE-NUMBERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/PHONE-NUMBERS.md) [skills-il, israeli-phone-formatter].
 
 **With a country picker:** one mask stops working. Don't write a mask per country. First check whether your country picker package ships a formatter. If not, [phone_numbers_parser](https://pub.dev/packages/phone_numbers_parser) knows every country's format; wrap it in a small `TextInputFormatter` with the selected country's ISO code:
 
@@ -289,7 +289,7 @@ class PhoneInputFormatter extends TextInputFormatter {
 
 The returned `TextEditingValue` sets no `selection`, so the source leaves the caret position unhandled.
 
-Validate against a parser's metadata, not a regex: a hand-written regex for one country's numbers over-accepts (the Israeli source's own sample `0521234567` fails libphonenumber), so take test numbers from the parser, not from a blog post ([PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md#validate-with-libphonenumber)).
+Validate against a parser's metadata, not a regex: a hand-written regex for one country's numbers over-accepts (the Israeli source's own sample `0521234567` fails libphonenumber), so take test numbers from the parser, not from a blog post ([web-accessibility PHONE-NUMBERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/PHONE-NUMBERS.md#validate-with-libphonenumber)).
 
 ## Never show null
 
@@ -364,9 +364,9 @@ Text(
 )
 ```
 
-Without the parentheses, a null `cartInfo` short-circuits the whole expression and `orPlaceholder()` never runs; with them it always runs ([LANGUAGE.md](../dart/LANGUAGE.md) on null-aware chains).
+Without the parentheses, a null `cartInfo` short-circuits the whole expression and `orPlaceholder()` never runs; with them it always runs ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md) on null-aware chains).
 
-**Placeholder character (two choices, both tagged):** [FlutterPro]: `-` by default, or a word such as `'N/A'`. The web [app-ui DATA-VIEWS.md](../../frontend/app-ui/DATA-VIEWS.md) shows an unavailable count as the em dash character (U+2014).
+**Placeholder character (two choices, both tagged):** [FlutterPro]: `-` by default, or a word such as `'N/A'`. The web [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md) shows an unavailable count as the em dash character (U+2014).
 
 ## Prove it
 

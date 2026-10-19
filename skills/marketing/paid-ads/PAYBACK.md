@@ -1,6 +1,6 @@
 # Payback: can this channel pay for itself
 
-The gate before every channel decision. Advertising has to be deterministic: $1 in, more than $1 out, on a clock you can name, and payback period sets the clock. From [coreyhaines31/marketingskills, ads, payback-period.md] (MIT), which cites Corey Haines, *Founding Marketing*, ch. 7 ("Spend budget where customers spend their time"); its payback targets and churn finding are practitioner. App subscription economics (store fees, trials, MMP data) are in [BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md); revenue metric definitions in [stripe](../../backend/stripe/SKILL.md); plan and price structure in [pricing-strategy](../pricing-strategy/SKILL.md).
+The gate before every channel decision. Advertising has to be deterministic: $1 in, more than $1 out, on a clock you can name, and payback period sets the clock. From [coreyhaines31/marketingskills, ads, payback-period.md] (MIT), which cites Corey Haines, *Founding Marketing*, ch. 7 ("Spend budget where customers spend their time"); its payback targets and churn finding are practitioner. App subscription economics (store fees, trials, MMP data) are in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md); revenue metric definitions in [stripe](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/SKILL.md); plan and price structure in [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
 
 ## Why LTV:CAC misleads
 
@@ -30,7 +30,7 @@ Same CAC, $300, very different payback (revenue-only, before serving costs and c
 
 At 20% margin the $99 plan takes 300 / (99 × 0.20) = **15.2 months** before churn, despite its 3.0-month revenue-only ratio. Compute per plan or per cohort, against measured margin, retention and cash timing.
 
-**Repo comparison.** app-growth's [appeeky] formulas are revenue-only: "Payback days | `Target CPA / (MRR / active_subscriptions / 30)`" ([BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md#subscription-snapshot)) and TikTok's "payback CPA / (LTV / expected lifetime months) under 3 months" ([TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md#audits)). Read them as the revenue-only ratio above; for a spend decision add gross margin (and, for apps, the store fee) and the cohort path below.
+**Repo comparison.** app-growth's [appeeky] formulas are revenue-only: "Payback days | `Target CPA / (MRR / active_subscriptions / 30)`" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md#subscription-snapshot)) and TikTok's "payback CPA / (LTV / expected lifetime months) under 3 months" ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#audits)). Read them as the revenue-only ratio above; for a spend decision add gross margin (and, for apps, the store fee) and the cohort path below.
 
 ## Cohort recovery
 
@@ -56,11 +56,11 @@ The single-retention ratio gives both about 4.3 months and ignores margin; their
 3. Compare with runway and your chosen target. Don't scale on a revenue-only ratio or an annual retention multiplier.
 4. Re-run monthly; CAC drifts up as you scale.
 
-Breakeven CPL and CPC ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#breakeven-cpl-and-cpc)) say the most you can pay per lead; payback says how long your cash is tied up. You need both. Blended CAC inputs come from [marketing-attribution](../marketing-attribution/SKILL.md).
+Breakeven CPL and CPC ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#breakeven-cpl-and-cpc)) say the most you can pay per lead; payback says how long your cash is tied up. You need both. Blended CAC inputs come from [marketing-attribution](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md).
 
 ## Two adjacent opinions
 
-The source's, tagged as opinion: out-of-home (billboards, transit, print) "without social amplification is a waste of money", because it has no click or pixel and pays back only when built to be photographed and shared; and ads that carry a story forward, each line earning the next, outperform restated pitches, tested one variable at a time ([ad-creative](../ad-creative/SKILL.md)).
+The source's, tagged as opinion: out-of-home (billboards, transit, print) "without social amplification is a waste of money", because it has no click or pixel and pays back only when built to be photographed and shared; and ads that carry a story forward, each line earning the next, outperform restated pitches, tested one variable at a time ([ad-creative](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ad-creative/SKILL.md)).
 
 ## Prove it
 

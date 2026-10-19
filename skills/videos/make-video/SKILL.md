@@ -17,9 +17,13 @@ CRITIC      what failed, where, and why?       out/qa/, reviews/, review-log.md
 
 Never collapse the layers into one uninspected step. The generic look (a centred title on a gradient, everything fading in, a logo at the end) is what the model fills in when a layer's decisions are missing.
 
+Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
 ## Setup
 
-1. Scaffold the film's studio folder from the project root: `bash <this skill>/scripts/new-film.sh <slug>`, then `npm install` inside `films/<slug>/`. If tools are missing, tell the user to run `/video-setup`. The scaffold writes the film's house rules (`AGENTS.md`, which Claude Code reads through `CLAUDE.md`): the render contract, the banned looks and the review loop, read on every run so they never need repeating. When the film lives inside an existing product repo, build it beside what is there and never regress an existing composition.
+Choose the renderer through [ENGINES.md](ENGINES.md) before scaffolding. The setup and `render.mjs` commands below describe the default seek-engine studio; an existing Remotion or HyperFrames project follows its engine contract while keeping the shared production gates. [Quegenx/agent-skills, make-video/ENGINES.md]
+
+1. For the default seek-engine studio, scaffold the film's studio folder from the project root: `bash <this skill>/scripts/new-film.sh <slug>`, then `npm install` inside `films/<slug>/`. If tools are missing, tell the user to run `/video-setup`. The scaffold writes the film's house rules (`AGENTS.md`, which Claude Code reads through `CLAUDE.md`): the render contract, the banned looks and the review loop, read on every run so they never need repeating. When the film lives inside an existing product repo, build it beside what is there and never regress an existing composition.
 2. Size the run from the format:
 
    | Format | Length, fps | Grid | Beats | Words | Sound | Review |
@@ -42,7 +46,7 @@ Work through them in order. Each one writes its file and shows it to the user. S
 1. **Brief and references.** Call the Skill tool with "video-brief". When the film shows a real product, also call it with "asset-prep" to collect the real screens, logo, colours and fonts. A missing asset the brief depends on is a blocker: ask for it, never draw a convincing fake.
 2. **Clock.** Call the Skill tool with "beat-grid": measure the supplied track, or choose a tempo for synthesized sound. When there is narration, call it with "voiceover" instead of or as well as: the voice becomes the clock.
 3. **Shot list on the grid.** Call the Skill tool with "shotlist". It also produces three storyboard variants when the direction is open; the user picks one.
-4. **Stills before motion.** Call the Skill tool with "seek-engine", build the composition, and render one still per shot (`render.mjs still`). Fixing a still costs seconds; fixing a render costs minutes. Get the stills approved.
+4. **Stills before motion.** For the default engine, call the Skill tool with "seek-engine"; otherwise follow the selected engine's contract. Build the composition, and render one still per shot (`render.mjs still`). Fixing a still costs seconds; fixing a render costs minutes. Get the stills approved.
 5. **Build, then review until it passes.** Animate between the approved stills, then render the animatic (`render.mjs full --scale 0.5 --sub 1`) and fix pacing before any polish. Before the full render, render the **hardest 2-4 seconds** at full quality (`render.mjs full --range a:b --sub 8`) and check them frame by frame (`strip a b`): contacts, occlusion, speed, seams, captions, sync. If the hardest stretch doesn't hold, the full render won't either. Call the Skill tool with "frame-review" after every meaningful change. It owns the loop: the smoke counters read zero, the contact sheet scores 8+ on every axis, and the three worst defects are fixed per round. For a launch film or anything long, run its critic rounds (director, art/copy/UI and sound lenses, a verifier, the 11-dimension rubric) until the ship gate passes or 5 rounds are used. At the cap, report unresolved gates as incomplete.
 6. **Sound, formats, delivery.** Call the Skill tool with "sound-pass" once picture timing is locked. Render every format the brief asks for from the same timeline (`render.mjs full --format all`), never by cropping. Run the frame-review final checks on the delivered files.
 

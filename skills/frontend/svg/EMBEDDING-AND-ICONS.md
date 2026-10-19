@@ -155,8 +155,8 @@ The clone, symbol template, attributes, per-instance styling, source-context wid
 ```
 
 - **One library and one stroke per surface:** "Never mix icon libraries on one toolbar. Where the library has no stroke variants, keep its native stroke and use size or color for emphasis." make-interfaces-feel-better: "Use one stroke weight per icon set on a surface."
-- app-ui keeps one stroke for every label weight: "One stroke set at 1.5px" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)), with button labels at 500, where the table would give 2px. That is the owner's design; the table is the general rule.
-- **Size inline icons from the font:** "Size inline icons at `1em`-`1.25em` of the adjacent font size, so the pair scales together." make-interfaces-feel-better ties it to "the text's cap height". app-ui uses fixed sizes in that range: "a glyph beside a label is 1rem" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)).
+- app-ui keeps one stroke for every label weight: "One stroke set at 1.5px" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)), with button labels at 500, where the table would give 2px. That is the owner's design; the table is the general rule.
+- **Size inline icons from the font:** "Size inline icons at `1em`-`1.25em` of the adjacent font size, so the pair scales together." make-interfaces-feel-better ties it to "the text's cap height". app-ui uses fixed sizes in that range: "a glyph beside a label is 1rem" ([app-ui CONTROLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CONTROLS.md)).
 - **Outline by default, fill for active,** "as a state pair, never interchangeably":
 
 | Variant | Use for |
@@ -172,7 +172,7 @@ The clone, symbol template, attributes, per-instance styling, source-context wid
 <TabIcon variant="solid" />
 ```
 
-  Cross-fade the swap "only where the change is infrequent, such as a bookmark or a like. An active tab swaps instantly." Icon swap timing is in [../ui-animation/PATTERNS.md](../ui-animation/PATTERNS.md).
+  Cross-fade the swap "only where the change is infrequent, such as a bookmark or a like. An active tab swaps instantly." Icon swap timing is in [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md).
 - **Design at render size:** "Test every icon at the smallest size it renders, often `16px`." "Prefer a simplified glyph for small contexts over scaling down detailed artwork." "Where the set ships per-size grids such as `16`, `20` and `24`, use the grid that matches the render size. A 24px drawing scaled to 16px lands off the pixel grid and renders soft." "Always SVG, never raster."
 - **Fix lopsided icons in the SVG.** For stars, arrows and carets with uneven visual weight, "The best fix is adjusting the SVG directly so no extra margin/padding is needed in the component code": adjust the `viewBox` or the path, and fall back to a 1px margin on a wrapper [Jakub Krehel, make-interfaces-feel-better] (`surfaces.md`).
 

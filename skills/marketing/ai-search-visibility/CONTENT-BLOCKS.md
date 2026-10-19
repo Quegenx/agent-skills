@@ -1,6 +1,6 @@
 # Content that answer engines can lift
 
-How to structure a page so an answer engine can quote a passage of it correctly, without writing a second version "for AI". Google's position comes first because it limits everything else; the block templates and the fan-out matrix are from [coreyhaines31/marketingskills, ai-seo] (MIT; the matrix adapted there from Profound's MIT skill), with the source's example statistics removed. Docs-specific rules live in [../../architecture/developer-docs/WRITING-AND-PUBLISHING.md](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md); page copy in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+How to structure a page so an answer engine can quote a passage of it correctly, without writing a second version "for AI". Google's position comes first because it limits everything else; the block templates and the fan-out matrix are from [coreyhaines31/marketingskills, ai-seo] (MIT; the matrix adapted there from Profound's MIT skill), with the source's example statistics removed. Docs-specific rules live in [developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md); page copy in [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
 
 **Contents:** [Google's limits](#googles-limits) · [Structure rules](#structure-rules) · [Block templates](#block-templates) · [Fact-family fan-out matrix](#fact-family-fan-out-matrix) · [Authority by domain](#authority-by-domain) · [By content type](#by-content-type) · [What not to do](#what-not-to-do) · [Prove it](#prove-it)
 
@@ -25,9 +25,9 @@ The source's view of other engines: they "actively reward extractable structure"
 
 [freescan] Lead with the direct answer, then scope, evidence, exceptions and limits under descriptive headings. Each section must keep its meaning when quoted alone: define acronyms, don't lean on "this" or "the above result". Original research states its population, data window, exclusions, aggregation, sample size and update time; say when a sample is too small, and separate measured data from interpretation.
 
-These match the repo's docs rules: "Keep each explanation understandable when retrieved alone" and "do not force every heading into a question" ([developer-docs](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md#headings-and-structure)).
+These match the repo's docs rules: "Keep each explanation understandable when retrieved alone" and "do not force every heading into a question" ([developer-docs](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md#headings-and-structure)).
 
-**Freshness** [coreyhaines31/marketingskills, ai-seo]: a visible "Last updated: [date]", refreshes on competitive topics (the source says quarterly at minimum), and outdated facts removed. The cadence is the source's opinion; the refresh workflow is [../seo/CONTENT-REFRESH.md](../seo/CONTENT-REFRESH.md).
+**Freshness** [coreyhaines31/marketingskills, ai-seo]: a visible "Last updated: [date]", refreshes on competitive topics (the source says quarterly at minimum), and outdated facts removed. The cadence is the source's opinion; the refresh workflow is [seo CONTENT-REFRESH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/CONTENT-REFRESH.md).
 
 **Evidence** [coreyhaines31/marketingskills, ai-seo]: the GEO study (Aggarwal et al., KDD 2024) found that adding citations, quotations and statistics raised visibility "by roughly 30-40% on its own metric", and keyword stuffing hurt. The source's per-method table (+40%, +37% ...) and its "15-30%" line disagree with each other; quote only the hedged range, and never as a forecast.
 
@@ -57,7 +57,7 @@ These match the repo's docs rules: "Keep each explanation understandable when re
 [Optional: Brief note on expected outcome or time estimate]
 ```
 
-**Comparison table** for "[X] vs [Y]" (the full comparison-page method is [../comparison-pages/SKILL.md](../comparison-pages/SKILL.md)):
+**Comparison table** for "[X] vs [Y]" (the full comparison-page method is [comparison-pages SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/comparison-pages/SKILL.md)):
 
 ```markdown
 ## [Option A] vs [Option B]: [Brief Descriptor]
@@ -165,16 +165,16 @@ The source's filled-in examples carry statistics with no real source ("over 60% 
 - **Product pages:** what it does and who it is for in the first paragraph; specific metrics instead of "blazing fast"; visible pricing (and a [pricing file](AGENT-READINESS.md#a-pricing-file-for-agents)).
 - **Blog posts:** one target query per post, a definition first for "what is" queries, original data, a visible updated date.
 - **Comparison and alternatives pages:** tables, "Fair and balanced", current prices and features.
-- **Industry or segment pages:** one per segment you actually serve, with real workflows, integrations, compliance and proof. "Templated pages that only swap the industry name are what the scaled-content policy targets" (the policy and pages at scale: [../seo/PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md)).
+- **Industry or segment pages:** one per segment you actually serve, with real workflows, integrations, compliance and proof. "Templated pages that only swap the industry name are what the scaled-content policy targets" (the policy and pages at scale: [seo PAGES-AT-SCALE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md)).
 - **Docs:** numbered steps, code, screenshots with alt text, prerequisites and outcomes. The source also says "HowTo schema markup"; Google removed the How-to documentation on 2023-09-14 because "this rich result is no longer shown in search results" [https://developers.google.com/search/updates]. schema.org `HowTo` still exists; no Google feature uses it.
-- **Local and ecommerce:** Merchant Center feeds and a complete Business Profile (Google's own emphasis, quoted in [AGENT-READINESS.md](AGENT-READINESS.md#acting-not-only-reading)); local SEO is [../seo/LOCAL.md](../seo/LOCAL.md).
+- **Local and ecommerce:** Merchant Center feeds and a complete Business Profile (Google's own emphasis, quoted in [AGENT-READINESS.md](AGENT-READINESS.md#acting-not-only-reading)); local SEO is [seo LOCAL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LOCAL.md).
 
 ## What not to do
 
 [coreyhaines31/marketingskills, ai-seo]
 - Write separate content "for AI" (the scaled content abuse policy, above).
 - Generate thin variations at scale for ranking.
-- Pursue inauthentic mentions: no fabricated citations, invented awards, owned "independent" review sites, or bulk posting on Reddit or Wikipedia. "Fake or misleadingly sourced reviews can also break the FTC's 2024 reviews rule" (16 CFR Part 465). The repo's copy rule agrees: "Invented stats and testimonials cost trust and can carry legal risk" ([anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md)); the FTC rules are defined in [../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
+- Pursue inauthentic mentions: no fabricated citations, invented awards, owned "independent" review sites, or bulk posting on Reddit or Wikipedia. "Fake or misleadingly sourced reviews can also break the FTC's 2024 reviews rule" (16 CFR Part 465). The repo's copy rule agrees: "Invented stats and testimonials cost trust and can carry legal risk" ([anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)); the FTC rules are defined in [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md).
 - Hide main content behind JavaScript that doesn't render.
 - Invent AI-only technical requirements, or quote precise statistics with no population or method. [freescan]
 

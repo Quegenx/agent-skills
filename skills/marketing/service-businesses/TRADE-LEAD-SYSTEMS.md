@@ -1,6 +1,6 @@
 # Trade enquiry and photo services
 
-Missed-call intake, eligible local-demand alerts and honest job-photo delivery, paraphrased from [more skills, 20-trades-lead-systems.md]. Shared acquisition/approval is [DEMO-FIRST.md](DEMO-FIRST.md); the fixed-message rescue below does not require an LLM. Community observation is owned by [DEMAND-ALERTS.md](DEMAND-ALERTS.md), and job-photo fidelity by [REAL-PHOTO-EDITING.md](../marketing-images/REAL-PHOTO-EDITING.md#finished-trade-work).
+Missed-call intake, eligible local-demand alerts and honest job-photo delivery, paraphrased from [more skills, 20-trades-lead-systems.md]. Shared acquisition/approval is [DEMO-FIRST.md](DEMO-FIRST.md); the fixed-message rescue below does not require an LLM. Community observation is owned by [DEMAND-ALERTS.md](DEMAND-ALERTS.md), and job-photo fidelity by [marketing-images REAL-PHOTO-EDITING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#finished-trade-work).
 
 ## Offer order and qualification
 
@@ -8,7 +8,7 @@ Missed-call intake, eligible local-demand alerts and honest job-photo delivery, 
 
 The author proposes missed-call rescue first, current local-intent capture second, job photographs third. All capture and hand over; they do not claim qualifications, issue quotes or commit the trade to arrival/callback times. Do not turn missed-call counts, sparse photos or a personal-looking business name into evidence of lost jobs or known staffing.
 
-Research the selected trade and town. The prose suggests rating at least 4.7, 10 to about 300 reviews and fewer than 8 actual photographs. Its detailed classifier instead rejects rating below 4.7, fewer than 10 or more than 500 reviews, missing phone and apparent national franchises. Choose the review ceiling explicitly; the source's seven-review example contradicts its minimum. Preserve existing [franchise-authority checks](../prospecting/LOCAL-SMB.md#common-mistakes), [website cross-checks](../prospecting/LOCAL-SMB.md#website-status) and [photo-sample limits](FOOD-VISUALS.md#qualification-and-routing).
+Research the selected trade and town. The prose suggests rating at least 4.7, 10 to about 300 reviews and fewer than 8 actual photographs. Its detailed classifier instead rejects rating below 4.7, fewer than 10 or more than 500 reviews, missing phone and apparent national franchises. Choose the review ceiling explicitly; the source's seven-review example contradicts its minimum. Preserve existing [franchise-authority checks](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LOCAL-SMB.md#common-mistakes), [website cross-checks](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/LOCAL-SMB.md#website-status) and [photo-sample limits](FOOD-VISUALS.md#qualification-and-routing).
 
 The proposed classifier records decision, reason, rating, review_count, photo_count, thin_proof, likely_sole_trader, has_website, lead_with and a neutral opening_line. Its author routing is missed_call for the sole-operator hypothesis, photos for non-solo with thin proof, intent for an owned site plus at least 8 photos. It leaves non-solo/no-owned-site/adequate-photo cases unresolved and supplies no complete unknown branch. Do not infer sole status from a name/address or invent a default offer.
 
@@ -33,15 +33,15 @@ The original caller template says the operator is on a job, while its own rules 
 
 Twilio requires prior express consent for informational messages, clear sender identification and initial opt-out language; its inbound-message exchange exception is not blanket permission to text anyone who made a voice call. The source instead called a non-promotional missed-call response generally lawful and omitted initial opt-out wording. Do not activate the recipe until the actual consent/provider setup is established. [Twilio Messaging Policy](https://www.twilio.com/en-us/legal/messaging-policy)
 
-The existing [SMS compliance owner](../sms-marketing/COMPLIANCE.md) retains jurisdiction, revocation and required-message rules. WhatsApp adaptation follows [WHATSAPP.md](../sms-marketing/WHATSAPP.md#opt-in-and-opt-out) and [Kapso](../../backend/kapso/SKILL.md); an unanswered voice call is not evidence of the customer-message service window. The source's direct channel substitution does not establish opt-in or a deployable integration. [more skills, 20-trades-lead-systems.md]
+The existing [SMS compliance owner](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/COMPLIANCE.md) retains jurisdiction, revocation and required-message rules. WhatsApp adaptation follows [sms-marketing WHATSAPP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sms-marketing/WHATSAPP.md#opt-in-and-opt-out) and [Kapso](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/kapso/SKILL.md); an unanswered voice call is not evidence of the customer-message service window. The source's direct channel substitution does not establish opt-in or a deployable integration. [more skills, 20-trades-lead-systems.md]
 
 ## Intent and photo extensions
 
 [more skills, 20-trades-lead-systems.md]
 
 - For eligible public/authorized community requests, alert the trade and draft a useful contextual reply for the actual operator to send only where permitted. Do not automate group posting. The complete research/digest contract stays in [DEMAND-ALERTS.md](DEMAND-ALERTS.md).
-- Existing listing visibility belongs to [local SEO](../seo/LOCAL.md). A problem-and-town page with useful explanation, phone and text action is the author's contact-page sketch, not a ranking guarantee or permission for near-duplicate doorway pages; apply [PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md).
-- Take authorized camera-roll images of actual finished work, request actual pre-work photos where available, and return a coherent pair/set using the [workmanship-preservation branch](../marketing-images/REAL-PHOTO-EDITING.md#finished-trade-work). Presentation edits must not improve faulty workmanship. Sell the reviewed output, not a claim that a prompt guarantees fidelity.
+- Existing listing visibility belongs to [local SEO](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LOCAL.md). A problem-and-town page with useful explanation, phone and text action is the author's contact-page sketch, not a ranking guarantee or permission for near-duplicate doorway pages; apply [seo PAGES-AT-SCALE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/PAGES-AT-SCALE.md).
+- Take authorized camera-roll images of actual finished work, request actual pre-work photos where available, and return a coherent pair/set using the [workmanship-preservation branch](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#finished-trade-work). Presentation edits must not improve faulty workmanship. Sell the reviewed output, not a claim that a prompt guarantees fidelity.
 
 ## Sales conversation and commercial terms
 

@@ -53,7 +53,7 @@ Everything renders from one JSON block near the top of the file, `<script type="
 
 2 to 4 concepts is the useful range; more than that and the tabs stop being a decision.
 
-**Frames are a storyboard:** label each by the job it does (`Hook`, `The problem`, `The proof`, `The ask`), not by what's pictured. A proof-led concept is literally Hook → Problem → Mechanism → Results → Context → Ask. Carousel arcs for social are in [social-media](../social-media/SKILL.md).
+**Frames are a storyboard:** label each by the job it does (`Hook`, `The problem`, `The proof`, `The ask`), not by what's pictured. A proof-led concept is literally Hook → Problem → Mechanism → Results → Context → Ask. Carousel arcs for social are in [social-media](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md).
 
 **Images vs placeholders:** with `image`, the creative fills the frame; without it, a styled placeholder shows the label and prompt, so the page is useful before images exist. The template blocks remote and protocol-relative image URLs (including spellings the browser normalizes), so the page stays offline and can't beacon on open: download authorized assets into a local `images/` folder and keep paths relative. Hosted relative assets still load from that host. That restriction covers image sources only; it is not a sandbox for arbitrary edits to the HTML.
 
@@ -66,7 +66,7 @@ Every concept carries a `grounding` line, and it is true: exactly what is real (
 The data block is inert JSON parsed with `JSON.parse`, so a value can never run as script. Two rules:
 
 - **Valid JSON only:** double-quoted keys and strings, no comments, no trailing commas. A malformed block shows an error banner instead of failing silently.
-- **Escape every `<` in a string value as `\u003c`.** A value containing `</script>` would otherwise close the block early. Values are HTML-escaped again at render time, but the source-level escape is the one that matters; apply it mechanically. The general rule for JSON inside a script tag is in [secure-coding](../../backend/secure-coding/CATALOG.md#json-inside-a-script-element).
+- **Escape every `<` in a string value as `\u003c`.** A value containing `</script>` would otherwise close the block early. Values are HTML-escaped again at render time, but the source-level escape is the one that matters; apply it mechanically. The general rule for JSON inside a script tag is in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/CATALOG.md#json-inside-a-script-element).
 
 ## Producing and delivering
 
