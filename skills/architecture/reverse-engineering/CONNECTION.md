@@ -32,7 +32,12 @@ From [morluto/rea, reverse-engineer-anything/references/connection-and-recovery.
 - A static JS CLI analysis accepts the user-supplied ASAR or extracted tree without MCP registration or a native engine.
 - Save complete JSON to an authorized output path before projecting a summary or module view. Large complete output need not be loaded into context.
 - A shell observation is shell evidence; only actual REA output is REA Evidence. A CLI fallback does not establish that MCP registration works.
-- Native-only providers and prerequisite installation are outside this skill's JS/web scope.
+- Native-only provider guidance and prerequisite installation are outside this skill's selected artifact workflows. [owner standing rules, stack and installation scope]
+
+## Check the selected auxiliary capability
+
+- Static [Flutter APK parsing](FLUTTER-ARTIFACTS.md) needs no native engine. [WASM inspection](OFFLINE-ARTIFACTS.md#inspect-a-local-wasm-module) has its own caller-supplied WABT profile; [SQLite inspection](OFFLINE-ARTIFACTS.md#acquire-coherent-sqlite-evidence) has its own Node/API requirement. Diagnose that capability rather than installing an unrelated decompiler. [morluto/rea, docs/flutter-analysis.md; docs/wasm-artifacts.md; docs/sqlite-databases.md]
+- Use the installed CLI's advertised doctor provider scopes. Current REA source includes a JADX scope; the supplied Android reference said doctor covered Hopper/Ghidra rather than JADX. [REA doctor provider IDs](https://github.com/morluto/rea/blob/main/src/application/DoctorProviderIds.ts); [morluto/rea, reverse-engineer-anything/references/android-applications.md]
 
 ## Prove it
 

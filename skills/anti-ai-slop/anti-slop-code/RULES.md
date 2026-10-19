@@ -10,6 +10,8 @@ Each rule: what it looks like, why it costs, the fix. Examples are TypeScript-fl
 
 **Invented APIs.** A method, option, flag or endpoint that the library doesn't have. Check the installed version's types or docs before calling anything you haven't used in this codebase.
 
+For imported packages, distinguish an unresolved local dependency from a nonexistent registry name. A successful registry lookup establishes that the name exists, not that it is the intended package; a failed network lookup is not evidence of nonexistence. Check the project's manifest and the package's actual purpose before treating the import as invented. [MrSpideyNihal/FixMySlop, fixmyslop/core/slop/rules_deps.py]
+
 ## Defense in the wrong places
 
 **Generic catch that only logs.**
@@ -155,7 +157,7 @@ Keep, short and in plain sentences: why the code does something non-obvious, con
 ## When it is not slop
 
 Over-cleaning is its own damage. Leave these alone:
-- **Null checks** where the type really allows null, at trust boundaries (request, queue, file, third-party returns), or on partially built values. The test: does the type say it can be null?
+- **Null checks** at trust boundaries (request, queue, file, third-party returns), on partially built values, or wherever the runtime contract permits null. Use [the actual-contract rule](#defense-in-the-wrong-places), not a type-only test. The old summary asked only whether the type allowed null. [TypeScript everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
 - **Short conventional names** in tiny scopes: `i`, `j` in a short loop, `x`, `y` for coordinates, `_` for ignored values, `acc` in a reduce, `req`, `res`, `next` where the framework uses them. Anything that lives past a few lines gets a real name.
 - **Suffixes with a real convention:** `*Repository`, `*Controller`, `*Middleware`, `*Gateway` at an external boundary, `*Listener`, and `*Service` used sparingly for orchestration. `*Helper`, `*Manager`, `*Util`, `*Wrapper`, `*Processor` are the suspect ones.
 - **Type words that carry meaning:** `userId` beside `user`, `itemCount`, `isPaid`, `hasShipping`, `usersByEmail`, wire-format types like `OrderPayload`.

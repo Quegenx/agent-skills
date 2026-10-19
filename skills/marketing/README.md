@@ -40,7 +40,7 @@ Marketing, SEO and GEO for web and SaaS products: getting found in Google (`seo`
 | [churn-prevention](./churn-prevention/SKILL.md) | SaaS churn: cancel flows within ROSCA, a health score, dunning copy |
 | [onboarding-and-upgrades](./onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts, scoped experiments and evidence-backed recovery cohort worksheets. |
 | [sms-marketing](./sms-marketing/SKILL.md) | Lawful SMS/MMS/WhatsApp, consent, sequences and destination-specific template restrictions. Review incentives follow destination rules, including no Google review incentives. |
-| [marketing-images](./marketing-images/SKILL.md) | Marketing images: choosing the method, prompting, sizes per platform. Actual-photo fidelity, reference decomposition and optional casual-phone prompts under existing generation policies. |
+| [marketing-images](./marketing-images/SKILL.md) | Image methods, prompts and platform sizes; actual-photo fidelity, reference decomposition and optional casual-phone prompts under existing generation policies. Routes store screenshot production and style directions to ASO. |
 | [marketing-video](./marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs |
 | [marketing-plan](./marketing-plan/SKILL.md) | A 12-month AARRR marketing plan: intake, current-state rubric, budget, funding stages, market sizing, measurement, team and agencies, an example plan |
 | [marketing-loops](./marketing-loops/SKILL.md) | Recurring marketing loops an agent runs on a durable scheduler: the loop template, state, guardrails, a 58-loop catalogue by funnel, SEO and outbound operators |

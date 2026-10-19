@@ -1,16 +1,20 @@
 # Visuals: icon, screenshots and preview videos
 
-Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md).
+Visuals turn a search impression into an install. The icon is the first thing seen in search [eronred]; previews autoplay muted, so their first seconds must be visually compelling, and on the App Store the first one to three screenshots appear in search results when no preview is available. Specs and rules come from Apple's and Google's docs unless tagged [eronred] (a third-party ASO skill, whose lift percentages are its own claims) or [ApparenceKit] (a Flutter starter-kit author's ASO posts); where they differ, both are given. Play asset specs are in [ANDROID.md](ANDROID.md); uploading is [../app-store-connect/SKILL.md](../app-store-connect/SKILL.md) and [../google-play/SKILL.md](../google-play/SKILL.md). Capture assessment, pairings, connected composition and final-image QA are in [SCREENSHOT-PRODUCTION.md](SCREENSHOT-PRODUCTION.md); optional art directions are in [SCREENSHOT-STYLES.md](SCREENSHOT-STYLES.md).
 
 **Contents:** [Rules for every asset](#rules-for-every-asset) · [App icon](#app-icon) · [Screenshot specs](#screenshot-specs-app-store) · [Screenshot strategy](#screenshot-strategy) · [App preview specs](#app-preview-specs-app-store) · [Preview strategy](#preview-strategy) · [Product page header and search assets](#product-page-header-and-search-assets-fall-2026) · [Prove it](#prove-it)
 
 ## Rules for every asset
 
+Apple's metadata rules are [App Review Guidelines 2.3](https://developer.apple.com/app-store/review/guidelines/#accurate-metadata); Play's screenshot-specific guidance is in [ANDROID.md](ANDROID.md#graphic-assets).
+
 - **Show the real app.** Screenshots "should show the app in use, and not merely the title art, login page, or splash screen"; text and image overlays are allowed (2.3.3). Previews "may only use video screen captures of the app itself"; narration and video or text overlays are allowed (2.3.4).
 - **Keep it 4+.** Icons, screenshots and previews must fit a 4+ age rating even when the app is rated higher; "For Kids" and "For Children" are reserved for the Kids Category (2.3.8).
 - **Own the rights and fake the data.** Secure rights to every material in icons, screenshots and previews, and show fictional account information, never a real person's data (2.3.9).
-- **No other platforms.** No names, icons or imagery of other mobile platforms or alternative app marketplaces (2.3.10).
+- **Other platforms:** no names, icons or imagery of other mobile platforms or alternative app marketplaces unless there is specific approved interactive functionality (2.3.10). The old line omitted that exception. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
 - **No prices or off-type text.** Screenshots and previews must not include prices, terms or descriptions that aren't specific to the metadata type (2.3.7). If the app has in-app purchases, screenshots and previews must make clear whether featured items need an extra purchase (2.3.2).
+- **Apple-designated recognitions:** do not include them in App Store assets, including earned App of the Day, Editor's Choice, App of the Year or Apple Design Award recognitions. The supplied screenshot guide and Scrnsht Studio article recommend awards as trust signals; Apple's asset guidance takes precedence over that general advice. [https://developer.apple.com/app-store/asset-best-practices/; app-store-screenshots, SKILL.md, Visual Design Principles; Scrnsht Studio, How to Make Your App Store Screenshots Convert (With These 7 Principles).md, principle 6]
+- **Apple-provided product images:** keep them unmodified under Apple's usage guidelines. Do not add shadows, highlights or reflections, crop, tilt, obstruct, animate or make elements break out of that artwork. The supplied screenshot guides prescribe some of these treatments; that does not grant permission to modify Apple's assets. This restriction concerns Apple-provided product artwork, not a blanket rule about every separately authorized generic frame or real capture. [https://developer.apple.com/app-store/marketing/guidelines/; app-store-screenshots, SKILL.md, Phone framing; aso-appstore-screenshots, SKILL.md, Breakout elements]
 
 ## App icon
 
@@ -54,17 +58,20 @@ Source: [eronred].
 
 | Slot | Content |
 |---|---|
-| 1 | The hook: benefit headline plus key UI, a before/after, social proof plus UI, or the problem statement. Never "Welcome to [App]", login or signup, or settings. |
+| 1 | The hook: benefit headline plus key UI, a before/after, or the problem statement. Any proof must follow the store-specific asset rules above. Never "Welcome to [App]", login or signup, or settings. |
 | 2 to 3 | The two most compelling features |
 | 4 to 7 | One feature each: `[Benefit Headline] + [Feature UI] + [Supporting Detail]` |
-| 8 to 9 | Trust and differentiation |
-| 10 | CTA ("Start your free trial", "Join [X] million users") |
+| 8 to 9 | Trust and differentiation within the store-specific asset rules above |
+| 10 | A closing benefit or further real features, within the store-specific asset rules above |
+
+The old [eronred] slot plan proposed social proof and a trial or millions-of-users CTA. Google's screenshot guidance recommends excluding testimonial, store-performance and CTA material; Apple's asset guidance excludes Apple-designated recognitions. Use the compliant closing alternatives from [app-store-screenshots, copy-ideas.md, Closer], not a universal proof/CTA slot. [https://support.google.com/googleplay/android-developer/answer/9866151?hl=en; https://developer.apple.com/app-store/asset-best-practices/]
 
 - **Overlays:** benefit headlines of 4 to 6 words, at least 60 px font, high contrast, consistent fonts. Not feature names ("Push Notifications"), paragraphs or busy backgrounds.
 - **Visual:** real content (no lorem ipsum), modern device frames or frameless, dark mode if the app supports it. Portrait for most apps; landscape for games, video and productivity.
-- **Localize:** translate overlays, consider right-to-left layouts for Arabic and Hebrew, show local currency on pricing screenshots.
+- **Localize:** translate overlays and consider right-to-left layouts for Arabic and Hebrew [eronred]. The old line also recommended local currency on pricing screenshots; instead apply Apple's qualified 2.3.7 metadata rule above and review the actual localized app capture and overlay separately. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata; app-store-screenshots, copy-ideas.md, Localization notes]
 - **Deliverable:** per slot `Slot [N]: [Headline] / Caption / Screen / Layout / Key element`, a design brief, and an audit table of competitors' screenshots ("Look at the top 10 apps in your category. Note what their first screenshot shows" [ApparenceKit](https://apparencekit.dev/blog/aso-flutter-app-store-optimization/)).
 - **Counts across stores:** up to 10 per language on iOS; 2 to 8 on Play (Google: at least two to publish, up to 8 per device type).
+- **Art direction is optional:** the incoming source puts headlines in the top 30 to 40% of the canvas; Google's highly recommended tagline limit is 20% ([ANDROID.md](ANDROID.md#graphic-assets)). Keep store constraints ahead of that author recipe, and choose a brand-appropriate direction from [SCREENSHOT-STYLES.md](SCREENSHOT-STYLES.md). [app-store-screenshots, SKILL.md, Headlines dominate; https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
 
 ## App preview specs (App Store)
 
@@ -114,7 +121,8 @@ Source: [eronred].
 ## Prove it
 
 - Every screenshot is .png or .jpeg without alpha, at a size in the table, with at least one iPhone Dynamic Island (medium) shot and, for iPad apps, one 13-inch shot.
-- Screenshot 1 shows the app in use with a benefit headline, not a splash, login or welcome screen; no screenshot shows a price, another platform, or real personal data.
+- Screenshot 1 shows the app in use with a benefit headline, not a splash, login or welcome screen; screenshots satisfy the qualified price/off-type, platform, fictional-data and asset-usage rules above. The old check said no screenshot could show any price; retain Apple's 2.3.7 qualifier rather than extending it into a blanket ban on prices inside real app UI. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]
+- A produced screenshot deck passes [SCREENSHOT-PRODUCTION.md](SCREENSHOT-PRODUCTION.md#prove-it), including the final exported images and intended locales. [aso-appstore-screenshots, SKILL.md; app-store-screenshots, template/src/lib/export-assets.ts; template/src/lib/export-render.ts]
 - Every preview is 15 to 30 s, at most 30 fps, under 500 MB, at an accepted resolution, built only from screen captures, with no download CTA; its paused frame reads well.
 - The icon is a 1024×1024 PNG with no transparency or rounded corners and stays recognisable at 60×60.
 - Header and search assets match the 2.3.14 sizes, carry no pricing, and were checked in the preview tool.

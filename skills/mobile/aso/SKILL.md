@@ -1,6 +1,6 @@
 ---
 name: aso
-description: "Optimizes App Store and Google Play listings: the ASO audit and its checks, keyword research, metadata per store with every field limit, localization and category, the icon, screenshots and preview videos, custom product pages, product page optimization and store listing experiments, in-app events, App Clips and featuring, competitor and market tracking, seasonal changes, rating prompts and review replies, and Play-specific ASO. Use when auditing or rewriting a store listing, choosing keywords, planning screenshots or a preview, setting up a custom product page, A/B test or in-app event, tracking competitors, or raising an app's rating."
+description: "Optimizes App Store and Google Play listings: the ASO audit and its checks, keyword research, metadata per store with every field limit, localization and category, the icon, screenshots and preview videos, resumable screenshot production with capture assessments and 18 optional art directions, custom product pages, product page optimization and store listing experiments, in-app events, App Clips and featuring, competitor and market tracking, seasonal changes, rating prompts and review replies, and Play-specific ASO. Use when auditing or rewriting a store listing, choosing keywords, producing screenshots or a preview, setting up a custom product page, A/B test or in-app event, tracking competitors, or raising an app's rating."
 ---
 
 # ASO
@@ -14,6 +14,8 @@ App store optimization decides two numbers: how often the app appears in search 
 | Third-party conversion, rating, screenshot, video, custom page and event benchmarks with their sources | [BENCHMARKS.md](BENCHMARKS.md) |
 | Field limits per store, what is indexed, keyword research and scoring, name, subtitle, keyword field, description, promotional text, metadata rejection rules, localization, category | [KEYWORDS-AND-METADATA.md](KEYWORDS-AND-METADATA.md) |
 | The icon, screenshot sizes and slot strategy, app preview specs and strategy, product page header and search assets | [VISUALS.md](VISUALS.md) |
+| Resuming screenshot work, discovering benefits, assessing and pairing real captures, connected-canvas composition, localization and final-image QA | [SCREENSHOT-PRODUCTION.md](SCREENSHOT-PRODUCTION.md) |
+| Choosing among 18 optional screenshot art directions while keeping the real app and approved brand design | [SCREENSHOT-STYLES.md](SCREENSHOT-STYLES.md) |
 | Custom product pages, product page optimization, how to run a store test, in-app events, App Clips, getting featured | [PRODUCT-PAGES.md](PRODUCT-PAGES.md) |
 | Competitor analysis and weekly tracking, market movers and pulse, seasonal ASO, trending moments, the Appeeky reference | [COMPETITORS-AND-MARKET.md](COMPETITORS-AND-MARKET.md) |
 | How each store treats ratings, when to prompt, the iOS and Play prompt APIs and quotas, replying to reviews, recovering a rating | [RATINGS-AND-REVIEWS.md](RATINGS-AND-REVIEWS.md) |
@@ -35,7 +37,7 @@ Source: [eronred].
 
 1. **Check every field against the official limit:** Apple name and subtitle 30, keywords 100 (bytes in App Store Connect Help, characters on Apple's marketing pages: count bytes), promotional text 170, description 4000; Play name 30, short description 80, full description 4000.
 2. **Spend each indexed character once:** no word repeated across the name, subtitle, keyword field and category; keywords comma-separated with no spaces; no app name, company name, "app", plurals of included words, or filler.
-3. **Never game the metadata:** no trademarks, competitor or other-platform names, prices, ranking claims ("#1", "Best") or unverifiable claims in names, subtitles, keywords, screenshots, previews or event copy (Apple 2.3.7, 2.3.10; Google's metadata policy).
+3. **Never game the metadata:** no keyword stuffing, misleading competitor references, ranking claims or unverifiable claims. Apply the store-specific rules in [KEYWORDS-AND-METADATA.md](KEYWORDS-AND-METADATA.md), [VISUALS.md](VISUALS.md#rules-for-every-asset) and [ANDROID.md](ANDROID.md#metadata-policy). The old summary banned every price and other-platform reference in every asset; Apple's 2.3.7 qualifies prices/off-type text by metadata type, and 2.3.10 includes an exception for specific approved interactive functionality. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata; https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
 4. **Research keywords per market with data;** never translate the primary list and never guess popularity.
 5. **Show the app in use, first:** screenshot 1 and the first seconds of a muted, autoplaying preview carry the decision; previews only from screen captures of the app.
 6. **Test one change at a time** and apply a treatment only once the store reports the confidence it requires (Apple: at least 90%).
@@ -44,4 +46,4 @@ Source: [eronred].
 
 ## Prove it
 
-Every locale's fields fit the official limits with no repeated words across the indexed fields; no metadata or asset contains a price, ranking claim, competitor or other-platform name; every keyword choice has a data source; screenshot 1 shows the app in use; every running test changes one thing; rating prompts fire only after the activation event and within the quota; and each file's own Prove it checks pass for the parts you touched.
+Every locale's fields fit the official limits with no repeated words across the indexed fields; metadata and assets pass the store-specific rules linked above, including Apple's qualified price/off-type rule; every keyword choice has a data source; screenshot 1 shows the app in use; every running test changes one thing; rating prompts fire only after the activation event and within the quota; and each file's own Prove it checks pass for the parts you touched. The old summary's blanket price ban is replaced by the official 2.3.7 scope. [https://developer.apple.com/app-store/review/guidelines/#accurate-metadata]

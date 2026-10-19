@@ -1,11 +1,11 @@
 ---
 name: reverse-engineering
-description: "Investigates shipped JavaScript and Electron artifacts and observed web features with REA: target identity, scoped static analysis, runtime observation, captures, version comparison and evidence coverage. Use when ordinary source is missing, a shipped package differs from source, or a feature needs artifact or runtime evidence."
+description: "Investigates shipped JavaScript, Electron, Flutter APK, WASM and SQLite artifacts and observed web features with REA: scoped analysis, source recovery, runtime observation, captures, version comparison and evidence coverage. Use when ordinary source is missing, a shipped package differs from source, or a feature needs artifact or runtime evidence."
 ---
 
 # Reverse engineering
 
-From [morluto/rea, reverse-engineer-anything], checked against the project's current [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified JS/Electron artifact or web feature. Ordinary complete-source investigation belongs in [debugging](../debugging/SKILL.md) and [agent source research](../../ai-agents/agent-harness/CODE-RESEARCH.md).
+From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. Ordinary complete-source investigation belongs in [debugging](../debugging/SKILL.md) and [agent source research](../../ai-agents/agent-harness/CODE-RESEARCH.md).
 
 | The job | Read |
 |---|---|
@@ -13,6 +13,9 @@ From [morluto/rea, reverse-engineer-anything], checked against the project's cur
 | Rebuild a live component, section or animation with the source's exact visuals and behavior | [pixel-reverse-engineer](../pixel-reverse-engineer/SKILL.md) |
 | Connect an available tool surface or repair an observed blocker | [CONNECTION.md](CONNECTION.md) |
 | Analyze an ASAR or JS tree, page modules, trace a feature or compare versions | [JAVASCRIPT.md](JAVASCRIPT.md) |
+| Export captured website scripts, map source positions or trace native imports | [CAPTURED-SOURCES.md](CAPTURED-SOURCES.md) |
+| Identify a Flutter APK build or inspect bounded Dart AOT facts | [FLUTTER-ARTIFACTS.md](FLUTTER-ARTIFACTS.md) |
+| Inspect local WASM interfaces or a coherent SQLite database/WAL snapshot | [OFFLINE-ARTIFACTS.md](OFFLINE-ARTIFACTS.md) |
 | Observe a user action, perform a declared scenario or reconcile static/runtime evidence | [RUNTIME.md](RUNTIME.md) |
 | Inspect saved captures, retained records, unknowns and finite comparisons | [CAPTURES-AND-EVIDENCE.md](CAPTURES-AND-EVIDENCE.md) |
 
@@ -32,6 +35,7 @@ From [morluto/rea, reverse-engineer-anything], checked against the project's cur
 - Installing this skill does not register an MCP server or install analysis engines. [morluto/rea, reverse-engineer-anything/SKILL.md]
 - Summary delivery does not by itself reduce analysis work; exact source selection does. [morluto/rea, reverse-engineer-anything/references/javascript-applications.md]
 - A static module or source-map match does not prove that module executed. [morluto/rea, reverse-engineer-anything/references/runtime-observation.md]
+- An Electron target can use an unpacked application directory rather than `app.asar`. The supplied REA article said every Electron app kept its code in one ASAR; inspect the actual layout. [Electron packaging](https://github.com/electron/electron/blob/main/docs/tutorial/application-distribution.md); [art, rea article.md]
 
 ## Prove it
 

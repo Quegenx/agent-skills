@@ -59,6 +59,8 @@
 - Describe source selection, partial coverage and unknowns separately from result pagination. An exhausted page is not evidence that the producer examined everything.
 - A shared producer has an explicit key, owner, invalidation and lifetime. One cancelled waiter must not cancel a successful peer or erase completed observations.
 - Retain resource ownership/capacity until shared work and cleanup settle. Cancellation of one caller's wait is different from cancellation of the owned producer.
+- Retry unresolved cleanup through the exact retained resource owners. Only that owner's confirmed release resolves its cleanup uncertainty; keep the earlier failure and completed observations. Release child descriptors before removing their containing root, retaining the composite owner if either stage fails so a retry preserves that order.
+- Preserve the caller's abort reason separately from physical failures and cleanup ownership, including through error wrapping. Cancellation observed after provider completion still keeps that reason; client cancellation alone does not prove the owned work stopped.
 - Distinguish observed process exit from output closure or descendant settlement. Do not infer one lifecycle boundary merely because another completed.
 - Keep existing deferred-tool routing above. The source's broad catalog preferences are a tagged design view, not a reason to remove measured tool-search guidance.
 
@@ -138,3 +140,4 @@ A tool that fetches a URL the model or a user supplied resolves the address firs
 - Selection, valid input shape, result completeness and continuation each have one owner.
 - A partial response retains its exact continuation handle and scope; an unread page cannot yield a complete answer.
 - Validating shape does not substitute for authorization or intent, and a refused call carries its real next-step reason.
+- Cleanup retries retain exact owners and child-before-root ordering; cancellation keeps the caller's reason without erasing completed observations or an earlier failure. [morluto/rea, docs/tool-design.md]

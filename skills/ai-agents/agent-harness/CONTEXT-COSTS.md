@@ -43,6 +43,8 @@ Reduce what an agent repeatedly reads while preserving the evidence and constrai
 - Check attribution: does the target still exist and carry the candidate edit, has someone changed it since, or was it never fingerprinted? Do not assign an old delta to an intervention the current evidence no longer identifies.
 - A local result remains scoped to its fixture. It does not establish production savings or a causal rollout outcome. Use [agent-evals](../agent-evals/SKILL.md) for the shared comparison and guardrail definitions.
 
+For an autonomous loop, compare **cost per accepted result**: the time, compute and human review needed to produce a verified, useful change. Counts of agents, prompts or candidate patches are activity, not accepted outcomes. Use the measurement basis above rather than treating token use alone as the result. [supplied article, How to Build AI Loops That Are Replacing Prompt Engineering.md, section 7]
+
 ## Data handling
 
 [JuliusBrussee/caveman, caveman-compress/SECURITY.md and caveman-evidence-review/SKILL.md]
@@ -59,3 +61,4 @@ Reduce what an agent repeatedly reads while preserving the evidence and constrai
 - The original can be recovered exactly, and any offloaded context has a working pointer and retrieval path.
 - The after figure includes recall overhead, and structural checks are not reported as semantic equivalence.
 - Quality, resource result, attribution and decision are reported separately; no fixture result becomes an unsupported production or monetary claim.
+- A loop comparison accounts for time, compute and human review against accepted, verified outcomes, rather than only generated candidates. [supplied article, How to Build AI Loops That Are Replacing Prompt Engineering.md, section 7]

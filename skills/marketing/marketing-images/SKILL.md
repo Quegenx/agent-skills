@@ -53,6 +53,8 @@ Marketing images split into what a model may draw and what it may not. A model m
 
 landing-page-ui does the same on the owner's sites: "**Show the real product.** Every claim sits beside a screen of the real app with demo data" ([landing-page-ui SKILL.md](../../frontend/landing-page-ui/SKILL.md)). Use demo-safe data on every screen.
 
+For store decks, use [ASO's screenshot production workflow](../../mobile/aso/SCREENSHOT-PRODUCTION.md) for benefit/capture pairing, approvals and final-image QA, and [its 18 optional art directions](../../mobile/aso/SCREENSHOT-STYLES.md) for the surrounding artwork. [aso-appstore-screenshots, SKILL.md; app-store-screenshots, SKILL.md; style-prompts.md]
+
 ## Blog heroes and social graphics
 
 [coreyhaines31/marketingskills, image]

@@ -50,14 +50,14 @@ Do not impose a target number of findings or fill empty report sections. When no
 
 ## Tags and output
 
-- **Each finding is tagged Important, Nit, or Pre-existing,** so a bug the PR didn't introduce doesn't look like the author's fault.
-- **Status is its own axis** beside the tag: `Introduced`, `Regression` or `Pre-existing`, decided "by cause, not by location", with at most three `Pre-existing` findings, a `Before` and `After` on each row and unrendered claims marked **Not verified** [Jakub Krehel, interface-review]. Definitions, the `git blame` check and the report shape are in [CHANGE-SCOPE.md](CHANGE-SCOPE.md#status-by-cause).
+- **Each finding has P0 to P3 severity** using the impact scale below. The old Important/Nit labels become severity by evidenced impact; Pre-existing remains origin, not a severity. [repository owner, severity convention]
+- **Status is its own axis** beside severity: `Introduced`, `Regression` or `Pre-existing`, decided "by cause, not by location", with at most three `Pre-existing` findings, a `Before` and `After` on each row and unrendered claims marked **Not verified** [Jakub Krehel, interface-review]. Definitions, the `git blame` check and the report shape are in [CHANGE-SCOPE.md](CHANGE-SCOPE.md#status-by-cause).
 - **One row per root cause:** before posting, re-open what each finding cites and merge findings that share a root cause into one [fluid-functionalism, stack-audit.md].
 - **Sorted by severity,** inline on the line it's about, with the file and line as evidence.
 - **Flag the class of bug,** so the author fixes every instance, not one line.
 - **The summary starts with a count** and says plainly when there's nothing to fix.
 - **For a per-file verdict** (clean, minor, inflated, unneeded, blocker), use the output table in [anti-slop-code](../../anti-ai-slop/anti-slop-code/SKILL.md).
-- **A UI review ranks by user impact instead.** Vercel's product-design skill: "Lead with findings, ordered by user impact." "For each finding include: file/line or rendered location, verification status, canonical source, user consequence, and smallest concrete fix." Its scale:
+- **The shared impact scale** follows Vercel's product-design skill: "Lead with findings, ordered by user impact." "For each finding include: file/line or rendered location, verification status, canonical source, user consequence, and smallest concrete fix." Use its P0 to P3 scale across reviews under the owner's convention:
   - "**P0:** blocks the primary task, creates severe accessibility failure, or can cause unrecoverable user harm."
   - "**P1:** likely task failure, misleading consequence, missing critical state, or major responsive/accessibility defect."
   - "**P2:** meaningful friction, inconsistency, weak hierarchy, or recoverability issue."
@@ -71,7 +71,7 @@ Review the diff on this branch against main.
 List only problems you'd block the merge for. For each one, give the file and line, why it's wrong, and how to show it fails.
 ```
 
-To review code, or to explain a PR to someone reviewing your code, render it as an HTML page: the diff with margin annotations attached to specific lines, tagged blocking, nit and nice.
+To review code, or to explain a PR to someone reviewing your code, render it as an HTML page: the diff with margin annotations attached to specific lines, ranked P0 to P3 with origin/status separate. [repository owner, severity convention]
 
 ```prompt
 Help me review this PR by creating an HTML artifact that describes it. I'm not very familiar with the streaming/backpressure logic, so focus on that. Render the actual diff with inline margin annotations, color-code findings by severity and whatever else might be needed to convey the concept well.
@@ -117,6 +117,6 @@ A long security review in one context can stop early and declare the job done af
 
 ## Prove it
 
-CLAUDE.md is short and points to other docs; REVIEW.md names what failure looks like, caps nits, lists paths to skip and asks for file-and-line evidence and a summary that starts with a count; a check shows the reviewer follows REVIEW.md; every posted finding passed the vote, carries an Important, Nit or Pre-existing tag and a file and line; and branch protection blocks merge while any bug-review or security-review thread is open.
+CLAUDE.md is short and points to other docs; REVIEW.md names what failure looks like, caps nits, lists paths to skip and asks for file-and-line evidence and a summary that starts with a count; a check shows the reviewer follows REVIEW.md; every posted finding passed the vote, carries P0 to P3 severity, separate origin/status and a file and line; and branch protection blocks merge while any bug-review or security-review thread is open.
 
 Each material finding also has a reachable trigger, violated rule and consequence, with observed/source-supported/hypothesis evidence distinguished. A no-finding report stays scoped and names important unperformed checks. [Milan Jovanovic, more skills/evidence-first-review]

@@ -83,7 +83,7 @@ Treat a review as read-only. "Do not edit source unless the user also asks you t
 
 ## Change reviews
 
-[Jakub Krehel, better-interface] A request that names a branch, pull request, commit range or uncommitted changes is a change review: "Never resolve a change scope yourself, because a guessed diff gives the report a scope nobody can check." The source hands those to its `interface-review` skill; here the change review is [REVIEWER.md](../../architecture/code-review/REVIEWER.md), whose findings are tagged Important, Nit or Pre-existing. When a UI pass runs inside one, "The cap and the verdict cover `Introduced` and `Regression` findings only, so a change whose only findings are `Pre-existing` is an `Approve`."
+[Jakub Krehel, better-interface] A request that names a branch, pull request, commit range or uncommitted changes is a change review: "Never resolve a change scope yourself, because a guessed diff gives the report a scope nobody can check." The source hands those to its `interface-review` skill; here the change review is [REVIEWER.md](../../architecture/code-review/REVIEWER.md#tags-and-output), with P0 to P3 severity and a separate [status by cause](../../architecture/code-review/CHANGE-SCOPE.md#status-by-cause). When a UI pass runs inside one, "The cap and the verdict cover `Introduced` and `Regression` findings only, so a change whose only findings are `Pre-existing` is an `Approve`."
 
 ## Output
 

@@ -20,6 +20,7 @@ Use the numbers as a starting point, not a quota: classify recent bugs by the sm
 [morluto/rea, rea-analysis-optimization/SKILL.md; rea-ci-tests-audit/SKILL.md]
 
 - Choose an oracle independent of the changed producer: source-built expectations, independently mapped bytes or a producer whose interpretation is checked separately. Two wrappers sharing one faulty decoder can agree while both are wrong.
+- If an oracle's normalization or comparison has a demonstrated blind spot, repair it and re-audit earlier accepted results that relied on it. Matching instructions can hide changed values at referenced addresses; the comparison must check the consequential data as well. Keep the earlier acceptance and the repaired check's actual coverage separate, and run only the verification authorized for the task. [art, rea article.md]
 - Separate fake-producer, boundary and actual-provider evidence. A fixture or fake engine does not establish the corresponding real provider's behavior.
 - Preserve intentionally malformed/adversarial fixtures and their expected rejection. Updating every fixture to become valid can delete the behavior the suite exists to protect.
 - A missing required test/report must not become a green result. Optional lanes may skip only with their stated prerequisites and limits recorded.

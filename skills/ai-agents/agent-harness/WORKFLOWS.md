@@ -83,7 +83,7 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 - **Track rounds-to-pass alongside recall.** With these changes, passing after one round rose from 65% to 78%, needing five or more rounds fell from 8.9% to 1.5%, and the mean reviews to pass fell from 2.08 to 1.32.
 - **Noise costs more when the author is an agent:** a person waves off a nit in seconds; an agent fixes it, which is another commit and another round. Several agents look for bugs at once, a separate group votes on each finding, and it is posted only if enough agree it is real; findings only about style, diagnostics or cleanup are dropped. A/B test such filters on your own work before keeping them.
 - **A person's change request goes back to the author's session:** when the human reviewer asks for changes, "the agent resumes its session and addresses them".
-- **Tag each finding** Important, Nit or Pre-existing and sort by severity, so a bug the change didn't introduce doesn't look like the author's fault.
+- **Tag severity and origin separately:** use the shared [P0 to P3 scale](../../architecture/code-review/REVIEWER.md#tags-and-output), and mark a pre-existing issue separately so a bug the change didn't introduce doesn't look like the author's fault. The old labels mixed Important/Nit severity with Pre-existing origin. [repository owner, severity convention]
 
 ## Which model each agent uses
 

@@ -10,6 +10,7 @@ From [morluto/rea, reverse-engineer-anything/references/javascript-applications.
 - Source selection retains the artifact inventory but limits source reading and analysis. Outside-scope relationships remain unknown. Summary detail changes delivery, not the underlying analysis boundary.
 - Exact package imports-map aliases can resolve to package-local files. Wildcard, recursive and external-package alias targets retain their unresolved limitations.
 - Optional recover_javascript_sources requires its advertised external provider and explicit inputs. Additional shared/runtime/lazy files retain their own digests and byte provenance. Recovered code and source maps are not evidence of execution.
+- Wakaru recovery uses selected input snapshots and an absent output directory, preserving per-input UTF-8 byte ranges, engine identity, transform choices and producer reports. It does not overwrite an existing output or establish original names, map accuracy or runtime equivalence. Follow the connected adapter's supported host/profile rather than assuming the recovery engine runs everywhere. [morluto/rea, docs/javascript-recovery.md]
 - Resource-limited or cancelled analysis can retain completed facts and partial Evidence. Inspect source coverage, limits and unknown scopes before retrying; a limit does not prove malformed source.
 
 ## Read the retained analysis
@@ -23,6 +24,7 @@ From [morluto/rea, reverse-engineer-anything/references/javascript-applications.
 - If a client truncates a successful response, use smaller retained views or export the complete record. An incomplete preview is not canonical JSON.
 - A transport resource_constraint can provide an Evidence reference. Recover that record instead of producing the same oversized analysis again.
 - Retained references have session lifetime. Export before close when evidence must survive; another connection needs a portable complete record.
+- For exact retained file/native facts, use the advertised `javascript-facts` view with exact paths and selected property keys. Keep each node/observation pair together; omitted properties, retained nulls and unavailable processing scopes have different meanings. These views do not reopen files or include every semantic relationship. [morluto/rea, docs/javascript-application-workflows.md]
 
 ## Trace the remaining question
 
@@ -33,6 +35,15 @@ From [morluto/rea, reverse-engineer-anything/references/javascript-applications.
 - BrowserWindow options, preload/contextBridge surfaces, IPC registrations, utility processes and native binding requests are static observations. Dynamic or ambiguous channels stay unresolved; a requested native member is not a verified native export.
 - Only a unique exact literal IPC channel supports an inferred pairing. State that it is inferred and retain coverage limitations.
 
+## Query semantic relationships
+
+[morluto/rea, docs/javascript-application-workflows.md]
+
+- When advertised, use `trace_javascript_semantics` on the authenticated companion semantic graph for backward provenance, forward influence, callers or ownership. Select a returned node/fingerprint or literal, property, endpoint, event or boundary-field seed appropriate to the question.
+- The graph can retain static definition/read/write, call, argument/return, asynchronous, event/timer, configuration and resource relationships. Missing companion data, unsupported shapes and unresolved dynamic effects remain explicit unknowns.
+- `resolved` identifies a unique admitted static target, not a path that executed. Candidate dynamic edges are excluded by default; opting in preserves ambiguity and partial coverage. Structural reachability, semantic influence, runtime observation and causal proof remain separate claims.
+- Read actual retained properties rather than decoding display labels or identity strings. Reanalyze after analyzer corrections and use the IDs returned by that selected graph; a fingerprint remains a static comparison candidate, not behavioral-equivalence proof.
+
 ## Compare versions
 
 [morluto/rea, reverse-engineer-anything/references/javascript-applications.md]
@@ -41,6 +52,15 @@ From [morluto/rea, reverse-engineer-anything/references/javascript-applications.
 - Added/removed requires complete opposite-side coverage. Otherwise report unknown.
 - For one exported callable's returned shape, use compare_javascript_export_shapes with explicit module paths and export names. Inspect property inventories and presence separately from unresolved values.
 - Accept variant pairing only under the tool's supported exact discriminant. Static shape inference does not establish runtime behavior; use scoped runtime evidence when behavior is the question.
+
+## Compare historical source with a bundle
+
+[morluto/rea, docs/cli.md; docs/javascript-application-workflows.md]
+
+- `import-reference-source` records a committed historical-source inventory separately from the current artifact. Its summary changes presentation, not the examined source, and is not the full graph consumed by `compare_source_to_bundle`.
+- Preserve source hashes, unreadable entries, parser failures and ignore/exclusion reasons. A recorded nearest Git HEAD does not prove the working tree matched it; exclusions and unavailable children leave source coverage partial.
+- Compare the authenticated full historical graph with application Evidence. Exact content wins over path inference; weak basename, extension or Unicode-equivalent spelling does not force a mapping. Keep split/merged/duplicate candidates and ambiguity explicit.
+- A removal requires complete historical and application inventories. Static source-to-bundle correspondence does not establish runtime loading or semantic equivalence.
 
 ## Prove it
 

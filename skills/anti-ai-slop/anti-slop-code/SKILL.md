@@ -9,6 +9,11 @@ The cost of writing code collapsed; the cost of reading it didn't. Code that's s
 
 Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md) agent (Apache-2.0), tagged [Anthropic, code-simplifier]; React Doctor's `deslop` skill, which is that agent's text with additions (indirection, inlining single-use functions, leftover scaffolding, consolidating duplicates with truffler), tagged [React Doctor, deslop] for the additions only; and React Doctor's `find-similar-functions`, which comes from the [truffler](https://github.com/rayhanadev/truffler) repo (MIT), tagged [React Doctor, find-similar-functions]. React Doctor's `deslop` is not Nimblesite's Deslop duplicate finder; RULES.md tells the two apart.
 
+| The job | Read |
+|---|---|
+| Review or remove code slop without changing behavior | [RULES.md](RULES.md) |
+| Use FixMySlop when selected, with its rule controls, baseline and source-version limits | [FIXMYSLOP.md](FIXMYSLOP.md) |
+
 ## Guardrails
 
 - **Behavior stays the same** unless you're fixing a clear bug, and then you say so. A cleanup that changes behavior is a new bug.
@@ -21,7 +26,7 @@ Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github
 
 In order of damage (details and examples in [RULES.md](RULES.md)):
 1. **Looks done but isn't:** placeholder logic behind a confident name, mocked or hard-coded data in a real path, `// TODO: implement`, swallowed errors, silent fallbacks that hide a broken invariant, calls to functions or APIs that don't exist.
-2. **Defense in the wrong places:** generic try/catch that only logs, null checks on values the types guarantee, while external calls have no timeout, retries no backoff, payments no idempotency key, shared state no lock or unique constraint.
+2. **Defense in the wrong places:** generic try/catch that only logs, guards redundant under an established runtime contract (see [Impossible null checks](RULES.md#defense-in-the-wrong-places)), while external calls have no timeout, retries no backoff, payments no idempotency key, shared state no lock or unique constraint. [TypeScript everyday types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
 3. **Tests that can't fail:** everything mocked, "doesn't throw" assertions, tests that re-compute the implementation, snapshots in place of behavior.
 4. **Over-engineering:** interfaces with one implementation and no second planned, classes wrapping one function, wrappers called once that only delegate, single-use functions that a name doesn't make clearer, leftover scaffolding and unused exports, new dependencies for what an existing one or the standard library does, config and options nobody uses.
 5. **Structure:** spaghetti growth (one-off conditionals in unrelated flows, flag parameters, special cases inside busy functions), logic in the wrong layer, duplicated helpers (search with 3-6 queries, reuse only what passes the four-part test, then re-search), files pushed past a healthy size, deep nesting that early returns would flatten.
@@ -64,7 +69,7 @@ I checked for existing symbols with `truffler` using queries like `normalize`, `
 I searched with `truffler` for `parse`, `config`, and `loadConfig` across `src/`; the matches were unrelated, so I added a new helper in the nearest module.
 ```
 
-**Review:** start with a count of findings, and say plainly when there's nothing to fix. Then findings most damaging first, one per root cause, each with `file:line` (read, not guessed from a name), the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. Tag each **Important**, **Nit** or **Pre-existing**, so a bug the change didn't introduce doesn't look like the author's fault. Name the class of bug, so the author fixes every instance, not one line. End with a per-file verdict:
+**Review:** start with a count of findings, and say plainly when there's nothing to fix. Then findings most damaging first, one per root cause, each with `file:line` (read, not guessed from a name), the problem, why it costs (a reader, a failure mode, a maintenance burden) and the concrete fix. Use [P0 to P3 severity](../../architecture/code-review/REVIEWER.md#tags-and-output), and record **Pre-existing** separately as a [status by cause](../../architecture/code-review/CHANGE-SCOPE.md#status-by-cause), so a bug the change didn't introduce doesn't look like the author's fault. The old output mixed **Important**, **Nit** and **Pre-existing** as alternative tags; impact and origin are separate. Name the class of bug, so the author fixes every instance, not one line. End with a per-file verdict:
 
 | File | Verdict | Main findings | Action |
 |---|---|---|---|

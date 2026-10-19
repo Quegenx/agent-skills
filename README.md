@@ -105,10 +105,10 @@ Each gate writes a file in `films/<slug>/` (`brief.md`, `style-guide.md`, `audio
 Start with `anti-slop`; it holds the shared rules and routes to the others.
 
 - **[anti-slop](./skills/anti-ai-slop/anti-slop/SKILL.md)**: The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies.
-- **[anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md)**: Voice-preserving prose and developer docs, evidence-based audits and Hebrew language guidance.
+- **[anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md)**: Voice-preserving prose, evidence-based audits, Hebrew guidance and developer docs checked against actual commands and files.
 - **[anti-slop-copy](./skills/anti-ai-slop/anti-slop-copy/SKILL.md)**: Grounded product copy, point edits, shared context, review panels and source-attributed alternatives. Research-to-copy traceability, scoped headline exploration and truthful early-stage proof handling.
-- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, component states, responsive/RTL behavior and correctly scoped WCAG contrast. Source-qualified numeric stacking limits. Routes live component reconstruction to pixel-reverse-engineer.
-- **[anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md)**: Behavior-preserving code cleanup, duplication pointers and runtime-qualified defensive checks.
+- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, product-specific concepts, honest chart data, component states, responsive/RTL behavior and scoped WCAG contrast. Routes exact reconstruction to pixel-reverse-engineer.
+- **[anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md)**: Behavior-preserving cleanup, duplication pointers, runtime contracts and optional FixMySlop scans with manual triage.
 
 ## AI agents
 
@@ -116,7 +116,7 @@ Building agents that stay reliable, and the AI features around them. Start with 
 
 | Skill | Covers |
 |---|---|
-| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Agent loops, tools, history, source research, authority binding, evidence coverage and shared-resource cancellation. |
+| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Agent loops, tools, history, source research, authority binding, evidence coverage, exact cleanup ownership and cost per accepted result. |
 | [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Real-agent evals, calibrated judges, review taxonomies, managed/local boundaries, DeepEval and evidence-based documentation audits. |
 | [skill-authoring](./skills/ai-agents/skill-authoring/SKILL.md) | Skill structure, routing, descriptions, reference organization, pressure scenarios and measured improvements. |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Long-term memory, evidence-based preference extraction, consolidation, retrieval, expiry and user controls. |
@@ -165,11 +165,11 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [system-migration](./skills/architecture/system-migration/SKILL.md) | Incremental ports, legacy replacement, dependency changes and jscpd function maps with behavior evidence. |
 | [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving changes, typed errors, deep modules, duplication and dependency-usage audits. Behavior-preserving validation, typestate and undo tradeoffs. |
 | [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets. JavaScript midpoint coercion and source-qualified numeric budgets. |
-| [testing](./skills/architecture/testing/SKILL.md) | Behavior tests, real infrastructure, independent oracles, provider evidence and deliberate malformed fixtures. Equivalent mutants and strike-lookahead coverage. |
-| [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based code review, repository/security audits, browser boundaries, scanner triage and Ultracite. Reachable failure paths, evidence levels and scoped no-finding reports. |
+| [testing](./skills/architecture/testing/SKILL.md) | Behavior tests, real infrastructure, independent oracles and re-auditing results after oracle faults; provider, malformed-fixture and mutation evidence. |
+| [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based code review, consistent P0 to P3 severity, repository/security audits, browser boundaries, scanner triage and Ultracite. Reachable failure paths, evidence levels and scoped no-finding reports. |
 | [debugging](./skills/architecture/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specifications, local work breakdown, decision maps, handoff plans, RFCs and human-only steps. |
-| [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | Shipped JS/Electron artifacts, scoped runtime observation, retained captures and version evidence; routes component reconstruction to pixel-reverse-engineer. |
+| [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and retained evidence; routes exact UI reconstruction to pixel-reverse-engineer. |
 | [pixel-reverse-engineer](./skills/architecture/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction from live DOM, CSS, assets, JavaScript and behavior. |
 
 ## Frontend
@@ -186,7 +186,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 | [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, semantic tokens, contrast, dark mode, gamut and color audits. |
 | [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Evidence-based exploded, orthographic and section drawings with dimensions and exports. |
-| [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance, audits and Remotion Player integration. |
+| [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance, audits with shared P0 to P3 severity and Remotion Player integration. |
 | [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages. |
 | [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
 | [app-ui](./skills/frontend/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
@@ -222,9 +222,9 @@ Detailed coverage is in the [Monitoring set README](./skills/monitoring/README.m
 | [dart](./skills/mobile/dart/SKILL.md) | Dart from dart.dev and the Dart team's skills: Effective Dart style, docs, usage and design, the Dart 3 language (records, patterns, class modifiers, extension types, primary constructors), async and isolates, core libraries (dates across daylight saving, maps, copying collections, JSON), versions, analysis and lints, packages and pub, testing, CLI apps, FFI. VM inline hints and measurement requirements. |
 | [app-store-connect](./skills/mobile/app-store-connect/SKILL.md) | Shipping to the App Store: the asc CLI, builds and signing, TestFlight and release, ad hoc distribution, the App Review Guidelines, a preflight checklist by app type, privacy manifests, ATT and account deletion, metadata and screenshots, pricing and subscriptions, in-app events, analytics and crashes; price-increase consent rules, the Small Business Program |
 | [google-play](./skills/mobile/google-play/SKILL.md) | Shipping to Google Play: the gplay CLI, builds, signing and target API deadlines, testing tracks and the 12-tester rule, staged rollouts, policy and Data safety, Android vitals, billing and purchase verification, pricing, the store listing, reviews and reports; the Subscriptions policy word for word, price-increase rules |
-| [aso](./skills/mobile/aso/SKILL.md) | App store optimization for both stores: audits, keywords and metadata, icons, screenshots and previews, custom product pages and experiments, in-app events, competitors and the market, ratings and reviews, Google Play specifics; an audit rubric and sourced benchmarks, Play promotional content |
+| [aso](./skills/mobile/aso/SKILL.md) | Store audits, keywords, metadata, icons, previews, product pages, experiments and reviews; screenshot production, localization, 18 style directions and store-specific asset rules. |
 | [app-growth](./skills/mobile/app-growth/SKILL.md) | Growing an app: launch, PR and referrals, analytics and attribution (ATT, AdAttributionKit, SKAdNetwork), onboarding, paywalls, retention and subscription offers, the Facebook SDK in Flutter with RevenueCat events, Apple Ads and its APIs, Google App campaigns, Meta and TikTok app ads, ad creatives, budgets and ROAS; onboarding and paywalls in their own files, Product Hunt from its own guide, FTC disclosure for creators, Apple referral rules, current Meta ad specs and Google Play fees |
-| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community Flutter UX and app polish from FlutterPro (Kamran Bekirov) and ApparenceKit, checked against the official docs: forms, keyboard and focus, navigation, sheets and route guards, scrolling and layout, images and typography, motion and haptics, painting and media, notifications and permissions, device features, forced updates and maintenance mode, Flutter web, formatting, theming and widget patterns, plus a find, pick, plan design review with a 42-rule catalog. Gesture arbitration, painter stability, notifications, scheduling and loader weights. |
+| [flutter-ux](./skills/mobile/flutter-ux/SKILL.md) | Community Flutter UX and app polish from FlutterPro (Kamran Bekirov) and ApparenceKit, checked against the official docs: forms, keyboard and focus, navigation, sheets and route guards, scrolling and layout, images and typography, motion and haptics, painting and media, notifications and permissions, device features, forced updates and maintenance mode, Flutter web, formatting, theming and widget patterns, plus a find, pick, plan design review with a 42-rule catalog and shared P0 to P3 review routing. Gesture arbitration, painter stability, notifications, scheduling and loader weights. |
 | [flutter-render-objects](./skills/mobile/flutter-render-objects/SKILL.md) | Custom RenderObjects from renderobjects.com (Matt Carroll), corrected against api.flutter.dev: layout, intrinsics and baselines, child models and parent data, painting, compositing and layers, hit testing and mouse cursors, semantics, show-on-screen, diagnostics, custom Elements, and three worked examples. Widget placements, lookup dependencies, clipping offsets and transform contracts. |
 
 ## Marketing
@@ -265,7 +265,7 @@ Marketing, SEO and GEO for web and SaaS products, from Corey Haines's marketings
 | [churn-prevention](./skills/marketing/churn-prevention/SKILL.md) | SaaS churn: cancel flows within ROSCA, a health score, dunning copy |
 | [onboarding-and-upgrades](./skills/marketing/onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts, scoped experiments and evidence-backed recovery cohort worksheets. |
 | [sms-marketing](./skills/marketing/sms-marketing/SKILL.md) | Lawful SMS/MMS/WhatsApp, consent, sequences and destination-specific template restrictions. Review incentives follow destination rules, including no Google review incentives. |
-| [marketing-images](./skills/marketing/marketing-images/SKILL.md) | Marketing images: choosing the method, prompting, sizes per platform. Actual-photo fidelity, reference decomposition and optional casual-phone prompts under existing generation policies. |
+| [marketing-images](./skills/marketing/marketing-images/SKILL.md) | Image methods, prompts and platform sizes; actual-photo fidelity, reference decomposition and casual-phone options. Routes store screenshot production to ASO. |
 | [marketing-video](./skills/marketing/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs |
 | [marketing-plan](./skills/marketing/marketing-plan/SKILL.md) | A 12-month AARRR marketing plan: intake, current-state rubric, budget, funding stages, market sizing, measurement, team and agencies, an example plan |
 | [marketing-loops](./skills/marketing/marketing-loops/SKILL.md) | Recurring marketing loops an agent runs on a durable scheduler: the loop template, state, guardrails, a 58-loop catalogue by funnel, SEO and outbound operators |
