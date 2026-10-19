@@ -61,7 +61,7 @@ These never run fully autonomously - route to a human regardless of authorizatio
 
 ## Kill switch
 
-Every scheduled loop needs a manual off switch, and you should know how to stop **all** loops fast (disable the schedule / cron, or a global flag the loop bodies check). In Claude Code, `CLAUDE_CODE_DISABLE_CRON=1` turns off every session-scheduled task and `CronDelete <id>` removes one (https://code.claude.com/docs/en/scheduled-tasks). Document it where the loops are scheduled. A loop you can't stop quickly is a liability.
+Every scheduled loop needs a manual off switch, and you should know how to stop **all** loops fast (disable the schedule / cron, or a global flag the loop bodies check). Use the canonical [scheduled-agent kill-switch mechanics](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md#guardrails) for Claude Code session tasks. [https://code.claude.com/docs/en/scheduled-tasks] Document it where the loops are scheduled. A loop you can't stop quickly is a liability.
 
 ## Pre-launch guardrail checklist
 

@@ -41,17 +41,18 @@ Where the rubric disagrees with official docs:
 [aeo.js, README, cli.mdx, mcp.mdx] Node 18+.
 - `npx aeo.js check <domain>` (no install), `report <url> [--json]`, `init --url ... --yes`, `generate --url --title --out`, `mcp`. `check <url>` exits 1 when the target is invalid or unreachable.
 - MCP: `claude mcp add aeo -- npx -y aeo.js mcp`, exposing `audit_url`, `score_citability` and `generate_aeo_files` (newline-delimited JSON-RPC over stdio, protocol `2025-03-26`, logs to stderr). `generate_aeo_files` rejects an `outDir` outside the working directory. Review generated files against [LLMS-TXT.md](LLMS-TXT.md#anti-patterns-measured-in-aeojss-generator) and [AI-CRAWLERS.md](AI-CRAWLERS.md#errors-in-the-sources) before committing them.
-- A CI gate on the score:
+- A CI gate on the local setup score, copied from the source:
 
 ```bash
 SCORE=$(npx aeo.js check --json | jq '.audit.score')
 [ "$SCORE" -ge 70 ] || { echo "GEO score $SCORE below 70"; exit 1; }
 ```
 
+- For a deployed preview, the official remote form is `npx aeo.js check https://mysite.com --json`, with the actual target URL. The old Prove it line incorrectly described the local no-URL block as checking a deployed preview. [aeo.js CLI docs](https://github.com/rubenmarcus/aeo.js/blob/main/website/src/content/docs/features/cli.mdx)
 - Its crawler: 12 s timeout, homepage plus 10 inner pages, at most 20 sitemap URLs, concurrency 5, UA `aeo.js (+https://aeojs.org)`, 1 MB body cap, manual redirects (at most 5, each re-checked), and the first 5 same-origin links when there is no sitemap. Its private-URL guard checks hostname strings only and never resolves DNS; the repo's SSRF rule resolves and checks the address ([../../backend/secure-coding/CATALOG.md](../../backend/secure-coding/CATALOG.md)).
 
 A score is a worklist, not a result to report: gate on the checks you agree with, and drop the ones above that measure nothing a platform uses.
 
 ## Prove it
 
-Every citability failure you fix is a real paragraph that now reads alone, not a regex dodged by rewording; the CI gate, if added, runs `check --json` against the deployed preview and fails the build below the agreed score; and any report that quotes an aeo.js score says it is aeo.js's heuristic and which checks were excluded.
+Every citability failure you fix is a real paragraph that now reads alone, not a regex dodged by rewording; the CI gate, if added, names whether it checks local setup or a deployed URL, uses the matching command and fails the build below the agreed score; and any report that quotes an aeo.js score says it is aeo.js's heuristic and which checks were excluded.

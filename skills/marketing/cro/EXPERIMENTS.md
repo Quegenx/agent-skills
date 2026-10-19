@@ -160,7 +160,7 @@ A catalogue of A/B test ideas by page, from [coreyhaines31/marketingskills, cro]
 | Area | Test | Hypothesis |
 |---|---|---|
 | Site-wide | Chat widget | Impact on conversions |
-| Site-wide | Page load speed | Performance vs. features ([performance-and-caching](../../backend/performance-and-caching/SKILL.md)) |
+| Site-wide | Page load speed | Performance vs. features ([web-performance](../../frontend/web-performance/SKILL.md)) |
 | Site-wide | Mobile experience | Responsive optimization |
 | Site-wide | Accessibility | Impact on conversion; AA conformance is the floor in every arm, not the variant |
 | Site-wide | Personalization | Dynamic content by segment |

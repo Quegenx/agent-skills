@@ -10,7 +10,7 @@ The places besides your own site that answer engines read about you: third-party
 - Fill in free profiles fully (what you do, who it's for, which industries), even on platforms you don't pay for.
 - Review text matters as much as profile text; models read what customers say there.
 - If the engine's fan-out queries run `site:` searches on review or analyst sites for your category ([PROMPT-RESEARCH.md](PROMPT-RESEARCH.md#chatgpts-own-fan-out-queries)), those profiles come before another page on your own site.
-- Directory and listing work, and its link-spam limits, is [../seo/LINKS-AND-DIRECTORIES.md](../seo/LINKS-AND-DIRECTORIES.md).
+- Directory and listing work is [directory submissions](../seo/DIRECTORY-SUBMISSIONS.md); its link-spam limits are in [link rules](../seo/LINKS-AND-OUTREACH.md#what-google-calls-link-spam).
 
 **Managing the "cons" others write.** If a listed con reinforces a weakness models already repeat, ask the publisher to use a different con that is also true and less central. "Never ask for negatives to be removed or for false claims." To repair a repeated weakness, address it in public with specifics from a real person (the source's anecdote: founder posts, real-timeline guides and a concrete "4 to 8 weeks" on an implementation page shifted it over 1.5 to 2 years).
 

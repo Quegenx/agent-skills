@@ -14,7 +14,7 @@ How to pick creators, structure the deal, brief them and measure the result, for
 | **Affiliate creator** | A creator promotes for commission on sales | Performance (CPA, rev-share) | Conversion at scale, low upfront risk ([../referral-programs/SKILL.md](../referral-programs/SKILL.md) for payout mechanics) |
 | **Gifted / seeding** | Free product, no obligation to post | Product only | Physical DTC, nano and micro, volume |
 | **Brand ambassador program** | A cohort of ongoing advocates (paid, gifted or perks) posting over months | Mixed, perks | Sustained presence, community depth ([below](#ambassador-programs)) |
-| **Organic advocate** | A customer who already recommends you unprompted | None | Authenticity, cheapest trust ([../partners-and-community/SKILL.md](../partners-and-community/SKILL.md)) |
+| **Organic advocate** | A customer who already recommends you unprompted | None | Authenticity, cheapest trust ([community-marketing](../community-marketing/SKILL.md)) |
 
 The further down the table, the more it is about relationship than transaction: cheaper and more durable trust, slower to scale. Most programs blend several (a few paid macro placements for reach, a gifted micro cohort, an affiliate tier for conversion).
 

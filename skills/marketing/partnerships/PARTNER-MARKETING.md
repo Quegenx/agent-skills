@@ -86,7 +86,7 @@ The source's eval for scoring adds: weight the criteria by the goal of the campa
 | Slack or Discord community collab | Low | Community building |
 | Joint AMA or X Space | Low | Thought leadership |
 
-A takeover, giveaway or contest needs the FTC disclosure wording (a contest post carries "#XYZ_Contest" or "#XYZ_Sweepstakes", and the brand tells entrants where to put it): [COMMUNITY.md](COMMUNITY.md#ambassadors) and [../creator-marketing/DISCLOSURE.md](../creator-marketing/DISCLOSURE.md). [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking]
+A takeover, giveaway or contest needs the FTC disclosure wording (a contest post carries "#XYZ_Contest" or "#XYZ_Sweepstakes", and the brand tells entrants where to put it): [COMMUNITY.md](../community-marketing/COMMUNITY.md#ambassadors) and [../creator-marketing/DISCLOSURE.md](../creator-marketing/DISCLOSURE.md). [https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking]
 
 ## Brainstorming with a partner
 

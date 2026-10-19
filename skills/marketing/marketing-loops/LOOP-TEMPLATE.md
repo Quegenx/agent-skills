@@ -23,7 +23,7 @@ Before you start, sanity-check that this *should* be a loop at all (see [When no
 - **Self-check**: <the verification done BEFORE acting - is the signal real vs. noise/seasonality/tracking bug? Is the sample big enough to be significant?>
 - **State / idempotency**: <what it remembers between runs - last-run marker, dedupe key, cooldown window, "already handled" set - so it doesn't double-act or re-nag the same people>
 - **Stop / bail-out**: <when it skips, halts, escalates to a human, or disables itself - plus what it does on error. Include a human checkpoint before anything that spends money or publishes.>
-- **Output**: <where results go - a file, a PR, a staged draft, a notification, a report>
+- **Output**: <where results go - a file, a staged draft, a notification, a report>
 ```
 
 ---
@@ -51,7 +51,7 @@ Say you sell a freemium API tool and want to stop losing signups who never make 
 - **Check cadence**: Daily
 - **Acts when**: A user who signed up 48h ago still hasn't made a successful API call and isn't already in this nudge sequence.
 - **Purpose**: Increase the share of new signups that reach first value (first successful API call).
-- **Skills used**: [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md)
+- **Skills used**: [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [email-marketing](../email-marketing/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md)
 - **Loop body**:
   1. Pull signups from ~48h ago and their first-call status.
   2. Filter to those with zero successful calls and no active nudge.

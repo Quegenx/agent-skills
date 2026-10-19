@@ -106,7 +106,7 @@ The source: "Show password toggle (eye icon) / Show requirements upfront, not af
 
 [coreyhaines31/marketingskills, signup]
 
-- **Metrics:** form start rate (landed → started), completion rate (started → submitted), field-level drop-off, time to complete, error rate by field, mobile versus desktop completion.
+- **Metrics:** use the [shared form measurement definitions](FORMS.md#measurement) for form starts, completion, field drop-off, elapsed time, errors and the device split.
 - **Track:** each field's focus, blur and error, step progression, the social-to-email signup ratio, time between steps. No field values in events ([posthog/EVENTS-AND-IDENTITY.md](../../monitoring/posthog/EVENTS-AND-IDENTITY.md#naming-events-and-properties)).
 - **Audit findings,** per issue: Issue, Impact (why it matters), Fix, Priority, with High, Medium and Low written as P1, P2 and P3 and P0 for anything that stops signup ([SKILL.md](SKILL.md#the-rules), rule 8).
 - **Recommended changes:** quick wins (same-day fixes), high-impact changes (week-level effort), test hypotheses ([EXPERIMENTS.md](EXPERIMENTS.md#signup)).

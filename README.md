@@ -1,6 +1,6 @@
 # Agent skills
 
-135 skills for coding agents, in ten sets:
+137 skills for coding agents, in ten sets:
 
 | Folder | What it's for |
 |---|---|
@@ -13,8 +13,8 @@
 | [`skills/frontend/`](./skills/frontend) | App and marketing UI, design-system maintenance, motion, SVG, CSS, GSAP, accessibility, colors, Sonner, technical drawings, React with Next.js and React Native, WebGL, consent and browser performance. 15 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Production errors, analytics and telemetry: Sentry, PostHog, Grafana, k6, OpenTelemetry and Google Analytics 4. 6 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
-| [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, email, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 39 skills. |
-| Total | 135 skills in ten sets. |
+| [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, email, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 41 skills. |
+| Total | 137 skills in ten sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -145,7 +145,7 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, host moves, restore/replay/reconciliation, releases and npm publishing; cached baselines link to parity guidance. |
 | [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Server measurement, queries, cache policy and telemetry audits; browser loading and tracing route to web-performance. |
 | [secure-coding](./skills/backend/secure-coding/SKILL.md) | Trust boundaries, authentication, tenant isolation, parsers and package controls; provider RLS mechanics route to their owners. |
-| [stripe](./skills/backend/stripe/SKILL.md) | Payments, Billing, Connect, Tax, agent tools and operations; canonical fulfillment, Price maintenance, reversals and health metrics. |
+| [stripe](./skills/backend/stripe/SKILL.md) | Payments, Billing, Connect, Tax, agent tools and operations; canonical fulfillment, Price maintenance, retry corrections, reversals and health metrics. |
 | [revenuecat](./skills/backend/revenuecat/SKILL.md) | Purchases, identity/restore policy, web billing, paywalls, Customer Center, store testing, experiments and webhooks. |
 | [resend](./skills/backend/resend/SKILL.md) | Provider sending/receiving, domains, retries, webhook identity, contacts, automations and tooling. |
 | [react-email](./skills/backend/react-email/SKILL.md) | React email components, styling, rendering, delivery and localization, with a separate visual-editor topic. |
@@ -239,44 +239,46 @@ Marketing, SEO and GEO for web and SaaS products, from Corey Haines's marketings
 
 | Skill | Covers |
 |---|---|
-| [seo](./skills/marketing/seo/SKILL.md) | Technical SEO, valid structured data, local visibility, pages at scale and factual directory submissions. |
-| [keyword-research](./skills/marketing/keyword-research/SKILL.md) | Search demand, intent clustering, competitor evidence and coverage-aware HTML reports. |
+| [seo](./skills/marketing/seo/SKILL.md) | Technical SEO, structured data, local visibility and scaled pages; shared project setup/reporting, link outreach and directory submissions. |
+| [keyword-research](./skills/marketing/keyword-research/SKILL.md) | Search demand, intent clusters and competitor evidence; first-party Search Console metrics distinguished from SERP listings. |
 | [search-console](./skills/marketing/search-console/SKILL.md) | Reading a site's own Search Console data and saying only what it shows: click drops, quick wins, low CTR, decay, cannibalization, URL Inspection, the API's quotas and data loss, the iannuttall `seo` CLI and MCP |
-| [ai-search-visibility](./skills/marketing/ai-search-visibility/SKILL.md) | AI crawl/discovery, OKF v0.2, visibility and citation evidence, prompts and measurement. |
-| [site-audit](./skills/marketing/site-audit/SKILL.md) | Permission-scoped site audits, scanner limits, scoring alternatives, authorized feedback and fix evidence. |
+| [ai-search-visibility](./skills/marketing/ai-search-visibility/SKILL.md) | AI discovery, crawler controls, citation evidence and measurement; local versus remote aeo.js checks. |
+| [site-audit](./skills/marketing/site-audit/SKILL.md) | Permission-scoped audits, scanner limits, scoring, feedback and fix evidence; self-contained plans link to engineering handoffs. |
 | [site-architecture](./skills/marketing/site-architecture/SKILL.md) | Information architecture: page hierarchy, URL patterns, breadcrumbs, header, footer and mobile navigation, internal links, platforms and migrations with Google's site-move rules, sitemap diagrams, site types |
-| [content-strategy](./skills/marketing/content-strategy/SKILL.md) | What content to make and how it spreads: searchable versus shareable, pillars and clusters, ideation, formats, distribution, headless CMS drafts and previews |
+| [content-strategy](./skills/marketing/content-strategy/SKILL.md) | Content research, pillars, formats, distribution and CMS drafts; shared ORB and linking definitions stay with their owners. |
 | [comparison-pages](./skills/marketing/comparison-pages/SKILL.md) | Evidence-backed alternative/versus pages, data hubs and audience-aware P0 to P3 audits. |
-| [customer-research](./skills/marketing/customer-research/SKILL.md) | Customer language and evidence: mining reviews, forums and Reddit within their terms, interviews and surveys, personas. Copywriting quote emotion/context, evidenced profile questions and tagged source-selection alternatives. |
-| [cro](./skills/marketing/cro/SKILL.md) | Conversion on marketing pages: the page audit, forms, popups within Google's interstitial guidance and WCAG, signup flows with NIST password rules, experiments |
+| [customer-research](./skills/marketing/customer-research/SKILL.md) | Public evidence and Sales Safari, interviews, surveys and personas with minimum evidence and source qualifications. |
+| [cro](./skills/marketing/cro/SKILL.md) | Marketing-page conversion, forms, popups, signup and experiments; shared form metrics and browser-performance routes. |
 | [ab-testing](./skills/marketing/ab-testing/SKILL.md) | Tool-agnostic A/B testing: hypotheses, metrics and guardrails, sample sizes from the standard formula, duration with unequal splits, sequential testing, templates, an experimentation program |
 | [marketing-attribution](./skills/marketing/marketing-attribution/SKILL.md) | Which marketing caused revenue: attribution models, MTA versus MMM versus incrementality, self-reported attribution, attribution by business type, stitching booking and checkout webhooks to analytics |
-| [paid-ads](./skills/marketing/paid-ads/SKILL.md) | Web advertising, current Google Search mechanics, statistical bounds and scoped Meta fatigue diagnosis. |
-| [ad-creative](./skills/marketing/ad-creative/SKILL.md) | Ad formats, grounded hooks, copy formulas, headline/CTA construction, testing order and creative roadmaps. |
-| [creator-marketing](./skills/marketing/creator-marketing/SKILL.md) | Influencer, creator, UGC and ambassador programs: vetting, deals and rights, briefs, FTC and platform disclosure, creator ad programs, newsletter sponsorships, Telegram channels |
-| [social-media](./skills/marketing/social-media/SKILL.md) | Organic strategy, current X ranking evidence, platform limits and normalized listening scores. Reddit community tutorials/inbound handoff and shootable short-form planning. |
-| [cold-outreach](./skills/marketing/cold-outreach/SKILL.md) | Lawful B2B cold outreach: who may be emailed, sending setup, copy, sequences, LinkedIn, replies, plays and benchmarks |
-| [prospecting](./skills/marketing/prospecting/SKILL.md) | Lawful demand signals, account research, sourcing and enrichment without evasion procedures. Browser cross-references follow the current stop-at-access-limits rule. |
-| [sales-enablement](./skills/marketing/sales-enablement/SKILL.md) | Sales collateral: decks, one-pagers, objection handling, battle cards, win-loss analysis, demo scripts, cold calls within the FTC and FCC rules |
-| [revops](./skills/marketing/revops/SKILL.md) | Lifecycle stages, lead scoring calibrated on a holdout, routing, inbound enrichment, pipeline metrics, CRM automations on current HubSpot and Salesforce features |
-| [product-launch](./skills/marketing/product-launch/SKILL.md) | Launch planning, channels, phases, Product Hunt and shipped-change announcement/digest workflows. |
-| [public-relations](./skills/marketing/public-relations/SKILL.md) | Press: story angles, pitching, newsjacking, press requests, podcast prep, crisis communication and statements |
-| [partners-and-community](./skills/marketing/partners-and-community/SKILL.md) | Co-marketing partners, the five partnership types, and community programs with FTC disclosure for ambassadors and contests |
-| [event-marketing](./skills/marketing/event-marketing/SKILL.md) | Events that produce pipeline: the event arc, portfolio, sponsorship, speaking, webinar funnels, lawful badge-scan follow-up |
+| [paid-ads](./skills/marketing/paid-ads/SKILL.md) | Web ad operations, scoped audits and measurement; separate B2B acquisition and account-based marketing topics. |
+| [ad-creative](./skills/marketing/ad-creative/SKILL.md) | Grounded concepts, hooks, formats, copy and creative roadmaps; canonical safe zones and corrected RSA acceptance. |
+| [creator-marketing](./skills/marketing/creator-marketing/SKILL.md) | Creators, UGC, ambassadors and paid placements: vetting, rights, briefs and qualified FTC/platform disclosure rules. |
+| [social-media](./skills/marketing/social-media/SKILL.md) | Organic strategy, posts, Reddit, short-form planning and listening; dated X ranking evidence and canonical writing rules. |
+| [cold-outreach](./skills/marketing/cold-outreach/SKILL.md) | Lawful outreach, sending, copy, cadences, LinkedIn and replies; permanent Gmail bulk status and human approval boundaries. |
+| [prospecting](./skills/marketing/prospecting/SKILL.md) | Lawful demand signals, account research, sourcing and enrichment; canonical contact-data policy and no evasion procedures. |
+| [sales-enablement](./skills/marketing/sales-enablement/SKILL.md) | Decks, one-pagers, objections, battle cards, win-loss, demos and calls; verified price comparisons and print constraints. |
+| [revops](./skills/marketing/revops/SKILL.md) | Lead lifecycle, scoring, routing, enrichment, pipeline and CRM recipes; Salesforce scheduling and date-field limits. |
+| [product-launch](./skills/marketing/product-launch/SKILL.md) | Launch planning, canonical ORB channels, phases, Product Hunt and source-grounded shipped-change announcements. |
+| [public-relations](./skills/marketing/public-relations/SKILL.md) | Story angles, pitching, requests, podcasts and crisis communication with P0 to P3 severity and statement templates. |
+| [partnerships](./skills/marketing/partnerships/SKILL.md) | Partner selection, co-marketing, integrations, resellers and marketplaces; agreements, lead sharing and lawful outreach. |
+| [community-marketing](./skills/marketing/community-marketing/SKILL.md) | Community identity, launch, onboarding, rituals, support, ambassadors, platform choice and health. |
+| [event-marketing](./skills/marketing/event-marketing/SKILL.md) | Event portfolios, sponsorship, speaking and webinars; the event arc, lawful follow-up and lifecycle-owner handoffs. |
 | [lead-magnets](./skills/marketing/lead-magnets/SKILL.md) | Lead magnets and free tools: planning, gating and delivery under double opt-in and GDPR Art. 7(4), formats, promotion and measurement, free-tool types and cases |
-| [referral-programs](./skills/marketing/referral-programs/SKILL.md) | Referral, affiliate and review programs: viral loops, program design with both reward-sizing formulas, metrics, affiliates, review programs within FTC, Google and Trustpilot rules |
-| [pricing-strategy](./skills/marketing/pricing-strategy/SKILL.md) | Pricing for SaaS and web: models, tiers and trials, research methods, price changes with the store rules, page teardowns |
-| [offer-design](./skills/marketing/offer-design/SKILL.md) | The offer itself: anatomy, guarantees, bonuses, scarcity, discounts, formats, and the one definition of the FTC rules on prices, "free", guarantees and fake urgency. Paid info-product discovery, validation, construction and distribution. |
+| [referral-programs](./skills/marketing/referral-programs/SKILL.md) | Product virality, customer referrals and affiliates; reward sizing, disclosure, fraud, measurement and payouts. |
+| [review-management](./skills/marketing/review-management/SKILL.md) | Neutral review invitations, public replies, moderation, reputation triage and permissioned testimonial reuse. |
+| [pricing-strategy](./skills/marketing/pricing-strategy/SKILL.md) | Pricing models, tiers, trials, research and rollout; page audits with consumer-specific markup and crawler policy. |
+| [offer-design](./skills/marketing/offer-design/SKILL.md) | Offer anatomy, guarantees, bonuses, scarcity, discounts and paid info-products; FTC claims and canonical Stripe Price rules. |
 | [service-businesses](./skills/marketing/service-businesses/SKILL.md) | Complete client-service guides: offers, qualified demos, approvals, delivery, actual-outcome billing, recurring work and handoff. |
-| [churn-prevention](./skills/marketing/churn-prevention/SKILL.md) | SaaS cancellation and post-cancel flows, health scores and source-qualified dunning schedules and copy. |
-| [onboarding-and-upgrades](./skills/marketing/onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts, scoped experiments and evidence-backed recovery cohort worksheets. |
-| [sms-marketing](./skills/marketing/sms-marketing/SKILL.md) | Lawful SMS/MMS/WhatsApp consent, registration, encoding and sequences; provider transport stays with its integration. |
+| [churn-prevention](./skills/marketing/churn-prevention/SKILL.md) | Cancellation, health scores and source-qualified dunning copy; provider retry settings and verified access recovery. |
+| [onboarding-and-upgrades](./skills/marketing/onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts, experiments and recovery cohorts; canonical psychology/store rules and cooldown constraints. |
+| [sms-marketing](./skills/marketing/sms-marketing/SKILL.md) | Lawful SMS/MMS/WhatsApp, consent, encoding and sequences; sender-specific registration and provider opt-out boundaries. |
 | [marketing-images](./skills/marketing/marketing-images/SKILL.md) | Image methods, prompts and platform sizes; actual-photo fidelity, reference decomposition and casual-phone options. Routes store screenshot production to ASO. |
 | [marketing-video](./skills/marketing/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs |
-| [marketing-plan](./skills/marketing/marketing-plan/SKILL.md) | A 12-month AARRR marketing plan: intake, current-state rubric, budget, funding stages, market sizing, measurement, team and agencies, an example plan |
-| [marketing-loops](./skills/marketing/marketing-loops/SKILL.md) | Recurring marketing loops an agent runs on a durable scheduler: the loop template, state, guardrails, a 58-loop catalogue by funnel, SEO and outbound operators |
-| [marketing-council](./skills/marketing/marketing-council/SKILL.md) | A simulated board of 12 marketing advisors applying their documented frameworks, with a named dissenter and a disagreement map |
-| [growth-ideas](./skills/marketing/growth-ideas/SKILL.md) | 139 marketing ideas, guerrilla tactics and 72 buyer-psychology models, each marked by whether it cites a study, with the platform rules each idea touches |
+| [marketing-plan](./skills/marketing/marketing-plan/SKILL.md) | Resumable AARRR plans, budgets, market sizing, hiring and metrics; corrected idea counts and current channel-owner routes. |
+| [marketing-loops](./skills/marketing/marketing-loops/SKILL.md) | Recurring marketing contracts, catalogues and operators; cadence, state, deduplication, approval and stop conditions. |
+| [marketing-council](./skills/marketing/marketing-council/SKILL.md) | Twelve simulated advisors, sourced frameworks and disagreements; shared offer definitions stay canonical. |
+| [growth-ideas](./skills/marketing/growth-ideas/SKILL.md) | 139 marketing ideas and buyer psychology; source-qualified applications, consolidated definitions and the corrected Fogg model. |
 | [email-marketing](./skills/marketing/email-marketing/SKILL.md) | Campaign copy, sequences and lifecycle strategy; delivery and dunning link to their owners. |
 
 ## Reference code

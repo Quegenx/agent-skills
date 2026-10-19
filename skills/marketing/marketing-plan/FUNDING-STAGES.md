@@ -184,7 +184,7 @@ The standard tiers assume a typical software / SaaS / consumer app. Adjust for c
 
 ### Open source / developer tools
 - DevRel + community + content > paid
-- GitHub stars / npm installs are the activation event
+- **Two source views on developer activation:** this funding-stage source calls GitHub stars / npm installs the activation event [coreyhaines31/marketingskills, marketing-plan, references/funding-stages.md]; the developer archetype instead uses first build / first integration ([CLIENT-TYPES.md](CLIENT-TYPES.md#archetype-5---developer-tool--open-source), same source, references/client-types.md). Keep the existing [retention-validated activation rule](AARRR.md) rather than assume either proxy proves value.
 - Paid layer often delayed until Series A
 
 ## Tier 1 budget detail (most common starting point)

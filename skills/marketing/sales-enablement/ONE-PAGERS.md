@@ -174,7 +174,9 @@ Whitespace: margins at least 0.75" on all sides; enough space between sections t
 | Headline | 18-24pt |
 | Section headers | 12-14pt bold |
 | Body text | 10-11pt |
-| Fine print / footer | 8-9pt |
+| Fine print / footer | 9pt minimum |
+
+The source's footer table said 8-9pt, conflicting with its no-text-below-9pt rule and Prove it check. Keep the existing 9pt floor; these remain source print conventions. [coreyhaines31/marketingskills, sales-enablement]
 
 Color: brand colors for headers and accents; body text dark (black or near-black) on white; 1-2 accent colors at most; use color to draw attention to metrics and CTAs.
 

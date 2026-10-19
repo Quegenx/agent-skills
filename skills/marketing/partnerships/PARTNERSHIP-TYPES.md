@@ -33,8 +33,7 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 
 [coreyhaines31/marketingskills, co-marketing] Promoters earn commission on conversions, so you pay only on results.
 
-- **The power law:** "~20% of affiliates drive ~80% of revenue". Identify super-promoters and invest in them disproportionately: higher rates, custom assets, early access, a direct relationship.
-- **Buyout clauses:** pay a super-promoter's future commissions as a lump sum, "commonly ~12x the monthly commission", to cap long-term liability.
+- **Top-promoter investment and recurring-commission buyouts:** use the canonical [affiliate operations](../referral-programs/AFFILIATES.md#power-law-buyouts-and-launches). The co-marketing chapter also attributes the 20/80 and roughly 12-month figures to its book cases; neither is a benchmark. [coreyhaines31/marketingskills, co-marketing; referrals]
 - The book's examples (ConvertKit with Pat Flynn, Demio's 50% commissions, Cometly's launch day with Rewardful) are anecdotes.
 - Commission structures, cookie windows, fraud and tooling are [../referral-programs/SKILL.md](../referral-programs/SKILL.md); affiliate disclosure is [../creator-marketing/DISCLOSURE.md](../creator-marketing/DISCLOSURE.md).
 

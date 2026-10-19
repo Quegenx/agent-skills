@@ -73,7 +73,7 @@ Source: [eronred].
 Source: [eronred].
 
 - **Beyond the app launch:** story angles, six pitch templates, media-list scoring, newsjacking and the press page are in [../../marketing/public-relations/SKILL.md](../../marketing/public-relations/SKILL.md). Its [PITCHING.md](../../marketing/public-relations/PITCHING.md) differs from this playbook on length (150 words vs 5 sentences), subject lines (under 50 characters vs an 8-word angle) and follow-up (day 3 and day 7, each with something new, vs one after 5 business days); both are third-party.
-- **Why it pays:** App Store Connect's Web Referral source tracks installs from press links; coverage earns backlinks and "As seen on" social proof, supports Apple editorial, and amplifies organically. Google counts "links with optimized anchor text in ... press releases distributed on other sites" as link spam (https://developers.google.com/search/docs/essentials/spam-policies); link attributes and lawful link prospecting are in [../../marketing/seo/LINKS-AND-DIRECTORIES.md](../../marketing/seo/LINKS-AND-DIRECTORIES.md#what-google-calls-link-spam).
+- **Why it pays:** App Store Connect's Web Referral source tracks installs from press links; coverage earns backlinks and "As seen on" social proof, supports Apple editorial, and amplifies organically. Google counts "links with optimized anchor text in ... press releases distributed on other sites" as link spam (https://developers.google.com/search/docs/essentials/spam-policies); link attributes and lawful link prospecting are in [../../marketing/seo/LINKS-AND-OUTREACH.md](../../marketing/seo/LINKS-AND-OUTREACH.md#what-google-calls-link-spam).
 - **Target tiers:**
 
 | Tier | Outlets |

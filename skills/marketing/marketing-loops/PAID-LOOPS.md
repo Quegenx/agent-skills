@@ -9,10 +9,8 @@ Seven loops that review ad accounts, refresh creative before fatigue and keep se
 - **Skills used**: [paid-ads](../paid-ads/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [ad-creative](../ad-creative/SKILL.md), [cro](../cro/SKILL.md)
 - **Loop body**:
   1. Read the **Paid Ads** section of `.agents/product-context.md` for targets, hard floors, and what counts as a conversion.
-  2. Check in a fixed order: spend and pacing → traffic (clicks, CPC, CTR, CPM, search terms) → conversions (CVR, CPA, ROAS, lead quality) → creative fatigue (frequency, CTR versus peak) → landing page (speed, forms, mobile CVR) → tracking (conversion counts against GA4 or the CRM).
-  3. For each mover, separate facts in the data from hypotheses, and list missing data.
-  4. End with exactly one call per account: **HOLD** (no change for now), **FIX** (a known, named issue), **TEST** (a hypothesis worth spend), or **INVESTIGATE** (the data can't be trusted yet).
-  5. On Friday, or at the end of the reporting period, turn the week's calls into a short stakeholder readout: results versus target, what moved and why, and next week's decisions.
+  2. Run the canonical [weekly operating check](../paid-ads/AUDIT-GUARDRAILS.md#the-weekly-operating-check), including its ordered diagnostics, evidence labels and four decision calls.
+  3. Produce the [Friday readout](../paid-ads/AUDIT-GUARDRAILS.md#the-friday-readout) at the end of the reporting period.
 - **Self-check**: Does any recommendation rest on a number that's still inside its conversion lag or learning phase? If tracking disagrees with the CRM by more than the usual gap, the call is INVESTIGATE.
 - **State / idempotency**: Store each week's call per account and the issue it named; don't re-open a FIX that's already staged.
 - **Stop / bail-out**: Never change budgets, bids, campaign status, tracking, or live ads. Changes are staged as plans for approval. Halt and alert if spend passes its cap.
@@ -40,7 +38,7 @@ Seven loops that review ad accounts, refresh creative before fatigue and keep se
 - **Skills used**: [ad-creative](../ad-creative/SKILL.md) (Mode 3 + static ad template library), [customer-research](../customer-research/SKILL.md)
 - **Loop body**:
   1. Read the inputs corpus: `inputs/winning-ads/`, `inputs/reviews/`, `inputs/comments/`, and `brand/`.
-  2. Generate the batch (e.g., 50 concepts) cycling all 15 static templates, 3-4 variations each, every concept grounded in a cited source.
+  2. Generate the grounded batch under [ad-creative's batch-generation rules](../ad-creative/SKILL.md#output-formats) and [template distribution](../ad-creative/STATIC-TEMPLATES.md#batch-distribution). The old loop said 15 templates with 3 to 4 variations each; the canonical library now has 22 templates. [coreyhaines31/marketingskills, marketing-loops; ad-creative]
   3. Generate images if an image tool is configured; otherwise deliver concepts + image prompts.
   4. Save to `outputs/YYYY-MM-DD/` with an `INDEX.md` (template type + grounding per concept).
 - **Self-check**: Are concepts actually grounded (spot-check citations against sources)? Is template coverage spread across the library, not clustered on 2-3? Does copy match the brand voice doc rather than generic DR voice?

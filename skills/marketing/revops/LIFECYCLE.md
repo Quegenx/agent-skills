@@ -124,7 +124,7 @@ Recycling workflow:
 5. If the lead re-engages and crosses the MQL threshold, re-route to sales with a "Recycled MQL" flag.
 6. Track recycled MQL conversion rate separately.
 
-Recycling nurture: bi-weekly or monthly (lower frequency than initial nurture); industry insights, case studies, product updates; 6 months, then archive if no engagement; re-MQL on a high-intent action (demo request, pricing page revisit). Nurture emails are marketing email and follow [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md).
+Recycling nurture: bi-weekly or monthly (lower frequency than initial nurture); industry insights, case studies, product updates; 6 months, then archive if no engagement; re-MQL on a high-intent action (demo request, pricing page revisit). Sequence design and copy follow [email-marketing](../email-marketing/SEQUENCES.md); marketing consent and delivery follow [email-practices](../../backend/email-practices/SKILL.md).
 
 ## Outbound stages
 

@@ -6,7 +6,7 @@ Which types fit the searchable and shareable jobs, which formats earn links, and
 
 `[coreyhaines31/marketingskills, content-strategy]`
 - **Use-case content:** the formula "[persona] + [use-case]", for long-tail keywords ("Project management for designers", "Task tracking for developers", "Client collaboration for freelancers").
-- **Hub and spoke:** the hub is the comprehensive overview, the spokes are subtopics (`/topic`, `/topic/subtopic-1`). "Create hub first, then build spokes. Interlink strategically." Most content works under `/blog/post-title`; a dedicated hub URL only for major topics with layered depth (the source's example is Atlassian's `/agile` guide).
+- **Hub and spoke:** use the [linking pattern](../site-architecture/URLS-AND-LINKS.md#hub-and-spoke). "Create hub first, then build spokes. Interlink strategically." The source's URL example is `/topic` with `/topic/subtopic-1`; most content works under `/blog/post-title`, with a dedicated hub URL only for major topics with layered depth (the source's example is Atlassian's `/agile` guide).
 - **Template libraries:** high-intent searches ("marketing plan template") that give standalone value and show how the product improves the template.
 
 ## Shareable types

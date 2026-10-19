@@ -5,7 +5,7 @@ The three-phase workflow that produces a comprehensive marketing plan. SKILL.md 
 Source: [coreyhaines31/marketingskills, marketing-plan] `references/methodology.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. Data pulls in this repo's stack: [posthog](../../monitoring/posthog/SKILL.md) or [google-analytics](../../monitoring/google-analytics/SKILL.md) for traffic and funnels, [stripe](../../backend/stripe/SKILL.md) and [revenuecat](../../backend/revenuecat/SKILL.md) for MRR and churn, [app-store-connect](../../mobile/app-store-connect/SKILL.md) for the install funnel, [search-console](../search-console/SKILL.md) for organic search.
 
 
-**Contents:** [Phase 1 - INIT (research + intake)](#phase-1---init-research--intake) · [Phase 2 - REVIEW (section-by-section drafting)](#phase-2---review-section-by-section-drafting) · [Phase 3 - FINALIZE (compile + verify + publish)](#phase-3---finalize-compile--verify--publish) · [Resuming a plan](#resuming-a-plan) · [Failure modes to watch for](#failure-modes-to-watch-for) · [Prove it](#prove-it)
+**Contents:** [Phase 1 - INIT (research + intake)](#phase-1---init-research--intake) · [Phase 2 - REVIEW (section-by-section drafting)](#phase-2---review-section-by-section-drafting) · [Phase 3 - FINALIZE (compile + verify)](#phase-3---finalize-compile--verify) · [Resuming a plan](#resuming-a-plan) · [Failure modes to watch for](#failure-modes-to-watch-for) · [Prove it](#prove-it)
 
 ## Phase 1 - INIT (research + intake)
 
@@ -102,7 +102,6 @@ If MCPs/APIs are wired for this client, pull:
 - **App Store Connect** (manual or `dev-browser`) → install → trial → paid funnel; cohort retention
 - **Customer.io MCP** → flow inventory, send / open / click / unsubscribe rates
 - **Shopify** → product page conversion, AOV, repeat rate
-- **GitHub MCP** → repos inventory, last commit dates, what's stale
 - **Notion** → internal knowledge directory if exposed
 
 Don't ask the user to copy/paste data that can be pulled directly.
@@ -300,9 +299,9 @@ If the client has documented brand voice rules (captured in research.md / Sectio
 
 If a section's draft violates the brand voice, redo it before showing it to the user.
 
-## Phase 3 - FINALIZE (compile + verify + publish)
+## Phase 3 - FINALIZE (compile + verify)
 
-**Goal:** Produce `final_plan.md` and optionally publish to a shared repo.
+**Goal:** Produce `final_plan.md`, ready to paste into Notion or share with the team.
 
 ### Step 3.1 - Compile
 
@@ -328,22 +327,7 @@ Output `final_plan.md` to the plan folder. Print a summary to chat:
 
 > *"Marketing Plan v1 saved to `~/marketing-plans/{client-slug}/final_plan.md`. ~X,XXX words across 13 sections. Ready to paste into Notion or share with the team."*
 
-### Step 3.4 - Publish (optional)
-
-Ask the user:
-> *"Want me to publish this to a shared GitHub repo so the team can access it? If yes, what's the target repo and path (e.g., `{client-org}/{client-context}/marketing/plan.md`)?"*
-
-If yes:
-- Clone (or assume cloned) target repo
-- Check out a feature branch or push direct to main per user's preference
-- Copy `final_plan.md` to the target path
-- Adjust the appendix to use repo-relative paths (not machine paths)
-- Commit + push
-- Confirm with commit URL
-
-If no: leave it local. Done.
-
-### Step 3.5 - Mark finalized
+### Step 3.4 - Mark finalized
 
 Set `phase: finalized` in `progress.md` and stamp `last_updated`. This is the terminal state and prevents future `/marketing-plan` invocations from silently overwriting the plan (see Step 1.1.2 case 6).
 

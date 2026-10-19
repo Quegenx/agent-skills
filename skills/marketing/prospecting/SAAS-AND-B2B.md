@@ -33,12 +33,9 @@ The SaaS branch sells to SaaS and digital businesses; the B2B branch sells to ev
 
 ## GitHub as a signal, not a contact source
 
-The source's SaaS reference pulls stargazers of competitor repos with a CLI, enriches their emails and validates them before "adding to outreach list", and its data-sources file calls GitHub a "Public API, no scraping concerns". GitHub's Acceptable Use Policies say otherwise (https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies):
+The source's SaaS reference pulls stargazers of competitor repos with a CLI, enriches their emails and validates them before "adding to outreach list", and its data-sources file calls GitHub a "Public API, no scraping concerns". The [GitHub list-policy correction](LIST-COMPLIANCE.md#github) applies to API and scraped information; the Acceptable Use Policies distinguish API collection from scraping without exempting it from the use restrictions. [https://docs.github.com/en/site-policy/acceptable-use-policies/github-acceptable-use-policies]
 
-- "You may not use information from the Service (whether scraped, collected through our API, or obtained otherwise) for spamming purposes, including for the purposes of sending unsolicited emails to users" (section 7). Scraping itself is defined as extraction "via an automated process" and "does not refer to the collection of information through our API"; the use restriction covers both.
-- Personal information from GitHub may be used only "for the purpose for which that User has authorized it".
-
-So stargazers and forks may count as an aggregate account signal (which companies show up around a category), never as a list of people to email. The API limits the source quotes are right: "your personal rate limit of 5,000 requests per hour", 60 an hour unauthenticated; on 403 or 429 wait for `retry-after` or `x-ratelimit-reset` (https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
+Stargazers and forks may count as an aggregate account signal (which companies show up around a category), never as a list of people to email. The API limits the source quotes are right: "your personal rate limit of 5,000 requests per hour", 60 an hour unauthenticated; on 403 or 429 wait for `retry-after` or `x-ratelimit-reset` (https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
 
 ## Qualification checklists
 

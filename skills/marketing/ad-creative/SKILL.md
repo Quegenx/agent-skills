@@ -14,7 +14,7 @@ Ad creative fails on its inputs more often than on its writing: ungrounded gener
 | Character limits and sizes for Google RSA and PMax, Meta feed, Reels, Stories and lead forms, LinkedIn, TikTok and X, character counting, writing across platforms | [PLATFORM-SPECS.md](PLATFORM-SPECS.md) |
 | Primary-text formulas, search headline shapes, social hooks, CTAs by stage and test order | [COPY-FORMULAS.md](COPY-FORMULAS.md) |
 | Text-led headlines by awareness stage, six treatments, the evidence sheet, headline as the visual | [HEADLINES.md](HEADLINES.md) |
-| The hook as visual + spoken line + caption, the segment-to-hook pipeline and matrix, 13 opening moves, the diagnostic funnel, the on-ramp, fidelity laddering | [HOOKS.md](HOOKS.md) |
+| The hook as visual + spoken line + caption, the segment-to-hook pipeline and matrix, 14 opening moves, the diagnostic funnel, the on-ramp, fidelity laddering | [HOOKS.md](HOOKS.md) |
 | Which ads to make next: three signals, evidence tiers, exploration vs scaling, the roadmap and production tiers, the monthly retro, Ad Library and review research | [CREATIVE-ROADMAP.md](CREATIVE-ROADMAP.md) |
 | Which format: unicorn scalers vs supporting cast, the S to F tiers of Meta formats | [FORMAT-TIERS.md](FORMAT-TIERS.md) |
 | 22 static templates with tier, structure, copy slot and sourcing, the per-concept output, batch weighting | [STATIC-TEMPLATES.md](STATIC-TEMPLATES.md) |
@@ -138,7 +138,7 @@ headline_1,headline_2,headline_3,description_1,description_2,platform
 ## Prove it
 
 - A Meta set for a B2B writing tool has 3 to 5 angles, several variations each, a hook, body and CTA, visual direction, which angle to test first, and every line counted against Meta's current limits (primary text 50 to 150, headline 27), not the source's 125/40/30 [coreyhaines31/marketingskills, ad-creative, evals #1].
-- An RSA set for "best CRM for small business" has 10 to 15 headlines within 30 characters and 4+ descriptions within 90, the keyword in headlines, sparing pinning and suggested assets [evals #2].
+- An RSA set for "best CRM for small business" has 10 to 15 headlines within 30 characters and 4 descriptions within 90 (Google permits at most four; the old expectation said "4+", https://support.google.com/google-ads/answer/7684791?hl=en), the keyword in headlines, sparing pinning and suggested assets [evals #2].
 - Ten primary-text variations for a no-code builder contain no stacked triple negation, no contrast reveal, no self-answered question, no em dash, no generic POV or "Stop scrolling", and don't share one sentence shape [evals #16].
 - Asked to fill formulas with made-up results and no product, audience or proof, the answer asks for them and invents nothing [evals #20].
 - Every file's own Prove it passes for the parts you touched.

@@ -21,7 +21,7 @@ Eight loops for news, listening, communities, competitors, links, directories, p
 - **Check cadence**: Daily
 - **Acts when**: A thread/mention clears the ICP-fit + intent + reach score.
 - **Purpose**: Surface the highest-value conversations to engage in, instead of scrolling feeds.
-- **Skills used**: [social-media](../social-media/SKILL.md) (the source skill's `references/listening.md`), [partners-and-community](../partners-and-community/SKILL.md)
+- **Skills used**: [social-media](../social-media/SKILL.md) (the source skill's `references/listening.md`), [community-marketing](../community-marketing/SKILL.md)
 - **Loop body**:
   1. Pull mentions and relevant threads across configured sources.
   2. Score by ICP fit, intent, reach, and comment opportunity.
@@ -35,7 +35,7 @@ Eight loops for news, listening, communities, competitors, links, directories, p
 - **Check cadence**: Daily
 - **Acts when**: A target community (subreddit/Slack/Discord/forum) has a relevant thread where a helpful, non-promotional reply fits.
 - **Purpose**: Build durable presence and trust in the communities where the ICP lives.
-- **Skills used**: [partners-and-community](../partners-and-community/SKILL.md), [social-media](../social-media/SKILL.md)
+- **Skills used**: [community-marketing](../community-marketing/SKILL.md), [social-media](../social-media/SKILL.md)
 - **Loop body**:
   1. Scan configured communities for relevant threads/questions.
   2. Score for genuine help opportunity (not just keyword match).
@@ -77,7 +77,7 @@ Eight loops for news, listening, communities, competitors, links, directories, p
 - **Check cadence**: Monthly
 - **Acts when**: A relevant new directory/launch platform/marketplace exists that the product isn't listed on.
 - **Purpose**: Steadily expand distribution and referral/SEO footprint via directories.
-- **Skills used**: [seo LINKS-AND-DIRECTORIES](../seo/LINKS-AND-DIRECTORIES.md)
+- **Skills used**: [seo LINKS-AND-OUTREACH](../seo/LINKS-AND-OUTREACH.md)
 - **Loop body**:
   1. Check for new/relevant directories, launch sites, and marketplaces.
   2. Qualify by relevance, authority, and audience fit.
@@ -91,7 +91,7 @@ Eight loops for news, listening, communities, competitors, links, directories, p
 - **Check cadence**: Monthly
 - **Acts when**: A viable co-marketing, integration, affiliate, or newsletter-swap opportunity surfaces (or the pipeline is thin).
 - **Purpose**: Keep a fresh pipeline of partnership and co-marketing opportunities.
-- **Skills used**: [partners-and-community](../partners-and-community/SKILL.md), [referral-programs](../referral-programs/SKILL.md)
+- **Skills used**: [partnerships](../partnerships/SKILL.md), [referral-programs](../referral-programs/SKILL.md)
 - **Loop body**:
   1. Scan for potential partners (complementary tools, aligned audiences, active newsletters, integration targets).
   2. Qualify by audience overlap + reach + fit.

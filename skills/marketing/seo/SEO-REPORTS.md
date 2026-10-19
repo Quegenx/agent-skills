@@ -41,6 +41,8 @@ How every SEO workflow here hands over its result: one self-contained HTML page 
 
 [open-seo, seo-report] Copy [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html), keep its CSS, and replace the ALL-CAPS placeholders. "Do not restyle the template per report. One look, kept good, is the point." A report template may change `--accent`, the byline and the footer, nothing else.
 
+The starter's opening prose paragraph is an original placeholder. When filling the report, replace that placeholder with the summary bullet list required by [Writing rules](#writing-rules); it is not an exception to "one fact per line, never prose". [open-seo, seo-report; existing REPORT-TEMPLATE.html opening placeholder]
+
 Select a saved template only when the user names it or its report kind matches the requested workflow; ask when multiple choices remain ambiguous. The source's template-selection workflow does not authorize applying an unrelated design or replacing the owner's app styles. [every-app/open-seo, seo-report/SKILL.md]
 
 - **Light only, on purpose.** The CSS comment: the report is read inside an app with its own theme toggle, and "a report that follows the OS scheme alone shows a black panel inside a light app for anyone whose two settings disagree." That reasoning is about a report embedded in a light app; a stand-alone page follows the page's own theming rules.

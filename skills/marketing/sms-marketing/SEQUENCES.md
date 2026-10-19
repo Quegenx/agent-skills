@@ -101,7 +101,7 @@ Send 4, 2 days after delivery (marketing consent required):
 ```
 From [Brand]: How are you liking your [product]? Share a review for 15% off next order: [short.link]
 ```
-~108 chars / 1 segment. The FTC's review rule bars incentives conditioned on the review "expressing a particular sentiment, whether positive or negative" (16 CFR 465.4). That does not authorize a platform-prohibited incentive: do not use this discount template for Google reviews, which prohibit review incentives regardless of sentiment. Follow the destination's rules in [REVIEW-PROGRAMS.md](../referral-programs/REVIEW-PROGRAMS.md). The old line mentioned only the FTC sentiment condition. [https://support.google.com/business/answer/16816815?hl=en]
+~108 chars / 1 segment. The FTC's review rule bars incentives conditioned on the review "expressing a particular sentiment, whether positive or negative" (16 CFR 465.4). That does not authorize a platform-prohibited incentive: do not use this discount template for Google reviews, which prohibit review incentives regardless of sentiment. Follow the destination's rules in [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md). The old line mentioned only the FTC sentiment condition. [https://support.google.com/business/answer/16816815?hl=en]
 
 Send 5, 14 days after delivery (cross-sell, marketing consent):
 
@@ -171,7 +171,7 @@ From [Brand]: Last 6 hours of BFCM savings. Don't miss out: [short.link]
 
 ## Transactional
 
-Order updates, shipping, auth codes and account alerts are a separate compliance bucket: generally fine without marketing consent when tied to a transaction the user started, and still registered under 10DLC in the US [source]. OneSignal wants a dedicated sender per program type ([EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-model-and-setup)).
+Order updates, shipping, auth codes and account alerts are a separate compliance bucket: generally fine without marketing consent when tied to a transaction the user started [source]. Apply the actual [sender-type registration](REGISTRATION.md#what-registration-covers), which corrects the source's blanket US 10DLC requirement. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc] OneSignal wants a dedicated sender per program type ([EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-model-and-setup)).
 
 ```
 [Brand]: Order #12345 confirmed. Total $XX.XX. Track at [short.link]. Reply HELP for help.
@@ -251,7 +251,7 @@ From [Brand]: You've reached Gold status! Your perks: 15% off + free shipping. [
 
 - Suppress customers in active sequences from promotional sends (no double-tap).
 - Suppress opted-out subscribers from everything.
-- Frequency cap: max 4 to 6 marketing sends a week per subscriber, lower for newer subscribers. Florida, Oklahoma and Maryland cap texts at 3 per 24 hours ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-registration)).
+- Frequency cap: max 4 to 6 marketing sends a week per subscriber, lower for newer subscribers. Apply the source-qualified Florida/Oklahoma/Maryland three-text guidance and its limits from [COMPLIANCE.md](COMPLIANCE.md#onesignal-jurisdiction-guidance).
 - Quiet hours: the source uses 9am to 8pm recipient-local, inside the federal 8 a.m. to 9 p.m. rule ([COMPLIANCE.md](COMPLIANCE.md#quiet-hours-and-do-not-call)).
 - Cool-off: after a discount-driven purchase, suppress promotional sends for 14 days.
 

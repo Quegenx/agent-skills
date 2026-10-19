@@ -7,7 +7,7 @@ Group keywords into page-level clusters and decide which existing or new page ta
 [open-seo, keyword-clustering]
 - A keyword list, a saved keyword tag, a seed topic or a target domain. Without a list, use saved keywords, run discovery on the seed ([KEYWORDS.md](KEYWORDS.md)), or pull the domain's ranked keywords.
 - Optional existing URLs to map against.
-- The key pages from the context file: they are the existing pages clusters map to, and the business and goal decide which clusters are worth targeting. If none are saved, run the minimal inline setup in [PROJECT-SETUP.md](PROJECT-SETUP.md#minimal-inline-setup): ask for the pages that matter, or propose a shortlist from the site, an audit or Search Console and confirm it.
+- The key pages from the context file: they are the existing pages clusters map to, and the business and goal decide which clusters are worth targeting. If none are saved, run the minimal inline setup in [PROJECT-SETUP.md](../seo/PROJECT-SETUP.md#minimal-inline-setup): ask for the pages that matter, or propose a shortlist from the site, an audit or Search Console and confirm it.
 
 ## The workflow
 
@@ -37,7 +37,7 @@ Query and page grouping has a data cost: Google says "when you group by page and
 3. **Page briefs:** one finding per cluster: the page type and the searcher's problem, then the page to create or update. List required sections and internal links underneath. Writing the page itself is [../content-strategy/SKILL.md](../content-strategy/SKILL.md); comparison and alternatives clusters go to [../comparison-pages/SKILL.md](../comparison-pages/SKILL.md).
 4. **Cannibalization:** a table of the query, the competing URLs and which one to keep, "only when there is real evidence for it."
 5. **What to do next:** an ordered list, including the tag suggestions and the explicit ask before applying them.
-6. **How this report was made:** where the keywords came from, and a note labelling target pages as proposed when no URL data was supplied ([SEO-REPORTS.md](SEO-REPORTS.md#how-this-report-was-made)).
+6. **How this report was made:** where the keywords came from, and a note labelling target pages as proposed when no URL data was supplied ([SEO-REPORTS.md](../seo/SEO-REPORTS.md#how-this-report-was-made)).
 
 ## Guardrails
 

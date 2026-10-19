@@ -47,7 +47,7 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 ### Skills emphasis
 - [cold-outreach](../cold-outreach/SKILL.md), [seo PAGES-AT-SCALE](../seo/PAGES-AT-SCALE.md), [comparison-pages](../comparison-pages/SKILL.md), [seo](../seo/SKILL.md), [ai-search-visibility](../ai-search-visibility/SKILL.md)
 - [paid-ads](../paid-ads/SKILL.md) weighted toward LinkedIn + Google
-- [email-practices](../../backend/email-practices/SKILL.md) for trial nurture + lifecycle
+- [email-marketing](../email-marketing/SKILL.md) for trial nurture + lifecycle
 - [pricing-strategy](../pricing-strategy/SKILL.md) for tier optimization
 
 ### Tier-1 budget priority
@@ -96,7 +96,7 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 - In-app upsells
 
 ### Skills emphasis
-- [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md) (the source's `onboarding` and `paywalls`), [email-practices](../../backend/email-practices/SKILL.md)
+- [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md) (the source's `onboarding` and `paywalls`), [email-marketing](../email-marketing/SKILL.md)
 - [paid-ads](../paid-ads/SKILL.md), [ad-creative](../ad-creative/SKILL.md) (heavy creative iteration)
 - [referral-programs](../referral-programs/SKILL.md)
 - [pricing-strategy](../pricing-strategy/SKILL.md) for annual default + tier consolidation
@@ -145,7 +145,7 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 
 ### Skills emphasis
 - [seo](../seo/SKILL.md) for Shopify product pages
-- [email-practices](../../backend/email-practices/SKILL.md) for both hardware post-purchase and software lifecycle
+- [email-marketing](../email-marketing/SKILL.md) for both hardware post-purchase and software lifecycle
 - [referral-programs](../referral-programs/SKILL.md) with gifting layer
 - [pricing-strategy](../pricing-strategy/SKILL.md) for blended-bundle math
 - [paid-ads](../paid-ads/SKILL.md) with creative-heavy Meta presence
@@ -336,7 +336,7 @@ Source: [coreyhaines31/marketingskills, marketing-plan] `references/client-types
 
 ### Skills emphasis
 - [paid-ads](../paid-ads/SKILL.md) + [ad-creative](../ad-creative/SKILL.md) (heavy weight)
-- [email-practices](../../backend/email-practices/SKILL.md) for post-purchase + abandoned cart
+- [email-marketing](../email-marketing/SKILL.md) for post-purchase + abandoned cart
 - [referral-programs](../referral-programs/SKILL.md) with gifting
 - [pricing-strategy](../pricing-strategy/SKILL.md) for bundles + subscription option
 

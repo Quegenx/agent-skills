@@ -18,11 +18,11 @@ Getting a new signup to the moment they "get it", fast: the principles, the psyc
 [coreyhaines31/marketingskills, onboarding] The source's frames; none comes with a study in the source.
 
 - **Endowed progress:** people finish faster when progress is already started for them. The source claims a checklist that opens at "20% done" (a step pre-completed on their behalf) drives "roughly +40% completion" against 0%; treat the figure as its claim and test it.
-- **Peak-end rule:** users remember the most intense moment and the end; engineer a clear high point and end each session well.
+- **[Peak-end rule](../growth-ideas/PSYCHOLOGY.md#peak-end-rule):** engineer a clear high point and end each session well.
 - **Goldilocks rule:** motivation peaks when a task is on the edge of ability; early steps achievable, not trivial.
-- **BJ Fogg Behavior Model:** a behavior happens when "Motivation × Ability × Prompt" meet; if a step isn't happening, one of the three is missing.
+- **[BJ Fogg Behavior Model](../growth-ideas/PSYCHOLOGY.md#bj-fogg-behavior-model):** if a step is not happening, check motivation, ability and the prompt; the source attributes the model to BJ Fogg. Use the canonical owner's official form and old-source correction rather than treating the source's multiplication symbols as an arithmetic formula.
 - **Boosters and blockers** (credited to Ramli John): add boosters (pre-filled data, templates, quick wins, celebrations), remove blockers (required fields, dead ends, confusing empty states).
-- **Hick's Law:** decision time grows with the number and complexity of choices; every step, field and option is a decision.
+- **[Hick's Law](../growth-ideas/PSYCHOLOGY.md#hicks-law):** every step, field and option is a decision.
 
 ## The toolkit
 

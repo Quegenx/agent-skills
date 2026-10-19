@@ -6,11 +6,7 @@ Layout frameworks for image ads, each with slots for brand copy: the structure i
 
 ## Reading the tiers
 
-Each template has a **tier** (S to F, priority of reach, not quality) and a **role**:
-
-- **Unicorn scalers** (S, A) reach cold, net-new audiences; reach for these first when you need fresh reach.
-- **Supporting cast** (B, C) mostly convert mid-funnel. Not a demotion: "Don't kill a good supporting-cast format for failing to scale cold, that was never its job."
-- **Decayed** (D to F) have fatigued, carry rights or compliance risk, or no longer convert.
+Template tiers and the scaler-versus-supporting-cast distinction are defined in [FORMAT-TIERS.md](FORMAT-TIERS.md#the-one-question). Use that role when choosing the [batch distribution](#batch-distribution); a supporting-cast format is not a failed cold scaler. [coreyhaines31/marketingskills, ad-creative]
 
 ## Generation rules
 

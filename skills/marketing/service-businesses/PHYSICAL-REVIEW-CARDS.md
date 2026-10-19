@@ -18,7 +18,7 @@ Program a redirect on the operator's domain rather than writing the final destin
 
 The source's prose requires checking every link on a phone before ordering; its prompt instead opens five. Retain the stronger every-link acceptance, and label any five-link sample as additional spot checking rather than complete acceptance. Confirm destination identity and record which links were actually checked.
 
-Use the actual owner's supported review destination. The source promises instant ready-to-rate access; [Google's review help](https://support.google.com/business/answer/3474122?hl=en) says reviewers need to sign in to a Google Account. Device coverage, supplier programming and any printed Google icon permission must be established for the selected product, not assumed. Review eligibility and counter behavior follow [REVIEW-PROGRAMS.md](../referral-programs/REVIEW-PROGRAMS.md#platform-rules). [Google Business Profile help; more skills, 03-nfc-review-cards.md]
+Use the actual owner's supported review destination. The source promises instant ready-to-rate access; [Google's review help](https://support.google.com/business/answer/3474122?hl=en) says reviewers need to sign in to a Google Account. Device coverage, supplier programming and any printed Google icon permission must be established for the selected product, not assumed. Review eligibility and counter behavior follow [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#platform-rules). [Google Business Profile help; more skills, 03-nfc-review-cards.md]
 
 ## Sample order and envelope
 

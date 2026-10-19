@@ -33,12 +33,12 @@ Twelve loops that keep a site ranking, cited correctly by AI assistants, linked 
 
 ### The striking-distance push loop
 - **Check cadence**: Weekly
-- **Acts when**: An existing page ranks in positions 8 to 20 for a query with meaningful impressions, or ranks in the top 5 with a click-through rate well below its neighbors.
+- **Acts when**: An existing page ranks in positions 8 to 20 for a query with meaningful impressions, or ranks in the top 5 with a click-through rate well below its neighbors. The 8 to 20 band is this loop source's heuristic, not a Google threshold or a replacement for other providers' bands. [coreyhaines31/marketingskills, marketing-loops]
 - **Purpose**: Move pages that Google already half-trusts onto page one, the cheapest ranking gains available.
 - **Skills used**: [seo](../seo/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), [site-architecture](../site-architecture/SKILL.md)
 - **Loop body**:
   1. Pull query + page pairs from Search Console for the trailing 28 days; keep positions 8 to 20 above an impression floor, plus top-5 positions with weak click-through.
-  2. For each candidate, read the top three results and name the specific reason each one outranks the page (intent match, a missing section, fresher facts, stronger internal links).
+  2. For each candidate, read the top three results and record observed differences (intent match, a missing section, fresher facts, stronger internal links), then label any ranking explanation as a hypothesis with uncertainty. The old loop asked for the specific reason each result outranks the page; [ranking evidence](../seo/TECHNICAL-AUDIT.md#ranking-evidence) does not establish a cause from those observations. [coreyhaines31/marketingskills, marketing-loops; open-seo, seo-audit]
   3. Draft the smallest change that closes that gap: answer the query in the opening lines, add the missing section, add internal links from strong related pages. For the weak-CTR cases, change only the title and meta description.
   4. Stage the edits and record the starting position and CTR.
 - **Self-check**: Is the page the right one for the query, or is another page on the site competing for it (cannibalization)? Fix the conflict first. Is the impression count big enough for the position to mean anything?
@@ -50,7 +50,7 @@ Twelve loops that keep a site ranking, cited correctly by AI assistants, linked 
 - **Check cadence**: Weekly (AI answers vary run to run; daily checks mostly measure noise)
 - **Acts when**: A tracked prompt's answer omits the brand, misstates a fact about it, or cites a new source in the category.
 - **Purpose**: Keep the brand present and described accurately in AI assistants' answers to the questions buyers actually ask.
-- **Skills used**: [ai-search-visibility](../ai-search-visibility/SKILL.md) (sampling and noise in [MEASUREMENT.md](../ai-search-visibility/MEASUREMENT.md#one-answer-is-an-anecdote)), [product context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md), [public-relations](../public-relations/SKILL.md), [seo LINKS-AND-DIRECTORIES](../seo/LINKS-AND-DIRECTORIES.md)
+- **Skills used**: [ai-search-visibility](../ai-search-visibility/SKILL.md) (sampling and noise in [MEASUREMENT.md](../ai-search-visibility/MEASUREMENT.md#one-answer-is-an-anecdote)), [product context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md), [public-relations](../public-relations/SKILL.md), [seo LINKS-AND-OUTREACH](../seo/LINKS-AND-OUTREACH.md)
 - **Loop body**:
   1. Run the prompt panel (20 to 30 prompts spread across awareness stages) on each assistant you track, several runs per prompt.
   2. Record per prompt: mentioned or not, how the brand is described, which sources were cited.

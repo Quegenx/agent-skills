@@ -8,18 +8,7 @@ Asking customers directly, the highest-signal and first-party research. From cor
 
 **Prove yourself wrong, not right.** Research is disconfirmation. The source's Dropbox example: the team assumed users cared most about sync speed; research aimed at disproving it showed they cared more that files were reliably there and safe. "Ask questions that could return an answer you don't want to hear. If none of your questions can prove you wrong, rewrite them."
 
-## Sales Safari
-
-`[coreyhaines31/marketingskills, customer-research]` Amy Hoy's Sales Safari: go where the audience already gathers and observe without interrupting. Mine four things:
-
-| Mine for | What you're capturing |
-|---|---|
-| Pains | The problems, frustrations and workarounds they describe unprompted |
-| Jargon | The exact words, phrases and shorthand they use |
-| Recommendations | What they tell each other to buy, try or avoid |
-| Worldview | Their beliefs, biases, and how they see themselves and the problem |
-
-Run it before interviews: it tells you what to ask, and in whose words.
+For [Sales Safari](SOURCES.md#sales-safari), observe the audience before recruiting interviews. [coreyhaines31/marketingskills, customer-research]
 
 ## Recruiting
 

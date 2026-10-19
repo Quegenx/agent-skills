@@ -42,7 +42,7 @@ The source's step 7 also uses profile Q&A. Google discontinued the My Business Q
 
 ## Prospects
 
-Unclaimed listings (`isClaimed: false`) near the business are candidates for local partnership and link work [open-seo, local-seo]. Local chambers, associations, campus resources and community pages are local link prospects [open-seo, link-prospecting]; the method is in [LINKS-AND-DIRECTORIES.md](LINKS-AND-DIRECTORIES.md#finding-link-prospects).
+Unclaimed listings (`isClaimed: false`) near the business are candidates for local partnership and link work [open-seo, local-seo]. Local chambers, associations, campus resources and community pages are local link prospects [open-seo, link-prospecting]; the method is in [LINKS-AND-OUTREACH.md](LINKS-AND-OUTREACH.md#finding-link-prospects).
 
 ## What Google forbids
 

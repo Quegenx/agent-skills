@@ -50,7 +50,7 @@ Read two or three gap answers in full to confirm what the engine says and which 
 ## 5. Shortlist, then choose
 
 [open-seo, ai-visibility-audit] Write five to eight candidate actions from at least two kinds:
-- get onto a recurring third-party source the answers cite (outreach and directory work: [../seo/LINKS-AND-DIRECTORIES.md](../seo/LINKS-AND-DIRECTORIES.md));
+- get onto a recurring third-party source the answers cite ([outreach](../seo/LINKS-AND-OUTREACH.md) and [directory work](../seo/DIRECTORY-SUBMISSIONS.md));
 - improve an owned page so it answers a gap prompt as well as the cited page does;
 - create a missing owned page, such as a comparison, alternatives or use-case page ([../comparison-pages/SKILL.md](../comparison-pages/SKILL.md));
 - remove an access barrier;

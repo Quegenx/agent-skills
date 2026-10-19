@@ -8,7 +8,7 @@ Read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-
 
 1. **Business type:** B2C ecom/DTC, B2B SaaS, mobile app, services, fintech; order volume or list size; geographic mix ("US, EU, both - compliance differs dramatically").
 2. **Current state:** existing SMS program (platform, list size, opt-in rate, opt-out rate, revenue per send); the email program ("SMS works best as a layer on top, not a replacement"); number type (short code, toll-free, 10DLC).
-3. **Compliance posture:** US 10DLC registration done; the opt-in mechanism (checkbox, keyword, double opt-in); SMS disclosures in the privacy policy and terms.
+3. **Compliance posture:** applicable registration for the selected [sender type](REGISTRATION.md#what-registration-covers); the opt-in mechanism (checkbox, keyword, double opt-in); SMS disclosures in the privacy policy and terms. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
 4. **Goal:** revenue (promotional, cart recovery, post-purchase), activation (welcome, onboarding, milestone nudges) or transactional (order updates, auth codes, alerts).
 
 ## When SMS beats email
@@ -50,8 +50,9 @@ The source says "Short links are mandatory (`klvy.co`, `txt.attn.tv`, branded sh
 
 ### Length and segments
 
-- **160 GSM-7 characters = 1 segment;** multi-part messages carry 153 each. UCS-2 (emoji, accented characters, curly quotes, non-Latin) carries 70, or 67 per part. Billing is per segment [OneSignal, Email and SMS source]. A 200-character GSM-7 message is two segments; the emoji example below preserves the source’s other billing example.
-- **161 to 306 characters = 2 segments:** "Acceptable for richer messages, but you're paying double per send." [source]
+- **160 GSM-7 characters = 1 segment;** ordinary multi-part messages carry 153 each. UCS-2 carries 70, or 67 per part. Billing is per segment. For US/Canada toll-free multipart SMS, Twilio instead specifies 152 GSM-7 or 66 UCS-2 characters per segment. Count the actual final message with the provider's segment calculator. [https://www.twilio.com/docs/glossary/what-sms-character-limit]
+- **A character outside GSM-7 can switch the message to UCS-2.** GSM-7 includes accented letters such as é and à; the old line and source summary incorrectly treated accented characters as universally UCS-2. Curly quotes and emoji are examples outside GSM-7. Preserve the source's 200-character GSM-7 example as two ordinary segments, and recount after substitutions and footers. [https://www.twilio.com/docs/glossary/what-is-gsm-7-character-encoding; https://www.twilio.com/docs/glossary/what-sms-character-limit]
+- **Ordinary GSM-7 messages of 161 to 306 characters = 2 segments:** "Acceptable for richer messages, but you're paying double per send." Apply the toll-free exception above where relevant. [source; https://www.twilio.com/docs/glossary/what-sms-character-limit]
 - **One emoji switches the whole message to UCS-2,** so a 100-character text with an emoji is 2 segments. The source recommends at most one emoji per message; preview the segment count before sending and multiply the extra segments by the list size.
 - **MMS** carries an image and up to 1,600 characters; the source puts it at "3-5x the SMS cost" (Twilio lists $0.022 per MMS against $0.0083 per SMS segment). "Use sparingly for high-impact moments."
 
@@ -86,7 +87,7 @@ The source's "healthy range (ecom DTC)" column is its own benchmark, not a platf
 
 When asked for an SMS plan [coreyhaines31/marketingskills, sms]:
 
-1. **Compliance check:** 10DLC registered (US)? Opt-in compliant? "Flag blockers first."
+1. **Compliance check:** selected sender type [registered as applicable](REGISTRATION.md#what-registration-covers)? Opt-in compliant? "Flag blockers first." [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
 2. **Strategy:** which flows to build first, ranked for the business model.
 3. **Sequence designs:** trigger, delay, copy with character counts, CTA, segmentation per flow.
 4. **Platform:** from the stack, list size and complexity. The source's vendor comparisons (Klaviyo, Postscript, Attentive, Twilio, Brevo, SimpleTexting, Plivo, AudienceTap, Customer.io) were not checked against vendor pages and are left out; OneSignal setup is in [../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md).
@@ -99,7 +100,7 @@ When asked for an SMS plan [coreyhaines31/marketingskills, sms]:
 
 [coreyhaines31/marketingskills, sms]
 
-1. Skipping 10DLC registration: "Register first, send second."
+1. Skipping applicable registration: "Register first, send second." The source's blanket 10DLC wording did not distinguish number types; use [the registration correction](REGISTRATION.md#what-registration-covers). [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
 2. Treating SMS like email, with daily promotional blasts.
 3. A discount on the first cart text: "trains customers to always abandon."
 4. A generic "From: [shortcode]": the brand name belongs in the message.

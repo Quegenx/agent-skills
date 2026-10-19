@@ -1,6 +1,6 @@
 # LinkedIn ads
 
-Operating rules for LinkedIn: bidding, audience sizing, scaling triggers, benchmarks and format tactics. LinkedIn is the precision channel, the highest-quality B2B targeting at the highest cost, so the discipline is about not wasting that precision. From [coreyhaines31/marketingskills, ads, linkedin-b2b-playbook.md] (MIT; it credits Ivan Falco's ads-skills, and its benchmarks are practitioner). LinkedIn's help pages are quoted with URLs where they confirm or correct the source. ABM on LinkedIn is in [B2B-AND-ABM.md](B2B-AND-ABM.md#linkedin-abm).
+Operating rules for LinkedIn: bidding, audience sizing, scaling triggers, benchmarks and format tactics. LinkedIn is the precision channel, the highest-quality B2B targeting at the highest cost, so the discipline is about not wasting that precision. From [coreyhaines31/marketingskills, ads, linkedin-b2b-playbook.md] (MIT; it credits Ivan Falco's ads-skills, and its benchmarks are practitioner). LinkedIn's help pages are quoted with URLs where they confirm or correct the source. ABM on LinkedIn is in [ABM.md](ABM.md#linkedin-abm).
 
 **Contents:** [Bidding](#bidding) · [Audience sizing](#audience-sizing) · [Functions vs titles](#functions-vs-titles) · [Splitting audiences](#splitting-audiences) · [Penetration-based scaling](#penetration-based-scaling) · [Benchmarks](#benchmarks) · [Thought leader ads](#thought-leader-ads) · [Build order](#build-order) · [Formats](#formats) · [Retargeting starts when the audience exists](#retargeting-starts-when-the-audience-exists) · [Audit shortlist](#audit-shortlist) · [Prove it](#prove-it)
 
@@ -93,7 +93,7 @@ Character limits and image sizes: [PLATFORM-SPECS.md](../ad-creative/PLATFORM-SP
 
 "LinkedIn retargeting audiences only start collecting from the moment you create them." LinkedIn agrees: "Once you set up your website audience in Campaign Manager, your audience will begin to build", and the Insight Tag must be installed "for your website audiences to build" (https://www.linkedin.com/help/lms/answer/a420433). Create every audience you might want (site visitors, video viewers, ad engagers, lead-form openers, company page visitors) before launch. Video audiences use 25, 50, 75 and 97% thresholds (https://www.linkedin.com/help/lms/answer/122355).
 
-Sequence by behavior so each audience sees the next step: saw a founder or creator ad → customer proof; visited the site → the use case matching the page read; watched most of a video → a stronger CTA (trial, demo or Lead Gen Form). Exclude converters. Cross-channel audiences from UTMs: [B2B-AND-ABM.md](B2B-AND-ABM.md#cross-channel-utm-remarketing).
+Sequence by behavior so each audience sees the next step: saw a founder or creator ad → customer proof; visited the site → the use case matching the page read; watched most of a video → a stronger CTA (trial, demo or Lead Gen Form). Exclude converters. Cross-channel audiences from UTMs: [ABM.md](ABM.md#cross-channel-utm-remarketing).
 
 ## Audit shortlist
 

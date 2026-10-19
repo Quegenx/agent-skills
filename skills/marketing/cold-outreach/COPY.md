@@ -121,10 +121,10 @@ The full research rules and the brief template are in [../prospecting/ACCOUNT-RE
 - **Lowercase.** Gong (85M+ emails): all-lowercase has the highest open rates.
 - **Context, not their name.** First name in the subject "→ 12% fewer replies"; use their pain point, competitor or trigger instead.
 - **Questions only when specific.** Belkins and Lavender disagree; the source's resolution: specific pain questions work, generic ones ("Quick question?", "Have 15 minutes?") fail. Default to statements.
-- **Avoid:** salesy words ("increase", "boost", "ROI"), urgency ("ASAP", "urgent"), excessive punctuation, numbers and percentages, emojis, pitching the product, an empty subject, spam-trigger words ("free", "guarantee", "act now").
+- **Avoid:** salesy words ("increase", "boost", "ROI"), urgency ("ASAP", "urgent"), excessive punctuation, numbers and percentages, emojis, pitching the product and an empty subject. The source also advised avoiding words to influence spam filters; do not use word substitution for filter evasion. [coreyhaines31/marketingskills, cold-email; owner safety rule 9]
 - **C-suite:** ultra-concise, human, understated ("thank you", "an update", "a question", or a specific project or trigger).
 
-The repo's "50 characters or less" for marketing subject lines in [LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails) is for opted-in newsletters; this is a different medium.
+The repo's "50 characters or less" for marketing subject lines in [email-marketing/SEQUENCES.md](../email-marketing/SEQUENCES.md#campaign-copy-conventions) is for opted-in newsletters; this is a different medium.
 
 ## What to avoid
 

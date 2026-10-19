@@ -79,4 +79,6 @@ Words and phrases they actually use (sourced from research):
 
 ## Prove it
 
-Each persona lists the data points behind it (at least 5, one segment) or is tagged provisional with its proxy source; every Key Vocabulary phrase has a source; empty fields are blank, not filled; the persona's review date is within the last quarter.
+Each persona lists the data points behind it (at least 5, one consistent segment); a proxy-derived persona is also tagged provisional with its proxy source; every Key Vocabulary phrase has a source; empty fields are blank, not filled; the persona's review date is within the last quarter.
+
+**Two source expectations:** the old acceptance line allowed the five-point evidence requirement "or" a provisional proxy tag; the minimum above and the skill hub require evidence before creating a persona. Keep that minimum for provisional personas too; their tag records provenance rather than waiving the evidence floor. [coreyhaines31/marketingskills, customer-research; existing PERSONAS.md and SKILL.md]

@@ -78,7 +78,7 @@ For each recommended idea [coreyhaines31/marketingskills, marketing-ideas]:
 
 ## Handoffs
 
-Where each idea is carried out in this repo: programmatic SEO (#4) to [seo PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md); comparison pages (#11) to [comparison-pages](../comparison-pages/SKILL.md); email tactics to [email-practices](../../backend/email-practices/SKILL.md); free tools (#15) to [lead-magnets](../lead-magnets/SKILL.md); referrals and viral growth (#93, #137) to [referral-programs](../referral-programs/SKILL.md); paid ads to [paid-ads](../paid-ads/SKILL.md); social to [social-media](../social-media/SKILL.md); launches to [product-launch](../product-launch/SKILL.md); app listings (#124) to [aso](../../mobile/aso/SKILL.md). A request to design a referral program or an A/B test is that skill's job, not an idea list (the source's evals).
+Where each idea is carried out in this repo: programmatic SEO (#4) to [seo PAGES-AT-SCALE.md](../seo/PAGES-AT-SCALE.md); comparison pages (#11) to [comparison-pages](../comparison-pages/SKILL.md); email sequences and campaign copy to [email-marketing](../email-marketing/SKILL.md), delivery/authentication/list operations to [email-practices](../../backend/email-practices/SKILL.md); free tools (#15) to [lead-magnets](../lead-magnets/SKILL.md); referrals and viral growth (#93, #137) to [referral-programs](../referral-programs/SKILL.md); paid ads to [paid-ads](../paid-ads/SKILL.md); social to [social-media](../social-media/SKILL.md); launches to [product-launch](../product-launch/SKILL.md); app listings (#124) to [aso](../../mobile/aso/SKILL.md). A request to design a referral program or an A/B test is that skill's job, not an idea list (the source's evals).
 
 ## The rules
 

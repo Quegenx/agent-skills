@@ -11,7 +11,7 @@ The plan's Section 12 ("Tactical idea bank") uses this mapping as the base, then
 
 ## How to read this doc
 
-- **139 unique ideas, 144 entries.** Five ideas cross-cut multiple AARRR stages and appear under each stage they serve (#79 Early-Access Referrals, #86 Lifetime Deals, #91 In-App Upsells, #114 Moneyball Marketing, #117 Product Competitions). Each duplicate row carries a cross-cut note.
+- **139 unique ideas, 143 entries.** Four ideas appear in more than one section (#79 Early-Access Referrals, #91 In-App Upsells, #114 Moneyball Marketing, #117 Product Competitions). These counts come from the tables below; #86 Lifetime Deals appears only under Acquisition, as its Revenue exclusion explains.
 - **"Entries" counts rows; idea IDs are unique.** Section header counts reflect rows in this doc, not unique ideas from [growth-ideas](../growth-ideas/SKILL.md).
 - **Numbers correspond exactly to the [growth-ideas](../growth-ideas/SKILL.md) skill ordering.** If [growth-ideas](../growth-ideas/SKILL.md) reorders or expands, update this doc.
 

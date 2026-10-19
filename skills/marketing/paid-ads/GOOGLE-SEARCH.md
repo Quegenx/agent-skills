@@ -80,7 +80,7 @@ Once a week per campaign, three passes:
 
 ## Offline conversions
 
-The single highest-impact move in a B2B Google account: import CRM outcomes (SQL, opportunity, closed-won) through GCLID + offline conversion import or a native CRM integration, with real deal values. Until then smart bidding optimizes to form-fills. B2B clicks close in 60 to 180 days, so in-platform counts never tell the truth alone; reconcile against the CRM monthly, and "the CRM wins" ([B2B-AND-ABM.md](B2B-AND-ABM.md#the-optimize-to-quality-trap)).
+The single highest-impact move in a B2B Google account: import CRM outcomes (SQL, opportunity, closed-won) through GCLID + offline conversion import or a native CRM integration, with real deal values. Until then smart bidding optimizes to form-fills. B2B clicks close in 60 to 180 days, so in-platform counts never tell the truth alone; reconcile against the CRM monthly, and "the CRM wins" ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#the-optimize-to-quality-trap)).
 
 ## Quality Score and landing pages
 

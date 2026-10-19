@@ -12,9 +12,7 @@ The source renders 1080 × 1920 (9:16), 30 fps, MP4, with footage of any size ce
 
 Platform UI (the action rail, caption stack, music button, account row) sits on top of the video, and text or key visuals under it get covered. The source's "cross-platform safe band" (keep 220 px top, 500 px bottom and 180 px each side clear on 1080 × 1920, a 720 × 1200 band from y = 220 to y = 1420, called "the worst case of TikTok and IG Reels margins") is not the worst case:
 
-- **Meta Reels:** leave "roughly 14% of the top, 35% of the bottom, and 6% on each side ... free from text, logos" (https://www.facebook.com/business/help/980593475366490). On 1080 × 1920: about 269 px top, 672 px bottom, 65 px each side, so the source's band is too small at top and bottom.
-- **Meta Stories:** "14% of the top and 20% of the bottom" (https://www.facebook.com/business/help/304846896685564).
-- **TikTok:** no fixed numbers; "The safe zone size is determined by the dimension ..., ad caption length, and any additional formats used", with downloadable overlay files (https://ads.tiktok.com/help/article?aid=10002742).
+Placement-specific margins and overlay requirements are canonical in [PLATFORM-SPECS.md](PLATFORM-SPECS.md#meta) for Meta and [its TikTok section](PLATFORM-SPECS.md#tiktok). Meta's top and bottom Reels margins exceed the source's old band. [Meta and TikTok official URLs in PLATFORM-SPECS.md]
 
 For one master across placements, keep captions and load-bearing visuals inside Meta's Reels margins and check the frame against TikTok's overlay for your caption length before a big push.
 

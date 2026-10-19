@@ -1,13 +1,13 @@
 # Keyword research
 
-Turn seed topics into a prioritized set of keywords the site can win, each tied to the page that should rank for it. The workflow is every-app/open-seo's `keyword-research` skill (MIT, Copyright (c) 2026 Ben Senescu), with its OpenSEO tool calls reduced to the job they do; the data provider behind OpenSEO is DataForSEO, and the same steps work with any keyword-data provider. Project facts come from the context file in [PROJECT-SETUP.md](PROJECT-SETUP.md); the report is written as in [SEO-REPORTS.md](SEO-REPORTS.md).
+Turn seed topics into a prioritized set of keywords the site can win, each tied to the page that should rank for it. The workflow is every-app/open-seo's `keyword-research` skill (MIT, Copyright (c) 2026 Ben Senescu), with its OpenSEO tool calls reduced to the job they do; the data provider behind OpenSEO is DataForSEO, and the same steps work with any keyword-data provider. Project facts come from the context file in [PROJECT-SETUP.md](../seo/PROJECT-SETUP.md); the report is written as in [SEO-REPORTS.md](../seo/SEO-REPORTS.md).
 
 ## Inputs
 
 [open-seo, keyword-research]
 - One or more seed topics, products, pages, competitors or audience problems.
 - Optional market, location and language. If they are unclear and "would materially affect keyword metrics, ask the user; otherwise use the MCP tool defaults."
-- The business overview and current goal from the context file. If either is empty, run the minimal inline setup in [PROJECT-SETUP.md](PROJECT-SETUP.md#minimal-inline-setup) and continue.
+- The business overview and current goal from the context file. If either is empty, run the minimal inline setup in [PROJECT-SETUP.md](../seo/PROJECT-SETUP.md#minimal-inline-setup) and continue.
 - Check the research log first: if the same research ran within the last 30 days, reuse it and say so.
 
 ## Start from first-party demand
@@ -33,11 +33,15 @@ Turn seed topics into a prioritized set of keywords the site can win, each tied 
    - a useful volume or CPC signal;
    - a SERP where the user can plausibly compete;
    - for local SEO, local-pack and Maps visibility and proximity fit.
-8. Check the live SERP for high-potential or ambiguous keywords "when SERP intent would change the recommendation; keep the default check small." Get SERPs from a licensed SERP data provider or Search Console, never by scraping Google: its spam policies list "scraping results for rank-checking purposes or other types of automated access to Google Search conducted without permission" ([spam policies](https://developers.google.com/search/docs/essentials/spam-policies)).
+8. Check the live SERP for high-potential or ambiguous keywords "when SERP intent would change the recommendation; keep the default check small." Get live SERP listings from a licensed SERP data provider, never by scraping Google: its spam policies list "scraping results for rank-checking purposes or other types of automated access to Google Search conducted without permission" ([spam policies](https://developers.google.com/search/docs/essentials/spam-policies)).
 9. Present a shortlist and a longer opportunity table.
 10. Ask before saving keywords. When saving, suggest concise tags such as `topic:<topic>`, `intent:<intent>` or `page:<slug>`.
 
 Then, if the keywords need mapping to pages, run [CLUSTERING.md](CLUSTERING.md).
+
+### Search Console and SERP evidence
+
+Search Console supplies the owned site's query/page performance and average position; it does not supply a complete current listing of competitors and SERP features. The old line called Search Console a source of live SERPs. Keep that evidence separate from a licensed provider's result-page listing. [Google Search Analytics query](https://developers.google.com/webmaster-tools/v1/searchanalytics/query); [Search Console API](../search-console/API.md)
 
 ## Rank tracking
 
@@ -53,7 +57,7 @@ Then, if the keywords need mapping to pages, run [CLUSTERING.md](CLUSTERING.md).
 4. **The longer opportunity list:** a second table, same columns.
 5. **Risks and caveats:** SERP intent that would change the recommendation, missing metrics written as `unknown`, "close-variant volumes that are one bucket rather than several."
 6. **What to do next:** an ordered list, including whether to run keyword clustering, write a content brief ([../content-strategy/SKILL.md](../content-strategy/SKILL.md)) or save the chosen keywords.
-7. **How this report was made:** which tools returned what ([SEO-REPORTS.md](SEO-REPORTS.md#how-this-report-was-made)).
+7. **How this report was made:** which tools returned what ([SEO-REPORTS.md](../seo/SEO-REPORTS.md#how-this-report-was-made)).
 
 ## Guardrails
 
@@ -65,4 +69,4 @@ Then, if the keywords need mapping to pages, run [CLUSTERING.md](CLUSTERING.md).
 
 ## Prove it
 
-Every shortlisted keyword has intent, volume, KD and CPC filled or written `unknown`, and a target page; the striking-distance rows were filtered after fetching and the report says which window and filter; no keyword is ranked on volume alone; branded-only and off-intent terms are gone; every SERP came from Search Console or a licensed provider; nothing was saved or tagged before the user confirmed; and the research log has one line for this run.
+Every shortlisted keyword has intent, volume, KD and CPC filled or written `unknown`, and a target page; the striking-distance rows were filtered after fetching and the report says which window and filter; no keyword is ranked on volume alone; branded-only and off-intent terms are gone; every live SERP listing came from a licensed provider and Search Console positions are identified as averages; nothing was saved or tagged before the user confirmed; and the research log has one line for this run.

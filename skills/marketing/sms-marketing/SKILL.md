@@ -5,7 +5,7 @@ description: "Plans and writes SMS, MMS and WhatsApp marketing that stays lawful
 
 # SMS marketing
 
-A text interrupts, so it has to be worth the interruption, and in the US every marketing text rests on a signed written consent the sender can prove, on revocation honored however the person phrases it, and on a registered sender whose Trust Score sets how fast it may send. This skill adapts the coreyhaines31/marketingskills `sms` skill (v1.1.0, MIT) and corrects it against the FCC's TCPA rules (47 CFR 64.1200 and order FCC 24-24), the CTIA Messaging Principles and Short Code Monitoring Handbook, Twilio's A2P 10DLC, pricing and throughput pages, and Meta's WhatsApp docs as the source cites them. The source reads `.agents/product-marketing.md`; here the shared file is `.agents/product-context.md` ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)). Sending through OneSignal (senders, keywords, Journeys, quiet-hours nodes) is [../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md); email is [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md); phone-number capture popups are [../cro/POPUPS.md](../cro/POPUPS.md); the phone field itself is [../../frontend/web-accessibility/PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md).
+A text interrupts, so it has to be worth the interruption. This repo requires provable signed written consent for US marketing texts and revocation honored however the person phrases it; registration and throughput depend on the selected [sender type](REGISTRATION.md#number-types), with Trust Score applying to 10DLC. This skill adapts the coreyhaines31/marketingskills `sms` skill (v1.1.0, MIT) and corrects it against the FCC's TCPA rules (47 CFR 64.1200 and order FCC 24-24), the CTIA Messaging Principles and Short Code Monitoring Handbook, Twilio's A2P 10DLC, pricing and throughput pages, and Meta's WhatsApp docs as the source cites them. The source reads `.agents/product-marketing.md`; here the shared file is `.agents/product-context.md` ([../../anti-ai-slop/anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)). Sending through OneSignal (senders, keywords, Journeys, quiet-hours nodes) is [../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md); email delivery is [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md) and sequences/copy are [../email-marketing/SKILL.md](../email-marketing/SKILL.md); phone-number capture popups are [../cro/POPUPS.md](../cro/POPUPS.md); the phone field itself is [../../frontend/web-accessibility/PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md).
 
 | The job | Read |
 |---|---|
@@ -23,7 +23,7 @@ A text interrupts, so it has to be worth the interruption, and in the US every m
 4. **Register the brand and every campaign before the first US 10DLC send,** keep sample messages identical to live sends, and plan volume from the Trust Score's MPS and T-Mobile's daily brand cap (Twilio; [REGISTRATION.md](REGISTRATION.md)).
 5. **Keep promotional texts between 8 a.m. and 9 p.m. recipient-local** (64.1200(c)(1)), or the stricter state window, and honor Do-Not-Call for marketing texts ([COMPLIANCE.md](COMPLIANCE.md#quiet-hours-and-do-not-call)).
 6. **Send by text only what can't wait 24 hours;** everything else goes by email [coreyhaines31/marketingskills, sms].
-7. **Count segments before sending:** one emoji or accent turns a message into UCS-2 at 70 characters a segment ([CHANNEL-AND-COPY.md](CHANNEL-AND-COPY.md#length-and-segments)).
+7. **Count the actual encoded segments before sending,** including the final footer; the corrected GSM-7/UCS-2 rules and the old accent claim are in [CHANNEL-AND-COPY.md](CHANNEL-AND-COPY.md#length-and-segments). [https://www.twilio.com/docs/glossary/what-sms-character-limit]
 8. **One link per text on a branded or platform domain,** never a public shortener (OneSignal; [CHANNEL-AND-COPY.md](CHANNEL-AND-COPY.md#one-cta-one-link)).
 9. **No discount in the first cart text,** double opt-in for US cart programs, and no urgency, hold or expiry claim that isn't true ([SEQUENCES.md](SEQUENCES.md#abandoned-cart)).
 10. **On WhatsApp, use an approved marketing template outside the 24-hour window,** and never plan marketing templates to US numbers (Meta, as cited by the source; [WHATSAPP.md](WHATSAPP.md)).
@@ -31,8 +31,8 @@ A text interrupts, so it has to be worth the interruption, and in the US every m
 
 ## Prove it
 
-- A plan opens with the compliance check (10DLC status, opt-in mechanism) and flags blockers before any strategy.
+- A plan opens with the compliance check (sender type and its applicable registration, opt-in mechanism) and flags blockers before any strategy.
 - Every flow names its trigger, delays, copy with character and segment counts, one CTA, and its exit conditions.
 - Test replies of "STOP", "opt out" and "please stop texting me" each end marketing texts with one confirmation.
-- The send schedule fits the campaign's MPS, the T-Mobile daily cap and the quiet-hours window.
+- The send schedule fits the selected sender's throughput and quiet-hours window, including the applicable T-Mobile daily brand cap for 10DLC.
 - No figure in the plan is presented as a platform rule unless an official page in these files says it, and every file's own Prove it checks pass for the parts you touched.

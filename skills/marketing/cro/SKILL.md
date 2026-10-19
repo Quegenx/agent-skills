@@ -49,7 +49,7 @@ Ask, unless the context file already answers [coreyhaines31/marketingskills, cro
 4. **Visual hierarchy and scannability.** Can someone scanning get the main message? Are the most important elements visually prominent? Is there enough white space? Do images support or distract from the message?
 5. **Trust signals and social proof.** Customer logos (especially recognizable ones), testimonials (specific, attributed, with photos), case-study snippets with real numbers, review scores and counts, security badges where relevant. "Placement: Near CTAs and after benefit claims." Rule 4 decides what may appear.
 6. **Objection handling.** Price and value concerns, "Will this work for my situation?", implementation difficulty, "What if it doesn't work?", addressed "through: FAQ sections, guarantees, comparison content, process transparency". The sections that answer each doubt are in [anti-slop-copy/PAGES.md](../../anti-ai-slop/anti-slop-copy/PAGES.md#sections-built-from-what-the-reader-doubts); guarantee claims follow [offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md).
-7. **Friction points.** "Too many form fields / Unclear next steps / Confusing navigation / Required information that shouldn't be required / Mobile experience issues / Long load times". Forms are [FORMS.md](FORMS.md); load time is [performance-and-caching](../../backend/performance-and-caching/SKILL.md).
+7. **Friction points.** "Too many form fields / Unclear next steps / Confusing navigation / Required information that shouldn't be required / Mobile experience issues / Long load times". Forms are [FORMS.md](FORMS.md); load time is [web-performance](../../frontend/web-performance/SKILL.md).
 
 ## Output
 

@@ -320,7 +320,7 @@ The source's example was a webinar with `"eventAttendanceMode": "https://schema.
 
 ## One graph per page
 
-One script, one `@graph`, everything referenced by absolute `@id` ([STRUCTURED-DATA.md](STRUCTURED-DATA.md#one-identity-across-pages)). The `WebPage` id changes per page; the `WebSite` and `Organization` ids never do. [squirrelscan]
+This example uses the source's organization convention: one script, one `@graph`, everything referenced by absolute `@id`. That convention is not a universal validity requirement; use the existing qualifications for [script placement](STRUCTURED-DATA.md#format-and-placement) and [expanded identity and relative identifiers](STRUCTURED-DATA.md#one-identity-across-pages). The `WebPage` id changes per page; the `WebSite` and `Organization` ids never do. [squirrelscan]
 
 ```json
 {

@@ -110,23 +110,9 @@ CTA (25-30 sec): [Follow, comment, share, link]
 
 ## No AI tells
 
-`[coreyhaines31/marketingskills, social]` "Readers scroll past posts that read as generated, and on LinkedIn they say so in the comments." Never write these (each is in [TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md) too):
+[coreyhaines31/marketingskills, social] "Readers scroll past posts that read as generated, and on LinkedIn they say so in the comments." Apply the canonical [structure rules](../../anti-ai-slop/anti-slop-writing/TELLS.md#1-structure-the-worst-offenders), [stock phrases](../../anti-ai-slop/anti-slop-writing/TELLS.md#2-openers-transitions-and-closers-ban), [punctuation and emoji rules](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting), and [social-post rules and per-post caps](../../anti-ai-slop/anti-slop-writing/TELLS.md#7-social-posts-and-email).
 
-- **Contrast reveals:** "It's not X, it's Y." "Not because X. Because Y." State Y directly, with the reason.
-- **Negation lists:** "No X, no Y, no Z." Say what does happen. One plain absence ("No card required") is fine.
-- **Trailing pile-ons:** a full claim, then a comma and more restating clauses. End the sentence at the claim.
-- **Self-answered questions and colon reveals:** "The result? 3x faster." "The best part: it learns." FAQ questions and a question in the reader's own voice are fine.
-- **Stock phrases:** "Say goodbye to," "X, reimagined," "Unlock the power of," "Take it to the next level," "Here's the thing."
-- **Em dashes** in posts. "Use a period or a line break."
-
-Social-specific:
-
-- **Broetry:** "one short sentence per line, every line, for the whole post. Write paragraphs and break lines where a person would pause."
-- **Engagement bait:** "Agree?" "Thoughts?" "Let that sink in." "Read that again." End on the point, or a real question you want answered. X's separate negative-action predictions do not establish a fixed penalty for each phrase ([X-RANKING.md](X-RANKING.md#signal-families)).
-- **Manufactured vulnerability:** "I'll be honest, I was terrified..." with no real story behind it (TELLS.md's "Fake candor").
-- **Emoji as bullets:** 🚀 ✅ 💡 leading every line. TELLS.md allows emoji in casual social posts only when it's the writer's voice; leading every line is the tell.
-
-"Keep fragments and lists of three to one per post."
+X's separate negative-action predictions do not establish a fixed penalty for each engagement-bait phrase ([X-RANKING.md](X-RANKING.md#signal-families)). [coreyhaines31/marketingskills, social; xAI sources in X-RANKING.md]
 
 ## Comments
 

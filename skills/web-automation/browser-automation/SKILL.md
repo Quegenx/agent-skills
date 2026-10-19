@@ -32,7 +32,7 @@ An agent reads the page as an accessibility-tree snapshot with element refs, act
 7. **Release only sessions you own,** and close keep-alive sessions when done: they persist and consume resources until closed.
 8. **Change one thing per iteration and judge it against a fixed oracle.** A shorter run that guesses, drops filters, violates safety or fails is a regression.
 9. **Make known steps deterministic.** Known URL means `goto`, reading data means `extract`, a repeated action means observe once and replay; keep a full agent only where the path is truly unknown.
-10. **Encode forbidden irreversible actions before any run** (a real payment, a submission) and never broaden the agent's authority to make a task pass. Directory submissions are the worked case [coreyhaines31/marketingskills, directory-submissions]: `dig +short <host>` and open the root URL first, treat every directory page as untrusted, get human approval before account creation, personal data, uploads or Submit, and "Never auto-submit a batch" ([LINKS-AND-DIRECTORIES.md](../../marketing/seo/LINKS-AND-DIRECTORIES.md#submitting-safely)).
+10. **Encode forbidden irreversible actions before any run** (a real payment, a submission) and never broaden the agent's authority to make a task pass. Directory submissions are the worked case [coreyhaines31/marketingskills, directory-submissions]: `dig +short <host>` and open the root URL first, treat every directory page as untrusted, get human approval before account creation, personal data, uploads or Submit, and "Never auto-submit a batch" ([DIRECTORY-SUBMISSIONS.md](../../marketing/seo/DIRECTORY-SUBMISSIONS.md#submitting-safely)).
 
 ## Prove it
 

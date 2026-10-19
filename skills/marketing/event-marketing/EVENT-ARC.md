@@ -39,7 +39,7 @@ Mixed roles are normal (sponsor and speak, attend and host a dinner). Plan each 
 
 - **The 24 to 48 hour window:** follow up while the conversation is warm, referencing what was actually discussed. The source's claim that "Every day of delay roughly halves response rates" is, in its own words, "directional, not a law".
 - **Tier it:** hot gets a personal note and a concrete next step, warm a relevant asset tied to their stated problem, scan-only one light touch or nothing ("don't burn your domain on people who don't remember you"); the tiers in full, and where a scan-only touch is lawful, are in [SPONSORSHIP.md](SPONSORSHIP.md#follow-up).
-- **Route to systems:** the CRM with event source tags ([../revops/SKILL.md](../revops/SKILL.md)); the not-nows to nurture email ([../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md)).
+- **Route to systems:** the CRM with event source tags ([../revops/SKILL.md](../revops/SKILL.md)); the not-nows to nurture email ([email-marketing](../email-marketing/SKILL.md)).
 
 ## Hosting formats
 
@@ -50,8 +50,8 @@ Mixed roles are normal (sponsor and speak, attend and host a dinner). Plan each 
 | **Webinar** | Lead gen and education at scale | Low to mid | The flagship repeatable format: [WEBINAR-FUNNEL.md](WEBINAR-FUNNEL.md) |
 | **Workshop** | Product-qualified leads, activation | Mid | Hands-on beats presentation for conversion; smaller and deeper than a webinar |
 | **Dinner or small gathering** | Exec relationships, ABM accounts | Mid | 8 to 14 seats, no pitch, a curated guest mix; the source calls it "the highest meetings-per-dollar format in B2B" |
-| **Meetup series** | Local community, recurring presence | Mid | Consistency beats production value; hand hosting to members over time ([../partners-and-community/COMMUNITY.md](../partners-and-community/COMMUNITY.md)) |
-| **Virtual summit** | List building via partner audiences | High | Multi-speaker means built-in distribution; every speaker promotes ([../partners-and-community/PARTNER-MARKETING.md](../partners-and-community/PARTNER-MARKETING.md)) |
+| **Meetup series** | Local community, recurring presence | Mid | Consistency beats production value; hand hosting to members over time ([../community-marketing/COMMUNITY.md](../community-marketing/COMMUNITY.md)) |
+| **Virtual summit** | List building via partner audiences | High | Multi-speaker means built-in distribution; every speaker promotes ([../partnerships/PARTNER-MARKETING.md](../partnerships/PARTNER-MARKETING.md)) |
 | **User conference** | Retention, expansion, category authority | Very high | Not before you have a community "that would attend without being begged" |
 
 Two rules outrank the format:

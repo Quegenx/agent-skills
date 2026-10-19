@@ -205,7 +205,11 @@ Once you know something, you can't imagine not knowing it. Experts struggle to e
 ### Mental Accounting
 People treat money differently based on its source or intended use, even though money is fungible.
 
-**Marketing application**: Frame costs in favorable mental accounts. "$3/day" feels different than "$90/month" even though it's the same. (In-app subscriptions: Apple's prominence rule under Mental Accounting (Pricing) below.)
+**Marketing application**: Frame costs in favorable mental accounts. "$3/day" feels different than "$90/month" even though it's the same. In-app subscriptions also follow Apple's prominence limit below.
+
+**Pricing application**: "$1/day" feels cheaper than "$30/month." "Less than your morning coffee" reframes the expense. This is the source's price-framing application alongside the money-source/use definition above. [coreyhaines31/marketingskills, marketing-psychology]
+
+**Apple's limit** (official): for in-app subscriptions "the amount that will be billed must be the most prominent pricing element in the layout", and a breakdown price "should be displayed in a subordinate position and size" (https://developer.apple.com/app-store/subscriptions/, quoted in [app-growth PAYWALLS.md](../../mobile/app-growth/PAYWALLS.md)). A daily figure never outranks the billed amount in an app.
 
 ### Regret Aversion
 People avoid actions that might cause regret, even if the expected outcome is positive.
@@ -320,11 +324,7 @@ People judge prices relative to options presented. A middle tier seems reasonabl
 **Two views.** The source above; this repo's anti-slop-ui lists "Three tiers, middle highlighted" as a pattern to replace with "Whatever the real pricing is" ([anti-slop-ui PATTERNS.md](../../anti-ai-slop/anti-slop-ui/PATTERNS.md)) and anti-slop-copy says "Not always three tiers with a highlighted middle". Keep the repo rule; use this framing only when three real plans exist. Pricing structure is in [pricing-strategy](../pricing-strategy/SKILL.md).
 
 ### Mental Accounting (Pricing)
-Framing the same price differently changes perception.
-
-**Marketing application**: "$1/day" feels cheaper than "$30/month." "Less than your morning coffee" reframes the expense.
-
-**Apple's limit** (official): for in-app subscriptions "the amount that will be billed must be the most prominent pricing element in the layout", and a breakdown price "should be displayed in a subordinate position and size" (https://developer.apple.com/app-store/subscriptions/, quoted in [app-growth PAYWALLS.md](../../mobile/app-growth/PAYWALLS.md)). A daily figure never outranks the billed amount in an app.
+The source's same-price framing application and Apple's billed-amount prominence limit are kept once under [Mental Accounting](#mental-accounting), alongside the separate money-source/use definition. [coreyhaines31/marketingskills, marketing-psychology]
 
 
 ## Design and delivery
@@ -355,8 +355,7 @@ Small changes in how choices are presented significantly influence decisions.
 **Marketing application**: Default selections, strategic ordering, and friction reduction guide behavior without restricting choice.
 
 ### BJ Fogg Behavior Model
-*Status: a named framework, no study cited.*
-Behavior = Motivation × Ability × Prompt. All three must be present for action.
+Fogg's official model says motivation, ability and a prompt must converge at the same moment for behavior to occur. The source printed "Behavior = Motivation × Ability × Prompt" without a study citation; use the author's qualitative relationship rather than that multiplication expression. [https://www.behaviormodel.org/; coreyhaines31/marketingskills, marketing-psychology]
 
 **Marketing application**: High motivation but hard to do = won't happen. Easy to do but no prompt = won't happen. Design for all three.
 

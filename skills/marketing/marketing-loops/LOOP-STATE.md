@@ -19,7 +19,7 @@ If your scheduler or platform provides its own dedupe/cursor storage, use that i
 
 A state file holds whatever the loop needs to not repeat itself:
 
-```json
+```jsonc
 {
   "loop": "churn-signal",
   "last_run": "2026-07-01T09:00:00Z",

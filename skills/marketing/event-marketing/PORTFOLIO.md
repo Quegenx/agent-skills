@@ -58,7 +58,7 @@ The book's example: a cybersecurity company whose $500k+ ACV deals "almost never
 - Support customer-run user groups but let them stay independent: prospects trust them "*because* they're not on your payroll".
 - Arm your most engaged attendees with playbooks, speaker connections and seed funding to launch their own city events.
 - Metrics: monthly active members, conversation depth, community-initiated events, relationship velocity, member-to-customer conversion. The gut check is the **Saturday Test**: "would people show up on a Saturday morning?"
-- The book claims prospects who attended 3+ community events showed "85% higher close rate and 40% shorter cycle"; an anecdote, not a benchmark. Running the community itself is [../partners-and-community/COMMUNITY.md](../partners-and-community/COMMUNITY.md).
+- The book claims prospects who attended 3+ community events showed "85% higher close rate and 40% shorter cycle"; an anecdote, not a benchmark. Running the community itself is [../community-marketing/COMMUNITY.md](../community-marketing/COMMUNITY.md).
 
 ## Costs
 

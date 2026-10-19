@@ -1,6 +1,6 @@
 # Sequences and cadences
 
-A sequence is the series of emails to one person; a cadence coordinates email, LinkedIn, calls and the occasional video or package so each touch builds on the last "and nobody gets hit on four channels in one afternoon" [coreyhaines31/marketingskills, cold-email]. Lifecycle sequences to people who opted in are in [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md). Account tiers are defined in [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md#account-tiers).
+A sequence is the series of emails to one person; a cadence coordinates email, LinkedIn, calls and the occasional video or package so each touch builds on the last "and nobody gets hit on four channels in one afternoon" [coreyhaines31/marketingskills, cold-email]. Lifecycle sequences to people who opted in are in [../email-marketing/SEQUENCES.md](../email-marketing/SEQUENCES.md). Account tiers are defined in [../prospecting/SIGNALS.md](../prospecting/SIGNALS.md#account-tiers).
 
 **Contents:** [How many and when](#how-many-and-when) · [Angle rotation](#angle-rotation) · [The breakup email](#the-breakup-email) · [Phrases that kill replies](#phrases-that-kill-replies) · [Channels by tier](#channels-by-tier) · [A 21-day Tier 1 cadence](#a-21-day-tier-1-cadence) · [Rules that hold any cadence together](#rules-that-hold-any-cadence-together) · [Calls](#calls) · [Video, direct mail and ads](#video-direct-mail-and-ads) · [SMS and WhatsApp](#sms-and-whatsapp) · [Measure by channel](#measure-by-channel) · [Prove it](#prove-it)
 
@@ -68,7 +68,7 @@ The 1-2-3 format:
 
 | Day | Touch |
 |---|---|
-| 1 | View their LinkedIn profile and engage with a recent post. Email 1 (short, no link) |
+| 1 | Email 1 (short, no link) |
 | 3 | LinkedIn connection request |
 | 4 | Email 2, as a reply in the same thread |
 | 6 | Call 1. If no answer, a short voicemail and an email recapping it |
@@ -77,9 +77,11 @@ The 1-2-3 format:
 | 13 | Call 2 |
 | 15 | LinkedIn voice note or a comment on a new post |
 | 18 | Email 4: breakup or referral ask |
-| 21 | Call 3. Then nurture and ad retargeting |
+| 21 | Call 3 only if no breakup was sent; subsequent nurture and ad retargeting require their own permission and cannot follow a breakup |
 
 Tier 2: email and LinkedIn over about 14 days. Tier 3: the email sequence alone.
+
+**Source conflicts:** the original Day 1 also views the LinkedIn profile and engages with a post, conflicting with the no-two-channels rule below; do not combine those actions here. Its Day 21 call/nurture/retargeting follows a possible Day 18 breakup, conflicting with the stop-after-breakup rule. Keep the existing stop. Every emailed video and voicemail recap also counts toward the five-email cap; this source table cannot authorize extra emails beyond it. [coreyhaines31/marketingskills, cold-email, follow-up-sequences.md and multichannel-cadence.md]
 
 ## Rules that hold any cadence together
 
@@ -89,7 +91,7 @@ Tier 2: email and LinkedIn over about 14 days. Tier 3: the email sequence alone.
 2. **An opt-out on one channel is an opt-out on all of them.** Key the suppression list on email, LinkedIn URL and phone together ([../prospecting/ENRICHMENT.md](../prospecting/ENRICHMENT.md#suppression-list)). The repo's email rule, "Hard bounces and complaints suppress across all email types", covers email types ([LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#suppression-list)); this extends it across channels.
 3. **One sender per account at a time.** Two reps, or a rep and an agent, on the same company "looks disorganized and doubles the annoyance".
 4. **Each touch may reference the last** ("Following up on the voicemail I left Tuesday") but must make sense alone.
-5. **4 to 7 emails and at most 3 LinkedIn messages.** "More touches don't rescue the wrong offer."
+5. **At most 5 emails and at most 3 LinkedIn messages.** The source's multichannel reference instead says 4 to 7 emails; keep the existing five-email cap from its follow-up reference, including emailed videos and voicemail recaps. "More touches don't rescue the wrong offer." [coreyhaines31/marketingskills, cold-email, follow-up-sequences.md and multichannel-cadence.md]
 6. **Space touches across days.** Never two channels on one day except a voicemail and its recap email.
 
 When email, LinkedIn and calls run in different tools, connect them with shared state (the CRM or a table keyed on the contact) and webhooks that pause every sequence when any reply arrives. Webhook handling is in [../../backend/third-party-integrations/CALLS-AND-SYNC.md](../../backend/third-party-integrations/CALLS-AND-SYNC.md#webhooks-from-providers).
@@ -117,7 +119,7 @@ Call scripts, gatekeepers and objection handling are in [../sales-enablement/SKI
 
 ## SMS and WhatsApp
 
-[coreyhaines31/marketingskills, cold-email] Not for cold outreach. US SMS to mobile numbers needs consent and 10DLC registration; WhatsApp business messaging needs an opt-in. Use them only after a prospect engaged and agreed, for scheduling and reminders. SMS consent and registration are in [../sms-marketing/SKILL.md](../sms-marketing/SKILL.md).
+[coreyhaines31/marketingskills, cold-email] Not for cold outreach. US SMS needs consent and the applicable [sender-type registration](../sms-marketing/REGISTRATION.md#what-registration-covers); WhatsApp business messaging needs an opt-in. Use them only after a prospect engaged and agreed, for scheduling and reminders. SMS consent is in [../sms-marketing/SKILL.md](../sms-marketing/SKILL.md). The source required 10DLC for all US mobile SMS; the registration owner records Twilio's official scope and that correction. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
 
 ## Measure by channel
 

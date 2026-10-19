@@ -14,13 +14,15 @@ The flagship is the master; every channel gets a cut derived from it.
 
 ## ORB as a funnel
 
-`[coreyhaines31/marketingskills, content-strategy]` Own, Rent, Borrow, read as discovery, engagement, conversion:
+`[coreyhaines31/marketingskills, content-strategy]` Use the [ORB channel definitions](../product-launch/LAUNCH-PLAN.md#the-orb-channels) with this distribution-specific funnel mapping:
 
-| Layer | Channels | Funnel role | You control |
-|---|---|---|---|
-| Borrowed | Podcasts, guest posts, partnerships, PR, other people's audiences | Discovery | Nothing, it's a loan |
-| Rented | Social platforms, ad networks, marketplaces | Engagement and reach | The content, not the audience or algorithm |
-| Owned | Email list, blog, community, app | Conversion and retention | Everything, the durable asset |
+| Layer | Funnel role |
+|---|---|
+| Borrowed | Discovery |
+| Rented | Engagement and reach |
+| Owned | Conversion and retention |
+
+The source's "Everything, the durable asset" is ownership shorthand, not an exemption from the rules of a platform hosting the channel; keep the canonical owner's qualification.
 
 "Use borrowed and rented reach to funnel strangers into owned channels." Moving people into the email list needs their consent ([email-practices LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md)).
 

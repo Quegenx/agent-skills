@@ -105,7 +105,7 @@ Scale only when all hold: proven-ad count meets the next level's minimum; accoun
 
 - **Rate:** the source's +20% every 5 days (practitioner; see [the corrections above](#what-meta-says-about-learning)).
 - **Rollback:** cost per QL > 1.5× TCPL after a step → cut budget 20 to 30%, stabilize 2 weeks, resume at +10% a week.
-- **The wall** (account-wide frequency > 3.5, an account-level guardrail distinct from the per-ad bands): widen seed audiences (the source says lookalikes 1% → 2 to 3%), add new seed audiences, test broad, use cross-channel UTM audiences ([B2B-AND-ABM.md](B2B-AND-ABM.md#cross-channel-utm-remarketing)), reopen remarketing.
+- **The wall** (account-wide frequency > 3.5, an account-level guardrail distinct from the per-ad bands): widen seed audiences (the source says lookalikes 1% → 2 to 3%), add new seed audiences, test broad, use cross-channel UTM audiences ([ABM.md](ABM.md#cross-channel-utm-remarketing)), reopen remarketing.
 
 ## Weekly cadence
 
@@ -124,7 +124,7 @@ Form or page: page converting ≥ 5% → use the page; under ~2% → the form; d
 
 ## Advantage+
 
-"Manual is where you learn; Advantage+ is where you earn." Move a campaign to Advantage+ only with a proven offer, a validated audience and ~50 conversions a week on the optimization event; if 50 is out of reach, optimize a higher-volume event up-funnel and retarget converters. Advantage+ conflicts with strict ABM: it won't stay locked to a list ([B2B-AND-ABM.md](B2B-AND-ABM.md#abm-on-meta)).
+"Manual is where you learn; Advantage+ is where you earn." Move a campaign to Advantage+ only with a proven offer, a validated audience and ~50 conversions a week on the optimization event; if 50 is out of reach, optimize a higher-volume event up-funnel and retarget converters. Advantage+ conflicts with strict ABM: it won't stay locked to a list ([ABM.md](ABM.md#abm-on-meta)).
 
 The source says to watch Campaign Score "directionally (70+ healthy, <50 = fighting the algorithm)" and never trade lead quality for it. The bands are practitioner: Meta's campaign score and account opportunity score run 0 to 100, and Meta says a high score "does not reflect or guarantee your actual or future performance" (https://www.facebook.com/business/tools/opportunity-score).
 

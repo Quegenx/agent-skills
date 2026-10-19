@@ -137,7 +137,7 @@ Consent is not transferable; keep timestamped opt-in and opt-out records. Every 
 
 ## No cold texting
 
-SMS and WhatsApp are not cold-outreach channels: US SMS needs consent and 10DLC, and WhatsApp needs opt-in [coreyhaines31/marketingskills, cold-email]. Booking reminders by text go only to people who consented. Cold outreach itself is in [../cold-outreach/SKILL.md](../cold-outreach/SKILL.md).
+SMS and WhatsApp are not cold-outreach channels: US SMS needs consent and the applicable [sender-type registration](REGISTRATION.md#what-registration-covers), and WhatsApp needs opt-in [coreyhaines31/marketingskills, cold-email]. Booking reminders by text go only to people who consented. The source's blanket 10DLC requirement for US SMS is corrected in that registration owner. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc] Cold outreach itself is in [../cold-outreach/SKILL.md](../cold-outreach/SKILL.md).
 
 ## Audit checklist
 

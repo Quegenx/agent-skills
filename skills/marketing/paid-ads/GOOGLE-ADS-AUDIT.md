@@ -44,7 +44,7 @@ Load [AUDIT-GUARDRAILS.md](AUDIT-GUARDRAILS.md) first: every check resolves to e
 ## Search
 
 18. **New terms for expansion:** converting queries not yet targeted; add them as keywords and feed their language into titles and content. Same report as item 3: pull it once.
-19. **Ad copy performance:** CTR relative to impressions, ad strength, underperformers refreshed. Weak copy raises CPC through Quality Score before it costs a conversion.
+19. **Ad copy performance:** CTR relative to impressions, ad strength, underperformers refreshed. Read [Quality Score as a diagnostic](GOOGLE-SEARCH.md#quality-score-and-landing-pages). Google says it is not an auction input (https://support.google.com/google-ads/answer/6167118?hl=en); the old line said weak copy raises CPC through that score.
 20. **Brand keyword match types:** exact or phrase only. Broad on brand spends brand budget on loosely related queries.
 21. **Brand ad copy:** consistent formatting, USPs first, the promotional calendar tracked.
 22. **Quality Score** as a diagnostic (expected CTR, ad relevance, landing page experience), not a metric to game.

@@ -8,7 +8,7 @@ Copy only matters if it reaches the inbox, and outreach goes to people who never
 - **All senders need SPF or DKIM;** bulk senders (5,000+ a day to personal Gmail) need SPF, DKIM and DMARC (https://support.google.com/a/answer/81126). The source said "SPF and DKIM for everyone". The full table is in [DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#sender-requirements-by-mailbox-provider).
 - **Enforcement since November 2025** brings "disruptions, including temporary and permanent rejections" (https://support.google.com/a/answer/14229414). The source said non-compliant mail "gets permanent rejections rather than temporary deferrals".
 - **Spam rate:** keep it below 0.10% and never reach 0.30% (https://support.google.com/a/answer/81126). The source's benchmarks file called 0.1% "Google's threshold"; 0.10% is the target and 0.30% the requirement ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#reputation-and-thresholds)).
-- **Under 5,000 a day you are not a bulk sender,** and the source still says to follow the bulk rules; the complaint threshold applies to everyone [coreyhaines31/marketingskills, cold-email].
+- **Bulk status is permanent once assigned.** Gmail counts messages from the same primary domain and permanently classifies senders who meet its bulk criteria at least once; reducing current daily volume does not remove that status (https://support.google.com/a/answer/14229414). The source said that under 5,000 a day means you are not a bulk sender; its recommendation to follow bulk rules anyway and the complaint threshold still apply. [coreyhaines31/marketingskills, cold-email]
 
 ## The sending setup
 

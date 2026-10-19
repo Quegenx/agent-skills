@@ -52,8 +52,10 @@ A catalogue of tests for activation and in-product upgrades, with the store and 
 | Trial expiration | Countdown always vs near the end; reminder frequency; a lapse window vs immediate downgrade (web); a "last chance" discount (real deadline only); pause vs cancel (pause exists on Play only) |
 | Upgrade path | One-click vs separate checkout, pre-filled payment, multiple payment methods (web only); a quarterly plan; a team invite flow for solo-to-team |
 | Personalization | Copy by features used; most-used premium features; usage stats ("You've created 50 projects"); a plan recommendation by behavior; power vs casual users; B2B vs B2C; industry; role; traffic source |
-| Frequency | Prompts per session; cool-down hours vs days; escalating vs consistent; once per feature vs consolidated; re-show after major engagement |
+| Frequency | Prompts per session; cool-down in days (not hours); escalating vs consistent; once per feature vs consolidated; re-show after major engagement |
 | Dismiss | "Maybe later" vs "No thanks" vs "Remind me tomorrow"; asking the reason; an alternative offer on dismiss (on iOS, see the RevenueCat note in [UPGRADE-PROMPTS.md](UPGRADE-PROMPTS.md#store-rules-for-in-app-upgrades)); an exit survey; friendly vs neutral copy |
+
+**Cooldown: two source views.** The test catalogue proposes "cool-down hours vs days"; the existing prompt rule requires "days, not hours" ([timing and frequency](UPGRADE-PROMPTS.md#timing-and-frequency)). Keep the existing days floor; the hours arm is a recorded conflict, not an executable variant. [coreyhaines31/marketingskills, paywalls]
 
 ## What to measure
 

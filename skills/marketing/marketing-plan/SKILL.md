@@ -9,7 +9,7 @@ The deliverable is one markdown document, the kind of strategy artifact a fracti
 
 | The job | Read |
 |---|---|
-| The three phases: folder layout, `progress.md` schema, the resumption tree, path safety, live data pulls, the ten-topic intake, `research.md`, the section review loop, the brand-voice gate, the six FINALIZE checks, publishing | [METHODOLOGY.md](METHODOLOGY.md) |
+| The three phases: folder layout, `progress.md` schema, the resumption tree, path safety, live data pulls, the ten-topic intake, `research.md`, the section review loop, the brand-voice gate, the six FINALIZE checks and finalized state | [METHODOLOGY.md](METHODOLOGY.md) |
 | The 13 sections: title block, purpose, length and structure of each, the unit-economics table, the 90-day sprints, RACI, open decisions, "is this section done?" | [PLAN-TEMPLATE.md](PLAN-TEMPLATE.md) |
 | AARRR stages and metrics, the signup boundary, choosing the binding-constraint stage, stage patterns, assigning a move to a stage | [AARRR.md](AARRR.md) |
 | Revenue-based and goal-based budgets (the corrected four-step formula), the experimental buffer, 3-3-2-2-2, blended CAC, forecasting honesty | [BUDGET.md](BUDGET.md) |
@@ -29,7 +29,7 @@ The deliverable is one markdown document, the kind of strategy artifact a fracti
 [coreyhaines31/marketingskills, marketing-plan]
 
 - A new fractional CMO or consulting engagement; a founder who needs a 12-month roadmap to share with the team or investors; scattered marketing work (SEO research, voice docs, audit findings) to consolidate; an existing scored audit to sequence into action.
-- **Not** for a single-channel tactical document (that goes to the channel's skill, such as [email-practices](../../backend/email-practices/SKILL.md), [paid-ads](../paid-ads/SKILL.md), [seo](../seo/SKILL.md) or [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md)), and not for ideas without a plan ([growth-ideas](../growth-ideas/SKILL.md)).
+- **Not** for a single-channel tactical document (that goes to the channel's skill, such as [email-marketing](../email-marketing/SKILL.md), [paid-ads](../paid-ads/SKILL.md), [seo](../seo/SKILL.md) or [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md)), and not for ideas without a plan ([growth-ideas](../growth-ideas/SKILL.md)).
 - **A "quick, short plan" request** is resisted and explained rather than silently answered with a stripped-down plan: the plan is the comprehensive artifact, and a quick single-channel plan belongs to that channel's skill (the source's eval 6).
 
 ## The three phases
@@ -38,7 +38,7 @@ The deliverable is one markdown document, the kind of strategy artifact a fracti
 
 1. **INIT (research and intake):** read every material, pull data from wired tools ("Don't ask the user to copy/paste data that can be pulled directly"), run the ten-topic intake, score Section 3 with the rubric, save `research.md`.
 2. **REVIEW:** draft Sections 2 to 13 in order, then Section 1; present each in chat ("Approve, adjust, or expand?"), save each confirmed section to `sections/NN.md`, tick it in `progress.md`.
-3. **FINALIZE:** compile `final_plan.md` in order 1 to 13, run the six verification checks, optionally publish to a shared repo, set `phase: finalized`.
+3. **FINALIZE:** compile `final_plan.md` in order 1 to 13, run the six verification checks, set `phase: finalized`.
 
 State lives in `~/marketing-plans/{client-slug}/` (`materials/`, `research.md`, `progress.md`, `sections/01.md`..., `final_plan.md`), so the plan resumes where it stopped. **A finalized plan is never silently overwritten:** ask whether to revise as v{N+1}, start fresh, or re-open a section. **Path safety:** build `{client-slug}` only by slugifying to lowercase `[a-z0-9-]`, reject `..`, `/` and absolute paths, and never read or write outside `~/marketing-plans/`, which "keeps one client's plan - and their data - from leaking into another client's context" (the same rule as path traversal in [secure-coding](../../backend/secure-coding/SKILL.md)).
 

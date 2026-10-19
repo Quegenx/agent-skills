@@ -52,14 +52,14 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 | 7 | Machine-readable pricing | The real numbers are in the page's HTML/text | Price in an image/SVG, JS-only render, or a PDF; "Contact sales" leaves no public number |
 | 8 | FAQ / objection coverage | Extractable answers to "does it do X", "what's the limit", "can I cancel", "is there a free trial" | No FAQ, or answers only in a support portal an agent won't reach |
 | 9 | Per-tier depth in text | Each plan's inclusions, limits and quotas stated in words | Differences only as checkmark columns in an image; limits unnamed |
-| 10 | Structured data & extractability | Structured data markup, clean semantic HTML, AI search bots allowed to crawl (`llms.txt` a nice-to-have, not yet a standard) | No schema; pricing behind auth or interaction; AI search bots blocked in robots.txt |
+| 10 | Structured data & extractability | Markup meets the identified consumer's requirements where needed; clean semantic HTML and the intended search-crawler policy (`llms.txt` a nice-to-have, not yet a standard) | Requested eligible markup is incomplete; pricing behind auth or interaction; unintended search-crawler blocks |
 
 [../../frontend/landing-page-ui/SECTIONS.md](../../frontend/landing-page-ui/SECTIONS.md#plans) already covers dimensions 2 and 7 its own way: "an audience line under the name" and "a screen-reader sentence ("99 shekels a month") in place of the visual pair".
 
 ## Structured data and AI bots
 
-- **Software is `SoftwareApplication`, not a bare Product.** The source names "`Product`/`Offer` schema" for a SaaS pricing page. Google Search Central documents software as `SoftwareApplication` with a required `name` and `offers.price` ("If the app is available without payment, set offers.price to 0"; with a price above 0, "we recommend also including the offers.priceCurrency property"), plus a rating or review ("You must include one of the following properties") ([Google, Software app structured data](https://developers.google.com/search/docs/appearance/structured-data/software-app)). schema.org `Offer` is the right inner type. Markup itself is in [../seo/STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md).
-- **AI search bots are not training bots.** The source says blocking `GPTBot` only opts out of training, not ChatGPT search. OpenAI confirms: "Sites that are opted out of OAI-SearchBot will not be shown in ChatGPT search answers", the settings are independent, and changes take "~24 hours from a site's robots.txt update" ([OpenAI crawlers](https://platform.openai.com/docs/bots)). Anthropic lists `Claude-SearchBot` ("Disabling Claude-SearchBot... may reduce your site's visibility") and `ClaudeBot` ([Anthropic crawlers](https://support.claude.com/en/articles/8896518)). The source also names `Claude-User` and `PerplexityBot`; those were not checked. Bot access is in [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md).
+- **Choose markup for the requested consumer.** For a requested Google software rich result, use the `SoftwareApplication` eligibility requirements in [STRUCTURED-DATA.md](../seo/STRUCTURED-DATA.md#properties-by-feature); that owner also records the source's `Product`/`Offer` correction. Google eligibility is distinct from schema.org validity, and not every pricing page needs markup ([check feature support first](../seo/STRUCTURED-DATA.md#check-feature-support-first)). [Google, Software app structured data](https://developers.google.com/search/docs/appearance/structured-data/software-app)
+- **Decide bot access by purpose.** Use the canonical [AI crawler controls](../ai-search-visibility/AI-CRAWLERS.md#decide-by-purpose-not-by-one-allowlist) when checking whether the pricing page can be discovered or fetched; keep the publisher's training choice separate. That file owns the vendor-specific controls and their documented limits, including the source's crawler corrections. [coreyhaines31/marketingskills, ai-seo]
 
 ## How to run it
 
@@ -74,6 +74,8 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 ## Output template
 
 [coreyhaines31/marketingskills, pricing] With the severity column added:
+
+**Source template limitation:** its "add Offer schema so AI can quote you" example below is a source claim, not a universal remedy or acceptance requirement. Apply the [consumer-specific markup and publisher crawler policy](#structured-data-and-ai-bots) above; the original rubric's blanket "No schema" gap and allow-bots requirement are qualified for the same reason. [coreyhaines31/marketingskills, pricing; canonical SEO and crawler rules linked above]
 
 ```markdown
 # Pricing Page Teardown - [url] - [date]
@@ -111,4 +113,4 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 
 ## Prove it
 
-The report has two sub-scores and a P0-P3 fix list, never one number; the paste test result is quoted; every price on the page appears in the fetched HTML text; each tier's limits are stated in words; the structured data is `SoftwareApplication` with `offers.price` (and `priceCurrency` above 0) plus a rating or review; and robots.txt allows `OAI-SearchBot` and `Claude-SearchBot` unless blocking them is a decision.
+The report has two sub-scores and a P0-P3 fix list, never one number; the paste test result is quoted; every price on the page appears in the fetched HTML text; each tier's limits are stated in words; any requested Google software rich result meets the canonical eligibility requirements; and crawler access matches the publisher's documented purpose-specific policy. [coreyhaines31/marketingskills, pricing; Google software app guidance and AI crawler controls linked above]

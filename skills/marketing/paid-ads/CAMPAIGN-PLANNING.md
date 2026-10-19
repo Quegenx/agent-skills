@@ -24,7 +24,7 @@ Ask only what `.agents/product-context.md` doesn't answer [coreyhaines31/marketi
 | X | Tech audiences, thought leadership | The audience is active on X, timely content |
 | TikTok | Younger demographics, video creative | The audience skews 18 to 34, video capacity |
 
-[coreyhaines31/marketingskills, ads]. Search harvests existing demand and cannot create it: with near-zero search volume, put the budget upstream on social ([GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#capture-before-you-create)). Before committing to a new channel, run a ~$100 test to learn its real CPC and CPM for your targeting ([B2B-AND-ABM.md](B2B-AND-ABM.md#channel-selection)). App installs: [app-growth](../../mobile/app-growth/SKILL.md).
+[coreyhaines31/marketingskills, ads]. Search harvests existing demand and cannot create it: with near-zero search volume, put the budget upstream on social ([GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#capture-before-you-create)). Before committing to a new channel, run a ~$100 test to learn its real CPC and CPM for your targeting ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#channel-selection)). App installs: [app-growth](../../mobile/app-growth/SKILL.md).
 
 ## Audience knowledge goes into creative first
 
@@ -161,7 +161,7 @@ From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], correct
 
 **TikTok:** Ads Manager account, business verification, payment; pixel with ViewContent and Purchase and the Events API; custom and lookalike audiences, interest categories; vertical 9:16 creative that feels native, a hook in the first 3 seconds, captions, licensed music.
 
-**Pre-launch, any platform:** conversion tracking tested with a real conversion; landing page mobile-friendly and fast; UTMs working; budget type, start and end dates correct; targeting matches the intended audience; creative approved; team told; reporting ready [coreyhaines31/marketingskills, ads]. The source's "loads fast (<3 sec)" is not a Core Web Vitals threshold: use web.dev's Core Web Vitals instead, LCP of 2.5 seconds or less (https://web.dev/articles/vitals); measuring it is in [performance-and-caching](../../backend/performance-and-caching/SKILL.md).
+**Pre-launch, any platform:** conversion tracking tested with a real conversion; landing page mobile-friendly and fast; UTMs working; budget type, start and end dates correct; targeting matches the intended audience; creative approved; team told; reporting ready [coreyhaines31/marketingskills, ads]. The source's "loads fast (<3 sec)" is not a Core Web Vitals threshold: use web.dev's Core Web Vitals instead, LCP of 2.5 seconds or less (https://web.dev/articles/vitals); measuring it is in [web-performance](../../frontend/web-performance/SKILL.md).
 
 ## Audience options per platform
 
@@ -170,7 +170,7 @@ From [coreyhaines31/marketingskills, ads, audience-targeting.md]; the sizes are 
 - **Google Search:** exact `[keyword]`, phrase `"keyword"`, broad `keyword` (with smart bidding only); add audiences in observation mode first, switch high performers to targeting; RLSA to bid higher on past visitors, show them different ads, and exclude converters from prospecting.
 - **Google Display and YouTube:** custom segments built from converting keywords (the source says "custom intent audiences"), in-market, affinity (awareness), customer match. Not similar segments (above).
 - **Meta:** start broad and let delivery optimize; always exclude customers. Custom audiences from website visitors (the source says 180 days maximum), customer lists, video viewers and engagers, app activity. Lookalikes from high-LTV customers (purchasers over leads over visitors), at least 100 source people, ideally 1,000+; 1% is the closest match, 1 to 3% balanced, 3 to 5% scale, 5 to 10% awareness only; exclude the source.
-- **Customer list match rates:** the source says "typically 30-70%" for Meta customer lists, and its ABM file says raw work emails match "under ~5%". Both are practitioner; the difference is personal vs work email ([B2B-AND-ABM.md](B2B-AND-ABM.md#abm-on-meta)).
+- **Customer list match rates:** the source says "typically 30-70%" for Meta customer lists, and its ABM file says raw work emails match "under ~5%". Both are practitioner; the difference is personal vs work email ([ABM.md](ABM.md#abm-on-meta)).
 - **LinkedIn:** titles (specific, verify the normalization), functions (broader, pair with seniority), seniority, skills (self-reported); company size bands 1-10 up to 5000+, industry, company lists, growth rate. Combinations: enterprise = 1000+ employees + VP or CXO + industry; SMB = 11 to 200 + manager or director + function; developer tools = skills + function; ABM = company list + decision-maker titles. Details in [LINKEDIN-ADS.md](LINKEDIN-ADS.md).
 - **X:** follower lookalikes of relevant accounts, interests, keywords in posts, conversation topics, events, your own lists; cheaper CPMs than LinkedIn or Meta, less precise.
 - **TikTok:** demographics, interests, behaviors, device, custom and lookalike audiences; skews 18 to 34; creative matters more than targeting.

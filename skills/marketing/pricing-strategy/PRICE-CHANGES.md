@@ -1,6 +1,6 @@
 # Price changes
 
-When to raise prices, the ways to do it, and how to roll a change out without a churn spike. From [coreyhaines31/marketingskills, pricing] `SKILL.md` (MIT, Copyright (c) 2025 Corey Haines). Stripe mechanics (a new Price, never an edited one) are in [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases); on the app stores the store, not you, sets the notice and consent rules (below).
+When to raise prices, the ways to do it, and how to roll a change out without a churn spike. From [coreyhaines31/marketingskills, pricing] `SKILL.md` (MIT, Copyright (c) 2025 Corey Haines). Stripe amount changes and supported maintenance updates follow [BILLING.md](../../backend/stripe/BILLING.md#model-the-catalog); price-test mechanics are in [REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#pricing-experiments-and-price-increases). On the app stores the store, not you, sets the notice and consent rules (below).
 
 ## Signs it's time
 

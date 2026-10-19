@@ -12,7 +12,7 @@ Where a lead magnet gets promoted, what to measure, how to tell good leads from 
 - **Exit intent and popups:** trigger on exit intent or scroll depth; match the popup's offer to the page. Building popups is in [cro](../cro/SKILL.md).
 - **Social:** snippets and teasers, carousel posts from the key points, the magnet as the CTA in your bio or profile ([social-media](../social-media/SKILL.md)).
 - **Paid:** Facebook and Instagram lead ads for top-funnel magnets, Google Ads for high-intent ones (templates, tools), LinkedIn for B2B, retargeting blog visitors ([paid-ads](../paid-ads/SKILL.md), where each platform's lead-ad rules belong).
-- **Partners:** cross-promote with complementary brands, guest webinars with partner audiences, partner newsletters, bundles in resource collections ([partners-and-community](../partners-and-community/SKILL.md)).
+- **Partners:** cross-promote with complementary brands, guest webinars with partner audiences, partner newsletters, bundles in resource collections ([partnerships](../partnerships/SKILL.md)).
 
 ## Key metrics
 

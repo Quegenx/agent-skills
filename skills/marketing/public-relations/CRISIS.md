@@ -2,7 +2,7 @@
 
 When something has gone wrong in public (a breach, an outage, a viral complaint, an executive controversy), copied from coreyhaines31/marketingskills `public-relations` (MIT), "Adapted from a contribution by @fyscleaning-jpg (PR #381)". The story is already running; the job is to respond quickly, honestly and without making it worse. The templates are in [CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md). Diagnosing and recovering the system itself, and the internal postmortem, are [../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#mid-incident).
 
-**Contents:** [Facts first](#facts-first) · [Legal and safety exposure](#legal-and-safety-exposure) · [Principles](#principles) · [Severity tiers](#severity-tiers) · [The first 60 minutes](#the-first-60-minutes) · [Channel order](#channel-order) · [Playbooks by crisis type](#playbooks-by-crisis-type) · [What not to do](#what-not-to-do) · [After the crisis](#after-the-crisis) · [Review checklist](#review-checklist) · [Prove it](#prove-it)
+**Contents:** [Facts first](#facts-first) · [Legal and safety exposure](#legal-and-safety-exposure) · [Principles](#principles) · [Severity](#severity) · [The first 60 minutes](#the-first-60-minutes) · [Channel order](#channel-order) · [Playbooks by crisis type](#playbooks-by-crisis-type) · [What not to do](#what-not-to-do) · [After the crisis](#after-the-crisis) · [Review checklist](#review-checklist) · [Prove it](#prove-it)
 
 ## Facts first
 
@@ -34,27 +34,29 @@ When something has gone wrong in public (a breach, an outage, a viral complaint,
 - **Apologize without a "but."** Once counsel has cleared accepting responsibility, say sorry, say what you're doing, and stop.
 - **Keep updating:** commit to a cadence ("next update by 6pm ET") and keep it, even when the update is "still investigating."
 
-## Severity tiers
+## Severity
 
-[coreyhaines31/marketingskills, public-relations] "When unsure, tier up: under-responding to a Tier 3 looks worse than over-responding to a Tier 2." These tiers rank a public crisis; they are not the P0 to P3 scale used for review findings.
+[coreyhaines31/marketingskills, public-relations] When unsure, escalate: under-responding to P1 looks worse than over-responding to P2. Map the source scale once: Tier 4 = P0, Tier 3 = P1, Tier 2 = P2, Tier 1 = P3. The examples and response duties below retain that order under the owner's P0 to P3 severity rule.
 
-| Tier | Examples | Response |
+| Severity | Examples | Response |
 |---|---|---|
-| **1. Contained** | Single feature bug, isolated complaint thread, minor copy mistake | Support or community team replies directly. No public statement. |
-| **2. Visible** | Service degradation, a complaint gaining traction, a marketing claim called out | Public acknowledgment on the status page or social, owned by the support or marketing lead |
-| **3. Significant** | Full outage, billing error across many customers, a widely shared customer-harm story | Formal exec-reviewed statement on status page, email and social. Spokesperson designated. |
-| **4. Severe** | Data breach, security incident, executive misconduct, safety issue, regulatory inquiry | Counsel-reviewed statement, exec-level spokesperson, dedicated incident page. Notification obligations may apply. |
+| **P3. Contained** | Single feature bug, isolated complaint thread, minor copy mistake | Support or community team replies directly. No public statement. |
+| **P2. Visible** | Service degradation, a complaint gaining traction, a marketing claim called out | Public acknowledgment on the status page or social, owned by the support or marketing lead |
+| **P1. Significant** | Full outage, billing error across many customers, a widely shared customer-harm story | Formal exec-reviewed statement on status page, email and social. Spokesperson designated. |
+| **P0. Severe** | Data breach, security incident, executive misconduct, safety issue, regulatory inquiry | Counsel-reviewed statement, exec-level spokesperson, dedicated incident page. Notification obligations may apply. |
+
+**Source scope conflict:** the first-hour checklist, hub rule and acceptance check called for a holding statement without a severity condition, while the source's contained-response row says "No public statement". Keep the P3 direct support/community response; the public-statement and public-update steps below apply when the severity requires a public response (P2, P1 or P0). [coreyhaines31/marketingskills, public-relations]
 
 ## The first 60 minutes
 
 [coreyhaines31/marketingskills, public-relations]
 
 1. **Confirm the facts** with the people who have direct knowledge (engineering, security, legal, support lead), not secondhand summaries.
-2. **Assess the tier.** For Tier 4, bring in counsel now.
+2. **Assess the severity.** For P0, bring in counsel now.
 3. **Designate the spokesperson** and the channel of record (status page, pinned post, or both).
-4. **Publish a holding statement** with zero unconfirmed claims about cause or scope ([CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md#holding-statement)).
+4. **When the severity requires a public response, publish a holding statement** with zero unconfirmed claims about cause or scope ([CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md#holding-statement)).
 5. **Notify staff before or alongside going public:** what's happening, what to say if asked, where to route press and customer questions.
-6. **Set the next update time** and state it publicly.
+6. **For the public response, set the next update time** and state it publicly.
 
 ## Channel order
 
@@ -96,7 +98,7 @@ When something has gone wrong in public (a breach, an outage, a viral complaint,
 
 [coreyhaines31/marketingskills, public-relations]
 
-1. **Public postmortem** for Tier 3 and 4: what happened, root cause, what's changing ([CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md#public-postmortem)). "Specific, checkable commitments build trust; 'we take this seriously' doesn't." Like the internal one, it names no person as the cause ([../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#the-postmortem)).
+1. **Public postmortem** for P1 and P0: what happened, root cause, what's changing ([CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md#public-postmortem)). "Specific, checkable commitments build trust; 'we take this seriously' doesn't." Like the internal one, it names no person as the cause ([../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#the-postmortem)).
 2. **Internal retro,** separate from the postmortem, on what should change in the response process itself.
 3. **Track every promise:** a promised fix, credit or policy change gets seen through, with a follow-up post when it ships.
 4. **Watch sentiment for 1 to 2 weeks:** "Crises often get a second wave when a new detail surfaces."
@@ -105,7 +107,7 @@ When something has gone wrong in public (a breach, an outage, a viral complaint,
 
 [coreyhaines31/marketingskills, public-relations]
 
-- Does the response match the tier?
+- Does the response match the severity?
 - Have directly affected parties been notified before any public statement?
 - Does the draft claim only what's confirmed?
 - For breaches, injuries, lawsuits or regulators: has counsel reviewed it?
@@ -114,9 +116,9 @@ When something has gone wrong in public (a breach, an outage, a viral complaint,
 
 ## Prove it
 
-- The tier is written down, and a Tier 4 had counsel involved before anything beyond the holding statement.
-- The holding statement went out within the hour and claims nothing about cause or scope.
+- The severity is written down, and a P0 had counsel involved before anything beyond the holding statement.
+- When a public response is required, the holding statement went out within the hour and claims nothing about cause or scope; a contained P3 instead received the direct support/community response without a public statement.
 - Affected parties heard before social and press; staff heard before or alongside the public.
 - Every public update names the next update time, and each one was kept.
 - No statement states a notification deadline counsel didn't confirm, says "No sensitive data was affected" before security confirmed it, or apologizes with a "but".
-- Tier 3 and 4 incidents get a public postmortem with no person as the cause, and every promise in it is tracked to done.
+- P1 and P0 incidents get a public postmortem with no person as the cause, and every promise in it is tracked to done.

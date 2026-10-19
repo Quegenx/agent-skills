@@ -43,10 +43,10 @@ This takes less than 30 seconds.
 ## Retries
 
 - **By decline type** [coreyhaines31/marketingskills, churn-prevention]: soft declines (insufficient funds, processor timeout) are retried; hard declines (card stolen, account closed) need a new card; authentication-required sends the customer to authenticate.
-- **On Stripe, use Smart Retries,** and use Stripe's settings, not the source's. The source said to enable Smart Retries in "Dashboard → Billing → Settings" and that it typically makes "4-8 retry attempts over 3-4 weeks". Stripe: "go to **Billing** > **Revenue recovery** > Retries"; the window is 1 week, 2 weeks, 3 weeks, 1 month or 2 months, and "The recommended default setting is 8 tries within 2 weeks" ([Stripe, Smart Retries](https://docs.stripe.com/billing/revenue-recovery/smart-retries)). Stripe gives no uplift figure, so the source's "Recovers ~15% more" is left out.
-- **Stripe's custom schedule allows up to three retries.** The source's manual schedule has five (days 1, 3, 5, 7, 10) and also "Retry 3-5 times over 7-10 days"; Stripe: "You can configure up to three retries, each with a specific number of days after the previous attempt." Use five only on a provider that allows it.
+- **On Stripe, use Smart Retries** with the [canonical Dashboard, window and attempt settings](../../backend/stripe/BILLING.md#smart-retries-and-dunning), not the source's settings. Its old Dashboard path and attempt/window claims are recorded there.
+- **Custom schedules depend on the provider.** The source's manual schedule has five retries (days 1, 3, 5, 7, 10), and also says "Retry 3-5 times over 7-10 days". Use five only on a provider that allows it; Stripe's limit is in [the retry settings](../../backend/stripe/BILLING.md#smart-retries-and-dunning).
 - **Retry timing tips** in the source (same day of month as the last success, after the 1st and 15th, not on weekends, 8 to 10am) are the author's; the source credits the first to Stripe Smart Retries, but it is not among the signals Stripe documents.
-- **`expired_card` is not on Stripe's hard-decline list.** The source's decline table marks it Hard. Stripe's hard declines are `incorrect_number`, `lost_card`, `pickup_card`, `stolen_card`, `revocation_of_authorization`, `revocation_of_all_authorizations`, `authentication_required`, `highest_risk_level` and `transaction_not_allowed`, and automatic card updates may refresh an expired card. On a hard decline, Stripe's scheduled retries continue but execute only after a new payment method is attached ([../../backend/stripe/BILLING.md](../../backend/stripe/BILLING.md#smart-retries-and-dunning)).
+- **Use [Stripe's hard-decline list](../../backend/stripe/BILLING.md#smart-retries-and-dunning),** including its `expired_card` correction and the distinction between scheduled and executed retries. The source classified `expired_card` as Hard.
 
 ## The four emails
 
@@ -160,6 +160,8 @@ will be paused automatically.
 
 Match each date in the copy to your real retry and grace schedule; the deadline in email 3 and 4 is a real one.
 
+**The source's timing examples conflict.** Email 3 is labelled day 7 and says "paused in 3 days", which points to day 10; email 4 is labelled day 10 and says "paused tomorrow", which points to day 11. The stack's day-10-to-14 pause and the later recommendation of 7 to 14 days of grace after the final retry are also separate source illustrations, not one configured schedule. Select one actual pause date and align every template and the product's grace policy before using them. The original templates above are retained for comparison. [coreyhaines31/marketingskills, churn-prevention]
+
 ## Grace period and access
 
 [coreyhaines31/marketingskills, churn-prevention]
@@ -212,7 +214,8 @@ Where these notices sit in the product UI is the job of [../../frontend/app-ui/S
 
 ## Webhooks
 
-- **Stripe** [coreyhaines31/marketingskills, churn-prevention]: `invoice.payment_failed` starts dunning, `invoice.paid` stops it and restores access, `customer.subscription.updated` carries status changes, `customer.subscription.deleted` is the final cancellation. Handlers and `attempt_count` are in [../../backend/stripe/WEBHOOKS.md](../../backend/stripe/WEBHOOKS.md) and [../../backend/stripe/BILLING.md](../../backend/stripe/BILLING.md#smart-retries-and-dunning).
+- **Stripe** [coreyhaines31/marketingskills, churn-prevention]: `invoice.payment_failed` starts dunning, `invoice.paid` triggers a check of the current subscription status or active entitlements before access is restored, `customer.subscription.updated` carries status changes, `customer.subscription.deleted` is the final cancellation. Handlers and `attempt_count` are in [../../backend/stripe/WEBHOOKS.md](../../backend/stripe/WEBHOOKS.md) and [../../backend/stripe/BILLING.md](../../backend/stripe/BILLING.md#smart-retries-and-dunning).
+- **A paid invoice is not complete account recovery.** With Stripe's All invoices status resolution, another applicable outstanding invoice can leave the subscription `past_due` or `unpaid`. Use the [canonical access checks](../../backend/stripe/BILLING.md#provision-and-revoke-access); a single invoice payment does not by itself prove that the recovery sequence can stop. The old line said `invoice.paid` stops dunning and restores access unconditionally. [Stripe subscription lifecycle and status resolution](https://docs.stripe.com/billing/subscriptions/overview)
 - **Paddle Billing** [coreyhaines31/marketingskills, churn-prevention], names confirmed against [Paddle's webhook overview](https://developer.paddle.com/webhooks/overview): `transaction.payment_failed` (use its `subscription_id`; a failed one-off transaction is not subscription churn), `subscription.past_due`, `subscription.canceled`; a cancellation scheduled for the next period emits `subscription.updated` first, which Paddle describes as "a catch-all that also covers cancellations and pauses". `subscription.payment_failed` and `subscription.cancelled` are not Paddle Billing event types.
 - **Chargebee, Recurly and Braintree** setup paths in the source were not checked against their docs and are left out.
 
@@ -222,4 +225,4 @@ Where these notices sit in the product UI is the job of [../../frontend/app-ui/S
 
 ## Prove it
 
-On a Stripe test clock, a renewal with a declining card fires `invoice.payment_failed`, the four emails go out on the dates their copy states, the banner shows on every session until the card is updated, `invoice.paid` stops the sequence and restores access, and the account after grace is paused, not deleted; Smart Retries uses Stripe's settings; and no copy promises a deadline the schedule doesn't keep.
+On a Stripe test clock, a renewal with a declining card fires `invoice.payment_failed`, the four emails go out on the dates their copy states, the banner shows on every session until the card is updated, `invoice.paid` leads to a current status/entitlement check, and access is restored only when eligible, and the account after grace is paused, not deleted; Smart Retries uses Stripe's settings; and no copy promises a deadline the schedule doesn't keep.

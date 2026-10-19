@@ -66,7 +66,7 @@ An answer read in a terminal or chat window, not a document [open-seo, seo-coach
 - "Numbers get a plain-language gloss the first time, in the same bullet: '2,400/mo (people searching it each month)'."
 - "End with a single question or a numbered list of 2-4 choices. Never both."
 - "Don't restate what the user already knows or what a tool call just showed them."
-- "Keep replies under a screen. If it needs more, that is a skill report, not a coach answer." The report rules are [SEO-REPORTS.md](../../marketing/keyword-research/SEO-REPORTS.md).
+- "Keep replies under a screen. If it needs more, that is a skill report, not a coach answer." The report rules are [SEO-REPORTS.md](../../marketing/seo/SEO-REPORTS.md).
 
 ## Output
 

@@ -73,12 +73,12 @@ Eight loops that keep the whole system honest: the weekly review that routes eve
 - **Output**: A tracking-QA report with prioritized fixes.
 
 ### The claim-drift loop
-- **Check cadence**: On every deploy or merge to the product, or daily
+- **Check cadence**: On every product deploy or release, or daily
 - **Acts when**: A product change (price, plan limit, feature, integration, supported platform) makes a statement on a marketing surface false.
 - **Purpose**: Stop the site, docs, comparison pages, and ads from describing a product that no longer exists.
 - **Skills used**: [product context](../../anti-ai-slop/anti-slop-copy/CONTEXT.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), [comparison-pages](../comparison-pages/SKILL.md), [pricing-strategy](../pricing-strategy/SKILL.md)
 - **Loop body**:
-  1. Read the product changes since the last run: merged PRs, commits, release notes, pricing config.
+  1. Read the product changes since the last run: commits, release notes, pricing config.
   2. Pick out the ones that change a customer-facing fact.
   3. Search every marketing surface for the old fact (pages, docs, comparison tables, FAQ, structured data, ad copy, email templates) and stage corrections.
   4. For new capabilities, add a backlog item: which queries or comparisons can the product now win?

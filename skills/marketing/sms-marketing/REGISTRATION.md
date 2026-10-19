@@ -12,6 +12,8 @@ Texting from a US 10-digit long code (10DLC) needs a registered brand and campai
 
 Twilio's overview: https://www.twilio.com/docs/messaging/compliance/a2p-10dlc
 
+A2P 10DLC registration covers application SMS/MMS using 10-digit long-code numbers to US recipients. Toll-free and short-code numbers are outside that system and follow their applicable requirements; Twilio also documents using Verify for verification-only traffic instead of direct A2P 10DLC registration. The old cross-skill summaries required 10DLC for all US SMS, including transactional texts; select the actual [number type](#number-types) rather than applying that blanket claim. [https://www.twilio.com/docs/messaging/compliance/a2p-10dlc]
+
 ## Fees
 
 From Twilio (https://help.twilio.com/articles/1260803965530). The source said "~$15 brand + $10/mo per campaign"; $15 is the campaign vetting fee, not a brand fee.
@@ -93,10 +95,12 @@ The source's 10DLC range "1-250 msg/sec" overstates the top: Twilio's maximum is
 - [ ] Suppression list management
 - [ ] Consent record retention with timestamps
 
-Raw APIs such as Twilio leave STOP/HELP handling and quiet hours to you: "Quiet hours and STOP/HELP handling must be implemented by you" [coreyhaines31/marketingskills, sms].
+Twilio handles standard English long-code opt-out replies by default. Messaging Services Advanced Opt-Out can configure opt-in, opt-out and help responses and supplies the webhook's opt-out classification; it is disabled by default and toll-free behavior has separate constraints. Check the actual provider configuration, synchronize suppression and do not send a second confirmation when Twilio already replied. The source instead said raw APIs such as Twilio leave all STOP/HELP handling to the application. [https://www.twilio.com/docs/messaging/tutorials/advanced-opt-out]
+
+The application still needs the agreed quiet-hours policy, consent records and suppression handling for its complete program; provider opt-out handling alone does not implement that whole checklist. [coreyhaines31/marketingskills, sms; COMPLIANCE.md]
 
 ## Prove it
 
-- The brand and every campaign show as registered at the provider before the first US send, and the sample messages match the live templates word for word.
+- For US 10DLC application traffic, the brand and every campaign show as registered at the provider before the first send, and the sample messages match the live templates word for word; other sender types follow their applicable requirements.
 - The planned send volume divided by the campaign's MPS fits inside the quiet-hours window and under T-Mobile's daily brand cap.
 - No error 30023 appears in the delivery logs after a large send.

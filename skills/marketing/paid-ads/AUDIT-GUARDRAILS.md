@@ -48,7 +48,7 @@ Every optimization heuristic is conditional on sample size, conversion lag, marg
 - **Recommend features the account is ineligible for.** Verify, or write "check whether you have access to X."
 - **Invent negative keywords.** Without a search terms report there is no evidence of what matches. Request it, then run the **overblocking review**: would this negative block a converting query?
 
-Where the repo states fixed kill rules, read them through this list. app-growth quotes [appeeky]: "**Kill:** spend > 2× target CPA with 0 conversions → pause now" ([META-ADS.md](../../mobile/app-growth/META-ADS.md#decide)) and "Kill criteria: spend > 2× target CPA with 0 conversions = pause channel" ([BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md)). This source calls fixed kill rules unsafe without the sample-size and lag check; both views are practitioner, so apply the [appeeky] rule only after that check passes. The source's own B2B kill rules say "These aren't statistically rigorous" ([B2B-AND-ABM.md](B2B-AND-ABM.md#kill-heuristics)).
+Where the repo states fixed kill rules, read them through this list. app-growth quotes [appeeky]: "**Kill:** spend > 2× target CPA with 0 conversions → pause now" ([META-ADS.md](../../mobile/app-growth/META-ADS.md#decide)) and "Kill criteria: spend > 2× target CPA with 0 conversions = pause channel" ([BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md)). This source calls fixed kill rules unsafe without the sample-size and lag check; both views are practitioner, so apply the [appeeky] rule only after that check passes. The source's own B2B kill rules say "These aren't statistically rigorous" ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#kill-heuristics)).
 
 ## Facts, hypotheses, missing data
 

@@ -17,7 +17,7 @@ Before writing, read the product context file `.agents/product-context.md` ([../
 | Turning blogs, podcasts, video, webinars and newsletters into posts: content atoms, the podcast workflow, per-episode targets | [REPURPOSING.md](REPURPOSING.md) |
 | Character, hashtag, media and carousel limits per platform, in the app and through the API, each tagged official or source | [PLATFORM-LIMITS.md](PLATFORM-LIMITS.md) |
 | Per-platform playbooks: LinkedIn, X, Instagram, TikTok, Facebook, and how reach works on a Telegram channel | [PLATFORMS.md](PLATFORMS.md) |
-| X's For You ranking from xAI's open-sourced algorithm: the pipeline, the scored signals, the 10 rules, what kills reach | [X-RANKING.md](X-RANKING.md) |
+| X's For You ranking from xAI's open-sourced algorithm: the pipeline, the scored signals, dated defaults and source publishing heuristics | [X-RANKING.md](X-RANKING.md) |
 | Carousels and LinkedIn document posts: picking one of five frameworks, slide-by-slide jobs, platform notes, the production checklist | [CAROUSELS.md](CAROUSELS.md) |
 | Organic short-form video: specs, research worksheet, complementary hooks, shootable scripts, reward/pacing directions, platform adaptation and evidence-based iteration | [SHORT-VIDEO.md](SHORT-VIDEO.md) |
 | Social listening: the daily triage loop, the scoring rubric, sources through official APIs and feeds, LinkedIn and X, per-platform comment notes, common workflows | [LISTENING.md](LISTENING.md) |

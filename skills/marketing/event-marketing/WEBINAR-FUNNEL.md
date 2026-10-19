@@ -40,7 +40,7 @@ Registration, show-up, live-to-close and nurture, copied from coreyhaines31/mark
 
 - **Email list:** 3 sends: announcement, a value-add reminder with a preview insight, a day-of last call.
 - **Social:** founder or host personal posts outperform brand posts; share the "why this topic now" angle ([../social-media/SKILL.md](../social-media/SKILL.md)).
-- **Partners:** a co-hosted webinar "doubles reach for free", but co-hosted registrant lists need explicit consent for both parties: the form says the registration goes to both companies ([../partners-and-community/PARTNER-MARKETING.md](../partners-and-community/PARTNER-MARKETING.md#the-agreement)). When one email promotes both, CAN-SPAM lets them "designate one of the marketers as the 'sender'" ([FTC](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)).
+- **Partners:** a co-hosted webinar "doubles reach for free", but co-hosted registrant lists need explicit consent for both parties: the form says the registration goes to both companies ([../partnerships/PARTNER-MARKETING.md](../partnerships/PARTNER-MARKETING.md#the-agreement)). When one email promotes both, CAN-SPAM lets them "designate one of the marketers as the 'sender'" ([FTC](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)).
 - **Paid:** only after the topic is proven organically; retargeting warm traffic works, and "cold-to-webinar ads are an expensive way to buy no-shows" ([../paid-ads/SKILL.md](../paid-ads/SKILL.md)).
 - **Speakers' audiences:** for panels and summits, every speaker promotes; give them pre-written posts and custom links.
 
@@ -69,7 +69,7 @@ Registration, show-up, live-to-close and nurture, copied from coreyhaines31/mark
 
 ## Stage 4: after the webinar
 
-[coreyhaines31/marketingskills, events] "Half the revenue is here." Segment by behavior, then sequence ([../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md)):
+[coreyhaines31/marketingskills, events] "Half the revenue is here." Segment by behavior, then sequence ([email-marketing](../email-marketing/SKILL.md)):
 
 | Segment | Play |
 |---|---|

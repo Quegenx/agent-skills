@@ -53,7 +53,7 @@ Deliverable: the likely concern, one response the rep can say as written, proof,
 |---|---|---|
 | "Too expensive" | "Compared to what? Let's look at what the problem costs you today." | ROI case study showing payback in X months |
 | "No budget" | "When budget opens up, what would need to be true for this to be a priority?" | Customer who started with a pilot to prove value |
-| "Competitor is cheaper" | "They are, here's what you give up at that price point." | Feature comparison + customer who switched |
+| "Competitor is cheaper" | Use the price talk track only after checking the competitor's price and comparable scope; otherwise ask what's in their number ([live deal rule](#live-deal-objection)). | Verified price/scope comparison + actual customer who switched |
 | "Not the right time" | "What changes next quarter that makes it better timing?" | Cost-of-delay calculation |
 | "Maybe next quarter" | "Happy to reconnect. What would a pilot look like before then?" | Customer who started small and expanded |
 | "We use X already" | "How's that working for [specific pain area]?" | Customer who switched from X |
@@ -90,8 +90,9 @@ Deliverable: the likely concern, one response the rep can say as written, proof,
 ### "Competitor X is cheaper"
 
 - **Why they say it:** they're comparing prices, possibly without comparing capabilities. May be using competitor price as leverage.
-- **Approach:** (1) acknowledge the price difference; don't pretend it doesn't exist; (2) shift to total cost of ownership and value delivered; (3) highlight what they lose at the lower price point; (4) share proof from customers who evaluated both.
-- **Talk track:** "You're right, [Competitor] is less expensive. Here's what I've seen from teams who evaluated both: [Competitor] works well for [their strength]. Where it falls short is [specific gap]. Customers like [name] actually switched to us after starting with [Competitor] because [specific reason]. The question is whether [specific capability] is worth the difference for your team."
+- **Approach:** first verify the claimed price difference and comparable scope under the [live deal rule](#live-deal-objection). Only then (1) acknowledge the verified difference; (2) shift to total cost of ownership and value delivered; (3) highlight evidenced differences at that price point; (4) share real proof from customers who evaluated both.
+- **Talk track, only for a verified price difference and scope comparison:** "You're right, [Competitor] is less expensive. Here's what I've seen from teams who evaluated both: [Competitor] works well for [their strength]. Where it falls short is [specific gap]. Customers like [name] actually switched to us after starting with [Competitor] because [specific reason]. The question is whether [specific capability] is worth the difference for your team."
+- **Source conflict:** the quick response said "They are" and this talk track conceded a lower price before checking it; the same source's live-deal rule says not to repeat the buyer's competitor claim as fact. Keep that verification rule and use only evidenced competitor and customer statements. [coreyhaines31/marketingskills, sales-enablement]
 - **Proof point:** customer who switched from the competitor, with specific reasons.
 - **Follow-up:** "What's most important to your team, the lowest price or the best fit for [their specific need]?"
 

@@ -21,7 +21,7 @@ When a discount helps and when an offer should replace it. From [coreyhaines31/m
 
 - **The "was" price must be real:** offered openly for a reasonably substantial period, and not raised just before the sale; an unstated reduction must not be trivial (16 CFR 233.1, [FTC-PRICING-CLAIMS.md](FTC-PRICING-CLAIMS.md#former-prices-and-sales)).
 - **A deadline must be real** and end when it says ([SCARCITY.md](SCARCITY.md)).
-- **In Stripe,** run a sale as a coupon or promotion code ([../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#coupons-and-promotion-codes)); a live Price can't be edited ([../../backend/stripe/BILLING.md](../../backend/stripe/BILLING.md#model-the-catalog)).
+- **In Stripe,** run a sale as a coupon or promotion code ([../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md#coupons-and-promotion-codes)); distinguish changes requiring a new Price from supported maintenance updates in [BILLING.md](../../backend/stripe/BILLING.md#model-the-catalog). The old line said a live Price could not be edited; Stripe permits supported updates, including `active`, `metadata` and `nickname` ([Update a price](https://docs.stripe.com/api/prices/update)).
 
 ## Save offers and win-back are a different case
 

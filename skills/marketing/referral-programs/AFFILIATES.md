@@ -1,6 +1,6 @@
 # Affiliate programs
 
-Commission-based partners who may not be customers: structures, recruitment, economics, terms, disclosure, reconciliation and measurement. From [coreyhaines31/marketingskills, referrals, references/affiliate-programs.md, affiliate-operations.md and viral-mechanisms.md] unless tagged. Creator sponsorships and audience vetting are in [creator-marketing](../creator-marketing/SKILL.md); finding partners is in [prospecting](../prospecting/SKILL.md); co-marketing with partner companies is in [partners-and-community](../partners-and-community/SKILL.md).
+Commission-based partners who may not be customers: structures, recruitment, economics, terms, disclosure, reconciliation and measurement. From [coreyhaines31/marketingskills, referrals, references/affiliate-programs.md, affiliate-operations.md and viral-mechanisms.md] unless tagged. Creator sponsorships and audience vetting are in [creator-marketing](../creator-marketing/SKILL.md); finding partners is in [prospecting](../prospecting/SKILL.md); co-marketing with partner companies is in [partnerships](../partnerships/SKILL.md).
 
 **Contents:** [Commission structures](#commission-structures) · [Cookie windows](#cookie-windows) · [Economics before a rate](#economics-before-a-rate) · [Recruiting](#recruiting) · [Enablement](#enablement) · [Terms](#terms) · [Disclosure](#disclosure) · [Reconciliation and payouts](#reconciliation-and-payouts) · [Measuring](#measuring) · [Power law, buyouts and launches](#power-law-buyouts-and-launches) · [Tools](#tools) · [Prove it](#prove-it)
 
@@ -75,7 +75,7 @@ Would you be open to learning more?
 
 ## Enablement
 
-Give affiliates: unique tracking links or codes; a product overview and key benefits; the target audience description; a comparison to competitors; creative assets (logos, banners, images); sample copy and talking points; case studies and testimonials (permissioned ones, [REVIEW-PROGRAMS.md](REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)); demo access or a free account; FAQ and objection handling; payment terms and schedule.
+Give affiliates: unique tracking links or codes; a product overview and key benefits; the target audience description; a comparison to competitors; creative assets (logos, banners, images); sample copy and talking points; case studies and testimonials (permissioned ones, [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)); demo access or a free account; FAQ and objection handling; payment terms and schedule.
 
 Test the customer journey and attribution "with authorized test data before inviting a broad cohort", and give each partner a tested link or code, truthful positioning, approved assets, disclosure guidance, a first-placement plan and a support contact.
 

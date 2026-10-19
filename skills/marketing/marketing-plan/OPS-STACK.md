@@ -24,8 +24,8 @@ The source's tables name its own marketingskills skills; this table maps each st
 |---|---|---|
 | Acquisition | [seo](../seo/SKILL.md), [keyword-research](../keyword-research/SKILL.md), [ai-search-visibility](../ai-search-visibility/SKILL.md), [content-strategy](../content-strategy/SKILL.md), [comparison-pages](../comparison-pages/SKILL.md), [paid-ads](../paid-ads/SKILL.md), [ad-creative](../ad-creative/SKILL.md), [social-media](../social-media/SKILL.md), [aso](../../mobile/aso/SKILL.md), [app-growth](../../mobile/app-growth/SKILL.md) | [product-launch](../product-launch/SKILL.md), [public-relations](../public-relations/SKILL.md), [lead-magnets](../lead-magnets/SKILL.md) (free tools), [creator-marketing](../creator-marketing/SKILL.md), [cold-outreach](../cold-outreach/SKILL.md), [prospecting](../prospecting/SKILL.md), [landing-page-ui](../../frontend/landing-page-ui/SKILL.md), [web-research](../../web-automation/web-research/SKILL.md) |
 | Activation | [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [cro](../cro/SKILL.md) (forms, signup, popups), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md) | [ab-testing](../ab-testing/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [growth-ideas PSYCHOLOGY.md](../growth-ideas/PSYCHOLOGY.md), [revenuecat](../../backend/revenuecat/SKILL.md) |
-| Retention | [email-practices](../../backend/email-practices/SKILL.md), [churn-prevention](../churn-prevention/SKILL.md) | [resend](../../backend/resend/SKILL.md), [onesignal](../../backend/onesignal/SKILL.md), [sms-marketing](../sms-marketing/SKILL.md), [ab-testing](../ab-testing/SKILL.md) |
-| Referral | [referral-programs](../referral-programs/SKILL.md), [partners-and-community](../partners-and-community/SKILL.md) | [social-media](../social-media/SKILL.md), [creator-marketing](../creator-marketing/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md) |
+| Retention | [email-marketing](../email-marketing/SKILL.md), [churn-prevention](../churn-prevention/SKILL.md) | [email-practices](../../backend/email-practices/SKILL.md) (delivery and consent), [resend](../../backend/resend/SKILL.md), [onesignal](../../backend/onesignal/SKILL.md), [sms-marketing](../sms-marketing/SKILL.md), [ab-testing](../ab-testing/SKILL.md) |
+| Referral | [referral-programs](../referral-programs/SKILL.md), [partnerships](../partnerships/SKILL.md), [community-marketing](../community-marketing/SKILL.md) | [social-media](../social-media/SKILL.md), [creator-marketing](../creator-marketing/SKILL.md), [email-marketing](../email-marketing/SKILL.md) |
 | Revenue | [pricing-strategy](../pricing-strategy/SKILL.md), [offer-design](../offer-design/SKILL.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md) (paywalls), [sales-enablement](../sales-enablement/SKILL.md), [revops](../revops/SKILL.md) | [stripe](../../backend/stripe/SKILL.md), [revenuecat](../../backend/revenuecat/SKILL.md), [ab-testing](../ab-testing/SKILL.md) |
 | Measurement | [posthog](../../monitoring/posthog/SKILL.md), [google-analytics](../../monitoring/google-analytics/SKILL.md), [marketing-attribution](../marketing-attribution/SKILL.md), [search-console](../search-console/SKILL.md) | [marketing-loops](../marketing-loops/SKILL.md) (the weekly review and tracking-QA loops) |
 | Cross-cutting | the product context file ([anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md)), [customer-research](../customer-research/SKILL.md) | [growth-ideas](../growth-ideas/SKILL.md), [marketing-council](../marketing-council/SKILL.md) |
@@ -39,7 +39,6 @@ The source's tables name its own marketingskills skills; this table maps each st
 | **Ahrefs API** | SEO data: keyword research, backlinks, competitor analysis | Required `AHREFS_API_KEY` in `.env` |
 | **DataForSEO API** | SERP data, keyword volume, competitor SERP analysis | Required API key |
 | **GA4 MCP** | Traffic by channel, conversion events, funnels (read-only, "Experimental") | A Google Cloud project with a service account or user OAuth / ADC (https://developers.google.com/analytics/devguides/MCP) |
-| **GitHub MCP** | Repo work: marketing site (`site-name-promo` patterns), content authoring | Standard `gh` CLI auth + MCP server |
 | **Typefully MCP** | Social posting (LinkedIn, X, Threads, Bluesky) | Typefully account + API key |
 | **Google Ads MCP** | Performance pulls only | Wired post-budget-unlock |
 
@@ -56,7 +55,6 @@ The source's tables name its own marketingskills skills; this table maps each st
 | Tool | What it provides |
 |---|---|
 | **App Store Connect** | Conversion rate by listing variant, install funnel | Usually manual + `dev-browser` for screenshots |
-| **GitHub MCP** | Mobile app repo for onboarding code edits |
 | **Figma / Pencil MCP** | Onboarding screen design + iteration |
 | **Customer.io MCP** | In-app messaging + lifecycle email coordination |
 | **Stripe MCP** | Subscription state for paywall logic |
@@ -78,7 +76,6 @@ The source's tables name its own marketingskills skills; this table maps each st
 |---|---|
 | **Dub.co** | Ambassador attribution, short links, per-ambassador tracking |
 | **Stripe MCP** | Commission accounting + payouts via Connect |
-| **GitHub MCP** | Per-ambassador landing pages |
 | **Customer.io MCP** | Ambassador lifecycle (recruitment → onboarding → monthly digest → payout notifications) |
 | **Rewardful / Tolt / Mention Me** | Alternatives to Dub for affiliate management |
 
@@ -97,7 +94,6 @@ The source's tables name its own marketingskills skills; this table maps each st
 | Tool | What it provides |
 |---|---|
 | **Notion** | Shared knowledge base |
-| **GitHub MCP** | Shared context repo (`{client-org}/{client-context}`) |
 | **defuddle** | Research extraction |
 | **obsidian-cli** | Working notes for fCMO |
 | **Pencil MCP** | Design files |
@@ -112,8 +108,10 @@ The plan's Section 11 must include this table (or equivalent), specific to the c
 | **Pre-seed / bootstrapped** | fCMO + founder team | All current tooling + marketing-skills library + MCP layer | Organic only (SEO, content, App Store, founder-led social, events, WOM, ambassador) |
 | **Seed close** | + first marketing hire (lifecycle/content owner) | + paid ad accounts (Apple Search Ads, Meta, LinkedIn) + [paid-ads](../paid-ads/SKILL.md) skill activated | + paid acquisition pilot ($5 to 15K/mo - see [FUNDING-STAGES.md](FUNDING-STAGES.md) for canonical tiers) |
 | **Seed deployment** | + designer (potentially fractional) | + analytics expansion (Mixpanel / Amplitude if needed) | + paid scaling ($20 to 50K/mo) + first launches (PH, GA) |
-| **Series A** | + performance marketing lead + content lead | + dedicated tooling spend ($2 to 5K/mo software) + sponsored event budget | + paid scaling ($50 to 150K/mo) + international consideration + B2B vertical expansion |
+| **Series A** | + performance marketing lead + content lead | + dedicated tooling spend ([Tier 4 budget](FUNDING-STAGES.md#tier-4---series-a)) + sponsored event budget | + paid scaling ($50 to 150K/mo) + international consideration + B2B vertical expansion |
 | **Series B+** | Full-stack marketing org (10+ people) | + agency partnerships + PR firm | + brand campaigns + acquisitions + sponsorships at category level |
+
+**Source budget difference:** this operations example said $2 to 5K/mo for Series A software [coreyhaines31/marketingskills, marketing-plan, references/ops-stack-mapping.md]; the canonical funding-stage table gives $5,000 to 10,000/mo for its tooling stack [same source, references/funding-stages.md]. Use the funding-stage table as this plan's tier anchor and keep any client-specific budget explicit; do not silently combine the two ranges.
 
 ## The concrete-example test
 

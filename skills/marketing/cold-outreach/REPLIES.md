@@ -58,11 +58,13 @@ The last row is a courtesy in the source and a legal duty for EU and UK contacts
 | Unsubscribe | Suppress everywhere | |
 | Bounce | Remove, flag for a job-change check | |
 | Not now | Set the reminder, stop the sequence | A polite acknowledgment |
-| Positive | | Until accuracy is proven over 100+ replies |
+| Positive | | Until accuracy is proven over 100+ replies and the approved sending policy permits it |
 | Information request | | Yes |
 | Objection | | Yes |
 | Referral | | Yes |
 | Hostile | Suppress | Any reply at all |
+
+**Source approval conflict:** the source's acceptance expectation and original [outbound-operator approval table](../marketing-loops/OUTBOUND-OPERATOR.md#approval-rules-defaults) extended the 100+ reply condition to positive, information, objection and referral replies. This source's reply table only gave that exception to positive replies; the other three remain human-sent. Keep that stricter table boundary until an explicitly approved policy changes it. A reply count alone neither proves accuracy nor grants sending permission. [coreyhaines31/marketingskills, cold-email and marketing-loops; owner standing rule 15]
 
 Before an agent sends anything alone: every claim in the draft matches an approved source, nothing from your banned-phrase list appears, and a daily cap applies. Sample-review a share of autonomous replies every week. Building these as code gates around the agent's send tool is in [../../ai-agents/agent-harness/CHECKS.md](../../ai-agents/agent-harness/CHECKS.md).
 
@@ -72,4 +74,4 @@ Before an agent sends anything alone: every claim in the draft matches an approv
 
 ## Prove it
 
-A test reply of each of the nine types lands in the right row and triggers its action; an unsubscribe suppresses the contact on email, LinkedIn and phone before the next scheduled touch; no positive, information, objection or referral reply leaves without a human sending it until 100+ replies show the drafts are accurate; every autonomous send passed the claims, banned-phrase and daily-cap checks; and "How did you get my email?" is answered from the contact's recorded source.
+A test reply of each of the nine types lands in the right row and triggers its action; an unsubscribe suppresses the contact on email, LinkedIn and phone before the next scheduled touch; positive replies remain human-sent until accuracy over 100+ replies and an approved sending policy permit otherwise; information, objection and referral replies remain human-sent under the stricter table above; every autonomous send passed the claims, banned-phrase and daily-cap checks; and "How did you get my email?" is answered from the contact's recorded source.

@@ -87,7 +87,7 @@ Playbooks layer: Locations + Personas ("Marketing agencies for startups in Austi
 
 ## Linking
 
-- **Hub and spoke:** the hub is the main category page, the spokes are the individual pages, with cross-links between related spokes. No orphans: every page reachable from the main site, in the XML sitemap, with breadcrumbs. [coreyhaines31/marketingskills, programmatic-seo]
+- **Hub and spoke:** use the [canonical linking pattern](../site-architecture/URLS-AND-LINKS.md#hub-and-spoke). No orphans: every page reachable from the main site, in the XML sitemap, with breadcrumbs. [coreyhaines31/marketingskills, programmatic-seo]
 - Google learns page importance from "the linkages between pages"; use `<a href>` links rather than JavaScript events, and when linking isn't feasible, sitemaps or Merchant Center feeds ([ecommerce site structure](https://developers.google.com/search/docs/specialty/ecommerce/help-google-understand-your-ecommerce-site-structure)). "Google can only crawl your link if it's an `<a>` HTML element" with an `href` ([crawlable links](https://developers.google.com/search/docs/crawling-indexing/links-crawlable)).
 
 ## Sitemaps

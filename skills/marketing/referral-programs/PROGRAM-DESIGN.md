@@ -129,7 +129,7 @@ They get [their reward] too.
 3. You both get [reward]
 ```
 
-The nurture sequence: Day 7, remind about the program; Day 30, "Know anyone who'd benefit?"; Day 60, a success story plus a referral prompt; after a milestone, "You achieved [X] - know others who'd want this?" The success story must be a real, permissioned one ([REVIEW-PROGRAMS.md](REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)).
+The nurture sequence: Day 7, remind about the program; Day 30, "Know anyone who'd benefit?"; Day 60, a success story plus a referral prompt; after a milestone, "You achieved [X] - know others who'd want this?" The success story must be a real, permissioned one ([REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#reusing-reviews-as-evidence)).
 
 These are marketing emails: consent, unsubscribe and frequency rules are in [email-practices](../../backend/email-practices/SKILL.md). Moved to push on iOS, they need the explicit opt-in Apple requires for promotional push (in app-growth's referral section).
 

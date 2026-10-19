@@ -117,7 +117,7 @@ For every client, one or two AARRR stages will be the binding constraint. The pl
 - Support as marketing (high-touch moments that drive stories)
 - Community + practitioner networks
 
-**Sequencing principle:** Ship lifecycle flows in the order their content is most stable (email rules: [email-practices](../../backend/email-practices/SKILL.md)). Hardware post-purchase flows ship first (they don't reference in-app screens that might change). Onboarding emails ship last (they reference UI that might change). Win-back is a quarterly campaign, not a one-time flow.
+**Sequencing principle:** Ship lifecycle flows in the order their content is most stable (sequence strategy: [email-marketing](../email-marketing/SKILL.md); delivery and consent: [email-practices](../../backend/email-practices/SKILL.md)). Hardware post-purchase flows ship first (they don't reference in-app screens that might change). Onboarding emails ship last (they reference UI that might change). Win-back is a quarterly campaign, not a one-time flow.
 
 ### Referral
 

@@ -38,7 +38,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Monthly
 - **Acts when**: A lead magnet, free tool, or opt-in underperforms on capture rate.
 - **Purpose**: Keep top-of-funnel capture assets (lead magnets + free tools) converting visitors to leads.
-- **Skills used**: [lead-magnets](../lead-magnets/SKILL.md), [lead-magnets](../lead-magnets/SKILL.md), [cro](../cro/SKILL.md), [cro POPUPS](../cro/POPUPS.md)
+- **Skills used**: [lead-magnets](../lead-magnets/SKILL.md), [cro](../cro/SKILL.md), [cro POPUPS](../cro/POPUPS.md)
 - **Loop body**:
   1. Pull view → capture conversion for each lead magnet, free tool, and opt-in.
   2. Flag underperformers vs. benchmark; diagnose (offer, placement, form friction, targeting).
@@ -52,7 +52,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Weekly
 - **Acts when**: A sticky/valuable feature is underused by a segment that would benefit.
 - **Purpose**: Drive adoption of the features that correlate with retention.
-- **Skills used**: [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md)
+- **Skills used**: [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent), [posthog](../../monitoring/posthog/SKILL.md)
 - **Loop body**:
   1. Identify high-retention-correlated features and the segments not using them.
   2. Pick the highest-leverage feature × segment.
@@ -68,7 +68,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Daily (or on-trigger)
 - **Acts when**: An account newly crosses a churn-risk threshold and isn't already in an intervention.
 - **Purpose**: Intervene inside the short window before an at-risk account leaves.
-- **Skills used**: [churn-prevention](../churn-prevention/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md)
+- **Skills used**: [churn-prevention](../churn-prevention/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent)
 - **Loop body**:
   1. Score accounts on churn-risk signals (usage decline, seat drop, dunning, support escalations).
   2. Segment newly at-risk accounts.
@@ -82,7 +82,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Monthly
 - **Acts when**: A sequence email underperforms on real engagement or contains stale content.
 - **Purpose**: Keep automated sequences performing as the product and audience evolve.
-- **Skills used**: [email-practices](../../backend/email-practices/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md)
+- **Skills used**: [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent), [posthog](../../monitoring/posthog/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md)
 - **Loop body**:
   1. Pull per-email performance - clicks, conversions, replies, unsubscribes, spam complaints, bounces (**not opens** - open tracking is unreliable post-privacy-changes).
   2. Flag weak performers and stale references (old features, dates, pricing).
@@ -96,7 +96,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Weekly
 - **Acts when**: A user newly crosses the inactivity threshold.
 - **Purpose**: Win back dormant users before they're gone for good.
-- **Skills used**: [email-practices](../../backend/email-practices/SKILL.md), [sms-marketing](../sms-marketing/SKILL.md), [offer-design](../offer-design/SKILL.md)
+- **Skills used**: [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent), [sms-marketing](../sms-marketing/SKILL.md), [offer-design](../offer-design/SKILL.md)
 - **Loop body**:
   1. Identify users newly crossing the inactivity threshold.
   2. Pick the win-back angle (new feature, offer, "we miss you," sunset warning).
@@ -127,7 +127,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Skills used**: [customer-research](../customer-research/SKILL.md), [churn-prevention](../churn-prevention/SKILL.md), [referral-programs](../referral-programs/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md)
 - **Loop body**:
   1. Collect new feedback across sources.
-  2. Route: detractors/at-risk → save motion ([churn-prevention](../churn-prevention/SKILL.md)); promoters → referral/review ask ([referral-programs](../referral-programs/SKILL.md)); recurring pain/desire → experiment + copy inputs.
+  2. Route: detractors/at-risk → save motion ([churn-prevention](../churn-prevention/SKILL.md)); promoters → referral ask ([referral-programs](../referral-programs/SKILL.md)); public review invitations → the [neutral experience-milestone cohort](../review-management/REVIEW-PROGRAMS.md#requesting-reviews), independent of NPS/CSAT; recurring pain/desire → experiment + copy inputs.
   3. Extract verbatim customer language for copy, FAQ, and objection-handling.
 - **Self-check**: Is a theme a real pattern or one loud voice? Require a minimum count before acting on it.
 - **State / idempotency**: Track processed feedback IDs; never double-route the same item.
@@ -140,7 +140,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Daily
 - **Acts when**: A trial user reaches a conversion-relevant moment (mid-trial, near-expiry, activated-but-not-paid).
 - **Purpose**: Move more trials to paid with well-timed nudges.
-- **Skills used**: [email-practices](../../backend/email-practices/SKILL.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [offer-design](../offer-design/SKILL.md)
+- **Skills used**: [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), [posthog](../../monitoring/posthog/SKILL.md), [offer-design](../offer-design/SKILL.md)
 - **Loop body**:
   1. Segment active trials by stage and activation level.
   2. Match each to the right nudge (value recap, use-case tip, near-expiry push, offer).
@@ -196,7 +196,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Weekly
 - **Acts when**: An existing paid account hits an expansion signal (usage near limits, added seats, new use case).
 - **Purpose**: Grow revenue from existing customers via well-timed upsell/cross-sell.
-- **Skills used**: [revops](../revops/SKILL.md), [sales-enablement](../sales-enablement/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md)
+- **Skills used**: [revops](../revops/SKILL.md), [sales-enablement](../sales-enablement/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent)
 - **Loop body**:
   1. Score paid accounts on expansion signals.
   2. Surface newly expansion-ready accounts.
@@ -210,10 +210,10 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Daily
 - **Acts when**: A payment fails or a card is about to expire.
 - **Purpose**: Recover involuntary churn - often the highest-ROI retention work.
-- **Skills used**: [revops](../revops/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md)
+- **Skills used**: [revops](../revops/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent)
 - **Loop body**:
   1. Detect failed payments and upcoming card expirations.
-  2. Trigger the dunning sequence (retry schedule + escalating update-card messaging).
+  2. Use [Stripe's retry and recovery operations](../../backend/stripe/BILLING.md#smart-retries-and-dunning) and [dunning message copy](../churn-prevention/DUNNING-COPY.md); preserve the configured retry schedule and escalating update-card messaging.
   3. Route persistent failures to a human/CS.
 - **Self-check**: Is the failure involuntary (card issue) vs. an intentional cancel? Don't dun someone who chose to leave.
 - **State / idempotency**: Track dunning stage per account; follow the retry schedule; stop on recovery.
@@ -226,16 +226,16 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Weekly
 - **Acts when**: A user hits a "happy moment" (milestone, positive NPS) and hasn't been asked recently.
 - **Purpose**: Ask for referrals when users are most delighted.
-- **Skills used**: [referral-programs](../referral-programs/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md)
+- **Skills used**: [referral-programs](../referral-programs/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (copy/sequences), [email-practices](../../backend/email-practices/SKILL.md) (delivery/consent)
 - **Loop body**:
   1. Identify users who just hit a happy moment and aren't in the ask-cooldown.
-  2. Match to the right ask (share link, incentive, review request).
+  2. Match to the right referral ask (share link or incentive); public review requests follow the separate [neutral-cohort rule](../review-management/REVIEW-PROGRAMS.md#requesting-reviews).
   3. Stage the ask.
 - **Self-check**: Genuinely a happy moment, or just any event? A bad-timing ask erodes goodwill.
 - **State / idempotency**: Enforce a cooldown - never ask the same user twice in the window.
 - **Stop / bail-out**: No one at a happy moment → skip.
 - **Output**: A staged, well-timed referral ask.
-- **Review requests are not filtered by sentiment** (correction): the source's step 2 includes "review request" in the happy-moment ask. The FTC's Consumer Reviews and Testimonials Rule Q&A says the rule "does not contain a specific prohibition" on asking only customers you think are happy, "But this practice could violate the FTC Act. See, e.g., Endorsement Guides 16 C.F.R 255.2(d) and (e)(11)" (https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers). Time referral asks to happy moments; send public review requests to customers generally, and never make an incentive depend on the review being positive. In-app store review asks stay on the system prompt ([app-growth RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md)).
+- **Review requests are not filtered by sentiment** (correction): The source's step 2 included "review request" in the happy-moment ask, as did the old voice-of-customer route. The FTC's Consumer Reviews and Testimonials Rule Q&A says the rule "does not contain a specific prohibition" on asking only customers you think are happy, "But this practice could violate the FTC Act. See, e.g., Endorsement Guides 16 C.F.R 255.2(d) and (e)(11)" (https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers). Time referral asks to happy moments; send public review requests to customers generally, and never make an incentive depend on the review being positive. In-app store review asks stay on the system prompt ([app-growth RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md)).
 
 ### The review-and-UGC-harvest loop
 - **Check cadence**: Weekly
@@ -256,7 +256,7 @@ Nineteen loops from signup to referral: they find the leak, stage the nudge and 
 - **Check cadence**: Weekly
 - **Acts when**: New reviews land on G2/Capterra/app stores, or listings drift out of date.
 - **Purpose**: Maintain reputation and conversion on third-party review platforms.
-- **Skills used**: [sales-enablement](../sales-enablement/SKILL.md), [social-media](../social-media/SKILL.md), [cro](../cro/SKILL.md)
+- **Skills used**: [review-management](../review-management/SKILL.md), [ASO ratings and reviews](../../mobile/aso/RATINGS-AND-REVIEWS.md) for stores; [sales-enablement](../sales-enablement/SKILL.md), [social-media](../social-media/SKILL.md), [cro](../cro/SKILL.md) for downstream placements
 - **Loop body**:
   1. Track new reviews across review sites/app stores.
   2. Draft responses (thank promoters, address detractors constructively).

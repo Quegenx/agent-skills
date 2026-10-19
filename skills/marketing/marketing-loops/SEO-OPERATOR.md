@@ -15,7 +15,7 @@ Settle five things with the owner and write them at the top of the operator brie
 | **Site** | The production URL |
 | **Conversion** | The one action that counts (trial, demo request, purchase). Traffic that never reaches it isn't the goal |
 | **Competitors** | 3 to 8 names, or permission to find them from the SERPs and AI answers |
-| **Ship mode** | "Open a PR for review" (default) or "merge when checks pass." Auto-merge needs the owner's explicit say-so; see [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md) |
+| **Ship mode** | Stage site changes for review by default; publishing requires the owner's explicit authorization; see [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md) |
 | **Data access** | Which of Search Console, analytics, a rank or backlink tool, and an AI-visibility tool the agent can read |
 
 Then confirm the foundation: tracking works (the tracking-QA loop), and `.agents/product-context.md` exists. If it doesn't, build it with [anti-slop-copy CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md) first. The operator reads product facts from there; it doesn't keep a second copy.
@@ -36,7 +36,9 @@ Agents start every run with no memory, so everything the operator knows lives in
 .agents/loops/seo-operator.log   # one line per run, acted or not
 ```
 
-Two rules make the query map work. **Every page owns one primary query**, and **every query has at most one page.** Two pages chasing the same query is a defect: merge them and redirect the weaker one. (This is the source's practice; Google Search Central states no one-query-per-page rule.) A query with no page is a gap and goes in the queue.
+Two rules make the query map work. **Every page owns one primary query**, and **every query has at most one page.** Two pages chasing the same query is a defect: merge them and redirect the weaker one. (This is the source's practice; Google Search Central states no one-query-per-page rule.) A query with no page is a gap and goes in the queue. [coreyhaines31/marketingskills, marketing-loops, seo-operator.md]
+
+The canonical [intent-cluster mapping](../keyword-research/CLUSTERING.md#the-workflow) groups related queries by intent into a page and requires actual query/page evidence before calling cannibalization. Keep the operator's one-primary-query convention as its tagged practice; do not merge or redirect from query overlap alone, and retain the approval boundary for pages with traffic or backlinks below. [open-seo, keyword-clustering]
 
 Every fact in `claims.md` cites where it came from (a file in the product repo, the live pricing page). Facts from memory don't go in.
 
@@ -72,7 +74,7 @@ Each cell is a catalog loop or a step defined below; run it with that loop's sel
 
 ## Operating rules
 
-- **The output is changes to the site.** A memo recommending a fix isn't progress; a PR with the fix is. Research earns its place only when it produces a change.
+- **The output is changes to the site.** A memo recommending a fix isn't progress; a staged site change with the fix is. Research earns its place only when it produces a change.
 - **Finish before starting.** Ship the change in progress before opening the next one. Half-done drafts don't rank.
 - **No guessing past missing data.** When a source isn't connected, note it in the report with what connecting it would make possible, then work with what exists. Don't fill gaps with estimates presented as data.
 - **The product is the source of truth.** When a page and the product disagree, change the page. Never change the product, its pricing, or its claims to match marketing.
@@ -110,9 +112,9 @@ If a number can't be sourced, leave it out rather than estimating it.
 ## When not to run an operator
 
 - **The site has almost no search demand to win** (a brand-new category, a tiny niche). Spend on positioning and distribution first.
-- **No one will review the PRs.** An operator in PR mode with no reviewer just builds a backlog of stale branches. Use a weekly manual run instead.
+- **No one will review staged changes.** Unreviewed changes accumulate; use a weekly manual run instead. [coreyhaines31/marketingskills, marketing-loops; owner exclusion of GitHub lifecycle workflows]
 - **Tracking is broken.** Fix it first. Every loop above reads from it.
 
 ## Prove it
 
-The brief holds the five settings before the first run; ship mode is PRs for review unless the owner said otherwise; everything the operator knows is in `.agents/seo/` and the run log, never memory; each query has at most one page; no page is reported as indexed without a Search Console check; the first run ends with three shipped fixes; no page with traffic or backlinks was deleted, noindexed or redirected without approval; every new page passed the one-sentence information-gain test and invents no statistic, quote, customer, review, price or benchmark; outreach, listings and posts stayed drafts; the weekly report fits one screen and every number in it has a source.
+The brief holds the five settings before the first run; ship mode stages changes for review unless the owner authorized publishing; everything the operator knows is in `.agents/seo/` and the run log, never memory; the query map labels its source convention and checks cannibalization against the canonical intent-cluster evidence; no page is reported as indexed without a Search Console check; the first run ends with three shipped fixes; no page with traffic or backlinks was deleted, noindexed or redirected without approval; every new page passed the one-sentence information-gain test and invents no statistic, quote, customer, review, price or benchmark; outreach, listings and posts stayed drafts; the weekly report fits one screen and every number in it has a source.

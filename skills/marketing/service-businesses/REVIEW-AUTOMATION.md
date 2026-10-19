@@ -1,6 +1,6 @@
 # Review-request automation service
 
-The recurring post-job review service from [more skills, 02-review-automation-sms.md]. Its distinct deliverables are a live inbound-code demonstration, completed-job intake, a bounded request/reminder flow and a four-field monthly owner report. Shared acquisition is [DEMO-FIRST.md](DEMO-FIRST.md); neutral reviewer eligibility and platform rules are [REVIEW-PROGRAMS.md](../referral-programs/REVIEW-PROGRAMS.md).
+The recurring post-job review service from [more skills, 02-review-automation-sms.md]. Its distinct deliverables are a live inbound-code demonstration, completed-job intake, a bounded request/reminder flow and a four-field monthly owner report. Shared acquisition is [DEMO-FIRST.md](DEMO-FIRST.md); neutral reviewer eligibility and platform rules are [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md).
 
 ## Prospect and comparison packet
 
@@ -27,7 +27,7 @@ The recipe-specific postcard has the approved personalized image full bleed on t
 [more skills, 02-review-automation-sms.md]
 
 1. Start with an owner form or authorized owner message recording customer name/phone after a completed job. The source later proposes connecting the client's existing completion event from Jobber, Housecall Pro or Square; it supplies no verified adapter contract.
-2. Apply the neutral experience-based cohort and authorization rules in [REVIEW-PROGRAMS.md](../referral-programs/REVIEW-PROGRAMS.md#requesting-reviews) and [SMS compliance](../sms-marketing/COMPLIANCE.md). Owner possession of a customer number does not establish permission for this messaging program.
+2. Apply the neutral experience-based cohort and authorization rules in [REVIEW-PROGRAMS.md](../review-management/REVIEW-PROGRAMS.md#requesting-reviews) and [SMS compliance](../sms-marketing/COMPLIANCE.md). Owner possession of a customer number does not establish permission for this messaging program.
 3. The author's example cadence waits three hours after completion, sends a named-business honest-review request with the actual review link, then allows one reminder after three days only for an evidenced eligible nonresponder.
 4. Cap this source flow at two messages per customer. The guide supplies no reset period for later jobs; resolve that scope before reenrolling someone. It also does not establish reliable individual review attribution, so do not equate no matching public review with proof of nonresponse.
 5. Log observed review count daily and retain actual request outcomes. Shared sender identity, consent, opt-out and suppression rules govern every send.

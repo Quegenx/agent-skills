@@ -47,7 +47,7 @@ Every loop has these nine parts; "a loop missing a stop condition, a self-check,
 | **Self-check** | The verification done *before* acting, so the loop doesn't act on noise, seasonality, or a tracking bug. |
 | **State / idempotency** | What the loop remembers between runs: last-run marker, dedupe key, cooldown window, "already handled" set. Without this, loops double-act, re-nag the same people, or re-alert the same thing ([LOOP-STATE.md](LOOP-STATE.md)). |
 | **Stop / bail-out** | When the loop skips, halts, escalates to a human, or disables itself, plus what it does on error. Heartbeat loops too: their stop is "manual disable + error-halt," never "n/a". |
-| **Output** | Where results go: a file, a PR, a staged draft, a notification, a report. |
+| **Output** | Where results go: a file, a staged draft, a notification, a report. |
 
 **Check cadence is not the action condition:** "a churn-signal loop might *check* daily but only *act* when an account crosses a risk threshold it hasn't been contacted about inside the cooldown window. Conflating the two produces loops that either miss the window or spam."
 
@@ -80,10 +80,9 @@ Every loop has these nine parts; "a loop missing a stop condition, a self-check,
 
 The loop body works in any agent; the scheduling depends on the environment [coreyhaines31/marketingskills, marketing-loops]. The source's Claude Code line ("`/loop` ... `ScheduleWakeup` ... and `CronCreate` (fixed cron schedule)", with time-of-day cron as the default for weekly reviews) leaves out the limits the docs state, so a weekly loop made with `CronCreate` fires about once and expires. Corrected from https://code.claude.com/docs/en/scheduled-tasks:
 
-- **Session tasks (`/loop`, `CronCreate`) are for in-session work:** a launch day, a monitor-until-threshold run. "Tasks only fire while Claude Code is running and idle"; "Recurring tasks automatically expire 7 days after creation"; there is "No catch-up for missed fires" (a missed time fires once when Claude is idle); recurring tasks run late by a jitter. A self-paced `/loop` picks its own delay and stops through `ScheduleWakeup`, and it isn't restored on resume.
-- **Weekly and monthly loops go to a durable scheduler:** Routines (cloud, `/schedule`) or Desktop scheduled tasks, which the docs name "for durable scheduling", or any agent plus cron (`0 9 * * 1` for Mondays at 9am) such as a GitHub Actions `schedule`.
-- **Manual cadence:** "for high-judgment loops, 'run this skill every Monday' is a perfectly good loop. The value is the repeatable *body*, not the automation."
-- **The kill switch for session tasks** is `CLAUDE_CODE_DISABLE_CRON=1` ([LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md#kill-switch)). Unattended runs, bookmarks and posting once are in [agent-harness SCHEDULED-AGENTS.md](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md).
+- **Use session tasks for in-session work and a durable scheduler for weekly or monthly recurrence.** The exact idle-firing, seven-day expiry, catch-up, jitter and resume rules are canonical in [Scheduling inside Claude Code](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md#scheduling-inside-claude-code). The old source recommendation omitted those limits. [https://code.claude.com/docs/en/scheduled-tasks]
+- **Manual cadence:** "for high-judgment loops, 'run this skill every Monday' is a perfectly good loop. The value is the repeatable *body*, not the automation." [coreyhaines31/marketingskills, marketing-loops]
+- **Document the kill switch** using the [scheduled-agent guardrails](../../ai-agents/agent-harness/SCHEDULED-AGENTS.md#guardrails). Marketing-specific action caps remain in [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md). [coreyhaines31/marketingskills, marketing-loops]
 
 ## Anti-patterns and banned words
 
@@ -119,5 +118,5 @@ From the source's nine evals [coreyhaines31/marketingskills, marketing-loops]:
 - A loop for positioning and big campaign ideas: identified as a when-not-to-loop case and redirected, with adjacent operational loops offered instead.
 - Failed payments: the dunning loop triggers on a failure or an expiring card, tracks the stage per account, separates involuntary failures from cancels and stops after the final retry.
 - A weekly A/B testing loop: the experiment backlog stays a thin wrapper with ICE ranking and dedupe, and [ab-testing](../ab-testing/SKILL.md) owns design and analysis.
-- An agent that runs our SEO: the SEO operator with its five settings, PRs for review, state in `.agents/seo/`, claim drift, the information-gain gate and drafts for anything outward.
+- An agent that runs our SEO: the SEO operator with its five settings, staged changes for review, state in `.agents/seo/`, claim drift, the information-gain gate and drafts for anything outward.
 - An agent that runs our outbound: the outbound operator with approved claims, caps, verification and suppression first, a reply that stops every channel, human approval for Tier 1 and positive replies, replies treated as data, and a sequence proven by hand before it is automated.

@@ -202,7 +202,7 @@ Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 - Annual plan default tests (cross-references to Revenue)
 
 ### Skills + tools
-[email-practices](../../backend/email-practices/SKILL.md), [churn-prevention](../churn-prevention/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), etc.
+[email-marketing](../email-marketing/SKILL.md), [churn-prevention](../churn-prevention/SKILL.md), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), [onboarding-and-upgrades](../onboarding-and-upgrades/SKILL.md), etc. Delivery and consent: [email-practices](../../backend/email-practices/SKILL.md).
 
 ## Section 7 - Referral
 
@@ -220,7 +220,7 @@ Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 - Gifting flows (for consumer / hardware)
 
 ### Skills + tools
-[referral-programs](../referral-programs/SKILL.md), [social-media](../social-media/SKILL.md), [email-practices](../../backend/email-practices/SKILL.md) (for ambassador lifecycle), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), etc.
+[referral-programs](../referral-programs/SKILL.md), [social-media](../social-media/SKILL.md), [email-marketing](../email-marketing/SKILL.md) (for ambassador lifecycle), [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md), etc.
 
 ## Section 8 - Revenue
 
@@ -260,7 +260,7 @@ These feed the budget math in Section 10. If any of these are unknown, flag in S
 
 **Length:** Tables, not prose. Should fit on one printed page if possible.
 
-**Structure:** Four 2 to 3-week sprints:
+**Structure:** Four sprints, with the week ranges below:
 
 ### Weeks 1 to 2 - Unblock
 Highest-confidence, lowest-cost changes. Removing things that are broken.

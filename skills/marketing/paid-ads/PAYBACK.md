@@ -56,7 +56,7 @@ The single-retention ratio gives both about 4.3 months and ignores margin; their
 3. Compare with runway and your chosen target. Don't scale on a revenue-only ratio or an annual retention multiplier.
 4. Re-run monthly; CAC drifts up as you scale.
 
-Breakeven CPL and CPC ([B2B-AND-ABM.md](B2B-AND-ABM.md#breakeven-cpl-and-cpc)) say the most you can pay per lead; payback says how long your cash is tied up. You need both. Blended CAC inputs come from [marketing-attribution](../marketing-attribution/SKILL.md).
+Breakeven CPL and CPC ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#breakeven-cpl-and-cpc)) say the most you can pay per lead; payback says how long your cash is tied up. You need both. Blended CAC inputs come from [marketing-attribution](../marketing-attribution/SKILL.md).
 
 ## Two adjacent opinions
 
