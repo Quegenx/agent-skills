@@ -20,7 +20,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | A free tool as the magnet: principles, the six tool types, ideation and validation, gating, SEO, build or buy, MVP scope, the scorecard, pitfalls | [FREE-TOOLS.md](FREE-TOOLS.md) |
 | Free tool detail: per-type examples and tips, concepts by industry, the sourced case library and the evidence rule for any number | [FREE-TOOL-TYPES-AND-CASES.md](FREE-TOOL-TYPES-AND-CASES.md) |
 
-A course, webinar series, podcast or newsletter archive you own can also ship as an installable agent skill; rights, extraction, the lesson and reference layers and release are in [skill-authoring CONTENT-TO-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/skill-authoring/CONTENT-TO-SKILL.md).
+A course, webinar series, podcast or newsletter archive you own can also ship as an installable agent skill; rights, extraction, the lesson and reference layers and release are in [skill-authoring CONTENT-TO-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/skill-authoring/CONTENT-TO-SKILL.md).
 
 ## The rules
 

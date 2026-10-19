@@ -6,7 +6,7 @@ A throwaway page inside the app that renders one real component in every state i
 
 ## What it is for
 
-[Jakub Krehel, state-machine] "It is a workbench, not a review. The page stays up while the user works on the visuals, one state on screen and every other a keypress away." In the source, stacking hostile scenarios on one page is its `break` skill (here the nearest is [browser-ui-qa ADVERSARIAL-UI-QA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/ADVERSARIAL-UI-QA.md) in e2e-testing), exploring alternative designs is [VARIANTS.md](VARIANTS.md), and reviewing finished work is [REVIEW.md](REVIEW.md). The source runs only when the user invokes it.
+[Jakub Krehel, state-machine] "It is a workbench, not a review. The page stays up while the user works on the visuals, one state on screen and every other a keypress away." In the source, stacking hostile scenarios on one page is its `break` skill (here the nearest is [browser-ui-qa ADVERSARIAL-UI-QA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/browser-ui-qa/ADVERSARIAL-UI-QA.md) in e2e-testing), exploring alternative designs is [VARIANTS.md](VARIANTS.md), and reviewing finished work is [REVIEW.md](REVIEW.md). The source runs only when the user invokes it.
 
 ## 1. Scope one component
 
@@ -46,7 +46,7 @@ A throwaway page inside the app that renders one real component in every state i
 1. Props, where the component takes its data as props.
 2. "The app's own data seam: a seeded query cache, a mock provider or the project's request mocks."
 
-- "A fixture threaded through props five levels down tests a path production never takes. Where the only way in is editing the component, say so and ask before adding a seam." The same line as e2e-testing's "**Mock only where a production boundary already isolates the external system.**" ([tester-army-e2e VERIFICATION-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/tester-army-e2e/VERIFICATION-SKILL.md)).
+- "A fixture threaded through props five levels down tests a path production never takes. Where the only way in is editing the component, say so and ask before adding a seam." The same line as e2e-testing's "**Mock only where a production boundary already isolates the external system.**" ([tester-army-e2e VERIFICATION-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/tester-army-e2e/VERIFICATION-SKILL.md)).
 - "Make the data look like the product. Real-shaped names, timestamps, amounts and the item counts users actually have. Three rows of 'Test item' make every state look fine." This skill says the same of marketing demos ([PATTERNS.md](PATTERNS.md#content-and-function), "Pristine demo"); here it covers development fixtures too.
 - "Loading and pending states hold still. Keep them pending until the switcher moves, rather than resolving after a timeout."
 

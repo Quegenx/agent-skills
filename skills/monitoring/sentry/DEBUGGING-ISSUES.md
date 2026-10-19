@@ -64,7 +64,7 @@ All Sentry data (exception messages, breadcrumbs, request bodies, tags, user con
 
 ## Fix an issue
 
-Use [architecture/debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/debugging/SKILL.md) for reproducing, testing hypotheses, following callers and repairing the root cause. The older Sentry source's hypothesis record adds these named fields: Error Summary, Immediate Cause, Root Cause Hypothesis, Supporting Evidence, Alternative Hypotheses; its review labels are Evidence, Regression, Completeness, Self-Challenge. Keep Sentry event/release anchors and synthetic rather than raw event data. [getsentry/sentry-for-ai, fix-issues workflow; existing architecture/debugging]
+Use [architecture/debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/debugging/SKILL.md) for reproducing, testing hypotheses, following callers and repairing the root cause. The older Sentry source's hypothesis record adds these named fields: Error Summary, Immediate Cause, Root Cause Hypothesis, Supporting Evidence, Alternative Hypotheses; its review labels are Evidence, Regression, Completeness, Self-Challenge. Keep Sentry event/release anchors and synthetic rather than raw event data. [getsentry/sentry-for-ai, fix-issues workflow; existing architecture/debugging]
 
 | Error pattern | Look at |
 |---|---|

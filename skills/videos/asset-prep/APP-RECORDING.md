@@ -11,7 +11,7 @@ A scripted, repeatable demo of one flow in your own web app (signup, onboarding,
 | Feature flow you'll re-record every release | Scripted in-app recording (this file) |
 | Narrated walkthrough where personality matters | Live screen recording (Loom, Screen Studio, Tella) |
 | Homepage hero or launch video with motion design | A code-built film over screen captures (make-video) |
-| Talking-head explainer with UI cutaways | AI avatar plus screen recording ([marketing-video AVATARS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/AVATARS.md)) |
+| Talking-head explainer with UI cutaways | AI avatar plus screen recording ([marketing-video AVATARS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/AVATARS.md)) |
 | Sales demo tailored to one prospect | Live recording, or an interactive demo tool |
 
 - **Use it when** the UI changes often and the video must be regenerated in minutes, runs must be pixel-identical (same data, same pacing, no mouse jitter), the demo must run against a local or staging build before launch, or several flows need the same branded look.

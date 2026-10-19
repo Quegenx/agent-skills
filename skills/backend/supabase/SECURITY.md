@@ -51,7 +51,7 @@ create policy "members read their tenant's projects" on projects
   using (tenant_id in (select tenant_id from memberships where user_id = (select auth.uid())));
 ```
 
-Test this as each role, using `set local role authenticated; set local request.jwt.claims = '{"sub": "..."}'`, or two real users through the client. Generic tenant-context handling stays in [secure-coding TENANCY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/TENANCY.md).
+Test this as each role, using `set local role authenticated; set local request.jwt.claims = '{"sub": "..."}'`, or two real users through the client. Generic tenant-context handling stays in [secure-coding TENANCY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/TENANCY.md).
 
 ## Views and functions that bypass RLS
 

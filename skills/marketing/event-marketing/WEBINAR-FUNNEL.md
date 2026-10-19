@@ -80,7 +80,7 @@ Registration, show-up, live-to-close and nurture, copied from coreyhaines31/mark
 
 - **Replay:** time-limited (72 hours to 1 week) for offers and launches; evergreen for education-led capture, where it becomes a lead magnet ([lead-magnets SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md)).
 - **Offer close:** if the offer had a deadline, run a real close sequence (deadline reminder, objection email, final hours). "All urgency claims must be true": the deadline ends when it says.
-- **Recycle:** transcript to a recap post ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), clips ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md)), quotable stats.
+- **Recycle:** transcript to a recap post ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), clips ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md)), quotable stats.
 
 ## Diagnostics
 

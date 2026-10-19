@@ -19,7 +19,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Parsing HTML: CSS, XPath, filters, text search, similar elements, adaptive selectors | [PARSING.md](PARSING.md) |
 | Crawling: robots.txt, concurrency, AutoThrottle, dedup, blocked responses, checkpoints, templates, export | [CRAWLING.md](CRAWLING.md) |
 | Running a scraping MCP server: current 0.5 tools, sequential browser sessions, saved state, network reads and HTTP auth | [MCP-SERVER.md](MCP-SERVER.md) |
-| Reconstructing an observed API from captured traffic | [reverse-engineering TRAFFIC-TO-OPENAPI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md) |
+| Reconstructing an observed API from captured traffic | [reverse-engineering TRAFFIC-TO-OPENAPI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/reverse-engineering/TRAFFIC-TO-OPENAPI.md) |
 
 ## The rules
 
@@ -33,8 +33,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 6. **Check the status code before processing the content.**
 7. **Never point insecure TLS or unrestricted redirects at internal addresses.** No skipped verification for localhost, private-network, link-local or cloud metadata endpoints; keep redirect following in a mode that rejects internal and private IPs.
 8. **A scraping MCP server on Streamable HTTP needs a token.** Anyone who can reach the port can call every tool, including fetching any URL from that machine.
-9. **Keep captured-API generation with its owner.** Its [privacy and source limitations](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md) govern generated clients and reports; collecting pages does not establish an API contract. [browserbase/skills, browser-to-api]
+9. **Keep captured-API generation with its owner.** Its [privacy and source limitations](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/reverse-engineering/TRAFFIC-TO-OPENAPI.md) govern generated clients and reports; collecting pages does not establish an API contract. [browserbase/skills, browser-to-api]
 
 ## Prove it
 
-For a fetch: the status code and a non-empty, narrowed body, with the tier used and why. For a crawl: the stats (`requests_count`, `blocked_requests_count`, `robots_disallowed_count`, `items_scraped`) and a resumed run that skips already-seen URLs. For API reconstruction, use the [owning topic's acceptance](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md#prove-it).
+For a fetch: the status code and a non-empty, narrowed body, with the tier used and why. For a crawl: the stats (`requests_count`, `blocked_requests_count`, `robots_disallowed_count`, `items_scraped`) and a resumed run that skips already-seen URLs. For API reconstruction, use the [owning topic's acceptance](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/reverse-engineering/TRAFFIC-TO-OPENAPI.md#prove-it).

@@ -46,7 +46,7 @@ Segment pages: one per core industry you actually serve, with real specifics; ne
 6. **A pinned comment** with the core answer in numbered steps and the key links.
 7. **Thumbnail and engagement** for the click; the text layer earns the citation.
 
-Post product demos publicly with keyword-first titles instead of behind a form. Making the video itself is [marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md).
+Post product demos publicly with keyword-first titles instead of behind a form. Making the video itself is [marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md).
 
 Podcasts work the same way: episodes get transcribed and show notes published. "Coach the guest to say the important things in liftable form: the company name next to the category ('we build X, the Y for Z'), and numbers spoken aloud." [coreyhaines31/marketingskills, public-relations] That transcripts get cited is the source's claim, not a measurement; event talks get the same advice [coreyhaines31/marketingskills, events] ([event-marketing SPEAKING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/event-marketing/SPEAKING.md), [public-relations PODCAST-PREP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/PODCAST-PREP.md)).
 

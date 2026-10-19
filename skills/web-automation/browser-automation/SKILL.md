@@ -18,8 +18,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Recording a run with a second CDP client, slicing it per page, and diagnosing failures | [RUN-TRACING.md](RUN-TRACING.md) |
 | Self-improving task loops, tuning an agent's prompt, oracles and judging results | [TASK-LOOPS.md](TASK-LOOPS.md) |
 | Turning a converged run into a deterministic Playwright or Stagehand script | [SCRIPT-CODEGEN.md](SCRIPT-CODEGEN.md) |
-| Reading how someone else's page or one effect was built: the stack, tokens, type, spacing, motion and breakpoint recipes, the layer stack behind an effect, `getAnimations()`, measured, derived and inferred claims, from a screenshot, without a browser | [pixel inspection](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/pixel-reverse-engineer/INSPECTION.md) |
-| Implementing an exact copy of an inspected live component, section or animation | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/pixel-reverse-engineer/SKILL.md) |
+| Reading how someone else's page or one effect was built: the stack, tokens, type, spacing, motion and breakpoint recipes, the layer stack behind an effect, `getAnimations()`, measured, derived and inferred claims, from a screenshot, without a browser | [pixel inspection](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/pixel-reverse-engineer/INSPECTION.md) |
+| Implementing an exact copy of an inspected live component, section or animation | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/pixel-reverse-engineer/SKILL.md) |
 | Deploying a browser task as a serverless function | [BROWSER-FUNCTIONS.md](BROWSER-FUNCTIONS.md) |
 | The determinism spectrum and migrating browser-use to Stagehand | [STAGEHAND-MIGRATION.md](STAGEHAND-MIGRATION.md) |
 

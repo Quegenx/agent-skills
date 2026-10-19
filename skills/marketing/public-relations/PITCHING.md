@@ -187,7 +187,7 @@ If useful for a follow-up, I'm around all day at this number: [phone].
 [your name]
 ```
 
-The app-growth guide's cold pitch for an app launch (subject "[App Name]: [your angle in 8 words]", four one-sentence lines, an offer of a promo code, press kit or call) is in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
+The app-growth guide's cold pitch for an app launch (subject "[App Name]: [your angle in 8 words]", four one-sentence lines, an offer of a promo code, press kit or call) is in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
 
 ## Subject lines
 
@@ -281,7 +281,7 @@ Track each pitch: date sent, subject line, journalist, outlet, response (open, r
 - Verify the outlet still exists and the journalist is still there before pitching.
 - **Not press:** Product Hunt, BetaList and Indie Hackers are directories ([product-launch PRODUCT-HUNT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/product-launch/PRODUCT-HUNT.md), [directory submissions](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/DIRECTORY-SUBMISSIONS.md)); press release wires are "overpriced for early-stage; journalists ignore them. Skip until you have IR / SEC requirements"; paid "As featured in" badge mills are "Worthless and damaging"; guest-post link networks are link spam under Google's spam policies (https://developers.google.com/search/docs/essentials/spam-policies; links in [seo SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md)).
 
-The app-growth guide's outlet tiers for apps are in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
+The app-growth guide's outlet tiers for apps are in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/LAUNCH-AND-MARKETING.md#press-and-pr) [eronred].
 
 ## Prove it
 

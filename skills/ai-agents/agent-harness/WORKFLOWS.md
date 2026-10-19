@@ -44,7 +44,7 @@ Finish with one table: service, affected yes or no, and the evidence.
 
 - **Ask an audit for a measurement or a task list, not a hunt or a score:** "Ask an agent to find index bloat and it will find index bloat. Ask it what fraction of the suspects are in the index and you get a number that can come back as zero." And: "Ask for a score and you get a number to argue about; ask for a task list and you get work" ([openseo.so](https://openseo.so/library/site-audit/index-bloat), [technical SEO audit checklist](https://openseo.so/library/site-audit/technical-seo-audit-checklist)).
 
-- **A chain of existing skills run one after another in one session** (review, simplify, commit, open the PR, babysit) is not a fan-out: it is a manual-only skill with a checklist and stop conditions, in [skill-authoring DISTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/skill-authoring/DISTRIBUTION.md#composing-skills).
+- **A chain of existing skills run one after another in one session** (review, simplify, commit, open the PR, babysit) is not a fan-out: it is a manual-only skill with a checklist and stop conditions, in [skill-authoring DISTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/skill-authoring/DISTRIBUTION.md#composing-skills).
 
 ## Fan-out contract
 
@@ -70,7 +70,7 @@ Vercel's `vercel-optimize` audit wires its subagents through deterministic scrip
 - **Independent review:** give the critic the artifact, acceptance and anchors; omit the author's identity, persuasive rationale and peer verdicts when they would bias the check. A separate context alone does not make a reviewer independent if its prompt supplies the answer to endorse.
 - **Choose the intervention:** a rubber duck surfaces assumptions in a stuck plan; an interview tests a claim; a red team attacks failure paths; a blind review judges the artifact; independent consensus compares attempts. Agreement is not proof, and another layer must earn its coordination cost. [bgauryy/octocode, octocode-subagent/references/techniques.md]
 
-Compact localization returns use [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-research/SOURCE-RESEARCH.md#a-localization-handback); a selected implementation plan resumes through [engineering-planning EXECUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/EXECUTION.md), using this packet mechanism rather than defining another one.
+Compact localization returns use [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-research/SOURCE-RESEARCH.md#a-localization-handback); a selected implementation plan resumes through [engineering-planning EXECUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/engineering-planning/EXECUTION.md), using this packet mechanism rather than defining another one.
 
 ## Author and reviewer loops
 
@@ -83,7 +83,7 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 - **Track rounds-to-pass alongside recall.** With these changes, passing after one round rose from 65% to 78%, needing five or more rounds fell from 8.9% to 1.5%, and the mean reviews to pass fell from 2.08 to 1.32.
 - **Noise costs more when the author is an agent:** a person waves off a nit in seconds; an agent fixes it, which is another commit and another round. Several agents look for bugs at once, a separate group votes on each finding, and it is posted only if enough agree it is real; findings only about style, diagnostics or cleanup are dropped. A/B test such filters on your own work before keeping them.
 - **A person's change request goes back to the author's session:** when the human reviewer asks for changes, "the agent resumes its session and addresses them".
-- **Tag severity and origin separately:** use the shared [P0 to P3 scale](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output), and mark a pre-existing issue separately so a bug the change didn't introduce doesn't look like the author's fault. The old labels mixed Important/Nit severity with Pre-existing origin. [repository owner, severity convention]
+- **Tag severity and origin separately:** use the shared [P0 to P3 scale](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md#tags-and-output), and mark a pre-existing issue separately so a bug the change didn't introduce doesn't look like the author's fault. The old labels mixed Important/Nit severity with Pre-existing origin. [repository owner, severity convention]
 
 ## Which model each agent uses
 
@@ -101,13 +101,9 @@ An agent author and an agent reviewer can keep each other busy indefinitely: one
 - **Repeatable workflows** (triage, research, verification) run on an interval with a hard completion requirement ([CHECKS.md](CHECKS.md), Loop breakers and goal loops).
 - **A detailed prompt that names the techniques** (fan out, verify adversarially, tournament) gives the best results.
 
-## In Claude Code
+## Coding-agent host workflows
 
-- **A dynamic workflow** is a JavaScript file: `agent(prompt, opts)` spawns one subagent (`prompt` required; `schema` returns validated JSON, `model` picks opus, sonnet or haiku, `isolation` is worktree or remote, `agentType` selects a subagent), `parallel()` fans out and waits for all, `pipeline()` streams each item through every stage, plus standard JavaScript (JSON, Math, Array). The trigger word `ultracode` makes Claude Code create one. An interrupted workflow picks up where it left off when the session resumes.
-- **Static workflows** (the Agent SDK, `claude -p`) must handle every edge case, so they stay generic; a dynamic one is written for the task in front of it (a provider migration that reads the billing code, checks each feature against the new provider's docs, prices it at real volume and runs a devil's advocate).
-- **Saving and sharing:** press `s` in the workflow menu to save; check workflows into `~/.claude/workflows` or put the `.workflow.js` files in a skill folder, referenced from its SKILL.md, and tell Claude to treat them as a template, not a script to run verbatim. For scale: a review-changes run took 14 agents, 482k tokens and 6m 12s; a deep-research run 22 agents, 1.1M tokens and 11m 3s.
-- **An established harness as the agent:** AI SDK 7's experimental `HarnessAgent` runs a configured harness such as Claude Code, Codex or Pi with a sandbox, custom instructions, skills and tools; its sessions park and resume, a single turn can be interrupted and resumed, and it implements the SDK's `Agent` interface, so `useChat()` works without extra wiring.
-- **Subagent models:** `model: haiku` or `model: sonnet` in a subagent's definition; `CLAUDE_CODE_SUBAGENT_MODEL` sets every subagent; a definition's model overrides the variable; with neither, a subagent runs on the main model.
+For Claude Code's dynamic workflow API, saved templates and subagent model settings, read [coding-agent-harness CLAUDE-WORKFLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/CLAUDE-WORKFLOWS.md#in-claude-code). The shared patterns, delegation packets and review contracts above remain the owner for both product and coding-agent workflows. [existing agent-harness, WORKFLOWS.md]
 
 ## Prove it
 

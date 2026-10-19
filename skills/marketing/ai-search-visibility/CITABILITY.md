@@ -34,7 +34,7 @@ The source also suggests "aim for 100-167 words" per paragraph; nothing official
 Where the rubric disagrees with official docs:
 - **FAQPage and HowTo points.** aeo.js's hints say "Google AI Overviews heavily rely on structured data" and "Add FAQPage or HowTo structured data to boost AI citation rate". Google: "There are no additional requirements to appear in AI Overviews or AI Mode", "no special schema.org structured data that you need to add" [https://developers.google.com/search/docs/appearance/ai-features]; the FAQ rich result is not shown from 2026-05-07 and HowTo from 2023-09-14 [https://developers.google.com/search/updates]. Those points measure nothing Google uses.
 - **llms.txt points.** Lighthouse marks a missing llms.txt N/A, not a failure ([LLMS-TXT.md](LLMS-TXT.md#lighthouses-check)).
-- **Meta lengths.** Title 10 to 70 and description 50 to 200 are aeo.js's numbers. Google: "There's no limit on how long a meta description can be" [https://developers.google.com/search/docs/appearance/snippet]. The repo's docs rule quotes c15t's house limits (60 and 160, "no standard sets them") in [developer-docs](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md#frontmatter-for-search-and-agents). Both are house numbers.
+- **Meta lengths.** Title 10 to 70 and description 50 to 200 are aeo.js's numbers. Google: "There's no limit on how long a meta description can be" [https://developers.google.com/search/docs/appearance/snippet]. The repo's docs rule quotes c15t's house limits (60 and 160, "no standard sets them") in [developer-docs](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/developer-docs/WRITING-AND-PUBLISHING.md#frontmatter-for-search-and-agents). Both are house numbers.
 
 ## Running it
 
@@ -49,7 +49,7 @@ SCORE=$(npx aeo.js check --json | jq '.audit.score')
 ```
 
 - For a deployed preview, the official remote form is `npx aeo.js check https://mysite.com --json`, with the actual target URL. The old Prove it line incorrectly described the local no-URL block as checking a deployed preview. [aeo.js CLI docs](https://github.com/rubenmarcus/aeo.js/blob/main/website/src/content/docs/features/cli.mdx)
-- Its crawler: 12 s timeout, homepage plus 10 inner pages, at most 20 sitemap URLs, concurrency 5, UA `aeo.js (+https://aeojs.org)`, 1 MB body cap, manual redirects (at most 5, each re-checked), and the first 5 same-origin links when there is no sitemap. Its private-URL guard checks hostname strings only and never resolves DNS; the repo's SSRF rule resolves and checks the address ([secure-coding CATALOG.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/CATALOG.md)).
+- Its crawler: 12 s timeout, homepage plus 10 inner pages, at most 20 sitemap URLs, concurrency 5, UA `aeo.js (+https://aeojs.org)`, 1 MB body cap, manual redirects (at most 5, each re-checked), and the first 5 same-origin links when there is no sitemap. Its private-URL guard checks hostname strings only and never resolves DNS; the repo's SSRF rule resolves and checks the address ([secure-coding CATALOG.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/CATALOG.md)).
 
 A score is a worklist, not a result to report: gate on the checks you agree with, and drop the ones above that measure nothing a platform uses.
 

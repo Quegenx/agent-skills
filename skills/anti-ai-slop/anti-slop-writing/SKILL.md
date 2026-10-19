@@ -15,7 +15,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Swap a pompous word or phrase for the plain one (prose and marketing copy, not interface verbs) | [PLAIN-WORDS.md](PLAIN-WORDS.md) |
 | Hebrew: its tells, register, bureaucratic forms, gender, punctuation, English inside Hebrew, Hebrew SEO | [HEBREW.md](HEBREW.md) |
 | The final pass before returning any edit or draft | [CHECK.md](CHECK.md) |
-| Write or maintain developer documentation, snippets, demos, navigation, redirects and generated output | [developer-docs](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/SKILL.md) |
+| Write or maintain developer documentation, snippets, demos, navigation, redirects and generated output | [developer-docs](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/developer-docs/SKILL.md) |
 
 ## Two jobs
 

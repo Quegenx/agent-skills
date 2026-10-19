@@ -1,6 +1,6 @@
 # Optimizing and securing SVG
 
-Files from vector editors carry editor metadata, comments, hidden elements and default or suboptimal values that can be removed without changing rendering; SVGO does that, but a few of its plugins change behavior (scaling, accessible names, ids, standalone use), so know which ones run, including through SVGR. On the security side, an SVG is a document that can carry scripts: they never run when it is used as an image (`<img>`, CSS backgrounds, SVG `<image>`), but they do run inline, when the file is opened directly, or when embedded with `<object>`, `<iframe>` or `<embed>`. Treat any SVG not from a trusted source as active content: sanitize it and serve it with headers that stop scripts. General upload rules (type checks, storage, file names) are in [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
+Files from vector editors carry editor metadata, comments, hidden elements and default or suboptimal values that can be removed without changing rendering; SVGO does that, but a few of its plugins change behavior (scaling, accessible names, ids, standalone use), so know which ones run, including through SVGR. On the security side, an SVG is a document that can carry scripts: they never run when it is used as an image (`<img>`, CSS backgrounds, SVG `<image>`), but they do run inline, when the file is opened directly, or when embedded with `<object>`, `<iframe>` or `<embed>`. Treat any SVG not from a trusted source as active content: sanitize it and serve it with headers that stop scripts. General upload rules (type checks, storage, file names) are in [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/SKILL.md).
 
 **Contents:** [Optimizing with SVGO](#optimizing-with-svgo) · [Risky plugins](#risky-plugins) · [SVGR's defaults](#svgrs-defaults) · [Rendering performance](#rendering-performance) · [Where scripts hide in SVG](#where-scripts-hide-in-svg) · [Content-Type and serving](#content-type-and-serving) · [User-uploaded SVG](#user-uploaded-svg) · [Sanitizing with DOMPurify](#sanitizing-with-dompurify) · [Prove it](#prove-it)
 
@@ -128,7 +128,7 @@ module.exports = {
 | `contentDispositionType` | v13.2.0 | Default `attachment` since v15.0.0: visiting the image URL directly downloads it |
 
 - **CSP is not a substitute for sanitizing.** Sanitize input and set a CSP, for defense in depth against XSS.
-- **Store and name uploads safely:** keep them on a different server or outside the webroot, generate the file name, and for images decode and re-encode to an allowed format. More in [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md).
+- **Store and name uploads safely:** keep them on a different server or outside the webroot, generate the file name, and for images decode and re-encode to an allowed format. More in [secure-coding SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/SKILL.md).
 - **[secondary] A header set for serving original SVGs as download-only:**
 
 ```

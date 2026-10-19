@@ -80,7 +80,7 @@ await client.beta.vaults.credentials.create(vaultId, {
 ```
 
 - **Outward actions are drafts unless someone authorized more.** Reading, analyzing, scoring, drafting and staging are safe unattended; spending, shifting budget, sending, publishing, deleting or suppressing records and changing live settings wait for a person, unless the user "explicitly authorized it *and* it's bounded by caps + an allowlist" [coreyhaines31/marketingskills, marketing-loops]. The marketing sources say the same per channel: "Create posts as drafts first - the user approves before anything is scheduled. Never auto-publish without an explicit go-ahead" [coreyhaines31/marketingskills, social]; "no messages, connects, follows, comments, form submissions, or CRM records unless the user separately authorizes that action" [coreyhaines31/marketingskills, prospecting]; "**Agent may:** read, compare, flag, draft, recommend" / "**Agent may not (without approval):** change budgets or bids, pause or launch, edit tracking, publish ads" [coreyhaines31/marketingskills, product-marketing]. When a run can't confirm consent, permission or a platform's terms, its stop condition is don't act.
-- **A kill switch for every schedule, and one for all of them:** disable the schedule or a global flag the run bodies check, written down where the schedules live [coreyhaines31/marketingskills, marketing-loops]. In Claude Code, `CLAUDE_CODE_DISABLE_CRON=1` stops every session-scheduled task and `CronDelete <id>` removes one (https://code.claude.com/docs/en/scheduled-tasks).
+- **A kill switch for every schedule, and one for all of them:** disable the schedule or a global flag the run bodies check, written down where the schedules live [coreyhaines31/marketingskills, marketing-loops]. For the coding-host kill switch, read [coding-agent-harness SESSION-SCHEDULING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/SESSION-SCHEDULING.md#stop-a-session-schedule).
 - **Set the spending cap from real runs.** Start at three to five times the cost of a normal run, then tighten as real numbers come in. Every run gets the full amount; a run that hits the cap pauses instead of failing, so a cap set too low looks like an output that went quiet.
 
 ## Example: a scheduled deployment
@@ -123,17 +123,9 @@ budget:
 
 A run that reaches the budget pauses with a `budget_reached` stop reason. Start a run by hand to test without waiting for the schedule (`ant beta:deployments run --deployment-id <id>`). The preferences store is created empty: seed the preferences file before the first run (the reference implementation's `scripts/seed-preferences.sh`). The reference implementation is `anthropics/claude-quickstarts/managed-agents/daily-brief`.
 
-## Scheduling inside Claude Code
+## Coding-agent session schedules
 
-Claude Code's own scheduler (`/loop`, `CronCreate`) is session-scoped, so it suits in-session work and not a weekly job (https://code.claude.com/docs/en/scheduled-tasks):
-
-- "Tasks only fire while Claude Code is running and idle. Closing the terminal or letting the session exit stops them firing."
-- "Recurring tasks automatically expire 7 days after creation. The task fires one final time, then deletes itself." For longer, the docs name "Routines or Desktop scheduled tasks for durable scheduling".
-- "No catch-up for missed fires": a time that passes while Claude is busy fires once when it is idle.
-- Recurring tasks run late by a jitter (except every-five-minute tasks); one-shot tasks on the hour or half hour run up to 90 seconds early, so schedule them off those minutes.
-- On `claude --resume` or `--continue`, `CronCreate` tasks come back except expired recurring and past one-shot ones; a self-paced `/loop` isn't restored.
-
-A source that schedules weekly marketing loops with `CronCreate` [coreyhaines31/marketingskills, marketing-loops] gets about one run before the task expires; the corrected guidance is in [marketing-loops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md#scheduling-a-loop). Deployed schedules (cron with a time zone, as above) and durable steps are in the `background-jobs` skill.
+For Claude Code's session scheduler and its expiry, catch-up and resume limits, read [coding-agent-harness SESSION-SCHEDULING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/SESSION-SCHEDULING.md#scheduling-inside-claude-code). Deployed schedules and durable agent steps keep the contracts above. [existing agent-harness, SCHEDULED-AGENTS.md]
 
 ## Prove it
 

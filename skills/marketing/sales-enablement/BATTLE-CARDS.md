@@ -29,7 +29,7 @@ Competitor facts are dated and sourced; write "not listed on their site" rather 
 - Tag every competitor fact with its source and date, so a stale line can be found and fixed.
 - One page. If reps can't find the answer mid-call, cut until they can.
 
-Pull competitor facts from competitor dossiers when they exist. The repo's research pipeline builds sourced battle cards (landmines, objection handlers, talk tracks, each with an evidence URL, after a fact-check of the feature matrix): [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#battle-cards).
+Pull competitor facts from competitor dossiers when they exist. The repo's research pipeline builds sourced battle cards (landmines, objection handlers, talk tracks, each with an evidence URL, after a fact-check of the feature matrix): [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#battle-cards).
 
 ## Prove it
 

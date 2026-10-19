@@ -21,8 +21,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Open every state a screen can reach on one page while doing visual work | [STATE-PAGE.md](STATE-PAGE.md) |
 | Build several named directions behind a picker and keep the chosen one | [VARIANTS.md](VARIANTS.md) |
 | Build a screen from a design file so it matches | [FROM-DESIGN.md](FROM-DESIGN.md) |
-| Reconstruct a live component and its animations from actual DOM, CSS, assets and behavior | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/pixel-reverse-engineer/SKILL.md) |
-| Compute a contrast ratio | [color-system contrast.py](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/scripts/contrast.py) |
+| Reconstruct a live component and its animations from actual DOM, CSS, assets and behavior | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/pixel-reverse-engineer/SKILL.md) |
+| Compute a contrast ratio | [color-system scripts/contrast.py](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/scripts/contrast.py) |
 
 ## 1. Direction first
 
@@ -120,7 +120,7 @@ Deliver with a short report, each line backed by evidence:
 
 The report goes to the requester, never into the page. Vercel's design.md goes further and keeps the review itself private: "Keep this work internal. Deliver the requested implementation, not a score, process diary, comparison log, or self-critique", and "do not expose an evaluation matrix or critique report unless the user asks for one." Both are in use: this skill reports by default, Vercel reports on request.
 
-When the job is a review rather than a build, rank the findings by user impact, P0 to P3, with the fields in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output) in code-review. A review across every discipline is [REVIEW.md](REVIEW.md).
+When the job is a review rather than a build, rank the findings by user impact, P0 to P3, with the fields in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md#tags-and-output) in code-review. A review across every discipline is [REVIEW.md](REVIEW.md).
 
 **One scale.** Jakub Krehel's review skills (better-ui, better-layout, better-typography, better-writing, better-interface, make-interfaces-feel-better) grade `HIGH`, `MEDIUM` and `LOW`; this skill maps them onto P0 to P3, once, here: `HIGH` is P1, or P0 where it blocks the primary task or can cause unrecoverable harm; `MEDIUM` is P2; `LOW` is P3. Their `Block` verdict means a P0 or P1 remains.
 

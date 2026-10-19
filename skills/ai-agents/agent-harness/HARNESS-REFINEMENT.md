@@ -1,6 +1,6 @@
 # Refining a harness from execution evidence
 
-Use recorded executions to improve the instructions, tools and orchestration around a model. This file paraphrases [google-research/harness2, README.md, docs/EXPERIMENTS.md and harness2/core/]. It covers the refinement method, with model weights held fixed. [agent-evals FIX-LOOP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/FIX-LOOP.md) owns measured optimization against an eval; [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) owns investigating an existing session.
+Use recorded executions to improve the instructions, tools and orchestration around a model. This file paraphrases [google-research/harness2, README.md, docs/EXPERIMENTS.md and harness2/core/]. It covers the refinement method, with model weights held fixed. [agent-evals FIX-LOOP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/FIX-LOOP.md) owns measured optimization against an eval; [coding-agent-harness SESSION-DIAGNOSIS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/SESSION-DIAGNOSIS.md) owns investigating an existing session.
 
 ## Fix the editable surface
 

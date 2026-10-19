@@ -62,7 +62,7 @@ Copy itself is in [anti-slop-copy SKILL.md](https://github.com/Quegenx/agent-ski
 
 - **One file per send date and placement,** for example `sponsorships/{partner}/2026-04-17-{publication}-primary.md`. Never combine two send dates in one file. Each placement needs its own link, its own checks, and its own record of who approved it.
 - **Record the angle in that file.** That's where the read-past-results step gets it later.
-- **One tracked link per placement,** even for two sends in the same week. A short link makes the copy cleaner and lets you change the destination after the issue ships. Build the UTMs with one newsletter pattern ([google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md)): the campaign rolls up the month, and the content value names the placement and date.
+- **One tracked link per placement,** even for two sends in the same week. A short link makes the copy cleaner and lets you change the destination after the issue ships. Build the UTMs with one newsletter pattern ([google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md)): the campaign rolls up the month, and the content value names the placement and date.
 - **Add a promo code** when the newsletter allows it. It catches readers who type the URL instead of clicking.
 
 ## Reporting

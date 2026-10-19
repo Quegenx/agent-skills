@@ -151,7 +151,7 @@ These ideas primarily serve top-of-funnel awareness, traffic, and lead generatio
 | 91 | In-App Upsells | Product-Led | Q2+ (cross-cuts Revenue) |
 | 95 | Concierge Setup | Product-Led | Q3+ (high-value users) |
 | 96 | Onboarding Optimization | Product-Led | Now |
-| 124 | App Store Optimization | Platforms | Now (App Store products). The source files ASO here while its plan template puts it under Acquisition (Move 2), and [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md) treats the listing as acquisition; assign by the move's primary impact ([AARRR.md](AARRR.md#how-to-assign-a-move-to-a-stage)) |
+| 124 | App Store Optimization | Platforms | Now (App Store products). The source files ASO here while its plan template puts it under Acquisition (Move 2), and [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/SKILL.md) treats the listing as acquisition; assign by the move's primary impact ([AARRR.md](AARRR.md#how-to-assign-a-move-to-a-stage)) |
 
 ### Retention (8 entries)
 

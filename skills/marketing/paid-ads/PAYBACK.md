@@ -1,6 +1,6 @@
 # Payback: can this channel pay for itself
 
-The gate before every channel decision. Advertising has to be deterministic: $1 in, more than $1 out, on a clock you can name, and payback period sets the clock. From [coreyhaines31/marketingskills, ads, payback-period.md] (MIT), which cites Corey Haines, *Founding Marketing*, ch. 7 ("Spend budget where customers spend their time"); its payback targets and churn finding are practitioner. App subscription economics (store fees, trials, MMP data) are in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md); revenue metric definitions in [stripe](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/SKILL.md); plan and price structure in [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
+The gate before every channel decision. Advertising has to be deterministic: $1 in, more than $1 out, on a clock you can name, and payback period sets the clock. From [coreyhaines31/marketingskills, ads, payback-period.md] (MIT), which cites Corey Haines, *Founding Marketing*, ch. 7 ("Spend budget where customers spend their time"); its payback targets and churn finding are practitioner. App subscription economics (store fees, trials, MMP data) are in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/BUDGET-AND-ROAS.md); revenue metric definitions in [stripe](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/stripe/SKILL.md); plan and price structure in [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
 
 ## Why LTV:CAC misleads
 
@@ -30,7 +30,7 @@ Same CAC, $300, very different payback (revenue-only, before serving costs and c
 
 At 20% margin the $99 plan takes 300 / (99 × 0.20) = **15.2 months** before churn, despite its 3.0-month revenue-only ratio. Compute per plan or per cohort, against measured margin, retention and cash timing.
 
-**Repo comparison.** app-growth's [appeeky] formulas are revenue-only: "Payback days | `Target CPA / (MRR / active_subscriptions / 30)`" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md#subscription-snapshot)) and TikTok's "payback CPA / (LTV / expected lifetime months) under 3 months" ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#audits)). Read them as the revenue-only ratio above; for a spend decision add gross margin (and, for apps, the store fee) and the cohort path below.
+**Repo comparison.** app-growth's [appeeky] formulas are revenue-only: "Payback days | `Target CPA / (MRR / active_subscriptions / 30)`" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/BUDGET-AND-ROAS.md#subscription-snapshot)) and TikTok's "payback CPA / (LTV / expected lifetime months) under 3 months" ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/TIKTOK-ADS.md#audits)). Read them as the revenue-only ratio above; for a spend decision add gross margin (and, for apps, the store fee) and the cohort path below.
 
 ## Cohort recovery
 

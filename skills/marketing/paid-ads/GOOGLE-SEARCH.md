@@ -1,6 +1,6 @@
 # Google Search, Shopping and Performance Max
 
-Intent-first operating rules for Google Ads: where to spend first, how to structure the account, when to loosen match types, how to keep smart bidding pointed at revenue instead of junk form-fills, and the output spec for responsive search ads. From [coreyhaines31/marketingskills, ads, google-search-playbook.md and rsa-output-spec.md] (MIT; the playbook credits Ivan Falco's ads-skills, and its benchmarks are practitioner starting points). Google's own rules are quoted with their URLs and win where they differ. App campaigns: [app-growth GOOGLE-APP-CAMPAIGNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/GOOGLE-APP-CAMPAIGNS.md).
+Intent-first operating rules for Google Ads: where to spend first, how to structure the account, when to loosen match types, how to keep smart bidding pointed at revenue instead of junk form-fills, and the output spec for responsive search ads. From [coreyhaines31/marketingskills, ads, google-search-playbook.md and rsa-output-spec.md] (MIT; the playbook credits Ivan Falco's ads-skills, and its benchmarks are practitioner starting points). Google's own rules are quoted with their URLs and win where they differ. App campaigns: [app-growth GOOGLE-APP-CAMPAIGNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/GOOGLE-APP-CAMPAIGNS.md).
 
 **Contents:** [The intent ladder](#the-intent-ladder) · [Brand bidding and the pause test](#brand-bidding-and-the-pause-test) · [Capture before you create](#capture-before-you-create) · [Account structure](#account-structure) · [Keywords and match types](#keywords-and-match-types) · [Negative keywords](#negative-keywords) · [The weekly search-terms pass](#the-weekly-search-terms-pass) · [Bidding by conversion volume](#bidding-by-conversion-volume) · [Offline conversions](#offline-conversions) · [Quality Score and landing pages](#quality-score-and-landing-pages) · [Performance Max](#performance-max) · [Benchmarks and the weekly scorecard](#benchmarks-and-the-weekly-scorecard) · [RSA limits](#rsa-limits) · [RSA output spec](#rsa-output-spec) · [Prove it](#prove-it)
 
@@ -43,7 +43,7 @@ Source keywords from how buyers describe the problem (sales calls, your search t
 
 ## Negative keywords
 
-**Mechanics:** a negative broad needs ALL its words present, in any order (negative broad "free trial" does not block "free" alone); negative phrase blocks the words in order; negative exact blocks only that query. Apple Ads negatives work the same way ([app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md#the-rules)). Most accidental over- and under-blocking traces to this.
+**Mechanics:** a negative broad needs ALL its words present, in any order (negative broad "free trial" does not block "free" alone); negative phrase blocks the words in order; negative exact blocks only that query. Apple Ads negatives work the same way ([app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/SKILL.md#the-rules)). Most accidental over- and under-blocking traces to this.
 
 **Starter lists at build time** [coreyhaines31/marketingskills, ads]:
 

@@ -4,7 +4,7 @@ How to shape a component's API so it grows without a pile of flags: pass props f
 
 **Contents:** [Props, then children, then context](#props-then-children-then-context) · [Explicit variants, not boolean props](#explicit-variants-not-boolean-props) · [Compound components](#compound-components) · [One context interface: state, actions, meta](#one-context-interface-state-actions-meta) · [The provider is the only place that knows the state](#the-provider-is-the-only-place-that-knows-the-state) · [Lift state into the provider](#lift-state-into-the-provider) · [Children over render props](#children-over-render-props) · [Prove it](#prove-it)
 
-Severity: the source ranks these rules CRITICAL, HIGH and MEDIUM, and its own files disagree (its SKILL.md calls component architecture HIGH, the rule file CRITICAL). A review finding from them is written on the P0 to P3 scale of [code-review's REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md): CRITICAL and HIGH as P1, MEDIUM as P2, and P0 only for a finding that blocks the primary task.
+Severity: the source ranks these rules CRITICAL, HIGH and MEDIUM, and its own files disagree (its SKILL.md calls component architecture HIGH, the rule file CRITICAL). A review finding from them is written on the P0 to P3 scale of [code-review's REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md): CRITICAL and HIGH as P1, MEDIUM as P2, and P0 only for a finding that blocks the primary task.
 
 The examples mix React Native and web (`TextInput`, `onChangeText` and `onPress` inside a `<form>`), as the source does: read them as the pattern, not as code that runs on either platform.
 
@@ -128,7 +128,7 @@ function ThreadComposer({ channelId }: { channelId: string }) {
 }
 ```
 
-"Each variant is explicit about: What provider/state it uses; What UI elements it includes; What actions are available. No boolean prop combinations to reason about. No impossible states." The same rule outside React (a flag added to a shared helper so one caller behaves differently) is in [refactoring's DESIGN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DESIGN.md).
+"Each variant is explicit about: What provider/state it uses; What UI elements it includes; What actions are available. No boolean prop combinations to reason about. No impossible states." The same rule outside React (a flag added to a shared helper so one caller behaves differently) is in [refactoring's DESIGN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/refactoring/DESIGN.md).
 
 app-ui does it differently: "A screen that needs a new look gets a variant on the component" ([app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md)), a `variant` prop such as `variant?: "legend" | "label"` in field.tsx, and booleans that switch what renders, such as `showCloseButton?: boolean` in [sheet.tsx](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/components/ui/feedback/dialog/sheet.tsx) and `showPrevious?: boolean` in [date-range-month.tsx](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/reference/components/ui/forms/date-range/date-range-month.tsx). They overlap where app-ui's variant is a look and Vercel's target is a behavior mode (thread, edit, forward); on booleans that switch what renders, the two disagree, and app-ui's components keep theirs.
 

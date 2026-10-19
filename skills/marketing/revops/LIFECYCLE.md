@@ -154,7 +154,7 @@ Fields to capture on every outbound contact, so meetings can be attributed and s
 - Reply type (reply handling is in [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md))
 - Last verification date and result
 
-These are the record that prospect research feeds ([prospecting SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md), [web-research EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVENTS.md)).
+These are the record that prospect research feeds ([prospecting SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/prospecting/SKILL.md), [web-research EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVENTS.md)).
 
 **Handoff SLA:** positive replies get a human response within minutes during business hours, with a meeting proposal in that first response. Meetings booked by an SDR transfer to the AE with the account brief and the full thread attached.
 

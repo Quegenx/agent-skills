@@ -105,7 +105,7 @@ Rate each factor 1-5:
 
 - **Over-engineering:** "Shipping a bloated tool before validating demand. Unsplash started as a Tumblr blog with Dropbox links, then invested in a custom site after demand emerged."
 - **Poor product integration:** "A tool with no natural path to your product earns traffic but not pipeline"; an analyzer can demonstrate the problem the paid product solves.
-- **Maintenance and security debt:** "Tools that scrape, call APIs, or take user input rot and become attack surfaces. Budget for upkeep before you build." User input, URL fetching (an analyzer that fetches a site is an SSRF surface) and uploads are in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md); rate limits are in [api-design](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/SKILL.md).
+- **Maintenance and security debt:** "Tools that scrape, call APIs, or take user input rot and become attack surfaces. Budget for upkeep before you build." User input, URL fetching (an analyzer that fetches a site is an SSRF surface) and uploads are in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/SKILL.md); rate limits are in [api-design](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/SKILL.md).
 - **Vanity metrics:** "Track leads, qualification rate, and trial/signup conversion - measured in your own funnel."
 
 A tool that gets no traffic after months (the source's eval: a speed test, six months on) is diagnosed through its SEO, distribution, the competition and its unique value before any rebuild [coreyhaines31/marketingskills, free-tools evals].

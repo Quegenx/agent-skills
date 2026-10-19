@@ -1,6 +1,6 @@
 # Conversion tracking on a website
 
-How to install each ad platform's tag on a website, define conversion events, deduplicate browser and server events, and validate it all before spending. From [coreyhaines31/marketingskills, ads, conversion-tracking.md] (MIT); stale lines are corrected where marked. App SDKs, the Conversions API for app events and SKAN are in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#measurement-sdk-conversions-api-mmp) and [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ANALYTICS-AND-ATTRIBUTION.md). Consent before any tag fires (Google's consent mode included) is in [cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md); GA4 itself in [google-analytics](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md).
+How to install each ad platform's tag on a website, define conversion events, deduplicate browser and server events, and validate it all before spending. From [coreyhaines31/marketingskills, ads, conversion-tracking.md] (MIT); stale lines are corrected where marked. App SDKs, the Conversions API for app events and SKAN are in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md#measurement-sdk-conversions-api-mmp) and [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ANALYTICS-AND-ATTRIBUTION.md). Consent before any tag fires (Google's consent mode included) is in [cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md); GA4 itself in [google-analytics](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md).
 
 **Contents:** [Why first](#why-first) · [The tags](#the-tags) · [Google Ads](#google-ads) · [Meta](#meta) · [LinkedIn](#linkedin) · [TikTok](#tiktok) · [Validation](#validation) · [Common mistakes](#common-mistakes) · [When to add server-side](#when-to-add-server-side) · [Prove it](#prove-it)
 
@@ -32,7 +32,7 @@ Google tag on every page, in `<head>`; replace `AW-XXXXXXXXX` with your Conversi
 </script>
 ```
 
-Where consent is required, the `gtag('consent', 'default', ...)` call with all four parameters (and `url_passthrough` if the banner loads late) goes before this `config`: see [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md#the-default-on-every-page) rather than restating it here.
+Where consent is required, the `gtag('consent', 'default', ...)` call with all four parameters (and `url_passthrough` if the banner loads late) goes before this `config`: see [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/CONSENT-MODE.md#the-default-on-every-page) rather than restating it here.
 
 Conversion actions (Goals > Conversions > New conversion action):
 
@@ -99,7 +99,7 @@ fbq('track', 'Purchase', { value: 99.00, currency: 'USD', content_type: 'product
 fbq('track', 'AddToCart', { content_ids: ['SKU-123'], content_type: 'product', value: 49.00, currency: 'USD' });
 ```
 
-**Conversions API** (server-side, alongside the pixel): a direct integration from your server, a partner integration (Shopify, WooCommerce, Segment and others), or Meta's managed Conversions API Gateway. Send the same events from the pixel and the server with a shared `event_id` so Meta keeps one, the rule app-growth also states for apps ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#conversions-api-for-app-events)).
+**Conversions API** (server-side, alongside the pixel): a direct integration from your server, a partner integration (Shopify, WooCommerce, Segment and others), or Meta's managed Conversions API Gateway. Send the same events from the pixel and the server with a shared `event_id` so Meta keeps one, the rule app-growth also states for apps ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md#conversions-api-for-app-events)).
 
 **Aggregated Event Measurement.** The source says it is "Required for iOS 14+ tracking" and to verify your domain and "Configure and prioritize your top 8 events ... Purchase should typically be #1, Lead #2". Jon Loomer (jonloomer.com) reports that in 2025 Meta stopped requiring web event prioritization and domain verification for AEM and removed the AEM tab; no Meta help page confirmed it. Check Events Manager before configuring either.
 
@@ -166,7 +166,7 @@ ttq.track('AddToCart', { content_id: 'SKU-123', content_type: 'product', value: 
 ttq.identify({ email: 'user@example.com', phone_number: '+11234567890' });
 ```
 
-The **Events API** is TikTok's server-side channel; deduplicate with the pixel through `event_id`. App events for TikTok are in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md).
+The **Events API** is TikTok's server-side channel; deduplicate with the pixel through `event_id`. App events for TikTok are in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/TIKTOK-ADS.md).
 
 ## Validation
 

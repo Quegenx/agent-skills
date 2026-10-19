@@ -61,7 +61,7 @@ Principles behind them: depth over surface (explain why a difference matters, wi
 | You vs Competitor | [You] vs [Competitor], [Competitor] vs [You] |
 | Competitor vs Competitor | [A] vs [B], [B] vs [A] |
 
-Plan the page set in priority order by search volume. web-research's discovery wave C already mines `"{X} vs"` titles ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#discovery-waves)), which also shows which vs pages the market already has.
+Plan the page set in priority order by search volume. web-research's discovery wave C already mines `"{X} vs"` titles ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#discovery-waves)), which also shows which vs pages the market already has.
 
 ## Prove it
 

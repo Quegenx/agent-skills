@@ -1,6 +1,6 @@
 # Adopt a system without changing behavior
 
-Move one ready family and representative flow at a time, with visual and behavior evidence kept separate. Sources: the supplied `migrate-design-system` skill, its incident lessons, parity and multi-agent references, `build-design-system` capture and pixel-diff scripts, and `ui-review`. General migration and function comparison remain in [system-migration](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/system-migration/SKILL.md); rendered critique remains in [anti-slop-ui REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/REVIEW.md).
+Move one ready family and representative flow at a time, with visual and behavior evidence kept separate. Sources: the supplied `migrate-design-system` skill, its incident lessons, parity and multi-agent references, `build-design-system` capture and pixel-diff scripts, and `ui-review`. General migration and function comparison remain in [system-migration](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/system-migration/SKILL.md); rendered critique remains in [anti-slop-ui REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/REVIEW.md).
 
 ## Plan from current consumers
 

@@ -98,7 +98,7 @@ Rules for stating your own prices (reference prices, "free", savings claims) are
 response time, dedicated CSM, implementation help].
 ```
 
-A status page is not an SLA ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#the-fact-check)).
+A status page is not an SLA ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#the-fact-check)).
 
 ## Who it's for
 

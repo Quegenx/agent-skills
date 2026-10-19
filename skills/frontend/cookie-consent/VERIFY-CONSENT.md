@@ -1,6 +1,6 @@
 # Verify consent
 
-"A banner on screen proves only that the banner renders." The release check watches network requests and storage in a production build. Source: c15t's verify-consent guide (https://c15t.com/docs/guides/verify-consent.md), the hosted setup skill's §7, comparisons/build-your-own.md and the per-vendor verify sections, all `[c15t]`. The same journey as an automated test is [browser-ui-qa CONSENT-JOURNEY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/CONSENT-JOURNEY.md).
+"A banner on screen proves only that the banner renders." The release check watches network requests and storage in a production build. Source: c15t's verify-consent guide (https://c15t.com/docs/guides/verify-consent.md), the hosted setup skill's §7, comparisons/build-your-own.md and the per-vendor verify sections, all `[c15t]`. The same journey as an automated test is [browser-ui-qa CONSENT-JOURNEY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/browser-ui-qa/CONSENT-JOURNEY.md).
 
 ## What you are checking
 
@@ -67,7 +67,7 @@ Keyboard only through banner and dialog, focus kept inside a modal dialog and re
 
 ## Per-vendor checks
 
-- **Google Tag and Tag Manager:** the Tag Assistant checks (the `default` before `config` with the optional types denied, `window.dataLayer` undefined under `'after-consent'`, one page view per route change) are in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md#verifying-it).
+- **Google Tag and Tag Manager:** the Tag Assistant checks (the `default` before `config` with the optional types denied, `window.dataLayer` undefined under `'after-consent'`, one page view per route change) are in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/CONSENT-MODE.md#verifying-it).
 - **GTM:** after Reject and reload, "no non-Google tag in the container fires" [c15t, google-tag-manager.md].
 - **Cleanup:** allow measurement, see `_ga` and `_ga_<id>` in Application, turn measurement off and save: "c15t reloads the page. Both cookies are gone", and they do not come back on reload [c15t, clear-on-revocation.md].
 - **Network blocker:** before a choice, matching requests are absent and the console logs each blocked request [c15t, network-blocker.md].

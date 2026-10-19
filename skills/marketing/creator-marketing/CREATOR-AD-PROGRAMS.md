@@ -64,7 +64,7 @@ The minimum lets you recruit good creators before you have history, reviews or p
 3. **The promise:** the one product truth this video argues.
 4. **One piece of proof** that ties it together.
 
-"One problem, one person, one way." A 15-second ad that tries to carry five value propositions to five audiences carries none. Give each video an assignment, like "show the workflow that answers *why pay when dictation is built in and free?*" Mine those objections from reviews, Reddit, support tickets and your own ad comments. App-growth's TikTok creator brief hands creators "the exact 2 second hook script" `[appeeky]` ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#production)); the two views are compared in [PROGRAMS.md](PROGRAMS.md#the-creative-brief).
+"One problem, one person, one way." A 15-second ad that tries to carry five value propositions to five audiences carries none. Give each video an assignment, like "show the workflow that answers *why pay when dictation is built in and free?*" Mine those objections from reviews, Reddit, support tickets and your own ad comments. App-growth's TikTok creator brief hands creators "the exact 2 second hook script" `[appeeky]` ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/TIKTOK-ADS.md#production)); the two views are compared in [PROGRAMS.md](PROGRAMS.md#the-creative-brief).
 
 ## Keep creators off the copy treadmill
 

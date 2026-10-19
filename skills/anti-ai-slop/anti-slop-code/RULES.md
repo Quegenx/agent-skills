@@ -53,7 +53,7 @@ Add the one the code path needs, not all of them everywhere.
 
 **Wrapper called once** that only delegates: `function getUser(id) { return userService.getUser(id) }`. Call the real thing. The same goes for single-branch helpers and "layers that exist only to forward arguments": collapse them. [React Doctor, deslop]
 
-**Single-use function** with its one caller next door: inline it at that call site, and "keep a named function only when the name itself is what makes the call site readable" [React Doctor, deslop]. That exception is the reason `refactoring` gives for extracting a function or naming a complex condition ([refactoring SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/SKILL.md#techniques-smallest-first)), so the two rules agree.
+**Single-use function** with its one caller next door: inline it at that call site, and "keep a named function only when the name itself is what makes the call site readable" [React Doctor, deslop]. That exception is the reason `refactoring` gives for extracting a function or naming a complex condition ([refactoring SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/refactoring/SKILL.md#techniques-smallest-first)), so the two rules agree.
 
 **Dependency creep.** A new package for something the standard library or an installed dependency already does (a date library when `Intl` suffices, a second HTTP client). Use what's there.
 
@@ -82,7 +82,7 @@ The search, before writing and for every helper, type or constant the change tou
 
 The other view, not taken: React Doctor's deslop extracts the merged helper as "one function per file under `utils/`, per the repo convention". That is its repo's convention; here the file is named after the concept it implements, and a reflexive `*Util` is itself slop (see Names).
 
-For Deslop structural matching, truffler symbol search and jscpd clone passes, use the canonical [duplication tool references](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/DUPLICATION.md). The semantic reuse test above remains the decision rule. [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/); [React Doctor, find-similar-functions]; [kucherenko/jscpd, jscpd; dry-refactoring]
+For Deslop structural matching, truffler symbol search and jscpd clone passes, use the canonical [duplication tool references](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/refactoring/DUPLICATION.md). The semantic reuse test above remains the decision rule. [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/); [React Doctor, find-similar-functions]; [kucherenko/jscpd, jscpd; dry-refactoring]
 
 **Deep nesting.** Four levels of `if`. Guard clauses and early returns.
 
@@ -95,7 +95,7 @@ For Deslop structural matching, truffler symbol search and jscpd clone passes, u
 - `as any`, `@ts-ignore`, `@ts-expect-error`, `!` non-null assertions to silence the checker: fix the type or narrow properly.
 - Debug output in production paths: `console.log`, `print`, `var_dump`, `dd()`, leftover `debugger`.
 - `if (x) return true; else return false;` -> `return x`. `const count: number = 0` -> `const count = 0`.
-- Nested ternaries: "Avoid nested ternary operators - prefer switch statements or if/else chains for multiple conditions" [Anthropic, code-simplifier]. An `if / else if` chain on a type field goes further, to an exhaustive `switch` ([refactoring SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/refactoring/SKILL.md#techniques-smallest-first)).
+- Nested ternaries: "Avoid nested ternary operators - prefer switch statements or if/else chains for multiple conditions" [Anthropic, code-simplifier]. An `if / else if` chain on a type field goes further, to an exhaustive `switch` ([refactoring SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/refactoring/SKILL.md#techniques-smallest-first)).
 - Magic numbers in logic with no name: name the constant where it's defined, with its unit.
 
 ## Names

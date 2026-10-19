@@ -106,7 +106,7 @@ A policy has a **model** and a **prompt** [c15t, how-consent-works.md]:
 
 ## Google Consent Mode types
 
-c15t maps `necessary`, `functionality`, `measurement`, `marketing` and `experience` onto Google's consent types (`marketing` covers `ad_storage`, `ad_user_data` and `ad_personalization`) [c15t, integrations/google-tag.md]; the table, checked against Google's list, is in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md). "Under an opt-out policy, the default command can grant types before the visitor has chosen anything. That is a permission, not a recorded choice." [c15t] When Google's script loads relative to the choice is [SCRIPT-GATING.md](SCRIPT-GATING.md#google-consent-mode-and-tag-managers).
+c15t maps `necessary`, `functionality`, `measurement`, `marketing` and `experience` onto Google's consent types (`marketing` covers `ad_storage`, `ad_user_data` and `ad_personalization`) [c15t, integrations/google-tag.md]; the table, checked against Google's list, is in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/CONSENT-MODE.md). "Under an opt-out policy, the default command can grant types before the visitor has chosen anything. That is a permission, not a recorded choice." [c15t] When Google's script loads relative to the choice is [SCRIPT-GATING.md](SCRIPT-GATING.md#google-consent-mode-and-tag-managers).
 
 ## Why the banner may be absent
 

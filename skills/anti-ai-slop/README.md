@@ -1,19 +1,25 @@
 # Anti-AI-slop skills
 
-Keep prose, copy, interfaces and code from reading as generic AI output. Start with `anti-slop`, which holds the shared rules and routes to `anti-slop-writing`, `anti-slop-copy`, `anti-slop-ui` and `anti-slop-code`. Details in the [main README](../../README.md#anti-ai-slop).
+General quality guidance for prose, copy, interfaces and code. Select the branch relevant to the task. Details in the [main README](../../README.md#anti-ai-slop).
 
 5 skills.
 
-Entry points apply only the selected job's routes and checks. Cross-skill references use named public sources and the installed skill when available; framework-specific guides are independent choices.
+Category membership is the primary home, not an instruction to install every skill here. Apply the selected job's routes and checks. Required selected-branch dependencies and optional related skills remain distinct.
 
 ## Skills
 
-Start with `anti-slop`; it holds the shared rules and routes to the others.
+| Skill | Covers |
+|---|---|
+| [anti-slop](anti-slop/SKILL.md) | The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies. |
+| [anti-slop-code](anti-slop-code/SKILL.md) | Behavior-preserving cleanup, semantic reuse rules, runtime contracts and optional FixMySlop scans with manual triage. Deslop, truffler and jscpd references have one canonical owner in refactoring/DUPLICATION.md. P0 to P3 severity stays separate from pre-existing origin. |
+| [anti-slop-copy](anti-slop-copy/SKILL.md) | Grounded website, marketing and product copy: shared context with optional mobile app fields, drafting, review, voice, pages and microcopy. Ad formulas and ad-specific tells route to ad-creative; shipped-change announcements route to product-launch. |
+| [anti-slop-ui](anti-slop-ui/SKILL.md) | Purposeful interfaces, product-specific concepts, honest charts, component states, craft, critique and measured improvement shortlists. Responsive mechanics route to modern-css, contrast measurement to color-system and exact reconstruction to pixel-reverse-engineer. |
+| [anti-slop-writing](anti-slop-writing/SKILL.md) | Voice-preserving editing, drafting, evidence-based audits and Hebrew guidance; missing-draft and SEO-coaching conventions are scoped. |
 
-- **[anti-slop](anti-slop/SKILL.md)**: The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies.
-- **[anti-slop-writing](anti-slop-writing/SKILL.md)**: Voice-preserving editing, drafting, evidence-based audits and Hebrew guidance; missing-draft and SEO-coaching conventions are scoped.
-- **[anti-slop-copy](anti-slop-copy/SKILL.md)**: Grounded website, marketing and product copy: shared context with optional mobile app fields, drafting, review, voice, pages and microcopy. Ad formulas and ad-specific tells route to ad-creative; shipped-change announcements route to product-launch.
-- **[anti-slop-ui](anti-slop-ui/SKILL.md)**: Purposeful interfaces, product-specific concepts, honest charts, component states, craft, critique and measured improvement shortlists. Responsive mechanics route to modern-css, contrast measurement to color-system and exact reconstruction to pixel-reverse-engineer.
-- **[anti-slop-code](anti-slop-code/SKILL.md)**: Behavior-preserving cleanup, semantic reuse rules, runtime contracts and optional FixMySlop scans with manual triage. Deslop, truffler and jscpd references have one canonical owner in refactoring/DUPLICATION.md. P0 to P3 severity stays separate from pre-existing origin.
+## Related task routes
 
-The jscpd, Deslop and truffler references live in [refactoring/DUPLICATION.md](../architecture/refactoring/DUPLICATION.md).
+These are discovery links; follow only the selected task's requirements.
+
+- [developer-docs](../engineering/developer-docs/SKILL.md)
+- [refactoring](../engineering/refactoring/SKILL.md)
+- [app-ui](../frontend/app-ui/SKILL.md)

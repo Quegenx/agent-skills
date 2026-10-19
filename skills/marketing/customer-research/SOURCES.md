@@ -31,7 +31,7 @@ Quick decision guide: a product category, start with G2/Capterra reviews (yours 
 | Theme tag | Pain / trigger / outcome / alternative / language |
 | Customer profile signals | Role, company size, industry hints from the post |
 
-This extends web-research's mention line (`- **[SourceType]** Title | Snippet (source: URL, YYYY-MM-DD)`, [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#lanes-and-the-merge)) with context, sentiment, theme and profile. Under GDPR Art. 4(1), personal data is "any information relating to an identified or identifiable natural person", identifiable among other ways by "an online identifier" ([GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj)), so a quote tied to a username is personal data: keep usernames out of the quote bank unless needed and cite the URL.
+This extends web-research's mention line (`- **[SourceType]** Title | Snippet (source: URL, YYYY-MM-DD)`, [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#lanes-and-the-merge)) with context, sentiment, theme and profile. Under GDPR Art. 4(1), personal data is "any information relating to an identified or identifiable natural person", identifiable among other ways by "an online identifier" ([GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj)), so a quote tied to a username is personal data: keep usernames out of the quote bank unless needed and cite the URL.
 
 [more skills, copywriting-playbook.md] For a copywriting quote bank, optionally add the specific emotion expressed and the context in which the quote will be used. The source mixes problem-aware, solution-aware, objection and post-purchase labels; record awareness separately from objection or post-purchase context. An emotion tag adds detail to sentiment rather than replacing it. Awareness is defined in [the Schwartz dossier](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-council/advisors/eugene-schwartz.md#core-frameworks).
 
@@ -76,7 +76,7 @@ High-signal posts: "What tools do you use for X?" (alternatives, vocabulary); "F
 
 Extract the job ("use it for"), the hardest or most frustrating part, comparisons ("coming from [X]", "better than [Y]"), and the reviewer's industry and role.
 
-**Competitor 4-star reviews "are gold":** customers who like the product but still complain. G2's prompts map: "What do you like best?" to their strengths, "What do you dislike?" to their weaknesses (your opportunities), "What problems are you solving?" to the job. Capterra is similar; Trustpilot skews B2C; AppSumo suits SMB and prosumer SaaS. These dislikes are the third-party evidence web-research's battle-card landmines prefer ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#battle-cards)).
+**Competitor 4-star reviews "are gold":** customers who like the product but still complain. G2's prompts map: "What do you like best?" to their strengths, "What do you dislike?" to their weaknesses (your opportunities), "What problems are you solving?" to the job. Capterra is similar; Trustpilot skews B2C; AppSumo suits SMB and prosumer SaaS. These dislikes are the third-party evidence web-research's battle-card landmines prefer ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#battle-cards)).
 
 | Category | Notes |
 |---|---|
@@ -100,7 +100,7 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 
 ## LinkedIn and job posts
 
-`[coreyhaines31/marketingskills, customer-research]` Posts: "[Role] at [company size]" plus a problem keyword; "We used to [old way] but now we [new way]" stories; recommendation-request posts draw active buyers. "A job posting is a company's admission of a pain point": tools listed as nice-to-have vs required (stack and adjacent tools), metrics in the description, where the role's time goes. `site:linkedin.com/jobs "[role title]" "[relevant tool or category]"`. Read LinkedIn through search snippets; don't fetch behind its login ([web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#the-research-loop)).
+`[coreyhaines31/marketingskills, customer-research]` Posts: "[Role] at [company size]" plus a problem keyword; "We used to [old way] but now we [new way]" stories; recommendation-request posts draw active buyers. "A job posting is a company's admission of a pain point": tools listed as nice-to-have vs required (stack and adjacent tools), metrics in the description, where the role's time goes. `site:linkedin.com/jobs "[role title]" "[relevant tool or category]"`. Read LinkedIn through search snippets; don't fetch behind its login ([web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVIDENCE.md#the-research-loop)).
 
 ## YouTube and X
 
@@ -116,7 +116,7 @@ Extract the job ("use it for"), the hardest or most frustrating part, comparison
 
 ## Comparison posts and communities
 
-`[coreyhaines31/marketingskills, customer-research]` Google `"[competitor 1] vs [competitor 2]"` or `"best [category] software [year]"` and read the comments: people on comparison content are actively evaluating, and their questions are ones your sales process should answer (web-research parses the same titles for competitor names, [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#discovery-waves)). Communities: Slack ("[industry] Slack community"), Discord, Facebook Groups (SMB, e-commerce, agencies, coaches and consultants), Circle and Mighty Networks paid communities.
+`[coreyhaines31/marketingskills, customer-research]` Google `"[competitor 1] vs [competitor 2]"` or `"best [category] software [year]"` and read the comments: people on comparison content are actively evaluating, and their questions are ones your sales process should answer (web-research parses the same titles for competitor names, [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#discovery-waves)). Communities: Slack ("[industry] Slack community"), Discord, Facebook Groups (SMB, e-commerce, agencies, coaches and consultants), Circle and Mighty Networks paid communities.
 
 ## Consumer products
 

@@ -106,7 +106,7 @@ All from [index.tsx](https://github.com/emilkowalski/sonner/blob/main/src/index.
 - The container is `<section aria-live="polite" aria-relevant="additions text" aria-atomic="false" tabIndex={-1}>`, and each toast an `<li tabIndex={0}>`.
 - Its label is `${containerAriaLabel} ${hotkeyLabel}` ("Notifications alt+T"); `customAriaLabel` replaces the whole label. Both are Toaster props.
 - `hotkey` is a `string[]`, default `['altKey', 'KeyT']`: every entry must match, each a modifier property name or an `event.code`. It expands the stack and focuses it, Escape collapses it, and `hotkey={[]}` turns it off (`hotkey.length > 0 && ...`). Focus returns to the previously focused element on blur or unmount.
-- `testId` renders `data-testid` on the toast `<li>`, which matches the e2e runner's default `testIdAttribute` ([tester-army-e2e RUNNER-SETUP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/tester-army-e2e/RUNNER-SETUP.md)); that skill's query order puts `getByRole` first and `getByTestId` last ([tester-army-e2e WRITING-TESTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/tester-army-e2e/WRITING-TESTS.md)).
+- `testId` renders `data-testid` on the toast `<li>`, which matches the e2e runner's default `testIdAttribute` ([tester-army-e2e RUNNER-SETUP.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/tester-army-e2e/RUNNER-SETUP.md)); that skill's query order puts `getByRole` first and `getByTestId` last ([tester-army-e2e WRITING-TESTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/tester-army-e2e/WRITING-TESTS.md)).
 
 ### Swipe
 

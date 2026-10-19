@@ -15,7 +15,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Safe retries, idempotency keys, deadlines, cancellation, retry/timeout/circuit breaker, rate limits | [RELIABILITY.md](RELIABILITY.md) |
 | Rolling out behind a flag, A/B experiments | [FLAGS.md](FLAGS.md) |
 | Streaming updates to a browser (SSE) | [STREAMING.md](STREAMING.md) |
-| Before changing a developer tool's public surface: the job, reuse, metric, defaults, compatibility and removal brief | [Engineering planning](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/PRODUCT-PASS.md) |
+| Before changing a developer tool's public surface: the job, reuse, metric, defaults, compatibility and removal brief | [Engineering planning](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/engineering-planning/PRODUCT-PASS.md) |
 
 ## The rules under all of them
 

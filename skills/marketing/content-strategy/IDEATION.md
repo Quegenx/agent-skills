@@ -45,7 +45,7 @@ Read public threads by hand or through search results; bulk automated collection
 
 ## Competitor content
 
-`[coreyhaines31/marketingskills, content-strategy]` Find their content with `site:competitor.com/blog`. Look at top-performing posts (comments, shares), topics covered repeatedly, gaps, case studies (customer problems, use cases, results) and structure (pillars, categories, formats). Opportunities: topics you can cover better, angles they miss, outdated content to improve on. Business-competitor research is [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md); SEO competitors (whoever recurs in the results, publishers included) are in [keyword-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/SKILL.md).
+`[coreyhaines31/marketingskills, content-strategy]` Find their content with `site:competitor.com/blog`. Look at top-performing posts (comments, shares), topics covered repeatedly, gaps, case studies (customer problems, use cases, results) and structure (pillars, categories, formats). Opportunities: topics you can cover better, angles they miss, outdated content to improve on. Business-competitor research is [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md); SEO competitors (whoever recurs in the results, publishers included) are in [keyword-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/keyword-research/SKILL.md).
 
 ## Sales and support input
 

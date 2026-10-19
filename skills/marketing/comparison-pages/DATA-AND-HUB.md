@@ -68,7 +68,7 @@ migration_from:
 
 A weakness or "not ideal for" entry follows the evidence rules: an absence is confirmed in docs or a trial, otherwise it reads "not listed on [page] (as of [date])" ([SKILL.md](SKILL.md#evidence-discipline)).
 
-**web-research as the data source:** a competitor's merged file from [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#lanes-and-the-merge) already holds pricing, features and positioning with cited URLs; map its frontmatter into this file and add `last_verified`, per-field `sources`, `best_for`, `not_ideal_for`, `common_complaints` and `migration_from`.
+**web-research as the data source:** a competitor's merged file from [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#lanes-and-the-merge) already holds pricing, features and positioning with cited URLs; map its frontmatter into this file and add `last_verified`, per-field `sources`, `best_for`, `not_ideal_for`, `common_complaints` and `migration_from`.
 
 ## Page generation
 

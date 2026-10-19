@@ -67,7 +67,7 @@ Every loop has these nine parts; "a loop missing a stop condition, a self-check,
 | Competitor changes | Weekly | Pricing/positioning shifts are infrequent but matter |
 | Social listening / mentions | Daily | Engagement windows close fast |
 
-"Over-frequent loops are the most common failure mode: they generate busywork, burn budget, and train you to ignore the output." The 2 to 3 day check on creative is a check cadence; app-growth's "bi-weekly creative refresh" [eronred] in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md) is a refresh cadence, so the two don't conflict.
+"Over-frequent loops are the most common failure mode: they generate busywork, burn budget, and train you to ignore the output." The 2 to 3 day check on creative is a check cadence; app-growth's "bi-weekly creative refresh" [eronred] in [app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/BUDGET-AND-ROAS.md) is a refresh cadence, so the two don't conflict.
 
 ## When not to loop
 
@@ -82,7 +82,7 @@ Every loop has these nine parts; "a loop missing a stop condition, a self-check,
 
 The loop body works in any agent; the scheduling depends on the environment [coreyhaines31/marketingskills, marketing-loops]. The source's Claude Code line ("`/loop` ... `ScheduleWakeup` ... and `CronCreate` (fixed cron schedule)", with time-of-day cron as the default for weekly reviews) leaves out the limits the docs state, so a weekly loop made with `CronCreate` fires about once and expires. Corrected from https://code.claude.com/docs/en/scheduled-tasks:
 
-- **Use session tasks for in-session work and a durable scheduler for weekly or monthly recurrence.** The exact idle-firing, seven-day expiry, catch-up, jitter and resume rules are canonical in [Scheduling inside Claude Code](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SCHEDULED-AGENTS.md#scheduling-inside-claude-code). The old source recommendation omitted those limits. [https://code.claude.com/docs/en/scheduled-tasks]
+- **Use session tasks for in-session work and a durable scheduler for weekly or monthly recurrence.** The exact idle-firing, seven-day expiry, catch-up, jitter and resume rules are canonical in [Scheduling inside Claude Code](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/SESSION-SCHEDULING.md#scheduling-inside-claude-code). The old source recommendation omitted those limits. [https://code.claude.com/docs/en/scheduled-tasks]
 - **Manual cadence:** "for high-judgment loops, 'run this skill every Monday' is a perfectly good loop. The value is the repeatable *body*, not the automation." [coreyhaines31/marketingskills, marketing-loops]
 - **Document the kill switch** using the [scheduled-agent guardrails](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/SCHEDULED-AGENTS.md#guardrails). Marketing-specific action caps remain in [LOOP-GUARDRAILS.md](LOOP-GUARDRAILS.md). [coreyhaines31/marketingskills, marketing-loops]
 

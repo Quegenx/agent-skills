@@ -6,7 +6,7 @@ A technical SEO audit answers two questions in order: can search engines reach, 
 
 ## Severity
 
-Findings use the repo's one scale, P0 to P3, as defined in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md). OpenSEO's three tiers are written here as critical = P1, warning = P2, info = P3; a finding that keeps a page that should rank out of Search (a block, a 5xx, a stray `noindex` on a money page) is P0 whatever the tool called it.
+Findings use the repo's one scale, P0 to P3, as defined in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md). OpenSEO's three tiers are written here as critical = P1, warning = P2, info = P3; a finding that keeps a page that should rank out of Search (a block, a 5xx, a stray `noindex` on a money page) is P0 whatever the tool called it.
 
 ## Check the crawl first
 

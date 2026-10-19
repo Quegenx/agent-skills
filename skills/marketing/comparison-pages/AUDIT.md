@@ -1,6 +1,6 @@
 # The competitive asset audit
 
-Checking existing pages and sales assets for claims that went stale or were never true. From coreyhaines31/marketingskills `competitors` (MIT). It audits published assets over time; web-research's fact-check checks a fresh feature matrix once, on a 25-call budget ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/COMPETITORS.md#the-fact-check)).
+Checking existing pages and sales assets for claims that went stale or were never true. From coreyhaines31/marketingskills `competitors` (MIT). It audits published assets over time; web-research's fact-check checks a fresh feature matrix once, on a 25-call budget ([web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md#the-fact-check)).
 
 ## Scope
 

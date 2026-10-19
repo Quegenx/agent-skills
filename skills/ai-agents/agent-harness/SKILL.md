@@ -1,6 +1,6 @@
 ---
 name: agent-harness
-description: "Builds reliable LLM agents: rule placement, prompts, gates, tools, history, runtime, measured context reductions, harness refinement and session diagnosis. Use when building or fixing an agent, its system prompt or tools, refining its harness, or explaining a costly or drifting run."
+description: "Builds reliable LLM agents: rule placement, prompts, gates, tools, history, runtime, measured context reductions and harness refinement for product agents. Use when building or fixing an application's agent, its system prompt or tools, or refining its production harness."
 ---
 
 # Agent harness
@@ -18,11 +18,11 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | The runtime: one answer at a time, loop settings, tool traits and approval policy, stop hook order, human in the loop, more than one agent, long runs, observability, the build order | [RUNTIME.md](RUNTIME.md) |
 | Multi-agent workflows: why one context fails, fan-out and its contract (evidence before the spawn, the brief as the whole prompt, a join key with coverage enforced, abstaining as an answer), adversarial verification, tournaments, loop until done, quarantine triage, author and reviewer loops with a round cap, which model each subagent uses | [WORKFLOWS.md](WORKFLOWS.md) |
 | Scheduled and background agents: bookmarks per source, a failed read that isn't a quiet day, re-check before posting, post once, read-only preferences and a ledger, scoped credentials, a spending cap from real runs | [SCHEDULED-AGENTS.md](SCHEDULED-AGENTS.md) |
-| Researching source: exact anchors, evidence lanes, negative-proof limits and localization returns | [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-research/SKILL.md) |
+| Researching source: exact anchors, evidence lanes, negative-proof limits and localization returns | [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-research/SKILL.md) |
 | Context reductions: measured units, recoverable originals, recall overhead, controlled comparisons, cost per accepted loop result and honest savings claims | [CONTEXT-COSTS.md](CONTEXT-COSTS.md) |
 | Refining the harness itself: observed divergences, scoped proposals, execution probes, parallel or sequential composition, supported lessons and experiment resume | [HARNESS-REFINEMENT.md](HARNESS-REFINEMENT.md) |
-| Executing or resuming a selected plan: shared interfaces, durable progress and phase handoff | [engineering-planning EXECUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/engineering-planning/EXECUTION.md) |
-| Diagnosing a recorded session: identity and record meanings, plan drift, repetitions, cost, coverage and scrubbed evidence | [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) |
+| Executing or resuming a selected plan: shared interfaces, durable progress and phase handoff | [engineering-planning EXECUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/engineering-planning/EXECUTION.md) |
+| Configure a coding-agent host or diagnose its recorded session | [coding-agent-harness](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/SKILL.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |
 | Long-term memory across conversations: extraction, profile and search, staying current, forgetting | the `agent-memory` skill |
 | Measuring it: the eval suite and the loop that takes it to a clean run | the `agent-evals` skill |
@@ -30,6 +30,19 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Classifier decisions inside the loop (typed yes/no, choice and score answers) | the `jev-decisions` skill |
 
 **Your own loop or an existing agent runtime.** A runtime that brings its own workspace, coding tools, history, compaction and permissions (a coding agent you drive through an SDK) fits work that looks like what it was built for; send it only the newest message, since it keeps its own history. Write your own loop when you need the model call, the tools, the settings and the structured output under your control, which is the case for a product's agent and the rest of this skill.
+
+- **An established harness as the agent:** AI SDK 7's experimental `HarnessAgent` runs a configured harness such as Claude Code, Codex or Pi with a sandbox, custom instructions, skills and tools; its sessions park and resume, a single turn can be interrupted and resumed, and it implements the SDK's `Agent` interface, so `useChat()` works without extra wiring. [existing agent-harness, WORKFLOWS.md, In Claude Code]
+
+## Selected references
+
+| Branch | Required reference |
+|---|---|
+| Full product-agent implementation or measured refinement | [agent-evals](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-evals/SKILL.md) for the baseline and comparison |
+| Durable long runs | [background-jobs durable workflows](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/DURABLE-WORKFLOWS.md) |
+| Long-term memory, Jev classifiers or the protected chat UI | Load agent-memory, jev-decisions or agent-chat-ui only when that capability is selected |
+| Coding-agent host configuration or recorded-session diagnosis | [coding-agent-harness](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/coding-agent-harness/SKILL.md); product runtime implementation is not a prerequisite for that job |
+
+These references are required only for the selected branch. Report unavailable material rather than reconstruct its contract. [existing agent-harness, The method, router and RUNTIME.md]
 
 ## Why agents fail
 
@@ -73,7 +86,7 @@ For implementing or refining a full product-agent harness:
 
 ## Prove it
 
-For a full harness implementation, use the full checklist. For a prompt, tool, history, runtime or classifier change, check the affected contracts. A recorded-session diagnosis reports observed evidence and gaps; it does not require implementing missing infrastructure.
+For a full harness implementation, use the full checklist. For a prompt, tool, history, runtime or classifier change, check the affected contracts. For a coding-host session diagnosis, use coding-agent-harness; its acceptance does not require implementing this product infrastructure.
 
 - [ ] Eval suite from real conversations, 3 runs per case, baseline recorded
 - [ ] One lease per conversation, longer than the worst-case run; an explicit step limit above the measured maximum, a last step with tools off, pass, step, stream and tool timeouts, visible retries; a stopped run saved from the abort callback

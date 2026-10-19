@@ -18,7 +18,7 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 
 - **Four ways to build:** native (you build and maintain a direct connection; best UX, highest cost); through an iPaaS such as Zapier or Make (covers the long tail); API-first (a clean public API partners build toward); embedded (your product runs inside theirs as a widget, SDK or iframe).
 - **Build in order of buyer intent,** as in the book's Calendly ladder: calendar (Google, Outlook: table stakes), then the sales stack (CRM, dialers), then the marketing stack (forms, ESP, automation). "Each rung deepens the account and widens who inside the company depends on you."
-- **Treat a marketplace listing like an app store listing:** optimize title, keywords, screenshots, reviews and category the way App Store Optimization does ([aso SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md) has the method for Apple and Google Play). Shopify App Store and Salesforce AppExchange "are discovery engines".
+- **Treat a marketplace listing like an app store listing:** optimize title, keywords, screenshots, reviews and category the way App Store Optimization does ([aso SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/SKILL.md) has the method for Apple and Google Play). Shopify App Store and Salesforce AppExchange "are discovery engines".
 - The book claims "83% of enterprise buyers cite integrations as a purchase-decision factor", with no source given.
 
 ## Resellers

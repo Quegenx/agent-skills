@@ -109,7 +109,7 @@ curl -s "https://hn.algolia.com/api/v1/search_by_date?query=QUERY&tags=story&num
 - **Which journalists are on the story** [coreyhaines31/marketingskills, public-relations]: search Google News for the story, open the articles, note the bylines, then confirm beat and recent coverage on their X, LinkedIn or Muck Rack profile ([PITCHING.md](PITCHING.md#the-media-list)).
 - **A standing topic list** [coreyhaines31/marketingskills, public-relations]: keep a "Newsjacking topics" section in `.agents/listening-sources.md`, with the Google News queries (your category's regulation and funding news, your competitors and adjacent ones) and the industry data drops to watch (benchmark and state-of-industry reports).
 
-Repeatable research runs and evidence handling are [web-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/SKILL.md).
+Repeatable research runs and evidence handling are [web-research SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/SKILL.md).
 
 ## Failure modes
 

@@ -70,7 +70,7 @@ The banner shows the actions the visitor's policy allows, in a shape that suits 
 - With a nonce on the provider the style elements "render next to each component with the nonce. React 19 would otherwise move them into `<head>` and drop the nonce." Or set `styles: false` and import `c15t/react/styles.css` under `style-src 'self'`.
 - "Scripts that a vendor script adds itself, such as a tag manager's tags, need their own hosts too, or `'strict-dynamic'` with a nonce."
 - Verify "with the policy enforced, not in report-only mode"; read each script's `nonce` property in the console, because "Browsers hide the attribute from `getAttribute`." Test against a production build: Vite's dev server and the DevTools panel add `<style>` elements without a nonce.
-- Security headers in general are [secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/HEADERS.md).
+- Security headers in general are [secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/HEADERS.md).
 
 ## Banner experiments
 

@@ -26,7 +26,7 @@ When a discount helps and when an offer should replace it. From [coreyhaines31/m
 ## Save offers and win-back are a different case
 
 - **A discount in a cancel flow goes to an existing customer,** which is the source's "existing customers" exception. Its limits (20 to 30% for 2 to 3 months, never above 30%, at most two per session) are in [churn-prevention CANCEL-FLOWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/CANCEL-FLOWS.md#save-offers).
-- **A discounted first period at trial end** (an app practice in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md#trials), [eronred]) goes to someone who is not yet a customer, so it conflicts with "never discount to acquire". Both views stand: [coreyhaines31/marketingskills, offers] says don't; [eronred] runs one. Test it rather than assume.
+- **A discounted first period at trial end** (an app practice in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/RETENTION-AND-MONETIZATION.md#trials), [eronred]) goes to someone who is not yet a customer, so it conflicts with "never discount to acquire". Both views stand: [coreyhaines31/marketingskills, offers] says don't; [eronred] runs one. Test it rather than assume.
 
 ## Replace the discount with an offer
 

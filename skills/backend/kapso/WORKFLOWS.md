@@ -20,7 +20,7 @@ Automation contracts from [gokapso/agent-skills, automate-whatsapp/references/lo
 
 - Distinguish start, sends, set-variable, waits, decisions, subworkflow calls, webhooks, Functions, agents, handoff and event emission. Edges name the route; make every referenced node and decision label resolve.
 - Agent tools belong to the agent node's configuration. Keep tool schema, actual function contract, delivery mode and runtime variable references aligned; discover supported models from the current service rather than copying the source's model example as current availability.
-- Function responses merge vars; Decide responses select next_edge. The source suggests always falling back to the first edge; keep that as described source behavior only. An uncertain privileged decision must use the existing [fail-closed rule](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/SKILL.md), not an arbitrary success edge.
+- Function responses merge vars; Decide responses select next_edge. The source suggests always falling back to the first edge; keep that as described source behavior only. An uncertain privileged decision must use the existing [fail-closed rule](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/SKILL.md), not an arbitrary success edge.
 - A Jev integration node's wiring belongs here; the general decision technique has one owner in [jev-decisions](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/jev-decisions/SKILL.md).
 
 ## Inspect and resume

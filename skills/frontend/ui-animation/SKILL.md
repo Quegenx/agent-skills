@@ -1,6 +1,6 @@
 ---
 name: ui-animation
-description: "Designs and builds website and app animations that feel deliberate and stay smooth: durations, curves and springs by element, staggers, enter and exit, layout and shared-element transitions, gestures, scroll-linked motion, collections, reduced motion. React with Motion, and CSS. Use when adding, tuning or reviewing animations or transitions in an interface."
+description: "Designs and builds website and web-app animations that feel deliberate and stay smooth: durations, curves and springs by element, staggers, enter and exit, layout and shared-element transitions, gestures, scroll-linked motion, collections, reduced motion. React with Motion, and CSS. Use when adding, tuning or reviewing animations or transitions in a web interface; React Native and Expo motion routes to the global React skill."
 ---
 
 # UI animation
@@ -27,8 +27,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Per-frame math in your own loop: lerp and exponential approach, a spring by hand, physics, facing the direction of travel, sine waves, sawtooth loops, controlled randomness, piecewise segments | [MATH.md](MATH.md) |
 | Smooth on a slow phone: which properties, GPU vs main thread, React re-renders, reduced motion, measuring | [PERFORMANCE.md](PERFORMANCE.md) |
 | Motion from a physical model: words to spring numbers, bodies, fields and walls, the hand that drags, projection on release, baking physics into keyframes | [PHYSICS.md](PHYSICS.md) |
-| React Native and Expo motion policy and setup: Reanimated runtimes, tool choices, springs, haptics and reduced motion | [REACT-NATIVE.md](REACT-NATIVE.md) |
-| React Native worked recipes: press, sheet, swipe, header, list, keyboard, tab, navigation, toast and threshold | [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md) |
+| React Native and Expo motion policy and setup: Reanimated runtimes, tool choices, springs, haptics and reduced motion | [React native motion policy](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE-MOTION.md) |
+| React Native worked recipes: press, sheet, swipe, header, list, keyboard, tab, navigation, toast and threshold | [React native motion recipes](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE-MOTION-RECIPES.md) |
 | Name an effect or a feeling: the term to ask for, and close terms told apart | [VOCABULARY.md](VOCABULARY.md) |
 | Review existing motion: scan, rank, write one fix plan per pick | [AUDIT.md](AUDIT.md) |
 | Find where motion belongs, and reject the rest | [OPPORTUNITIES.md](OPPORTUNITIES.md) |
@@ -39,7 +39,7 @@ Images and video loading, long lists and bundle splitting are in [web-performanc
 
 ## Before you build
 
-**Choose the platform first.** For React Native or Expo, read [REACT-NATIVE.md](REACT-NATIVE.md) before implementing its [recipes](REACT-NATIVE-RECIPES.md); use that file's tool ladder, properties, timing alternatives and device-verification contract. The CSS, WAAPI, Motion and browser-tool checks below are the web branch. Shared motion principles remain, with the existing source differences kept explicit. [Emil Kowalski, animate; Emil Kowalski, animate-expo; REACT-NATIVE.md]
+**Choose the platform first.** For React Native or Expo, read [React native motion policy](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE-MOTION.md) before implementing its [recipes](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE-MOTION-RECIPES.md); use that file's tool ladder, properties, timing alternatives and device-verification contract. The CSS, WAAPI, Motion and browser-tool checks below are the web branch. Shared motion principles remain, with the existing source differences kept explicit. [Emil Kowalski, animate; Emil Kowalski, animate-expo; REACT-NATIVE.md]
 
 [Emil Kowalski, animate] "Two failure modes, and the first is worse: 1. **Animating something that shouldn't animate.** The gate below exists to produce zero lines of code sometimes. That's a success, not a dodge. 2. **Animating the right thing with the wrong ingredients**." Ask in order and stop at the first no:
 
@@ -60,12 +60,12 @@ Images and video loading, long lists and bundle splitting are in [web-performanc
 4. **Exits are faster than entrances** (about half to two thirds of the entrance), and leave through the nearest edge or back where they came from. The named exceptions (symmetric pairs, hover-out, deliberate holds) are in [TIMING.md](TIMING.md#staggers-and-sequencing).
 5. **Interruptible always.** A new target starts from the current position and velocity; never wait for an animation to finish before responding, never snap back to the start first. In Motion only a physics spring (`stiffness`, `damping`, `mass`) carries the velocity: duration-based springs "don't incorporate velocity" ([motion.dev](https://motion.dev/docs/animate); [TIMING.md](TIMING.md#springs)). [Craft] "Never lock the door": "An `isAnimating` flag drops clicks, or `pointer-events: none` stays on until the motion is done", and "people tap again, which drops another tap, which makes it worse."
 6. **Things that move together move as one:** a group shifts in one direction, never crossing paths; one element is the focus of each change, everything else yields.
-7. **The web performance default is that only transform and opacity move,** so it stays smooth while the page is busy; keep the documented alternatives in [PERFORMANCE.md](PERFORMANCE.md). React Native has its own [property policy and absolute-childless-element exception](REACT-NATIVE.md#properties); retain both source views rather than erasing that exception. [Emil Kowalski, animation-performance; Emil Kowalski, animate-expo]
+7. **The web performance default is that only transform and opacity move,** so it stays smooth while the page is busy; keep the documented alternatives in [PERFORMANCE.md](PERFORMANCE.md). React Native has its own [property policy and absolute-childless-element exception](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE-MOTION.md#properties); retain both source views rather than erasing that exception. [Emil Kowalski, animation-performance; Emil Kowalski, animate-expo]
 8. **Reduce, don't remove:** with reduced motion, movement becomes short fades; feedback and state changes stay. [Jakub Krehel, better-ui] Motion is never the only feedback channel: every animated state change also leaves a static cue (a colour, an icon or a label).
 
 ## Prove it
 
-For React Native and Expo, use [the native device checks](REACT-NATIVE.md#prove-it). The browser checks below apply to web interactions. [Emil Kowalski, animate-expo; REACT-NATIVE.md]
+For React Native and Expo, use [the native device checks](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REACT-NATIVE-MOTION.md#prove-it). The browser checks below apply to web interactions. [Emil Kowalski, animate-expo; REACT-NATIVE.md]
 
 Record the web interaction at 4x CPU slowdown: no dropped frames, no layout in the animation frames. Click twice fast and mid-animation: it retargets smoothly. Toggle reduced motion: no slides or zooms remain, every state change is still visible. Check every duration and curve against [TIMING.md](TIMING.md).
 

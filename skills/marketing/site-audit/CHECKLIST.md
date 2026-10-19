@@ -20,7 +20,7 @@ Audit Kit asks the same at intake [audit-kit, `ak new`]: "Client name" and "Webs
 |---|---|
 | Availability | The page loads at its intended public URL with no redirect loop, certificate error or runtime failure. A broken foundation makes every later check irrelevant. |
 | Discovery | Robots rules, canonical, sitemap routing, title, description, headings and structured data agree ([seo TECHNICAL-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/TECHNICAL-AUDIT.md)). |
-| Public security | HTTPS, response headers, mixed content, form transport, exposed files ([secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/HEADERS.md)). |
+| Public security | HTTPS, response headers, mixed content, form transport, exposed files ([secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/HEADERS.md)). |
 | Accessibility | Semantics, labels, keyboard, alternatives, contrast, reflow and errors, automated and manual ([web-accessibility REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/REVIEW.md)). |
 | Design and runtime | Hierarchy, primary action, responsive layout, stability, performance and console health ([web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md)). |
 
@@ -69,9 +69,9 @@ Audit Kit's security score starts at 100 [audit-kit, `analyzeSecurity`]: no HTTP
 
 - **It checks presence, not value.** Every header is tested with `headers.has(...)`, so `max-age=0` HSTS and an `unsafe-inline` CSP pass, and cookie flags are matched by substring (`value.includes("secure")` also matches a cookie named `insecure_x`). Read each header's value and parse each cookie's attributes.
 - **It requires `X-Frame-Options` even when CSP covers framing.** MDN: "For more comprehensive options than offered by this header, see the `frame-ancestors` directive in a `Content-Security-Policy` header"; `ALLOW-FROM` "is an obsolete directive"; the header "has no effect" in `<meta>` ([MDN X-Frame-Options](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options)). A site with `frame-ancestors` and no XFO is not a failure.
-- **It wants HttpOnly on every cookie.** The repo keeps its own rule: secure-coding prefers `HttpOnly`, `Secure`, `SameSite` cookies ([secure-coding AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/AUTH.md)), and a Supabase app using client JavaScript must read the session, so "HttpOnly is not necessary" there ([supabase AUTH-SESSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SESSIONS.md)). Classify each cookie by purpose before flagging it [freescan].
+- **It wants HttpOnly on every cookie.** The repo keeps its own rule: secure-coding prefers `HttpOnly`, `Secure`, `SameSite` cookies ([secure-coding AUTH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/AUTH.md)), and a Supabase app using client JavaScript must read the session, so "HttpOnly is not necessary" there ([supabase AUTH-SESSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/supabase/AUTH-SESSIONS.md)). Classify each cookie by purpose before flagging it [freescan].
 
-The header checklist itself, sourced from MDN, is [secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/HEADERS.md).
+The header checklist itself, sourced from MDN, is [secure-coding HEADERS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/HEADERS.md).
 
 ## Performance, lab and field
 

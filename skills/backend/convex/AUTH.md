@@ -1,6 +1,6 @@
 # Authentication and authorization
 
-These Convex boundaries come from [get-convex/agent-skills, convex-auth, convex-authz, convex-reviewer, convex-create-component], with current official authentication forms. General authentication policy stays in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/AUTH.md).
+These Convex boundaries come from [get-convex/agent-skills, convex-auth, convex-authz, convex-reviewer, convex-create-component], with current official authentication forms. General authentication policy stays in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/AUTH.md).
 
 ## Identity is not a users-table lookup
 

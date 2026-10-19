@@ -40,7 +40,7 @@ Related skills: keyword demand, clustering and SEO competitors in [keyword-resea
 9. **Verify a backlink from the anchor itself:** the `<a href>`, its `rel` tokens (spaces and commas), page-level `nofollow` and `X-Robots-Tag`, recorded with a timestamp; `sponsored` is the correct value on a paid tier ([LINKS-AND-OUTREACH.md](LINKS-AND-OUTREACH.md#verify-the-actual-backlink)).
 10. **Local: category and claim problems outrank posting,** businesses are matched by `cid` or `place_id`, and no plan gates, buys or filters reviews or stuffs the business name ([LOCAL.md](LOCAL.md)).
 11. **Refresh for readers, not for a fresh date.** Keep the URL and ranking anchors, redirect with 301 or 308 for at least a year when a URL must change, and move the visible date and `dateModified` only after a substantial change ([CONTENT-REFRESH.md](CONTENT-REFRESH.md)).
-12. **Severity is P0 to P3** as in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md); a tool's critical, warning and info map to P1, P2 and P3, and anything keeping a page that should rank out of Search is P0.
+12. **Severity is P0 to P3** as in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md); a tool's critical, warning and info map to P1, P2 and P3, and anything keeping a page that should rank out of Search is P0.
 
 ## Prove it
 

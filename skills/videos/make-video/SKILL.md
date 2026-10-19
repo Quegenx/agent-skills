@@ -19,6 +19,8 @@ Never collapse the layers into one uninspected step. The generic look (a centred
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
+**Required skills by phase:** This studio composes video-brief, shotlist, seek-engine or the selected engine contract, frame-review and sound-pass. Select asset-prep for real product assets and beat-grid/voiceover for the chosen clock. These are workflow dependencies, not requirements to install another rendering framework. Read the selected phase before executing it. [Quegenx/agent-skills, make-video/SKILL.md#the-gates]
+
 ## Setup
 
 Choose the renderer through [ENGINES.md](ENGINES.md) before scaffolding. The setup and `render.mjs` commands below describe the default seek-engine studio; an existing Remotion or HyperFrames project follows its engine contract while keeping the shared production gates. [Quegenx/agent-skills, make-video/ENGINES.md]

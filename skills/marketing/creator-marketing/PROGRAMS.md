@@ -42,7 +42,7 @@ Three more models have their own files:
 
 Other bands in this repo and its sources:
 
-- `[eronred]` in app-growth: "Micro-influencers (10K-100K) often give the best ROI" and a seeding tier of "micro-creators (1k-50k followers)" ([app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#creator-and-ugc-marketing)).
+- `[eronred]` in app-growth: "Micro-influencers (10K-100K) often give the best ROI" and a seeding tier of "micro-creators (1k-50k followers)" ([app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/LAUNCH-AND-MARKETING.md#creator-and-ugc-marketing)).
 - `[lightreel]` treats creators under 10K as the strongest for direct-response production but weak for organic reach, and 20K to 250K niche authorities as the strongest organic range; macro only with category authority. Its testing-roster split (explicitly not a universal budget rule): about 40% micro specialists with direct proof, 25% mid-sized niche authorities, 20% age or life-stage matches (notably 40+ for beauty, wellness, fashion and home), 15% credentialed experts or regional voices. Micro creators are production partners, not necessarily distribution partners.
 - `[lightreel]` cast by the product's user, problem and proof mechanism rather than by gender benchmarks, and brief in the audience's shopping culture (retailers, foods, festivals, climate, vocabulary); "Translation alone is weaker than culturally native proof."
 
@@ -108,7 +108,7 @@ Ground talking points in real proof (reviews, results); never hand a creator a c
 
 Where the sources disagree on scripting:
 
-- `[appeeky]` in app-growth's TikTok creator brief gives "the exact 2 second hook script" ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#production)), while the performance-paid program says "Don't hand creators a script" `[influencer-marketing]`.
+- `[appeeky]` in app-growth's TikTok creator brief gives "the exact 2 second hook script" ([app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/TIKTOK-ADS.md#production)), while the performance-paid program says "Don't hand creators a script" `[influencer-marketing]`.
 - `[lightreel]` lists over-scripted authenticity as a mistake, yet its UGC guide says that when a video goes viral everyone should copy it closely, second by second. Read it as copying a proven format fast, not as scripting new work.
 
 Brief shapes for ad creative (one person, situation, promise, proof) are in [CREATOR-AD-PROGRAMS.md](CREATOR-AD-PROGRAMS.md#briefing); the UGC brief order is in [UGC-PROGRAMS.md](UGC-PROGRAMS.md#briefs).
@@ -118,7 +118,7 @@ Brief shapes for ad creative (one person, situation, promise, proof) are in [CRE
 `[coreyhaines31/marketingskills, influencer-marketing]` Fix attribution gaps before the campaign runs:
 
 - **Unique promo codes** (for example `CREATOR20`): the easiest direct-conversion tracker, and essential for podcasts and video where links aren't clickable.
-- **UTM links** on every digital placement, "one per creator per placement", with one fixed pattern per partner type so every deal rolls up the same way ([google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md)).
+- **UTM links** on every digital placement, "one per creator per placement", with one fixed pattern per partner type so every deal rolls up the same way ([google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md)).
 - **Vanity landing pages:** `yourdomain.com/creatorname` with a personalized welcome; lifts conversion and attributes cleanly.
 - **Post-purchase survey:** "How did you hear about us?" catches the halo and branded-search effect that codes and last click miss ([marketing-attribution SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md)).
 - **Whitelisting performance:** when creator content runs as an ad, that ad's own metrics are a clean read on the creative's pull.

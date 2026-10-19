@@ -47,7 +47,7 @@ Effort and time are the source's estimates [coreyhaines31/marketingskills, lead-
 | Resource library | Ongoing value, return visits | High | Ongoing |
 | Free trial or community access | Product experience | Varies | Varies |
 
-How to build each one is in [FORMATS.md](FORMATS.md). An interactive tool (calculator, grader) is in [FREE-TOOLS.md](FREE-TOOLS.md); a content archive packaged as an agent skill is in [skill-authoring CONTENT-TO-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/skill-authoring/CONTENT-TO-SKILL.md).
+How to build each one is in [FORMATS.md](FORMATS.md). An interactive tool (calculator, grader) is in [FREE-TOOLS.md](FREE-TOOLS.md); a content archive packaged as an agent skill is in [skill-authoring CONTENT-TO-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/agent-workflows/skill-authoring/CONTENT-TO-SKILL.md).
 
 **A static magnet or a free tool:** the source's eval expects the answer to separate static content from an interactive tool, compare the effort to build, compare SEO and shareability, and choose on speed against investment [coreyhaines31/marketingskills, lead-magnets evals].
 

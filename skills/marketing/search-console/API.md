@@ -78,7 +78,7 @@ Also query and page combinations when possible, and countries or devices if rele
 | "Search Console API isn't enabled" | Enable it, wait a minute |
 | No properties to pick | Verify the site in Search Console first |
 
-Reading Google Analytics with the same client is [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md). OAuth app setup in general is [third-party-integrations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/SKILL.md).
+Reading Google Analytics with the same client is [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md). OAuth app setup in general is [third-party-integrations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/third-party-integrations/SKILL.md).
 
 ## Prove it
 

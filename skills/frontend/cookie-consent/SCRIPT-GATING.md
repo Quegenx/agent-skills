@@ -121,14 +121,14 @@ const clearOnRevocation: ClearOnRevocationConfig = {
 
 ## Google Consent Mode and tag managers
 
-[c15t, integrations/google-tag.md, google-tag-manager.md] The loader side; the Google side is [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md). In both modes the helper sends `gtag('consent', 'default', ...)` before `config` and an `update` on each change:
+[c15t, integrations/google-tag.md, google-tag-manager.md] The loader side; the Google side is [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/CONSENT-MODE.md). In both modes the helper sends `gtag('consent', 'default', ...)` before `config` and an `update` on each change:
 
 | `loadMode` | Until the category is allowed | After the category is allowed |
 |--|--|--|
 | `'always'` (default) | Loads `gtag/js` and sends `consent` `default` with the current permissions, then `config`. | Sends `consent` `update` with the mapped types granted. |
 | `'after-consent'` | Sends nothing to Google. The helper creates no `dataLayer` or `gtag` function. | Loads `gtag/js` once. `consent` `default` carries the current permissions and comes before `config`. Later changes send `update`. |
 
-- `'always'` is what Google calls advanced mode and `'after-consent'` basic mode; Google's definitions, the modeling tradeoff (basic mode loses the advertiser-specific model, not all modeling, which c15t's pages overstate), the late-banner `wait_for_update` and consent settings for tags in a GTM container are in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/CONSENT-MODE.md#basic-and-advanced-mode).
+- `'always'` is what Google calls advanced mode and `'after-consent'` basic mode; Google's definitions, the modeling tradeoff (basic mode loses the advertiser-specific model, not all modeling, which c15t's pages overstate), the late-banner `wait_for_update` and consent settings for tags in a GTM container are in [google-analytics CONSENT-MODE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/CONSENT-MODE.md#basic-and-advanced-mode).
 - "`'after-consent'` waits for the category to be allowed, not for a recorded choice." Under `opt-out` or `none`, `gtag/js` loads on the first page; "`category: 'necessary'` loads `gtag/js` before a choice in either mode." [c15t]
 - If the site forbids requests to Google before opt-in, do not keep the default silently: set `loadMode: 'after-consent'` and tell the owner which Consent Mode features that gives up [c15t, SKILL.md §6.2].
 - A GTM container's non-Google tags ignore Consent Mode signals; "If a vendor must make no request before consent, remove it from the container and register its own c15t helper instead." [c15t, google-tag-manager.md]

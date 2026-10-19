@@ -16,7 +16,7 @@
 - **Competitive-advantage tools:** "users *hide* that they use them (their edge)".
 - **Internal-only tools:** never leave the org.
 
-"If you're on the limited end, invest in referral programs, content, and partnerships instead of embedding viral loops that won't fire." For a collaborative product, the source's eval expects product-embedded virality first, with a reward program as the incentive-driven fallback [coreyhaines31/marketingskills, referrals evals]. app-growth sorts mobile apps the same way (strong: network effects, high LTV, show-off content; weak: solo utilities, low-ARPU free apps, embarrassing apps) in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
+"If you're on the limited end, invest in referral programs, content, and partnerships instead of embedding viral loops that won't fire." For a collaborative product, the source's eval expects product-embedded virality first, with a reward program as the incentive-driven fallback [coreyhaines31/marketingskills, referrals evals]. app-growth sorts mobile apps the same way (strong: network effects, high LTV, show-off content; weak: solo utilities, low-ARPU free apps, embarrassing apps) in [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/LAUNCH-AND-MARKETING.md#referral-programs).
 
 ## The seven viral mechanisms
 

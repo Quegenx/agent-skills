@@ -86,7 +86,7 @@ Quick take loads only the one named advisor and delivers that take with the simu
 
 When the topic is specific (a niche, a channel shift, a current platform change) or the user wants sources, go beyond the dossiers [coreyhaines31/marketingskills, marketing-council]:
 
-- **A deep-research skill, if installed** (this repo: [web-research](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/SKILL.md)): find what the seated advisors have actually said or written about this topic class (books, essays, interviews, podcasts) plus the current state of the debate.
+- **A deep-research skill, if installed** (this repo: [web-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/SKILL.md)): find what the seated advisors have actually said or written about this topic class (books, essays, interviews, podcasts) plus the current state of the debate.
 - **A video-analysis skill, if installed** (the source names `watch-video`): pull takes from specific talks and interviews the research surfaces.
 - **A recency skill, if installed** (the source names `last30days`): check for recent takes when the topic is fast-moving.
 - **Otherwise:** built-in web search for `[advisor name] + [topic]` per seated advisor, "preferring primary sources (their own books, blogs, newsletters, talks) over roundup articles".

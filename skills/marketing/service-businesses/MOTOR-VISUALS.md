@@ -28,7 +28,7 @@ The source rejects manufacturer franchises outright. [more skills, 18-motor-trad
 
 The repeatable actual-stock shot set is three-quarter front, three-quarter rear, interior from the driver's door and dashboard with actual mileage visible. Each needs evidence of the actual vehicle/view; one exterior photograph cannot establish unseen condition or mileage. Accept the still before reusing it as a treatment-preview base.
 
-The author's optional reel is three or four real same-car stills with a slow push on each, assembled to about 15 seconds. Stills come first. A cut of still photographs is separate from generated specific-product footage, which remains prohibited by the [existing video rule](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md#the-rules). The source's photo-edit proposals also retain the [generic product/prompt/text conflicts](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods).
+The author's optional reel is three or four real same-car stills with a slow push on each, assembled to about 15 seconds. Stills come first. A cut of still photographs is separate from generated specific-product footage, which remains prohibited by the [existing video rule](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md#the-rules). The source's photo-edit proposals also retain the [generic product/prompt/text conflicts](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-images/REAL-PHOTO-EDITING.md#conflicting-source-methods).
 
 ## Preview inputs and acceptance
 

@@ -1,6 +1,6 @@
 # Platforms, new sections and migrations
 
-Where the site gets built, how new pages join an existing site, and how to move platforms without losing search traffic. From coreyhaines31/marketingskills' `site-architecture` (MIT, references/platforms-and-migration.md), copied where quoted, with Google's site-move guide correcting the redirect and sitemap steps. The architecture (pages, hierarchy, URLs, internal links) comes first and doesn't depend on the platform: "Pick the platform that can carry the architecture you planned, not the other way round." The host and DNS side of a move is in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime); the launch audit around it is in [site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md).
+Where the site gets built, how new pages join an existing site, and how to move platforms without losing search traffic. From coreyhaines31/marketingskills' `site-architecture` (MIT, references/platforms-and-migration.md), copied where quoted, with Google's site-move guide correcting the redirect and sitemap steps. The architecture (pages, hierarchy, URLs, internal links) comes first and doesn't depend on the platform: "Pick the platform that can carry the architecture you planned, not the other way round." The host and DNS side of a move is in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/deployment/SKILL.md#moving-to-a-new-host-without-downtime); the launch audit around it is in [site-audit LAUNCH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/LAUNCH.md).
 
 ## Choosing where to build
 
@@ -79,7 +79,7 @@ A hosted router in front of the whole domain puts the vendor's edge in front of 
 
 - Watch Search Console for 404s and coverage drops daily for two weeks, then weekly; fix missing redirects as they appear [coreyhaines31/marketingskills, site-architecture].
 - Compare traffic to the same period before, by page. "A dip of a few weeks can be normal; a sustained drop on specific pages usually means a missing redirect or lost content." Google also expects temporary ranking fluctuation during a move ([site move](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)).
-- Update internal links to the new URLs instead of relying on redirects: "Change the internal links on the new site from the old URLs to the new URLs" (same page). Docs sites follow the same rule ([developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md#moving-and-removing-pages)).
+- Update internal links to the new URLs instead of relying on redirects: "Change the internal links on the new site from the old URLs to the new URLs" (same page). Docs sites follow the same rule ([developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/developer-docs/WRITING-AND-PUBLISHING.md#moving-and-removing-pages)).
 - Keep the redirects "for as long as possible", "generally at least 1 year" (same page).
 
 ## Prove it

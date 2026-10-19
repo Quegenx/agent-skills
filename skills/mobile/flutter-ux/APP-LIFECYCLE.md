@@ -7,7 +7,7 @@ What the running app shows users across failures and versions: a friendly error 
 ## Version notes
 
 - No article states a Flutter, Dart or package version. [FlutterPro](https://flutterpro.design/details/friendly-error-view)
-- `FriendlyErrorView` uses dot shorthands (`mainAxisSize: .min`, `mainAxisAlignment: .center`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)), and `Color.withValues(alpha:)`, which replaces `withOpacity` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
+- `FriendlyErrorView` uses dot shorthands (`mainAxisSize: .min`, `mainAxisAlignment: .center`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md)), and `Color.withValues(alpha:)`, which replaces `withOpacity` ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md)).
 - The samples import `package:flutter/material.dart`; Material is moving to its own package ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
 
 ## Replace the default error view
@@ -370,7 +370,7 @@ void getUser() {
 - Show the **build number**, not just the version ([flutter BUILD-AND-RELEASE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/BUILD-AND-RELEASE.md) has build name and build number).
 - No patch number means the user is on the store build.
 - Keep it dim: "This line should whisper to users."
-- It reads `PackageInfo.fromPlatform()` (`package_info_plus`) and `ShorebirdUpdater().readCurrentPatch()` in parallel with a record `.wait` ([dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md)), and sets tabular figures for the digits. The article names `ShorebirdUpdater` and `Patch` but not their package.
+- It reads `PackageInfo.fromPlatform()` (`package_info_plus`) and `ShorebirdUpdater().readCurrentPatch()` in parallel with a record `.wait` ([dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/ASYNC.md)), and sets tabular figures for the digits. The article names `ShorebirdUpdater` and `Patch` but not their package.
 
 Verbatim (put `VersionIndicator()` wherever you want it):
 
@@ -427,7 +427,7 @@ class _VersionIndicatorState extends State<VersionIndicator> {
 
 ## Changelog after update
 
-[FlutterPro](https://flutterpro.design/details/in-app-changelog): show a changelog after every update. "Without one, shipped features and fixed bugs stay in the shadow. And when changes came from user feedback, users get to see they were heard." This is the in-app sheet, not the store's What's New field ([app-store-connect](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md), [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md)).
+[FlutterPro](https://flutterpro.design/details/in-app-changelog): show a changelog after every update. "Without one, shipped features and fixed bugs stay in the shadow. And when changes came from user feedback, users get to see they were heard." This is the in-app sheet, not the store's What's New field ([app-store-connect](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-store-connect/SKILL.md), [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/SKILL.md)).
 
 [ApparenceKit](https://apparencekit.dev/blog/apparencekit-flutter-template-v5-release/) ships the same pattern as an "update log bottom sheet" to "show once to users what's new in the latest version of your app".
 

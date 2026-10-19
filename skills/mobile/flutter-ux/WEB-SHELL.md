@@ -148,7 +148,7 @@ class RouteTitle extends StatelessWidget {
 }
 ```
 
-`titleForPath` is yours: map the path to a readable name, with a fallback so the tab is never blank (a list-pattern `switch`, see [dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)):
+`titleForPath` is yours: map the path to a readable name, with a fallback so the tab is never blank (a list-pattern `switch`, see [dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md)):
 
 The source's `titleForPath` helper parses `Uri.parse(path).pathSegments`, maps `billing` to Billing, `project/<id>/insights` to Insights plus the ID, and `project/<id>` to that ID, with a nonblank app-name fallback. Its printed helper hardcoded a real product's brand, so that sample block is omitted; supply the selected app's name and route map. [FlutterPro](https://flutterpro.design/details/browser-tab-title)
 

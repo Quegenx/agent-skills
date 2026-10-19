@@ -45,7 +45,7 @@ Then check the journey: does the sequence of feelings *earn* the Monday takeaway
 
 - **Before:** post the "why this topic now" angle; invite specific people to the session; plan to meet the other speakers ("speaker-to-speaker is the strongest networking lane at any event").
 - **During:** end with one low-friction pointer, a memorable URL to the slides plus a related asset, which doubles as a lead magnet ([lead-magnets SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/lead-magnets/SKILL.md)). Note every Q&A question: it is content research.
-- **After:** publish the recording and a written version ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), clip the peak beats ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md)), and follow up within 24 to 48 hours with everyone who asked a question or approached you: "the warmest leads an event produces".
+- **After:** publish the recording and a written version ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), clip the peak beats ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md)), and follow up within 24 to 48 hours with everyone who asked a question or approached you: "the warmest leads an event produces".
 - **Roll the talk forward:** the same core talk, sharpened by each Q&A, can run a season. "Retire it when the Q&A stops surprising you."
 
 ## Prove it

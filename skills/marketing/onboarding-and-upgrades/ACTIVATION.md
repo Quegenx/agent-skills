@@ -1,6 +1,6 @@
 # Activation and onboarding
 
-Getting a new signup to the moment they "get it", fast: the principles, the psychology behind progress mechanics, the components to build from, how to find the activation event from data, the minimum path to value, the first 30 seconds, checklists, empty states and tours, email alongside the product, stalled users, and the audit format. From [coreyhaines31/marketingskills, onboarding] `SKILL.md` and `references/minimum-path-to-value.md` (MIT, Copyright (c) 2025 Corey Haines), which cites Amplitude's Compass docs for the aha-moment method; people it credits (BJ Fogg, Ramli John) are kept. Written for web products; app onboarding (permissions, store sign-in, push) is in [app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ONBOARDING.md). The signup form before onboarding is in [cro SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md).
+Getting a new signup to the moment they "get it", fast: the principles, the psychology behind progress mechanics, the components to build from, how to find the activation event from data, the minimum path to value, the first 30 seconds, checklists, empty states and tours, email alongside the product, stalled users, and the audit format. From [coreyhaines31/marketingskills, onboarding] `SKILL.md` and `references/minimum-path-to-value.md` (MIT, Copyright (c) 2025 Corey Haines), which cites Amplitude's Compass docs for the aha-moment method; people it credits (BJ Fogg, Ramli John) are kept. Written for web products; app onboarding (permissions, store sign-in, push) is in [app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ONBOARDING.md). The signup form before onboarding is in [cro SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md).
 
 **Contents:** [Principles](#principles) · [Psychology](#psychology) · [The toolkit](#the-toolkit) · [Defining activation](#defining-activation) · [Find the aha moment](#find-the-aha-moment) · [Minimum path to value](#minimum-path-to-value) · [The first 30 seconds](#the-first-30-seconds) · [Checklists, empty states and tours](#checklists-empty-states-and-tours) · [Email alongside the product](#email-alongside-the-product) · [Stalled users](#stalled-users) · [Measure it](#measure-it) · [Patterns by product type](#patterns-by-product-type) · [Output formats](#output-formats) · [Prove it](#prove-it)
 
@@ -96,7 +96,7 @@ Whatever you choose: a clear single next action, no dead ends, progress indicati
 
 - **Trigger-based emails:** welcome (immediate); incomplete onboarding (24h, 72h); activation achieved (celebration + next step); feature discovery (days 3, 7, 14).
 - **Email "should reinforce in-app actions, not duplicate them"**, drive back to the product with a specific CTA, and be personalized by actions taken.
-- **Sending and compliance** are in [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md); app push schedules in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md#retention-and-engagement).
+- **Sending and compliance** are in [email-practices SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md); app push schedules in [app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/RETENTION-AND-MONETIZATION.md#retention-and-engagement).
 
 ## Stalled users
 
@@ -124,13 +124,13 @@ The percentages are the source's illustration, not a benchmark. Fix the biggest 
 | Content platform | Follow/customize → Consume → Create → Engage |
 | Mobile app | Permissions → Quick win → Push setup → Habit loop |
 
-**The mobile row conflicts with app-growth's rule** "Ask for permissions in context; they are the #1 drop-off point. Push after activation, never on cold open" [eronred]; app-growth records all three views and keeps the in-context rule ([app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ONBOARDING.md)). Follow app-growth for apps.
+**The mobile row conflicts with app-growth's rule** "Ask for permissions in context; they are the #1 drop-off point. Push after activation, never on cold open" [eronred]; app-growth records all three views and keeps the in-context rule ([app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ONBOARDING.md)). Follow app-growth for apps.
 
 ## Output formats
 
 [coreyhaines31/marketingskills, onboarding]
 
-- **Onboarding audit:** for each issue, Finding → Impact → Recommendation → Priority. Write Priority on the P0 to P3 scale of [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md) (P0 blocks the primary task; P1 likely task failure; P2 meaningful friction; P3 minor craft).
+- **Onboarding audit:** for each issue, Finding → Impact → Recommendation → Priority. Write Priority on the P0 to P3 scale of [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md) (P0 blocks the primary task; P1 likely task failure; P2 meaningful friction; P3 minor craft).
 - **Onboarding flow design:** the activation goal, the step-by-step flow, checklist items, empty-state copy, email triggers, and the metrics plan.
 - **Ask first:** which early action predicts later retention, with what activation window and fully observed cohort; what happens right after signup; where users drop off; the activation target; whether a cohort comparison of retained vs churned users exists.
 

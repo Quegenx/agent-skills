@@ -209,7 +209,7 @@ People treat money differently based on its source or intended use, even though 
 
 **Pricing application**: "$1/day" feels cheaper than "$30/month." "Less than your morning coffee" reframes the expense. This is the source's price-framing application alongside the money-source/use definition above. [coreyhaines31/marketingskills, marketing-psychology]
 
-**Apple's limit** (official): for in-app subscriptions "the amount that will be billed must be the most prominent pricing element in the layout", and a breakdown price "should be displayed in a subordinate position and size" (https://developer.apple.com/app-store/subscriptions/, quoted in [app-growth PAYWALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/PAYWALLS.md)). A daily figure never outranks the billed amount in an app.
+**Apple's limit** (official): for in-app subscriptions "the amount that will be billed must be the most prominent pricing element in the layout", and a breakdown price "should be displayed in a subordinate position and size" (https://developer.apple.com/app-store/subscriptions/, quoted in [app-growth PAYWALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/PAYWALLS.md)). A daily figure never outranks the billed amount in an app.
 
 ### Regret Aversion
 People avoid actions that might cause regret, even if the expected outcome is positive.

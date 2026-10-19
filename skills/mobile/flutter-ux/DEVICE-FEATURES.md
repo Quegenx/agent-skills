@@ -209,7 +209,7 @@ class PlatformUtils {
 
 ## Keep the screen awake only where needed
 
-Dot shorthands in these recipes, including `rootTab == .compass` and `mode: .externalApplication`, need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
+Dot shorthands in these recipes, including `rootTab == .compass` and `mode: .externalApplication`, need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md)). [FlutterPro](https://flutterpro.design/details/adaptive-date-picker)
 
 [FlutterPro](https://flutterpro.design/details/keep-screen-awake): on some pages users look at the screen for a long time without touching it: a video player, a live call, navigation, a reading page. Keep the screen awake there with [wakelock_plus](https://pub.dev/packages/wakelock_plus).
 

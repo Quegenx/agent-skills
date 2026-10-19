@@ -6,7 +6,7 @@ Polish for scrolling screens in Flutter: bottom breathing room instead of `SafeA
 
 ## Version notes
 
-- The articles state no Flutter or Dart version. Several samples use dot shorthands (`.symmetric(horizontal: 24)`, `.only(...)`, `.all(24)`, `.topCenter`, `.dstIn`, `.vertical`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)); `separatorBuilder: (_, _) => ...` needs wildcard variables, 3.7+. The others use full names. [FlutterPro](https://flutterpro.design/details/safe-area-replacement)
+- The articles state no Flutter or Dart version. Several samples use dot shorthands (`.symmetric(horizontal: 24)`, `.only(...)`, `.all(24)`, `.topCenter`, `.dstIn`, `.vertical`), which need Dart language version 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md)); `separatorBuilder: (_, _) => ...` needs wildcard variables, 3.7+. The others use full names. [FlutterPro](https://flutterpro.design/details/safe-area-replacement)
 - The samples import `package:flutter/material.dart`; `MaterialScrollBehavior`, `Scrollbar`, `Colors` and `MaterialApp` would move with Material to its own package ([flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#material-and-cupertino-as-packages)). Check at copy time.
 - `textScaler` with `TextScaler.clamp(maxScaleFactor:)` is the current API; `MediaQueryData.textScaleFactor` is deprecated ("Use textScaler instead", deprecated after v3.12.0-2.0.pre). [api.flutter.dev](https://api.flutter.dev/flutter/widgets/MediaQueryData/textScaleFactor.html)
 

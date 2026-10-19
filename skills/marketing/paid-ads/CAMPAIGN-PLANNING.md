@@ -24,7 +24,7 @@ Ask only what `.agents/product-context.md` doesn't answer [coreyhaines31/marketi
 | X | Tech audiences, thought leadership | The audience is active on X, timely content |
 | TikTok | Younger demographics, video creative | The audience skews 18 to 34, video capacity |
 
-[coreyhaines31/marketingskills, ads]. Search harvests existing demand and cannot create it: with near-zero search volume, put the budget upstream on social ([GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#capture-before-you-create)). Before committing to a new channel, run a ~$100 test to learn its real CPC and CPM for your targeting ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#channel-selection)). App installs: [app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/SKILL.md).
+[coreyhaines31/marketingskills, ads]. Search harvests existing demand and cannot create it: with near-zero search volume, put the budget upstream on social ([GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#capture-before-you-create)). Before committing to a new channel, run a ~$100 test to learn its real CPC and CPM for your targeting ([B2B-ACQUISITION.md](B2B-ACQUISITION.md#channel-selection)). App installs: [app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/SKILL.md).
 
 ## Audience knowledge goes into creative first
 
@@ -102,7 +102,7 @@ Wherever people can search your name, split brand from non-brand before you eval
 
 - **Report blended, optimize on non-brand.** Blended ROAS or CAC is the honest top-line number for the whole account; targets, bids and budgets are set on non-brand ROAS, or cheap brand conversions loosen every target and hide non-brand waste.
 - **Never report a low brand CPA as a win** unless you measure incrementality, for example a brand-campaign holdout. The brand pause test for Search is in [GOOGLE-SEARCH.md](GOOGLE-SEARCH.md#brand-bidding-and-the-pause-test).
-- app-growth's Apple Ads scale gate uses "brand ROAS > 1.0×" ([app-growth APPLE-ADS-OPTIMIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/APPLE-ADS-OPTIMIZATION.md)); the same caution applies there: brand ROAS is not incremental.
+- app-growth's Apple Ads scale gate uses "brand ROAS > 1.0×" ([app-growth APPLE-ADS-OPTIMIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/APPLE-ADS-OPTIMIZATION.md)); the same caution applies there: brand ROAS is not incremental.
 
 ## Scaling on net cash
 
@@ -142,7 +142,7 @@ From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], correct
 
 - Foundation: the source says "Business Manager"; business verification if the ad types need it, ad account, payment, roles.
 - Pixel: on all pages; standard events PageView, ViewContent, Lead, Purchase, AddToCart and InitiateCheckout for ecommerce; Conversions API; test events in Events Manager. The source's "Event Match Quality score > 6" is a practitioner bar: no Meta threshold was found.
-- Aggregated Event Measurement: the source requires domain verification and "Top 8 events prioritized ... for iOS 14+". Jon Loomer (jonloomer.com) reports that in 2025 Meta stopped requiring web event prioritization and domain verification and removed the AEM tab; no Meta help page confirmed it, so check Events Manager before doing either. App campaigns are separate ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#ios-14-skadnetwork-and-aem)).
+- Aggregated Event Measurement: the source requires domain verification and "Top 8 events prioritized ... for iOS 14+". Jon Loomer (jonloomer.com) reports that in 2025 Meta stopped requiring web event prioritization and domain verification and removed the AEM tab; no Meta help page confirmed it, so check Events Manager before doing either. App campaigns are separate ([app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md#ios-14-skadnetwork-and-aem)).
 - Audiences: website visitors (30, 60, 90, 180 days), key pages, video viewers, engagers, customer list; lookalikes (1%, 1 to 3%); saved audiences.
 - Catalog (ecommerce): connected, feed updating, catalog sales and dynamic product ads.
 - Compliance: the source lists Special Ad Categories as "housing, credit, employment, politics". Meta: "The Credit Special Ad Category has been replaced by the Financial Products and Services category", required since January 21, 2025 for advertisers based in the US or targeting the US (https://www.facebook.com/business/help/399587795372584). Ads about social issues, elections or politics go through their own authorization. The landing page and ads must follow Meta's policies.

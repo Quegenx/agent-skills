@@ -1,6 +1,6 @@
 # Web search without a browser
 
-From [browserbase/skills, search and company-research], with the current [Browserbase Search documentation](https://docs.browserbase.com/platform/search/overview) and [Node SDK source](https://github.com/browserbase/sdk-node/blob/main/src/resources/search.ts). These are provider adapters; targeting and research evidence policy remain in [web-research](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/SKILL.md).
+From [browserbase/skills, search and company-research], with the current [Browserbase Search documentation](https://docs.browserbase.com/platform/search/overview) and [Node SDK source](https://github.com/browserbase/sdk-node/blob/main/src/resources/search.ts). These are provider adapters; targeting and research evidence policy remain in [web-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/SKILL.md).
 
 ## Search, then fetch
 
@@ -35,9 +35,9 @@ From [browserbase/skills, search and company-research], with the current [Browse
 
 [browserbase/skills, company-research/references/research-patterns.md; company-research/scripts/list_urls.mjs; competitor-analysis/scripts/list_urls.mjs]
 
-The source's command shape is `browse cloud search "{q}" --num-results 25 --output /tmp/company_discovery_batch_{N}.json`. Its result-count argument and batch path are source-example values; choose the actual mode quota and run-owned output from [web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#discovering-targets), rather than treating 25 as a universal research setting.
+The source's command shape is `browse cloud search "{q}" --num-results 25 --output /tmp/company_discovery_batch_{N}.json`. Its result-count argument and batch path are source-example values; choose the actual mode quota and run-owned output from [web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVIDENCE.md#discovering-targets), rather than treating 25 as a universal research setting.
 
-The source research instructions describe `{ requestId, query, results: [{ url, title, author, publishedDate }] }` in one version and result records containing `{ id, url, title, image, favicon }` in another. Its `list_urls.mjs` adapter accepts a flat array or `{results:[...]}`. Keep these source/CLI input variants distinct from the REST and Node SDK contract above; inspect actual output before parsing it. The upstream [company helper](https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/list_urls.mjs) and [competitor helper](https://github.com/browserbase/skills/blob/main/skills/competitor-analysis/scripts/list_urls.mjs) are not installed with this prose skill. Research owns the [hostname dedup and homepage-selection requirements](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#dedup-by-domain).
+The source research instructions describe `{ requestId, query, results: [{ url, title, author, publishedDate }] }` in one version and result records containing `{ id, url, title, image, favicon }` in another. Its `list_urls.mjs` adapter accepts a flat array or `{results:[...]}`. Keep these source/CLI input variants distinct from the REST and Node SDK contract above; inspect actual output before parsing it. The upstream [company helper](https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/list_urls.mjs) and [competitor helper](https://github.com/browserbase/skills/blob/main/skills/competitor-analysis/scripts/list_urls.mjs) are not installed with this prose skill. Research owns the [hostname dedup and homepage-selection requirements](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVIDENCE.md#dedup-by-domain).
 
 ## Prove it
 

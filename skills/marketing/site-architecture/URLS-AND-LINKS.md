@@ -14,7 +14,7 @@ URLs and links are the structure search engines and people actually walk. This f
 6. **Short but descriptive:** `/blog/landing-page-conversions` over `/blog/how-to-improve-landing-page-conversion-rates` (the source's opinion).
 7. **Trim parameters that don't change the content** ([url-structure](https://developers.google.com/search/docs/crawling-indexing/url-structure)).
 
-On the owner's sites, "The default language has no path prefix, the second lives under its code (`/en`)" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); the patterns below say nothing about locale and must not override it. The canonical host (apex or `www`) is decided in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#moving-to-a-new-host-without-downtime).
+On the owner's sites, "The default language has no path prefix, the second lives under its code (`/en`)" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); the patterns below say nothing about locale and must not override it. The canonical host (apex or `www`) is decided in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/deployment/SKILL.md#moving-to-a-new-host-without-downtime).
 
 ## Patterns by page type
 

@@ -40,7 +40,7 @@ Check first-party facts against your current product material and claims about t
 
 ## Severity
 
-The source's Critical, High, Medium and Low are written here as P0 to P3, the repo's scale ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md)).
+The source's Critical, High, Medium and Low are written here as P0 to P3, the repo's scale ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md)).
 
 | Level | Examples |
 |---|---|

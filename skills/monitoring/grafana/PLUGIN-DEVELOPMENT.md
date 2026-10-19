@@ -50,7 +50,7 @@ Custom scene objects extend SceneObjectBase, expose a renderer through Component
 
 [https://grafana.com/developers/plugin-tools/key-concepts/best-practices]
 
-Use Grafana UI components, Emotion and Grafana theme tokens inside a plugin so it follows its host. Avoid global styles that affect other plugins. This is a host-specific contract, not a generic product-design replacement. Use the existing [package installation boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/PACKAGE-INSTALLS.md) for any dependency change.
+Use Grafana UI components, Emotion and Grafana theme tokens inside a plugin so it follows its host. Avoid global styles that affect other plugins. This is a host-specific contract, not a generic product-design replacement. Use the existing [package installation boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/PACKAGE-INSTALLS.md) for any dependency change.
 
 ## Prove it
 

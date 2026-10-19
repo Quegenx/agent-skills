@@ -1,6 +1,6 @@
 # React Native and Expo: lists, state, native UI and project setup
 
-React Native and Expo code that isn't motion: render crashes, virtualized lists, state, native navigators, sheets, safe areas, menus, styling, images, fonts and monorepos. The source is Vercel's `react-native-skills` (36 rule files, tagged [Vercel, react-native-skills]), checked against reactnative.dev, docs.expo.dev, the Reanimated, Gesture Handler and FlashList docs and React Navigation 7; each correction gives the official form, its URL and what the source said. Motion (Reanimated, gestures, springs, sheets that drag, screen transitions, haptics) is in [ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md) and is not repeated here; tests on a device are in [maestro MAESTRO.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/maestro/MAESTRO.md). The source ranks its rules CRITICAL, HIGH, MEDIUM and LOW; the two render crashes below are its CRITICAL tier.
+React Native and Expo code that isn't motion: render crashes, virtualized lists, state, native navigators, sheets, safe areas, menus, styling, images, fonts and monorepos. The source is Vercel's `react-native-skills` (36 rule files, tagged [Vercel, react-native-skills]), checked against reactnative.dev, docs.expo.dev, the Reanimated, Gesture Handler and FlashList docs and React Navigation 7; each correction gives the official form, its URL and what the source said. Motion (Reanimated, gestures, springs, sheets that drag, screen transitions, haptics) is in [REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md) and is not repeated here; tests on a device are in [maestro MAESTRO.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/maestro/MAESTRO.md). The source ranks its rules CRITICAL, HIGH, MEDIUM and LOW; the two render crashes below are its CRITICAL tier.
 
 **Contents:** [Before you change an app](#before-you-change-an-app) · [Render crashes](#render-crashes) · [Lists](#lists) · [State](#state) · [Measuring views](#measuring-views) · [Navigation](#navigation) · [Sheets and modals](#sheets-and-modals) · [Safe areas and insets](#safe-areas-and-insets) · [Pressables and menus](#pressables-and-menus) · [Styling](#styling) · [Images](#images) · [Design-system components](#design-system-components) · [Fonts and formatters](#fonts-and-formatters) · [Monorepos](#monorepos) · [Motion rules in this source](#motion-rules-in-this-source) · [Prove it](#prove-it)
 
@@ -167,7 +167,7 @@ LegendList also takes `getEstimatedItemSize={(index, item, itemType) => ...}` pe
 
 [Vercel, react-native-skills] "State should be the minimal source of truth. Everything else is derived." Deriving during render instead of syncing in an Effect is defined in [EFFECTS-AND-STATE.md](EFFECTS-AND-STATE.md#you-might-not-need-an-effect) ([react.dev, choosing the state structure](https://react.dev/learn/choosing-the-state-structure)).
 
-The same rule for UI state: store `isExpanded`, derive `const height = isExpanded ? 200 : 0`, never `setHeight` in an effect. State names what is true (`pressed`, `progress`, `isOpen`), not its visual output (`scale`, `opacity`, `translateY`). The shared-value half of this rule (`pressed` 0 to 1 driving `interpolate`) is motion: [ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md#keep-it-off-the-js-thread).
+The same rule for UI state: store `isExpanded`, derive `const height = isExpanded ? 200 : 0`, never `setHeight` in an effect. State names what is true (`pressed`, `progress`, `isOpen`), not its visual output (`scale`, `opacity`, `translateY`). The shared-value half of this rule (`pressed` 0 to 1 driving `interpolate`) is motion: [REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md#keep-it-off-the-js-thread).
 
 ### Fallback state instead of a copied initial value
 
@@ -212,7 +212,7 @@ const onLayout = (e: LayoutChangeEvent) => {
 
 ### Scroll position that nothing renders
 
-[Vercel, react-native-skills] "Never store scroll position in `useState`." When nothing on screen reads it, keep it in a ref: `scrollY.current = e.nativeEvent.contentOffset.y`. When something animates from it, it's a shared value ([ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md#keep-it-off-the-js-thread)).
+[Vercel, react-native-skills] "Never store scroll position in `useState`." When nothing on screen reads it, keep it in a ref: `scrollY.current = e.nativeEvent.contentOffset.y`. When something animates from it, it's a shared value ([REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md#keep-it-off-the-js-thread)).
 
 **`scrollEventThrottle`, corrected** ([ScrollView](https://reactnative.dev/docs/scrollview)): the default is `0`, and "Values ≤ `16` will disable throttling, regardless of the refresh rate of the device." So `16` means unthrottled, not a 60 fps cap. The source's comment beside `16` said "higher number has better performance, but it fires less often", which holds only above 16.
 
@@ -251,7 +251,7 @@ function MeasuredBox({ children }: { children: React.ReactNode }) {
 }
 ```
 
-**Version, unconfirmed:** the source labels `getBoundingClientRect()` "RN 0.82+" with `measure()` as the older path. The [element nodes](https://reactnative.dev/docs/element-nodes) page lists `getBoundingClientRect()` and puts `measure()` under "Legacy API", but states no version. Text scaling and measured heights are in [ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md#reduced-motion-and-text-size).
+**Version, unconfirmed:** the source labels `getBoundingClientRect()` "RN 0.82+" with `measure()` as the older path. The [element nodes](https://reactnative.dev/docs/element-nodes) page lists `getBoundingClientRect()` and puts `measure()` under "Legacy API", but states no version. Text scaling and measured heights are in [REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md#reduced-motion-and-text-size).
 
 ## Navigation
 
@@ -283,7 +283,7 @@ export default function TabLayout() {
 }
 ```
 
-**`NativeTabs`, corrected** ([Expo native tabs](https://docs.expo.dev/router/advanced/native-tabs/)): SDK 58 and later import from `expo-router/native-tabs`; SDK 54 to 57 use `expo-router/unstable-native-tabs`, the only path the source gave. `NativeTabs.Trigger.Label` is SDK 55 and later. `Icon` takes `sf`, `md`, `src`, `xcasset`, `drawable`, or `{ default, selected }`. On iOS, native tabs turn on automatic content insets for the first `ScrollView` of each tab screen; `disableAutomaticContentInsets` on the trigger turns that off, and then "you must manage safe area insets manually". All tab screens render eagerly, and that can't be changed; the motion consequence is in [ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md#pick-the-tool).
+**`NativeTabs`, corrected** ([Expo native tabs](https://docs.expo.dev/router/advanced/native-tabs/)): SDK 58 and later import from `expo-router/native-tabs`; SDK 54 to 57 use `expo-router/unstable-native-tabs`, the only path the source gave. `NativeTabs.Trigger.Label` is SDK 55 and later. `Icon` takes `sf`, `md`, `src`, `xcasset`, `drawable`, or `{ default, selected }`. On iOS, native tabs turn on automatic content insets for the first `ScrollView` of each tab screen; `disableAutomaticContentInsets` on the trigger turns that off, and then "you must manage safe area insets manually". All tab screens render eagerly, and that can't be changed; the motion consequence is in [REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md#pick-the-tool).
 
 ## Sheets and modals
 
@@ -301,7 +301,7 @@ export default function TabLayout() {
 />
 ```
 
-React Navigation's `formSheet` "Uses "BottomSheetBehavior" on Android and "UIModalPresentationFormSheet" … on iOS", with `sheetAllowedDetents` as `'fitToContents'` or fractions ([native stack navigator](https://reactnavigation.org/docs/native-stack-navigator/)). Motion recipes are in [ui-animation REACT-NATIVE-RECIPES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE-RECIPES.md#screen-transitions).
+React Navigation's `formSheet` "Uses "BottomSheetBehavior" on Android and "UIModalPresentationFormSheet" … on iOS", with `sheetAllowedDetents` as `'fitToContents'` or fractions ([native stack navigator](https://reactnavigation.org/docs/native-stack-navigator/)). Motion recipes are in [REACT-NATIVE-MOTION-RECIPES.md](REACT-NATIVE-MOTION-RECIPES.md#screen-transitions).
 
 - **`formSheet` differs by platform** ([Expo modals](https://docs.expo.dev/router/advanced/modals/)): Android caps detents at three; `sheetGrabberVisible` is iOS-only; Android form sheets can't host native headers or nested stacks; `fitToContents` needs explicitly sized content, not a `flex: 1` root.
 
@@ -463,19 +463,19 @@ Then `npx expo prebuild` and rebuild; `<Text style={{ fontFamily: 'Geist-Bold' }
 
 - **Native dependencies and autolinking, corrected for Expo** ([Expo autolinking](https://docs.expo.dev/modules/autolinking/)). The source: "Autolinking only scans the app's `node_modules`", so a native package used by `packages/ui` must also be listed in `packages/app`. Since SDK 54, Expo autolinking "resolves the dependencies of your app and any dependency or peer dependency recursively", matching Node resolution; "Before SDK 54, Expo Autolinking didn't search dependencies recursively and only resolved your app's direct dependencies"; `legacy_shallowReactNativeLinking` restores that for React Native modules. With two versions of a native module, "your JavaScript bundle may contain both versions of the native module", and "This might cause runtime crashes and risks incompatibilities." React Native CLI projects without Expo were not checked.
 - **One version of each native module.** "Only one version of a native module can be compiled for an app build at a time" ([Expo monorepos](https://docs.expo.dev/guides/monorepos/)); "Duplicate React versions in a single app will cause runtime errors." In SDK 54, `experiments.autolinkingModuleResolution: true` in app.json is opt-in; "From SDK 55, this is enabled automatically for apps in monorepos."
-- **Single versions across the repo** [Vercel, react-native-skills]: exact versions without `^` or `~`, enforced with syncpack, a root `pnpm.overrides`, or yarn `resolutions` "as a last resort". Expo's monorepo guide uses `resolutions` (npm: `overrides`) to force one `react`. The source's pin, `react-native-reanimated` 3.16.1, is Reanimated 3; Reanimated 4 is current ([ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md#setup-that-silently-breaks-motion)).
+- **Single versions across the repo** [Vercel, react-native-skills]: exact versions without `^` or `~`, enforced with syncpack, a root `pnpm.overrides`, or yarn `resolutions` "as a last resort". Expo's monorepo guide uses `resolutions` (npm: `overrides`) to force one `react`. The source's pin, `react-native-reanimated` 3.16.1, is Reanimated 3; Reanimated 4 is current ([REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md#setup-that-silently-breaks-motion)).
 
 ## Motion rules in this source
 
-The source's animation rules belong to [ui-animation REACT-NATIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE.md), which already states the correct forms. Where this source is wrong:
+The source's animation rules belong to [REACT-NATIVE-MOTION.md](REACT-NATIVE-MOTION.md), which already states the correct forms. Where this source is wrong:
 
 - **Non-layout properties:** the source says only `transform` and `opacity` avoid layout. Reanimated: "Animating non-layout properties (like `transform`, `opacity` or `backgroundColor`) is generally more performant… the latter group requires an additional step of layout recalculation" ([performance guide](https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/)). Its `scaleY` collapse on a fixed `height: 200` box still takes 200 in layout.
 - **`interpolate(withTiming(...), ...)` is invalid:** "withTiming returns an animation object" ([withTiming](https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming/)), not a number. Interpolate the shared value: `interpolate(pressed.get(), [0, 1], [1, 0.95])`.
 - **`runOnJS`** is deprecated in Reanimated 4; use `scheduleOnRN` ([migration from 3.x](https://docs.swmansion.com/react-native-reanimated/docs/guides/migration-from-3.x/)).
 - **Gesture builders rebuilt every render:** memoize gesture objects, or use the Gesture Handler 3 hooks (`useTapGesture`), which have Reanimated integration on by default ([Reanimated interactions](https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/reanimated-interactions/)).
 - **A shared value read in JSX** (``title={`Count: ${count.get()}`}``, the source's "Correct" example) breaks "Don't read or modify the value of a shared value during a component's render" ([useSharedValue](https://docs.swmansion.com/react-native-reanimated/docs/core/useSharedValue/)).
-- **Derive, react only for side effects** [Vercel, react-native-skills]: "When deriving a shared value from another, use `useDerivedValue`… Use `useAnimatedReaction` only for side effects that don't produce a value (e.g., triggering haptics, logging…)", as the threshold recipe in ui-animation does.
-- **Press feedback, both ways.** The source drives press scale with `GestureDetector`, `Gesture.Tap()` and shared values "instead of Pressable's `onPressIn`/`onPressOut`… no JS thread round-trip". [ui-animation REACT-NATIVE-RECIPES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/REACT-NATIVE-RECIPES.md#press-feedback) uses `Pressable` with a Reanimated CSS transition: "A press scale is a CSS transition; a drag is a shared value", and `setState` "fires twice per press, not per frame". ui-animation's rule stays the default.
+- **Derive, react only for side effects** [Vercel, react-native-skills]: "When deriving a shared value from another, use `useDerivedValue`… Use `useAnimatedReaction` only for side effects that don't produce a value (e.g., triggering haptics, logging…)", as the [native threshold recipe](REACT-NATIVE-MOTION-RECIPES.md#fire-once-at-a-threshold) does.
+- **Press feedback, both ways.** The source drives press scale with `GestureDetector`, `Gesture.Tap()` and shared values "instead of Pressable's `onPressIn`/`onPressOut`… no JS thread round-trip". [REACT-NATIVE-MOTION-RECIPES.md](REACT-NATIVE-MOTION-RECIPES.md#press-feedback) uses `Pressable` with a Reanimated CSS transition: "A press scale is a CSS transition; a drag is a shared value", and `setState` "fires twice per press, not per frame". The native-motion reference's press-feedback rule stays the default.
 
 ## Prove it
 

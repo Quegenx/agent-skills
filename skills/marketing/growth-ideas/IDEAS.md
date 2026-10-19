@@ -291,7 +291,7 @@ The full idea library, one line each, by category. Source: [coreyhaines31/market
 
 123. **Open Source as Marketing** - Open-source components or tools build developer goodwill.
 
-124. **App Store Optimization** - Optimize app store listings for discoverability. How: [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md).
+124. **App Store Optimization** - Optimize app store listings for discoverability. How: [aso](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/SKILL.md).
 
 125. **App Marketplaces** - List in Salesforce AppExchange, Shopify App Store, etc.
 

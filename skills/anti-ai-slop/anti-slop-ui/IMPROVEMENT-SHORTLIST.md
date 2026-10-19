@@ -1,16 +1,16 @@
 # An evidence-backed UI improvement shortlist
 
-Use this for a short list of changes someone will see or feel in an existing product. The method comes from [fluid-functionalism], `references/stack-audit.md`, `scripts/stack.mjs` and `scripts/audit.mjs`, with Libraries.dev's free review format kept as the alternate view below. A cross-discipline verdict review stays in [REVIEW.md](REVIEW.md); this workflow produces an improvement shortlist. Fresh facts and approved decision storage follow [repository audit policy](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REPOSITORY-AUDIT.md#facts-are-read-never-remembered).
+Use this for a short list of changes someone will see or feel in an existing product. The method comes from [fluid-functionalism], `references/stack-audit.md`, `scripts/stack.mjs` and `scripts/audit.mjs`, with Libraries.dev's free review format kept as the alternate view below. A cross-discipline verdict review stays in [REVIEW.md](REVIEW.md); this workflow produces an improvement shortlist. Fresh facts and approved decision storage follow [repository audit policy](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REPOSITORY-AUDIT.md#facts-are-read-never-remembered).
 
 ## Inventory the product surface
 
-The following exclusion list belongs to the source's UI inventory. A broader repository audit still inspects the relevant tests, scripts and configuration under [repository audit scope](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REPOSITORY-AUDIT.md#scope-intent-and-expected-load). [fluid-functionalism, stack.mjs; shadcn/improve, SKILL.md]
+The following exclusion list belongs to the source's UI inventory. A broader repository audit still inspects the relevant tests, scripts and configuration under [repository audit scope](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REPOSITORY-AUDIT.md#scope-intent-and-expected-load). [fluid-functionalism, stack.mjs; shadcn/improve, SKILL.md]
 
 - **Read product code only:** "Product code only: tests and stories are not what people use, and fixtures in them (a template that loads Inter, say) would read as the app's own." The walk skips `node_modules`, `.git`, `.next`, `.turbo`, `.vercel`, `.output`, `.cache`, `.svelte-kit`, `.agents`, `.claude`, `dist`, `build`, `out`, `coverage`, `public`, `storybook-static`, `__tests__`, `__mocks__`, `tests`, `e2e` and any other directory whose name starts with a dot; it reads only `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs`, `.css` and `.html` files, skips `.d.ts` and names matching `/\.(test|spec|stories)\.[cm]?[jt]sx?$/`, stops at 8,000 files and skips any file over 400,000 bytes [fluid-functionalism, stack.mjs].
 
 ## Measure before you advise
 
-Measure what source cannot settle, in bounded passes (once before advising, once after a change, then stop), and file an entry that needed a measurement the app could not give as a `check:` question rather than a finding [fluid-functionalism, stack-audit.md]. The quotes and the script are in [browser-ui-qa UI-INVARIANT-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/UI-INVARIANT-AUDIT.md#what-it-cannot-see).
+Measure what source cannot settle, in bounded passes (once before advising, once after a change, then stop), and file an entry that needed a measurement the app could not give as a `check:` question rather than a finding [fluid-functionalism, stack-audit.md]. The quotes and the script are in [browser-ui-qa UI-INVARIANT-AUDIT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/browser-ui-qa/UI-INVARIANT-AUDIT.md#what-it-cannot-see).
 
 ## The evidence gate
 
@@ -37,7 +37,7 @@ Measure what source cannot settle, in bounded passes (once before advising, once
 - **Two to five items:** "Two to five is a hard band: one suggestion reads as an afterthought, six reads as a rewrite plan. If fewer than two genuine candidates exist, say so; never pad."
 - **UI only:** "Every slot goes to something the user sees or feels. Infrastructure findings (dead dependencies, package-manager notes, framework or Tailwind migrations, icon-library consolidation) are stated as stack facts, but they never occupy a shortlist slot and never lead the conversation."
 - **Systems before components:** "one system adopted lifts every surface at once, and components installed afterwards land on rails that already exist."
-- **Impact and effort:** impact "(high / medium / low): how much the user would actually feel it", written on this repo's scale as P1, P2 and P3 ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output)); effort S, M or L, where S is "few call sites", M "several call sites or a moderate API distance" and L a "heavily customized local component …, many call sites, or a blocked install". "Rank by impact-per-effort … a medium-impact S usually belongs above a high-impact L."
+- **Impact and effort:** impact "(high / medium / low): how much the user would actually feel it", written on this repo's scale as P1, P2 and P3 ([code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md#tags-and-output)); effort S, M or L, where S is "few call sites", M "several call sites or a moderate API distance" and L a "heavily customized local component …, many call sites, or a blocked install". "Rank by impact-per-effort … a medium-impact S usually belongs above a high-impact L."
 - **At most two craft details per entry,** and "Only cite what the project actually lacks". "Reading the current component first is what makes the pitch credible."
 - **In the reply, not a file,** "under ~40 lines", led by a table `| Now | Replace with | Impact | Effort | Why | Evidence |`.
 
@@ -59,4 +59,4 @@ Libraries.dev's free skill reviews a project by grepping each library's fit sign
 
 ## Prove it
 
-Each shortlist entry carries an `evidence:` line with a route and width or a `file:line` that still matches when re-opened; the shortlist holds two to five UI items or says why not, with infrastructure outside it. Recorded decisions follow the [existing-notes policy](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REPOSITORY-AUDIT.md#only-decisions-persist). [fluid-functionalism, stack-audit.md]
+Each shortlist entry carries an `evidence:` line with a route and width or a `file:line` that still matches when re-opened; the shortlist holds two to five UI items or says why not, with infrastructure outside it. Recorded decisions follow the [existing-notes policy](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REPOSITORY-AUDIT.md#only-decisions-persist). [fluid-functionalism, stack-audit.md]

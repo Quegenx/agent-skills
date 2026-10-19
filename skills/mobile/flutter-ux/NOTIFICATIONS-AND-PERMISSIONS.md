@@ -89,7 +89,7 @@ final XFile? photo = await ImagePicker().pickImage(
 );
 ```
 
-- **`source: .gallery`** is a dot shorthand, which needs Dart 3.10 ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md#dot-shorthands)); on older SDKs write `ImageSource.gallery`.
+- **`source: .gallery`** is a dot shorthand, which needs Dart 3.10 ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/LANGUAGE.md#dot-shorthands)); on older SDKs write `ImageSource.gallery`.
 - **Android versions** ([image_picker_android 0.8.13+25](https://pub.dev/packages/image_picker_android)): "On Android 16 and above, gallery image, video, and mixed-media picks always use the Android Photo Picker. `ImagePickerAndroid.useAndroidPhotoPicker` has no effect on those versions." On Android 15 and below the flag turns it on; set it "before calling any `image_picker` APIs", and it is also required for the `limit` option. The imports are `package:image_picker_android/image_picker_android.dart` and `package:image_picker_platform_interface/image_picker_platform_interface.dart`.
 - **Ask for gallery permission only when the app needs the whole library,** like a backup app [FlutterPro](https://flutterpro.design/details/native-photo-picker). Google Play says the same for `READ_MEDIA_IMAGES` ([google-play POLICY-AND-PREFLIGHT.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/google-play/POLICY-AND-PREFLIGHT.md)).
 
@@ -99,7 +99,7 @@ You get one shot at the system dialog. "On iOS, after "Don't Allow" it never sho
 
 - **After a value moment** [FlutterPro](https://flutterpro.design/details/notification-permission-priming): "Don't ask for notification permission when the app opens. The user just got here, they have no reason to say yes." Ask when the benefit is obvious: right after an order is placed, for "Get order status updates"; in the author's prayer-times app, when the user configures prayer times, with examples of the daily reminders for the 5 prayers.
 - **At launch or after sign-in** [ApparenceKit](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/): "For notifications I like to ask it right after app launches or after he has signed in. And that's the same on iOS, Android and web."
-- **After a value moment, never first launch** (OneSignal, [onesignal PERMISSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/PERMISSIONS.md#principles)) and **after activation, never on cold open** ([app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md)).
+- **After a value moment, never first launch** (OneSignal, [onesignal PERMISSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/onesignal/PERMISSIONS.md#principles)) and **after activation, never on cold open** ([app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/RETENTION-AND-MONETIZATION.md)).
 
 How often to re-ask also differs:
 

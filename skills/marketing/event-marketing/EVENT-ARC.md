@@ -21,7 +21,7 @@ Mixed roles are normal (sponsor and speak, attend and host a dinner). Plan each 
 
 [coreyhaines31/marketingskills, events] Where pipeline is actually made.
 
-- **Build the target list:** who's attending that matches your ICP (attendee lists, speaker lists, "who's going" posts, past-year attendees). Researching a speaker list is [web-research EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVENTS.md).
+- **Build the target list:** who's attending that matches your ICP (attendee lists, speaker lists, "who's going" posts, past-year attendees). Researching a speaker list is [web-research EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVENTS.md).
 - **Book meetings before you arrive:** "A meeting booked two weeks out is worth ten hopeful hallway collisions." The ask is specific, low-friction and time-boxed ("15 min at the coffee bar Tuesday"). The outreach email follows [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md) and the law in [SPONSORSHIP.md](SPONSORSHIP.md#lawful-follow-up).
 - **Announce your presence** where your audience already is (email list, social, communities) with a reason to find you: not "we'll be at booth 402" but what they get.
 
@@ -75,7 +75,7 @@ Two rules outrank the format:
 
 - **Record everything you're allowed to record.** "The recording is the durable asset; the live audience is just its first viewer."
 - **Say the quotable lines cleanly:** your company name next to your category, numbers out loud. The source holds that published transcripts "get crawled and cited by AI assistants"; that is its claim, not a measured mechanism ([ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md)).
-- **Slice the recording:** clips ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md)), a recap post per session ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), pull-quotes for social ([social-media SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md)), proof points for sales ([sales-enablement SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md)).
+- **Slice the recording:** clips ([marketing-video SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md)), a recap post per session ([content-strategy SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/content-strategy/SKILL.md)), pull-quotes for social ([social-media SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/social-media/SKILL.md)), proof points for sales ([sales-enablement SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/SKILL.md)).
 - **Collect social proof:** testimonials captured at the event are "the most natural you'll ever get".
 
 ## Measurement

@@ -80,7 +80,7 @@ ListView.builder(
 - **Flutter does all work on the main isolate by default** and adds a "paint frame" event 60 times per second. Work that cannot finish in a frame gap should move to another isolate.
 - **"There is only one hard rule for when you should use isolates, and that's when large computations are causing your Flutter application to experience UI jank."**
 - **Common uses:** reading from a local database, sending push notifications, parsing or decoding large files, processing or compressing photos, audio and video, converting media, async support with FFI, filtering complex lists or filesystems.
-- **Message copying, immutable values and ownership transfer:** use the canonical [Dart isolate mechanics](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md#isolates).
+- **Message copying, immutable values and ownership transfer:** use the canonical [Dart isolate mechanics](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/ASYNC.md#isolates).
 
 ```dart
 // Produces a list of 211,640 photo objects.
@@ -95,7 +95,7 @@ Future<List<Photo>> getPhotos() async {
 }
 ```
 
-- **Repeated work:** use the canonical [long-lived worker and port mechanics](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md#long-lived-isolates); the Flutter source also names `worker_manager`, `isolate_agents` and `IsolateNameServer`.
+- **Repeated work:** use the canonical [long-lived worker and port mechanics](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/ASYNC.md#long-lived-isolates); the Flutter source also names `worker_manager`, `isolate_agents` and `IsolateNameServer`.
 - **On-device models in an adaptive UI** (community practice, [LAYOUT-AND-RESPONSIVE.md](LAYOUT-AND-RESPONSIVE.md#context-aware-layouts-optional)): "Keep the model small and quantized, sample sensors at the lowest rate that still feels responsive, and gate expensive work on battery and thermal state". Move the `interpreter.run` call to a background isolate (via `compute` or a long-lived isolate) if the model is heavy enough to jank the frame.
 - **Plugins in a background isolate** need `BackgroundIsolateBinaryMessenger`:
 
@@ -121,7 +121,7 @@ Future<void> _isolateMain(RootIsolateToken rootIsolateToken) async {
   - Web does not support isolates; use `compute()`, which runs on the main thread on web. On mobile and desktop, `await compute(fun, message)` equals `await Isolate.run(() => fun(message))`.
   - No `rootBundle` and no `dart:ui` or widget work in spawned isolates.
   - Background isolates cannot receive unsolicited host messages (no long-lived Firestore listener; one-off queries are fine).
-- **Dart-side isolate details** are in [dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ASYNC.md).
+- **Dart-side isolate details** are in [dart ASYNC.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/ASYNC.md).
 
 ## Build modes
 
@@ -148,7 +148,7 @@ Future<void> _isolateMain(RootIsolateToken rootIsolateToken) async {
 - **Slow Animations** in the inspector slows animations 5x. In VS Code, with the app running, open the Flutter Inspector; the toolbar icon "looks like a stopwatch. When you tap it, your app's animations will run at 1/5th of their normal speed", to "observe every tiny detail and step in the animation sequence" ([ApparenceKit](https://apparencekit.dev/flutter-tips/debug-flutter-slow-animations/); no IDE version stated).
 - **Sources differ on timing code in tests.** ApparenceKit [community] puts a `Stopwatch` budget in a widget test so "If a code change makes something unexpectedly slow, your test will fail" ([TESTING.md](TESTING.md#performance-integration-tests)). The Flutter docs [official] measure in profile mode on a device, as above; a widget-test stopwatch runs in the test environment, so treat it as a regression tripwire, not a frame-time measurement.
 - **First-run animation jank on mobile only:** "make sure you're using Flutter's default graphic renderer, Impeller."
-- **VM inlining hints:** use the measured, compiler-specific guidance in [dart ANALYSIS-AND-LINTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/ANALYSIS-AND-LINTS.md#vm-inlining-hints), not a promised speedup from an annotation. [Dart VM FAQ](https://github.com/dart-lang/sdk/blob/main/docs/Frequently-asked-questions-about-the-Dart-VM.md)
+- **VM inlining hints:** use the measured, compiler-specific guidance in [dart ANALYSIS-AND-LINTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/ANALYSIS-AND-LINTS.md#vm-inlining-hints), not a promised speedup from an annotation. [Dart VM FAQ](https://github.com/dart-lang/sdk/blob/main/docs/Frequently-asked-questions-about-the-Dart-VM.md)
 
 ## DevTools
 

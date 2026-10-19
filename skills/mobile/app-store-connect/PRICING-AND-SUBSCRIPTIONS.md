@@ -182,7 +182,7 @@ Apple decides whether a subscriber must agree to a higher price ([Manage pricing
 
 ## Localize subscription and IAP names
 
-- **Display names are what users see** on the subscription management sheet and in purchase dialogs. Apple's IAP display name (2 to 30 characters) and description (up to 45) limits, quoted, and promoted IAPs in search: [aso KEYWORDS-AND-METADATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/KEYWORDS-AND-METADATA.md#field-limits). Given a single name, use it in every locale.
+- **Display names are what users see** on the subscription management sheet and in purchase dialogs. Apple's IAP display name (2 to 30 characters) and description (up to 45) limits, quoted, and promoted IAPs in search: [aso KEYWORDS-AND-METADATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/KEYWORDS-AND-METADATA.md#field-limits). Given a single name, use it in every locale.
 - **Locales:** `ar-SA, ca, cs, da, de-DE, el, en-AU, en-CA, en-GB, en-US, es-ES, es-MX, fi, fr-CA, fr-FR, he, hi, hr, hu, id, it, ja, ko, ms, nl-NL, no, pl, pt-BR, pt-PT, ro, ru, sk, sv, th, tr, uk, vi, zh-Hans, zh-Hant` (39). This is shorter than the app metadata list: it has no bn-BD, gu-IN, kn-IN, ml-IN, mr-IN, or-IN, pa-IN, sl-SI, ta-IN, te-IN or ur-PK.
 - **Use the v2 version-scoped commands for all new work.** The v1 product- and group-scoped localization commands are deprecated by API 4.4.1 and the CLI warns about them.
 - **Resolve the version:**

@@ -12,7 +12,7 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 
 - **Above the fold:** a clear tier comparison, the recommended tier highlighted, a monthly/annual toggle, a primary CTA per tier.
 - **Common elements:** a feature comparison table, who each tier is for, an FAQ, an annual discount callout, a money-back guarantee, customer logos and trust signals.
-- **The annual discount differs by market.** The source gives "Annual discount callout (17-20%)" for SaaS; [eronred] gives "Annual at a 40-60% discount vs monthly" for consumer apps ([app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/RETENTION-AND-MONETIZATION.md#monetization-model-and-pricing)). Both stand, each for its market.
+- **The annual discount differs by market.** The source gives "Annual discount callout (17-20%)" for SaaS; [eronred] gives "Annual at a 40-60% discount vs monthly" for consumer apps ([app-growth RETENTION-AND-MONETIZATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/RETENTION-AND-MONETIZATION.md#monetization-model-and-pricing)). Both stand, each for its market.
 - **A guarantee or strikethrough price on the page** must meet [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md): full refund for "money back", conditions beside it, a real former price.
 
 ## Pricing psychology
@@ -69,7 +69,7 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 2. **Fetch the page as an agent would:** the rendered text or HTML, not a screenshot. Note at once whether prices appear in the text (dimension 7).
 3. **Run the paste test** and record what the model gets wrong or misses.
 4. **Score all 10 dimensions** Pass / Partial / Gap with a one-line reason each.
-5. **Prioritize fixes.** The source ranks by impact × effort and says AI-readiness gaps are often high impact, low effort (prices in text, structured data). Here each fix also carries a severity on the P0 to P3 scale of [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md) (a mapping added here; the source ranks only by impact and effort).
+5. **Prioritize fixes.** The source ranks by impact × effort and says AI-readiness gaps are often high impact, low effort (prices in text, structured data). Here each fix also carries a severity on the P0 to P3 scale of [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md) (a mapping added here; the source ranks only by impact and effort).
 
 ## Output template
 

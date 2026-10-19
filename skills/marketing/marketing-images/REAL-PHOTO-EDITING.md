@@ -92,7 +92,7 @@ The existing rules remain in force. The following are attributed alternative vie
 | Image prompt length | 40 to 80 words, specific over comprehensive, with size/ratio. [coreyhaines31/marketingskills, image, PROMPTING.md] | Long prompts enumerate invariants and exclusions. Preserve these constraints as a briefing/review contract; no blanket prompt-length exception is approved. [more skills, 14-solar-rooftop-renders.md; 15-restaurant-food-visuals.md; 17-estate-agent-listings.md; 18-motor-trade-visuals.md; 19-shop-storefront-visuals.md] |
 | Generated real-location/product footage | No generated footage for real locations or specific products. [coreyhaines31/marketingskills, video, marketing-video/SKILL.md] | Animate actual bedroom/property photographs or vehicle imagery. Keep the current rule; film design and acceptance requirements remain useful separately. [more skills, 16-guest-house-systems.md; 17-estate-agent-listings.md; 18-motor-trade-visuals.md] |
 
-Canonical policies are [image rules](SKILL.md#the-rules), [image prompting](PROMPTING.md#the-prompt) and [video rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md#the-rules). None of these alternatives changes the owner's production UI designs.
+Canonical policies are [image rules](SKILL.md#the-rules), [image prompting](PROMPTING.md#the-prompt) and [video rules](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md#the-rules). None of these alternatives changes the owner's production UI designs.
 
 ## Prove it
 

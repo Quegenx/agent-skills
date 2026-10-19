@@ -40,7 +40,7 @@ The source's reading: "curating statistics earns ~5x the links of producing orig
 `[coreyhaines31/marketingskills, content-strategy]`
 - **Blog post:** write 10 title options before drafting and pick the strongest; plan about 5 editing passes (structure, clarity, evidence, line edit, headline and SEO). This is a drafting habit; anti-slop-copy's two or three delivered alternatives for the headline are a different step ([anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)).
 - **Long-form guide:** the flagship of a pillar, with a table of contents and links to its spokes; build the hub before the spokes.
-- **Video:** script the hook first, front-load the payoff, plan short clips at creation (video production itself is [marketing-video](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-video/SKILL.md)).
+- **Video:** script the hook first, front-load the payoff, plan short clips at creation (video production itself is [marketing-video](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/SKILL.md)).
 - **Podcast:** one interview yields a transcript, quote graphics, short clips and a written recap; design the episode to be atomized.
 - **Email:** one idea per send; the subject line is the title, so write several and pick. Sending rules are [email-practices](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/SKILL.md).
 

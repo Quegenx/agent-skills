@@ -65,7 +65,7 @@ The source's email panel has a "Spam filter analyst (deliverability red flags, t
 | 3-4 | "Significant issues. Major revision needed." |
 | 1-2 | "Fundamentally broken. Rethink approach." |
 
-When: "Always" for launch copy, pricing pages and high-traffic landing pages; "Recommended" for email sequences, sales pages and ad copy; "Optional" for blog posts, social content and internal docs; "Skip" for quick updates, minor edits and low-stakes content. The panel score is a quality gate, not a finding severity: findings keep the repo's one scale, P0 to P3 as in code-review's [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/code-review/REVIEWER.md#tags-and-output).
+When: "Always" for launch copy, pricing pages and high-traffic landing pages; "Recommended" for email sequences, sales pages and ad copy; "Optional" for blog posts, social content and internal docs; "Skip" for quick updates, minor edits and low-stakes content. The panel score is a quality gate, not a finding severity: findings keep the repo's one scale, P0 to P3 as in code-review's [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md#tags-and-output).
 
 ### An alternative five-lens panel
 

@@ -74,7 +74,7 @@ Words and phrases they actually use (sourced from research):
 `[coreyhaines31/marketingskills, customer-research]`
 - **Don't name them cutely** ("Marketing Mary") unless the team finds it helpful; it's often a distraction.
 - **Don't average across segments:** "a persona that represents everyone represents no one".
-- **Don't invent details:** without data on a field, leave it blank (the same rule as web-research's "Fields with no supporting finding stay empty", [web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md#anti-hallucination-rules)).
+- **Don't invent details:** without data on a field, leave it blank (the same rule as web-research's "Fields with no supporting finding stay empty", [web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVIDENCE.md#anti-hallucination-rules)).
 - **Revisit quarterly:** personas decay as the market and product change.
 
 ## Prove it

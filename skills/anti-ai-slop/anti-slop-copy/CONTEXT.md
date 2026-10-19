@@ -4,7 +4,7 @@ One file of real facts that every piece of copy draws from, so nothing has to be
 
 ## Finding it
 
-Look for `.agents/product-context.md` first. If it isn't there, look for the names other tools use: `.agents/product-marketing.md`, `.claude/product-marketing.md` and the legacy `product-marketing-context.md` in `.agents/` or `.claude/` [coreyhaines31/marketingskills, product-marketing]; mobile skills also use `app-marketing-context.md` in the project root or `.claude/` ([app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md)). Read whichever exists and offer to move it to `.agents/product-context.md`.
+Look for `.agents/product-context.md` first. If it isn't there, look for the names other tools use: `.agents/product-marketing.md`, `.claude/product-marketing.md` and the legacy `product-marketing-context.md` in `.agents/` or `.claude/` [coreyhaines31/marketingskills, product-marketing]; mobile skills also use `app-marketing-context.md` in the project root or `.claude/` ([app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/LAUNCH-AND-MARKETING.md)). Read whichever exists and offer to move it to `.agents/product-context.md`.
 
 **If it exists:** "Read it and summarize what's captured: note its current **Document version** and the last few **Changelog** entries", "Ask which sections they want to update" and "Only gather info for those sections" [coreyhaines31/marketingskills, product-marketing]. Leave the other sections as they are.
 
@@ -129,7 +129,7 @@ Where the sections come from: Paid Ads, Learnings, the personas, objections, glo
 | Resources | Mobile and Paid Ads where relevant: budget, team (solo / small / marketing), tools (analytics / Apple Ads / MMP) and constraints. |
 | Markets | Mobile: primary and secondary markets and languages. |
 
-Close the source's context intake with the confirmed strengths, gaps and next steps, such as an [ASO audit](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/SKILL.md). These mobile fields extend the same source-backed context; unknown facts still remain `[ASK]`. [eronred, app-marketing-context]
+Close the source's context intake with the confirmed strengths, gaps and next steps, such as an [ASO audit](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/SKILL.md). These mobile fields extend the same source-backed context; unknown facts still remain `[ASK]`. [eronred, app-marketing-context]
 
 ## Keeping it
 

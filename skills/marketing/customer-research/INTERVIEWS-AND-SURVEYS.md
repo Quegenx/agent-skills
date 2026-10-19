@@ -18,7 +18,7 @@ For [Sales Safari](SOURCES.md#sales-safari), observe the audience before recruit
 
 `[coreyhaines31/marketingskills, customer-research]` $50 per call (about 30 minutes), $5 per survey response, offered up front; gift cards work. "Aim for 10 calls, be happy with 5"; by call 5 or 6 the same themes repeat.
 
-These are payments for research, never for public reviews: Apple lists "paid, incentivized, filtered, or fake feedback" as review manipulation, and aso's rule is never to "offer incentives for reviews" ([aso RATINGS-AND-REVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/aso/RATINGS-AND-REVIEWS.md)). Don't tie a gift card to leaving a store, G2 or Capterra review.
+These are payments for research, never for public reviews: Apple lists "paid, incentivized, filtered, or fake feedback" as review manipulation, and aso's rule is never to "offer incentives for reviews" ([aso RATINGS-AND-REVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/RATINGS-AND-REVIEWS.md)). Don't tie a gift card to leaving a store, G2 or Capterra review.
 
 ## The outreach email
 

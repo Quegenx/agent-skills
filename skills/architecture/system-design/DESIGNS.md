@@ -53,7 +53,7 @@ One command (`placeOrder`) owned by one service; reserve stock before charging (
 
 ## Recovering a data platform
 
-Choose point-in-time recovery for data loss, a replica for failover, and replayable projections for derived stores. State the recovery point and recovery time targets. Execute the canonical [recovery procedure](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/deployment/SKILL.md#recovering-a-data-platform); PostgreSQL backup tools, WAL and promotion are in [Postgres operations](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/OPERATIONS.md#backups-and-recovery).
+Choose point-in-time recovery for data loss, a replica for failover, and replayable projections for derived stores. State the recovery point and recovery time targets. Execute the canonical [recovery procedure](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/deployment/SKILL.md#recovering-a-data-platform); PostgreSQL backup tools, WAL and promotion are in [Postgres operations](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/postgres/OPERATIONS.md#backups-and-recovery).
 
 ## Fundamentals
 

@@ -1,6 +1,6 @@
 # Hooks
 
-The first three seconds decide whether the rest of the ad exists. Hooks are the highest-leverage unit of paid creative work, and hook *diversity* is what earns new learning: distinct hooks reach distinct pockets of the audience, while near-identical openings re-test what you already know. A system for generating, diagnosing and iterating hooks, from [coreyhaines31/marketingskills, ad-creative, hook-system.md] (MIT; practitioner). Use it inside generation (hooks for new concepts), iteration (why an ad underperforms) and the [creative strategy loop](CREATIVE-ROADMAP.md). App-ad hook scripts are in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#hooks).
+The first three seconds decide whether the rest of the ad exists. Hooks are the highest-leverage unit of paid creative work, and hook *diversity* is what earns new learning: distinct hooks reach distinct pockets of the audience, while near-identical openings re-test what you already know. A system for generating, diagnosing and iterating hooks, from [coreyhaines31/marketingskills, ad-creative, hook-system.md] (MIT; practitioner). Use it inside generation (hooks for new concepts), iteration (why an ad underperforms) and the [creative strategy loop](CREATIVE-ROADMAP.md). App-ad hook scripts are in [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/TIKTOK-ADS.md#hooks).
 
 **Contents:** [A hook is three components](#a-hook-is-three-components) · [The generation pipeline](#the-generation-pipeline) · [Opening moves](#opening-moves) · [The diagnostic funnel](#the-diagnostic-funnel) · [The on-ramp](#the-on-ramp) · [Fidelity laddering](#fidelity-laddering) · [Grounding](#grounding) · [Failure modes](#failure-modes) · [Prove it](#prove-it)
 
@@ -70,7 +70,7 @@ Each metric isolates a component. Fix the part that failed instead of scrapping 
 - **A great thumbstop is not a great ad.** Clickbait that attracts the wrong viewers shows as high thumbstop with collapsed hold and CVR. Read the whole funnel before declaring a winning hook.
 - **One component per iteration:** the visual, or the on-ramp, or the offer framing.
 
-This sharpens app-growth's diagnosis rows ("Weak hook / thumb-stop") in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md#decide) and [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/TIKTOK-ADS.md#audits).
+This sharpens app-growth's diagnosis rows ("Weak hook / thumb-stop") in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md#decide) and [app-growth TIKTOK-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/TIKTOK-ADS.md#audits).
 
 ## The on-ramp
 

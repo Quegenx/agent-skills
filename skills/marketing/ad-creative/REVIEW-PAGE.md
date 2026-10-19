@@ -66,7 +66,7 @@ Every concept carries a `grounding` line, and it is true: exactly what is real (
 The data block is inert JSON parsed with `JSON.parse`, so a value can never run as script. Two rules:
 
 - **Valid JSON only:** double-quoted keys and strings, no comments, no trailing commas. A malformed block shows an error banner instead of failing silently.
-- **Escape every `<` in a string value as `\u003c`.** A value containing `</script>` would otherwise close the block early. Values are HTML-escaped again at render time, but the source-level escape is the one that matters; apply it mechanically. The general rule for JSON inside a script tag is in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/secure-coding/CATALOG.md#json-inside-a-script-element).
+- **Escape every `<` in a string value as `\u003c`.** A value containing `</script>` would otherwise close the block early. Values are HTML-escaped again at render time, but the source-level escape is the one that matters; apply it mechanically. The general rule for JSON inside a script tag is in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/CATALOG.md#json-inside-a-script-element).
 
 ## Producing and delivering
 

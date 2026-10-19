@@ -1,0 +1,23 @@
+# Browser boundaries
+
+Browser investigation prompts come from [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md and DATA-ISOLATION-AND-LIFECYCLE.md], checked against the linked browser documentation. These are boundary questions, not vulnerabilities established by a missing header or a keyword. HTML/URL controls stay in [CATALOG.md](CATALOG.md), CORS in [PARSERS.md](PARSERS.md#cross-origin-requests-and-proxies), response policies in [HEADERS.md](HEADERS.md) and audit evidence in [code-review SECURITY-AUDITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/SECURITY-AUDITS.md).
+
+## Messages and windows
+
+- **Send to the exact intended origin and verify the sender.** For postMessage, check event.origin, the expected event.source and the message's validated shape before a privileged action; do not grant authority from message data, a window name or a matching substring. Bind replies to the initiating window and operation. [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md; https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage]
+- **Treat channel names as routing, not identity.** BroadcastChannel connects contexts in the same origin/storage partition. An account switch or second tab can change which application user receives a message; bind application messages and resulting effects to the current user/tenant and invalidate stale state. [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md; https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel]
+- **Trace data into a real execution or authority sink.** DOM clobbering and prototype pollution candidates need the attacker-controlled property, reachable gadget and actual effect. An unusual object key or named DOM element alone is not the result. Reuse the existing input and HTML controls rather than adding another sanitizer definition. [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md]
+
+## Service workers and account lifecycle
+
+- **Cache storage is not account authorization.** A service worker or offline cache can outlive a signed-in page. Check cache keys, reads and invalidation across logout, account/tenant switches, permission revocation and deletion, including already open tabs and background requests. The Cache API does not automatically expire an application's cached data. [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md, DATA-ISOLATION-AND-LIFECYCLE.md; https://developer.mozilla.org/en-US/docs/Web/API/Cache]
+- **Require a promised boundary and unauthorized reader.** A stale response is a security finding when an unintended principal can read protected data or perform an action, not merely because the application chose a different cache preference. Derived-data lifecycle is owned by [TENANCY.md](TENANCY.md#derived-data-and-revocation). [cloudflare/security-audit-skill, security-audit/DATA-ISOLATION-AND-LIFECYCLE.md]
+
+## Cross-site observation
+
+- **Name the confidential predicate in an XS-Leak candidate.** Trace what an attacker can observe, how it depends on a victim's authenticated state or private data, the repeatability and the effective browser/response controls. A timing difference or missing isolation header without that cross-principal inference is not a confirmed disclosure. [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md]
+- **Check the actual embedding and navigation context.** Reuse framing, referrer and opener policies from [HEADERS.md](HEADERS.md); do not add a universal new-tab finding without checking browser behavior. Current target=_blank links implicitly provide noopener behavior. [https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/noopener; cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md]
+
+## Prove it
+
+Each message has a verified peer and bound action; current user/tenant identity reaches channel and cache decisions; logout, revocation and account switching cannot expose another principal's protected state. Any clobbering, pollution or cross-site leak finding identifies the concrete sink or confidential predicate, controls examined and evidence still missing. [cloudflare/security-audit-skill, security-audit/CLIENT-SIDE.md]

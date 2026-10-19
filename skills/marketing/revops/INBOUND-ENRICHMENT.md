@@ -23,7 +23,7 @@ Load this when enrichment changes the next step after a demo or contact form, or
 | Missing, ambiguous, stale, or failed enrichment | Generic successful confirmation or a necessary clarifying field | Unqualified/pending queue; preserve the submission |
 | Explicit business disqualifier supported by reliable evidence | Useful alternate resource or respectful message | Record the actual reason; follow agreed retention policy |
 
-- "Do not reject solely because a provider returned nothing." Keep legal or business disqualifiers distinct from an unknown score. The research-side version of the rule: an unknown is written `Unknown`, not guessed ([web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-research/EVIDENCE.md)).
+- "Do not reject solely because a provider returned nothing." Keep legal or business disqualifiers distinct from an unknown score. The research-side version of the rule: an unknown is written `Unknown`, not guessed ([web-research EVIDENCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/EVIDENCE.md)).
 - "Never infer sensitive traits to decide eligibility." In the GDPR the closest list is Article 9's special categories of personal data (Regulation (EU) 2016/679, https://eur-lex.europa.eu/eli/reg/2016/679/oj).
 
 ## Bound the interactive wait
@@ -41,7 +41,7 @@ Load this when enrichment changes the next step after a demo or contact form, or
 [coreyhaines31/marketingskills, revops]
 
 - **Replay fixtures** for: existing customer, new ICP-fit lead, unknown company, false company match, exhausted quota, timeout followed by a late success, duplicate submission, and unavailable owner. Check the visible page plus the resulting CRM records and tasks, not only a workflow's success indicator.
-- **Shadow run, then pilot:** start with a shadow run that records proposed routes without changing the live experience, then a bounded pilot. The same shadow-before-gate pattern for code review: [lint-rule-authoring BASE-HEAD-PARITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/lint-rule-authoring/BASE-HEAD-PARITY.md) ("Shadow the shortcut before it gates").
+- **Shadow run, then pilot:** start with a shadow run that records proposed routes without changing the live experience, then a bounded pilot. The same shadow-before-gate pattern for code review: [lint-rule-authoring BASE-HEAD-PARITY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/lint-rule-authoring/BASE-HEAD-PARITY.md) ("Shadow the shortcut before it gates").
 - **Compare against the existing flow:** completion and abandonment, verified routing accuracy, time to assignment, time to first human response, booking rate, fallback frequency, and duplicate tasks. "Separate request latency from actual sales response time." Set targets from the team's coverage and baseline rather than promising conversion multipliers.
 
 Deliver a branch table, required fields and sources, response budget, fallback, ownership rules, replay handling, launch scope, and measured pilot results. After assignment, the SLA and escalation rules take over ([LIFECYCLE.md](LIFECYCLE.md#slas)).

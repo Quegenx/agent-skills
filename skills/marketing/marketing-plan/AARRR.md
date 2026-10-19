@@ -2,7 +2,7 @@
 
 AARRR (Dave McClure's "pirate metrics") is the spine of every plan produced by this skill. This doc is the primer + the decision rules for when each stage gets prioritized.
 
-Source: [coreyhaines31/marketingskills, marketing-plan] `references/aarrr-framework.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The activation event itself is not a sign-up and should be validated against retention, not assumed: [app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ONBOARDING.md) ("Activation is not sign-up") and [posthog METRICS-MODELING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/METRICS-MODELING.md).
+Source: [coreyhaines31/marketingskills, marketing-plan] `references/aarrr-framework.md` (v1.2.2, MIT, Corey Haines), copied with its dashes replaced, its file and skill names mapped to this repo, and `.agents/product-marketing.md` written as `.agents/product-context.md`. The activation event itself is not a sign-up and should be validated against retention, not assumed: [app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ONBOARDING.md) ("Activation is not sign-up") and [posthog METRICS-MODELING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/METRICS-MODELING.md).
 
 ## The five stages
 

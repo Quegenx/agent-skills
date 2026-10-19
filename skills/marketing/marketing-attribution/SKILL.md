@@ -22,11 +22,11 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 [coreyhaines31/marketingskills, attribution] Attribution assumes tracking exists. The line: analytics is "what events and how to fire them"; attribution is "how touches join to conversions and survive to revenue."
 
-- **Event tracking, tracking plans, UTMs, GA4 and GTM:** [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/SKILL.md) and [posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md).
-- **Ad-platform pixels, CAPI, server-side conversion tracking:** [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md); for app campaigns, [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/META-ADS.md). Attribution consumes platform-reported numbers and corrects for their bias.
+- **Event tracking, tracking plans, UTMs, GA4 and GTM:** [google-analytics SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md) and [posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md).
+- **Ad-platform pixels, CAPI, server-side conversion tracking:** [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md); for app campaigns, [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md). Attribution consumes platform-reported numbers and corrects for their bias.
 - **Pipeline stages, lead lifecycle, CRM revenue dashboards:** [revops SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/revops/SKILL.md). Attribution feeds it the source dimension.
 - **Showing up in and measuring AI search:** [ai-search-visibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ai-search-visibility/SKILL.md). Attribution names AI traffic as a blind spot only.
-- **Mobile install attribution** (ATT, AdAttributionKit, SKAdNetwork, AdServices, MMPs, the Play Install Referrer): [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/ANALYTICS-AND-ATTRIBUTION.md).
+- **Mobile install attribution** (ATT, AdAttributionKit, SKAdNetwork, AdServices, MMPs, the Play Install Referrer): [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ANALYTICS-AND-ATTRIBUTION.md).
 - **Controlled experiments on site changes:** [ab-testing SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), the incrementality mindset applied to on-site changes.
 
 ## What attribution can and can't tell you
@@ -66,7 +66,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 5. **Expect and budget for the gap.** Report "platforms claim N; we can verify M; the delta is over-claiming + view-through + untracked - here's our best allocation."
 6. **Operationalize triangulation as documented rules** once a holdout or a trusted survey band exists ([MEASUREMENT-PARADIGMS.md](MEASUREMENT-PARADIGMS.md#triangulated-overrides)).
 
-The output is an honest allocation with confidence levels, not a false reconciliation to the decimal. For apps, the same rule: never add up per-network installs; the store or RevenueCat count is the total ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md)).
+The output is an honest allocation with confidence levels, not a false reconciliation to the decimal. For apps, the same rule: never add up per-network installs; the store or RevenueCat count is the total ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/BUDGET-AND-ROAS.md)).
 
 ## The blind spots
 

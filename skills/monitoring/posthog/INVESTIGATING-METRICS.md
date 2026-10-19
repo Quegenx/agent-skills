@@ -62,7 +62,7 @@ This is for "why did X change?" on a saved insight, a dashboard tile or a pasted
 
 ### Compute, don't eyeball
 
-Use the canonical [analytics computation and reconciliation rules](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/google-analytics/TRACKING-PLAN.md#reading-the-numbers) before reporting totals, rates, windows or segment deltas. The recurring [analytics-anomaly and tracking-QA loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/OPS-LOOPS.md) apply those rules. [coreyhaines31/marketingskills, analytics]
+Use the canonical [analytics computation and reconciliation rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/TRACKING-PLAN.md#reading-the-numbers) before reporting totals, rates, windows or segment deltas. The recurring [analytics-anomaly and tracking-QA loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/OPS-LOOPS.md) apply those rules. [coreyhaines31/marketingskills, analytics]
 
 ## Shared techniques
 

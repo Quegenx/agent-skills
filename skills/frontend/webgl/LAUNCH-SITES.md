@@ -220,7 +220,7 @@ Build order from the source's checklist: app shell (header, mobile nav, aside na
 
 ## Prove it
 
-- **UI and canvas:** use the [responsive checks](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/browser-ui-qa/RESPONSIVE-CHECKS.md) and [nonblank-canvas proof](WIDGETS.md#nonblank-canvas-proof). The source's four-size list is unavailable in this copy; do not treat the separate responsive-craft list as that source list. [webdown-a, 3d-site; local source-coverage review]
+- **UI and canvas:** use the [responsive checks](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/browser-ui-qa/RESPONSIVE-CHECKS.md) and [nonblank-canvas proof](WIDGETS.md#nonblank-canvas-proof). The source's four-size list is unavailable in this copy; do not treat the separate responsive-craft list as that source list. [webdown-a, 3d-site; local source-coverage review]
 - **3D:** the model or fallback is visible and framed in desktop and mobile screenshots; the DPR cap works; resize keeps the camera framing; reduced motion disables heavy movement; low quality cuts particles and post-processing; a missing asset breaks only its scene; when scenes mount dynamically, geometries, materials and textures are disposed on unmount (`renderer.info.memory` stays flat, [THREEJS-AND-R3F.md](THREEJS-AND-R3F.md#disposal)); no large uncompressed textures ship.
 - **No WebGL:** the fallback layers render with WebGL removed (the stub and `--disable-gpu` in [WebGL verification](WIDGETS.md#verification-with-webgl-disabled)), and the content is readable with JavaScript off.
 - **Completion:** run the project's lint, build and tests; start a dev server if the app needs one; capture desktop and mobile screenshots; report the exact files changed and the checks run.

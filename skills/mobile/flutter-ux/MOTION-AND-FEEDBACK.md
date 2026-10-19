@@ -214,7 +214,7 @@ void didUpdateWidget(covariant UploadedAvatarAnimation oldWidget) {
 }
 ```
 
-- **Style, two views:** the source writes `break;` in each case. The [dart skill](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/RECORDS-AND-PATTERNS.md) says Dart 3 "non-empty cases break implicitly (no `break`)", so the `break` lines are redundant there; both compile.
+- **Style, two views:** the source writes `break;` in each case. The [dart skill](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/dart/RECORDS-AND-PATTERNS.md) says Dart 3 "non-empty cases break implicitly (no `break`)", so the `break` lines are redundant there; both compile.
 
 ## Chain on one controller
 
@@ -465,7 +465,7 @@ ThemeData(
 )
 ```
 
-- The block imports from `package:flutter/material.dart` and uses `TabBarThemeData`, the newer class name; see the [flutter skill's VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md) for the Material package move.
+- The block imports from `package:flutter/material.dart` and uses `TabBarThemeData`, the newer class name; see the [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md) for the Material package move.
 - **Pressed state.** ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#buttons-presses-and-feedback): "Every pressable element has a pressed state". FlutterPro strips the ripple for a custom design language and does not say what replaces it; its `Pressable` above is a press state that uses no ink.
 
 ## Haptics
@@ -528,7 +528,7 @@ await HapticsHelper.success();
 
 - Don't show the same snack bar twice. If it's already on screen, shake it instead: "A duplicate tells the user nothing new. The shake says 'this just happened again' without piling up copies of the same message."
 - If that snack bar is on screen but stacked behind a newer one, bring it to the front and reset its timer so it stays long enough to read again.
-- Reference implementation: bunpod.app's open-source [expressive_snack](https://github.com/kamranbekirovyz/bunpod/tree/main/packages/expressive_snack) package (handles both, plus RTL and icons). The source gives no shake duration; ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) gives an error shake 300-400 ms, never a bounce. The state side (an error shows once because it is cleared first) is in the [flutter skill's ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md).
+- Reference implementation: bunpod.app's open-source [expressive_snack](https://github.com/kamranbekirovyz/bunpod/tree/main/packages/expressive_snack) package (handles both, plus RTL and icons). The source gives no shake duration; ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) gives an error shake 300-400 ms, never a bounce. The state side (an error shows once because it is cleared first) is in the [flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md).
 
 ## Switch thumb icons
 
@@ -688,7 +688,7 @@ const Spinner(
 ```
 
 - The arc insets by half the stroke width, so it stays inside `size` at any stroke; the color falls back to `_defaultColor`. It rotates on a plain `..repeat()`, linear, 1000 ms per turn, and labels itself with `Semantics(label: 'Loading')`.
-- **Where the painter is built, two views.** The source builds the `CustomPaint` inside the `AnimatedBuilder` builder. The [flutter skill's PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md): "do not put a subtree that does not depend on the animation in the builder. Build it once and pass it as `child`."
+- **Where the painter is built, two views.** The source builds the `CustomPaint` inside the `AnimatedBuilder` builder. The [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md): "do not put a subtree that does not depend on the animation in the builder. Build it once and pass it as `child`."
 - Whether to show a spinner at all is a separate question; see ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md).
 
 ### Rounded linear progress
@@ -709,7 +709,7 @@ ClipRRect(
 )
 ```
 
-- **Clip, two views.** ApparenceKit clips the bar. The [flutter skill's PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md) says clipping is still costly, to use `borderRadius` instead of a clip for rounded rectangles, and to avoid clipping in an animation. **[Flutter docs]:** `LinearProgressIndicator.borderRadius` is "The border radius of both the indicator and the track" (defaults to radius 2 under Material 3) ([api.flutter.dev](https://api.flutter.dev/flutter/material/LinearProgressIndicator/borderRadius.html)), so the bar can be rounded without `ClipRRect`.
+- **Clip, two views.** ApparenceKit clips the bar. The [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md) says clipping is still costly, to use `borderRadius` instead of a clip for rounded rectangles, and to avoid clipping in an animation. **[Flutter docs]:** `LinearProgressIndicator.borderRadius` is "The border radius of both the indicator and the track" (defaults to radius 2 under Material 3) ([api.flutter.dev](https://api.flutter.dev/flutter/material/LinearProgressIndicator/borderRadius.html)), so the bar can be rounded without `ClipRRect`.
 - A round progress or timer drawn with `CustomPainter` is in [PAINTING-AND-MEDIA.md](PAINTING-AND-MEDIA.md#round-progress-and-timers).
 
 ## Swipe-action hint

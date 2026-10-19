@@ -52,7 +52,7 @@ Derive targets from deal math, not platform benchmarks:
 - **Breakeven CPL** = average deal size × lead-to-close rate ($3,000 ACV × 10% = $300).
 - **Breakeven CPC** = target CPL × landing page conversion rate ($300 × 5% = $15).
 
-Set the target below breakeven by your required margin. This is the B2B form of app-growth's "Break-even CPA = LTV × (1 − store fee %)" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/BUDGET-AND-ROAS.md#campaign-profitability)); how long the cash is tied up is in [PAYBACK.md](PAYBACK.md).
+Set the target below breakeven by your required margin. This is the B2B form of app-growth's "Break-even CPA = LTV × (1 − store fee %)" ([app-growth BUDGET-AND-ROAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/BUDGET-AND-ROAS.md#campaign-profitability)); how long the cash is tied up is in [PAYBACK.md](PAYBACK.md).
 
 ## Kill heuristics
 

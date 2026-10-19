@@ -80,7 +80,7 @@ Google's guide on commerce agents: "Protocols like Universal Commerce Protocol (
 - Features: SSO, SLA, [feature]
 ```
 
-Rules: consistent units (monthly vs annual, per-seat vs flat); specific limits, not only feature names; everything included per tier, not only the differences; "Keep it updated: stale pricing is worse than no file"; link it from the sitemap and the pricing page. The pricing page itself follows [developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/architecture/developer-docs/WRITING-AND-PUBLISHING.md#headings-and-structure) ("Use tables for pricing").
+Rules: consistent units (monthly vs annual, per-seat vs flat); specific limits, not only feature names; everything included per tier, not only the differences; "Keep it updated: stale pricing is worse than no file"; link it from the sitemap and the pricing page. The pricing page itself follows [developer-docs WRITING-AND-PUBLISHING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/developer-docs/WRITING-AND-PUBLISHING.md#headings-and-structure) ("Use tables for pricing").
 
 ## OKF bundles (emerging)
 

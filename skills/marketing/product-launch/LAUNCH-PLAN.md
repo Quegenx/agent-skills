@@ -1,6 +1,6 @@
 # Launch plan
 
-The strategy layer of a web or SaaS launch, copied and adapted from coreyhaines31/marketingskills `launch` (MIT). The source's company case studies (Superhuman, Notion, TRMNL, SavvyCal, Reform) are left out: they are anecdotes with no citation. Its vendor plugs (Introw, Navattic) are left out too. For an app store launch, use [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/app-growth/LAUNCH-AND-MARKETING.md), which has the store-specific calendar.
+The strategy layer of a web or SaaS launch, copied and adapted from coreyhaines31/marketingskills `launch` (MIT). The source's company case studies (Superhuman, Notion, TRMNL, SavvyCal, Reform) are left out: they are anecdotes with no citation. Its vendor plugs (Introw, Navattic) are left out too. For an app store launch, use [app-growth LAUNCH-AND-MARKETING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/LAUNCH-AND-MARKETING.md), which has the store-specific calendar.
 
 **Contents:** [Ask first](#ask-first) · [Readiness gate](#readiness-gate) · [The ORB channels](#the-orb-channels) · [Five phases](#five-phases) · [After the launch](#after-the-launch) · [Ongoing launches](#ongoing-launches) · [Checklist](#checklist) · [Prove it](#prove-it)
 
