@@ -1,0 +1,357 @@
+{
+ "techniques": [
+  {
+   "id": "dn-ease-out-count-up",
+   "name": "Ease-out count-up from a near-final value",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "A proof figure counts up in place from a credible value just below its target and decelerates, so the last units tick in one at a time and it reads in about half a second.",
+   "recipe": "Compute the shown value on whole frames: v = Math.round(mix(a, b, prog(fd(frame), at, at + 28, E.type))), with a at 85-90% of b (173 to 195, 734 to 799), so early frames jump 2-3 units and the last ones step by 1. Use E.out only for ranges over ~500 units, where its long tail still has digits to tick. Render the value as plain text through typeStyle (tabular-nums), with a fixed digit count and Intl.NumberFormat separators so the box never changes width, and let the digits replace in place each frame: no roll, no crossfade. Start the count on the frame its cause lands and put ticks on countSteps(a, b, at, 28, E.type) frames, thinned to at most one every 2 f. After it lands, keep the block alive with breath() on the camera (2-3%) until the next element covers it.",
+   "timing": "Hero count 28 f on E.type (quad-out: 2x the mean rate at the start, so the last unit lands in the final ~6 f). Prices and recounts 36-46 f; ambient UI KPIs 36-104 f. Start at 85-90% of the target. Hold the landed figure at least 36 f (plus 6 f per word of any label) under a 2-3% breath before anything covers it.",
+   "use_when": "A single proof figure (countries, users, a price) must register in under a second, or a number inside a UI shot should feel live.",
+   "avoid_when": "The number is the film's hero reveal and deserves a reel or a snap-out; nothing on screen causes the count to start.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "dn-count-glyph-swap",
+   "name": "Companion glyph swaps mid-count",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop"
+   ],
+   "summary": "A small icon riding a counting number (a flag, an avatar, a status glyph) swaps to its destination state when the count crosses a threshold, then drops from superscript to the baseline.",
+   "recipe": "Set a 0.45 em glyph at the number's top-right as a superscript (translateY -0.35 em). Swap its source on the first whole frame where the shown value reaches the threshold (an fd-based v >= T compare, about 60% of the way through the count), cutting between the two images with no crossfade. On that frame start the drop: translateY from -0.35 em to 0 over 8 f with arrive(prog(frame, swap - 1, swap + 7, E.out)), so the new glyph seats on the baseline while the count is still finishing. Put a soft tick on the swap frame, separate from the count ticks.",
+   "timing": "Swap at ~60% of the count (frame 17 of a 28 f count). Drop 8-12 px at 1080p over 8 f on E.out through arrive. The count lands 10-11 f after the swap.",
+   "use_when": "The count carries a from-to story (origin to destination, free to paid, pending to done) that one icon can tell.",
+   "avoid_when": "The glyph would only be decoration; counts shorter than 20 f, where the swap gets lost.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "dn-status-pill-ring",
+   "name": "Process-status pill with ring progress",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "A compact capsule shows where a process stands in one glance: a live dot, a mono step label, a ring filled to the current percentage, the step count and a grey date.",
+   "recipe": "Draw a rounded rect (radius 25% of its height) in C.ink2 with a 1.5 px C.line hairline border. Left to right, place an 8 px accent dot, a mono uppercase label (FONT.mono, 24 px at 1080p, tracking 0.15 em), an SVG ring (r 14 px, 3 px stroke, pathLength 1, strokeDasharray `${p} 1` over a C.line track), primary text at weight 500 ('Step 5/6 · Motion') and a C.mute date line. Animate it rather than parking it: the capsule rises 24 px on SPR.firm with opacity over 10 f on E.smooth; from the landing, the ring fills from 4/6 to 5/6 over 30 f on E.out, and the step digit rolls 4 to 5 through Roll on the fill's 50% frame. On the roll frame the dot pulses once, scale 1 + 0.4 * hitPulse(t, 2, 8).",
+   "timing": "Arrival on SPR.firm (~24 f to settle). Ring fill 30 f on E.out. Step roll 14 f. Dot pulse: attack 2 f, tau 8 f. Visible 46-90 f.",
+   "use_when": "Proving that a real, structured process exists (pipeline, build, delivery) as an overlay on process footage.",
+   "avoid_when": "The step and percentage aren't true to the story; frames that already carry a headline, which the pill would compete with.",
+   "ban_safe": false,
+   "bans": [
+    "glass",
+    "filler-text"
+   ],
+   "ban_safe_variant": "The same capsule on a solid C.ink2 fill with a 1.5 px hairline border, no backdrop blur or frosted translucency, depth only from a soft drop shadow at about 0.16 alpha. Keep the live dot, the ring and the one step line ('Step 5/6 · Motion'); drop the tracked mono uppercase label and the grey date, which only decorate.",
+   "evidence": 1
+  },
+  {
+   "id": "dn-metric-cold-open",
+   "name": "Metric as the first statement",
+   "category": "data_and_numbers",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "vertical",
+    "feature"
+   ],
+   "summary": "The film opens on its proof number already moving, with no title and no logo, and the brand waits for the end lockup.",
+   "recipe": "Frame 0 is the number mid-count or mid-roll (an ease-out count-up, a digit reel or the macro snap-out) at hero size, cap height about 11% of frame height, centred on the stage colour. The first visible change comes by frame 2, with no fade-up from black. The number settles by frame 40, stays readable for at least 72 f including its unit under a 2% breath push, then hands off on a cut at a motion peak into the problem. Run the story as metric, problem, solution, process, lockup, and keep the logo and product name off screen until the lockup, which stays the only brand moment. Mark the landing with an audio drop: thin or cut the music on the landing frame and allow a designed freeze of at most 15 f there.",
+   "timing": "First change by frame 2. Settled by frame 40. Readable for 72 f (about frames 41-113). Hand-off cut near frame 113. Optional freeze of at most 15 f on the landing silence.",
+   "use_when": "The product has one strong, true outcome number (users, views, savings) that should earn attention before the name does.",
+   "avoid_when": "The number is weak, generic or can't be verified; films where the mark itself must lead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "dn-tucked-unit-label",
+   "name": "Tucked unit under the last digits",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "any"
+   ],
+   "summary": "A small lowercase unit word fades in right-aligned under a big number's last digits, its top overlapping the numeral's baseline, so number and unit read as one mark.",
+   "recipe": "Set the unit at 0.35x the numeral's font size in the film's one sans (weight 450, C.mute or the stage's secondary ink). Align its right edge with the numeral's right edge (measureTracked, minus the last glyph's trailing tracking) and its top with the numeral baseline minus 0.3x the label's line height, so it tucks under the last two digits. Fade it in over 19 f on E.smooth with a 4 px rise through arrive, starting at least 12 f after the number settles so the figure reads first. It then holds with the number under the shot's breath.",
+   "timing": "Starts at least 12 f after the number settles (36 f is a good default). Opacity over 19 f on E.smooth with a 4 px rise via arrive. Label at 0.35x the numeral size, overlapping its baseline by 30% of the label height.",
+   "use_when": "A hero figure needs its unit (views, users, ms) without a second line pushing the layout down.",
+   "avoid_when": "The unit is longer than one short word; numbers ending in narrow digits (1, 7) that leave no room to tuck under.",
+   "ban_safe": false,
+   "bans": [
+    "serif",
+    "beige"
+   ],
+   "ban_safe_variant": "Same placement and size in the film's one sans at weight 450, in C.mute or the stage's secondary ink: no second display typeface and no cream or gold tint.",
+   "evidence": 1
+  },
+  {
+   "id": "dn-hero-bar-pullback",
+   "name": "Hero bar in close-up, then pull back",
+   "category": "data_and_numbers",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "The winning bar (or the hero chart) grows across a tight frame, then the camera eases back to show the whole chart, with the grey comparison bars and their values.",
+   "recipe": "Lay the whole chart out in world space with the anchor camera (src/lib/camera.ts): the hero bar in C.accent, the comparison bars in C.mute, values at the bar ends. Shot A frames the hero bar at k of about 1.33-1.5. Grow its width over 50 f on E.smooth while the camera pushes 4% and tracks the tip at about 60% of frame width; keep the tip at or under 70 px/f on screen (on-screen length x 2.86 / frames). On the landing frame, pull back with lc(A, B, prog(frame, land, land + 80, E.cam)) to the full chart at k = 1. The grey bars are already at value, the labels type in with TypeOn, and the percentages count on E.type over 28 f, 4 f apart top to bottom, starting 12 f into the pull-back.",
+   "timing": "Bar fill 50 f on E.smooth (no overshoot) with a 4% push. Pull-back 52-80 f on E.cam to 0.65-0.75 of the close scale. Values count over 28 f on E.type at a 4 f stagger. Hold the full chart at least 36 f under a breath.",
+   "use_when": "Benchmarks and comparisons the product wins; any chart whose hero value should be felt before it is compared.",
+   "avoid_when": "Narrow wins, which the close-up would oversell; more than ~6 bars, whose labels go unreadable after the pull-back.",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "ban_safe_variant": "A flat accent bar with no outer glow or bloom. It stands apart from the grey bars by colour and 4-6 px of extra thickness only.",
+   "evidence": 2
+  },
+  {
+   "id": "dn-answer-card-bars",
+   "name": "Mini bar-chart answer card",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Inside a chat or a panel, an answer arrives as a small card of labelled horizontal bars that grow in sequence, followed by a one-line insight that states the key figures.",
+   "recipe": "The card rises 24 px on SPR.firm (opacity over 10 f on E.smooth). Each row holds a label, a bar track (C.mist on paper, C.ink2 on ink) and a value. Bar i's width is value% x track x prog(frame, at + 5i, at + 5i + 20, E.outSoft), and its value counts on the same progress. Keep tracks at or under 300 px, or stretch the grow to track/15 frames, so the bar tip stays at or under 70 px/f. Only the row the insight is about takes C.accent; the rest stay neutral. Six frames after the last bar lands, type the insight with TypeOn with its two figures at weight 600. Keep the card under a 2% camera breath while it is read, and optionally hard-cut on the next 8th to a 2.4x punch-in on the highlighted row (cam-punch-in-insert) that pans sideways with inertia(f, cut, 20, 0.89), starting at the 20 px/f text limit and settling in about 30 f.",
+   "timing": "Rows 20 f each on E.outSoft at a 5 f stagger (the group lands within 30 f). The insight types over ~40 f, starting 6 f after the last bar. Card visible ~180 f under a 2% breath. Optional 2.4x punch-in cut, then a pan from 20 px/f decaying 0.89 per frame (settled in about 30 f).",
+   "use_when": "An AI or analytics product answers a question with data; a walkthrough needs one piece of quantitative proof.",
+   "avoid_when": "More than 6 rows, where the group outruns 30 f and the labels shrink; bars that carry no real meaning.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "dn-line-draw-tracked-head",
+   "name": "Line chart draws with a tracking head",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "A line or stepped series draws left to right behind a solid dot at its head that the eye can follow, accelerating through the middle and creeping into its last point.",
+   "recipe": "Draw the series as an SVG path with pathLength={1}, strokeDasharray 1 and strokeDashoffset 1 - p. Put a solid head dot (r 6 px at 1080p, with a 2 px ring in the stage colour) at the point at fraction p along the polyline, sampled from the data in JS rather than measured from the DOM. Beneath the line, add an area fill in the line's hue fading from 18% to 0% opacity, clipped by a rect whose right edge follows the head. Drive p from 0 to 1 over 96 f on E.rest in a single link: it starts from rest, peaks near 29% of the draw and spends its last third creeping into the last point, so the head never stops and restarts. The head peaks around 40-60 px/f, so the blur pass streaks it while the drawn line stays crisp; when the head lands, roll in the endpoint value with Roll.",
+   "timing": "Full draw 96 f on E.rest (peak near 29%, 3.5x the mean speed; the last 30 f creep at about 2-3 px/f on a 1,400 px path). Short form: 24 f on E.out, with the area fill fading in from 8 f later over 16 f. Head peaks at 40-60 px/f at 1080p. Endpoint value rolls over 14 f.",
+   "use_when": "Growth, price or usage over time; any chart where the trend is the message.",
+   "avoid_when": "Invented up-and-to-the-right data; charts under ~400 px wide, where the head reads as noise.",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "ban_safe_variant": "A solid head dot with a 2 px stage-colour ring and no blur, drop-shadow halo or bloom. The area fill stays a single-hue opacity ramp.",
+   "evidence": 2
+  },
+  {
+   "id": "dn-bar-sweep-lit-caps",
+   "name": "Constant-speed bar sweep with lit caps",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop",
+    "walkthrough"
+   ],
+   "summary": "A row of bars grows in a wave that travels at constant speed; each bar eases up on its own and flashes a bright cap that relaxes to the resting tone.",
+   "recipe": "Bar i starts at at + 1.6i, a linear wave travelling at bar pitch / 1.6 px per frame (about 25 px/f at 1080p). It grows with height = h_i * prog(frame, start_i, start_i + 12, E.out) from a bottom anchor; make the grow last at least 0.09 x the bar height in px so the top edge never passes 70 px/f. A 3 px cap on each bar arrives in C.accent and relaxes to the bar's resting tone over 20 f after the bar lands (mixColor, cap opacity 1 to 0.6), because the accent means 'just landed'. For a centre-out symmetric wall, use tr-stepped-column-fill instead.",
+   "timing": "1.6 f per bar (~25 px/f wave). Each bar 12 f on E.out (at least 0.09 x its height in px). Cap relaxes over 20 f.",
+   "use_when": "Volume, activity or histogram data streaming in; an opening equaliser or skyline that hints at growth.",
+   "avoid_when": "Bars that must be compared precisely, since the wave delays reading; fewer than 6 bars.",
+   "ban_safe": false,
+   "bans": [
+    "orange",
+    "gradient"
+   ],
+   "ban_safe_variant": "Solid single-tone bars (or a single-hue tonal ramp) whose cap uses the film's one accent and relaxes to the bar tone: never a multi-hue gradient and never a warm amber cap.",
+   "evidence": 2
+  },
+  {
+   "id": "dn-linked-control-counters",
+   "name": "One control drives several live numbers",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "Dragging a slider visibly drives every dependent figure in lockstep, and the fill changes tint once it passes a marked threshold.",
+   "recipe": "Drive everything from one progress, p = prog(frame, at, at + 90, E.smooth). The slider fill is mix(0.35, 0.84, p) x track, the thumb (with a 2 px ring) rides the same value, and each dependent figure (percentage, amount, headroom) is computed from that value on fd(frame), rounded and set in fixed-width tabular figures. Past the threshold marker, draw the fill from the marker to the thumb in a brighter tint of the fill hue, and switch the affected figure's colour on the crossing frame. The cursor (Cursor.tsx) grabs the thumb 8 f before the drag starts and rides it. Figures that fall (headroom 44K to 13K) count down on the same p, and the formula is asserted in data.ts so every frame stays consistent.",
+   "timing": "Drag 90 f on E.smooth (fastest change mid-drag). Cursor grabs 8 f before. Figures update every whole frame. Hold the end state at least 36 f under a breath.",
+   "use_when": "Calculators, pricing, risk limits, utilisation: any feature whose logic is 'move this and those follow'.",
+   "avoid_when": "The dependent figures aren't computed consistently from one formula; more than 3 dependents.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "dn-flag-then-select",
+   "name": "Flag cascade, then one chosen",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "Status marks appear on a set of cards one after another, then a single card switches to the accent state: many flagged, one picked.",
+   "recipe": "Card i gets its flag at at + 6i: its border mixes from the card fill to a mid grey over 6 f on E.ui, and a 10 px hollow dot scales from 0 to 1 on SPR.micro. Flags stay neutral so the one accent can mean 'chosen'. About 28 f after the first flag, the chosen card switches over 8 f on E.ui: border to C.accent, a 6% accent inner tint, the dot filled, and scale 1 + 0.02 * hitPulse(t, 2, 6). Hold for at most 48 f with a slow 2% push toward it, then the chosen card leaves first on E.in into the cut.",
+   "timing": "Flags 6 f apart, 6 f each. Selection ~28 f after the first flag, an 8 f change. Hold at most 48 f with a 2% push. The chosen card exits on E.in.",
+   "use_when": "Triage, review, matching, anomaly detection: anything that narrows many down to one.",
+   "avoid_when": "The pick isn't what the product actually outputs; grids of more than ~12 cards, where the cascade reads as a queue.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "dn-row-cascade-value-swap",
+   "name": "Top-to-bottom row refresh",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature"
+   ],
+   "summary": "When a filter changes, a thin scan line crosses each table row in turn from top to bottom, and the row's icon, label and values change behind it.",
+   "recipe": "Two frames after the filter chip lands, row i gets its own scan, x_i = rowW * prog(frame, at + 3i, at + 3i + 20, E.linear). Clip the old row content with inset(0 0 0 x_i px) and the new with inset(0 (rowW - x_i) px 0 0), so each cell changes as the line crosses it and nothing is crossfaded. A 1.5 px hairline in C.line rides x_i and fades over its last 6 f; only the row the story is about gets the accent. Figures that change by a small amount roll with Roll (12 f) from the frame the line reaches their cell, instead of wiping.",
+   "timing": "Starts 2 f after the chip lands. 3 f row stagger. 20 f per row, linear (at most 60 px/f across a 1,250 px row). Six rows finish within ~35 f. Hairline fades over 6 f.",
+   "use_when": "Tables, activity feeds or leaderboards that refresh on a filter or a new period.",
+   "avoid_when": "Only one cell changes, so a Roll on it is enough; more than 8 rows, where the cascade reads as a queue.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "gradient"
+   ],
+   "ban_safe_variant": "One neutral hairline per row (the accent only on the row the story cares about), with no rainbow-tinted streak and no glow.",
+   "evidence": 1
+  },
+  {
+   "id": "dn-digit-reel-detent",
+   "name": "Mechanical digit reel",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "Each digit sits in its own masked column and rolls vertically like an odometer: the low columns spin while the high ones step once, landing column by column.",
+   "recipe": "Use Roll from src/fx/Roll.tsx in count mode (from, to, start, dur 60, ease E.out, roll 14, group ','). countSteps places a step on every whole frame where the integer changes, so the low columns spin a slot per frame while each high column rolls once on its own E.out, and the fixed column count keeps the width still. For an event counter, pass steps at the landing frames of their causes, with roll 6-8 f. For a single column that matters (a badge going 9 to 10, the leading digit of a total), build that strip by hand and drive its slot with spr(frame, step, SPR.detent), so it clicks home with the one small overshoot a detent is allowed. Ticks go on step frames, thinned to one per 2-3 f while they are dense, with each of the last three steps ticked.",
+   "timing": "Count 60 f on E.out. Column roll 14 f (6-8 f for event counters). Detent landing ~16 f. Ticks at least 2 f apart.",
+   "use_when": "Counters with a tactile, product-like feel: totals, balances, counters that step on visible events.",
+   "avoid_when": "The film already counts with plain in-place digits (keep one counting style per film); fewer than 3 changes, where one roll is enough.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "dn-ring-gauge-sync",
+   "name": "Ring gauge filling with its centre number",
+   "category": "data_and_numbers",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "any"
+   ],
+   "summary": "A circular gauge sweeps to its value while the number at its centre counts on the same progress, and the ring's end cap leads the eye around.",
+   "recipe": "Draw an SVG circle rotated -90deg over a C.line track ring, with pathLength={1}, strokeLinecap round and strokeDasharray `${v} 1`, where v = target * prog(frame, at, at + N, E.outSoft) and N = max(48, 0.48 x radius x target) frames, which keeps the end cap at or under 60 px/f (48 f covers a 160 px ring up to 63%; a full 160 px ring needs 77 f). The centre figure is Math.round(100 * v) on fd(frame), in tabular figures with a tucked % at 0.4x size. The arc arrives in C.accent and relaxes to the ink tone over 20 f after landing; for nested rings, stagger them 6 f apart with stagger() so the group lands within 30 f.",
+   "timing": "Fill over N = max(48, 0.48 x radius x target) f on E.outSoft (48 f for most gauges, 77 f for a full 160 px ring). Centre count on the same progress. Accent relaxes over 20 f after landing. Nested rings 6 f apart.",
+   "use_when": "Percentages, scores, completion and utilisation; status pills and KPI tiles.",
+   "avoid_when": "Values that aren't parts of a whole; more than 3 concentric rings.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "dn-delta-chip-compare",
+   "name": "Before-to-after with a delta chip",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical",
+    "walkthrough"
+   ],
+   "summary": "The old figure steps back to a small grey 'before', the new figure counts in at hero size, and a delta chip ('-38%') pops in the accent on the landing frame.",
+   "recipe": "At the cue the old hero figure lifts out (0.3 em up, 12 f on E.in through depart, opacity on E.smooth), while a smaller 'before' copy rises into a secondary slot above-left through MaskRise, so the two values never sit crossfaded in one place. The new figure counts at hero size from the old value to the new on E.type over 36 f, and a 2 px C.mute strike draws across the 'before' value over 10 f on E.out. On the count's landing frame, the delta chip (C.accent fill) scales from 0.6 to 1 from its left edge on SPR.micro (no overshoot) with a tick, then its fill relaxes to C.ink2 with accent text over 20 f.",
+   "timing": "Old figure exits over 12 f on E.in. 'Before' MaskRise 30 f. New count 36 f on E.type. Strike 10 f on E.out. Chip on the landing frame (SPR.micro, no overshoot), fill relaxes over 20 f. Hold at least 36 f under a breath.",
+   "use_when": "Improvements such as cost down, speed up or errors falling from 412 to 3; before-and-after claims.",
+   "avoid_when": "The change is small or noisy; the story has no real 'before' state to show.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "dn-unit-grid-tally",
+   "name": "Unit grid that fills to the count",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "A grid of small squares, each standing for a fixed number of units, fills in a diagonal wave while a counter beside it reaches the total, and one cell lands in the accent.",
+   "recipe": "Lay out an n x m grid of 14-20 px rounded squares as a C.line track, each square standing for a fixed number of units. Fill cell (r, c) from at + stagger(r + c, n + m - 1, 30, E.out), with opacity over 8 f on E.smooth and scale from 0.6 to 1 on SPR.micro, and fill the last cell by its fraction through a width clip. The counter beside the grid shows filled cells x unit on fd(frame) in tabular figures, so the number and the grid can never disagree. The cell that carries the point (the last one, or 'you') lands in C.accent with scale 1 + 0.15 * hitPulse(t, 2, 8).",
+   "timing": "Diagonal wave over 30 f on stagger with E.out. Each cell fades over 8 f, with an SPR.micro scale. Accent cell pulse: attack 2 f, tau 8 f. Hold at least 36 f with a 2% push.",
+   "use_when": "Shares and proportions ('3 in 10 teams'), quotas, capacity; making a large count tangible without a chart.",
+   "avoid_when": "Exact values with many significant digits, which the grid can't show honestly; cells under 12 px on vertical phone formats.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "dn-area-ratio-compare",
+   "name": "Area-true ratio comparison",
+   "category": "data_and_numbers",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical",
+    "loop"
+   ],
+   "summary": "A multiplier claim ('10x smaller') plays as a block that shrinks in log space to the area the ratio implies, leaving an outline of its old size behind.",
+   "recipe": "Draw block A at side s in C.mute, anchored bottom-left on a baseline. At the cue, scale it from that corner with lmix(1, 1/sqrt(ratio), prog(frame, at, at + 48, E.smooth)), so its area ends at 1/ratio and the shrink keeps an even ratio per frame. Its fill mixes to C.accent over the last 12 f, and a 1.5 px C.line outline stays at the original size as the reference. The ratio figure counts beside it on E.type over 36 f and lands on the same frame as the block. For speed or time claims, compare bar lengths (a linear ratio) instead of areas.",
+   "timing": "Shrink 48 f on E.smooth via lmix. Fill mixes to the accent over the last 12 f. Ratio count 36 f on E.type, landing with the block. Hold at least 36 f under a 2% breath.",
+   "use_when": "Multiplier and reduction claims about size, cost, time or footprint.",
+   "avoid_when": "Ratios above ~25x, where the block shrinks to a dot (show the number alone); claims that aren't really proportional.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  }
+ ]
+}

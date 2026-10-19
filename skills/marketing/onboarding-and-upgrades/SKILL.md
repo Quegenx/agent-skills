@@ -15,6 +15,7 @@ Read the product context file first, `.agents/product-context.md` ([../../anti-a
 | Freemium, free trial, paid trial, money-back and consultation, the card decision on visitor-to-paid, model-market fit, hook don't satisfy | [ACTIVATION-MODELS.md](ACTIVATION-MODELS.md) |
 | Upgrade prompts: principles, triggers, the seven screen parts, templates, timing and frequency, after the upgrade, dark patterns, the App Store and Play rules, what to measure | [UPGRADE-PROMPTS.md](UPGRADE-PROMPTS.md) |
 | The test catalogue for onboarding and upgrade prompts, with store-invalid arms marked | [EXPERIMENTS.md](EXPERIMENTS.md) |
+| Recovery audience worksheet: event evidence, billing and cross-platform identity, segment precedence, exclusions, channel eligibility and measurement handoff | [RECOVERY-COHORTS.md](RECOVERY-COHORTS.md) |
 
 ## The rules
 

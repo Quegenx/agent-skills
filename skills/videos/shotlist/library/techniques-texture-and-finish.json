@@ -1,0 +1,408 @@
+{
+ "techniques": [
+  {
+   "id": "tx-speed-gated-motion-blur",
+   "name": "Speed-gated motion blur",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Fast whips, flings and flicked scrolls streak like a real shutter while holds and slow drifts stay pin-sharp, so the eye rests on the readable frames.",
+   "recipe": "Never fake speed blur per layer in the browser (CameraMotionBlur and an animated filter: blur() quantise to 8 bits and step); design the moves and let the master's render pass make the blur: `bash scripts/render.sh Film out/film.mp4 --blur` renders a 240-degree shutter centred on each frame, takes samples from measured speed (1 under 2 px/f, 4 up to 18 px/f, 14 at 60, 18 at 80) and averages them in float. Shape every fast move so its peak sits between 12 and 70 px/f (E.whip or E.inOut, or inertia() for a flicked scroll) and both ends fall under 2 px/f, so the streak exists only mid-move. Put every hard cut on an act boundary so samples never smear across it, and drive typed text, counters, carets and grain from fd(frame) so all sub-samples of a frame agree. Where optical flow cannot see the speed (a flat band wiping the whole frame) pass `--floor A-B:px` or analytic speed; in HyperFrames render at 4x fps and run `accumulate.py --uniform 4`, which is clean only to about 12-18 px/f.",
+   "timing": "Whip 12-20 f on E.whip with a 40-70 px/f peak, the shots either side at 0.3-1.5 px/f; streak length is about 2/3 of the per-frame travel (a 60 px/f card smears ~40 px); a flick is inertia(f, start, 50-70, 0.89), coasting ~8.6 x v0 px and under 0.5 px/f after its `settle` frames; nothing above 80 px/f.",
+   "use_when": "Any film with whips, flings, drops or flicked scrolls; walkthroughs that travel fast between setups and need every hold razor-sharp.",
+   "avoid_when": "Moves that would need more than 80 px/f (redesign as a cut on the beat, a match cut or a mask wipe); readable text moving above 20 px/f; a deliberately stepped on-twos section.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 6
+  },
+  {
+   "id": "tx-on-twos-cadence",
+   "name": "Stepped cadence on twos",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "sting",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "One designated layer or section updates only on every second frame, so its motion reads crisp, precise and slightly mechanical against an otherwise smooth 60 fps film.",
+   "recipe": "Inside the chosen layer compute `const f2 = 2 * Math.floor(fd(frame) / 2)` and pass f2 instead of frame to every prog, tw, spr and hitPulse call it makes (or use interpolate(..., { posterize: 2 }) for a single value), so every motion-blur sub-sample of a frame agrees and each held pair renders sharp. Because a held frame cannot carry blur, keep every stepped element under 24 px per step (12 px/f average) and type under 20 px per step; leave the camera, backgrounds and grain on the native frame. Apply it to a whole act (a UI-precision section, a sting) or to the type layer only, never switching on and off inside a shot.",
+   "timing": "Steps every 2 f (30 Hz in a 60 fps file); moves of 60-150 px over 24-40 f on E.glide or SPR.firm evaluated at f2, peaking at or under 24 px per step; at least one full shot or act long.",
+   "use_when": "Mechanical, developer or precision brands; a UI section that should feel like a live screen; a short sting that wants a punchy graphic cadence.",
+   "avoid_when": "Slow drifts and camera pushes (they judder); moves that would exceed 24 px per step; a few isolated shots in a smooth film, where it reads as dropped frames.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-mixed-media-grade",
+   "name": "One grade across mixed media",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop"
+   ],
+   "summary": "Desaturated photography, matte grey 3D, flat vector maps and line diagrams cut freely against each other without clashing, because every medium shares one dark value range and only the hero prop carries the accent.",
+   "recipe": "Normalise each medium before it enters a shot: photos get `filter: grayscale(1) brightness(0.65) contrast(1.05)`; 3D or clay renders use matte grey materials (base around 40% grey, no coloured speculars) with C.accent on the hero prop only; vector maps fill land at C.ink plus OKLCH 0.03-0.04 lightness with 1.5 px borders at 15-25% white; line diagrams draw in white at 60-80% with the accent on the one active path. Check that every medium's mean luma lands within 8-25% and that nothing except the accent exceeds OKLCH chroma 0.03, then hard-cut or swap media inside a shot or grid cell on beats. The accent keeps the same single meaning in every medium.",
+   "timing": "Swap media inside a shot or cell every 48-90 f, on beats; hard cuts between media need no transition because the value range already matches.",
+   "use_when": "Films that must combine photos, renders, maps, diagrams and UI, especially grid or bento layouts with several media on screen at once.",
+   "avoid_when": "Light, pastel or colourful brands; single-medium films; hero product photography that must keep its true colour.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-low-luma-photo-plate",
+   "name": "Low-luma photo plate",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A real photograph sits behind the UI or type, graded almost to black or thrown out of focus, adding context and tonal texture without stealing contrast from the copy.",
+   "recipe": "A full-bleed <Img> overscanned 6% sits under everything, in one of two settings: (a) a sharp texture plate behind statements, `filter: grayscale(1) brightness(0.25) contrast(1.15)` tuned until its mean luma is 5-8%; (b) a defocused context plate behind a moving panel, pre-blurred offline at a 40 px radius (PIL GaussianBlur saved as PNG, so the browser never animates a blur; use src/fx/RackFocus.tsx if focus must change) with `brightness(0.6) saturate(0.4)`, translated at 0.3x the panel's or camera's translation for parallax. Keep plate hues neutral or cool, run the film's global grain over it so the dark ramps do not band, and separate the panel on top with a luminance step (C.ink2) and `inset 0 1px 0 rgba(255,255,255,.08)`. Plates may hard-cut on beats under a locked foreground whose pill or headline stays pixel-identical across the cut.",
+   "timing": "A plate holds its shot (90-420 f) with 0.3x parallax or a 0.5-1.5 px/f drift; montage cuts under a locked foreground every 15-30 f on beats; never a fade on the plate.",
+   "use_when": "Dark-stage films that need real-world context (a desk, a city, a workspace) or a material, crafted feel behind sparse type or a floating panel.",
+   "avoid_when": "Light stages; a busy photo that stays above ~12% mean luma and fights the type; stock imagery unrelated to the product's world; decorative bokeh that names no job.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "tx-global-grain",
+   "name": "Global frame-keyed grain",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "A fine, even grain sits over the whole film at one strength, breaking banding in soft ramps and blurred plates and giving flat colour fields a tactile surface.",
+   "recipe": "Bake 8 seeded noise tiles offline (512x512 PNG, numpy gaussian noise with sigma about 90 levels, centred on the stage's own luma so the stage is not lifted); never Math.random or an animated feTurbulence. Add one full-frame top layer: a div with the tile as backgroundImage, normal blend at opacity 0.015-0.02, tile index Math.floor(fd(frame) / 2) % 8, and backgroundPosition offset by Math.floor(rand(index) x 512) px in x and y so the repeat never shows. Keep the same strength from the first frame to the last (never per scene), verify on a flat mid-grey crop (sigma about 1.5-2 code levels) and confirm forensics.py reports no smear. Grain does not replace baked dither: soft gradients still ship as dithered PNGs from scripts/dither-gradient.py.",
+   "timing": "New tile every 2 f; constant strength (sigma ~1-2.3 code levels) for the whole film; no fades and no per-scene changes.",
+   "use_when": "Films with large flat or saturated colour fields, soft lighting ramps, blurred photo plates, or a tactile, filmic brand.",
+   "avoid_when": "Crisp, clinical UI films where any texture reads as dirt; when the strength would have to change between scenes; as a fix for banding that dithered PNGs should solve.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "tx-ramp-masked-stipple",
+   "name": "Stipple only in lit ramps",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "loop"
+   ],
+   "summary": "A visible dithered stipple lives only inside lit edges and light falloffs, while the flat stage around them stays perfectly clean.",
+   "recipe": "Bake each lit ramp (a lit edge on a shape, a light pool, a floor falloff) as an RGBA PNG with scripts/dither-gradient.py, then give the element that carries it a child layer of a static seeded noise tile (sigma about 64 levels around mid-grey) masked by that same PNG (`maskImage: url(fx/rim.png)`, `maskSize: '100% 100%'`), blend overlay at opacity 0.08-0.12. The noise sits inside the ramp's own transform so it travels with the light instead of swimming through it, and wherever the ramp's alpha is 0 the stage gets no texture at all. Check it with the x12 stretch from `dither-gradient.py --preview`: stipple inside the ramp, none on the stage.",
+   "timing": "Static texture that moves rigidly with its ramp; high-pass sigma about 1.9 code levels in the brightest ramps, 0.5-0.9 in faint falloffs, 0.0 on the flat stage.",
+   "use_when": "Dark films with lit edges, light pools or soft falloffs that risk banding, where a global grain would dirty a deliberately clean stage.",
+   "avoid_when": "Films already running global grain (double texture); light stages; hard-edged flat design with no ramps.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-dot-matrix-silhouette",
+   "name": "Faint dot-matrix silhouette",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "Behind a claim, a barely visible field of dots forms a meaningful silhouette (a world map, a region, the product's own shape), adding literal context without competing with the type.",
+   "recipe": "Precompute dot centres on a 20 px grid at 1080p, keeping only those inside a silhouette bitmap (a land mask, a region outline, the mark), and render them as one SVG of 13 px circles (or bake it to PNG). Fill the dots with the ground colour shifted about 4% in lightness, same hue (OKLCH 0.03-0.04: lighter on dark grounds, darker on light ones), and place the layer under the type. Keep it alive with a scale of lmix(1.00, 1.02, prog(f, s, e, E.linear)) across the shot or a translate under 1 px/f, and let it leave with the shot's cut rather than fading.",
+   "timing": "Holds one shot of 80-100 f; scale 1.00 to 1.02 linear across it (well under 1 px/f); arrives and leaves on cuts, no fades.",
+   "use_when": "Claims about reach, coverage, location or scale, and any shot where a silhouette adds literal meaning behind the copy.",
+   "avoid_when": "Generic decoration with no meaning; contrast above ~6%, where it starts competing with the copy; small vertical frames where 13 px dots read as noise (scale the pitch up instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-scanline-transmute",
+   "name": "Scanline transmutation",
+   "category": "texture_and_finish",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "A bright bar sweeps down a hero object: above the bar the object has already become its digital form, a dot-matrix disc with a crisp rim, while below it the original solid object remains.",
+   "recipe": "Stack two copies of the object in one container: the solid version and a dot-matrix version (an SVG <pattern> of 5 px-radius circles on a 16 px pitch, clipped to the object's outline, plus a 2 px rim stroke). Drive one value y (percent of the object's height) and clip the dot layer with `clipPath: inset(0 0 ${100 - y}% 0)` and the solid layer with `inset(${y}% 0 0 0)`; draw the bar as a hard-edged rect centred on y, 3-4% of the frame height thick, clipped to the object's column so it enters already moving from 8% above the object. Chain three segments: -8% to 45% over f0-11 on E.linear, 45% to 50% over f11-17 on E.linear (a near-hold that catches on the object's symbol), 50% to 100% over f17-34 on E.glide; the fast segments run 20-40 px/f and get the blur pass. Put a whoosh apex on the third segment's velocity peak and a snap on f34.",
+   "timing": "34 f in all: 11 f fast (20-30 px/f at 1080p), a 6 f near-hold at ~4-6 px/f on the symbol, 17 f on E.glide to rest; bar 36-40 px; the transformed object then holds 24-40 f with a drift under 1 px/f.",
+   "use_when": "One hero transformation per film: an object becoming its private, digital, encrypted or connected form; the moment the concept turns.",
+   "avoid_when": "More than once per film; ordinary UI state changes; objects under ~25% of frame height, where the dot pitch cannot read.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "purple"
+   ],
+   "ban_safe_variant": "Keep the sweep but drop the bloom and the tint: a flat, hard-edged bar 12-24 px thick in white or the accent (or a 2 px hairline with a 10% tint band 40 px behind it), dots in white or the accent, never violet, and nothing lit outside the object's outline.",
+   "evidence": 1
+  },
+  {
+   "id": "tx-locked-mosaic",
+   "name": "Locked-state mosaic",
+   "category": "texture_and_finish",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "Withheld content shows as pixelated, desaturated, darkened art with a lock glyph and thin light lines sliding across it, until an unlock snaps it to clean full-tone art.",
+   "recipe": "Pre-render each card's art at 1/40 of its width (blocks about 2.5% of the card width), show it upscaled with `imageRendering: 'pixelated'` and `filter: saturate(0) brightness(0.3)`, and over it 2-3 slightly curved strokes (1.5-2 px, white at 30%) translating linearly along the card at 2-4 px/f, clipped to the card, with a 32-40 px line lock glyph at centre and no caption. Unlock: the strokes brighten to 60% over the 12 f before it, then the art dips from brightness 0.3 to 0.18 over 4 f on E.smooth while the shackle rotates open on SPR.firm; on the next frame swap to the full-resolution art at brightness 1.12 easing to 1.0 over 10 f on E.out, and fade glyph and strokes over 10 f on E.smooth. In a run of cards make each later unlock about 25% faster.",
+   "timing": "Locked state 54-108 f (the strokes keep moving, so nothing is static); unlock = 12 f brighten, 4 f dip, swap, 10 f settle; repeated unlocks 30-45 f apart, each ~25% quicker.",
+   "use_when": "Premium, gated or upcoming features; a reveal sequence where concealment builds desire; access or unlock stories.",
+   "avoid_when": "Products with nothing gated; text content (pixelated text reads as broken); more than one reveal device in the same act.",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "ban_safe_variant": "Replace the soft, screen-blended gaussian light ribbons with crisp 1.5-2 px strokes at 30-60% white, and keep the unlock's brightness overshoot inside the card: no burst or rays past its edge.",
+   "evidence": 1
+  },
+  {
+   "id": "tx-ring-field",
+   "name": "Intersecting ring field",
+   "category": "texture_and_finish",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "loop",
+    "sting"
+   ],
+   "summary": "Above and below a centred band of type, families of huge overlapping ellipse outlines rotate slowly in opposite directions and whip on every copy swap, giving the words an ownable abstract environment.",
+   "recipe": "One full-frame SVG holds two groups of 6-8 ellipses (rx about 47% of frame width, ry about 32% of frame height, centred just above and just below the text band), each a crisp 2 px stroke in one hue whose opacity steps from 0.6 on the outer ring to 0.15 nearest the band. Rotate the groups in opposite directions, angle = +-(0.2 x f + 14 x the sum over swap cues s_k of prog(f, s_k, s_k + 12, E.smooth)), so each copy swap adds a 14-degree whip, and swap the text hard on each whip's peak frame (s_k + 6) so the motion masks the change. The text stays static at the band's centre; the rings' fastest edges (~50 px/f at the whip peak) get the blur pass.",
+   "timing": "Drift 0.2 degrees/f between swaps; whip +12-16 degrees over 12 f on E.smooth (peak ~3 degrees/f, ~50 px/f at the outer rim); copy swaps every 60-120 f on the whip's peak frame.",
+   "use_when": "Type-led launch cards or a statement sequence on a dark stage that needs a signature environment and a motivated way to change copy without cuts.",
+   "avoid_when": "UI demos, where it competes with the product; light stages, where 2 px rings vanish; more than ~4 s of pure ambience.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "gradient"
+   ],
+   "ban_safe_variant": "Drop the soft-lit two-hue gradient strokes, the inner blur and the screen blend: every ring is a crisp 2 px stroke in one neutral (white at 15-60% on ink), normal blend, with depth carried by per-ring opacity alone. Keep the rings out of the accent so the accent keeps its one meaning.",
+   "evidence": 1
+  },
+  {
+   "id": "tx-brushed-micro-streaks",
+   "name": "Brushed micro-streaks",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "Fine directional streaks and a satin grain across a hero object's face make it read as machined material instead of flat vector.",
+   "recipe": "Bake a brushed texture PNG offline at 2x the hero's on-screen size: seeded noise stretched along one axis (numpy noise, then a 1-D box blur 60-200 px long, normalised to sigma about 6 levels around mid-grey) so streaks are 1-2 px wide. Apply it as a child of the object inside its transform, masked to the face (`maskImage` of the face shape), blend overlay at opacity 0.06-0.10; a CSS `repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px)` is the quick version for a face that never scales down. As the object turns, slide the texture's backgroundPosition along the streak axis in proportion to its rotation so the satin seems to catch the light.",
+   "timing": "Constant while the object is at hero scale (at least 30% of frame height); fade it out over 10-14 f on E.smooth before the object shrinks below that.",
+   "use_when": "Hero objects shown big enough for micro detail (coins, cards, devices, extruded marks); hardware and finance brands with a physical metaphor.",
+   "avoid_when": "Small or minified objects, where 1 px streaks alias and crawl; soft, friendly brands; flat UI.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-glyph-grid-pulse",
+   "name": "Glyph-grid shock pulse",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "On the film's biggest hit, the dark background flashes a grid of tiny monoline marks that bend outward from the impact like a shockwave, then settles back to a quiet grained field.",
+   "recipe": "One SVG or canvas layer over the stage holds a grid of 36 px cells at 1080p, each with a 10 px monoline mark picked by rand(cellIndex) from plus, L, T and slash, stroked 1.5 px in white. With t = f - hit and pulse = hitPulse(t, 4, 3), each mark at distance d from the impact point gets opacity 0.6 x (1 - d / R) x pulse and a radial offset of 30 x pulse x (1 - d / R) px outward (R about 900 px), so the grid bulges like a tunnel and dies away. Play it once, on the payoff or the lockup's landing, with the hit sound on the hit frame.",
+   "timing": "About 12-14 f visible, peaking 4 f after the hit (hitPulse(t, 4, 3)); 30 px radial push at peak; once per film.",
+   "use_when": "A digital or developer brand's payoff hit or lockup landing that needs a shockwave without colour or glow.",
+   "avoid_when": "Calm films; more than once per film; light stages; behind type that is still arriving.",
+   "ban_safe": false,
+   "bans": [
+    "particles"
+   ],
+   "ban_safe_variant": "Keep it strictly grid-locked so it reads as structure, not a burst: plus marks only, every cell on the grid with no scatter or random drift, opacity capped at 0.35, a single displacement ring, monochrome, and no streaks of light.",
+   "evidence": 1
+  },
+  {
+   "id": "tx-gobo-studio-shadows",
+   "name": "Gobo-lit studio backdrop",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The UI floats over an off-white studio backdrop crossed by huge, very soft diagonal shadows, like window light through leaves, so flat screens feel photographed.",
+   "recipe": "Stage C.paper (a cool off-white around #F7F7F7). Bake 3-5 shadow bands as RGBA PNGs at 120% of frame size with scripts/dither-gradient.py: linear gradients at 30-40 degrees, each going transparent to rgba(0,0,0,0.05-0.08) to transparent across 10-18% of the gradient line (the look of grey shapes blurred 100-150 px at 8-15% opacity, without the banding). Layer them above the stage and below the cards, and drift each along its own axis by A x sin(2 pi f / P + phi) with A = 40-80 px and P = 600-900 f, which keeps them under 0.5 px/f. Cards get `0 30px 60px rgba(0,0,0,.12)` and a 1 px C.line border.",
+   "timing": "Band drift under 0.5 px/f on sines with 600-900 f periods and spread phases; present in every light shot of the act, unchanged between shots.",
+   "use_when": "Light-stage product films and walkthroughs that need depth and physicality without glass, colour or a 3D set.",
+   "avoid_when": "Dark stages; dense UI that fills the frame edge to edge; strictly flat graphic brands.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-fog-floor",
+   "name": "Fog floor",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The bottom fifth of the frame lightens toward the stage's brightest tone, as if the UI hovers above a softly lit floor that receding planes can sink into.",
+   "recipe": "Bake a full-frame RGBA PNG with scripts/dither-gradient.py: linear, angle 0 (bottom to top), stops [floor tone at 0, floor tone at alpha 0.6 at 0.12, transparent at 0.22], where the floor tone is a near-white just above the stage in the same hue (OKLCH L about 0.98). Layer it above the background and below the UI. When a panel tilts back into depth (perspective 2000-2400 px, transformOrigin at its bottom edge, rotateX 0 to 60 degrees over 30-40 f on E.in), render a second copy of the fog above that panel so it dissolves into the floor, and take the panel's opacity to 0 on E.in over the last 12 f. On an ink stage the floor tone is C.ink raised OKLCH 0.04.",
+   "timing": "The floor band is 22% of frame height and fixed to the stage; tilt-backs 30-40 f on E.in with the fade over their last 12 f.",
+   "use_when": "Light or pastel stages with 3D tilt-backs, lifts and recedes; any film that wants a horizon without drawing a floor.",
+   "avoid_when": "Flat, front-on UI with no depth moves; dark stages that already have a light pool; vertical frames where captions sit in the bottom fifth.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tx-micro-tick-ui-sound",
+   "name": "Micro-tick UI sound",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "(Sound) Typing and UI changes get tiny, dry ticks at or under the music, and once the drums run the UI goes silent, so the picture feels tactile without a loud keyboard sample.",
+   "recipe": "In src/sync.ts emit `key` events from the same CHAR_AT array the picture types with (variant 'word' on word starts) and `tick` or `click` events on UI appearances, at weight 0.2-0.35 (12-18 dB under the landing hit), and set \"typing\": \"soft\" in score.json (\"muted\" over a denser section). Emit none of them in sections whose drums are \"groove\" or \"drive\": there the hats carry the typing. When typing is fast, place one tick per word as it becomes legible rather than one per letter, and let a run of UI ticks climb about 1 dB per event into a payoff. Cinetic's score.py typing_levels profile measures each run pre-master against the music under it: per-key soft, mechanical and pitched typing -8 to -2 dB A against the ducked bed; word blips +2 to +9 dB; muted typing at least 8 dB A below the full bed [cinetic, scripts/audio/score.py:1397-1407]. The old recipe instead said \"15-20 dB A under a full bed and never brighter than the music above 2 kHz\". These are the source's mix targets, not a universal standard.",
+   "timing": "Ticks 2-6 ms long, at least 60 ms (3.6 f) apart, sigma 3.5 ms timing jitter and +-1 dB gain jitter; peaks -23 to -36 dBFS, at or under the bed's RMS; zero UI sounds once the drums enter.",
+   "use_when": "Typed prompts, word-by-word builds, cold opens before the beat drops, any UI moment that wants touch without an effect announcing itself.",
+   "avoid_when": "Under voiceover syllables; inside a dense drum section; loud keyboard samples; a film whose idea is silent UI over a beat bed throughout.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "tx-surface-edge-finish",
+   "name": "Hairline edge and key shadow",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Every floating surface gets a 1 px edge plus one soft key shadow on paper, or a top inner highlight on ink, so flat UI reads as a physical object in a lit space.",
+   "recipe": "On paper: `boxShadow: '0 30px 60px rgba(0,0,0,.12)'` with a 1 px C.line border, optionally over a tight `0 1px 2px rgba(0,0,0,.06)` contact shadow. On ink: no shadow, a C.ink2 fill (a luminance step from C.ink), a 1 px border at C.ink plus about OKLCH 0.06 lightness, and `inset 0 1px 0 rgba(255,255,255,.08)` as the top highlight. Tie the finish to motion: when a card lifts (z 0 to 120 px) grow its shadow with the lift formulas (offset 0.1z, 0.22z; blur 3 + 0.06z; alpha 0.2 - 0.1 x min(1, z / 200)), and when a panel tilts toward camera raise the inset highlight from 0.08 to 0.12 with |tilt| / 15 degrees, so the edge catches light as it moves.",
+   "timing": "Static finish; shadow and highlight follow the element's z and tilt every frame (lift 14 f on E.out, drop 10 f on E.in); highlight alpha changes by at most 0.04 over a tilt.",
+   "use_when": "Any floating card, panel, modal or window, in every format.",
+   "avoid_when": "Flush full-bleed UI or gutterless grids whose cells should merge into one canvas; anything tempting a glass panel or a coloured halo instead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tx-feathered-edge-mask",
+   "name": "Feathered edge mask",
+   "category": "texture_and_finish",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "loop",
+    "vertical"
+   ],
+   "summary": "Lists, reels and overflowing lines dissolve into the stage at a soft edge instead of being cut by a hard crop, so content feels endless and the eye stays in the clear middle.",
+   "recipe": "Put the moving content inside a fixed container with `maskImage` (and `WebkitMaskImage`) set to `linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)`, so rows enter and leave by fading into the stage; move the content inside by transform only, with inertia() for a flicked reel or E.glide for single steps. For a typed line that must follow its caret, use a left feather `linear-gradient(to right, transparent 0, #000 140px)` on the line's box and slide the text left by exactly its overflow each frame. Size the feather at 10-15% of the container (120-160 px at 1080p): shorter reads as a crop, longer greys out readable rows.",
+   "timing": "Feather 10-15% of the container; list steps 26-40 f on E.glide, or inertia(f, s, 30-60, 0.89) for a proof reel; text under the mask at most 20 px/f while it must read; the mask itself never moves.",
+   "use_when": "Endless-feeling lists, proof reels, logs, chats, card stacks, and type that overflows its line as it is typed.",
+   "avoid_when": "Content that must be read right at the container edge; a hard-cropped bento look; as a full-frame vignette (that is lighting, not a mask).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tx-mosaic-resolve",
+   "name": "Stepped mosaic resolve",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "launch",
+    "sting"
+   ],
+   "summary": "An image or screen arrives as coarse grey blocks that halve in size every two frames until the real picture snaps in, sharp and in full colour.",
+   "recipe": "Render the target's final look as a still (`npx remotion still` for a live component, or the image itself) and pre-bake downsampled copies at 48, 24, 12, 6 and 3 px blocks (PIL resize with BOX), shown upscaled with `imageRendering: 'pixelated'`. From cue c, pick the copy by Math.floor((fd(frame) - c) / 2) so each size holds 2 f, and hand over to the live component on the frame the block would reach 1 px; run `filter: saturate()` from 0 to 1 and brightness from 0.7 to 1 across the same 12 f on E.smooth. The stepping is discrete state read from fd, so it stays crisp under the blur pass.",
+   "timing": "48, 24, 12, 6, 3, then 1 px over 10-12 f (2 f per size); saturation and brightness over 12 f on E.smooth; an optional 4-6 f hold at 48 px so the resolve starts on a beat.",
+   "use_when": "Revealing an image, avatar, map or screen in a digital or tech brand; the resolve after a locked state; a beat-synced reveal.",
+   "avoid_when": "Text-heavy screens (half-resolved text looks broken); calm, quiet brands; more than twice per film.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "tx-wireframe-scan-build",
+   "name": "Wireframe-to-product scan",
+   "category": "texture_and_finish",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "A thin accent line sweeps across a UI card: ahead of it the card is still a wireframe of outlines and skeleton bars, behind it the finished product is already there.",
+   "recipe": "Render the component twice in one container: the real UI, and a wire version of the same component (backgrounds transparent, every box a 1.5 px C.line outline, text replaced by rounded bars at the measured text width and 40% opacity, icons as outlined circles). Drive x from -4% to 100% of the card width with prog(f, s, s + 44, E.smooth) and, clamped to 0-100, clip the real layer with `inset(0 ${100 - x}% 0 0)` and the wire layer with `inset(0 0 0 ${x}%)`, and draw a 2 px C.accent line at x reaching 24 px past the card's top and bottom, with no glow. Add a soft swell event across the sweep and a snap as the line leaves the card, then fade the line over 10 f on E.smooth.",
+   "timing": "Sweep 40-48 f on E.smooth across a 600-900 px card (edge peak ~40-58 px/f; the UI itself never moves); line fade 10 f; the finished card then holds at least 30 f under a 0.5-1.5 px/f camera drift.",
+   "use_when": "Idea-to-product, design-to-code, generation or build stories; the first appearance of the hero UI.",
+   "avoid_when": "More than once per film; UI too sparse to read as a wireframe; a film that already uses another scan device such as scanline transmutation.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "tx-halftone-shading",
+   "name": "Halftone shading",
+   "category": "texture_and_finish",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A flat hero shape gains volume from a single-colour halftone dot field whose dots swell in the shadow side and shrink toward a slowly moving light.",
+   "recipe": "Over the shape, lay an SVG grid of circles on a 12 px pitch, clipped to the shape (clipPath), in C.ink on paper or C.white on ink. Each dot's radius is 5.5 x E.smooth(clamp(dist(L, dot) / R)) px, with L a light point and R about 0.8 x the shape's diagonal; drop dots under 0.8 px radius so nothing aliases. Move L along a slow arc at under 0.5 px/f so the shading breathes, and reveal the field as a diagonal wave in which each dot grows from 0 to its radius over 12 f on E.out, offset by stagger(i, n, 24) with i ordered by x + y.",
+   "timing": "Reveal 36 f (a 24 f diagonal stagger plus 12 f per dot on E.out); light point drift under 0.5 px/f; holds as long as the shape stays the hero.",
+   "use_when": "Flat marks, icons or objects that need volume without 3D; technical or print-minded brands; alongside other dot-matrix devices.",
+   "avoid_when": "Shapes under ~200 px, where the dots turn to mush; photographic or 3D scenes; busy UI behind the shape.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  }
+ ]
+}

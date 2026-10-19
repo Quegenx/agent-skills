@@ -57,6 +57,8 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 
 Left to choose, every agent picks the same fade-up, push-in and end card. Before designing shots, draw the film's techniques at random from the library, weighted to the format and energy:
 
+The [Cinetic catalogue](library/techniques.json) keeps 14 category intros and an ordered list of 21 sibling JSON parts containing the 273 entries [cinetic, assets/library/techniques.json]. Copy the complete skill folder when installing it; the script resolves each part relative to the manifest, preserving entry order for seeded draws. Direct JSON consumers must flatten the listed parts in order; the manifest replaces the old top-level `techniques` array.
+
 ```bash
 python3 <this skill>/scripts/draw_techniques.py --format launch --energy high --seconds 30     # a whole-film plan, seed printed
 python3 <this skill>/scripts/draw_techniques.py --category transition --n 3 --format launch     # three seams

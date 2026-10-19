@@ -2,7 +2,7 @@
 """Draw a film's techniques at random from the library, so films stop converging on the same few moves.
 
 An agent left to choose picks the first familiar option: the same fade-up, the same push-in, the same end card.
-This draws from library/techniques.json (273 measured techniques in 14 categories),
+This draws from the ordered library/techniques.json manifest and its sibling parts (273 measured techniques in 14 categories),
 weighted toward moves that fit the film's format and energy and toward proven workhorses. The seed is printed so a
 plan can be reproduced and written into shotlist.md.
 
@@ -100,7 +100,12 @@ def main():
     ap.add_argument("--show")
     ap.add_argument("--json")
     a = ap.parse_args()
-    lib = json.load(open(LIBRARY))["techniques"]
+    with open(LIBRARY, encoding="utf-8") as source:
+        manifest = json.load(source)
+    lib = []
+    for part in manifest["parts"]:
+        with open(os.path.join(os.path.dirname(LIBRARY), part), encoding="utf-8") as source:
+            lib.extend(json.load(source)["techniques"])
     by_id = {e["id"]: e for e in lib}
     if a.show:
         if a.show not in by_id:

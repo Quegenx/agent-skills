@@ -1,0 +1,224 @@
+{
+ "techniques": [
+  {
+   "id": "tr-velocity-handoff-cut",
+   "name": "Velocity handoff cut",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "The outgoing shot speeds up in one direction and is cut on its fastest frame. The next shot opens already moving the same way and brakes to rest, so momentum runs straight through the edit.",
+   "recipe": "Make the cut an act boundary in timeline.ts so motion-blur samples never straddle it, and place it on a beat with b(). In the outgoing act, drive the camera (src/lib/camera.ts) or the hero's translate on E.exit (E.contact, or E.in for a harder snap) over its last 16-24 f, so it ends at peak speed on the final frame; for a zoom, apply the same ramp to k through lmix. In the incoming act, start the key element moving on frame 0 in the same screen direction at 1.0-1.5x that speed and slow it on E.out over 45-90 f. Size the two sides with exitSpeed(D, T, ease) and entryDistance(v, T) from references/transitions.md; for a flicked list, use y = v0·(1 − k^f)/(1 − k) with k = 0.92-0.943 and no overshoot. Give each act one dominant screen vector (+x in one act, −x in the next) and start every incoming element on the side it would enter from.",
+   "timing": "Exit: last 16-24 f on E.exit (speed grows about ×1.1-1.2 per frame), ending at 25-40 px/f (never above 60) or −6 to −8% scale per frame. Entry: 30-55 px/f on frame 0, slowing about ×0.92-0.94 per frame (E.out over 45-90 f; entryDistance(40, 60) is about 400 px). A 1-3 px/f drift may run under the hold before the ramp. Text inside a moving shot must be under 20 px/f by the time it has to be read.",
+   "use_when": "Most cuts between moving shots: feature-to-feature edits, montages, chapter changes, and any film that must never stop. Velocity-matched cuts are exempt from the two-uses-per-type limit.",
+   "avoid_when": "One side has to be still (a held statement or a designed freeze), or the two shots would move in opposite directions. Carry a shape or an anchor across instead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 9
+  },
+  {
+   "id": "tr-scale-through-cut",
+   "name": "Scale-through cut",
+   "category": "transition",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "loop"
+   ],
+   "summary": "An object shrinks faster and faster toward a fixed point, the film cuts, and a matching object appears much larger on the same point and keeps shrinking as it brakes, so one pull-back runs through two different worlds. The mirror version swells into the cut and opens on an undersized object that grows.",
+   "recipe": "Choose an anchor screen point and keep both objects centred on it within ±30 px (fixed sx, sy in an anchor-camera Shot, or transform-origin on the anchor). Outgoing: k = lmix(1, 0.75, prog(f, T − 20, T, E.in)), so the last frame shrinks about 7.8%; cut on an act boundary. Incoming: the same subject in a new medium (3D render to flat map, device to flat UI, brand card to product world) with k = lmix(1.8, 1, prog(f, 0, 40, E.out)). Its first frame shrinks about 8.4%, so scale velocity is continuous in log space. For a related mark shown as a frame-filling macro, use k = 1 + (S0 − 1)·0.84^f from S0 = 8-9 and snap to 1 once |1 − k| < 0.01. Push version: the hero swells 1 → 1.22 on E.in over the last 16-24 f while the rest of the frame dims (brightness 1 → 0.6 on a dark stage), and the next shot opens at 0.8 and grows to 1 over 30 f on E.out.",
+   "timing": "Exit: 16-24 f on E.in to 0.70-0.80 (last frame −7 to −9% per frame). Cut on a downbeat. Entry: 1.7-2.0x → 1 over 30-40 f on E.out (first frame −8 to −9%), or an 8-9x macro shrinking toward rest ×0.84 per frame and settled by about 30 f. Anchor drift ≤ 30 px. Push variant: +20-25% over 16-24 f, then 0.8 → 1 over 30 f.",
+   "use_when": "Changing medium or world while keeping the subject: 3D to flat, device to UI, brand card to product, a mark coming back as a macro. Also hero pull-backs at act changes.",
+   "avoid_when": "The two objects cannot share a centre point, or both sides are calm; a scale jump without matched scale velocity reads as a jump cut. Use it at most twice per film.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 6
+  },
+  {
+   "id": "tr-anchor-overlay-cut",
+   "name": "Anchored overlay, background swap",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "loop",
+    "vertical"
+   ],
+   "summary": "A foreground element (a pin, a status pill, a modal, a big word) keeps its exact screen position while the world behind it hard-cuts, so a total change of scene reads as a change of zoom or context.",
+   "recipe": "Render the overlay from one absolute-frame function drawn by every act it crosses (deviceAt in references/transitions.md §4.1). Use the identical transform string on both sides of each cut, so its last frame in one act and its first in the next are consecutive samples of one curve. Each background change is an act boundary; a montage is 2-3 background acts in a row behind the same overlay. The overlay keeps its own clock through the cut (a running scale tween, a 0.5-1 px/f drift or a breath() push), so it is never static for more than 48 f. After the last swap the overlay acts on the new world: it travels into its slot on E.glide over 40 f (moves up to 350 px), or FLIPs into an input.",
+   "timing": "Background holds of 10-22 f each in a montage (2-3 swaps), or a single swap. Overlay offset across the cut: 0 px ideally, 30 px at most. Overlay drift 0.5-1 px/f. Follow-up move 40 f on E.glide. Cuts on beats or 16ths.",
+   "use_when": "Showing that one thing persists across contexts: a location going from 3D city to map, a request going from an empty void to the full app, a claim held over a run of photos.",
+   "avoid_when": "The overlay is text that must be reread after each swap, or the backgrounds are busy and bright enough to swallow it. Keep backgrounds near 5% mean luma under light overlays.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "tr-polarity-flip-cut",
+   "name": "Polarity flip cut",
+   "category": "transition",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A hard cut flips the stage between near-black and near-white on a downbeat, often with the same icon or pill held on the same spot in inverted colours, so the luminance jump itself is the accent.",
+   "recipe": "Plan adjacent acts with opposite stage luminance (mean luma differing by at least 150 of 255) and cut on their act boundary on a downbeat, after a dropout or silence, with one impact in the sound. Carry the flip; never cut from a static frame. Either cut on the outgoing motion peak (a zoom-through or an accelerating exit), or end on a shape centred at P and open on the same shape at P ±20 px, at 1-2.5x the size, with fill and ground swapped. An ink icon on paper becomes a paper icon on ink; an accent pill on paper becomes a paper pill on an accent field. The incoming shape is already drifting, translateY −36 px over 30 f on E.out. For a softer edge, draw two ghost frames with the incoming shot at 0.12 and then 0.94 opacity over the fully opaque outgoing frame. Declare the cut for scripts/forensics.py, and use no flash frame and no dip through black.",
+   "timing": "Cut in 0 f, or 2 ghost frames at 0.12 and 0.94. Anchor scale jump 1.0-2.5x. Post-cut drift 30 f on E.out. After a flip to dark, wait 12-20 f before any small type. At most one flip per bar and two flip cuts per film.",
+   "use_when": "Act breaks: problem to answer, public to private, demo to claim. The strongest punctuation on a drop.",
+   "avoid_when": "A third time in one film; a flip from a static frame with nothing carried; or when the accent field would be the film's second full-frame accent flood.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 6
+  },
+  {
+   "id": "tr-shape-match-cut",
+   "name": "Shape match cut",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "The hero shape leaves one shot at a known point and size, and the next shot opens on a matching shape (the mark, the flat UI, the real object) on the same point, so the object's identity carries across a change of world.",
+   "recipe": "Record the outgoing shape's centre and size on its last frame (toScreen from src/lib/camera.ts, or inkBox from src/lib/measure.ts for type). Open the incoming act with the matching shape centred there within ±20 px, at 0.57-1.3x that size. Keep motion on both sides. The outgoing shape shrinks 2-4% over its last 4 f on E.in (or a coin turns face-on, rotateY 90 → 10 deg over 22 f on E.out). The incoming shape keeps going, for example k = lmix(0.57, 1, prog(f, 0, 18, E.out)), with no overshoot. Match colour, corner radius and stroke weight so only the medium changes (device screen to flat UI, coin emblem to logotype, circle to app icon), and hold the result 12-30 f before it moves on.",
+   "timing": "Cut in 0 f. Centre offset ≤ 20 px. Scale ratio 0.57-1.3x. Incoming settle 18 f on E.out, with half the change done in about 2 f. Outgoing pre-cut shrink 4 f on E.in. Hold 12-30 f.",
+   "use_when": "Turning a problem shape into the answer, a device mockup into the bare UI, or a physical object into the mark.",
+   "avoid_when": "The silhouettes differ (round against tall), so the match cannot be seen. Use a dot relay or a container morph instead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "tr-giant-word-punch-out",
+   "name": "Giant word punch-out",
+   "category": "transition",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "vertical",
+    "feature"
+   ],
+   "summary": "A hard cut lands on an extreme close-up of an oversized word sliding fast and braking, its letters resolving one by one. A second cut jumps out to the whole word at reading size, arriving with wide tracking that slams together.",
+   "recipe": "Close-up act: set the word at 2-2.5x its final size, cropped by the frame, with x = x_end + (x_start − x_end)·0.92^f, starting at no more than 70 px/f. Each letter animates blur 12 → 0 px and colour C.mute → C.ink over 12 f on a 2 f stagger starting at frame 4, so the first letter lands sharp at frame 16, when the pan is down to about 18 px/f. Cut on the act boundary while the word still moves at 13-20 px/f. Wide act: show the whole word, with p = prog(f, 0, 30, E.out) driving scale lmix(1.38, 1, p) and letter-spacing from 0.8 em to its resting track. Add a horizontal-only blur (SVG feGaussianBlur stdDeviation '18 0') set by blurIn(p, 18), opacity 0.5 → 1 over the first 8 f, and colour mixColor(C.accent, C.ink, t) with t going 0.6 → 1 over 17 f. Hold 30-60 f, then exit on E.in over 6-12 f.",
+   "timing": "Close-up 18-22 f: starts at ≤ 70 px/f and slows ×0.92 per frame (about 18 px/f by frame 16); letters resolve over 12 f with a 2 f stagger from frame 4. Cut at 13-20 px/f residual speed. Wide entry 30 f on E.out: scale 1.38 → 1, tracking 0.8 em → rest, horizontal blur of 18 px gone by 60% of the move, outer letters ≤ 60 px/f. Colour settles in 17 f. Hold 30-60 f. Exit 6-12 f on E.in.",
+   "use_when": "A one-word claim or product name that deserves two beats: read it, then see it whole. Vertical cut-downs where one huge word fills the frame.",
+   "avoid_when": "Lines of more than two words, or words over about 10 letters (the close-up loses the word); or when the next shot needs the word small within a second.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tr-dot-relay",
+   "name": "Collapse to a dot relay",
+   "category": "transition",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "The hero collapses into one small dot, or the whole world shrinks into it. The dot, the only thing that survives, opens into the next object: a check ring, an avatar, the mark.",
+   "recipe": "Collapse the hero (a card, a prompt box, or the detached dot of an i) to a 24-52 px dot: width and height go to the dot size and border-radius to 50%, over 4 f on E.in when it feeds a cut, or 16 f on E.out when it snaps and holds. To take the world with it, start 15 f later and scale the world group with k = lmix(1, 0.03, prog(f, s, s + 24, E.contact)) about the dot centre, over the next stage colour. Its corner radius grows to 50% and its mask edge is feathered 40 px; unmount it once it is smaller than the dot. The dot stays at full opacity through the seam (one absolute-frame function, or a hard cut that holds it on the same screen point). Then it opens into the next object: a check ring (stroke-dashoffset 1 → 0 and scale 0.6 → 1 over 8 f on E.out, its label 4 f later), an avatar disc (fill ramps paper → ink linearly over 12 f, icon fading in over the last 4 f), or the mark.",
+   "timing": "Collapse: 4 f (E.in, into a cut) or 16 f (E.out, snap and hold). World shrink: 24 f on E.contact for a dot near centre (edges ≤ 66 px/f), or 40 f for a dot near a corner, starting 15 f after the collapse. Reopen over 8-12 f. Any device rotation that follows settles over 28 f on E.out.",
+   "use_when": "Submit, send, process, receive: actions that mean 'this went in and came out as that'. Also the film's signature device when the mark contains a dot.",
+   "avoid_when": "The dot would blink out or change size or colour at the seam, or the film already has an implosion seam.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "tr-defocus-cut",
+   "name": "Defocus cut",
+   "category": "transition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The outgoing shot throws itself out of focus in a few frames, the film cuts to a shot that is still fully defocused with its content already moving, and the lens snaps sharp as that content settles.",
+   "recipe": "In the outgoing act's last 6 f, wrap the scene in RackFocus with t = prog(f, T − 6, T, E.in) and blur 16 px, fading it toward the next stage colour (opacity 1 → 0.2). Hard cut on the act boundary. The incoming act opens in RackFocus at blur 24 px and t = 1, held for 6-12 f while its content already moves in (cards on a diagonal, E.out over 20 f). Then t goes 1 → 0.1 over 8 f on E.in (the snap) and 0.1 → 0 over 12-20 f on E.outSoft with mid = true. Text in the incoming shot uses Words.tsx or blurIn so it lands sharp, and readable text is never blurred for more than 6 f.",
+   "timing": "Out: 6 f on E.in to 16 px. Cut. Defocused hold 6-12 f at 24 px. Snap 8 f (E.in) to t = 0.1. Settle 12-20 f (E.outSoft). Incoming card move 20 f on E.out. About 30-45 f in all.",
+   "use_when": "Joining two shots with nothing in common (no shared shape, direction or colour), or a deliberate 'look again' beat.",
+   "avoid_when": "As the default seam (it turns into a soft crossfade), on shots dominated by small text, or more than twice per film.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tr-path-relay",
+   "name": "Path relay",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "loop"
+   ],
+   "summary": "A line and its lead dot carry the eye from one place to the next. The connector bends around a rounded corner with the camera following, or continues across a cut and enters the next shot from the same edge at the same angle.",
+   "recipe": "Draw the connector as an SVG path (stroke ≥ 1.5 px, C.white on ink or C.ink on paper) with pathLength 1, revealed by stroke-dashoffset; corners are arcs of r = 40 px. Place the lead dot with getPointAtLength (from @remotion/paths, or an analytic line-plus-arc), where the arc length grows with prog(f, a, b, E.linear) at 8-16 px/f. The camera follows with a lag: the anchor-camera Shot frames the dot's position at f − 10. Across a cut, start shot B's path at the frame edge where A's path left, at the same angle and speed, so the dot reaches its target 18 f after the cut. Off-frame variant: the dot or cursor speeds out of frame on E.contact over 24 f and stays hidden 12 f while the camera relocates. It then re-enters at ≤ 60 px/f, slowing ×0.92 per frame to rest in about 36 f.",
+   "timing": "Dot at a constant 8-16 px/f. Corner radius 40 px. Camera lag 8-12 f. One run lasts 60-72 f. After a cut the dot lands 18 f later. Off-frame gap 12 f; re-entry at ≤ 60 px/f, slowing ×0.92 per frame.",
+   "use_when": "Money, data or messages travelling (send, route, sync), flowcharts and timelines, and films whose UI already uses lines and nodes.",
+   "avoid_when": "The film has no line language, or the path would cross readable text. A path that loops back reads as indecision.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "tr-iris-from-glyph",
+   "name": "Iris from a glyph",
+   "category": "transition",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "A small dot appears on a word or icon in the current shot and balloons exponentially to swallow the frame, showing the next scene inside it, so the reveal starts from content rather than from nowhere.",
+   "recipe": "Render the incoming scene above the outgoing one, clipped with clip-path: circle(r at cx cy). The 14 px seed dot (in the next scene's stage colour) appears on the glyph, scale 0 → 1 over 6 f on E.out, and holds 6-10 f. Then r = lmix(14, R, prog(f, 0, 20, E.linear)), where R is the distance to the farthest frame corner: a constant ratio of about ×1.25-1.29 per frame. Over the same 20 f, (cx, cy) moves from the glyph to the frame centre on E.smooth. Optional residue: when the disc reaches r ≈ 900 px, step its fill through three tones of one hue over 6 f, and leave a 90 px ring one tone darker at that radius as set dressing for the new shot. For an app icon, use a funnel instead of a circle: a clip polygon anchored at the icon's base whose top width and height grow ×1.18 per frame over 24 f.",
+   "timing": "Seed in over 6 f, hold 6-10 f. Iris 20 f at a constant ratio (about ×1.25-1.29 per frame, radius in log space). Centre drift 20 f on E.smooth. Optional tonal ramp: 3 steps over 6 f. Funnel variant: 24 f at ×1.18 per frame. The disc fills the frame on the downbeat.",
+   "use_when": "A word in the copy names what the next scene shows (a benchmark, a feature, a place); dark-to-light or light-to-dark act changes.",
+   "avoid_when": "A linear radius (it crawls, then snaps); the same iris more than twice per film; a seed glyph the viewer has not had 6 f to find.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tr-portal-aspect-zoom",
+   "name": "Portal zoom with aspect morph",
+   "category": "transition",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "A window opens in the middle of a solid tile. Tile and window grow faster and faster while the square stretches to 16:9, until the window's interior is the next scene and the tile's border has flown off the edges.",
+   "recipe": "Draw an outer rect in the accent and an inner rect inset by 30% of the outer width and height on each side. The next scene renders inside the inner rect's clip (insetClip) from frame 0, at its final transform. Outer width w = lmix(204, 4800, prog(f, 0, 39, E.linear)), a pure exponential of about ×1.084 per frame, with aspect = mix(1, 16/9, prog(f, 0, 30, E.smooth)) and height = w / aspect. The accent border's outer edges leave the frame near frame 30, and the inner window covers the frame at frame 39, when the clip is dropped. Optional lead-in: the words on either side speed inward under the tile (translateX by their distance over 22 f on E.in, with blurOut). Then the tile turns 90 deg like a cube to bring a plain accent face to the front (CSS 3D box, front = the mark, side = accent at brightness 0.85, over 12 f on E.inOut), and holds that blank face 6 f before the window opens. Keep text out until the window has filled; the next scene's labels rise in as the border clears.",
+   "timing": "Lead-in: converge 22 f, cube turn 12 f, blank hold 6 f. Portal: 39 f at ×1.084 per frame (border gone by about frame 30, inner window edges ≤ 78 px/f). Aspect 1 → 1.78 over the first 30 f. Next-scene labels start from about frame 30 on a 4-6 f stagger.",
+   "use_when": "The film's energy peak and act break, going inside the product, when the mark or app icon is a tile.",
+   "avoid_when": "The accent has already flooded the frame once (the tile border is a brief accent flood), or another zoom-through sits in the same act.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  }
+ ]
+}

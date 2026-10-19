@@ -1,0 +1,226 @@
+{
+ "techniques": [
+  {
+   "id": "cam-offframe-whip-relay",
+   "name": "Off-frame whip relay",
+   "category": "camera",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "The cursor accelerates up and out of frame, the camera whips down the product while it's hidden, and the cursor re-enters from the top as a fast streak that brakes onto its target.",
+   "recipe": "Three overlapping keyed parts. Cursor exit: y on E.in toward -10% of the frame height from a to a + 24, after which it stays off screen for 12 f. Camera: sy travels the product distance D (900-1400 px) on E.smooth over N = 2.86 x D / 75 frames (34-54 f), centred on a + 30 so its fastest stretch falls inside the hidden window and peaks at about 75 px/f. Cursor entry: from -10% to the target over 36 f from a + 36 on E.out, entering at about 63 px/f; while it moves faster than 12 px/f, draw a trailing rounded capsule behind the tip, 0.6 x speed long at 40% opacity, and let the blur pass handle the camera.",
+   "timing": "Cursor exit 24 f on E.in (2.5 -> 15 px/f). Off screen 12 f. Camera 34-54 f on E.smooth centred on the hidden window, peak 60-75 px/f. Cursor re-enters at about 63 px/f and brakes over 36 f on E.out (speed ratio about 0.92 per frame).",
+   "use_when": "A big spatial jump within one product (top bar to bottom bar, one page to another) that should feel like a match-on-action without a cut.",
+   "avoid_when": "Films without a cursor, or destinations less than about one frame height away (a plain reframe is enough).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-lead-follow",
+   "name": "Follow the lead dot",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "vertical",
+    "launch"
+   ],
+   "summary": "A small lead (a progress dot, a travelling packet, a drawing line's head) moves through the layout and the camera follows it with a soft lag, never quite stopping, so the viewer always knows where to look.",
+   "recipe": "Make the follow a pure function of the frame: loop i from the shot's first frame to f, updating c += (lead(i) - target - c) * 0.08 (target is the lead's desired screen position, for example 40% of the frame height), plus a constant 2 px/f drift in the direction of travel; never keep state between renders. Feed c into the anchor camera (ax, ay on the lead's world point) and draw the lead as a flat dot in the one accent colour with no halo. Reveal each step row as the lead passes it: opacity prog(f, tPass, tPass + 12, E.smooth) with a 12 px rise through arrive(). At a corner, let the lead turn first and the camera's lag carry the turn; at the destination, punch in (cam-punch-in-insert) or ease to rest on E.rest.",
+   "timing": "Lag coefficient 0.08 per frame (time constant about 12 f). Peak 12.5 px/f, residual drift 2-2.5 px/f, never 0. Step rows reveal over 12 f as the lead passes. Bumps between steps about 40 f.",
+   "use_when": "Agent progress, pipelines, timelines and journeys across a map: any story told by one thing moving through a layout.",
+   "avoid_when": "The lead moves faster than about 20 px/f for long stretches (the lag lets it escape the frame), or the whole layout fits in one framing.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "cam-crane-push",
+   "name": "Crane down with a delayed push",
+   "category": "camera",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "The camera tilts down the page past the chart to the detail cards while a slow push-in builds behind it, as if the operator were leaning in to read.",
+   "recipe": "Sum two vertical components on the anchor camera's sy: a main move of about 240 px on prog(f, a, a + 64, E.smooth), and a 300 px drift on prog(f, a + 40, a + 220, E.rest) that overlaps it, so the motion never stalls and fades out slowly. Multiply k by lmix(1, 1.22, prog(f, a + 40, a + 240, E.rest)) so the push starts 40 f late and peaks while the tilt is decelerating. Put ax on the column the viewer will read so the push doesn't drift sideways.",
+   "timing": "Main tilt 64 f on E.smooth, about 240 px, peak about 10 px/f mid-move. Drift 300 px from a + 40 to a + 220 on E.rest (peaks near 5.8 px/f, under 0.5 px/f by the end). Push +22% from a + 40 to a + 240 on E.rest, peak about +0.35%/f near a + 98.",
+   "use_when": "Moving down a long page or dashboard from the overview to the detail that matters.",
+   "avoid_when": "Pages too short to travel 500 px or more, or vertical formats where the push crops the column.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-crash-zoom-through",
+   "name": "Extrude then crash in",
+   "category": "camera",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "An object grows toward camera (a disc extruding into a tall cylinder) and the camera slams into it, hard-cutting to its interior while still rushing forward.",
+   "recipe": "Extrude first: the object's scaleY goes 1 -> 2.5 over 12 f on E.in, with transform-origin at its base, so it accelerates toward camera. Overlapping the last 8 f of the extrusion, push the anchor camera into its face with k = k0 * Math.exp(0.64 * ((f - s) / 24) ** 3) over 24 f, then hard-cut on the last frame to the interior shot. Open the interior already moving: k starts at 1.76x its rest value and lmix-decays over 40 f on E.outSoft, while the tube walls converge on a vanishing point. Draw the walls as two or three flat, crisp-edged steps of the object's own colour (darker at the rim, lighter toward the vanishing point), with no bloom, halo or bright blurred edges. Render with --blur so the frames either side of the cut streak; spreading the crash across the cut keeps the frame edge under about 80 px/f.",
+   "timing": "Extrusion 12 f on E.in. Camera push 24 f on a cubic ease-in, x1.9, reaching about 8%/f (about 77 px/f at the frame edge) on the cut frame. Interior entry x1.76 -> rest over 40 f on E.outSoft.",
+   "use_when": "A violent spatial jump into the product at the energy peak of a launch film or sting.",
+   "avoid_when": "Calm films, any second use in the same film, and readable text on either side of the cut.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-impact-kick",
+   "name": "Directional impact kick",
+   "category": "camera",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "vertical"
+   ],
+   "summary": "On a true impact (a card landing, a lock-in, a slam) the whole frame jolts a few pixels in the direction of the hit and pushes a hair closer, then settles within a fifth of a second.",
+   "recipe": "On the impact cue c, add a decaying jolt to the anchor camera: sx += dir.x * 8 * hitPulse(f - c, 1, 4) and sy += dir.y * 8 * hitPulse(f - c, 1, 4), where dir is the unit vector of the incoming object's travel, and multiply k by 1 + 0.015 * hitPulse(f - c, 2, 5). Take c from the contact frame in src/lib/sync.ts so sound and picture peak together, pair it with squash() on the landing object, and never add roll. Use it at most 2-3 times per film, and only where something truly lands.",
+   "timing": "Jolt 6-10 px, attack 1 f, tau 4 f (gone in about 25 f). Push +1.5%, attack 2 f, tau 5 f. At most 2-3 per film.",
+   "use_when": "True landings and lock-ins: a heavy object slamming into a slot, or a statement locking together on a hit.",
+   "avoid_when": "Every beat or tick (that makes a shake, not a hit), soft UI arrivals, or mid camera move (it fights the move's ease).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "cam-parallax-truck",
+   "name": "Layered parallax truck",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The camera trucks sideways across a scene split into two or three depth planes: the background barely moves, the subject moves with the camera and a near element slides past faster, so a flat layout reads as space.",
+   "recipe": "Split the world into at most three layers in one AbsoluteFill (background, subject and an optional foreground), each with its own transform, and drive a single camera translation x = D * prog(f, a, a + N, E.cam), or a constant 1-3 px/f drift for a hold. Apply it at 0.3x to the background, 1.0x to the subject and 1.6x to the foreground, and scale the background to 1.08 so its slower travel never reveals an edge. Keep the subject's readable text under 20 px/f and let the text-free foreground carry the fast motion, which the blur pass smears above 12 px/f.",
+   "timing": "Truck 200-400 px over 90-120 f on E.cam (subject peak about 12 px/f for 300 px over 105 f), or a 1-3 px/f drift. Plane factors 0.3 / 1.0 / 1.6. Background overscan 5-8%.",
+   "use_when": "Hero product shots and feature cards that need depth without 3D, and slow establishing moves.",
+   "avoid_when": "Dense UI walkthroughs where the eye has to track one control, or any scene with more than three planes (it starts to look like a parallax demo).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "cam-seamless-loop-orbit",
+   "name": "Seamless loop drift",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "loop",
+    "vertical"
+   ],
+   "summary": "In a looping clip the camera drifts along a slow, closed figure-eight (a little sideways, a little up, breathing in and out) and returns exactly to its first frame, so the loop has no seam.",
+   "recipe": "With L the loop length in frames and u = 2 * Math.PI * f / L, set sx = sx0 + 32 * Math.sin(u), sy = sy0 + 12 * Math.sin(2 * u) and k = k0 * Math.exp(0.03 * Math.sin(u + 1.2)) on the anchor camera, plus yaw = 3 * Math.sin(u) deg for a 3D product. Every term completes a whole number of cycles in L, so frame L equals frame 0 exactly and the motion never stops (the speed peaks around 0.6 px/f at L = 360). Time the content's own loop to L or a divisor of it.",
+   "timing": "Loop L = 240-480 f. Amplitudes 24-40 px sideways and 10-16 px vertically (at twice the frequency), zoom +-3%, yaw +-3 deg. Peak speed about 0.5-0.8 px/f.",
+   "use_when": "Feature loops, background clips and vertical loops that replay endlessly.",
+   "avoid_when": "Linear films with cuts (use a living hold instead), or loops shorter than about 4 s, where the drift turns into a visible wobble.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "cam-inside-object-pullout",
+   "name": "Pull out from inside the object",
+   "category": "camera",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "vertical"
+   ],
+   "summary": "The shot opens on what reads as a full-bleed colour field or a statement card, and one long pull reveals it was the face of a small object (an app icon, a card, a screen, the mark) sitting among its neighbours.",
+   "recipe": "Lay the object out at true size inside its real context (a dock, a grid, a window, the lockup) in the anchor camera's world, with its face, corner radius and shadow as live layout in world units, never a bitmap. Shot FACE puts ax, ay on the object's centre at frame centre with k0 = 1.04 x max(W / objectW, H / objectH), so its edges sit just outside the frame (about 13.3 for a 144 px icon at 1920 wide), and Shot CONTEXT frames the object at k = 1 in its slot. Blend cam = lc(FACE, CONTEXT, prog(f, a, a + N, E.dolly)) with N = 25.7 x ln(k0); this caps the log zoom rate at about 6%/f mid-move, so anything entering at the frame corner moves under about 66 px/f, and the corners, the shadow and the neighbours arrive purely by coverage, with no fades of their own. Draw the opening copy on a screen-space overlay at toScreen(cam, centre), scaled by (cam.k / k0) ** 0.46 so it shrinks more slowly than the object, and fade it out on E.smooth while the object's on-screen width falls from 1.3x to 1.0x the copy's width, so it never spills past the edges. Read the face under a cam-living-hold creep before the pull, land with no overshoot, and start the next beat (an icon hop, a wordmark build) within 12 f of the settle.",
+   "timing": "Face hold 24-48 f for the read, with a 0.04-0.07%/f creep. Pull from k0 = 8-14 to 1 over N = 25.7 x ln(k0) frames on E.dolly (about 53 f from 8x, 66 f from 13.3x), log rate peaking near 6%/f mid-move and landing at rest. Copy scale tracks k ** 0.46 and fades over the 8-14 f in which the object's width passes 1.3x -> 1.0x the copy width. Anchor travel to the slot under 10 px/f. --blur for frames above 12 px/f.",
+   "use_when": "Cold opens and hooks where a calm statement or a colour field should turn out to be part of the product (the question was printed on the app icon, the colour was one card in the grid); landing the mark into the final lockup; any reveal whose point is scale.",
+   "avoid_when": "The face is a photo or bitmap (it falls apart at 8-14x), the context it lands in is not recognisable at a glance, or a scale-through cut or detail-first pull-back has already used the same object. Once per film.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "cam-z-field-flythrough",
+   "name": "Fly-through of a depth field",
+   "category": "camera",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "Dozens of flat screens or tokens float at different depths and the camera travels forward through them: near ones swell and slide off the frame edges, far ones barely drift, until the move lands square on one hero screen.",
+   "recipe": "Seed 24-36 items with rand(i): x within +-2200 px, y within +-1300 px, z from 800 to 6000 px ahead of the start, keeping a 420 x 260 px corridor around the camera's path empty so nothing hits the lens head-on, and place the hero at (0, 0, Zh), sized in world px at the size it should read. Project each item yourself rather than through preserve-3d: with F = 1200 and d = z - camZ(f), draw it as a flat layer at translate(W/2 + (x - camX) x F/d, H/2 + (y - camY) x F/d) scale(F/d), z-ordered far to near, and unmount it once d < 300. Multiply each item's opacity by a far fade-in (0 -> 1 as d falls from 6000 to 4800) and by a speed gate, clamp((70 - v) / 20), where v is its screen travel since f - 1 (project it again with camZ(f - 1)), so whatever rushes past the lens dissolves instead of breaking the speed cap; sink distant items into the stage with an overlay of the stage colour at 0.5 x clamp((d - 1200) / 4000) instead of blurring 30 layers. For the dive, camZ = (Zh - F) x prog(f, a, a + N, E.cam) lands the hero at exactly scale 1, sharp and readable; for a breadth drift that ends in a cut, pull back 1200 px on E.out, cruise forward at 4 px/f with camY sinking 1.5 px/f, then ramp out over the last 18-24 f on E.contact and hard-cut on the fastest frame (tr-velocity-handoff-cut). Tokens may also turn slowly on rotateY (up to 10 deg/s each), and the whole move renders with --blur.",
+   "timing": "Dive: 150-180 f on E.cam through 4,000 px of depth (Zh = 5200, F = 1200), landing the hero at scale 1 on the long settle. Drift: pull-back 40 f on E.out, cruise 90-120 f, exit ramp 18-24 f. Speed gate between 50 and 70 px/f; far fade over 1,200 px of depth; about 12-16 items on screen at once. The hero's copy starts once it moves under 20 px/f.",
+   "use_when": "Proving breadth (a whole platform, hundreds of templates, every integration) in 3-4 s without explaining any single screen; opening into a layered world; arriving on the one screen the next act is about.",
+   "avoid_when": "Items must be read in flight, there are fewer than about 15 of them (the field looks sparse), the film is flat with no depth language, or lc-swarm-cluster-burst already spends the film's breadth crescendo.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "cam-fit-bounds-follow",
+   "name": "Fit-to-content follow",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "vertical"
+   ],
+   "summary": "As a route, graph or plan builds, the camera widens just enough to keep every piece that matters in frame, so the shot opens close on the first node and ends on the whole structure.",
+   "recipe": "Each frame, collect the world boxes that must stay visible: the origin, every item revealed so far (with its half-size) and the travelling head if there is one, its box stretched ahead along its direction of travel by 18% of the frame converted to world px at the current k. Turn their bounding box plus a 12% frame margin into a target shot: ax, ay at the box centre, sx, sy at frame centre (or shifted off the caption band), and k = min((W - 2 x SAFE.x) / boxW, (H - 2 x SAFE.y) / boxH), clamped between the opening k and a floor that keeps the smallest label at TYPE.ui size (24 px) on screen; when the floor binds, let the oldest items leave the frame rather than shrinking type. Smooth it as a pure function of the frame: loop i from the shot's first frame to f, keep lnT = min(lnT, ln kTarget(i)) so the zoom never pumps back in while the set grows, and step c += (target - c) x 0.07 for ax, ay and ln k, clamping each step to 1.2% of zoom and 12 px of screen travel, then feed exp(c.lnk) to the anchor camera so the widening keeps an even pace in log space. When the structure is complete, either hold the full fit as the payoff under a cam-living-hold pull or punch in on the destination with lc(FOLLOW, DEST, prog(f, e, e + 54, E.cam)).",
+   "timing": "Follow coefficient 0.06-0.08 per frame (time constant 12-16 f); zoom at most 1.2%/f, centre at most 12 px/f on screen (--blur if the corners ever pass 12 px/f). Margin 12% of the frame, 18% lead on the head's side. Nodes 20-40 f apart give a steady widening rather than steps. Closing punch-in 48-60 f on E.cam, or a hold with a -0.08%/f pull.",
+   "use_when": "Pipelines, agent plans, org charts, dependency or network graphs and routes that build piece by piece, where the first node needs close-up legibility and the payoff is the whole shape.",
+   "avoid_when": "The finished structure already fits one comfortable framing, a single moving lead is the whole story (cam-lead-follow), or the full structure cannot fit with 24 px labels (split it into chapters with cuts instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-zoom-out-hop",
+   "name": "Zoom-out hop between areas",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "To travel between two distant parts of one product, the camera eases back as it sets off, crosses at a wider framing that shows where it is going, and pushes back in as it arrives.",
+   "recipe": "Keyframe Shots A and B at the same k on the two areas, blend cam = lc(A, B, prog(f, a, a + N, E.smooth)), then multiply cam.k by dip(prog(f, a, a + N, E.linear), depth) from src/lib/camera.ts. Driving the dip on linear time instead of on the pan's eased progress is the point: the pull-back starts before the pan gathers speed and the push-in finishes after it slows, so the widest framing coincides with the fastest travel and the frame edge peaks 28-40% lower than the same pan without the hop. Set depth = clamp(1 - 0.7 x W / (A.k x D), 0.15, 0.45), where D is the world distance between the anchors, so both areas share the frame at mid-move, and size N = A.k x D / 34 frames at depth 0.45 (A.k x D / 25 for a shallow 0.15-0.25 hop, interpolated between) to keep the edge under about 60 px/f. Start B's caption in the last 25% of the move and render with --blur.",
+   "timing": "Pan on E.smooth over N = A.k x D / 34 f at depth 0.45, or A.k x D / 25 at 0.15-0.25: about 76 f for 2,600 px at k = 1, 106 f for 1,800 px at k = 2, 72 f for 1,800 px at k = 1. Dip on linear time, depth 0.15-0.45, its zoom rate peaking at 1-2.6%/f a quarter of the way in and out. Frame edge at most about 60 px/f. Beyond about 120 f, cut instead (cam-offframe-whip-relay or cam-punch-in-insert).",
+   "use_when": "Single-take and walkthrough films moving between two areas of one surface more than about a frame width apart (sidebar to canvas, one dashboard panel to another), where the viewer should see how they relate.",
+   "avoid_when": "Areas less than about a frame width apart (cam-reframe-to-subject), a cursor that should lead the move (cam-cursor-whip-orbit), or a wide view that is cluttered or unfinished, since the hop shows it.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  }
+ ]
+}

@@ -1,0 +1,241 @@
+{
+ "techniques": [
+  {
+   "id": "cl-rising-wash-carrier",
+   "name": "Rising colour wash carrier",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "A soft single-hue field rises from the bottom edge behind the type, swells and sweeps up across the frame on the change, then recedes off the top, so the foreground swap reads as one move.",
+   "recipe": "Place a full-frame layer under the type with background radial-gradient(ellipse 70% 60% at 50% Y, C.accent 0%, transparent 70%). The gradient is soft on its own, so use no blur filter, keep normal blend and keep the saturation low. Animate Y from 110% to 75% on E.out (coverage 0 to 47%). Then swell the ellipse from 70% to 110% and wipe it up (centroid from about 487 to 154 px at 1080p) on E.inOut, changing the foreground underneath on the fastest frame, and finally let it recede to Y -20% on E.outSoft. Short version into a hard cut: a bottom-anchored band of 40% height, linear-gradient(to top, mixColor(C.accent, C.ink, 0.5), transparent), translateY from 100% to 20% on E.in, with the cut landing mid-rise. Use it to preview the accent ground that is coming.",
+   "timing": "The rise takes 39 f on E.out. The swell and wipe take 12 f on E.inOut (about 28 px/f). The recede takes 90 f on E.outSoft. The pre-cut band takes 16 f on E.in (about +14 luma levels).",
+   "use_when": "Changing cards behind continuous colour, leading into an accent-ground claim or the end card, or smoothing a hard cut into a new scene.",
+   "avoid_when": "Shots already on an accent ground, or dense UI that the wash would tint. A soft accent haze behind type reads as glow.",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "evidence": 4,
+   "ban_safe_variant": "Keep the move and lose the soft falloff: a flat accent band with a crisp, straight top edge (a clip-path inset driven by the same Y curve) rises behind the type, sweeps up across the frame on the change and leaves off the top, at full opacity in a light tint of the accent. The swap still happens on its fastest frame; no radial gradient, no feathered edge."
+  },
+  {
+   "id": "cl-drain-stage-keep-hero",
+   "name": "Drain the stage, keep the hero",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Everything around the hero fades and the world drops to dark or bleaches to white, while the hero stays crisp in place, isolating it or closing a section.",
+   "recipe": "Duplicate the hero onto a top layer at identical coordinates so nothing under it can shift. Isolate: fade the rest of the layer to 0 on E.linear to reveal a mid-grey plate, then mix the plate from C.mist toward C.ink2 on E.in (world luma from about 238 to 87) while the hero gains a 20 px radius and a soft shadow; in a light film, drain the surroundings to C.white instead and assemble the next page around the parked hero. Focus variant: render the side columns through RackFocus (t 0 to 1, blur 8; never an animated blur filter on the columns) and drop them to 0.6 opacity while the centre stays untouched and the parent scales from 1 to 1.06. Exhale: after a peak, or once the lockup has held 90-120 f, dim the stage first (stage opacity 1 to 0, or brightness 1 to 0.6 during a push-in) and fade the hero 8 f later, ending on a hard cut mid-film or on a short C.ink tail only at the very end.",
+   "timing": "Neighbours fade over 12 f on E.linear, the world dims over 10 f on E.in, then hold about 30 f. A white drain takes 6-16 f on E.linear. Column focus takes 18 f on E.smooth. In the exhale, the stage fades over 36 f and the hero over 30 f starting 8 f later, with a tail of up to 22 f; a push-in dim takes 8 f on E.in.",
+   "use_when": "Search results, a found item, a selected post or row, the moment before a detail view, and the ends of sections or of the film.",
+   "avoid_when": "The hero itself must move during the isolation, or the neighbours carry context the viewer still needs.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 6
+  },
+  {
+   "id": "cl-tilt-linked-sheen",
+   "name": "Tilt-linked sheen",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "As a card or device tilts in 3D, a faint highlight band slides across its face in step with the angle, so the surface reads as a real material catching a key light.",
+   "recipe": "Inside the tilted element, add an overlay above the content and below its 1 px border: linear-gradient(105deg, transparent 40%, C.white at 18% alpha 50%, transparent 60%) at background-size 300%, with screen blend on dark UI or soft-light on light UI. Compute background-position-x from the same rotation value that drives the transform (50% plus 2.5% per degree of rotateY, with rotateX nudging it vertically), so the highlight moves only while the object turns and parks when it settles. Multiply its opacity by clamp((|rotateY| - 2) / 6) so a flat card stays clean. Assume one key light 45° camera-left for the whole film, so every card catches it from the same side.",
+   "timing": "It follows the tilt move: for example, rotateY going from 12° to 0 over 40 f on E.out moves the band about 30% and parks it. Peak overlay opacity is 0.18 on dark UI and 0.10 on light UI.",
+   "use_when": "Perspective UI tilt-ups, cards flipping or settling out of 3D, device turns, and logo tiles yawing.",
+   "avoid_when": "Flat 2D layouts with no rotation (use the one-shot specular sweep instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "cl-duotone-until-featured",
+   "name": "Duotone until featured",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "Screenshots and photos sit in a two-tone grade until their beat. Then full colour opens out from the point of interaction, and the previous item returns to duotone.",
+   "recipe": "Give every non-featured media layer an SVG filter: feColorMatrix type saturate 0, then feComponentTransfer tables mapping shadows to C.ink and highlights to C.mist (or to a pale accent tint, mixColor(C.accent, C.paper, 0.85), for a branded duotone). On the featured item's beat, place the full-colour copy of the same image above it and reveal it through clip-path circle(r at x y), growing from the click or impact point to 150% on E.out, or swap it on the cut frame. When focus moves on, return the previous item to duotone by animating the matrix's saturate value from 1 to 0. Only one item is ever in full colour.",
+   "timing": "The colour iris takes 18 f on E.out from the interaction point. The return to duotone takes 20 f on E.smooth. A swap on a cut takes 0 f.",
+   "use_when": "Grids of integrations, galleries, template pickers, and multi-cell layouts where one item at a time is the subject.",
+   "avoid_when": "Only one hero screenshot is on screen (nothing to contrast with), or the UI's colours are its selling point in every frame.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "cl-key-light-edge-hairline",
+   "name": "Key-light edge hairline",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "sting"
+   ],
+   "summary": "Every card, device bezel and bevelled shape on a dark stage carries a hairline edge that is bright on the side facing one fixed key light and fades to nothing on the far side, so surfaces separate from black without shadows or halos.",
+   "recipe": "Declare one light direction for the whole film in brand/tokens.ts (LIGHT = 135, meaning light from the top-left, the same key light cl-tilt-linked-sheen assumes). Give each surface an edge layer above its content: position absolute, inset 0, border-radius inherit, padding 1.5 px, background linear-gradient(calc(LIGHT - rotateZ) deg, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.10) 35%, transparent 65%), masked to a ring with mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0) and mask-composite: exclude (-webkit-mask-composite: xor). Recompute the angle every frame as LIGHT minus the object's own rotateZ, so the lit edge stays on the light's side while the object turns. Add box-shadow inset 0 1px 0 rgba(255,255,255,0.06) as a top inner highlight. In 3D, multiply the lit-edge alpha by clamp(1 + 0.04 x degrees tilted toward the light, 0.6, 1.4), so an edge brightens as it turns into the light. For bevelled decorative shapes drawn in SVG (stars, tiles, extruded marks), stroke each facet edge at 1 px with a linearGradient in gradientUnits='userSpaceOnUse' running along the light vector (white at 40% fading to 0), and keep facet fills within 2-4% luma of the stage. Use no blur and no outer halo. On light stages, replace the hairline with a 1.5 px C.white top edge and a C.line bottom edge.",
+   "timing": "Static styling with no clock of its own: it rides every entrance and move of its surface. Lit-edge alpha is 0.40 at the light corner, 0.10 at 35% of the gradient line and 0 by 65%. The inner top highlight is 0.06. The angle is recomputed every frame as LIGHT - rotateZ. Tilt gain is 0.04 per degree, clamped to 0.6-1.4x. On a tilt resolve (for example rotateX 25 deg to 0 over 68 f on E.out), the edge brightness settles on the same curve.",
+   "use_when": "Dark UI films with flat cards, panels, device bezels or bevelled brand shapes on near-black, where a drop shadow disappears and a glow is off-limits.",
+   "avoid_when": "Light-mode shots, where a white hairline vanishes on paper. Also avoid it on cards that already carry cl-rim-light-sweep's travelling streak, and on layouts so dense that every lit edge turns the frame into wireframe noise.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "cl-brightness-rides-move",
+   "name": "Brightness rides the move",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A mark or icon takes its brightness from the same progress that drives its scale or depth, so an oversized pass stays a dark shape and the object reaches full brightness exactly as it lands.",
+   "recipe": "Never give the fill a clock of its own: derive it from the transform. Log-scale slam: s = lmix(s0, 1, prog(f, a, a + 66, E.glide)) with s0 = 6-8. Then p = 1 - Math.log(s) / Math.log(s0), and fill = mixColor(mixColor(C.ink, C.white, 0.14), C.white, p * p * p) on a dark stage (on paper, mix from mixColor(C.paper, C.ink, 0.12) to C.ink). While the mark is three or more times its final size and covering much of the frame, it stays a dark grey under about luma 60, so the frame's mean luma never flashes. Lift toward camera: an icon tile peeling out of its row inverts as it travels, with the tile going mixColor(C.ink2, C.white, q) and the glyph mixColor(C.white, C.ink, q), where q = clamp(travel progress / 0.75), so the inversion finishes before the last quarter of the move. Depth field: in a multi-depth parallax field, mix each layer's fill from C.ink toward its own colour by a weight read from its current z (0.45 far, 0.75 mid, 1.0 near), and keep reading it during a push so objects brighten as they approach. Turn on true motion blur while |delta log s| > 0.1 per frame, and check with scripts/measure-speed.py that edges stay under 80 px/f.",
+   "timing": "Slam: 66 f on E.glide from s0 = 6-8. The fill follows p^3, so it passes mid-grey only in the second half of the move and reaches full brightness on the landing frame. Lift-out: 24 f of travel on E.inOut, with the inversion complete at 75% (about 18 f); a mid-grey tile goes from about luma 160 to 248. Depth weights are 0.45 / 0.75 / 1.0 by z, re-read every frame of the push. Motion blur stays on while |delta log s| > 0.1 per frame, and edges stay under 80 px/f.",
+   "use_when": "A logo mark or icon slams in oversized and shrinks to size, an icon lifts out of the UI toward camera, or a field of objects at several depths is pushed through on a dark stage.",
+   "avoid_when": "Text (use cl-ink-resolve, which runs on time), and moves under about 150 px or 1.5x, where the change would not show. On a light stage a giant near-black pass would itself be the flash, so mix toward the paper there.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "cl-read-state-tone-ladder",
+   "name": "Now, was, next tone ladder",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Items in a sequence sit on three neutral tones: the one being read is at full ink, the ones already read step down to a mid grey and stay as context, and the ones still to come wait in a dim grey.",
+   "recipe": "Declare three tones in brand/tokens.ts. NOW is C.white on an ink stage (C.ink on paper). WAS is C.mute. NEXT is mixColor(C.ink, C.white, 0.24) on ink (mixColor(C.paper, C.ink, 0.2) on paper). Give every item in the sequence (caption words, list rows, step labels, roller slots, status words) a cue frame, and compute its state with fd(): NEXT before its cue, NOW from its cue, and WAS from the next item's cue. Promote NEXT to NOW over 6 f on E.ui. Start the previous item's NOW-to-WAS demotion on the same frame, over 10 f on E.smooth, so the eye is handed over and only one item is at full ink after each handoff. Rollers and ratchets step their tones on the slot frame with no tween. Show pending items at NEXT only when 'there is more' is the message (lists, slot ratchets, step lists, with at most three visible); otherwise they do not exist yet. Exits go through WAS: an item drops to WAS before it leaves, never straight from NOW. Keep weight and size the same so tone alone carries the order. The accent stays out of the ladder because it marks meaning (cl-mono-one-accent).",
+   "timing": "Promotion takes 6 f on E.ui. Demotion takes 10 f on E.smooth, starting with the next item's arrival. Each item holds NOW for at least 24 f. Rollers and ratchets step on the slot frame (0 f). An exit starts at least 8 f after the item reaches WAS. On ink, the tones sit at about 100% (NOW), 40% (WAS) and 24% (NEXT) of the way from the stage to white.",
+   "use_when": "Captions that build in steps, lists and checklists that grow, slot rollers, status sequences, and flanking words that make way for a new focal word.",
+   "avoid_when": "A single statement that lands all at once, or real product UI whose own text colours must stay true. In lens lists, tone should follow distance from the focus line, not reading order.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "cl-graphic-blurs-into-stage",
+   "name": "Graphic softens into the stage",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "sting",
+    "loop"
+   ],
+   "summary": "A crisp graphic that has just finished its move, such as a wall of bars or a stripe field, loses its edges, widens and keeps drifting until it has become the soft backdrop for the next title, with no cut.",
+   "recipe": "Keep the graphic's own elements mounted after their build and render them through src/fx/RackFocus (render = the bar group, blur 48, mid on). Drive t from 0 to 1 over 72 f on E.smooth. RackFocus crossfades a sharp copy and a copy at constant blur, so the softening does not step the way an animated filter: blur() does. On the same progress, widen each element (scaleX 1 to 1.5 about its centre) so the gaps close, and mix the whole field 25% toward the stage colour so its contrast drops under the type to come. Fill every element with a vertical gradient between two adjacent steps of the film's one-hue ramp (cl-one-hue-light-ramp). Slide each element's background-position-y at its own speed, 0.3 + 0.5 x rand(i) percent per frame, so the bands shift tone at different rates and the field never freezes once it is soft. Bring the next foreground in from frame 36 of the soften, when the stripes no longer read as objects. If banding shows, add 1-2% feTurbulence noise over the field, or bake a matching still with scripts/dither-gradient.py. In full colour, the field shifts through several hues as it softens.",
+   "timing": "The soften takes 72 f on E.smooth (RackFocus t from 0 to 1, blur 48 px at 1080p). The widen from 1 to 1.5 and the 25% contrast drop run on the same curve. Each element's gradient drifts at 0.3-0.8% per frame on E.linear and keeps drifting for 60-120 f under the next element. The next foreground enters from frame 36.",
+   "use_when": "After a graphic build (a bar wall, a stripe or tile field, a filled pattern), when the next beat is a title or the end-card mark and needs a backdrop born from what was just on screen.",
+   "avoid_when": "The graphic carries data the viewer still needs to read, or it is a UI act where the stage should stay flat. When no graphic build comes before the title, use cl-living-stage directly.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "orange",
+    "purple"
+   ],
+   "ban_safe_variant": "Fill the bars with tonal steps of one non-banned hue (from the stage to a light tint), not a periwinkle-pink-orange spectrum, so the softened field becomes a single-hue living stage. Keep the RackFocus soften, the widen and the per-bar drift.",
+   "evidence": 1
+  },
+  {
+   "id": "cl-rolling-band-flood",
+   "name": "Rolling band flood",
+   "category": "color_and_light",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "A light frame fills with the brand colour as soft horizontal bands of it roll upward and grow opaque. The text tints and dissolves into it, and the film arrives on its end-card field without a cut.",
+   "recipe": "Over the last product frame, add a full-frame overlay holding a strip three frames tall: a linear-gradient(to bottom) that repeats six soft tonal bands of one hue (mixColor(C.accent, C.paper, 0.7), then 0.45, then 0.2, then C.accent, then back up). Make each band about half the frame height, with its stops blending over about 10% of the band. Drive the strip's translateY from 0 to -1 frame height on E.linear, so the bands roll up at constant speed. Drive its opacity with p * p, where p = prog(f, a, a + 60, E.linear), so the colour arrives late and decisively (quarter strength at the halfway point). Mix the foreground text to mixColor(C.accent, C.ink, 0.4) over the first 12 f, then fade it from 1 to 0 over f12-f40 on E.smooth, so the colour absorbs it rather than covering it. End on the end-card field, with the same bands slowing to a 0.3 px/f drift, and let the lockup appear on it afterwards. Bake the strip once with scripts/dither-gradient.py (space oklab) so the soft bands do not contour. In full colour, the flood runs through several hues.",
+   "timing": "60 f in total. The bands roll one frame height on E.linear (about 18 px/f at 1080p), and the opacity follows p^2 over the same 60 f. The text tints over 12 f and fades over f12-f40 on E.smooth. Frame mean luma goes from about 250 to 215: a light-to-mid flood, not a polarity flip. The bands then ease to a 0.3 px/f drift for the end card's 90-120 f.",
+   "use_when": "Closing a light product act into the end card, or returning to the brand world after the last UI beat (a success state, a published page) without a hard cut.",
+   "avoid_when": "Dark films, where the flood reads as fog over black. Also avoid it a second time in the same film, and before an end card whose ground is not the flood's hue.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "orange",
+    "purple"
+   ],
+   "ban_safe_variant": "Build the bands only from tonal steps of one non-banned hue (light tint, mid tint, the accent), not a lavender-pink-peach-orange spectrum. Keep the roll, the p^2 opacity ramp and the text absorption.",
+   "evidence": 1
+  },
+  {
+   "id": "cl-hue-tinted-shadow",
+   "name": "Shadows tinted by the stage",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "On a tinted light stage, lifted cards and solid pills cast soft shadows in a dark step of the stage's own hue instead of grey, so depth reads as part of the world's colour rather than dirt on it.",
+   "recipe": "Derive one shadow colour from the stage, never from the accent: SH = mixColor(stageHue, C.ink, 0.6), where stageHue is the act's tint (for example, the pale-tint act of cl-context-palette-shift). Give each lifted card two shadows: a contact shadow, 0 2px 6px of C.ink at 0.10, and an ambient shadow, 0 24px 56px -16px of SH at 0.22 (convert mixColor's rgb() output to rgba). Under a solid black pill or icon tile, use a single tinted ellipse instead. Make it 80% of the element's width and 30% of its height, offset downward by 40% of its height, filled with radial-gradient(SH at 0.35, transparent 70%) and blur(32px), on multiply, below the element. Tie the shadow to lift: with lift = scale - 1 (or translateZ / 200), multiply offset and blur by 1 + 3 x lift and alpha by 1 / (1 + 3 x lift), so a rising card's shadow spreads and fades. Because SH reads from the act's tokens, a palette switch retints every shadow on the same frame. In its richer form, the look puts blurred blobs of two pastel hues beside a black pill and coloured halos on three sides of cards floating on black.",
+   "timing": "Static while parked. On a lift (scale 1 to 1.04 over 20-26 f on E.out), the ambient blur goes from about 56 to 63 px and the alpha from 0.22 to 0.20 on the same curve. On seating, it returns on the seat move's own easing. A palette switch retints the shadows in 0 f, on the cut.",
+   "use_when": "Light-mode acts on pale tinted stages, pastel product worlds, and black pills or tiles floating on a tinted field where a grey shadow looks muddy.",
+   "avoid_when": "Dark stages, where a coloured shadow becomes a glow. Keep shadows neutral in neutral C.paper films, and skip the tint wherever it would echo the accent and spend its meaning.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "gradient",
+    "orange",
+    "purple"
+   ],
+   "ban_safe_variant": "Use only one dark step of the stage's own hue, on light stages only, with shadows that fall downward and never spread past about half the element's size. On dark stages, drop the tint entirely and separate cards with cl-key-light-edge-hairline instead of a coloured halo.",
+   "evidence": 2
+  },
+  {
+   "id": "cl-type-solidity-arc",
+   "name": "Type solidity arc",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "The type gains body across the film. Early statements are translucent white that lets the coloured stage show through, and the closing line and lockup are solid, so the payoff reads as more certain than the promise.",
+   "recipe": "Add a typeAlpha value to each act in timeline.ts, for example [0.65, 0.85, 1.0] for opening, middle and end, and read it through one helper so every caption in an act shares it. Apply it as the opacity of the C.white line container, not as per-glyph rgba, which darkens where glyphs overlap, so the stage colour shows through the letters. Keep weight, size and tracking identical across acts so that only confidence changes. Step the value only on cuts or act changes, never inside a line or a shot. cl-ink-resolve still handles each arrival; the arc only sets where that resolve ends. Keep translucent acts to display type (at least 64 px at 1080p) over stage areas darker than about luma 110, and check contrast on rendered stills (Stills.tsx). The end-card line and lockup are always solid C.white.",
+   "timing": "Act values are 0.65, 0.85 and 1.0 (opening, middle, end), stepped in 0 f on cuts or act changes. Each arrival's ink resolve (12-16 f on E.out) lands at the act's value. The end-card line and lockup stay at 1.0 for their whole 90-120 f hold.",
+   "use_when": "Brand films and launches on a coloured or living stage, built as question to answer or promise to proof, where the closing line should feel firmer than the opening.",
+   "avoid_when": "Neutral black or grey stages, where translucent white just reads as dim grey. Also avoid it for small UI text, in films under about 10 s, and on light stages, where translucent ink loses contrast.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  }
+ ]
+}

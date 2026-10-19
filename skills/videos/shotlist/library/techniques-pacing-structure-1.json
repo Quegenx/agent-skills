@@ -1,0 +1,263 @@
+{
+ "techniques": [
+  {
+   "id": "ps-breath-envelope",
+   "name": "Breath envelope per card",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "Every card arrives fast and decelerates, keeps moving gently through its hold, then accelerates away and is cut on its fastest frame.",
+   "recipe": "Drive each card's container with one summed transform of three terms. Arrival: tw(f, 0, 36, 90, 0, E.out) px of translate (or scale lmix(1.08, 1, prog(f, 0, 36))), with arrive() on vertical text moves and blurIn only while the card travels faster than 12 px/f. Hold: a linear drift of 0.4-1 px/f, or breath() from src/lib/camera.ts at about +0.06%/f, optionally with letter-spacing tightening 2-3% over 40 f on E.outSoft from the landing frame. Exit: tw(f, T-16, T, 0, 100, E.in) px (or +6% scale) with blurOut, and the hard cut on frame T, which is the exit's fastest frame. Because the terms add, speed follows a U (fast, slow, fast) and never touches zero mid-card; the hold length follows the copy rule (36 f + 6 f per word).",
+   "timing": "Arrival 20-50 f E.out (default 36, peak about 15 px/f). Hold = 36 f + 6 f per word at 0.4-1 px/f or +0.06%/f scale; the drift rate is never 0 for more than 6 f. Exit 14-20 f E.in, reaching 19-39 px/f on the cut frame. Example U: 14 then 3 then 39 px/f across 56 f. No near-still run over about 22 f before the end card.",
+   "use_when": "Statement cards, kinetic type and feature cards in a fast-cut film where nothing should ever look frozen.",
+   "avoid_when": "Dense UI that needs a dead-still read (lock the camera instead), and the final lockup hold.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 7
+  },
+  {
+   "id": "ps-locked-camera-holds",
+   "name": "Camera locks, the interface performs",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "After each move the camera stops dead, and for a 1-4 s read only the caption, the cursor and one micro-interaction move.",
+   "recipe": "Between poses, blend with lc(A, B, E.cam(p)) from src/lib/camera.ts. At each pose, hold the Shot exactly: no breath(), scale constant, 0.0 px/f. Schedule events from the move's end so that no gap between visible changes exceeds 40 f: the UI action at moveEnd - 10 f, the caption word reveal (src/fx/Words.tsx) at moveEnd - 0.25 * moveDuration, cursor travel (src/fx/Cursor.tsx) on E.glide. Ambient life lives only in the background, for example a single-hue wash breathing ±3% opacity on a 240 f sine. The caption leaves as one block, opacity on E.smooth over 26-28 f with no stagger, and is gone 0-56 f before the next move starts.",
+   "timing": "Holds 60-240 f (median about 150 f) at exactly 0 px/f; an in-frame event at least every 40 f; moves between holds 56-108 f E.cam; caption exit 26-28 f E.smooth, ending 0-56 f before the next move.",
+   "use_when": "Dense product UI that must be read, walkthroughs, and films where every move should feel deliberate because it contrasts with stillness.",
+   "avoid_when": "Kinetic type or fast montages where a dead camera reads as a stalled player, or holds with nothing in the UI to animate.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-one-long-hold",
+   "name": "The one long hold",
+   "category": "pacing_structure",
+   "role": "accent",
+   "energy": "any",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "In a film that otherwise never stops, a single key claim sits nearly still for over a second, which tells the viewer it is the line to remember.",
+   "recipe": "Reserve exactly one statement per film for this. After it settles (words on SPR.word or src/fx/Words.tsx), hold it 60-90 f with the type effectively still: breath(t, 0.015-0.02) from src/lib/camera.ts on its container (under 0.3 px/f at the edges) and a background breathing ±3% opacity, with no new element entering. Every other shot keeps a breath envelope or a camera move, so this hold is at least twice as long as any other near-still stretch. Leave on an E.in scale creep of +6% over the last 18 f, cutting on the creep's fastest frame.",
+   "timing": "Settle 20-36 f; hold 60-90 f at under 0.3 px/f; exit creep +6% over 18 f E.in. Every other near-still run stays at or under 30 f.",
+   "use_when": "The single claim or number the film exists to say, in a launch film or short spot that is relentless everywhere else.",
+   "avoid_when": "Films already built on long holds, where it stops reading as special, or when two lines compete for the slot.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-silent-sign-off",
+   "name": "Hard stop into a silent sign-off",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "Tension rises under the back half, the music stops dead on the cut to the last line or URL, the picture all but freezes, and the lockup arrives at full speed under a single low stinger.",
+   "recipe": "About 180-300 f before the end card, add a riser event in src/sync.ts that ends on the first frame of the silence, and thin the score section (layers {drums: 0, arp: 0}). Skip the riser if a whoosh already leads into the same downbeat. On the cut to the URL or last line, stop the music with a score.json drops entry and hold the picture near-still (scale drift at most 0.03%/f). The final 12-15 f before the logo sit on a silences entry with zero transforms. The logo move starts at full speed (its E.out curve begins on frame 0 of the move, with no ease-in), and one drop or hit stinger lands on the frame the wordmark resolves; its 1.2-1.5 s tail covers a 90-120 f lockup hold that keeps building with a push of at least 10%.",
+   "timing": "Riser 180-300 f ending where the silence begins; music falls to silence within 2 f; URL readable for at least 102 f with drift of at most 0.03%/f; designed freeze 12-15 f on true silence; logo move 30-68 f E.out from full speed; stinger on the wordmark's resolve frame; lockup hold 90-120 f; tail of at least 60 f.",
+   "use_when": "The last 4-6 s of launch films and feature reels for fast, confident brands.",
+   "avoid_when": "Calm brands, where a sub stinger reads as trailer noise (end on one soft chord instead), and loops with no ending.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ps-four-sequence-launch",
+   "name": "Spectacle, diagram, walkthrough, sign-off",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch"
+   ],
+   "summary": "A launch film in four sequences: a short spectacle open, one concept diagram, a long real-product walkthrough and a brief brand close.",
+   "recipe": "Split the runtime about 19/14/58/9%, each part a contiguous bar-aligned ACT in src/timeline.ts. The open (surge) gets the biggest moves and the strongest use of the accent colour. The diagram (dip) is one centred concept figure that names the idea, paced slower. The walkthrough (plateau) is 10-14 shots built from wide/close pairs: render the UI once and frame each close-up as the same composition at 4-4.5x scale on the control, with the cuts velocity-matched. The close (a small peak, then calm) replays the open's mechanic and lands the lockup. Map score.json sections onto the same contour: intro/build, breakdown, groove, resolve, hold.",
+   "timing": "Shares 19/14/58/9% (at 30 s: about 342/252/1044/162 f). Walkthrough shot median 75-100 f; wides 90-180 f, close-ups 76-154 f at 4-4.5x. Lockup hold 90-120 f inside the close.",
+   "use_when": "30-60 s launch films that have to earn attention, explain an idea and then prove it in the product.",
+   "avoid_when": "Spots under 15 s (use the image-then-type plan instead) and products with nothing to diagram.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-image-act-then-type-act",
+   "name": "Image act, then type act",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "vertical"
+   ],
+   "summary": "A short spot splits in half: the first half is pure imagery with no words at all, the second is pure type with no imagery.",
+   "recipe": "Storyboard two contiguous ACTs at about 47/53%. Act 1 is three image shots of about 80 f each with no text layer at all, each ending on an accelerating exit (E.in). Act 2 is type only on a plain stage: the claim, then the headline, then the CTA and the lockup. Its first card continues act 1's screen direction across the seam. Keep text and imagery in separate Sequences so neither act can leak into the other, and run each type card on the breath envelope.",
+   "timing": "Total 480-600 f. Act 1: 3 shots of 70-90 f. Act 2: claim 70-80 f, headline 60-70 f, CTA 60 f, then lockup 90-110 f.",
+   "use_when": "6-12 s spots and social cut-downs with one claim and a strong visual metaphor, especially when watched on mute.",
+   "avoid_when": "Product walkthroughs that need captions on the UI, and films over 20 s.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-luma-act-map",
+   "name": "Light and dark as chapters",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "Acts are planned by stage polarity, dark for the abstract or problem beats and light for the product, so chapter changes read without any title cards.",
+   "recipe": "Add a LUMA map beside ACT in src/timeline.ts ('dark' or 'light' per act) and two stage token sets in src/brand/tokens.ts (dark at value 0.10-0.30, light at 0.85-0.95; the accent colour stays the same). Pick one plan. Alternation: about 50/50 dark and light, flipping at each ask/answer change. Arc: dark open, mixed middle, light product finish. Flips land on downbeats, 3-5 per film, and never use the same device twice in a row: an inverse hard cut, an inverse match cut on a shared icon, an iris from a glyph (20 f E.inOut), a bleach to white (26 f E.smooth), or a theme flip during a move (6 f). An optional second channel is a single-hue brand wash (one Background component with intensity 0-1) that shows only on brand beats: it rises from the bottom edge (translateY 40% to 0, 50 f E.out) and drains in 8 f E.in.",
+   "timing": "3-5 flips per film, each on b(n); iris 20 f E.inOut; bleach 26 f E.smooth; theme flip during a move 6 f; wash rise 50 f E.out, drain 8 f E.in.",
+   "use_when": "Films with distinct problem/solution or prompt/result halves, and 20-60 s pieces that need a rhythm at the scale of whole acts.",
+   "avoid_when": "Very short stings, and brands locked to a single stage colour.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "ps-oner-morph-chain",
+   "name": "Oner through a morph chain",
+   "category": "pacing_structure",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The whole film plays as one continuous shot, every new scene growing out of an object already on screen, with no hard cuts at all.",
+   "recipe": "List one handoff object per beat boundary: a word gap, a box, a dot, a button, an icon, a card or a pill. At each boundary, duplicate the handoff element onto a top layer and swap the world beneath it: blur it 0 to 12 px while fading it to 40% opacity over the next scene's stage colour, swap, then clear the blur, so the luminance never dips toward black. Then interpolate the element's box (x, y, width, height, radius) from its old slot to the next scene's anchor: 5 f on E.in to break it loose, then 10-16 f of E.out geometry, all inside one global camera group (src/lib/camera.ts). Allow at most one masked cut, hidden behind a 3-6 f blur dip at a motion peak.",
+   "timing": "About 3.6 morphs per 10 s; beats median 72-144 f, minimum 23-34 f, maximum 194-410 f; each morph 5 f E.in plus 10-16 f E.out; world swap 10-14 f under the held element.",
+   "use_when": "Multi-step workflows and multi-app stories, or any film where the viewer should never have to re-orient.",
+   "avoid_when": "Films that use polarity cuts as punctuation, or footage-based shots that cannot share elements.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ps-single-camera-journey",
+   "name": "One camera journey across one surface",
+   "category": "pacing_structure",
+   "role": "signature",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Every product state lives on one large surface and the film is a single camera path between poses; scene changes are pushes, pulls, orbits, whips and the interface's own window actions.",
+   "recipe": "Lay out every UI state on one world container and keyframe 12-17 Shot poses (src/lib/camera.ts). Between poses, blend with lc(A, B, E.cam(p)) over 56-108 f, using E.inOut for at most one or two whips. At each pose the camera holds dead still while the UI acts (see locked holds). Move between product areas with the product's own behaviour instead of cuts: a window minimizing into a corner (20-22 f E.in), a bottom sheet (52 f E.out), a popover scaling from the cursor point (8-12 f), a modal (26 f). Chain them as exit, 4 f gap, entrance. Keep camera roll at or under 11 degrees on orbits, and give moves over 12 px/f the motion-blur pass.",
+   "timing": "0 cuts; about 3 moves per 10 s; moves 42-108 f E.cam; holds 18-252 f (median setup about 170 f); window actions 8-52 f.",
+   "use_when": "Walkthroughs of a single app, features where spatial orientation matters, and calm, premium product films.",
+   "avoid_when": "Multi-app or abstract stories, and films under 10 s.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-continuity-thread",
+   "name": "Travelling thread object",
+   "category": "pacing_structure",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "One small accent object (a dot, a packet or a streak) recurs across shots and acts, carrying the idea from problem to feature to feature as a single causal chain.",
+   "recipe": "Build one Thread component: a round head 2-3% of frame height plus a tapered tail whose length scales with speed (tail = clamp(v * 1.5, 0, 240) px). Each scene drives it along a path (SVG getPointAtLength) with a speed curve that is always fast: E.contact into an impact or E.out into the distance. Across a cut it re-enters from the same screen side and at the same angle it left by, and it hands off by becoming the next scene's element (a check, a pin, a button fill), with squash() on contact. The full look surrounds the head with a bloom halo and shifts its tint on each beat (one beat goes violet). Use 3-5 appearances over 9-15 s at the same size every time.",
+   "timing": "3-5 appearances of 20-60 f each; head 2-3% of frame height; travel 20-60 px/f with true motion blur; contact squash over about 8 f; hitPulse(t, 2, 5) on the struck element.",
+   "use_when": "Abstract or concept-led launch films whose beats are visually disconnected, and stories about value or data travelling.",
+   "avoid_when": "Plain UI walkthroughs where a cursor already guides the eye, since two guides compete.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "purple"
+   ],
+   "ban_safe_variant": "Same Thread component in the single brand accent: an opaque head with a solid tapered tail and no halo or bloom, and the same hue on every beat. Impacts read through squash() and a hitPulse scale bump on the struck element rather than a flash of light.",
+   "evidence": 2
+  },
+  {
+   "id": "ps-faster-each-repeat",
+   "name": "Each repeat runs faster",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "The first instance of a repeated action plays at full length, the second runs about 40% quicker, and later ones are implied or ratchet faster still.",
+   "recipe": "Give the repeated component a duration parameter: dur_k = max(minDur, base * 0.6^k) for k = 0, 1, 2, and so on. It is the same curve compressed, so an E.out rise stays E.out. Show two full instances, then cut away or batch the rest. For lists, swaps and deletes, schedule start frames from shrinking gaps and pick the visible state with fd(frame). Across a film, the caption word stagger in src/fx/Words.tsx can fall the same way from the title to the last feature. Bind a repeat run with one low pad swell under the whole run (attack 6-9 f, release over about 84 f), with one tick per step growing by about 1 dB each time.",
+   "timing": "Second instance at 0.6x length (for example a rise of 12 f becomes 7 f), starting about 46 f after the first. Ratchet gaps 26, 14, 12, 8, 8, 4, 4 f. Caption word stagger falling from 24 f on the title to 5 f on late captions.",
+   "use_when": "Repeated unlocks, card reveals, list items, word deletes, and captions that recur across a film.",
+   "avoid_when": "Items that each need a full read, and the first instance, which must teach the pattern at full length.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ps-fixed-ask-variable-answer",
+   "name": "Fixed-length ask, variable answer",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "A demo repeats a fixed-length ask beat followed by a result whose length varies with its importance, so the rhythm teaches itself and the variations prevent fatigue.",
+   "recipe": "Write the ask beat as one component with a fixed internal script, 6 beats long (180 f at 120 BPM). Typing takes 68 f however long the prompt is: visibleChars = fd(len * prog(f, 0, 68, E.linear)), with the first word pre-filled. Then an icon drop of 28 f, a chip morph of 16-20 f, cursor travel of 14 f on E.glide, a press of 32-40 f, and a plus-to-x rotation of 8-12 f as the cut cue. Results last 4-8 beats, and one hero result runs 2-3x the others. From the third cycle on, split the ask beat into a big-type or 3-4x close-up insert plus the card: the template stays and the framing changes.",
+   "timing": "Ask beat 180-188 f (6 beats); results 138-234 f, the hero result about 490 f; 4-5 cycles; close-up insert from cycle 3.",
+   "use_when": "Prompt-to-result products, feature tours with one repeated action, and walkthroughs of 3-6 capabilities.",
+   "avoid_when": "Fewer than 3 instances (there is no pattern to learn), and stings.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ps-beat-quantized-chunks",
+   "name": "Phrase chunks on the beat",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "A line arrives in two or three chunks split by meaning, each landing exactly on the next beat, so the reading rhythm is performed by the track.",
+   "recipe": "Split the copy into 2-3 chunks by meaning (subject | object | qualifier). Chunk k starts at b(bar, beat + k) minus half its first word's rise, so the rise's 50% frame lands on the beat. Words inside a chunk follow 4 f apart, each on a baseline line-mask rise (an overflow-hidden line box, translateY 100% to 0 on E.out with arrive()). For a calmer build, use one beat per word with a blur-to-focus reveal: opacity 0 to 1 over 8 f, blurIn from 8 px across 18 f, a 13 px rise over 28 f on E.out, plus a 1 px/f line drift. Hold the finished line for at least 36 f + 6 f per word.",
+   "timing": "One beat per chunk (30 f at 120 BPM); 4 f word stagger inside a chunk; masked rise 6-8 f E.out, stretched to 10-12 f for words over 60 px tall so legible glyphs stay under 20 px/f; calm variant 20-22 f per word.",
+   "use_when": "Statement lines over music with a clear pulse, launch openers, and 3-7 word claims.",
+   "avoid_when": "No music or a free-time score, and sentences of more than 8 words.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  }
+ ]
+}

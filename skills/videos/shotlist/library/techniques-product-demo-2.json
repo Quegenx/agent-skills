@@ -1,0 +1,223 @@
+{
+ "techniques": [
+  {
+   "id": "pd-single-control-hero",
+   "name": "One native control as the demo",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "launch",
+    "vertical",
+    "loop"
+   ],
+   "summary": "Instead of a screenshot, the feature is shown as the single control that embodies it (a picker wheel, a toggle, a segmented switch) at large scale, centred, with no chrome, doing only its native interaction.",
+   "recipe": "Build only that control at 3-5x its native size, centred on an empty stage with no app chrome. For a picker, scroll the column with inertia(f, s, 20, 0.975) from src/lib/anim.ts (≈ 790 px, tau ≈ 40 f, starting at the 20 px/f readable-text limit) and style each item from its distance d to the centre line: scale 1.2 − 0.35 · min(d / 375, 1), colour mixColor(C.ink, C.mute, min(d / 375, 1)), opacity 1 → 0.35 on the same ratio. Either cut while it still drifts, or click the chosen item home with SPR.detent. Toggles and segmented controls keep their real geometry (knob 8 f on E.ui, the selected pill gliding between labels on E.glide).",
+   "timing": "Shot ≈ 120 f; picker v0 20 px/f, decay 0.975 per frame, an item crossing focus about every 30 f early on and slowing after; detent settle ≈ 12 f; toggle knob 8 f; segment glide 18-24 f.",
+   "use_when": "A settings, targeting or compatibility claim in a type-led film, where one interaction says it is a real product faster than a full UI.",
+   "avoid_when": "The feature needs context to make sense; the control is generic (every app has a toggle) and says nothing about the claim.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "pd-drag-assets-skeleton-fill",
+   "name": "Drag assets in, skeletons fill",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The cursor drags a fanned stack of images into the input; after the drop they appear as grey skeleton thumbnails that fill with the real images one by one.",
+   "recipe": "Build the stack as four image cards rotated −12°, −4°, 4° and 12° that travel with the cursor along cursorArc (src/fx/Cursor.tsx, bow 0.2) on E.smooth, each card evaluated 1 f behind the one above so the fan trails slightly; pressAt marks the pickup and the release. On the drop frame (or just after a cut), mount the thumbnails as C.mist rounded rects in the input's attachment row and fade each image up over 8 f on E.smooth with a 1.04 → 1 scale, i × 8 f apart. The input's other contents shift by FLIP as the row opens over 18 f on E.ui, and the drag path stays clear of any text being read.",
+   "timing": "Drag ≈ 72 f on E.smooth; thumbnails 8 f each at a 6-10 f stagger (≈ 36 f for four); attachment row opens over 18 f on E.ui.",
+   "use_when": "The product takes real material as input (files, photos, documents) and the viewer should see that context going in.",
+   "avoid_when": "The input is text only; the drag path would cross text being read; more than six assets (show a count chip instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "pd-pin-field-pullback",
+   "name": "Pin field pull-back",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "launch",
+    "walkthrough"
+   ],
+   "summary": "A map pulls back from a close view to reveal a field of location pins that drop in as accent marks and relax to ink, then a card grows out of the pin the cursor picks.",
+   "recipe": "Scale the map group with k = lmix(2.2, 1, prog(f, s, s + 50, E.outSoft)) about the focus point. Pop the pins during the pull with SPR.micro (no visible overshoot: a field of pins is not a landing) on scale 0 → 1 and translateY −12 → 0 px, transform-origin at the bottom centre, with offsets from stagger(i, n, 30) so the whole group lands within 30 f; each pin arrives in C.accent and relaxes to C.ink over 24 f (mixColor). The cursor clicks one pin and its card grows from the pin tip (transform-origin at the pin, scale 0.6 → 1 over 12 f on E.out), with a leader line drawing over 8 f and its label sliding 25 px over 12 f on E.out.",
+   "timing": "Pull 50 f on E.outSoft (first frame ≈ −7% scale per frame); pins ≈ 11 f each on SPR.micro, the group within 30 f (2-6 f apart); colour relax 24 f; card 12 f, leader 8 f, label 12 f.",
+   "use_when": "Location, coverage, store-finder or delivery features; any everywhere claim backed by real places.",
+   "avoid_when": "Fewer than about five locations; a map style busy enough to hide the pins; a route arc has already run on the same map.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "pd-before-after-drag-wipe",
+   "name": "Before/after drag divider",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "launch",
+    "walkthrough"
+   ],
+   "summary": "The cursor grabs a vertical divider on the product and drags it across, wiping away the old state to reveal the new one in the same layout.",
+   "recipe": "Stack two renders of the same layout: before below, after above, clipped with clip-path inset(0 0 0 X px) where X is the divider's position; draw the divider as a 2 px C.white line (C.ink on paper) with a 40 px round handle holding two small chevrons. The cursor arrives on cursorArc over 36-48 f on E.out, presses the handle (pressAt) and drags it across the product panel on E.smooth over 60 f (≈ 1,100 px, peak ≈ 52 px/f). Optionally it pauses once at the midpoint for up to 24 f under a breath push so both states read side by side. Values that differ between the states change exactly where the divider passes them, because they sit on separate layers, so the halves are never crossfaded.",
+   "timing": "Cursor approach 36-48 f on E.out; press 4 f down, 8 f recoil; drag 60 f on E.smooth, or 36 f to the midpoint on E.glide (peak ≈ 46 px/f), a hold of ≤ 24 f, then 36 f on to the edge.",
+   "use_when": "Redesigns, image or audio cleanup, performance gains, any this-got-better claim with a visible difference.",
+   "avoid_when": "The two states differ in layout (the wipe then reads as a glitch); the difference is invisible at frame size; the film has no human gesture anywhere else.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "pd-page-runway-flyover",
+   "name": "Long page flown like a runway",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A whole long page lies on a steeply tilted plane that recedes to a horizon, and the view travels along it faster and faster, so the page reads as one landscape and is cut at full speed.",
+   "recipe": "Lay the whole page out as live components at desktop width inside a runway plane about 75% of frame width and 2x frame height long (overflow hidden), in a full-frame parent with perspective 1200 px and its perspective-origin at frame centre; give the plane transform-origin 50% 100%, rotateX(55deg) and put its bottom edge on the frame's bottom edge, so its far edge recedes to a horizon about 25% down the frame and its sides converge like a runway. Move the page inside the plane, never the camera: translateY = Y0 + 6n + 0.225n² for n = f − s up to 54 (plane speed 6 → 30 px/f), then +36 px per frame to the cut, so content streams toward the viewer and the page's upper sections emerge from the horizon (start with its lower sections on the plane so the hero arrives last); at the near edge the screen speed is about 0.95x the plane speed and the far half moves much slower. Fade the far end with an alpha mask on the plane, mask-image linear-gradient(to top, #000 45%, transparent 95%), so the stage colour swallows the horizon in one hue, and keep the empty stage above the horizon as the caption band, where one short line lands with src/fx/Words.tsx in screen space while the page streams below it. Nothing on the plane is meant to be read: keep the motion-blur pass on for the whole flight and cut on its last, fastest frame into a shot that opens moving the same way.",
+   "timing": "Flight 80 f: plane speed 6 → 30 px/f over 54 f (closed form 6n + 0.225n², linear acceleration with no ease-out), then 36 px/f for 26 f into the cut, about 1,900 px of travel (page at least plane length + 2,000 px); near-edge screen speed ≈ 6 → 34 px/f, under the blur pass throughout; rotateX 55°, perspective 1200 px, plane 2x frame height; caption words 6 f apart, landed by f40 of the flight; cut on the final frame.",
+   "use_when": "Showing the length or completeness of a page, document, feed or site in about a second without asking anyone to read it; a fast connective beat between two readable product shots, or the carrier for a change made mid-move, such as a theme switch.",
+   "avoid_when": "The content must be read, the page is short (it reads as a tilted card instead), or the frame is vertical and leaves too little runway; use it once per film.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "pd-ghost-suggestion-accept",
+   "name": "Ghost suggestion accepted with a key",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "As someone types, the product proposes the rest of the line as pale ghost text after the caret; a small key chip appears, the key is pressed, and the ghost text inks in left to right as the caret jumps to its end.",
+   "recipe": "Type the user's prefix with TypeOn at a human 30 cps; 12 f after the last key, draw the suggestion as one span starting at the prefix's caretX from typeOn(), in the same font and baseline and in C.mute, appearing whole on one frame (or streaming at 2 characters per frame for a longer block), so nothing already typed reflows. Twelve px past its last glyph (or under the line end if that would cross the field edge), mount a key chip (a FONT.mono label at 0.6 em in a 6 px-radius box with a 1.5 px C.line border and a 3 px bottom edge) on spr(f, s, SPR.micro) from scale 0.8 with opacity over 6 f, and keep the 30-40 f wait alive with breath(t, 0.02) on the camera. On ACCEPT the chip presses with pressAt (translateY 2 px and its bottom edge 3 → 1 px, both times the press value), and on that frame a recolour front runs through the ghost text, k = fd(prog(f, ACCEPT − 1, ACCEPT + 10, E.linear) × n): each character behind the front switches from C.mute to C.accent on its frame and relaxes to C.ink over 12 f by its own age (mixColor), while the prefix caret is removed (caretOut = ACCEPT) and a caret appears at the suggestion's end on the same frame. The chip fades out over 8 f on E.smooth from ACCEPT + 4; in a multi-line block each line's front starts 3 f after the line above, and a rejection uses the same chip labelled Esc with the ghost text fading out over 8 f on E.smooth.",
+   "timing": "Prefix at 30 cps; ghost text 12 f after the last key, whole in 1 f (or 2 characters per frame); chip on SPR.micro with a 6 f fade; wait 30-40 f under a 2% breath; press 4 f down, 8 f recoil; recolour front 10 f per line (lines 3 f apart), accent relax 12 f; chip out over 8 f from ACCEPT + 4; read hold after acceptance 36-48 f.",
+   "use_when": "An assistant that completes text, code, email or form fields inline: the moment the product does the work is one key away, and the cause (the key) and the effect (the ink) share a frame.",
+   "avoid_when": "The product generates whole answers rather than inline completions (stream the answer instead), or the suggestion runs past about two lines at readable size; never show more than two accepts in a row.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "pd-live-filter-narrows",
+   "name": "List narrows with each keystroke",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "A shortcut opens a command palette or search field, and as the query types the list answers every key: non-matching rows fold away, survivors slide up, matched letters ink in, and the highlight rides the top result until Enter.",
+   "recipe": "Open with the shortcut if the product has one: two key chips (FONT.mono labels, 1.5 px C.line border, 3 px bottom edge) appear 4 f apart and press together with pressAt, and on the press frame the palette scales 0.96 → 1 about its top centre with opacity over 10 f on E.outSoft while the app behind racks to 8 px through RackFocus under a 20% C.ink veil over 12 f. Type the query with TypeOn at 30-40 cps and recompute the matches from the data on each key frame (typeFrames(), decided on fd(f)), so the list is a pure function of the characters typed: rows that stop matching fold from row height to 0 over 10 f on E.ui with their opacity gone in the first 6 f, and survivors FLIP to their new slots from the computed list layout over max(12, 0.14 × distance) f on E.ui, so no label passes 20 px/f. In every surviving label the matched characters switch to C.ink on the key frame while the rest drops to C.mute (colour only, never weight, so nothing reflows), and one shared highlight (C.mist, 8 px radius) always sits behind the top result and FLIPs to its new rect over 8 f on E.ui. On Enter (a single chip press) the chosen row takes a C.accent 12% tint for 6 f and the palette closes, scale 1 → 0.98 with opacity out over 8 f on E.smooth, while the result mounts underneath on the press frame.",
+   "timing": "Chips 4 f apart, press 4 f down + 8 f recoil; palette 10 f on E.outSoft, backdrop rack and veil 12 f; query 30-40 cps; row fold 10 f on E.ui (opacity 6 f); survivor FLIP max(12, 0.14 × px) f on E.ui; highlight 8 f on E.ui; 4-7 keys narrow 8-10 rows to 1-3; final list held 24-36 f under a 2% breath before Enter; close 8 f.",
+   "use_when": "Search, command menus, filters and pickers: any product whose speed claim is 'type a few letters and it is there', proving instant results without a spinner.",
+   "avoid_when": "The rows are illegible at frame size (punch in first), or the query is long (past about 12 characters it becomes a typing beat); do not FLIP more than about ten rows at once.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "pd-chart-scrub-readout",
+   "name": "Scrub a chart with a live readout",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "The cursor glides across a chart; a hairline and a dot ride the series beneath it and a small readout shows the date and value at that point, stepping from data point to data point until it lands on the one that makes the claim.",
+   "recipe": "Build the chart from data in one SVG and make the scrub a pure function of the cursor's x: move src/fx/Cursor.tsx along a shallow cursorArc (bow 0.05) on E.smooth at 6-10 px/f, and take the active point i as the data point nearest that x, decided on fd(f). Layer back to front: series, a 1.5 px C.line hairline at point i's x, a 6 px solid dot on the series at point i with a 2 px ring in the stage colour, the readout, then the cursor; the hairline and dot snap from point to point as i changes (use 40 or more points so each snap is small; with sparse data let the hairline follow the cursor x and snap only the dot and value). The readout is a small card (8 px radius, C.ink on paper or C.white on ink) with a FONT.mono date in C.mute above the value in tabular figures; it rides along the plot's top edge at the cursor's x, clamped inside the plot so it never flips sides, and its value changes through Roll fed one step per index change (roll 8) so digits roll instead of cutting. The hairline and readout fade in over 6 f as the cursor crosses into the plot, and the scrub ends on the point that carries the claim, where the dot pulses at scale 1 + 0.25 · hitPulse(f − LAND, 2, 6) and the value arrives in C.accent and relaxes to C.ink over 24 f.",
+   "timing": "Scrub 90-150 f on E.smooth at 6-10 px/f (the readout never moves faster than the cursor); hairline and readout in over 6 f; value roll 8 f per index change; landing pulse attack 2 f, tau 6; accent relax 24 f; hold on the landing point 36-48 f under a 2% breath.",
+   "use_when": "Analytics, finance, health or monitoring products whose value is reading any point in history; a calm interaction beat after a fast one.",
+   "avoid_when": "The chart has no point worth landing on, or the readout is illegible at the framing (punch in to 1.6-2x first); never scrub faster than the readout can be read.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "pd-terminal-burst-output",
+   "name": "Command runs, output prints in bursts",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "A command is typed at human speed and entered; the terminal answers machine-fast, printing whole lines in uneven bursts with a stepping spinner and a progress bar, and ends on a single success line.",
+   "recipe": "Set the terminal in FONT.mono at no less than TYPE.ui size, in a C.ink2 window with a 1.5 px edge, with every line laid out from data on a fixed line height, and keep breath(t, 0.02) on the camera for the whole run. Type the command with TypeOn at a human 30 cps with fade 0 (keys appear whole), hold the caret 10 f, then enter on a quiet tick. Output never types: each line appears whole on its own frame from a hand-written schedule of uneven bursts (for example 3 lines on consecutive frames, a 14 f gap, 5 lines 2 f apart, a 22 f gap), decided on fd(f), with the newest line in C.white and older ones relaxing to C.mute over 24 f; once text reaches the bottom row, each burst scrolls the content up by its total height as one move over max(6, 0.14 × distance) f on E.ui, so text never passes 20 px/f. A working line steps the four-glyph ASCII spinner (bar, slash, dash, backslash) every 4 f beside a text progress bar whose filled cells advance on fd(prog(f, a, a + 60, E.smooth) × cells), and the run ends on one success line whose check mark and key word arrive in C.accent and stay, followed by a fresh prompt with the caret blinking 30 f on, 30 f off.",
+   "timing": "Command at 30 cps, caret hold 10 f; bursts of 2-6 lines 1-2 f apart with 10-24 f gaps (40-80 lines in 120-180 f reads machine-fast); line relax 24 f; burst scroll max(6, 0.14 × px) f on E.ui; spinner step 4 f; progress bar 60 f on E.smooth; success line held 48-60 f under the breath with the caret blinking 30/30.",
+   "use_when": "Developer tools, CLIs, infrastructure and build products, where the contrast between a human-typed command and machine-fast output is the speed claim.",
+   "avoid_when": "The audience is not technical, or the output itself must be read line by line (show the result screen instead); never type the output.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "pd-diff-hunks-apply",
+   "name": "Change applied as a visible diff",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A proposed edit lands in a code or document view as a diff: outgoing lines strike through and fold away, incoming lines open in place with a marker in the gutter, and the view steps hunk by hunk before the change is accepted.",
+   "recipe": "Render the file as live lines from data (FONT.mono for code, the text face for prose) beside a gutter of line numbers, and drive each hunk from its own start frame. An outgoing line first gets a 1.5 px C.mute strike that draws left to right over 8 f on E.ui (scaleX 0 → 1 from the left) while its text dims to C.mute; 6 f later it folds from line height to 0 over 12 f on E.ui, its opacity gone in the first 8 f. On that same frame an incoming slot opens from 0 to line height over 12 f on E.ui (the lines below are pushed through the computed layout), a 3 px C.accent bar appears in the gutter on its first frame, the new text appears whole once the slot is 70% open, and a C.accent 10% row tint relaxes to clear over 36 f while the bar stays; line numbers below recompute on fd(f) and are never tweened. Step to the next hunk 60-90 f later with the anchor camera (lc to a Shot centred on it) over 48 f on E.glide, keeping each hop under about 300 px (peak ≈ 19 px/f) and hard-cutting on the same axis to anything farther; on Accept (a Cursor press with pressAt on the button) every gutter bar fades over 12 f on E.smooth and the clean file holds under breath(t, 0.02).",
+   "timing": "Strike 8 f on E.ui; fold 12 f on E.ui starting 6 f later; slot open 12 f on E.ui with the text in at 70%; tint relax 36 f; hunks 60-90 f apart, camera hop 48 f on E.glide (≤ 300 px); accept fade 12 f; final hold 36-48 f under a 2% breath; at most three hunks.",
+   "use_when": "AI coding or writing assistants and review, versioning or migration tools, when the claim is 'it changes exactly the right lines and shows you which'.",
+   "avoid_when": "The code is unreadable at frame size (macro in first), or the change needs more than three hunks (show a summary instead); never give removals a second colour.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "pd-presence-cursors",
+   "name": "Several people at work at once",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "Two or three named cursors move and act on the same canvas at the same time, each in its own rhythm, while presence avatars stack in the corner, so collaboration reads without a word.",
+   "recipe": "Draw each collaborator as src/fx/Cursor.tsx plus a name flag pinned 14 px right and 18 px below the tip (a 6 px-radius label with an initial and first name in C.white on C.ink, C.ink2 or C.mute), so identity comes from the label rather than from colour and the one accent stays free for the newest edit. Script each person as a list of {to, at, action} beats: travel on cursorArc (bow 0.15-0.25, its sign from rand(name)) on E.smooth at 6-14 px/f, with every start shifted by rand(name + i) × 10 f so no two cursors arrive or press on the same frame. Between beats each cursor wanders: every 24 f it eases on E.smooth to a new point within 6 px of its rest, picked with rand(name + floor(f / 24)), so no hand ever freezes. Each action lands on that person's press frame (pressAt): a note dropped onto the canvas on SPR.firm, a shape dragged with the item evaluated 2 f behind the cursor, or a label typed with TypeOn at 30 cps beside the flag; the newest edit takes a 2 px C.accent outline for 24 f, then relaxes to C.line. In the top bar, overlapping 28 px avatar circles with initials scale in on spr(f, join, SPR.micro) as each cursor first enters the frame.",
+   "timing": "Shot 180-240 f; travel 6-14 px/f on E.smooth, arrivals and presses at least 6 f apart; wander ≤ 6 px per 24 f; one action every 30-50 f across all cursors; note settle on SPR.firm ≈ 16 f; accent outline 24 f; avatars on SPR.micro 6-10 f each; at most three cursors.",
+   "use_when": "Collaborative documents, whiteboards, design and planning tools: anything whose claim is 'together, live'.",
+   "avoid_when": "A single-user product, or a frame where the name flags would be too small to read; never more than three cursors, which turns into noise.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  }
+ ]
+}

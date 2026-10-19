@@ -1,0 +1,245 @@
+{
+ "techniques": [
+  {
+   "id": "tr-band-wipe",
+   "name": "Band wipe",
+   "category": "transition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "launch",
+    "walkthrough",
+    "loop"
+   ],
+   "summary": "A band crosses a region (snapping up, lingering, then whipping off, or sweeping across a chart) and the content changes along its edge: the old state is erased under it and the new state draws in its wake.",
+   "recipe": "Clip both states to the region and drive one band position b(f). The old state stays clipped to the side the band has not reached (clip-path: inset(0 0 0 b px)), and the new state draws in behind it (a line chart's stroke-dashoffset follows b). In the full look the band is a luminous light core falling off through a warm hue, screen-blended over the content. Sweep profile: a 368 px band crosses a chart at a constant 60-70 px/f (prog with E.linear, about 27 f for a 1400 px chart plus the band), starting 2 f after the control that caused it (a tab) lands, never easing out, until the chart edge cuts it off. Hang-time profile, for a full-frame band behind giant type: the bottom edge goes from 81% to 66% of frame height over 6 f on E.out, 66% to 53% over 20 f at constant speed, and 53% to 0 over 16 f on E.contact. In the hang-time profile the band's edges are flat mask edges, so they may pass 80 px/f; nothing textured rides on them.",
+   "timing": "Sweep: 368 px band at a constant 60-70 px/f (about 27 f across a 1400 px chart), starting 2 f after the cause. Hang-time: 6 f (E.out) + 20 f (constant speed) + 16 f (E.contact) = 42 f. The new state draws in within 6-10 f after the band passes.",
+   "use_when": "Swapping a data series, a filter result or a big-type card in place, when a control's tap should visibly cause the change.",
+   "avoid_when": "Applied to whole scenes again and again (it becomes a preset wipe), or when the band would cross text the viewer has not finished reading.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "gradient",
+    "beige",
+    "orange"
+   ],
+   "ban_safe_variant": "Fill the band with the one accent (or ink on a paper stage) at full strength. Its trailing side falls off by opacity of that same colour over 30-40% of its width, with no light core, no screen blend and no second hue.",
+   "evidence": 2
+  },
+  {
+   "id": "tr-horizon-rise",
+   "name": "Horizon rise",
+   "category": "transition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "A huge disc rises from the bottom edge like a planet horizon, its rim washing over the frame, until its dark core swallows the screen and becomes the stage for the next line.",
+   "recipe": "One full-frame layer holds a circle of radius R = 1.1 × frame width (2112 px at 1080p), centred horizontally: a dark core in the next act's stage colour out to 55% of R, then bands of rim colour out to 85%, softened by a 30 px blur. In the full look the rim is several hues with a bloom. Bake the disc as a dithered PNG with scripts/dither-gradient.py so the soft falloff does not band. Move its centre from y = H + R (the disc's top just touching the bottom edge) to y = 0.58 H over 56 f on E.dolly, with the previous scene disappearing behind it; at rest the core covers all four corners. Start the next text at about frame 46, inside the core. Lighter version: a rim band 40% of the frame height rises from the bottom edge over 16 f on E.in, and the cut lands mid-rise on the beat.",
+   "timing": "Rise: 56 f on E.dolly, about 2570 px of centre travel at 1080p (the rim's leading edge peaks near 70 px/f mid-move). Next text from about frame 46. Band version: 16 f on E.in. The core fills the frame on a downbeat.",
+   "use_when": "A single colour event that divides the film into acts (UI section to brand moment), or a calm lift from a statement into the next card.",
+   "avoid_when": "More than once per film, or on a light film where the dark core would be the only dark frame.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "glow"
+   ],
+   "ban_safe_variant": "Keep one hue: the dark core, then a rim of the accent at full strength falling off by opacity of that same accent (no second hue, no bloom), baked dithered. Or use a hard-edged ink disc with a 1.5 px accent edge rising over a paper stage.",
+   "evidence": 3
+  },
+  {
+   "id": "tr-cover-wipe",
+   "name": "Product surface cover wipe",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "A product surface (a UI panel, a window, a device) moves in front of the old shot and either passes straight through it with the scene changed behind it, or lands and becomes the new shot.",
+   "recipe": "Pass-through: a panel 1.15x the frame height, showing the product's real UI, moves at a constant 64-72 px/f (prog with E.linear) from fully above the frame to fully below. The scene beneath switches on the first frame the panel covers the frame completely, decided with fd(frame); the motion-blur pass streaks the panel. Land: the product window rises about 940 px from below the frame to its rest pose over 44 f on E.glide, above the title layer, while the title fades 1 → 0 over 36 f, starting 16 f before the window moves. Occluder variant: during a fast camera push, time one foreground object to cross the lens on the push's peak frame, covering at least 60% of the frame for 2-4 f, and change the world behind it then. In every version the surface sits above the old shot in z-order, and its own content does not need to be readable until it rests.",
+   "timing": "Pass-through: about 2600 px at 64-72 px/f, or 36-40 f; the scene switches on the full-cover frame. Land: 940 px over 44 f on E.glide (peak about 64 px/f at 31% of the move); the title fades over 36 f, starting 16 f before. Occluder: covers for 2-4 f at the push's peak.",
+   "use_when": "Promise to product: the UI pushes the headline off. Scene changes that should show the product itself rather than a graphic.",
+   "avoid_when": "The surface is a plain coloured slab (then it is a preset wipe), or the pass-through would need more than 80 px/f; shorten the distance with a cut instead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "tr-subtract-reveal",
+   "name": "Reveal by subtraction",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "sting",
+    "loop"
+   ],
+   "summary": "The clutter in front of the hero flies off toward the frame edges or shrinks away, uncovering a hero that was already sitting at its final size behind it.",
+   "recipe": "Layer order: the hero at the bottom, static, already at its final size and position; the clutter above it. Each clutter item moves along the vector from the hero's centre through its own centre, its distance scaled by (1 + index × 0.1), on E.contact over 30 f. Set its travel to twice its distance to clear the frame, which keeps it under about 75 px/f until it is gone; keep that clearing distance ≤ 750 px by starting big cards near the edges. Window variant: the current window shrinks into the corner where the cursor sits, with transform-origin on that corner and k = lmix(1, 0.05, prog(f, 0, 40, E.contact)). Its opacity goes to 0 over the last 6 f, and the next panel's entrance starts 4 f after it vanishes. Staccato variant: remove one item every 5-7 f on hard steps (fd), re-centring the survivors instantly, until one remains, held 17 f.",
+   "timing": "Scatter: 30 f on E.contact; items clear the frame by about frame 24; stagger 0-2 f; the hero stays static throughout. Window minimize: 40 f on E.contact in log scale (far corner ≤ 75 px/f), fading over the last 6 f; next entrance 4 f later. Staccato: one removal every 5-7 f, final hold 17 f.",
+   "use_when": "Ending a busy montage on the one stat, card or word. Walkthroughs that change app areas through the product's own window behaviour.",
+   "avoid_when": "The hero is not ready behind the clutter (it must never pop in), or the clutter is readable content the viewer has not finished.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "tr-conveyor-line-swap",
+   "name": "Conveyor line swap",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical",
+    "loop"
+   ],
+   "summary": "The current line floats up and fades, the stage is empty for an instant, and the next line rises from below into the same spot, so a run of statements reads as one upward feed.",
+   "recipe": "Outgoing line: translateY 0 → −135 px through depart(q), with q = prog(f, 0, 30, E.in); opacity 1 → 0 over its last 8 f, plus blurOut(q, 8). Leave 2 empty frames. Incoming line: translateY +188 → 0 through arrive(p), with p = prog(f, 0, 30, E.out). Its opacity goes 0 → 1 over the first 10 f, so it flies faded while faster than 20 px/f, and its colour goes C.mute → C.ink over 16 f with mixColor. For a word-by-word version, use Words.tsx with stagger 3-4 and out/outDur 16, so each old word rises away as its replacement rises in. Keep one direction (up) for the whole run.",
+   "timing": "Exit: 30 f on E.in (last frame about 26 px/f, while fading). Gap 2 f. Entry: 30 f on E.out (first frame about 37 px/f, while faded); colour over 16 f. Per-word stagger 3-4 f. One line per bar or half bar.",
+   "use_when": "Sequences of short claims, lists of capabilities, a subject that changes while the predicate stays.",
+   "avoid_when": "Lines of very different length or alignment (the eye loses the slot), or more than 4-5 lines in a row without another seam type.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tr-motion-masked-swap",
+   "name": "Motion-masked swap",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "loop",
+    "launch"
+   ],
+   "summary": "Content changes on exactly the frame something else moves fastest (background rings whipping past, a card kicking into a tilt), so the change hides inside the motion and two states chain in one space with no visible cut.",
+   "recipe": "Drive a large secondary motion with a curve whose peak falls on the swap frame s. Either run a background sweep on E.smooth over 20-24 f, from s − 11 to s + 11, so its peak speed lands on s. Or kick a card with rotateY = 12 deg × hitPulse(f − s + 2, 2, 3) and skewY 2 deg on the same envelope, in a perspective(900px) container. Decide the content with fd(frame) >= s, so every motion-blur sub-sample agrees, and give the new content its own arrival (a slam or a word reveal) from s. Give kicked cards a soft shadow (0 18px 40px rgba(0,0,0,.18)) so the tilt reads.",
+   "timing": "Sweep: 20-24 f on E.smooth, centred on the swap. Kick: attack 2 f, decay tau 3 f, settled in about 8 f. Repeat no faster than every 48-54 f.",
+   "use_when": "Changing copy inside a continuous environment; cycling examples (photos, prompts, results) in a loop.",
+   "avoid_when": "The masking motion is weak (under about 20 px/f at its peak), so the swap shows; or the content is a counter (roll the digits instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "tr-tip-back-exit",
+   "name": "Tip-back exit",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The outgoing scene tips away from camera like a sheet laid onto a table, or flips up into a line, speeding up and fading into the next stage colour, and the next element lands on the clean field.",
+   "recipe": "Wrap the outgoing scene in a 3D container (transform-origin 50% 100%, perspective 1200 px) and tip it: rotateX 0 → 40 deg and translateY 0 → +10% over 30 f on E.smooth. Lay a floor of the stage colour over it, opaque across the bottom 25% and transparent from 55% up, so the scene sinks into the stage, and dim it toward the next act's stage colour (overlay 0 → 0.9) over the last 12 f. Fast version: rotateX 0 → 88 deg with translateY 0 → −400 px over 20 f on E.contact (last frame about 70 px/f), so the scene flattens into a line at the top edge and uncovers what sits beneath. Flat version: a clip-path inset from the bottom grows on E.contact over 24 f, and the cut lands on its fastest frame. The next element starts on the frame the exit clears, or 1 f before.",
+   "timing": "Tip-back: 30 f on E.smooth (rotateX 40 deg). Flip to a line: 20 f on E.contact. Crop collapse: 24 f on E.contact. Dim overlay 0 → 0.9 over the last 12 f. The next element starts 0-1 f after the exit clears.",
+   "use_when": "Ending a UI section to hand over to a statement or an alert, when the next beat needs an empty stage for big type.",
+   "avoid_when": "The next act opens on the same pose (use a relay instead), or the dim would go to black and back up (a dip) instead of into the next stage colour.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "tr-envelope-match-type-cut",
+   "name": "Envelope-matched type cut",
+   "category": "transition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "A big line hard-cuts to a much smaller, longer line whose words start spread apart so it spans exactly the old line's width, then the gaps close while the sideways drift carries on, so the outer edges of the type survive the cut.",
+   "recipe": "On the cut frame, measure line A's on-screen width W_A and its centre or left edge (measureTracked from src/lib/measure.ts times A's current scale). Lay line B out at rest (cap height 2-3x smaller, more words) and read its natural width W_B, which must be smaller than W_A, and its word positions from measureTracked prefixes. Spread B with an extra gap per word space, g(f) = g0 · (1 − prog(f, 0, 36, E.outSoft)) with g0 = (W_A − W_B)/(n − 1), applied as translateX g · (j − (n − 1)/2) on word j of a centred line (g · j with the left edge pinned for a left-aligned one). Each word keeps its own tracking, so it stays readable while the gaps close. Cut on the act boundary, optionally with one ghost frame of B at 0.65 opacity over A. Both lines carry the same horizontal drift through the cut (A's creep, for example −3.5 px/f), which decays in B over 60 f on E.outSoft, and B may ink in from C.mute to C.ink over 16 f with mixColor.",
+   "timing": "Cut in 0 f, or 1 ghost frame at 0.6-0.7 incoming. The gaps close over 36 f on E.outSoft, half done by frame 5. The outermost words travel (W_A − W_B)/2: keep that at or under 160 px so their first frame stays under 20 px/f, or fly them at 0.6 opacity for the first 6 f. Shared drift 3-4 px/f, decaying in B over 60 f. Hold B at least 60 f.",
+   "use_when": "A big two- or three-word claim hands over to its full sentence or call to action; any big-to-small type change where both lines share a centre or a left edge and the type already drifts sideways.",
+   "avoid_when": "B is naturally wider than A (use a blur-swap rescale instead), either line is a single word (there are no gaps, so collapse one word's tracking instead), or the alignment changes across the cut.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tr-drift-matched-angle-cut",
+   "name": "Angle change on a shared drift",
+   "category": "transition",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "loop"
+   ],
+   "summary": "A hard cut jumps to a new angle or the next state of the same object (front to top-down, open to closed) while the slow zoom or pan carries on at exactly the same rate, so a calm shot changes viewpoint with no jolt and no speed ramp.",
+   "recipe": "Write the drift once as a function of the absolute frame and multiply it into both acts' anchor-camera k (src/lib/camera.ts): d(abs) = lmix(1.10, 1, prog(abs, a, a + 96, E.outSoft)) for a settling pull (lmix(1, 1.10, ...) for a push), plus any pan as sx += v · (abs − a). zoomSpeed(kA, cut − 1) then equals zoomSpeed(kB, cut) by construction. Shot A frames the subject from one angle. Shot B frames the same subject at least 30 deg away (yaw ±35-50 deg on a tilted UI plane, or a top-down pitch on an object built with depth) or in its next state (lid open to closed, card face to back). Its on-screen centre stays within ±40 px of A's and its apparent size within ±15%. Cut on an act boundary 8-16 f into the drift, on a beat, while the frame still changes about 0.3% per frame. When the subject itself acts (a lid closes, a device turns), drive that action from one absolute progress too and cut at 35-55% of it, so it finishes in the new angle. Keep the stage colour and light identical, and add no ghost frame.",
+   "timing": "Drift 96 f on E.outSoft from 1.10x (or a 2-4 px/f pan). Cut 8-16 f in, at −0.26 to −0.36% scale per frame (about 3 px/f at the frame edge); the drift settles 40-80 f after the cut. Angle change at least 30 deg, centre offset at most 40 px, size change at most 15%. Optional subject action 36-60 f on E.smooth, cut at 35-55% of it. Cut in 0 f.",
+   "use_when": "Calm films and product beauty shots where a velocity ramp would be too loud: showing an object's second side or its next state within one continuous gesture.",
+   "avoid_when": "The two angles look alike (under about 30 deg it reads as a jump cut), the subject's size or position jumps, or one side is static. For a lift in energy, use a velocity handoff instead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tr-select-retype-swap",
+   "name": "Select and retype swap",
+   "category": "transition",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "A finished headline is selected like text in an editor, the highlight holds for a beat, and on one frame the selection is replaced by a caret that types the next line in the same place.",
+   "recipe": "Set both lines left-aligned in the same font, size and baseline, with line A rendered as per-character spans. The selection is a highlight rect 1.15 em tall from the ascender line: C.ink on paper with the covered glyphs switched to C.paper, or C.white with C.ink glyphs on an ink stage. Its left edge jumps one word leftward every 2-3 f, from the last word to the first, decided with fd and placed from measureTracked prefix widths; for a select-all it covers the line in one frame. The caret sits solid at its left edge. Hold the selection 10-12 f. Then, on one fd frame, remove line A and the highlight together, leave the caret at the line start and put one tick on that frame. Type line B with TypeOn from the same frame (2 f per character on E.type, head fade 4 f, caret blinking once idle). For a centred line, offset it by (full width − typed width)/2, using typeOn().followX through a 6-10 f lag. If the new line's last word is the beat that lands, give it the accent and relax it to ink over 12 f through charStyle.",
+   "timing": "Selection 2-3 f per word (or a 1 f select-all), hold 10-12 f, replace on 1 f. Line B types at 2 f per character on E.type (a 20-character line in 40 f), and the caret blinks 30 f on, 30 f off once idle. About 60-75 f in all for a five-word, 20-character pair.",
+   "use_when": "Products where text is the medium (editors, prompts, writing and AI tools); correcting a claim, where the assumption is selected and overwritten by the answer; two or three headline swaps that should feel authored.",
+   "avoid_when": "The product has nothing to do with text, lines run past about 40 characters (the typing outlasts the read), or the swap repeats more than three times in a row and turns into a typing demo.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "tr-stepped-column-fill",
+   "name": "Stepped column fill",
+   "category": "transition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "sting",
+    "launch",
+    "loop"
+   ],
+   "summary": "Columns rise from the bottom edge in a stepped pyramid centred under the hero, spreading outward until they close into one solid field that becomes the next stage behind it.",
+   "recipe": "Split the frame into N equal columns with no gutters, layered below the hero: 12-16 at 1920 px, or the hero's own grid unit so they line up with the bars or pixels of a mark. Column i starts d_i = |i − c| · 2 f after the first, where c is the column under the hero's centre. It rises from the bottom edge with height = H · prog(f, s + d_i, s + d_i + 40, E.smooth), so the tops form a stepped pyramid that widens outward. Fill each column with the next act's stage colour; in its full look every column carries a multi-hue vertical ramp. The columns are flat mask edges on a flat fill with nothing textured on them, so their tops may peak near 76 px/f. The hero keeps a living-hold creep throughout. Where the field rises behind it, draw a second copy of the hero in the opposite tone clipped to the union of the column rects (built by the same geometry function), so the hero flips tone exactly where a column stands behind it, with no fade. On the frame the outermost column fills, swap the column layer for one plate of that colour and land that frame on a downbeat. The hero answers it with scale 1 + 0.02 · hitPulse(f − close, 2, 5), or with its next build step.",
+   "timing": "Each column rises over 40 f on E.smooth (tops peak at about 76 px/f at 1080p). Stagger 2 f per column outward from the centre (7 steps for 14-15 columns), about 54 f in all. The field closes on a downbeat and swaps to one flat plate on the same frame. Hero pulse: attack 2 f, tau 5 f.",
+   "use_when": "Marks built from bars, steps or pixels; data and analytics products, where the columns read as a chart; stings and loop intros that change the stage colour behind a held hero.",
+   "avoid_when": "As a general scene change between unrelated shots (it reads as a preset blinds wipe), behind small readable type, or more than once per film.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "orange",
+    "purple"
+   ],
+   "ban_safe_variant": "Fill every column with one flat colour: the next stage colour, or the accent if this is the film's one accent flood. Or alternate two adjacent lightness steps of one hue from column to column and let them merge into a single tone as the field closes. Never put a ramp inside a column.",
+   "evidence": 1
+  }
+ ]
+}

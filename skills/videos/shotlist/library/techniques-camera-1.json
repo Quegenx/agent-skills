@@ -1,0 +1,220 @@
+{
+ "techniques": [
+  {
+   "id": "cam-living-hold",
+   "name": "Living hold creep",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "any"
+   ],
+   "summary": "Under every hold the frame keeps a barely visible push, pull or sideways drift, so no shot sits dead while the viewer reads.",
+   "recipe": "Set the anchor camera's ax, ay on the focal element so the creep pivots there. Multiply k by breath(prog(f, holdStart, holdEnd, E.linear) * (1 - nextMove), amount), where amount = 0.0005 x the hold length in frames and nextMove is the next move's 0..1 progress, so the next move releases the creep with no velocity step. Push on proof and result shots, pull (negative amount) on busy or chaotic boards, and use a tiny creep on the end card. For type or a single card, drift sideways instead: with g = f - holdStart, sx = sx0 - v * (g - 20 * (1 - Math.exp(-g / 20))), which leaves the seam at zero velocity and reaches v after about 60 f. Keep every layer the camera carries static inside the one transform, so nothing stair-steps on the pixel grid during the creep.",
+   "timing": "Scale creep 0.04-0.07%/f (+2.4 to +4.2%/s), at most 0.1%/f in a 40-60 f tail after a big push. Pulls about -0.08%/f. End card 0.0125%/f. Lateral drift 0.3-0.5 px/f for UI and cards, 1.5-3 px/f for big display type. E.linear once at speed, with a 20 f exponential ease-in from a seam. Released over the next move's own ease.",
+   "use_when": "Any hold longer than about 30 f: reading a caption, watching a counter, a UI state sitting after an action, the end card.",
+   "avoid_when": "A designed freeze of at most 15 f on a silence, or a shot where a big camera move or a travelling cursor already supplies the life. Never stack a creep on top of a punch-in drift on the same axis.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "cam-breathing-zoom",
+   "name": "Breathing zoom between interactions",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "After a reveal the camera slowly pulls back, coasts through a stop and turns smoothly into a slow push that lands on the next interaction, so the frame breathes across a whole act.",
+   "recipe": "Drive only k, from a keyframed zoom rate rather than from poses: rate(i) = interpolate(i, [s0, s0 + 72, s0 + 108, s0 + 168], [-0.0025, 0, 0.0014, 0.0011], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) with linear interpolation, and k = k0 * Math.exp(sum of rate(i) for i = s0..f), computed in a pure loop every frame with no state kept between renders. Put ax, ay on the element the next interaction touches, so the zoom pivots on it and it holds its screen position. Keyframe the rate so it crosses zero rather than resting there: |rate| may stay under 0.0002 for no more than 12 f. Close the act with a short exhale under the final hold: k x lmix(1, 0.94, prog(f, T, T + 60, E.out)).",
+   "timing": "Pull after a reveal: -0.25%/f falling to 0 over 72 f (about -9% total). Push into the next interaction: 0 rising to +0.14%/f over 36 f, about +6% within 60 f of the zero crossing; table and list acts run +0.03 to +0.17%/f (about +6.6% total). Rate keyframes 36-90 f apart, linear. Exhale x0.94 over 60 f on E.out.",
+   "use_when": "Dashboard, analytics or table acts of 4-10 s with several interactions in one framing, where cutting would cost orientation.",
+   "avoid_when": "Shots shorter than about 90 f, acts that already move pose to pose with big pushes, or a scrolling feed (a zoom on a moving list reads as wobble).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-punch-in-insert",
+   "name": "Punch-in insert on the same render",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "vertical"
+   ],
+   "summary": "A hard cut jumps from the wide view to a 2-2.5x on-axis close-up, or to a 3-4.5x macro of the exact control being used, while every animation keeps running, then cuts back out.",
+   "recipe": "Lay the product out once and define two Shots on it: WIDE, and INSERT with ax, ay on the control's centre (or the cursor tip), sx, sy at frame centre or on a third, and k = 2.0-2.5 for an on-axis punch or 3-4.5 for a macro insert. Switch on a whole frame, cam = fd(f) >= CUT ? INSERT : WIDE, and keep the cursor path, hover lift, typing and counters on their own clocks so they carry on mid-motion across the cut; place the cursor with toScreen() of the active shot. Never hold the insert still: give it a 1-2 px/f linear drift along the action's direction, or open it with a decaying offset (+8% of frame width, decayed on E.out over 96 f). Build the UI as live layout at its final size, never as an upscaled bitmap, so text stays sharp at k = 4.5, and cut back out on the next action or at the peak of an exit move.",
+   "timing": "Wide holds 20-64 f before an on-axis punch (90-220 f when it establishes the scene). On-axis close-up about 60 f. Macro insert 46-74 f, up to 76-154 f when it carries an action. Scale 2.0-2.5 on-axis, 3-4.5 macro. Drift inside the insert 1-2 px/f linear (3-5 px/f for a 2.5x component slide). Cut on the click, keystroke or beat, with no transition frames. Chain 2-3 punches on consecutive beats for a staccato build.",
+   "use_when": "Small UI actions that need hero weight (send, picking a date, a chip), long walkthroughs that need their visual scale reset, and a wide/close rhythm that keeps both context and legibility.",
+   "avoid_when": "The UI doesn't hold up at 3-4.5x, or the close-up isn't obviously the same place (keep the cut on-axis or anchored to the cursor, or it reads as a jump).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "cam-detail-first-pullback",
+   "name": "Detail first, then pull back",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A shot opens tight on the one thing that matters (giant prompt words, a chart counting up, a status pill) with no chrome, then the camera pulls back to show it sitting in the full window.",
+   "recipe": "Anchor on the hero element (ax, ay at its centre, or at the caret for typed words) and hold k = 1.6-1.7 while its value animates; for giant type, pan sx after the caret at 2-4 px/f. Then pull with cam = lc(TIGHT, CONTEXT, prog(f, a, a + 52, E.cam)), so the hero barely moves on screen while the frame widens around it, and fade out any partly cropped edge tiles over the 16 f before the pull so they don't pop at the frame edge. Bring the context in during the pull: window chrome and neighbouring panels fade 0 -> 1 over 30 f from 20% of the move, optionally behind <RackFocus t={1 - prog(f, a, a + 30, E.smooth)} blur={10}>. The hero card can tip pitch 0 -> 6 -> 0 deg and yaw 0 -> -4 -> 0 deg as it docks into its slot. For an end-of-film re-establish, open the tight frame soft (RackFocus t = 1, blur 6) and resolve it over the pull.",
+   "timing": "Tight hold 24-52 f while the value animates. Pull k 1.6-1.7 -> 1.0 over 52 f on E.cam (peak about 4%/f at 27%), or a settle back over 56-80 f on E.out (half done by f10-12). Edge tiles out over 16 f before the pull, context in over 30 f, 3D tip peaking mid-move. Re-establish k 2.2 -> 1.0 with focus over 60 f on E.cam (peak about 5.6%/f).",
+   "use_when": "Result reveals, analytics, prompts and input moments where the value should land before the load of the full UI; breaking up a repeated card formula; re-establishing the whole product after a run of close details.",
+   "avoid_when": "The product hasn't been seen yet and the tight frame stays unrecognisable for long (keep the tight hold under 52 f), or the wider frame adds nothing new.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "cam-hero-push-yaw",
+   "name": "Hero push with a 3D turn",
+   "category": "camera",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "From a wide view of the whole app, one continuous move pushes 2.5x into a single panel while yawing, so the panel turns toward the viewer and an empty side of the frame opens for the caption.",
+   "recipe": "Build one scene on one world container with two Shots: WIDE (k = 1, flat) and HERO, with ax, ay on the panel centre, sx at 0.67 x width (0.33 for a panel on the left), k = 2.56, yaw 24-30 deg and pitch about 5 deg, rendered through camera(shot, 2400). Blend with lc(WIDE, HERO, prog(f, a, a + 60, E.smooth)); k already lerps in log space, so the push keeps an even perceived speed. Start the caption in the void at a + 45 (the last 25% of the move) so the word reveal and the camera settle read as one gesture, then keep the hold alive with breath(prog(f, a + 60, next, E.linear), 0.025) instead of a dead lock. Check that the panel's smallest meaningful text is at least 22 px on screen at k = 2.56, and render with --blur for the peak.",
+   "timing": "60 f on E.smooth, 10-90% of progress between 29% and 71% of the move, peak about 4.5%/f scale (around 47 px/f on screen) at 50%. Zoom 1 -> 2.56; yaw 0 -> 24-30 deg and pitch 0 -> 5 deg on the same curve. Caption starts at 75% of the move. Hold breath +2.5%.",
+   "use_when": "The film's energy peak: the one feature that needs both spatial orientation and close-up legibility, or a scene change inside a single-take film.",
+   "avoid_when": "More than once per film, or on a lone card with no surrounding app (the turn needs a world to orient against). Keep each act on its own rotation axis.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-dolly-surge-foreground",
+   "name": "Dolly surge with a foreground pass",
+   "category": "camera",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "The camera surges from a wide shot into a 3x medium close-up, with most of the travel in half a second, and at the fastest moment a near object rushes past the lens before a long, slow creep.",
+   "recipe": "Animate k = lmix(1, 3.1, prog(f, a, a + 67, E.smooth)) around the subject (or translateZ of a preserve-3d stage under perspective 2400px), multiplied by lmix(1, 1.04, prog(f, a + 47, a + 107, E.linear)) so the +4% creep starts 20 f before the push ends and the motion never stalls. Put one foreground object on its own layer above the world, 300-400 px off the anchor, and project it with a stronger scale, kFg = k ** 1.6 (screen position = sx + (p - ax) * kFg), so it grows and slides out past the frame edge around the push's peak frame (about a + 33); keep its crossing at 60-80 px/f or less. The motion-blur pass (--blur) streaks it, so never fake the streak with a CSS blur. Optional mid and far layers at 1.0x and 0.3x of the camera's translation add parallax.",
+   "timing": "Push 67 f on E.smooth, zoom 1 -> 3.1, 10-90% of the travel in about 28 f, peak about 4.8%/f near a + 33. Creep +4% over 60 f on E.linear from a + 47. Foreground exits on the peak at 60-80 px/f or less, smeared by the blur pass.",
+   "use_when": "Opening a launch film into a 3D or layered world, or a sting that dives from an overview into the hero object.",
+   "avoid_when": "Flat UI with no depth layers (nothing to pass the lens), or calm walkthroughs.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-push-dutch-roll",
+   "name": "Push-in with a roll swing",
+   "category": "camera",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "The camera dives into one corner of the UI, rolls a few degrees off level mid-dive like a hand-steered move, and rolls back to level as it lands.",
+   "recipe": "Blend lc(WIDE, TARGET, t) with t = prog(f, a, a + 60, E.smooth), where TARGET has ax, ay on the corner element, sx, sy at that element's current screen point (so it stays put while the frame grows around it) and k = 2.09 x WIDE.k. Add the roll on its own curve: roll = t < 0.57 ? mix(0, -4, E.smooth(t / 0.57)) : mix(-4, -0.3, E.smooth((t - 0.57) / 0.43)), passed as the Shot's roll so camera() keeps it rigid outside any tilt. For a tilted landing, ease pitch 0 -> 8 deg over the last 24 f. Keep |roll| under 11 deg.",
+   "timing": "60 f; zoom 1 -> 2.09 on E.smooth in log space, peak about 3.5%/f mid-move. Roll 0 -> -4 deg by 57% of the move, back to -0.3 deg at the end, each segment E.smooth. Optional pitch 0 -> 8 deg over the last 24 f.",
+   "use_when": "A push that would otherwise feel mechanical: diving into a settings corner, a sidebar or a detail panel.",
+   "avoid_when": "Next to another rolled or tilted move in the same act (one rotation axis per act), or on moves shorter than 40 f, where the roll reads as a wobble.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cam-isolating-push",
+   "name": "Isolating push into one item",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "The camera pushes into one row, card or column while everything around it fades, dims or slides off the edges, picking a single thread out of a busy layout.",
+   "recipe": "Anchor the push on the chosen item and pick a preset. Dive: k x lmix(1, 4, prog(f, a, a + 80, E.smooth)) while sibling rows fade from 1 to 0 opacity over 20 f from a; as the push ends, the item's icon dims to 0.3 and the next state swaps in on a whole frame (fd), a zoom-through without a cut. Accelerate-through: k x lmix(1, 1.25, prog(f, a, a + 60, E.in)) while the surroundings fade to the background colour over 16 f, then cut or swap on the peak frame. Eject: k x lmix(1, 1.48, prog(f, a, a + 30, E.smooth)) and then +4% over 60 f on E.linear, the flanking words taking blurOut text blur up to 6 px once they pass 80% of the half-width on their way off frame. Gentle focus: wrap the side columns in RackFocus (t 0 -> 1, blur 8) and dim them to 0.6 opacity while the parent pushes x1.06 over 18 f on E.smooth.",
+   "timing": "Dive 80 f, x4 on E.smooth (peak about 5%/f), sibling fades 20 f, swap on the last frame. Accelerate-through 60 f, x1.25 on E.in, surround fade 16 f. Eject 30 f, x1.48 on E.smooth, then +4% over 60 f. Focus pull 18 f, x1.06, blur 8 px, opacity 0.6, running straight into the next move.",
+   "use_when": "Choosing one result from a list of parallel processes, moving from a typographic act into a UI close-up without a cut, or steering the eye to where the next action will happen.",
+   "avoid_when": "The item is still too small to read at 4x, or the surrounding layout carries information the viewer still needs.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "cam-reframe-to-subject",
+   "name": "Reactive reframe",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "When something new appears (a popover, a result, the hero icon), the camera glides a few hundred pixels and pushes in slightly until it sits where the eye wants it.",
+   "recipe": "On the event cue c, blend from the current camera into a reframed Shot: cam = lc(CURRENT, REFRAMED, prog(f, c + 4, c + 4 + N, E.glide)). REFRAMED puts ax, ay on the new element's centre and sx, sy at frame centre (or offset to leave room for its caption), with k = CURRENT.k x 1.05-1.23. Starting 4 f after the element begins to appear lets the content lead and the camera follow. The element arrives on its own curve; a popover, for example, scales 0.05 -> 1 from the click point over 10 f on E.out, its opacity rising over the first 4 f. To centre a hero after a punch-in, use the same blend over 22 f with position and k on one curve, so the subject arrives on a long tail.",
+   "timing": "Popover reframe: starts 4 f after the pop, settles in 20-40 f on E.glide, k x1.05. Hero centring: 22 f on E.glide, 150-350 px of travel, peak about 22 px/f at 31% of the move, k 1.0 -> 1.23.",
+   "use_when": "After any UI event that changes what matters on screen, or after a punch-in that left the hero off-centre.",
+   "avoid_when": "Every small UI change (keep it for the ones that matter), or an element that already appears near frame centre (a move under 40 px reads as a twitch).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "cam-pull-lands-event",
+   "name": "Pull-back that lands an event",
+   "category": "camera",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "A long, gentle pull-back runs from a close-up to the full view, and as it decelerates the next UI event (a modal, labels, a caption) starts, so it lands together with the camera's settle.",
+   "recipe": "Pull with lc(CLOSE, WIDE, prog(f, a, a + 108, E.smooth)), where WIDE.k is about 0.56 x CLOSE.k. Start the event at a + round(0.72 x 108) = a + 78. A modal arrives on SPR.firm from 0.92 to 1 scale, opacity up over 8 f, landing within 4 f of a + 108. Captions start no earlier than a + 81 (the last 25% of the move) and no later than a + 114, while labels and values can type in through the whole pull. After the settle, hand over to a breath creep instead of a dead lock.",
+   "timing": "108 f on E.smooth, zoom x0.56, peak about 1.5%/f (about 24 px/f) mid-move. Event starts at 72% of the move; the SPR.firm modal settles within 4 f of the camera. Captions start in the last 25% of the move or up to 6 f after it.",
+   "use_when": "Walkthroughs and single-take films that move pose to pose, and any long move whose ending would otherwise be a dead beat.",
+   "avoid_when": "Short or fast moves under 50 f, where an event in the tail just competes with the motion, and the finale, where the lockup needs a clean frame.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "cam-cursor-whip-orbit",
+   "name": "Cursor-led whip orbit",
+   "category": "camera",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Following a cursor that leads the way to the next panel, the camera swings fast across the product, yawing to show the slab's thick edge and rolling slightly.",
+   "recipe": "Keyframe A (the current pose) and B, with ax, ay on the destination panel, yaw about +24 deg, roll about -10 deg and k = 0.77 x A.k, and blend lc(A, B, prog(f, a, a + 74, E.whip)) through camera(shot, 2400). Move the cursor in screen space along cursorArc(start, dest, prog(f, a - 5, a + 69, E.whip), 0.2), so it leads the camera by about 5 f and seems to drag it, projecting its destination with the same transform maths. Give the world container a 24-40 px side face (a darker tone of the surface, hinged on the right edge with rotateY(90deg)) so the yaw reveals the product's thickness. Render with --blur, since the peak is near 47 px/f.",
+   "timing": "74 f on E.whip, peak about 47 px/f at around 40% of the move. Yaw 0 -> 24 deg, roll 0 -> -10 deg, zoom x0.77. The cursor leads by 4-6 f.",
+   "use_when": "Moving between two distant panels of one product in a single-take or walkthrough film, where a cut would lose the spatial relationship.",
+   "avoid_when": "There is no cursor or other lead to motivate it (an unmotivated whip reads as a flourish), or the act already uses yaw for something else.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  }
+ ]
+}

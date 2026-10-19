@@ -1,0 +1,175 @@
+{
+ "techniques": [
+  {
+   "id": "ui-outline-led-reveal",
+   "name": "Outline-led insert and spawn",
+   "category": "ui_choreography",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "A thin accent line or a heavy outline appears first and opens into a new row or a modal, then the stroke decays to a hairline so the content takes over.",
+   "recipe": "Row insert: a 2 px C.accent line appears across the list in one frame at the insert position, then the row opens from height 0 to row height over 10 f on E.ui, pushing the rows below through the computed list layout at 20 px/f or less; its 2 px border decays from the accent to 40% over 24 f on E.linear and then to nothing, and the row's content fades in over the last 4 f of the open. Repeat inserts every 41 f so three new rows read as a countable rhythm, each with a tick on its line frame. Modal spawn: the modal scales lmix(0.07, 1, prog(f, a, a + 26, E.out)) about the trigger point while an overlay stroke in the accent runs 6 to 10 to 1 px wide (interpolate(p, [0, 0.6, 1], [6, 10, 1]) on the same progress); after landing it thins to 1 px over 12 f and its opacity falls to 0.3, leaving a clean modal. At its peak the stroke can carry a faint outer glow, which the hard bans rule out; build it flat (see the variant).",
+   "timing": "Line 1 f; open 10 f (E.ui); border decay 24 f (E.linear); content in the last 4 f; inserts every 41 f. Modal 26 f (lmix on E.out) from scale 0.07, far edge ~52 px/f; stroke 6/10/1 px; thin 12 f; opacity to 0.3.",
+   "use_when": "A click that creates something (a new account, row, record or dialog) that must read from a wide shot, or repeated creation shown as a rhythm.",
+   "avoid_when": "The accent already means something else in the film, or the shot is a calm monochrome close-up where a bright stroke would shout.",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "ban_safe_variant": "Use a flat 2 px stroke in the film's single accent with no box-shadow, bloom or blur; express the flash as stroke width (2 to 3 px for 4 f via hitPulse) and an opacity decay from 1 to 0.4 to 0 over 24 f, and frame the modal with a solid 6-10 px accent stroke that thins to 1 px.",
+   "evidence": 1
+  },
+  {
+   "id": "ui-anchor-point-spawn",
+   "name": "Spawn from the anchor point",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Menus, popovers, drop targets and detail cards scale out of the exact point that caused them, such as the cursor tip or a map pin, and collapse back into it.",
+   "recipe": "Set transform-origin to the trigger point in the element's own coordinates (cursor tip, pin base, the edge of the button) and scale with lmix from about 0.05, opacity reaching 1 within the first 4 f; the log-space scale keeps the far edge from jumping on frame 1. Small surfaces (menus, popovers, a card out of a pin): lmix(0.05, 1, prog(f, a, a + 12, E.out)), no overshoot, adding 2 f per extra 100 px of size, then a small camera reframe toward the surface starting 2 f later over 20-40 f on E.cam. Large surfaces (a drop target filling a panel): lmix(0.036, 1, prog(f, a, a + 48, E.smooth)), a flat C.accent fill with a 12 px radius, its icon and hint text fading in over the last 8 f; it collapses back into the point over 36 f on E.smooth. Keep the cursor (fx/Cursor.tsx) parked on the trigger during the spawn so cause and effect share one point.",
+   "timing": "Small: 12 f (lmix, E.out) from 0.05, opacity 4 f, far edge ~63 px/f for a 300 px menu; camera reframe from +2 f over 20-40 f (E.cam). Large: 48 f (lmix, E.smooth) from 0.036, hint over the last 8 f, collapse 36 f (E.smooth).",
+   "use_when": "Any UI that opens from a click, or a drag target appearing: menus, popovers, dialogs, drop zones, cards from a map pin.",
+   "avoid_when": "The element enters from off-screen or is a full window (rise-in), or the trigger point is out of frame.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ui-shell-first-build",
+   "name": "Shell first, then contents, then the action",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "The empty container is on screen first, its contents arrive left to right, the card unfolds downward in stages, and the primary button fills last as the clear call to act.",
+   "recipe": "Show the container (bar, card, window) at t0 with nothing inside; its children enter in DOM order at a 4 f stagger, each rising 6 px through arrive() with opacity 0 to 1 over 12 f on E.out, and media slots first appear as C.mist rounded rects that fill with their image over 8 f, 8 f apart. The primary action comes last: its background ramps from transparent to solid on E.linear over 16 f from +20 f, and its label colour inverts on a single frame at +28 f. To teach the hierarchy, unfold the card downward in stages with a clip-path inset on its bottom edge on E.smooth (header row first, then 36 f to reveal the stats row, then 24 f to the full card, the bottom edge travelling about 330 px), each stage's content starting only once its slot is 60% revealed. Headlines inside the UI are live text in the camera world, revealed per word with Words (6 f stagger), so they inherit the plane's perspective.",
+   "timing": "Children 4 f stagger, 12 f each (E.out), 6 px rise. Media fill 8 f, 8 f apart. Button fill 16 f (E.linear) from +20 f; label inverts at +28 f. Unfold 36 f then 24 f (E.smooth), content at 60% open. In-UI headline 6 f per word.",
+   "use_when": "The first appearance of any real product screen, especially dashboards, headers and forms whose reading order matters.",
+   "avoid_when": "The screen should feel already alive on the cut (enter it moving with a rise-in), or the shot is shorter than about 40 f.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ui-top-insert-push",
+   "name": "Top insert pushes the list down",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop",
+    "walkthrough"
+   ],
+   "summary": "New items arrive at the top of a list one at a time and every earlier item slides down one slot, on a steady metronome that reads as abundance or on a slower cadence where each row resolves as it is generated.",
+   "recipe": "Compute every item's y from the data each frame (listLayout from the product-ui reference, newest at index 0), so earlier items slide down one pitch on E.ui as each new one mounts; overlapping pushes simply add. Metronome: one insert every 14 f with a 155 px pitch pushed over 20 f (about 21 px/f); the new pill reveals left to right with clip-path inset(0 100% 0 0) to inset(0) over 12 f on E.ui, its icon leading and its label fading in 4 f later, while any paired object (an item landing on a stack) drops 60-90 px with opacity over 10 f on E.out; wrap the group in a camera drift whose velocity decays as vStart*0.97^f from about 19 to 3 px/f over 90 f. Generation: one insert every 36-40 f, the row starting at scaleX 0.6 about its left edge with blurIn(p, 6) and an 8% C.accent tint, reaching full width, sharp and neutral over 12 f on E.out while the rows below move 66 px over 10 f on E.ui. Put a tick on each insert frame (LANDINGS) so the cadence is heard.",
+   "timing": "Metronome: every 14 f, push 155 px over 20 f (E.ui), pill reveal 12 f (E.ui), label +4 f, camera drift 19 to 3 px/f (x0.97 per frame). Generation: every 36-40 f, resolve 12 f (E.out) from scaleX 0.6 and 6 px blur, push 66 px over 10 f (E.ui).",
+   "use_when": "Results, messages, subtasks or saved items accumulating: generated rows, imports landing, a feed or a stack filling up.",
+   "avoid_when": "The whole list should appear at once (row cascade), or there are so many inserts that the pushes blur into noise (scroll instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ui-container-morph",
+   "name": "Container morph into its next role",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "One element changes shape into what it becomes, a button unfolding into a panel, a card stretching into a detail view, a pill collapsing into an app tile, so there is no navigation cut to explain.",
+   "recipe": "Keep one element mounted and animate its position (x and y inside one transform), width, height and border radius from the old rect to the new role's rect; never swap two elements. Use E.whip over 30-36 f (slow first 5 f, speed peak near 40%, long settle) and lengthen it so the fastest edge stays under about 70 px/f (frames >= 3.8 x edge travel / 70); a pill collapsing to a tile keeps its height locked while its radius goes from 999 px to 22% of its side, and a panel's radius eases from 44 to 36 px. The old content fades out in the first 12 f on E.smooth, a title that survives FLIPs to its header position and scale (1 to 0.6) on the same curve, flying at opacity 1 - 0.45*clamp((v - 20)/30) (v its speed in px/f) whenever it passes 20 px/f so it lands sharp, the new content enters 8 f after the speed peak with a 2-4 f stagger, and a backdrop behind a panel morph dims linearly over the same frames. Optional preface: the card's outline retracts first (SVG rect with pathLength 1, strokeDashoffset 0 to 1 over 15 f); for a content swap inside a card that stays, the old child leaves with depart() and blurOut(q, 8) over 18 f on E.in, the card resizes to the new aspect over 20 f on E.out, and the new child arrives with arrive() and blurIn(p, 8) over 18 f on E.out.",
+   "timing": "Morph 30-36 f (E.whip), edges <= 70 px/f. Old content out 12 f (E.smooth); title FLIP to 0.6 scale; new content +8 f after the peak, 2-4 f stagger; backdrop dim linear over the morph. Outline retract 15 f. Content swap: out 18 f (E.in), resize 20 f (E.out), in 18 f (E.out).",
+   "use_when": "A click that opens something (button to panel, card to detail), a status becoming an icon, an object docking into its slot.",
+   "avoid_when": "The size change comes from content or a drag (live reflow), or the two states have no visual relation.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ui-drag-reorder-makeway",
+   "name": "Drag to reorder, siblings make way",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature"
+   ],
+   "summary": "An item lifts under the cursor, travels on a slight arc to a new position while its neighbours slide aside one slot at a time, and settles into place with a firm landing and no bounce.",
+   "recipe": "On the press (pressAt(f, grab)) the item moves to its own top layer and lifts: scale 1 to 1.03 and its shadow from 0 6px 16px at 8% to 0 18px 40px at 14% over 8 f on E.ui. It then follows cursorArc(from, to, prog(f, a, a + T, E.glide), 0.15) with T = max(36, 0.15 x distance) f, so it never exceeds 20 px/f and its label stays readable, and rotateZ = -0.15 deg per px/f of horizontal speed, clamped to +-4 deg. Siblings take their y from the computed layout for the currently hovered index, evaluated on fd(f), so each time that index changes the displaced sibling moves one pitch over 12 f on E.ui. On release the item settles into its slot with spr(f, drop, SPR.firm), the lift reverses over 10 f, its marker flashes C.accent and relaxes to neutral over 24 f, and a tick lands on the drop frame.",
+   "timing": "Lift 8 f (E.ui), scale 1.03. Drag T = max(36, 0.15 x distance) f (E.glide) on a 0.15 bow, <= 20 px/f, tilt <= 4 deg. Sibling shift 12 f (E.ui) per index change. Drop SPR.firm, shadow back over 10 f, accent relax 24 f.",
+   "use_when": "Prioritising, scheduling, kanban boards, playlists: any product whose smart part is ordering things.",
+   "avoid_when": "The reorder is automatic (animate the computed reorder on one curve, with no cursor), or more than 2-3 drags would fall in one shot.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "ui-progress-spine-steps",
+   "name": "Progress spine leads the steps",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "vertical"
+   ],
+   "summary": "A thin line grows down the side of a step list with a dot at its head. Each step appears as the head reaches it, works with a spinner and a typed detail line, then flips to done, and the list scrolls to keep the head in view until the line turns a rounded corner toward the result.",
+   "recipe": "Build the spine as one SVG path: a vertical run down the list's left gutter, then optionally a 40 px-radius arc into a horizontal run toward the result card. Place the head, a flat 10 px dot in C.ink, at getPointAtLength(L(f)) (from @remotion/paths). L moves only between steps, over 40 f on E.rest per step pitch, and waits at each step for that step's work time from the data (machine-timed, 24-60 f). Draw the path twice: a 1.5 px C.line hairline for the whole route, and above it a 2 px C.ink stroke with pathLength 1 and strokeDashoffset = 1 - L / total, so the part already travelled is solid and the rest is a guide. Step row i appears on the frame the head reaches its y (pass_i): opacity prog(f, pass_i, pass_i + 12, E.smooth) with a 12 px rise through arrive(). While the head waits there, the row shows a dashed-ring spinner (one turn per 48 f) and TypeOn types its detail line at about 1.5 characters per frame. On the last frame of the wait (decided on fd), the spinner becomes a C.accent check that draws over 8 f on E.out, a 'Done' tag fades in over 8 f, and the head leaves on that same frame. Scroll the list container, not the camera, with a lagged follow written as a pure function: loop from the shot's first frame to f with c += (headY(i) - 0.4 x H - c) x 0.08, and add a 2 px/f drift, so the head sits near 40% of the frame height and the list never stops dead. At the corner the head turns first, and the horizontal follow inherits the lag as it carries the eye to the result at a constant 10-14 px/f.",
+   "timing": "Head travel 40 f per step (E.rest), about 10 px/f for a 120 px pitch; wait 24-60 f per step, taken from the data. Row reveal 12 f (E.smooth) with a 12 px rise. Spinner one turn per 48 f; detail line ~1.5 chars/f; check 8 f (E.out); tag 8 f. Scroll lag 0.08 per frame plus a 2 px/f drift, peak about 12.5 px/f. Corner radius 40 px; horizontal run 10-14 px/f.",
+   "use_when": "An agent, build, deploy, import or onboarding process working through steps, where the point is visible progress toward one result.",
+   "avoid_when": "There are fewer than 3 steps (one status capsule says it), or the steps finish too fast to read (show the result with a count instead).",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "ban_safe_variant": "Draw the head as a flat 10 px dot in C.ink (white on an ink stage) with no halo, bloom or blur. Mark its state with size instead (12 px while travelling, 10 px while waiting). The spine, the step states, the scroll follow and every timing stay the same.",
+   "evidence": 2
+  },
+  {
+   "id": "ui-genie-launch-from-icon",
+   "name": "Genie launch from an icon",
+   "category": "ui_choreography",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A dock or home-screen icon flares open at its top into a curved funnel that keeps widening until it fills the frame, and the app's first screen is already sitting inside it.",
+   "recipe": "Render the app's first screen full-frame above the current scene and clip it with clip-path: path(), rebuilt every frame from a few numbers. The bottom edge sits on the icon's base with width wb; the top edge is h above it with width wt. Each side is a quadratic curve whose control point is the bottom corner raised by 0.45 h, so the outline pinches like a funnel. Grow it in log space so it leaves the icon slowly and speeds up: h = lmix(iconH, H + 120, p) and wt = lmix(iconW, W + 240, p), with p = prog(f, a, a + 44, E.linear). Over the same 44 f, the top edge's centre drifts from the icon to the frame centre on E.smooth, which peaks mid-way, before the growth gets fast. In the last 24 f, with s = prog(f, a + 20, a + 44, E.smooth), the waist widens toward the top (wb = mix(iconW, wt, s)) and the bottom edge drops from the icon base to 60 px below the frame. With these numbers the fastest edge stays near 70-75 px/f on the final frames, under the motion-blur pass. Start the funnel 4 f after pressAt on the icon (the icon's tile darkens 10% on the press frame). Either keep the revealed screen still at its final size, or let it settle from 1.04 to 1 over the same 44 f on E.outSoft. On the first frame the path covers the whole frame, unmount the clip and the old scene, and start the app's first UI event (a caret, a typed greeting) on that frame, so the launch hands straight over to the product.",
+   "timing": "Press, then funnel from +4 f: 44 f in log space (about x1.06-1.08 per frame, E.linear progress). Centre drift over the same 44 f (E.smooth). Waist and bottom edge open over the last 24 f (E.smooth). Fastest edge ~70-75 px/f at the end. Optional content settle 1.04 to 1 over 44 f (E.outSoft). Clip removed on full cover; the next UI event starts on that frame.",
+   "use_when": "Opening an app, a document or a tool from its icon in a dock, launcher or home screen, as a playful product-native scene change.",
+   "avoid_when": "The product is never launched from an icon, or the film already has a genie (once is a gag, twice reads as a template).",
+   "ban_safe": false,
+   "bans": [
+    "gradient"
+   ],
+   "ban_safe_variant": "Fill the funnel with the app's real first screen on its flat stage colour, or with one flat colour taken from the icon, never the icon's colour ramp. The clip path, the log-space growth and the timing stay the same.",
+   "evidence": 1
+  }
+ ]
+}

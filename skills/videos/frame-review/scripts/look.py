@@ -318,7 +318,7 @@ def print_audio(res, loud, au, cut_times):
         print("  flags      none")
 
 
-def compute_gates(a, dur, fps, nf, M, C, vs, au, cut_times, hold, final_dur, probe_ok=True):
+def compute_gates(a, dur, fps, nf, M, C, vs, au, cut_times, hold, final_dur, probe_ok=True, audio_result=None):
     G = []
     std, rng, mean = ST["std"], ST["rng"], ST["mean"]
     n = len(std)
@@ -343,8 +343,12 @@ def compute_gates(a, dur, fps, nf, M, C, vs, au, cut_times, hold, final_dur, pro
     if a.expect_audio:
         if not au:
             why.append("NO AUDIO STREAM but --expect-audio"); st = "FAIL"
+        elif audio_result is None:
+            why.append("AUDIO UNVERIFIED but --expect-audio"); st = "FAIL"
+        elif audio_result["silent"]:
+            why.append("SILENT AUDIO but --expect-audio (below -50 dBFS)"); st = "FAIL"
         else:
-            why.append("audio stream present")
+            why.append("audible audio present")
     else:
         why.append("audio %s" % ("present" if au else "none (not required)"))
     G.append(("G0", "render exists", st, "; ".join(why)))
@@ -418,7 +422,7 @@ def main():
     ap.add_argument("--shown", type=int, default=12, help="max cuts shown in mid.jpg / strips.jpg")
     ap.add_argument("--expect", type=float, default=None, help="G0: expected film duration in seconds")
     ap.add_argument("--expect-tol", type=float, default=0.15, help="G0: duration tolerance in seconds")
-    ap.add_argument("--expect-audio", action="store_true", help="G0: the film must contain an audio stream")
+    ap.add_argument("--expect-audio", action="store_true", help="G0: the film must contain verified audible audio")
     ap.add_argument("--strict", action="store_true", help="exit 3 when any gate FAILs")
     a = ap.parse_args()
     if not os.path.isfile(a.film):
@@ -580,7 +584,7 @@ def main():
     print()
     ares = audio_audit(a.film, dur, cuts) if au else None
     print_audio(ares, loud, au, cuts)
-    G = compute_gates(a, dur, fps, nf, M, C, vs, au, cuts, hold, final_dur)
+    G = compute_gates(a, dur, fps, nf, M, C, vs, au, cuts, hold, final_dur, audio_result=ares)
     print_gates(G, M, fps)
     mm = sum(M[1:]) / max(1, len(M) - 1)
     with open(os.path.join(a.out, "gates.json"), "w") as f:

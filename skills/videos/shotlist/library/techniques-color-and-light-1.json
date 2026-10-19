@@ -1,0 +1,294 @@
+{
+ "techniques": [
+  {
+   "id": "cl-mono-one-accent",
+   "name": "Monochrome world, one accent",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Everything is black, white and grey, and one saturated accent marks the single element in each shot that carries the meaning.",
+   "recipe": "Declare neutrals plus one accent in brand/tokens.ts: C.ink for the stage, C.ink2 for surfaces, C.mute for labels, C.line for strokes, C.white for type, C.accent, and a press step of mixColor(C.accent, C.ink, 0.08). Grade every photo, map, clay render or backdrop screenshot with filter: grayscale(1) so mixed media reads as one world. Paint the accent on exactly one thing per shot (the payoff word, the pin, the pressed button, the focus ring) and keep one meaning for it all film. Focus devices use three steps of it: the full accent for strokes, mixColor(C.accent, C.ink, 0.65) for fills and a mid step for decaying outlines. Colour arrives on a cut or an impact frame (fd(frame) >= cue), never through a slow fade, and when you audit rendered stills the accent should average 0.05-6% of frame pixels (peak about 12.5%) with the stage at 85-90%.",
+   "timing": "The palette stays the same for the whole film. The accent swaps on the cue frame (a step, 0 f). Focus outlines land 6-10 px wide with their container (26 f, E.out), thin to 1 px over 12 f on E.in, then decay to 30% opacity over 24 f on E.linear.",
+   "use_when": "Films that mix photos, 3D, maps and UI, multi-cell layouts, or any shot where several things compete and the eye needs exactly one target.",
+   "avoid_when": "The product's own colourful UI is the subject of every shot and greying it would misrepresent it, or the story needs two semantic colours on screen at once.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "cl-one-hue-light-ramp",
+   "name": "One-hue light ramp",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "loop"
+   ],
+   "summary": "Every lit thing (rims, rings, stage lifts, the end-card field) comes from adjacent lightness steps of one hue on a single near-black stage.",
+   "recipe": "Build five tokens of one hue with mixColor, running from the stage to a pale tint: C.ink, then mixColor(C.ink, C.accent, 0.2 / 0.45 / 0.75), then mixColor(C.accent, C.white, 0.5). Only ever draw a gradient between two adjacent steps, so the whole film's light comes from one decision. Rims, rings and orb lobes use the upper steps as crisp strokes or flat fills, never as soft halos or bloom, and the stage holds 63-99% of pixels on dark frames. For an end-card field behind a wordmark, use linear-gradient(to top, step0, step2 45%, step4) plus a repeating-linear-gradient(90deg) of flat, hard-edged 60-120 px bands at ±6% lightness (no blur, so they never read as fluted glass); the band layer drifts 0.3 px/f so the hold never freezes. Against banding, bake the field as a dithered PNG with scripts/dither-gradient.py and let the film's global 1.5-2% grain sit over it.",
+   "timing": "The palette stays the same. The end-card field holds 90-120 f with the bands drifting 0.3 px/f on E.linear.",
+   "use_when": "Dark launch films with many light-built shapes (orbs, rings, rims) that need a recognisable look. It also makes a single bright card hit harder.",
+   "avoid_when": "Light-mode walkthroughs where the UI's own colours dominate, or films already using the monochrome-plus-accent system (pick one system).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "cl-accent-claim-grounds",
+   "name": "Accent ground for claims only",
+   "category": "color_and_light",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "Narrative shots sit on the neutral stage, other claims flip to the opposite neutral, and the single full-bleed accent ground is saved for the hero claim or the closing card, so colour works as punctuation.",
+   "recipe": "Use two ground tokens (C.paper or C.ink, and C.accent) and one ink. Tag each shot 'story' or 'claim' in timeline.ts. The accent floods the frame once per film: give the full-bleed accent ground to the one hero claim (about 72 f) or to the closing card, and set every other claim on the opposite neutral stage (C.ink after C.paper, or the reverse) with the accent only on its one key word, so accent pixels stay near 8% across the film. Switch grounds on hard cuts; elsewhere the accent appears only as a one-word highlight or a soft single-hue wash that previews the flood. Let the accent ground arrive as a radial flood. Layer order: the accent ground; a disc of radius 640 px whose fill steps mixColor(C.accent, C.paper, 0.75), then 0.4, then 0; a 60 px ring of mixColor(C.accent, C.ink, 0.1) at r 600 px, which appears with the last step and stays for the shot to frame the hero word; then the type.",
+   "timing": "Grounds swap on cut frames. The radial flood takes 6 f, with tint steps on f0, f2 and f4 decided with fd(). The ring stays from f4 to the end of the shot. Claim shots run 60-120 f each.",
+   "use_when": "Films with a few big statements that must feel louder than the walkthrough around them, and endings that need to feel conclusive.",
+   "avoid_when": "The accent fails contrast as a ground for display type, or the film has no distinct claims (a pure UI tour).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "cl-inversion-card",
+   "name": "Single inversion card",
+   "category": "color_and_light",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "In an otherwise dark film, one card cuts to a near-white field with dark type for one second, marking the key promise.",
+   "recipe": "At about 40% of runtime, inside a gap in the music, hard-cut to an AbsoluteFill of cream C.paper whose edges carry a soft ring of colour, fading from white at 55% of the radius through two accent hues to the frame edge. Set the line in C.ink and rise it out of a line mask: overflow hidden, translateY from 100% to 0 through arrive(), on E.out. Let the ring breathe, with its scale moving between 1.00 and 1.02 on sin(2π·frame/120). Frame mean luma jumps from about 9 to about 232, so this must be the film's only light frame; cut out hard on the next beat.",
+   "timing": "Hold for 60 f. The type rises over 18 f on E.out, starting on f4. The ring breathes with a period of 120 f, ±2%. Place it at about 40% of runtime.",
+   "use_when": "A dark film's single most important promise needs to stop the viewer halfway through.",
+   "avoid_when": "Light-mode films, films that already alternate dark and light, or when the music has no gap to place it in.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "beige"
+   ],
+   "ban_safe_variant": "Keep a neutral C.paper field, never a cream one. Draw the ring as a single hard-edged accent stroke (a 6-10 px ellipse at 88% of the frame) that breathes in scale, with no soft colour falloff and no second hue.",
+   "evidence": 1
+  },
+  {
+   "id": "cl-theme-flip-in-motion",
+   "name": "Theme flip mid-move",
+   "category": "color_and_light",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "feature",
+    "launch",
+    "walkthrough"
+   ],
+   "summary": "In the middle of a camera fly-over, the dark page and stage flash to their light versions, top first, and the motion never pauses.",
+   "recipe": "Render dark and light versions of the same page as two identical layers on the same moving plane, inside one world container driven by src/lib/camera.ts so they share every transform. Reveal the light layer through mask-image: linear-gradient(to bottom, black X%, transparent X+30%), with X running from -30% to 100%, so the top bands lead by about 2 f. On the same span, swap the stage from the C.ink grid to the C.paper studio. Keep the camera at cruise speed through the flip: it shows theme support and doubles as the film's dark-to-light act change.",
+   "timing": "6 f in total, with the mask edge on E.linear (frame luma goes about 40, 140, 205, 235). The top leads by 2 f. Leave the camera's own easing untouched.",
+   "use_when": "Products with dark and light modes, or as the single dark-to-light act transition of a film.",
+   "avoid_when": "The camera is static (the flip turns into a plain crossfade), or the light version would not match the dark one pixel for pixel.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "cl-context-palette-shift",
+   "name": "Palette shift as context cue",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The world's colour changes behind a steady foreground, for a whole act or for one beat, to say 'new context' or 'this is the moment' without words.",
+   "recipe": "Keep two or three token sets keyed by act in brand/tokens.ts: for example, a loud act on C.paper with C.ink and C.accent, a technical process act in pure neutral greys, and a calm product act in pale tints of one hue with the accent withdrawn. Read colours through a palette(act) helper so a whole act switches at once, on a hard cut or hidden inside a zoom-through. For a single beat, park the hero (card, composer, device) and shift only the backdrop. Drive one blurred backdrop layer's filter brightness() and saturate() so its luma rises about 100 levels over 42 f on E.smooth, or step it on the cut into the hero beat and step back on the next wide. The hero never moves during the shift, so the eye stays parked.",
+   "timing": "Act switches happen in 0 f on a cut. A neutral process act can be as short as 74 f. A backdrop shift takes 42 f on E.smooth. A hero-beat backdrop holds for up to about 300 f before stepping back.",
+   "use_when": "Act changes without title cards, entering another app's world, or flagging the key moment (the user's prompt, the reveal).",
+   "avoid_when": "The foreground is moving at the same time (the cue gets lost), or the film is shorter than two acts.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "cl-ink-resolve",
+   "name": "Ink resolve on arrival",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Text never simply fades in: it arrives pale (or dim on a dark stage) and darkens or brightens to full ink as it settles.",
+   "recipe": "For each word or line, mix its colour from a pale tone to the ink with mixColor from src/lib/color.ts (interpolateColors stair-steps), while opacity goes from 0.3-0.4 to 1. On paper, go from mixColor(C.ink, C.paper, 0.65), or a pale accent tint mixColor(C.accent, C.paper, 0.8), to C.ink; on a dark stage, go from C.mute to C.white. Pair it with a short rise inside an overflow-hidden line mask (translateY 100% to 0 through arrive(), or at most 60 px), with words staggered and no blur on slow rises; src/fx/Words.tsx can carry the motion while you apply the colour per word. Connector words ('on', 'and', 'the') reach half strength in 2 f and finish over the next 6-12 f, so the nouns read first.",
+   "timing": "Colour takes 12-16 f per word on E.out (a headline-scale darkening may run 40 f). The rise takes 20 f, peaking under 20 px/f. Stagger words 8 f apart (4-10). Connector words go 0 to 0.5 in 2 f, then to 1 over 6-12 f.",
+   "use_when": "Every headline and caption reveal, especially over textured or busy backgrounds where an opacity fade alone looks washed out.",
+   "avoid_when": "Numbers that must read instantly on a cut (land them at full ink), or type that already sits inside a colour-band fill.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "cl-accent-on-newest",
+   "name": "Accent on the newest arrival",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "vertical"
+   ],
+   "summary": "Whatever just arrived (a typed character, a snapped word, a generated pill) wears the accent for a moment and then settles to neutral, so a short coloured wake leads the eye.",
+   "recipe": "Store each item's birth frame. Type-on: give each glyph span colour = mixColor(C.accent, C.white or C.ink, clamp((frame - birth) / 12)); at 1-1.7 chars/f this leaves a wake of 10-20 characters behind the caret. Word builds work as either a wave or a step. Wave: each word is grey for 4 f, accent at about 8 f and ink by 16-20 f, on E.out. Step: the word that snapped last holds the accent (fd(frame) >= snap[i] && fd(frame) < snap[i+1]), and the final word keeps it until 1 frame before the cut. Objects (generated pills, pins, cards, an end-card icon): stack an accent-tinted duplicate clipped to the shape (mix-blend-mode: color) and fade it from 1 to 0 on E.out. Use one accent hue only: no multi-stop hue cycle, no bloom, no text-shadow.",
+   "timing": "Glyph decay takes 12-16 f on E.linear. A word wave takes 16-20 f per word with an 8-12 f stagger. A step holds 16-20 f per word. An object's tint resolves over 20-40 f on E.out.",
+   "use_when": "Prompts typing, statements building word by word, AI-generated items appearing, or any build where the newest piece should lead.",
+   "avoid_when": "The accent already means something else in the shot (a focus ring or a pressed button), or long paragraphs where the wake becomes noise.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 6
+  },
+  {
+   "id": "cl-accent-hit-envelope",
+   "name": "Accent hit envelope",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "loop"
+   ],
+   "summary": "On a press or an impact, the element floods with the accent and peaks for one frame with its label inverted, then either bleeds back like decaying light or stays as the new state.",
+   "recipe": "Put a solid C.accent overlay inside the button, with the same corner radius. Drive its opacity with hitPulse(frame - cue, 10, 8): a fast rise, a one-frame peak, and an exponential release about twice as long as the attack. Switch the label to C.ink when the overlay passes 0.6, and change no scale (the cursor may dip 1 to 0.9 to 1 over 12 f). For an impact that changes state, swap the object's fill to the accent on the contact frame (decided with fd), add a flat C.white overlay at 0.8·hitPulse(t, 1, 2), apply squash(t) anchored at the contact edge, and leave the accent on. No ring blur and no outer halo.",
+   "timing": "Attack 10-12 f, a 1 f peak, then a release of 20-26 f (tau 8): an asymmetric 1:2 envelope. On an impact, the swap takes 1 f, the white flash about 4 f and the squash 8 f.",
+   "use_when": "Primary-button clicks, send or confirm moments, and contact hits that turn an object into its new state.",
+   "avoid_when": "Secondary controls and hovers (save it for the decisive action), or when the accent already floods the ground.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "cl-specular-sweep",
+   "name": "Specular sweep",
+   "category": "color_and_light",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "loop"
+   ],
+   "summary": "A soft bright band glides once across a settled number, word or logo face, so the element looks locked and made of a real material without moving.",
+   "recipe": "Duplicate the settled text or mark and fill the duplicate with linear-gradient(100deg, transparent 0, C.white at 35% alpha 50%, transparent 100%). Make the band about 40% of the text height wide (about 30% of the width for a logo glyph, with peak opacity up to 0.9), clip it to the glyphs with background-clip: text or an SVG mask, and use mix-blend-mode: screen on dark stages. Drive the band's x from -20% to 120% of the element width on E.smooth, so its speed peaks mid-sweep, starting 6-10 f after the element lands. For a looping working state, use a light-grey label with a 120 px lighter band whose background-position is (frame % 60) / 60 on E.linear, and stop it on the frame the state resolves. Keep the sheen inside the glyphs, with no blur or halo outside them.",
+   "timing": "A one-shot sweep takes 36 f on E.smooth (about 16 px/f mid-sweep, peaking near 26 px/f). A logo glint brightens over 9 f, holds about 11 f and is clear by 36 f. The loop has a 60 f period on E.linear and is held for up to about 74 f before the result.",
+   "use_when": "A final number, price or logo that has landed and must hold attention through a still beat, or loading and generating labels.",
+   "avoid_when": "The element is still moving, or you would need more than one sweep in the shot (it turns into decoration).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "cl-rim-light-sweep",
+   "name": "Rim streak on card edges",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "launch",
+    "walkthrough"
+   ],
+   "summary": "A bright streak travels along a dark card's border while its edges carry a faint lit rim, separating it from a black stage without a drop shadow.",
+   "recipe": "Fill the card with C.ink2 on a C.ink stage and give it a 1 px border of C.white at 8% alpha. Above it, place an SVG rect of the same size and radius with pathLength=1, a 1-2 px stroke of C.accent or C.white, strokeDasharray '0.12 0.88' and strokeDashoffset driven by the frame, so a 120 px segment runs along the top edge or around the whole perimeter. For the whole UI act, breathe the static rim's opacity between 0.6 and 0.8 on sin(2π·frame/180). For a brand that supplies glow, add soft box-shadow halos in a different colour on each of three sides.",
+   "timing": "The streak crosses one edge in 20-30 f on E.linear. The rim breathes ±20% over 180 f and stays on for the whole UI act.",
+   "use_when": "Flat dark UI cards floating on pure black that need depth and separation without tilting or shadows.",
+   "avoid_when": "Light-mode UI (use a soft neutral shadow instead), or several cards on screen at once (the streaks compete).",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "gradient",
+    "orange"
+   ],
+   "ban_safe_variant": "Drop the coloured halos entirely. Use one 1 px single-colour border highlight sweeping along the edge, plus a neutral low-opacity drop shadow (0 24px 48px of C.ink at 50%) for lift.",
+   "evidence": 2
+  },
+  {
+   "id": "cl-tone-band-fill",
+   "name": "Travelling tone band fill",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A word, URL or logo mark fills through a band of colour (dark, then accent, then light) that sweeps across it and settles on the final ink.",
+   "recipe": "Text: set background to linear-gradient(90deg, final ink 0 35%, light accent tint 50%, C.accent 65%, stage colour 80%) at background-size 300%, with background-clip: text and color: transparent, and animate background-position from 100% to 0%. For a domain plus path, delay the path span. For accent words in a tagline, step each letter from ink to C.accent with a 2 f stagger after the line lands. Mark: use the mark as an SVG mask over a tall gradient rect, reveal the fill bottom-up with clip-path from inset(100% 0 0 0) to inset(0), then translateY the rect by one gradient period so the tone scrolls and settles on solid accent, just before the colour floods the frame. The type itself stays still; only the fill travels.",
+   "timing": "A word sweep takes 32 f on E.smooth (the front peaks at about 25 px/f). A URL takes 42 f, easing into the final ink on E.out, with the path lagging 8-12 f. A mark wipe takes 8 f on E.linear, then the tone scrolls for 36 f on E.smooth. Letters stagger 2 f.",
+   "use_when": "Hero words, the URL card, or a logo mark that should introduce the accent before it fills the frame.",
+   "avoid_when": "Small UI text, or type that is still moving (the band and the motion fight).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "cl-living-stage",
+   "name": "Living gradient stage",
+   "category": "color_and_light",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "any"
+   ],
+   "summary": "Behind static cards the background never freezes: soft pools of colour at the corners breathe in brightness or drift slowly, like light through water.",
+   "recipe": "Start from a C.ink base with two or three huge pools (radius 55-60% of the frame, for example one centred at 85% 15% and one at 10% 95%) in dark tints of one allowed hue (never violet, warm brown or a multi-hue mesh), each baked once as an RGBA PNG with scripts/dither-gradient.py rather than drawn as a CSS radial-gradient under a live blur(), which bands at 8 bits and costs render time. Breathe mode: each pool's opacity moves between 0.85 and 1.0 on sin(2π·frame/162), the second half a period out of phase, with no translation (about ±15% luma). Drift mode: 4-5 pools, each centre moving ±6% of the frame on sine loops of 360-660 f at different phases, with opacity ±8%. The pools light the stage, never an element: none sits centred behind type or a card. Let the film's global 1.5-2% grain sit over it, and give the stage an intensity prop (0-1) so brand beats (open, tagline, end card) raise it while UI beats sit on flat C.ink.",
+   "timing": "The breathe period is 162 f. Drift loops run 360-660 f, at under 1 px/f. On brand beats the stage rises over 50 f on E.out (translateY +40% to 0) and drains to flat in 8 f.",
+   "use_when": "Holds, end cards and statement cards that would otherwise sit still for more than 48 f.",
+   "avoid_when": "Busy UI shots where any background motion competes, or films built on a hard flat-stage look. Behind a product window or readable type, where soft pools read as a generic gradient backdrop or as haze; light stages, where they read as smudges. A flat stage with one tonal step is the stronger default.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 7
+  },
+  {
+   "id": "cl-light-swell-bridge",
+   "name": "Light swell bridge into the hero",
+   "category": "color_and_light",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "Light swells around a small panel until the frame is bright, the film cuts on the brightest frame to the hero card sitting in the same light, and that light slowly exhales back to dark.",
+   "recipe": "Shot A: a radial gradient centred on the panel with four stops (stage, dark tint, mid, light tint), whose radii grow at 12-25 px/f on E.linear so mean frame luma climbs about 2.25 levels per frame (from 15 to about 78); cut on a downbeat at the peak. Shot B opens on the identical gradient with the hero title already in place, then pulls the stops back inward so luma falls from about 112 to 43, handing off to the next dark shot. Put the cut on an act boundary so it stays crisp.",
+   "timing": "The swell takes 28 f on E.linear. Cut at the peak, on a downbeat. The exhale takes 86 f on E.smooth (a fade-out never runs on an expo-out).",
+   "use_when": "Releasing a dark section into the hero card or title: the biggest reveal in a dark film.",
+   "avoid_when": "Light-mode films, or a second time in the same film.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "gradient"
+   ],
+   "ban_safe_variant": "Replace the soft multi-hue bloom with four hard-edged concentric discs in tonal steps of one hue (the stage, then 15%, 35% and 60% lightness toward the accent), their radii expanding with a 2 f stagger on normal blend. Keep the same swell, cut and exhale timing.",
+   "evidence": 1
+  }
+ ]
+}

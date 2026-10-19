@@ -1,0 +1,378 @@
+{
+ "techniques": [
+  {
+   "id": "le-mark-slide-name-follow",
+   "name": "Mark slides aside, name follows",
+   "category": "logo_and_end_card",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "The centred mark glides sideways, shrinking if it was hero-sized, to open its slot, and the name resolves beside it just before the mark stops, so the lockup forms in one gesture.",
+   "recipe": "Lay the finished lockup out first: LOCKUP token with mark height = the name's cap height, gap = 0.25-0.4x the mark height, and the name's width from measureTracked. Then slide the mark from frame centre to its lockup slot with x = tw(f, a, a+D, 0, -(nameW + gap)/2, E.smooth). If it was larger as a hero, scale it lmix(heroK, 1, same progress) with heroK about 1.6. Start the name when the slide passes 55-60% of its progress. As one block: opacity on E.smooth, blurIn(p, 10), translateX +30 -> 0 on E.out. Per letter: the same over 16 f at a 3 f stagger, with colour mixColor(C.mute, C.ink, p) so letters arrive grey and settle to ink. From the name's resolve, tighten its letter-spacing from +0.04 em to the TYPE.display track over 46 f on E.out; this hands into the hold's push. For a round mark, add roll: rotate = -(dx / r) * 180/pi degrees, so it rolls without slipping and stops exactly when x does. In 9:16, stack instead: the mark rises by (nameH + gap)/2 and the name rises in under it with MaskRise.",
+   "timing": "Slide: 36 f for up to ~250 px (E.smooth peaks ~20 px/f), 60 f for ~350 px (~17 px/f). Motion-blur pass on the mark whenever it moves faster than 12 px/f. Name starts at 0.55-0.6 x D: a block takes 14 f; letters take 16 f each at a 3 f stagger (10 letters inside ~43 f). Tracking: 46 f on E.out. Lockup resolved by about D + 20 f, then hold 90-120 f.",
+   "use_when": "Any end card whose mark is already on screen (it was the story device or the hero) and the name still has to arrive. The default lockup build.",
+   "avoid_when": "The mark has not been seen yet (give it its own beat first). The film already used a slide-to-make-room for the product. Long names that would push the slide past ~400 px (stack vertically instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "le-reverse-type-recentre",
+   "name": "Name types backwards, group stays centred",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "The name appears from its last letter to its first while the mark is pushed outward, so the lockup grows out of the mark's edge and stays centred on every frame.",
+   "recipe": "Lay out [mark][gap][name], with every character laid out from the start and untyped characters at opacity 0. Measure each character's advance with measureTracked. Character i of n shows from frame t0 + 3.5 * (n-1-i), decided on fd, with a 4 f opacity ramp on E.ui, so the name grows leftward from its last letter. Keep the group centred without stepping: markLeft = cx - (markW + gap + ws(f))/2, where ws(f) = sum of adv_k * spr(f, t_k, SPR.firm) over the characters revealed so far. That is one critically damped spring per character, which glides the mark outward as each letter lands. If the story device is a dot, let it become the mark in place first: fill mixColor(C.mist, C.ink, p) over 12 f on E.smooth, with the glyph inside fading in over the last 4 f.",
+   "timing": "3.5 f per character (10 characters in 36 f), each fading in over 4 f on E.ui. Each width step eases on SPR.firm (no overshoot, ~20 f to settle). The mark travels ~270 px at 7-8 px/f on average. Dot-to-mark darkening takes 12 f. The lockup settles ~20 f after the last character, then holds 90-120 f under a 10-15% push (le-living-hold).",
+   "use_when": "Agent, assistant or persona products whose mark is an avatar or a disc. Names of 4-12 characters. A centred lockup that must never jump.",
+   "avoid_when": "Two-word names whose second word makes no sense on its own first. Right-to-left scripts (it becomes an ordinary type-on). The headline already used a typewriter.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "le-macro-pullout-breathe",
+   "name": "Pull out of the mark, undershoot, breathe",
+   "category": "logo_and_end_card",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "vertical"
+   ],
+   "summary": "The mark arrives so large that only fragments of it fill the frame, collapses to slightly smaller than its final size, then gently breathes up to rest, as if the camera had found it.",
+   "recipe": "Place the Mark with placeMark at its final spot; centre it where the lockup needs it, e.g. 80 px left of frame centre to leave room for the name. Pick the start scale s0 so the mark's outer edge starts about 750 px from its centre (s0 = 750 / the mark's half-width at rest, about 5x for a 300 px mark), so only fragments fill the frame. Scale it about its own centre in log space: s = lmix(s0, 0.93, prog(f, a, a+N, E.outSoft)) * lmix(1, 1/0.93, prog(f, a+N-24, a+N, E.smooth)), with N = 43 x ln(s0 / 0.93) frames (72 f from 5x). The log rate then starts near 0.105/f, so the outer edge never passes about 80 px/f; from 5x it crosses 1.0 near f35, bottoms out at 0.94 near f52 and breathes up to rest at 1.0 by f72 with no velocity step. Enter it on a cut: the outgoing shot shrinks into its centre on E.in over its last 24 f and cuts at a matching log speed (or start from zoomHandoff in camera.ts at the outgoing log speed). Render with the motion-blur pass. Keep the mark's counters and small parts outside the frame until the log rate falls below 0.07/f (~f10). Put the bottom of the undershoot on the strongest low hit after a ~15 f bass gap.",
+   "timing": "Collapse: N = 43 x ln(s0 / 0.93) frames on E.outSoft (72 f from 5x; log rate about 0.105/f at the start, outer edge under about 80 px/f, under 0.07/f by f10). Breathe: the last 24 f on E.smooth (0.93 -> 1.0), bottoming at 0.94 near f52. Settled by f72. Hold the mark ~20 f before the name follows.",
+   "use_when": "The mark's first full appearance at the end, or a logo sting. A hit after a short bass gap. Marks with a strong silhouette or inner shapes that read as abstract fragments when huge.",
+   "avoid_when": "Thin line marks (at macro scale they become two hairlines crossing the frame). Right after another zoom-through seam. The mark was already shown at hero size earlier (that makes this a replayed reveal).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "le-slam-spin-pullout",
+   "name": "Dark slam, spin and brighten",
+   "category": "logo_and_end_card",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "After a near-still beat, giant low-contrast arms of the mark sweep over the frame, and the mark rushes back to logo size while spinning into place and brightening to full contrast.",
+   "recipe": "Hold the card before it (the URL or last line) almost still, drifting at most 0.3 px/f, and end that hold with a designed freeze of at most 15 f on silence. Then start the mark at full speed with no ease-in, centred on the frame. Scale s = lmix(12, 1, prog(f, a, a+66, E.outSoft)); rotation tw(f, a, a+60, -70, 0, E.outSoft) degrees; fill mixColor(C.ink2, C.white, p*p) with p = 1 - ln(s)/ln(12). The fastest frames are then dark grey on a C.ink stage and cannot strobe, and full contrast arrives only as the mark slows. Blur the previous text out underneath (blurOut over 10 f), and keep the motion-blur pass on while the log rate is above 0.05/f (about the first 18 f).",
+   "timing": "66 f. Log rate 0.17/f at f0, 0.10 at f10, 0.04 at f20. Spin 5.2 deg/f at the start, 2.8 deg/f by f10, at rest by f60. Fill 31% of the way to white at f10, 70% at f20, 97% at f40. Preceded by a near-still hold of 60-90 f that ends in a freeze of at most 15 f.",
+   "use_when": "The finale of a high-energy film, where the single biggest motion spike follows the single biggest stillness. Radially symmetric or rotational marks (asterisks, petals, rings).",
+   "avoid_when": "Marks with an obvious up direction that look wrong at -70 deg (lettermarks). Calm films. Films that already used a spin or a fast zoom-out seam.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "le-seed-stroke-build",
+   "name": "Seed build with stroke draw-on",
+   "category": "logo_and_end_card",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting",
+    "feature",
+    "loop",
+    "vertical"
+   ],
+   "summary": "The mark grows from a small seed while its strokes, stripes or arcs draw on in a quick stagger, so it assembles itself in about half a second and the label rises in beside it.",
+   "recipe": "Build the mark from named parts (Mark pieces with per-piece transforms). Grow the body from a seed with scale lmix(0.2, 1, prog(f, a, a+54, E.out)) about its centre. Draw each line part on with stroke-dasharray = its length L and stroke-dashoffset = L * (1 - p). Reveal each filled stripe through a mask rect whose scaleX goes 0 -> 1 from one end. Part i starts at a + 6 + 6i and runs 10 f on E.out. When the last part lands, raise the label letter by letter from behind its baseline: each glyph sits in an overflow-hidden line box and moves translateY 100% -> 0 through arrive (or use MaskRise for whole words). Then push the whole group gently through the hold.",
+   "timing": "Seed growth: 54 f on E.out (about 0.2x -> 1; first-frame edge speed ~4 px/f). Parts: 10 f each, 6 f apart (3 parts inside ~28 f). Label glyphs: 2 f apart, 12 f each on E.out. The whole mark reads within ~0.5 s. Then a 90-120 f hold that pushes from 1.0 to 1.10-1.15 on E.dolly (le-living-hold).",
+   "use_when": "Geometric marks made of a body plus lines, stripes or orbits. A fresh logo reveal after a hard cut to a clean stage. Stings that must show the mark within 0.5 s.",
+   "avoid_when": "Solid single-shape marks (there is nothing to draw). Marks with more than ~5 parts (it turns into a slow queue). The mark already exists on screen as the story device.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "le-gooey-merge-to-mark",
+   "name": "Liquid blob resolves into the mark",
+   "category": "logo_and_end_card",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting",
+    "loop"
+   ],
+   "summary": "A dot, or two soft lobes sliding in from the sides, swells into a liquid blob that stretches, splits and snaps into the crisp geometric mark.",
+   "recipe": "Draw the mark's primitives as SVG circles and rects in one group, all starting stacked on the seed dot, and move each to its final place on E.smooth with a 2-4 f stagger. Two-lobe version: two large rounded shapes move translateX +/-600 -> +/-160 px on E.outSoft, fuse at centre and frame the closing line. Filter the group with feGaussianBlur stdDeviation 10, then feColorMatrix (type matrix, alpha row '0 0 0 18 -7'), which thresholds the blur into a liquid neck wherever parts are close. Over the last 8 f, ramp stdDeviation 10 -> 0. On the frame it reaches 0, swap the filtered group for the crisp Mark at the identical transform: a one-frame swap of identical shapes, never a crossfade. Use flat fills only; the threshold makes hard edges, and rim lights or inner highlights would be eaten or look like neon.",
+   "timing": "46 f. Parts travel f0-38 on E.smooth at a 2-4 f stagger, and the blob visibly splits ~26 f in. Blur ramp and crisp swap over the last 8 f. Two-lobe version: converge in 40 f on E.outSoft (first frame ~49 px/f, motion-blur pass on), then drift 0.3-0.5 px/f under the line.",
+   "use_when": "Products about raw input becoming structure, or about merging and joining. The story device is a dot. Marks made of a few separate primitives.",
+   "avoid_when": "Marks with thin strokes or text inside (the threshold eats them). Brands that need crisp precision throughout. Films already using a soft morph seam.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "le-clone-stack-morph",
+   "name": "Staircase echo shape morph",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "A large brand shape collapses into a slim pill around the URL, and mid-morph its moving edges show stepped echoes from staggered copies, like a mechanical transformation.",
+   "recipe": "Animate one rounded rect from the big shape to a pill that hugs the URL over 48 f on E.smooth, using morphBox from Morph.tsx or width, height and radius directly. Render 7 copies behind it: copy k samples the same morph at frame f - 2k and draws as a 1.5 px stroke (no fill) with opacity 0.6 * (1 - k/9) in one tonal step of the stage colour. The copies show only where the shape moves, stack into a staircase along the moving edges, and coincide and vanish once it rests. The URL swaps in at the start of the morph (8 f fade on E.smooth) and stays still once the pill lands.",
+   "timing": "Morph: 48 f on E.smooth, height 983 -> 227 px (edge peak ~22 px/f), width 1878 -> 997 px with a long tail. 7 copies at a 2 f delay each (14 f of echo after the leader stops). The URL stays readable for at least 102 f afterwards, under the card's 10-15% push (le-living-hold).",
+   "use_when": "Turning a big brand shape or frame into the CTA container. Mechanical, engineered or developer-tool brands. One moment that should feel designed rather than tweened.",
+   "avoid_when": "Short moves (under ~150 px the echoes collapse into a smear). Elements that already carry motion blur (double trails). More than once per film.",
+   "ban_safe": false,
+   "bans": [
+    "glow"
+   ],
+   "ban_safe_variant": "Draw the echoes as plain 1.5 px strokes in one tonal step of the stage (C.ink2 on C.ink, C.line on C.paper) with a linear opacity falloff. No rim light, bloom or coloured edges on the copies.",
+   "evidence": 1
+  },
+  {
+   "id": "le-device-becomes-mark",
+   "name": "Story object becomes the mark",
+   "category": "logo_and_end_card",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "The film's last object (a dot, circle, coin or pill) ends at exactly the mark's screen position and size, and the mark replaces it by a hard cut or an in-place morph, so the logo arrives as the answer to the story.",
+   "recipe": "Compute the mark's final rect first (placeMark). Drive the story object so its last frame lands on that rect, or on 0.57 of it for the cut-and-grow ending, with matched centre, size, radius and colour. Examples: a coin turning rotateY 90 -> 10 deg on E.outSoft while it rises 20% of H; a word deleting from both ends (slice(k, n - k), k + 1 every 5 f) while its pill hugs the text down to a circle; a pill whose width collapses to the icon's rounded square (Morph on E.inOut). Then either hard-cut to the flat mark at exactly the object's last position and size (0.57 of the rect) and grow it lmix(0.57, 1, prog(f, cut, cut + 18, E.out)) about its centre, with half the growth in the first 2 f and no overshoot. Or finish in place: the dot's fill darkens to the mark's ink (mixColor over 12 f on E.smooth) and its glyph fades in over the last 4 f. Nothing may blink, double or change style across the seam, not even for one frame.",
+   "timing": "Coin flip: 22 f on E.outSoft. Two-ended delete: 5 f per letter pair, pill width eased 4 f per step on E.ui. Pill-to-square morph: 30-40 f on E.inOut. Cut pop: 18 f on E.out (0.57 -> 1). In-place darkening: 12 f. Then hold ~20 f before the name follows.",
+   "use_when": "Every film that has a story device: the default way to arrive at the mark, especially as the device's third and final use.",
+   "avoid_when": "There is no recurring object (a mark forced out of an unrelated shape reads as a pun). The object's shape and the mark's disagree (a square into a circle needs a morph, never a cut).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "le-words-part-url-types",
+   "name": "Words part, URL types into the gap",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The closing line splits at its middle, both halves slide outward and dim, the URL types letter by letter into the gap, and the flanks fade so the URL holds alone.",
+   "recipe": "Set the closing line as two spans that meet at the centre. Split them apart by +/-(urlWidth/2 + 40 px) over 44 f on E.smooth, with colour mixColor(C.ink, C.mute, p) so they dim but stay legible. From 40% of the split, type the URL centred in the gap with TypeOn: 1 character per 4 f, head fade 4 f, caret hidden once done. After the last key, fade the flanks to 0 over 16 f on E.smooth. Keep the URL still on the card while the card pushes 10-15% on E.dolly; the mark then joins above it, or the URL becomes the lockup's secondary line.",
+   "timing": "Split: 44 f on E.smooth over 250-300 px (peak 20 px/f or less). URL starts at 40% of the split, 4 f per character. Flank fade: 16 f after the last key. URL readable and still for at least 102 f.",
+   "use_when": "The closing line is a two-word phrase or pun built around the product, and the CTA is a URL. Minimal, type-only films.",
+   "avoid_when": "Lines longer than ~4 words. Films with no typing anywhere else (it would add a new device at the very end). URLs too long for the gap to open within the safe width.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "le-card-to-pill-flank",
+   "name": "Card shrinks to a pill, words close in",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The last content card empties and shrinks into a small pill while the tagline words slide in from beyond the frame edges, blurred to sharp, to sit on either side of it; then the logo appears inside the pill.",
+   "recipe": "Build a flex row [wordL][slot][wordR] and animate the slot's width from the card's width to the pill's width. Use Morph for the slot's box: radius to h/2, fill from the card surface to a solid tonal step of the stage. The words are then carried in from off-frame by the layout alone. Fade the card's content out over the first 6 f, before the slot moves fast, and shrink on E.whip. The words get blurIn(p, 8) and opacity prog(..., E.smooth), so they fly faded and resolve sharp on landing. When the pill lands, fade the Mark in inside it over 14 f on E.smooth. The row stays centred on the frame throughout.",
+   "timing": "Content fade: 6 f. Shrink: 30 f on E.whip (card ~1240 -> ~310 px; each word travels ~470 px at a peak of ~58 px/f with the motion-blur pass on, faded until it lands). Logo fade: 14 f, starting 8 f after the pill lands. Then hold 90-120 f under a 10-15% push (le-living-hold).",
+   "use_when": "Films that opened with a gap or pill inside a headline (the reverse closes the bookend). Products whose output is a card, post, message or result. A tagline that brackets the brand: [wordL] [mark] [wordR].",
+   "avoid_when": "There is no card on screen to collapse. Words too long to fit beside the pill inside the safe width. Light-on-light stages where the pill loses its edge.",
+   "ban_safe": false,
+   "bans": [
+    "glass"
+   ],
+   "ban_safe_variant": "Make the pill opaque: a solid tonal step of the stage (C.ink2 on C.ink, C.mist on C.paper), optionally with a 1.5 px C.line stroke. No translucent fill and no backdrop blur over the background.",
+   "evidence": 1
+  },
+  {
+   "id": "le-accordion-cta-collapse",
+   "name": "CTA line closes its gaps",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The end line starts with exaggerated spaces between its words, which close as the line settles centred; the last word, often the URL, travels farthest, so the eye ends there.",
+   "recipe": "Lay the final line out centred. Give word i a start offset off_i = 70 + 80 * i px (capped at 290 px) in the direction of travel, so the last word travels farthest. Drive each word as x_i = finalX_i + off_i - inertia(f, a, off_i/14.6, 0.934).x: a pure exponential close with tau = 14.6 f and no overshoot (horizontal moves need no arrive). Enter on a hard cut from a larger line whose total width matches this line's stretched width. Optionally keep the URL soft for 8 f after it stops, then resolve it over 14 f with RackFocus, so focus is the last thing to settle.",
+   "timing": "tau = 14.6 f: 55% closed in 10 f, 95% by 44 f. The last word starts at no more than 20 px/f and only slows from there. Gaps of ~150/115/80 px close to a normal word space (~0.25 em). URL focus: soft for 8 f, resolved over 14 f.",
+   "use_when": "A one-line CTA (a sentence plus a URL) after a large type beat. Type-led films whose last beat is a phrase locking together.",
+   "avoid_when": "Lines that wrap to two rows. Films that already closed a word gap earlier. Vertical frames where the stretched line would exceed the safe width.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "le-stage-clears-to-brand",
+   "name": "The product clears the stage",
+   "category": "logo_and_end_card",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "The last product element leaves (dropping out of frame, accelerating away, or bursting outward toward camera), and the brand, already waiting behind it, starts its reveal on the exact frame it is uncovered.",
+   "recipe": "Keep the brand layer (stage plus lockup) mounted under the product for the whole shot, so the exit uncovers it instead of cutting to it. Exit the product one of three ways. (1) Time-reverse its own entrance with progress = 1 - entrance(1 - t); for a window this is typically a ~1000 px drop over 44 f on E.smooth. (2) Float a lone card up from its drift over 25 f on E.in while it grows 1 -> 1.33. (3) Burst a card cluster outward: each card translates 300-450 px along its vector from the cluster centre and scales lmix(1, 3) over 20 f on E.in, and the card layer is removed on the frame its fastest card passes ~75 px/f. Start the brand reveal on the frame the product's edge clears the lockup's box, computed from the exit curve. Either the mark grows lmix(0.48, 1, prog(..., E.out)) over 68 f, or a letterspaced wordmark (0.08 em) fades up over 40 f on E.smooth with no scale.",
+   "timing": "Drop: 44 f on E.smooth (~1000 px, peak ~64 px/f, motion-blur pass on). Float-out: 25 f on E.in (5 -> 22 px/f, scale +33%). Burst: 20 f on E.in, cut at ~75 px/f. The brand reveal starts within 0-1 f of the clear frame. Mark growth: 68 f on E.out (edge speed ~17 px/f, no overshoot). Then hold 90-120 f under a 10-15% push (le-living-hold).",
+   "use_when": "Walkthroughs and feature films whose last shot is the product itself. The opening was a window or card entering, so the reverse bookends it. A crescendo of many screens that should give way to calm.",
+   "avoid_when": "The film's last beat is type, not product. A lockup that is already visible would be crossed by the exiting product. A burst with no build-up earlier to justify the energy.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "le-bookend-replay",
+   "name": "End card replays the opening",
+   "category": "logo_and_end_card",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "The ending reuses the opening's stage and its mechanic, now carrying the brand, so the film closes on a rhyme the viewer has already learned.",
+   "recipe": "Build the opening's stage (a Background component with an intensity prop) and its signature mechanic (a gap opening in a line, a word-roll, a mark slide, a window rise) as components with props, and call them again at the end with the same type size, position and curves. Run the mechanic mirrored, or with the brand as its payload. The window's exit is its entrance time-reversed: 1 - entrance(1 - t). The flanking words roll up and away (Words exit at half the stagger, E.in) and 'made with' plus the name roll in while the centre object holds. The opening's mark slide plays again, this time with the name. Bring the stage back only for brand beats: intensity 0 on product beats, then a 25 f rise from the bottom edge on E.out at the lockup. Never replay a reveal identically; the third use must add the name or the CTA.",
+   "timing": "Word-roll: 28 f with a 5 f stagger. Mirrored exits keep the entrance's distance and duration. Stage rise: 25 f on E.out. Final hold: 96-120 f under the push.",
+   "use_when": "Films with a distinctive opening mechanic or stage. The signature move's third use. Loops, where the end hands back to frame 0.",
+   "avoid_when": "The opening was generic (replaying it only repeats a template). The reprise would be a frame-for-frame replay that adds nothing. Films under 10 s, where the rhyme has no time to land.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "le-living-hold",
+   "name": "Lockup keeps building through the hold",
+   "category": "logo_and_end_card",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "any"
+   ],
+   "summary": "Once resolved, the lockup never freezes: the card slowly pushes in (or exhales back), the tracking tightens a touch and the stage dims, so the last 1.5-2 s read as intentional rather than stalled.",
+   "recipe": "Wrap the whole end card in one camera transform and push it about the lockup's optical centre with k = lmix(1, 1.15, prog(f, resolve, end, E.dolly)), a 10-20% push. Under that, tighten the name's letter-spacing from +0.03-0.06 em to its token track over 46 f on E.out, starting at its resolve. For a calm close, use the exhale instead: k = lmix(1, 0.9, prog(f, resolve, resolve + 120, E.out)) while only the stage dims to 35% over 36 f on E.smooth. The lockup stays at full strength to the last frame, because the last frame is the poster and never fades to black.",
+   "timing": "Hold 90-120 f (1.5-2.0 s, never more than ~150 f). Push 10-20% over the hold on E.dolly. Tracking: 46 f on E.out. Exhale: 10% over 120 f on E.out, with a 36 f stage dim. Tail of at least 60 f after the last event, inside the hold.",
+   "use_when": "Every lockup and URL hold, and any card that must sit for more than 48 f.",
+   "avoid_when": "A designed freeze of at most 15 f on a silence (then stop everything, the push included). Loops whose hold must end at the frame-0 scale (ease the push back down instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "le-strobe-sting",
+   "name": "Stop-motion brand strobe",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "sting",
+    "launch",
+    "loop",
+    "vertical"
+   ],
+   "summary": "A burst of hard-cut brand states (the poster, the lockup tiled in ever denser grids, one flood, the boxed wordmark, the glyph) flickers past in under a second as a punchy sign-off.",
+   "recipe": "After the lockup's hold, cut through an array of full-frame states with no interpolation: const seq = [[poster,7],[grid3,5],[grid4,5],[gridA,2],[gridB,2],[flood,5],[ink,5],[boxedName,5],[glyph,7]], accumulated into Sequences or chosen with fd(frame). The grids are a CSS grid of the lockup with n = 3, 4, 5, 5 columns and a half-tile offset on alternate states, so the cuts read as a stepped pull-back. Keep every state on the same dark stage, with the accent flood as the only bright state, so there are no more than 3 large light-dark flips per second. End on the glyph alone for at most 30 f, and export the poster from the lockup frame, not the last frame. A quiet version keeps only the last two states (boxed name 5 f, glyph 7 f) as a loop point.",
+   "timing": "Holds 7, 5, 5, 2, 2, 5, 5, 5, 7 f (43 f, ~0.72 s). Glyph ~2% of H, centred, for at most 30 f. A tick cluster under it that matches the opening's sound.",
+   "use_when": "Social stings and launch films with a poster-driven or stop-motion identity. A re-energising coda after a quiet end card. Autoplay loops that need a clean reset point.",
+   "avoid_when": "Calm or premium brands. Any film where you cannot keep large light-dark flips under 3 per second (photosensitivity). Any case where it would cut the lockup's hold below 1.5 s.",
+   "ban_safe": false,
+   "bans": [
+    "beige"
+   ],
+   "ban_safe_variant": "Replace the cream flood with the film's single accent flood (or C.ink2), keep every other state on the dark stage, and allow only one bright state, so the strobe changes shape and density rather than luminance.",
+   "evidence": 1
+  },
+  {
+   "id": "le-hot-to-neutral-cool",
+   "name": "Accent icon cools to its neutral mark",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "The app icon pops up from tiny in the film's hot accent, cools through darker tones to its neutral final colours, lifts a little to make room, and the name fades in beneath it.",
+   "recipe": "Pop the icon from tiny with scale mix(0.19, 1, prog(f, a, a+38, E.out)), its tile filled C.accent. Cool it as one object, never as two crossfaded copies: tile fill mixColor(C.accent, C.ink, p) and glyph mixColor(C.ink, C.white, p), with p = prog(f, a+6, a+34, E.smooth). OKLab mixing passes through darker shades of the same hue instead of muddy grey. Then lift it to make room: translateY 0 -> -102 px and scale 1 -> 0.945 over 36 f on E.smooth. As the lift passes 60%, fade the label up under it: opacity 0 -> 1 and translateY 8 -> 0 through arrive, over 15 f.",
+   "timing": "Pop: 38 f on E.out (0.19 -> 0.72 by f6). Colour: 28 f (f6-34) on E.smooth. Lift: 36 f on E.smooth. Label: 15 f. Then hold 90-120 f under a push.",
+   "use_when": "Films whose accent stood for heat, urgency or the problem early on and should cool into the product. App-icon lockups.",
+   "avoid_when": "The accent already means something else in the film (one accent, one meaning). Icons whose final colour is the accent itself.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "orange"
+   ],
+   "ban_safe_variant": "Start the tile in the film's single accent as a flat fill, not a multi-hue gradient, and cool it through darker shades of that same hue to the neutral ink with mixColor. Any accent hue carries the idea, so it never needs a warm orange-to-red ramp.",
+   "evidence": 1
+  },
+  {
+   "id": "le-mark-glint-turn",
+   "name": "Mark turns through a key light",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "The mark (an extruded glyph, a coin or a tile) turns a few degrees in 3D, and its face passes through a light, so a single specular sweep crosses it as it settles face-on.",
+   "recipe": "Give the mark depth with CSS 3D: perspective 1200 px on the parent, the front face plus 6-10 copies stacked 1 px apart in z in a darker tonal step for the extrusion (or a mesh in Three.js). Rotate it rotateY tw(f, a, a+40, -35, 0, E.outSoft) with a small rotateX 20 -> 0 so it settles face-on. Sweep the light in 2D: a white band 30% of the mark's width, with opacity 0 -> 0.9 -> 0 across its width, masked to the mark (mask-image of the mark SVG) with mix-blend-mode screen, translated across the face over 14 f. Time it so the band's centre crosses as the rotation passes ~70%.",
+   "timing": "Turn: 40 f on E.outSoft (~4 deg/f peak for 35 deg). Glint: 14 f on E.smooth, starting ~f20. One glint per film.",
+   "use_when": "Premium, material or physical brands (finance, hardware, collectibles). 3D marks. A mark that needs one moment of life early in its hold.",
+   "avoid_when": "Flat, playful or line marks (a sheen on a stroke looks like a template effect). Films with no other 3D. A second glint anywhere in the film (it reads as a preset).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "le-mark-ticks-in-lockup",
+   "name": "Device keeps time inside the lockup",
+   "category": "logo_and_end_card",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "loop",
+    "sting"
+   ],
+   "summary": "During the hold, the story device that became part of the mark (a dot, a bar, a stripe) gives one or two small ticks on the beat, so the bookend plays inside the finished lockup instead of after it.",
+   "recipe": "Keep the device as its own Mark piece (e.g. MARK.D). During the hold, pulse only that piece: scale 1 + 0.12 * hitPulse(f - beat, 2, 6) about its own centre, or a nudge of 3 * hitPulse(f - beat, 2, 6) px along the device's signature direction. If the accent means 'what just landed', flash the piece to C.accent on the pulse and return it to its resting colour over 12 f with mixColor. Place 1-2 ticks on downbeats in the first second of the hold, in time with the stinger's tail, and none in the last 30 f, so the final frame is calm and identical to the poster.",
+   "timing": "1-2 ticks at least 30 f apart. hitPulse attack 2 f, tau 6 f (gone in ~38 f). Amplitude 10-14% scale or 2-4 px. None in the final 30 f.",
+   "use_when": "Films whose story device became a piece of the mark. Ends that should close the device's loop without ending on the device alone.",
+   "avoid_when": "Marks without a separable piece. Very still closes, where any pulse breaks the calm. Loops that need the device to travel back to its frame-0 position instead.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  }
+ ]
+}

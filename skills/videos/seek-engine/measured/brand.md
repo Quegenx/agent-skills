@@ -95,7 +95,7 @@ The corpus never uses more than one saturated hue per film plus, at most, one se
 
 **WHEN** sizing type **DO** use the role scale (director.md section 4, layout.md section 4): headline 7-11% H (supporting phrase 5-7%); act-two word 16% H; hero figure 22-29% H (opening thesis word 33%); wordmark 9-14% H; UI prompt 4-5% H; menu or card text 2.2-4% H; unreadable texture text 1.3-1.9% H (M921-M974).
 
-**WHEN** a mark exists as a file **DO** use `logo/` for the mark and the wordmark; retype the name only when the film morphs it glyph by glyph (M968 typed on, M973 flipped glyph by glyph) **because** a retyped logo is almost always slightly wrong and is read as a fake (*practice, not from the corpus*).
+**WHEN** a mark exists as a file **DO** use `logo/` for the mark and the wordmark; retype the name only when the film morphs it glyph by glyph (M968 typed on, M973 flipped glyph by glyph) **because** a retyped logo is almost always slightly wrong and is read as a fake (*practice, not from the corpus*). Honor the supplied brand guide's clearspace throughout motion, keeping particles, wipes and overshoot outside it; land on the supplied mark's exact proportions, colours and symbol/wordmark relationship. [iart-ai/motion-design-skills, logo-animation/references/logo-patterns.md]
 
 ---
 

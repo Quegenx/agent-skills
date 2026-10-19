@@ -1,6 +1,6 @@
 # UI demo: more beats and the recipes
 
-Moved unchanged from [ui-demo.md](ui-demo.md) to keep each file under the size cap. Sections 7 to 13 (cards and carousels, agent work, phones, dense scrolls, counters, the demo beat recipes and the slop tells)
+Moved from [ui-demo.md](ui-demo.md) to keep each file under the size cap. Sections 7 to 13 (cards and carousels, agent work, phones, dense scrolls, counters, the demo beat recipes and the slop tells)
 
 ## 7. Cards, carousels, orbits, popups, selection
 
@@ -74,7 +74,7 @@ Moved unchanged from [ui-demo.md](ui-demo.md) to keep each file under the size c
 
 ## 12. Demo beat recipes (30 fps frame timelines)
 
-Each is a mechanic, not a film; swap content and scale, and choose the film shape first (section 0.5). Frames are relative to the start of the recipe (f0). Convert source timing at 24/25 fps by x1.2/x1.25.
+Each is a mechanic, not a film; swap content and scale, and choose the film shape first (section 0.5). Frames are relative to the start of the recipe (f0). To preserve duration at 30 fps, multiply source frame counts at 24 fps by 1.25 and at 25 fps by 1.2; the earlier factors were reversed.
 
 ### Recipe A: prompt -> send -> agent result (~205 f, 6.8 s). Evidence M914, M919, M969. Use only when the product is typed into (section 0.5).
 1. f0: hard cut into the prompt card at 1.6x, already moving: 105 px gone on frame 1, 72% of the slide done by f5, tail to ~f15 (`MEASURED.snapSettle`). Placeholder grey, clipped at the edge.

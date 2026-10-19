@@ -8,8 +8,8 @@
  *   NativeUI.arrive(M, '#ui .nu-notif:last-child', { at: 18, dir: 'up', push: ['#ui .nu-notif:first-child'] });   // frames, M.enter underneath
  *   NativeUI.macro(M, '#ui .nu-notif:last-child', { at: 62, world: '#cam', fill: .62 });                          // M.camera push-in, target fills 62 % of the frame width
  *
- * A UI needs identity: every notification takes an icon (or app), a title (the sender / subject), a time and a real sentence. Missing pieces throw, because a
- * notification without them is the "label . value card" the director rejects. Copy comes from the brief; invented senders/apps are fine when the film says illustrative.
+ * A UI needs identity: every notification requires an icon (or app), a title (the sender / subject) and a real sentence. Missing required pieces throw; time defaults to 'now'.
+ * A notification without identity is the "label . value card" the director rejects. Copy comes from the brief; invented senders/apps are fine when the film says illustrative.
  * Entries are hard appearances plus measured travel (M.enter: smear, measured ease), never an opacity ramp. All sizes are in points via --s (see native-ui.css).
  */
 (function (root) {

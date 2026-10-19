@@ -1,0 +1,203 @@
+{
+ "techniques": [
+  {
+   "id": "ps-empty-ground-after-cut",
+   "name": "Empty ground after a cut",
+   "category": "pacing_structure",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "Right after some hard cuts the new stage shows for two empty frames before its type appears, a tiny palate cleanser that makes the cut read crisply without any flash.",
+   "recipe": "On selected statement-to-statement hard cuts, not every cut, delay the incoming card's first element by 2 f: the new background is on screen at the cut frame, and the card's Sequence starts at cut + 2, its first element arriving on its normal E.out entrance. Use it where the outgoing card has already left by its own exit (an E.in move, or a fade over its last 8 f) and both stages are flat, so the two empty frames read as a breath and not as a dropped frame. Never use it on the film's first frame, where the hook has to open composed and moving.",
+   "timing": "2 empty frames at 60 fps; the incoming card starts at cut + 2 on its usual entrance; on at most a third of the cuts.",
+   "use_when": "Type-led films on white or flat stages with many statement cuts.",
+   "avoid_when": "Velocity-matched cuts, where the gap kills the momentum, and frame 0.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-music-hole-slam",
+   "name": "Music hole, then slam on the cut",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "The low end, or the whole bed, vanishes for a fraction of a second under a key statement, then slams back on the exact frame of a picture event.",
+   "recipe": "For a single statement, add a score.json drops entry ({at, silence: '1/8', suck: 0.2}) so the bed sucks down and stops 12-24 f before at. Then choose one of two placements. Either at is the cut itself, so the slam lands on the cut, or the statement card cuts in 3-12 f inside the silence and at is the next 8th, about 15-17 f after the cut. For a whole line, give its bar a section with layers {drums: 0, bass: 0} so only the pad holds, and put the next picture event (a cut, a mask click, a reveal) on the return downbeat within ±1 f. Keep the card's own sound tiny, and use 2-4 holes per minute, the deepest before the hero cut.",
+   "timing": "Hole 12-24 f for one statement or 2-4 beats for a line; the bed drops 10-20 dB or the sub goes fully silent; re-entry on a downbeat within ±1 f of a picture event; 2-4 holes per minute.",
+   "use_when": "Statement cards, key claims and the hero cut in any film with a groove bed.",
+   "avoid_when": "Calm brands with no drums, or more than one hole every 8 bars, where it stops working as an accent.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "ps-score-mapped-to-acts",
+   "name": "Score arranged to the acts",
+   "category": "pacing_structure",
+   "role": "signature",
+   "energy": "any",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "The music's arrangement tells the story's structure: a sparse filtered intro, the drop on the first product frame, a breakdown for the calm act, a return for the proof, a final hit on the climax and the logo in silence.",
+   "recipe": "Cut the picture first, then write audio/score.json sections bar-aligned to each ACT. Start with an intro of sparse layers (no sub, no kick, filtered pad and plucks, wide) that sounds at intent from frame 0 and builds about 10 dB. Put the drop on the first product shot (a drops entry on that act's downbeat, sub 8-12 f before the cut, kick on the cut frame). Run groove or drive for the proof, a breakdown (layers {drums: 0}) for the calmest act, a return on the next act's downbeat, a hit on the climax burst, and a hold with the lockup in silence. Hard cuts inside sections snap to onsets within ±4 f, act seams fall within ±4 f of the section change, and on the big drop the picture may lead the downbeat by up to 8 f.",
+   "timing": "Intro 120-160 f; the drop and its cut within 1 f (or the picture leads by up to 8 f); cuts within ±4 f of onsets; breakdown 2-4 bars; the final hit's tail reaches -60 dB in about 35-55 f.",
+   "use_when": "20-60 s launch films with clear acts, when the score is generated or its stems can be edited.",
+   "avoid_when": "A supplied track with a fixed structure (retime the picture to its bars instead), and 3-6 s stings.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ps-silent-ui-steady-bed",
+   "name": "Silent UI over a steady bed",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "high",
+   "formats": [
+    "loop",
+    "feature",
+    "vertical",
+    "walkthrough"
+   ],
+   "summary": "In dense, fast-changing sequences the interface makes no sound of its own, with no per-key or per-event effects, and a steady groove carries all the energy.",
+   "recipe": "When visible events exceed about 3 per second (multi-cell loops, speed-typed prompts, counters), set the score.json typing style to off or muted and emit no key or tick events for them in src/sync.ts. Let the section's hats and kick carry the rhythm (style groove or drive, low end in mono). Allow at most one soft tick per word or label: high-passed above 2-3 kHz, 18-24 dB under the bed, 40-80 ms decay, with ±2 dB and ±80 cents of variation seeded by rand(). Save 6-8 accent ticks per 45 s for real clicks, and keep cuts on the 8th grid, where the hats already sound.",
+   "timing": "No per-character sounds; at most 1 tick per word; 6-8 accent ticks per 45 s; ticks 5-15 ms attack, 40-80 ms decay, 18-24 dB under the bed.",
+   "use_when": "Loops, grids, speed-typed prompts, counters, and any sequence with more than 3 events per second.",
+   "avoid_when": "Sparse, calm films where each event deserves its own tuned sound, and the payoff moment.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ps-accelerando-to-climax",
+   "name": "Accelerando into the climax",
+   "category": "pacing_structure",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "Shot lengths shrink step by step toward the climax, then one designed freeze on silence resets the clock just before the payoff lands.",
+   "recipe": "Plan the last 5-7 shots before the climax on the beat grid, each about 0.7x the length of the one before: for example 4, 3, 2, 1.5, 1 and 1 beats at 120 BPM (120, 90, 60, 45, 30 and 30 f). Text only goes on shots long enough for the copy rule, and shots without text can go down to 24 f. Each shot ends on the accelerate-into-cut ramp, scaled to its last 40% on E.in, while the score section steps from groove to build beneath it. The run ends on a 12-15 f freeze sitting exactly on a score.json silences entry, and the climax move starts at full speed on the next downbeat.",
+   "timing": "Shots 120, 90, 60, 45, 30, 30 f (about x0.7 each, minimum 24 f without text); exit ramps on the last 40% of each shot, E.in; freeze 12-15 f on true silence; climax on the next downbeat.",
+   "use_when": "The run-up to a reveal, a collage burst or the lockup in launch films and stings.",
+   "avoid_when": "Walkthroughs where each shot carries UI that must be read, and films already cutting under 60 f per shot throughout.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "ps-loop-seam-on-motion-peak",
+   "name": "Loop seam hidden at a motion peak",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "loop"
+   ],
+   "summary": "A loop wraps around on the fastest frame of a whip or push, so the last frame flows into the first with no visible restart.",
+   "recipe": "Make the clip length L a whole number of bars (for example 4 bars = 480 f at 120 BPM). Design frame 0 as the second half of a move, opening already travelling on E.out from full speed, and the last 12-24 f as the first half of the same move, an E.in ramp to the same speed and direction. Make every state a pure function of frame % L. Verify the seam by rendering frames L-2, L-1, 0 and 1: per-frame position deltas should match within 10%, and every discrete fd() state at L should equal frame 0. Wrap motion-blur sub-frame times modulo L so the seam frame smears like its neighbours, and loop the music bed on the same bar line.",
+   "timing": "L = whole bars (240, 480 or 960 f); seam move at 20-40 px/f with true motion blur; entry E.out 30-50 f, exit E.in 12-24 f; seam on the downbeat.",
+   "use_when": "Autoplay loops for social, landing pages and product pages.",
+   "avoid_when": "Pieces that end on a lockup (it appears once, at the end), and loops whose first frame must work as a readable poster.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "ps-silence-first-sound",
+   "name": "Silence as the default bed",
+   "category": "pacing_structure",
+   "role": "signature",
+   "energy": "calm",
+   "formats": [
+    "sting",
+    "feature",
+    "vertical"
+   ],
+   "summary": "There is no running music: most of the film is true silence, sound appears only on decisive events, one low swell carries the single reveal act, and the audio cuts dead on the frame a key value lands.",
+   "recipe": "Leave the sections array in audio/score.json empty, since bars outside every section get no music, and build the soundtrack only from src/sync.ts events, each tied to a decisive picture event. Open on a tick cluster whose first onset sits on frame 0 (five tick events at +0, 4, 8, 11 and 14 f under the opening mechanic). Give each appearance cut one centred tick (pan 0, weight 0.35, 1-3 f after the cut), and let a run of removals multiply the weight by 1.26 per tick so the run gets louder as the edit speeds up. The only sustained sound is one low pad under the reveal act: a section with style breakdown, layers {drums: 0, arp: 0, bells: 0, bass: 0} and level about 0.5 spanning that act, a swell event that peaks on the first reveal, and a one-bar tail section after it so the pad rings out instead of stopping. On each resolution frame (a number lands, a polarity cut), schedule nothing after the last tick so the sound stops within a frame, and put one bell there at weight 0.15 with pitch 'D8' as a faint high shimmer. Close by repeating the opening cluster at the same spacing under the stinger, then let the lockup's single land ring into silence over a slow push. The picture never sits still longer than 48 f, any designed freeze also gets a silences entry, and master.lufs is -16.",
+   "timing": "At least 50% of the runtime silent, in gaps of 30-96 f between sound clusters. Opening cluster: 5 ticks over 14 f from frame 0. Reveal pad: on from the act's first frame, swell peak on the first reveal, about 42 f of plateau, about 84 f of ring-out. Sound stops within 1 f of each resolution; the shimmer bell (weight 0.15) fades over about 54 f. Removal ticks rise about 2 dB each. Lockup hold 90-120 f in silence after its single land, under a push of at least 10% across the hold.",
+   "use_when": "Short stings and feature spots under about 15 s, calm or premium tones, number and unlock reveals, and films with fewer than about one decisive event per second.",
+   "avoid_when": "Launch films and walkthroughs over about 20 s, dense sequences with more than about 3 visible events per second (use a steady bed instead), briefs that supply a music track, or feeds where the brief asks for high energy.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ps-long-tail-beat-lengths",
+   "name": "Long-tailed beat lengths",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "launch",
+    "walkthrough",
+    "feature"
+   ],
+   "summary": "Beat lengths follow a long tail instead of an even grid: most beats sit near one median length, a few connective beats snap past at a third of it, and one or two hero beats run about three times as long, so the film never settles into a slideshow rhythm.",
+   "recipe": "Before animating anything, write the cut list in src/timeline.ts as a BEATS array of cut-to-cut lengths in 8ths, and derive the ACT and CUE start frames from its running sum with b() so every boundary sits on the grid. Pick a median M of 60-72 f (2-2.4 beats at 120 BPM, inside the house shot median of 60-90 f) and fill the list from four bins. Core beats run 0.75-1.33x M (about 60%: features, claims, answers). Connective beats run 0.25-0.5x M and never under 24 f (about 20%: a punch-in insert, a whip, a one-word card, an isolate hold). Long beats run 1.5-2x M (10-15%: a walkthrough setup, a two-step interaction). One or two hero beats run 2.5-3x M, capped at 180 f, the house shot maximum (the hero result or the key feature), placed in the back half before the sign-off. Put one or two connective beats directly before each hero beat so the hero lands as a release, and never let three neighbouring beats sit within 10% of each other in length. Beats under 42 f carry no readable text (the copy rule is 36 f + 6 f per word). A hero beat is filled with continuous action, either a camera journey or a UI event at least every 40 f, never a long hold. Beside grid-check, add a node check asserting that max/M is 2.5-3.0, min/M is 0.16-0.5, no beat exceeds 180 f and the coefficient of variation is 0.4-0.8. An evenly spaced cut list scores about 0.1 and reads as a slideshow.",
+   "timing": "M = 60-72 f. Connective beats 24-36 f (never under 24 f); core 0.75-1.33x M; long 1.5-2x M; hero 2.5-3x M, at most 180 f and at most 2 per film; coefficient of variation 0.4-0.8. Example 28.75 s cut at 120 BPM: 75, 60, 30, 75, 120, 45, 60, 75, 30, 75, 60, 45, 105, 60, 30, 180, 75, 45, 30, 180, 90 and 60 f, then a 120 f lockup (M 60, max/M 3.0, CV 0.56).",
+   "use_when": "Launch films and walkthroughs of 15 s or more with eight or more beats, any cut list that came out evenly spaced, and deciding where the hero feature gets its time.",
+   "avoid_when": "Polyrhythm loops and fixed-length ask cycles, where equal length is the point; stings under about 8 s, which have too few beats for a distribution; accelerando runs, which set their own length ratios.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ps-direction-per-act",
+   "name": "One screen direction per act",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "Each act owns one direction of travel, so every entrance, exit, drift and camera ramp in it runs the same way, and the direction turns only at an act seam, where the turn itself marks the new chapter.",
+   "recipe": "Add a DIR map beside ACT in src/timeline.ts with one unit vector per act ({x: 1, y: 0} for left to right, {x: -1, y: 0} for right to left, or {x: 0, y: -1} for an upward feed), plus a helper along(act, d) that returns {x: d * DIR.x, y: d * DIR.y}. Route every directional number through that helper. Entrances start upstream at along(act, -O), with O = 8-15% of frame width, and brake on E.out. Holds drift downstream at 0.3-1 px/f. Exits and accelerate-into-cut ramps leave downstream on E.in, and whoosh pan takes the sign of DIR.x. Inside an act nothing travels against the vector except a settle tail or a final move to centre. Across each cut inside the act, the hero leaves by the downstream edge and comes back in from the upstream edge, still travelling the same way. Turn the vector only at an act seam, on its downbeat (a seam may also keep it). Make each turn coincide with a second channel change (a polarity flip, a score section change, or the switch from imagery to type) so it reads as a new chapter rather than a continuity slip. The last act's vector delivers the lockup: the mark arrives along it and settles centred. Check it in a node test beside grid-check: sample each act's text positions at f and f + 1 from the same functions the acts use, and assert that every text element moving faster than 2 px/f has a velocity whose dot product with DIR is positive, except settle tails of at most 6 f.",
+   "timing": "2-4 vectors per film, one per act, each turn on b(n) at an act seam. Entrance offsets 8-15% of frame width (150-290 px at 1080p), braking on E.out over 30-50 f; hold drift 0.3-1 px/f downstream; exit ramps 18-24 f on E.in, reaching 17-38 px/f; counter-motion above 2 px/f lasts at most 6 f and only in settle tails.",
+   "use_when": "Films built from hard cuts with velocity handoffs, two-act spots (imagery, then type), runs of statements (an upward feed), and vertical films with a rising vector.",
+   "avoid_when": "Oners and single camera journeys, where the layout of the surface sets the direction; films whose motion is mostly radial zooms; multi-cell grids; a film with no act change, which should keep one vector throughout.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ps-machine-grid-human-gaps",
+   "name": "Machine on the grid, hands off it",
+   "category": "pacing_structure",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Work the product does (rows inserting, items stacking, text streaming) ticks on a strict metronome, while what a person does (moving the cursor, flipping toggles, clicking) arrives on uneven, deliberating gaps, so the viewer can feel who is acting.",
+   "recipe": "Tag every scheduled event in src/timeline.ts with who performs it: SYS for work the product does (rows inserting, items stacking, text streaming, status steps) and USER for what a person does (cursor travel, clicks, toggles, drags). SYS start frames come from b() on a fixed step: 15 f (an 8th at 120 BPM) for inserts, or 16ths via b(bar, beat, sub) for bursts. Every SYS instance uses the same curve and duration (for example a 12 f E.ui reveal) at a constant or ratcheting rate. Streamed text uses TypeOn with cps at 25-40 characters per second, or one fixed time box, and never jitters. USER start frames come from a hand-written list of uneven gaps, with at least 2x between the shortest and longest gap and no two neighbouring gaps within 15% of each other ([0, 4, 19, 37] f for four toggles, or gaps of 10, 26 and 14 f). Cursor travel runs through cursorArc (bow 0.15-0.25) on E.glide and lasts max(14, D / 20) f for a trip of D px, which keeps its peak under 60 px/f. A dwell of 6-18 f, chosen per instance with rand(seed), separates arrival from the press, and pressAt drives the click. Only the decisive press of each scene lands on a beat (±1 f); the rest of the user layer stays off the grid. Sound follows the same split: each SYS insert gets one soft tick so the metronome is heard (dropped once inserts pass about 3 per second over a bed), and USER actions stay silent except the decisive click.",
+   "timing": "SYS: one event every 15 f (an 8th at 120 BPM), or every 7-8 f (16ths) in bursts; identical 12 f E.ui reveals; streams at 25-40 characters per second. USER: gaps such as 4, 15 and 18 f, or 10, 26 and 14 f; cursor travel max(14, D/20) f on E.glide, peak under 60 px/f, with motion blur above 12 px/f; dwell 6-18 f; press 12 f via pressAt; the decisive press on the beat ±1 f.",
+   "use_when": "Product demos where a person gives an instruction and the product or an agent responds, walkthroughs that mix input with generated output, and any sequence where automation should feel tireless next to a human.",
+   "avoid_when": "Pure type films or brand stings with no user in the story; polyrhythm grids, which run their own clocks; musical montages where every event must land on the beat.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  }
+ ]
+}

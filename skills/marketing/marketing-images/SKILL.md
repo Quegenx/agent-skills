@@ -61,6 +61,10 @@ landing-page-ui does the same on the owner's sites: "**Show the real product.** 
 - **Social graphics:** make the concept once at the largest size needed, resize per platform, set any text in post, export at each platform's size ([SIZES.md](SIZES.md)).
 - **Brand direction comes from the brand,** not from a model's defaults: anti-slop-ui's "Look for the brand's direction" ([anti-slop-ui SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md)).
 
+For a carousel adapted from an authorized reference, record its image crop, type regions and hierarchy, alignment and overlap, annotations and information density before making the first slide. Rebuild those mechanics with the brand's own assets and design, then review one slide before batching. This is reference analysis, not a prescribed visual genre or evidence that a layout improves engagement. [nestyme/awesome-prompts, carousel-styles/SKILL.md; carousel-styles/reference.md]
+
+The narrative framework and consistent interior template remain in [social-media's carousel guide](../social-media/CAROUSELS.md). Keep claims, counts, verification status and commenters factual; text and logos still follow this skill's post-processing rules.
+
 ## Brand assets
 
 [coreyhaines31/marketingskills, image]

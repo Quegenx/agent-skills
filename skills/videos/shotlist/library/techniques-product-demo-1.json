@@ -1,0 +1,229 @@
+{
+ "techniques": [
+  {
+   "id": "pd-device-rise-on-cut",
+   "name": "Device rises already moving",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "A phone or app window enters from below already travelling on the cut frame and decelerates into place near centre while the whole shot slowly scales down.",
+   "recipe": "Drive the device group's translateY = tw(f, cut − 1, cut + 43, rise, 0, E.out) with rise 140-160 px, so it already moves about 20 px/f on the cut frame (prog is 0 on its first frame, hence cut − 1); no fade-in, since the cut hides the start, and the shadow travels with the device. Under it, scale the whole shot 1 → 0.9 over 48 f on E.outSoft; a desaturated photo backdrop (grayscale(1) contrast(1.1) brightness(0.7)) keeps the device the only colour. When the device must push a title off screen without a cut, rise it from a full frame height below over 48 f on E.glide (peak ≈ 59 px/f at 31%, motion blur on), fade the title on E.smooth starting 16 f before the device moves, and keep the device above the title in z. For anticipation, peek first: 170 px in 14 f on E.out, hover 4 f, then launch the rest on E.whip over 40 f (peak under 70 px/f) and drift the scale 1 → 0.93 over 60 f.",
+   "timing": "On a cut: 140-160 px over 44 f on E.out, first frame ≈ 6.2 × rise / 44 (about 20-23 px/f), 75% of the travel by f9, settled by f44; shot scale 1 → 0.9 over 48 f on E.outSoft. Over a title: ≈ 1,000 px in 48 f on E.glide, title fade 36 f starting 16 f early. Peek variant: 14 f peek, 4 f hover, 40 f launch on E.whip, 60 f scale drift.",
+   "use_when": "The first product shot after a type card or a photo, when the previous shot's energy should carry straight into the product.",
+   "avoid_when": "The device is already on screen; a calm film where a 20 px/f arrival feels pushy; it would be the third rise in a row (vary with a tilt or a pull-back).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "pd-tilted-plane-flattens",
+   "name": "Tilted product plane flattens",
+   "category": "product_demo",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A real product page lies tipped back in perspective, rises toward the camera and rotates flat to face the viewer, landing the product as a frontal screen.",
+   "recipe": "Give the page's parent perspective 1800-2000 px; on the page set transform-origin 50% 100% and tween translateY 270 → −60 px, rotateX 25° → 8° and scale 1 → 1.3 over 68 f on E.out, then drift linearly at about 3.5 px/f and leave on E.in. Resolve the last 8° → 0 as follow-through on its own E.out over 20 f, starting 6 f before the translate lands, so position and tilt settle at different moments. Hero version: hold the plane tilted for up to 34 f with progressive depth of field (4-6 horizontal bands, each a RackFocus at 0/2/4/6/8 px by distance from the focal row), then rotate rotateX and rotateZ to 0 over 80 f on E.glide while every band racks to sharp as the rotation reaches zero. Edge the page with a 1.5 px solid C.line hairline rather than a lit rim; an in-page headline may build with src/fx/Words.tsx while the plane still moves, but nothing is meant to be read until it lands.",
+   "timing": "Rise 68 f on E.out: top edge ≈ 35 px/f on the first frame, ≈ 12 px/f by f4, ≈ 5.5 px/f by f8, then ≈ 3.5 px/f drift and an exit at ≈ 5.5 px/f on E.in; tilt follow-through 20 f, starting 6 f before the position lands; hero de-skew: hold ≤ 34 f, then 80 f on E.glide (peak edge speed ≈ 60-70 px/f at about 31%).",
+   "use_when": "Introducing a real web page or app screen as the real thing while keeping the camera alive; the first frontal look at the product.",
+   "avoid_when": "The UI must be read during the move; the plane would need more than about 30° of tilt (text shears and aliases); the same flatten ran within the last 10 s.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "pd-hard-swap-on-cause",
+   "name": "Hard swap on the cause frame",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "On a click or selection the product image, view or value changes in one frame with no crossfade, any price or count rolls up from just below its new value, and a physical card can hide the swap in a small 3D kick.",
+   "recipe": "Export the cause frame once (the press of pressAt from src/fx/Cursor.tsx after a hover state shown 6 f earlier, or a selection marker's landing) and switch state on fd(f) >= CAUSE so every motion-blur sub-sample agrees; never crossfade the two states. Re-count numbers with Roll fed countSteps(next − delta, next, CAUSE, 40, E.out), delta about 5-10% of the value, so the digits roll instead of cutting. Punch the swapped object with scale 1 + 0.02 · hitPulse(f − CAUSE, 2, 5). For a print or card beside a list, kick it: perspective 900 px, transform-origin on its left edge, rotateY = 12° · hitPulse(f − CAUSE + 1, 1, 2.5) with skewY 2° on the same envelope and a soft shadow (0 18px 40px rgba(0,0,0,.18)), while the list's selection marker moves 6 f before the swap.",
+   "timing": "Swap 1 f on the cause frame; hover 6 f before the press; recount 36-46 f on E.out with 14 f digit rolls; punch attack 2 f, tau 5; kick peaks on the swap frame and settles in 6-8 f; at most one swap per 30 f, 54 f apart in a repeating sequence.",
+   "use_when": "A choice changes the product instantly: a variant picker, filter, plan selector, theme switch, a canvas that appears whole on launch.",
+   "avoid_when": "The change is a process the viewer should watch; two numbers would sit half-and-half in place; swaps faster than one per 30 f (the clicks read as a macro).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "pd-blur-resolve-load",
+   "name": "Generated view resolves from soft",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "loop"
+   ],
+   "summary": "A freshly generated window or row appears as a soft, out-of-focus shape over a flat placeholder plate and snaps into crisp UI in about a third of a second.",
+   "recipe": "Mount the finished UI over a flat placeholder plate (C.mist, or C.accent at 12% opacity: one hue only). Render the UI through RackFocus (src/fx/RackFocus.tsx) with blur 20 px and t = 1 − p, p = prog(f, s, s + 20, E.out); fade its opacity 0.6 → 1 and scale it 1.03 → 1 on the same p so the focus pull rides a move, and fade the plate out over the same 20 f on E.smooth. For a list, insert rows one at a time: width 60% → 100% with RackFocus 6 → 0 px over 12 f, siblings pushed down one row over 10 f on E.ui, rows 34-40 f apart; inside an unfolding card, start a row's rack only once 60% of its height is revealed. t must reach 0 by the end, so text lands fully sharp.",
+   "timing": "Window: 20 f on E.out (blur 20 → 0 px, opacity 0.6 → 1, scale 1.03 → 1), plate fade 20 f on E.smooth. Rows: 12 f each, push-down 10 f on E.ui, cadence 34-40 f. Card stats row: 12 f, starting once 60% of it is revealed.",
+   "use_when": "An AI or build step produces a result and it should read as just arrived, without a spinner.",
+   "avoid_when": "The UI was already on screen (use a state change); more than two resolves in one sequence (it becomes a fog filter); type so small that 12 f of softness hurts legibility.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "pd-agent-status-then-answer",
+   "name": "Agent status beat, then streamed answer",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "The product's tiny working status is shown at hero size, as a black capsule with a spinner and a typed label or as bare headline type, holds for a beat with a looping ellipsis or shimmer, then dissolves as the answer streams in.",
+   "recipe": "Build the status as a capsule (height ≈ 8.4% of frame, border-radius 999 px, C.ink fill, an 8-dot spinner stepping 45° every 6 f, label typed with TypeOn) or as bare type at 72-100 px with a clock or spinner glyph at cap height, its trailing word arriving in C.accent and relaxing to ink with mixColor over 24 f. Keep the hold alive with a looping ellipsis '.'.repeat(1 + (Math.floor(fd(f) / 16) % 3)) and a one-hue shimmer (background-clip: text over three lightness stops of the label grey, band ≈ 120 px, position linear in f), while the camera settles 1.62 → 1 with lmix over 56 f on E.outSoft. Dissolve the status over 12 f on E.smooth, then stream the answer with TypeOn at about 60 cps, the newest three characters at 0.3/0.6/0.85 opacity and each new character in the accent relaxing to ink over 12 f. When the status itself is the payoff, type it, hold 30 f and dim it to C.mute over 12 f instead of streaming.",
+   "timing": "Label types in about 30 f (40 f at headline size); hold 60-74 f with the ellipsis stepping every 16 f and one shimmer sweep per 60 f (≈ 20 px/f); camera 1.62 → 1 over 56 f on E.outSoft; dissolve 12 f; stream ≈ 1 character per frame (41 characters in about 42 f); payoff variant: hold 30 f, dim 12 f.",
+   "use_when": "An AI or agent product needs its invisible work made visible, and a moment of anticipation before the payoff.",
+   "avoid_when": "The product is not autonomous; the hold would run past about 74 f; a second status beat in the same film.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "sparkle",
+    "glow"
+   ],
+   "ban_safe_variant": "Keep the same beat but build every decoration from one hue: a flat C.ink capsule with a plain soft neutral drop shadow instead of coloured light blobs behind it, a dot spinner or clock glyph instead of a sparkle icon, a shimmer made of three lightness stops of one grey instead of a multi-hue sweep, and an accent-to-ink trail on the newest characters instead of a multi-colour wake.",
+   "evidence": 3
+  },
+  {
+   "id": "pd-headline-becomes-input",
+   "name": "Headline becomes the product input",
+   "category": "product_demo",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "Without a cut the headline turns into the product: a caret appears in the gap between two words, swells into a capsule and widens into the input bar that shoves the words aside, or the sentence inside a card dissolves while the card reshapes into the input.",
+   "recipe": "Lay out [wordL][slot][wordR] from data, centred, and bind each word's x to the slot's edges (wordL's right edge = cx − slotW/2 − gap) so the line reflows with no separate tween. Grow the slot as a 3 px C.accent caret (height 0 → line height over 6 f on E.out), hold 8 f, thicken to a 36 px capsule over 14 f, then widen to ≈ 92% of frame on E.rest over 60 f (edge peak ≈ 50 px/f, motion blur on) while its fill goes straight to the opaque input colour; the flanking words ride the edges and, once they pass 20 px/f, fade on E.smooth with blurOut as they leave frame. Populate container-first: icons, a C.mute placeholder and the send button fade in left to right 4 f apart over 12 f each with a 6 px arrive() rise, and the primary button fills last on a 16 f linear ramp. If the sentence already sits in a card, exit its words 6 f apart (the out props of src/fx/Words.tsx), tween the card's height to the input's over 30 f on E.out and fade the placeholder in over 16 f.",
+   "timing": "Caret 6 f, hold 8 f, capsule 14 f, widen 60 f on E.rest (a short bar: 23 f in all on E.out); contents 12 f each at a 4 f stagger, button fill 16 f linear. Card variant: word exits 6 f apart, resize 30 f on E.out, placeholder 16 f.",
+   "use_when": "Bridging from message to demo in a type-led film; the product's core surface is an input, search or command bar.",
+   "avoid_when": "The product is not input-led; the headline has no natural gap; the bar would have to stay translucent over a busy backdrop (go straight to opaque).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "pd-fast-prompt-true-scale",
+   "name": "Fast prompt at true scale",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "The real prompt bar fills with a long, honest instruction in about a second at full legible size, the card growing as lines wrap, then the text is sent up into a chat bubble.",
+   "recipe": "Type with TypeOn (src/fx/TypeOn.tsx), either time-boxed (dur 68, ease E.linear, so prompts of any length finish in 68 f and every ask beat keeps its length) or at a fixed 50-72 cps; pre-fill the first word so frame 1 already shows text, and draw the newest three characters at 0.3/0.6/0.85 opacity, each arriving in C.accent and relaxing to ink over 12 f. Grow the card from the measured text box: width ≈ 67% → 77% of frame over the first 24 f, then one line height over 12 f on E.out at each wrap, decided on fd(f). Keep the frame alive with breath(t, 0.025) from src/lib/camera.ts on the camera; the caret is solid while typing and blinks 16 f on / 16 f off only once done. On the send press the composer text fades out over 12 f while the bubble rises 12-20 px through arrive() and fades in over 16-18 f, starting 4 f later.",
+   "timing": "Time box 68 f, or 50-72 cps (0.8-1.2 characters per frame); card width 24 f, +1 line per wrap in 12 f on E.out; read hold after typing at least 36 f + 6 f per word, kept alive by the breath; send: 12 f out, bubble 16-18 f in with a 4 f offset.",
+   "use_when": "An AI, search or command product whose real input is the story; showing a real task without a dull typing wait.",
+   "avoid_when": "The prompt runs past about 100 characters (cut it); a human-paced beat is the point (use 30 cps with human rhythm); the product is not input-driven.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "pd-mark-docks-into-app",
+   "name": "Mark docks into the app",
+   "category": "product_demo",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "An integration mark or icon travels to an app tile or page and settles overlapping its face, rising in front of it at the moment of contact, so it reads as plugging in.",
+   "recipe": "Move the mark toward the tile centre minus a small offset (15-20% of the tile) over 25 f on E.outSoft so it decelerates into contact; at overlap (frame 17 of the approach) raise its z-index and translateZ above the tile, and let it come to rest on frame 25. On contact the tile answers with scale 1 + 0.02 · hitPulse(f − contact, 2, 3); the tile is a matte solid with a 1.5 px C.line edge and a soft neutral shadow. Shared-element variant: lift a small icon out of its row (scale 0.53 → 1 over 27 f on E.out while its tile inverts light/dark over 18 f), float it 45 f with a linear rotateZ 1.5° and rotateY 4° drift, then shrink it over 12 f on E.inOut into the logo slot of a page that swings in from the bottom right (perspective 1000 px, rotateX 55° → 40°, rotateZ −30° → −22° over 50 f on E.out). Position the icon through the page's own transform and, on the frame it reaches the slot, replace it with the page's own logo in one frame (decided with fd, identical transform) instead of crossfading the two copies.",
+   "timing": "Approach 25 f on E.outSoft, overlap at f17, rest at f25; tile bump 2% (attack 2 f, tau 3, about 8 f). Variant: lift 27 f, colour invert 18 f, float 45 f, shrink 12 f on E.inOut, page swing 50 f on E.out, one-frame swap to the page logo on arrival.",
+   "use_when": "An integration, plug-in or works-inside claim; handing off from a settings screen into the platform it acts on.",
+   "avoid_when": "The mark would pass over text being read; the mark is also the end lockup (it would appear early, so dock an integration icon instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "pd-ui-native-transitions",
+   "name": "Edit with the product's own UI",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Instead of cuts, the film moves between product areas the way the app does: a window recedes to a corner, a sheet slides up, a popover pops from its anchor, a button or card unfolds into a full panel.",
+   "recipe": "Model the app as stacked layers in one scene, park the cursor on the control that would trigger each change 6 f before the press, and use the matching native behaviour instead of a cut. Minimize: transform-origin at the trigger corner, scale 1 → 0.7 on E.in over 22 f while opacity falls 1 → 0 over its last 12 f on E.smooth (the far corner is mostly gone before it passes 60 px/f), with the next layer 4 f later. Sheet: translateY 100% → 0 of the window over 52 f on E.glide, clipped to the window. Popover: scale 0.5 → 1 from the trigger point over 12 f on E.outSoft with opacity over its first 4 f, then a 20-40 f camera reframe starting 2 f later. Launch: the sidebar glides left 31% of frame width over 96 f on E.smooth while the main canvas mounts whole on the trigger frame and its greeting starts typing on that frame. Unfold: one element interpolates rect and border-radius from the button or card to the full panel over 28 f on E.rest (longer for a big panel: at least edge travel / 20 f, so no edge passes about 70 px/f) and its title FLIPs to the header slot (scale 1 → 0.6), flying faded whenever it moves faster than 20 px/f; the old content fades out over the first 12 f, the panel content fades in 8 f after the morph peaks, and the stage behind dims over 24 f (a RackFocus at 40 px for a blurred desktop).",
+   "timing": "Generic chain: exit on E.in 22 f, gap 4 f, entrance on E.out 52 f. Minimize 22 f; sheet 52 f (peak ≈ 50 px/f); popover 12 f plus a 20-40 f reframe; launch slide 96 f (peak ≈ 18 px/f); unfold 28 f on E.rest (at least edge travel / 20 f), content in 8 f after the peak, stage dim 24 f.",
+   "use_when": "Walkthroughs across several product areas; any film where each transition can also demonstrate how the product navigates.",
+   "avoid_when": "A purely conceptual or type-led film; desktop chrome that is not part of the brand world; more than one native transition every 3 s (it starts to feel like a screen recording).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "pd-shared-element-page",
+   "name": "Shared element survives the page change",
+   "category": "product_demo",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "The cursor clicks a row; the page drains away except the row's icon (or the clicked card), which stays exactly in place while the next page assembles around it with a short zoom-out.",
+   "recipe": "Duplicate the anchor (a row's icon, a card or a modal) into a top overlay at its exact screen rect. On the press frame fade page A to its background colour over 6 f on E.smooth and hold the lone anchor 2-4 f. Then mount page B at scale 1.2 about the anchor and settle it with lmix over 24 f on E.out, while the overlay interpolates from A's rect to B's (both computed from layout data, so FLIP by construction) and B's blocks fade in 2 f apart over 10 f. Cross-app variant: keep one card container mounted, take child A out through RackFocus to 8 px with opacity over 36 f, resize the card to the new aspect over 20 f on E.out, and bring child B in from 8 px over 24 f. Cut variant: keep the anchor fixed on a top layer while only the background layer switches on the cut frame, then drag the anchor into its new slot over 40 f on E.whip.",
+   "timing": "Hover 12 f, press (pressAt), page A out 6 f, anchor alone 2-4 f, page B 1.2 → 1 over 24 f on E.out (≤ 50 px/f at 960 px from the anchor), block stagger 2 f over 10 f: about 48 f from click to settled. Cross-app: 36 f out, 20 f resize, 24 f in. Cut variant: anchor drag 40 f on E.whip.",
+   "use_when": "Navigating into a detail view, or carrying a piece of content between apps, where spatial continuity should make the product feel instant.",
+   "avoid_when": "Nothing exists in both states; the anchor is under about 40 px and cannot carry attention; it would need to travel more than a third of the frame (use a native transition).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "pd-flick-scroll-lands-target",
+   "name": "Flick scroll lands the target",
+   "category": "product_demo",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "A list or page scrolls like a trackpad flick, entering already fast or ramping up briefly, then glides on an exponential tail until the target row rests at its reading position.",
+   "recipe": "On a cut, start at peak speed with inertia(f, cut, v0, 0.943) from src/lib/anim.ts (v0 ≈ 54 px/f: travel ≈ 920 px, readable after ≈ 49 f, within 0.5 px after its settle). Inside a shot, ramp first: position = vmax·t³/(3·tp²) for t < tp, then vmax·tp/3 + inertia(f, s + tp, vmax, d).x after tp, with decay d 0.93-0.98. Solve vmax = D / (tp/3 + tau), tau = −1/ln d, so the target lands about 15% from the top (a section heading) or at centre, and cap vmax at 60 px/f. Drive text through total · arrive(x / total, 0.98) so the slow tail does not tick, keep the camera itself crisp, and let the motion-blur pass streak the rows above 12 px/f; rows are not meant to be read until they drop below 3 px/f.",
+   "timing": "Cut entry: v0 54 px/f, decay 0.943 (tau 17 f), ≈ 76 f to rest. In-shot: ramp tp 28-40 f, vmax 35-60 px/f, tail decay 0.93 for a form section, up to 0.98 for a long volume reel (≈ 277 f for ≈ 2,600 px); readable below 3 px/f.",
+   "use_when": "Showing volume (many results, a long page, a feed), or moving down a form to its next section with a human feel.",
+   "avoid_when": "The viewer must read during the move; the list is shorter than two screens; it would be the third scroll in a row.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  }
+ ]
+}

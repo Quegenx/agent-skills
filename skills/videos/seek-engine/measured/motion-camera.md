@@ -59,7 +59,7 @@ By length: punch <= 6 f -> 1.26x median; short 7-18 f -> 1.39x; medium 19-45 f -
 
 ### 6.7 Camera micro-drift
 
-**R6.14** WHEN the camera appears to hold -> DO keep it moving at >= 0.003 H/f or ~1 px/f: grid drift 0.02 W per 2.9 s, scrubber 0.9 px/f, slow right drift 0.027 W/s, slow shrink 1.0 -> 0.82 per 0.6 s, badge growth 120 -> 208 px over 3 s (M934), title row -0.01 W per 0.44 s; where the camera must be still, move something else (M913, M914, M923, M934, M936, M964).
+**R6.14** WHEN the camera appears to hold -> DO choose a drift from the measured examples: grid drift 0.02 W per 2.9 s, scrubber 0.9 px/f, slow right drift 0.027 W/s, slow shrink 1.0 -> 0.82 per 0.6 s, badge growth 120 -> 208 px over 3 s (M934), title row -0.01 W per 0.44 s; where the camera must be still, move something else (M913, M914, M923, M934, M936, M964). These examples are not a universal minimum speed; frame size and fps determine pixel travel per frame.
 **R6.15** WHEN the camera ends a moment -> DO end it still accelerating with no settle (pan ends hard at 0.39 -> 0.31 W, M913; accelerating roll to -76 deg with 22 px smear, M944; accelerating card up to the last frame, M924).
 
 ---
@@ -86,7 +86,7 @@ By length: punch <= 6 f -> 1.26x median; short 7-18 f -> 1.39x; medium 19-45 f -
 | Grow a logo from scale 0 and fade | Start 1.4-5x and scale DOWN, with excess halving every 2 f; `snapSettle` 18-30 f |
 | Smooth global zoom-in | One-frame snap 0.56-0.77x + 0.3-0.6 s tail; two-push pans; hard scale cut; constant-octave dive |
 | Blur everything the same 20 px or smear on some beats and not others | One blur grammar per film: per-element smear on frame 1 of fast moves decaying over 3 f, OR crisp steps, OR render-time shutter blur (R4.8); backdrop blur capped ~11 px |
-| Hold a settled frame for 1-2 s | No dead frame: one living thing (1-3 px/f drift, a creep, a sweep, moving light) on every hold; a designed breath of 0.6-1.5 s only before a payoff; only the payoff holds still, < 1 s |
+| Hold a settled frame for 1-2 s | No dead frame: one living thing (a measured drift, a creep, a sweep, moving light) on every hold; a designed breath of 0.6-1.5 s only before a payoff; only the payoff holds still, < 1 s |
 | Drive every film toward "motion on 99% of frames" and constant energy | That figure is for 3-7 s moments; human whole films run a mean motion median 6.8 (IQR 4.4-9.8) and breathe; use the band as a question, not a dial |
 | Start big on every logo, word and cursor in every film | Arrival decelerates from oversize, once; spend scale once and let the ending get smaller (R3.6b) |
 | Press with ripple ring and glow | 2-6 f squeeze to 0.75, target reacts 0-1 f later, brightens, slower release; no ring |

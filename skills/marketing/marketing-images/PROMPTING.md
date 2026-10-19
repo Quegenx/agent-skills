@@ -52,6 +52,8 @@ The source's decision order:
 
 Keep it to 40-80 words, specific over comprehensive, and always give the aspect ratio or dimensions.
 
+For an optional casual-phone look, describe the capture: who holds the camera, its approximate height and distance, the subject's ordinary action, concrete location details, light direction and what must remain visible. These are choices within the prompt brief, not universal tests of authenticity. Preserve the subject and product locks; actual-photo editing follows [REAL-PHOTO-EDITING.md](REAL-PHOTO-EDITING.md), and the existing size, prompt-length, text, UI and logo rules still apply. [nestyme/awesome-prompts, photo-realism/SKILL.md]
+
 ## Templates
 
 [coreyhaines31/marketingskills, image] The source's SaaS blog hero, lifestyle shot and listing templates put a "dashboard" or "project management interface" on a screen, which the source itself forbids for product UI; they are left out. Put a real screenshot on the screen in post instead.

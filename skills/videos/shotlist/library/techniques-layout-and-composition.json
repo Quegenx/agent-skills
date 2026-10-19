@@ -1,0 +1,320 @@
+{
+ "techniques": [
+  {
+   "id": "lc-swarm-cluster-burst",
+   "name": "Swarm, cluster and burst reveal",
+   "category": "layout_and_composition",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting"
+   ],
+   "summary": "About twenty cards or screenshots fly in from every edge, swirl, pack into a dense overlapping cluster that slowly swells, then blow outward past the camera to uncover a hero object that was waiting behind them.",
+   "recipe": "Place the hero (lockup, stat card, product) centred at z 0, already at final size, with N = 16-24 cards above it. Give card i a slot in a packed cluster (a grid jittered by rand(i): up to 40 px and 6 deg, overlapping, larger cards higher in z) and a unit radial vector from the centre through that slot. Fly-in: set the card's offset along its vector to total - inertia(f, s_i, 56, 0.95).x, so it starts about 1090 px out and coasts into its slot, with start frames spread by stagger(i, N, 24, E.out). Over the next 60 f the slots rotate about the centre by an angle that decays from 24 deg to 0 on E.outSoft (the swirl), contract to 73% spread over 32 f on E.out, and then the whole cluster scales up linearly by 0.2% per frame. Burst: each card travels along its vector by d(n) = 3n^2 px for n <= 12, then 432 + 72(n - 12), with scale 1 + 2(n/24)^3 under a true motion-blur pass, so the hero is uncovered in about 18 f.",
+   "timing": "Fly-in 28-40 f, entering at 56 px/f and decaying. Swirl 60 f. Converge 32 f (cluster width 1474 to 1076 px at 1080p). Build 104 f at +0.2%/f, E.linear. Burst 24 f, peaking at 72 px/f with motion blur; the last cards clear by f24, then hold the hero. Shorter scatter-only version: cards leave on E.in over 22 f, with travel scaled by (1 + 0.1 * index).",
+   "use_when": "A crescendo near the end that proves breadth (many apps, templates, outputs) and clears the stage for the lockup or a hero stat; the film's single biggest motion spike.",
+   "avoid_when": "Calm or minimal films, more than once per film, or when the cards' content has to be read (nothing in the swarm is legible). If it reveals the lockup, the lockup still holds only 1.5-2.0 s.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "lc-arc-carousel",
+   "name": "Arc carousel",
+   "category": "layout_and_composition",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop"
+   ],
+   "summary": "A row of cards rides a wide smile-shaped arc across the lower part of the frame, each tilted tangent to the curve, rushing in, coasting slowly through the middle and speeding out.",
+   "recipe": "Use a circle of R = 1750 px centred at (960, -790) at 1080p. Card i sits at angle theta_i = theta0(f) + i * 11 deg, with x = 960 + R sin(theta_i), y = -790 + R cos(theta_i) and rotateZ(-theta_i), so the arc bottoms out at y = 960 and the cards lean outward toward the edges. Drive it with a U-shaped speed: theta0(f) = 12 deg * (1 - prog(f, 0, 45, E.out)) - 0.25 deg * (f - 45) - 7.6 deg * prog(f, 45, 90, E.in), over 12 opaque cards with soft drop shadows, z-ordered so the centre card is on top. Behind them, a large flat ellipse (or one accent hue fading to transparent) centred above the arc acts as the dome. Apply the motion-blur pass while card speed exceeds 12 px/f (roughly the first 15 f and the last 20 f).",
+   "timing": "90 f per pass. Card speed 58 px/f on entry, about 8 px/f through the middle, 39 px/f on exit (angular 1.9, then 0.25, then 1.3 deg/f). Spacing 11 deg, about 336 px of arc, for cards 260-300 px wide.",
+   "use_when": "Showing an inventory or collection (templates, cards, products, integrations) where several items should read at once and the set should feel endless; a looping feature beat.",
+   "avoid_when": "Items with dense text that must be read at the edges (tilted edge cards are glanced at, not read), or vertical frames where the arc gets too tight.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "lc-hero-flips-to-inline-glyph",
+   "name": "Hero icon becomes the inline glyph",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "The centred hero icon shrinks and travels into a slot at the start of, or inside, a sentence, and the words of the claim spill out of it, so the icon becomes a word.",
+   "recipe": "Lay out the final line first with an empty inline slot one cap height square (inkBox gives the cap height, measureTracked the widths), and read the slot's rect. FLIP the hero from its centred rect to that rect with translate and scale on prog(f, a, a + 26, E.smooth), with motion blur while it exceeds 12 px/f; for extra life add a wobble of rotateY = sin(pi p) * 25 deg and rotateX = -sin(pi p) * 15 deg under perspective(800px). The words start behind the icon in z and spill outward: each word's translateX runs from -24 px to 0 over 14 f on E.out while its opacity rises and its colour moves from C.mute to C.ink through mixColor over 12 f. The first word starts 2 f after the icon lands and the rest follow 4 f apart; then the line drifts at 0.5 px/f.",
+   "timing": "Icon travel 22-30 f on E.smooth, scaling to about 0.42 (cap height). Words at icon landing + 2, + 6 and + 10 f, each a 14 f slide of 24 px with a 12 f colour resolve. Residual drift 0.5-1 px/f.",
+   "use_when": "Bridging from a hero object to a claim about it: an icon becoming the bullet of its benefit, a mark becoming the subject of a sentence, a feature glyph leading a metric line.",
+   "avoid_when": "Detailed icons that will not read at cap height (50-90 px), or sentences long enough to wrap.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "lc-headline-over-ghost-ui",
+   "name": "Headline over a ghost of the UI",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A headline inks in from light grey to near-black while a faint copy of the product interface sits behind it, then the UI resolves to full strength as the headline leaves.",
+   "recipe": "Use two layers: the product UI (a full-frame capture or live component) at opacity 0.15, and the headline centred on top of it. Ink the headline from C.mute to C.ink through mixColor on prog(f, a, a + 40, E.outSoft) (on a dark stage, C.mute to C.white). As the headline exits (Words with out, or a 16 f fade on E.smooth), raise the UI's opacity from 0.15 to 1 over 60 f on E.smooth with a slow scale from 1.03 to 1.0 on the same curve, so the next shot is already composed. If the UI is busy, defocus the ghost with RackFocus (t = 1, blur 10) and rack it sharp as it resolves.",
+   "timing": "Ink resolve 40 f. Ghost UI at 10-20% opacity under the headline; it resolves to 100% over 60 f, starting when the headline's exit begins.",
+   "use_when": "Setting up a demo during a statement, so the move into the product needs no transition; a claim that names the product area about to be shown.",
+   "avoid_when": "High-contrast UIs whose ghost would muddy the type, or UI text at the same scale as the headline sitting directly behind it.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "lc-icon-ragged-stack",
+   "name": "Icon-led ragged word stack",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "A short lead word is followed by three or four keywords on separate lines, each with a small line icon, set at staggered x positions so the list has a rag instead of bullets.",
+   "recipe": "Build a flex column with one row per keyword. Each row is a 1 em inline SVG line icon (stroke width matching the type's stem, coloured like the text) followed by the word, shifted by translateX from a fixed rag table such as [0, +120, -60, +180] px. The lead word sits above in C.mute; the keywords are C.ink at TYPE.secondary size or larger. Each row enters with translateY 12 px to 0 through arrive(prog(f, s_i, s_i + 22, E.out)) and opacity on the same progress, rows 10 f apart; while held, the whole stack drifts upward at 0.4 px/f.",
+   "timing": "Rows 8-12 f apart (10 by default), 22 f each on E.out, 12 px rise. Hold the full stack 60-80 f with the drift, then exit in reading order 4 f apart.",
+   "use_when": "Listing three or four abstract capabilities, platforms or audiences that would otherwise be a bullet list; a 'works across X, Y, Z' beat.",
+   "avoid_when": "More than four items, items longer than two words, or icons that decorate rather than mean something (then drop them and keep the rag).",
+   "ban_safe": false,
+   "bans": [
+    "filler-text"
+   ],
+   "evidence": 1,
+   "ban_safe_variant": "Drop the muted lead word above the stack: fold it into the first row as a full-strength word at the keywords' size ('Built for teams', then 'agencies' and 'founders' on the rag), or cut it and let the keywords stand alone. Use an icon only where it is the product's own mark for that item, never a stock line icon; otherwise keep the rag with words alone. Keep the rag table, the 10 f row stagger and the 0.4 px/f drift."
+  },
+  {
+   "id": "lc-hub-spoke-diagram",
+   "name": "Hub-and-spoke concept diagram",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "A central product tile sits inside two thin concentric rings with a short streak orbiting it, inputs on the left and outputs on the right, under a centred one-line headline.",
+   "recipe": "Centre an opaque 64-96 px icon tile with a soft shadow, and draw two SVG circles around it at 1.8x and 2.8x the tile size: 1.5 px strokes at 15% opacity. The orbiting streak is an SVG arc of about 70 deg on the outer ring, with stroke opacity ramping from 0 to 1 toward its head (a one-hue linearGradient in C.accent), turned by rotate(1.5 * f deg). Inputs (left) and outputs (right) are small opaque labelled chips in mirrored rows that enter together, 6 f per row (opacity plus a 10 px rise, 12 f on E.out); then connector lines from each chip to the outer ring draw with stroke-dashoffset over 16 f on E.out. The headline above reveals with Words, and the orbit keeps the hold alive.",
+   "timing": "Rows 6 f apart, 12 f each; connectors 16 f on E.out; streak 1.5 deg/f (a quarter turn per second) on E.linear. Hold 120-200 f; the rotation keeps it moving.",
+   "use_when": "Explaining a many-inputs, many-outputs product (integrations, sources to results) in one still composition without narration; the concept beat before a walkthrough.",
+   "avoid_when": "More than five chips per side, or when the real product UI can show the same thing directly.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "lc-mark-as-inline-word",
+   "name": "Mark set as a word",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "A logo, partner mark or icon sits inside a sentence on the baseline at cap height, as if it were a word, appearing with its own delayed fade or swapping with a word in the same slot.",
+   "recipe": "Lay out the final centred line with the mark in its own inline slot: height equal to the cap height from inkBox, bottom on the baseline, margin-left one space width (measureTracked(' ')), so the slot is reserved and nothing reflows. Reveal the words first (Words, stagger 8), then fade the mark in on its own about 17 f after the first word: opacity 0 to 1 on prog(f, s, s + 6, E.smooth), with no scale pop. To swap something in the slot, stack two spans: the outgoing one moves to translateY -8 px as it fades out while the incoming one rises from +8 px as it fades in, both over 8 f on E.ui.",
+   "timing": "Mark appears about 17 f after the first word with a 4-6 f fade. Slot swap 8 f with 8 px travel. The line then drifts at 0.5 px/f.",
+   "use_when": "Co-branding inside a claim, naming a platform or integration without a separate logo slate, or turning a generic noun into the product name in place.",
+   "avoid_when": "Marks with fine detail or wide aspect ratios that cannot read at cap height, or the film's own final lockup, which appears once, at the end, on its own.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "lc-negative-space-caption",
+   "name": "Caption in the subject's negative space",
+   "category": "layout_and_composition",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature",
+    "launch"
+   ],
+   "summary": "Each camera move ends on a pose where the product covers about two-thirds of the frame and leaves a clean band of empty stage, and the caption builds inside that band.",
+   "recipe": "Design each anchor-camera end Shot (src/lib/camera.ts) so the subject covers 65-75% of the frame and leaves a clear 25-30% band on the side it turns away from (a right band when yawed left, a top band when pitched down); check the subject's corners with toScreen. Set the caption in that band: at most 24% of the frame width, 2-3 words per line, left-aligned, inset 8-10% from the frame edge and inside SAFE. Start its Words reveal in the last 25% of the camera move, or within 6 f of landing, so type and camera settle as one gesture; fade it out as a block before the camera moves again.",
+   "timing": "Caption starts at 75% of the move, or within 6 f of landing; Words stagger 8 f, dur 26 f. Block exit 12-16 f on E.smooth, ending as the next move starts. Camera moves on E.cam.",
+   "use_when": "Single-take product walkthroughs and 3D UI slabs where each feature gets one pose and one caption; any shot where text laid over the UI would fight it.",
+   "avoid_when": "The subject must stay full-frame to be legible (caption above or below it instead), or a 9:16 frame, where the band should be top or bottom only.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "lc-opposite-corner-relay",
+   "name": "Opposite-corner caption relay",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature"
+   ],
+   "summary": "One caption fades out of one upper corner while the next starts building in the mirrored corner, so the eye travels across a locked frame and that travel is the motion.",
+   "recipe": "Place caption A top-left and caption B in the mirrored position top-right, on the same baseline and at the same inset from the safe edge. A exits with a 28 f opacity fade on E.smooth and does not move. B's Words reveal starts 10 f after A's exit begins, so the two overlap for 18 f in different places. Keep the product shot on a slow breath(t, 0.02) or a 0.3 px/f drift rather than fully locked, since each caption holds 48-60 f; the relay is the event.",
+   "timing": "A fades over 28 f on E.smooth; B starts 10 f after A's exit begins; 18 f of overlap. Each caption stays readable for at least 48-60 f.",
+   "use_when": "Two consecutive beats over one held product shot with no camera move or cut; alternating claims about one screen.",
+   "avoid_when": "Captions longer than a short line (the eye cannot finish A while B starts), or as the default for every caption change; repeated more than twice it reads as a device.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "lc-one-centred-subject",
+   "name": "One huge centred subject",
+   "category": "layout_and_composition",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Every frame has exactly one subject, centred and large: a single line of type, or one UI card scaled to most of the frame width and often bleeding past the edges, with everything else dimmed.",
+   "recipe": "Compose every shot on the frame centre (on safeBox cy in a tall frame) with exactly one subject: a single line of type sized with fitSize to at most 80% of the frame width, or one UI card scaled through the anchor camera to at least 0.85 of the frame width and bleeding past the edges wherever its content allows, so it reads as the product filling the frame rather than a centred floating card. Show captured UI at about 2x native, so body text is at least 27 px at 1080p. Dim anything that is not the hero to brightness 0.6-0.7, or defocus it with RackFocus (blur 8-40); never leave it at full strength. Keep each hold alive with breath(t, 0.025) on the camera.",
+   "timing": "Holds of 30-72 f per hero. Cards at 85-100% of frame width or bleeding past it, header bars up to full width, tables at least 80%; type 5-8% of frame height per line. Dims and rack focus 12-20 f on E.smooth.",
+   "use_when": "Fast, phone-first films; walkthroughs where the viewer must never search for the subject; the default framing between more designed compositions.",
+   "avoid_when": "Comparison or cause-and-effect beats that need two things on screen at once (use a split), or bento-style loops.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "lc-symmetric-flank",
+   "name": "Centre object with mirrored flanks",
+   "category": "layout_and_composition",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A narrow centre object (a phone-width window, a pill, a big number) holds the middle while matching elements sit on both sides: the two halves of a caption, or two mirrored columns of items.",
+   "recipe": "Build a three-column row centred on (W/2, H/2): [left flank, right-aligned] [centre object] [right flank, left-aligned], with a 3% W gutter (58 px at 1080p) between each flank and the object. Caption version: split the sentence so the object stands in for a word, and reveal the halves with Words (blur to focus), the right half 20-42 f after the left. Column version: two columns of 80 px items, rows offset alternately by half a row, the right column built as the mirror of the left. Rows appear top to bottom in sync on both sides, 6 f per row (opacity plus a 10 px rise, 12 f on E.out); then both columns drift outward with a U-shaped speed while the centre statement rises 50 px over 38 f on E.outSoft.",
+   "timing": "Caption halves 20-42 f apart; hold about 60 f. Column rows 6 f apart (five rows in about 30 f); outward drift 3.8, then 0.7, then 1.8 px/f over about 120 f. Centre numeral rises 50 px over 38 f.",
+   "use_when": "A narrow device or pill leaves empty sides; a stat that needs visible volume on either side; inputs and outputs around one product; the tagline that frames a logo pill before the end.",
+   "avoid_when": "Wide centre subjects (each flank gets squeezed under 20% of the frame), or vertical formats (stack above and below instead).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "lc-subtract-to-one",
+   "name": "Subtract to the one",
+   "category": "layout_and_composition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A busy board loses its elements one by one until a single survivor remains, which either re-centres or stays exactly where it was while the world around it dims.",
+   "recipe": "Staccato version: keep an array of tiles and an index that drops by one at keyframes 5-7 f apart, decided with fd(). Recompute the centred flex layout for each state with no tween, so the survivors jump to their new centred positions on each removal, and hold the last one for 17 f with a +0.5% scale drift. Graded version: duplicate the survivor into a top layer at identical coordinates, fade every neighbour over 12 f on E.smooth, then darken the stage plate from C.paper to C.ink with mixColor over 10 f on E.in, leaving the survivor crisp in place. Words in a line leave in reading order, each lifting 12 px and fading over 4 f on E.in, 3 f apart; if the survivor must end centred, slide it home with spr(f, s, SPR.soft) once the others are gone.",
+   "timing": "Staccato: a removal every 5-7 f; last survivor held 17 f. Graded: neighbours fade over 12 f, world dims over 10 f, hold 30 f. Word exits 4 f each, 3 f apart (a line clears in about 12 f). Re-centre 20-40 f on SPR.soft.",
+   "use_when": "Isolating the deliverable, the found result or the keyword before entering its world; turning a crowded problem state into one focus.",
+   "avoid_when": "The removed elements are themselves the message (show them first), or the survivor is small enough to float lost in an empty frame (push in after isolating it).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "lc-gap-open-insert",
+   "name": "Words part for an inserted object",
+   "category": "layout_and_composition",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "Inside a finished line, the words slide apart to open a gap and an object pops into it (an icon, a photo, a token, or a caret that grows into a container), so the sentence becomes a frame for the object.",
+   "recipe": "Split the line into a left group, a slot and a right group. Animate the slot width w(f) from 0 to the object's width on prog(f, a, a + 16, E.glide), and move the groups with transforms (left translateX -w/2, right +w/2 for a centred line) rather than by reflowing flex widths. Pop the object into the slot once the gap is 70% open: scale 0 to 1 on spr(f, b, SPR.micro), with no overshoot. Container variant: a hairline caret grows to cap height, thickens into a capsule, then widens into the next UI element, pushing the words aside. Hold at least 14 f; to make the object the next scene, accelerate the groups apart on E.in over 16 f (faded, with blurOut) while the object scales up into the next shot's rect.",
+   "timing": "Gap opens over 16 f on E.glide, which keeps a 200 px gap under 20 px/f per side. Object pop 6 f on SPR.micro. Hold 14-60 f. Exit: words 16 f on E.in, object scale-up 8-20 f into the cut. Caret variant: grow 6 f, hold 8 f, thicken 14 f, widen 24-62 f.",
+   "use_when": "Making a sentence about the object literally contain it (a product photo in a claim, a lock icon beside 'private', a prompt box between two words); morphing a headline into the first UI element of the next scene.",
+   "avoid_when": "Long lines whose parted words would leave the frame unintentionally, or an object that needs more room than a word gap can give (use a push-aside or a cut).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 5
+  },
+  {
+   "id": "lc-live-split-view",
+   "name": "Live cause-and-effect split",
+   "category": "layout_and_composition",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "walkthrough",
+    "feature"
+   ],
+   "summary": "Two panels share the frame side by side, the cause on one side (a chat, a list, an input) and the effect on the other (a generated page, a photo, a result), both live, while the camera creeps in.",
+   "recipe": "Lay out two panels inside SAFE at 40/60 (the cause narrower), separated by a 3% W gutter, both the full height of the safe box and aligned on the same top edge; render the composition at 2x so a slow push stays sharp. Keep both sides moving: the cause streams text or steps (a typed reply, a marker hopping down a list) and the effect updates on the frame each cause completes (sections drawing in, or an image swapping on the marker's frame with a small kick of rotateY = 12 deg * hitPulse(f - s, 1, 2.5)). Push the world container linearly by about +0.017%/f, then leave on an accelerating pan (E.in over the last 40 f) and cut on its fastest frame, at most 60 px/f.",
+   "timing": "Hold 180-240 f. Creep about +0.017%/f (+4% over 4 s) on E.linear. Swaps every 54 f with a 6 f settle. Exit pan 40 f on E.in, cut at the peak (at most 60 px/f).",
+   "use_when": "Showing that an input produces an output (prompt to page, list to detail, setting to preview), where seeing both at once is the point.",
+   "avoid_when": "Phone-first or vertical films (stack the two instead), or when either side's text would drop under 24 px at 1080p.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "lc-bento-cell-takeover",
+   "name": "Bento cell takes over the frame",
+   "category": "layout_and_composition",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "loop",
+    "launch",
+    "feature"
+   ],
+   "summary": "In a flush four-cell grid, one cell grows to fill the whole frame while its siblings are pushed off the edges, still playing as they go, turning a breadth overview into one focused shot without a cut.",
+   "recipe": "Build a flush 2x2 grid as in oh-live-grid-cold-open: gap 0, cells exactly W/2 x H/2 on whole pixels, overflow hidden and C.ink in every cell so the seams vanish, with every cell's scene rendered at full 1920x1080 inside a wrapper with scale(0.5) and transformOrigin '0 0'. Scale the whole grid container from 1 to 2 with lmix on prog(f, a, a + 64, E.smooth), about the chosen cell's outer corner (transformOrigin '0 0' for the top-left cell, '100% 100%' for the bottom-right). That corner stays fixed, the chosen cell lands exactly on the frame at native resolution, and the other cells slide out of frame. Keep every cell's loop running through the move and apply motion blur while the far edge exceeds 12 px/f; on landing, drop the grid and continue the cell's scene as a normal shot.",
+   "timing": "64 f on E.smooth; content at the far frame edge peaks around 60 px/f (the far corner about 68 px/f), with motion blur. Cells keep playing throughout. Follow with at least 90 f of the full-frame scene. To return to the overview, run it in reverse (scale 2 to 1, 64 f, E.smooth).",
+   "use_when": "A loop or launch that opens on four-up breadth and then dives into one feature; returning to the overview between features.",
+   "avoid_when": "A chosen cell whose scene was not composed for full frame (it will look sparse), or more than twice per film.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "lc-vertical-band-stack",
+   "name": "Vertical clear-band stack",
+   "category": "layout_and_composition",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "vertical"
+   ],
+   "summary": "In a 9:16 frame, the caption and the subject stack vertically inside the band the feed leaves clear, with their combined mass centred on that band rather than on the frame, and nothing important under the bottom caption zone or the right action rail.",
+   "recipe": "Get the band from safeBox('feed9x16', W, H): 896 x 1230 px at 1080x1920, centred near y = 885. Stack inside it: the caption on top (fitSize to the band width, at most two lines), a 48 px gap, then the subject below (a UI card at 0.86 of the band width, or a phone screen cropped to its key region), with the stack's combined height centred on the band's cy. Moves are vertical: the subject rises 120 px into place through arrive(prog(f, a, a + 40, E.glide)), the caption reveals with Words 8 f later, and scene changes flow upward (the old stack exits up on E.in over 16 f while the new one rises from below). Never place things side by side, and check every frame with the layout audit so nothing crosses the feed zones.",
+   "timing": "Subject rises 120 px over 40 f on E.glide; caption Words (stagger 8 f, dur 26 f) start 8 f after the subject; exits 16 f on E.in; hold 60-90 f per stack.",
+   "use_when": "Any vertical cut-down or vertical-first film for feeds.",
+   "avoid_when": "16:9 masters (use a side-by-side composition there), or full-bleed moments where one giant word fills the screen anyway.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  }
+ ]
+}

@@ -1,0 +1,220 @@
+{
+ "techniques": [
+  {
+   "id": "ui-orbit-gather-merge",
+   "name": "Orbit gather and merge",
+   "category": "ui_choreography",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop"
+   ],
+   "summary": "Tokens swing into orbit around a node, slow to a lazy spin, then accelerate one by one into a single exit point from which a line shoots out.",
+   "recipe": "Place 4 tokens on a 95 px radius around the source node (above the node, below the exit line) and drive each angle in closed form: theta_i(f) = theta0 + 90*i - (132.5*(1 - exp(-f/10)) + 2*f) deg, a 13 deg/f swing (about 22 px/f of arc) that decays to a 2 deg/f spin within 30 f. Token 0 is there at f0; tokens 1-3 spawn at f10, f18 and f28, each scaling 0 to 1 over 10 f on E.out. Pick theta0 so each token is 90-120 deg short of the exit angle (3 o'clock) when its merge starts; token i then covers that remaining angle forward over 16 f on E.contact, landing at f72, f82 and f86 at under 60 px/f, its scale cutting to 0 on arrival while the exit node takes scale 1 + 0.08*hitPulse(t) and a tick. At f92 a line draws out of the exit point (pathLength 1, strokeDashoffset 1 to 0 over 12 f on E.out) and carries the story to the next diagram.",
+   "timing": "omega = 13.25*exp(-f/10) + 2 deg/f, radius 95 px at 1080p. Spawns f10/f18/f28, 10 f each (E.out). Merges 16 f each (E.contact), landing f72/f82/f86 at < 60 px/f; hitPulse(t, 2, 5) on the exit node. Exit line f92, 12 f (E.out). About 105 f in all.",
+   "use_when": "Several inputs, funds or sources gather before one action (pooling, batching, syncing, sending) and the idea should be told by physics with no words.",
+   "avoid_when": "The tokens are UI cards carrying text (unreadable while orbiting), or the story has no single output point.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ui-path-fracture-fan",
+   "name": "Path fractures into a fan, then re-converges",
+   "category": "ui_choreography",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature"
+   ],
+   "summary": "A solid line draws out, breaks into dashes, splits into a fan of curves that end on obstacle pills, and later the curves funnel back into one point that becomes the next diagram.",
+   "recipe": "Draw the trunk from the source node as an SVG path with pathLength 1, strokeDashoffset 1 to 0 on E.linear over 12 f; at +12 f let it degrade by tweening strokeDasharray from 'L 0' to '24 12' over 8 f (dash = mix(L, 24, p), gap = mix(0, 12, p)). At +26 f split it into 6 cubic beziers from one shared point with their ends spread +-200 px in y, each revealed by its own dashoffset on E.glide over 24 f at a 2 f stagger so the drawing head stays under about 70 px/f, and pop a labelled obstacle pill at each end as its curve arrives (opacity step plus scale 0.9 to 1 over 8 f on E.out). Hard-cut to a 2.5x punch-in on the pills about 10 f after the fan completes. To resolve, give each pill a trailing bezier ending on one point, the next diagram's first node, draw them over 24 f on E.smooth while the camera travels the same way with no cut, and finish the camera's travel with an E.out landing of about 210 px over 60 f (22 px/f at its start) through lib/camera.ts.",
+   "timing": "Trunk 12 f (E.linear); dashes at +12 f over 8 f to '24 12'; fan at +26 f: 6 curves x 24 f (E.glide), 2 f stagger, complete at +60 f; punch-in cut at ~+70 f (2.5x). Converge 24 f (E.smooth); camera landing 210 px over 60 f (E.out), 22 px/f at its start.",
+   "use_when": "Explaining the friction of an old way (one simple path turning into many obstacles) before the turn to one clean path.",
+   "avoid_when": "The viewer needs real product UI on screen; this is diagram language, and a diagram act longer than about 4 s loses the thread.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ui-stalled-state",
+   "name": "Stalled state by dimming",
+   "category": "ui_choreography",
+   "role": "accent",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A token stops on its rail, the destination greys out, short status words appear one after another, and the frame goes briefly still so the blockage is felt.",
+   "recipe": "Split the rail at the stalled token: the travelled part solid, the part ahead dotted (strokeDasharray '2 4'), both drawn from the same path and clipped at the token's position. On the stall frame the destination node dims to 30% (opacity, or mixColor toward C.mute) over 8 f on E.smooth; status words then appear beside the token at +6, +28 and +40 f, each an opacity step with a 6 px rise through arrive() over 8 f on E.out, and at +51 f the first word dims to 40% so the decisive word (the reason, the day) stands alone. Bring the camera to zero velocity for a designed freeze of at most 15 f on a gap in the sound, then resume a 0.3 px/f drift so nothing sits static past 48 f.",
+   "timing": "Node dim 8 f (E.smooth) to 30%. Status words at +6/+28/+40 f, 8 f each (E.out, 6 px rise); first word dims at +51 f. Freeze <= 15 f on a silence, then 0.3 px/f drift.",
+   "use_when": "The problem beat: money, a message or a task stuck waiting (closed, pending, rejected) just before the product unblocks it.",
+   "avoid_when": "The film has no problem act, or the block would sit longer than about 1.5 s; stillness only works as a short contrast to the motion around it.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ui-clutter-pileup-strip",
+   "name": "Clutter pile-up, then strip to one",
+   "category": "ui_choreography",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "Clicks spawn copies of a control until the frame is a messy pile, then elements vanish one per beat and the survivors snap to re-centre until a single tile remains.",
+   "recipe": "Pile-up: on each click (pressAt from fx/Cursor.tsx) spawn a clone every 4 f for about 60 f at x = (rand(i) - 0.5)*500 and y = (rand(i + 99) - 0.5)*300 px, each travelling 40-80 px out from the previous clone over 8 f on E.out while scaling 0.9 to 1, so the motion-blur pass smears every spawn, and drift the whole pile up 1.5 px/f. Strip: hold the survivors in an array whose length drops at listed frames, one removal every 5-7 f, choose the state with fd(f), and compute the centred layout from the current array with no tween, so the remaining tiles jump to their new places on the removal frame. Hold the last survivor 17 f under a 0.5% scale drift (breath() from lib/camera.ts), then exit it or let it become the next shot. Put a soft tick on every spawn and removal, rising in level, so the acceleration is heard.",
+   "timing": "Spawns every 4 f for ~60 f (12-15 clones), 8 f each (E.out, 40-80 px), pile drift 1.5 px/f. Removals every 5-7 f with an instant re-centre (fd); last survivor 17 f with a 0.5% drift.",
+   "use_when": "Showing overload (too many tools, buttons, tabs, notifications) and then focus: the product reduces chaos to the one thing that matters.",
+   "avoid_when": "Calm or premium films, or elements whose text must be read; the jumps are deliberately abrupt.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ui-card-grid-arrival",
+   "name": "Cards dealt or dropped into a grid",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "Cards land in a row or grid one after another, either dealt fast with a small tilt that squares up, or falling from just in front of the camera and shrinking into their slots.",
+   "recipe": "Deal preset: card i appears at t0 + 5*i, its opacity stepping to 1 on the first frame while rotate goes 4 to 0 deg and scale 0.95 to 1 over 7 f on E.out, left to right, with no overshoot. Depth-drop preset: card i starts at delays [0, 4, 10, 14] (row-major, 6 extra frames between rows) and goes translateY 534 to 0 px and scale lmix(1.38, 1, p) on the same progress p over 54 f on E.out, half the distance in about 6 f at up to 62 px/f under the motion-blur pass. In the depth-drop keep each card's text and icons at opacity 0 until the card slows (prog(f, s + 8, s + 16, E.smooth)), so content resolves on landing below 20 px/f. Cards are opaque with a soft shadow (0 8px 30px at 6% black) and a radius of about 32 px at 1080p.",
+   "timing": "Deal: 5 f stagger, 7 f settle (E.out), rotate 4 deg, scale 0.95. Drop: 54 f (E.out), stagger 0/4/10/14 f, 534 px, scale 1.38 to 1, peak ~62 px/f, content fades in from +8 to +16 f.",
+   "use_when": "Revealing a set of options, results, features or integrations that should read as one set with a clear reading order.",
+   "avoid_when": "There is one hero object, or more than about 8 cards (use a row cascade or a scroll).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ui-live-reflow",
+   "name": "Container resizes, content reflows",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch"
+   ],
+   "summary": "A card or window changes size because its content or the user changes it, growing as typed text wraps or narrowing as an edge is dragged, while everything inside reflows to the new width.",
+   "recipe": "Make layout a pure function of the container's current width: measure text with measureTracked or inkBox, derive line breaks and block positions from that width, and evaluate typed text on fd(f) so the substring and the line count change on whole frames only. Content-driven: as the prompt starts, the input card widens from 67% to 77% of frame width over 24 f on E.outSoft (about 18 px/f per edge, centred so both edges move), and each newly wrapped line adds one line height over 12 f on E.out. User-driven: the cursor grabs a window's right edge and drags it 300-400 px inward on E.contact over 40 f, stopping dead like a real release with no settle, while the left edge follows at 15% of the right edge's speed so the window re-centres and the cursor trails the edge by 1 f. When the width crosses a breakpoint, compute both layouts and FLIP every block to its new slot over 16-24 f on E.ui (fastest block under 70 px/f) instead of crossfading the two layouts.",
+   "timing": "Widen 67% to 77% FW over 24 f (E.outSoft); +1 line per wrap over 12 f (E.out). Drag 300-400 px over 40 f (E.contact), ends near 40 px/f, hard stop; breakpoint FLIP 16-24 f (E.ui); then a 0.3 px/f push-out.",
+   "use_when": "Typing into an input, responsive layouts, resizable panels: any moment where the point is that the UI adapts.",
+   "avoid_when": "The size change is a change of role, such as a button becoming a panel (use a container morph), or text must be read during the resize.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ui-row-cascade",
+   "name": "Row cascade",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "List rows or cards appear one after another from top to bottom, each rising a few pixels as it fades in, so the list reads as data streaming in.",
+   "recipe": "For row i, start = t0 + 4*i (6*i for taller cards); translateY 8 to 0 px through arrive() and opacity 0 to 1, both over 12 f on E.out, placed by transform only. When two columns describe input and output, give both sides the same row index so the build is mirrored and 5 rows complete in about 30 f. Let each row's text land in C.mute and darken to C.ink over 12 f, 40 f after the row arrives (mixColor), so the eye reads the structure first and the words second. Start the cascade about 20 f before the previous move (a transition, a portal edge) finishes, so the start of the scene is hidden inside it.",
+   "timing": "Stagger 4 f (rows) to 6 f (cards); each row 12 f (E.out), 6-12 px rise; ink-in 12 f at +40 f; overlap the previous move by ~20 f.",
+   "use_when": "Populating any list, inbox, table, feed or a pair of mirrored input and output columns.",
+   "avoid_when": "Rows are added one at a time over a longer beat (top insert), or the list arrives by scrolling (flick scroll).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ui-fan-resolve-to-slots",
+   "name": "Fanned stack resolves into slots",
+   "category": "ui_choreography",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "A tilted, overlapping stack of cards spreads into an even row, or each card flips to show its face and flies small into a slot of a list grid where its label resolves.",
+   "recipe": "Start with 4-6 cards stacked 20 px apart with seeded tilts (rand(i) mapped to +-6 deg), or a fan (rotateZ -20 deg, rotateY 25 deg, 40 px offset), z-order from the stack. Row preset: x = mix(stackX + 20*i, slotX_i, p) and rotate = mix(seed_i, 0, p) with p = prog(f, t0 + 2*i, t0 + 2*i + T, E.out) and T = max(24, 0.09 x travel) f, so the farthest card stays under 70 px/f and nothing overshoots. Flip preset: card i starts at t0 + 6*i, turns rotateY 0 to 180 deg on E.linear over 6 f, or 8 f for cards wider than 200 px so the edge stays near 50 px/f at edge-on (swapping from its muted back to its full face at 90 deg), drifts on E.out for 12 f (28 down to 7 px/f), then FLIPs to its grid slot rect (scale about 0.25, rotateZ to 0) over max(12, travel/20) f on E.rest; its label then rises 6 px and clears from blurIn(p, 6) over 8 f. Six cards should land within about 60 f.",
+   "timing": "Row: 2 f stagger, T = max(24, 0.09 x travel) f (E.out), tilt +-6 deg. Flip: 6 f stagger, flip 6 f (8 f over 200 px wide, E.linear), drift 12 f (E.out), FLIP to slot max(12, travel/20) f (E.rest), label 8 f; six cards in ~60 f.",
+   "use_when": "Many options, offers, integrations or tools becoming an orderly set: the 'all in one place' or 'compare them all' beat.",
+   "avoid_when": "The cards must be read while they move, or there is only one card.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ui-lens-list-scroll",
+   "name": "Lens list scroll",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop",
+    "vertical"
+   ],
+   "summary": "A list scrolls with momentum past an invisible lens line, and each item's size, tint or tilt depends on its distance from that line, like a phone picker, a rolodex cylinder or a smile-shaped arc.",
+   "recipe": "Drive one offset s(f) for the whole list: a flicked picker uses s = D*(1 - (1 - p)^4) with p = prog(f, a, a + 120, E.linear) and D about 900 px (30 px/f at the start, under 20 px/f after 15 f, cut while it still drifts near 2 px/f, or land on an option with spr(f, a, SPR.detent)); a rolodex uses E.inOut over 90 f for about 480 px (peak about 41 px/f). Per item compute d, its distance from the lens line along the path, and map it: flat picker, scale = 1.2 - 0.35*min(|d|/375, 1) with text colour mixColor(C.ink, C.mute, min(|d|/375, 1)); cylinder, theta = d/R with R = 1.4*H, rotateX(theta) and translateZ(-(1 - cos theta)*R) under perspective 1600 px; smile arc, x = cx + R*sin(theta), y = cy + R*cos(theta) and rotate(-theta) with R = 1750 px and the centre about 790 px above the frame. Give each card a soft shadow; the depth comes from the geometry, never from translucent panels.",
+   "timing": "Picker: 120 f quartic momentum, D ~900 px, 30 px/f start, < 20 px/f from f15, ~2 px/f at the cut; focus scale 1.2 to 0.85 across 375 px; optional SPR.detent landing. Cylinder: 90 f (E.inOut), ~480 px, peak ~41 px/f, R = 1.4H, perspective 1600 px. Arc: R 1750 px.",
+   "use_when": "Choosing among options, showing many screens as one continuous surface, or a playful list of choices that read one at a time.",
+   "avoid_when": "Items must be read while moving fast, or a plain scroll says it more simply.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ui-discard-into-bin",
+   "name": "Toss into a bin with one rebound",
+   "category": "ui_choreography",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "feature",
+    "vertical"
+   ],
+   "summary": "Icons or chips are thrown into a container that rises in to catch them, drop through its mouth and peek back out once before settling.",
+   "recipe": "Layer order, back to front: bin body, thrown items, bin front lip, with the items clipped by a clipPath at the mouth so they vanish inside; the bin rises 160 px on E.out over 24 f. Toss: each item rises about 260 px on E.out over 24 f (about 68 px/f on its first frame), hangs 3 f, then falls about 340 px on E.contact over 22 f while rotateZ goes to +-15 deg (sign from rand(i)) and x eases to the mouth on E.smooth, entering at no more than 70 px/f under the motion-blur pass. Chain variant: chips follow an SVG path into the bin, chip i at path.getPointAtLength(L*E.contact(prog(f, t0 + 5*i, t0 + 5*i + 60, E.linear))) rotated to the tangent (atan2 of a 1 px look-ahead), the element they trail squashed to a 6 px tall tail. Six frames after the last entry the contents peek back up about 24 px on spr(f, hit, SPR.land) and settle within 16 f, the rim takes squash(t), and a low 60 to 30 Hz thud lands on that frame; this counts as one of the film's two spring landings.",
+   "timing": "Bin rise 160 px, 24 f (E.out). Item rise ~260 px, 24 f (E.out); hang 3 f; fall ~340 px, 22 f (E.contact), <= 70 px/f; tilt +-15 deg. Chain: 60 f per chip (E.contact along the path), 5 f lag. Rebound at +6 f, ~24 px, SPR.land, settled in 16 f.",
+   "use_when": "A comic or decisive 'throw the old way away' beat: replacing old tools, clearing clutter, deleting the problem.",
+   "avoid_when": "Serious, calm or enterprise tone, or the film has already used its two spring landings.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ui-push-aside-reflow",
+   "name": "Push-aside with bound layout",
+   "category": "ui_choreography",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "An incoming panel or card enters from the edge and the neighbouring content moves aside because it is bound to the panel's edge, so one motion moves two elements and nothing overlaps.",
+   "recipe": "Bind instead of tweening twice: each frame set neighbour.x = min(restX, panel.left - gap), so the neighbour reflows from the panel's own position. Shove: a dark card (C.ink2, radius 24 px, about 62% of frame width) enters from beyond the right edge over 72 f on E.whip (peak about 72 px/f at 40% under the motion-blur pass) and is placed so it reaches the headline word only after 58% of its move, where the card has slowed to 20 px/f or less, so the shoved word stays readable. Make room: a side panel 36% of frame width slides in on E.glide over 54 f (peak about 38 px/f) while the content card moves 0.43x the panel's travel on E.smooth, starting 28 f before the panel so it anticipates the arrival; the exit mirrors both over about 50 f. For copy, the product card glides 370 px aside and scales 1 to 0.83 on E.glide over 48 f (peak about 23 px/f) while the headline rises line by line into the freed side (Words, 6 f stagger), starting 4-6 f after the slide.",
+   "timing": "Shove: 72 f (E.whip), contact after 58% of the move, word <= 20 px/f. Side panel: 36% FW over 54 f (E.glide); neighbour 0.43x travel with a 28 f lead (E.smooth); exit ~50 f. Copy: 370 px + scale 0.83 over 48 f (E.glide); lines 6 f apart from +4-6 f.",
+   "use_when": "Introducing a detail panel, a new card or a caption beside existing UI, or a joke where the layout itself does the gag.",
+   "avoid_when": "The incoming element should float above (modal, popover), or there is no room to move into.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  }
+ ]
+}

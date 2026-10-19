@@ -1,0 +1,262 @@
+{
+ "techniques": [
+  {
+   "id": "ty-phrase-clamp-junction",
+   "name": "Phrase clamp at a junction",
+   "category": "typography_motion",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "Two halves of a phrase arrive from opposite directions and lock on one baseline at a fixed junction, like a clamp closing.",
+   "recipe": "Fix a junction (x about 48% of the frame, on the shared baseline): the first half is right-aligned to it and the second half left-aligned, both measured with measureTracked so the junction gap is exactly one word space. Vertical default: hold the first half alone for 1 f at +64 px (the pre-pose), then translateY +64 -> 0 on arrive(p), p = prog(f, s, s + 18, E.out), while each word of the second half drops -40 -> 0 the same way, word i starting at s + 2i; give every piece opacity 0 -> 1 over 3 f and blurIn(p, 8), because frame 1 moves about 20 px/f. Horizontal snap: the line cuts in at full strength with each half 35 px out from the junction, closes to 0.75 of the word space over 10 f on E.out, then eases back to the true gap over 18 f on E.outSoft (the one designed undershoot, never closing the space); calm variant: a 1.7x gap closes to 1x over 80 f on E.outSoft. Put the lock on a beat and give it one 1.5% scale punch with hitPulse(t, 1, 4).",
+   "timing": "Vertical: 18 f E.out, 64 px and 40 px travel (peak 19.7 and 12.3 px/f on frame 1), 2 f word stagger, 1 f pre-pose, opacity 3 f. Snap: 35 px per side over 10 f E.out (about 20 px/f on frame 1) to 0.75 of the gap, back over 18 f E.outSoft. Calm close: 80 f E.outSoft. Hold the locked line at least 54 f with a 0.3 px/f drift.",
+   "use_when": "A two-part claim whose halves mean more together (subject + promise, problem + fix); the payoff line; a junction that a slot roller will reuse.",
+   "avoid_when": "Lines over 5 words or halves of very unequal length; more than once per film; the end lockup.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ty-slot-roller-fixed-phrase",
+   "name": "Slot roller beside a fixed phrase",
+   "category": "typography_motion",
+   "role": "signature",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "loop",
+    "vertical"
+   ],
+   "summary": "A fixed phrase holds still while the word in its slot rolls through alternatives one line at a time, speeding up until the last one lands.",
+   "recipe": "The fixed phrase sits in its own layer and never moves; the slot is a column of alternatives aligned to the junction, line pitch 1.5x the font size, translated by -index x pitch and cut by a feathered mask-image (transparent beyond +-1.2 pitch, opaque within +-0.5 pitch) so neighbours show only as slivers. Each step rolls on E.whip over 20 f (peak about 0.18 x pitch per frame, 12 px/f at a 68 px pitch); above a 110 px pitch, stretch the step to 0.18 x pitch frames so the rolling word stays at or under 20 px/f; the row on the junction baseline is ink and every other row is C.mute at no more than 1.3:1 contrast, flipped binary when |rowY - baselineY| < pitch/2 (no colour tween). For a run of 5 or more items, accelerate: intervals 26, 14, 12, 8, 8, 4, 4 f, where intervals under 12 f are whole-frame swaps chosen by fd(f) with no tween, the final item rolls home on SPR.detent, and every step gets a tick. For a loop, make the last item equal the first and wrap the index modulo the list.",
+   "timing": "Step 20 f E.whip (0.18 x pitch frames above a 110 px pitch) every 29-34 f (0.48-0.57 s), 3 steps, then a 28 f hold before the cut. Accelerating run: 26/14/12/8/8/4/4 f (7 items in 76 f), last item on SPR.detent (home in about 9 f), held at least 54 f under a 0.3 px/f line drift. Pitch 1.5x the font size; ticks at least 3 f apart.",
+   "use_when": "One sentence frame that fits many subjects or capabilities; listing use-cases without spending screen time; a feature loop that cycles items.",
+   "avoid_when": "Items of very different widths in a centred layout (the fixed phrase would have to move); more than about 7 items; any mask loose enough that the neighbours read as a list.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ty-masked-baseline-rise",
+   "name": "Masked baseline rise",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "Each word rises out of an invisible line at its own baseline, tops of the glyphs first, as if cut out of the layout.",
+   "recipe": "Wrap each word in an inline-block with overflow:hidden and padding-bottom 0.15 em (room for descenders); the inner span goes translateY 110% -> 0 on arrive(p), p = prog(f, s_i, s_i + 12, E.out), s_i = start + 6i, with opacity 0 -> 1 linear over the first 3 f, because frame 1 moves about 57 px/f and must be streaked by the blurred master (render.sh --blur). Optional ink resolve: color = mixColor(C.mute, C.ink, prog(f, s_i, s_i + 10, E.linear)). For one short hero word, run it per letter with a 3 f stagger, or drop the letters unmasked from -0.25 em over 8 f, 4 f apart, so a small word falls into place. Exit back into the same mask (translateY 0 -> -110% on depart(q), q on E.in over 10 f) or with ty-reading-order-exit.",
+   "timing": "Per word 12 f E.out (10-14 f), travel 110% of the line box (about 132 px at 120 px type): 57, 34, 18 px/f on frames 1-3; opacity 3 f; stagger 6 f (4-10); per letter 3 f stagger; letter drop 0.25 em over 8 f, 4 f apart; mask exit 10 f E.in.",
+   "use_when": "Editorial headlines and in-UI headings that must land fast (a 3-word line in under 0.5 s) without stealing focus; titles that build while the plane or camera is still moving.",
+   "avoid_when": "Tight leading where the mask would clip the line above; a calm voice-paced read (use ty-blur-focus-word-rise); per-letter runs on anything but one short hero word.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ty-blur-focus-word-rise",
+   "name": "Blur-to-focus word rise",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "Words materialise one per beat out of a soft blur, rising a few pixels and darkening to full ink as they sharpen.",
+   "recipe": "Use src/fx/Words.tsx with stagger 20, dur 28, rise 0.11 (em) and blur 8: each word fades in, rises through arrive(p) and sharpens through blurIn(p, 8), so the blur is gone by frame 4 while the word is still moving and half transparent. Pass wordStyle to resolve colour as well: color = mixColor(C.mist, C.ink, p) on paper (C.mute -> C.white on ink), so a word reads pale and soft first, crisp and dark on landing. Give the whole line a 0.5 px/f translateX drift on E.linear so it never freezes, and start the first word while the camera is still decelerating so reveal and settle read as one gesture. For a URL, start the path segment 8-12 f after the domain.",
+   "timing": "Per word 28 f E.out; opacity 8 f; blur 8 -> 0 px, clear by frame 4; rise 13 px at 120 px type (peak about 3 px/f); stagger 20-22 f (one word per beat at 160-180 BPM); line drift 0.5 px/f.",
+   "use_when": "Calm, premium statements that keep pace with a voice-over or a slow bed; the opening line of a quiet film; light grounds.",
+   "avoid_when": "High-energy acts or dense beats (the stagger is too slow); pale type on a pale ground (under 4.5:1); any blur left on readable text for more than 6 f.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ty-inplace-light-up-beats",
+   "name": "In-place word light-up on beats",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough",
+    "vertical"
+   ],
+   "summary": "The finished line is laid out from the start and its words light up in place, chunk by chunk on the beat, with the last word held back.",
+   "recipe": "Lay out the final centred line once; every word is a span at its final position with opacity 0, so nothing ever reflows. Group the words into 2-3 chunks that start on beat frames, 6 f apart within a chunk; each word's opacity is tw(f, s, s + 5, 0, 0.75, E.linear) then rises to 1 over the next 40 f on E.outSoft (fast attack, slow brightening tail). Hierarchy without a second colour: keywords at weight 600, connectors at 400 held at 0.55 until the last chunk lands and then raised to 1 over 12 f; the final word or qualifier arrives a full beat late, and a qualifier may sit tucked under the line's right edge at 0.35x size. Across a film, shorten the per-word stagger from 24 f on the title to about 6 f on later captions, because viewers learn the pattern; exit the whole line at once.",
+   "timing": "Attack 5 f to 0.75, tail 40 f E.outSoft to 1; 6 f within a chunk, chunks on beats; last token +24-34 f; connectors 0.55 -> 1 over 12 f; title stagger 24 f shrinking to 5-6 f; exit all words together over 26 f E.smooth. If the camera is locked, add a 0.3 px/f line drift.",
+   "use_when": "Titles and walkthrough captions over a moving camera; lines with an inline glyph or partner wordmark that must not shift; music-led films where each chunk can sit on a beat.",
+   "avoid_when": "High-energy acts that need motion in the type itself; lines over 6 words (it turns into a slide).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ty-typeon-timeboxed",
+   "name": "Time-boxed eased type-on",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "vertical"
+   ],
+   "summary": "Text types in with most of the line appearing in the first few frames, and every line, short or long, finishes in the same musical length.",
+   "recipe": "Visible count n = fd(N x prog(f, s, s + 68, E.out)) for prompts and headlines (45% of the string by frame 6, the last letters trickle in), or E.linear at 22-45 characters/s for small mono UI labels; pre-fill the first word so frame 1 already shows text, and pre-solve the layout (left-anchored in a fixed centred box, or a pill sized to the final string) so nothing reflows. The caret is a 0.08 em x 1 em bar that rides the text while typing and blinks at 1 Hz (30 f on, 30 f off, decided with fd) only after completion, and is gone before the hold ends. When the line outgrows 88% of the frame width, translate the container by min(0, 0.88W - caretX), eased over 8 f per character, and fade the head out through a mask-image over the left 25%. To replace a typed line, turn the whole string accent for 6 f, swap it on one frame and retype the new one in 26 f.",
+   "timing": "Box 68 f per line whatever its length (26-32 f for a headline under 22 characters, 84 f for giant type); E.out count; mono labels E.linear 22-45 cps; caret blink 30/30 f after completion; caret-follow 8 f per character, head mask 25%; retype: 6 f accent, 1 f swap, 26 f retype. Hold at least 36 f + 6 f per word after the last glyph.",
+   "use_when": "Prompts, search queries and names typed into the product; UI labels appearing while the camera trucks; keeping a run of typed beats on one musical length.",
+   "avoid_when": "Statements nobody would type; keystroke clicks on every glyph (let the music carry it); letter-by-letter reveals of a name whose prefixes spell another word.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ty-recentre-line-build",
+   "name": "Re-centring line build",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "Words or typed glyphs join a centred line one at a time while the whole line glides sideways so it is centred on every frame.",
+   "recipe": "Measure the line at each state with measureTracked and set targets x_k = centreX - width_k / 2; drive the container as a sum of springs, x = x_0 + sum over k of (x_k - x_(k-1)) x spr(f, land_k, SPR.firm), which never overshoots and smooths away per-glyph steps when it follows typing. Each new word drops from -0.35 em (or rises from +0.2 em) into its slot on arrive(prog(f, land_k, land_k + 18, E.out)) with opacity 0 -> 1 over 6 f; after the last word keep a residual 0.3 px/f drift. Pre-solved alternative for short typed lines: lay out the final centred line, fade each character in over 5 f at 1.3 f apart, and glide the container +90 px -> 0 on prog(f, s, s + 24, E.out) so it lands centred with the last glyph. Optional: a single-hue pill behind the line whose width follows the measured width + 50 px on the same springs.",
+   "timing": "A new word every 26-36 f (0.43-0.6 s); SPR.firm re-centre (peak about 7% of the shift per frame, 97% by 27 f), so shifts up to 280 px stay under 20 px/f; word drop 18 f E.out; pre-solved: 1.3 f per character, 5 f fade, 90 px glide over 24 f E.out; residual drift 0.3 px/f.",
+   "use_when": "Speaking-pace builds, stat rows that widen as words arrive, centred typed headlines, any line whose final width is unknown while it builds.",
+   "avoid_when": "Shifts over about 280 px per word (split the line instead); left-aligned layouts; a line that must keep an anchored element still (use ty-inplace-light-up-beats).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 6
+  },
+  {
+   "id": "ty-staggered-word-roll",
+   "name": "Staggered word roll",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "any"
+   ],
+   "summary": "The words of a phrase roll up and away one after another while their replacements rise in from below, so one sentence mutates instead of cutting.",
+   "recipe": "For slot i, t_i = t0 + 10i. Out: q = prog(f, t_i, t_i + 12, E.in), translateY = -depart(q) x 0.2 em, opacity = 1 - prog(f, t_i, t_i + 12, E.smooth), blur = blurOut(q, 6). In, starting at t_i + 4 (a 4 f overlap): p = prog(f, t_i + 4, t_i + 28, E.out), translateY = (1 - arrive(p)) x 0.25 em, opacity 0 -> 1 over 10 f, blur = blurIn(p, 8). Keep any shared element (an icon pill, an unchanged word) perfectly still as the anchor, always roll in the same direction, and re-centre on SPR.firm when the new words change the width.",
+   "timing": "Out 12 f E.in, 0.2 em up; in 24 f E.out from +0.25 em (peak about 7 px/f at 120 px type), 4 f overlap; stagger 6-11 f per word; a phrase swap takes about 50 f; a whole-line conveyor variant leaves exactly 1 empty frame between the lines.",
+   "use_when": "Swapping one claim for the next in place; a URL replacing a tagline; a category word turning into the product name; a closing bookend that rolls the opening phrase into the brand line.",
+   "avoid_when": "Swaps where nothing persists (a cut or ty-blur-swap-rescale reads cleaner); more than two rolls in a row without a different move between them.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 4
+  },
+  {
+   "id": "ty-reading-order-exit",
+   "name": "Reading-order word exit",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "any",
+   "formats": [
+    "any"
+   ],
+   "summary": "Words leave one by one in reading order, each lifting a few pixels and vanishing, until only the hero element is left on screen.",
+   "recipe": "For each word except the hero, o_i = out + 4i and q = prog(f, o_i, o_i + 10, E.in): translateY = -depart(q) x 0.12 em, opacity = 1 - prog(f, o_i, o_i + 10, E.smooth) (never fade on E.in, which pops), blur = blurOut(q, 4). The hero word, icon or pill stays put, and the next move (zoom, match cut) starts from it within 6 f of the last word clearing. Loosen variant for a calm handoff: words drift apart vertically by sign_i x (10 + 10 x rand(i)) px with a rotation of +-2 degrees, fade toward the ground colour first (mixColor(C.ink, C.mist)) and then to 0, over 20 f on E.smooth, 6 f apart.",
+   "timing": "Per word 10 f, lift 0.12 em (about 14 px), stagger 4 f (2-6), a 5-word line clears in about 26 f; loosen variant 20 f per word, 6 f apart, about 32-44 f in all.",
+   "use_when": "Isolating a hero word or object before a match cut or zoom; clearing a statement gently before a calmer UI moment; mirroring a word-by-word entry.",
+   "avoid_when": "Walkthrough captions just before a camera move: fade the whole caption at once over 26 f on E.smooth and finish 0-56 f before the move starts; exits that would hurry a payoff line.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ty-kinetic-word-slams",
+   "name": "One-word slam sequence",
+   "category": "typography_motion",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "vertical"
+   ],
+   "summary": "A line is read one huge word at a time: each word hits oversized and blurred, settles, then is sucked away as the next word cuts in.",
+   "recipe": "Each word is its own card, fitted to about 77% of the frame width with fitSize. Entry: scale = lmix(1.35, 1, p), p = prog(f, cue - 1, cue + 21, E.outSoft), opacity 0 -> 1 over 3 f, blur = blurIn(p, 12), then a 6 f drift (scale x 1.01). Never start above 1.35x: a larger start leaves the outer letters of a frame-wide word moving faster than 20 px/f after the blur has cleared. Exit: scale x lmix(1, 0.6, q), q = prog(f, end - 14, end, E.in), opacity to 0 on E.smooth over the same window, then a hard cut to the next word on its slam's first frame, with every cut on an act boundary so the blurred master never smears two words together. Optional echo: two copies behind the word use the entry progress at f - 2 and f - 4, at 0.35 and 0.18 opacity, tinted 50% toward the ground, so they converge into the word by +12 f.",
+   "timing": "Entry 22 f E.outSoft from 1.35x (the edges of a 1120 px word start at about 43 px/f, faded and blurred, and are near 22 px/f by frame 4 when the blur clears), blur 12 -> 0 by about frame 4, drift 6 f, exit 14 f E.in to 0.6x (last frame about 72 px/f, nearly transparent); 36-42 f per word (0.6-0.7 s), last word held at least 54 f under a 1-2% scale creep; every hit on a beat.",
+   "use_when": "A punchy 3-5 word line on a strong beat; a problem statement or rhythmic claim; vertical formats where one word fills the screen.",
+   "avoid_when": "More than one sequence per film; lines over 5 words; calm films; a card for a lone connector word (fold it into the next word).",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ty-multi-direction-assemble",
+   "name": "Multi-direction slam assembly",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "vertical"
+   ],
+   "summary": "Each word of a short sentence flies in from a different side, oversized and streaked, and the sentence assembles on one baseline almost at once.",
+   "recipe": "Lay out the final line and give each word a start offset from a different side (+-220 px in x, or +200 px in y) and a start scale of 1.4. Per word: p = prog(f, s + d_i, s + d_i + 20, E.out) with delays d = [0, 4, 10, 12, 16]; translate = offset x (1 - p) (vertical offsets through arrive), scale = lmix(1.4, 1, p), opacity 0 -> 1 over 5 f, so each word stays faint while it moves faster than 20 px/f and the blurred master streaks it along its own direction. One quiet piece may simply fade in over 8 f while the others fly; once the line is complete it drifts from scale 1 to 0.99 over 60 f.",
+   "timing": "Per word 20 f E.out, 220 px travel (62, 47, 33, 23, 16 px/f on frames 1-5), scale 1.4 -> 1, opacity 5 f; delays 0/4/10/12/16 f; each word readable from about frame 5, the whole line resolved in about 36 f; then 1 -> 0.99 over 60 f.",
+   "use_when": "Re-spiking energy after a calm, read-paced card; a payoff line that needs a burst; 3-5 short words.",
+   "avoid_when": "Long words that would cross each other in flight; straight after another high-energy type move; calm films.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ty-oversize-blur-slide-in",
+   "name": "Oversize word slide-in",
+   "category": "typography_motion",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A huge word arrives streaked from beside the frame and brakes on a long tail, and a trailing word follows from further out and closes the gap so the phrase locks together.",
+   "recipe": "Type height 21-25% of the frame. Word 1: x = x_f + 0.4W x (1 - prog(f, s, s + 90, E.out)) - 0.5 x (f - s), a long braking tail on top of a slow drift that never stops, with opacity 0.2 -> 1 over the 16 f it takes to fall below 20 px/f, so it travels faded. Word 2 starts 16 f later with a larger offset (0.6W) on the same curve, so the gap between the words shrinks from about 1.7x to 1x over about 80 f, and its opacity rises 0.2 -> 1 over 68 f; letters may fade on left to right 2 f apart as each word slows. Frame 1 runs about 52 px/f (78 for word 2), so render the blurred master; blurIn(p, 10) stands in for the sharp preview.",
+   "timing": "Brake 90 f E.out (feels like a 33 f time constant); word 1 offset 0.4W (768 px), word 2 0.6W from +16 f; drift 0.5 px/f; opacity from 0.2, readable below 20 px/f from frame 16 (word 2 from frame 21); gap 1.7x -> 1x over 80 f.",
+   "use_when": "The energy peak of a type act; a two-word claim; a cold open whose first frame already moves.",
+   "avoid_when": "Long phrases; when screen direction must run the other way across the cut; small type.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ty-blur-swap-rescale",
+   "name": "Blur-swap rescale",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting",
+    "vertical"
+   ],
+   "summary": "A big word blurs out and instantly re-forms smaller as the start of the full line, so the type changes scale without a rubbery size tween.",
+   "recipe": "Use two layers and never animate font-size. Old layer: q = prog(f, s, s + 6, E.in), blur = blurOut(q, 12), scale x lmix(1, 0.85, q), opacity to 0 on E.smooth over the same 6 f, still moving in its current direction. New layer from s + 2: p = prog(f, s + 2, s + 16, E.out), scale = lmix(1.25, 1, p), blur = blurIn(p, 12), opacity 0 -> 1 over 6 f; carry any ongoing drift so both layers travel at the same px/f. Optional tracking collapse on the new line: letter-spacing +0.25 em -> the token's tracking over 16 f on E.out, so the small word arrives spread wide and slams together.",
+   "timing": "Old out 6 f (E.in, blurOut 12 px); new in 14 f from +2 f (E.out, blurIn 12 px, scale 1.25 -> 1, edges of a 1000 px line about 51 px/f on frame 1); 4 f overlap; typical cap-height change -35%; tracking collapse 16 f E.out.",
+   "use_when": "Going from one or two giant words to the full readable sentence; right after tr-giant-word-punch-out; any big-to-small type handoff inside one continuous take.",
+   "avoid_when": "As a default between unrelated lines (it is not a crossfade substitute); small-to-small swaps; overlaps longer than 10 f, which read as a dissolve.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  }
+ ]
+}

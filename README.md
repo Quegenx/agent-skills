@@ -88,14 +88,14 @@ Each gate writes a file in `films/<slug>/` (`brief.md`, `style-guide.md`, `audio
 
 **Model-invoked**
 
-- **[make-video](./skills/videos/make-video/SKILL.md)**: Direct and render a video from code as a gated production. The entry point and the map of the flow.
+- **[make-video](./skills/videos/make-video/SKILL.md)**: Direct and render a video from code as a gated production; Remotion contracts, engine limits, snapshot privacy and GIF timing.
 - **[video-brief](./skills/videos/video-brief/SKILL.md)**: The director's brief (facts vs choices, banned looks, the copy budget) and a style guide: look, motion language and video type as separate layers, the same film in several styles, restyles. Holds the spec patterns behind the films people copied.
-- **[asset-prep](./skills/videos/asset-prep/SKILL.md)**: Real screens and brand facts captured from a site; cutouts, layers, textures and upscaling of supplied images; generated base footage to trace over. Official logos fetched as SVG. Also scripted app demo recordings with Playwright.
+- **[asset-prep](./skills/videos/asset-prep/SKILL.md)**: Real screens and brand facts captured from a site; cutouts, layers, textures and upscaling of supplied images; generated base footage to trace over. Official logos fetched as SVG. Also scripted app recordings, reference provenance, asset reuse scope and inspected silence boundaries.
 - **[beat-grid](./skills/videos/beat-grid/SKILL.md)**: Find, scan and measure music into `audio/beats.json`, the clock for picture and sound; per-frame band energy for audio-reactive visuals; word-by-word lyric timing.
 - **[voiceover](./skills/videos/voiceover/SKILL.md)**: ElevenLabs narration with word timings, per-line cache, pronunciation fixes and pause trimming, plus lip sync for a talking character.
-- **[shotlist](./skills/videos/shotlist/SKILL.md)**: A concept that passes ownership tests, a measured precedent per beat, beat structures by format, the viewer's reads on the grid, one carrier object, techniques drawn from a 273-entry library, three storyboard variants.
-- **[seek-engine](./skills/videos/seek-engine/SKILL.md)**: The `seek(t)` render contract, the starter film, the motion number sheet and the renderer (stills, sheets, strips, motion-blurred MP4 in every format). A measured corpus from 53 professional moments, the 12 measured eases, a seekable 3D hero, iOS UI builders and isometric figures, real objects built from a photo or a name (exploded product reveals), and motion blur sized by on-screen speed.
-- **[frame-review](./skills/videos/frame-review/SKILL.md)**: The smoke test's zero counters, contact sheets, phone test, a catalogue of AI-video tells, critic lenses with a verify pass, a rubric and ship gate, and sync and loudness checks on the delivered file. Page-chrome lint and file-level gates (end hold, flat frames, audio audit) and a blind A/B review page.
+- **[shotlist](./skills/videos/shotlist/SKILL.md)**: A concept that passes ownership tests, a measured precedent per beat, beat structures by format, the viewer's reads on the grid, one carrier object, a 273-entry library split into ordered parts, corrected typing profiles and three storyboard variants.
+- **[seek-engine](./skills/videos/seek-engine/SKILL.md)**: The `seek(t)` render contract, the starter film, the motion number sheet and the renderer (stills, sheets, strips, motion-blurred MP4 in every format). A measured corpus from 53 professional moments, the 12 measured eases, a seekable 3D hero, iOS UI builders and isometric figures, real objects built from a photo or a name (exploded product reveals), motion blur sized by on-screen speed, a three-part drawing kit and dark/light cinematic UI stages. Corrected timing, geometry and source claims.
+- **[frame-review](./skills/videos/frame-review/SKILL.md)**: The smoke test's zero counters, contact sheets, phone test, a catalogue of AI-video tells, critic lenses with a verify pass, a rubric and ship gate, and sync and loudness checks on the delivered file. Page-chrome lint and file-level gates (end hold, flat frames, audio audit) and a blind A/B review page. Required-audio gates use the audio audit; short-clip smoothing preserves the time axis.
 - **[sound-pass](./skills/videos/sound-pass/SKILL.md)**: Synthesized SFX on measured peaks, scaled to their cause, with a progress motif; music and voice mixed; mastered to -14 LUFS and -1 dBTP; the sound norms of top launch films.
 
 **Requirements:** Node 20+ (22+ for HyperFrames), ffmpeg with libx264, uv (or Python 3 with numpy), and Playwright's Chromium. Optional: `ELEVENLABS_API_KEY` for narration, `FAL_KEY` for generated imagery, both in the project's `.env`.
@@ -180,12 +180,12 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 | [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Web/app motion, timing, gestures, scroll, native CSS, React transitions and audits. |
 | [svg](./skills/frontend/svg/SKILL.md) | Drawing, styling, animation, filters, icons, embedding, accessibility and sanitization. |
 | [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern layout, queries, forms, top-layer controls, motion, colors and browser support. Corrected registration, geometry and dismissal contracts, CSS infinity, flex balancing and Tailwind aliases. |
-| [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, eases, timelines, React cleanup, ScrollTrigger and the official plugins. |
+| [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, eases, timelines with corrected placement arguments/defaults, React cleanup, ScrollTrigger and plugins. |
 | [web-accessibility](./skills/frontend/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers with numbering validity separate from identity. |
 | [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, semantic tokens, contrast, dark mode, gamut and color audits. |
 | [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Evidence-based exploded, orthographic and section drawings with dimensions and exports. |
-| [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance and audits. |
+| [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance, audits and Remotion Player integration. |
 | [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages. |
 | [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
 | [app-ui](./skills/frontend/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
@@ -262,10 +262,10 @@ Marketing, SEO and GEO for web and SaaS products, from Corey Haines's marketings
 | [offer-design](./skills/marketing/offer-design/SKILL.md) | The offer itself: anatomy, guarantees, bonuses, scarcity, discounts, formats, and the one definition of the FTC rules on prices, "free", guarantees and fake urgency. Paid info-product discovery, validation, construction and distribution. |
 | [service-businesses](./skills/marketing/service-businesses/SKILL.md) | Complete client-service guides: offers, qualified demos, approvals, delivery, actual-outcome billing, recurring work and handoff. |
 | [churn-prevention](./skills/marketing/churn-prevention/SKILL.md) | SaaS churn: cancel flows within ROSCA, a health score, dunning copy |
-| [onboarding-and-upgrades](./skills/marketing/onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts and scoped component versus whole-variant experiments. |
+| [onboarding-and-upgrades](./skills/marketing/onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts, scoped experiments and evidence-backed recovery cohort worksheets. |
 | [sms-marketing](./skills/marketing/sms-marketing/SKILL.md) | Lawful SMS/MMS/WhatsApp, consent, sequences and destination-specific template restrictions. Review incentives follow destination rules, including no Google review incentives. |
-| [marketing-images](./skills/marketing/marketing-images/SKILL.md) | Marketing images: choosing the method, prompting, sizes per platform. Actual-photo fidelity and subject-specific QA under existing generation policies. |
-| [marketing-video](./skills/marketing/marketing-video/SKILL.md) | Marketing video with tools rather than code: AI generation with Veo's real limits, avatars, repurposing |
+| [marketing-images](./skills/marketing/marketing-images/SKILL.md) | Marketing images: choosing the method, prompting, sizes per platform. Actual-photo fidelity, reference decomposition and optional casual-phone prompts under existing generation policies. |
+| [marketing-video](./skills/marketing/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs |
 | [marketing-plan](./skills/marketing/marketing-plan/SKILL.md) | A 12-month AARRR marketing plan: intake, current-state rubric, budget, funding stages, market sizing, measurement, team and agencies, an example plan |
 | [marketing-loops](./skills/marketing/marketing-loops/SKILL.md) | Recurring marketing loops an agent runs on a durable scheduler: the loop template, state, guardrails, a 58-loop catalogue by funnel, SEO and outbound operators |
 | [marketing-council](./skills/marketing/marketing-council/SKILL.md) | A simulated board of 12 marketing advisors applying their documented frameworks, with a named dissenter and a disagreement map |

@@ -58,7 +58,7 @@ def main():
     # perceived, not raw: a full-frame flood changes every pixel, a cursor a few; log-compress so the flood reads
     # as big without flattening every smaller move into "rest" (0.05 grey levels ~ a small UI move)
     diff = np.log1p(diff / 0.05)
-    k = max(1, int(fps * 0.5))
+    k = min(len(diff), max(1, int(fps * 0.5)))  # 'same' returns max(input, kernel) samples: keep the clip length.
     sm = np.convolve(diff, np.ones(k) / k, mode="same")
     n, dur = len(sm), len(sm) / fps
     p10, p50, p90 = np.percentile(sm, [10, 50, 90])

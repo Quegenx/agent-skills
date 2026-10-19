@@ -17,12 +17,14 @@ tl.to(".a", { x: 100, duration: 1 })
 
 [GreenSock, gsap-timeline]
 
-The third argument (or a `position` property in vars) controls placement:
+Pass placement as a separate argument: third in `.to()` and `.from()`, fourth in `.fromTo()`. It is not a `position` property in tween vars. The default is `"+=0"`, the end of the whole timeline ([to](https://gsap.com/docs/v3/GSAP/Timeline/to%28%29), [fromTo](https://gsap.com/docs/v3/GSAP/Timeline/fromTo%28%29), [method implementations](https://github.com/greensock/GSAP/blob/master/src/gsap-core.js#L1486)).
+
+Source corrections: the previous text allowed `position` in vars and called `">"` the default; placement uses the method argument, and `">"` means the most recently inserted animation's end, which can differ from the timeline's end.
 
 - **Absolute**: `1`, start at 1 second.
 - **Relative**: `"+=0.5"`, 0.5s after the end; `"-=0.2"`, 0.2s before the end.
 - **Label**: `"labelName"`, at that label; `"labelName+=0.3"`, 0.3s after it.
-- **Placement**: `"<"`, start when the most recently added animation starts; `">"`, start when it ends (the default); `"<0.2"`, 0.2s after its start.
+- **Placement**: `"<"`, start when the most recently added animation starts; `">"`, start when it ends; `"<0.2"`, 0.2s after its start.
 
 ```javascript
 tl.to(".a", { x: 100 }, 0);           // at 0

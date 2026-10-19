@@ -1,0 +1,256 @@
+{
+ "techniques": [
+  {
+   "id": "ty-step-edit-performs-copy",
+   "name": "Hard-step edits that act out the copy",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "The headline does what it says with one-frame edits: broken words click straight one at a time, or words delete from the end faster and faster.",
+   "recipe": "Give each word two states and pick one by fd(f) >= step_i, with no tween at all. Fix variant: broken states are per-letter rotation along an arc (letter j rotated (j - mid) x 6 degrees and raised (j - mid)^2 x 2 px), skewX(15deg) with translateY -0.17 em, or rotate(-20deg), drifting 0.5 px/f while broken; steps land at +6, +26 and +40 f after the cut, each with a 2% scale punch from hitPulse(t, 1, 4) on the fixed word. Delete variant: words.slice(0, n) with n dropping at accelerating intervals (10, 5, 5, 2 f), building pressure into the cut. Each step gets one click, each a little louder than the last.",
+   "timing": "Snap 1 f, no tween; fix intervals 20 then 14 f; delete intervals 10/5/5/2 f; broken-state drift 0.5 px/f; click within 1 f of each step; hold the fixed line at least 42 f.",
+   "use_when": "Copy about fixing, undoing, cleaning up or simplifying; a deadpan joke beat; a problem line that should visibly go away.",
+   "avoid_when": "Copy the motion would contradict; calm films; more than one per film.",
+   "ban_safe": false,
+   "bans": [
+    "italic"
+   ],
+   "evidence": 2,
+   "ban_safe_variant": "Keep only the rotation-based broken states (letters fanned along an arc, or the word rotated -20 deg) and drop the skewX(15deg) state, which fakes an italic; the one-frame steps, the 2% punches and the accelerating deletes stay as they are."
+  },
+  {
+   "id": "ty-shared-letter-morph",
+   "name": "Shared-letter morph",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "One word turns into another: the letters both words share stay and slide into place while the new letters tumble in and click upright.",
+   "recipe": "Split both words into glyph spans at measured, kerned positions; map shared characters (same letter, nearest index) so they keep their element and slide to the new x on prog(f, s, s + 24, E.out), while unshared old glyphs fade out over 6 f and the word spaces collapse over 8 f. Each new glyph starts at an offset of +-150 px in x and +-120 px in y from rand(`g${i}`) with a rotation of 90-180 degrees and animates to rest on E.out over 24 f, opacity 0 -> 1 over the first 12 f so it stays faint while faster than 20 px/f, with start times spread over 56 f and the last glyph dropping from above. Check every frame on a contact sheet so no in-between state spells another word.",
+   "timing": "Space collapse 8 f; old glyph fade 6 f; each new glyph 24 f E.out (about 45 px/f on frame 1), opacity 12 f; starts spread over 56 f; hold at least 36 f after the last glyph settles.",
+   "use_when": "Two words that share letters and whose relationship is the point (before and after, problem and product); one memorable word turn per film.",
+   "avoid_when": "Fewer than 2 shared letters; words longer than about 8 letters; fast films where 60 f of letter flight is too slow.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ty-scramble-decode",
+   "name": "Scramble decode",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "sting",
+    "loop"
+   ],
+   "summary": "A string of random glyphs locks into the real text from left to right, or real letters roll through the alphabet into gibberish and back.",
+   "recipe": "Character i shows target[i] once fd(f) >= lock_i = s + 5i, otherwise a glyph from a fixed pool chosen by rand(`${i}:${Math.floor(fd(f) / 2)}`), which changes on twos and repeats exactly on every render; use tabular or mono figures, or pin each slot to the target glyph's measured advance, so the width never jitters. Unlocked glyphs sit at 50% opacity (or C.mute) and locked glyphs at ink, optionally with a 12 f accent decay on lock. Code-roll variant: each letter steps one character code per frame from an offset toward its target, or away from it as an exit while a container takes its place.",
+   "timing": "One lock every 5 f (about 48 f for a 10-character string); unlocked glyphs change every 2 f; accent decay 12 f E.out; code roll 1 step per frame, 4-8 steps per letter.",
+   "use_when": "Keys, codes, private or encrypted values, numbers resolving, a short technical name in a feature beat.",
+   "avoid_when": "Prose statements (it delays reading); the brand name in the end lockup; glints or sparkles on the glyphs.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ty-front-restyle-sweep",
+   "name": "Travelling front restyles a word",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "A front sweeps left to right across a settled word and restyles each glyph as it passes, in colour or weight, sometimes with a cursor riding under it.",
+   "recipe": "After the word has landed, move a front x_F = mix(xL - band, xR + band, prog(f, s, s + 32, E.dolly)) across it, with band about 0.6 em. For glyph i at measured x_i, u_i = clamp((x_F - x_i) / band): its colour runs C.mute -> C.accent at u = 0.5 -> C.ink at u = 1 through mixColor (one hue only), or its variable-font weight runs fontVariationSettings 'wght' 400 -> 700, with each glyph's advance interpolated between measureTracked at both weights so the line re-flows smoothly and stays centred. If the beat is the user switching something on, ride src/fx/Cursor.tsx at the base of the front. For two promise words in a tagline, step the glyphs 2 f apart instead of using a continuous band.",
+   "timing": "Sweep 32 f E.dolly (front peaks about 29 px/f across a 600 px word; stretch to 40 f for wider words); band 0.6 em; per-glyph weight morph about 4 f; a second word starts about 20 f after the first; begin at least 10 f after the word lands.",
+   "use_when": "Turning a static big word into a moment of discovery; emphasising one or two promise words without a highlight shape; a change of voice mid-sentence.",
+   "avoid_when": "Text still moving; sweeps whose half-restyled frames read as another word; colour and weight sweeps in the same film.",
+   "ban_safe": false,
+   "bans": [
+    "gradient",
+    "serif",
+    "italic"
+   ],
+   "ban_safe_variant": "A one-hue front (mute -> accent -> ink per glyph through mixColor) instead of a multi-hue band, and a variable-weight wave (400 -> 700) in the film's one sans instead of switching glyphs to a serif italic.",
+   "evidence": 2
+  },
+  {
+   "id": "ty-occlusion-spill-from-mark",
+   "name": "Words spill out from behind a mark",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "sting"
+   ],
+   "summary": "A glyph or icon slides aside and the words shoot out from behind it, clipped at its edge, as if the mark were delivering the message.",
+   "recipe": "Put the words in a container clipped at the mark's current edge (for a leftward spill, clip-path: inset(0 calc(100% - (markX - boxLeft)) 0 0)) and draw the mark above them. Mark: translateX 0 -> +260 px on prog(f, s, s + 20, E.out); words: translateX +320 -> 0 on p = prog(f, s + 1, s + 25, E.out) with blurIn(p, 8) and opacity 0 -> 1 over 6 f, hidden behind the mark at first and readable once they drop below 20 px/f around frame 6. Inline variant: an icon shrinks (lmix 3 -> 1, optionally tilting in 3D) into the bullet slot at the start of a sentence and the words slide out to its right from behind it the same way.",
+   "timing": "Mark 260 px over 20 f E.out (peak about 73 px/f, blurred master); words 320 px over 24 f E.out (76 px/f on frame 1, under 20 by frame 6), 1 f after the mark; opacity 6 f; hold at least 54 f with a drift.",
+   "use_when": "An icon-led claim mid-film, or an opening line pushed out by the mark already in motion; a feature icon that introduces its own line; a mark or number that says the sentence.",
+   "avoid_when": "The end lockup (it appears once and belongs to the end card); marks smaller than the cap height (nothing to hide behind); spills longer than about 360 px.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 3
+  },
+  {
+   "id": "ty-vertical-word-stack",
+   "name": "Vertical word stack",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "vertical"
+   ],
+   "summary": "In a tall frame each new word lands on its own line under the last while the stack rises one line, so the newest word always sits on the optical centre.",
+   "recipe": "Line pitch 1.05x the font size (110-140 px statement type in 9:16), lines left- or centre-aligned inside safeBox() so the stack clears the feed zones. Word k lands at land_k: translateY +0.35 em -> 0 on arrive(prog(f, land_k, land_k + 18, E.out)), opacity 0 -> 1 over 6 f; the stack container moves up by the sum over k of pitch x spr(f, land_k, SPR.firm), peaking at about 11 px/f for a 150 px pitch. Lines more than two steps old fade out through a feathered top mask (mask-image transparent -> opaque over the top 0.8 pitch), so at most 3 words of one statement are on screen; the final word may arrive in the accent and relax to ink.",
+   "timing": "A word every 24-30 f; word rise 18 f E.out; stack step SPR.firm (97% in 27 f); at most 3 lines visible; final hold at least 36 f + 6 f per word with a 0.3 px/f drift.",
+   "use_when": "Vertical cut-downs where a horizontal line would be too small; speaking-pace statements on a phone-sized frame; one word per beat.",
+   "avoid_when": "16:9 masters (use ty-recentre-line-build); statements over 6 words; stacking two separate statements.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 0
+  },
+  {
+   "id": "ty-slice-band-assembly",
+   "name": "Slice-band glyph assembly",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "Each letter builds up from thin horizontal slices that slide in from slightly different offsets at slightly different moments, faint and pale at first, until the word locks solid.",
+   "recipe": "Measure the word with measureTracked. Give each glyph an inline-grid cell holding N = 5 stacked copies of itself (6 copies for type above 160 px), with all copies in grid-area 1/1. Clip copy b to its band with clip-path: inset(calc(b * 100% / N - 0.5px) -0.1em calc((N - 1 - b) * 100% / N - 0.5px) -0.1em), on a line box padded 0.12 em on top and 0.26 em below, so neighbouring bands overlap by 1 px and no descender or overhang gets shaved. Band (i, b) starts at s + d, with d = fd(12 x rand(`${i}:${b}`)) (add 1 f per glyph for a left-to-right bias), and runs on p = prog(f, s + d, s + d + 20, E.out): translateX (1 - p) x sx x 0.12 em, where sx = rand(`x${i}:${b}`) > 0.5 ? 1 : -1; translateY (1 - arrive(p)) x 0.04 em; opacity over its first 8 f on E.linear; and color mixColor(C.mute, C.ink, p) on paper (stage tint to C.white on ink). On the frame the last band lands, swap the band stacks for one intact text layer, decided with fd, so no seam survives antialiasing, then tighten the tracking 0.03 em -> the token over 44 f on E.out. Beside a mark that slides aside, start the build at the slide's peak-velocity frame, so the letters seem to be pulled out by its motion.",
+   "timing": "Each band takes 20 f on E.out, with opacity over 8 f on E.linear and colour over the same 20 f. Band delays are 0-12 f from rand (plus 1 f per glyph if biased). The whole word is built in about 32 f (about 40 f with the bias). Offsets are 0.12 em sideways and 0.04 em vertical: about 4 px/f on frame 1 at 120 px type, so no blur. The swap to intact text takes 1 f, then the tracking tightens over 44 f on E.out. Hold at least 60 f with a drift of 0.3 px/f.",
+   "use_when": "A product or feature name that should feel assembled or digital. A name set beside a modular or pixel mark, including the one end-lockup build when the film bookends with it. A short title after a quiet beat.",
+   "avoid_when": "Lines over about 3 words, or type under 48 px (bands thinner than 3 px alias into noise). Prose. Delay spreads wide enough that the half-built word reads as broken for more than about 30 f. A film that already has a scramble decode.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ty-slice-glitch-streak",
+   "name": "Slice glitch into a speed streak",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A word jolts into sideways-displaced horizontal slices for two frames, then stretches into a solid capsule that races off as a streak, and the next word lands in its wake.",
+   "recipe": "Slice: for 2 f decided with fd, render the word as 6-8 stacked copies, each clipped to one horizontal band with clip-path: inset(), and offset each band by sign x 0.08-0.25 em, both drawn from rand(`${b}:${fd(f)}`). Under 30% of the bands, lay a C.mute copy offset 0.03 em (one hue, no RGB fringes), and raise the variable 'wght' by 100 for those two frames; frame 3 renders clean. Smear: from s, scaleX = mix(1, 1.8, prog(f, s, s + 18, E.contact)) about the word's left edge, so the right edge accelerates to about 70 px/f on the last frame (render the blurred master). Over those last 10 f, fade the text out while a capsule (C.ink on paper or C.white on ink, radius 50%) fades in over the same box and its height shrinks from the cap height to 0.35 of it. Streak: the capsule keeps its handoff speed, with head x = x_e + v_e x (f - e) and a trailing tail of length clamp(v x 1.5, 0, 240) px, until it clears the frame edge. Next word: it enters in the wake, layered under the streak, with translateX -320 -> 0 on p = prog(f, e + 4, e + 28, E.outSoft), opacity 0 -> 1 over 8 f and blurIn(p, 16), so it is faint while fast and readable once it drops under 20 px/f. The 2 f slice alone, with no smear, works as a hit on privacy or obfuscation copy.",
+   "timing": "Slice: 2 f via fd, clean on frame 3. Smear: 18 f on E.contact, scaleX 1 -> 1.8; for a word up to 450 px wide the right edge ends near 70 px/f. Text-to-capsule crossfade over the last 10 f. The streak cruises at that speed and clears a 1920 frame in about 15 f, with a tail of at most 240 px. Next word: 320 px over 24 f on E.outSoft from e + 4 (58 px/f on frame 1, under 20 px/f from frame 7), opacity over 8 f. Hold it at least 54 f.",
+   "use_when": "A speed or performance claim, where the word itself turns into motion. Handing a name off to a thread, packet or line that carries into the next scene. The 2 f slice alone on 'private', 'encrypted' or 'blocked'.",
+   "avoid_when": "Calm films. More than once per film. Words wider than about 450 px at the smear, where the edge would pass 80 px/f. Long lines. Coloured fringes or a tint shift along the trail.",
+   "ban_safe": false,
+   "bans": [
+    "glow",
+    "purple"
+   ],
+   "ban_safe_variant": "Make the streak a flat solid capsule in C.ink or C.white with a speed-scaled tail and true motion blur. No bloom on the type or the streak, the trail keeps the capsule's one tone, and the glitch copies stay in C.mute.",
+   "evidence": 2
+  },
+  {
+   "id": "ty-scaled-echo-extrusion",
+   "name": "Scaled-echo extrusion",
+   "category": "typography_motion",
+   "role": "accent",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "sting",
+    "feature"
+   ],
+   "summary": "A hero title carries two or three faint copies scaled out behind it, a short depth extrusion that compresses as the title lands and then holds.",
+   "recipe": "Stack k = 3, 2, 1 copies of the same text behind the title, with the title on top. Give copy k transform scale(1 + step x k) about a vanishing point, opacity 0.55, 0.35 and 0.2 for k = 1, 2, 3, and color mixColor(C.ink, stage colour, 0.5) (C.white mixed toward the stage on ink). Arrival: step = mix(0.03, 0.012, prog(f, land - 2, land + 20, E.out)), so the extrusion collapses inward as the title lands. Put the vanishing point on the text centre for a straight-on echo, or 0.3 W to one side or below it for a directional depth. Keep the hold alive by sliding the vanishing point about 40 px across the text over the hold, opposite to a 0.3 px/f line drift, so the echoes shift like real depth. Solid-block variant for a giant cropped word: 8-12 copies translated (k x 1 px, k x 1.5 px) behind the face, each a step darker (mixColor toward C.ink by k / 12), with no blur, bevel or shadow.",
+   "timing": "Converge over 22 f on E.out (step 0.03 -> 0.012; outer copy edges stay under 7 px/f on a 500 px title). Copy opacity 0.55 / 0.35 / 0.2. Hold the whole card (36-60 f) with a vanishing-point slide of about 40 px on E.linear and a line drift of 0.3 px/f. The solid-block variant uses 8-12 one-pixel steps that do not animate relative to the face; the card still drifts at 0.3 px/f.",
+   "use_when": "A product name or a hero title of one to three words that needs weight in a flat sans. A giant cropped word that needs physical depth. A title card between two energetic acts.",
+   "avoid_when": "Body copy or lines over 3 words (the copies tangle inside the counters). Low-contrast stages, where the copies turn to haze. Blur, glow, bevels or drop shadows on the copies. A film that already uses the motion-trail echo of the word slams: pick one echo device.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ty-swell-on-drop",
+   "name": "Quiet type swells on the drop",
+   "category": "typography_motion",
+   "role": "signature",
+   "energy": "high",
+   "formats": [
+    "launch",
+    "sting",
+    "vertical"
+   ],
+   "summary": "A word appears small and low-contrast and waits through the build, then swells to hero size, with 90% of the growth landing exactly on the beat drop.",
+   "recipe": "Set the word at about 9% of the frame height, centred, in C.mute (or at 0.5 opacity on ink), and bring it in quietly: per-letter opacity pops 5-6 f apart decided with fd, or ty-typeon-timeboxed. Put the drop frame h on the music's downbeat, register it in src/sync.ts, and scale the group about its centre with k = lmix(1, 2.5, prog(f, h - 32, h + 22, E.glide)), so 90% of the log-scale growth lands on h and the rest settles over 22 f. Run color mixColor(C.mute, C.ink, prog(f, h - 32, h, E.smooth)) so size and contrast peak together. Drive the scale with transform, never font-size, and keep the starting width under about 420 px, so the outer edges peak near 17 px/f (21 px/f at 2.9x) and the word stays readable through the swell; render the blurred master for the frames above 12 px/f. After the settle, keep it alive with a 0.3 px/f drift or a cam-living-hold creep, or cut within 54 f.",
+   "timing": "Letters 5-6 f apart at 9% of the frame height. Swell over 54 f on E.glide, starting at h - 32 so 90% lands on h: scale 1 -> 2.5 (2.9 at most) in log space, with the outer edges of a 420 px word peaking at about 16.5 px/f around frame 17. Contrast goes C.mute -> ink over the 32 f before h. Hold at most 54 f after h, or 90-120 f if this is the final lockup's one appearance.",
+   "use_when": "A hero word or product name that should detonate on the drop after a quiet intro. The one appearance of the final wordmark when the music builds into the end. A single-word answer after a question beat.",
+   "avoid_when": "There is no real musical hit to land on. Words wide enough to swell past the safe area. Using it more than once per film. Stacking a separate scale punch or camera kick on the same hit.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  },
+  {
+   "id": "ty-centre-out-unmask",
+   "name": "Centre-out line unmask",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "calm",
+   "formats": [
+    "feature",
+    "walkthrough",
+    "launch",
+    "loop"
+   ],
+   "summary": "A short line opens from its own centre outward behind a soft-edged mask while the letters stay perfectly still, so a result or status reads as unveiled rather than flown in.",
+   "recipe": "Lay out the final centred line, get its width w from measureTracked, and keep every glyph static. Reveal it with a horizontal mask on the line box: o = w x prog(f, s, s + 18, E.out), and mask-image: linear-gradient(90deg, transparent (50% - o/2 - 20px), #000 (50% - o/2), #000 (50% + o/2), transparent (50% + o/2 + 20px)), computed in px each frame, so both edges travel outward with a 20 px feather (a hard clip-path: inset(0 calc(50% - o/2)) is fine inside a pill). Over the same window, run opacity 0.6 -> 1 and letter-spacing +0.04 em -> the token's tracking on E.out, so the line tightens as it opens. Set it under a centred icon or check that has just landed, starting 4-6 f after the icon's landing frame; for a second line, open it 6 f after the first. Keep the hold alive with a drift of at most 0.3 px/f, and exit with the whole line over 12 f on E.smooth or with ty-reading-order-exit.",
+   "timing": "Unmask over 18 f on E.out (31% of each half-width opens on frame 1), with a 20 px feather. Opacity 0.6 -> 1 and tracking +0.04 em -> token over the same 18 f. Starts 4-6 f after the icon lands; a second line follows at +6 f. Hold at least 36 f + 6 f per word, drifting at most 0.3 px/f. Exit over 12 f on E.smooth.",
+   "use_when": "A result, status or confirmation line under a centred icon ('Published', 'Connected'). A hero word inside a pill that has just formed. A calm sub-line under a headline that has already landed.",
+   "avoid_when": "Lines over about 40 characters (the edges take too long to reach the ends). Left-aligned layouts (wipe from the left edge instead). Text that is also moving, where the mask fights the glyph motion. Headlines that need energy.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 2
+  },
+  {
+   "id": "ty-line-rebreak-glide",
+   "name": "Animated line re-break",
+   "category": "typography_motion",
+   "role": "workhorse",
+   "energy": "medium",
+   "formats": [
+    "launch",
+    "feature",
+    "walkthrough"
+   ],
+   "summary": "A centred one-line statement re-breaks into a two-line stack, or back, with every word gliding from its old slot to its new one, so the layout changes without a cut or a jump.",
+   "recipe": "Pre-solve both layouts with measureTracked and baselineOf. Layout A is one centred line; layout B is two centred lines at pitch = lead x size, the block centred on the same point, optionally at a smaller size s_B. Store each word's centre in both. Move each word i as one FLIP: p_i = prog(f, s + 2i, s + 2i + D_i, E.glide), with D_i = clamp(0.15 x travel_i, 30, 48) f; x = mix(xA_i, xB_i, p_i); scale = lmix(1, s_B / s_A, p_i). Give y its own curve, mix(yA_i, yB_i, arrive(prog(f, s + 2i - 4, s + 2i - 4 + D_i, E.outSoft))), so words that change rows drop first and slide second and never pass through a neighbour. Keep travel under 320 px per word: E.glide peaks at about 3x its mean speed, so D = 0.15 x travel holds readable words near 20 px/f (render the blurred master). If a word would travel further, split the line differently or cut. When an insert causes the re-break (an icon popping into a gap), start it 6 f after the insert lands; once settled, drift the block at 0.3 px/f.",
+   "timing": "Per word, D = 0.15 x travel, clamped to 30-48 f, on E.glide (peak about 20 px/f, near 30% of the move). y leads x by 4 f on E.outSoft through arrive. Stagger 2 f in the reading order of the new layout. Travel at most 320 px. Starts 6 f after a causing insert. Settled drift 0.3 px/f.",
+   "use_when": "An inserted icon or a longer word makes a centred line too wide. A headline must stack to free half the frame for a product shot. Returning a stacked headline to a single line for the payoff.",
+   "avoid_when": "Lines over about 7 words. Re-breaks that carry the hero word far from where it was being read (keep it as the still anchor). More than one re-break per statement. Vertical formats, where a stack is already the default layout.",
+   "ban_safe": true,
+   "bans": [],
+   "evidence": 1
+  }
+ ]
+}
