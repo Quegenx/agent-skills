@@ -119,7 +119,7 @@ ORDER BY i.created_at DESC
 
 - **Typed first:** `posthog:query-logs` for filtered lists (discover, narrow, count, drill down); HogQL for cross-signal joins with `posthog.trace_spans` and `posthog.metrics` by `trace_id`, or custom aggregations.
 - **`logs` columns:** `uuid`, `team_id`, `trace_id` (24-char base64; unset is `'AAAAAAAAAAAAAAAAAAAAAA=='`, not null), `span_id` (12-char base64; unset is `'AAAAAAAAAAA='`), `body` (also `message`), `severity_text` (`trace`, `debug`, `info`, `warn`, `error`, `fatal`), `severity_number`, `level` (alias of `severity_text`), `service_name`, `attributes` Map, `resource_attributes` Map, `resource_fingerprint`, `instrumentation_scope`, `event_name` (often empty), `pattern` (a mined template with variable parts masked), `time_bucket` (`toStartOfDay(timestamp)`), `timestamp` DateTime64(9), `observed_timestamp`. Backed by ClickHouse `logs_distributed`.
-- **Sort key `(team_id, service_name, toUnixTimestamp(timestamp))`.** "Never query without a `service_name` filter and a time window: unfiltered queries can scan terabytes." A `resource_attributes` filter alone does not prune granules.
+- **Sort key `(team_id, service_name, toUnixTimestamp(timestamp))`.** The source rule is "Never query without a `service_name` filter and a time window: unfiltered queries can scan terabytes." Its own cross-service aggregation and trace-correlation recipes deliberately span services. Keep the service filter as the default; an explicit cross-service scope is an exception to that filter, with the actual incident-time bounds on every scan and the same scan-cost warning. A `resource_attributes` filter alone does not prune granules. [existing HOGQL-TABLES-PRODUCTS.md, Logs; HOGQL-EXAMPLES-SIGNALS.md, cross-signal correlation]
 - **Hex and base64:** `21EDB3A025A9ECD32ADF3E5D7548A4F4` is `Ie2zoCWp7NMq3z5ddUik9A==`. Logs with trace context: `trace_id != 'AAAAAAAAAAAAAAAAAAAAAA=='` or `tryBase64Decode(trace_id) != unhex('00000000000000000000000000000000')`. Prefer `severity_text` over `severity_number` or `level`.
 - **`log_attributes`:** an AggregatingMergeTree rollup per service and 10-minute bucket; `attribute_type` is `log` or `resource`. Prefer `posthog:logs-attributes-list` and `posthog:logs-attribute-values-list`.
 - **`system.logs_views`** (saved views): `id`, `team_id`, `short_id`, `name`, `filters` (typically `severityLevels`, `serviceNames`, `filterGroup`), `pinned`, `created_at`, `updated_at`.
@@ -135,21 +135,9 @@ ORDER BY errors DESC
 LIMIT 10
 ```
 
-```sql
-SELECT timestamp, severity_text, service_name, body
-FROM logs
-WHERE trace_id = base64Encode(unhex('<hex_trace_id>'))
-ORDER BY timestamp
-```
+For a trace-linked log lookup, convert an incoming hex ID with the documented `base64Encode(unhex(...))` form, or compare an already stored base64 ID directly. Apply the actual incident-time bounds and the discovered service scope on that log scan. The retired source lookup omitted both bounds; a trace ID does not make the time-first access path bounded. [existing HOGQL-TABLES-PRODUCTS.md, logs]
 
-If you already have the trace_id in base64 form (for example selected directly from the table), compare it as-is:
-
-```sql
-SELECT timestamp, severity_text, service_name, body
-FROM logs
-WHERE trace_id = 'Ie2zoCWp7NMq3z5ddUik9A=='
-ORDER BY timestamp
-```
+An ID selected directly from the table is already in the stored base64 representation. [existing HOGQL-TABLES-PRODUCTS.md]
 
 ```sql
 SELECT timestamp, severity_text, body
@@ -268,17 +256,7 @@ GROUP BY metric_name, metric_type
 ORDER BY n DESC
 ```
 
-```sql
-SELECT
-    toStartOfMinute(timestamp) AS minute,
-    service_name,
-    sum(value) / count() AS mean_value
-FROM posthog.metrics
-WHERE metric_name = 'http.server.duration'
-  AND timestamp >= now() - INTERVAL 1 HOUR
-GROUP BY minute, service_name
-ORDER BY minute, mean_value DESC
-```
+The retired `http.server.duration` example grouped by minute/service but divided the sum of histogram population values by the number of rows. For histograms, combine population sums and observation counts, with matching units and temporality; `count()` of rows is not the observation total. Prefer the typed metric query unless the custom aggregation is required. [existing HOGQL-TABLES-PRODUCTS.md; https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/data-model.md]
 
 ```sql
 SELECT service_name, sum(value) AS total
@@ -647,7 +625,7 @@ ORDER BY observations DESC
 
 ## Prove it
 
-- Every `logs` query filters `service_name` and a time window; every `posthog.trace_spans` query filters `service_name` and `time_bucket`.
+- Every log/span scan has the actual incident-time bounds. Discover service scope before a per-service query; explicitly identify a deliberate cross-service aggregation or trace-correlation scope rather than silently treating it as a per-service lookup. [existing HOGQL.md, time ranges; HOGQL-TABLES-PRODUCTS.md, logs and spans]
 - Prefixed tables carry `posthog.`; a bare-name "Unknown table" error never reached the user.
 - A hex trace ID was converted with `base64Encode(unhex('<hex_trace_id>'))` before comparing to `trace_id`.
 - Span durations are read as nanoseconds and errors as `status_code = 2`.

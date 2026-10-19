@@ -1,8 +1,8 @@
-# Alerting and On-call
+# Grafana alert evaluation and notifications
 
-Grafana Alerting evaluates rules (queries plus a condition, on an interval, with a pending period) and hands firing instances to a notification policy tree that groups them and routes them to contact points; IRM (formerly OnCall) takes it from there with escalation chains, schedules and incidents. Most outcomes are decided by labels: the labels a rule produces decide which policy matches, how instances group into one notification or a hundred, which silence applies and which IRM route fires. Alert on user-facing symptoms, give every alert an owner, and test routing before go-live. PromQL and recording rules are in [PROMQL.md](PROMQL.md) and [PROMETHEUS.md](PROMETHEUS.md); provisioning in general is in [PROVISIONING-AND-API.md](PROVISIONING-AND-API.md).
+Grafana Alerting evaluates rules (queries plus a condition, on an interval, with a pending period) and hands firing instances to a notification policy tree that groups them and routes them to contact points; [IRM and OnCall](IRM-AND-ONCALL.md) take it from there with escalation chains, schedules and incidents. Most outcomes are decided by labels: the labels a rule produces decide which policy matches, how instances group into one notification or a hundred, which silence applies and which IRM route fires. Alert on user-facing symptoms, give every alert an owner, and test routing before go-live. PromQL and recording rules are in [PROMQL.md](PROMQL.md) and [PROMETHEUS.md](PROMETHEUS.md); provisioning in general is in [PROVISIONING-AND-API.md](PROVISIONING-AND-API.md).
 
-**Contents:** [Alert design](#alert-design) · [How rules work](#how-rules-work) · [Grafana-managed rules](#grafana-managed-rules) · [Data source-managed rules](#data-source-managed-rules) · [Example rule queries](#example-rule-queries) · [SLOs and burn-rate alerts](#slos-and-burn-rate-alerts) · [Contact points](#contact-points) · [Notification policies](#notification-policies) · [Templates](#templates) · [Silences, mute timings, inhibition](#silences-mute-timings-inhibition) · [Provisioning alerting](#provisioning-alerting) · [Server config and HA](#server-config-and-ha) · [Alerting RBAC](#alerting-rbac) · [IRM and OnCall](#irm-and-oncall) · [Debugging](#debugging) · [Prove it](#prove-it)
+**Contents:** [Alert design](#alert-design) · [How rules work](#how-rules-work) · [Grafana-managed rules](#grafana-managed-rules) · [Data source-managed rules](#data-source-managed-rules) · [Example rule queries](#example-rule-queries) · [SLOs and burn-rate alerts](#slos-and-burn-rate-alerts) · [Contact points](#contact-points) · [Notification policies](#notification-policies) · [Templates](#templates) · [Silences, mute timings, inhibition](#silences-mute-timings-inhibition) · [Provisioning alerting](#provisioning-alerting) · [Server config and HA](#server-config-and-ha) · [Alerting RBAC](#alerting-rbac) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Alert design
 
@@ -12,7 +12,7 @@ Grafana Alerting evaluates rules (queries plus a condition, on an interval, with
 - **One multi-dimensional rule, not one rule per host, service or endpoint.** Start with a single dimension such as `service` or `endpoint`; add `region` or `instance` only when it improves actionability.
 - **Design for first responders.** Each alert says why it exists, what triggered it and how to investigate; link dashboards and runbooks in annotations. "If no action is possible, it shouldn't be an alert"; use a dashboard instead. Alerts behave like technical debt over time.
 - **Every alert has an owner** (team) and a system scope (service or component). "Notification routing is as important as the alerts."
-- **Set thresholds from an observed baseline, in peacetime.** "Debating that baseline while an incident is underway means you are already late." Alerts catch momentary problems, not slow decline; a week-over-week comparison panel finds that ([DIAGNOSE.md](../observability/DIAGNOSE.md#three-kinds-of-time)).
+- **Set thresholds from an observed baseline, in peacetime.** "Debating that baseline while an incident is underway means you are already late." Alerts catch momentary problems, not slow decline; a week-over-week comparison panel finds that ([INCIDENT-RESPONSE.md](../observability/INCIDENT-RESPONSE.md#three-kinds-of-time)).
 - **Fight flapping** with a pending period and with aggregation over a window instead of raw values; prefer percentiles to averages for latency and errors; use `keep_firing_for` or recovery thresholds during recovery.
 
 ```promql
@@ -30,14 +30,14 @@ quantile_over_time(0.95, http_duration_seconds[5m]) > 3
 - **Graduate noisy symptom alerts into SLOs** and alert on error-budget burn rate; one SLO across teams replaces several latency alerts.
 - **Keep alerts few and simple.** Aim for as few alerts as possible, link each to the relevant consoles, and allow slack for small blips; page on latency at only one point in a stack, as high up as possible; page on user-visible errors plus severe invisible failures (e.g. losing money); split alerts per request type when low-traffic types would drown. Batch jobs: page when a job hasn't succeeded recently enough, with a threshold of at least 2 full runs ("For a job that runs every 4 hours and takes an hour, 10 hours would be a reasonable threshold"). Offline processing: alert on how long data takes to get through. Capacity: being near capacity often needs human intervention. Alert names: CamelCase by community convention.
 - **Monitor the monitoring.** Alert that Prometheus, Alertmanager and PushGateway are up; prefer one end-to-end blackbox test (PushGateway to Prometheus to Alertmanager to email) plus external blackbox monitoring.
-- **Review continuously.** After incidents, check which alerts fired and how they shaped the response; remove alerts that lead to no action; "Use dashboards and observability tools for investigation, not alerts." The postmortem's first question is the detection gap, from the first trace on a graph to the alert firing: can that sign become an alert ([DIAGNOSE.md](../observability/DIAGNOSE.md#the-postmortem))?
+- **Review continuously.** After incidents, check which alerts fired and how they shaped the response; remove alerts that lead to no action; "Use dashboards and observability tools for investigation, not alerts." The postmortem's first question is the detection gap, from the first trace on a graph to the alert firing: can that sign become an alert ([INCIDENT-RESPONSE.md](../observability/INCIDENT-RESPONSE.md#the-postmortem))?
 
 ## How rules work
 
 Reference: https://grafana.com/docs/grafana/latest/alerting.md
 
 - **A rule is queries + condition + evaluation interval + pending period.** It is multi-dimensional: one instance per unique label combination (`cpu_usage{host=~".*"}` gives one instance per host).
-- **Evaluation group:** rules in a group share an interval and evaluate sequentially.
+- **Evaluation group:** the interval is shared. Grafana-managed rules normally evaluate concurrently; data source-managed rules and Grafana-managed rules imported from them evaluate sequentially. The old line said every group evaluated sequentially. [https://grafana.com/docs/grafana/latest/alerting/fundamentals/alert-rule-evaluation/evaluation-within-a-group/]
 - **Pending period** (`for`): `0s` fires immediately, `5m` needs 5 continuous minutes. **Keep firing for** keeps it firing after recovery.
 - **Folder is the RBAC boundary** for rules.
 
@@ -416,20 +416,7 @@ curl https://grafana.example.com/api/alertmanager/grafana/api/v2/silences \
 
 ## Server config and HA
 
-```ini
-[unified_alerting]
-# Enable unified alerting (default: true since Grafana 9)
-enabled = true
-
-# Maximum alert instances a single rule can produce
-max_annotations_to_keep = 100
-
-# Evaluation timeout
-evaluation_timeout = 30s
-
-# Minimum evaluation interval (prevent too-frequent evaluation)
-min_interval = 10s
-```
+- **Rule-result quota:** self-managed Grafana uses `alerting_rule_evaluation_results` in `[quota]` (default `-1`, unlimited); Cloud manages the limit. `max_annotations_to_keep` belongs to `[unified_alerting.state_history.annotations]` and limits retained annotations. The retired source INI called it a maximum alert-instance count. Its other source settings were `[unified_alerting] enabled=true`, `evaluation_timeout=30s` and `min_interval=10s`; these are separate settings, not the result quota. [https://grafana.com/docs/grafana/latest/alerting/set-up/performance-limitations/; https://grafana.com/docs/grafana/latest/administration/configuration/]
 
 HA: instances share state so notifications aren't duplicated.
 
@@ -453,130 +440,13 @@ ha_push_pull_interval = 60s
 | Manage notification policies | | | yes |
 | Create silences | | yes | yes |
 
-## IRM and OnCall
-
-Docs: https://grafana.com/docs/grafana-cloud/alerting-and-irm/ (IRM), https://grafana.com/docs/oncall/latest/ (OnCall), API https://grafana.com/docs/oncall/latest/oncall-api-reference/, Jinja2 helpers https://grafana.com/docs/oncall/latest/configure/jinja2-template-functions/
-
-- **OnCall OSS is in maintenance mode, archived March 2026.** Cloud users use IRM; the concepts are identical.
-- **Prerequisites:** a Cloud stack with IRM/OnCall, an API token, and Slack workspace admin for ChatOps. **The OnCall API header is `Authorization: <token>` with no `Bearer`** (the Grafana HTTP API uses `Bearer`).
-- **Flow:** alert > integration > routing template > escalation chain > notifications > acknowledge or resolve.
-
-| Concept | Meaning |
-|---|---|
-| Integration | Webhook URL accepting alerts; one per source |
-| Route | Jinja2 condition to an escalation chain; first True wins |
-| Escalation chain | Wait, notify schedule, notify team, webhook, auto-resolve steps |
-| Schedule | Calendar-based rotation (web, iCal or Terraform) |
-| Alert Group | Related alerts collapsed by a Grouping ID template |
-| Notification Policy | Per-user channels: Slack, mobile push, SMS, phone, email |
-
-- **Sources:** Grafana Alerting (native), Prometheus Alertmanager (webhook URL), Datadog (webhook), PagerDuty (event integration), Jira (issue-triggered), custom generic webhook. ChatOps and integrations: Slack, Teams, Telegram, GitHub, Jira, StatusPage.
-
-### Grafana Alerting to IRM
-
-- **Wire it:** create an IRM integration "Grafana Alerting webhook", add a webhook contact point (e.g. named `irm-routing`) pointing at `https://<region>.grafana.net/api/plugins/grafana-irm-app/resources/integrations/<integration-id>/webhook` with `httpMethod: POST`, and add a policy matcher (e.g. `severity = page`) routing to it. The alert should appear in IRM within about 30s.
-- **Same-instance shortcut:** IRM > Integrations > New Integration > Grafana Alerting > **Quick Connect** creates the contact point; then link it to a notification policy.
-- **Test** with the rule UI's "Test" button or a fake alert via `POST /api/v1/alerts`.
-
-### Alertmanager to OnCall
-
-```yaml
-# alertmanager.yml
-receivers:
-  - name: grafana-oncall
-    webhook_configs:
-      - url: https://<your-stack>.grafana.net/integrations/v1/alertmanager/<id>/
-        send_resolved: true
-        max_alerts: 100        # prevent oversized payloads
-
-route:
-  receiver:        grafana-oncall
-  group_by:        [alertname, cluster]
-  group_wait:      30s
-  group_interval:  5m
-  repeat_interval: 4h
-```
-
-- **End-to-end test:** `amtool alert add foo severity=critical team=platform --alertmanager.url http://localhost:9093`; the alert group should appear in IRM > Alert Groups within about 5s. Confirm the correct route fired, the correct schedule or user was notified, and the Slack message appeared in the configured channel.
-
-### Formatted webhook (any source)
-
-Fields: `alert_uid`, `title`, `state` (`alerting` or `ok`), `message`, `image_url`, `link_to_upstream_details`.
-
-```bash
-# Send
-curl -X POST https://<stack>.grafana.net/integrations/v1/formatted_webhook/<id>/ \
-  -H "Content-Type: application/json" \
-  -d '{
-    "alert_uid": "incident-123",
-    "title": "Database CPU High",
-    "state": "alerting",
-    "message": "db-prod-01 CPU at 95% for 10 minutes",
-    "link_to_upstream_details": "https://grafana.example.com/d/abc123"
-  }'
-
-# Resolve
-curl -X POST https://<stack>.grafana.net/integrations/v1/formatted_webhook/<id>/ \
-  -H "Content-Type: application/json" \
-  -d '{"alert_uid": "incident-123", "state": "ok"}'
-```
-
-### Routing and grouping templates
-
-- **Routes return True or False; first match wins:** `{{ payload.labels.severity == "critical" }}`, `{{ payload.labels.team == "platform" }}`, `{{ "database" in payload.labels.get("component", "") }}`, catch-all `{{ true }}`.
-- **Grouping ID:** `{{ payload.labels.alertname }}-{{ payload.labels.instance }}`.
-- **Helpers:** `b64decode`, `regex_match`, `datetimeformat_as_timezone(payload.startsAt, "UTC")`, `tojson_pretty`.
-- **Preview before going live:** Integration > Route > "Preview" with a sample payload (use a real Alertmanager test webhook) should show `Routing result: True` and the expected escalation chain. False means the Jinja expression is wrong; fix it and preview again.
-
-### Escalation chains
-
-- **Step types:** Wait, Notify users from schedule, Notify team, Notify users, Trigger outgoing webhook, Auto-resolve after N minutes, Round-robin; Slack adds "Notify by Slack mentions".
-- **Example:** notify Primary (Important) > wait 5 min > notify Primary (Default) > wait 10 min > notify team Platform > webhook.
-- **Keep chains at 4 levels or fewer with a definitive final step;** combine Slack and mobile push. Check with "Send demo alert" and watch the timeline.
-- **API:** base `https://<stack>.grafana.net/api/v1/`: `integrations/`, `escalation_chains/` (POST `{"name":"Platform Critical","team_id":"<id>"}`), `schedules/`, `alert_groups/?page=1&perpage=25`.
-
-### Schedules
-
-- **From iCal:** `POST https://<stack>.grafana.net/api/v1/schedules/` with `ical_url_primary`, `ical_url_overrides`, `slack.channel_id`, `slack.user_group_id`.
-- **Who is on call:** `GET /api/v1/schedules/<schedule_id>/next_shifts/`, then `.results[0]`.
-
-```hcl
-resource "grafana_oncall_schedule" "platform" {
-  name = "Platform On-Call"
-  type = "calendar"
-  shifts = [
-    grafana_oncall_on_call_shift.weekday.id,
-    grafana_oncall_on_call_shift.weekend.id,
-  ]
-}
-
-resource "grafana_oncall_on_call_shift" "weekday" {
-  name           = "Weekday"
-  type           = "rolling_users"
-  start          = "2024-01-01T09:00:00"
-  duration       = 3600 * 8
-  frequency      = "weekly"
-  users_per_slot = 1
-  rolling_users  = [["user-id-1"], ["user-id-2"], ["user-id-3"]]
-}
-```
-
-### Slack, incidents, roles, limits
-
-- **Slack:** install at OnCall Settings > Chat Ops > Slack; users connect in Profile; set a default channel. Message actions: Acknowledge, Resolve, Silence, Add responders, Add note. Slash commands: `/escalate`, `/oncall`.
-- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; source severity P1 to P4, mapped here to P0 to P3 respectively; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [DIAGNOSE.md](../observability/DIAGNOSE.md#the-postmortem)).
-- **RBAC roles:** `oncall-admin`, `oncall-editor`, `oncall-viewer`, `oncall-notifications-receiver`. Assign integrations and schedules to teams.
-- **Rate limits:** 300 alerts per integration per 5 min; 500 alerts per org per 5 min; 300 API requests per key per 5 min.
-- **Always `send_resolved: true` and `max_alerts: 100`** on Alertmanager webhooks.
+For this workflow, read [IRM-AND-ONCALL.md](IRM-AND-ONCALL.md). [existing skills/monitoring/grafana/ALERTING-AND-ONCALL.md]
 
 ## Debugging
 
 | Symptom | Cause |
 |---|---|
 | Alert goes to the wrong receiver | Policy matchers; check with the Alertmanager alerts endpoint below |
-| Fires in Grafana, never reaches IRM | Policy doesn't match the labels, wrong webhook URL, or policy doesn't route to `irm-routing`; check Grafana logs for HTTP errors on the webhook POST |
-| Reaches IRM, nobody notified | Escalation chain misconfigured: no users in rotation, quiet hours |
-| Duplicate IRM incidents | `group_by` is missing the labels that make alerts unique |
 | Hundreds of notifications for one outage | Grouping too fine; group by service or owner |
 | Repeat interval not what you set | Coerced to a multiple of group interval |
 | No email | SMTP not configured; send a test from Alerting > Contact points |
@@ -592,5 +462,4 @@ curl https://grafana.example.com/api/alertmanager/grafana/api/v2/alerts \
 - Every rule has a `team` (or owner) label, a summary, and a dashboard or runbook link in its annotations.
 - `GET /api/v1/provisioning/contact-points | jq '.[].name'` lists every contact point the policies reference.
 - A silence created through the API shows `status.state == "active"` and the previewed instances are only the intended ones.
-- For IRM: the test alert appears (about 30s via Grafana Alerting, about 5s for Alertmanager to OnCall), the route Preview shows `Routing result: True`, and "Send demo alert" reaches a person through the escalation chain.
 - For SLOs: `slo:burn_rate:ratio_rate1h` returns a number and a staged failure fires within `for`.

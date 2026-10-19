@@ -20,7 +20,7 @@ Product context: read `.agents/product-context.md` first if it exists (defined i
 
 [coreyhaines31/marketingskills, attribution] Attribution assumes tracking exists. The line: analytics is "what events and how to fire them"; attribution is "how touches join to conversions and survive to revenue."
 
-- **Event tracking, tracking plans, UTMs, GA4 and GTM:** [../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md) and [../../monitoring/posthog/EVENTS-AND-IDENTITY.md](../../monitoring/posthog/EVENTS-AND-IDENTITY.md).
+- **Event tracking, tracking plans, UTMs, GA4 and GTM:** [../../monitoring/google-analytics/SKILL.md](../../monitoring/google-analytics/SKILL.md) and [../../monitoring/posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md).
 - **Ad-platform pixels, CAPI, server-side conversion tracking:** [../paid-ads/SKILL.md](../paid-ads/SKILL.md); for app campaigns, [../../mobile/app-growth/META-ADS.md](../../mobile/app-growth/META-ADS.md). Attribution consumes platform-reported numbers and corrects for their bias.
 - **Pipeline stages, lead lifecycle, CRM revenue dashboards:** [../revops/SKILL.md](../revops/SKILL.md). Attribution feeds it the source dimension.
 - **Showing up in and measuring AI search:** [../ai-search-visibility/SKILL.md](../ai-search-visibility/SKILL.md). Attribution names AI traffic as a blind spot only.

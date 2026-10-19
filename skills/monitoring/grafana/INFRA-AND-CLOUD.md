@@ -2,7 +2,7 @@
 
 Infrastructure monitoring covers Kubernetes clusters, Linux hosts and Docker containers (collected by Alloy you run) and cloud providers (scraped for you by Grafana Cloud's hosted exporters). On Kubernetes, the `k8s-monitoring` Helm chart deploys Alloy, kube-state-metrics and node-exporter in one step; on hosts, Alloy's exporters do the job; for AWS, Azure and Confluent, hosted exporters poll the provider's API on your behalf. Most outcomes come down to the credentials (the API key secret on the cluster, the IAM actions or Azure role on the provider) and to scraping only the namespaces and resources you need. Alloy pipelines are [ALLOY.md](ALLOY.md); PromQL is [PROMETHEUS.md](PROMETHEUS.md) and [PROMQL.md](PROMQL.md); dashboards are [DASHBOARDS.md](DASHBOARDS.md). Docs: https://grafana.com/docs/grafana-cloud/monitor-infrastructure/ and the chart at https://github.com/grafana/k8s-monitoring-helm
 
-**Contents:** [Kubernetes](#kubernetes) · [Linux hosts](#linux-hosts) · [Docker](#docker) · [Cloud integrations (hosted exporters)](#cloud-integrations-hosted-exporters) · [Cloud datasources by provisioning](#cloud-datasources-by-provisioning) · [Debugging](#debugging) · [Prove it](#prove-it)
+**Contents:** [Kubernetes](#kubernetes) · [Linux hosts](#linux-hosts) · [Docker](#docker) · [Cloud integrations (hosted exporters)](#cloud-integrations-hosted-exporters) · [Cloud datasources by provisioning](#cloud-datasources-by-provisioning) · [Private connectivity](#private-connectivity) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 - **Prerequisites:** a Grafana Cloud stack with Prometheus, Loki and Tempo endpoints and an API key; for Kubernetes, a cluster, `helm` 3.x and a `kubectl` context pointing at it; for hosts and Docker, Alloy installed on the node.
 
@@ -24,50 +24,12 @@ helm install k8s-monitoring grafana/k8s-monitoring \
 
 ### `values.yaml`
 
-```yaml
-cluster:
-  name: production-us-east
+- **Match values to chart 4.1.4:** configure named-map `destinations`, named `collectors`, feature blocks such as `clusterMetrics`, `hostMetrics`, `costMetrics`, `clusterEvents` and `podLogsViaLoki`, and deployed exporters under `telemetryServices`. Application receivers belong under `applicationObservability.receivers`. The retired source paired chart 4.1.4 with older top-level `externalServices`, `metrics`, `logs`, `traces`, `profiles` and `receivers`; it is not a working v4 values file. Read the pinned values and current migration guide before adapting the actual deployment. [https://github.com/grafana/k8s-monitoring-helm/blob/k8s-monitoring-4.1.4/charts/k8s-monitoring/values.yaml; https://grafana.com/docs/grafana-cloud/monitor-infrastructure/kubernetes-monitoring/configuration/config-other-methods/helm-terraform-config/]
 
-externalServices:
-  prometheus:
-    host: https://prometheus-prod-xx.grafana.net
-    basicAuth:
-      username: "123456"
-      password: { secretName: grafana-cloud-secret, secretKey: api-key }
-  loki:
-    host: https://logs-prod-xx.grafana.net
-    basicAuth:
-      username: "234567"
-      password: { secretName: grafana-cloud-secret, secretKey: api-key }
-  tempo:
-    host: https://tempo-prod-xx.grafana.net:443
-    basicAuth:
-      username: "345678"
-      password: { secretName: grafana-cloud-secret, secretKey: api-key }
+- **Preserve the source deployment intent:** cluster name, authenticated Prometheus/Loki/Tempo destinations, cluster and cost metrics, pod/service monitors, kube-state-metrics, node-exporter, cAdvisor, pod logs, cluster events and traces; profiles were disabled, and OTLP receivers used 4317/4318. The old secret references were `grafana-cloud-secret` / `api-key`. These source choices need the selected v4 feature/collector schemas, not renamed keys guessed from the old YAML. [existing INFRA-AND-CLOUD.md]
 
-metrics:
-  enabled: true
-  cost: { enabled: true }            # Kubernetes cost monitoring
-  podMonitors:     { enabled: true }
-  serviceMonitors: { enabled: true }
-  kube-state-metrics: { enabled: true }
-  node-exporter:      { enabled: true }
-  cadvisor:           { enabled: true }
-
-logs:
-  pod_logs:       { enabled: true }
-  cluster_events: { enabled: true }
-
-traces:   { enabled: true }
-profiles: { enabled: false }
-
-receivers:
-  grpc: { enabled: true, port: 4317 }
-  http: { enabled: true, port: 4318 }
-```
-
-- **The sources disagree on the receiver keys:** the infrastructure skill uses `receivers.grpc` / `receivers.http`; the opentelemetry skill uses `receivers.otlp.grpc/http.enabled` with `opencost.enabled: false` and an inline `password: "${GRAFANA_API_KEY}"`. Check the chart's values for version 4.1.4.
-- **Extra Postgres scraping and logs** go in the chart's `alloy-metrics.extraConfig` and `podLogs.extraDiscoveryRules` ([APP-AND-DB-OBSERVABILITY.md](APP-AND-DB-OBSERVABILITY.md#postgres-infrastructure-integration)).
+- **Old receiver forms:** the infrastructure source used `receivers.grpc/http`; the OpenTelemetry source used `receivers.otlp.grpc/http.enabled`, `opencost.enabled: false` and an inline environment reference. Neither is the v4 top-level contract; use the pinned `applicationObservability` and `telemetryServices` schemas. [existing INFRA-AND-CLOUD.md; https://github.com/grafana/k8s-monitoring-helm/blob/k8s-monitoring-4.1.4/charts/k8s-monitoring/values.yaml]
+- **Extra Postgres scraping and logs:** the older integration source used `alloy-metrics.extraConfig` and `podLogs.extraDiscoveryRules`; these are not a verified v4 values contract. Follow the selected chart's collector and feature configuration, with the integration pipeline in [DATABASE-OBSERVABILITY.md](DATABASE-OBSERVABILITY.md#postgres-infrastructure-integration). [existing INFRA-AND-CLOUD.md; https://github.com/grafana/k8s-monitoring-helm/blob/k8s-monitoring-4.1.4/charts/k8s-monitoring/values.yaml]
 
 ### Queries
 
@@ -111,7 +73,7 @@ groups:
           summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} almost full"
 ```
 
-Rule files, routing and on-call are [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md).
+Rule evaluation and notification routing are in [ALERTING.md](ALERTING.md); on-call operations are in [IRM-AND-ONCALL.md](IRM-AND-ONCALL.md).
 
 ## Linux hosts
 
@@ -334,6 +296,50 @@ datasources:
 
 - **After provisioning,** restart Grafana to pick up the file, then test the datasource under **Connections** > **Data sources** > "Test" (expect "Successfully queried the CloudWatch metrics API" or the equivalent), and confirm a query in Explore, for example CloudWatch namespace `AWS/EC2` metric `CPUUtilization` over the last 1h. Datasource docs: https://grafana.com/docs/grafana/latest/datasources/aws-cloudwatch/, https://grafana.com/docs/grafana/latest/datasources/azure-monitor/, https://grafana.com/docs/grafana/latest/datasources/google-cloud-monitoring/
 
+## Private connectivity
+
+[existing ADMIN-AND-AI.md]
+
+Docs: https://grafana.com/docs/grafana-cloud/send-data/
+
+| Direction | Use |
+|---|---|
+| Push from AWS | AWS PrivateLink |
+| Push from Azure | Azure Private Link |
+| Push from GCP | GCP Private Service Connect |
+| Grafana Cloud querying a private DB or Prometheus | Private Data Source Connect (PDC) |
+
+- **Prerequisites:** the stack runs on the same cloud provider; one private endpoint per signal (metrics, logs, traces, profiles; distinct service names). AWS is same-region only; cross-region needs VPC peering first.
+- **AWS:** service names are at Stack Details > "Send using AWS PrivateLink". Create with `aws ec2 create-vpc-endpoint --vpc-endpoint-type Interface --private-dns-enabled ...`, or Terraform `aws_vpc_endpoint` with `private_dns_enabled = true` per signal. Check the endpoint state is "available" with `aws ec2 describe-vpc-endpoints`, and confirm traffic with the endpoint's CloudWatch `BytesProcessed`.
+- **Critical: DNS must resolve privately.** `dig +short prometheus-private.us-east-0.grafana.net` must return a private IP. A public IP means Alloy silently keeps using the public path. Fix with `private_dns_enabled = true` and VPC DNS resolution plus DNS hostnames enabled.
+- **Alloy pointed at private endpoints** (more Alloy in [ALLOY.md](ALLOY.md)):
+
+```alloy
+prometheus.remote_write "cloud_private" {
+  endpoint {
+    url = "https://prometheus-private.us-east-0.grafana.net/api/prom/push"
+    basic_auth {
+      username = sys.env("PROM_USER")
+      password = sys.env("GRAFANA_CLOUD_API_KEY")
+    }
+  }
+}
+
+loki.write "cloud_private" {
+  endpoint {
+    url = "https://logs-private.us-east-0.grafana.net/loki/api/v1/push"
+    basic_auth {
+      username = sys.env("LOKI_USER")
+      password = sys.env("GRAFANA_CLOUD_API_KEY")
+    }
+  }
+}
+```
+
+- **Azure:** have Grafana Support pre-register your Subscription IDs first, or creation hangs at "Pending". Create in the Portal with the Service Alias (auto approval takes about 10 minutes) or `az network private-endpoint create ... --group-ids grafana-metrics`. Check "Approved" with `--query 'privateLinkServiceConnections[0].privateLinkServiceConnectionState.status'`, and resolve with `nslookup prometheus-private.eu-west-2.grafana.net`.
+- **GCP:** `gcloud compute forwarding-rules create grafana-metrics-psc ... --target-service-attachment=projects/grafana-cloud/regions/us-east1/serviceAttachments/metrics`; check `pscConnectionStatus` is "ACCEPTED".
+- **PDC** opens an encrypted tunnel from Grafana Cloud into your network: `helm install pdc grafana/grafana-agent --version 0.44.2 --set pdcConfig.hostedGrafanaId=<your-stack-id> --set pdcConfig.token=<pdc-token>`.
+
 ## Debugging
 
 | Symptom | Cause and fix |
@@ -347,6 +353,8 @@ datasources:
 | `401 Unauthorized` (Confluent) | Wrong API credentials; re-enter them and confirm it is a Metrics API key, not a Kafka key |
 | `No metrics found` | Wrong namespace or resource type selected; add it in the integration settings |
 | `Scrape timeout` | Network restriction; make sure Grafana Cloud's IPs can reach the cloud provider API |
+| Private endpoint unused | DNS returns a public IP |
+| Azure endpoint stuck "Pending" | Subscription ID not pre-registered |
 
 ## Prove it
 
@@ -361,3 +369,4 @@ curl -s -H "Authorization: Bearer <USER>:<API_KEY>" \
   jq '.data | map(select(startswith("aws_") or startswith("azure_")))'
 ```
 - **Cloud datasources:** the datasource "Test" button succeeds and an Explore query returns data.
+- For each private endpoint: `dig` returns a private IP, the endpoint is "available" / "Approved" / "ACCEPTED", and `BytesProcessed` (AWS) rises after Alloy starts. [existing ADMIN-AND-AI.md]

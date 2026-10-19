@@ -21,7 +21,7 @@ What to track and how to read it once it arrives: the principles, the rules for 
 - **Match observation windows.** "A rate or efficiency metric divides a numerator and denominator that cover the same closed observation window. Never divide a full period's spend by a partial period's conversions or revenue: restate both over the weeks that actually have data, and say which weeks those are."
 - **Pending is not failed.** "Cohort rates use only cohorts whose observation window has ended. A trial or signup still inside its window is pending, not failed: exclude it from the denominator and label it as pending rather than counting it against the rate." PostHog's version of the same rule (right-censoring) is in [../posthog/METRICS-MODELING.md](../posthog/METRICS-MODELING.md).
 - **Recommend against the stated goal.** Analysis ends in a recommendation argued "from the goal the brief states (the launch target, audience, revenue, or positioning objective), not only from what is operationally easiest. Name which stated goal each option serves and what it trades away."
-- When GA4 and the database disagree, the source's eval lists the causes to check: consent mode, ad blockers, client-side versus server-side tracking, and session timeout differences. PostHog's guidance to prefer backend tracking when accuracy matters is in [../posthog/EVENTS-AND-IDENTITY.md](../posthog/EVENTS-AND-IDENTITY.md#what-to-capture).
+- When GA4 and the database disagree, the source's eval lists the causes to check: consent mode, ad blockers, client-side versus server-side tracking, and session timeout differences. PostHog's guidance to prefer backend tracking when accuracy matters is in [../posthog/EVENTS.md](../posthog/EVENTS.md#what-to-capture).
 
 ## The plan
 
@@ -60,7 +60,7 @@ checkout_payment_completed
 - Document decisions.
 - "Keep provider-defined names when using automatic or recommended events (e.g. GA4 `click`, `view_search_results`, `purchase`). Map internal business names explicitly; naming a custom event does not make the provider collect it automatically."
 
-Conflict on format: this source uses past-tense object-action (`signup_completed`); the PostHog skill records PostHog's present-tense `category:object_action` and its `[object] [verb]` alternative ([../posthog/EVENTS-AND-IDENTITY.md](../posthog/EVENTS-AND-IDENTITY.md#naming-events-and-properties)). Both say: pick one per project and reuse what the project already has. The owner's website uses the past-tense form (`app_entry_clicked`, [../../frontend/landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md#consent-and-analytics)).
+Conflict on format: this source uses past-tense object-action (`signup_completed`); the PostHog skill records PostHog's present-tense `category:object_action` and its `[object] [verb]` alternative ([../posthog/EVENTS.md](../posthog/EVENTS.md#naming-events-and-properties)). Both say: pick one per project and reuse what the project already has. The owner's website uses the past-tense form (`app_entry_clicked`, [../../frontend/landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md#consent-and-analytics)).
 
 ## Essential events
 

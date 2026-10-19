@@ -2,7 +2,7 @@
 
 Sentry's Flutter SDK (`sentry_flutter`) captures errors, traces, profiles, session replays, logs and metrics on Android, iOS, macOS, Linux, Windows and Web; plain Dart programs (CLI, server) use the `sentry` package. Most outcomes come down to three things: `SentryFlutter.init()` is awaited in an async `main()` with the app wrapped in `SentryWidget`, the build is obfuscated with its debug symbols uploaded by `sentry_dart_plugin` (or stack traces are unreadable), and the feature you want actually runs on the target platform and build mode (replay is iOS and Android only, profiling iOS and macOS only, and several native features work only in release builds). This file covers setup, debug symbols, configuration, errors and the ecosystem packages; tracing, profiling, replay, logs and metrics are in [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md). Releases and source maps across SDKs are in [RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md); sampling, PII and noise rules in [PRACTICES.md](PRACTICES.md); vendor-neutral OpenTelemetry in the `observability` skill ([../observability/SKILL.md](../observability/SKILL.md)).
 
-**Contents:** [Versions](#versions) · [What to set up](#what-to-set-up) · [Detect the project](#detect-the-project) · [Platform support](#platform-support) · [Setup](#setup) · [Debug symbols](#debug-symbols) · [Configuration](#configuration) · [Errors](#errors) · [Release health](#release-health) · [Ecosystem integrations](#ecosystem-integrations) · [Connect a backend](#connect-a-backend) · [Debugging](#debugging) · [Prove it](#prove-it)
+**Contents:** [Versions](#versions) · [What to set up](#what-to-set-up) · [Detect the project](#detect-the-project) · [Platform support](#platform-support) · [Setup](#setup) · [Debug symbols](FLUTTER-SYMBOLS.md#debug-symbols) · [Configuration](#configuration) · [Errors](#errors) · [Release health](#release-health) · [Ecosystem integrations](#ecosystem-integrations) · [Connect a backend](#connect-a-backend) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Versions
 
@@ -10,6 +10,8 @@ Sentry's Flutter SDK (`sentry_flutter`) captures errors, traces, profiles, sessi
 - **The current docs target `sentry_flutter` v10,** which needs Flutter 3.44.0 and Dart 3.12.0+, Android API 26+ (`minSdk` 26), iOS 15.0 / macOS 12.0+ with Swift Package Manager enabled (CocoaPods can't install v10), and `jni >=1.0.0 <1.1.0`. Review the migration guide before upgrading to v10. Several defaults below changed in v10 (trace lifecycle, logs, metrics API); FLUTTER-FEATURES.md flags each one.
 - **`sentry_flutter` 9.0.0 and later need Dart 3.5 or newer.** `pub get` failing with a Dart SDK too old means `flutter upgrade`.
 - **Feature minimums:** errors 7.0.0 (tombstone and trace sync 9.14.0), user-interaction tracing 6.17.0, routing TTID/TTFD 9.1.0, profiling 7.12.0, session replay 9.0.0, structured logs 9.5.0 (docs: 9.0.0), attributes 9.9.0, `sentry_supabase` 9.9.0, W3C `traceparent` 9.7.0, `captureNativeFailedRequests` and trace-connected metrics 9.11.0.
+
+The retained manual setup/full/production source examples below target SDK 9.x (the vendor baseline is 9.14.0), including enableLogs and legacy transaction profiling. Do not paste them unchanged into SDK 10: use its stated prerequisites and the [versioned feature contracts](FLUTTER-FEATURES.md). The source examples' enableLogs flag is removed in 10. [getsentry/sentry-for-ai, sentry-flutter-sdk; https://docs.sentry.io/platforms/dart/guides/flutter/logs/]
 
 ## What to set up
 
@@ -139,7 +141,7 @@ Future<void> main() async {
 ```
 
 - **Add `SentryNavigatorObserver()`** to `navigatorObservers` of `MaterialApp` or `CupertinoApp`, and always name your routes (FLUTTER-FEATURES.md).
-- **Then upload debug symbols** ([Debug symbols](#debug-symbols)).
+- **Then upload debug symbols** ([Debug symbols](FLUTTER-SYMBOLS.md#debug-symbols)).
 
 ### C: Dart only (CLI or server)
 
@@ -258,53 +260,7 @@ Future<void> main() async {
 
 ## Debug symbols
 
-- **Obfuscated builds need their debug symbols uploaded** for readable stack traces. Configure `sentry_dart_plugin` in `pubspec.yaml`:
-
-```yaml
-dev_dependencies:
-  sentry_dart_plugin: ^3.2.1
-
-sentry:
-  project: YOUR_PROJECT_SLUG
-  org: YOUR_ORG_SLUG
-  auth_token: YOUR_AUTH_TOKEN  # prefer SENTRY_AUTH_TOKEN env var instead
-  upload_debug_symbols: true
-  upload_sources: true
-  upload_source_maps: true     # for Web
-```
-
-- **Build, then upload:**
-
-```bash
-# Android
-flutter build apk \
-  --release \
-  --obfuscate \
-  --split-debug-info=build/debug-info \
-  --extra-gen-snapshot-options=--save-obfuscation-map=build/app/obfuscation.map.json
-dart run sentry_dart_plugin
-
-# iOS
-flutter build ipa \
-  --release \
-  --obfuscate \
-  --split-debug-info=build/debug-info \
-  --extra-gen-snapshot-options=--save-obfuscation-map=build/app/obfuscation.map.json
-dart run sentry_dart_plugin
-
-# Web
-flutter build web --release --source-maps
-dart run sentry_dart_plugin
-```
-
-- **The current docs pin `sentry_dart_plugin: ^3.4.0`** and add `dart_symbol_map_path: build/app/obfuscation.map.json` to the `sentry:` block (in `pubspec.yaml` or `sentry.properties`). Precedence: env vars > `--sentry-define` (for example `dart run sentry_dart_plugin --sentry-define=release=my-app@1.0.0`) > `pubspec.yaml` > `sentry.properties`.
-- **Upload even without obfuscation:** "Even if you don't use `split-debug-info` or `obfuscate`, we recommend uploading all available debug files with the Sentry Dart Plugin" (it also symbolicates native iOS frames). Manual upload is not recommended. "Obfuscation is encouraged for production builds"; `--obfuscate` must pair with `--split-debug-info` (output dir inside the project).
-- **Plugin defaults:** `upload_debug_symbols` `true`, `upload_source_maps` `false`, `upload_sources` `false`, `release` from `SENTRY_RELEASE` (default `name@version` from pubspec), `dist` from `SENTRY_DIST` (default the build number after `+`), `build_path` `build`, `web_build_path` `web`, `symbols_path` `.`, `url_prefix` (for example `~/`; needed for non-root web deploys), `legacy_web_symbolication` `false`, `commits` `auto`, `ignore_missing` `false`, `wait_for_processing` `false`, `log_level` `warn`; also `url`, `bin_dir`, `bin_path`, `sentry_cli_cdn_url` (`SENTRYCLI_CDNURL`), `sentry_cli_version`.
-- **Source context** works on iOS and Android only with `--split-debug-info` (Flutter 3.10.0+ and `upload_sources`) and covers the main app package only. Symbolicated issue titles for obfuscated builds exist only on iOS and Android, not web.
-- **R8/ProGuard:** configure the Sentry Android Gradle Plugin in `app/build.gradle.kts` with `autoInstallation { enabled.set(false) }`, `org`, `projectName` and `authToken.set(System.getenv("SENTRY_AUTH_TOKEN"))` (never hardcode). AGP 7.4+ fixes the Gradle plugin circular dependency.
-- **Upload failures:** previous release missing from git history: `ignore_missing: true`; web source maps with plugin 3.0.0+ need the Flutter SDK 9.1.0+ (else `legacy_web_symbolication: true`); a non-root web deploy needs `url_prefix: ~/my-app/` plus a `beforeSend` that rewrites `frame.absPath` to include the prefix; Flutter 3.32.0+ with Android flavors and `--split-debug-info` can overwrite `.symbols` (use a `variantFilter` and `--android-project-arg=active-flavor=...`).
-- **Keep the auth token out of the app.** `SENTRY_AUTH_TOKEN` is for the build tool only; a `sentry_dart_plugin` auth error means use the env var, not a hard-coded token.
-- **Symptoms of missing symbols:** Dart frames shown as `_f`, `_g` (upload Dart symbols); native frames shown as hex addresses (upload dSYMs with the Sentry Xcode build phase or `sentry_dart_plugin`); missing Android ProGuard mapping (pass `--extra-gen-snapshot-options=--save-obfuscation-map=...`); missing iOS dSYMs (`upload_debug_symbols: true` in the `sentry:` block); missing Web stack traces (build with `--source-maps`, then `dart run sentry_dart_plugin`).
+Use the shared debug symbols guidance in [FLUTTER-SYMBOLS.md](FLUTTER-SYMBOLS.md#debug-symbols). [getsentry/sentry-for-ai, SDK references]
 
 ## Configuration
 
@@ -390,7 +346,7 @@ dart run sentry_dart_plugin
 
 ### Build-time environment
 
-Pass these with `--dart-define`:
+The runtime DSN/environment/release/dist can use dart-define. The auth token and upload target belong to the separate build-tool environment, not app defines. The old heading grouped them under one dart-define instruction despite its own no-token rule. [getsentry/sentry-for-ai, sentry-flutter-sdk; existing no-token acceptance rule]
 
 | Variable | Purpose | Notes |
 |---|---|---|
@@ -415,8 +371,33 @@ options.environment = const String.fromEnvironment('SENTRY_ENVIRONMENT', default
 
 ### v10 option notes
 
-More v10 options: [FLUTTER-OPTIONS.md](FLUTTER-OPTIONS.md).
+### Init in the docs' style
 
+The options page initializes with a cascade:
+
+```dart
+import 'package:flutter/widgets.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+
+Future<void> main() async {
+  await SentryFlutter.init(
+    (options) => options
+      ..dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>'
+      ..release = 'my-project-name@2.3.12'
+      ..environment = 'staging',
+    appRunner: () => runApp(MyApp()),
+  );
+}
+```
+
+### Option notes
+
+- **`release`:** set it manually to keep it in sync with deploys and symbol uploads. `dist` is the build number or version code (max 64 chars).
+- **`sendDefaultPii`** defaults to `false` ("By default, no such data is sent"); if you turn it on, remove unwanted data with the sensitive-data features. The hooks for that are `beforeSend`, `beforeSendTransaction` and `beforeSendSpan` (stream mode).
+- **`maxCacheItems`** (`30`): envelopes cached offline; the oldest are deleted.
+- **In-app frames:** `considerInAppFramesByDefault`, `inAppIncludes` (takes precedence) and `inAppExcludes`.
+- **Since versions:** `sendClientReports` 6.6.0; `captureFailedRequests` 7.0.0 (HTTP client errors as events).
+- **`beforeSend`** runs with all scope data already applied. Examples from the filtering page: `event.serverName = "";`, `return hint is MyHint ? null : event;`, and a fingerprint, `if (event.throwable is DatabaseException) { event.fingerprint = ['database-connection-error']; }`. `beforeSendTransaction` applies in transaction mode.
 
 - **`SENTRY_DSN`, `SENTRY_ENVIRONMENT`, `SENTRY_RELEASE` are read automatically** (not in browser runtimes). `environment` is not set by default. `debug` is "generally not recommended to turn it on in production".
 - **`sampleRate` runs after event processors and `beforeSend`,** so those callbacks also run for events later sampled out. Changing it needs a redeploy; a project rate limit may suit better.
@@ -424,6 +405,7 @@ More v10 options: [FLUTTER-OPTIONS.md](FLUTTER-OPTIONS.md).
 - **A throwing callback drops the item:** an exception in event processors, `beforeSend`, `beforeSendTransaction`, `beforeSendFeedback`, `beforeBreadcrumb`, `beforeSendLog` or `beforeSendMetric` drops it; `beforeSendSpan` logs and doesn't drop. "Handle expected failures inside these callbacks and return the intended item or `null` explicitly."
 - **Web-only filters:** `allowUrls` / `denyUrls` (regex strings, ignored elsewhere), for example `options.allowUrls = ["^https://sentry.com.*\$", "my-custom-domain"];`. `ignoreTransactions` (transaction mode; case-insensitive regex, substring by default), for example `['my-transaction', r'^transaction-.*$']`.
 - **Sensitive data:** hash values you need to correlate (`Sentry.configureScope((scope) => scope.setTag('birthday', checksumOrHash('08/12/1990')));`) and send internal IDs rather than personal data (`scope.setUser(SentryUser(id: clientUser.id, username: clientUser.username))`). PII practice across SDKs: [PRACTICES.md](PRACTICES.md).
+
 
 ### Integrations on by default
 
@@ -672,7 +654,7 @@ try {
 | Hot restart crashes on Android in debug | Known issue, fixed in 9.9.0 |
 | `SentryWidget` warning in tests | Call `SentryFlutter.init()` in `setUpAll`, or use `enabled: false` |
 | `pub get` fails, Dart SDK too old | `sentry_flutter` 9.0.0+ needs Dart 3.5.0+; `flutter upgrade` |
-| Symbol upload problems | See [Debug symbols](#debug-symbols) |
+| Symbol upload problems | See [Debug symbols](FLUTTER-SYMBOLS.md#debug-symbols) |
 | 16 KB page size errors | SDK 8.11.0+ |
 | Apple "ITMS-91053: Missing API declaration" | Follow the Apple Privacy Manifest guide |
 | Linux/Windows native crashes | Breakpad by default (uploaded on next start); `SENTRY_NATIVE_BACKEND=crashpad` at build time for Crashpad (clang 13+; for `sentry_init failed` add the CMake `install(PROGRAMS ...)` fix) |

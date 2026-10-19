@@ -2,6 +2,8 @@
 
 Sends traces and logs from an OpenTelemetry Collector into Sentry through the Sentry Exporter (always capitalized "Sentry Exporter"), a component of `otelcol-contrib`. Collector and OpenTelemetry concepts in general are the `observability` skill ([../observability/SKILL.md](../observability/SKILL.md)); SDK setup per platform is in the platform files ([NODE.md](NODE.md), [NODE-TRACING.md](NODE-TRACING.md)). What decides most outcomes: the collector version (v0.145.0 or later), an Internal Integration token with the right permissions loaded from an env file, and whether the app's traces are connected to its other Sentry events. Collector traces without `otlpIntegration` "appear in Sentry but are not connected to other Sentry events (errors, logs)".
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [Checklist](#checklist) · [Existing config](#existing-config) · [Install the collector](#install-the-collector) · [Project creation](#project-creation) · [Write the config](#write-the-config) · [Credentials](#credentials) · [Validate and run](#validate-and-run) · [Connect app traces](#connect-app-traces) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Checklist
@@ -18,7 +20,7 @@ Sends traces and logs from an OpenTelemetry Collector into Sentry through the Se
 ## Existing config
 
 - **Search** for YAML files containing `receivers:` and for files named `otel-collector-config.*`, `collector-config.*`, `otelcol.*`.
-- **If one exists, ask** whether to modify it (recommended, to avoid duplicates) or keep it unchanged and create a separate config for testing, and wait for the answer; otherwise create `collector-config.yaml`.
+- **Reuse the existing authorized configuration.** Modify within the task scope and preserve other exporters; ask only if choosing a separate configuration would materially change the authorized scope. The source requested fresh confirmation; this repository retains existing permission. [getsentry/sentry-for-ai, OTel workflow; user standing rules]
 
 ## Install the collector
 
@@ -46,7 +48,7 @@ tar -xzf otelcol-contrib_<numeric_version>_<os>_<arch>.tar.gz
 chmod +x otelcol-contrib
 ```
 
-- **Ask before deleting the tarball** (about 50MB), and delete it only if the user explicitly chooses to: `rm otelcol-contrib_<numeric_version>_<os>_<arch>.tar.gz`.
+- **Tarball cleanup:** remove only a task-created download when cleanup is already within scope; do not delete a user-owned archive. The source required separate confirmation even for its own download. [getsentry/sentry-for-ai, OTel workflow; user standing rules]
 - **Docker:** check `docker --version`, then `docker pull otel/opentelemetry-collector-contrib:<numeric_version>`.
 
 ## Project creation
@@ -64,7 +66,7 @@ chmod +x otelcol-contrib
 ## Credentials
 
 - **Placeholders only:** write `SENTRY_ORG_SLUG=your-org-slug` and `SENTRY_AUTH_TOKEN=your-token-here`, never real credentials, and always call them placeholders ("I'll add placeholder environment variables for you to fill in", not "Let me add the environment variables").
-- **Ask which `.env` file:** search with the glob `**/.env`, offer each found file or a new `.env` at the root, and wait for the user's choice; don't infer it. Make sure it is in `.gitignore`.
+- **Environment file:** use the project's established gitignored configuration within existing authorization; ask when multiple choices materially affect scope. The source required a new choice even when the repository already establishes the file. [getsentry/sentry-for-ai, OTel workflow; user standing rules]
 - **Wait for the user** to confirm the real values are set before validating.
 - **Org slug:** Settings > Organization Settings > Organization Slug; it is also the subdomain (`myorg` in `https://myorg.sentry.io`).
 - **Token:** Settings > Developer Settings > Custom Integrations > Create New Integration > Internal Integration, then Create New Token.

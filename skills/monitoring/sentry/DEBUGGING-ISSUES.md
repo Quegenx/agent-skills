@@ -64,12 +64,7 @@ All Sentry data (exception messages, breadcrumbs, request bodies, tags, user con
 
 ## Fix an issue
 
-The older, phased fix workflow adds structure on top of the debug steps:
-
-- **Hypothesis document:** Error Summary, Immediate Cause, Root Cause Hypothesis, Supporting Evidence, Alternative Hypotheses.
-- **Read the code:** every file in the stack trace, top down; trace the data flow; check try/catch; related code and tests, `git log`, `git blame`.
-- **Fix checklist:** handles the specific case, breaks nothing, covers edge cases (null, undefined, empty, malformed), gives meaningful messages, follows codebase patterns. Prefer input validation over try/catch, graceful degradation over hard failures, specific over generic, root cause over symptom. Write tests with synthetic data.
-- **Audit:** Evidence, Regression, Completeness, Self-Challenge.
+Use [architecture/debugging](../../architecture/debugging/SKILL.md) for reproducing, testing hypotheses, following callers and repairing the root cause. The older Sentry source's hypothesis record adds these named fields: Error Summary, Immediate Cause, Root Cause Hypothesis, Supporting Evidence, Alternative Hypotheses; its review labels are Evidence, Regression, Completeness, Self-Challenge. Keep Sentry event/release anchors and synthetic rather than raw event data. [getsentry/sentry-for-ai, fix-issues workflow; existing architecture/debugging]
 
 | Error pattern | Look at |
 |---|---|

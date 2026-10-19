@@ -193,7 +193,7 @@ The rule in one line: **when identity is ambiguous, send nothing.** A missing jo
 - **Self and subdomain referrals:** `yourdomain.com`, `app.yourdomain.com`, `auth.yourdomain.com`
 - **Dev and internal traffic:** `localhost`, `127.0.0.1`, test accounts
 
-The source calls this the "highest-trust-per-effort" fix and "usually a *settings* change in the analytics tool, not code"; whether a given tool exposes a referrer-exclusion setting was not checked. Filtering internal users in PostHog is in [../../monitoring/posthog/EVENTS-AND-IDENTITY.md](../../monitoring/posthog/EVENTS-AND-IDENTITY.md#filtering-internal-users).
+The source calls this the "highest-trust-per-effort" fix and "usually a *settings* change in the analytics tool, not code"; whether a given tool exposes a referrer-exclusion setting was not checked. Filtering internal users in PostHog is in [../../monitoring/posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md#filtering-internal-users).
 
 ### Cross-subdomain stitching
 

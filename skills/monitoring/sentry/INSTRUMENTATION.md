@@ -128,7 +128,7 @@ const ranked = await Sentry.startSpan(
 
 ## Automatic browser instrumentation
 
-`browserTracingIntegration` captures page loads (LCP, CLS, TTFB), navigations, fetch/XHR, INP and long tasks (over 50 ms): one transaction per page load or navigation, with child spans for fetch and XHR. Wiring per framework is in [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md) and [REACT-TRACING.md](REACT-TRACING.md).
+`browserTracingIntegration` captures page loads (LCP, CLS, TTFB), navigations, fetch/XHR, INP and long tasks (over 50 ms): one transaction per page load or navigation, with child spans for fetch and XHR. Wiring per framework is in [BROWSER-TRACING.md](BROWSER-TRACING.md) and [REACT-TRACING.md](REACT-TRACING.md).
 
 - **`tracePropagationTargets` default disagrees between pages:** the automatic-instrumentation page lists `['localhost', /^\/$/]` ("tracing headers are only attached to requests containing `localhost` or starting with `/`"); the options page says all same-origin requests are propagated. Flutter, unset, attaches to every outgoing request from the instrumented client. The automatic-instrumentation page's example: `["localhost", /^https:\/\/api\.example\.com/]`. The server must allow the headers: `Access-Control-Allow-Headers: sentry-trace, baggage`.
 - **Parameterize span names so they group:** `beforeStartSpan: (options: StartSpanOptions) => StartSpanOptions`, for example `/users/12312012` to `/users/:userid`, or replacing `/[a-f0-9]{32}/` with `/<hash>` and `/\d+/` with `/<digits>`.

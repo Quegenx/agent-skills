@@ -14,9 +14,10 @@ k6 runs JavaScript test scripts as load: `options` (or `options.scenarios`) set 
 | k6 browser tests: selectors, waits, consent banners, `expect()`, async checks, screenshots, Web Vitals thresholds, exploring a live site for selectors, validating | [BROWSER.md](BROWSER.md) |
 | A full website suite, steps 1 to 4: eliciting workflows, the scaffold, recording with Playwright and har-to-k6, functional protocol and browser tests, assertion libraries | [WEBSITE-PERF-TEST.md](WEBSITE-PERF-TEST.md) |
 | The website suite, steps 5 to 10: SLO thresholds, hybrid load tests, per-type defaults, the load-generator monitor, local vs cloud and VUh, backend investigation in Grafana, the report | [WEBSITE-LOAD-AND-REPORT.md](WEBSITE-LOAD-AND-REPORT.md) |
-| Grafana Cloud k6: `options.cloud`, load zones, cloud run commands, CI templates, gcx auth, the API proxy and its quirks, pagination, managing tests, runs and schedules, editing cloud scripts safely, gotchas | [CLOUD.md](CLOUD.md) |
+| Grafana Cloud k6: `options.cloud`, load zones, cloud run commands, generic automation gates, gcx auth, the API proxy and its quirks, pagination, managing tests, runs and schedules, editing cloud scripts safely, gotchas | [CLOUD.md](CLOUD.md) |
 | Reading and investigating cloud runs: the investigation workflow, result vs status vs checks, the v5 metrics API, Loki logs, screenshots, Tempo traces, Insights audits, run reports | [CLOUD-RESULTS.md](CLOUD-RESULTS.md) |
-| Maintaining existing tests (change control, verification classes, tightening thresholds, migrations, service changes, audits) and multi-run trend analysis | [MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md) |
+| Maintaining existing tests: change control, verification classes, tightening thresholds, migrations, service changes and audits | [MAINTENANCE.md](MAINTENANCE.md) |
+| Historical run trends, grouping, metric direction, headroom and script/version evidence at inflection points | [TRENDS.md](TRENDS.md) |
 | Which k6 version a behavior needs: the v2.0.0 migration checklist, v1.7 to v2.3 changes, feature flags, version boundaries in trend data | [VERSIONS.md](VERSIONS.md) |
 
 ## The rules

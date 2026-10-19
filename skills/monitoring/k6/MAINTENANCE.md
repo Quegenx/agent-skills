@@ -1,8 +1,8 @@
-# Maintaining tests and reading trends
+# Maintaining k6 tests
 
-Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to a new k6 version, adapting to service changes, refactoring, auditing against best practices), and their run history answers whether performance is drifting. The core is change control: syntactic edits apply directly, behavioral edits (anything that changes what the test measures or when it fails) are proposed as a diff and confirmed, and every change is verified in proportion to its risk. New tests start in [SCRIPTS.md](SCRIPTS.md) or [BROWSER.md](BROWSER.md); a single run's deep dive is [CLOUD-RESULTS.md](CLOUD-RESULTS.md).
+Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to a new k6 version, adapting to service changes, refactoring, auditing against best practices). Their run history is interpreted in [TRENDS.md](TRENDS.md). The core is change control: syntactic edits apply directly, behavioral edits (anything that changes what the test measures or when it fails) are proposed as a diff and confirmed, and every change is verified in proportion to its risk. New tests start in [SCRIPTS.md](SCRIPTS.md) or [BROWSER.md](BROWSER.md); a single run's deep dive is [CLOUD-RESULTS.md](CLOUD-RESULTS.md).
 
-**Contents:** [Change control](#change-control) · [Verifying a change](#verifying-a-change) · [Tightening thresholds](#tightening-thresholds) · [Version migration](#version-migration) · [Service changes](#service-changes) · [Refactoring and audits](#refactoring-and-audits) · [Trend analysis](#trend-analysis) · [Prove it](#prove-it)
+**Contents:** [Change control](#change-control) · [Verifying a change](#verifying-a-change) · [Tightening thresholds](#tightening-thresholds) · [Version migration](#version-migration) · [Service changes](#service-changes) · [Refactoring and audits](#refactoring-and-audits) · [Prove it](#prove-it)
 
 ## Change control
 
@@ -27,8 +27,10 @@ Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to
 
 ## Tightening thresholds
 
-- **Report** the current value, the proposed value, the observed justification ("P95 is currently 380ms, proposing p(95)<450 to give 18% headroom") and the downstream impact (`abortOnFail`, CI gates, SLOs). Tightening an `abortOnFail` threshold makes runs abort earlier; warn the user.
-- **Recommendations only tighten,** never loosen unless asked. Target 10 to 20% headroom above the recent P95, using the second-half mean as the baseline. Headroom above 100% may be intentional. Consider per-endpoint thresholds on tags, for example `http_req_duration{name:homepage}`.
+- **Report** the current value, the proposed value, the observed justification ("P95 is currently 380ms, proposing p(95)<450 to give about 15.6% headroom against the threshold") and the downstream impact (`abortOnFail`, CI gates, SLOs). Tightening an `abortOnFail` threshold makes runs abort earlier; warn the user.
+The source called the 380ms-to-450ms example 18% headroom. Using its threshold-based definition gives `(450 - 380) / 450 * 100`, about 15.6%; dividing by 380 instead measures uplift over the observation. The canonical formula and upper-bound scope are in [TRENDS.md](TRENDS.md#trend-analysis). [existing MAINTENANCE-AND-TRENDS.md; arithmetic recomputation]
+
+- **Recommendations only tighten,** never loosen unless asked. The maintenance source targets 10 to 20% above the recent P95, using the second-half mean as the baseline, and says "Headroom above 100% may be intentional." That observation-based uplift convention differs from the [canonical threshold-based headroom](TRENDS.md#trend-analysis), which cannot exceed 100% for nonnegative latency and a positive threshold. Label the denominator when reporting either view. Consider per-endpoint thresholds on tags, for example `http_req_duration{name:homepage}`. [existing MAINTENANCE-AND-TRENDS.md, Tightening thresholds and Trend analysis]
 
 ## Version migration
 
@@ -54,43 +56,16 @@ Existing k6 tests need five kinds of upkeep (tightening thresholds, migrating to
 - **Look up the docs before auditing** (not optional): `k6 x docs using-k6-browser/recommended-practices`, `k6 x docs javascript-api k6-browser page`, `k6 x docs javascript-api k6-browser locator`.
 - **Audit checklist:**
   - Thresholds and assertions: thresholds defined (at minimum `http_req_duration` and `http_req_failed` for HTTP tests); `check()` or `expect()` on every response; thresholds realistic for the test type.
-  - Load design: `sleep()` present in load tests (required for realistic think time); executors appropriate for the test type; a reasonable VU and iteration count.
+  - Load design: follow the [load-model-specific think-time rule](SCRIPTS.md#rules-for-every-script), with the intended executor, VU pool and iteration count. The old checklist required sleep in every load test; arrival-rate executors already pace iteration starts and need no trailing sleep. [https://grafana.com/docs/k6/latest/using-k6/scenarios/executors/ramping-arrival-rate/]
   - Resource management: browser tests use `try/finally` with `page.close()` in `finally`; gRPC tests call `client.close()` after each iteration; file handles and connections closed.
   - Code quality: `const` instead of `let`/`var` at module level; no deprecated imports; no hardcoded secrets (use `__ENV` or environment variables); `SharedArray` for test data files.
   - Browser-specific (the script imports `k6/browser`): `getBy*` APIs instead of generic `page.locator()` where possible; no `waitFor()` before interactions; no `waitForLoadState()` after navigation; `page.waitForTimeout()` instead of `sleep()`.
 - **Audit report format:** Passed / Needs attention (behavioral) / Auto-applied (syntactic), each item citing its doc page.
 
-## Trend analysis
-
-Multi-run trends for one load test. Not for deep-diving one run, editing scripts, creating them, or querying service metrics directly (hand those to backend investigation, [WEBSITE-LOAD-AND-REPORT.md](WEBSITE-LOAD-AND-REPORT.md#investigating-the-backend)).
-
-- **Window:** the last 30 days by default; widen if there are fewer than 5 runs; ask if there are more than 200. Fewer than 3 usable runs: a trend isn't meaningful. Exclude aborted and timed-out runs by default. List tests with `gcx k6 tests list`.
-- **Method per type:** trend `histogram_quantile(0.95)` (P95), `histogram_quantile(0.5)`, `histogram_avg`, and query P50, P90, P95 and P99; counter `increase`; rate `ratio`; gauge `max`.
-- **Group by default:** `browser_web_vital_*` (LCP, FCP, CLS, TTFB, INP; FID only in runs before k6 v2.0.0, which removed `browser_web_vital_fid`) `by (url)`; `http_req_duration`, `http_req_failed`, `http_reqs` `by (name, status)` when requests are tagged with `name`, else `by (url, status)`; `iteration_duration` `by (scenario)`; custom trends `by (<tag>)`. Discover labels through the labels endpoints rather than assuming them from the script. Batch run IDs in groups of 50 when URLs get too long.
-
-```bash
-gcx --context <ctx> api "/api/plugins/k6-app/resources/cloud/cloud/v5/load_tests/$LT/query_aggregate_k6(query='histogram_quantile(0.95)',metric='http_req_duration',test_run_ids=[$IDS])" -o json
-```
-
-- **Metric types can collide across runs:** the latest run's type wins and aggregations using the older type's method silently break.
-
-| Classification | Rule |
-|---|---|
-| Degrading | Second-half mean worse than the first half by more than 10% |
-| Improving | Better by more than 10% |
-| Stable | Within 10% |
-| Volatile | Standard deviation above 25% of the mean |
-| Anomaly | A run more than 2 standard deviations from the mean |
-
-- **Formulas:** baseline is the oldest run or the mean of the first 3 runs. Rate of change `((recent_mean - baseline_mean) / baseline_mean) * 100 / weeks_in_window`. Headroom `((threshold_value - current_value) / threshold_value) * 100`: Comfortable above 50%, Adequate 20 to 50%, Thin under 20%, Breached under 0%. `weeks_until_breach = headroom_absolute / rate_of_change_per_week` is a rough projection. For rate metrics, "degrading" means decreasing.
-- **Overall health** is Healthy, Watch, Degrading or Critical, taken from the worst-case metric.
-- **Inflection points:** sha256-diff the run-bundled scripts (`/cloud/v6/test_runs/{id}/script`) on either side of the change. Different scripts: split the history into eras. Same script: the regression is external, unless the k6 version changed across a boundary that shifts the numbers ([VERSIONS.md](VERSIONS.md#version-boundaries-in-trend-data)); split there too.
-- **Load generator resources trending up** (`load_generator_cpu_percent`, `load_generator_file_handles`) can mean the test is outgrowing its load generator, not that the service is degrading.
-- **When the service has no observability,** correlate client-side: Tempo traces for browser tests; for protocol tests compare `http_req_duration by (name, status)` and `http_req_failed by (name, status)`, and split `http_req_waiting` (server time) from `http_req_receiving` (transfer). Latency up with payload up suggests a content change; latency up with payload stable, a processing change; an intermittent payload, a flaky cache or an A/B test.
+For this workflow, read [TRENDS.md](TRENDS.md). [existing skills/monitoring/k6/MAINTENANCE-AND-TRENDS.md]
 
 ## Prove it
 
 - Every behavioral change was shown as a diff and confirmed before it shipped; syntactic ones are listed as auto-applied.
 - Each change has the verification its class and duration require, ending with matching sha256 sums for cloud scripts.
 - A tightened threshold comes with a table of recent runs showing which would have passed and failed under old and new values.
-- A trend verdict states the window, the number of usable runs (at least 3), the exclusions, and the script-hash comparison at any inflection point.

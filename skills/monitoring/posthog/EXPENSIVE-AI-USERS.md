@@ -127,7 +127,7 @@ ORDER BY total_cost DESC
 | High cost per generation, ordinary volume | Expensive models, long context or outputs, reasoning, web-search or request fees |
 | High input tokens | Context bloat, repeated history, large retrieved docs, missing truncation |
 | High output or reasoning tokens | Verbose answers, reasoning models, missing output limits, tool loops |
-| Low cache reuse with high repeated input | Missed prompt caching (formula in `exploring-llm-costs/references/cache-accounting.md`) |
+| Low cache reuse with high repeated input | Missed prompt caching (formula in [cache accounting](LLM-EXPLORING.md#cache-accounting)) |
 | High errors, many high-cost traces | Retries, failed tool calls, loops (read the traces first) |
 | High request or web-search cost | Provider flat fees or tool-heavy generations |
 

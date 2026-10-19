@@ -11,9 +11,9 @@ Sentry captures errors and crashes and ties each one to the release, request and
 |---|---|
 | React SPA: setup, `reactErrorHandler`, error boundaries, feedback, Redux, source maps | [REACT.md](REACT.md) |
 | React tracing: router integrations, Web Vitals, custom spans, distributed tracing | [REACT-TRACING.md](REACT-TRACING.md) |
-| React Session Replay, logs and profiling | [REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md) |
+| Shared browser Session Replay, privacy, network/CSP/manual control and browser profiling for Browser/React/Next.js | [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md) |
 | Plain browser JavaScript: npm, Loader Script or CDN, capture, filtering, tunnel, feedback | [BROWSER.md](BROWSER.md) |
-| Browser tracing, Replay, logs and profiling | [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md) |
+| Shared browser tracing options, custom spans, propagation and router handoffs | [BROWSER-TRACING.md](BROWSER-TRACING.md) |
 | React Router framework mode (`@sentry/react-router`) and TanStack Start: client and server setup, errors, tracing | [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md) |
 | Next.js: the three runtimes, `withSentryConfig`, error boundaries, server-side capture | [NEXTJS.md](NEXTJS.md) |
 | Next.js tracing, Replay, logs, metrics, profiling, crons, AI monitoring | [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md) |
@@ -26,8 +26,9 @@ Sentry captures errors and crashes and ties each one to the release, request and
 | React Native errors, tracing, profiling, Replay, logs, feedback | [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md) |
 | Flutter and Dart: setup, `SentryWidget`, debug symbols, options, errors, release health | [FLUTTER.md](FLUTTER.md) |
 | Flutter tracing, TTID and TTFD, profiling, Replay, logs, metrics, feedback | [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md) |
-| Flutter v10 docs details: init cascade, `release` and PII notes, in-app frames, `beforeSend` examples, the docs' Dart plugin config | [FLUTTER-OPTIONS.md](FLUTTER-OPTIONS.md) |
+| Flutter build symbols, source maps, Dart plugin options and upload diagnosis | [FLUTTER-SYMBOLS.md](FLUTTER-SYMBOLS.md) |
 | Ground rules for agents, routing by platform, setup order, project and DSN through the MCP, verifying end to end, core options, noise filters, environments, PII | [PRACTICES.md](PRACTICES.md) |
+| Shared JavaScript options, versioned privacy categories, capture APIs, scopes and breadcrumbs | [JAVASCRIPT.md](JAVASCRIPT.md) |
 | Sample rates, `tracesSampler`, a sampling strategy, quotas, rate limits, spike protection | [SAMPLING-AND-QUOTAS.md](SAMPLING-AND-QUOTAS.md) |
 | Which signal answers which question: errors, traces, logs, metrics, profiles, replay, feedback, crons, uptime, alerts | [SIGNALS.md](SIGNALS.md) |
 | Cross-platform practice for Replay, logs, metrics, crons, feedback and profiling | [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md) |
@@ -38,7 +39,7 @@ Sentry captures errors and crashes and ties each one to the release, request and
 | AI and agent monitoring: `gen_ai.*` spans, integrations, tokens and cost, conversations, sampling | [AI-MONITORING.md](AI-MONITORING.md) |
 | Sending traces and logs from an OpenTelemetry Collector through the Sentry Exporter | [OTEL.md](OTEL.md) |
 | Supabase: `supabaseIntegration`, trace propagation, Edge Functions, the log drain | [SUPABASE.md](SUPABASE.md) |
-| Major JavaScript SDK upgrades: v7 to v8, v8 to v9, v9 to v10 | [UPGRADE.md](UPGRADE.md) |
+| Major JavaScript SDK upgrades: v7 to v8, v8 to v9, v9 to v10 and v10 to v11 | [UPGRADE.md](UPGRADE.md) |
 
 ## The rules
 

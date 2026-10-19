@@ -1,6 +1,6 @@
 # Next.js setup
 
-Next.js uses two SDKs: `posthog-js` in the browser and `posthog-node` on the server. The browser side initializes once in `instrumentation-client.ts`, which serves both the app router and the pages router; the server side runs in short-lived functions, so whether events arrive depends on flushing before the function returns, and whether they join the right person depends on using the same distinct ID as the client. The general rules (commandments, CSP, bundles, tracing headers) are in [SETUP-WEB.md](SETUP-WEB.md); the Next.js reverse proxy recipes are in [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md); init options in [CONFIG-WEB.md](CONFIG-WEB.md); the Node SDK itself in [SETUP-SERVER.md](SETUP-SERVER.md); `identify` in [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md); server-side flag evaluation in [FEATURE-FLAGS.md](FEATURE-FLAGS.md).
+Next.js uses two SDKs: `posthog-js` in the browser and `posthog-node` on the server. The browser side initializes once in `instrumentation-client.ts`, which serves both the app router and the pages router; the server side runs in short-lived functions, so whether events arrive depends on flushing before the function returns, and whether they join the right person depends on using the same distinct ID as the client. The general rules (commandments, CSP, bundles, tracing headers) are in [SETUP-WEB.md](SETUP-WEB.md); the Next.js reverse proxy recipes are in [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md); init options in [CONFIG-WEB.md](CONFIG-WEB.md); the Node SDK itself in [SETUP-SERVER.md](SETUP-SERVER.md); `identify` in [IDENTITY.md](IDENTITY.md); server-side flag evaluation in [FEATURE-FLAGS.md](FEATURE-FLAGS.md).
 
 ## Client
 
@@ -47,6 +47,13 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
 - **Don't add a `PostHogProvider` on top.** The example apps say never to combine `instrumentation-client.ts` with another client-side initialization, especially a provider.
 - **Bootstrapping is limited:** values passed to `init` in `instrumentation-client` stay fixed for the whole session, so bootstrapping only works when flags are evaluated before the app renders (on the server). Otherwise evaluate on the server and pass the value in, or evaluate in an earlier page or state and reuse it, as long as client and server use the same `distinct_id`.
 - **SSR hydration errors** from injected scripts: `external_scripts_inject_target: 'head'` (the default from `defaults: '2026-01-30'`; see [CONFIG-WEB.md](CONFIG-WEB.md)).
+
+### Provider-based router alternatives
+
+The error-tracking source also describes these alternatives; the example-app guidance above says not to combine a provider with `instrumentation-client.ts`. Keep the source views distinct and use only one initialization path. [PostHog skills, ERROR-TRACKING.md; SETUP-NEXTJS.md]
+
+- **App router alternative:** `app/providers.tsx` with `'use client'`, `posthog.init(...)` inside `useEffect(() => {...}, [])`, children wrapped in `PostHogProvider as PHProvider` from `@posthog/react` with `client={posthog}`; wrap it in `app/layout.tsx`.
+- **Pages router:** `pages/_app.tsx`, init in `useEffect` with `loaded: (posthog) => { if (process.env.NODE_ENV === 'development') posthog.debug() }`, wrapped in `<PostHogProvider client={posthog}>`.
 
 ### `@posthog/next` (pre-release)
 
@@ -103,8 +110,30 @@ posthog.identify({
 await posthog.flush();
 ```
 
-  The React Router examples say the opposite: identify once on the client, never on the server. Backend `identify` only updates person profiles (there are no anonymous sessions in backend SDKs). See [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md).
+  The React Router examples say the opposite: identify once on the client, never on the server. Backend `identify` only updates person profiles (there are no anonymous sessions in backend SDKs). See [EVENTS.md](EVENTS.md).
 - **Link to the browser session** with `tracing_headers` on the client ([SETUP-WEB.md](SETUP-WEB.md#linking-frontend-and-backend)), and use the same distinct ID on both sides.
+
+### Request-error server factory
+
+The request-error example in [ERROR-TRACKING.md](ERROR-TRACKING.md#nextjs) uses this lazy server factory. Its shared-client delivery follows [Flush or shut down](#flush-or-shut-down). [PostHog skills, ERROR-TRACKING.md]
+
+```javascript
+import { PostHog } from 'posthog-node'
+let posthogInstance = null
+export function getPostHogServer() {
+  if (!posthogInstance) {
+    posthogInstance = new PostHog(
+      process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN,
+      {
+        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+        flushAt: 1,
+        flushInterval: 0,
+      }
+    )
+  }
+  return posthogInstance
+}
+```
 
 ### Flush or shut down
 
@@ -131,7 +160,7 @@ posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN, {
 
 ## Proxy
 
-A reverse proxy is recommended so tracking blockers drop fewer events: PostHog's managed proxy (free on Cloud), Next.js rewrites in `next.config`, the Next.js proxy file (`middleware.js` before Next.js 16), or Vercel rewrites. The rewrites, the proxy file, the matcher pitfall with next-intl or NextAuth, and the Vercel costs are all in [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md#nextjs).
+Reverse proxy options include PostHog's managed proxy (free on Cloud), Next.js rewrites in `next.config`, the Next.js proxy file (`middleware.js` before Next.js 16), or Vercel rewrites. The rewrites, the proxy file, the matcher pitfall with next-intl or NextAuth, and the Vercel costs are all in [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md#nextjs).
 
 ## App router or pages router
 

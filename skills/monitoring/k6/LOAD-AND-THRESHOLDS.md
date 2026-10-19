@@ -193,7 +193,7 @@ A k6 cloud run reporting `ABORTED_THRESHOLD` means a threshold tripped; inspect 
 - **Pre-release thresholds:** `'http_req_failed': ['rate<0.01']`, `'http_req_duration': ['p(90)<600']`, `'http_req_duration{type:staticContent}': ['p(99)<250']`, `'my_custom_metric': ['rate<0.05']`.
 - **Compare identical runs:** same workload, scenario, data and environment. If something must change, rename it or create a new test. Run the same test twice almost consecutively. Manual cadence examples: soak quarterly; heavy stress 2 months before a seasonal event.
 - **Quality gates in CI/CD may give false assurance.** Don't rely entirely on pass/fail until the tests are mature; start with warnings. Load tests take 3 to 15+ minutes, so keep larger tests out of auto-deploy pipelines and plan days for pre-release performance testing.
-- **Keep results:** pick a storage backend and a deletion policy that keeps baselines; track metric trends ([MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md)); build dashboards and alerts; correlate with observability (traces from tests through the `http-instrumentation-tempo` jslib). Stop risky tests with `abortOnFail` or from the CLI or Cloud.
+- **Keep results:** pick a storage backend and a deletion policy that keeps baselines; track metric trends ([TRENDS.md](TRENDS.md)); build dashboards and alerts; correlate with observability (traces from tests through the `http-instrumentation-tempo` jslib). Stop risky tests with `abortOnFail` or from the CLI or Cloud.
 - **For always-on probing** of production (uptime, scheduled API health checks), use Synthetic Monitoring in the grafana skill: [../grafana/SYNTHETIC-MONITORING.md](../grafana/SYNTHETIC-MONITORING.md).
 
 ## Prove it

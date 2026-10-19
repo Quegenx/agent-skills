@@ -2,6 +2,8 @@
 
 `@sentry/nestjs` is the Node SDK plus NestJS hooks: a module that names transactions, a global filter that reports exceptions, and decorators for spans, crons and existing filters. Everything shared with plain Node (capture APIs, scopes, filtering, fingerprints, logs API, metrics, crons API, span APIs, sampling, distributed tracing, profiling, AI integrations) is in [NODE.md](NODE.md) and [NODE-TRACING.md](NODE-TRACING.md); this file keeps only what Nest changes. Two mechanisms decide most outcomes. First, the SDK must patch Node modules through OpenTelemetry before NestJS loads them, which is why setup takes three files and `instrument.ts` is the first import. Second, NestJS routes unhandled exceptions through its exception filter pipeline, so they never reach Node's uncaught handler: Sentry sees them only if it is hooked into that pipeline.
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [Versions](#versions) · [Detect and recommend](#detect-and-recommend) · [Setup: three files](#setup-three-files) · [Configuration](#configuration) · [Error monitoring](#error-monitoring) · [Context per request and per job](#context-per-request-and-per-job) · [Tracing](#tracing) · [Databases](#databases) · [Profiling](#profiling) · [Logs](#logs) · [Metrics](#metrics) · [Crons](#crons) · [AI monitoring](#ai-monitoring) · [DI wrappers and lint rules](#di-wrappers-and-lint-rules) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Versions
@@ -661,7 +663,7 @@ For a fleet: `tracesSampleRate: 0.1` (10% of requests) with `profileSessionSampl
 
 ## Logs
 
-The `Sentry.logger` API, `fmt`, `beforeSendLog` and attributes are in [NODE.md](NODE.md#logs). Nest bridges:
+The `Sentry.logger` API, `fmt`, `beforeSendLog` and attributes are in [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md#logs). Nest bridges:
 
 - **NestJS `Logger` / `ConsoleLogger`:** `consoleLoggingIntegration({ forceConsole: true })`; then `new Logger(AppService.name)` sends `.log` as info, `.warn` as warn, `.error` as error.
 
@@ -684,7 +686,7 @@ Sentry.init({
 
 ## Metrics
 
-Exactly as in [NODE.md](NODE.md#metrics) (on by default from 10.25.0, no init flag). Nest example of a counter from a DTO:
+Exactly as in [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md#application-metrics) (on by default from 10.25.0, no init flag). Nest example of a counter from a DTO:
 
 ```typescript
 Sentry.metrics.count('orders.created', 1, {

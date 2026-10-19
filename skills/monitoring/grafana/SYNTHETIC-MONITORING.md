@@ -506,7 +506,7 @@ resource "grafana_synthetic_monitoring_check" "edge_ping" {
 
 ## Alerting and rollback
 
-- **Start with `alertSensitivity`** (Terraform `alert_sensitivity`) and the default alert rules on `probe_success`. In Terraform the default is `none`, so nothing alerts until you set `low`, `medium` or `high`. Custom rules and routing are [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md).
+- **Start with `alertSensitivity`** (Terraform `alert_sensitivity`) and the default alert rules on `probe_success`. In Terraform the default is `none`, so nothing alerts until you set `low`, `medium` or `high`. Custom rules and routing are [ALERTING.md](ALERTING.md).
 - **Cert expiry:** a TCP check with TLS feeds `probe_ssl_earliest_cert_expiry`.
 - **Roll back with `enabled: false`** (UI toggle, `gcx synthetic-monitoring checks update`, API update or Terraform): executions stop and history stays. Delete a check only when you no longer need its configuration.
 

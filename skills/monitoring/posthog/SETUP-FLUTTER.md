@@ -1,6 +1,6 @@
 # Flutter setup
 
-`posthog_flutter` (`https://pub.dev/packages/posthog_flutter`) runs on iOS, macOS, Android and Web, with an internal queue and batched async flush. Lifecycle events won't have any special context set by the time the SDK initializes. Self-hosted instances need a public hostname or IP. Session Replay, Surveys and `onFeatureFlags` require manual setup (`AUTO_INIT` off), a web build needs the posthog-js snippet (`Posthog().setup()` is a no-op on web), and there are no `$screen` events without `PosthogObserver`. React Native and Expo are [SETUP-MOBILE.md](SETUP-MOBILE.md), which also compares the defaults of every SDK; servers are [SETUP-SERVER.md](SETUP-SERVER.md), the browser is [SETUP-WEB.md](SETUP-WEB.md), naming and identity rules are [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md), flags are [FEATURE-FLAGS.md](FEATURE-FLAGS.md), replay is [SESSION-REPLAY.md](SESSION-REPLAY.md) and exceptions are [ERROR-TRACKING.md](ERROR-TRACKING.md).
+`posthog_flutter` (`https://pub.dev/packages/posthog_flutter`) runs on iOS, macOS, Android and Web, with an internal queue and batched async flush. Lifecycle events won't have any special context set by the time the SDK initializes. Self-hosted instances need a public hostname or IP. Session Replay, Surveys and `onFeatureFlags` require manual setup (`AUTO_INIT` off), a web build needs the posthog-js snippet (`Posthog().setup()` is a no-op on web), and there are no `$screen` events without `PosthogObserver`. React Native and Expo are [SETUP-MOBILE.md](SETUP-MOBILE.md), which also compares the defaults of every SDK; servers are [SETUP-SERVER.md](SETUP-SERVER.md), the browser is [SETUP-WEB.md](SETUP-WEB.md), naming and identity rules are [EVENTS.md](EVENTS.md), flags are [FEATURE-FLAGS.md](FEATURE-FLAGS.md), replay is [SESSION-REPLAY.md](SESSION-REPLAY.md) and exceptions are [ERROR-TRACKING.md](ERROR-TRACKING.md).
 
 **Contents:** [Flutter install and init](#flutter-install-and-init) · [Flutter Web](#flutter-web) · [Reproducible Android builds and Shorebird](#reproducible-android-builds-and-shorebird) · [Flutter events and screens](#flutter-events-and-screens) · [Flutter identity](#flutter-identity) · [Flutter feature flags](#flutter-feature-flags) · [Flutter flush, offline, beforeSend, debug](#flutter-flush-offline-beforesend-debug) · [Flutter replay, logs, surveys](#flutter-replay-logs-surveys) · [Prove it](#prove-it)
 
@@ -137,13 +137,7 @@ GoRoute(
 
 ## Flutter identity
 
-```dart
-await Posthog().identify(
-  userId: emailController.text,
-  userProperties: {"name": "Peter Griffin", "email": "peter@familyguy.com"},
-  userPropertiesSetOnce: {"date_of_first_log_in": "2024-03-01"}
-);
-```
+Use the stable authenticated ID described in [IDENTITY.md](IDENTITY.md#identify).
 
 - **Identify after login;** previous anonymous events get linked. `Posthog().getDistinctId()`; `await Posthog().alias(alias: 'distinct_id');`.
 - **Flutter captures anonymous events by default.** Identified events create a person profile; anonymous events can be up to 4x cheaper, so capture identified events only when needed. `personProfiles`: `PostHogPersonProfiles.identifiedOnly` (recommended, default), `.always`, `.never`. Calling `identify()`, `alias()` or `group()` creates the person profile.

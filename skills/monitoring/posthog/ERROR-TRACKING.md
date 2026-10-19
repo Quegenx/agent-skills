@@ -2,7 +2,7 @@
 
 Error tracking captures exceptions as `$exception` events and groups them into issues by fingerprint. Most outcomes come down to three things: whether autocapture is on and the errors your framework swallows are captured by hand, whether minified or compiled code has source maps (or symbols) uploaded so stack traces resolve, and whether the fingerprint is stable, because resolved in-app frames decide which issue an event lands in. Triage, grouping, suppression, alerts, symbolication debugging and linking to traces and replays are in [ERROR-TRIAGE.md](ERROR-TRIAGE.md); the SQL is in [HOGQL-EXAMPLES-SIGNALS.md](HOGQL-EXAMPLES-SIGNALS.md); replays in [SESSION-REPLAY.md](SESSION-REPLAY.md); logs and traces in [LOGS-AND-APM.md](LOGS-AND-APM.md); vendor-neutral OpenTelemetry in the [observability](../observability/SKILL.md) skill.
 
-**Contents:** [How it works](#how-it-works) · [Install: the order](#install-the-order) · [Web (JavaScript)](#web-javascript) · [React](#react) · [Next.js](#nextjs) · [Node.js](#nodejs) · [Hono](#hono) · [React Native and Expo](#react-native-and-expo) · [Flutter](#flutter) · [Source maps and symbols](#source-maps-and-symbols) · [Fingerprints and issue names](#fingerprints-and-issue-names) · [Exception properties](#exception-properties) · [Monitoring issues](#monitoring-issues) · [Versions and defaults](#versions-and-defaults) · [Prove it](#prove-it)
+**Contents:** [How it works](#how-it-works) · [Install: the order](#install-the-order) · [Web (JavaScript)](#web-javascript) · [React](#react) · [Next.js](#nextjs) · [Node.js](#nodejs) · [Hono](#hono) · [React Native and Expo](#react-native-and-expo) · [Flutter](#flutter) · [Source maps and symbols](SOURCE-MAPS.md#source-maps-and-symbols) · [Fingerprints and issue names](#fingerprints-and-issue-names) · [Exception properties](#exception-properties) · [Monitoring issues](#monitoring-issues) · [Versions and defaults](#versions-and-defaults) · [Prove it](#prove-it)
 
 ## How it works
 
@@ -27,20 +27,11 @@ Error tracking captures exceptions as `$exception` events and groups them into i
 7. **Set env vars, never hardcode keys.** If the project token is missing, call the MCP `projects-get` tool and read `api_token`; with several projects ask the user; without MCP, ask for the token. Host from `projects-get` `region`: `US` is `https://us.i.posthog.com`, `EU` is `https://eu.i.posthog.com`; otherwise ask "Are you on PostHog US Cloud or EU Cloud?" Do not assume US Cloud.
 8. **Verify:** type-check or build, make sure components you created are actually used, and run the linter or prettier only on files you edited, never the whole codebase.
 
-- **A missing PostHog configuration must never break the app.** Read keys as optional settings, guard init and capture behind their presence, and keep build and boot working with no PostHog env set. Not silently: in development or debug builds fail loudly with the language's idiomatic error and the message "<VAR> variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once <VAR> is configured" (with the real variable name). Production stays a no-op.
+- **Missing configuration:** follow [the setup commandment](SETUP-WEB.md#the-commandments).
 
 ## Web (JavaScript)
 
-- **Install:** the HTML snippet in `<head>` (also works in Google Tag Manager), or `posthog-js` (`npm install posthog-js`, `yarn add posthog-js`, `pnpm add posthog-js`, `bun add posthog-js`). The snippet loads `/static/array.js` from `api_host.replace(".i.posthog.com","-assets.i.posthog.com")`; its stub methods include `captureException`, `get_session_replay_url` and `startSessionRecording`.
-
-```javascript
-import posthog from 'posthog-js'
-
-posthog.init('<ph_project_token>', {
-    api_host: 'https://us.i.posthog.com',
-    defaults: '2026-05-30'
-})
-```
+- **SDK installation and initialization:** [SETUP-WEB.md](SETUP-WEB.md).
 
 - **Autocapture is a project setting:** Project settings > **Error tracking** (`https://app.posthog.com/settings/project-error-tracking#exception-autocapture`). On, it captures `$exception` events by wrapping `window.onerror` and `window.onunhandledrejection`.
 - **Manual capture:** `posthog.captureException(error, additionalProperties)`.
@@ -49,31 +40,8 @@ posthog.init('<ph_project_token>', {
 
 ## React
 
-- **Install** `posthog-js @posthog/react` (`npm install posthog-js @posthog/react`, or the yarn, pnpm or bun equivalent). Vite env in `.env`: `VITE_POSTHOG_PROJECT_TOKEN=<ph_project_token>`, `VITE_POSTHOG_HOST=https://us.i.posthog.com`.
+- **SDK setup:** [React with Vite](SETUP-WEB.md#react-with-vite).
 
-```jsx
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { PostHogProvider } from '@posthog/react'
-
-const options = {
-  api_host: import.meta.env.VITE_POSTHOG_HOST,
-  defaults: '2026-05-30',
-} as const
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <PostHogProvider apiKey={import.meta.env.VITE_POSTHOG_PROJECT_TOKEN} options={options}>
-      <App />
-    </PostHogProvider>
-  </StrictMode>
-)
-```
-
-- **`defaults`** applies PostHog's recommended settings for new projects.
-- **Access the client** with the `usePostHog` hook inside the provider, or `import posthog from 'posthog-js'` in non-React code.
 - **Autocapture:** the same project setting as Web.
 - **Error boundary:** the fallback receives `{ error, componentStack, exceptionEvent }`.
 
@@ -99,20 +67,8 @@ const YourFallbackComponent = ({ error, componentStack, exceptionEvent }) => {
 
 ## Next.js
 
-- **Install** `posthog-js`. Env in `.env.local` and on the hosting provider, with the `NEXT_PUBLIC_` prefix: `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN`, `NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com`.
-- **Next.js 15.3+: `instrumentation-client.ts`.** Then `import posthog from 'posthog-js'` in any `'use client'` component.
+- **Browser initialization and router alternatives:** [SETUP-NEXTJS.md](SETUP-NEXTJS.md#client). The error-tracking reference also describes provider-based App router and Pages router initialization; those alternatives are preserved in the setup guide.
 
-```typescript
-import posthog from 'posthog-js'
-
-posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-    defaults: '2026-05-30'
-})
-```
-
-- **App router alternative:** `app/providers.tsx` with `'use client'`, `posthog.init(...)` inside `useEffect(() => {...}, [])`, children wrapped in `PostHogProvider as PHProvider` from `@posthog/react` with `client={posthog}`; wrap it in `app/layout.tsx`.
-- **Pages router:** `pages/_app.tsx`, init in `useEffect` with `loaded: (posthog) => { if (process.env.NODE_ENV === 'development') posthog.debug() }`, wrapped in `<PostHogProvider client={posthog}>`.
 - **Client exceptions (required):** the autocapture project setting, plus manual `posthog.captureException(error, additionalProperties)`.
 - **App router `error.tsx`:**
 
@@ -139,25 +95,9 @@ export default function Error({
 
 - **`app/global-error.tsx`:** the same `useEffect` capture. It must include `html` and `body` tags and renders `<NextError statusCode={0} />` from `next/error`.
 - **Pages router:** a custom ErrorBoundary with `componentDidCatch(error, errorInfo) { posthog.captureException(error) }` wrapping `<Component {...pageProps} />` in `_app.tsx`.
-- **Server side (required):** `npm install posthog-node --save` and a singleton in `lib/posthog-server.js`. Use it as `posthog.captureException(error, { source: 'test', user_id: 'test-user-123' })`.
+- **Server side (required):** `npm install posthog-node --save` and a singleton in `lib/posthog-server.js`. Use the [Node signature](#nodejs): the second argument is the user's distinct ID and extra properties are the third argument. The old Next.js line put a properties object in argument two. [PostHog, https://posthog.com/docs/references/posthog-node?filter=error-tracking]
 
-```javascript
-import { PostHog } from 'posthog-node'
-let posthogInstance = null
-export function getPostHogServer() {
-  if (!posthogInstance) {
-    posthogInstance = new PostHog(
-      process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN,
-      {
-        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-        flushAt: 1,
-        flushInterval: 0,
-      }
-    )
-  }
-  return posthogInstance
-}
-```
+The lazy `getPostHogServer` factory is in [SETUP-NEXTJS.md](SETUP-NEXTJS.md#request-error-server-factory).
 
 - **Server exceptions through `onRequestError` in `instrumentation.js`.** Capture only when `process.env.NEXT_RUNTIME === 'nodejs'`, and read the `distinct_id` from the PostHog cookie. `posthog.debug()` turns on verbose logging.
 
@@ -196,7 +136,7 @@ export const onRequestError = async (err, request, context) => {
 
 ## Node.js
 
-- **Install** `posthog-node`. Init: `new PostHog('<ph_project_token>', { host: 'https://us.i.posthog.com' })`. Events: `client.capture({ distinctId, event, properties })`.
+- **Node SDK installation and initialization:** [SETUP-SERVER.md](SETUP-SERVER.md).
 - **Autocapture uncaught exceptions and unhandled rejections** with `{ host: 'https://us.i.posthog.com', enableExceptionAutocapture: true }`.
 - **Express handles uncaught exceptions itself,** so autocapture does not work there by default. Add the error handler:
 
@@ -235,8 +175,8 @@ app.onError(async (err, c) => {
 
 ## React Native and Expo
 
-- **Install, Expo:** `npx expo install posthog-react-native expo-file-system expo-application expo-device expo-localization`. **Bare** (yarn or npm): `posthog-react-native @react-native-async-storage/async-storage react-native-device-info react-native-localize`, then `cd ios && pod install`.
-- **Provider:** `<PostHogProvider apiKey="<ph_project_token>" options={{ host: "https://us.i.posthog.com" }}>` from `posthog-react-native`; the `usePostHog` hook gives the client.
+- **SDK install and provider setup:** [SETUP-MOBILE.md](SETUP-MOBILE.md).
+
 - **Remote configuration** from the error tracking settings needs SDK 4.35.0 or higher; otherwise configure on the client.
 
 ```jsx
@@ -269,11 +209,8 @@ export const posthog = new PostHog('<ph_project_token>', {
 
 ## Flutter
 
-- **Dependency:** `posthog_flutter: ^5.24.0` in `pubspec.yaml`.
-- **Android:** `AndroidManifest.xml` meta-data `com.posthog.posthog.PROJECT_TOKEN`, `com.posthog.posthog.POSTHOG_HOST`, `com.posthog.posthog.TRACK_APPLICATION_LIFECYCLE_EVENTS` = true, `com.posthog.posthog.DEBUG` = true. The page's text says to set the minimum Android SDK to 21, but its snippet shows `minSdkVersion 23`; confirm in the current docs.
-- **iOS:** `Info.plist` keys `com.posthog.posthog.PROJECT_TOKEN`, `com.posthog.posthog.POSTHOG_HOST`, `com.posthog.posthog.CAPTURE_APPLICATION_LIFECYCLE_EVENTS` (true), `com.posthog.posthog.DEBUG` (true); Podfile `platform :ios, '13.0'`.
-- **Web:** the JS snippet in `web/index.html` with `posthog.init('<ph_project_token>', { api_host: 'https://us.i.posthog.com', defaults: '2026-05-30' })`.
-- **Events:** `await Posthog().capture(eventName: 'button_clicked', properties: {'button_name': 'signup'});`
+- **Flutter SDK installation and initialization:** [SETUP-FLUTTER.md](SETUP-FLUTTER.md). This error-tracking reference specifies `posthog_flutter: ^5.24.0`; native exception capture requires 5.22.0+.
+- **Android minimum conflict in the error-tracking source:** its text says 21 while its snippet says `minSdkVersion 23`; confirm against the current platform reference. General platform metadata, iOS deployment and web setup are owned by [SETUP-FLUTTER.md](SETUP-FLUTTER.md).
 - **Autocapture is configured on the client only;** remote configuration is not supported yet.
 
 ```dart
@@ -322,76 +259,7 @@ try {
 
 ## Source maps and symbols
 
-- **Compiled or minified code needs source maps.** If they are not publicly hosted, upload them during the build. Python, Ruby and PHP have no source maps: link releases instead (`/docs/error-tracking/link-releases.md`).
-- **The wizard** sets up upload for JS and TS frameworks and works for coding agents: `npx @posthog/wizard upload-source-maps`.
-- **Platform guides** live at `/docs/error-tracking/upload-source-maps/<platform>.md`: Web, Next.js, Node.js, React, Angular, Nuxt, React Native, Android (upload-mappings), Flutter, Go, iOS, Kotlin Multiplatform (upload-debug-symbols), Rust, Rollup, Webpack, Vite, CLI, GitHub Action.
-- **Upload packages:** `@posthog/rollup-plugin`, `@posthog/webpack-plugin`, `@posthog/nextjs-config`, `@posthog/nuxt`, or `posthog-cli` directly. The build plugins call `posthog-cli sourcemap process`.
-- **Symbol data types:** `source-and-map` (JS/TS web), `hermes` (React Native), `proguard` (Android), `apple-dsym` (iOS/macOS).
-
-### The CLI
-
-- **Install:** `npm install -g @posthog/cli`, `curl -LsSf https://download.posthog.com/cli | sh`, `brew install posthog/tap/posthog-cli` or `cargo install posthog-cli`.
-- **Auth:** `posthog-cli login`, or in CI the env vars `POSTHOG_CLI_HOST` (default `https://us.posthog.com`), `POSTHOG_CLI_PROJECT_ID` and `POSTHOG_CLI_API_KEY` (a personal API key with the `error tracking write` and `organization read` scopes). EU: `posthog-cli --host https://eu.posthog.com [CMD]`. `--dotenv-file .env` loads a file.
-
-```bash
-# Inject release and chunk metadata into sourcemaps
-posthog-cli sourcemap inject --directory ./path/to/assets
-# Upload injected sourcemaps to their release
-posthog-cli sourcemap upload --directory ./path/to/assets --release-name my-app --release-version 1.2.3 --build 42
-```
-
-- **Check for the `//# chunkId=...` comment** in the minified code after injecting.
-- **You must serve the injected assets.** Serving copies from before the inject breaks unminification.
-- **For continuous deploys,** set the release name and let the CLI detect the version (the git commit hash). `--delete-after` cleans up the maps.
-- **Verify** in the symbol sets (error tracking configuration).
-
-### Next.js
-
-`npm install @posthog/nextjs-config`. It injects and uploads during the build. Set the env vars on Vercel or your host's project settings, not just locally.
-
-```javascript
-import { withPostHogConfig } from "@posthog/nextjs-config";
-
-const nextConfig = {
-  //...your nextjs config,
-};
-
-export default withPostHogConfig(nextConfig, {
-  personalApiKey: process.env.POSTHOG_API_KEY!, // Personal API Key
-  projectId: process.env.POSTHOG_PROJECT_ID, // Project ID
-  host: process.env.NEXT_PUBLIC_POSTHOG_HOST, // (optional), defaults to https://us.posthog.com
-  sourcemaps: { // (optional)
-      enabled: true, // (optional) Enable sourcemaps generation and upload, default to true on production builds
-      releaseName: "my-application", // (optional) Release name, defaults to repository name
-      releaseVersion: "1.0.0", // (optional) Release version, defaults to current git commit
-      deleteAfterUpload: true, // (optional) Delete sourcemaps after upload, defaults to true
-  },
-});
-```
-
-### Vite and Rollup
-
-- **Plugin:** `npm install @posthog/rollup-plugin`; `import posthog from '@posthog/rollup-plugin'` in the `vite.config.js` plugins with `personalApiKey`, `projectId`, `host` and `sourcemaps: { enabled, releaseName, releaseVersion, deleteAfterUpload }`. The Vite page gives the `host` default as `https://us.i.posthog.com`, while the Next.js config and the CLI default to `https://us.posthog.com`; confirm in the current docs.
-- **Production maps:** `build: { sourcemap: "hidden" }`. Hidden maps are fine for upload; they are not advertised through `sourceMappingURL`.
-
-### GitHub Action
-
-`PostHog/upload-source-maps@v2` after the build. Inputs: `directory` (required), `project-id` (required), `api-key` (required; error tracking write plus organization read), `release-name`, `release-version` (default the commit SHA), `host` (EU `https://eu.posthog.com`). Deploy the injected artifacts.
-
-### React Native
-
-- **CLI 0.7.8+.** React Native web: `npx expo export --source-maps --platform web`, then the CLI.
-- **Automatic injection only on Expo 50+** (debug IDs), in `metro.config.js`: `const { getPostHogExpoConfig } = require('posthog-react-native/metro'); const config = getPostHogExpoConfig(__dirname)`. Upload runs in the Gradle and Xcode builds; EAS Updates (OTA) need a manual `posthog-cli hermes upload --directory dist`.
-- **Expo plugin** `"posthog-react-native/expo"` in `expo.plugins`. Options: `disableSandboxing` (default `true`, sets `ENABLE_USER_SCRIPT_SANDBOXING=NO`); `skipOnConflict` (4.49.1+); `dotenvFile` (4.60.0+, CLI 0.8.4+); `uploadNativeSymbols`, opt-in, for dSYM, ProGuard and NDK `.so` files, `{ includeSource: true }`.
-- **Bare React Native:** on Android, `apply from: ... 'tooling', 'posthog.gradle'` above `android {}`; on iOS, wrap the "Bundle React Native code and images" phase with `posthog-xcode.sh` and disable User Script Sandboxing. The error `Sandbox: bash deny(1) file-read-data` points at sandboxing.
-- **Native crash symbolication** needs build-time symbols, runtime `errorTracking.autocapture.nativeCrashes` or `androidNdkCrashes`, `@posthog/react-native-plugin`, and the project's "Enable exception autocapture".
-
-### Flutter
-
-- **CLI 0.7.4+.** Flutter web: `flutter build web --source-maps`, then CLI inject and upload.
-- **iOS and macOS with `captureNativeExceptions`:** upload dSYMs (the iOS guide). **Android with ProGuard or R8:** upload mapping files with the PostHog Gradle plugin. The Flutter debug symbols guide is `/docs/error-tracking/upload-source-maps/flutter.md`.
-
-When traces still show minified frames, follow [ERROR-TRIAGE.md](ERROR-TRIAGE.md#symbolication).
+See [SOURCE-MAPS.md](SOURCE-MAPS.md#source-maps-and-symbols).
 
 ## Fingerprints and issue names
 
@@ -452,5 +320,4 @@ posthog.captureException(error, {
 - **Capture works:** throw a test error on each platform you installed and see a `$exception` event in the activity feed (`/activity/explore`, server events at `/activity/events`) with the expected `$lib` (`web`, `posthog-node`, `posthog-react-native`, `posthog-flutter`).
 - **Swallowed errors arrive:** an error in a Next.js `error.tsx`, an Express route, a Hono handler or a React boundary produces an event, not just a fallback screen.
 - **No duplicates:** on React Native with `PostHogErrorBoundary`, one render error in a release build produces one event (`console: []`).
-- **Frames resolve:** the minified build has a `//# chunkId=...` comment, the deployed assets are the injected ones, the symbol set appears in Project settings > Error tracking > Symbol sets, and a production error shows your source file names and lines.
 - **Missing config is safe:** with no PostHog env set, the app builds and boots; a debug build prints the "variable required by PostHog is missing" error, production stays silent.

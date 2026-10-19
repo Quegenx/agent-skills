@@ -425,7 +425,7 @@ jq -r '.metrics | sort_by(-.dpm) | .[:10][] | "\(.dpm)\t\(.series_count)\t\(.met
 Docs: https://grafana.com/docs/grafana-cloud/cost-management-and-billing/ ; Adaptive Logs: https://grafana.com/docs/grafana-cloud/cost-management-and-billing/reduce-costs/logs-costs/
 
 - **Prerequisites:** Adaptive Metrics, Logs and Traces enabled (under **Cost Management**); Alloy (or Grafana Agent) with API key scopes `metrics:write` + `logs:write` (+ `traces:write`); admin access.
-- **Billing units:** Metrics = active series (unique label combinations); Logs = bytes ingested; Traces = spans ingested; Profiles = bytes ingested; Synthetic Monitoring = check executions; k6 = VUh (virtual user hours).
+- **Billing scope:** the source summarized Metrics as active series, Profiles as bytes, Synthetic Monitoring as executions and k6 as VUh; check the current plan and each product's invoice. Grafana Cloud Logs and Traces currently meter GBs processed, written and retained, and Logs adds queried volume above fair use. The old line reduced Logs to ingested bytes and Traces to ingested spans. [existing CARDINALITY-AND-COST.md; https://grafana.com/docs/grafana-cloud/platform/pricing-and-usage/logs/; https://grafana.com/docs/grafana-cloud/platform/pricing-and-usage/traces/]
 - **Cost attribution labels:** put `team` and `project` external labels on every Alloy config, reload Alloy (`curl -X POST http://localhost:12345/-/reload`), then verify in Explore with `count by (team, project) ({__name__=~".+"})` and group by `team`/`project` in Cost Management.
 
 ```alloy

@@ -1,6 +1,6 @@
 # Alloy
 
-Alloy is Grafana's OpenTelemetry Collector distribution with built-in Prometheus pipelines and native Loki and Pyroscope support: one binary that collects metrics, logs, traces and profiles and ships them to Grafana Cloud, Prometheus, Loki, Tempo and Pyroscope. Grafana Labs calls it the recommended collector and the recommended path for all signals. Every pipeline has the shape `discovery / receive` to `process / relabel` to `write / export`, and components connect by referencing each other's exports, so most outcomes come down to two things: whether each component points at the right export of the next one (`.receiver` or `.input`), and whether each write endpoint has the right URL and credentials. Vendor-neutral collector shapes (agent and gateway, direct export) are in the [observability skill's COLLECTOR.md](../observability/COLLECTOR.md); sending OTLP from apps is [OPENTELEMETRY-AND-BEYLA.md](OPENTELEMETRY-AND-BEYLA.md).
+Alloy is Grafana's OpenTelemetry Collector distribution with built-in Prometheus pipelines and native Loki and Pyroscope support: one binary that collects metrics, logs, traces and profiles and ships them to Grafana Cloud, Prometheus, Loki, Tempo and Pyroscope. Grafana Labs calls it the recommended collector and the recommended path for all signals. Every pipeline has the shape `discovery / receive` to `process / relabel` to `write / export`, and components connect by referencing each other's exports, so most outcomes come down to two things: whether each component points at the right export of the next one (`.receiver` or `.input`), and whether each write endpoint has the right URL and credentials. Vendor-neutral collector shapes (agent and gateway, direct export) are in the [observability skill's COLLECTOR.md](../observability/COLLECTOR.md); sending OTLP from apps is [OTLP-GATEWAY.md](OTLP-GATEWAY.md).
 
 **Contents:** [How it works](#how-it-works) · [Install](#install) · [Syntax](#syntax) · [Write, validate, run, verify](#write-validate-run-verify) · [Component catalog](#component-catalog) · [Metrics pipelines](#metrics-pipelines) · [Log pipelines](#log-pipelines) · [OTLP pipelines](#otlp-pipelines) · [Profiles, Beyla, Faro and clustering](#profiles-beyla-faro-and-clustering) · [Sending data to Grafana Cloud](#sending-data-to-grafana-cloud) · [Fleet Management](#fleet-management) · [Source disagreements](#source-disagreements) · [Debugging](#debugging) · [Prove it](#prove-it)
 
@@ -239,7 +239,7 @@ prometheus.relabel "filter" {
 }
 ```
 
-Metric naming, cardinality and PromQL are [PROMETHEUS.md](PROMETHEUS.md). Host and container exporters are [INFRA-AND-CLOUD.md](INFRA-AND-CLOUD.md); the Postgres exporter is [APP-AND-DB-OBSERVABILITY.md](APP-AND-DB-OBSERVABILITY.md).
+Metric naming, cardinality and PromQL are [PROMETHEUS.md](PROMETHEUS.md). Host and container exporters are [INFRA-AND-CLOUD.md](INFRA-AND-CLOUD.md); the Postgres exporter is [DATABASE-OBSERVABILITY.md](DATABASE-OBSERVABILITY.md).
 
 ## Log pipelines
 
@@ -486,7 +486,7 @@ otelcol.processor.memory_limiter "default" {
 }
 ```
 
-The single-exporter variant that sends every signal to the Grafana Cloud OTLP gateway, sampling, and the tail sampler are in [OPENTELEMETRY-AND-BEYLA.md](OPENTELEMETRY-AND-BEYLA.md). Span metrics for Application Observability are in [APP-AND-DB-OBSERVABILITY.md](APP-AND-DB-OBSERVABILITY.md).
+The single-exporter variant that sends every signal to the Grafana Cloud OTLP gateway, sampling, and the tail sampler are in [OTLP-GATEWAY.md](OTLP-GATEWAY.md). Span metrics for Application Observability are in [APPLICATION-OBSERVABILITY.md](APPLICATION-OBSERVABILITY.md).
 
 ## Profiles, Beyla, Faro and clustering
 
@@ -543,7 +543,7 @@ prometheus.scrape "cluster_aware" {
 }
 ```
 
-- **Beyla** details (kernel requirements, routes, sampling) are in [OPENTELEMETRY-AND-BEYLA.md](OPENTELEMETRY-AND-BEYLA.md); the full `faro.receiver` options are in [FRONTEND-FARO.md](FRONTEND-FARO.md).
+- **Beyla** details (kernel requirements, routes, sampling) are in [BEYLA.md](BEYLA.md); the full `faro.receiver` options are in [FRONTEND-FARO.md](FRONTEND-FARO.md).
 - **Clustering** runs multiple Alloy replicas that shard targets among themselves. It uses memberlist to find peers; set peer addresses with the `--cluster.*` flags on `alloy run`, for example `--cluster.join-addresses=alloy-headless:12345`.
 
 ## Sending data to Grafana Cloud

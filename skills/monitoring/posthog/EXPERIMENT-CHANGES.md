@@ -2,7 +2,7 @@
 
 Group E of the experiment health check: the split, rollout, metrics or exposure criteria changed during the run; the experiment was paused, frozen, reset, ended or shipped; retention or matured-user counts look off; a legacy experiment. Pausing, freezing, unfreezing and resuming all change who gets the variant or when, while the analysis treats the run as one continuous window: say so whenever the history shows one (E9, E16). Find the change first in `experiment-activity` (flag entries appear only with flag access). The workflow is [EXPERIMENT-HEALTH.md](EXPERIMENT-HEALTH.md); the lifecycle actions themselves are [EXPERIMENTS.md](EXPERIMENTS.md#lifecycle).
 
-**Contents:** [E1 Increasing rollout](#e1-increasing-rollout-high) · [E2 Decreasing rollout](#e2-decreasing-rollout-medium) · [E3 Changing the variant split](#e3-changing-the-variant-split-high) · [E4 Blocked changes](#e4-blocked-changes-high) · [E5 Changing exposure criteria](#e5-changing-exposure-criteria-high) · [E6 Adding metrics mid-run](#e6-adding-metrics-mid-run-medium) · [E7 Ending vs shipping](#e7-ending-vs-shipping-high) · [E8 Reset](#e8-reset-high) · [E9 Pause](#e9-pause-high) · [E10 Retention start events](#e10-retention-start-events-high) · [E11 Completed windows only](#e11-completed-windows-only-high) · [E12 Short-term vs long-term metrics](#e12-short-term-vs-long-term-metrics-medium) · [E13 Legacy experiments](#e13-legacy-experiments-high) · [E14 Flag cleanup](#e14-flag-cleanup-high) · [E15 Restart with new variants](#e15-restart-with-new-variants-medium) · [E16 Freeze](#e16-freeze-high) · [E17 Start date changed](#e17-start-date-changed-medium) · [Prove it](#prove-it)
+**Contents:** [E1 Increasing rollout](#e1-increasing-rollout-high) · [E2 Decreasing rollout](#e2-decreasing-rollout-medium) · [E3 Changing the variant split](#e3-changing-the-variant-split-high) · [E4 Blocked changes](#e4-blocked-changes-high) · [E5 Changing exposure criteria](#e5-changing-exposure-criteria-high) · [E6 Adding metrics mid-run](#e6-adding-metrics-mid-run-medium) · [E7 Ending vs shipping](#e7-ending-vs-shipping-high) · [E8 Reset](#e8-reset-high) · [E9 Pause](#e9-pause-high) · [E10 Retention start events](#e10-retention-start-events-high) · [E11 Completed windows only](#e11-completed-windows-only-high) · [E12 Short-term vs long-term metrics](#e12-short-term-vs-long-term-metrics-medium) · [E13 Legacy experiments](#e13-legacy-experiments-high) · [E14 Flag cleanup](#e14-flag-cleanup-high) · [E15 Restart with new variants](#e15-restart-with-new-variants-medium) · [E16 Freeze](#e16-freeze-high) · [E17 Start date changed](#e17-start-date-changed-medium) · [Unresolved source contracts](#unresolved-source-contracts) · [Prove it](#prove-it)
 
 ## E1 Increasing rollout [HIGH]
 
@@ -143,6 +143,10 @@ Group E of the experiment health check: the split, rollout, metrics or exposure 
 - **Insights ignore the start date,** so they disagree.
 - **Evidence:** `start_date` changes in `experiment-activity`; a start date before the current split or audience.
 - **Recommend:** moving it to just after a fix legitimately cuts a contaminated beginning (say what was cut); the user does it on the page, since no tool changes the start date. Moving it back brings in whatever the flag did then: check the flag history. Repeated edits: reset and relaunch.
+
+## Unresolved source contracts
+
+- **Retention event roles:** this reference says completion must use a different event; [EXPERIMENT-METRICS.md](EXPERIMENT-METRICS.md) permits repeat retention with the same event name while excluding the same occurrence. The fetched experiment metrics prose does not settle this implementation detail. Keep both source views until the experiment runner is checked. [PostHog skills, EXPERIMENT-CHANGES.md; EXPERIMENT-METRICS.md]
 
 ## Prove it
 

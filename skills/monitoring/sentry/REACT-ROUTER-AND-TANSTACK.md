@@ -1,6 +1,8 @@
 # React Router and TanStack Start
 
-Two full-stack React frameworks with their own Sentry SDKs, each initialized twice: once in the browser and once on the Node server. `@sentry/react-router` (React Router framework mode, currently beta) and `@sentry/tanstackstart-react` (TanStack Start, currently beta (the source called it alpha; https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/), documented against TanStack Start `1.0 RC`). The server half loads `instrument.server.mjs`, preferably with `--import` (a direct import can leave auto-instrumentation incomplete), and the framework's error hooks (`sentryOnError`, `createSentryHandleRequest` and `createSentryHandleError`, the TanStack global middlewares) must be wired. React Router in non-framework (data or declarative) mode, v5 to v7, uses `@sentry/react` instead: [REACT.md](REACT.md) and [REACT-TRACING.md](REACT-TRACING.md). Related files: [REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md), [REACT.md](REACT.md#user-feedback), and Node server behavior in [../sentry/NODE.md](../sentry/NODE.md).
+Two full-stack React frameworks with their own Sentry SDKs, each initialized twice: once in the browser and once on the Node server. `@sentry/react-router` (React Router framework mode, currently beta) and `@sentry/tanstackstart-react` (TanStack Start, currently beta (the source called it alpha; https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/), documented against TanStack Start `1.0 RC`). The server half loads `instrument.server.mjs`, preferably with `--import` (a direct import can leave auto-instrumentation incomplete), and the framework's error hooks (`sentryOnError`, `createSentryHandleRequest` and `createSentryHandleError`, the TanStack global middlewares) must be wired. React Router in non-framework (data or declarative) mode, v5 to v7, uses `@sentry/react` instead: [REACT.md](REACT.md) and [REACT-TRACING.md](REACT-TRACING.md). Related files: [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md), [REACT.md](REACT.md#user-feedback), and Node server behavior in [../sentry/NODE.md](NODE.md).
+
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
 
 **Contents:** [Detect](#detect) · [What to set up](#what-to-set-up) · [React Router: wizard](#react-router-wizard) · [React Router: manual setup](#react-router-manual-setup) · [React Router: server startup](#react-router-server-startup) · [React Router: source maps](#react-router-source-maps) · [React Router: APIs](#react-router-apis) · [React Router: errors](#react-router-errors) · [React Router: tracing](#react-router-tracing) · [TanStack Start: setup](#tanstack-start-setup) · [TanStack Start: server startup](#tanstack-start-server-startup) · [TanStack Start: APIs](#tanstack-start-apis) · [TanStack Start: errors](#tanstack-start-errors) · [TanStack Start: tracing](#tanstack-start-tracing) · [Shared config notes](#shared-config-notes) · [Replay, logs, profiling, feedback](#replay-logs-profiling-feedback) · [Debugging](#debugging) · [Prove it](#prove-it)
 
@@ -44,7 +46,7 @@ cat package.json | grep -E '"pino"|"winston"|"loglevel"'
 - **Lead with a proposal, not open questions:** React Router: "I recommend Error Monitoring + Tracing + Session Replay first. Want me to also enable Profiling, Logs, and User Feedback?" TanStack: "I recommend Error Monitoring + Tracing + Session Replay. Want me to also enable Logs and User Feedback?"
 - **When:** Error Monitoring always (the baseline). Tracing usually yes (React Router: route and request timing; TanStack: route and fetch instrumentation). Replay for user-facing apps, hard UX debugging, login and checkout flows, hard-to-reproduce UX bugs. Logs when the team wants log search and trace correlation, or has an existing logging strategy or support workflow. User Feedback when product or support teams want direct in-app reports.
 
-- **Companion backend:** check `../backend ../server ../api`; Node backend services use [../sentry/NODE.md](../sentry/NODE.md).
+- **Companion backend:** check `../backend ../server ../api`; Node backend services use [../sentry/NODE.md](NODE.md).
 
 ## React Router: wizard
 
@@ -202,7 +204,7 @@ export default {
 ```
 
 - **Both are needed:** the `sentryReactRouter` plugin in `vite.config.ts` and `sentryOnBuildEnd` in `react-router.config.ts`.
-- **Token:** `SENTRY_AUTH_TOKEN` from the environment or `.env.sentry-build-plugin`. If it's undefined in the Vite config, load env vars in the config or use `.env.sentry-build-plugin`. More in [../sentry/RELEASES-AND-SOURCEMAPS.md](../sentry/RELEASES-AND-SOURCEMAPS.md).
+- **Token:** `SENTRY_AUTH_TOKEN` from the environment or `.env.sentry-build-plugin`. If it's undefined in the Vite config, load env vars in the config or use `.env.sentry-build-plugin`. More in [../sentry/RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md).
 
 ## React Router: APIs
 
@@ -441,14 +443,14 @@ const route = createRoute({
 
 ## Shared config notes
 
-- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](JAVASCRIPT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 - **`sendDefaultPii`** is deprecated: use `dataCollection` (removed in v11).
 - **Profiling distinction:** `profileSessionSampleRate` samples continuous profiling once per SDK/service session; the old source called it a fraction of traced transactions. `profilesSampleRate` is the legacy transaction-based option. [https://docs.sentry.io/platforms/javascript/guides/node/profiling/]
 
 ## Replay, logs, profiling, feedback
 
 - **Replay is client-only:** `replayIntegration({ maskAllText: true, blockAllMedia: true })` in the client init. React Router: validate with session `0.1` and error `1.0`; for cost lower the session rate and keep the error rate high; raise the session rate temporarily during incidents. TanStack: cost-sensitive production uses session `0.02` to `0.05` with the error rate kept high, and stricter masking for apps that handle sensitive user or payment data.
-- **Logs:** use the [versioned JavaScript rule](REACT-REPLAY-LOGS-PROFILING.md#logs), configuring client/server deliberately. Emit searchable fields as the logger's attributes argument and keep field vocabulary consistent. [getsentry/sentry-for-ai, React Router/TanStack logging; https://docs.sentry.io/platforms/javascript/logs/]
+- **Logs:** use the [versioned JavaScript rule](SIGNALS-PRACTICE.md#logs), configuring client/server deliberately. Emit searchable fields as the logger's attributes argument and keep field vocabulary consistent. [getsentry/sentry-for-ai, React Router/TanStack logging; https://docs.sentry.io/platforms/javascript/logs/]
 - **Profiling (React Router, server):** install `@sentry/profiling-node`; in `instrument.server.mjs` set `integrations: [nodeProfilingIntegration()]`, `tracesSampleRate: 1.0`, `profileSessionSampleRate: 1.0`. Start high in dev, lower for production. Traces but no profiles: raise `profileSessionSampleRate`. Runtime incompatibility symptoms: verify Node runtime support and fall back to tracing-only.
 - **Feedback:** `Sentry.feedbackIntegration({ colorScheme: "system" })` in the client init. Both references' common options: `autoInject: true`, `colorScheme: "system"`, `showName: true`, `showEmail: true`, `triggerLabel: "Report a bug"`, `formTitle: "Report a bug"`, `submitButtonLabel: "Send report"`, `successMessageText: "Thanks for the report."` (TanStack adds `isNameRequired: false`, `isEmailRequired: false` and `tags`). The typed `triggerLabel` is canonical; the old browser example's `buttonLabel` conflicts with the SDK type. Manual opening follows [REACT.md](REACT.md#user-feedback). [https://github.com/getsentry/sentry-javascript/blob/develop/packages/core/src/types/feedback/config.ts] Set the Sentry user before feedback is submitted.
 - **Error-linked feedback:** `const eventId = Sentry.captureException(new Error("Checkout failed")); Sentry.showReportDialog({ eventId, title: "Something went wrong", subtitle: "Tell us what happened" });`. Feedback not linked to errors means `showReportDialog` lacks the real `eventId`.

@@ -1,111 +1,28 @@
 # Signal practice: Replay, Logs, Metrics, Crons, Feedback, Profiling
 
-Cross-platform practice for Session Replay, Logs, Application Metrics, Crons, User Feedback and Profiling: what each records, how it is sampled, how to keep it private and how to query it. Which signal answers which question is [SIGNALS.md](SIGNALS.md) and [INSTRUMENTATION.md](INSTRUMENTATION.md); sampling across signals is [SAMPLING-AND-QUOTAS.md](SAMPLING-AND-QUOTAS.md); the init lines per framework are in the platform files ([BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md), [REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md), [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md), [NODE.md](NODE.md), [NODE-TRACING.md](NODE-TRACING.md), [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md), [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md)). What decides most outcomes: each signal is switched on and sampled on its own terms. Replay is sampled at init by two rates, logs and metrics are not sampled at all (you filter them in `beforeSendLog` and `beforeSendMetric`), crons only alert on what their check-ins report, and profiling only runs where the runtime supports it.
+Cross-platform practice for Session Replay, Logs, Application Metrics, Crons, User Feedback and Profiling: what each records, how it is sampled, how to keep it private and how to query it. Which signal answers which question is [SIGNALS.md](SIGNALS.md) and [INSTRUMENTATION.md](INSTRUMENTATION.md); sampling across signals is [SAMPLING-AND-QUOTAS.md](SAMPLING-AND-QUOTAS.md); the init lines per framework are in the platform files ([BROWSER-TRACING.md](BROWSER-TRACING.md), [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md), [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md), [NODE.md](NODE.md), [NODE-TRACING.md](NODE-TRACING.md), [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md), [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md)). What decides most outcomes: each signal is switched on and sampled on its own terms. Replay is sampled at init by two rates, logs and metrics are not sampled at all (you filter them in `beforeSendLog` and `beforeSendMetric`), crons only alert on what their check-ins report, and profiling only runs where the runtime supports it.
 
-**Contents:** [Session Replay](#session-replay) · [Replay privacy](#replay-privacy) · [Replay manual control](#replay-manual-control) · [Logs](#logs) · [What to log](#what-to-log) · [Application Metrics](#application-metrics) · [Crons](#crons) · [User Feedback](#user-feedback) · [Profiling](#profiling) · [Prove it](#prove-it)
+**Contents:** [Session Replay](BROWSER-REPLAY-AND-PROFILING.md#session-replay) · [Replay privacy](BROWSER-REPLAY-AND-PROFILING.md#replay-privacy) · [Replay manual control](BROWSER-REPLAY-AND-PROFILING.md#replay-manual-control) · [Logs](#logs) · [What to log](#what-to-log) · [Application Metrics](#application-metrics) · [Crons](#crons) · [User Feedback](#user-feedback) · [Profiling](#profiling) · [Prove it](#prove-it)
 
 ## Session Replay
 
-- **Web replay is not video.** It is built with rrweb from DOM snapshots, so the player lets you inspect the DOM. Mobile replay takes a view-hierarchy snapshot plus a screenshot once per second, compressed into video segments, and redaction draws blocks in the control's predominant color.
-- **The default SDK masks all DOM text, images and user input.** The replay integration ships in the browser and framework npm packages (minimum SDK `7.27.0`; Node 12+; browsers newer than IE11). CDN bundles: `https://browser.sentry-cdn.com/11.8.0/bundle.tracing.replay.min.js` (recommended for replay, errors and tracing) or `bundle.replay.min.js`.
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-  // This sets the sample rate to be 10%. You may want this to be 100% while
-  // in development and sample at a lower rate in production
-  replaysSessionSampleRate: 0.1,
-
-  // If the entire session is not sampled, use the below sample rate to sample
-  // sessions when an error occurs.
-  replaysOnErrorSampleRate: 1.0,
-
-  integrations: [Sentry.replayIntegration()],
-});
-```
-
-- **Both rates default to `0`** in the options table; the Loader Script enables Replay with `replaysSessionSampleRate: 0.1` and `replaysOnErrorSampleRate: 1`. The recommended default `0.1` / `1.0` "captures 10% of sessions in full, plus every error from the remaining 90%".
-- **Keep `replaysOnErrorSampleRate` at `1.0`:** "error sessions provide the most debugging value." Test with `replaysSessionSampleRate: 1.0`, then lower it.
-- **The session rate recommendation disagrees across sources:** SDK pages say `0.1`; the setup page's traffic table says High (100k+ sessions/day) `0.01`, Medium (10k to 100k) `0.1`, Low (under 10k) `0.25`, all with error rate `1.0`; the sampling blog uses `0.01` ("a typical Sentry plan comes with 5 million spans, we start with 50 Session Replays"); the replay concept says "a few percent".
-- **Sampling order:** the session rate is checked first. Sampled sessions are sent in real time; the rest are buffered in memory (the last 60 seconds, a ring buffer of about 2 to 5 MB of DOM event logs). On an error the error rate is checked: sampled sends the buffer plus the rest of the session, otherwise the buffer is discarded.
-- **When a web session ends:** after inactivity (only clicks and navigation count; scrolls, mouse moves and keys don't), on tab close, at the 60-minute maximum, or on `replay.stop()`. The inactivity timeout disagrees: the setup page says 5 minutes; the understanding-sessions page and the product page say 15. Replay sessions can span several page loads (unlike release-health sessions).
-- **When a mobile session ends:** on app close, a crash, more than 30 seconds in the background, or 60 minutes; User Feedback attaches up to 30 seconds of mobile replay. Minimum SDKs: iOS 8.43.0, Android 7.20.0, React Native 6.5.0, Flutter 8.12.0 (the Flutter SDK page says at least 9.0.0; see [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md#session-replay)).
-- **Replays for backend errors** need Sentry on the frontend and backend with distributed tracing and `tracePropagationTargets` set; minimum JavaScript 7.51.0, Node 7.48.0.
-- **Errors and traces link to replays,** and logs emitted during a replay are linked. The error count on Replay Details may not match (rate-limited, deleted or network errors). AI replay summaries need "Show Generative AI Features".
-- **No `replaysSampler` exists.** For per-page replay, set `replaysSessionSampleRate: 0` and use a `useSessionReplay` React hook (Next.js `"use client"`) that decides at random, sets tags and calls `replay.stop(); replay.start();` on mount, then `replay.stop(); replay.startBuffering();` on unmount so error replays keep working. It starts after mount, so it can miss early hydration issues.
-- **Lazy-load:** init with `integrations: []`, then `import("@sentry/browser").then((lazyLoadedSentry) => { Sentry.addIntegration(lazyLoadedSentry.replayIntegration()); });`.
-- **Canvas is opt-in** with `Sentry.replayCanvasIntegration()`, and "There is currently no PII scrubbing in canvas recordings!" WebGL: `enableManualSnapshot: true` and call `snapshot()` in the paint loop. WebGPU: `snapshot(canvasRef, { skipRequestAnimationFrame: true })`.
-- **CSP:** allow `worker-src 'self' blob:` and `child-src 'self' blob:` (Safari 15.4 and older), or self-host the compression worker: `workerUrl: "/assets/worker.min.js"` plus the bundler plugin's `bundleSizeOptimizations: { excludeReplayWorker: true }` (plugins 2.10.0+), and keep that worker updated.
-
-| `replayIntegration` option | Default |
-|---|---|
-| `stickySession` | `true` |
-| `mutationLimit` / `mutationBreadcrumbLimit` | `10000` / `750` |
-| `minReplayDuration` | `5000` ms (max 15000; session sampling only) |
-| `maxReplayDuration` | `3600000` (1 hour max) |
-| `networkDetailAllowUrls` / `networkDetailDenyUrls` | `[]` / `[]` (deny takes precedence) |
-| `networkCaptureBodies` | `true` |
-| `networkRequestHeaders` / `networkResponseHeaders` | `[]` |
-| `beforeAddRecordingEvent` | since 7.53.0 |
-| `beforeErrorSampling` | buffer mode only |
-| `slowClickIgnoreSelectors`, `workerUrl` | none |
-
-- **Network details are off by default:** only URL, body sizes, method and status code. Opt in per URL with `networkDetailAllowUrls: [window.location.origin]` (SDK 7.50.0+) to get bodies plus `Content-Type`, `Content-Length` and `Accept`; add headers with `networkRequestHeaders: ["Cache-Control"]` and `networkResponseHeaders: ["Referrer-Policy"]`. Bodies are truncated to 150k characters and PII-sanitized server-side, but "the best way to avoid getting PII into Sentry is by not adding URLs of endpoints that may contain PII."
-- **Identify the user:** `Sentry.setUser({ email: "jane.doe@example.com" });`.
+Use the shared session replay guidance in [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md#session-replay). [getsentry/sentry-for-ai, SDK references]
 
 ## Replay privacy
 
-- **Verify masking before production.** "Before enabling Session Replay in production, verify your masking configuration"; after changing settings or upgrading UI frameworks or SDKs "you must thoroughly test your application". If masking fails, open a GitHub issue "and avoid deploying to production with Session Replay enabled until the issue is resolved." The same warning applies to mobile.
-- **Defaults:** all text masked with `*`; media blocked (`img`, `svg`, `video`, `object`, `picture`, `embed`, `map`, `audio`). Markers: `sentry-mask` / `data-sentry-mask`, `sentry-block` / `data-sentry-block` (a same-size placeholder), `sentry-ignore` / `data-sentry-ignore` (inputs only).
-
-| Option | Default |
-|---|---|
-| `mask` | `['.sentry-mask', '[data-sentry-mask]']` (additive) |
-| `maskAllText` / `maskAllInputs` | `true` / `true` |
-| `block` | `['.sentry-block', '[data-sentry-block]']` (additive) |
-| `blockAllMedia` | `true` |
-| `ignore` | `['.sentry-ignore', '[data-sentry-ignore]']` |
-| `maskFn` | `(s) => '*'.repeat(s.length)` |
-| `unblock` | `[]` (beats all blocking; doesn't affect `password` elements) |
-| `unmask` | `[]` |
-
-- **Since v8, `unblock` and `unmask` add no default selectors.** To use `sentry-unmask`, set `unmask: [".sentry-unmask", "[data-sentry-unmask]"]` (and `unblock: [".sentry-unblock", "[data-sentry-unblock]"]`).
-- **`block` always includes `base` and `iframe[srcdoc]:not([src])`;** re-enable with `unblock: ['iframe[srcdoc]']` only if unmasked recording is acceptable.
-- **Turn masking off only for static sites without sensitive data:** `maskAllText: false, blockAllMedia: false`.
-- **Bake privacy into shared primitives** (the i18n layer, design-system components, avatars). The i18n pattern, "the same pattern Sentry uses in its own web app": record strings returned by `t()` without interpolation in a `staticStrings` Set, and use a custom `maskFn` that unmasks only catalog text. Shared React components `SensitiveText` (`data-sentry-mask`) and `StaticCopy` (`data-sentry-unmask`); a `withReplayMask` HOC wrapping in a `div` (not a `span`, to avoid invalid HTML and SSR hydration mismatches). Block avatar components that use a CSS `background-image` with `data-sentry-block`, letter avatars too. Consider a lint rule or snapshot test that fails when a component rendering user-identifying data ships without a marker.
-- **Scrub recording events** with `beforeAddRecordingEvent` (return `null` to drop). Keeping only fetch/xhr with status 500:
-
-```javascript
-Sentry.replayIntegration({
-  beforeAddRecordingEvent: (event) => {
-    // Do not capture fetch/xhr requests, unless the response code is 500
-    if (
-      event.data.tag === "performanceSpan" &&
-      (event.data.payload.op === "resource.fetch" ||
-        event.data.payload.op === "resource.xhr") &&
-      event.data.payload.data.statusCode !== 500
-    ) {
-      return null;
-    }
-
-    return event;
-  },
-});
-```
-
-- **URLs are stored** in recording and replay events; scrub replay-event URLs with `Sentry.addEventProcessor`, checking `event.type !== "replay_event"` and mapping `event.urls`.
-- **Mobile masks by widget or view type;** the Flutter rules are in [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md#masking), React Native's in [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md).
+Use the shared replay privacy guidance in [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md#replay-privacy). [getsentry/sentry-for-ai, SDK references]
 
 ## Replay manual control
 
-- **Both rates `0`** means installed but inactive. `Sentry.getReplay()` returns the instance: `replay.start()` (session mode), `replay.startBuffering()` (buffer mode), `await replay.stop()`, `await replay.flush()`, `replay.getReplayId()`.
-- **Consent withdrawn:** `await replay.stop({ flush: false })` (since `v10.67.0`); it doesn't retract segments already sent.
-- **Deferred init:** set `client.getOptions().replaysSessionSampleRate` and the error rate, then `client.addIntegration(replay)`.
-- **Lifecycle events** (since `v10.50.0`): `client.on("replayStart", ({ sessionId, recordingMode }) => ...)` and `client.on("replayEnd", ({ sessionId, reason }) => ...)`, reasons `manual`, `sessionExpired`, `sendError`, `mutationLimit`, `eventBufferError`, `eventBufferOverflow`.
-- **Custom sampling:** flush for employees; use the Navigation API (`navigation.addEventListener("navigate", ...)`) to `replay.start()` on `/buggy-page/`; drop some errors with `beforeErrorSampling: (event) => !event.exception?.values?.[0]?.value?.includes("drop me")`; in a support widget, `replay.flush()` then attach `replay.getReplayId()`. Replay URL: `https://<org-slug>.sentry.io/replays/<replay-id>/`.
+Use the shared replay manual control guidance in [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md#replay-manual-control). [getsentry/sentry-for-ai, SDK references]
 
 ## Logs
+
+[getsentry/sentry-for-ai, shared Logs reference and sentry-node-sdk]
+
+The retained server init example uses the SDK 10 contract. SDK 11 removes enableLogs; [UPGRADE.md](UPGRADE.md#v10-to-v11) records that boundary. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#logs-and-metrics]
+
+Use [structured logging](../observability/LOGGING.md) for generic event design, accumulated context, levels and privacy; the Sentry APIs, logger integrations and SDK-specific attributes stay here. [existing observability, LOGGING.md; getsentry/sentry-for-ai, shared Logs reference]
 
 - **Versions (JS):** supported from SDK `9.41.0`, on by default from `10.71.0`; below that set `enableLogs: true`. CDN and Loader need a logs bundle, for example `bundle.logs.metrics.min.js`. Logs are high-cardinality: any attributes, all searchable.
 - **API:** `Sentry.logger.trace|debug|info|warn|error|fatal(message, attributes)`; the message is required. Levels: trace (fine-grained debugging), debug (development diagnostics), info (normal operations, milestones), warn (potential issues), error (failures needing attention), fatal (critical, system down). Prefer a real error event for exceptions that should become Issues.
@@ -132,6 +49,61 @@ Sentry.logger.info("Checkout completed", {
 - **Business context belongs on the log:** user tier, account age, lifetime value, order value and item count, active feature flags, endpoint, method, duration.
 - **Naming:** "Use `snake_case` for custom attributes", consistently. The logging workflow also suggests namespacing (`myapp.<domain>.<field>`) agreed once across services, with the same names on both sides of `baggage` / `sentry-trace` propagation.
 - **Querying:** the query window is Developer 7 days, Team 14, Business 30. Raw text search is case sensitive and only over the message. Examples: `severity:error`, `severity:error payment.failed`, `user.id:12345`, `trace_id:abc123def456`, `severity:error environment:production`, `severity:warn OR severity:error`, `database:"users" query.duration_ms:>1000`, `message://^Timeout after \d+ms//` (regex, logs only). Auto-refresh turns off above 100 logs/second, runs at most 10 minutes and only on time-descending relative ranges. Export up to 10,000 lines as CSV or JSONL. Visualize `count(logs)` with Group By and the Aggregates tab; at high volume charts are extrapolated from samples ("Continue Scanning"). Logs feed alerts and dashboard widgets; log drains cover platforms without an SDK. AI analysis of logs: Sentry CLI logs, the Sentry MCP Server, Seer.
+
+### JavaScript logger source qualifiers
+
+[getsentry/sentry-for-ai, sentry-react-sdk, sentry-browser-sdk and sentry-node-sdk logging references]
+
+```typescript
+Sentry.logger.info(
+  Sentry.logger.fmt`User ${userId} purchased ${productName} for $${amount}`
+);
+```
+
+- fmt is an alias for Sentry.parameterize and a tagged template; calling fmt as an ordinary function creates no parameter attributes. The source tables describe scalar-only attributes in older versions; SDK 11 accepts primitive arrays too, as its migration guide specifies.
+- Browser/React source tables list scope attributes since 10.32.0; the shared source lists the newer top-level setters since 10.61.0. Source-specific default SDK names and browser/server attributes remain runtime-specific.
+- The React source says npm only; Browser/shared sources also list the logs CDN bundle. These are source alternatives: verify the selected bundle instead of treating the npm-only troubleshooting line as universal. The Loader has no logger API.
+- Source level preferences conflict: the shared quota practice keeps WARNING and above, while the browser/React references keep low-volume info with warn/error/fatal and drop trace/debug. Choose deliberately and preserve the existing application policy.
+- Node logger signature adds an optional scope argument, and structured levels have severity numbers 1/5/9/13/17/21. These wire levels are not incident severity P0-P3.
+
+### Server logger details
+
+Node-specific source signature: `info(message: ParameterizedString, attributes?: Record<string, unknown>, options?: { scope?: Scope }): void`. Its hook reference includes severityNumber alongside level/message/attributes; other references list timestamp. Use the installed Log type rather than inventing one common serialized shape. [getsentry/sentry-for-ai, sentry-node-sdk]
+
+```typescript
+Sentry.logger.info(
+  Sentry.logger.fmt`Order ${orderId} placed by ${userId}`,
+  { total: 149.99, itemCount: 3, region: "us-west-2" },
+);
+```
+
+```typescript
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  enableLogs: true,
+  beforeSendLog: (log) => {
+    // Drop debug logs in production
+    if (process.env.NODE_ENV === "production" && log.level === "debug") {
+      return null;
+    }
+
+    // Scrub sensitive fields
+    if (log.attributes?.credit_card) {
+      log.attributes.credit_card = "[REDACTED]";
+    }
+
+    // Add computed attributes
+    log.attributes = {
+      ...log.attributes,
+      processed_at: Date.now(),
+    };
+
+    return log;
+  },
+});
+```
+
+- Serverless handlers flush before returning. Supported Node logger integrations in the current source are Pino 10.18.0+, Winston 9.13.0+ and Consola 10.12.0+; do not extend that support claim to Bunyan or Morgan. Console default levels include debug/info/warn/error/log/trace/assert; Consola uses createConsolaReporter. [getsentry/sentry-for-ai, sentry-node-sdk; https://docs.sentry.io/platforms/javascript/guides/node/logs/]
 
 ## What to log
 
@@ -167,7 +139,69 @@ Sentry.logger.info("Aurora import finished", {
 
 ## Application Metrics
 
-- **JS SDK `10.25.0`+.** CDN builds need a metrics bundle (for example `bundle.logs.metrics.min.js`); elsewhere `Sentry.metrics.*` is a no-op with a warning under `debug`.
+[getsentry/sentry-for-ai, sentry-node-sdk and shared Application Metrics reference]
+
+The API examples below retain the SDK 10 source contract; SDK 11 removes enableMetrics. Use the current [migration boundary](UPGRADE.md#v10-to-v11). [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#logs-and-metrics]
+
+- **On by default** (`enableMetrics: false` disables it); no init flag needed. Metrics are buffered (max 1000, `MAX_METRIC_BUFFER_SIZE = 1000`) and sent periodically (the NestJS reference: not suitable for sub-second alerting).
+- The Next.js SDK 10 source has no increment or set API: increment became count, while set was removed without an equivalent. [getsentry/sentry-for-ai, sentry-nextjs-sdk]
+- **API:** `Sentry.metrics.count(name, value?, options?)` (value defaults to 1), `gauge(name, value, options?)`, `distribution(name, value, options?)`, with `MetricOptions { unit?, attributes?, scope? }`.
+
+| Method | Underlying type | Use for |
+|---|---|---|
+| `count` | counter | Event frequency: requests, errors, signups |
+| `gauge` | gauge | Current snapshot value: queue depth, CPU % |
+| `distribution` | distribution | Value histograms and ranges: latencies, file sizes |
+
+The NestJS reference adds that distributions support p50/p90/p95/p99 while gauges give min, max, avg, sum and count with no percentiles, so use a distribution when you need percentiles.
+
+```typescript
+// count: how many times something happened
+Sentry.metrics.count("user.signups", 1);
+Sentry.metrics.count("api.errors", 1, { attributes: { endpoint: "/checkout" } });
+
+// gauge: what the current state is
+Sentry.metrics.gauge("queue.depth", 42);
+Sentry.metrics.gauge("memory.usage", 512, { unit: "megabyte" });
+
+// distribution: spread of a measured value
+Sentry.metrics.distribution("api.latency", 187.5, { unit: "millisecond" });
+Sentry.metrics.distribution("payload.size", 1024, { unit: "byte" });
+```
+
+- **Units:** time `millisecond`, `second`, `minute`, `hour`, `day`, `week`; storage `bit`, `byte`, `kilobyte`, `megabyte`, `gigabyte`, `terabyte`, `petabyte`; fractions `ratio`, `percent`; `none` (or omit `unit`). The NestJS reference lists `nanosecond` and `microsecond` too and no `petabyte`. Confirm in the current docs.
+- **Keep cardinality low:** high-cardinality attributes (per-user IDs, request UUIDs) degrade backend performance; keep attributes to bounded enums and sets, and put per-user and per-request data in logs. The NestJS reference adds: no timestamps as attributes, and prefix names with the service (`"payments.charge_time"`, not `"charge_time"`). Each metric envelope is limited to 2 KB; bigger metrics are dropped.
+- **`beforeSendMetric(metric)`** returns `null` to drop or the metric with changes. The Node reference gives the shape `{ name, value, type, unit?, attributes? }`; the NestJS reference adds `type` values `"counter"`, `"gauge"`, `"distribution"` and fields `timestamp` (epoch seconds), `traceId`, `spanId`.
+
+```typescript
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  beforeSendMetric: (metric) => {
+    // metric: { name, value, type, unit?, attributes? }
+
+    // Drop internal debug metrics
+    if (metric.name.startsWith("_internal.")) {
+      return null;
+    }
+
+    // Normalize metric names
+    metric.name = metric.name.toLowerCase().replace(/[^a-z0-9_.]/g, "_");
+
+    // Add global context
+    metric.attributes = {
+      ...metric.attributes,
+      host: process.env.HOSTNAME,
+      deploy_id: process.env.DEPLOY_ID,
+    };
+
+    return metric;
+  },
+});
+```
+
+- **Scope attributes (>=10.33.0):** `Sentry.getGlobalScope().setAttributes({...})` or `scope.setAttribute(...)` inside `withScope`; metrics emitted in that scope inherit them.
+
+- **Automatic attributes:** `sentry.environment`, `sentry.release`, `sentry.sdk.name`, `sentry.sdk.version`, `user.id`, `user.name`, `user.email`, `server.address`.
 
 ```javascript
 // Count occurrences
@@ -182,7 +216,11 @@ Sentry.metrics.distribution("api_latency", 187, {
 });
 ```
 
-- **Attributes** go in `{ attributes: { endpoint: "/api/orders", user_tier: "pro", ... } }`. Each metric has a **2KB size limit** and is dropped if it exceeds it. Units: `millisecond`, `second`, `byte`, `kilobyte`, `megabyte`.
+### Product and query details
+
+[getsentry/sentry-for-ai, shared metrics reference; https://docs.sentry.io/platforms/javascript/configuration/options/; https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+- **JS SDK `10.25.0`+.** CDN builds need a metrics bundle (for example `bundle.logs.metrics.min.js`); elsewhere `Sentry.metrics.*` is a no-op with a warning under `debug`.
 - **No on/off option in v11:** metrics are captured only when called. Drop them with `beforeSendMetric: () => null`; below `11.0.0` use `enableMetrics: false`. `await Sentry.flush()` sends pending metrics.
 - **Default attributes:** `sentry.environment`, `sentry.release`, `sentry.sdk.name`, `sentry.sdk.version`, `user.*`, `browser.*`, `sentry.replay_id` (client), `server.address` (server). Element timing and bfcache metrics come from integrations.
 - **Every metric event is trace-connected.** "Application Metrics are typically sampled at 100% while traces are usually sampled at a much lower rate"; use attributes and Cross-Event Querying to find a comparable trace. Use metrics for code-based health signals, Logs for log aggregation and Traces for request tracing.
@@ -239,22 +277,8 @@ Sentry.metrics.distribution("api_latency", 187, {
 
 - **Continuous (backend) and UI (frontend) profiling replace transaction-based profiling,** which capped profiles at 30 seconds. Continuous: start at service start, stop at termination, and constrain by profiling for example 10% of instances or around critical code. UI: profile full user sessions, constrained by for example 10% of sessions. Sampling is per session. The manual lifecycle is the default; the trace lifecycle requires tracing and span instrumentation.
 - **What you get:** function-level data with no extra instrumentation; the Profiling page shows the slowest and regressed or improved functions. The Transactions tab needs tracing, the Aggregate Flamegraph doesn't; from Trace View use a span's "Profile" section or the Profiles tab.
-- **Browser profiling is beta** and uses the JS Self-Profiling API (Chromium only: Chrome, Edge), so profiles are biased to Chrome users. It needs `@sentry/browser` `10.27.0`+ (or `7.60.0`+ for the deprecated transaction-based mode), and the server must send `Document-Policy: js-profiling` (in `vercel.json` headers, Netlify `netlify.toml` / `_headers`, Express `res.set("Document-Policy", "js-profiling")`, Nginx `add_header`, Apache, a CloudFront function). Without that header browser profiling isn't available.
+Use the [browser profiling owner](BROWSER-REPLAY-AND-PROFILING.md#profiling) for headers, browser support, lifecycles and browser source variants. [getsentry/sentry-for-ai, shared profiling reference]
 
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    Sentry.browserProfilingIntegration(),
-  ],
-  tracesSampleRate: 1.0,
-  tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
-  profileSessionSampleRate: 1.0,
-});
-```
-
-- **Browser modes:** manual (default) `Sentry.uiProfiler.startProfiler();` / `Sentry.uiProfiler.stopProfiler();`; trace mode `profileLifecycle: "trace"`. The options page names the manual APIs `startProfiler()` / `stopProfiler()` instead. Sentry samples at 100Hz (10ms) vs DevTools' 1000Hz, and Chrome DevTools shows "Profiling Overhead" with the integration on, so disable it locally.
 - **Node:** `npm install @sentry/profiling-node --save`, version exactly matching the main SDK; `nodeProfilingIntegration()`; `profileSessionSampleRate` (evaluated once at init, so per service instance) and `profileLifecycle: 'trace' | 'manual'` (mutually exclusive); manual API `Sentry.profiler.startProfiler()`. It uses a V8 CpuProfiler native add-on, so it won't run on Deno or Bun. Env flags: `SENTRY_PROFILER_BINARY_PATH`, `SENTRY_PROFILER_BINARY_DIR`, `SENTRY_PROFILER_LOGGING_MODE=eager|lazy` (lazy makes `startProfiler` slow, a few hundred ms). Prebuilt binaries: macOS x64, Linux ARM64 (musl), Linux x64 (glibc), Windows x64, for Node v18, v20, v22, v24. "If you're adopting Profiling in a high-throughput environment, we recommend testing prior to deployment". Setup per runtime: [NODE-TRACING.md](NODE-TRACING.md).
 
 ## Prove it

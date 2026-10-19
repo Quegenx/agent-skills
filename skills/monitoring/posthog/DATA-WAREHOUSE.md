@@ -2,7 +2,7 @@
 
 The PostHog data warehouse imports business data PostHog does not collect itself (payments, subscriptions, CRM records, support tickets, your production tables) so it can be queried next to events and persons in HogQL ([HOGQL.md](HOGQL.md)). Each source writes tables named `{prefix}_{table_name}`, and each table's sync type, incremental field, primary key and frequency decide most outcomes: whether rows arrive at all, whether updates are missed, whether duplicates appear, and how many rows you are billed for. Modeling on top of the imported tables (catalog, views, dimension tables, warehouse person properties, data quality checks) is [WAREHOUSE-MODELING.md](WAREHOUSE-MODELING.md).
 
-**Contents:** [Native or imported](#native-or-imported) · [Connect a source](#connect-a-source) · [Credentials per source](#credentials-per-source) · [Advanced flow: wizard, db-schema, create](#advanced-flow-wizard-db-schema-create) · [Sync types](#sync-types) · [Frequency](#frequency) · [CDC](#cdc) · [Webhooks](#webhooks) · [Custom REST source](#custom-rest-source) · [Tune a sync](#tune-a-sync) · [Diagnose a failed sync](#diagnose-a-failed-sync) · [Source health audit](#source-health-audit) · [Batch export file downloads](#batch-export-file-downloads) · [Prove it](#prove-it)
+**Contents:** [Native or imported](#native-or-imported) · [Connect a source](#connect-a-source) · [Credentials per source](#credentials-per-source) · [Supabase as a warehouse source](#supabase-as-a-warehouse-source) · [Advanced flow: wizard, db-schema, create](#advanced-flow-wizard-db-schema-create) · [Sync types](#sync-types) · [Frequency](#frequency) · [CDC](#cdc) · [Webhooks](#webhooks) · [Tune a sync](#tune-a-sync) · [Diagnose a failed sync](#diagnose-a-failed-sync) · [Source health audit](#source-health-audit) · [Batch export file downloads](#batch-export-file-downloads) · [Prove it](#prove-it)
 
 ## Native or imported
 
@@ -68,7 +68,7 @@ The PostHog data warehouse imports business data PostHog does not collect itself
 
 | Source | Use |
 |---|---|
-| Supabase | The Session pooler, not the direct host (the direct host is IPv6-only). Host like `aws-0-<region>.pooler.supabase.com`, username `postgres.<project-ref>`, port 6543 (not 5432). Password is the database password (Settings, Database), not the `anon` or `service_role` JWT keys nor the account password. Derive the project ref from `db.<ref>.supabase.co` if `SUPABASE_URL` is in the env. Conflict: the PostHog Supabase source docs give the port default as `5432` and say CDC needs Direct connection plus the IPv4 add-on; full docs fields in [MCP-AND-WIZARD.md](MCP-AND-WIZARD.md#supabase-as-a-warehouse-source). |
+| Supabase | Use the [canonical Supabase connection modes and CDC prerequisites](#supabase-as-a-warehouse-source). Database passwords differ from API/JWT and account credentials. [existing DATA-WAREHOUSE.md; official Supabase/PostHog connection docs below] |
 | Stripe | A restricted key (`rk_live_…`), not the standard secret key (`sk_live_…`). One recovery example in the vendor sync-diagnosis skill updates Stripe with `stripe_secret_key: "sk_live_..."` while its own text says to grab a fresh restricted key; the source setup skill says `rk_live_…`. |
 | RevenueCat | v2 secret key (`sk_…`) with read scopes |
 | Sentry | Internal-integration token, not a DSN, not a personal auth token |
@@ -76,6 +76,28 @@ The PostHog data warehouse imports business data PostHog does not collect itself
 | Twilio | API Key SID plus Secret, not the account auth token |
 | Mailchimp | The key carries a datacenter suffix (`key-usX`) |
 | Resend, Mailgun (send-only) | The key in the env is often restricted; import needs a full or read-access key |
+
+## Supabase as a warehouse source
+
+- **Set up:** `npx @posthog/wizard warehouse`, or Data pipeline > sources > New source > Supabase. The Supabase connector is the Postgres integration; CDC sync is in alpha.
+- **Connection details:** Supabase dashboard **Connect** > **Direct** tab > **Session pooler** or **Direct connection**.
+
+| Field | Value |
+|---|---|
+| Host | The Session pooler hostname, e.g. `aws-0-us-east-1.pooler.supabase.com`. Not the Project URL `<ref>.supabase.co` (the REST endpoint); not the direct host `db.<ref>.supabase.co` (IPv6 unless the IPv4 add-on is enabled; CDC requirements are below) |
+| Port | Default `5432` |
+| Database | `postgres` |
+| User | `postgres.<project-ref>` |
+| Schema | Optional; default `public`, blank means all |
+
+- **Connection modes:** shared Session pooler uses `5432`; shared Transaction pooler uses `6543`; Direct uses `5432`. The old vendor credential row called `6543` the Session port. Copy the actual hostname, port and role from Dashboard Connect; the pooler cluster index cannot be inferred from region. Shared pooler custom-role usernames are `<role>.<project-ref>`, while direct credentials use the role itself. [https://supabase.com/docs/guides/database/connecting-to-postgres.md; https://posthog.com/docs/cdp/sources/supabase]
+- **IP qualification:** shared poolers are IPv4. The direct host is IPv6 unless the project has the IPv4 add-on, which switches that endpoint to IPv4. The source's unqualified direct-is-IPv6 wording applies without that add-on. [https://supabase.com/docs/guides/database/connecting-to-postgres.md]
+- **CDC needs Direct connection plus the Supabase IPv4 add-on:** logical replication doesn't work through the pooler.
+- **SSH tunnel** is optional ("Require TLS through tunnel?" defaults to on).
+- **Sources created after February 18, 2026 require SSL/TLS.**
+- **Columns are selectable per table;** the primary key and incremental field are always synced.
+- **Connect as a dedicated read-only role,** not the `postgres` superuser.
+- **Allow PostHog's inbound IPs.** US: `44.205.89.55`, `52.4.194.122`, `44.208.188.173`. EU: `3.75.65.221`, `18.197.246.42`, `3.120.223.253`.
 
 ## Advanced flow: wizard, db-schema, create
 
@@ -167,98 +189,11 @@ The PostHog data warehouse imports business data PostHog does not collect itself
 - **Healthy:** `exists: true`, `external_status.status: "enabled"`, no `error`.
 - **The first load still polls** (until `initial_sync_complete` flips true), and a webhook schema keeps its `sync_frequency` as a reconciliation safety net. Both are expected.
 
-## Custom REST source
-
-- **Alpha.** At most 50 resources per manifest; at most 5 Custom sources per project. The manifest is a `RESTAPIConfig`, the same shape as the built-in REST connectors (Intercom, Attio, Sentry).
-- **Step 0: look for a native connector** with `external-data-sources-wizard`. PostHog ships hundreds; if one matches, use the native setup.
-- **Tools:** `external-data-sources-wizard`, `external-data-sources-db-schema` (validate and list; returns `detected_primary_keys`, `incremental_fields`), `external-data-sources-preview-resource` (live sample), `data-warehouse-source-setup` (enables all resources), `external-data-sources-create` (a subset via `schemas`), `external-data-schemas-list`.
-- **Validate** (structure, fan-out graph, and the credential via a bounded live probe): `{ source_type: "Custom", manifest_json: "<stringified manifest>", auth_token: "<credential>" }`. A 400 `message` is plain English, for example `resources[0].endpoint.path: must not be empty`.
-- **Always preview before creating;** skipping it is the most common way to sync zero or malformed rows. Call `{ source_type: "Custom", payload: { manifest_json, auth_token }, resource_name: "<name>", limit: 10 }`. It returns rows plus inferred `columns`; a live failure returns `error` with empty `rows`. Check `data_selector` (rows like `[{ "data": [...] }]` mean you pointed at the envelope), that `primary_key` exists and is unique, and that `cursor_path` is present and sortable.
-- **Create:** `{ source_type: "Custom", payload: { manifest_json, auth_token }, prefix: "<short_name>" }`. Incremental where a cursor is declared, else full refresh; tables are `{prefix}_{resource_name}`.
-- **Secrets go in payload keys by `client.auth.type`:** `auth_token` (bearer), `auth_api_key` (api_key), `auth_password` (http_basic), `auth_oauth2_client_secret` (plus `auth_oauth2_refresh_token` for the refresh_token grant). Inline secrets in the manifest are rejected; PostHog redacts them from responses.
-- **GET and POST only;** PUT, PATCH and DELETE are rejected. One level of fan-out.
-
-Skeleton (verbatim):
-
-```json
-{
-  "client": {
-    "base_url": "https://api.example.com/v1",
-    "auth": { "type": "bearer" }
-  },
-  "resources": [
-    {
-      "name": "users",
-      "primary_key": "id",
-      "endpoint": {
-        "path": "/users",
-        "data_selector": "data",
-        "paginator": { "type": "json_response", "next_url_path": "next" },
-        "incremental": { "cursor_path": "updated_at", "start_param": "since" }
-      }
-    }
-  ]
-}
-```
-
-### Manifest grammar
-
-- **Top level:** `client` {`base_url`, `auth`, `headers` (static, every request), `paginator` (default for all resources, overridable per endpoint)}, `resource_defaults.endpoint`, `resources` (required, 1 to 50). Unknown keys are ignored.
-- **`client.base_url`** is required; on PostHog Cloud it must be `https://`; internal or private hosts are rejected (SSRF guard).
-- **`resource_defaults.endpoint`** merges into every resource; `incremental` is not allowed there.
-- **Auth blocks:** `{ "type": "bearer" }` sends `Authorization: Bearer <token>`; `{ "type": "api_key", "name": "X-Api-Key", "location": "header" }`; `{ "type": "api_key", "name": "api_key", "location": "query" }` sends `?api_key=<key>`; `{ "type": "http_basic", "username": "user" }`; `{ "type": "oauth2", ... }` sends the minted token as Bearer. `location` is `header`, `query`, `param` or `cookie` (`query` and `param` are synonyms; prefer `query`). No auth: omit `auth`.
-
-```json
-{
-  "type": "oauth2",
-  "client_id": "my-client-id",
-  "token_url": "https://auth.example.com/oauth/token",
-  "grant_type": "refresh_token",
-  "scopes": "read:orders read:users"
-}
-```
-
-- **`grant_type`:** `client_credentials` (default) or `refresh_token`. `authorization_code` is not supported; obtain the refresh token out of band. Optional knobs: `access_token_name`, `expires_in_name`, `expiry_date_format` (strptime), `extra_token_request_params` (for example `audience`), `token_request_headers`, `client_auth_method` (`body` default, or `basic`).
-- **Keep the whole `client.auth` block identical across db-schema, preview and create.** OAuth2 secrets move into a server-managed credential store on first validation, preview or create, and rotated single-use refresh tokens are persisted server-side, matched by `client_id` + `token_url` + `grant_type`. Changing any field discards the stored rotation and the next mint fails with `invalid_grant`. Never set `auth_oauth2_integration_id` (server-owned; ignored on create). To reconnect, update with re-entered `auth_oauth2_client_secret` / `auth_oauth2_refresh_token`.
-- **Endpoint fields:** `path` (required), `method` (`GET` default, or `POST`), `params`, `json` (POST body), `data_selector` (JSONPath such as `"data"` or `"results.items"`; omit only if the body is the array), `paginator`, `incremental`. `primary_key` sits on the resource: `"id"` or `["org_id", "id"]`.
-- **A paginator is required for any paginated endpoint.** Omitting it, or `{ "type": "auto" }`, fetches only the first response; there is no auto-detection, so a paginated API silently imports page one.
-
-| Paginator | Options |
-|---|---|
-| `json_response` | `next_url_path` |
-| `header_link` | `links_next_key` (default `next`) |
-| `cursor` | `cursor_path`, `cursor_param` |
-| `offset` | `limit`, `offset_param`, `limit_param`, `total_path`, `maximum_offset` |
-| `page_number` | `base_page`, `page_param`, `total_path`, `maximum_page` |
-| `single_page`, `auto` | none |
-
-- **`param_location`** on `cursor`, `offset` and `page_number`: `"query"` (default) or `"json"` with a dotted path like `"variables.offset"` (for GraphQL).
-- **Incremental block:** `cursor_path`, `start_param`, `end_param` (optional), `param_location` (child resources in a fan-out can't use `"json"`), `cursor_type` (`datetime` default, `date`, `timestamp`, `integer`, `numeric`, `objectid`), `datetime_format` (strftime; default ISO-8601; set it for strict APIs). Set `cursor_type` when the cursor isn't a datetime. Prefer `updated_at` over `created_at` (it catches edits).
-- **Two different `cursor_path`s:** the paginator's (next-page cursor in the envelope) and the incremental one (watermark on each record) are independent.
-- **Worked patterns:** Bearer with next-URL and incremental (`links.next`, `updated_since`); API key in query with offset (`limit: 200`, `total_path: "meta.total"`, `cursor_type: "integer"`, `after_id`); HTTP basic with a single page; OAuth2 refresh-token with page_number (`page_param: "page"`, `total_path: "total_pages"`, `modified_since`); Bearer with cursor (`cursor_path: "meta.next_cursor"`, `cursor_param: "cursor"`).
-
-Fan-out with a `resolve` param (verbatim):
-
-```json
-{
-  "resources": [
-    { "name": "forms", "primary_key": "id", "endpoint": { "path": "/forms", "data_selector": "items" } },
-    {
-      "name": "responses",
-      "primary_key": "token",
-      "endpoint": {
-        "path": "/forms/{form_id}/responses",
-        "data_selector": "items",
-        "params": { "form_id": { "type": "resolve", "resource": "forms", "field": "id" } }
-      }
-    }
-  ]
-}
-```
-
-- **Fan-out rules:** the placeholder sits within the path (not at the start); the parent must be top-level; one level; at most one resolve param per resource.
+For this workflow, read [CUSTOM-SOURCES.md](CUSTOM-SOURCES.md). [existing skills/monitoring/posthog/DATA-WAREHOUSE.md]
 
 ## Tune a sync
+
+In an authorized recovery follow-up, billing-capped schemas can be disabled with `external-data-schemas-partial-update`; a read-only health audit must not perform that mutation. The old health-audit paragraph mixed the two modes. [existing DATA-WAREHOUSE.md]
 
 - **Change with `external-data-schemas-partial-update`,** sending only changed fields: `sync_type`, `incremental_field`, `incremental_field_type`, `primary_key_columns`, `cdc_table_mode`, `sync_frequency`, `sync_time_of_day`, `should_sync`.
 - **Always `external-data-schemas-retrieve` first, and don't tune a `Running` schema** (wait or `external-data-schemas-cancel`): a mid-sync update can leave the high-water mark inconsistent.
@@ -347,7 +282,7 @@ Example payloads (verbatim):
 - **Not flagged:** paused schemas (`should_sync = false`), stale but `Completed` schemas, webhook problems.
 - **Priority:** sources in Error first (they cascade; name the schemas under them), then `billing_limit`, then Failed on heavily used tables, then the rest.
 - **Deeper checks, only when asked:** stale schemas (old `last_synced_at` against `sync_frequency`, for example `1hour` last synced 3 days ago); abandoned sources (every schema `should_sync: false` or `Paused`), cleaned up with `external-data-sources-destroy`; webhook state via `external-data-sources-webhook-info-retrieve` (`exists: false`, `external_status.error`, `external_status.status` not `"enabled"`).
-- **The audit is read-only;** an empty result means healthy. Never apply fixes from an audit; hand off to [Diagnose a failed sync](#diagnose-a-failed-sync) or [Tune a sync](#tune-a-sync). Route `destination` and `transformation` entries to their own products. Disable billing-capped schemas with `external-data-schemas-partial-update`.
+- **The audit is read-only.** An empty response means no issue was returned in its supported categories; paused schemas, stale Completed schemas and webhook failures still need their own checks. The old line called the empty result healthy despite those omissions. Hand off authorized fixes to [Diagnose a failed sync](#diagnose-a-failed-sync) or [Tune a sync](#tune-a-sync); route destination and transformation entries to their product owners. [existing DATA-WAREHOUSE.md, source health audit]
 
 ## Batch export file downloads
 

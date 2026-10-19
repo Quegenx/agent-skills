@@ -2,7 +2,9 @@
 
 Everything `@sentry/nextjs` does beyond error capture: tracing, Session Replay, logs, metrics, profiling, crons and AI monitoring. Each feature is switched on per runtime, in the init file of that runtime (`instrumentation-client.ts`, `sentry.server.config.ts`, `sentry.edge.config.ts`), so the mechanism that decides most outcomes is the same as for errors: tracing or logs configured in one file produce nothing in the other two. Setup, the three runtimes and error monitoring are in [NEXTJS.md](NEXTJS.md); cross-platform sampling and PII practices are in [PRACTICES.md](PRACTICES.md); source maps (also needed for readable flame graphs) are in [RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md).
 
-**Contents:** [Feature versions](#feature-versions) · [Tracing](#tracing) · [Distributed tracing](#distributed-tracing) · [Session Replay](#session-replay) · [Logs](#logs) · [Metrics](#metrics) · [Profiling](#profiling) · [Crons](#crons) · [AI monitoring](#ai-monitoring) · [Debugging](#debugging) · [Prove it](#prove-it)
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+**Contents:** [Feature versions](#feature-versions) · [Tracing](#tracing) · [Distributed tracing](#distributed-tracing) · [Session Replay](BROWSER-REPLAY-AND-PROFILING.md#session-replay) · [Logs](SIGNALS-PRACTICE.md#logs) · [Metrics](SIGNALS-PRACTICE.md#application-metrics) · [Profiling](#profiling) · [Crons](#crons) · [AI monitoring](#ai-monitoring) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Feature versions
 
@@ -114,7 +116,7 @@ Sentry.init({
 - **`StartSpanOptions`:** `name` (required), `op`, `attributes: Record<string, string | number | boolean>`, `parentSpan`, `onlyIfParent` (skip if there is no active parent), `forceTransaction` (force a root transaction in the UI), `startTime` (Unix seconds).
 - **Common `op` values:** `http.client`, `http.server`, `db` / `db.query`, `db.redis`, `function`, `ui.render`, `ui.action.click`, `cache.get` / `cache.put`, `queue.publish` / `queue.process`, `task`.
 - **Enrich:** `Sentry.getActiveSpan()`, `span.setAttribute`, `span.setAttributes`, `span.setStatus({ code })` (0 = unset, 1 = ok, 2 = error, optional `message`), `Sentry.updateSpanName(span, "GET /users/:id")`.
-- **`beforeSendSpan(span)`** modifies every span; it can return `null` to drop, but prefer `ignoreSpans` for that.
+- **beforeSendSpan modifies but cannot drop spans or return null.** Use ignoreSpans for dropping; serialized shape follows the selected stream/static lifecycle. The old Next.js source said null could drop spans. [https://docs.sentry.io/platforms/javascript/guides/node/configuration/filtering/#using-before-send-span]
 - **Other APIs:** `Sentry.continueTrace({ sentryTrace, baggage }, cb)`, `Sentry.startNewTrace(cb)` (break the chain), `Sentry.suppressTracing(cb)` (no spans), `Sentry.getRootSpan(span)`, `Sentry.spanToJSON(root).name`, `Sentry.withActiveSpan(span, async (scope) => ...)`.
 - **The browser attaches all child spans flat to the root span by default.** Opt into nesting with `parentSpanIsAlwaysRootSpan: false`, with care: it can produce incorrect data with concurrent async operations. Across async gaps use `startInactiveSpan` with an explicit `parentSpan`.
 
@@ -128,83 +130,27 @@ Sentry.init({
 
 ## Session Replay
 
-### Setup and sampling
-
-- **Browser only.** Add `replayIntegration()` only in `instrumentation-client.ts`: never in the server or edge config, the server part of `instrumentation.ts`, Route Handlers or Server Actions. It is bundled in `@sentry/nextjs`; no separate package.
-- **Sample rates live in `Sentry.init`, not inside `replayIntegration()`.** In development, `replaysSessionSampleRate: 1.0`. The two sources disagree on defaults (`0.1` / `1.0` in the setup guide, `0` / `0` in the replay reference); confirm in the current docs.
-
-| Daily sessions | `replaysSessionSampleRate` | `replaysOnErrorSampleRate` |
-|---|---|---|
-| 100,000+ | `0.01` | `1.0` |
-| 10,000 to 100,000 | `0.10` | `1.0` |
-| Under 10,000 | `0.25` | `1.0` |
-
-- **Always keep `replaysOnErrorSampleRate: 1.0`.**
-- **Modes:** a session sampled by `replaysSessionSampleRate` runs in Session Mode (chunks sent in real time). An unsampled one runs in Buffer Mode: the last ~60 seconds are kept in memory only, and on an error `replaysOnErrorSampleRate` decides whether the buffer plus what follows is sent.
-- **Lifecycle:** a replay ends after 5 minutes of inactivity or at 60 minutes max; closing the tab ends it immediately; refreshes and navigations on the same domain and tab stay in one session.
-
-### Options
-
-| Option | Default | Notes |
-|---|---|---|
-| `stickySession` | `true` | |
-| `mutationLimit` | `10000` | |
-| `mutationBreadcrumbLimit` | `750` | |
-| `minReplayDuration` | `5000` ms | Max 15000; session sampling only |
-| `maxReplayDuration` | `3600000` ms | |
-| `workerUrl` | `undefined` | Self-hosted compression worker |
-| `beforeAddRecordingEvent` | | |
-| `beforeErrorSampling` | | Buffer mode only; return `false` to prevent upload |
-| `slowClickIgnoreSelectors` | `[]` | |
-| `networkDetailAllowUrls` | `[]` | |
-| `networkDetailDenyUrls` | `[]` | Takes precedence over allow |
-| `networkCaptureBodies` | `true` | |
-| `networkRequestHeaders`, `networkResponseHeaders` | `[]` | Beyond Content-Type, Content-Length, Accept |
-
-- **Network capture by default:** URL, body size, method, status. Bodies are truncated to 150k characters, only text (JSON, XML, FormData), and scrubbed server-side for PII (credit cards, SSNs, private keys).
-- **Keep console errors from triggering replays** (from `captureConsoleIntegration`): `beforeErrorSampling: (event) => { if (event.logger === "console") return false; return true; }`.
-
-### Privacy
-
-- **Masking happens client-side before send.** `maskAllText` `true`, `maskAllInputs` `true`, `blockAllMedia` `true` (`img`, `svg`, `video`, `object`, `picture`, `embed`, `map`, `audio`).
-- **Selectors:** `mask` default `['.sentry-mask', '[data-sentry-mask]']`; `block` `['.sentry-block', '[data-sentry-block]']`; `ignore` `['.sentry-ignore', '[data-sentry-ignore]']`; `unblock` and `unmask` `[]`; `maskFn` default `(s) => '*'.repeat(s.length)`. Mask turns characters into `*`, block draws a blank box, ignore suppresses input events.
-- **v8 breaking change:** `unblock` and `unmask` no longer add `sentry-unblock` and `sentry-unmask` automatically. Restore them with `unblock: [".sentry-unblock, [data-sentry-unblock]"], unmask: [".sentry-unmask, [data-sentry-unmask]"]`.
-- **iframe `srcdoc` bypasses masking:** add `block: ["iframe"]`.
-- **Canvas recordings have NO PII scrubbing.** `Sentry.replayCanvasIntegration()`; for WebGL use manual mode `replayCanvasIntegration({ enableManualSnapshot: true })`, then `Sentry.getClient()?.getIntegrationByName("ReplayCanvas")?.snapshot(canvasEl)`.
+Add replayIntegration only in instrumentation-client.ts, never server/edge initialization, handlers or actions. Use the [shared web Replay owner](BROWSER-REPLAY-AND-PROFILING.md#session-replay) for sampling, privacy, network, manual control and CSP; it is bundled with @sentry/nextjs. [getsentry/sentry-for-ai, sentry-nextjs-sdk]
 
 ### Bundle size, control and CSP
 
 - **Tree-shaking (webpack only, Turbopack not supported):** `webpack.treeshake.removeDebugLogging`, `removeTracing` (never call `Sentry.startSpan()` and friends if enabled), `excludeReplayIframe`, `excludeReplayShadowDOM`, `excludeReplayCompressionWorker` (requires `workerUrl`). All default `false`.
-- **Lazy-load Replay:** start with `integrations: []`, then `import("@sentry/nextjs").then((lazySentry) => { Sentry.addIntegration(lazySentry.replayIntegration()); });`.
-- **Programmatic control:** `Sentry.getReplay()` gives `replay.start()`, `replay.startBuffering()`, `await replay.stop()`, `await replay.flush()`.
 - **Custom worker:** download `worker.min.js` from https://github.com/getsentry/sentry-javascript/blob/develop/packages/replay-worker/examples/worker.min.js, set `workerUrl: "/assets/worker.min.js"` and `excludeReplayCompressionWorker: true`.
-- **CSP:** `worker-src 'self' blob:`; `child-src 'self' blob:` for Safari 15.4 and earlier; add `sentry.io` to the CORS policy for iframe CSS, fonts and images.
-- **Performance:** about 50KB gzipped, compression runs in a Web Worker. Virtualize long lists. Stop rage-click false positives with `slowClickIgnoreSelectors: [".download-btn", 'a[label*="download" i]', "#print-button"]`.
 - **Click positions misaligned with custom fonts:** serve the fonts with `Access-Control-Allow-Origin` headers.
 
 ## Logs
 
-- **Configure each runtime deliberately.** Use the [JavaScript Logs version rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source claimed every version is a silent no-op without explicit true. Client, server and edge initialization remain independent. [https://docs.sentry.io/platforms/javascript/logs/]
-- **Levels:** `Sentry.logger.trace/debug/info/warn/error/fatal(message, attributes)`. Attribute values are `string`, `number` or `boolean` only (no `undefined`, arrays or objects).
-- **`Sentry.logger.fmt` is a tagged template, not a function call:** `Sentry.logger.info(Sentry.logger.fmt\`User ${userId} purchased ${productName} for $${amount}\`)` stores `message.template` "User %s purchased %s for $%s" and `message.parameter.0` to `.2`.
-- **Console capture:** `Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] })`. `console.log` and `info` map to info, `warn` to warn, `error` to error, `debug` to debug, a failing `console.assert` to error.
+Use the [shared JavaScript logger API and version boundary](SIGNALS-PRACTICE.md#logs). Retain the Next.js runtime choices below. [getsentry/sentry-for-ai, sentry-nextjs-sdk]
+
+- **Configure each runtime deliberately.** Use the [JavaScript Logs version rule](SIGNALS-PRACTICE.md#logs); the old source claimed every version is a silent no-op without explicit true. Client, server and edge initialization remain independent. [https://docs.sentry.io/platforms/javascript/logs/]
 - **Logger libraries:** Pino (server only) `integrations: [Sentry.pinoIntegration()]`, with no changes to your pino logger. Consola `consola.addReporter(Sentry.createConsolaReporter({ levels: ["error", "warn"] }))`. Winston `Sentry.createSentryWinstonTransport(Transport, { levels: ["error", "warn"] })` with `import Transport from "winston-transport"`.
 - **Per runtime:** client `consoleLoggingIntegration({ levels: ["warn", "error"] })`, server `pinoIntegration()`, edge only `enableLogs: true`.
-- **`beforeSendLog: (log) => ...` returns `null` to drop.** A log has `level`, `message`, `timestamp`, `attributes`. Use it to drop `debug` and `trace`, delete `password`, redact `credit_card`, drop messages containing `/health`.
 - **Scope attributes (10.32.0+):** `Sentry.getGlobalScope().setAttributes({...})`, `Sentry.getIsolationScope().setAttributes({...})`, `scope.setAttribute("request_id", req.id)` inside `withScope`. Always use `getIsolationScope()` for per-request data on the server, to prevent cross-request leakage.
-- **Automatic attributes:** `sentry.environment`, `sentry.release`, `sentry.sdk.name` (e.g. `"sentry.javascript.nextjs"`), `sentry.sdk.version`, `browser.name` / `browser.version` (client), `user.id` / `user.name` / `user.email` (after `setUser`; `userInfo` defaults to `true`), `sentry.trace.parent_span_id` (inside an active span), `sentry.replay_id` (client with Replay), `server.address` (server), `message.template`, `message.parameter.N`.
-- **Prefer wide events:** one comprehensive log with all the context (`orderId`, `userId`, `cartValue`, `itemCount`, `paymentMethod`, `userTier`, `durationMs`) over many fragmented logs.
 
 ## Metrics
 
-- **On by default in all three runtimes** (`enableMetrics` defaults to `true`); disable with `enableMetrics: false`. Metrics are buffered in memory (max 1000 entries) and sent periodically.
-- **API:** `Sentry.metrics.count(name, value?, options?)` (value defaults to 1), `Sentry.metrics.gauge(name, value, options?)`, `Sentry.metrics.distribution(name, value, options?)`. `MetricOptions { unit?, attributes?: Record<string, unknown>, scope? }`.
-- **There is no `increment()` or `set()` in v10:** `increment` was renamed to `count`; `set` was removed with no equivalent.
-- **Units:** time `millisecond, second, minute, hour, day, week`; storage `bit, byte, kilobyte, megabyte, gigabyte, terabyte, petabyte`; fractions `ratio, percent`; `none` or omit.
-- **Attributes are capped at 2 KB per metric envelope;** larger metrics are dropped.
-- **Keep cardinality bounded:** no per-user IDs or request UUIDs, use bounded enums, and send per-user or per-request data with `Sentry.logger.*`. For a bounded route in a proxy: `request.nextUrl.pathname.split("/").slice(0, 3).join("/")`.
-- **Automatic attributes:** `sentry.environment`, `sentry.release`, `sentry.sdk.name`, `sentry.sdk.version`, `user.*`, `browser.*` (client), `sentry.replay_id` (client), `server.address` (server).
-- **`beforeSendMetric: (metric) => ...`** gets `{ name, value, type, unit?, attributes? }`; return `null` to drop.
+Use the [shared JavaScript Metrics API and version-specific disable contract](SIGNALS-PRACTICE.md#application-metrics) in each initialized runtime. [getsentry/sentry-for-ai, sentry-nextjs-sdk]
+
 - **Typical uses:** an App Router route counting `orders_created` with a `status` attribute and an `order_latency` distribution recorded in `finally`; a Server Action counting `checkout_attempts`, `checkout_success` and `checkout_failures`.
 - **Flush in serverless and edge:** `await Sentry.flush(2000);` keeps the client alive; `await Sentry.close(2000);` tears it down on permanent shutdown.
 

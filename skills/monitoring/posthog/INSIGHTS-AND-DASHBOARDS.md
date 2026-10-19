@@ -33,11 +33,7 @@ These target PostHog MCP v2. Typed query tools accept the query body directly: p
 ## Data Catalog first
 
 - **The Data Catalog is the semantic layer.** Store canonical metric definitions there. Never use `agent_context` as a substitute for a Data Catalog metric.
-- **Find the governed metric before building one:**
-  1. `posthog:metric-list`, following pagination to the complete catalog.
-  2. `posthog:metric-describe` for each possible match. Use only an `approved`, non-drifted exact match as a canonical definition.
-  3. `posthog:data-catalog-metric-run` to verify an approved match. Use its definition when you build or update the related insight.
-  4. No governed match: create a proposed metric with `posthog:data-catalog-metric-create`, passing `source_insight_short_id` when it comes from an insight. A proposed metric is not canonical until a human approves it.
+- **Find the governed metric before building one:** use the complete [governed-metric query contract](HOGQL.md#governed-metrics-first), including pagination, canonical/noncanonical status and user-authorized proposals. The old dashboard-specific flow omitted the proposal permission and unavailable-catalog branches. Catalog curation stays in [WAREHOUSE-MODELING.md](WAREHOUSE-MODELING.md#data-catalog). [existing HOGQL.md; INSIGHTS-AND-DASHBOARDS.md]
 - **Don't copy the metric definition into dashboard text or `agent_context`.** Store only the Data Catalog metric name in `agent_context`, and only when a future agent needs it. With no Data Catalog, label the derived metric as noncanonical and don't claim that `agent_context` makes it governed.
 
 ## Build a dashboard

@@ -118,7 +118,7 @@ Setup per runtime and library is in [AI-MONITORING.md](AI-MONITORING.md). The de
 - **The docs are the source of truth;** read them at runtime, starting at https://docs.sentry.io/product/agents/ .
 - **One AI span producer per runtime,** and tracing enabled and sampled: if the root trace is dropped, the agent run is dropped.
 - **A stable opaque conversation ID.** Cached, cache-creation and reasoning token counts are subsets of total input and output tokens.
-- **Prompt and response capture:** the AI-monitoring reference says keep prompt, response, tool argument, tool result and system-instruction capture enabled by default and disable or scope it only on a privacy concern; the data-scrubbing reference calls it opt-in and notes default server-side rules don't scrub it. See [PRACTICES.md](PRACTICES.md#in-the-sdk) and confirm with the user.
+- **Prompt and response capture:** the AI-monitoring reference says keep prompt, response, tool argument, tool result and system-instruction capture enabled by default and disable or scope it only on a privacy concern; the data-scrubbing reference calls it opt-in and notes default server-side rules don't scrub it. See [JAVASCRIPT.md](JAVASCRIPT.md#datacollection) and confirm with the user.
 
 ## Prove it
 

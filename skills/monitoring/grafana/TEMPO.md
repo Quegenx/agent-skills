@@ -59,7 +59,7 @@ otelcol.exporter.otlp "tempo" {
 ```
 
 - **Kubernetes:** `helm repo add grafana https://grafana.github.io/helm-charts`, `helm install tempo grafana/tempo-distributed --version 1.61.3 --set storage.trace.backend=s3 --set storage.trace.s3.bucket=my-tempo-bucket --set storage.trace.s3.region=us-east-1`, verify every pod is Ready with `kubectl get pods -n default -l app.kubernetes.io/instance=tempo`, then `kubectl port-forward svc/tempo-query-frontend 3200:3200` and `curl -sf http://localhost:3200/ready`.
-- **Cost:** tail-sample traces to 5 to 10% and keep errors and slow spans ([CARDINALITY-AND-COST.md](CARDINALITY-AND-COST.md#cost-management)). Traces are billed by spans ingested.
+- **Cost:** tail-sample traces to 5 to 10% and keep errors and slow spans ([CARDINALITY-AND-COST.md](CARDINALITY-AND-COST.md#cost-management)). Grafana Cloud Traces meters GBs processed, written and retained. The old source said spans ingested; span counts remain a telemetry measure, not the current billing unit. [https://grafana.com/docs/grafana-cloud/platform/pricing-and-usage/traces/]
 
 ## What to put in spans
 

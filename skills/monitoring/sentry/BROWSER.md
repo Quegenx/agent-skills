@@ -1,8 +1,10 @@
 # Browser
 
-`@sentry/browser` monitors plain JavaScript pages: vanilla JS, jQuery, static sites, WordPress, Shopify, Squarespace, and any JS project without a framework SDK. It installs three ways (npm, the Loader Script, or a CDN bundle), and the install path decides most of what works: npm gets every feature, source maps and tree-shaking; the Loader needs no build but has no logs and only traces fetches made after it loads. This file covers choosing the SDK, the three setups, configuration, errors and user feedback. Tracing, Replay, logs and profiling are in [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md). The APIs reflect `@sentry/browser` ≥10.0.0; verify against https://docs.sentry.io/platforms/javascript/ before implementing.
+`@sentry/browser` monitors plain JavaScript pages: vanilla JS, jQuery, static sites, WordPress, Shopify, Squarespace, and any JS project without a framework SDK. It installs three ways (npm, the Loader Script, or a CDN bundle), and the install path decides most of what works: npm gets every feature, source maps and tree-shaking; the Loader needs no build but has no logs and only traces fetches made after it loads. This file covers choosing the SDK, the three setups, configuration, errors and user feedback. Tracing, Replay, logs and profiling are in [BROWSER-TRACING.md](BROWSER-TRACING.md). The APIs reflect `@sentry/browser` ≥10.0.0; verify against https://docs.sentry.io/platforms/javascript/ before implementing.
 
-**Contents:** [Check for a framework first](#check-for-a-framework-first) · [Versions](#versions) · [Pick the install path](#pick-the-install-path) · [Path A: npm](#path-a-npm) · [Path B: Loader Script](#path-b-loader-script) · [Path C: CDN bundles](#path-c-cdn-bundles) · [Source maps](#source-maps) · [Init options](#init-options) · [dataCollection](#datacollection) · [What is captured automatically](#what-is-captured-automatically) · [Capture APIs](#capture-apis) · [Scopes and enrichment](#scopes-and-enrichment) · [Breadcrumbs](#breadcrumbs) · [Hooks and event processors](#hooks-and-event-processors) · [Filtering and grouping](#filtering-and-grouping) · [Default integrations](#default-integrations) · [Transport, offline and tunnel](#transport-offline-and-tunnel) · [User feedback](#user-feedback) · [Debugging](#debugging) · [Prove it](#prove-it)
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+**Contents:** [Check for a framework first](#check-for-a-framework-first) · [Versions](#versions) · [Pick the install path](#pick-the-install-path) · [Path A: npm](#path-a-npm) · [Path B: Loader Script](#path-b-loader-script) · [Path C: CDN bundles](#path-c-cdn-bundles) · [Source maps](#source-maps) · [Init options](#init-options) · [dataCollection](#datacollection) · [What is captured automatically](#what-is-captured-automatically) · [Capture APIs](JAVASCRIPT.md#capture-apis) · [Scopes and enrichment](JAVASCRIPT.md#scopes-and-enrichment) · [Breadcrumbs](JAVASCRIPT.md#breadcrumbs) · [Hooks and event processors](JAVASCRIPT.md#hooks-and-event-processors) · [Filtering and grouping](#filtering-and-grouping) · [Default integrations](#default-integrations) · [Transport, offline and tunnel](#transport-offline-and-tunnel) · [User feedback](#user-feedback) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Check for a framework first
 
@@ -27,10 +29,10 @@ grep -r "sentry-cdn.com\|js.sentry-cdn.com" . --include="*.html" -l 2>/dev/null 
 
 | Found | Use |
 |---|---|
-| `next` | `@sentry/nextjs`: [../sentry/NEXTJS.md](../sentry/NEXTJS.md). Don't use the browser SDK |
+| `next` | `@sentry/nextjs`: [../sentry/NEXTJS.md](NEXTJS.md). Don't use the browser SDK |
 | `react` without Next.js | `@sentry/react`: [REACT.md](REACT.md) |
 | `@remix-run` | `@sentry/remix` (https://docs.sentry.io/platforms/javascript/guides/remix/) |
-| `express`, `fastify`, `@nestjs/core` | A Node.js server: [../sentry/NODE.md](../sentry/NODE.md) |
+| `express`, `fastify`, `@nestjs/core` | A Node.js server: [../sentry/NODE.md](NODE.md) |
 
 - **Recommend, don't ask:** "I recommend setting up Error Monitoring + Tracing + Session Replay using Path A (npm). Want me to also add Logging or User Feedback?" Error Monitoring always (the baseline); Tracing always for interactive pages; Replay for user-facing apps, support flows and checkout pages; User Feedback optional (support-focused apps); Logging optional (npm or the CDN logs bundle, not the Loader; the same guide's recommendation table says "npm path only"); Profiling optional (Beta, Chromium only, needs `Document-Policy: js-profiling`).
 
@@ -48,7 +50,7 @@ grep -r "sentry-cdn.com\|js.sentry-cdn.com" . --include="*.html" -l 2>/dev/null 
 - **`linkedErrorsIntegration`'s cause chain** needs `Error.cause` (Chrome 93+, Firefox 91+).
 - **`sendDefaultPii` is on its way out:** one setup guide says it "will be deprecated in v11", another says it is deprecated and removed in v11. Use `dataCollection`.
 - **`configureScope is not a function`:** deprecated in SDK v8; use `getIsolationScope()` or `withScope()`.
-- Tracing, Replay, logs and profiling versions are in [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md#versions).
+- Tracing, Replay, logs and profiling versions are in [BROWSER-TRACING.md](BROWSER-TRACING.md#versions).
 
 ## Pick the install path
 
@@ -182,7 +184,7 @@ Sentry.init({
 
 ## Source maps
 
-Without source maps, stack traces show minified code. The general upload and release story is in [../sentry/RELEASES-AND-SOURCEMAPS.md](../sentry/RELEASES-AND-SOURCEMAPS.md).
+Without source maps, stack traces show minified code. The general upload and release story is in [../sentry/RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md).
 
 - **There is no browser wizard** (`npx @sentry/wizard -i browser` doesn't exist). `npx @sentry/wizard@latest -i sourcemaps` configures source map upload only, for an SDK that's already initialized.
 
@@ -207,37 +209,17 @@ The old source used esbuild `sourcemap: "hidden"`; esbuild supports external for
 
 ## Init options
 
+Use [JAVASCRIPT.md](JAVASCRIPT.md#core-sdk-options) for shared option defaults, privacy and hooks; tracing, Replay and sampling keep their dedicated owners. The rows below retain browser-install-specific options from the SDK 10 source. [getsentry/sentry-for-ai, sentry-browser-sdk and sentry-react-sdk]
+
 | Option | Default | Notes |
 |---|---|---|
-| `dsn` | none | Required; the SDK is disabled when empty |
-| `environment` | `"production"` | |
-| `release` | none | e.g. `"my-app@1.0.0"` or a git SHA |
-| `sendDefaultPii` | `false` | Includes IPs and request headers; replaced by `dataCollection` |
-| `dataCollection` | | v10.54+ |
-| `tracesSampleRate` | | 0 to 1; `1.0` dev, `0.1` to `0.2` prod |
-| `tracesSampler` | | Overrides the rate |
-| `tracePropagationTargets` | see [tracing](BROWSER-TRACING-REPLAY-LOGS.md#distributed-tracing) | |
-| `replaysSessionSampleRate` / `replaysOnErrorSampleRate` | `0` | |
-| `enableLogs` | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | |
-| `attachStacktrace` | `false` | Stack traces on `captureMessage`. Spelling differs: the setup guide's table writes `attachStackTrace`, the error-monitoring reference writes `attachStacktrace: true` |
-| `maxBreadcrumbs` | `100` | |
-| `debug` | `false` | |
-| `tunnel` | | |
-| `ignoreErrors` / `denyUrls` / `allowUrls` | `[]` | |
 | `spotlight` | `false` | `boolean\|string`; forwards events to the Spotlight local dev overlay |
 | `cdnBaseUrl` | | Base URL for lazy-loading integrations |
 | `skipBrowserExtensionCheck` | `false` | |
-| `sampleRate` | | Errors, e.g. `0.25` = 25% |
-| `normalizeDepth` | 3 levels | Context depth |
-| `initialScope` | | Object or callback |
-| `beforeSend` / `beforeSendTransaction` / `beforeBreadcrumb` | | Hooks |
-| `beforeSendLog` | | Logs hook |
-| `defaultIntegrations` | | `false` starts from scratch |
-| `transport` | fetch | |
 
 ## dataCollection
 
-- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](JAVASCRIPT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 
 ```typescript
 Sentry.init({
@@ -263,65 +245,19 @@ Sentry.init({
 
 ## Capture APIs
 
-- **`Sentry.captureException(error, captureContext?)`:** pass `Error` objects (they carry stack traces). Returns the event id, which feeds `showReportDialog` and `captureFeedback`. Context: `level` (`"fatal" | "error" | "warning" | "log" | "info" | "debug"`), `tags` (`Record<string,string>`), `extra`, `user` (`{ id?, email?, username?, ip_address? }`), `contexts`, `fingerprint` (`string[]`).
-
-```javascript
-Sentry.captureException(err, {
-  level: "fatal",
-  tags: { module: "checkout", payment_provider: "stripe" },
-  extra: { orderId: order.id, amount: order.total },
-  user: { id: "u_123", email: "user@example.com" },
-  fingerprint: ["checkout-payment-fail"],
-  contexts: {
-    payment: { provider: "stripe", amount: 9999, currency: "usd" },
-  },
-});
-```
-
-- **`Sentry.captureMessage(message, levelOrContext?)`:** e.g. `Sentry.captureMessage("Something went wrong", "warning");`; also takes a full context.
-- **`Sentry.captureEvent(event)`:** for custom integrations and forwarding legacy loggers; `timestamp` in Unix seconds (`Date.now() / 1000`).
-- **Utilities:** `Sentry.lastEventId()`; `await Sentry.flush(2000)` waits up to 2 s; `await Sentry.close(2000)` flushes and disables the SDK permanently; `Sentry.isEnabled()`.
+Use the shared capture apis guidance in [JAVASCRIPT.md](JAVASCRIPT.md#capture-apis). [getsentry/sentry-for-ai, SDK references]
 
 ## Scopes and enrichment
 
-- **Merge order: Global, Isolation, Current, then the event's own context.** `getGlobalScope()` lives for the whole app (app-wide constants: version, build ID, region), `getIsolationScope()` per page load (user info, session data, tags from top-level `setTag()`), `withScope()` per event (one API call, one form submit). A browser has no per-request isolation, so the isolation scope effectively behaves like the global one (the distinction matters in Node.js, Deno and Cloudflare Workers). Top-level `Sentry.setTag` / `setTags` write to the isolation scope.
-- **`withScope` is the way to attach per-event data;** it forks the scope and discards it after the callback:
-
-```javascript
-Sentry.withScope((scope) => {
-  scope.setTag("transaction_id", "txn_abc123");
-  scope.setExtra("requestPayload", { amount: 50, currency: "USD" });
-  scope.setLevel("warning");
-  scope.setUser({ id: "u_789" });
-  scope.setFingerprint(["payment-error", "stripe"]);
-  Sentry.captureException(new Error("Payment failed"));
-  // scope is discarded after this callback
-});
-```
-
-- **Scope methods:** `setUser({ id, email, username, ip_address })` (`null` clears), `setTag`, `setTags`, `setExtra`, `setExtras`, `setContext(name, obj)` (`null` removes), `setLevel`, `setFingerprint`, `addBreadcrumb`, `addEventProcessor`, `clear()`.
-- **Tags for data you filter on, context for debugging data:** tags are indexed, context is not.
-- **Tags** (searchable): keys ≤32 chars from `a-zA-Z0-9_.:-`, no spaces; values ≤200 chars, no newlines. Built-in tags (`browser`, `os`, `url`, `environment`, `release`) overwrite yours of the same name.
-- **Context** isn't indexed or searchable but shows in full on the event page; normalized to 3 levels deep (change `normalizeDepth`).
-- **User:** `Sentry.setUser({...})` accepts extra fields; call it after login, not in init, and `Sentry.setUser(null)` on logout. `Sentry.setUser({ ip_address: "{{auto}}" })` infers the IP; collection follows `dataCollection.userInfo`.
-- **`initialScope`:** an object (`{ tags, user }`) or a callback `(scope) => { ...; return scope; }`.
-- **Never send emails, card numbers or passwords as tags or extra;** scrub PII in `beforeSend`. Always set `release` and `environment`: source maps and environment-aware alerts need them.
-- **Avoid capturing in render paths:** put Sentry calls in event handlers or `try/catch` blocks.
+Use the shared scopes and enrichment guidance in [JAVASCRIPT.md](JAVASCRIPT.md#scopes-and-enrichment). [getsentry/sentry-for-ai, SDK references]
 
 ## Breadcrumbs
 
-- **Buffered locally** and attached to the next event sent to Sentry.
-- **Manual:** `Sentry.addBreadcrumb({ category: "auth", message: "User authenticated", level: "info", data: { userId: user.id, method: "oauth2", provider: "google" } })`.
-- **Automatic:** `console` (log, warn, error, debug), `dom` (click, keypress), `fetch`, `xhr`, `history` (pushState, replaceState, navigations), `sentry` (SDK sends).
-- **Shape:** `message`, `type` (`"default"|"debug"|"error"|"info"|"navigation"|"http"|"query"|"ui"|"user"`), `level`, `category` (dot-namespaced), `data`, `timestamp`.
-- **`beforeBreadcrumb(breadcrumb, hint)`** returns `null` to drop; `hint?.xhr` exists for http breadcrumbs. `maxBreadcrumbs` defaults to 100.
-- **Configure sources:** `Sentry.breadcrumbsIntegration({ console, dom: { serializeAttribute: ["data-testid", "aria-label"] }, fetch, history, xhr, sentry })`.
+Use the shared breadcrumbs guidance in [JAVASCRIPT.md](JAVASCRIPT.md#breadcrumbs). [getsentry/sentry-for-ai, SDK references]
 
 ## Hooks and event processors
 
-- **`beforeSend(event, hint)` runs last,** after scope data is applied; return `null` to drop. Hint: `originalException`, `syntheticException`, `event_id`, `data`. Uses: drop ResizeObserver errors, drop errors with `extension://` frames, delete `event.user.email`, set fingerprints.
-- **`beforeSendTransaction(event)`** is the separate hook for transactions, e.g. drop `/health` and `/ping`, normalize `/users/\d+` to `/users/:id`.
-- **`Sentry.addEventProcessor((event, hint) => ...)` against `beforeSend`:** processor order is unspecified while `beforeSend` always runs last; any number of processors but one `beforeSend`; processors can be scope-level while `beforeSend` is init-only; both may be async (slower).
+Use the shared hooks and event processors guidance in [JAVASCRIPT.md](JAVASCRIPT.md#hooks-and-event-processors). [getsentry/sentry-for-ai, SDK references]
 
 ## Filtering and grouping
 
@@ -390,7 +326,7 @@ Sentry.withScope((scope) => {
 - **Screenshots** are hidden on mobile and count against the attachment quota (1 GB standard).
 - **With Replay,** feedback links to the replay: the SDK buffers up to 30 seconds when the widget opens, and needs `replaysOnErrorSampleRate > 0`.
 
-**Logs defaults:** Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
+**Logs defaults:** Use the [versioned JavaScript Logs rule](SIGNALS-PRACTICE.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
 
 ## Debugging
 
@@ -420,7 +356,7 @@ Sentry.withScope((scope) => {
 | Feedback missing | Check the attachment quota; self-hosted needs ≥24.4.2 |
 | Ad blockers drop events | `tunnel` plus a relay endpoint |
 
-Shared habits are in [../sentry/PRACTICES.md](../sentry/PRACTICES.md).
+Shared habits are in [../sentry/PRACTICES.md](PRACTICES.md).
 
 ## Prove it
 

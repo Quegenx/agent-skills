@@ -1,6 +1,6 @@
 # Provisioning and API
 
-Everything in Grafana that you click together can also be declared: server settings in `grafana.ini`, data sources, dashboards, plugins, service accounts and alerting in provisioning YAML, and the same resources through the HTTP API, Terraform, `gcx` or Git Sync. The mechanism that decides most outcomes is ownership: each resource should have exactly one source of truth (a file, Terraform, Git Sync or the UI), with stable `uid`s so references survive, and secrets passed as environment variables, never literals. Alerting resources are in [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md); RBAC, SSO and service-account policy are in [ADMIN-AND-AI.md](ADMIN-AND-AI.md).
+Everything in Grafana that you click together can also be declared: server settings in `grafana.ini`, data sources, dashboards, plugins and alerting in provisioning YAML, and the same resources through the HTTP API, Terraform, `gcx` or Git Sync. The mechanism that decides most outcomes is ownership: each resource should have exactly one source of truth (a file, Terraform, Git Sync or the UI), with stable `uid`s so references survive, and secrets passed as environment variables, never literals. Alerting resources are in [ALERTING.md](ALERTING.md); RBAC, SSO and service-account policy are in [ADMIN-AND-AI.md](ADMIN-AND-AI.md).
 
 **Contents:** [grafana.ini](#grafanaini) · [How file provisioning works](#how-file-provisioning-works) · [Data source provisioning](#data-source-provisioning) · [Data source settings by type](#data-source-settings-by-type) · [Dashboard provisioning](#dashboard-provisioning) · [Plugins and service accounts](#plugins-and-service-accounts) · [HTTP API](#http-api) · [Annotations](#annotations) · [Grafana as code](#grafana-as-code) · [Debugging](#debugging) · [Prove it](#prove-it)
 
@@ -12,7 +12,7 @@ Everything in Grafana that you click together can also be declared: server setti
 - **SMTP** (needed for email contact points): `[smtp]` with `enabled`, `host` (e.g. `smtp.gmail.com:587`), `user`, `password`, `from_address`, `from_name`. Verify by sending a test email from Alerting > Contact points.
 - **`[security]`:** `admin_user` and `admin_password` are only consulted on first startup; change the password later with `grafana-cli admin reset-admin-password <new-password>`. `allow_embedding = true` is required for iframe embedding.
 - **`[feature_toggles]`:** `enable = publicDashboards`; several are space-separated: `enable = publicDashboards correlations grafanaApiServer`.
-- **Alerting:** `[unified_alerting]` (enabled by default since Grafana 9) and its HA keys are in [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md#server-config-and-ha). The Grafana OSS config reference also shows `[alerting] enabled = true` alongside it.
+- **Alerting:** `[unified_alerting]` (enabled by default since Grafana 9) and its HA keys are in [ALERTING.md](ALERTING.md#server-config-and-ha). The Grafana OSS config reference also shows `[alerting] enabled = true` alongside it.
 - **SSO sections** (`[auth.generic_oauth]`, `[auth.github]`, SAML): [ADMIN-AND-AI.md](ADMIN-AND-AI.md#sso).
 - **Inspect a running server:** `curl http://localhost:3000/api/health` returns `{"database": "ok", ...}`; `curl http://localhost:3000/api/admin/settings | jq '.database'` shows the config.
 
@@ -266,6 +266,8 @@ apps:
 
 Verify after restart with `GET /api/plugins/<plugin-id>/health`.
 
+The source shows the service-account file form below, but support for `serviceAccounts:` at this path was not established by the documentation fetched in this round. Treat it as an unverified source example, not an approved provisioning contract; use the documented service-account API flow in [ADMIN-AND-AI.md](ADMIN-AND-AI.md#service-accounts) or confirm support against the installed version before adopting it. [existing ADMIN-AND-AI.md; PROVISIONING-AND-API.md]
+
 ```yaml
 # provisioning/access-control/service_accounts.yaml
 apiVersion: 1
@@ -313,7 +315,7 @@ curl https://grafana.example.com/api/dashboards/uid/<uid> \
 ```
 
 - **Verify a token:** `curl https://grafana.example.com/api/org -H "Authorization: Bearer <new-token>"`: 200 with org JSON means token and role work, 401 the token is wrong, 403 the role is wrong.
-- **Alerting, silences and IRM endpoints** are in [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md); users, teams, audit logs and the Cloud API in [ADMIN-AND-AI.md](ADMIN-AND-AI.md).
+- **Alerting and silences** are in [ALERTING.md](ALERTING.md); IRM endpoints are in [IRM-AND-ONCALL.md](IRM-AND-ONCALL.md); users, teams, audit logs and the Cloud API in [ADMIN-AND-AI.md](ADMIN-AND-AI.md).
 
 ## Annotations
 
@@ -366,7 +368,7 @@ resource "grafana_dashboard" "metrics" {
 ```
 
 - **Provider block:** `version = "~> 2.0"`, `auth = var.grafana_service_account_token`, with the token in tfvars or the environment.
-- **Resources:** `grafana_team`, `grafana_user` (password ignored when SSO is configured), `grafana_team_member`, `grafana_folder`, `grafana_dashboard` (`config_json = file("dashboards/overview.json")`, `folder = grafana_folder.x.uid`), `grafana_data_source` (above), `grafana_oncall_schedule` and `grafana_oncall_on_call_shift` ([ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md#schedules)).
+- **Resources:** `grafana_team`, `grafana_user` (password ignored when SSO is configured), `grafana_team_member`, `grafana_folder`, `grafana_dashboard` (`config_json = file("dashboards/overview.json")`, `folder = grafana_folder.x.uid`), `grafana_data_source` (above), `grafana_oncall_schedule` and `grafana_oncall_on_call_shift` ([IRM-AND-ONCALL.md](IRM-AND-ONCALL.md#schedules)).
 - **Drift:** after apply, `terraform plan` should be clean. UI edits cause drift: reclaim them in code or use `ignore_changes`. `409 Conflict` means the resource exists: `terraform import` it.
 
 ### gcx

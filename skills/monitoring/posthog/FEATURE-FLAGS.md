@@ -90,16 +90,7 @@ For experiments across platforms, evaluate on the server and distribute the valu
 
 ### Web (posthog-js)
 
-- **Install** with `npm install posthog-js` (or yarn, pnpm, bun), or the HTML snippet in `<head>` (also usable in Google Tag Manager). Full setup is [SETUP-WEB.md](SETUP-WEB.md).
-
-  ```javascript
-  import posthog from 'posthog-js'
-
-  posthog.init('<ph_project_token>', {
-      api_host: 'https://us.i.posthog.com',
-      defaults: '2026-05-30'
-  })
-  ```
+- **SDK installation and initialization:** [SETUP-WEB.md](SETUP-WEB.md).
 
 - **Read one result** for enabled, variant and payload from the same evaluation:
 
@@ -123,26 +114,7 @@ For experiments across platforms, evaluate on the server and distribute the valu
 
 ### React (@posthog/react)
 
-- **Install** `posthog-js @posthog/react`. With Vite: `VITE_POSTHOG_PROJECT_TOKEN=<ph_project_token>`, `VITE_POSTHOG_HOST=https://us.i.posthog.com`. Wrap the root in `PostHogProvider` (the `defaults` option sets recommended settings for new projects):
-
-  ```jsx
-  import { PostHogProvider } from '@posthog/react'
-
-  const options = {
-    api_host: import.meta.env.VITE_POSTHOG_HOST,
-    defaults: '2026-05-30',
-  } as const
-
-  createRoot(document.getElementById('root')).render(
-    <StrictMode>
-      <PostHogProvider apiKey={import.meta.env.VITE_POSTHOG_PROJECT_TOKEN} options={options}>
-        <App />
-      </PostHogProvider>
-    </StrictMode>
-  )
-  ```
-
-  Use the `usePostHog` hook inside the provider and `import posthog from 'posthog-js'` in non-React code.
+- **SDK setup and provider alternatives:** [React with Vite](SETUP-WEB.md#react-with-vite).
 
 | Hook | Sends `$feature_flag_called` | Notes |
 |---|---|---|
@@ -164,17 +136,7 @@ function App() {
 
 ### Next.js
 
-- **Setup:** `npx @posthog/wizard`. The pre-release `@posthog/next` offers synchronized client and server identity, server-side flag bootstrapping and a built-in API proxy. Env vars `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` and `NEXT_PUBLIC_POSTHOG_HOST` go in `.env.local` and your hosting provider (the `NEXT_PUBLIC_` prefix is required).
-- **Client init in `instrumentation-client.ts`** at the app root (app and pages router):
-
-  ```typescript
-  import posthog from 'posthog-js'
-
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN!, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-    defaults: '2026-05-30'
-  });
-  ```
+- **Client initialization and the pre-release integration:** [SETUP-NEXTJS.md](SETUP-NEXTJS.md#client).
 
 - **`@posthog/react` hooks work automatically** with that init (they use the posthog-js singleton):
 
@@ -189,32 +151,11 @@ function App() {
   }
   ```
 
-- **Server (app router):** a short-lived `posthog-node` client:
-
-  ```javascript
-  // app/posthog.js
-  import { PostHog } from 'posthog-node'
-
-  export default function PostHogClient() {
-    const posthogClient = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN, {
-      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-      flushAt: 1,
-      flushInterval: 0
-    })
-    return posthogClient
-  }
-  ```
-
-  `flushAt: 1` and `flushInterval: 0` because server functions are short-lived. In a page: `const flags = await posthog.getAllFlags('user_distinct_id'); await posthog.shutdown()`, then `flags['main-cta'] && ...`. Always `await client.shutdown()`.
-- **Pages router:** in `getServerSideProps`, `new PostHog(...)`, `client.getAllFlags(distinctId)`, `client.capture(...)`, `await client.shutdown()`, and pass `flags` as props. next-auth sessions lack `user.id` by default: add a session callback (`session.user.id = token?.sub ?? user.id`). Capturing with an `undefined` distinct ID creates events that belong to nobody.
-- **Identify:** `posthog.identify('your-user-id')` after login with a stable auth ID (not an email or display name, never a shared literal like `"anonymous"`); `posthog.reset()` on logout.
-- **`tracing_headers: ['api.example.com']`** adds `X-POSTHOG-DISTINCT-ID` and `X-POSTHOG-SESSION-ID` to matching fetch and XHR calls. Hostnames only: `'localhost'`, not `'localhost:3000'`.
-- **Fetch cache:** PostHog ignores the Next.js fetch cache by default. `fetch_options: { cache: 'force-cache', next_options: { revalidate: 60, tags: ['posthog'] } }` overrides that, and you may then get cached flag results.
-- **CSP:** `connect-src` covers ingestion and feature flags; missing it causes silent failures. Directives are in [SETUP-WEB.md](SETUP-WEB.md).
+- **Server factory, Pages router, auth identity and fetch cache:** [SETUP-NEXTJS.md](SETUP-NEXTJS.md#server). Short-lived delivery is owned by [Flush or shut down](SETUP-NEXTJS.md#flush-or-shut-down); frontend context headers and CSP by [SETUP-WEB.md](SETUP-WEB.md).
 
 ### Node.js (posthog-node)
 
-- **Install** `posthog-node`; init `new PostHog('<ph_project_token>', { host: 'https://us.i.posthog.com' })`. Add a secret key for local evaluation ([FLAG-EVALUATION.md](FLAG-EVALUATION.md)).
+- **Node SDK setup:** [SETUP-SERVER.md](SETUP-SERVER.md). Local evaluation credentials are in [FLAG-EVALUATION.md](FLAG-EVALUATION.md).
 - **Evaluate once, read from the snapshot:**
 
   ```javascript
@@ -233,24 +174,7 @@ function App() {
 
 ### React Native and Expo
 
-- **Install (Expo):** `npx expo install posthog-react-native expo-file-system expo-application expo-device expo-localization`. **Bare:** `yarn add posthog-react-native @react-native-async-storage/async-storage react-native-device-info react-native-localize` (npm: `npm i -s ...`), then `cd ios && pod install`.
-
-  ```jsx
-  import { PostHogProvider } from 'posthog-react-native'
-
-  export function MyApp() {
-      return (
-          <PostHogProvider
-              apiKey="<ph_project_token>"
-              options={{
-                  host: "https://us.i.posthog.com",
-              }}
-          >
-              <RestOfApp />
-          </PostHogProvider>
-      )
-  }
-  ```
+- **Expo and bare setup:** [SETUP-MOBILE.md](SETUP-MOBILE.md).
 
 - **Hooks:** `import { useFeatureFlag } from 'posthog-react-native'` returns `undefined` while loading; `useFeatureFlagWithPayload` for payloads. The React Native reference says "Use `useFeatureFlagEnabled` for boolean flags" while its code calls `posthog.isFeatureEnabled('flag-key')` via `usePostHog()`; the adding-flag-code page uses `useFeatureFlag`. Confirm in the current docs.
 - **Direct calls:** `posthog.isFeatureEnabled(key)`, `posthog.getFeatureFlag(key)` (`undefined` if not loaded or the load failed; multivariate returns a string), `posthog.getFeatureFlagResult(key)?.payload`. `getAllFeatureFlags()` doesn't send `$feature_flag_called`.

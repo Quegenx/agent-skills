@@ -2,7 +2,7 @@
 
 Answers questions about how agents use an MCP server: which tools fail or run slow, what one agent run did, which harnesses connect, what goals agents bring, and what the person behind a session set out to do. Any MCP server instrumented with the `@posthog/mcp` SDK emits a `$mcp_tool_call` event on `events` every time an agent invokes a tool; there is no dedicated table, and every metric is an aggregation over its `$mcp_*` properties. Three rules recur: a typed `posthog:query-mcp-*` tool (matches the UI) before hand-written SQL, the effective tool name rather than the raw `$mcp_tool_name` (new-SDK events wrap the real tool in a single exec call), and the governed `mcp_tool_call_fail_pct` metric for any failure-rate headline. The `$mcp_*` property schema, the canonical events, the three identifiers, the tool-quality matrix, daily activity and tool co-occurrence SQL are in [HOGQL-TABLES-PRODUCTS.md](HOGQL-TABLES-PRODUCTS.md#mcp-analytics); connecting to PostHog's own MCP server is [MCP-AND-WIZARD.md](MCP-AND-WIZARD.md); LLM traces, which can link to MCP sessions, are [LLM-EXPLORING.md](LLM-EXPLORING.md), with capture in [LLM-ANALYTICS.md](LLM-ANALYTICS.md) and [LLM-PROVIDERS.md](LLM-PROVIDERS.md).
 
-**Contents:** [Pick the tool](#pick-the-tool) · [Tool quality](#tool-quality) · [Harnesses](#harnesses) · [Sessions](#sessions) · [Intent clusters](#intent-clusters) · [Original user motive](#original-user-motive) · [Links to the UI](#links-to-the-ui) · [Prove it](#prove-it)
+**Contents:** [Pick the tool](#pick-the-tool) · [Tool quality](#tool-quality) · [Harnesses](#harnesses) · [Sessions](#sessions) · [Intent clusters](#intent-clusters) · [Original user motive](#original-user-motive) · [Links to the UI](#links-to-the-ui) · [Query bounds](#query-bounds) · [Prove it](#prove-it)
 
 ## Pick the tool
 
@@ -267,6 +267,8 @@ Embeds the free-text `$mcp_intent` values and groups goals. Each call is credite
 
 ## Original user motive
 
+This source workflow depends on PostHog-internal tables and helpers; it does not grant customer-project access to other organizations' telemetry. Follow the [helper availability prerequisite](#scripts) and report inaccessible steps as unverified. [PostHog skills, MCP-ANALYTICS.md]
+
 PostHog's internal analyst skill for its own MCP telemetry across all organizations ("Internal analyst tool. Do not seed it into customer teams."). The facts below carry over to analysing any MCP server's telemetry.
 
 ### What to measure
@@ -300,6 +302,8 @@ SELECT toString(properties.$mcp_intent) AS intent, count() AS n FROM events WHER
 
 ### Scripts
 
+**Upstream-only prerequisite:** the helper scripts described in this section are not included in this skill. Obtain and read the exact source helper before using its commands or depending on its output; if unavailable, report that step as unverified. Do not invent a replacement or assume these paths exist in the project. [PostHog skills, MCP-ANALYTICS.md]
+
 - **`extract_facets.py corpus.txt facets.jsonl --tool workflows-create --facet destination --values email,slack,webhook,person_property,unclear`:** `gpt-4.1-mini`, 8 workers, max_tokens 256, the facet as an Enum because "structured output enforces types, not descriptions" (a `str` field yielded `unclarified`, `unclar`, `unclassified`).
 - **`canonicalize_intentions.py facets.jsonl facets_canonical.jsonl --target 70`:** not optional after scripted extraction; defaults `--target 90`, `--floor 0.55`, `--dedupe 0.82`; embedding `text-embedding-3-small`. The backend alias `text-embedding-3-small-1536` is a PostHog gateway alias; OpenAI direct needs the plain id.
 - **`audit_intentions.py facets.jsonl`:** `--threshold 0.80` (calibrated; the highest pair on 105 intentions was 0.819); always prints the closest pairs; merges nothing. Example pairs: 0.819 `investigate a product error`/`investigate a production error` merge; 0.805 a support-automation pair merge; 0.805 digest email/slack merge (the destination facet carries the channel). "Watch the ceiling, not just the flag count."
@@ -330,6 +334,10 @@ SELECT toString(properties.$mcp_intent) AS intent, count() AS n FROM events WHER
 ## Links to the UI
 
 `https://app.posthog.com/project/<project_id>/mcp-analytics/dashboard`, `.../mcp-analytics/tool-quality`, `.../mcp-analytics/sessions`, `.../mcp-analytics/intent-clustering`. The MCP skills hand-build these on `app.posthog.com`, while the LLM costs and failures skills say never to hand-write `app.posthog.com` links because that host drops the region and project prefix (see [LLM-EXPLORING.md](LLM-EXPLORING.md#links-to-the-ui)). Confirm the right host for your project.
+
+## Query bounds
+
+Some source examples above omit timestamp bounds. Every query on `events` must use the [canonical time-range contract](HOGQL.md); supply the investigation's explicit window before running those examples. The unbounded source snippets are not ready-to-run queries. [PostHog skills, HOGQL.md; MCP-ANALYTICS.md]
 
 ## Prove it
 

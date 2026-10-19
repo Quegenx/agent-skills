@@ -101,13 +101,14 @@ GA4 calls the actions you measure as goals **key events**; "conversions" now mea
 
 [coreyhaines31/marketingskills, analytics]
 - **Custom dimensions** for properties you segment or filter by: user attributes (plan type, industry), content attributes (author, category). **Custom metrics** for numeric values to aggregate: scores, counts, durations.
-- Setup: Admin, Data display, Custom definitions; create the dimension or metric; choose the scope (**Event**: per event, e.g. content_type; **User**: per user, e.g. account_type; **Item**: per product, e.g. product_category); enter the parameter name, which must match the event parameter.
+- **Use predefined dimensions first.** For additional custom data, choose the matching scope: **Event** for event parameters, **User** for user properties, **Item** for custom parameters in the ecommerce `items` array. Configure the actual underlying key; the display name need not equal it. Admin, Data display, Custom definitions creates these definitions. The old setup line treated every scope as an event parameter, and the old Prove it required a custom definition for every reported parameter. [Google custom dimensions and metrics](https://support.google.com/analytics/answer/10075209), [event-scoped setup](https://support.google.com/analytics/answer/14239696)
 
-| Dimension | Scope | Parameter | Description |
+| Dimension | Scope | Underlying key | Description |
 |-----------|-------|-----------|-------------|
 | User Type | User | user_type | Free, trial, paid |
 | Content Author | Event | author | Blog post author |
-| Product Category | Item | item_category | E-commerce category |
+
+`item_category` already populates the predefined Item category dimension; reuse it. The source table presented it as a new custom Item dimension. [Google ecommerce report](https://support.google.com/analytics/answer/9786881)
 
 ## Audiences
 
@@ -166,4 +167,4 @@ Google's GA4 MCP server (https://github.com/googleanalytics/google-analytics-mcp
 
 ## Prove it
 
-With Tag Assistant connected, every planned event and its parameters appear in DebugView on your device; each enhanced measurement event the plan relies on is enabled and observed under its real name; every reported parameter has a custom definition with a matching name; key events are marked under Admin, Data display, Events and appear in Realtime; the internal traffic filter ran in Testing and shows your own events under "Test data filter name" before it was made Active; no `debug_mode: false` is left in production code.
+With Tag Assistant connected, every planned event and its parameters appear in DebugView on your device; each enhanced measurement event the plan relies on is enabled and observed under its real name; reported custom data that needs a custom definition uses its correct scope and configured underlying key, while predefined dimensions are reused; key events are marked under Admin, Data display, Events and appear in Realtime; the internal traffic filter ran in Testing and shows your own events under "Test data filter name" before it was made Active; no `debug_mode: false` is left in production code.

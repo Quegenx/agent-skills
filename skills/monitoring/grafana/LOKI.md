@@ -437,7 +437,7 @@ curl -X POST https://logs-xxx.grafana.net/loki/api/v1/push \
 
 ## Log cost
 
-- **Loki bills on compressed bytes ingested, not on stream count.** Label hygiene saves nothing on ingest directly; it reduces index storage and query compute.
+- **Grafana Cloud Logs billing:** current usage is measured in GBs processed, written and retained, with queried volume charged above the fair-use allowance. This is the hosted service contract, not a bill attached to Loki OSS. The old source said compressed bytes ingested and treated stream-count reductions as having no direct ingest charge; measure the applicable invoice dimensions before quoting savings. [https://grafana.com/docs/grafana-cloud/platform/pricing-and-usage/logs/]
 - **Where savings come from:** normalize `level`, then `stage.drop` debug and trace lines (often 20 to 40% of volume in verbose Kubernetes; only after the owner confirms; prefer scoping by env or sampling); log-line optimization (15 to 38%). Drop and sampling stages are in [CARDINALITY-AND-COST.md](CARDINALITY-AND-COST.md#cost-management).
 - **Log-line optimization:** inline timestamps are redundant (about 30 to 34 bytes, about 6% of a line); strip them with regexes for logfmt, JSON or ISO-8601 and recover them at query time with `| line_format '{{ __timestamp__ | date "2006-01-02T15:04:05Z" }}'`. Use `stage.decolorize {}`. Remove a duplicate `level=` when `level` is a label. Strip JSON nulls, placeholders (`-`, `null`, `undefined`) and empty values. An Istio access log went from 753 to 464 bytes (38%). Establish a cost-per-GB baseline first.
 
@@ -484,7 +484,7 @@ stage.replace {
  replace = ""
 }
 ```
-- **Estimate:** `monthly_GB = bytes_per_second × 86400 × 30 / 1e9`, then `monthly_GB × reduction_%` at the contract per-GB rate. Illustrative scenarios (replace with measured values): A, label hygiene only: streams often down 65 to 90%, volume 0%, $0 direct; B, A plus an approved debug/trace drop: volume often down about 15 to 30%; C, B plus line compaction: about 5 to 15% more (workload-dependent). The 38% Istio figure is not a universal expectation.
+- **Estimate:** `monthly_GB = bytes_per_second × 86400 × 30 / 1e9`, then `monthly_GB × reduction_%` at the contract per-GB rate. The source's illustrative scenarios were A, label hygiene only (streams down 65 to 90%, volume 0%, $0 direct under its old ingest-only model); B, A plus an approved debug/trace drop (volume down about 15 to 30%); C, B plus line compaction (about 5 to 15% more). These are workload-specific source estimates, not current invoice guarantees. The 38% Istio figure is not a universal expectation. [existing LOKI.md; https://grafana.com/docs/grafana-cloud/platform/pricing-and-usage/logs/]
 - **Usage metrics:**
 
 ```PromQL

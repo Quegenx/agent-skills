@@ -1,6 +1,6 @@
 ---
 name: posthog
-description: "Sets up and runs PostHog across web, Next.js, Node and serverless, React Native, Expo and Flutter: SDK setup and config, the reverse proxy, consent and cookieless mode, the MCP server and wizard, events and identity, feature flags, experiments and their health checks, surveys, web analytics and heatmaps, session replay and Replay Vision, error tracking and alerts, logs, metrics and APM traces, LLM analytics and evaluations, MCP analytics, HogQL, insights and dashboards, investigating metric changes, metric modeling, the data warehouse, endpoints, workflows, email templates, subscriptions, ingestion warnings and costs. Use when adding PostHog to a project, capturing events or identifying users, shipping a flag or experiment, debugging missing events, recordings, exposures or surveys, writing HogQL, building a dashboard, or investigating a PostHog number, error, log or bill."
+description: "Sets up and runs PostHog across web, Next.js, Node and serverless, React Native, Expo and Flutter: SDK setup and config, the reverse proxy, consent and cookieless mode, the MCP server and wizard, events and identity, feature flags, experiments and their health checks, surveys, web analytics and heatmaps, session replay and Replay Vision, error tracking and alerts, logs, metrics and APM traces, LLM analytics and evaluations, MCP analytics, HogQL, insights and dashboards, investigating metric changes, metric modeling, the data warehouse, endpoints, workflows, email templates, subscriptions, ingestion warnings and costs, member access. Use when adding PostHog to a project, capturing events or identifying users, shipping a flag or experiment, debugging missing events, recordings, exposures or surveys, writing HogQL, building a dashboard, or investigating a PostHog number, error, log or bill."
 ---
 
 # PostHog
@@ -14,12 +14,12 @@ PostHog captures events from browser, server and mobile SDKs and builds everythi
 | Next.js: `instrumentation-client.ts`, `posthog-node` on the server, the proxy, app or pages router | [SETUP-NEXTJS.md](SETUP-NEXTJS.md) |
 | `posthog.init` options: `defaults` snapshots, autocapture, `before_send`, persistence and cookies, runtime calls | [CONFIG-WEB.md](CONFIG-WEB.md) |
 | Reverse proxy (managed, Next.js, Vercel, Cloudflare, Vite), network allowlists, keys and hosting, consent, cookieless mode, collection controls, deletion | [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md) |
-| `posthog-node`: options, shutdown and flush in short-lived processes, Express context, server flags and local evaluation keys, groups, errors, distributed tracing, Cloudflare Workers | [SETUP-SERVER.md](SETUP-SERVER.md) |
+| `posthog-node`: options, shutdown and flush in short-lived processes, Express context, server flags and local evaluation keys, groups, errors, Cloudflare Workers | [SETUP-SERVER.md](SETUP-SERVER.md) |
 | React Native and Expo: init, the native plugin, screens, autocapture, `before_send`, offline, flags, replay, upgrading, SDK defaults compared | [SETUP-MOBILE.md](SETUP-MOBILE.md) |
 | Flutter: install and init, Flutter Web, reproducible Android builds and Shorebird, screens, identity, flags, flush, replay, logs, surveys | [SETUP-FLUTTER.md](SETUP-FLUTTER.md) |
-| The PostHog MCP server (auth, pinning, tool mode, `exec`, rate limits, tools), the AI wizard, Supabase as a warehouse source | [MCP-AND-WIZARD.md](MCP-AND-WIZARD.md) |
+| The PostHog MCP server (auth, pinning, tool mode, `exec`, rate limits, tools), the AI wizard | [MCP-AND-WIZARD.md](MCP-AND-WIZARD.md) |
 | **Events and identity** | |
-| What to capture, naming events and properties, super properties, autocapture, the events data model, late events, internal users | [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md) |
+| What to capture, naming events and properties, super properties, autocapture, the events data model, late events, internal users | [EVENTS.md](EVENTS.md) |
 | `identify`, `reset`, `alias`, merges, catch-all IDs, person profiles and properties, cookieless tracking, group analytics | [IDENTITY.md](IDENTITY.md) |
 | **Feature flags** | |
 | How a flag evaluates, best practices, stable identity, flag code per SDK, testing, limits, debugging | [FEATURE-FLAGS.md](FEATURE-FLAGS.md) |
@@ -45,13 +45,15 @@ PostHog captures events from browser, server and mobile SDKs and builds everythi
 | Privacy and masking, sampling and recording controls, investigating a recording, missing recordings, playback | [SESSION-REPLAY.md](SESSION-REPLAY.md) |
 | Replay Vision: summarizing a recording, designing, sizing and creating scanners, exploring observations | [REPLAY-VISION.md](REPLAY-VISION.md) |
 | **Error tracking** | |
-| `$exception` capture per framework (web, React, Next.js, Node, Hono, React Native, Flutter), source maps and symbols, fingerprints | [ERROR-TRACKING.md](ERROR-TRACKING.md) |
-| Triage, investigating one issue, grouping, suppression, alerts, assigning, symbolication, linking to traces, logs and replays | [ERROR-TRIAGE.md](ERROR-TRIAGE.md) |
+| Source-map and symbol injection, upload, deployed artifacts and symbolication troubleshooting | [SOURCE-MAPS.md](SOURCE-MAPS.md) |
+| `$exception` capture per framework (web, React, Next.js, Node, Hono, React Native, Flutter), fingerprints | [ERROR-TRACKING.md](ERROR-TRACKING.md) |
+| Triage, investigating one issue, grouping, suppression, alerts, assigning, linking to traces, logs and replays | [ERROR-TRIAGE.md](ERROR-TRIAGE.md) |
 | The canonical alert message bodies per trigger and destination | [ERROR-ALERT-TEMPLATES.md](ERROR-ALERT-TEMPLATES.md) |
 | **Logs, metrics, APM** | |
+| Node spans, propagation, privacy and queue limits, APM queries and trace investigation | [TRACING.md](TRACING.md) |
 | Sending OpenTelemetry logs: token and endpoint, Next.js, Node, React Native, Flutter, browser console, Datadog forwarding | [INSTRUMENT-LOGS.md](INSTRUMENT-LOGS.md) |
 | Sending metrics over OTLP: browser, Node, any OTel client, the Kubernetes agent | [INSTRUMENT-METRICS.md](INSTRUMENT-METRICS.md) |
-| Searching and investigating logs, log alerts, APM traces | [LOGS-AND-APM.md](LOGS-AND-APM.md) |
+| Searching and investigating logs, log alerts | [LOGS-AND-APM.md](LOGS-AND-APM.md) |
 | **LLM analytics and MCP analytics** | |
 | AI Observability: the event hierarchy, the commandment, integration styles, manual capture, properties, cost, privacy mode | [LLM-ANALYTICS.md](LLM-ANALYTICS.md) |
 | Setup per provider and framework: OpenAI, Azure, Anthropic, Gemini, gateways, Vercel AI SDK, Mastra, LangChain, OpenTelemetry, LiteLLM | [LLM-PROVIDERS.md](LLM-PROVIDERS.md) |
@@ -71,7 +73,8 @@ PostHog captures events from browser, server and mobile SDKs and builds everythi
 | "Why did X change?": variance, attribution, playbooks per insight kind, cause taxonomy, server metric anomalies | [INVESTIGATING-METRICS.md](INVESTIGATING-METRICS.md) |
 | Modeling activation, conversion, product usage and revenue metrics | [METRICS-MODELING.md](METRICS-MODELING.md) |
 | **Data warehouse and modeling** | |
-| Connecting sources, sync types, frequency, CDC, webhooks, custom REST sources, failed syncs, batch export downloads | [DATA-WAREHOUSE.md](DATA-WAREHOUSE.md) |
+| Custom REST sources: credentials and OAuth, pagination, cursors, fan-out and preview | [CUSTOM-SOURCES.md](CUSTOM-SOURCES.md) |
+| Connecting sources including Supabase, sync types, frequency, CDC, webhooks, failed syncs, batch export downloads | [DATA-WAREHOUSE.md](DATA-WAREHOUSE.md) |
 | The data catalog, views or dbt, joins, dimension tables, warehouse person properties, data quality checks | [WAREHOUSE-MODELING.md](WAREHOUSE-MODELING.md) |
 | **Endpoints, workflows, email, subscriptions** | |
 | Endpoints: creating, materialising, calling, versions, audit, performance, execution logs | [ENDPOINTS.md](ENDPOINTS.md) |
@@ -79,6 +82,7 @@ PostHog captures events from browser, server and mobile SDKs and builds everythi
 | Email templates: authoring, Liquid, images, Unlayer design JSON | [EMAIL-TEMPLATES.md](EMAIL-TEMPLATES.md) |
 | Subscriptions: insight, dashboard and AI prompt deliveries to email, Slack or Teams | [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md) |
 | **Ingestion and costs** | |
+| Member and role permissions, effective access, object and property rules, confirmed access changes | [ACCESS-CONTROL.md](ACCESS-CONTROL.md) |
 | Ingestion warnings, SDK health, billing usage, cutting costs, billing limits | [INGESTION-AND-COSTS.md](INGESTION-AND-COSTS.md) |
 | The fix for each ingestion warning type | [INGESTION-FIXES.md](INGESTION-FIXES.md) |
 

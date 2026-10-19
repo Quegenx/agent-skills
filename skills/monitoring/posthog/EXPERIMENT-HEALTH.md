@@ -23,7 +23,7 @@ This is the health check for one experiment whose results look wrong, biased or 
 
 ## Confidence tags
 
-The diagnostics in these files carry the vendor's tags:
+The diagnostics in these files carry the vendor's confidence tags, not impact severities. P0 to P3 is reserved for severity; preserve these source-confidence labels with the meanings below. [PostHog skills, experiment-health references]
 
 | Tag | Meaning |
 |---|---|

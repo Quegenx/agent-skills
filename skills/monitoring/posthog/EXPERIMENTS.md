@@ -271,6 +271,8 @@ Agent:
 
 ## Lifecycle
 
+**Unresolved source conflict:** this overview describes pause as leaving status `running`; the health and changes references describe `paused`. The current API prose does not establish the serialized status. Preserve both views until the current model or serializer is checked. [PostHog skills, EXPERIMENTS.md; EXPERIMENT-HEALTH.md; EXPERIMENT-CHANGES.md]
+
 ```text
 draft ──launch──▶ running ──end──▶ stopped ──archive──▶ archived
                   │ │   ▲              │
@@ -293,7 +295,7 @@ Any non-draft state ──reset──▶ draft
 | Freeze exposure | Stops enrolling new users: snapshots exposed users into a static cohort and narrows every release condition to it; status `exposure_frozen`; `end_date` stays null. For long-horizon metrics (revenue, LTV, retention, renewals). |
 | Unfreeze | Restores the original targeting, deletes the snapshot cohort, status `running`; can bias (two cohorts joined at different times); warn first. |
 | End | Sets `end_date`, status stopped; the flag is NOT modified; results frozen to `end_date`. Optional `conclusion` (`won`, `lost`, `inconclusive`, `stopped_early`, `invalid`) and `conclusion_comment`. |
-| Ship variant | Rewrites the flag to serve the variant to 100% (catch-all group); from running or stopped, not draft; ends the experiment if running. Requires `variant_key`; optional `conclusion`, `conclusion_comment`. Always confirm. 409 if an approval policy requires review. |
+| Ship variant | Serves the chosen variant at 100% within the existing release conditions by default; `release_to_everyone: true` adds a catch-all. See [the canonical ship behavior](EXPERIMENT-CHANGES.md#e7-ending-vs-shipping-high). From running or stopped, not draft; ends the experiment if running. Requires `variant_key`; optional `conclusion`, `conclusion_comment`. Always confirm. 409 if an approval policy requires review. The old overview said shipping always added a catch-all. [PostHog, https://posthog.com/docs/api/experiments-2; https://posthog.com/docs/experiments/managing-lifecycle] |
 | Archive | Stopped only; restore with `archived=false` through `experiment-update`. |
 | Reset | Back to draft; clears `start_date`, `end_date`, `conclusion`, `archived`; flag unchanged; old data excluded unless `start_date` is adjusted after relaunch. |
 | Duplicate | New draft; always give a unique `feature_flag_key` (the same key means a shared flag); default name "Original Name (Copy)". |
@@ -306,10 +308,8 @@ Any non-draft state ──reset──▶ draft
 - **Duplicate** creates a new draft with fresh dates and no results; with the same flag key both experiments share a flag, so changes to one affect both.
 - **Copy to project** also copies name, description, type, parameters, filters, primary and secondary metrics (fresh uuids), stats and scheduling config and exposure criteria; it needs write access to the target. The resolved key is looked up in the target project: if it exists the copy shares that flag (lifecycle ops on either affect both), otherwise a new independent flag is created. Pass a key that doesn't exist in the target to guarantee independence. The returned experiment and id belong to the target project.
 - **Migrate** is the only way to get results for a legacy experiment; calling it again returns the experiment the first call created. Name, description and end_date still edit on the legacy experiment directly, so don't migrate for them; migrate only when the user asks, wants results, or requests a change to a field the guard blocks, and apply that change to the migrated experiment.
-- **Cleanup PR target:** omit `repository` to fall back to the experiment's saved repository, the team default, or the only connected repository; with several candidates and no default the cleanup is skipped. The PR URL appears in `experiment-cleanup-task` once opened.
 - **Freeze preconditions:** running (not draft, stopped, paused or already frozen), flag linked and not deleted, at least one release condition. It is synchronous; tens of thousands of exposed users can take tens of seconds, so don't retry. It returns 400 for group-aggregated experiments, experiments in a holdout, flags with early access conditions, mostly-anonymous exposure (the troubleshooting docs: more than about 5% of exposed users anonymous), and very large exposed sets (person cap and timeout). These are structural; don't retry.
 - **Freeze side effects:** ship-variant and reset strip the freeze and delete the cohort; end does NOT touch the flag. Local-evaluation SDKs can't resolve static cohorts, so a frozen flag evaluates through `/decide`. Final-moment exposures may miss the snapshot (ingestion lag).
-- **Flag cleanup PR:** `open_cleanup_pr: true` on end or ship-variant starts a background PostHog Code task that opens a draft PR in the connected GitHub repo. It needs the `task:write` scope (else 403 and nothing is ended or shipped), runs only when the call actually ends the experiment and a `conclusion` is set, and requires the team flag cleanup feature (silently skipped otherwise). `repository` ("organization/repository") picks the target; track it with `experiment-cleanup-task`; it takes several minutes. Only when the user asks or confirms.
 
 ### Lifecycle errors
 

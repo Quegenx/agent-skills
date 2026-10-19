@@ -96,7 +96,7 @@ The source's enrichment vendor table (Clay, Apollo, ZoomInfo) is left out as ven
 | Speed-to-lead | Time from form fill to first rep contact | "< 5 minutes ideal" |
 | Win rate | Closed-won / total opportunities | 20-30% (varies) |
 
-Where the inputs come from: one PostHog project for site and app gives "full journeys, channel attribution, CAC and LTV" ([../../monitoring/posthog/EVENTS-AND-IDENTITY.md](../../monitoring/posthog/EVENTS-AND-IDENTITY.md)); Stripe revenue metrics are in [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md), and RevenueCat "cannot compute CAC, LTV/CAC or payback period on its own" ([../../backend/revenuecat/FORECASTING-AND-VALUATION.md](../../backend/revenuecat/FORECASTING-AND-VALUATION.md)). Which touches get credit for a deal is [../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md).
+Where the inputs come from: one PostHog project for site and app gives "full journeys, channel attribution, CAC and LTV" ([../../monitoring/posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md)); Stripe revenue metrics are in [../../backend/stripe/REVENUE-METRICS.md](../../backend/stripe/REVENUE-METRICS.md), and RevenueCat "cannot compute CAC, LTV/CAC or payback period on its own" ([../../backend/revenuecat/FORECASTING-AND-VALUATION.md](../../backend/revenuecat/FORECASTING-AND-VALUATION.md)). Which touches get credit for a deal is [../marketing-attribution/SKILL.md](../marketing-attribution/SKILL.md).
 
 ## Dashboards
 

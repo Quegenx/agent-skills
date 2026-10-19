@@ -2,9 +2,9 @@
 
 Writing and optimizing PromQL against Prometheus, Mimir or Grafana Cloud Metrics. A query returns an instant vector, a range vector or a scalar. Wrong rate magnitudes come from aggregating a counter before `rate()`, and NaN or wrong quantiles from forgetting `by (le)` before `histogram_quantile` (the most common bug). Query timeouts come from too high a series count, fixed with `topk(...)`, recording rules ([PROMETHEUS.md](PROMETHEUS.md#recording-rules)) and label hygiene ([CARDINALITY-AND-COST.md](CARDINALITY-AND-COST.md)).
 
-Docs: https://prometheus.io/docs/prometheus/latest/querying/basics/ , https://prometheus.io/docs/prometheus/latest/querying/operators/ , https://prometheus.io/docs/prometheus/latest/querying/functions/
-
 **Contents:** [Selectors](#selectors) · [Rates](#rates) · [Aggregation](#aggregation) · [Histograms](#histograms) · [Ratios and error rates](#ratios-and-error-rates) · [Saturation and prediction](#saturation-and-prediction) · [Absence and staleness](#absence-and-staleness) · [Time offsets](#time-offsets) · [SLOs and burn rate](#slos-and-burn-rate) · [Joins and info metrics](#joins-and-info-metrics) · [Cardinality queries](#cardinality-queries) · [Validate a query](#validate-a-query) · [Common bugs](#common-bugs) · [Metrics Drilldown](#metrics-drilldown) · [Prove it](#prove-it)
+
+Docs: https://prometheus.io/docs/prometheus/latest/querying/basics/ , https://prometheus.io/docs/prometheus/latest/querying/operators/ , https://prometheus.io/docs/prometheus/latest/querying/functions/
 
 ## Selectors
 
@@ -210,11 +210,7 @@ rate(http_requests_total[5m])
 
 ## Absence and staleness
 
-```promql
-absent(up{job="api"})                  # metric disappeared
-changes(up{job="api"}[5m]) == 0        # value not changing → stale exporter
-count_over_time(up{job="api"}[5m]) > 0 # at least one sample in window
-```
+`absent(up{job="api"})` tests missing series; `count_over_time(up{job="api"}[5m]) > 0` tests whether samples exist in the window. `changes(up{job="api"}[5m]) == 0` only says the value did not change: a healthy target can remain at 1. The retired source comment incorrectly called that a stale exporter. [existing PROMQL.md; https://prometheus.io/docs/concepts/jobs_instances/]
 
 For "time since", export a Unix timestamp and compute `time() - my_timestamp_metric`.
 
@@ -246,7 +242,7 @@ predict_linear(node_filesystem_avail_bytes[1h], 2 * 3600)
   / (1 - 0.999)
 ```
 
-Turning these into alerts is in [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md).
+Turning these into alerts is in [ALERTING.md](ALERTING.md).
 
 ## Joins and info metrics
 

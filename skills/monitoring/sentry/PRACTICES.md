@@ -2,7 +2,7 @@
 
 The rules that hold on every platform: how to set up and verify a project, the core SDK options, filtering noise, environments, distributed tracing and PII. Sampling, quotas, rate limits and spike protection are in [SAMPLING-AND-QUOTAS.md](SAMPLING-AND-QUOTAS.md); which signal to use for what (errors, spans, logs, metrics, replay, crons, uptime, alerts) is in [SIGNALS.md](SIGNALS.md). Vendor-neutral OpenTelemetry is the `observability` skill. Most outcomes come down to three things: `init` runs before the code that fails, the event reaches Sentry and is confirmed there rather than assumed, and data is filtered and scrubbed in the SDK before it is sent.
 
-**Contents:** [Ground rules for agents](#ground-rules-for-agents) · [Route to the platform file](#route-to-the-platform-file) · [Setup order](#setup-order) · [Create or select the project](#create-or-select-the-project) · [Verify end to end](#verify-end-to-end) · [Core SDK options](#core-sdk-options) · [Filtering noise](#filtering-noise) · [Inbound filters](#inbound-filters) · [Environments](#environments) · [Distributed tracing](#distributed-tracing) · [PII and data scrubbing](#pii-and-data-scrubbing) · [Prove it](#prove-it)
+**Contents:** [Ground rules for agents](#ground-rules-for-agents) · [Route to the platform file](#route-to-the-platform-file) · [Setup order](#setup-order) · [Create or select the project](#create-or-select-the-project) · [Verify end to end](#verify-end-to-end) · [Core SDK options](JAVASCRIPT.md#core-sdk-options) · [Filtering noise](#filtering-noise) · [Inbound filters](#inbound-filters) · [Environments](#environments) · [Distributed tracing](#distributed-tracing) · [PII and data scrubbing](#pii-and-data-scrubbing) · [Prove it](#prove-it)
 
 ## Ground rules for agents
 
@@ -10,12 +10,12 @@ The rules that hold on every platform: how to set up and verify a project, the c
 - **Check the package registry for the latest SDK version.** Do not use memorized version numbers.
 - **Keep the DSN in an environment variable** (`SENTRY_DSN` or `NEXT_PUBLIC_SENTRY_DSN`). Never hardcode DSN strings in source.
 - **Prefer Sentry Logs over Breadcrumbs** unless the user explicitly asks for breadcrumbs.
-- **Ask first.** Never install packages, create files or change configuration without asking; configure only the features the user asked for.
+- **Use existing authorization.** Perform authorized local setup within scope; ask for unresolved decisions or actions beyond it. The upstream setup source requires a new confirmation before every install/file/config change; this repository keeps existing user permission. [getsentry/sentry-for-ai, SDK setup sources; user standing rules]
 - **Sentry tooling for agents:** the plugin installs with `npx @sentry/agent-plugin install` (Claude Code, Cursor, Codex, Grok); the skill library is https://skills.sentry.dev/ (SDK setup at https://skills.sentry.dev/instrument, plus `/workflows` and `/features`; source repo https://github.com/getsentry/sentry-for-ai); the MCP server for live issue analysis is `https://mcp.sentry.dev`.
 
 ## Route to the platform file
 
-Identify the platform from project files, then tell the user what you found and confirm: don't assume from files alone. When several rows match, take the most specific: Next.js over React or Node.js, NestJS over Node.js, Cloudflare over Node.js, React Native over React. Integrations: some are auto-enabled per SDK, others must be enabled in `init`. `release`, `environment` and `dist` are on the platform's `configuration/options` docs page.
+Identify the platform from project files, then report what you found; resolve only material uncertainty rather than requesting confirmation already supplied by the task. [getsentry/sentry-for-ai, SDK setup sources; user standing rules] When several rows match, take the most specific: Next.js over React or Node.js, NestJS over Node.js, Cloudflare over Node.js, React Native over React. Integrations: some are auto-enabled per SDK, others must be enabled in `init`. `release`, `environment` and `dist` are on the platform's `configuration/options` docs page.
 
 | Platform | Detect from | Read |
 |---|---|---|
@@ -25,11 +25,11 @@ Identify the platform from project files, then tell the user what you found and 
 | React Router Framework | `@react-router/dev`, `@sentry/react-router` | [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md) |
 | TanStack Start React | `@tanstack/react-start` | [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md) |
 | React Native and Expo | `react-native`, `expo` | [REACT-NATIVE.md](REACT-NATIVE.md), [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md) |
-| React | `react` without a more specific framework | [REACT.md](REACT.md), [REACT-TRACING.md](REACT-TRACING.md), [REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md) |
+| React | `react` without a more specific framework | [REACT.md](REACT.md), [REACT-TRACING.md](REACT-TRACING.md), [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md) |
 | Node.js | `package.json` without a more specific framework | [NODE.md](NODE.md), [NODE-TRACING.md](NODE-TRACING.md) |
 | Bun | `bun.lock`, `bunfig.toml` | [NODE.md](NODE.md) |
 | Deno | `deno.json`, `deno.jsonc` | [NODE.md](NODE.md) |
-| Browser JavaScript | Plain JS, jQuery, static sites, CDN script | [BROWSER.md](BROWSER.md), [BROWSER-TRACING-REPLAY-LOGS.md](BROWSER-TRACING-REPLAY-LOGS.md) |
+| Browser JavaScript | Plain JS, jQuery, static sites, CDN script | [BROWSER.md](BROWSER.md), [BROWSER-TRACING.md](BROWSER-TRACING.md) |
 | Flutter | `pubspec.yaml` with a `flutter` dependency | [FLUTTER.md](FLUTTER.md), [FLUTTER-FEATURES.md](FLUTTER-FEATURES.md) |
 | Dart | `pubspec.yaml` without Flutter | [FLUTTER.md](FLUTTER.md) |
 
@@ -39,8 +39,8 @@ SDK major upgrades are in [UPGRADE.md](UPGRADE.md); releases, source maps and de
 
 Six steps, in this order. Each hands off to its section or platform file.
 
-1. **Detect the platform** from `package.json`, `pubspec.yaml` and the like (table above), confirm with the user, and fetch the docs for install, `init`, errors and tracing.
-2. **Provision the project and DSN** ([Create or select the project](#create-or-select-the-project)). Propose `create_project` and create on a yes, never silently.
+1. **Detect the platform** from `package.json`, `pubspec.yaml` and the like (table above), resolve material ambiguity, and fetch the docs for install, `init`, errors and tracing.
+2. **Provision the project and DSN** ([Create or select the project](#create-or-select-the-project)). Create only within existing external-project authorization; otherwise propose it and request consent. [user standing rules; getsentry/sentry-for-ai, setup sources]
 3. **Install the SDK with the docs' recommended default setup as written**, which in practice is errors and tracing. Don't ask the user which signals to enable, and don't pare it back to errors only. Heavier signals (profiling, replay, logs, metrics) are added when the use case warrants it.
 4. **Verify end to end** ([Verify end to end](#verify-end-to-end)): run the real app, make it throw through its actual init path (a temporary real trigger in the app is fine, never a standalone script that bypasses init), poll the MCP, and show the user the issue title, the error message or value, and the direct issue URL, not just the link.
 5. **Get it into production: this is the point.** Use the existing deploy context (CI/CD config, deploy script, Dockerfile or Procfile, Vercel, Fly, Render, Heroku, a deploy section in `AGENTS.md` or `CLAUDE.md`) and make sure the DSN, `release`, `environment` and the production sample rate are set in production. Without deploy context, advocate and ask. No deploy actions without consent.
@@ -88,45 +88,7 @@ Every instrumentation task ends here. Do not tell the user to "go check your das
 
 ## Core SDK options
 
-JavaScript SDK options (v10 and v11). Other SDKs have their own options page; the platform files list their differences.
-
-| Option | Default | What it does |
-|---|---|---|
-| `dsn` | unset | Where events go. Unset means the SDK sends nothing. |
-| `orgId` | from the DSN | Used for trace propagation. |
-| `debug` | `false` | SDK debug output. |
-| `release` | unset | In the browser the SDK tries `window.SENTRY_RELEASE.id`. |
-| `environment` | `production` (the text says `development` or `production` depending on whether the app is packaged) | See [Environments](#environments). |
-| `tunnel` | unset | URL to transport events through, to get around ad-blockers. Still needs the DSN and a custom server endpoint. |
-| `sampleRate` | `1.0` | Error sampling, events picked randomly. |
-| `maxBreadcrumbs` | `100` | Events over the max payload size are dropped. |
-| `attachStacktrace` | `true` (browser) | Events group differently with and without stack traces, so toggling it creates new groups. |
-| `initialScope` | | Object or callback `(scope) => scope`. |
-| `maxValueLength` | | Truncation length for string properties. |
-| `normalizeDepth` / `normalizeMaxBreadth` | `3` / `1000` | |
-| `enabled` | `true` | `false` doesn't remove all instrumentation overhead. To disable Sentry completely per environment, call `Sentry.init` conditionally. |
-| `sendClientReports` | `true` | Sends outcomes for events that were never sent. |
-| `integrations` / `defaultIntegrations` | | Array or `(integrations) => integrations`; `defaultIntegrations: false` means none, an array replaces them. |
-| `transport` / `transportOptions` | `fetch` in the browser | Transports drop an event that fails to send for lack of connection. `transportOptions`: `headers`, `fetchOptions`. |
-| `enhanceFetchErrorMessages` | `'always'` (since `10.34.0`) | `'always' \| 'report-only' \| false`. Appends the hostname, e.g. "Failed to fetch (example.com)". `'always'` changes the real error message and may break packages that match exact messages (`is-network-error`, `p-retry`); `'report-only'` changes it only in what is sent to Sentry. |
-| `traceLifecycle` | `'stream'` since 11.0.0 (option since `10.53.1`) | `'stream'` sends spans in batches as they finish; `'static'` keeps them in memory and sends a transaction when the root span ends. |
-| `propagateTraceparent` | `false` (since `10.10.0`) | Adds the W3C `traceparent` header to fetch and XHR next to `sentry-trace` and `baggage`, for OpenTelemetry-instrumented backends. The backend's CORS must allow `traceparent`. |
-| `enableLogs` | opt-in below `10.71.0` | Set `enableLogs: true` on older SDKs. |
-| `profileSessionSampleRate` | `0` (since `10.27.0`) | Required to enable profiling; decided once per session (browser session = page-load SDK init until the tab closes). |
-| `profileLifecycle` | `"manual"` (since `10.27.0`) | `"manual"` uses `startProfiler()` and `stopProfiler()`, and only `profileSessionSampleRate` affects it; `"trace"` starts and stops with root spans as long as tracing is enabled, runs while at least one sampled root span is active, max 5 minutes per root span, and is affected by both `profileSessionSampleRate` and the trace sample rate. |
-
-Sampling options (`tracesSampleRate`, `tracesSampler`, `replaysSessionSampleRate`, `replaysOnErrorSampleRate`) are in [SAMPLING-AND-QUOTAS.md](SAMPLING-AND-QUOTAS.md). Data-collection options are in [PII and data scrubbing](#pii-and-data-scrubbing).
-
-**Hook signatures:**
-
-| Hook | Signature | Notes |
-|---|---|---|
-| `beforeSend` | `(event: Event, hint: EventHint) => Event \| null` | Errors and messages. All scope data is already applied when it runs, so scope changes there have no effect. |
-| `beforeBreadcrumb` | `(breadcrumb: Breadcrumb, hint?: BreadcrumbHint) => Breadcrumb \| null` | Returning nothing drops the breadcrumb. |
-| `beforeSendSpan` | `(span: StreamedSpanJSON) => StreamedSpanJSON` | Runs for every finished span; check `span.is_segment` for service spans. Cannot drop (cannot return `null`): use `ignoreSpans`. With `traceLifecycle: 'static'` wrap it with `Sentry.withStaticSpan()`; a callback that doesn't match the lifecycle is ignored. |
-| `beforeSendTransaction` | | Deprecated; applies only with `traceLifecycle: 'static'`. |
-| `beforeSendLog` | `(log: Log) => Log \| null` | |
-| `beforeSendMetric` | `(metric: Metric) => Metric \| null` | |
+Use the shared core sdk options guidance in [JAVASCRIPT.md](JAVASCRIPT.md#core-sdk-options). [getsentry/sentry-for-ai, SDK references]
 
 ## Filtering noise
 
@@ -301,36 +263,7 @@ Sensitive data includes emails, names, IPs, user IDs, request and response bodie
 
 ### In the SDK
 
-- **Scrub before sending** with `beforeSend` (errors, messages), `beforeSendSpan`, `beforeSendLog`, `beforeSendMetric` and `beforeSendTransaction` (transaction mode).
-- **`dataCollection`** (JS since `10.57.0`) controls the auto-collected categories. In v10 its defaults apply only when you set it; without it the deprecated `sendDefaultPii` decides. From v11 the defaults always apply. It does not affect Session Replay (use Replay's privacy options).
-
-| Key | Default | Notes |
-|---|---|---|
-| `userInfo` | `true` | `user.*` id, email, username, ip_address from instrumentation; `Sentry.setUser()` data is always sent. |
-| `cookies` | `true` | Names always included; sensitive values replaced with `[Filtered]`. |
-| `httpHeaders` | `true`, or `{ request?, response? }` both `true` | |
-| `httpBodies` | all types | `"incomingRequest"`, `"outgoingRequest"`, `"incomingResponse"`, `"outgoingResponse"`; `[]` disables. |
-| `urlQueryParams` | `true` | |
-| `graphQL` | `{ document?, variables? }` both `true` | |
-| `genAI` | `{ inputs?, outputs? }` both `true` | Options set on an AI integration take precedence. |
-| `databaseQueryData` | `true` | Bound params, write payloads, result data; `db.query.text` is not controlled by it. |
-| `queues` | `true` | |
-| `stackFrameVariables` | `true` | |
-| `frameContextLines` | `5` | |
-
-```typescript
-type CollectBehavior = boolean | { allow: string[] } | { deny: string[] };
-// true          → collect all (sensitive denylist still scrubs values)
-// false         → collect nothing
-// { deny: [] }  → collect all, extending the denylist with the given terms
-// { allow: [] } → only the listed keys send their real value
-```
-
-- **The built-in denylist always applies, even to `allow` keys,** matching partially and case-insensitively (`auth` matches `Authorization` and `X-Auth-Token`): `["auth", "token", "secret", "password", "passwd", "pwd", "key", "jwt", "bearer", "sso", "saml", "csrf", "xsrf", "credentials", "session", "sid", "identity"]`. To also filter user-identifying values that aren't credentials (`x-forwarded-for`, `x-user-id`), extend it with `["forwarded", "-ip", "remote-", "via", "-user"]`.
-- **Defaults differ by SDK:** JS v11 collects user info, headers, bodies and cookies by default behind the denylist; Flutter's `sendDefaultPii` defaults to `false`.
-- **Where sensitive data hides:** stack locals (Node), breadcrumbs (do not log PII when log statements become breadcrumbs; query strings and fragments in breadcrumb data), user context, HTTP query strings, transaction names (raw URLs like `/users/1234/details` when parameterization fails), HTTP spans (query string and fragment), attributes (scrub with `beforeSendSpan`, `beforeSendLog`, `beforeSendMetric`).
-- **Send identifiers, not personal data:** hash confidential context, `Sentry.setTag("birthday", checksumOrHash("08/12/1990"));`, and send an internal ID instead of the email, `Sentry.setUser({ id: user.id });` or `Sentry.setUser({ username: user.username });`. For logging: anonymize, filter with `beforeBreadcrumb`, or disable the logging breadcrumb integration.
-- **AI prompts and completions** (`gen_ai.input.messages`, `gen_ai.output.messages`, `gen_ai.tool.call.*`, ...) are not scrubbed by the default server-side rules. Scrub them with an advanced rule on `$span.data.'<attribute>'` or disable capture. The sources disagree on the default: the data-scrubbing reference calls capture opt-in (only with PII capture enabled); the AI-monitoring reference says keep capture enabled by default and disable it only on a privacy concern. Confirm with the user.
+Use the [JavaScript privacy schema and version boundary](JAVASCRIPT.md#datacollection); other SDKs retain their platform-specific options. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 
 ### On the server
 

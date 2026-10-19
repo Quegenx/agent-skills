@@ -2,6 +2,8 @@
 
 Setup that differs from plain Node.js: Bun (`@sentry/bun`), Deno (`@sentry/deno`), and OpenTelemetry-first Node projects on `@sentry/node-core/light`, plus which Node versions the docs support and the delivery checks the JavaScript troubleshooting page gives for server SDKs. The shared setup, errors, logs, metrics and crons are in [NODE.md](NODE.md); tracing is in [NODE-TRACING.md](NODE-TRACING.md). What decides most outcomes is the same as on Node: Sentry must load before anything else, through `bun --preload` on Bun, as the first import on Deno, and through `--import` on the OTLP path.
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 ## Bun
 
 - **Install and preload:** `bun add @sentry/bun`; write `instrument.ts` with `import * as Sentry from "@sentry/bun";` (the reference example drops `includeLocalVariables`). Start with `bun --preload ./instrument.ts server.ts`.

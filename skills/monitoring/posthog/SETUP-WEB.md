@@ -1,6 +1,6 @@
 # Web setup
 
-`posthog-js` is PostHog's browser SDK; server-side JavaScript uses `posthog-node` instead. Setup is one `posthog.init(token, config)` that runs early, once, from environment variables, and every module then imports that same instance: events captured before `init()` runs are dropped. An integration can look complete while zero events arrive: a missing Content Security Policy entry stops delivery silently, ad blockers block known analytics domains, and the host must match the project's region (never assume US Cloud). Next.js has its own file, [SETUP-NEXTJS.md](SETUP-NEXTJS.md); init options and their defaults are in [CONFIG-WEB.md](CONFIG-WEB.md); the reverse proxy, consent, cookieless mode and EU hosting are in [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md). Events, `identify`, `reset` and groups are in [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md); flags in [FEATURE-FLAGS.md](FEATURE-FLAGS.md); replay in [SESSION-REPLAY.md](SESSION-REPLAY.md); exceptions in [ERROR-TRACKING.md](ERROR-TRACKING.md).
+`posthog-js` is PostHog's browser SDK; server-side JavaScript uses `posthog-node` instead. Setup is one `posthog.init(token, config)` that runs early, once, from environment variables, and every module then imports that same instance: events captured before `init()` runs are dropped. An integration can look complete while zero events arrive: a missing Content Security Policy entry stops delivery silently, ad blockers block known analytics domains, and the host must match the project's region (never assume US Cloud). Next.js has its own file, [SETUP-NEXTJS.md](SETUP-NEXTJS.md); init options and their defaults are in [CONFIG-WEB.md](CONFIG-WEB.md); the reverse proxy, consent, cookieless mode and EU hosting are in [PROXY-AND-PRIVACY.md](PROXY-AND-PRIVACY.md). Events, `identify`, `reset` and groups are in [EVENTS.md](EVENTS.md); flags in [FEATURE-FLAGS.md](FEATURE-FLAGS.md); replay in [SESSION-REPLAY.md](SESSION-REPLAY.md); exceptions in [ERROR-TRACKING.md](ERROR-TRACKING.md).
 
 **Contents:** [The commandments](#the-commandments) · [The setup workflow](#the-setup-workflow) · [Pick the integration](#pick-the-integration) · [Plain web](#plain-web) · [React with Vite](#react-with-vite) · [React Router](#react-router) · [TanStack Router](#tanstack-router) · [TanStack Start](#tanstack-start) · [Linking frontend and backend](#linking-frontend-and-backend) · [Content Security Policy](#content-security-policy) · [Bundles](#bundles) · [Conflicts between sources](#conflicts-between-sources) · [Prove it](#prove-it)
 
@@ -12,7 +12,7 @@
 - **Minimal changes.** Add PostHog code alongside existing integrations and below them; don't overwrite, replace or restructure existing code or the architecture of existing files. Read a file immediately before writing it.
 - **Match the docs and the example.** Follow the framework reference's initialization and capture patterns exactly, and the example project's patterns as closely as possible.
 - **Treat event names, property names and feature flag keys as an analytics contract.** Reuse the names and patterns already in the project; new ones are clear, descriptive and consistent with them.
-- **Identifying users is required.** Call `posthog.identify(...)` after login and `posthog.reset()` on logout; see [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md).
+- **Identifying users is required.** Call `posthog.identify(...)` after login and `posthog.reset()` on logout; see [EVENTS.md](EVENTS.md).
 - **Update early, update often.** PostHog ships fast: `npm update posthog-js` / `pnpm update posthog-js` / `yarn upgrade posthog-js` / `bun update posthog-js` (or bump the constraint in `package.json` and reinstall). Avoid setups that cache the SDK version so it fails to update.
 
 ## The setup workflow
@@ -26,7 +26,7 @@ The order PostHog's own agent skills follow:
 5. **Environment variables.** If valid values already exist in `.env`, `.env.local` or the framework's env files, keep them. Otherwise get the token with the PostHog MCP server's `projects-get` tool (the project's `api_token`; ask which project if there are several), and the host from its `region` field (`US` to `https://us.i.posthog.com`, `EU` to `https://eu.i.posthog.com`). Without MCP, ask the user for the token and "Are you on PostHog US Cloud or EU Cloud?".
 6. **Verify:** run the type check or build scripts from `package.json`, make sure every component you created is actually used, and run the linter or formatter only on files you edited or created, never across the whole codebase.
 
-When the job is also adding events: pick 10 to 15 files with business value (conversion and churn events, login and signup for identify, error handling), note the existing `posthog.capture()` naming and supplement rather than duplicate, track actions rather than pageviews (pageviews are automatic; "viewed" events at the top of a conversion funnel are the exception), and add server-side events whenever the project has instrumentable server code (API routes, server actions, webhook handlers, payment or checkout completion, authentication endpoints). Schema management defines event schemas with typed properties and generates type-safe code (`/docs/product-analytics/schema-management`). Details are in [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md).
+When the job is also adding events: pick 10 to 15 files with business value (conversion and churn events, login and signup for identify, error handling), note the existing `posthog.capture()` naming and supplement rather than duplicate, track actions rather than pageviews (pageviews are automatic; "viewed" events at the top of a conversion funnel are the exception), and add server-side events whenever the project has instrumentable server code (API routes, server actions, webhook handlers, payment or checkout completion, authentication endpoints). Schema management defines event schemas with typed properties and generates type-safe code (`/docs/product-analytics/schema-management`). Details are in [EVENTS.md](EVENTS.md).
 
 **The wizard:** `npx @posthog/wizard` (beta, integration via LLM; also runnable as a prompt in coding agents).
 
@@ -57,6 +57,8 @@ posthog.init('<ph_project_token>', {
     defaults: '2026-05-30',
 })
 ```
+
+- **Snippet stub methods** include `captureException`, `get_session_replay_url` and `startSessionRecording`. [PostHog skills, ERROR-TRACKING.md]
 
 - **TypeScript with the snippet:** `npm install @posthog/types`, then a `posthog.d.ts`:
 
@@ -147,6 +149,38 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 ```
+
+### Provider-owned initialization alternative
+
+The error-tracking reference also initializes through the provider's `apiKey` and `options` branch. Use this instead of the client-owned initialization above. [PostHog skills, ERROR-TRACKING.md]
+
+- **Install** `posthog-js @posthog/react` (`npm install posthog-js @posthog/react`, or the yarn, pnpm or bun equivalent). Vite env in `.env`: `VITE_POSTHOG_PROJECT_TOKEN=<ph_project_token>`, `VITE_POSTHOG_HOST=https://us.i.posthog.com`.
+
+```jsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+import { PostHogProvider } from '@posthog/react'
+
+const options = {
+  api_host: import.meta.env.VITE_POSTHOG_HOST,
+  defaults: '2026-05-30',
+} as const
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <PostHogProvider apiKey={import.meta.env.VITE_POSTHOG_PROJECT_TOKEN} options={options}>
+      <App />
+    </PostHogProvider>
+  </StrictMode>
+)
+```
+
+- **`defaults`** applies PostHog's recommended settings for new projects.
+- **Access the client** with the `usePostHog` hook inside the provider, or `import posthog from 'posthog-js'` in non-React code.
+
+### Using the React client
 
 - **Inside components use `usePostHog()`;** outside them import `posthog` directly, as long as it is the instance you initialized. `usePostHog` returns the client from the nearest `PostHogProvider`; if the provider got a different instance, import that one.
 - **The provider takes a client or an `apiKey` with `options`, never both.** `PostHogProviderProps` is a discriminated union: `{ client: PostHog; apiKey?: never; options?: never } | { apiKey: string; options?: Partial<PostHogConfig>; client?: never }`. With `apiKey`, the provider calls `posthog.init()` itself.

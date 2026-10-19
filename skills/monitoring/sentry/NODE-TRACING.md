@@ -2,6 +2,8 @@
 
 Performance data for Node.js, Bun and Deno services: automatic and custom spans, sampling, distributed tracing across HTTP and queues, CPU profiling, and LLM call monitoring. Setup, errors, logs, metrics and crons are in [NODE.md](NODE.md); NestJS specifics are in [NESTJS.md](NESTJS.md). The mechanism: `Sentry.init()` makes Sentry the OpenTelemetry provider, registering `SentrySpanProcessor`, `SentryPropagator` (`sentry-trace` plus `baggage`), `SentrySampler` and `SentryContextManager` (`AsyncLocalStorage`). Any OpenTelemetry-compatible library therefore produces spans in Sentry, but only for modules loaded after the instrument file, and only when a sample rate or sampler is set. Vendor-neutral OpenTelemetry is the [observability skill](../observability/SKILL.md).
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [Turning tracing on](#turning-tracing-on) · [Sampling](#sampling) · [What is traced automatically](#what-is-traced-automatically) · [Custom spans](#custom-spans) · [Enriching and filtering spans](#enriching-and-filtering-spans) · [Distributed tracing](#distributed-tracing) · [Deno and Bun](#deno-and-bun) · [Profiling](#profiling) · [AI monitoring](#ai-monitoring) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Turning tracing on
@@ -81,29 +83,7 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
 
 - **Enrich the active span:** `Sentry.getActiveSpan()`, then `span.setAttribute`, `span.setAttributes`, `span.recordException(error)`. Status: `span.setStatus({ code: 1 })` (0 unset, 1 ok, 2 error; `{ code: 2, message: "Payment declined" }`).
 - **Rename:** `Sentry.updateSpanName(span, "GET /users/:id")` (v8.47.0+, per the NestJS reference). Root span: `Sentry.getRootSpan(span)`, its name via `Sentry.spanToJSON(root).name`.
-- **Filter with `ignoreSpans`:** strings (substring match), RegExp, functions, or objects `{ name, attributes }` (object form SDK >=9.x; string attribute values match by substring or RegExp, non-strings by strict equality).
-- **`beforeSendSpan(span)`** mutates a span or drops it with `null`; prefer `ignoreSpans` for filtering.
-
-```typescript
-Sentry.init({
-  ignoreSpans: [
-    // Drop health check spans (string substring match)
-    "health",
-    // Drop spans by name pattern (RegExp)
-    /health|heartbeat|ping/,
-    // Drop internal DB keepalive queries (function)
-    (span) => span.op === "db.query" && span.description?.includes("SELECT 1"),
-    // Drop spans matching specific attributes (object form, SDK ≥9.x)
-    {
-      name: /health/,             // optional: name/op substring or RegExp
-      attributes: {
-        "http.url": "/health",    // string = substring match
-        "http.status_code": 200,  // non-string = strict equality
-      },
-    },
-  ],
-});
-```
+- **Filtering contract:** beforeSendSpan modifies serialized spans and cannot return null; ignoreSpans accepts strings, regexes or name/op/attribute match objects. The old Node source allowed null and a function entry; both conflict with the current official contract. Use the existing [filter owner](PRACTICES.md#filtering-noise), including the stream/static lifecycle distinction in [JAVASCRIPT.md](JAVASCRIPT.md#core-sdk-options). [https://docs.sentry.io/platforms/javascript/guides/node/configuration/filtering/; https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#ignoreSpans]
 
 - **Suppress or restart:** `Sentry.suppressTracing(cb)` suppresses spans even for auto-instrumented code; `Sentry.startNewTrace(cb)` breaks the chain.
 
@@ -111,7 +91,7 @@ Sentry.init({
 
 - **Headers:** `sentry-trace` is `{traceId}-{spanId}-{sampled}`; `baggage` is W3C Baggage with `sentry-*` keys. Backends must allowlist both for CORS: `Access-Control-Allow-Headers: sentry-trace, baggage`; the NestJS reference adds that proxies and API gateways must pass both headers through.
 - **HTTP is automatic:** framework integrations call `continueTrace` for incoming requests and outgoing requests get the headers.
-- **`tracePropagationTargets` decides which outgoing requests get the headers** (strings match as substrings, or RegExp); the NestJS reference says set it so `sentry-trace` doesn't leak to third parties. The Node tracing reference gives the default as `['localhost', /^\//]`, only localhost and relative paths (disable with `[]`), and warns that for an API at `http://localhost:3001` you need `"localhost:3001"` or a regex: `"localhost"` alone won't match. The NestJS tracing reference gives the default as "all origins". Confirm in the current docs.
+- **tracePropagationTargets controls outgoing trace headers:** string entries match URL substrings; server SDKs propagate to all outgoing requests by default. Thus localhost matches localhost:3001; port-specific CORS origin authorization is a separate question. The old Node source gave browser-like localhost/relative defaults and said localhost could not match the port. [https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#tracePropagationTargets]
 
 ```typescript
 Sentry.init({
@@ -186,7 +166,7 @@ Deno.serve(async (req) => {
 Node.js only. Not available on Bun, Deno or the OTLP path.
 
 - **Install `@sentry/profiling-node` at exactly the same version as `@sentry/node`** (or `@sentry/nestjs`): `npm install @sentry/profiling-node --save`. A mismatch causes silent failures or startup crashes. It is a native C++ addon (`node-gyp`) and must be in `dependencies`, not `devDependencies`.
-- **How sampling multiplies:** the profiler samples V8 CPU stacks about 100 times a second (10 ms). A profile is collected only when the trace is sampled and the profiling session is sampled: `tracesSampleRate: 0.1` with `profileSessionSampleRate: 0.5` gives about 5%. `profileSessionSampleRate` is decided once per process at startup, so it profiles a fraction of processes or pods (e.g. `0.25` for 25% of pods). Tracing must be on (`tracesSampleRate > 0`).
+- **How sampling multiplies:** the profiler samples V8 CPU stacks about 100 times a second (10 ms). A profile is collected only when the trace is sampled and the profiling session is sampled: `tracesSampleRate: 0.1` with `profileSessionSampleRate: 0.5` gives about 5%. `profileSessionSampleRate` is decided once per process at startup, so it profiles a fraction of processes or pods (e.g. `0.25` for 25% of pods). This multiplication and tracing requirement apply to profileLifecycle:trace; manual lifecycle is independent of trace sampling and uses profileSessionSampleRate. The old source stated tracing was universally required. [https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#profileLifecycle]
 
 ```typescript
 import * as Sentry from "@sentry/node";

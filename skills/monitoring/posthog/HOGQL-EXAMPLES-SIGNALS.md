@@ -68,44 +68,7 @@ Filter by severity and search for a term.
 - **Search** pairs `indexHint(like(lower(body), '%timeout%'))` with `ilike(toString(body), '%timeout%')`; severity is `severity_text IN ('warn','error','fatal')`.
 - **`span_id` and `trace_id` are base64:** show them with `hex(tryBase64Decode(...))`. The live checkpoint comes from `logs_kafka_metrics`. Pages are `LIMIT 101 OFFSET 0`.
 
-```sql
-SELECT
-    uuid,
-    hex(tryBase64Decode(trace_id)),
-    hex(tryBase64Decode(span_id)),
-    body,
-    attributes,
-    timestamp,
-    observed_timestamp,
-    severity_text,
-    severity_number,
-    severity_text AS level,
-    resource_attributes,
-    resource_fingerprint,
-    instrumentation_scope,
-    event_name,
-    (SELECT
-            min(partition_checkpoint)
-        FROM
-            (SELECT
-                _topic,
-                _partition,
-                max(max_observed_timestamp) AS partition_checkpoint
-            FROM
-                logs_kafka_metrics
-            GROUP BY
-                _topic,
-                _partition)) AS live_logs_checkpoint
-FROM
-    logs
-WHERE
-    and(and(greaterOrEquals(toStartOfDay(time_bucket), toStartOfDay(assumeNotNull(toDateTime('2025-12-09 00:00:00')))), lessOrEquals(toStartOfDay(time_bucket), toStartOfDay(assumeNotNull(toDateTime('2025-12-10 00:00:00'))))), 1, greaterOrEquals(timestamp, toDateTime('2026-10-16 11:52:17.125091')), indexHint(like(lower(body), '%timeout%')), ilike(toString(body), '%timeout%'), in(severity_text, tuple('warn', 'error', 'fatal')))
-ORDER BY
-    timestamp DESC,
-    uuid DESC
-LIMIT 101
-OFFSET 0
-```
+The retired generated log example combined December 9 to 10, 2025 `time_bucket` with `timestamp` from October 16, 2026, so its windows cannot describe the same rows. Use the same actual incident window for both bounds and a discovered service scope. Its selected fields were `uuid`, trace/span IDs decoded for display, `body`, `attributes`, `timestamp`, `observed_timestamp`, `severity_text`, `severity_number`, `severity_text AS level`, `resource_attributes`, `resource_fingerprint`, `instrumentation_scope` and `event_name`; `live_logs_checkpoint` was the minimum of per-topic/partition maximum observed timestamps from `logs_kafka_metrics`. It searched for `timeout` with both the lowercase-body index hint and a case-insensitive body predicate, restricted severity to warn/error/fatal, sorted timestamp then uuid descending, and used LIMIT 101 OFFSET 0. Preserve those source-specific fields and predicates when adapting a verified query. [existing HOGQL-EXAMPLES-SIGNALS.md; HOGQL-TABLES-PRODUCTS.md, logs time_bucket definition]
 
 ## Cross-signal correlation
 
@@ -118,41 +81,7 @@ Use when a metric anomaly (latency spike, error-rate jump) needs a representativ
 
 The pattern: locate the spike in `posthog.metrics` for a `(service, metric, window)`; pick an exemplar with `argMax(trace_id, value)` (the trace from the highest-value row); fetch spans and logs for it in one `UNION ALL`, ordered by timestamp so the timeline interleaves.
 
-```sql
-WITH exemplar AS (
-    SELECT argMax(trace_id, value) AS trace_id
-    FROM posthog.metrics
-    WHERE service_name = 'checkout'
-      AND metric_name = 'http.server.duration'
-      AND timestamp >= now() - INTERVAL 15 MINUTE
-      AND trace_id != ''
-)
-SELECT
-    'span' AS source,
-    name AS detail,
-    service_name,
-    duration_nano,
-    status_code,
-    NULL AS severity_number,
-    timestamp
-FROM posthog.trace_spans
-WHERE trace_id = (SELECT trace_id FROM exemplar)
-
-UNION ALL
-
-SELECT
-    'log',
-    body,
-    service_name,
-    NULL,
-    NULL,
-    severity_number,
-    timestamp
-FROM logs
-WHERE trace_id = (SELECT trace_id FROM exemplar)
-
-ORDER BY timestamp
-```
+The source's exemplar-to-timeline UNION selected span name/service/duration/status and log body/service/severity, then ordered both by timestamp. It bounded only the exemplar CTE; the outer trace and log scans lacked incident-time predicates. Keep the actual window on each scan, join the stored trace_id directly and use UNION ALL for the interleaved timeline. The existing bounded exemplar-sample query below can discover candidate IDs; use `apm-trace-get` for the selected trace and the typed logs tool with the same window. No corrected SQL block is supplied here. [existing HOGQL-EXAMPLES-SIGNALS.md, cross-signal correlation]
 
 - **`argMax(trace_id, value)` is cheap** because the per-minute projection on `posthog.metrics` pre-aggregates by `(service_name, metric_name, ...)`. Keep the window tight: 15 minutes is plenty for a spike.
 - **`UNION ALL`, not `UNION`:** `UNION` deduplicates and adds cost.
@@ -161,43 +90,7 @@ ORDER BY timestamp
 
 Fallback, anchored on a span (slowest error, longest duration, a specific service), then its logs:
 
-```sql
-WITH slow_error_trace AS (
-    SELECT trace_id
-    FROM posthog.trace_spans
-    WHERE service_name = 'checkout'
-      AND is_root_span
-      AND status_code = 2
-      AND timestamp >= now() - INTERVAL 1 HOUR
-    ORDER BY duration_nano DESC
-    LIMIT 1
-)
-SELECT
-    'span' AS source,
-    name AS detail,
-    service_name,
-    duration_nano,
-    status_code,
-    NULL AS severity_number,
-    timestamp
-FROM posthog.trace_spans
-WHERE trace_id = (SELECT trace_id FROM slow_error_trace)
-
-UNION ALL
-
-SELECT
-    'log',
-    body,
-    service_name,
-    NULL,
-    NULL,
-    severity_number,
-    timestamp
-FROM logs
-WHERE trace_id = (SELECT trace_id FROM slow_error_trace)
-
-ORDER BY timestamp
-```
+The span-anchored source fallback chose the longest root error span (`is_root_span`, status_code 2, service checkout, one-hour window), then fetched the same span/log timeline fields as above. Its outer scans also omitted the window. Keep the selected incident bounds on every scan and use the discovered stored trace_id with the typed trace/log tools; source sampling and empty-exemplar caveats still apply. [existing HOGQL-EXAMPLES-SIGNALS.md, span fallback]
 
 A sample of exemplar traces, not just one:
 

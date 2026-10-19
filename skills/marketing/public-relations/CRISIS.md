@@ -1,6 +1,6 @@
 # Crisis communications
 
-When something has gone wrong in public (a breach, an outage, a viral complaint, an executive controversy), copied from coreyhaines31/marketingskills `public-relations` (MIT), "Adapted from a contribution by @fyscleaning-jpg (PR #381)". The story is already running; the job is to respond quickly, honestly and without making it worse. The templates are in [CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md). Diagnosing and recovering the system itself, and the internal postmortem, are [../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#mid-incident).
+When something has gone wrong in public (a breach, an outage, a viral complaint, an executive controversy), copied from coreyhaines31/marketingskills `public-relations` (MIT), "Adapted from a contribution by @fyscleaning-jpg (PR #381)". The story is already running; the job is to respond quickly, honestly and without making it worse. The templates are in [CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md). Diagnosing and recovering the system itself, and the internal postmortem, are [../../monitoring/observability/INCIDENT-RESPONSE.md](../../monitoring/observability/INCIDENT-RESPONSE.md#mid-incident).
 
 **Contents:** [Facts first](#facts-first) · [Legal and safety exposure](#legal-and-safety-exposure) · [Principles](#principles) · [Severity](#severity) · [The first 60 minutes](#the-first-60-minutes) · [Channel order](#channel-order) · [Playbooks by crisis type](#playbooks-by-crisis-type) · [What not to do](#what-not-to-do) · [After the crisis](#after-the-crisis) · [Review checklist](#review-checklist) · [Prove it](#prove-it)
 
@@ -98,7 +98,7 @@ When something has gone wrong in public (a breach, an outage, a viral complaint,
 
 [coreyhaines31/marketingskills, public-relations]
 
-1. **Public postmortem** for P1 and P0: what happened, root cause, what's changing ([CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md#public-postmortem)). "Specific, checkable commitments build trust; 'we take this seriously' doesn't." Like the internal one, it names no person as the cause ([../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#the-postmortem)).
+1. **Public postmortem** for P1 and P0: what happened, root cause, what's changing ([CRISIS-STATEMENTS.md](CRISIS-STATEMENTS.md#public-postmortem)). "Specific, checkable commitments build trust; 'we take this seriously' doesn't." Like the internal one, it names no person as the cause ([../../monitoring/observability/INCIDENT-RESPONSE.md](../../monitoring/observability/INCIDENT-RESPONSE.md#the-postmortem)).
 2. **Internal retro,** separate from the postmortem, on what should change in the response process itself.
 3. **Track every promise:** a promised fix, credit or policy change gets seen through, with a follow-up post when it ships.
 4. **Watch sentiment for 1 to 2 weeks:** "Crises often get a second wave when a new detail surfaces."

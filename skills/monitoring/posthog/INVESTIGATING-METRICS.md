@@ -62,14 +62,7 @@ This is for "why did X change?" on a saved insight, a dashboard tile or a pasted
 
 ### Compute, don't eyeball
 
-[coreyhaines31/marketingskills, analytics]
-
-- **"Derive every total, rate, and delta from row-level data with a script or spreadsheet - never by scanning rows and summing mentally.** One silently dropped row corrupts every figure downstream of it."
-- **Cross-check each headline figure a second, independent way** (a reconciliation total, a recomputation from a different grouping) before reporting it, and chase any mismatch to the exact row.
-- **A claim about one segment** (a single campaign, ad set, channel or week) reports that segment's own numbers; never fold it into a neighboring group and let the group's total speak for it.
-- **Match observation windows:** a rate divides a numerator and denominator over the same closed window. "Never divide a full period's spend by a partial period's conversions or revenue"; restate both over the weeks that have data, and say which weeks.
-- **Recommend against the stated goal:** "Name which stated goal each option serves and what it trades away."
-- The same rules with the full quotes, for any analytics tool: [../google-analytics/TRACKING-PLAN.md](../google-analytics/TRACKING-PLAN.md#reading-the-numbers). Recurring checks that run them (the analytics-anomaly and tracking-QA loops, which "Escalate a broken revenue/conversion event immediately") are in [../../marketing/marketing-loops/OPS-LOOPS.md](../../marketing/marketing-loops/OPS-LOOPS.md).
+Use the canonical [analytics computation and reconciliation rules](../google-analytics/TRACKING-PLAN.md#reading-the-numbers) before reporting totals, rates, windows or segment deltas. The recurring [analytics-anomaly and tracking-QA loops](../../marketing/marketing-loops/OPS-LOOPS.md) apply those rules. [coreyhaines31/marketingskills, analytics]
 
 ## Shared techniques
 
@@ -200,7 +193,7 @@ Rank hypotheses by evidence count when writing findings.
 | Seasonality, day of week | The prior-period comparison catches it |
 | Platform, device, browser | `$browser`, `$browser_version`, `$os`, `$device_type`, `$geoip_country_code`, plus error tracking |
 | Rate limit or upstream outage | `posthog:query-trends` on API error events; `posthog:query-logs` for an error surge |
-| Upstream data integration | Warehouse-backed metrics (schema change, pipeline failure, view altered): the tools can't confirm it; flag it as a candidate when no product-side cause fits and recommend checking pipeline health |
+| Upstream data integration | Check the existing [source/schema health](DATA-WAREHOUSE.md#source-health-audit) and [materialized-view health](WAREHOUSE-MODELING.md#view-health-audit) workflows. The old investigation source said tools could not confirm these changes; the warehouse sources expose scoped status and run evidence. A green status alone does not prove freshness or causality. [existing DATA-WAREHOUSE.md; WAREHOUSE-MODELING.md] |
 
 ## Report the findings
 

@@ -182,7 +182,7 @@ FROM per_person
 - **All three key off one event or action, an interval and an aggregation unit.**
 - **Model the action that means "got value",** not `$pageview`.
 - **Match the interval to the product:** daily retention looks brutal for a weekly-use product.
-- **Decide recurring or every-prior-interval retention.** Recurring (active in interval N) is the common default; cumulative or "rolling" means active in N and every interval up to N. Start and return events can differ (`signed_up` to `ran_query`).
+- **Choose cohort entry separately from returning time:** first-time, first-ever and recurring determine which start-event occurrences enter cohorts. Returning criteria are On the selected interval, or On-or-after it; the latter is cumulative/rolling retention. Start and return events can differ. The old line conflated recurring with return timing and incorrectly defined rolling as activity in every preceding interval. [https://posthog.com/docs/product-analytics/retention]
 - **Stickiness** buckets units by distinct active intervals over a fixed span (for example the last 7 days or 4 weeks) and surfaces power users (the high-interval buckets) and feature stickiness; a DAU/WAU or DAU/MAU ratio is its scalar summary.
 - **For quick analysis prefer the native tools** (`query-retention`, `query-stickiness`, `query-lifecycle`); build views when reused or joined.
 
@@ -341,7 +341,7 @@ WHERE position(table_name, 'revenue_view') > 0 ORDER BY table_name
 | `m0 > 0, m1 = 0` | Churn `-m0` |
 
 - **Validate with the identity** `starting_MRR + new + expansion - contraction - churn = ending_MRR`. Unit: choose person or group once; `group_0_key` (or the relevant `group_N_key`) for accounts, `customer_id` joined to persons via the customer metadata link for users. Keep it consistent across MRR, churn and LTV.
-- **Sign of churn differs between sources:** the definitions write the churn movement as `-m0`, while the dbt `fct_mrr` reports `churned_mrr` as the positive `prev_mrr`; the definitions' notes also phrase the bridge as "New − Contraction − Churn + Expansion".
+- **Keep the churn sign with the convention:** the table above uses signed movement `-m0`; the displayed bridge subtracts a positive churn magnitude. Convert the signed movement to its magnitude before using that bridge, or add signed movements consistently. The source definitions used negative churn movement while dbt `fct_mrr` used positive `prev_mrr`; mixing them reverses churn's effect. [existing METRICS-MODELING.md, revenue definition and dbt source alternatives]
 
 ### In PostHog
 
@@ -372,7 +372,7 @@ ORDER BY month
 - **`dim_customer`:** one row per customer from Stripe `customers` (`customer_id`, `customer_name`, `email`, `country`, `first_seen_date`), the analogue of the managed customer view.
 - **`fct_revenue_item`** spreads each recurring line item evenly over its service months (an annual plan feeds 1/12 of its value into each month's MRR); one-time items resolve to the charge month. Grain is one row per (line item, service month); its month spine uses `generate_series`, Postgres and DuckDB syntax, so swap in your warehouse's month generator if it differs.
 - **`fct_mrr` needs a dense customer by month spine.** Without a row for every month, `lag()` compares a customer's last active month to their next active month and silently skips the churn in between. It zero-fills one row per customer per month so churn shows up as MRR going to 0; its month list is the observed range (swap for a `generate_series` spine if needed).
-- **Tests:** `dim_customer.customer_id` `unique` and `not_null`; on `fct_revenue_item`, `dbt_utils.unique_combination_of_columns` on `[revenue_item_id, month]`, `not_null` on `revenue_item_id`, `customer_id` and `amount`, and `relationships` from `customer_id` to `ref('dim_customer')`; `fct_mrr.month` `unique` and `not_null`, `fct_mrr.mrr` `not_null`.
+- **Tests:** `dim_customer.customer_id` `unique` and `not_null`; on `fct_revenue_item`, `dbt_utils.unique_combination_of_columns` on `[revenue_item_id, month]`, `not_null` on `revenue_item_id`, `customer_id` and `amount`, and `relationships` from `customer_id` to `ref('dim_customer')`; check the actual `fct_mrr` output grain before uniqueness: month alone is unique only for a final one-row-per-month rollup, while retained customer-month rows require that combined grain. Keep month and mrr non-null. The old source required unique month without qualifying its dense customer-month intermediate. [existing METRICS-MODELING.md, dbt revenue model]
 
 ## Prove it
 

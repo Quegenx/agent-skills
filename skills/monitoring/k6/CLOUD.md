@@ -2,7 +2,7 @@
 
 Grafana Cloud k6 runs your script on its load generators, keeps the runs, and exposes them through the UI, the `gcx` CLI and a REST API. Run load tests before a release, stress tests to find limits and regression tests in CI here; always-on uptime and scheduled API health checks belong to Synthetic Monitoring ([../grafana/SYNTHETIC-MONITORING.md](../grafana/SYNTHETIC-MONITORING.md)). Most cloud mistakes are API mechanics: the doubled `cloud/cloud/` proxy path, list endpoints that return the oldest rows, PATCH bodies that silently drop fields, and script edits that weren't verified. Reading runs (logs, metrics, traces, screenshots, Insights) and investigating them is [CLOUD-RESULTS.md](CLOUD-RESULTS.md).
 
-**Contents:** [Running in the cloud](#running-in-the-cloud) · [CI](#ci) · [Authentication](#authentication) · [Calling the API through gcx](#calling-the-api-through-gcx) · [Listing and pagination](#listing-and-pagination) · [Managing tests, runs and schedules](#managing-tests-runs-and-schedules) · [Editing a cloud script safely](#editing-a-cloud-script-safely) · [Gotchas](#gotchas) · [Prove it](#prove-it)
+**Contents:** [Running in the cloud](#running-in-the-cloud) · [Automation](#automation) · [Authentication](#authentication) · [Calling the API through gcx](#calling-the-api-through-gcx) · [Listing and pagination](#listing-and-pagination) · [Managing tests, runs and schedules](#managing-tests-runs-and-schedules) · [Editing a cloud script safely](#editing-a-cloud-script-safely) · [Gotchas](#gotchas) · [Prove it](#prove-it)
 
 ## Running in the cloud
 
@@ -48,30 +48,15 @@ k6 cloud run script.js
 - **Docs:** `https://grafana.com/docs/grafana-cloud/testing/k6/`.
 - **The UI:** tabs Performance Overview, Checks, Thresholds, Logs (`console.log`), Comparison. Authoring tools: k6 Studio (desktop GUI), the browser recorder (Chrome extension), the test builder (Cloud UI), the k6 TypeScript template.
 
-## CI
+## Automation
 
-GitHub Actions: `grafana/k6-action` is archived and no longer maintained; its README points to the Setup K6 and Run K6 actions ([grafana/k6-action](https://github.com/grafana/k6-action)). This block used to show `uses: grafana/k6-action@v0.3.1` with `filename`, `cloud: true` and `token`.
-
-```yaml
-- uses: grafana/setup-k6-action@v1
-- uses: grafana/run-k6-action@v1
-  env:
-    K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
-    K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
-  with:
-    path: |
-      ./tests/api*.js
-```
-
-run-k6-action inputs: `path` (a glob), `cloud-run-locally` (default true), `parallel`, `fail-fast`, `flags`, `inspect-flags`, `cloud-comment-on-pr` (default true), `only-verify-scripts`, `debug`, `disable-analytics` ([grafana/run-k6-action](https://github.com/grafana/run-k6-action)). On k6 v2 a cloud run also needs a stack (`K6_CLOUD_STACK_ID`), and CI must treat exit `97` as a failure.
-
-GitLab CI uses `image: grafana/k6` with `k6 cloud login` then the cloud run, `only: - main`; CircleCI runs the same two commands. The sources wrote them as `k6 cloud login --token $K6_CLOUD_TOKEN` and `k6 cloud tests/load.js`; on k6 v2 that is `k6 cloud login --token $K6_CLOUD_TOKEN --stack $K6_CLOUD_STACK_ID` and `k6 cloud run tests/load.js`. Keep larger tests out of auto-deploy pipelines ([LOAD-AND-THRESHOLDS.md](LOAD-AND-THRESHOLDS.md#automating-performance-tests)).
+Use the documented standalone cloud login/run commands and exit-code contract in [LOAD-AND-THRESHOLDS.md](LOAD-AND-THRESHOLDS.md#exit-codes). Keep larger tests outside automatic deployment pipelines. GitHub Actions, PR-comment inputs and branch-specific lifecycle recipes from the sources are excluded by the owner. [existing CLOUD.md; owner GitHub lifecycle exclusion]
 
 ## Authentication
 
 - **gcx:** `gcx login --context <ctx>` (one-time OAuth in the browser); `gcx --context <ctx> config check` should print `✔ Connectivity: online`. An expired token returns 401 `Invalid or expired token` with a prompt to run gcx login to refresh; run `gcx login --context <ctx>` again. gcx needs Grafana Cloud or Grafana OSS/Enterprise v12+; its experimental commands may change without semver.
 - **gcx injects auth.** The only header you set by hand is `X-K6TestRun-Id` (Loki logs, screenshot and file fetches, Tempo traces). `gcx k6 auth token` prints the k6 API token.
-- **Without gcx** (`command -v gcx` finds nothing): send `Authorization: Bearer <k6_token>` and `X-Stack-ID: <int>` on every call. REST (`/cloud/v6/...`, `/cloud/v5/...`, `/cloud-resources/v1/...`, `/insights/...`) goes to `https://api.k6.io`; logs (Loki) and traces (Tempo) go to `https://cloudlogs.k6.io`. Drop the `/api/plugins/k6-app/resources/{cloud,logs,insights}` prefix, and the doubled `cloud/cloud/` collapses to one `/cloud/`. Ask the user for the token and stack once per session; don't guess them. The token is the long-lived bearer that `gcx k6 auth token` would print; the stack is either the integer stack ID or a stack URL (for example `https://myorg.grafana.net`).
+- **Without gcx** (`command -v gcx` finds nothing): send `Authorization: Bearer <k6_token>` and `X-Stack-ID: <int>` on every call. REST (`/cloud/v6/...`, `/cloud/v5/...`, `/cloud-resources/v1/...`, `/insights/...`) goes to `https://api.k6.io`; logs (Loki) and traces (Tempo) go to `https://cloudlogs.k6.io`. Drop the `/api/plugins/k6-app/resources/{cloud,logs,insights}` prefix, and the doubled `cloud/cloud/` collapses to one `/cloud/`. Have the user authenticate or configure the token locally through an authorized credential flow; never request bearer text in chat. Resolve the stack from that configuration rather than guessing it. [existing Grafana ADMIN-AND-AI.md, token handling] The token is the long-lived bearer that `gcx k6 auth token` would print; the stack is either the integer stack ID or a stack URL (for example `https://myorg.grafana.net`).
 - **Resolve a stack URL to its ID** once, and cache it for the session:
 
 ```bash
@@ -238,7 +223,7 @@ gcx api /api/plugins/k6-app/resources/cloud/cloud/v6/load_tests/$ID/script \
 shasum -a 256 /tmp/script_new.js /tmp/script_verify.js
 ```
 
-  The `updated` timestamp does not change on a script PUT: verify by sha256. A 415 on the PUT means the `Content-Type: application/octet-stream` header didn't make it through (some shell quoting mistakes drop it); pass `-vvv` to `gcx api` for the request and response trace. Smoke with `--once` on k6 v2.3+ (at most one scenario; `--scenario a,b --once` for several); on older k6 use `sed` on `iterations:`, never `--iterations 1`, which overrides the scenario block and breaks browser scenarios. Which checks a change needs before the PUT is in [MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md#verifying-a-change).
+  The `updated` timestamp does not change on a script PUT: verify by sha256. A 415 on the PUT means the `Content-Type: application/octet-stream` header didn't make it through (some shell quoting mistakes drop it); pass `-vvv` to `gcx api` for the request and response trace. Smoke with `--once` on k6 v2.3+ (at most one scenario; `--scenario a,b --once` for several); on older k6 use `sed` on `iterations:`, never `--iterations 1`, which overrides the scenario block and breaks browser scenarios. Which checks a change needs before the PUT is in [MAINTENANCE.md](MAINTENANCE.md#verifying-a-change).
 
 ## Gotchas
 

@@ -73,7 +73,7 @@ These fixes change the numbers a run reports, so a multi-run trend that crosses 
 - **v2.2.0:** a counter `rate` threshold no longer fails spuriously on zero duration (#6200); `SharedArray` memory dropped from about 1 GB to 100 MB in one reproduction (#6140).
 - **v2.3.0:** a `ramping-vus` scenario that can't start a VU now errors instead of silently stopping and reporting success (#5922); HTTPS-through-HTTPS-proxy timings were inflated before (#6349); Web Vitals from intermediate pages in a tab that navigates several times are now kept instead of lost (#6163).
 
-Record the k6 version of each run with the trend (the run report's `k6 build` column in [CLOUD-RESULTS.md](CLOUD-RESULTS.md#reports)) and split the history at these versions as you would at a script change ([MAINTENANCE-AND-TRENDS.md](MAINTENANCE-AND-TRENDS.md#trend-analysis)).
+Record the k6 version of each run with the trend (the run report's `k6 build` column in [CLOUD-RESULTS.md](CLOUD-RESULTS.md#reports)) and split the history at these versions as you would at a script change ([TRENDS.md](TRENDS.md#trend-analysis)).
 
 ## Prove it
 

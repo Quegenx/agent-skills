@@ -11,7 +11,7 @@ React Email builds emails from React and TypeScript components and turns them in
 |---|---|
 | Versions and Node, install (new, existing, monorepo), project layout, static files, `PreviewProps`, the `email` CLI and preview server, esbuild plugins, deploying the preview, changes by version and the 6.0 migration | [SETUP.md](SETUP.md) |
 | The canonical template, structure rules, every component and its props, accessibility defaults and duties | [COMPONENTS.md](COMPONENTS.md) |
-| Tailwind and `pixelBasedPreset`, what doesn't inline, required classes, borders, layout and images, the brand config, dark mode, client support caveats | [STYLING.md](STYLING.md) |
+| Tailwind and `pixelBasedPreset`, what doesn't inline, required classes, borders, layout and images, tagged email-design alternatives, the brand config, dark mode, client support caveats | [STYLING.md](STYLING.md) |
 | `render`, `pretty`, `toPlainText`, runtimes, sending with Resend (SDK, MCP, uploaded templates) and with other providers | [RENDERING-AND-SENDING.md](RENDERING-AND-SENDING.md) |
 | What to ask before building, props instead of `{{placeholders}}`, the footer, the ready templates' props and caveats, internationalization | [PATTERNS.md](PATTERNS.md) |
 | The embeddable `@react-email/editor`: setup, API, export, themes and custom extensions | [EDITOR.md](EDITOR.md) |

@@ -2,6 +2,8 @@
 
 Sentry's AI (agent) monitoring records LLM calls, agent runs, tool calls and handoffs as `gen_ai.*` spans and groups them into Conversations, with token counts and costs. It rides on tracing, so what decides most outcomes is sampling: agent runs are sampled as complete span trees, and "If the root trace is dropped, the agent run is dropped." Then: one AI span producer per runtime, the prompt and output capture choice (the sources disagree on the default), and a stable conversation ID. Base SDK setup is in the platform files ([NODE.md](NODE.md), [NODE-TRACING.md](NODE-TRACING.md), [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md), [NESTJS.md](NESTJS.md), [CLOUDFLARE.md](CLOUDFLARE.md), [REACT-NATIVE-FEATURES.md](REACT-NATIVE-FEATURES.md)); attribute naming for other domains is in [INSTRUMENTATION.md](INSTRUMENTATION.md#attribute-semantics).
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [Before you edit](#before-you-edit) · [Docs to read](#docs-to-read) · [Detect](#detect) · [Integrations](#integrations) · [Cloudflare Workers](#cloudflare-workers) · [Browser and Next.js](#browser-and-nextjs) · [Vercel AI SDK](#vercel-ai-sdk) · [Manual instrumentation](#manual-instrumentation) · [Attributes](#attributes) · [Tokens and cost](#tokens-and-cost) · [Conversations](#conversations) · [Sampling](#sampling) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Before you edit

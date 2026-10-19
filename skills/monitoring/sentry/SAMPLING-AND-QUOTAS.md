@@ -13,7 +13,7 @@ How much data reaches Sentry and what it costs: SDK sample rates for errors, tra
 | `tracesSampler` | unset | Function returning a rate per trace; takes precedence over `tracesSampleRate`. |
 | `replaysSessionSampleRate` | | Full session replays. |
 | `replaysOnErrorSampleRate` | | Replays kept when an error happens: records up to a minute before the error and continues until the session ends. |
-| `profileSessionSampleRate` | `0` | Profiling, decided once per session (see [PRACTICES.md](PRACTICES.md#core-sdk-options)). |
+| `profileSessionSampleRate` | `0` | Profiling, decided once per session (see [JAVASCRIPT.md](JAVASCRIPT.md#core-sdk-options)). |
 
 - **Tracing is off unless you set one of them.** By default neither `tracesSampleRate` nor `tracesSampler` is set, so no transactions are sent. Either one must be defined to enable tracing.
 - **`tracesSampleRate: 0` does not disable tracing:** it keeps tracing enabled but samples nothing, and no downstream spans are sampled. Omit the sampling config entirely to truly disable it.
@@ -101,6 +101,42 @@ Sentry.init({
 - **Per-page replay without a sampler:** set `replaysSessionSampleRate: 0` and use a `useSessionReplay` React hook (Next.js `"use client"`) that decides randomly, sets tags, and calls `replay.stop(); replay.start();` on mount; on unmount it calls `replay.stop(); replay.startBuffering();` to keep error replays working. Downside: recording starts after mount and can miss early hydration issues.
 - **Logs: filter at the source** with `beforeSendLog`, or with LogTape (`@logtape/logtape`, `@logtape/sentry` `getSentrySink()`, `lowestLevel`, filters such as `(isHighSignal(rec) || sampleRate(rec)) && noDev(rec)` with 5% sampling). Stop sending info logs for every routine event.
 - **The blog's short login example is broken** (it destructures only `{name}`, reads `attributes`, and returns nothing on the fallback path): don't copy it.
+
+## React source rate example
+
+These are the React source's traffic-tier recommendations and SDK 10 sampler example, distinct from the other production-rate preferences above. [getsentry/sentry-for-ai, sentry-react-sdk]
+
+| Daily transactions | `tracesSampleRate` |
+|---|---|
+| <10K (also dev, staging) | 1.0 |
+| 10K to 100K | 0.2 |
+| 100K to 1M | 0.05 to 0.1 |
+| >1M | 0.01 to 0.02, with `tracesSampler` for priority routes |
+
+- **`tracesSampler` wins** when both are set. It receives `{ name, attributes, parentSampled, parentSampleRate, inheritOrSampleWith }` and returns a rate or a boolean (`true` = 1.0, `false` = 0).
+
+```typescript
+Sentry.init({
+  tracesSampler: ({ name, attributes, inheritOrSampleWith }) => {
+    // Drop health checks and internal routes
+    if (["/health", "/ping", "/readyz"].some(p => name.includes(p))) return 0;
+
+    // Always capture critical flows
+    if (name.startsWith("/checkout") || name.startsWith("/payment")) return 1.0;
+
+    // Sample admin routes at 50%
+    if (name.startsWith("/admin")) return 0.5;
+
+    // High-volume search at 5%
+    if (name.includes("/search")) return 0.05;
+
+    // For everything else: honor parent's decision, fall back to 10%
+    return inheritOrSampleWith(0.1);
+  },
+});
+```
+
+- **Use `inheritOrSampleWith(fallback)`, not a hand check of `parentSampled`:** it keeps sampling deterministic across the trace, metric extrapolation accurate and `sentry-sampled` correct in downstream baggage.
 
 ## Dynamic Sampling (legacy)
 

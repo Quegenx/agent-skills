@@ -4,6 +4,8 @@ This workflow performance-, load- or stress-tests a public website end to end: i
 
 **Contents:** [Scope and opinions](#scope-and-opinions) · [Prerequisites and tools](#prerequisites-and-tools) · [The ten steps](#the-ten-steps) · [1. Elicit workflows](#1-elicit-workflows) · [2. Scaffold](#2-scaffold) · [3. Record with Playwright](#3-record-with-playwright) · [4. Functional tests](#4-functional-tests) · [Assertion libraries](#assertion-libraries) · [Prove it](#prove-it)
 
+The recorder, workflow templates, run-all.sh and LG-monitor sidecars named below are upstream scaffold dependencies, not files shipped in this skill. Obtain and fully read the matching upstream assets before using the scaffold commands, or report that the scaffold is unavailable; never invent their implementation. The remaining workflow and source-specific constraints are preserved below. [existing WEBSITE-PERF-TEST.md]
+
 ## Scope and opinions
 
 - **Triggers:** "perf test my site", "performance test my site", "load test this URL", "stress test my web app", "I want to load test [URL]", "set up k6 against my website", "write a k6 suite for [site]", "see if my site handles N concurrent users", "how does my site perform under traffic", and any mention of k6, load testing, stress testing or performance testing.
@@ -52,7 +54,7 @@ The single most important step. Ask in order, before scaffolding anything, and r
 
 ## 2. Scaffold
 
-- **Copy the assets:** `cp -R "<SKILL_DIR>/assets/." "<target-dir>/"`; if a sandbox blocks it, copy files one by one. If `<SKILL_DIR>` can't be determined, ask the user.
+- **Only after obtaining the actual upstream scaffold, copy its assets:** `cp -R "<SKILL_DIR>/assets/." "<target-dir>/"`; if a sandbox blocks it, copy files one by one. If `<SKILL_DIR>` can't be determined, ask the user.
 - **Layout:** `package.json`, `.gitignore`, `README.md`, `runbook.md` (you create it), `recordings/README.md`, `recordings/scripts/recorder.template.js`, `tests/run-all.sh`, `tests/workflow.template/{from-har,protocol,browser,smoke,average,stress,spike,soak,breakpoint}.js`, `tools/lg-monitor.sh`, `tools/run-with-monitor.sh`.
 - **Per workflow:** copy `recorder.template.js` to `recordings/scripts/wN-<short-name>.js` and `tests/workflow.template/` to `tests/wN-<short-name>/`, then replace `<WORKFLOW_PLACEHOLDER>`:
 

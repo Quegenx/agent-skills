@@ -1,8 +1,8 @@
 # Admin and AI
 
-Running Grafana for a team: who can do what (roles, custom RBAC, teams), how people sign in (OAuth, SAML, GitHub), how machines and agents get in (service accounts, the Grafana MCP server), the Grafana Cloud account and stack APIs, the Cloud AI and ML features, and private network paths into and out of Grafana Cloud. Most outcomes come down to scope: the narrowest role on the narrowest folder, service account tokens kept in env vars or a secrets manager, read-only MCP by default, and in private connectivity whether DNS actually resolves to the private endpoint. Server config and provisioning files are in [PROVISIONING-AND-API.md](PROVISIONING-AND-API.md).
+Running Grafana for a team: who can do what (roles, custom RBAC, teams), how people sign in (OAuth, SAML, GitHub), how machines and agents get in (service accounts, the Grafana MCP server), the Grafana Cloud account and stack APIs, the Cloud AI and ML features. Private network paths are in [INFRA-AND-CLOUD.md](INFRA-AND-CLOUD.md#private-connectivity). Most outcomes come down to scope: the narrowest role on the narrowest folder, service account tokens kept in env vars or a secrets manager, read-only MCP by default. Server config and provisioning files are in [PROVISIONING-AND-API.md](PROVISIONING-AND-API.md).
 
-**Contents:** [Structure and roles](#structure-and-roles) · [Custom RBAC](#custom-rbac) · [Users and teams](#users-and-teams) · [Service accounts](#service-accounts) · [SSO](#sso) · [Cloud API](#cloud-api) · [Audit logs](#audit-logs) · [Grafana MCP server](#grafana-mcp-server) · [Grafana Assistant and A2A](#grafana-assistant-and-a2a) · [ML features](#ml-features) · [Private connectivity](#private-connectivity) · [Debugging](#debugging) · [Prove it](#prove-it)
+**Contents:** [Structure and roles](#structure-and-roles) · [Custom RBAC](#custom-rbac) · [Users and teams](#users-and-teams) · [Service accounts](#service-accounts) · [SSO](#sso) · [Cloud API](#cloud-api) · [Audit logs](#audit-logs) · [Grafana MCP server](#grafana-mcp-server) · [Grafana Assistant and A2A](#grafana-assistant-and-a2a) · [ML features](#ml-features) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Structure and roles
 
@@ -19,7 +19,7 @@ Docs: https://grafana.com/docs/grafana-cloud/account-management.md
 | Org Admin | Cloud organization | Stacks, users, billing, API keys |
 
 - **Custom fine-grained RBAC roles are Enterprise and Cloud only.** In OSS you have the built-in roles.
-- **Folders are the RBAC boundary** for dashboards and alert rules. Alerting's per-role defaults are in [ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md#alerting-rbac); OnCall roles (`oncall-admin`, `oncall-editor`, `oncall-viewer`, `oncall-notifications-receiver`) likewise.
+- **Folders are the RBAC boundary** for dashboards and alert rules. Alerting's per-role defaults are in [ALERTING.md](ALERTING.md#alerting-rbac); OnCall roles (`oncall-admin`, `oncall-editor`, `oncall-viewer`, `oncall-notifications-receiver`) likewise.
 
 ## Custom RBAC
 
@@ -71,19 +71,7 @@ Stack API (Bearer service account token):
 
 ## Service accounts
 
-- **Service accounts are the recommended way for programmatic access** (CI/CD, Terraform, agents). Create them in Administration > Service Accounts, through the API (`POST /api/serviceaccounts`, then `POST /api/serviceaccounts/{id}/tokens`, where `"secondsToLive": 0` means no expiry), or from a provisioning file:
-
-```yaml
-# provisioning/access-control/service_accounts.yaml
-apiVersion: 1
-serviceAccounts:
-  - name: ci-reader
-    orgId: 1
-    role: Viewer
-    tokens:
-      - name: ci-token
-        # expires: optional ISO 8601 timestamp; omit for no-expiry tokens
-```
+- **Service accounts are the recommended way for programmatic access** (CI/CD, Terraform, agents). Create them in Administration > Service Accounts, through the API (`POST /api/serviceaccounts`, then `POST /api/serviceaccounts/{id}/tokens`, where `"secondsToLive": 0` means no expiry). The duplicate source-only provisioning-file form is recorded, with its verification limit, in [PROVISIONING-AND-API.md](PROVISIONING-AND-API.md#plugins-and-service-accounts). [existing ADMIN-AND-AI.md; PROVISIONING-AND-API.md]
 
 - **Viewer is enough for queries and dashboard reads;** add Editor only to create dashboards or annotations. A dashboard push token needs `dashboards:write`. A Cloud admin example is an `alloy-writer` account with role `Editor` and token `alloy-token`.
 - **Keep tokens in env vars or a secrets manager,** never committed, and rotate them.
@@ -213,47 +201,7 @@ Docs: https://grafana.com/docs/grafana-cloud/alerting-and-irm/machine-learning/
 - **Knowledge Graph:** discovers services, pods, nodes and namespaces from labels and traces, updated every minute. Observability > Entity graph; search e.g. `Show Service api-server`; RCA Workbench for blast radius and upstream cause.
 - **Adaptive Metrics:** recommendations at `GET https://<stack>.grafana.net/api/plugins/grafana-adaptive-metrics-app/resources/v1/recommendations`. A sample rule `match: "^http_request_duration_seconds.*"`, `action: keep`, `match_labels: [method, status, service]` drops pod, container and instance.
 
-## Private connectivity
-
-Docs: https://grafana.com/docs/grafana-cloud/send-data/
-
-| Direction | Use |
-|---|---|
-| Push from AWS | AWS PrivateLink |
-| Push from Azure | Azure Private Link |
-| Push from GCP | GCP Private Service Connect |
-| Grafana Cloud querying a private DB or Prometheus | Private Data Source Connect (PDC) |
-
-- **Prerequisites:** the stack runs on the same cloud provider; one private endpoint per signal (metrics, logs, traces, profiles; distinct service names). AWS is same-region only; cross-region needs VPC peering first.
-- **AWS:** service names are at Stack Details > "Send using AWS PrivateLink". Create with `aws ec2 create-vpc-endpoint --vpc-endpoint-type Interface --private-dns-enabled ...`, or Terraform `aws_vpc_endpoint` with `private_dns_enabled = true` per signal. Check the endpoint state is "available" with `aws ec2 describe-vpc-endpoints`, and confirm traffic with the endpoint's CloudWatch `BytesProcessed`.
-- **Critical: DNS must resolve privately.** `dig +short prometheus-private.us-east-0.grafana.net` must return a private IP. A public IP means Alloy silently keeps using the public path. Fix with `private_dns_enabled = true` and VPC DNS resolution plus DNS hostnames enabled.
-- **Alloy pointed at private endpoints** (more Alloy in [ALLOY.md](ALLOY.md)):
-
-```alloy
-prometheus.remote_write "cloud_private" {
-  endpoint {
-    url = "https://prometheus-private.us-east-0.grafana.net/api/prom/push"
-    basic_auth {
-      username = sys.env("PROM_USER")
-      password = sys.env("GRAFANA_CLOUD_API_KEY")
-    }
-  }
-}
-
-loki.write "cloud_private" {
-  endpoint {
-    url = "https://logs-private.us-east-0.grafana.net/loki/api/v1/push"
-    basic_auth {
-      username = sys.env("LOKI_USER")
-      password = sys.env("GRAFANA_CLOUD_API_KEY")
-    }
-  }
-}
-```
-
-- **Azure:** have Grafana Support pre-register your Subscription IDs first, or creation hangs at "Pending". Create in the Portal with the Service Alias (auto approval takes about 10 minutes) or `az network private-endpoint create ... --group-ids grafana-metrics`. Check "Approved" with `--query 'privateLinkServiceConnections[0].privateLinkServiceConnectionState.status'`, and resolve with `nslookup prometheus-private.eu-west-2.grafana.net`.
-- **GCP:** `gcloud compute forwarding-rules create grafana-metrics-psc ... --target-service-attachment=projects/grafana-cloud/regions/us-east1/serviceAttachments/metrics`; check `pscConnectionStatus` is "ACCEPTED".
-- **PDC** opens an encrypted tunnel from Grafana Cloud into your network: `helm install pdc grafana/grafana-agent --version 0.44.2 --set pdcConfig.hostedGrafanaId=<your-stack-id> --set pdcConfig.token=<pdc-token>`.
+Private network paths, endpoint approval and DNS verification are in [INFRA-AND-CLOUD.md](INFRA-AND-CLOUD.md#private-connectivity). [existing ADMIN-AND-AI.md]
 
 ## Debugging
 
@@ -271,8 +219,6 @@ loki.write "cloud_private" {
 | SSE server unreachable | Not running or port conflict (`lsof -i :3001`) |
 | SSE 401 on every call | `GRAFANA_API_KEY` not in the SSE process env |
 | SSE drops after minutes | Proxy idle timeout; set keep-alive |
-| Private endpoint unused | DNS returns a public IP |
-| Azure endpoint stuck "Pending" | Subscription ID not pre-registered |
 
 ## Prove it
 
@@ -281,4 +227,3 @@ loki.write "cloud_private" {
 - `GET /api/access-control/roles` lists every provisioned custom role, and a member of the team can edit only dashboards in its folder.
 - `/mcp` lists the Grafana tools and "What data sources are configured" answers from the live stack, with `--disable-write` still set unless writes were asked for.
 - `GET /api/plugins/grafana-llm-app/health` returns `{"status":"ok"}`; an ML forecast query returns a non-empty result.
-- For each private endpoint: `dig` returns a private IP, the endpoint is "available" / "Approved" / "ACCEPTED", and `BytesProcessed` (AWS) rises after Alloy starts.

@@ -462,26 +462,20 @@ options.privacy.maskCallback<Text>(
 
 ## Logs
 
-- **Structured logs need `sentry_flutter` 9.5.0+ and `options.enableLogs = true`.** It is off by default, and logs are silently discarded without it. Import `package:sentry/sentry.dart`.
+- **Versioned Logs contract:** official support starts 9.0.0; direct logger calls are enabled by default 9.28.0+, while v9 automatic collection still uses enableLogs. Earlier 9.x needs enableLogs:true, and 10 removes it. The old vendor source used 9.5 and claimed all versions silently drop without explicit true. [https://docs.sentry.io/platforms/dart/guides/flutter/logs/]
 - **This changed:** the current docs say logs (SDK `9.0.0`+) are on by default from `9.28.0`, and "In SDK v10, the `enableLogs` option is removed." On v10 drop `enableLogs` lines; below 9.28.0 keep them.
-- **The v10 API takes typed attributes** (the vendor reference uses the map form below): `Sentry.logger.info('Order completed', attributes: { 'order_id': SentryAttribute.string('12345'), 'total': SentryAttribute.double(99.99) });` with `SentryAttribute.string/int/double/bool`. Logger methods return `void` (don't await). Templates: `Sentry.logger.fmt.info("%s added %s to cart.", [user.username, product.name]);` (must use `%s`). Same practice as JS: wide events, business context, `snake_case` attribute names ("to match Dart conventions"); see [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md#logs).
+- **The v10 API takes typed attributes** (the old vendor reference used positional raw maps): `Sentry.logger.info('Order completed', attributes: { 'order_id': SentryAttribute.string('12345'), 'total': SentryAttribute.double(99.99) });` with `SentryAttribute.string/int/double/bool`. Logger methods return `void` (don't await). Templates: `Sentry.logger.fmt.info("%s added %s to cart.", [user.username, product.name]);` (must use `%s`). Same practice as JS: wide events, business context, `snake_case` attribute names ("to match Dart conventions"); see [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md#logs).
 
 ```dart
-import 'package:sentry/sentry.dart';
-
-Sentry.logger.trace('Starting checkout flow', {'step': 'init'});
-Sentry.logger.debug('Cache lookup', {'key': 'user:123', 'hit': false});
-Sentry.logger.info('Order created', {'orderId': 'order_456', 'total': 99.99});
-Sentry.logger.warn('Rate limit approaching', {
-  'endpoint': '/api/search/',
-  'current': 95,
-  'max': 100,
+Sentry.logger.error('Uh oh, something broke, here is the error: $errorMsg',
+    attributes: {
+      'error': SentryAttribute.string(errorMsg),
+      'some_info': SentryAttribute.string('some info'),
+    });
+Sentry.logger.info('User ${user.username} added ${product.name} to cart.', attributes: {
+  'user': SentryAttribute.string(user.username),
+  'product': SentryAttribute.string(product.name),
 });
-Sentry.logger.error('Payment failed', {
-  'reason': 'card_declined',
-  'userId': 'u_1',
-});
-Sentry.logger.fatal('Database unavailable', {'host': 'db-primary'});
 ```
 
 | Level | For |
@@ -493,9 +487,9 @@ Sentry.logger.fatal('Database unavailable', {'host': 'db-primary'});
 | `error` | Failures that need investigation but don't crash |
 | `fatal` | The app or a critical subsystem is down |
 
-- **Attribute values are `String`, `int`, `double` or `bool` only;** other types are dropped or coerced. Attributes become queryable columns in the Logs view. Attached automatically: `sentry.environment`, `sentry.release`, `sentry.sdk.name`/`sentry.sdk.version`, `user.id`/`user.email`, `origin`.
+- **Current attributes use SentryAttribute.string/int/double/bool through the named attributes argument.** The old raw-map positional calls are retired above. [https://docs.sentry.io/platforms/dart/guides/flutter/logs/] Attributes become queryable columns in the Logs view. Attached automatically: `sentry.environment`, `sentry.release`, `sentry.sdk.name`/`sentry.sdk.version`, `user.id`/`user.email`, `origin`.
 
-### The Dart `logging` package
+### The Dart `logging` package (v9 source example)
 
 - **Install** `sentry_flutter: ^9.14.0`, `sentry_logging: ^9.14.0` and `logging: ^1.0.0` (`sentry_logging` needs 9.5.0+ and `logging` 1.0.0+). `LoggingIntegration` not found means the package or the `package:sentry_logging/sentry_logging.dart` import is missing.
 
@@ -530,93 +524,128 @@ Future<void> main() async {
 
 ### Filter and link
 
-- **`beforeSendLog` is the only sampling:** there is no per-log sample rate. In v10 it takes `(log, hint)`: `options.beforeSendLog = (log, hint) { if (log.level == SentryLogLevel.info) return null; return log; };`; the v9 form below takes only `log`.
+- **Filter in beforeSendLog:** there is no per-log sample rate. In v10 it takes `(log, hint)`: `options.beforeSendLog = (log, hint) { if (log.level == SentryLogLevel.info) return null; return log; };`; v9 takes only `log`, while the unchanged official block below uses v10.
 
 ```dart
-options.beforeSendLog = (log) {
-  // Drop trace/debug in production to reduce volume
-  if (log.level == SentryLogLevel.trace ||
-      log.level == SentryLogLevel.debug) {
-    return null;
-  }
+await SentryFlutter.init(
+  (options) {
+    options.dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
+    options.beforeSendLog = (log, hint) {
+      if (log.level == SentryLogLevel.info) {
+        // Filter out all info logs
+        return null;
+      }
 
-  // Scrub sensitive attribute values
-  if (log.attributes.containsKey('password')) {
-    log.attributes.remove('password');
-  }
-  if (log.attributes.containsKey('creditCard')) {
-    log.attributes['creditCard'] = '[REDACTED]';
-  }
-
-  return log;
-};
+      return log;
+    };
+  },
+);
 ```
 
-- **Logs inside an active span link to its transaction;** this needs `tracesSampleRate > 0` and `Sentry.startTransaction()`:
+The retired vendor hook also dropped trace/debug in production, removed the password attribute and redacted creditCard. Preserve those source policies through the installed typed log API when required; the exact official v10 example above illustrates dropping info instead. [getsentry/sentry-for-ai, sentry-flutter-sdk; https://docs.sentry.io/platforms/dart/guides/flutter/logs/]
 
-```dart
-Future<void> processOrder(String orderId) async {
-  final transaction = Sentry.startTransaction('process-order', 'task');
-  try {
-    Sentry.logger.info('Validating cart', {'orderId': orderId});
-    await validateCart(orderId);
-    Sentry.logger.info('Charging payment', {'orderId': orderId});
-    await chargePayment(orderId);
-    Sentry.logger.info('Confirming order', {'orderId': orderId});
-    await confirmOrder(orderId);
-    transaction.finish(status: const SpanStatus.ok());
-  } catch (e) {
-    transaction.finish(status: const SpanStatus.internalError());
-    rethrow;
-  }
-}
-```
+- **Log correlation needs the actual active span,** not merely constructing a transaction. Keep the source's validation/payment/confirmation milestones if they answer the diagnostic question. [getsentry/sentry-for-ai, sentry-flutter-sdk; existing HTTP tracing source]
+
+The old processOrder recipe logged cart validation, payment and confirmation while constructing a transaction without binding it. Use the existing [active transaction binding](#http-and-distributed-tracing) for that source workflow; the unbound recipe is retired rather than claiming proven log correlation. [getsentry/sentry-for-ai, sentry-flutter-sdk; existing HTTP tracing source]
 
 - **Limits:** logs buffered since the last flush are lost if the app dies unexpectedly. Keep a log payload under 1 MB.
 - **`[Filtered]` in an attribute** means a server-side PII scrubbing rule matched; adjust Data Scrubbing in the project. Logs vanishing silently: check org stats for rate limiting.
 
 ## Metrics
 
-- **The current API (SDK `9.11.0`+) is `count`, `gauge`, `distribution`,** on by default: `Sentry.metrics.count('checkout.failed', 1); Sentry.metrics.gauge('queue.depth', 42); Sentry.metrics.distribution('cart.amount_usd', 187.5);`, with units like `distribution('api_latency', 187, unit: 'millisecond')` or `SentryMetricUnit.millisecond`. 2KB per-metric limit. Stop them with `options.beforeSendMetric = (metric, hint) => null` (v9: `options.enableMetrics = false`). Default attributes include `os.*`, `device.*`, `sentry.replay_id`, and `user.*` only if `sendDefaultPii` is on. The vendor metrics reference describes the `increment` / `tags` API below instead; the two sources disagree. Cross-SDK practice: [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md#application-metrics).
-- **Three types:** counter `Sentry.metrics.increment()`, distribution `Sentry.metrics.distribution()`, gauge `Sentry.metrics.gauge()`, each `(key, {value, unit, tags})`. The `set` type is not supported in the Flutter/Dart SDK.
-- **On by default with a valid DSN,** no sample rate: every emitted metric is sent. Metrics are aggregated locally and flushed on a schedule, so individual points aren't kept and low-volume metrics may arrive late. The API is stable but under active development; check Sentry > Metrics that the feature is enabled for the org.
-- **Versions disagree between sources:** the metrics reference says the basic API is 9.0.0 and trace-connected metrics (emitted inside a span, linked to the active trace) are 9.11.0; the setup guide lists Metrics as 9.11.0+. `Sentry.metrics` missing means upgrade to at least 9.0.0.
-- **Sentry's JavaScript SDK removed its metrics API in v9** when the metrics beta ended (UPGRADE.md). That is a different SDK; the sources disagree on whether Sentry metrics exist.
-- **The key plus all tag pairs must fit in 2 KB;** tag values must be strings. Distribution gives min, max, sum, count, p50, p75, p95, p99; gauge gives last, min, max, sum, count.
+The current official Flutter SDK 9.11+ API has count, gauge and distribution, typed attributes and no extra setup beyond initialization. The old vendor reference used increment with value/tags and claimed 9.0; that retired beta form is not the current API. [https://docs.sentry.io/platforms/dart/guides/flutter/metrics/]
 
 ```dart
-Sentry.metrics.increment('button.tapped');
-Sentry.metrics.increment('orders.processed', value: 5.0);
-Sentry.metrics.increment(
-  'api.request',
-  value: 1.0,
-  unit: SentryMeasurementUnit.none,
-  tags: {
-    'endpoint': '/api/search',
-    'method': 'GET',
-    'status': '200',
-  },
-);
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-final stopwatch = Stopwatch()..start();
-await fetchUserData(userId);
-stopwatch.stop();
+// Count occurrences
+Sentry.metrics.count('orders_created', 1);
 
+// Track current values
+Sentry.metrics.gauge('active_connections', 42);
+
+// Track distributions
 Sentry.metrics.distribution(
-  'api.response_time',
-  value: stopwatch.elapsedMilliseconds.toDouble(),
-  unit: SentryMeasurementUnit.duration(DurationSentryMeasurementUnit.milliSecond),
-  tags: {'endpoint': '/users', 'cached': 'false'},
-);
-
-Sentry.metrics.gauge(
-  'cache.entry_count',
-  value: imageCache.currentSize.toDouble(),
-  tags: {'type': 'image_cache'},
+  'api_latency',
+  187,
+  unit: 'millisecond',
 );
 ```
 
-- **Units:** `SentryMeasurementUnit.duration(DurationSentryMeasurementUnit.nanoSecond|microSecond|milliSecond|second|minute|hour)`, `.information(InformationSentryMeasurementUnit.byte|kilobyte|megabyte|gigabyte)`, `.fraction(FractionSentryMeasurementUnit.ratio|percent)`, `SentryMeasurementUnit.none`, `SentryMeasurementUnit.custom('items')`.
+### Attributes and units
+
+Attributes support environment, feature-flag and user-tier slices; each metric must remain under 2 KB or it is dropped. Typed scope attributes apply to logs, metrics and stream-mode spans. gauge/distribution accept unit strings or SentryMetricUnit; common units are millisecond, second, byte, kilobyte, megabyte. [https://docs.sentry.io/platforms/dart/guides/flutter/metrics/]
+
+```dart
+Sentry.metrics.count(
+  'api_calls',
+  1,
+  attributes: {
+    'endpoint': SentryAttribute.string('/api/orders'),
+    'user_tier': SentryAttribute.string('pro'),
+    'region': SentryAttribute.string('us-west'),
+  },
+);
+```
+
+```dart
+// Add attributes to the global scope
+Sentry.setAttributes({'is_admin': SentryAttribute.bool(true)});
+
+// All scope attributes are added to metrics
+Sentry.metrics.count('clicks', 1);
+Sentry.metrics.gauge(
+  'time_since_refresh',
+  4,
+  unit: 'second',
+);
+```
+
+```dart
+Sentry.metrics.distribution(
+  'response_time',
+  187.5,
+  unit: SentryMetricUnit.millisecond,
+);
+
+Sentry.metrics.gauge(
+  'memory_usage',
+  1024,
+  unit: SentryMetricUnit.byte,
+);
+```
+
+### Filtering and defaults
+
+The v10 callback takes metric and Hint; return null to drop. SDK 9 takes only metric and can disable through enableMetrics; v10 has no enable/disable option. The old source's local aggregation/late-arrival and gauge/distribution summaries described its earlier beta API, not a guarantee of current per-event storage. [https://docs.sentry.io/platforms/dart/guides/flutter/metrics/]
+
+```dart
+import 'package:sentry_flutter/sentry_flutter.dart';
+
+await SentryFlutter.init((options) {
+  options.dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>';
+  options.beforeSendMetric = (metric, hint) {
+    // Drop specific metrics
+    if (metric.attributes.containsKey('debug')) {
+      return null;
+    }
+
+    // Return the metric to send it
+    return metric;
+  };
+});
+```
+
+```dart
+import 'package:sentry_flutter/sentry_flutter.dart';
+
+await SentryFlutter.init((options) {
+  options.dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>';
+  options.beforeSendMetric = (metric, hint) => null;
+});
+```
+
+Default attributes are sentry.environment, release, sdk.name, sdk.version; available os/device fields; user fields only with sendDefaultPii; and replay id when available. The historical JS beta removal is a different version/product phase, not evidence that current Flutter or JavaScript Application Metrics do not exist. [https://docs.sentry.io/platforms/dart/guides/flutter/metrics/; existing Sentry UPGRADE.md]
 
 ## User feedback
 
@@ -651,5 +680,5 @@ Sentry.metrics.gauge(
 - **Replay:** on an iOS or Android release build, a session with an error appears in Replays, and every text field, image and registered third-party widget is masked.
 - **Profiling:** on a real iOS device (not the Simulator), trigger a transaction (for example a navigation), open it under Performance and find the Profiling tab.
 - **Logs:** `Sentry.logger.info('Test log from Flutter app')` appears in Logs with its attributes as columns, and a log inside a transaction links to it.
-- **Metrics:** an `increment` shows up under Metrics after the next flush.
+- **Metrics:** a current count/gauge/distribution call appears with its typed attributes; verify the selected SDK 9/v10 hook contract. [https://docs.sentry.io/platforms/dart/guides/flutter/metrics/]
 - **Tracing, from the v10 setup page:** `final transaction = Sentry.startTransaction('test-transaction', 'task'); final span = transaction.startChild('test-span'); await span.finish(); await transaction.finish();`

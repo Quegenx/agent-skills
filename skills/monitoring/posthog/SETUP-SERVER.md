@@ -1,8 +1,8 @@
 # Server setup
 
-`posthog-node` sends events, evaluates feature flags, captures exceptions and records spans from a Node.js server, a serverless function or a Cloudflare Worker. It queues calls and flushes them in batches in the background, so short-lived runtimes need an explicit flush, an immediate capture or a shutdown to send what they queued, and backend events need a `distinctId` that matches the ID the frontend passes to `posthog.identify()`. The browser SDK is [SETUP-WEB.md](SETUP-WEB.md), mobile SDKs are [SETUP-MOBILE.md](SETUP-MOBILE.md), event naming and identity rules are [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md), flags in depth are [FEATURE-FLAGS.md](FEATURE-FLAGS.md) and exceptions are [ERROR-TRACKING.md](ERROR-TRACKING.md). Vendor-neutral OpenTelemetry is the `observability` skill ([../observability/SKILL.md](../observability/SKILL.md)).
+`posthog-node` sends events, evaluates feature flags, captures exceptions and records spans from a Node.js server, a serverless function or a Cloudflare Worker. It queues calls and flushes them in batches in the background, so short-lived runtimes need an explicit flush, an immediate capture or a shutdown to send what they queued, and backend events need a `distinctId` that matches the ID the frontend passes to `posthog.identify()`. The browser SDK is [SETUP-WEB.md](SETUP-WEB.md), mobile SDKs are [SETUP-MOBILE.md](SETUP-MOBILE.md), event naming and identity rules are [EVENTS.md](EVENTS.md), flags in depth are [FEATURE-FLAGS.md](FEATURE-FLAGS.md) and exceptions are [ERROR-TRACKING.md](ERROR-TRACKING.md). Vendor-neutral OpenTelemetry is the `observability` skill ([../observability/SKILL.md](../observability/SKILL.md)).
 
-**Contents:** [How it works](#how-it-works) · [Install and initialize](#install-and-initialize) · [Options](#options) · [Shutdown, flush and short-lived processes](#shutdown-flush-and-short-lived-processes) · [Capturing events](#capturing-events) · [Super properties and contexts](#super-properties-and-contexts) · [Express request context](#express-request-context) · [Server and client capture together](#server-and-client-capture-together) · [Feature flags and local evaluation keys](#feature-flags-and-local-evaluation-keys) · [Groups](#groups) · [Error tracking](#error-tracking) · [Distributed tracing](#distributed-tracing) · [Next.js server code](#nextjs-server-code) · [Cloudflare Workers](#cloudflare-workers) · [API reference](#api-reference) · [Example app](#example-app) · [Debugging and upgrades](#debugging-and-upgrades) · [Prove it](#prove-it)
+**Contents:** [How it works](#how-it-works) · [Install and initialize](#install-and-initialize) · [Options](#options) · [Shutdown, flush and short-lived processes](#shutdown-flush-and-short-lived-processes) · [Capturing events](#capturing-events) · [Super properties and contexts](#super-properties-and-contexts) · [Express request context](#express-request-context) · [Server and client capture together](#server-and-client-capture-together) · [Feature flags and local evaluation keys](#feature-flags-and-local-evaluation-keys) · [Groups](#groups) · [Error tracking](#error-tracking) · [Distributed tracing](TRACING.md#distributed-tracing) · [Next.js server code](#nextjs-server-code) · [Cloudflare Workers](#cloudflare-workers) · [API reference](#api-reference) · [Example app](#example-app) · [Debugging and upgrades](#debugging-and-upgrades) · [Prove it](#prove-it)
 
 ## How it works
 
@@ -125,7 +125,7 @@ client.capture({
 })
 ```
 
-- **Name events `[object] [verb]`:** `project created`, `user signed up`, `invite sent`. Naming and taxonomy are in [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md).
+- **Name events `[object] [verb]`:** `project created`, `user signed up`, `invite sent`. Naming and taxonomy are in [EVENTS.md](EVENTS.md).
 
 ```javascript
 client.capture({
@@ -177,7 +177,7 @@ client.identify({
 ```
 
 - **A webhook that merges a third-party conversion** (booking, checkout) [coreyhaines31/marketingskills, attribution]: send it after the business work, with a timeout, non-fatal on failure; check `response.ok` (fetch resolves on HTTP errors), log the booking ID and status, never the payload or email; if delivery needs retry guarantees, enqueue analytics separately with idempotency rather than replaying the booking. A 200 alone doesn't prove acceptance: the capture docs say some invalid events still return "200: OK" ([posthog.com/docs/api/capture](https://posthog.com/docs/api/capture)). Recipe: [../../marketing/marketing-attribution/FIRST-PARTY-STITCH.md](../../marketing/marketing-attribution/FIRST-PARTY-STITCH.md#2c-merge-in-the-webhook).
-- **Alias** when the frontend distinct ID isn't available in the backend: `client.alias({ distinctId: 'distinct_id', alias: 'alias_id' })`. The docs strongly recommend reading the alias docs first ([EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md)). `aliasImmediate(...)` returns a promise.
+- **Alias** when the frontend distinct ID isn't available in the backend: `client.alias({ distinctId: 'distinct_id', alias: 'alias_id' })`. The docs strongly recommend reading the alias docs first ([EVENTS.md](EVENTS.md)). `aliasImmediate(...)` returns a promise.
 - **Per-capture GeoIP:** pass `disableGeoip` on the capture call. It overrides `$geoip_city_name`, `$geoip_country_name`, `$geoip_country_code`, `$geoip_continent_name`, `$geoip_continent_code`, `$geoip_postal_code`, `$geoip_time_zone`.
 
 ## Super properties and contexts
@@ -340,113 +340,7 @@ try {
 
 ## Distributed tracing
 
-posthog-node 5.52.0+. The span API is experimental and may change in a minor release.
-
-- **Off until you set `traces`;** no OpenTelemetry dependency. Set `serviceName`: PostHog groups operations by service and span name.
-
-```typescript
-const posthog = new PostHog('<ph_project_token>', {
-  host: 'https://us.i.posthog.com',
-  traces: {
-    serviceName: 'checkout-api',
-  },
-})
-```
-
-- **`withSpan(name, [options], callback)`** makes the span active and ends it when the callback returns or its promise settles; nested spans become children. A throw or rejection records the exception, sets status `error` and propagates the original error. The exception includes a stack trace with server file paths; delete `exception.stacktrace` in `beforeSpanSend` if you don't want them. A callback that ends the span itself gets the rethrow but not the recording.
-
-```typescript
-await posthog.withSpan('POST /checkout', async (span) => {
-  span.setAttribute('plan', user.plan)
-
-  const order = await posthog.withSpan('create-order', () => createOrder(cart))
-  await posthog.withSpan('charge-card', () => stripe.charge(order))
-
-  return order
-})
-```
-
-- **`startSpan` does not make the span active:** pass `parent` explicitly and call `end()` yourself. `getActiveSpan()` returns the active span or `null`.
-
-```typescript
-const span = posthog.startSpan('background-sync', { attributes: { queue: 'emails' } })
-
-// Explicitly parent a child to a span that isn't active.
-const child = posthog.startSpan('send-batch', { parent: span })
-child.end()
-
-span.end()
-```
-
-- **`startSpan` always returns a handle.** Without `traces`, with the SDK disabled or the user opted out, the handle is inert and nothing is exported; an inert handle given a `parent` header still returns it from `traceparent()`, so a service with tracing off passes a distributed trace through.
-- **Low-cardinality names** (`GET /users/:id`, not `GET /users/123`); variable values go in attributes (strings, numbers, booleans, BigInt, arrays of those).
-- **Span methods:** `setAttribute(key, value)`, `setAttributes(attributes)`, `addEvent(name, attributes?, timestamp?)`, `setStatus(status, message?)` (`'ok'` or `'error'`), `recordException(error)`, `updateName(name)`, `traceparent()`, `tracestate()` (or null), `end(endTime?)`.
-- **Span options:** `kind` (`'internal'` default, `'server'`, `'client'`, `'producer'`, `'consumer'`), `attributes`, `parent` (a span handle or an inbound W3C `traceparent` string), `tracestate` (ignored when `parent` is a handle), `startTime` (ms epoch or `Date`; the server clamps a start more than 24 hours old to the receive time, and with `debug` on the SDK warns).
-- **W3C Trace Context across services.** A missing or malformed `traceparent` starts a new trace instead of throwing. A continued trace propagates the sampled flag; PostHog itself doesn't sample.
-
-```typescript
-app.post('/checkout', async (req, res) => {
-  await posthog.withSpan('POST /checkout', { kind: 'server', parent: req.get('traceparent') }, async (span) => {
-    const traceparent = span.traceparent()
-
-    await fetch('https://payments.internal/charge', {
-      method: 'POST',
-      headers: traceparent ? { traceparent } : {},
-    })
-
-    res.json({ status: 'ok' })
-  })
-})
-```
-
-```node
-// Propagate the trace to another service
-const traceparent = posthog.getActiveSpan()?.traceparent()
-await fetch(url, { headers: traceparent ? { traceparent } : {} })
-```
-
-- **Inside a request context** (Express middleware or `withContext`) spans carry `posthogDistinctId` and `sessionId` attributes; outside they don't.
-- **`beforeSpanSend`** edits a span in place or returns `null` to drop it. It sees plain values (not OTLP encoding) and runs after `posthogDistinctId` and `sessionId` are attached; `traceId`, `spanId`, `parentSpanId` are read-only (assignments ignored). A hook that throws drops the span. An array of hooks runs left to right and the first `null` stops the chain.
-
-```typescript
-const posthog = new PostHog('<ph_project_token>', {
-  host: 'https://us.i.posthog.com',
-  traces: {
-    serviceName: 'checkout-api',
-    beforeSpanSend: (span) => {
-      if (span.attributes['http.route'] === '/health') return null
-
-      delete span.attributes['http.request.header.authorization']
-      return span
-    },
-  },
-})
-```
-
-- **Span limits:** 128 attributes, 128 events, 128 attributes per event, 8192 characters per string attribute value. The endpoint rejects a too-large span whole. Past a cap the earliest are kept and the dropped count is reported (`droppedEventsCount`). `posthogDistinctId` and `sessionId` don't count. The SDK-recorded `exception` event takes a normal slot, so raise `maxEventsPerSpan` for spans with many events that can fail. Caps are re-applied after `beforeSpanSend`.
-
-| `traces` option | Default |
-|---|---|
-| `serviceName`, `serviceVersion`, `environment` | none |
-| `resourceAttributes` | none (takes precedence over the three above) |
-| `flushIntervalMs` | `5000` |
-| `maxExportBatchSize` | `512` |
-| `maxQueueSize` | `2048` (beyond it, dropped) |
-| `maxLiveSpans` | `10000` (at the limit `startSpan` returns an inert handle) |
-| `maxSpanAgeMs` | `3600000` (older open spans are treated as leaked and never exported) |
-| `beforeSpanSend` | none |
-| `maxAttributesPerSpan`, `maxEventsPerSpan` | `128` |
-| `maxAttributeValueLength` | `8192` |
-
-- **Flush and shutdown export ended spans.** A span still open at `flush()` is exported once it ends; one open at `shutdown()` is discarded.
-- **Edge runtimes can't track the active span across `await`.** Node uses `AsyncLocalStorage`; the edge build tracks synchronously, so after an `await` `getActiveSpan()` returns null. Pass `{ parent: span }` explicitly:
-
-```typescript
-await posthog.withSpan('handler', async (span) => {
-  const user = await loadUser()
-  await posthog.withSpan('render', { parent: span }, () => render(user))
-})
-```
+See [TRACING.md](TRACING.md#distributed-tracing).
 
 ## Next.js server code
 
@@ -492,7 +386,7 @@ export default {
 - **Environment:** `process.env` is populated with `nodejs_compat` from compatibility date `2025-04-01`, or `import { env } from 'cloudflare:workers'`. React Router 7: `context.cloudflare.env.VAR_NAME`; Hono: `env.VAR_NAME`.
 - **`waitUntil` by framework:** React Router 7 `context.cloudflare.ctx.waitUntil()`, Hono `c.executionCtx.waitUntil()`, raw `ctx.waitUntil()`, or `import { waitUntil } from 'cloudflare:workers'`.
 - **Durable Objects with local evaluation:** set `featureFlagsPollingInterval: null` (posthog-node 5.55.0+) to stop polling timers; from compatibility date `2026-10-01` pending timers prevent idle eviction. Reload explicitly with `await posthog.reloadFeatureFlags()`, but not per request.
-- **Edge tracing:** pass `parent` explicitly (see [Distributed tracing](#distributed-tracing)).
+- **Edge tracing:** pass `parent` explicitly (see [Distributed tracing](TRACING.md#distributed-tracing)).
 
 ## API reference
 
@@ -582,7 +476,7 @@ process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 ```
 
-The example falls back to the distinct ID `'anonymous'`; the Next.js guide says never to use shared literals like `"anonymous"` or `"user"` as distinct IDs ([EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md)).
+The example falls back to the distinct ID `'anonymous'`; the Next.js guide says never to use shared literals like `"anonymous"` or `"user"` as distinct IDs ([EVENTS.md](EVENTS.md)).
 
 ## Debugging and upgrades
 
@@ -598,4 +492,3 @@ The example falls back to the distinct ID `'anonymous'`; the Next.js guide says 
 - **Local evaluation is really local:** `waitForLocalEvaluationReady()` resolves `true` and `$feature_flag_called` events carry `locally_evaluated: true`.
 - **Flags are on events:** captured events carry `$feature/<flag-key>` from `capture({ flags })`.
 - **Express context:** with `setupExpressRequestContext` registered before routes, a request carrying `x-posthog-distinct-id` produces an event with that distinct ID and `$request_path`; security decisions use the authenticated ID, not the header.
-- **Spans export:** with `traces.serviceName` set, a `withSpan` call appears under that service, a thrown error marks it `error`, and a downstream service receives `traceparent`.

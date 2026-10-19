@@ -35,7 +35,7 @@ Each snapshot includes the earlier ones' changes. An option you set explicitly o
 | `capture_exceptions` | | Exception autocapture ([ERROR-TRACKING.md](ERROR-TRACKING.md)) |
 | `capture_heatmaps` | | Replaces deprecated `enable_heatmaps` |
 | `capture_performance` | `undefined` | Falls back to the project's remote config |
-| `person_profiles` | `'identified_only'` | `'always'`, `'identified_only'` (recommended), `'never'` ([EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md)) |
+| `person_profiles` | `'identified_only'` | `'always'`, `'identified_only'` (recommended), `'never'` ([EVENTS.md](EVENTS.md)) |
 | `reuseAnonymousId` | | `identify` doesn't send `$anon_distinct_id` |
 | `bootstrap` | `{}` | Seeds `distinctID`, `isIdentifiedID`, `sessionID`, `featureFlags`, `featureFlagPayloads` |
 | `tracing_headers` | | Hostnames that get `X-POSTHOG-DISTINCT-ID` and `X-POSTHOG-SESSION-ID` ([SETUP-WEB.md](SETUP-WEB.md#linking-frontend-and-backend)) |

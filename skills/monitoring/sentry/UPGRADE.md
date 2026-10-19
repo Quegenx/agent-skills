@@ -1,14 +1,14 @@
 # Upgrading the JavaScript SDK
 
-Major upgrades of Sentry's JavaScript SDKs (`@sentry/*`): v7 to v8, v8 to v9, and preparing for v10, for Next.js, Remix, React, Express and Node, NestJS, Bun and Cloudflare. Other Sentry SDKs (Python, Ruby, Go, Flutter) are not covered here; Flutter is in [FLUTTER.md](FLUTTER.md). What decides most outcomes: every `@sentry/*` package moves to the same major in one step, code changes are applied hop by hop in order, and v9 brings behavior changes that type checkers don't catch, so a green build is not proof. Release and source-map setup after the upgrade is in [RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md); sampling and PII defaults in [PRACTICES.md](PRACTICES.md).
+Major upgrades of Sentry's JavaScript SDKs (`@sentry/*`): v7 to v8, v8 to v9, v9 to v10 and v10 to v11, for Next.js, Remix, React, Express and Node, NestJS, Bun and Cloudflare. Other Sentry SDKs (Python, Ruby, Go, Flutter) are not covered here; Flutter is in [FLUTTER.md](FLUTTER.md). What decides most outcomes: every `@sentry/*` package moves to the same major in one step, code changes are applied hop by hop in order, and v9 brings behavior changes that type checkers don't catch, so a green build is not proof. Release and source-map setup after the upgrade is in [RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md); sampling and PII defaults in [PRACTICES.md](PRACTICES.md).
 
-**Contents:** [Which version](#which-version) · [Detect](#detect) · [Plan the migration](#plan-the-migration) · [Apply it](#apply-it) · [Where the config lives](#where-the-config-lives) · [v7 to v8](#v7-to-v8) · [v8 to v9](#v8-to-v9) · [v9 to v10](#v9-to-v10) · [Pitfalls](#pitfalls) · [Prove it](#prove-it)
+**Contents:** [Which version](#which-version) · [Detect](#detect) · [Plan the migration](#plan-the-migration) · [Apply it](#apply-it) · [Where the config lives](#where-the-config-lives) · [v7 to v8](#v7-to-v8) · [v8 to v9](#v8-to-v9) · [v9 to v10](#v9-to-v10) · [v10 to v11](#v10-to-v11) · [Pitfalls](#pitfalls) · [Prove it](#prove-it)
 
 ## Which version
 
-- **Without a target, recommend the latest major.** The sources say "v9 as of this writing" and "As of March 2026, v9 is the latest major version", with no v10 guide yet. Changelog: `https://github.com/getsentry/sentry-javascript/blob/develop/CHANGELOG.md`.
+- **Resolve the target from current official guides and the installed runtime.** v10 and v11 migration guides exist; the old source called v9 latest and v10 unpublished. Historical v7/v8/v9 sections remain for those exact hops. Check the current registry/docs rather than inferring the latest version from this file. [https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/; https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
 - **Packages already bumped and code broken:** read the target from `package.json`.
-- **Official guides to read at runtime:** `https://docs.sentry.io/platforms/javascript/migration/v7-to-v8/` and `https://docs.sentry.io/platforms/javascript/migration/v8-to-v9/`.
+- **Official hops:** [v7 to v8](https://docs.sentry.io/platforms/javascript/migration/v7-to-v8/), [v8 to v9](https://docs.sentry.io/platforms/javascript/migration/v8-to-v9/), [v9 to v10](https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/) and [v10 to v11](https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/). Read the platform-specific guide for the installed framework.
 
 ## Detect
 
@@ -367,8 +367,11 @@ grep -rn "Sentry\.metrics\." --include="*.ts" --include="*.js" --include="*.tsx"
 
 ## v9 to v10
 
-- **The source predates v10:** as of March 2026 it calls v9 the latest major with no v10 migration guide.
-- **v9 deprecations expected to go in v10:** the internal `logger` export from `@sentry/core` (use `debug`: `debug.log`, `debug.warn`, `debug.error`) and the `@sentry/types` package (use `@sentry/core`).
+The official guide exists; the old source's unpublished-v10 prediction is historical. v10 upgrades OpenTelemetry dependencies to 2.x.x/0.20x.x and requires self-hosted 24.4.2+; projects unable to move to OTel 2 can remain on 9 or use the v10 node-core option. [https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/]
+
+- FID reporting is removed; replace FID-dependent dashboards/alerts with INP. The removed _experiments.autoFlushOnFeedback behavior is now the default. [https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/]
+- In 10.4, the browser IP-inference fix makes sendDefaultPii actually govern automatic IP capture as advertised since 9; false/unset does not infer it, true does. This is a historical 10.x rule; SDK 11 uses dataCollection.userInfo. [https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/#update-user-ip-address-collection-gated-by-senddefaultpii]
+- Removed BaseClient->Client, hasTracingEnabled->hasSpansEnabled, internal core logger/Logger->debug/SentryDebugLogger. This internal logger change does not remove the public Sentry Logs logger. The old source only predicted the internal rename. [https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/#removed-apis]
 
 ```diff
 - import { logger } from '@sentry/core';
@@ -377,7 +380,34 @@ grep -rn "Sentry\.metrics\." --include="*.ts" --include="*.js" --include="*.tsx"
 + debug.log('message');
 ```
 
-- **Prepare now:** upgrade to the latest v9, fix every deprecation warning, move `@sentry/types` imports to `@sentry/core`, and replace the internal `logger` with `debug`.
+- _experiments.enableLogs/beforeSendLog become the top-level options in 10; in 11 enableLogs is removed altogether. Do not apply this historical migration to Flutter/RN SDK versions. [https://docs.sentry.io/platforms/javascript/migration/v9-to-v10/#removed-apis]
+
+## v10 to v11
+
+This is the selected-stack routing for the current official v11 migration, not permission to upgrade a working project without the task's authorization. Upgrade to a recent 10.x first. Node 20.19.0 is the new minimum; self-hosted 26.4.2+ is supported. Browser support is ES2020 with Safari 15+/iOS 15+ (Safari 14 removed), and the guide lists TypeScript 5.0.4 minimum. Check the exact framework/runtime range before an upgrade. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+### Privacy and capture
+
+- dataCollection replaces sendDefaultPii; omitting it collects more data than restrictive 10.x defaults. Review userInfo, cookies, request/response headers and bodies, GenAI content, database data, stack locals and source-context categories explicitly through [JAVASCRIPT.md](JAVASCRIPT.md#datacollection). Key-name scrubbing is best effort; a credential under an innocuous key can still leave the app. Integration-level explicit collection overrides remain separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#data-collection]
+- enableLogs/enableMetrics and their experiments are removed; calls or logging integrations emit directly. beforeSendMetric is top-level. attachStacktrace now defaults true; this changes grouping and captureMessage can mark a session errored, without changing its crash-free rate. Use Logs for informational output when appropriate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#logs-and-metrics; https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#errors-and-sessions]
+- Browser sessions now default to page lifetime, not every client navigation, and uncaught-error status becomes unhandled rather than crashed. route lifecycle remains an explicit configuration. DOMException.code tag is removed; use error.type. sendFeedback now rejects with an Error rather than some string failures. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#errors-and-sessions]
+
+### Tracing and matching
+
+- Stream mode is default. Static transaction mode is compatibility-only; beforeSendTransaction/ignoreTransactions apply only there. beforeSendSpan receives StreamedSpanJSON in stream mode, and static mode requires withStaticSpan. Matching callback/lifecycle matters; mismatched callbacks are ignored. Use ignoreSpans to drop, not null from beforeSendSpan. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#tracing]
+- Serialized description/data/op/timestamp become name/attributes/attributes[sentry.op]/end_timestamp; status is ok/error with original fine status preserved on sentry.status.message. spanToJSON returns the streamed shape; spanToStreamedSpanJSON is removed. Scope tags/extra still enrich errors but not streamed spans; use attributes for spans/logs/metrics. Primitive arrays are accepted too. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#tracing]
+- Span names now follow low-cardinality conventions: resolved route or safe fallback, HTTP method/domain, database summary, and stable operation names. The removed details stay on attributes. ignoreSpans/tracesSampler run at start, so final names may be unavailable; inspect initial attributes rather than assuming final route matching. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#span-names-are-low-cardinality]
+- Ops consolidate: framework handlers/middleware/router/function scopes become generic names; Redis uses db.query/db, messaging uses queue.publish/receive/process, React lifecycle uses ui.mount/render/update/unmount, and long-task/long-animation-frame ops use snake_case. Cloudflare cron/email/workflow-step ops become function. Update filters/dashboards with the exact migration table, rather than treating old source ops as v11 examples. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#span-operations-were-consolidated]
+- Legacy http.method/status_code, db.system/name/statement and similar keys move to current conventions. GenAI cache/reasoning keys become gen_ai.usage.cache_read.input_tokens, cache_creation.input_tokens and reasoning.output_tokens; tool input/output become gen_ai.tool.call.arguments/result. SEMANTIC_ATTRIBUTE_SENTRY_SOURCE moves to sentry.segment.name.source on root spans. Do not preserve deprecated keys as active conventions. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#span-attributes-follow-the-current-conventions]
+- tracePropagationTargets matching becomes case-insensitive; global/sticky regex flags are ignored to avoid stateful alternating matches. This is separate from CORS origin authorization. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#trace-propagation-matching-is-case-insensitive]
+
+### Runtime and browser ownership
+
+- Sentry no longer takes over an existing OpenTelemetry setup. Node's enableOpenTelemetrySetup defaults false; keep it false when managing your own provider. node-core merged into node; the old node-core/light and otlpIntegration recipes in [NODE-RUNTIMES-AND-DELIVERY.md](NODE-RUNTIMES-AND-DELIVERY.md#otlp-path-for-opentelemetry-first-projects) are v10 source routes, not v11 installation instructions. Exact v11 provider wiring must come from the current platform guide, not an invented conversion. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#package-changes; https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#enableOpenTelemetrySetup]
+- Runtime instrumentation uses diagnostics channels; v10 module-patching/preload explanations need their version boundary. Browser-only AI integrations are removed; AI instrumentation belongs to server SDKs. GenAI spans are always streamed/untruncated, so enableTruncation/streamGenAiSpans are removed. Provider helpers moved out of core; platform SDK exports remain the preferred route. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#ai-integrations]
+- Browser console breadcrumbs come from consoleIntegration; breadcrumbsIntegration.console is removed. userTimingIntegration owns mark/measure, interactionsIntegration owns interactions, and fetchStreamPerformanceIntegration owns fetch stream tracing. BrowserTracing still owns pageload/navigation timeouts and now adds WebVitals. enableInp is deprecated; webVitals.ignore controls vitals. Soft-navigation/bfcache collection has new defaults; use the full guide before changing existing dashboards. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#browser-integrations]
+- Scope.clear is removed; use a fresh scope or reinitialize. inboundFiltersIntegration is renamed eventFiltersIntegration/EventFilters; @sentry/types is no longer published. core isomorphic/server/browser entrypoints split; platform SDK reexports remain. Legacy transaction profiling is removed; choose profileSessionSampleRate plus manual/trace lifecycle. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#removed-apis; https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/#renames]
+- Svelte, Vue, Angular, Ember, Nuxt and native-only branches in the full upstream migration are skipped under the selected-stack rule. Keep framework-specific React/Next/Node/Nest/Cloudflare/Bun/Deno changes scoped to the platform actually used. [user standing rules; https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
 
 ## Pitfalls
 

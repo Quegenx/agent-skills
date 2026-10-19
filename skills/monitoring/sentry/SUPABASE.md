@@ -2,6 +2,8 @@
 
 Three connections between Supabase and Sentry: `supabaseIntegration` turns Supabase client calls into spans, errors and breadcrumbs; W3C trace propagation makes Supabase's API Gateway and Edge Function logs share the app's trace ID; and the Supabase Log Drain ships Supabase logs into Sentry Logs. Edge Functions themselves use the Sentry Deno SDK. Supabase itself is the `supabase` skill ([../../backend/supabase/SKILL.md](../../backend/supabase/SKILL.md)); base SDK setup is in the platform files ([BROWSER.md](BROWSER.md), [REACT.md](REACT.md), [NEXTJS.md](NEXTJS.md), [NODE.md](NODE.md), [FLUTTER.md](FLUTTER.md)). What decides most outcomes for propagation: Sentry's propagator omits `traceparent` by default, so `propagateTraceparent: true` plus `tracePropagation` on the Supabase client are both required, and browsers also need the project URL in `tracePropagationTargets` and `sentry-trace` in Edge Function CORS.
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [The integration (JS)](#the-integration-js) · [Trace propagation (JS)](#trace-propagation-js) · [Dart and Flutter](#dart-and-flutter) · [Edge Functions](#edge-functions) · [Log drain](#log-drain) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## The integration (JS)

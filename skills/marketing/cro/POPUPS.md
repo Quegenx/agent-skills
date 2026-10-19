@@ -113,7 +113,7 @@ A top announcement banner inserted above the content after load, on a timer or o
 | Engagement rate | Interaction before close |
 | Time to close | How long before dismissing |
 
-Track: popup views, form focus, submission attempts, successful submissions, close-button clicks, outside clicks, the Escape key. Event naming is [posthog/EVENTS-AND-IDENTITY.md](../../monitoring/posthog/EVENTS-AND-IDENTITY.md#naming-events-and-properties), with no field values in events.
+Track: popup views, form focus, submission attempts, successful submissions, close-button clicks, outside clicks, the Escape key. Event naming is [posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md#naming-events-and-properties), with no field values in events.
 
 **Benchmarks.** [coreyhaines31/marketingskills, popups] reports, with no cited data: "Email popup: 2-5% conversion typical", "Exit intent: 3-10% conversion", "Click-triggered: Higher (10%+, self-selected)". Compare against your own baseline, not these.
 

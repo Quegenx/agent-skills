@@ -2,7 +2,9 @@
 
 Tracing in `@sentry/react` records a `pageload` span for the first load, a `navigation` span for each client route change and an `http.client` span for every fetch or XHR, then joins them to backend traces through headers. The router integration names transactions by route pattern (`/users/:userId`) instead of by URL; without it every user generates a unique transaction name and nothing can be aggregated. Setup and errors are in [REACT.md](REACT.md); React Router framework mode and TanStack Start in [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md). Vendor-neutral OpenTelemetry is the `observability` skill ([../observability/SKILL.md](../observability/SKILL.md)).
 
-**Contents:** [Versions](#versions) · [What is traced automatically](#what-is-traced-automatically) · [browserTracingIntegration options](#browsertracingintegration-options) · [Web Vitals](#web-vitals) · [Router integrations](#router-integrations) · [Custom routing](#custom-routing) · [Custom spans](#custom-spans) · [Distributed tracing](#distributed-tracing) · [Sampling](#sampling) · [Filtering spans](#filtering-spans) · [Debugging](#debugging) · [Prove it](#prove-it)
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+**Contents:** [Versions](#versions) · [What is traced automatically](BROWSER-TRACING.md#automatic-spans) · [browserTracingIntegration options](BROWSER-TRACING.md#browsertracingintegration-options) · [Web Vitals](#web-vitals) · [Router integrations](#router-integrations) · [Custom routing](BROWSER-TRACING.md#custom-router-integration) · [Custom spans](BROWSER-TRACING.md#custom-spans) · [Distributed tracing](BROWSER-TRACING.md#distributed-tracing) · [Sampling](SAMPLING-AND-QUOTAS.md#react-source-rate-example) · [Filtering spans](BROWSER-TRACING.md#filtering-spans) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Versions
 
@@ -19,61 +21,11 @@ Tracing in `@sentry/react` records a `pageload` span for the first load, a `navi
 
 ## What is traced automatically
 
-| What | Op | How |
-|---|---|---|
-| Initial page load | `pageload` | `window.performance` timing |
-| Client navigations | `navigation` | History API |
-| `fetch()` / XHR | `http.client` | Patched |
-| Long tasks (>50 ms) | `ui.long-task` | `PerformanceLongTaskTiming` |
-| Long animation frames (≥8.18.0) | `ui.long-animation-frame` | `PerformanceLongAnimationFrameTiming` |
-| INP | `ui.interaction` | `PerformanceEventTiming`, emitted on page hide |
-
-- **The pageload span carries Web Vitals** LCP, CLS, FCP and TTFB; navigation spans don't. HTTP spans record method, URL, status and response size, plus DNS, TLS, connection, TTFB and download with `enableHTTPTimings`. INP spans carry `component`, `element` and `interaction_type`.
-- **To disable tracing, omit both `tracesSampleRate` and `tracesSampler`.** `tracesSampleRate: 0` is not the same: the integration still runs.
+Use the shared what is traced automatically guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#automatic-spans). [getsentry/sentry-for-ai, SDK references]
 
 ## browserTracingIntegration options
 
-| Option | Default | Notes |
-|---|---|---|
-| `instrumentPageLoad` | `true` | |
-| `instrumentNavigation` | `true` | |
-| `idleTimeout` | `1000` ms | The root takes the last child's end time |
-| `finalTimeout` | `30000` ms | Hard cap |
-| `childSpanTimeout` | `15000` ms | |
-| `markBackgroundSpan` | `true` | A backgrounded tab marks the span `cancelled` and closes it |
-| `traceFetch` / `traceXHR` | `true` | |
-| `enableHTTPTimings` | `true` | |
-| `shouldCreateSpanForRequest` | none | `(url) => boolean` |
-| `onRequestSpanStart` | none | `(span, requestInfo) => void` |
-| `enableLongTask` | `true` | |
-| `enableLongAnimationFrame` | `true` | Supersedes long tasks for most cases |
-| `enableInp` | `true` | SDK 8.x+; 7.x defaulted to `false` |
-| `interactionsSampleRate` | `1.0` | Applied on top of `tracesSampleRate` (0.5 × 0.1 = 5%) |
-| `beforeStartSpan` | none | `(context) => StartSpanOptions`; mainly to parameterize URLs |
-| `linkPreviousTrace` | `'in-memory'` | `'session-storage'` persists across hard reloads; `false` disables |
-| `enableReportPageLoaded` | `false` | Enables `Sentry.reportPageLoaded()` |
-| `ignoreResourceSpans` | `[]` | Op prefixes, e.g. `["resource.css", "resource.script", "resource.img"]` |
-| `ignorePerformanceApiSpans` | `[]` | |
-
-```typescript
-browserTracingIntegration({
-  beforeStartSpan: (context) => ({
-    ...context,
-    name: location.pathname
-      .replace(/\/[a-f0-9]{8,}/g, "/<hash>")  // strip hashes/UUIDs
-      .replace(/\/\d+/g, "/<id>"),              // strip numeric IDs
-  }),
-})
-```
-
-```typescript
-      shouldCreateSpanForRequest: (url) =>
-        !url.includes("/health") && !url.includes("/__webpack_hmr"),
-      onRequestSpanStart: (span, { headers }) => {
-        const rid = headers?.["x-request-id"];
-        if (rid) span.setAttribute("request.id", rid);
-      },
-```
+Use the shared browsertracingintegration options guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#browsertracingintegration-options). [getsentry/sentry-for-ai, SDK references]
 
 ## Web Vitals
 
@@ -210,109 +162,23 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
 ## Custom routing
 
-For a router Sentry doesn't know, turn off automatic pageload and navigation spans and start them yourself:
-
-```typescript
-const client = Sentry.init({
-  dsn: "...",
-  integrations: [
-    Sentry.browserTracingIntegration({
-      instrumentPageLoad: false,   // handled manually
-      instrumentNavigation: false, // handled manually
-    }),
-  ],
-  tracesSampleRate: 1.0,
-})!;
-
-let pageLoadSpan = Sentry.startBrowserTracingPageLoadSpan(client, {
-  name: window.location.pathname,
-  attributes: {
-    [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: "url",  // start with "url" source
-  },
-});
-
-myCustomRouter.on("routeResolved", (route) => {
-  if (pageLoadSpan) {
-    pageLoadSpan.updateName(route.pattern);          // e.g. "/users/:id"
-    pageLoadSpan.setAttribute(
-      SEMANTIC_ATTRIBUTE_SENTRY_SOURCE, "route"      // upgrade to "route" source
-    );
-    pageLoadSpan = undefined;
-  } else {
-    Sentry.startBrowserTracingNavigationSpan(client, {
-      op: "navigation",
-      name: route.pattern,
-      attributes: {
-        [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: "route",
-      },
-    });
-  }
-});
-```
-
-- **Both functions create idle spans** that close after `idleTimeout`. `SEMANTIC_ATTRIBUTE_SENTRY_SOURCE` is `"sentry.source"` and `SEMANTIC_ATTRIBUTE_SENTRY_OP` is `"sentry.op"`.
+Use the shared custom routing guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#custom-router-integration). [getsentry/sentry-for-ai, SDK references]
 
 ## Custom spans
 
-- **`Sentry.startSpan(options, cb)`:** active and ends by itself; the recommended one. A thrown error is captured and the span marked as an error.
-- **`Sentry.startSpanManual(options, cb)`:** active; you must call `span.end()`.
-- **`Sentry.startInactiveSpan(options)`:** not active, ended manually; for spans that cross event boundaries, with an explicit `parentSpan`.
-- **Options:** `name` (required), `op`, `startTime` (Unix seconds, float), `attributes` (`string|number|boolean|string[]|number[]|boolean[]`), `parentSpan`, `onlyIfParent`, `forceTransaction`.
-- **Common ops:** `http.client`, `db.query`, `ui.render`, `ui.load`, `ui.click`, `ui.flow`, `function`, `task`, `cache.get` / `cache.set`, `middleware`.
-- **Span methods:** `Sentry.getActiveSpan()`, `span.setAttribute`, `setAttributes`, `setStatus({ code })` (0 unset, 1 ok, 2 error), `setHttpStatus(404)` (code 2, "Not Found"), `updateName`, `end(timestampSeconds)`.
-- **`forceTransaction: true`** makes its own root transaction (background work, Web Workers, queue processors).
-- **Browser spans are flat:** every child attaches to the root span. Opt into nesting with `parentSpanIsAlwaysRootSpan: false` (use with care). Spans missing after an async gap: use `startInactiveSpan` with an explicit `parentSpan`.
+Use the shared custom spans guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#custom-spans). [getsentry/sentry-for-ai, SDK references]
 
 ## Distributed tracing
 
-- **Headers:** `sentry-trace` (`{traceId}-{spanId}-{sampled}`) and `baggage` (W3C Baggage with `sentry-*` entries), injected into fetch and XHR for URLs matching `tracePropagationTargets`.
-- **Matching:** a string is a substring match against the full URL; a RegExp is tested against the full URL; `[]` disables the headers entirely.
-- **The default is disputed:** the tracing reference says same-origin requests get headers automatically and cross-origin ones need explicit entries; the setup troubleshooting says the default is `localhost` and your DSN origin only.
-- **CORS:** the backend must send `Access-Control-Allow-Headers: sentry-trace, baggage`, or the preflight fails and the browser drops the headers. An Express example allows `"Content-Type, Authorization, sentry-trace, baggage"`.
-- **Continue a server-rendered trace:** the server calls `Sentry.getTraceData()` (from `@sentry/node`) and renders `<meta name="sentry-trace" content="...">` and `<meta name="baggage" content="...">`; the browser SDK reads them automatically. Server setup is in [../sentry/NODE.md](../sentry/NODE.md).
-- **WebSockets and other channels:** send `Sentry.getTraceData()` values in the message as `_sentry: { trace, baggage }`; a Node receiver uses `propagation.extract(context.active(), {...})` from `@opentelemetry/api`, then `context.with(ctx, () => Sentry.startSpan(...))`.
-- **OpenTelemetry-native backends:** `propagateTraceparent: true` (≥10.10.0) adds the W3C `traceparent` header.
+Use the shared distributed tracing guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#distributed-tracing). [getsentry/sentry-for-ai, SDK references]
 
 ## Sampling
 
-| Daily transactions | `tracesSampleRate` |
-|---|---|
-| <10K (also dev, staging) | 1.0 |
-| 10K to 100K | 0.2 |
-| 100K to 1M | 0.05 to 0.1 |
-| >1M | 0.01 to 0.02, with `tracesSampler` for priority routes |
-
-- **`tracesSampler` wins** when both are set. It receives `{ name, attributes, parentSampled, parentSampleRate, inheritOrSampleWith }` and returns a rate or a boolean (`true` = 1.0, `false` = 0).
-
-```typescript
-Sentry.init({
-  tracesSampler: ({ name, attributes, inheritOrSampleWith }) => {
-    // Drop health checks and internal routes
-    if (["/health", "/ping", "/readyz"].some(p => name.includes(p))) return 0;
-
-    // Always capture critical flows
-    if (name.startsWith("/checkout") || name.startsWith("/payment")) return 1.0;
-
-    // Sample admin routes at 50%
-    if (name.startsWith("/admin")) return 0.5;
-
-    // High-volume search at 5%
-    if (name.includes("/search")) return 0.05;
-
-    // For everything else: honor parent's decision, fall back to 10%
-    return inheritOrSampleWith(0.1);
-  },
-});
-```
-
-- **Use `inheritOrSampleWith(fallback)`, not a hand check of `parentSampled`:** it keeps sampling deterministic across the trace, metric extrapolation accurate and `sentry-sampled` correct in downstream baggage.
+Use the shared sampling guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#sampling). [getsentry/sentry-for-ai, SDK references]
 
 ## Filtering spans
 
-- **`beforeSendTransaction(event)`** modifies or drops whole transactions (return `null`).
-- **`ignoreTransactions`:** e.g. `["/health", /^\/api\/internal/, "/__webpack_hmr", /\.(png|jpg|svg|ico|woff2)$/]`; strings are substring matches.
-- **`beforeSendSpan(span)` cannot drop spans:** always return the span. Returning `null` breaks the SDK. Use `ignoreSpans`.
-- **`ignoreSpans` (≥10.2.0):** strings, regexes, `{ op }`, `{ name, op }`, `{ name: /regex/ }`, and from ≥10.6.0 `{ attributes: { "url.path": "/health", "http.response.status_code": 200 } }` (string values match as substring or RegExp, others by strict equality). If the root span matches, the entire local trace is dropped.
+Use the shared filtering spans guidance in [BROWSER-TRACING.md](BROWSER-TRACING.md#filtering-spans). [getsentry/sentry-for-ai, SDK references]
 
 ## Debugging
 

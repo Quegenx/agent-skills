@@ -2,7 +2,9 @@
 
 Server-side Sentry for Node.js (`@sentry/node`, with Express, Fastify, Koa, Hapi, Connect or plain `http`), Bun (`@sentry/bun`) and Deno (`@sentry/deno`): setup, configuration, errors, logs, metrics, runtime metrics and crons. Bun, Deno and the OTLP light SDK specifics, supported Node versions and server tunnel checks are in [NODE-RUNTIMES-AND-DELIVERY.md](NODE-RUNTIMES-AND-DELIVERY.md). Tracing, profiling and AI monitoring are in [NODE-TRACING.md](NODE-TRACING.md); NestJS is [NESTJS.md](NESTJS.md); Cloudflare Workers is [CLOUDFLARE.md](CLOUDFLARE.md). One mechanism decides most outcomes: `@sentry/node` patches modules at import time through OpenTelemetry, so the instrument file must load before your framework, database driver and any HTTP client. Anything loaded earlier is not instrumented, and events silently go missing.
 
-**Contents:** [Versions](#versions) · [Pick the setup](#pick-the-setup) · [Node.js setup](#nodejs-setup) · [Framework error handlers](#framework-error-handlers) · [Configuration](#configuration) · [Capturing errors](#capturing-errors) · [Scopes and context](#scopes-and-context) · [Breadcrumbs](#breadcrumbs) · [Filtering and grouping](#filtering-and-grouping) · [Request data and linked errors](#request-data-and-linked-errors) · [Shutdown and flushing](#shutdown-and-flushing) · [Logs](#logs) · [Metrics](#metrics) · [Runtime metrics](#runtime-metrics) · [Crons](#crons) · [Source maps](#source-maps) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+**Contents:** [Versions](#versions) · [Pick the setup](#pick-the-setup) · [Node.js setup](#nodejs-setup) · [Framework error handlers](#framework-error-handlers) · [Configuration](#configuration) · [Capturing errors](#capturing-errors) · [Scopes and context](#scopes-and-context) · [Breadcrumbs](#breadcrumbs) · [Filtering and grouping](#filtering-and-grouping) · [Request data and linked errors](#request-data-and-linked-errors) · [Shutdown and flushing](#shutdown-and-flushing) · [Logs](SIGNALS-PRACTICE.md#logs) · [Metrics](SIGNALS-PRACTICE.md#application-metrics) · [Runtime metrics](#runtime-metrics) · [Crons](#crons) · [Source maps](#source-maps) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Versions
 
@@ -199,7 +201,7 @@ app.listen(3000);
 | `tracesSampleRate` | none | 0 to 1; required to enable tracing; never on the OTLP path |
 | `dataCollection` | see below | `userInfo`, `cookies`, `httpHeaders`, `httpBodies`, `urlQueryParams`, `genAI` |
 | `includeLocalVariables` | `false` | Local variable values in stack frames |
-| `enableLogs` | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | Logs (9.41.0+) |
+| `enableLogs` | [Versioned Logs rule](SIGNALS-PRACTICE.md#logs) | Logs (9.41.0+) |
 | `environment` | `"production"` | Or `SENTRY_ENVIRONMENT` |
 | `release` | none | Or `SENTRY_RELEASE` |
 | `debug` | `false` | |
@@ -213,7 +215,7 @@ app.listen(3000);
 
 Also: `serverName`, `maxValueLength`, `ignoreErrors`, `ignoreTransactions`, `beforeSend`, `beforeSendTransaction`, `beforeBreadcrumb`, `onFatalError`.
 
-- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection] Platform capture behavior still depends on its installed integrations; explicitly disable categories you must not collect.
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](JAVASCRIPT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection] Platform capture behavior still depends on its installed integrations; explicitly disable categories you must not collect.
 - **Environment variables:** `SENTRY_DSN`, `SENTRY_ENVIRONMENT`, `SENTRY_RELEASE` (auto-detected from git; the NestJS skill adds Heroku and CircleCI), `SENTRY_TRACES_SAMPLE_RATE`, `NODE_OPTIONS`; at build time `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`.
 
 ## Capturing errors
@@ -385,114 +387,11 @@ Sentry.init({
 
 ## Logs
 
-- **Sentry Logs complement a logging library.** Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/] Keep buffering/flush behavior in the installed SDK contract rather than assuming a disabled-default no-op.
-- **API:** `Sentry.logger.trace|debug|info|warn|error|fatal(message, attributes?, options?)` with severity numbers 1, 5, 9, 13, 17, 21. Signature: `info(message: ParameterizedString, attributes?: Record<string, unknown>, options?: { scope?: Scope }): void`. Attribute values are `string`, `number` or `boolean`.
-- **Parameterize with `Sentry.logger.fmt`, never string concatenation.** The tagged template stores `sentry.message.template` (e.g. "User '%s' purchased '%s'") plus `sentry.message.parameter.0`, `.1`, so interpolated values become individually searchable attributes. It is an alias for `Sentry.parameterize()`.
-
-```typescript
-Sentry.logger.info(
-  Sentry.logger.fmt`Order ${orderId} placed by ${userId}`,
-  { total: 149.99, itemCount: 3, region: "us-west-2" },
-);
-```
-
-- **Scope attributes (>=10.32.0):** `Sentry.getGlobalScope().setAttributes({...})`, `Sentry.getIsolationScope().setAttributes({...})`, or `scope.setAttribute(...)` inside `withScope`.
-- **Automatic attributes:** `sentry.environment`, `sentry.release`, `sentry.sdk.name` (e.g. `"sentry.javascript.node"`), `sentry.sdk.version`, `server.address`, `user.id`, `user.name`, `user.email`, and the template attributes. Logs emitted during an active span carry `sentry.trace.parent_span_id`, linking them to the trace; with no active span (tracing off) there is no trace link.
-- **`beforeSendLog: (log) => log | null`** gets `{ level, message, attributes, severityNumber }`; it does not fire when logging is disabled.
-
-```typescript
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  enableLogs: true,
-  beforeSendLog: (log) => {
-    // Drop debug logs in production
-    if (process.env.NODE_ENV === "production" && log.level === "debug") {
-      return null;
-    }
-
-    // Scrub sensitive fields
-    if (log.attributes?.credit_card) {
-      log.attributes.credit_card = "[REDACTED]";
-    }
-
-    // Add computed attributes
-    log.attributes = {
-      ...log.attributes,
-      processed_at: Date.now(),
-    };
-
-    return log;
-  },
-});
-```
-
-- **Console:** `Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] })`; default levels `['debug','info','warn','error','log','trace','assert']`.
-- **Consola (>=10.12.0):** `logger.addReporter(Sentry.createConsolaReporter());`.
-- **Use the supported logger integration before a custom bridge.** Official Node integrations support Pino from 10.18.0, Winston from 9.13.0 and Consola from 10.12.0. The old Node reference said no first-party transport existed for any of them; do not extend this correction to Bunyan or Morgan without evidence. Inspect the installed integration API. [https://docs.sentry.io/platforms/javascript/guides/node/logs/]
-- **Serverless:** `await Sentry.flush(2000)` before returning.
-
-**Breadcrumb shape correction:** SDK Event.breadcrumbs is an array, not a `.values` wrapper. The old source's beforeSend example used `event.breadcrumbs.values`; it is removed above. Use the existing beforeBreadcrumb hook for per-breadcrumb filtering. [https://github.com/getsentry/sentry-javascript/blob/develop/packages/core/src/types/event.ts]
+Use the [shared JavaScript Logs API, source examples, filtering and logger integrations](SIGNALS-PRACTICE.md#logs). Keep server request isolation in this file and flush in serverless handlers before returning. [getsentry/sentry-for-ai, sentry-node-sdk]
 
 ## Metrics
 
-- **On by default** (`enableMetrics: false` disables it); no init flag needed. Metrics are buffered (max 1000, `MAX_METRIC_BUFFER_SIZE = 1000`) and sent periodically (the NestJS reference: not suitable for sub-second alerting).
-- **API:** `Sentry.metrics.count(name, value?, options?)` (value defaults to 1), `gauge(name, value, options?)`, `distribution(name, value, options?)`, with `MetricOptions { unit?, attributes?, scope? }`.
-
-| Method | Underlying type | Use for |
-|---|---|---|
-| `count` | counter | Event frequency: requests, errors, signups |
-| `gauge` | gauge | Current snapshot value: queue depth, CPU % |
-| `distribution` | distribution | Value histograms and ranges: latencies, file sizes |
-
-The NestJS reference adds that distributions support p50/p90/p95/p99 while gauges give min, max, avg, sum and count with no percentiles, so use a distribution when you need percentiles.
-
-```typescript
-// count: how many times something happened
-Sentry.metrics.count("user.signups", 1);
-Sentry.metrics.count("api.errors", 1, { attributes: { endpoint: "/checkout" } });
-
-// gauge: what the current state is
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.gauge("memory.usage", 512, { unit: "megabyte" });
-
-// distribution: spread of a measured value
-Sentry.metrics.distribution("api.latency", 187.5, { unit: "millisecond" });
-Sentry.metrics.distribution("payload.size", 1024, { unit: "byte" });
-```
-
-- **Units:** time `millisecond`, `second`, `minute`, `hour`, `day`, `week`; storage `bit`, `byte`, `kilobyte`, `megabyte`, `gigabyte`, `terabyte`, `petabyte`; fractions `ratio`, `percent`; `none` (or omit `unit`). The NestJS reference lists `nanosecond` and `microsecond` too and no `petabyte`. Confirm in the current docs.
-- **Keep cardinality low:** high-cardinality attributes (per-user IDs, request UUIDs) degrade backend performance; keep attributes to bounded enums and sets, and put per-user and per-request data in logs. The NestJS reference adds: no timestamps as attributes, and prefix names with the service (`"payments.charge_time"`, not `"charge_time"`). Each metric envelope is limited to 2 KB; bigger metrics are dropped.
-- **`beforeSendMetric(metric)`** returns `null` to drop or the metric with changes. The Node reference gives the shape `{ name, value, type, unit?, attributes? }`; the NestJS reference adds `type` values `"counter"`, `"gauge"`, `"distribution"` and fields `timestamp` (epoch seconds), `traceId`, `spanId`.
-
-```typescript
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  beforeSendMetric: (metric) => {
-    // metric: { name, value, type, unit?, attributes? }
-
-    // Drop internal debug metrics
-    if (metric.name.startsWith("_internal.")) {
-      return null;
-    }
-
-    // Normalize metric names
-    metric.name = metric.name.toLowerCase().replace(/[^a-z0-9_.]/g, "_");
-
-    // Add global context
-    metric.attributes = {
-      ...metric.attributes,
-      host: process.env.HOSTNAME,
-      deploy_id: process.env.DEPLOY_ID,
-    };
-
-    return metric;
-  },
-});
-```
-
-- **Scope attributes (>=10.33.0):** `Sentry.getGlobalScope().setAttributes({...})` or `scope.setAttribute(...)` inside `withScope`; metrics emitted in that scope inherit them.
-
-- **Automatic attributes:** `sentry.environment`, `sentry.release`, `sentry.sdk.name`, `sentry.sdk.version`, `user.id`, `user.name`, `user.email`, `server.address`.
+Use the [shared JavaScript Application Metrics API and source alternatives](SIGNALS-PRACTICE.md#application-metrics). Node runtime-health collection is a separate integration below. [getsentry/sentry-for-ai, sentry-node-sdk]
 
 ## Runtime metrics
 

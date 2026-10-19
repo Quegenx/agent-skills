@@ -2,7 +2,7 @@
 
 Session replay records what users saw and did, and it is investigated through the recording, its events, its errors and its person. Most outcomes are decided in the SDK, before anything reaches PostHog: privacy masking runs in the browser or app (masked data is never sent over the network), trigger groups and sample rates decide whether a session records at all, and the SDK's own `$recording_status` and `$sdk_debug_*` properties on each event say why a recording is missing. AI summaries and standing scanners over recordings are in [REPLAY-VISION.md](REPLAY-VISION.md); backend logs linked to a replay in [INSTRUMENT-LOGS.md](INSTRUMENT-LOGS.md#link-logs-to-replays-and-persons); replay listing SQL in [HOGQL-EXAMPLES-WEB.md](HOGQL-EXAMPLES-WEB.md).
 
-**Contents:** [Privacy and masking](#privacy-and-masking) · [Sampling and recording controls](#sampling-and-recording-controls) · [Investigating a recording](#investigating-a-recording) · [Finding sessions to watch](#finding-sessions-to-watch) · [Missing recordings](#missing-recordings) · [Troubleshooting capture and playback](#troubleshooting-capture-and-playback) · [Prove it](#prove-it)
+**Contents:** [Privacy and masking](#privacy-and-masking) · [Sampling and recording controls](#sampling-and-recording-controls) · [Investigating a recording](#investigating-a-recording) · [Finding sessions to watch](#finding-sessions-to-watch) · [Missing recordings](#missing-recordings) · [Troubleshooting capture and playback](#troubleshooting-capture-and-playback) · [Query bounds](#query-bounds) · [Prove it](#prove-it)
 
 ## Privacy and masking
 
@@ -387,6 +387,10 @@ All `disabled`: off in project settings. All `sampled_out` with a low rate: samp
 ### Tabs show as separate sessions
 
 A different browser, profile or incognito window; different domains; `persistence` `sessionStorage` or `memory`; `cross_subdomain_cookie: false`; shared domains `herokuapp.com`, `vercel.app`, `netlify.app` (no cross-subdomain cookie: use a custom domain); `posthog.reset()` calls; session limits of 30 minutes inactivity or 24 hours.
+
+## Query bounds
+
+Some source examples above omit timestamp bounds. Every query on `events` must use the [canonical time-range contract](HOGQL.md); supply the investigation's explicit window before running those examples. The unbounded source snippets are not ready-to-run queries. [PostHog skills, HOGQL.md; SESSION-REPLAY.md]
 
 ## Prove it
 

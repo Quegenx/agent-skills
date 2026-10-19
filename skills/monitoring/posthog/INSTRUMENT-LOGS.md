@@ -21,7 +21,7 @@ PostHog Logs takes OpenTelemetry structured logs (resource attributes, log attri
 6. **Prefer structured key-value properties over plain text.**
 7. **Environment variables.** Check `.env`, `.env.local` and framework env files. If the token is missing, use the PostHog MCP `projects-get` to retrieve `api_token` (ask which project if there are several; if MCP isn't connected, ask the user). Host from the `region` field: `US` is `https://us.i.posthog.com`, `EU` is `https://eu.i.posthog.com`; otherwise ask "Are you on PostHog US Cloud or EU Cloud?". Do not assume US Cloud. Reference env vars in code; never hardcode.
 
-- **Missing PostHog config must never break the app.** Read keys optionally, guard init and capture behind their presence, and make build and boot work with no PostHog env. In development or debug, fail loudly with: "<VAR> variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once <VAR> is configured". Production stays a no-op.
+- **Missing PostHog config:** follow the canonical [SETUP-WEB commandments](SETUP-WEB.md#the-commandments), including production no-op and the source's development/debug diagnostic. [existing PostHog, SETUP-WEB.md, The commandments]
 
 ## Token and endpoint
 
@@ -138,8 +138,7 @@ logger.emit({ severityText: 'error', body: 'log data', attributes: {'json_attrib
 
 - **Built in:** the SDK handles OTLP encoding, batching, persistence and lifecycle. APIs: `posthog.captureLog(...)` and `posthog.logger.{trace,debug,info,warn,error,fatal}(...)`.
 - **JavaScript layer only:** native `os_log` and `Log.d` are not collected.
-- **Minimum `posthog-react-native@4.44.0`.** Expo: `npx expo install posthog-react-native expo-file-system expo-application expo-device expo-localization`. Bare RN: `yarn add posthog-react-native @react-native-async-storage/async-storage react-native-device-info react-native-localize`. RN Web and macOS: don't use `expo-file-system`; use `@react-native-async-storage/async-storage`.
-- **Client:** `PostHogProvider` (Context API, enables autocapture) is recommended; or `new PostHog('<ph_project_token>', { host })` in its own file, also passable as `<PostHogProvider client={posthog}>`.
+- **Minimum `posthog-react-native@4.44.0` for Logs.** Installation, Expo/bare/native-web storage selection and provider/client setup are in [SETUP-MOBILE.md](SETUP-MOBILE.md). Keep the Logs configuration and APIs below. [existing PostHog, INSTRUMENT-LOGS.md, React Native and Expo]
 
 ```jsx
 const posthog = new PostHog('<ph_project_token>', {
@@ -206,24 +205,8 @@ beforeSend: (record) => {
 - **Built in across mobile and web.** On mobile, on-disk persistence across restarts and lifecycle integration; on web, buffered in memory via `posthog-js`. APIs: `Posthog().captureLog(...)` and `Posthog().logger.{trace,debug,info,warn,error,fatal}(...)`.
 - **Manual capture only:** `print`, `debugPrint` and `dart:developer` `log` are not autocaptured.
 - **Minimum `posthog_flutter` `5.27.0`** (adds Logs); on mobile it pulls `posthog-android` `3.48.0`+. The same reference's install snippet shows `posthog_flutter: ^5.26.0` in `pubspec.yaml`, which is below that minimum: use at least 5.27.0.
-- **Android:** auto-init via `AndroidManifest.xml` meta-data `com.posthog.posthog.PROJECT_TOKEN`, `com.posthog.posthog.POSTHOG_HOST`, `com.posthog.posthog.DEBUG`; manual init with `com.posthog.posthog.AUTO_INIT` = `false`; `minSdkVersion 23`. `CAPTURE_APPLICATION_LIFECYCLE_EVENTS` is enabled by default since 5.23.0 (formerly `TRACK_APPLICATION_LIFECYCLE_EVENTS`, still an alias). Session Replay and Surveys require manual setup (disable `AUTO_INIT`).
-- **iOS:** the same key names in `Info.plist`; manual with `com.posthog.posthog.AUTO_INIT` false; minimum iOS 13.0 (`platform :ios, '13.0'` in the Podfile, or Xcode Minimum Deployments then `flutter build ios --config-only`). CocoaPods and SPM are supported; Flutter 3.44+ enables SPM by default, otherwise `flutter config --enable-swift-package-manager`.
-- **Manual setup:**
+- **General Flutter init and platform requirements:** [SETUP-FLUTTER.md](SETUP-FLUTTER.md#flutter-install-and-init) owns Android/iOS metadata, AUTO_INIT, native minima and SPM, plus the complete source `main()` example. [Flutter Web](SETUP-FLUTTER.md#flutter-web) owns the required JS snippet; `Posthog().setup()` is a no-op there. Keep the Logs-specific version minimum above and the config, web behavior, capture and flush rules below. [existing PostHog, INSTRUMENT-LOGS.md, Flutter]
 
-```dart
-Future<void> main() async {
-  // init WidgetsFlutterBinding if not yet
-  WidgetsFlutterBinding.ensureInitialized();
-  final config = PostHogConfig('<ph_project_token>');
-  config.debug = true;
-  // captureApplicationLifecycleEvents is enabled by default since version 5.23.0
-  config.host = 'https://us.i.posthog.com';
-  await Posthog().setup(config);
-  runApp(MyApp());
-}
-```
-
-- **Web is required if the project has `web/`:** `Posthog().setup()` is a no-op on web. Add the JS snippet in the `<head>` of `web/index.html` with the token as a literal string (it is public); the init is shown with `defaults: "2026-05-30"`.
 - **Logs config, before setup:**
 
 ```dart
@@ -337,8 +320,11 @@ app.post('/api/chat', async (req, res) => {
 
 ## Best practices
 
-- **Log what happened to requests, not what your code is doing.** Step-by-step lines ("Entering payment processing", "Calling Stripe API" ...) are useless at INFO; they are fine at DEBUG for race conditions, ordering and state machines, but not by default.
-- **Make INFO logs wide events (a canonical log line):** one rich log per request per service.
+Read [the shared structured-logging guidance](../observability/LOGGING.md) for wide events, context, level semantics, schema and privacy. The source examples below retain the PostHog person/event fields. [existing PostHog, INSTRUMENT-LOGS.md, Best practices]
+
+**Source plain-text counterexample:** `Payment failed for user abc123 - Stripe error: card_declined (amount: $49.99)`. The shared guidance keeps the structured-field rule. [existing PostHog, INSTRUMENT-LOGS.md, Best practices]
+
+**Provider event fields, source example:**
 
 ```json
 {
@@ -357,12 +343,7 @@ app.post('/api/chat', async (req, res) => {
 }
 ```
 
-- **Long-running, event-driven or multi-service workflows:** a hybrid, with a wide event at each stage boundary (job started, stage completed, job finished) carrying the full accumulated context.
-- **Structured JSON, not plain text** (bad: `Payment failed for user abc123 - Stripe error: card_declined (amount: $49.99)`). Log search works across all fields; every key-value pair is filterable.
-- **Want high cardinality and high dimensionality.** One wide event with 50 fields tells you more than 50 separate log lines with three fields each; ClickHouse handles high cardinality fine.
-- **Business context:** Who (user ID, account type, tier, org), What (order ID, cart, item count, feature flags), Where (service, version, region), How (payment method, auth provider, API version), How much (amount, quantity, retry count).
-- **Resource attributes, set once at start:** `service.name`, `deployment.environment`, `service.version`, `cloud.region`. **Log attributes per event:** `posthogDistinctId`, `order_id`, `payment_method`, `duration_ms`. Match log context to your Product Analytics event properties.
-- **Accumulate context through the request and emit once:**
+**Accumulating PostHog request context, source example:**
 
 ```javascript
 import { logs } from "@opentelemetry/api-logs";
@@ -396,24 +377,12 @@ function handleCheckout(req, res) {
 }
 ```
 
-- **Bind only scalars** (strings, numbers, booleans); never full API responses or large results (payload limits, memory).
-- **Crash safety:** a global exception handler or `finally` that flushes the collected context; long jobs emit "started" and "checkpoint" logs.
-
-| Level | Use |
-| --- | --- |
-| ERROR | Failed and needs attention. If no one ever looks at an error log, it's not an error, it's noise. |
-| WARN | Unexpected but no failure (a retry succeeded on the 3rd attempt, a deprecated API) |
-| INFO | Normal operations worth recording |
-| DEBUG | Active debugging detail; off in production by default |
-
-- **Sampling:** tail sampling keeps 100% of errors and exceptions, 100% of requests above p99 latency, and 100% of important accounts or flagged sessions, typically with the OTel Collector tail sampling processor (https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/tailsamplingprocessor). Head sampling (a fixed % up front) is a pragmatic starting point.
+- **Want high cardinality and high dimensionality.** One wide event with 50 fields tells you more than 50 separate log lines with three fields each; ClickHouse handles high cardinality fine.
+- **PostHog log attributes per event:** `posthogDistinctId`, `order_id`, `payment_method`, `duration_ms`. Match log context to Product Analytics event properties. [existing PostHog, INSTRUMENT-LOGS.md, Best practices]
 - **Drop rules** (Logs > Configuration > Drop rules) run at ingestion, before storage. **Drop** discards every matching line (health checks, load balancer pings, liveness probes); **Rate limit** caps a service in KB/s. Match by service name, severity or any attribute. Rules run top to bottom after optional PII scrubbing and JSON parsing: order them most to least specific (drag to reorder). Log-based metric rules evaluate before drop rules, so counts survive dropped logs (https://posthog.com/docs/logs/metrics).
-- **Logging library:** structured output, async or buffered writes, low per-call overhead; the OTel bridge adds minimal overhead; benchmark under realistic load.
-- **Trace context propagates automatically** in OTel; logs are correlated by trace ID.
-- **Treat the log schema as an API contract.** Renaming `error_type` to `err_code`, or changing the type of `duration_ms`, silently breaks dashboards and alerts: communicate, and deprecate before removing.
-- **Never log:** secrets (API keys, passwords, tokens, card numbers); request or response bodies (log status, content length, duration); unneeded PII (hash or tokenize; even `posthogDistinctId` or `email` may need masking under GDPR or HIPAA); high-frequency health checks; needless duplication (but include the downstream outcome you'd need).
 - **Automatic PII scrubbing is a safety net, not a substitute.** It is in closed beta (internal teams only; request via in-app support), at Project settings > Logs > PII scrubbing, off by default. It redacts to `{{REDACTED}}` in `body` and string-valued `attributes`: Bearer tokens (keeping the prefix: `Bearer {{REDACTED}}`), Stripe keys `sk_live_*` / `sk_test_*` followed by 20 or more alphanumerics, and email addresses. It is a single regex pass: no JSON parsing, no nested walk, no key-name redaction, and it doesn't touch `resource_attributes`, `service_name`, `severity_text` or trace IDs. It is permanent and irreversible. It does not catch card numbers (PANs), secrets identified only by key name, numbers or booleans inside JSON, or anything else (custom tokens, session IDs, addresses, phones, names, IPs).
-- **Checklist:** structured JSON; one wide event per request; scalars only; context accumulated; Who/What/Where with `service.name`, `service.version`, `deployment.environment`; OTel `trace_id` attached; PostHog `session_id` included; levels correct; `/healthz` and load balancer pings excluded or sampled; sampling planned; try/finally flush; no secrets; PII masked; no bodies; stable schema; PII scrubbing considered; linked to replays.
+
+- **Checklist:** apply [LOGGING.md](../observability/LOGGING.md#prove-it), include the selected PostHog person/session fields, verify the replay link, review source-specific drop rules and PII scrubbing, and keep the SDK examples' version and platform qualifications. [existing PostHog, INSTRUMENT-LOGS.md, Best practices]
 
 ## Troubleshooting
 

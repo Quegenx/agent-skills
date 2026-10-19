@@ -2,7 +2,7 @@
 
 The PostHog MCP server lets an agent read and change a PostHog project (insights, flags, experiments, errors, logs, persons, SQL, billing and more) from any MCP client; the AI wizard is the agentic CLI that installs PostHog into a codebase and can add the MCP server for you. What the server can do in a session is decided by its auth (OAuth or a personal API key), the project it's pinned to, the tool mode (one `exec` tool or every tool registered), and the read-only and feature filters. The Supabase warehouse source, also set up through the wizard, is at the end. Warehouse syncs in general are [DATA-WAREHOUSE.md](DATA-WAREHOUSE.md), SDK setup is [SETUP-WEB.md](SETUP-WEB.md), and the SQL the `execute-sql` tool runs is [HOGQL.md](HOGQL.md).
 
-**Contents:** [Set up the MCP server](#set-up-the-mcp-server) · [Auth, pinning and accounts](#auth-pinning-and-accounts) · [Tool mode and filters](#tool-mode-and-filters) · [The exec commands](#the-exec-commands) · [Rate limits](#rate-limits) · [Tools](#tools) · [The AI wizard](#the-ai-wizard) · [Supabase as a warehouse source](#supabase-as-a-warehouse-source) · [posthog-js source cross-checks](#posthog-js-source-cross-checks) · [Prove it](#prove-it)
+**Contents:** [Set up the MCP server](#set-up-the-mcp-server) · [Auth, pinning and accounts](#auth-pinning-and-accounts) · [Tool mode and filters](#tool-mode-and-filters) · [The exec commands](#the-exec-commands) · [Rate limits](#rate-limits) · [Tools](#tools) · [The AI wizard](#the-ai-wizard) · [posthog-js source cross-checks](#posthog-js-source-cross-checks) · [Prove it](#prove-it)
 
 ## Set up the MCP server
 
@@ -108,26 +108,7 @@ Plus others; the full list is in the server source. Names below are verbatim; a 
 - **The wizard page also recommends** a reverse proxy, and grouping the marketing site, mobile app and web app in one project.
 - **Add PostHog's IPs to your WAF allowlist** for features like heatmaps, where the WAF may block PostHog's requests to your site. EU: `3.75.65.221`, `18.197.246.42`, `3.120.223.253`. US: `44.205.89.55`, `52.4.194.122`, `44.208.188.173`. Heatmap screenshots are captured with Browserless, which has its own IP addresses (Browserless publishes the current list). An allowlist does not help when the app has a private address.
 
-## Supabase as a warehouse source
-
-- **Set up:** `npx @posthog/wizard warehouse`, or Data pipeline > sources > New source > Supabase. The Supabase connector is the Postgres integration; CDC sync is in alpha.
-- **Connection details:** Supabase dashboard **Connect** > **Direct** tab > **Session pooler** or **Direct connection**.
-
-| Field | Value |
-|---|---|
-| Host | The Session pooler hostname, e.g. `aws-0-us-east-1.pooler.supabase.com`. Not the Project URL `<ref>.supabase.co` (the REST endpoint); not the direct host `db.<ref>.supabase.co` (IPv6-only; PostHog connects over IPv4) |
-| Port | Default `5432` |
-| Database | `postgres` |
-| User | `postgres.<project-ref>` |
-| Schema | Optional; default `public`, blank means all |
-
-- **Port conflict:** the Supabase source page gives the port default as `5432`; [DATA-WAREHOUSE.md](DATA-WAREHOUSE.md) (from the vendor warehouse skill) says port 6543 for the session pooler. Confirm in the current docs.
-- **CDC needs Direct connection plus the Supabase IPv4 add-on:** logical replication doesn't work through the pooler.
-- **SSH tunnel** is optional ("Require TLS through tunnel?" defaults to on).
-- **Sources created after February 18, 2026 require SSL/TLS.**
-- **Columns are selectable per table;** the primary key and incremental field are always synced.
-- **Connect as a dedicated read-only role,** not the `postgres` superuser.
-- **Allow PostHog's inbound IPs.** US: `44.205.89.55`, `52.4.194.122`, `44.208.188.173`. EU: `3.75.65.221`, `18.197.246.42`, `3.120.223.253`.
+Supabase warehouse connection modes, credentials, TLS and CDC prerequisites are in [DATA-WAREHOUSE.md](DATA-WAREHOUSE.md#supabase-as-a-warehouse-source). [existing MCP-AND-WIZARD.md]
 
 ## posthog-js source cross-checks
 

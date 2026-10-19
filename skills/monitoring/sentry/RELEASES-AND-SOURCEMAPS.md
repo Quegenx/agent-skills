@@ -56,7 +56,7 @@ export default defineConfig({
 
 ## Source maps: three ways to upload
 
-- **Path A, a bundler plugin (preferred):** `@sentry/vite-plugin`, `@sentry/webpack-plugin`, `@sentry/rollup-plugin`, `@sentry/esbuild-plugin`, or a framework wrapper (`withSentryConfig` in `@sentry/nextjs`, plus `@sentry/sveltekit`, `@sentry/react-router`, `@sentry/tanstackstart-react`, `@sentry/nuxt`). It injects Debug IDs, uploads on production builds, can delete maps after upload, and reads `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN`. Set deliberately: delete maps after upload for public web apps.
+- **Path A, a bundler plugin (preferred):** `@sentry/vite-plugin`, `@sentry/webpack-plugin`, `@sentry/rollup-plugin`, `@sentry/esbuild-plugin`, or a framework wrapper (`withSentryConfig` in `@sentry/nextjs`, plus `@sentry/react-router` and `@sentry/tanstackstart-react` (Svelte/Nuxt branches are skipped under the selected-stack rule)). It injects Debug IDs, uploads on production builds, can delete maps after upload, and reads `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN`. Set deliberately: delete maps after upload for public web apps.
 - **Path B, `sentry-cli` (cli `>= 2.17.0`, SDK `>= 7.47.0`):** for build tools without a plugin. Run `inject` before `upload`; `sourcemaps upload` without `sourcemaps inject` "silently falls back to legacy matching". Integrate it into the CI/CD pipeline.
 
 ```bash
@@ -168,33 +168,7 @@ npx sentry-cli sourcemaps upload \
 
 ### Flutter and Dart
 
-Setup is in [FLUTTER.md](FLUTTER.md#debug-symbols). Build with the flags, then run `sentry_dart_plugin` after each build:
-
-```bash
-# Android
-flutter build apk \
-  --release \
-  --obfuscate \
-  --split-debug-info=build/debug-info \
-  --extra-gen-snapshot-options=--save-obfuscation-map=build/app/obfuscation.map.json
-dart run sentry_dart_plugin
-
-# iOS
-flutter build ipa \
-  --release \
-  --obfuscate \
-  --split-debug-info=build/debug-info \
-  --extra-gen-snapshot-options=--save-obfuscation-map=build/app/obfuscation.map.json
-dart run sentry_dart_plugin
-
-# Web
-flutter build web --release --source-maps
-dart run sentry_dart_plugin
-```
-
-- **Without obfuscation,** Dart frames are generally readable already.
-- **The plugin is configured in the `pubspec.yaml` `sentry:` section** (org, project, upload toggles) and reads `SENTRY_AUTH_TOKEN`. Key names differ across plugin majors and "a misspelled key is ignored rather than reported"; check the plugin docs. The Dart map doesn't fix native crashes and vice versa.
-- **Traps:** release unreadable but debug fine means obfuscation; plugin uploads nothing means missing `--split-debug-info` or `--obfuscate`; frames unchanged means a different build; native still raw means native debug files; web minified means `--source-maps`; config edits with no effect mean the wrong key for the version.
+Use [FLUTTER-SYMBOLS.md](FLUTTER-SYMBOLS.md) for build flags, the Dart plugin, native symbol families, web source maps and upload troubleshooting. The Dart map does not fix native crashes and native debug files do not fix Dart frames; uploads must match the build that shipped. [getsentry/sentry-for-ai, sentry-flutter-sdk and debug-artifact references]
 
 ### Native layers (used by React Native and Flutter)
 
@@ -272,28 +246,7 @@ sentryVitePlugin({
 
 Defaults: `inject`, `create`, `finalize` are `true` and `setCommits` is `{auto: true}`; `deploy` is not set by default. It needs `fetch-depth: 0`; an undetectable name silently creates no release. Escapes: `setCommits: {auto: true, ignoreMissing: true}`, `setCommits: {repo: 'owner/name', commit: '<sha>'}`, `setCommits: false`, `release.vcsRemote`.
 
-**Path B, GitHub Actions:**
-
-```yaml
-- uses: actions/checkout@v4
-  with:
-    fetch-depth: 0          # required: commit association needs history
-
-# ... your build steps here ...
-
-- name: Create Sentry release
-  uses: getsentry/action-release@v3
-  env:
-    SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-    SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-    SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-  with:
-    environment: production
-    release: ${{ github.sha }}   # optional; defaults to the triggering commit SHA
-    sourcemaps: ./dist          # only if you have JS source maps to upload
-```
-
-Wire `SENTRY_RELEASE=${{ github.sha }}` into the build step if you rely on the default. Self-hosted needs `SENTRY_URL`.
+GitHub Actions workflow setup is skipped under the repository's scope rule. Keep the standalone plugin and sentry-cli release paths below; no Actions workflow recipe is imported. [user standing rules; getsentry/sentry-for-ai, release references]
 
 **Path C, `sentry-cli`:**
 

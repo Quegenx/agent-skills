@@ -148,7 +148,7 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [stripe](./skills/backend/stripe/SKILL.md) | Payments, Billing, Connect, Tax, agent tools and operations; canonical fulfillment, Price maintenance, retry corrections, reversals and health metrics. |
 | [revenuecat](./skills/backend/revenuecat/SKILL.md) | Purchases, identity/restore policy, web billing, paywalls, Customer Center, store testing, experiments and webhooks. |
 | [resend](./skills/backend/resend/SKILL.md) | Provider sending/receiving, domains, retries, webhook identity, contacts, automations and tooling. |
-| [react-email](./skills/backend/react-email/SKILL.md) | React email components, styling, rendering, delivery and localization, with a separate visual-editor topic. |
+| [react-email](./skills/backend/react-email/SKILL.md) | React email components, styling, rendering, delivery and localization, with a separate visual-editor topic. Tagged email-design alternatives live in STYLING, with the existing default preserved. |
 | [email-practices](./skills/backend/email-practices/SKILL.md) | Email authentication, delivery, consent, capture, suppression, reliability and accessibility; campaigns route to email-marketing. |
 | [onesignal](./skills/backend/onesignal/SKILL.md) | Messaging setup, identity, permissions, channel-scoped API limits, Journeys and analytics; generic law links to channel owners. |
 | [convex](./skills/backend/convex/SKILL.md) | Functions, auth, operations and native scheduling; kitcn cRPC, ORM, aggregates, React/RSC, HTTP and rate limits. |
@@ -213,12 +213,12 @@ Detailed coverage is in the [Monitoring set README](./skills/monitoring/README.m
 
 | Skill | Covers |
 |---|---|
-| [sentry](./skills/monitoring/sentry/SKILL.md) | Platform SDKs, privacy, version-scoped defaults, Expo Router tracing, logs and diagnostics. |
-| [posthog](./skills/monitoring/posthog/SKILL.md) | Product analytics, flags, experiments, replay, errors, HogQL and data workflows. Current Clerk composition for the Next.js proxy. |
-| [grafana](./skills/monitoring/grafana/SKILL.md) | Dashboards, alerts, telemetry pipelines, current configuration and plugin development. |
-| [k6](./skills/monitoring/k6/SKILL.md) | Load/browser tests, VU isolation, threshold semantics, private HAR handling and compliant access. |
-| [google-analytics](./skills/monitoring/google-analytics/SKILL.md) | GA4, Tag Manager, events, UTM, Consent Mode and tracking verification. |
-| [observability](./skills/monitoring/observability/SKILL.md) | OpenTelemetry traces, metrics, logs, health checks and incident diagnosis. |
+| [sentry](./skills/monitoring/sentry/SKILL.md) | Shared JavaScript and platform SDKs, browser tracing/Replay, Flutter symbols, signals, sampling/privacy and versioned SDK upgrades. |
+| [posthog](./skills/monitoring/posthog/SKILL.md) | SDK setup, analytics/identity, flags, experiments, replay, logs/tracing, source maps, HogQL, governed metrics, warehouse/custom sources and access. |
+| [grafana](./skills/monitoring/grafana/SKILL.md) | Dashboards/alerting, IRM, provisioning, Prometheus/Mimir, Loki, Tempo, Alloy/OTLP/Beyla, application/database monitoring and Faro sessions. |
+| [k6](./skills/monitoring/k6/SKILL.md) | Load/browser tests, scenarios and thresholds, Cloud runs, maintenance and a separate trend-analysis topic; qualified source assets and corrected metrics. |
+| [google-analytics](./skills/monitoring/google-analytics/SKILL.md) | GA4, Tag Manager, tracking plans, UTM, Consent Mode and verification; correct predefined/custom dimensions and consent behavior. |
+| [observability](./skills/monitoring/observability/SKILL.md) | OpenTelemetry instrumentation/collectors, structured logging, health probes, graph diagnosis and incident response, with canonical correlation and privacy rules. |
 
 ## Mobile
 

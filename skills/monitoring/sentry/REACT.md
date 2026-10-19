@@ -1,12 +1,14 @@
 # React
 
-`@sentry/react` instruments a React single-page app (React 16+, React Router v5 to v7 in non-framework mode, TanStack Router, Redux, Vite, webpack). `Sentry.init()` must run before any other code (its own `instrument.ts`, imported first), and the error path follows the React version (`reactErrorHandler()` on the root for React 19+, `<Sentry.ErrorBoundary>` for React below 19 and for scoped fallbacks). This file covers setup, errors, error boundaries, user feedback and the React-only features. Tracing and routers are in [REACT-TRACING.md](REACT-TRACING.md); Replay, logs and profiling in [REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md). React Router framework mode (`@sentry/react-router`) and TanStack Start are in [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md); Next.js is [../sentry/NEXTJS.md](../sentry/NEXTJS.md); a page with no framework is [BROWSER.md](BROWSER.md).
+`@sentry/react` instruments a React single-page app (React 16+, React Router v5 to v7 in non-framework mode, TanStack Router, Redux, Vite, webpack). `Sentry.init()` must run before any other code (its own `instrument.ts`, imported first), and the error path follows the React version (`reactErrorHandler()` on the root for React 19+, `<Sentry.ErrorBoundary>` for React below 19 and for scoped fallbacks). This file covers setup, errors, error boundaries, user feedback and the React-only features. Tracing and routers are in [REACT-TRACING.md](REACT-TRACING.md); Replay, logs and profiling in [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md). React Router framework mode (`@sentry/react-router`) and TanStack Start are in [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md); Next.js is [../sentry/NEXTJS.md](NEXTJS.md); a page with no framework is [BROWSER.md](BROWSER.md).
 
-**Contents:** [Pick the SDK](#pick-the-sdk) · [Versions](#versions) · [Detect, then recommend](#detect-then-recommend) · [Setup](#setup) · [Init options](#init-options) · [dataCollection](#datacollection) · [What is captured automatically](#what-is-captured-automatically) · [React 19: reactErrorHandler](#react-19-reacterrorhandler) · [Error boundaries](#error-boundaries) · [React Router error elements](#react-router-error-elements) · [Manual capture](#manual-capture) · [Context, scopes and breadcrumbs](#context-scopes-and-breadcrumbs) · [Filtering and grouping](#filtering-and-grouping) · [User feedback](#user-feedback) · [Redux](#redux) · [Component names and withProfiler](#component-names-and-withprofiler) · [Integrations](#integrations) · [Source maps](#source-maps) · [Debugging](#debugging) · [Prove it](#prove-it)
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
+**Contents:** [Pick the SDK](#pick-the-sdk) · [Versions](#versions) · [Detect, then recommend](#detect-then-recommend) · [Setup](#setup) · [Init options](#init-options) · [dataCollection](JAVASCRIPT.md#datacollection) · [What is captured automatically](#what-is-captured-automatically) · [React 19: reactErrorHandler](#react-19-reacterrorhandler) · [Error boundaries](#error-boundaries) · [React Router error elements](#react-router-error-elements) · [Manual capture](JAVASCRIPT.md#capture-apis) · [Context, scopes and breadcrumbs](JAVASCRIPT.md#scopes-and-enrichment) · [Filtering and grouping](#filtering-and-grouping) · [User feedback](#user-feedback) · [Redux](#redux) · [Component names and withProfiler](#component-names-and-withprofiler) · [Integrations](#integrations) · [Source maps](#source-maps) · [Debugging](#debugging) · [Prove it](#prove-it)
 
 ## Pick the SDK
 
-- **Next.js** (`next.config.*` or `"next"` in deps): use `@sentry/nextjs`, see [../sentry/NEXTJS.md](../sentry/NEXTJS.md).
+- **Next.js** (`next.config.*` or `"next"` in deps): use `@sentry/nextjs`, see [../sentry/NEXTJS.md](NEXTJS.md).
 - **React Router framework mode** (`@sentry/react-router` or `@react-router/*` in deps): see [REACT-ROUTER-AND-TANSTACK.md](REACT-ROUTER-AND-TANSTACK.md).
 - **Everything else React:** `@sentry/react`, this file. The APIs here reflect `@sentry/react` ≥8.0.0; verify against https://docs.sentry.io/platforms/javascript/guides/react/ before implementing.
 
@@ -77,7 +79,7 @@ cat ../go.mod ../requirements.txt ../Gemfile ../pom.xml 2>/dev/null | head -3
 | `vite.config.*` / `"vite"` | Source maps through `sentryVitePlugin` |
 | `"react-scripts"` (CRA), `craco.config.js` / `"@craco/craco"` | `@sentry/webpack-plugin` in CRACO |
 | `webpack.config.*` / `"webpack"` | Custom webpack |
-| Backend directory | After React, set up the backend: Node.js (Express, Fastify) uses `@sentry/node`, see [../sentry/NODE.md](../sentry/NODE.md) |
+| Backend directory | After React, set up the backend: Node.js (Express, Fastify) uses `@sentry/node`, see [../sentry/NODE.md](NODE.md) |
 
 - **Lead with a proposal, don't ask open-ended questions:** "I recommend setting up Error Monitoring + Tracing + Session Replay. Want me to also add Logging or Profiling?"
 - **Always:** Error Monitoring (the non-negotiable baseline) and Tracing (page load and navigation spans are high-value in an SPA). **Session Replay** for user-facing apps, login flows and checkout pages. **Optional:** Logging (structured log search, log-to-trace correlation) and Profiling (performance-critical apps whose server can send `Document-Policy: js-profiling`).
@@ -170,53 +172,11 @@ module.exports = {
 
 ## Init options
 
-| Option | Type | Default | Notes |
-|---|---|---|---|
-| `dsn` | string | none | Required. The SDK is disabled when empty |
-| `environment` | string | `"production"` | |
-| `release` | string | none | e.g. `"my-app@1.0.0"` or a git SHA |
-| `dataCollection` | object | Version-specific | See below |
-| `tracesSampleRate` | number | none | 0 to 1; `1.0` dev, `0.1` to `0.2` prod |
-| `tracesSampler` | function | none | Overrides the rate |
-| `tracePropagationTargets` | `(string\|RegExp)[]` | see [REACT-TRACING.md](REACT-TRACING.md) | |
-| `replaysSessionSampleRate` | number | none in the SKILL.md table; `0` per the Replay reference | Fraction of all sessions recorded |
-| `replaysOnErrorSampleRate` | number | none in the SKILL.md table; `0` per the Replay reference | Fraction of error sessions recorded |
-| `enableLogs` | boolean | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | |
-| `attachStacktrace` | boolean | `false` | Stack traces on `captureMessage()` |
-| `maxBreadcrumbs` | number | `100` | |
-| `normalizeDepth` | number | `3` | Depth of context and Redux state |
-| `sampleRate` | number | none | Fraction of errors sent |
-| `debug` | boolean | `false` | |
-| `tunnel` | string | none | Proxy URL that gets past ad blockers |
-
-Also: `ignoreErrors`, `allowUrls`, `denyUrls`, `beforeSend`, `beforeBreadcrumb` (this file); `beforeSendTransaction`, `ignoreTransactions`, `beforeSendSpan`, `ignoreSpans`, `parentSpanIsAlwaysRootSpan`, `propagateTraceparent` ([REACT-TRACING.md](REACT-TRACING.md)); `beforeSendLog`, `profileSessionSampleRate`, `profileLifecycle` ([REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md)); `defaultIntegrations` ([Integrations](#integrations)).
+Use [JAVASCRIPT.md](JAVASCRIPT.md#core-sdk-options) for shared option defaults, privacy and hooks; tracing, Replay and sampling keep their dedicated owners. The rows below retain browser-install-specific options from the SDK 10 source. [getsentry/sentry-for-ai, sentry-browser-sdk and sentry-react-sdk]
 
 ## dataCollection
 
-- **Version the privacy contract.** In JavaScript SDK 10 (dataCollection introduced in 10.57.0), omitting the object falls back to `sendDefaultPii`; providing it enables category defaults unless opted out. SDK 11 uses category defaults even when the object is absent and removes `sendDefaultPii`. Set the categories your privacy policy requires explicitly. The old source described SDK 10 fallback as universal. Use `urlQueryParams`, not the old source's `queryParams`. [getsentry/sentry-for-ai, sentry-react-sdk; https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
-
-| Field | Type | Default |
-|---|---|---|
-| `userInfo` | boolean | `true` (user id, email, IP) |
-| `cookies` | `boolean \| { allow: string[] } \| { deny: string[] }` | `true` (sensitive keys filtered) |
-| `httpHeaders.request` / `.response` | same | `true` |
-| `urlQueryParams` | same | `true` |
-| `httpBodies` | `HttpBodyCollectionTarget[]` | `["incomingRequest", "outgoingRequest", "incomingResponse", "outgoingResponse"]` |
-| `genAI.inputs` / `genAI.outputs` | boolean | `true` |
-| `stackFrameVariables` | boolean | `true` |
-| `frameContextLines` | number | `5` |
-
-```typescript
-Sentry.init({
-  dataCollection: {
-    cookies: { allow: ['session', 'user_id'] },
-    httpHeaders: {
-      request: { allow: ['authorization', 'x-request-id'] },
-      response: { deny: ['set-cookie'] },
-    },
-  },
-});
-```
+Use the versioned JavaScript privacy schema in [JAVASCRIPT.md](JAVASCRIPT.md#datacollection). [getsentry/sentry-for-ai, SDK references]
 
 ## What is captured automatically
 
@@ -347,30 +307,11 @@ const router = Sentry.wrapCreateBrowserRouterV6(createBrowserRouter)([
 
 ## Manual capture
 
-- **`Sentry.captureException(error, captureContext?)`:** pass `Error` objects (other values may lack stack traces). Context keys: `level` (`"fatal"|"error"|"warning"|"log"|"info"|"debug"`), `tags`, `extra`, `user`, `fingerprint`, `contexts`. Returns the event id (for `showReportDialog`).
-- **`Sentry.captureMessage(message, level?)`:** level defaults to `"info"`; the second argument may also be a full capture context. For non-exception events: deprecated API calls, suspicious conditions, rate-limit hits.
-- **`Sentry.captureEvent(event)`:** low level, for custom integrations or forwarding legacy loggers; `timestamp` in Unix seconds.
-- **Keep Sentry out of the render path:** wrap calls in `useEffect` so they don't fire on every render, e.g. a `useQuery` error reported with `useEffect(() => { if (error) Sentry.captureException(error, {...}) }, [error, userId])`.
+Keep capture out of React render: the source reports hook/query failures in useEffect, for example `useEffect(() => { if (error) Sentry.captureException(error, {...}) }, [error, userId])`. Use the [shared JavaScript capture, scope and breadcrumb contract](JAVASCRIPT.md#capture-apis). [getsentry/sentry-for-ai, sentry-react-sdk]
 
 ## Context, scopes and breadcrumbs
 
-- **User:** `Sentry.setUser({ id, email, username, ip_address, segment, ...custom })` after authentication completes, not inside `Sentry.init`; `Sentry.setUser(null)` on logout. `ip_address: "{{ auto }}"` infers the IP. With `userInfo` at its default `true` the IP is inferred automatically; opt out with `dataCollection: { userInfo: false }` or "Prevent Storing of IP Addresses" in the project's Security & Privacy settings.
-- **Tags are indexed and searchable:** `Sentry.setTag` / `setTags`. Keys ≤32 chars from `a-z A-Z 0-9 _ . : -`, no spaces; values ≤200 chars, no newlines. Don't overwrite the built-in tags `browser`, `os`, `url`, `environment`, `release`.
-- **Context is not indexed or searchable:** `Sentry.setContext(name, data)`, `setContext(name, null)` removes it. Normalized to 3 levels deep by default (change `normalizeDepth`). The key `type` is reserved. Use tags for anything you filter on.
-- **Extras:** `Sentry.setExtra` / `setExtras` are loosely typed; prefer `setContext` for structured data.
-
-| Scope | API | Lifetime |
-|---|---|---|
-| Global | `Sentry.getGlobalScope()` | Entire process |
-| Isolation | `Sentry.getIsolationScope()` | Current page or request |
-| Current | `Sentry.getCurrentScope()` | Innermost execution (`withScope`) |
-
-- **Merge order is Global, Isolation, Current, then the event; later wins.** Global and isolation scopes only store data and can't capture events. In the browser the isolation scope is effectively global (one per page load, unlike Node where it is forked per request), and every top-level `Sentry.setXxx()` writes there.
-- **`Sentry.withScope(cb)`** forks the current scope so changes don't leak; `scope.addEventProcessor(fn)` works inside it.
-- **`Sentry.configureScope()` is deprecated since SDK v8.** `configureScope is not a function` means replace it with `getIsolationScope()` or `withScope()`.
-- **Automatic breadcrumbs:** `ui.click`, `ui.input`, `navigation` (pushState, popstate, hash), `http` (XHR and fetch: URL, method, status), `console`, `sentry`.
-- **Manual breadcrumbs:** `Sentry.addBreadcrumb({ type, category, message, level, timestamp, data })`; `type` is one of `"default"|"debug"|"error"|"info"|"navigation"|"http"|"query"|"ui"|"user"`, `category` is dot-namespaced, `timestamp` in Unix seconds.
-- **`beforeBreadcrumb(breadcrumb, hint)`** returns `null` to discard: drop clicks on password fields through `hint?.event?.target`, enrich XHR through `hint?.xhr`, drop `console` debug. `maxBreadcrumbs` defaults to 100.
+React context reserves the type key; context and extras are not indexed, while tags are indexed. The source says global/isolation scopes store enrichment and do not capture, and top-level setters write to isolation. Use the [shared JavaScript capture, scope and breadcrumb contract](JAVASCRIPT.md#scopes-and-enrichment). [getsentry/sentry-for-ai, sentry-react-sdk]
 
 ## Filtering and grouping
 
@@ -434,11 +375,11 @@ const store = configureStore({
 - **Defaults:** `breadcrumbsIntegration`, `browserApiErrorsIntegration` (wraps `setTimeout`, `setInterval`, `requestAnimationFrame`, `addEventListener`, `removeEventListener`), `browserSessionIntegration` (Release Health), `dedupeIntegration`, `functionToStringIntegration`, `globalHandlersIntegration`, `httpContextIntegration`, `inboundFiltersIntegration`, `linkedErrorsIntegration`.
 - **Reconfigure** by passing one explicitly, e.g. `Sentry.breadcrumbsIntegration({ console: false, dom: true, fetch: true, history: true, xhr: true })`. **Remove** with the function form `integrations: (integrations) => integrations.filter((i) => i.name !== "Dedupe")`; names include `"Dedupe"`, `"Breadcrumbs"`, `"GlobalHandlers"`, `"LinkedErrors"`, `"HttpContext"`, `"InboundFilters"`. `defaultIntegrations: false` disables all.
 - **Optional:** `httpClientIntegration({ failedRequestStatusCodes: [[400, 499], [500, 599]], failedRequestTargets: [...] })` reports 4xx/5xx responses as errors (opt-in because it may capture PII); `extraErrorDataIntegration()`; `contextLinesIntegration()` (needs source maps); `reportingObserverIntegration()`; `captureConsoleIntegration()` (console to Sentry issues, legacy); `rewriteFramesIntegration()`; `feedbackModalIntegration()`; `feedbackScreenshotIntegration()`.
-- **Add after init** (e.g. after consent): `Sentry.addIntegration(Sentry.replayIntegration({...}))`. Lazy loading is in [REACT-REPLAY-LOGS-PROFILING.md](REACT-REPLAY-LOGS-PROFILING.md).
+- **Add after init** (e.g. after consent): `Sentry.addIntegration(Sentry.replayIntegration({...}))`. Lazy loading is in [BROWSER-REPLAY-AND-PROFILING.md](BROWSER-REPLAY-AND-PROFILING.md).
 
 ## Source maps
 
-Release naming, CI order and the general upload story are in [../sentry/RELEASES-AND-SOURCEMAPS.md](../sentry/RELEASES-AND-SOURCEMAPS.md). The React-specific parts:
+Release naming, CI order and the general upload story are in [../sentry/RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md). The React-specific parts:
 
 - **Wizard (the user runs it; it needs an interactive browser login):** `npx @sentry/wizard@latest -i sourcemaps`. It detects Vite, webpack or CRA, installs the plugin, writes `SENTRY_AUTH_TOKEN` to `.env.sentry-build-plugin` and sets `sourcemap: "hidden"` with `filesToDeleteAfterUpload`.
 - **Debug IDs:** the plugin injects a Debug ID into each `.js` and `.js.map` and uploads the maps; more reliable than release-based matching.
@@ -466,7 +407,7 @@ export default defineConfig({
   Add `reactComponentAnnotation` and `sourcemaps.filesToDeleteAfterUpload: ["./**/*.map", ".*/**/public/**/*.map", "./dist/**/client/**/*.map"]` as needed.
 - **webpack:** `npm install @sentry/webpack-plugin --save-dev`, `devtool: "hidden-source-map"`, `sentryWebpackPlugin({ org, project, authToken, sourcemaps: { filesToDeleteAfterUpload: [...] } })`.
 - **CRA:** use CRACO (`npm install @craco/craco @sentry/webpack-plugin --save-dev`, scripts `craco start` / `craco build`). Ejecting is irreversible; prefer CRACO.
-- **Manual:** `npm install @sentry/cli --save-dev`, then `npx sentry-cli sourcemaps upload --org $SENTRY_ORG --project $SENTRY_PROJECT --auth-token $SENTRY_AUTH_TOKEN ./build`; `.sentryclirc` holds `[defaults] org / project / url = https://sentry.io/`. In GitHub Actions: build, upload (`SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}`), `find ./build -name "*.map" -delete`, deploy.
+- **Manual:** `npm install @sentry/cli --save-dev`, then `npx sentry-cli sourcemaps upload --org $SENTRY_ORG --project $SENTRY_PROJECT --auth-token $SENTRY_AUTH_TOKEN ./build`; `.sentryclirc` holds `[defaults] org / project / url = https://sentry.io/`. The GitHub Actions-specific wiring is skipped; keep the standalone upload command and the [platform-neutral release pipeline](RELEASES-AND-SOURCEMAPS.md#creating-releases-in-ci). [user standing rules; getsentry/sentry-for-ai, sentry-react-sdk]
 - **Token:** `.env.sentry-build-plugin` is loaded automatically by the Vite and webpack plugins; add it to `.gitignore`. Permissions: Project Read & Write, Release Admin. Never commit `SENTRY_AUTH_TOKEN`.
 - **Protect the maps with all three together:** hidden maps, delete after upload, and a server that returns 403 for `.js.map`.
 - **When maps don't apply:** upload before deploying (same CI step); remove webpack `noSources: true`; the plugin only uploads in production builds (`NODE_ENV=production`), so run `npm run build` and check `SENTRY_AUTH_TOKEN`.
@@ -491,7 +432,7 @@ export default defineConfig({
 | Source maps not working | Build in production mode (`npm run build`); verify `SENTRY_AUTH_TOKEN` is set |
 | Minified stack traces | Source maps not uploading: check the plugin config and auth token |
 
-Shared habits (sampling budgets, PII, alert noise) are in [../sentry/PRACTICES.md](../sentry/PRACTICES.md).
+Shared habits (sampling budgets, PII, alert noise) are in [../sentry/PRACTICES.md](PRACTICES.md).
 
 ## Prove it
 

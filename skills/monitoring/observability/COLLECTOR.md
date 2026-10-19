@@ -12,7 +12,7 @@ The SDK's batching span processor has a bounded queue. The old direct-export row
 | One Collector next to the apps | One machine, a monolith, a single compose file | One place to batch, filter, redact and fan out; apps know one OTLP address |
 | An agent Collector on every box plus one gateway | Two or more machines, boxes whose memory is budgeted for real work, browser telemetry, several teams | Local buffering on each box, a single controlled ingest point, backends known only to the gateway |
 
-Moving between them is invisible to the application: it keeps exporting to whatever `OTEL_EXPORTER_OTLP_ENDPOINT` says; only that address changes.
+Moving between these arrangements can keep the same application instrumentation, provided the configured exporter transport matches its receiver. The [Node example](INSTRUMENT.md#the-sdk-loaded-first) explicitly uses HTTP/protobuf; the agent example below enables only gRPC on 4317, so those two displayed configurations cannot be paired directly. The old line said only the endpoint address changes, omitting the transport requirement. [OpenTelemetry HTTP/protobuf exporter](https://github.com/open-telemetry/opentelemetry-js/blob/main/experimental/packages/exporter-trace-otlp-proto/README.md), [existing observability, COLLECTOR.md, Agent and gateway]
 
 ## Agent and gateway
 

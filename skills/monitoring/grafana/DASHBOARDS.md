@@ -362,7 +362,7 @@ Reference: https://grafana.com/docs/grafana/latest/panels-visualizations/query-t
 ]
 ```
 
-- **Server-side expressions:** Math (`$A + $B`, `$A / $B * 100`), Reduce, Resample, Classic conditions. Error rate: `Expression C (Math): $B / $A * 100`. Alert rules use the same expressions ([ALERTING-AND-ONCALL.md](ALERTING-AND-ONCALL.md)).
+- **Server-side expressions:** Math (`$A + $B`, `$A / $B * 100`), Reduce, Resample, Classic conditions. Error rate: `Expression C (Math): $B / $A * 100`. Alert rules use the same expressions ([ALERTING.md](ALERTING.md)).
 
 ## Links and annotations
 
@@ -374,7 +374,7 @@ Reference: https://grafana.com/docs/grafana/latest/panels-visualizations/query-t
 ]
 ```
 
-- **Mark deploys first.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more" ([DIAGNOSE.md](../observability/DIAGNOSE.md#the-thirty-minutes-after-a-deploy)).
+- **Mark deploys first.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more" ([INCIDENT-RESPONSE.md](../observability/INCIDENT-RESPONSE.md#the-thirty-minutes-after-a-deploy)).
 - **Annotation types:** native (manual: Ctrl/Cmd+click a time series panel) and query annotations. Create them through the API too ([PROVISIONING-AND-API.md](PROVISIONING-AND-API.md#annotations)).
 
 Deploys from Loki:

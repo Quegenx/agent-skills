@@ -111,7 +111,7 @@ When enrichment decides the next step after a lead form: "preserve valid submiss
 | Time to complete | Total and by field |
 | Mobile vs. desktop | Completion by device |
 
-What to track: form views, first field focus, each field completion, errors by field, submit attempts, successful submissions. Event names and properties follow [posthog/EVENTS-AND-IDENTITY.md](../../monitoring/posthog/EVENTS-AND-IDENTITY.md#naming-events-and-properties). Field events carry no field values (nothing the visitor typed); the owner's sites track only that a form was sent or failed and "Events carry no personal data" ([landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)).
+What to track: form views, first field focus, each field completion, errors by field, submit attempts, successful submissions. Event names and properties follow [posthog/EVENTS.md](../../monitoring/posthog/EVENTS.md#naming-events-and-properties). Field events carry no field values (nothing the visitor typed); the owner's sites track only that a form was sent or failed and "Events carry no personal data" ([landing-page-ui/DISCOVERY.md](../../frontend/landing-page-ui/DISCOVERY.md)).
 
 ## Audit output
 

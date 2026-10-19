@@ -2,6 +2,8 @@
 
 `@sentry/cloudflare` covers Workers, Pages Functions, Hono on Workers, Durable Objects, Workflows, D1, Queues and cron triggers. It is a different SDK from `@sentry/node` ([NODE.md](NODE.md)), with different defaults. The mechanism that decides most outcomes: you never call `Sentry.init()` yourself. A wrapper (`withSentry`, `sentryPagesPlugin`, the Hono `sentry` middleware, `instrumentDurableObjectWithSentry`, `instrumentWorkflowWithSentry`) initializes per request from `env`, isolates each request in its own scope and flushes through `ctx.waitUntil()`. Code outside a wrapper loses events on short requests, and the SDK needs `AsyncLocalStorage`, so a compatibility flag is required.
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [Versions](#versions) · [Detect and recommend](#detect-and-recommend) · [Compatibility flag](#compatibility-flag) · [Workers](#workers) · [Pages](#pages) · [Hono](#hono) · [Secrets, release and source maps](#secrets-release-and-source-maps) · [Configuration](#configuration) · [Errors](#errors) · [Tracing](#tracing) · [Logs](#logs) · [Crons](#crons) · [Durable Objects](#durable-objects) · [Workflows](#workflows) · [D1](#d1) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## Versions
@@ -147,7 +149,7 @@ export const onRequest = Sentry.sentryPagesPlugin((context) => ({
 
 - **Chain with Sentry first:** `export const onRequest = [ Sentry.sentryPagesPlugin(...), /* more */ ];`.
 - **Errors are captured and re-thrown** (your error responses still work) and flushed through `ctx.waitUntil()`.
-- **Frameworks like SvelteKit on Pages:** `Sentry.wrapRequestHandler({ options, request: event.request, context: event.platform.ctx }, () => resolve(event))`.
+- SvelteKit-on-Pages integration is skipped under the selected-stack rule. [user standing rules; getsentry/sentry-for-ai, sentry-cloudflare-sdk]
 
 ## Hono
 
@@ -196,15 +198,15 @@ export default app;
 | `dsn` | `env.SENTRY_DSN`, read automatically | |
 | `tracesSampleRate` | `env.SENTRY_TRACES_SAMPLE_RATE` (parsed as float) | 0 to 1; 1.0 in dev, lower in production. Without it or `tracesSampler`, no spans are created |
 | `tracesSampler` | | Mutually exclusive with `tracesSampleRate` |
-| `dataCollection` | [Versioned JavaScript schema](REACT.md#datacollection) | Check Cloudflare integration-specific categories and explicit privacy settings |
+| `dataCollection` | [Versioned JavaScript schema](JAVASCRIPT.md#datacollection) | Check Cloudflare integration-specific categories and explicit privacy settings |
 | `sendDefaultPii` | `false` | Legacy |
-| `enableLogs` | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | |
+| `enableLogs` | [Versioned Logs rule](SIGNALS-PRACTICE.md#logs) | |
 | `environment` | `env.SENTRY_ENVIRONMENT` | |
 | `release` | See above | |
 | `debug` | `env.SENTRY_DEBUG` (`"true"` or `"1"`) | |
 | `tunnel` | `env.SENTRY_TUNNEL` | |
 | `beforeSend`, `beforeSendTransaction`, `beforeSendLog` | | |
-| `tracePropagationTargets` | All URLs | Unlike Node's `['localhost', /^\//]` |
+| `tracePropagationTargets` | All URLs | Node server SDKs also propagate all outgoing requests by default; narrow targets deliberately [https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#tracePropagationTargets] |
 | `skipOpenTelemetrySetup` | `false` | `true` opts out of the OpenTelemetry compatibility tracer |
 | `instrumentPrototypeMethods` | `false` | `boolean \| string[]`, for Durable Objects |
 
@@ -232,7 +234,7 @@ export default app;
 
 ## Logs
 
-- **Logger API:** use `Sentry.logger.<level>(message, attributes)` and the `Sentry.logger.fmt` tagged template for parameters, as in [NODE.md](NODE.md#logs). The old Cloudflare source invented a printf-style params array before attributes. Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
+- **Logger API:** use `Sentry.logger.<level>(message, attributes)` and the `Sentry.logger.fmt` tagged template for parameters, as in [SIGNALS-PRACTICE.md](SIGNALS-PRACTICE.md#logs). The old Cloudflare source invented a printf-style params array before attributes. Use the [versioned JavaScript Logs rule](SIGNALS-PRACTICE.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
 - **Console:** the default `consoleIntegration` sends console output to breadcrumbs only; `Sentry.consoleLoggingIntegration({ levels: ["warn", "error"] })` forwards it to Logs.
 - **Logs link to the active trace** when tracing is on; with tracing off they carry no trace link.
 - **Practice:** put searchable data in attributes; use format strings with parameters so Sentry groups similar logs; log what matters (auth, payments, external APIs, errors), not everything, and never in tight loops; keep `console.log` for local debugging; drop debug and trace in production with `beforeSendLog`.
@@ -338,7 +340,7 @@ export const MyDurableObject = Sentry.instrumentDurableObjectWithSentry(
 
 ## Prove it
 
-- **Flag and secret:** `wrangler.toml` has `nodejs_als` or `nodejs_compat`; `wrangler secret list` shows `SENTRY_DSN`; no DSN sits in `[vars]`.
+- **Compatibility and configured DSN:** wrangler has nodejs_als or nodejs_compat and the selected binding supplies the intended public DSN. A secret binding is optional; the old acceptance line incorrectly prohibited DSN vars. Actual auth tokens remain secret. [https://docs.sentry.io/concepts/key-terms/dsn-explainer/#dsn-utilization]
 - **One wrapper, outermost:** the default export is `Sentry.withSentry(...)` (or `sentryPagesPlugin` first in the Pages chain, or `app.use(sentry(...))` first in Hono), never nested.
 - **An error arrives:** a route that throws (like the Hono `/error` example) produces an issue with the `cloud_resource` context; inside the handler `Sentry.isInitialized()` is `true`.
 - **A trace arrives:** one request shows an `http.server` span with `url.full` and `http.response.status_code`, plus child spans for `fetch` and D1 queries.

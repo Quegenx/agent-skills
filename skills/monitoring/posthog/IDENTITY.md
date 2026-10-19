@@ -1,6 +1,6 @@
 # Identity
 
-Identity decides which person each event belongs to. Web and mobile SDKs start with an anonymous distinct ID; `identify` links it to a stable ID you choose, `alias` links two IDs, and `reset` starts a new anonymous person on logout. PostHog merges exactly what you tell it to, so identity resolution is your engineering problem: incoherent IDs make flags flip, experiments double-count, funnels misattribute and replays fragment. The root cause is always the same: two distinct IDs that should be one person aren't linked. Use an identical `distinct_id` string in every environment, and run `identify()` before flag evaluations and conversion events. Events and naming are in [EVENTS-AND-IDENTITY.md](EVENTS-AND-IDENTITY.md); SDK setup is in [SETUP-WEB.md](SETUP-WEB.md), [SETUP-SERVER.md](SETUP-SERVER.md) and [SETUP-MOBILE.md](SETUP-MOBILE.md); SQL over persons is [HOGQL.md](HOGQL.md).
+Identity decides which person each event belongs to. Web and mobile SDKs start with an anonymous distinct ID; `identify` links it to a stable ID you choose, `alias` links two IDs, and `reset` starts a new anonymous person on logout. PostHog merges exactly what you tell it to, so identity resolution is your engineering problem: incoherent IDs make flags flip, experiments double-count, funnels misattribute and replays fragment. The root cause is always the same: two distinct IDs that should be one person aren't linked. Use an identical `distinct_id` string in every environment, and run `identify()` before flag evaluations and conversion events. Events and naming are in [EVENTS.md](EVENTS.md); SDK setup is in [SETUP-WEB.md](SETUP-WEB.md), [SETUP-SERVER.md](SETUP-SERVER.md) and [SETUP-MOBILE.md](SETUP-MOBILE.md); SQL over persons is [HOGQL.md](HOGQL.md).
 
 **Contents:** [How it works](#how-it-works) · [Choosing the distinct ID](#choosing-the-distinct-id) · [Identify](#identify) · [Reset on logout](#reset-on-logout) · [Alias](#alias) · [Across platforms and environments](#across-platforms-and-environments) · [What a merge does](#what-a-merge-does) · [Merge and split by hand](#merge-and-split-by-hand) · [Catch-all IDs](#catch-all-ids) · [Anonymous vs identified events](#anonymous-vs-identified-events) · [Person profiles](#person-profiles) · [Person properties](#person-properties) · [Cookieless tracking](#cookieless-tracking) · [Group analytics](#group-analytics) · [Symptoms](#symptoms) · [Prove it](#prove-it)
 
@@ -120,7 +120,7 @@ useEffect(() => {
 
 ## Alias
 
-- **Use case:** several distinct IDs for one user when the primary one is inaccessible, e.g. the frontend ID isn't available in your backend. It links two IDs going forward, not retroactively: call it when a user signs up to connect their anonymous session with their account.
+- **Use case:** several distinct IDs for one user when the primary one is inaccessible, e.g. the frontend ID isn't available in your backend. It merges past and future events into the same user, subject to alias restrictions; it does not rewrite stored event distinct IDs. The old line said alias linked IDs only going forward. [PostHog, https://posthog.com/docs/product-analytics/identify#alias-assigning-multiple-distinct-ids-to-the-same-user]. Call it when a user signs up to connect their anonymous session with their account.
 
 | SDK | Call |
 |---|---|

@@ -1,10 +1,10 @@
-# Reading graphs and diagnosing incidents
+# Reading monitoring graphs
 
-How to read monitoring graphs and act on what they show: in peacetime, mid-incident and in the postmortem. Building the panels and alerts is in the `grafana` skill ([DASHBOARDS.md](../grafana/DASHBOARDS.md), [ALERTING-AND-ONCALL.md](../grafana/ALERTING-AND-ONCALL.md)).
+How to read monitoring graphs and diagnose the patterns they show. Incident response, deploy observation and postmortems are in [INCIDENT-RESPONSE.md](INCIDENT-RESPONSE.md). Building the panels and alerts is in the `grafana` skill ([DASHBOARDS.md](../grafana/DASHBOARDS.md), [ALERTING.md](../grafana/ALERTING.md)).
 
-Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/server-monitoring-analysis-guide/en/ (the four signals and the change statistic cite the Google SRE book, https://sre.google/sre-book/monitoring-distributed-systems/).
+Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/server-monitoring-analysis-guide/en/ (the four signals cite the Google SRE book, https://sre.google/sre-book/monitoring-distributed-systems/).
 
-**Contents:** [Symptoms first, then causes](#symptoms-first-then-causes) · [Traffic](#traffic) · [Latency](#latency) · [Errors](#errors) · [CPU](#cpu) · [Memory](#memory) · [Pools and queueing](#pools-and-queueing) · [Event-loop servers](#event-loop-servers) · [Bottlenecks and the utilization knee](#bottlenecks-and-the-utilization-knee) · [Queues, backpressure, load shedding](#queues-backpressure-load-shedding) · [Cache hit rate](#cache-hit-rate) · [When two dashboards disagree](#when-two-dashboards-disagree) · [The diagnosis table](#the-diagnosis-table) · [Three kinds of time](#three-kinds-of-time) · [Mid-incident](#mid-incident) · [The thirty minutes after a deploy](#the-thirty-minutes-after-a-deploy) · [Slow decline](#slow-decline) · [The postmortem](#the-postmortem) · [Prove it](#prove-it)
+**Contents:** [Symptoms first, then causes](#symptoms-first-then-causes) · [Traffic](#traffic) · [Latency](#latency) · [Errors](#errors) · [CPU](#cpu) · [Memory](#memory) · [Pools and queueing](#pools-and-queueing) · [Event-loop servers](#event-loop-servers) · [Bottlenecks and the utilization knee](#bottlenecks-and-the-utilization-knee) · [Queues, backpressure, load shedding](#queues-backpressure-load-shedding) · [Cache hit rate](#cache-hit-rate) · [When two dashboards disagree](#when-two-dashboards-disagree) · [The diagnosis table](#the-diagnosis-table) · [Prove it](#prove-it)
 
 ## Symptoms first, then causes
 
@@ -26,7 +26,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 ## Latency
 
 - **The average "erases the shape of the distribution".** A server where every request takes about 100ms and one where most take 30ms but some take 900ms can both average 100ms. P50, P95 and P99 are the values at the 50%, 95% and 99% marks; tail latency is the slow responses around P99.
-- **1% is not small.** At 1,000 req/s, ten requests hit P99 every second, 860,000 a day. When one screen makes about 40 API calls, the chance that all of them avoid P99 is 0.99^40 = 67%: "One user in three experiences tail latency somewhere on the screen."
+- **1% is not small.** At 1,000 req/s, 1% is ten requests per second, or exactly 864,000 per day (`1,000 × 0.01 × 86,400`). For 40 independent calls, each with a 1% tail probability, `0.99^40` is about 66.9% avoiding the tail and `1 - 0.99^40` about 33.1% encountering it. This is the article's illustrative model, not a measured user proportion. The source gave 860,000 without marking rounding and called the result "One user in three" without stating independence. [kciter.so, How to Read Server Monitoring Graphs; arithmetic recomputed from its inputs]
 - **Tail users are not random.** "Heavy, long-time users have more data, so they generate heavier queries and land in the tail more often. P99 is quite possibly the response time your best customers are getting."
 - **Roles:** "P50 is the representative value for user experience, and P95 or P99 should be the basis for alerts and performance targets." "The early signs of an incident almost always appear in P99 first."
 
@@ -57,7 +57,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 ## Pools and queueing
 
 - **Pigeonhole principle:** "If there are n threads, then the moment the number of requests being handled at once exceeds n, some request must wait."
-- **Little's law:** `Requests in flight = arrivals per second × average processing time`. 1,000 req/s × 0.05s = 50 in flight, fine for 200 threads. A slow query that raises processing time to 2s gives 1,000 × 2 = 2,000 in flight, 1,800 of them queued: "Not a single extra request arrived, and yet the server dies." Processing time "is a multiplier". (John Little proved it in 1961; it holds for any stable queueing system with no assumptions about the distributions.)
+- **Little's law relates stable-system averages:** average requests in the system equal the effective arrival rate times average total residence time, including queue wait. At 1,000 req/s and 0.05s total mean time, the average is 50. In the article's exclusive-thread model, 2s service time at 1,000 offered req/s demands 2,000 concurrent service slots; 200 threads provide only `200 / 2 = 100` completions/s. That overload does not establish a stable queue of 1,800 requests. The source used processing time to claim 2,000 in flight and 1,800 queued; keep its overload lesson without presenting offered concurrency demand as a stationary measurement. [kciter.so, How to Read Server Monitoring Graphs; arithmetic recomputed from its inputs], [MIT, Little's Law and a stable system](https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/resources/lecture-22-sliding-window-analysis-littles-law/)
 - **The connection pool runs dry first.** The article cites defaults of 200 for Tomcat's thread pool and 10 for HikariCP's connection pool: with 200 threads sharing 10 connections, "the connection pool runs dry before the thread pool does whenever the DB slows even slightly."
 - **A vertical P99 jump means a pool ran dry.** A queued request's time is its own processing plus everyone ahead of it. "If P99 on a graph didn't degrade gradually but jumped vertically at some point, it is likely that a pool somewhere just ran dry."
 - **Read the slope of active threads,** not the absolute utilization. A steep climb that does not follow traffic means "the cause is usually not the pool itself but a delay somewhere else."
@@ -69,7 +69,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 - **No request thread pool to watch.** On Node or WebFlux/Netty, one long CPU-bound task stops every request in that process ("When the revolving door stops, everything stops"). The key metric is **event loop lag**, "how much later than scheduled each turn of the loop is running" (the runtime metrics in [INSTRUMENT.md](INSTRUMENT.md)).
 - **Read the max or a high percentile, never the average:** one 1-second stall "barely moves an average diluted by normal samples". Compare against your own usual value, not an absolute threshold, and treat "a sustained reading tens of milliseconds above it as a problem."
 - **The usual causes** are "oversized JSON serialization, a regex whose backtracking explodes, or cryptographic work running on the loop". Loop lag spiking with CPU at 100% "is close to certain".
-- **Aggregate per process.** Node scales by process: "Eight processes averaging 40% CPU hides a situation where seven sit at 25% and one is pinned at 100%." Use a per-process maximum over the average, or "better, put per-process event loop lag on the dashboard."
+- **Aggregate per process.** Node scales by process. Seven processes at 25% and one at 100% have a simple equal-weight mean of `(7 × 25 + 100) / 8 = 34.375%`; the source's 40% would require a different aggregation it does not supply. Use a per-process maximum over the average, or "better, put per-process event loop lag on the dashboard." [kciter.so, How to Read Server Monitoring Graphs; arithmetic recomputed from its inputs]
 
 ## Bottlenecks and the utilization knee
 
@@ -105,47 +105,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 
 Whether everything is slow or only some things are slow "cuts the suspect list in half": everything slow is a shared resource (usually the DB or the cache), some things slow is that API's code.
 
-## Three kinds of time
-
-The same dashboard serves three purposes. Peacetime: find where problems will occur. Mid-incident: find the shortest path to resolution. Post-incident: make sure the same incident never happens twice. "Mixing them up is the most common mistake in monitoring."
-
-- **Walk the dashboard in peacetime,** "once a day, five minutes at a time". Learn the usual shape of traffic, the rhythm of the CPU, the everyday P99 and the wobble at each deploy. "If you don't know usual, you can't recognize abnormal either."
-- **Set alert thresholds from that observed baseline, in peacetime.** "Debating that baseline while an incident is underway means you are already late."
-
-## Mid-incident
-
-1. **Triage the scope before the cause:** a full outage, a specific API, region or customer. Scope sets the response level, and it is the first diagnosis (everything slow means a shared resource, partly slow means that code).
-2. **Ask what changed** in the last thirty minutes to a few hours: a deploy, a config change, a feature flag, infrastructure work, a marketing-driven traffic surge. "The prior probability that it is the culprit is overwhelming, so before digging deep into graphs, consider reverting it first."
-3. **Recover first.** "Recovery comes first almost always": rollback, restart, scale out, flag off. The evidence stays in metrics, logs and heap dumps for later.
-4. **Diagnose by hypothesis,** only when the prepared recovery measures don't work and the cause has to be narrowed further. "Don't open twenty graphs and scan for anything that looks spiky. Form a hypothesis instead, like 'if the DB slowed down, connection waits should have risen,' then open the one graph that checks it, and discard or adopt."
-5. **Tell customers in parallel.** The public side (a severity tier, one spokesperson and channel of record, a holding statement with no unconfirmed cause or scope, affected customers before social and press, a stated next-update time) runs from [../../marketing/public-relations/CRISIS.md](../../marketing/public-relations/CRISIS.md) [coreyhaines31/marketingskills, public-relations].
-
-## The thirty minutes after a deploy
-
-- **Changes cause most outages.** "Roughly 70% of outages originate in changes to a running system" (SRE book). A deploy is the biggest and most frequent change, so "The thirty minutes after a deploy are the time to read the graphs with the most concentration."
-- **Mark deploys on the graphs.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more." (Grafana annotations: [DASHBOARDS.md](../grafana/DASHBOARDS.md#links-and-annotations).)
-- **Some wobble is expected.** The JIT is not warm, local caches are empty and pools are being re-established, so "P99 jumping to double or triple right after a deploy is not, in itself, an anomaly." Read the direction: a spike that slopes down over minutes is warmup, so wait; a spike that sticks or worsens means consider a rollback.
-- **Agree on rollback criteria in advance,** for example "if the error rate exceeds X% after a deploy, or P99 shows no recovery trend within 10 minutes, roll back without debate." "A rollback is a way to resolve the problem decisively within minutes. The cause can be found after the system is stable."
-- **Reduce the wobble** with a **slow start** (ramp traffic up gradually after a deploy) or a **warmup stage** that sends priming requests before real traffic to heat the JIT, caches and pools. "The effect is especially large on the JVM, which runs several times slower until the JIT compiler has optimized the frequently executed code."
-- **Split canary metrics by version label.** During a gradual rollout "the metrics of the two versions can blend together"; compare canary and existing "at the same time, under the same traffic conditions."
-
-## Slow decline
-
-A 1%-a-day decline produces zero alerts over four weeks. "An alert is a way to catch momentary problems, not a way to find slow decline. Comparison is." Draw last week's same-weekday P99 on top of today's. A trend opens hypotheses: traffic growth, a memory leak, a slower DB, a slipping cache hit rate.
-
-## The postmortem
-
-- **Reconstruct four timestamps:** first trace on a graph, alert fired, response began, service recovered.
-- **First trace to alert is the detection gap** ("the warning sign was there well before the alert"). The postmortem's first question is whether that sign can become an alert.
-- **Alert to recovery is the speed of response.** For example, 30 minutes lost for lack of a deploy marker is an action item.
-- **Reach causation, not correlation.** Mid-incident analysis stops at correlation ("we reverted the deploy and the incident ended"); the postmortem asks "why was that deploy a problem, and why didn't review catch it?" Go one layer past the surface cause: not "because of a slow query" but "because there was no procedure for checking the execution plan of queries against large tables."
-- **Never write a person as the cause.** "The moment a person's name goes into the cause field, whoever is standing there during the next incident will hide it or blame themselves … A postmortem that blames people only makes the next incident longer." Record only the context: "in this situation, this was the judgment that had to be made."
-- **The output is "a list of changes that make the next incident shorter":** panels, alerts, rollback criteria agreed in advance, root-cause removal.
-- **The public postmortem is a separate document.** For P0 and P1 public crises, publish a postmortem (repo mapping of the source: Tier 4 to P0, Tier 3 to P1, Tier 2 to P2, Tier 1 to P3) with a summary, timeline, a specific root cause ("Avoid vague phrases like 'a configuration issue.'"), impact, specific verifiable changes, what went well and what you'd do differently; it keeps the no-person rule above. Template: [../../marketing/public-relations/CRISIS-STATEMENTS.md](../../marketing/public-relations/CRISIS-STATEMENTS.md#public-postmortem) [coreyhaines31/marketingskills, public-relations].
-
 ## Prove it
 
 - The service dashboard shows traffic, latency percentiles (P50 and P99, not only the average), error rate split into 4xx and 5xx, and saturation, with deploy markers on the graphs.
 - Every count panel (errors, slow queries) is divided by traffic.
-- Rollback criteria for a deploy are written down before the deploy.
-- The postmortem records the four timestamps, names the detection gap, has no person in the cause field, and ends in a list of changes.

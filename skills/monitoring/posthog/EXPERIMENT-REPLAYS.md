@@ -2,7 +2,7 @@
 
 The qualitative side of an experiment: browsing session replays per variant, running a Replay Vision scanner that watches recordings of each variant, and a short survey that asks users what they thought. Metrics say which variant won; these say how it landed. Two rules decide most outcomes: the variant must come from the flag and the exposure data, never from a model or a guess, and anything shown to only one variant (a survey, a prompt naming the variant) becomes part of the treatment. When qualitative evidence disagrees with the metrics, the metrics win and the qualitative evidence explains. The health workflow is [EXPERIMENT-HEALTH.md](EXPERIMENT-HEALTH.md); replay itself is [SESSION-REPLAY.md](SESSION-REPLAY.md); surveys are [SURVEYS.md](SURVEYS.md).
 
-**Contents:** [Browse replays per variant](#browse-replays-per-variant) · [Replay Vision experiment scanners](#replay-vision-experiment-scanners) · [Size the scanner](#size-the-scanner) · [Create disabled, preview, then enable](#create-disabled-preview-then-enable) · [Read results per variant](#read-results-per-variant) · [Scanner limits](#scanner-limits) · [Feedback surveys](#feedback-surveys) · [Read survey responses per variant](#read-survey-responses-per-variant) · [Prove it](#prove-it)
+**Contents:** [Browse replays per variant](#browse-replays-per-variant) · [Replay Vision experiment scanners](#replay-vision-experiment-scanners) · [Size the scanner](#size-the-scanner) · [Create disabled, preview, then enable](#create-disabled-preview-then-enable) · [Read results per variant](#read-results-per-variant) · [Scanner limits](#scanner-limits) · [Feedback surveys](#feedback-surveys) · [Read survey responses per variant](#read-survey-responses-per-variant) · [Source contract to verify](#source-contract-to-verify) · [Prove it](#prove-it)
 
 ## Browse replays per variant
 
@@ -217,6 +217,10 @@ LIMIT 500  -- 500 rows back means the list is cut: run it again with OFFSET 500
 
 - **Read `respondents`, not `responses`:** partial responses span several events; the backend merges them and the raw count doesn't.
 - **Caveats:** the split means "the flag was active when they answered", not "enrolled"; respondents are a self-selected few percent, so their answers are hypotheses; when they disagree with the metrics, the metrics win and the survey explains.
+
+## Source contract to verify
+
+The size-scanner calculation subtracts elapsed age from `recommended_running_time`; [EXPERIMENT-HEALTH.md](EXPERIMENT-HEALTH.md) and [EXPERIMENT-SIGNIFICANCE.md](EXPERIMENT-SIGNIFICANCE.md) describe cases where that field is already days remaining. Confirm the field's origin before using this arithmetic; do not silently choose one interpretation. [PostHog skills, EXPERIMENT-REPLAYS.md; EXPERIMENT-HEALTH.md; EXPERIMENT-SIGNIFICANCE.md]
 
 ## Prove it
 

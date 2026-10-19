@@ -8,7 +8,7 @@ Two questions with different consequences, so two endpoints:
 | On failure | The orchestrator restarts the process | The load balancer stops sending it requests until it passes again |
 | Checks | Only the process itself: it answers. No dependencies | The dependencies a request needs: database, cache, broker, with short timeouts |
 
-**Why the split matters:** if liveness checks the database, a 30-second database blip restarts every instance at once, and they come back to a still-down database and restart again. Readiness takes them out of rotation and puts them back without a restart. Startup is readiness too: an instance is not ready until migrations, caches and connections are warmed.
+**Why the split matters:** if liveness checks the database, a 30-second database blip restarts every instance at once, and they come back to a still-down database and restart again. Readiness takes them out of rotation and puts them back without a restart. Readiness can gate traffic while migrations, caches and connections initialize. Kubernetes also has a distinct startup probe: it delays liveness/readiness probes until startup succeeds, and failure can restart the container according to its restart policy. The old line equated startup with readiness. [Kubernetes probe types](https://kubernetes.io/docs/concepts/workloads/pods/probes/)
 
 ```ts
 app.get("/health/live", (_req, res) => res.status(200).send("ok"));

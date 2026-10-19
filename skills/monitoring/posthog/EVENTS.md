@@ -231,10 +231,10 @@ left join big_events on big_events.distinct_id = sb_users.email
 - **Events not appearing:** point `api_host` at a webhook.site URL to see what the SDK sends; decode the base64 `data=` payload for support tickets.
 - **Debug mode:** `posthog.debug()` or `debug(true)` logs every PostHog call to the console; URL `?__posthog_debug=true` does the same without a code change. A common pattern is `debug` true only in local development.
 - **Bots are blocked by default:** googlebot, bingbot, gptbot, ahrefsbot, semrushbot and more.
-- **Automated browsers send nothing:** with `navigator.webdriver` true or `HeadlessChrome` in the user agent or brands (Playwright, Puppeteer, Selenium), the SDK loads and flags and identify work, but event requests never leave the page. `?__posthog_debug=true` shows "likely bot". To test, override the user agent, `navigator.webdriver` and `navigator.userAgentData` before page scripts run.
+- **Automated browsers send nothing:** with `navigator.webdriver` true or `HeadlessChrome` in the user agent or brands (Playwright, Puppeteer, Selenium), the SDK loads and flags and identify work, but event requests never leave the page. `?__posthog_debug=true` shows "likely bot". Do not bypass bot detection. [User standing safety instruction]
 - **A property disappears from filters:** too many unique property names, so new definitions are rate limited. Stop interpolating names.
 - **`$set` values not filterable on events:** they aren't stored on events; query person properties (see [IDENTITY.md](IDENTITY.md#person-properties)).
-- **Missing config must not break the app:** read keys optionally, guard init and capture behind their presence, keep build and boot working with no PostHog env set. In development fail loudly with "<VAR> variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once <VAR> is configured"; production stays a no-op.
+- **Missing configuration:** follow [the setup commandment](SETUP-WEB.md#the-commandments).
 
 ## Prove it
 
@@ -242,4 +242,4 @@ left join big_events on big_events.distinct_id = sb_users.email
 - The Activity tab (refreshes every 30 seconds) shows each new event; no event or property name contains an interpolated value.
 - Every growth event (`user_signed_up` and the like) arrives from the backend, not only from autocapture.
 - An event in an internal-users-filtered insight from `localhost` is excluded; one from production is kept.
-- A Playwright or headless run is expected to send no events; if a test needs them, the user agent and `navigator.webdriver` overrides are in place.
+- A Playwright or headless run is expected to send no events; do not bypass bot detection. [User standing safety instruction]

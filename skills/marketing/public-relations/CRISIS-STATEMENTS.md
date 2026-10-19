@@ -118,7 +118,7 @@ Issuing the refunds and credits in billing code is [../../backend/stripe/SKILL.m
 
 ## Public postmortem
 
-[coreyhaines31/marketingskills, public-relations] For P1 and P0, published once the crisis is resolved and the root cause confirmed. The internal postmortem it draws on (four timestamps, the detection gap, no person as the cause) is [../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#the-postmortem); the public one keeps that rule too.
+[coreyhaines31/marketingskills, public-relations] For P1 and P0, published once the crisis is resolved and the root cause confirmed. The internal postmortem it draws on (four timestamps, the detection gap, no person as the cause) is [../../monitoring/observability/INCIDENT-RESPONSE.md](../../monitoring/observability/INCIDENT-RESPONSE.md#the-postmortem); the public one keeps that rule too.
 
 ```
 # [Incident name]: Postmortem

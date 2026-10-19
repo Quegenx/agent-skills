@@ -2,6 +2,8 @@
 
 `@sentry/nextjs` instruments a Next.js 13+ app (App Router and Pages Router) across three runtimes: the browser, the Node.js server and the Edge. Each runtime has its own init file and its own configuration, so most outcomes come down to whether all three files exist, whether `instrumentation.ts` loads the right one for `NEXT_RUNTIME`, and whether an error reaches Sentry at all: Next.js error boundaries and swallowed `try/catch` blocks stop errors before the SDK sees them. This file covers setup and error monitoring; tracing, Session Replay, logs, metrics, profiling, crons and AI monitoring are in [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md). Releases and source map upload in depth are in [RELEASES-AND-SOURCEMAPS.md](RELEASES-AND-SOURCEMAPS.md); sampling, PII and noise practices that apply to every platform are in [PRACTICES.md](PRACTICES.md). Vendor-neutral OpenTelemetry is the [observability](../observability/SKILL.md) skill.
 
+**JavaScript version boundary:** retained vendor examples target the stated SDK 10 era source unless marked 11; read the [SDK 11 migration](UPGRADE.md#v10-to-v11) before applying them to 11. Native Flutter/RN SDK versions are separate. [https://docs.sentry.io/platforms/javascript/migration/v10-to-v11/]
+
 **Contents:** [Versions](#versions) · [Detect the project](#detect-the-project) · [Pick the features](#pick-the-features) · [Setup with the wizard](#setup-with-the-wizard) · [Setup by hand](#setup-by-hand) · [The three runtimes](#the-three-runtimes) · [next.config and withSentryConfig](#nextconfig-and-withsentryconfig) · [Init options and environment variables](#init-options-and-environment-variables) · [What is captured automatically](#what-is-captured-automatically) · [Capture APIs](#capture-apis) · [Error boundaries](#error-boundaries) · [Server-side capture](#server-side-capture) · [Scopes and enrichment](#scopes-and-enrichment) · [Breadcrumbs](#breadcrumbs) · [Filtering, fingerprints and event processors](#filtering-fingerprints-and-event-processors) · [Companion backend](#companion-backend) · [Debugging](#debugging) · [Source conflicts](#source-conflicts) · [Prove it](#prove-it)
 
 ## Versions
@@ -226,7 +228,7 @@ export default withSentryConfig(nextConfig, {
 | `widenClientFileUpload` | boolean | Upload more client files for better stack traces |
 | `tunnelRoute` | string | API route that proxies events past ad-blockers, e.g. `"/monitoring"` |
 | `silent` | boolean | `!process.env.CI` recommended |
-| `webpack.treeshake.*` | object | Webpack only, not Turbopack (see [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md#session-replay)) |
+| `webpack.treeshake.*` | object | Webpack only, not Turbopack (see [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md#bundle-size-control-and-csp)) |
 | `automaticVercelMonitors` | boolean | Vercel Cron monitors, Pages Router only (see [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md#crons)) |
 
 - **Exclude the tunnel route from middleware.** Next.js 16+ uses `proxy.ts`, earlier versions `middleware.ts`; the pattern is the same.
@@ -253,12 +255,12 @@ export const config = {
 | `replaysOnErrorSampleRate` | number | `1.0` (see [conflicts](#source-conflicts)) | Fraction of error sessions recorded |
 | `dataCollection` | object | Version-specific, see below | Categories `userInfo`, `cookies`, `httpHeaders`, `httpBodies`, `urlQueryParams`, `genAI` |
 | `includeLocalVariables` | boolean | `false` | Server only |
-| `enableLogs` | boolean | [Versioned Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs) | Sentry Logs |
+| `enableLogs` | boolean | [Versioned Logs rule](SIGNALS-PRACTICE.md#logs) | Sentry Logs |
 | `environment` | string | auto | |
 | `release` | string | auto | Commit SHA or version tag |
 | `debug` | boolean | `false` | Logs SDK activity to the console |
 
-- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](REACT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
+- **Privacy:** Use the [canonical JavaScript privacy schema and version distinction](JAVASCRIPT.md#datacollection). The old source applied omitted-object fallback semantics without the required SDK version boundary. [https://docs.sentry.io/platforms/javascript/configuration/options/#dataCollection]
 
 | Variable | Runtime | Purpose |
 |---|---|---|
@@ -550,7 +552,7 @@ export async function submitForm(formData: FormData) {
 - **Look for a backend:** `../backend ../server ../api ../services`, `go.mod`, `requirements.txt` or `pyproject.toml`, `Gemfile`, `pom.xml` or `build.gradle`. A Node.js backend (Express, Fastify, Hapi) uses `@sentry/node`: https://docs.sentry.io/platforms/javascript/guides/express/.
 - **Connecting frontend and backend with the same DSN or linked projects enables distributed tracing** (see [NEXTJS-FEATURES.md](NEXTJS-FEATURES.md#distributed-tracing)).
 
-**JavaScript Logs defaults:** Use the [versioned JavaScript Logs rule](REACT-REPLAY-LOGS-PROFILING.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
+**JavaScript Logs defaults:** Use the [versioned JavaScript Logs rule](SIGNALS-PRACTICE.md#logs); the old source incorrectly described every version as opt-in. [https://docs.sentry.io/platforms/javascript/logs/]
 
 ## Debugging
 

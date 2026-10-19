@@ -1,6 +1,6 @@
 # Proxy and privacy
 
-Two things decide how much of your real traffic PostHog sees and whether you may keep it. Ad and tracking blockers block known analytics domains, so routing the SDK through your own (sub)domain typically raises captured events by 10 to 30%; it isn't needed to start but is recommended before production. And you, as controller, decide what is collected and when: PostHog provides opt-in and opt-out, cookieless mode, EU hosting, transformations and deletion, and on opt-out you must stop all capture and processing. Init options are in [CONFIG-WEB.md](CONFIG-WEB.md); framework setup in [SETUP-WEB.md](SETUP-WEB.md) and [SETUP-NEXTJS.md](SETUP-NEXTJS.md); replay masking in [SESSION-REPLAY.md](SESSION-REPLAY.md).
+Proxy routing determines where SDK requests go; you, as controller, decide what is collected and when: PostHog provides opt-in and opt-out, cookieless mode, EU hosting, transformations and deletion, and on opt-out you must stop all capture and processing. Init options are in [CONFIG-WEB.md](CONFIG-WEB.md); framework setup in [SETUP-WEB.md](SETUP-WEB.md) and [SETUP-NEXTJS.md](SETUP-NEXTJS.md); replay masking in [SESSION-REPLAY.md](SESSION-REPLAY.md).
 
 **Contents:** [Proxy: how it works](#proxy-how-it-works) · [Managed proxy](#managed-proxy) · [Your own proxy](#your-own-proxy) · [Next.js](#nextjs) · [Vercel](#vercel) · [Cloudflare](#cloudflare) · [Vite dev proxy](#vite-dev-proxy) · [Proxy troubleshooting](#proxy-troubleshooting) · [Network allowlists](#network-allowlists) · [Keys, hosting and agreements](#keys-hosting-and-agreements) · [Consent](#consent) · [Cookieless mode](#cookieless-mode) · [Collection controls](#collection-controls) · [Storage, transformations and deletion](#storage-transformations-and-deletion) · [Prove it](#prove-it)
 
@@ -16,11 +16,9 @@ posthog.init("<ph_project_token>", {
 });
 ```
 
-- **Names blockers catch:** avoid the subdomains `analytics`, `tracking`, `telemetry`, `posthog`, `ph` and the paths `/analytics`, `/posthog`, `/ph`; use `/e` or `/ingest`. Custom paths per endpoint: `rewriteRequestPath` ([CONFIG-WEB.md](CONFIG-WEB.md)).
 - **Flags on their own host:** `flags_api_host` sends flag requests through a separate proxy host, so blocking analytics doesn't block flags.
 - **Strip credentials.** A proxy forwards all headers, cookies included, by default: delete `cookie` and `authorization`, or use `persistence: 'localStorage'`. Ingestion authenticates with the project token in the body.
 - **What PostHog asks blockers to block:** only `https://us.i.posthog.com/i/v0/e` and `https://eu.i.posthog.com/i/v0/e`, not `/flags` or `*-assets.i.posthog.com/static/`, which sites need to work.
-- **DNS uncloaking** of a CNAME proxy is only possible at the DNS level (NextDNS, Pi-hole); extensions like uBlock Origin can't do it.
 
 ## Managed proxy
 
@@ -74,35 +72,7 @@ module.exports = nextConfig
 
 Use it when rewrites return 503 or 400, or when you need to modify headers. Next.js 16 renamed `middleware.js` to `proxy.js` (export `proxy`); Next.js 15 and earlier use `middleware.js` with `middleware`; codemod `npx @next/codemod@canary middleware-to-proxy .`. Requires Next.js 12.2+; the file sits at the project root beside `app` or `pages`.
 
-```javascript
-import { NextResponse } from 'next/server'
-
-export function proxy(request) {
-  const url = request.nextUrl.clone()
-  const hostname = url.pathname.startsWith('/yourpath/static/') || url.pathname.startsWith('/yourpath/array/')
-    ? 'us-assets.i.posthog.com'
-    : 'us.i.posthog.com'
-
-  const requestHeaders = new Headers(request.headers)
-  requestHeaders.set('host', hostname)
-  // Remove cookies and auth headers before forwarding to PostHog
-  requestHeaders.delete('cookie')
-  requestHeaders.delete('authorization')
-
-  url.protocol = 'https'
-  url.hostname = hostname
-  url.port = '443'
-  url.pathname = url.pathname.replace(/^\/yourpath/, '')
-
-  return NextResponse.rewrite(url, {
-    headers: requestHeaders,
-  })
-}
-
-export const config = {
-  matcher: '/yourpath/:path*',
-}
-```
+- **Forward request headers through the request override.** After removing `cookie` and `authorization`, pass the sanitized headers through `request.headers` in the rewrite options; top-level `headers` sets response headers. The old example passed the request headers as top-level `headers`, so it did not implement the claimed upstream sanitization. [Next.js, https://nextjs.org/docs/app/api-reference/functions/next-response#next]
 
 - **Still set `skipTrailingSlashRedirect: true`** in `next.config.js`.
 - **With current Clerk,** compose the proxy by returning the other middleware from the `clerkMiddleware()` callback, using framework path matching for non-auth routing. Enforce authorization at the resources that need it. The old line used `authMiddleware`, `beforeAuth` and `ignoredRoutes`; current composition is documented at https://clerk.com/docs/reference/nextjs/clerk-middleware.
@@ -190,9 +160,10 @@ export default {
 };
 ```
 
-- **Use a custom domain** (for example `e.yourdomain.com`), not `*.workers.dev`, which is blocked.
+- **Custom domains:** use the domain configured for your approved first-party routing; do not choose names or domains to evade tracking blockers. [User standing safety instruction]
 - **Buffer the body** with `await request.arrayBuffer()`, or custom POST events go missing.
-- **Size limits on the free plan:** 10MB request, 50MB response; events are up to 1MB, recordings up to 64MB per message.
+- **Workers limits:** the Cloudflare Free account plan permits a 100MB request body; response bodies have no enforced size limit. The old line said 10MB request and 50MB response. Cache object limits are separate. [Cloudflare, https://developers.cloudflare.com/workers/platform/limits#request-and-response-limits]
+- **PostHog message limits from the proxy guide:** events are up to 1MB, recordings up to 64MB per message.
 - **SSL mode Full or Full (strict).** Flexible gives a 301, then a CORS error.
 - **DNS plus Page Rules (Enterprise):** CNAME `e` to `us-proxy-direct.i.posthog.com` (proxied, orange cloud), and Host Header Override rules in this order: `/static/*` and `/array/*` to `us-assets.i.posthog.com`, `/*` to `us-proxy-direct.i.posthog.com` (else 403).
 

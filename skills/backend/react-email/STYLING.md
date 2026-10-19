@@ -2,7 +2,7 @@
 
 Email clients support a narrow, uneven slice of CSS: some strip `<style>` tags, some ignore `rem`, flexbox, grid, media queries and web fonts. React Email's `Tailwind` component bridges this by converting classes into inline styles at render time, which is why the rules below are about what can be inlined: utilities that resolve to one class lookup work; complex selectors, `hover:` and responsive or theme variants either don't inline or aren't reliable in clients. Without Tailwind, use inline `style` props.
 
-**Contents:** [Tailwind or inline styles](#tailwind-or-inline-styles) · [How the Tailwind component works](#how-the-tailwind-component-works) · [What doesn't work](#what-doesnt-work) · [Required classes and borders](#required-classes-and-borders) · [Layout, typography and images](#layout-typography-and-images) · [Brand config](#brand-config) · [Dark mode](#dark-mode) · [Client support caveats](#client-support-caveats) · [Tailwind changes by version](#tailwind-changes-by-version) · [Prove it](#prove-it)
+**Contents:** [Tailwind or inline styles](#tailwind-or-inline-styles) · [How the Tailwind component works](#how-the-tailwind-component-works) · [What doesn't work](#what-doesnt-work) · [Required classes and borders](#required-classes-and-borders) · [Layout, typography and images](#layout-typography-and-images) · [Email design alternatives](#email-design-alternatives) · [Brand config](#brand-config) · [Dark mode](#dark-mode) · [Client support caveats](#client-support-caveats) · [Tailwind changes by version](#tailwind-changes-by-version) · [Prove it](#prove-it)
 
 ## Tailwind or inline styles
 
@@ -86,6 +86,22 @@ Email clients support a narrow, uneven slice of CSS: some strip `<style>` tags, 
   />
   ```
 - **Custom fonts:** use `Font` with a web font URL and a fallback ([COMPONENTS.md](COMPONENTS.md#document-components)).
+
+## Email design alternatives
+
+- **Existing React Email default:** the [layout above](#layout-typography-and-images) uses a white centered container on gray. Keep this existing source rule unless the user selects the alternative. [existing React Email, STYLING.md, Layout typography and images]
+- **PostHog source alternative:** the source below discourages the centered white card on gray and prescribes tone-led layout. This generic source disagreement remains explicit. [existing PostHog, EMAIL-TEMPLATES.md, Design guidelines]
+
+React Email's authoring colors remain semantic classes from [Brand config](#brand-config); Tailwind converts styles for the rendered email. PostHog's literal-hex rule belongs to its exported design. The Liquid fallback clause below applies to [PostHog workflow templates](../../monitoring/posthog/EMAIL-TEMPLATES.md), while React Email uses [typed template props](SKILL.md#the-rules). [existing React Email, STYLING.md and SKILL.md], [existing PostHog, EMAIL-TEMPLATES.md]
+
+[existing PostHog, EMAIL-TEMPLATES.md, Design guidelines]
+
+- **Decide first:** purpose and audience (a transactional receipt, a product announcement, a win-back campaign and onboarding each warrant different energy); one tone, executed precisely (brutally minimal, editorial, luxury, playful, industrial; intentionality beats intensity); the real brand (pull colors, voice and logo from the sender's product or site, and mine a given URL for palette and typography); one memorable thing, not five.
+- **Typography:** hierarchy through size, weight and color contrast, not font variety: one display treatment for the headline (large, tight line-height, heavy weight) with padding above and below; body 15 to 17px with 1.5 to 1.6 line-height; line length about 35em. Web-safe stacks with character: `Georgia, 'Times New Roman', serif` (editorial), `'Trebuchet MS', Tahoma, sans-serif` (friendly), `'Courier New', monospace` (technical). Choose to match the tone. Custom fonts via `<link>`/`@font-face` render in Apple Mail and only partially elsewhere; use them as enhancement with a fallback stack that still fits.
+- **Color:** a dominant color, one sharp accent for the CTA, neutrals for text (evenly spread timid palettes read as template default); literal hex (no CSS variables), with a palette comment at the top. Body text contrast at least 4.5:1. Test on white and dark backgrounds: many clients force dark mode and invert naive black-on-white.
+- **Layout:** asymmetry and overlap are mostly unavailable in table layout, so get interest from generous whitespace, full-bleed color sections and strong alignment. Vary the rhythm (a full-width color band header, padded white content, a tight dark footer), not a uniform 20px. One column; side-by-side cells rare, content-justified, and degrading acceptably when stacked. A bulletproof CTA is a padded `<td>` with `bgcolor`, border-radius and an inline-styled `<a>`. Solid `bgcolor` sections, a 4px accent top border and spacer rows are the reliable atmosphere tools; gradients, background images and shadows are enhancement only. Add a real text preheader (hidden with inline styles) written like ad copy, so the client doesn't scrape your header nav.
+- **Avoid:** a centered white card on gray, a purple gradient header, Arial everywhere, three equal feature columns with stock icons, a pastel palette, "Hi {name}," as the only personalization. If the draft resembles that, restart from the tone decision; don't polish it.
+- **Quality pass before saving:** every text-block element styled inline, consistent palette values, alt text on images; the squint test on the rendered preview (headline, key message, CTA); Liquid `| default:` fallbacks so no reader sees a blank; a plain-text version carrying the full message, not a stub.
 
 ## Brand config
 
@@ -172,3 +188,4 @@ Email clients support a narrow, uneven slice of CSS: some strip `<style>` tags, 
 - Templates use semantic brand classes, no `bg-[#...]` brand colors.
 - Text contrast is at least 4.5:1, and the email reads correctly in the preview's dark mode switcher.
 - The rendered HTML is under 102KB, and the compatibility warnings are clear for the clients you target.
+- When the PostHog design alternative is selected, the rendered preview passes its inline-style, palette, alt-text, headline/message/CTA and complete plain-text checks; its Liquid fallback requirement remains scoped to PostHog templates. [existing PostHog, EMAIL-TEMPLATES.md, Design guidelines]

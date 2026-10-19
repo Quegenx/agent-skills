@@ -2,7 +2,7 @@
 
 Email templates in the PostHog workflows library feed broadcast campaigns and `function_email` workflow steps. You author the template's design JSON with Liquid personalization, save it over MCP, and round-trip edit it. How a step references a template is in [WORKFLOWS.md](WORKFLOWS.md#function_email).
 
-**Contents:** [Authoring](#authoring) · [Create](#create) · [Edit](#edit) · [Images](#images) · [Unlayer design JSON](#unlayer-design-json) · [Design guidelines](#design-guidelines) · [Prove it](#prove-it)
+**Contents:** [Authoring](#authoring) · [Create](#create) · [Edit](#edit) · [Images](#images) · [Unlayer design JSON](#unlayer-design-json) · [Design guidelines](../../backend/react-email/STYLING.md#email-design-alternatives) · [Prove it](#prove-it)
 
 ## Authoring
 
@@ -134,12 +134,7 @@ Minimal working example (one row, one column, one `text` block; adapted from [un
 
 ## Design guidelines
 
-- **Decide first:** purpose and audience (a transactional receipt, a product announcement, a win-back campaign and onboarding each warrant different energy); one tone, executed precisely (brutally minimal, editorial, luxury, playful, industrial; intentionality beats intensity); the real brand (pull colors, voice and logo from the sender's product or site, and mine a given URL for palette and typography); one memorable thing, not five.
-- **Typography:** hierarchy through size, weight and color contrast, not font variety: one display treatment for the headline (large, tight line-height, heavy weight) with padding above and below; body 15 to 17px with 1.5 to 1.6 line-height; line length about 35em. Web-safe stacks with character: `Georgia, 'Times New Roman', serif` (editorial), `'Trebuchet MS', Tahoma, sans-serif` (friendly), `'Courier New', monospace` (technical). Choose to match the tone. Custom fonts via `<link>`/`@font-face` render in Apple Mail and only partially elsewhere; use them as enhancement with a fallback stack that still fits.
-- **Color:** a dominant color, one sharp accent for the CTA, neutrals for text (evenly spread timid palettes read as template default); literal hex (no CSS variables), with a palette comment at the top. Body text contrast at least 4.5:1. Test on white and dark backgrounds: many clients force dark mode and invert naive black-on-white.
-- **Layout:** asymmetry and overlap are mostly unavailable in table layout, so get interest from generous whitespace, full-bleed color sections and strong alignment. Vary the rhythm (a full-width color band header, padded white content, a tight dark footer), not a uniform 20px. One column; side-by-side cells rare, content-justified, and degrading acceptably when stacked. A bulletproof CTA is a padded `<td>` with `bgcolor`, border-radius and an inline-styled `<a>`. Solid `bgcolor` sections, a 4px accent top border and spacer rows are the reliable atmosphere tools; gradients, background images and shadows are enhancement only. Add a real text preheader (hidden with inline styles) written like ad copy, so the client doesn't scrape your header nav.
-- **Avoid:** a centered white card on gray, a purple gradient header, Arial everywhere, three equal feature columns with stock icons, a pastel palette, "Hi {name}," as the only personalization. If the draft resembles that, restart from the tone decision; don't polish it.
-- **Quality pass before saving:** every text-block element styled inline, consistent palette values, alt text on images; the squint test on the rendered preview (headline, key message, CTA); Liquid `| default:` fallbacks so no reader sees a blank; a plain-text version carrying the full message, not a stub.
+See the tagged [email design alternatives](../../backend/react-email/STYLING.md#email-design-alternatives). Liquid fallbacks and the render check remain part of this template workflow.
 
 ## Prove it
 

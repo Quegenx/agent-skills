@@ -58,7 +58,11 @@ Session call:
 
 ### Parsing scripts
 
-The traces skill ships Python helpers; run them in this order on a saved result file:
+**Upstream-only prerequisite:** the helper scripts described in this section are not included in this skill. Obtain and read the exact source helper before using its commands or depending on its output; if unavailable, report that step as unverified. Do not invent a replacement or assume these paths exist in the project. [PostHog skills, LLM-EXPLORING.md]
+
+The upstream example trace fixtures are also not included here. Obtain the exact source fixture before depending on it. [PostHog skills, LLM-EXPLORING.md]
+
+The upstream traces source describes Python helpers; after satisfying the availability prerequisite, use this order on a saved result file:
 
 | Script | Does |
 |---|---|
@@ -235,6 +239,8 @@ posthog:alert-create
 - **The insight must be a single-value trends query.** `subscribed_users` is required, at least one user from the same team. `threshold.configuration.type`: `"absolute"` or `"percentage"`; `condition.type`: `"absolute_value"`, `"relative_increase"`, `"relative_decrease"`. If rejected, `posthog:docs-search` "alerts" (enums can change).
 
 ## Clusters
+
+Helper-script commands in this section have the same [upstream-only availability prerequisite](#parsing-scripts). [PostHog skills, LLM-EXPLORING.md]
 
 PostHog clusters traces, generations or evaluation events by embedding similarity. A Temporal workflow runs periodically or on demand and emits `$ai_trace_clusters`, `$ai_generation_clusters` or `$ai_evaluation_clusters` events.
 
