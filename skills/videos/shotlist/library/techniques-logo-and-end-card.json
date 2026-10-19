@@ -306,7 +306,8 @@
     "beige"
    ],
    "ban_safe_variant": "Replace the cream flood with the film's single accent flood (or C.ink2), keep every other state on the dark stage, and allow only one bright state, so the strobe changes shape and density rather than luminance.",
-   "evidence": 1
+   "evidence": 1,
+   "safety_note": "Cuts or light-dark flips per second alone do not prove flash safety. Evaluate opposing luminance changes and general/red thresholds at full viewing size and while looping; omit strobing if unverified. https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html"
   },
   {
    "id": "le-hot-to-neutral-cool",
@@ -374,5 +375,6 @@
    "bans": [],
    "evidence": 0
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

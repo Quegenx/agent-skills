@@ -102,29 +102,7 @@ the first seek() call.
 
 ## 3. Motion brief with numbers (UI and web motion)
 
-For motion that ships in a product, or any piece where the feel must be exact. Adjectives get the
-default (300 ms, ease-in-out, a 20 px slide, a bounce on everything); numbers get exactly the numbers.
-
-```
-MOTION BRIEF
-target        [seek-engine HTML | GSAP 3 | Remotion]
-canvas        [1440 × 900, 60 fps]
-beats         0.00  card group enters from +24px
-              0.28  cards settled, title begins
-              0.46  title settled, meta fades in
-              0.60  rest state
-duration      cards 280ms · title 220ms · meta 160ms
-easing        cards cubic-bezier(0.05, 0.7, 0.1, 1) · title (0.2, 0, 0, 1) · meta (0, 0, 0, 1)
-overshoot     0% (these carry information)
-stagger       60ms between cards, total under 400ms
-properties    transform and opacity only
-reduced       cross-fade 120ms, no translation
-```
-
-Beats are a timeline, not a list: sequence relative to labels (`"<0.28"`), never as recomputed absolute
-delays. Take every value from the seek-engine number sheet (call the Skill tool with "seek-engine").
-Before the code, list each beat with start, duration, curve and overshoot in a table; the review checks
-the render against that table.
+[video-brief, original section 3] Shipped product motion belongs in [Writing a motion brief](../../frontend/ui-animation/TIMING.md#writing-a-motion-brief), alongside the UI duration/frequency rules and protected owner tokens.
 
 ## 4. Director's brief for a long autonomous run
 
@@ -360,48 +338,18 @@ Gotcha: never set opacity or filter on a preserve-3d element; fade its wrapper.
 
 ## 13. Narrated explainer (education, a paper, a concept)
 
-The biggest single kind of film people make this way: history recaps, science and maths concepts, paper explainers. What separates the good ones is the order of ideas and the checking, not the effects.
-
-```
-Explain [concept] to [audience: a high-school student / a beginner who has never coded] in [60-180] s.
-Research it first and list the sources; every claim on screen traces to one. Before the script, list the factual claims, their sources and anything
-disputed or needing my confirmation. Anything not checked is labelled an illustration, not a validated explanation.
-Order: the everyday intuition first, then the mechanism, then (only if the audience can take it) one piece of the
-maths, each step built on the last picture rather than a new one.
-Look: [line art on paper / whiteboard strokes drawn on / paper cut-out], one accent, friendly and light.
-Narration is the clock: write the script, voice it (word timings), then cut the picture to the words.
-Captions burned in: [language], or two languages stacked (the primary larger), never covering the action.
-One concept on screen at a time; a concept is drawn the moment the voice names it.
-Show a preview to someone in the audience before polish, and check terms, formulas and dates.
-You cannot hear the narration: say so, and have a person listen to the whole track (names, terms, numbers) before it ships.
-```
-
-Shaping an explainer. Pick one structure, never a splice: a concept explainer (name the idea, reveal its mechanism layer by layer, land the implication) for one idea the audience half-knows; a how-to (3-6 ordered steps on one consistent stage, the object being worked on carried from step to step); a listicle (a hook, N co-equal items, rule of three strongest, a wrap); a story explainer (setup, tension, turn, resolution, a lesson that generalises). Open with one hook strategy that opens a gap or names stakes, never a definition: a credible shocking number, a rhetorical question, a counterintuitive claim, validating a confusion the viewer already has, a visceral metaphor, naming the concept as a memorable term, direct address, an "imagine" scenario, or a real cost of getting it wrong. Every beat names the technique that makes it land, not "explain the idea": an analogy, a worked example with real numbers, progressive disclosure, a before and after, common belief against reality, a counterexample, frame-then-fill, a causal chain, a demonstration of the mechanism running, a callback to the hook, a distillation into one line. When the idea is a mechanism (an algorithm, a protocol, a system), the stage can be an invented machine whose moving parts do the idea, never boxes and arrows: a queue as a marble run, an LRU cache as a bookcase that pushes its oldest book off the end, a bloom filter as a fruit machine (seek-engine `ISOMETRIC.md`). The body is 3-6 frames on one stage that keeps growing (the same diagram, the same number line) with one repeated seam between them; an element that transforms from one idea into the next does it inside one shot, not across a cut. Animate what you would explain as "first this, then that" (a sequence, a transformation, an assembly, a comparison of states, change over time) and show static what you would explain by pointing at one picture (a labelled diagram, a dense table). Build a hard equation by showing it whole and dimmed to ~20% so the viewer sees where it is going, then lighting each term as it is explained. Teaching needs more time than promos: a new equation about 2 s to appear and 2 s held, a new label 1 s and 1 s, the key insight 2.5 s and 3 s, with a deliberate pause before it. Teaching follows Mayer's multimedia-learning principles: one new concept every 30-45 s at most (a 3-minute film carries 4-6); a spoken signpost about as often; picture and narration at the same moment, never seconds apart; cut the interesting but irrelevant detail, which lowers what is learned; narration with pictures beats written text with pictures, so don't print what the voice is saying. Link sections with "but" and "therefore", never "and then"; give working memory a short breather (a pause, a visual joke) every 45-60 s; hold 1-3 s of quiet after the key insight. A 3-minute shape: hook to 0:08, the gap or misconception to 0:30, the foundation, the complication, a breather, the key insight (the most polished shot), a proof in one concrete case, the implications, a close that calls back to the hook; for 1 minute keep 1-2 concepts and a 5 s hook.
-
-Variants that shipped:
-- **Talking head into explainer:** keep the speaker's audio, captions and duration untouched; shrink the speaker into a round picture-in-picture in a lower corner (clear of the captions) and draw each concept in the main frame as it is spoken.
-- **Talking head with designed cards**: the clip plays untouched and timed cards (a title, a lower third, a data callout, a quote, a side panel) arrive when the transcript reaches them. Four ways the speaker and a card share the frame, chosen per moment: side by side (equal weight, speaker and data), stacked (the speaker on top, a summary card below), the card full frame with the speaker in a corner (a content-heavy moment), or the speaker full frame with a card floating over the bottom (a dramatic moment). Move between them by tweening the video's own box, and pick the card style by the talk's tone, not its topic.
-- **Split-screen lesson:** the lesson on one half, a calm looping gameplay-style motion on the other, for vertical feeds; the lesson half still obeys every reading rule.
-- **Maths and physics:** Manim instead of the seek engine, voiced by the voiceover skill.
-- **A "why" film, briefed in one line:** the question people half understand, then the visual turn nobody expects, then the metaphor that carries the idea ("Why do we dream? Then someone wakes up, zooms out of the eye and into outer space; neural networks of interconnection stand for the brain."). The opening line has to promise what's coming: say the question big, show the first surprise inside 5 s.
-- **Documentary shot types**, one per line of script: a kinetic statement (three short lines of bold condensed type on a torn paper strip); paper cards dropping in for several things at once; a before and after (same card, the date chip flips); a label call-out (a marker circle draws itself, then the label); a counter; a grid of identical tiles where one breaks the pattern. Cards and objects that move in depth, never a lone bar or line crossing an empty frame. Say "looks like" when the research shows only a similarity, and "one reason", never "the reason".
-- **History recap:** a timeline device (a line that draws on, years as big numerals) carries every era; one image per era, never a slideshow of facts.
-- **The hidden-in-plain-sight collage**. The film makes the viewer recognise the thing first, then pays it off with a causal history. Pick topics with four tests, used to choose, never to refuse one the user names: the viewer meets it daily and has never looked at it (or everyone dates it wrong); the story lands on a person and a date within one beat; one beat lets the eye verify the claim unaided; the receipts exist as free archival material. Spine for 60 s: the familiar thing and more instances of it 15%, the dig ("and it comes back to [person], [year]") 5%, the story with its why 15%, the one physical artifact held on screen 10%, the mechanism the viewer verifies 20%, a later technology removing a constraint 15%, the thesis in two plain sentences 10%, a close that mirrors the open with a fact the viewer doesn't have 10%. About 150 words a minute; ~225 words is the ceiling for 90 s, and a beat that can't be filled honestly is cut, never faked.
-  - **From a supplied document** (a memo, report, paper or link), the source is ore, not an outline: never film it section by section. Pull out the recognition its intended audience already has, the claim that contradicts what they assume, the turn the story pivots on, the one claim the viewer can verify on screen (build the demonstration if the source only asserts it) and the receipts. One storyline per film; everything else becomes a receipt. The narration never mentions the source ("the memo says", "according to the doc"): if a line only parses for someone who read the original, cut it.
-  - **The look is a collage of printed objects on a pale ground:** photos as cards, history as clippings, data as specimens, one recurring shape as the carrier. Every beat names its layout and its motion before the build, so the film can't drift into a slideshow: at least one push into a photograph that isolates its subject, at least one pull-back arrival on a payoff, a subject lifted off its photo doing what a flat card can't, static cards or side-by-sides in at most a third of the beats, and no two beats in a row with the same layout or the same move. Elements move on 12 fps steps over a smooth camera.
-  - **Words on screen have one of three jobs or are cut:** a ≤3-word anchor with a drawn arrow whose tip touches the subject; one promoted sentence per act, staircased over 2-3 lines; or a name (a credit, a label) in the same slot every time. Every highlight, underline or circled word animates on (a bar sweeping left to right behind the words in ~0.4 s, a circle drawing itself); a highlight that simply appears reads as pre-printed. The caption rail stays clear of every other element.
-  - **Frame rules for the contact sheet:** no lone element drifting on empty ground (every element relates to the grid or to another element); labels sit within one gap of what they name; a grid has no empty cell; a circle or arrow drawn on a photo is checked against the feature's actual pixels; text in a shape sits optically centred within ~70% of it; nothing spills out of its container. Real photographs are never recreated (a missing photo turns the beat typographic); a recreated document says so on the frame.
-
-**A film built from someone's real words**: ask before reading any history; quote verbatim as a contiguous span of what they wrote (cutting to a shorter span is fine, rewording, merging or fixing spelling is not), and record each line's source (session, timestamp). Pick the typical session or day, not the most dramatic one, in the order it happened, and leave out a kind of moment their history doesn't show. Before any design pass, show the person one table of every line that will appear on screen with its kind and source, ask which name goes on screen, and strip anything naming another person, a client or company, a product under NDA, a file path, a URL, an email, an identifying number or a secret (automated flags miss a lowercase name: read every line). Take their edits, get an explicit yes, and until then stamp every frame DRAFT. The film holds their words: it is theirs to share, never posted or uploaded by you.
+[video-brief, original section 13] Read [EXPLAINERS.md](EXPLAINERS.md) for the complete teaching/documentary structures, captions, source checks and private-real-words approval gate.
 
 ## 14. Illustrated short from generated stills
+
+[OpenAI Images API](https://developers.openai.com/api/reference/resources/images/methods/generate) supports transparent backgrounds with PNG/WebP output. The old source claimed that asking any image model for transparency returns a fake checkerboard. Inspect actual alpha; green-screen keying below remains a source alternative, not a requirement for providers with real alpha.
 
 For characters and painterly worlds that code draws badly, generate the stills and do the motion, camera and finish in code:
 
 ```
 Story as a numbered shot list with exact times (24 fps, 2.39:1 or 9:16), each shot one action and one camera move.
 Art: generate the background, each character and each prop as separate stills. Characters on a flat #00FF00 field,
-keyed yourself (asking an image model for "transparent background" returns a fake checkerboard). Keep one character's
+keyed yourself as this source's alternative workflow. Keep one character's
 poses in one session, editing from a base image so the design never drifts; change only the region that moves.
 Finish: upscale every still 4x, estimate depth for the backgrounds and parallax them per pixel, then composite in
 2.5D: layers at real depths, a pinhole camera with a real focal length, focus pulls, rain or dust in 3D, motion blur,
@@ -430,7 +378,7 @@ Short prompts that shipped, for when the user wants a fast start. Each still goe
 | Music-driven | "Build a 45-second machine that plays an original piece of music, where every note comes from a visible collision." |
 | Lyric video | "A lyrics motion video for the attached track, every line synced to the vocals and the beat." |
 | Music visualizer | "A visual for this track: the structure cuts on the bars, the texture breathes with the bass and the hats; one recurring shape that evolves through the song." |
-| From project history | "Turn this repo's git history (or this coding session) into a 60-second film: the milestones as chapters, the real commit messages and files as the material." Real words on screen go through a privacy gate first ("A film built from someone's real words", section 13). |
+| From project history | "Turn this repo's git history (or this coding session) into a 60-second film: the milestones as chapters, the real commit messages and files as the material." Real words on screen go through a privacy gate first ([the private-real-words gate](EXPLAINERS.md#private-real-words)). |
 | Logo reveal | "A slow-reveal transition that assembles and finally reveals the [brand] logo." |
 | Named style | "Make a motion graphic about my studio in [risograph / oscilloscope / paper cut-out shadow theatre / whiteboard] style." |
 | Quality push | "Question your plan before you build; if it doesn't feel like a professional designer made it, start over. Every frame matters." |

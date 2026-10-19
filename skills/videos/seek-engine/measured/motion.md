@@ -1,10 +1,14 @@
-# motion.md: how things move
+# [motion.md](motion.md): how things move
 
-See also: transitions.md (joins between beats), type.md (word cadence and arrival; meaning on the word), ui-demo.md (cursor, press and camera inside UI beats), layout.md (sizes and placement), director.md (film-level clock and grammar), world.md (light, depth, finish, grain; when to use shutter blur), slop.md (review after rendering; conditions for fades and holds), tools.md (`render.mjs --shutter`, `look.py` motion note).
+[measured corpus, original motion.md] Source-specific short SaaS-film observations and practice, retained with their M/N evidence IDs. Original/private clips were not remeasured here. Use the [corpus scope and current tool map](README.md); historical helper APIs and paths are not supplied merely because a recipe names them. These are film decisions, not changes to protected live-product designs. [Existing licence](LICENSE-motionmaxxing.txt). Modified: ownership links, source scope and documented corrections.
 
-**Contents:** [1. The measured defaults](#1-the-measured-defaults) · [2. The 12 measured eases](#2-the-12-measured-eases) · [3. Entry and exit grammar](#3-entry-and-exit-grammar) · [4. Smear and blur](#4-smear-and-blur) · [5. Frame clocks](#5-frame-clocks)
+[measured corpus, original motion.md; seek-engine, SKILL.md#render] Source render commands using `--subframes` are historical. The current form is in [Render](../SKILL.md#render), using the `full` subcommand and `--sub`; no flag equivalence beyond the recorded translation is assumed.
 
-Durations, curves, smear, clocks, camera and physical behaviour for a launch/explainer film. Two kinds of evidence are used. **MEAS** = frame-sampled statistics over 50 moments and 4,288 distinct moves (hook 12, turn 8, proof 24, cta 6; staggered siblings counted once; three tile-mosaic moments excluded). **Moment IDs** (M913...) = single-film observations. Where they disagree the MEAS number is the default and the anecdote is a **signature move** (use rarely, one per film). Transitions between beats are in transitions.md.
+See also: [MEASURED-TRANSITIONS.md](../../shotlist/MEASURED-TRANSITIONS.md) (joins between beats), [MEASURED-TYPOGRAPHY.md](../../shotlist/MEASURED-TYPOGRAPHY.md) (word cadence and arrival; meaning on the word), [MEASURED-PRODUCT-DEMO.md](../../shotlist/MEASURED-PRODUCT-DEMO.md) (cursor, press and camera inside UI beats), [MEASURED-COMPOSITION.md](../../shotlist/MEASURED-COMPOSITION.md) (sizes and placement), [MEASURED-DIRECTION.md](../../shotlist/MEASURED-DIRECTION.md) (film-level clock and grammar), [MEASURED-WORLD.md](../../video-brief/MEASURED-WORLD.md) (light, depth, finish, grain; when to use shutter blur), [MEASURED-REVIEW.md](../../frame-review/MEASURED-REVIEW.md) (review after rendering; conditions for fades and holds), [README.md](README.md#their-tools-in-this-skill-set) (`render.mjs --shutter`, `look.py` motion note).
+
+**Contents:** [1. The measured defaults](#1-the-measured-defaults) · [2. The 12 measured eases](#2-the-12-measured-eases) · [3. Entry and exit grammar](#3-entry-and-exit-grammar) · [4. Smear and blur](#4-smear-and-blur) · [5. Frame clocks](#5-frame-clocks) · [Prove it](#prove-it)
+
+Durations, curves, smear, clocks, camera and physical behaviour for a launch/explainer film. Two kinds of evidence are used. **MEAS** = frame-sampled statistics over 50 moments and 4,288 distinct moves (hook 12, turn 8, proof 24, cta 6; staggered siblings counted once; three tile-mosaic moments excluded). **Moment IDs** (M913...) = single-film observations. Where they disagree the MEAS number is the default and the anecdote is a **signature move** (use rarely, one per film). Transitions between beats are in [MEASURED-TRANSITIONS.md](../../shotlist/MEASURED-TRANSITIONS.md).
 
 Conventions. Time as `s (f@30)`; 1 f = 0.033 s, 3 f = 0.10, 6 f = 0.20, 10 f = 0.33, 15 f = 0.50, 30 f = 1.0. Sizes: % of frame height H or width W; px are on the 1280x720 reference stage (multiply by 1.5 at 1920x1080). Eases are named `MEASURED.<name>`: plain t -> value functions (GSAP takes them directly, `ease: MEASURED.softLand`, `duration: frames/30`); the runtime exports exactly crashIn, popOver, bounceHard, snapSettle, softLand, whip, glide, cruise, softInOut, gentleIn, accelExit, crashOut. Rule format: **WHEN** situation -> **DO** decision -- *because* effect (IDs).
 
@@ -12,7 +16,11 @@ Conventions. Time as `s (f@30)`; 1 f = 0.033 s, 3 f = 0.10, 6 f = 0.20, 10 f = 0
 
 ## 1. The measured defaults
 
+[measured corpus, original motion.md]
+
 ### 1.1 Duration by property (MEAS, distinct moves, frames @30)
+
+[measured corpus, original motion.md]
 
 | Property | n | p10 / p25 / **median** / p75 / p90 | Travel (p25 / median / p75) |
 |---|---|---|---|
@@ -30,6 +38,8 @@ All moves pooled: median **10 f (0.33 s)**. Histogram of k: 2 f 8%, 3 f 5%, 4-5 
 
 ### 1.2 Entry vs exit, and role (MEAS)
 
+[measured corpus, original motion.md]
+
 | Property | Entry median k (p25/75) | Exit median k (p25/75) |
 |---|---|---|
 | translate x | 12 (6/23) | 14 (7/27) |
@@ -46,10 +56,12 @@ All moves pooled: median **10 f (0.33 s)**. Histogram of k: 2 f 8%, 3 f 5%, 4-5 
 | proof | 12-14 f | 12-16 f | 7 / 7 | 9 / 6 | 11% | 27% | 5.7% |
 | cta | **6 f** | 9-13 f | 4 / 6 | 6 / 6 | **39%** | 30% | 4.3% |
 
-**R1.2** WHEN the beat is a CTA/sign-off -> DO halve the entry times (6 f), make 23% of moves snapSettle and 25% softLand, and keep overshoot out; the 6 f median is for supporting moves (stack, pills, copy), while a hero mark or button runs 18-30 f on snapSettle (close.md C1, C8) -- *because* the close is the most staccato part of a film (CTA median move 6 f vs 10-11 f elsewhere; MEAS).
+**R1.2** WHEN the beat is a CTA/sign-off -> DO halve the entry times (6 f), make 23% of moves snapSettle and 25% softLand, and keep overshoot out; the 6 f median is for supporting moves (stack, pills, copy), while a hero mark or button runs 18-30 f on snapSettle ([MEASURED-ENDINGS.md](../../shotlist/MEASURED-ENDINGS.md) C1, C8) -- *because* the close is the most staccato part of a film (CTA median move 6 f vs 10-11 f elsewhere; MEAS).
 **R1.3** WHEN the beat is a turn -> DO give it the longest exits (14-16 f) and lean on acceleration (33% ease-in), with up to 11% of moves carrying a late overshoot -- *because* turns are built on things being pulled away and replaced (MEAS).
 
 ### 1.3 Landing decelerates, leaving accelerates (MEAS)
+
+[measured corpus, original motion.md]
 
 | Direction (x/y/scale/rot/blur toward or away from neutral) | Ease-out | Linear | In-out | Ease-in |
 |---|---|---|---|---|
@@ -66,6 +78,8 @@ Typical shapes, % of travel done at 10 / 25 / 50% of the time: snap 50/86/95, fi
 
 ### 1.4 Opacity, blur, cuts versus fades (MEAS)
 
+[measured corpus, original motion.md]
+
 - Opacity: 6 f entry, 7 f exit (p25-75: 4-12 f). 23% of opacity tweens are 2-3 f (near-cuts), 44% 4-9 f, 33% >= 10 f. Shapes: linear 32%, softInOut 27%, glide 19%, gentleIn 10%.
 - Blur: median travel 5 px (p25-75 2.5-10), 7-8 f. Blur-in lands ease-out 58% / blur-out accelerates 63%.
 - Elements mostly arrive and leave by **moving**, not fading: 3,392 transform entries vs 584 opacity fades; exits 60% moves, 15% fades, 25% hard steps. Where an element simply appears or disappears: entry 57% hard 1-frame cut / 43% fade, exit 63% cut / 37% fade.
@@ -77,18 +91,22 @@ Typical shapes, % of travel done at 10 / 25 / 50% of the time: snap 50/86/95, fi
 
 ### 1.5 Stagger and overlap (MEAS, 97 stagger groups in 25 moments)
 
+[measured corpus, original motion.md]
+
 | Interval between sibling onsets | 1 f | 2 f | 3 f | 4 f | 5 f | 6 f | 7-9 f | 10-14 f | 15-24 f |
 |---|---|---|---|---|---|---|---|---|---|
 | Share of all gaps | **56%** | 13% | 8% | 6% | 7% | 2% | 3% | 1% | 4% |
 
 - Per-group median interval 3 f (p25-75: 1-5 f; p10-90: 1-8.6 f). By class: translate 2.2-2.5 f, scale 3, opacity 3, blur 4.8. By role: hook 3.0, turn 1.5, proof 2.2, **cta 8.0 (widest)**. Median group size 4 (p90 15).
 - Metronomic (CV < 0.25) 45%, uneven 55%. Overlap: interval / move duration median **0.5** (p25-75 0.27-0.83): siblings overlap, each tail runs under the next entrance.
-- What the 1-f gaps are: letters in a row, tiles in a cascade (13 tiles 1 f apart, M918), rows. Whole **words** run slower (2-5 f; 8-12 f when voice-led; see type.md).
+- What the 1-f gaps are: letters in a row, tiles in a cascade (13 tiles 1 f apart, M918), rows. Whole **words** run slower (2-5 f; 8-12 f when voice-led; see [MEASURED-TYPOGRAPHY.md](../../shotlist/MEASURED-TYPOGRAPHY.md)).
 
 **R1.8** WHEN repeated siblings (letters, tiles, rows, avatars) arrive -> DO space onsets 1-3 f apart with uneven gaps (e.g. 3,2,2,2,2,2) and run each move ~2x longer than the gap so tails overlap -- *because* a whole wave under ~0.6 s reads as one gesture; a uniform timer-delay reads as a loading list (MEAS; M933, M935, M918).
-**R1.9** WHEN a CTA stack of elements arrives -> DO widen the gaps to ~8 f (0.27 s); CTA words in a blur-resolve still run back-to-back at 4 f each (type.md 3.4) -- *because* the sample's CTA groups are the only ones that slow down (MEAS, 5 groups).
+**R1.9** WHEN a CTA stack of elements arrives -> DO widen the gaps to ~8 f (0.27 s); CTA words in a blur-resolve still run back-to-back at 4 f each ([MEASURED-TYPOGRAPHY.md](../../shotlist/MEASURED-TYPOGRAPHY.md) 3.4) -- *because* the sample's CTA groups are the only ones that slow down (MEAS, 5 groups).
 
 ### 1.6 Overshoot: rare, late, small (MEAS)
+
+[measured corpus, original motion.md]
 
 - 8.8% of moves (k >= 4) overshoot by > 3%: translate x 9%, y 12%, scale 9%, rotation 15%, opacity/blur ~1%. 37 of 50 moments contain at least one. Median overshoot = 19% of that move's own travel (p75 38%, p90 66%).
 - Shape: **88% of overshoots > 5% peak after 35% of the duration (median t = 0.65-0.70)**: a slow lean past the mark and back over 15-24 f, not a fast spring. 5% have an anticipation dip first. Early-peak crashes (peak before 35%) are ~1% of moves.
@@ -100,27 +118,33 @@ Typical shapes, % of travel done at 10 / 25 / 50% of the time: snap 50/86/95, fi
 
 ### 1.7 Drift and no dead frame (MEAS)
 
+[measured corpus, original motion.md]
+
 - **Drift moves** (k >= 20 f, flat velocity, linear within RMSE 0.01): 221 distinct in 35 of 50 moments. Median 26 f (0.87 s), translate ~2.5 px/f (median travel 69 px), scale ~1.16x. Slower background creeps seen in single films: 1.1-1.5 px/f (M920, M921 -88 px = 6.9% W over 67 f@60), 0.02 W per 2.9 s (dot grid, M914), 0.027 W/s (M923), 0.07 W/s (tile field, M964).
 - **Motion on ~99% of frames (in short moments).** This was measured on **3-7 s moments** from a gallery of dense, prompt-card clips; it is context for how much a held frame should stay alive, **not a target for a whole film**. Human-made whole films are calmer: their mean frame-to-frame luma motion has a median of **6.8 (IQR 4.4-9.8)**, a bright-ground film such as a major hardware launch is still for about 55% of its length, and the user has picked the calm, legible film over the frantic one. `look.py` prints your film's number as a *question*, not a gate: above ~10, does the film breathe anywhere? Below ~3, does it exist? Median share of perceptually still frames 1.1%; median longest still run 1 f; p90 3 f. Overall 8.5% of frames in the sample are still (604 of 7,091), mostly short stepped-motion stills. Still runs >= 6 f in 20% of moments, >= 12 f in 10%, >= 24 f in 2% (one end-card hold, 110 f, M946). At the "noticeable" threshold (0.5 px/f) 28% of moments park for >= 6 f; CTAs park longest (median run 12 f, 50% of CTAs >= 12 f; hook 0.6% parked frames, turn 6.8%, proof 3.0%, cta 9.0%).
 - Legit long holds are all payoffs: readable list 0.8 s (M939), shape pile 0.8-1.0 s (M938), static lockup 0.67 s (M968), headline 0.67 s with solid caret (M969), living mark 3.66 s with tip sway +-1% W (M946, a measured outlier: your end hold stays <= 1.4 s, gate G3), single number 0.47 s (M945).
 
-**R1.12** WHEN a thing must hold for more than 3 f -> DO keep something alive on it (**no dead frame**): linear drift 1-3 px/f, 0.5-1% scale creep, a sweep, a caret, a counter tick, a sway, video, light moving on the ground -- *because* a locked frame reads as a slide. A **designed breath** (0.6-1.5 s, a reason you can state, immediately before a payoff or after a matched cut) is wanted and may be quiet, with one living thing on it; only the payoff the viewer must read may be perfectly still, and then for under ~1 s (hero figure up to 1.2 s; a resolved CTA lockup 0.6-1.4 s with something alive, close.md R2.6) (MEAS; M913, M916, M920, M946, M955).
+**R1.12** WHEN a thing must hold for more than 3 f -> DO keep something alive on it (**no dead frame**): linear drift 1-3 px/f, 0.5-1% scale creep, a sweep, a caret, a counter tick, a sway, video, light moving on the ground -- *because* a locked frame reads as a slide. A **designed breath** (0.6-1.5 s, a reason you can state, immediately before a payoff or after a matched cut) is wanted and may be quiet, with one living thing on it; only the payoff the viewer must read may be perfectly still, and then for under ~1 s (hero figure up to 1.2 s; a resolved CTA lockup 0.6-1.4 s with something alive, [MEASURED-ENDINGS.md](../../shotlist/MEASURED-ENDINGS.md) R2.6) (MEAS; M913, M916, M920, M946, M955).
 **R1.13** WHEN a clip ends -> DO end mid-motion (accelerating exit, still-shrinking lockup, half-faded field) -- *because* the cut is the edit and the next frame inherits the speed (M913, M916, M920, M929, M931, M944; ends-at-rest only in M946).
 
 ### 1.8 Statistic vs signature move
+
+[measured corpus, original motion.md]
 
 | Topic | Default (MEAS) | Signature move | Use the signature when |
 |---|---|---|---|
 | Entry curve | softLand 15%, glide 14%; snapSettle only ~8% | 54-72% of travel in the first 4 f + 0.4-0.6 s tail (M913, M914, M916, M929) | the entry is the hero object or the first beat; one per scene |
 | Exit curve | 37% of leaving moves accelerate | every exit accelerates off-frame (M919, M920) | the exit crosses the frame or ends on a cut |
 | Overshoot | 8.8% of moves, late lean | none at all except one spring (M948) or only +4-5% pops | pick "none" for technical films, "one spring" for consumer films |
-| Word stagger | 1-3 f median (letters, rows) | 6-7 f @60 = 3-4 f@30 inside a phrase, 10 f@60 before the stinger (M921) | whole-word headline builds (see type.md) |
+| Word stagger | 1-3 f median (letters, rows) | 6-7 f @60 = 3-4 f@30 inside a phrase, 10 f@60 before the stinger (M921) | whole-word headline builds (see [MEASURED-TYPOGRAPHY.md](../../shotlist/MEASURED-TYPOGRAPHY.md)) |
 | Camera | 18 f push/pull, median 1.46x | one-frame snap 0.56-0.77x + 0.3-0.6 s tail (M913, M914) | the camera reveals or reframes the product |
 | Stills | motion on ~99% of frames in 3-7 s moments (not a whole-film target; human films: mean motion median 6.8, IQR 4.4-9.8) | 0.67-1.0 s payoff holds (M938, M968; M946's 3.66 s is an outlier, not a licence past the 1.4 s end-hold gate); a designed breath 0.6-1.5 s before a payoff | after the claim has landed; never in hooks; always one living thing on the frame |
 
 ---
 
 ## 2. The 12 measured eases
+
+[measured corpus, original motion.md]
 
 Fitted to the median curves of clusters of real moves (RMSE over 21 points: 0.02 = identical, 0.06 = close). 89% of measured moves lie within 0.12 of one of these, 53% within 0.06; the eases are anchors on a continuum, interpolate in between. "Share" = distinct moves nearest this ease (n = 3,573).
 
@@ -142,6 +166,8 @@ Fitted to the median curves of clusters of real moves (RMSE over 21 points: 0.02
 Share by role (nearest ease): CTA snapSettle 23% / softLand 25% / cruise 8%; hook glide 16% / cruise 17% / whip 8%; turn cruise 22% / softInOut 16% / gentleIn 11%; proof cruise 20% / softInOut 16% / glide 15%. By where: entries mostly glide 17%, cruise 15%, softLand 14%, softInOut 13%, snapSettle 9%, whip 9%; exits mostly cruise 18%, softInOut 17%, gentleIn 15%, accelExit 10%, crashOut 9%.
 
 ### 2.1 Pick the ease
+
+[measured corpus, original motion.md]
 
 | What is moving | Ease | Frames @30 | Notes (IDs) |
 |---|---|---|---|
@@ -168,7 +194,11 @@ Share by role (nearest ease): CTA snapSettle 23% / softLand 25% / cruise 8%; hoo
 
 ## 3. Entry and exit grammar
 
+[measured corpus, original motion.md]
+
 ### 3.1 Entries
+
+[measured corpus, original motion.md]
 
 An entry spends **two or more decaying channels at once**, never opacity alone. Order of use in MEAS: transform moves 71% of entries, blur-in 8%, opacity-only 12%, hard cut 16%.
 
@@ -188,13 +218,15 @@ An entry spends **two or more decaying channels at once**, never opacity alone. 
 
 ### 3.2 Exits
 
+[measured corpus, original motion.md]
+
 | Exit type | Mechanics | Use when | IDs |
 |---|---|---|---|
 | Accelerate off-frame | ease-in 6-10 f, 17 -> 111 px/f; object stays sharp, only the label may smear | the element is "thrown away" | M920, M919, M914 |
 | Shrink into the centre | scale to ~0.3 with ease-in 4 steps/0.24 s, strips jittered +-1 px for the last 0.4 s | the old act collapses before a hard cut | M947, M967 |
 | Clip / mask wipe through glyphs | clip edge sweeps through the line in 5 f, accelerating, while the line slides the same way | text leaves | M962, M947 |
 | Words out one frame apart | 1 f apart, 3-4 f each, up 0.07 H and grey; overlap the next entrance by ~2 f | phrase replaced | M938 |
-| Dissolve to cells or strips | real cells, stepped coverage | the thing becomes the next scene | transitions.md |
+| Dissolve to cells or strips | real cells, stepped coverage | the thing becomes the next scene | [MEASURED-TRANSITIONS.md](../../shotlist/MEASURED-TRANSITIONS.md) |
 | Hard cut off | 1 f; 25% of exits | state change | MEAS |
 | Single-object fade | linear 10 f or stepped 4-5 f | one object only (a line, a last phrase), never between scenes | M920, M934, M938 |
 
@@ -202,6 +234,8 @@ An entry spends **two or more decaying channels at once**, never opacity alone. 
 **R3.5** WHEN a drawn highlight or stroke leaves -> DO exit with NEW motion (the tail pushes out, curls to a smaller arc), not the entry reversed -- *because* reversed motion reads as an undo (M933).
 
 ### 3.3 Start oversized and come down
+
+[measured corpus, original motion.md]
 
 | Object | Start | Rest | Time and shape | IDs |
 |---|---|---|---|---|
@@ -217,12 +251,14 @@ An entry spends **two or more decaying channels at once**, never opacity alone. 
 | Logo grid / tiles | 2.5x, tiles are giant cropped squares | 0.875 | two surges, near-stall between | M937 |
 
 **R3.6** WHEN an object with identity (logo, word, cursor, card, mark) enters -> DO start it at 1.4-5x and scale **down** to rest, never grow it from zero, never fade it up -- *because* "arrives from the camera" reads as authority and makes the hit without a bounce (M929, M932, M947, M959, M968).
-**R3.6b** WHEN you apply R3.6 -> DO read it as a rule about *arrival* (the thing decelerates in from oversize, never grows from zero), not as a recipe for a giant cropped first word or a logo that crashes in at every end. Spend scale once per film and let the ending get smaller (director.md section 6); a calm brand's logo may arrive at 1.1x with a long ease (close.md C4) -- *because* "start big" repeated in every beat is a house style, and an arrival that is always the same size says nothing.
+**R3.6b** WHEN you apply R3.6 -> DO read it as a rule about *arrival* (the thing decelerates in from oversize, never grows from zero), not as a recipe for a giant cropped first word or a logo that crashes in at every end. Spend scale once per film and let the ending get smaller ([MEASURED-DIRECTION.md](../../shotlist/MEASURED-DIRECTION.md) section 6); a calm brand's logo may arrive at 1.1x with a long ease ([MEASURED-ENDINGS.md](../../shotlist/MEASURED-ENDINGS.md) C4) -- *because* "start big" repeated in every beat is a house style, and an arrival that is always the same size says nothing.
 **R3.7** WHEN the rule seems to fail -> DO allow growth from small only in these cases: items in a 1-f-apart cascade (13 tiles 0 -> 1.12 -> 1.0 in place, M918), a growing object that IS the next scene (bead 0.04 W -> disk 17x, M922; dot -> disc 0.33 H, M962), a loader dot -> QR (M954), and identity objects that start no smaller than ~0.30-0.60x (cards 0.30, button 0.60, disc 0.46: M967, M959, M945) -- *because* in each the growth is the content.
 
 ---
 
 ## 4. Smear and blur
+
+[measured corpus, original motion.md]
 
 Three grammars, chosen once per film (R4.1): per-element smear, crisp steps, or camera shutter blur (R4.8). All use blur as a **focus** tool (type resolves, backgrounds rack-focus); only the smear grammar adds per-element directional smear on fast moves, and only the shutter grammar blurs everything by its own speed.
 
@@ -248,11 +284,13 @@ Batch data: 3-65 px in ordinary use, 100-140 px on whips. PRACTICE (extrapolatio
 **R4.5 Rack-focus backgrounds.** WHEN a UI sits behind a headline -> DO blur the UI, not the type: 0.7 -> 5.5 -> 10 -> 11 px over ~0.7 s (cap ~11 px) with 0.1 darkening while the headline stays crisp; for a defocused-but-readable backdrop hold ~4 px and let the cursor blur with it; pull focus back by animating blur 4 -> 0 over ~0.46 s, never by opacity -- *because* the proof stays visible and the type stays legible (M918, M942, M943).
 **R4.6 Depth defocus.** WHEN a UI exits or recedes -> DO defocus by depth (top row 0.9 px, bars 3.2, labels 4 px) and leave the hero stat sharp; secondary panels sit at 7-15 px (M953, M956, M958).
 **R4.7 Blur peaks to expect.** Entering card 6 px, disc dock 12, orb 15, button burst 25, roll 22, hero counter 12-17, whip 9, logo 18 -> 0 (M939-M946, M954, M958, M968).
-**R4.8 Shutter blur (render-time).** WHEN the film is smooth (30 or 60 fps interpolation, camera moves, type that glides) and you want the look of a real lens -> DO render with `node scripts/render.mjs --shutter 180 --subframes 8` (add `--grain 0.03` for a little film grain): each output frame is the average of 8 sub-frames spread across a 180-degree shutter (half the frame interval), so every moving thing, including type and the camera, is blurred by its own speed and a still thing stays sharp -- *because* continuous, physically consistent blur is what separates a rendered camera from stacked tweens, and it costs no authored smear. Rules: this *is* the film's blur grammar (R4.1), so author no per-element smear and no radial streaks on top; fast cuts and whips need no extra blur; stepped, on-twos, glitch or crisp films must not use it; render time grows with the sub-frame count (use 4 for drafts, 8 for finals); keep grain at one level for the whole film (world.md finish). Check the result at real speed: type that must be read should be sharp within 3-4 f of landing.
+**R4.8 Shutter blur (render-time).** WHEN the film is smooth (30 or 60 fps interpolation, camera moves, type that glides) and you want the look of a real lens -> DO render with `node scripts/render.mjs --shutter 180 --subframes 8` (add `--grain 0.03` for a little film grain): each output frame is the average of 8 sub-frames spread across a 180-degree shutter (half the frame interval), so every moving thing, including type and the camera, is blurred by its own speed and a still thing stays sharp -- *because* continuous, physically consistent blur is what separates a rendered camera from stacked tweens, and it costs no authored smear. Rules: this *is* the film's blur grammar (R4.1), so author no per-element smear and no radial streaks on top; fast cuts and whips need no extra blur; stepped, on-twos, glitch or crisp films must not use it; render time grows with the sub-frame count (use 4 for drafts, 8 for finals); keep grain at one level for the whole film ([MEASURED-WORLD.md](../../video-brief/MEASURED-WORLD.md) finish). Check the result at real speed: type that must be read should be sharp within 3-4 f of landing.
 
 ---
 
 ## 5. Frame clocks
+
+[measured corpus, original motion.md]
 
 **R5.1** WHEN you start a film -> DO choose ONE clock per moment: (a) smooth 30 or 60 fps for brand morph/UI dive (M921-M924, M973, M974); (b) smooth 24-30 for camera/type with stepped reveals (M964-M966); (c) **on twos**: every pose holds 2 frames, every onset lands on an even frame (M947-M949, M967-M969, M945 pairs); (d) **12 fps drawn things on a 24 fps world** (hand-drawn loops, ring/fill/check poses) while the camera, type and cursor stay smooth (M933, M934); (e) 30 fps hard cuts on a constant interval (M962: every 10 f = 0.333 s) -- *because* mixed step rates read as a bug.
 **R5.2 On-twos implementation.** Quantise time: `const f = Math.floor(frame/2)*2` and seek every timeline to `f/30`. Land all onsets and durations on even frames; the camera timeline gets the raw frame, the drawn layer's timeline gets the quantised one (two timelines, one `seek`). In a 24 fps comp 12 fps drawn poses are plain 2-f holds; in a 30 fps comp use 2-f holds (15 fps) or quantise t as `Math.floor(t*12)/12`. Stepped typing, glitch rectangles, radius steps and dial states are discrete states by design and are never tweened (M929 rectangles step every 2 f, M926 radius at five instants).
@@ -263,3 +301,7 @@ Batch data: 3-65 px in ordinary use, 100-140 px on whips. PRACTICE (extrapolatio
 ---
 
 **Moved:** sections 6 and 7 (camera, physical bodies, pulses and springs) and the slop tells is now in [motion-camera.md](motion-camera.md).
+
+## Prove it
+
+[measured corpus, original motion.md; frame-review, existing evidence workflow] Record the selected film decision and cited evidence ID, distinguish source observation from unverified helper behavior, then inspect the rendered frames and report what was actually checked. Current house gates and the owner's approved design remain authoritative.

@@ -76,11 +76,11 @@ def main():
         k = int(np.argmax(moments))
         loudest = round((k + 1) / len(moments), 2)
     gates = {
-        "sync": all(l is None or abs(l) <= 48 for l in lags),
+        "sync": any(l is not None for l in lags) and all(l is None or abs(l) <= 48 for l in lags),
         "true_peak": peak <= -1.0,
         "loudness": abs(integrated - target) <= 1.0,
     }
-    report = {"lags_samples": lags, "true_peak_dbtp": peak, "integrated_lufs": integrated, "target_lufs": target,
+    report = {"lags_samples": lags, "sync_measured": any(l is not None for l in lags), "true_peak_dbtp": peak, "integrated_lufs": integrated, "target_lufs": target,
               "lra_lu": lra, "loudest_at": loudest, "duration_s": round(dur, 3), "gates": gates}
     print(json.dumps(report, indent=2))
     if dur >= 20 and lra < 5:

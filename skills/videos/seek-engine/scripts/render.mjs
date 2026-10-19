@@ -15,7 +15,7 @@
 //   ceil(travel / step) sub-frames, 1 to most, the travel in output pixels over the open shutter; --sub N overrides it),
 //   --workers 6, --range 2:5 (seconds), --fps 60, --audio audio/mix.wav (default: used when it exists), --crf 16,
 //   --chunk 10 (render in 10 s segments kept in out/segments/: a crashed or stopped long render resumes where it
-//   left off; segments are keyed by a hash of the page and the options, so any edit starts fresh; --fresh forces it)
+//   left off; segments are keyed by a hash of the page and the options, imported assets are not hashed; use --fresh after dependency edits)
 // --gpu (any mode): draw on the real GPU (Metal on macOS) instead of software WebGL. Measured 9x faster on a
 //   shader-heavy frame; for 3D and shader films. Pixels can differ between machines, so keep one machine per film.
 // Subtitles: when audio/vo.srt exists (the voiceover skill writes it), a full render from 0 carries it as a
@@ -64,6 +64,7 @@ const pageErrors = []
 const dataText = opt.data ? fs.readFileSync(path.resolve(root, opt.data), 'utf8') : null
 const DATA = dataText === null ? null : (() => { try { return JSON.parse(dataText) } catch (e) { fail(`render: --data ${opt.data} is not valid JSON (${e.message})`) } })()
 
+if (mode === 'full' && opt.format === 'all' && opt.out) fail('render: --out requires one format; omit --out for --format all.')
 if (!fs.existsSync(pagePath)) fail(`render: no page at ${pagePath}. Run from the film folder or pass --page.`)
 
 function fail(msg) { console.error(msg); process.exit(1) }
@@ -226,6 +227,8 @@ async function renderFull(browser, format) {
   const srt = path.join(root, 'audio', 'vo.srt')
   const withSubs = !ALPHA && fs.existsSync(srt) && first === 0
   const out = opt.out && format !== 'all' ? path.resolve(root, opt.out) : path.join(outDir, `${tag}${opt.range ? `_${a}-${b}` : ''}${ALPHA ? '-alpha.' + ALPHA : '.mp4'}`)
+  if (withSubs && path.extname(out).toLowerCase() !== '.mp4') fail('render: subtitle output requires an .mp4 filename.')
+  if (withSubs && path.resolve(srt) === path.join(path.dirname(out), path.parse(out).name + '.srt')) fail('render: subtitle output must not overwrite audio/vo.srt.')
   // no mix yet: a silent AAC track, because feeds (Instagram, TikTok, LinkedIn) mishandle a video with no audio
   // stream; --audio none keeps the file video-only (scene pages joined and mixed later)
   const silent = !ALPHA && !withAudio && opt.audio !== 'none'
@@ -239,7 +242,7 @@ async function renderFull(browser, format) {
     await encode(dir, frames, out, [...muxIn, '--', '-map', '0:v', ...muxMap])
     fs.rmSync(dir, { recursive: true, force: true })
   } else {
-    // segments keyed by everything that changes their pixels: page source, options, measured beat
+    // The key covers top-level page bytes, listed options, beats and data, not imported assets. Use --fresh after dependency edits.
     const key = crypto.createHash('sha1').update(fs.readFileSync(pagePath)).update(JSON.stringify([format, opt.style, scale, FPS, ADAPTIVE ? ['speed', STEP, MOST] : SUB, SHUTTER, num('crf', 16), CHUNK, measured?.beat ?? null, dataText, GRAIN])).digest('hex').slice(0, 10)
     const segDir = path.join(outDir, 'segments', `${tag}-${key}`)
     if (opt.fresh) fs.rmSync(segDir, { recursive: true, force: true })
@@ -263,7 +266,7 @@ async function renderFull(browser, format) {
     await run('ffmpeg', ['-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list, ...muxIn, '-map', '0:v', '-c:v', 'copy', ...muxMap, '-movflags', '+faststart', out])
   }
   await Promise.all(pages.map(({ page }) => page.close()))
-  if (withSubs) fs.copyFileSync(srt, out.replace(/\.mp4$/, '.srt'))
+  if (withSubs) fs.copyFileSync(srt, path.join(path.dirname(out), path.parse(out).name + '.srt'))
   // <out>.events.json: the timeline's declared cuts, relative to the file's first frame; frame-review look.py reads it
   // as the authoritative cut list instead of detecting cuts from pixels
   const cutEvents = CUTS.filter((c) => c > a && c < b).map((c) => ({ t: +(c - a).toFixed(4), type: 'cut' }))

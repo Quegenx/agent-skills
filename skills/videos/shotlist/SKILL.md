@@ -11,6 +11,27 @@ Read `brief.md`, `style-guide.md` and `audio/beats.json` (or `audio/vo.json`) fi
 
 When the brief leaves the idea open, find the concept first with [CONCEPT.md](CONCEPT.md): the inventory, three lenses, the tests that kill weak ideas, the carrier's path, the beats and the end card. For the structure, budgets, transitions by intent and per-aspect layouts of each kind of film (launch, feature, loop, sting, walkthrough, vertical, explainer, trailer and more), read [FORMATS.md](FORMATS.md). A product reveal of a real physical object (tumble in, macro details, one feature, explode and snap back, hero) takes its beats from seek-engine's `REAL-OBJECTS.md`.
 
+
+## Read by job
+
+[existing shotlist topics; measured corpus, original chapter responsibilities]
+
+| The job | Read |
+|---|---|
+| Concept and source inventory | [CONCEPT.md](CONCEPT.md) |
+| Film structures and format budgets | [FORMATS.md](FORMATS.md) |
+| Measured beat direction and importance budget | [MEASURED-DIRECTION.md](MEASURED-DIRECTION.md) |
+| Measured storyboard worksheet | [MEASURED-STORYBOARD.md](MEASURED-STORYBOARD.md) |
+| Measured frame composition and layout | [MEASURED-COMPOSITION.md](MEASURED-COMPOSITION.md) |
+| Measured endings and CTA source scope | [MEASURED-ENDINGS.md](MEASURED-ENDINGS.md) |
+| Measured typography grammar | [MEASURED-TYPOGRAPHY.md](MEASURED-TYPOGRAPHY.md) |
+| Measured counters, name morphs and reading observations | [MEASURED-TYPE-DECISIONS.md](MEASURED-TYPE-DECISIONS.md) |
+| Measured product-demo grammar | [MEASURED-PRODUCT-DEMO.md](MEASURED-PRODUCT-DEMO.md) |
+| Measured frame-timed demo recipes | [MEASURED-DEMO-RECIPES.md](MEASURED-DEMO-RECIPES.md) |
+| Measured transition choice | [MEASURED-TRANSITIONS.md](MEASURED-TRANSITIONS.md) |
+| Measured transition catalogue | [MEASURED-TRANSITION-CATALOGUE.md](MEASURED-TRANSITION-CATALOGUE.md) |
+
+
 ## States, not effects
 
 Name the states the film moves through before any transition: `SEARCH → RESULT → DETAIL → ACTION → CONFIRMATION`. Then the film is the design of continuity between known states. Give each shot:
@@ -27,7 +48,7 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 - **One read at a time.** When two things happen at once, the viewer sees one of them. Put a cause and its reaction in sequence.
 - **Fast actions, slow meanings.** A move can be quick if it is anticipated; what it means needs held time. Spend time on what matters to the story, move fast through what doesn't. That contrast is rhythm.
 - **Lead the eye** before an important read: something moves, lights up or is looked at first.
-- **Holds:** a readable state holds at least the smoke test's reading time, max(0.5 s, 0.3 s per word, 0.25 s + characters ÷ 17), never under 1 s for a phrase, and 2 s for the final line. Text never moves while it is being read.
+- **Holds:** a readable state holds at least the smoke test's reading time, the [canonical reading floor](../video-brief/COPY.md#budget), never under 1 s for a phrase, and 2 s for the final line. Text never moves while it is being read.
 - **Let the reads set the length.** A shot with many reads can't be short; a shot whose reads have landed shouldn't be padded.
 
 ## Rules for every row
@@ -51,19 +72,21 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 
 ## Precedent per beat
 
-`python3 <this skill>/scripts/precedent.py query --beat proof --content ui --text "selection becomes result" --k 6` returns what professional motion designers did at that kind of beat: 156 measured rules (WHEN, DO, BECAUSE, with frame numbers and the moment ids they come from), the 53 study moments and 507 rules decoded from 39 reference films (`library/moments.jsonl`; beats hook, turn, proof, cta; content ui, type, logo, number, 3d). Run one query per beat, adopt one rule, and write its id beside the beat (`PR-A01: crop to one object at 3.3x, reveal the product by pulling back`). The rows are model-decoded and unverified: the measured numbers in seek-engine's `measured/` outrank them.
+`python3 <this skill>/scripts/precedent.py query --beat proof --content ui --text "selection becomes result" --k 6` returns what professional motion designers did at that kind of beat: 156 measured rules (WHEN, DO, BECAUSE, with frame numbers and the moment ids they come from), the 53 study moments and 507 rules decoded from 39 reference films (`library/moments.json` and its eight ordered JSONL parts; beats hook, turn, proof, cta; content ui, type, logo, number, 3d). Run one query per beat, adopt one rule, and write its id beside the beat (`PR-A01: crop to one object at 3.3x, reveal the product by pulling back`). The rows are model-decoded and unverified: the source-scoped measured chapters in the router outrank them.
 
 ## Draw the techniques
 
+[cinetic, assets/library/techniques.json] Evidence counts are source claims; entries with evidence 0 are uncorroborated recipes. Source starter paths and helpers are not bundled here. Current [reading floors](../video-brief/COPY.md#budget) govern readable production text, even where a recipe uses a shorter hold.
+
 Left to choose, every agent picks the same fade-up, push-in and end card. Before designing shots, draw the film's techniques at random from the library, weighted to the format and energy:
 
-The [Cinetic catalogue](library/techniques.json) keeps 14 category intros and an ordered list of 21 sibling JSON parts containing the 273 entries [cinetic, assets/library/techniques.json]. Copy the complete skill folder when installing it; the script resolves each part relative to the manifest, preserving entry order for seeded draws. Direct JSON consumers must flatten the listed parts in order; the manifest replaces the old top-level `techniques` array.
+The [Cinetic catalogue](library/techniques.json) keeps 14 category intros and an ordered list of 21 sibling JSON parts containing the 273 source recipes [cinetic, assets/library/techniques.json]. Copy the complete skill folder when installing it; the script resolves each part relative to the manifest, preserving entry order for seeded draws. Direct JSON consumers must flatten the listed parts in order; the manifest replaces the old top-level `techniques` array.
 
 ```bash
 python3 <this skill>/scripts/draw_techniques.py --format launch --energy high --seconds 30     # a whole-film plan, seed printed
 python3 <this skill>/scripts/draw_techniques.py --category transition --n 3 --format launch     # three seams
-python3 <this skill>/scripts/draw_techniques.py --category camera --exclude ca-orbit-hero         # reroll one slot
-python3 <this skill>/scripts/draw_techniques.py --show tr-mask-wipe-swap                         # one entry in full
+python3 <this skill>/scripts/draw_techniques.py --category camera --exclude cam-living-hold         # reroll one slot
+python3 <this skill>/scripts/draw_techniques.py --show tr-velocity-handoff-cut                         # one entry in full
 ```
 
 Formats: launch, feature, loop, sting, walkthrough, vertical; energy: calm, medium, high. Write the seed and the picks into `shotlist.md`. Build each pick the concept can carry, retold in the film's own objects; reroll a pick that fights the concept at most twice, or drop it with a written reason; never add a technique the draw did not give you (draw one with `--category`). A draw is a starting point, not a quota. The recipes were written for another engine: translate them to the seek-engine template's `tween`, `EASE`, `SPR`, `beat()` and `TOKENS`.
@@ -73,6 +96,8 @@ Formats: launch, feature, loop, sting, walkthrough, vertical; energy: calm, medi
 One shot is one idea. A 15 s film holds about four visual ideas; three extraordinary moments beat ten mediocre feature animations. Tell it as one continuous thought (for example, chaos → control → clarity → the product) rather than a list of five features. The first 1.5 seconds already look finished, and the first real product moment lands by about 2 seconds.
 
 ## One carrier
+
+[shotlist, existing house rule; measured corpus, brand.md section 4] This house shape uses one carrier. The measured source treats a carrier as optional for held shots, typographic essays and task documentaries; see [the source alternative](../video-brief/MEASURED-BRAND-SYSTEM.md#4-the-hero--carrier-object-optional). Keep the chosen film shape explicit.
 
 Pick one object that travels through every shot and changes role: the prompt bar, the card, the dot that becomes the logo. Persistent objects make a film feel designed instead of assembled, carry the eye across every cut, and let the story read with the sound off. Every transition is motivated by something on screen. Give the film one hero moment and build to it; don't spend it early.
 

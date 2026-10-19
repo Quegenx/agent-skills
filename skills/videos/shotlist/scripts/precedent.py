@@ -9,20 +9,20 @@ Usage:
   python3 precedent.py stats                   (what the library holds: counts by beat x content x source)
   python3 precedent.py --help
 
-Library: ../library/moments.jsonl (override with --lib FILE). 716 rows of three kinds, all our own words, none carrying third-party
+Library: ../library/moments.json (ordered JSONL parts; override with --lib FILE for a custom JSONL). 716 rows of three kinds, all our own words, none carrying third-party
 copy, frames or brand names:
   PR-Xnn   156 designer rules (WHEN / DO / BECAUSE, with frame and pixel numbers) distilled from the 53 measured recreations;
-           the evidence moments (M913..M974) are listed: the same ids as in references/*.md.
+           the evidence moments (M913..M974) are listed: the same ids as in the measured corpus router ../seek-engine/measured/README.md.
   PM###    the 53 study moments themselves: role, mechanic, and why it works (what the viewer is bought).
   PL####   507 rules decoded from 39 human-made reference films; "film" is an opaque id f-xxxxxxxx = sha1(original name)[:8].
 Roles: hook | turn | proof | cta (library beats map: problem/claim -> hook; tension/name-reveal/contrast/emotion/breath -> turn;
 demo/feature/number/list -> proof; lockup -> cta). Contents: ui | type | logo | number | 3d (also abstract, photo).
 
 How to use it. Step "per beat": run one query per beat of the storyboard, read the top 3-6, and write in the beat table's "why" column the ONE
-rule you adopt and its id (e.g. "PR-A02: cause lands first, effect 1-2 f later"). Retrieve the RULE and the WHY, not the technique name:
+rule you adopt and its id (e.g. "PR-C01: cause lands first, effect 1-2 f later"). Retrieve the RULE and the WHY, not the technique name:
 human techniques are mostly bespoke. These rows are study-derived and model-decoded: UNVERIFIED. Open the cited M-moment (private study
-folder, or the measured numbers in references/) before relying on a number, and never let a precedent outrank a measured number in
-references/ or the user's verdicts in taste/. Ranking: beat +3, content +2 (+1 secondary), text tokens (idf-weighted) up to ~+4,
+folder, or the current owners linked from seek-engine/measured/README.md) before relying on a number, and never let a precedent outrank a measured number in
+the measured corpus or an observed user verdict. Ranking: beat +3, content +2 (+1 secondary), text tokens (idf-weighted) up to ~+4,
 measured rules +0.8, one row per film in the first pass.
 Exit: 0 ok, 1 library missing/unreadable, 2 bad usage.
 """
@@ -37,7 +37,7 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_LIB = os.path.join(HERE, "..", "library", "moments.jsonl")
+DEFAULT_LIB = os.path.join(HERE, "..", "library", "moments.json")
 BEATS = ("hook", "turn", "proof", "cta")
 CONTENTS = ("ui", "type", "logo", "number", "3d", "abstract", "photo")
 BEAT_ALIAS = {"problem": "hook", "claim": "hook", "tension": "turn", "name-reveal": "turn", "contrast": "turn", "emotion": "turn", "breath": "turn",
@@ -57,11 +57,18 @@ def toks(s):
     return [t for t in TOK.findall((s or "").lower()) if t not in STOP and len(t) > 1]
 
 
-def load(path):
+def load(path, manifest=False):
     if not os.path.isfile(path):
         die("library not found: %s" % path, 1)
     rows = []
+    ln = 0  # A manifest is one JSON document; JSONL diagnostics retain their 1-based line.
     try:
+        if manifest:
+            with open(path, encoding="utf-8") as source:
+                index = json.load(source)
+            for part in index["parts"]:
+                rows.extend(load(os.path.join(os.path.dirname(path), part)))
+            return rows
         for ln, line in enumerate(open(path, encoding="utf-8"), 1):
             line = line.strip()
             if not line:
@@ -154,10 +161,13 @@ def fmt(r, s=None):
         lines.append("    WHY:      %s" % r["why"])
     if r.get("rule"):
         lines.append("    RULE:     %s" % r["rule"])
+    for key in ("evidence_note", "scope_note", "safety_note"):
+        if r.get(key):
+            lines.append("    NOTE:     %s" % r[key])
     return "\n".join(lines)
 
 
-NOTE = ("study-derived, model-decoded, UNVERIFIED: open the cited M-moment (or the measured numbers in references/) before relying on a row; "
+NOTE = ("study-derived, model-decoded, UNVERIFIED: open the cited M-moment (or the measured corpus router seek-engine/measured/README.md) before relying on a row; "
         "retrieve the rule and why, not the technique name; never outrank a measured number or a user verdict.")
 
 
@@ -201,6 +211,9 @@ def cmd_rules(a, rows):
             print("\n## %s (%d)" % (b, len(g[b])))
             for r in g[b]:
                 print("- %s [%s] %s" % (r["id"], ", ".join(r.get("content") or []), r["rule"]))
+                for key in ("evidence_note", "scope_note", "safety_note"):
+                    if r.get(key):
+                        print("  NOTE: %s" % r[key])
     print("\n" + NOTE)
 
 
@@ -221,7 +234,7 @@ def cmd_stats(a, rows):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--lib", default=DEFAULT_LIB, help="moments.jsonl (default ../library/moments.jsonl)")
+    ap.add_argument("--lib", default=DEFAULT_LIB, help="custom JSONL FILE (default ../library/moments.json manifest)")
     sub = ap.add_subparsers(dest="cmd")
     q = sub.add_parser("query", help="top rules for a beat / content / text")
     q.add_argument("--beat"); q.add_argument("--content"); q.add_argument("--text", default=""); q.add_argument("--k", type=int, default=6); q.add_argument("--src")
@@ -234,7 +247,7 @@ def main():
         sys.exit(2)
     if a.cmd == "query" and a.k < 1:
         die("--k must be >= 1")
-    rows = load(a.lib)
+    rows = load(a.lib, manifest=a.lib == DEFAULT_LIB)
     {"query": cmd_query, "show": cmd_show, "rules": cmd_rules, "stats": cmd_stats}[a.cmd](a, rows)
 
 

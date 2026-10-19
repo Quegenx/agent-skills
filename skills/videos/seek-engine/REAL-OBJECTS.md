@@ -94,7 +94,7 @@ The 3D mode draws convex parts only (3d.md section 5). Everything else is built 
 
 ## Building it in the 3D mode
 
-Build it the kit's way (a Node `build.mjs` that writes the page, with the audit and the 3D build) and drive it with a film script, as `templates/isokit/examples/turning-dial/` does (ISOMETRIC.md, "Two ways to build the page").
+Build it the kit's way (a Node `build.mjs` that writes the page, with the audit and the 3D build) and drive it with a film script, as [the canonical turning-dial example](../../frontend/isometric-figures/templates/isokit/examples/turning-dial/build.mjs) does (ISOMETRIC.md, "Two ways to build the page").
 
 **Frame and units.**
 - **World units are real millimetres.**

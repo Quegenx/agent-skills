@@ -13,7 +13,7 @@ Writes `window.MOUTH = {"fps": 60, "lead": 0.04, "poses": "0011223332110..."}`: 
 
 The envelope is the one talking-avatar tuned for live voice chat: fast
 attack, slow decay, normalised against a rolling peak, a new pose at most every ~96 ms, never jumping more than one
-pose at a time, closing after short silence. Offline we can also look ahead: --lead shifts the poses earlier, because
+pose at a time during ordinary updates; 0.17 s of silence closes directly, bypassing both constraints. Offline we can also look ahead: --lead shifts the poses earlier, because
 a mouth that opens a frame or two before the sound reads as speaking it (animators lead the mouth); 0 disables it.
 The levels are measured from the waveform, not the words: a breath or a loud consonant opens the mouth too.
 """

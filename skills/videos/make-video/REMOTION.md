@@ -1,12 +1,12 @@
 # Remotion: frame timing, composition metadata and render output
 
-Use this when [SKILL.md](SKILL.md#when-to-use-a-framework-instead) selects Remotion. These framework contracts come from the supplied [remotion-dev/skills](https://github.com/remotion-dev/skills) snapshot, identified there as 4.0.536, checked against the official documentation linked below. That snapshot does not establish the project's installed version. The brief, beat grid, stills and review gates remain in [SKILL.md](SKILL.md); embedding a preview in a product belongs to React's [REMOTION-PLAYER.md](../../frontend/react/REMOTION-PLAYER.md).
+Use this when [ENGINES.md](ENGINES.md#choosing-the-engine) selects Remotion. These framework contracts come from the supplied [remotion-dev/skills](https://github.com/remotion-dev/skills) snapshot, identified there as 4.0.536, checked against the official documentation linked below. That snapshot does not establish the project's installed version. The brief, beat grid, stills and review gates remain in [SKILL.md](SKILL.md); embedding a preview in a product belongs to React's [REMOTION-PLAYER.md](../../frontend/react/REMOTION-PLAYER.md).
 
 ## Start with the installed version
 
 Read the project's manifests and lockfile before choosing APIs. Keep `remotion` and every installed `@remotion/*` package on one exact version; inspect every workspace that supplies them. Check the documentation and types for that version before adopting newer timing props or defaults. The official [upgrade guide](https://www.remotion.dev/docs/upgrading) describes coordinated upgrades; a source snapshot is not a reason to upgrade an existing project.
 
-The engine choice and current licence terms are in [SKILL.md](SKILL.md#when-to-use-a-framework-instead). Check those before selecting Remotion for a commercial workflow.
+The engine choice and current licence terms are in [ENGINES.md](ENGINES.md#choosing-the-engine). Check those before selecting Remotion for a commercial workflow.
 
 ## Keep parent placement and source time separate
 

@@ -80,7 +80,7 @@ One finish per film, chosen with the look: clean and flat (deliberately: crisp v
 | Trap | What you see | Fix |
 |---|---|---|
 | a canvas read back with `getImageData` again and again | the same frame paints slightly differently after many reads | `getContext('2d', { willReadFrequently: true })` on any canvas you sample |
-| `filter` or `opacity` below 1 on any ancestor of a `preserve-3d` space (a blur wrapper, a fading container, a sample-stacking motion-blur component) | the 3D space flattens; near and mid planes vanish | blur, fade or warp each plane on its own; nothing on the space or its parents |
+| Grouping values on an element: `opacity` below 1 or `filter` other than `none` | that element's used `transform-style` becomes `flat`, even if `preserve-3d` was specified | preserve the film source's per-plane blur/fade treatment; inspect the actual 3D context boundary before applying an effect to a wrapper. The old rows said both "any ancestor" and "fade a wrapper", without defining that boundary. [MDN transform-style](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/transform-style); [original TECHNIQUES-COLOUR-AND-FINISH.md, Chromium traps] |
 | a declared font nothing has used yet | frame 0 paints in a fallback face (`document.fonts.ready` doesn't load unused faces) | the renderer and smoke test load every declared face before frame 0 and fail on one that won't load |
 | `will-change` on a scaled layer | text rasterizes blurry under the camera | remove it |
 | `will-change` with an animated `filter: blur()` | nondeterministic ghost frames | remove it |
@@ -89,7 +89,6 @@ One finish per film, chosen with the look: clean and flat (deliberately: crisp v
 | an angled `linear-gradient` light sweep on a tall box | a hard diagonal seam instead of a soft bar: the stops land at different heights on the two edges | keep the gradient axis at 90° and skew the element (`skewX(-14deg)`), oversized (`top: -24%; height: 148%`) so the skewed corners never enter the frame |
 | a `gap` or `margin` in `em` on a flex row of big words | near-zero gaps: `em` resolves against the container's own font size (often 16 px), not the 150 px type inside it | set the gap in px, or put the font size on the container |
 | slow vertical text rise | a 1 px tick every few frames in the tail | `arrive()` |
-| `opacity`/`filter` on `preserve-3d` | the 3D flattens, both faces show | fade a wrapper |
 | `backdrop-filter: url(#displace)` | displacement misread | clone the scene behind the glass |
 | `visibility: visible` child of a hidden parent | the child shows through | `inherit` |
 | text measured before fonts load | wrong widths, overlaps in the first frames | measure after `document.fonts.ready` |

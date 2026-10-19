@@ -8,6 +8,7 @@
 import { chromium } from 'playwright'
 import fs from 'node:fs'
 import path from 'node:path'
+import { createHash } from 'node:crypto'
 
 const args = process.argv.slice(2)
 const urls = args.filter((a) => /^https?:\/\//.test(a))
@@ -18,6 +19,7 @@ if (!urls.length) { console.error('usage: node scripts/capture.mjs <url> [more u
 const out = path.join(process.cwd(), 'assets', 'screens')
 fs.mkdirSync(out, { recursive: true })
 const slug = (u) => new URL(u).pathname.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-/, '') || 'home'
+const screenUrls = new Map()
 const browser = await chromium.launch()
 for (const url of urls) {
   for (const [w, h] of sizes) {
@@ -25,7 +27,10 @@ for (const url of urls) {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => page.waitForLoadState('load'))
     await page.evaluate(() => document.fonts.ready)
     await page.waitForTimeout(800) // let entrance animations on the site settle before the shot
-    const base = `${slug(url)}-${w}x${h}`
+    const originalBase = `${slug(url)}-${w}x${h}`
+    const previousUrl = screenUrls.get(originalBase)
+    const base = previousUrl && previousUrl !== url ? `${originalBase}-${createHash('sha256').update(url).digest('hex')}` : originalBase
+    screenUrls.set(originalBase, previousUrl || url)
     await page.screenshot({ path: path.join(out, `${base}.png`) })
     await page.screenshot({ path: path.join(out, `${base}-full.png`), fullPage: true })
     console.log(`wrote assets/screens/${base}.png and ${base}-full.png`)

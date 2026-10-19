@@ -290,5 +290,6 @@
    "ban_safe_variant": "Replace the soft multi-hue bloom with four hard-edged concentric discs in tonal steps of one hue (the stage, then 15%, 35% and 60% lightness toward the accent), their radii expanding with a 2 f stagger on normal blend. Keep the same swell, cut and exhale timing.",
    "evidence": 1
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

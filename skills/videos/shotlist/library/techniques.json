@@ -38,5 +38,6 @@
   "techniques-pacing-structure-2.json",
   "techniques-micro-interaction.json",
   "techniques-depth-and-3d.json"
- ]
+ ],
+ "source_note": "cinetic, assets/library/techniques.json. Source recipes, not 273 independently verified measurements. Evidence 0 means no cited evidence. Starter paths/helpers (src/lib/camera.ts, src/fx/Words.tsx, references/transitions.md, scripts/dither-gradient.py, score.json) are source prerequisites, not shipped local files. Use current house reading floors for required text. Cursor/caret/hold grammars differ by source; do not merge them into live-product rules."
 }

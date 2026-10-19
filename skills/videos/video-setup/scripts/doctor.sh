@@ -11,8 +11,8 @@ opt() { printf '  --    %-14s %s\n' "$1" "$2"; }
 echo "required"
 if command -v node >/dev/null; then
   v=$(node -p 'process.versions.node.split(".")[0]')
-  [ "$v" -ge 20 ] && ok node "$(node --version)" || bad node "$(node --version) is too old: install Node 20+"
-else bad node "install Node 20+ (brew install node)"; fi
+  [ "$v" -ge 22 ] && ok node "$(node --version)" || bad node "$(node --version) is too old: install Node 22+"
+else bad node "install Node 22+ (brew install node)"; fi
 if command -v ffmpeg >/dev/null; then
   ffmpeg -hide_banner -encoders 2>/dev/null | grep -q libx264 && ok ffmpeg "$(ffmpeg -version | head -1 | cut -d' ' -f3) with libx264" || bad ffmpeg "built without libx264: brew reinstall ffmpeg"
   ffmpeg -hide_banner -filters 2>/dev/null | grep -q ' tmix ' && ok "ffmpeg tmix" "motion blur available" || bad "ffmpeg tmix" "this ffmpeg lacks tmix (a Remotion-bundled ffmpeg?): use a full build"

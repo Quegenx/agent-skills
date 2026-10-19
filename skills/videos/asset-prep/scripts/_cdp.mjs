@@ -1,3 +1,5 @@
+// CDP connections require Node 22+ for unflagged global WebSocket; argument parsing alone does not.
+// https://github.com/nodejs/node/blob/main/doc/api/globals.md#class-websocket
 // _cdp.mjs (Apache-2.0, see LICENSE-motionmaxxing.txt; modified) - shared zero-dependency
 // Chrome DevTools Protocol helper, used by fetch_logo.mjs.
 // Not a CLI. Exports: findChrome, launchChrome, CDP, parseArgs, die.

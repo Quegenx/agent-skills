@@ -171,5 +171,6 @@
    "ban_safe_variant": "Fill the funnel with the app's real first screen on its flat stage colour, or with one flat colour taken from the icon, never the icon's colour ramp. The clip path, the log-space growth and the timing stay the same.",
    "evidence": 1
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

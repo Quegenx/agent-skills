@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "source": "motionmaxxing; existing LICENSE-motionmaxxing.txt; source rows retained in original order",
+  "evidence_note": "Study-derived and model-decoded, unverified; no per-row moment IDs means missing evidence. Current house reading floors and official flash thresholds govern production. Source helper/private-study paths are not bundled prerequisites.",
+  "parts": [
+    "moments-01.jsonl",
+    "moments-02.jsonl",
+    "moments-03.jsonl",
+    "moments-04.jsonl",
+    "moments-05.jsonl",
+    "moments-06.jsonl",
+    "moments-07.jsonl",
+    "moments-08.jsonl"
+  ]
+}

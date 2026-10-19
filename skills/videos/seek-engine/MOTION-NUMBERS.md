@@ -60,7 +60,7 @@ Material's "emphasized" is a two-segment path, not one cubic-bezier: `emphasized
 
 Springs for things that feel physical (UI, objects); eased tweens for type and camera-like moves. Stiffness/damping/mass and duration/bounce are different parameterisations of the same thing: don't mix them in one file. If everything overshoots, nothing feels precise: overshoot belongs to true landings, at most a couple per film.
 
-**Matching a product built with Motion (framer-motion).** When the site's own components animate with Motion, reproduce its springs exactly in the template's `spring(t, f, z)`: from `{ stiffness: k, damping: c, mass: m }`, `f = sqrt(k / m) / (2π)` Hz and `z = c / (2·sqrt(k·m))`; from `{ visualDuration: d, bounce: b }` with `b ≥ 0`, `f = 1 / (1.2·d)` Hz and `z = max(1 - b, 0.05)` (a negative bounce is overdamped and Motion also slows it, so measure that one). Its defaults: physics `k 100, c 10, m 1` is `f 1.59, z 0.5` (a visible wobble); `visualDuration 0.3, bounce 0.3` is `f 2.78, z 0.7`. Read the numbers from the product's code (`transition={{ type: "spring",... }}`), never guess them; Motion's springs also start with the element's current velocity when interrupted, which a sum of springs from rest approximates.
+**Matching a product built with Motion (framer-motion).** When the site's own components animate with Motion, map its spring parameters into the template's `spring(t, f, z)`: from `{ stiffness: k, damping: c, mass: m }`, `f = sqrt(k / m) / (2π)` Hz and `z = c / (2·sqrt(k·m))`; from `{ visualDuration: d, bounce: b }` with `b ≥ 0`, `f = 1 / (1.2·d)` Hz and `z = max(1 - b, 0.05)` (a negative bounce is overdamped and Motion also slows it, so measure that one). Its defaults: physics `k 100, c 10, m 1` is `f 1.59, z 0.5` (a visible wobble); `visualDuration 0.3, bounce 0.3` is `f 2.78, z 0.7`. Read the numbers from the product's code (`transition={{ type: "spring",... }}`), never guess them; Motion's springs also start with the element's current velocity when interrupted, which a sum of springs from rest approximates. The bundled helper uses the critically damped branch for every `z >= 1`; an overdamped source spring (`z > 1`) therefore needs measured matching rather than a claim of exact reproduction. The old line promised exact reproduction without that limit. [templates/index.html and templates/examples/explainer/index.html, spring; source Motion matching notes]
 
 ## Camera and handoffs
 
@@ -77,7 +77,7 @@ Springs for things that feel physical (UI, objects); eased tweens for type and c
 
 ## Invariants
 
-- Entrances run 30-50% longer than exits (exits are roughly half an entrance on content).
+- The source gives two entrance/exit heuristics: entrances 30-50% longer than exits, and exits roughly half an entrance on content. Those ratios differ; keep the selected timing explicit rather than treating them as equivalents. The old line combined them in one parenthesis. [Original MOTION-NUMBERS.md, Phrase timing]
 - Total stagger stays under 500 ms: words ~90 ms apart, list items 60-250 ms, dots ~60 ms; a dense grid 20-40 ms. With many items, stagger by distance from a focal point (each starts in proportion to its distance), which keeps the same feel at any count.
 - The 1/3 rule, twice: no element travels more than about a third of the frame in one unbroken move without a stop or a change of scale or opacity (a long slide reads as "the template moved"); and with three or more elements, no more than about a third of them move at once while the rest hold.
 - Distance scales duration: `durFor(px)` = 0.35 s + 1.35 ms per px (200 px ≈ 0.62 s, 600 px ≈ 1.16 s); camera moves `durFor(px, true)`, clamped to 0.6-2.4 s.
@@ -155,11 +155,7 @@ Small controls snap; large panels settle; the camera moves slowly enough to keep
 
 ## UI motion that ships in a product
 
-Animate `transform` and `opacity` only, never width, height, top, left or padding (one measured case dropped 50% of frames animating `top/left`, 1% with transforms). At 60 Hz a frame is 16.7 ms and the browser keeps some: budget 10 ms. No `will-change` unless a measured problem names it.
-
-## Reduced motion (UI work that ships)
-
-Reduce, don't remove. Replace scaling and panning of large objects with 100-150 ms opacity cross-fades; keep colour and state changes; nothing becomes unreachable or invisible.
+For compositor cost, measured frame budgets and will-change, use [ui-animation PERFORMANCE.md](../../frontend/ui-animation/PERFORMANCE.md#move-only-what-the-compositor-can-move); for product reduced motion use [the same owner](../../frontend/ui-animation/PERFORMANCE.md#reduced-motion). [Original MOTION-NUMBERS.md, UI motion and reduced motion chapters]
 
 ## Hits, pulses and contact
 

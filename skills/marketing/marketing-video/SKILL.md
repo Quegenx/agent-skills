@@ -32,7 +32,7 @@ Marketing video is four approaches, each good at one job: a film built in code, 
 | AI avatars | A talking-head presenter without filming | HeyGen, Synthesia | Explainers, tutorials, multilingual content |
 | Editing and repurposing | Cutting long-form into short clips | Descript, Opus Clip, CapCut | Podcast or webinar to social clips |
 
-The source recommends HyperFrames as the default engine for agents ("Plain HTML/CSS means any coding agent can write a composition"). This repo's make-video keeps its own default instead: "one HTML file with `window.seek(t)` ... Reach for a framework only when the brief needs what it adds". The [make-video licence section](../../videos/make-video/SKILL.md#remotion-licence) owns Remotion eligibility and its operating-party headcount correction; the source's "Company license for commercial use" and this file's old employees-only shorthand were incomplete.
+The source recommends HyperFrames as the default engine for agents ("Plain HTML/CSS means any coding agent can write a composition"). This repo's make-video keeps its own default instead: "one HTML file with `window.seek(t)` ... Reach for a framework only when the brief needs what it adds". The [make-video licence section](../../videos/make-video/ENGINES.md#remotion-licence) owns Remotion eligibility and its operating-party headcount correction; the source's "Company license for commercial use" and this file's old employees-only shorthand were incomplete.
 
 **AI generation or stock** [coreyhaines31/marketingskills, video]:
 

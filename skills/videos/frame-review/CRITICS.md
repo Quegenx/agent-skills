@@ -73,7 +73,7 @@ Take the lower score where lenses disagree, and cap a dimension at 3 while it ha
 - no open verified P0;
 - every script passes: `smoke.mjs` (all counters 0 in every format), `check_sync.py`, the delivered-file checks.
 
-When the gate is met, or 5 rounds are used, ship, and say plainly what you would still change. Past 5 rounds scores flatten and fixes start to fight each other.
+When the gate is met, ship and say plainly what you would still change. Stop after 5 rounds and report any unmet gate as incomplete. The old source said to ship when either the gate passed or the round cap was reached; the cap does not establish a passing result. [Quegenx/agent-skills, frame-review/SKILL.md delivery evidence and original CRITICS.md at 48e92a7]
 
 ## Design-off for a weak act
 

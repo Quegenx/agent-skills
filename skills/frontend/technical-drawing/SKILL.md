@@ -157,7 +157,7 @@ Keep the response about the drawing and its files. Exported drawings must remain
 
 ## How this differs from the video figures
 
-The isometric figures in [seek-engine ISOMETRIC.md](../../videos/seek-engine/ISOMETRIC.md) and isokit are a film card on screen; this is a sheet on paper. Both sides are right for their medium, and neither rule set is changed by the other:
+The live interactive SVG/WebGL figures are now owned by [isometric-figures](../isometric-figures/SKILL.md); [seek-engine ISOMETRIC.md](../../videos/seek-engine/ISOMETRIC.md) adapts them to a film clock. This skill makes a static sheet on paper. Both sides are right for their medium, and neither rule set is changed by the other:
 
 - **Hidden lines:** here, "Use hidden edges only where they explain features absent from the visible outlines"; the film figure says "No see-through edges, no dashed hidden lines" (ISOMETRIC.md).
 - **Balloons and leaders:** here, perimeter balloon lanes with anchored leaders; there, "no leader lines, balloons, dimension arrows or labels in the air" (ISOMETRIC.md).

@@ -259,5 +259,6 @@
    "bans": [],
    "evidence": 2
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

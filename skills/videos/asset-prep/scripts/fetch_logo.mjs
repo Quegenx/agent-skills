@@ -5,7 +5,7 @@
 //
 // Use it when the brand is known only by name, or for THIRD-PARTY marks in an integrations beat. For the user's own brand, brand.mjs's
 // captured logo stays primary (it is the one on their live site).
-// Sources, in order, until a mark is found:
+// Sources, in order; retain additional official variants:
 //   1. SVGL (api.svgl.app): mark + wordmark, light and dark variants          -> logo.svg, wordmark.svg, logo-light.svg
 //   2. Simple Icons (jsDelivr CDN): single-colour mark + the official hex     -> logo.svg (if still free) or logo-simpleicons.svg
 //   3. the brand's own site (domain or the SVGL site): <link rel=icon> .svg, then an inline header/nav <svg>, then the
@@ -121,4 +121,4 @@ else {
     ? `\nSaved ${found.files.map((c) => c.file).join(', ')} in ${out}/. LOOK at logo.svg (render it once) before using it; use the brand's own light/dark variant, never recolour.`
     : `\nNo official SVG found for "${brand}". Do NOT draw one: set the name in type, or ask the user for the asset.`);
 }
-process.exit(has('logo.svg') ? 0 : 1);
+process.exit(found.ok ? 0 : 1);

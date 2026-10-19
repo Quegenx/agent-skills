@@ -1,6 +1,6 @@
 # Agent skills
 
-137 skills for coding agents, in ten sets:
+138 skills for coding agents, in ten sets:
 
 | Folder | What it's for |
 |---|---|
@@ -10,11 +10,11 @@
 | [`skills/backend/`](./skills/backend) | Servers, APIs, jobs, SQL, integrations, security, deployment and caching; Postgres, Supabase, Effect, Convex, Firebase, Stripe, RevenueCat, Resend, React Email, OneSignal and Kapso. 20 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, lint-rule authoring, code review, debugging, engineering planning and execution, source research, developer docs, artifact investigation and exact component/animation reconstruction. 15 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
-| [`skills/frontend/`](./skills/frontend) | App and marketing UI, design-system maintenance, motion, SVG, CSS, GSAP, accessibility, colors, Sonner, technical drawings, React with Next.js and React Native, WebGL, consent and browser performance. 15 skills. |
+| [`skills/frontend/`](./skills/frontend) | App and marketing UI, design-system maintenance, motion, SVG, CSS, GSAP, accessibility, colors, Sonner, technical drawings, React with Next.js and React Native, WebGL, consent, browser performance and interactive isometric figures. 16 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Production errors, analytics and telemetry: Sentry, PostHog, Grafana, k6, OpenTelemetry and Google Analytics 4. 6 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, email, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 41 skills. |
-| Total | 137 skills in ten sets. |
+| Total | 138 skills in ten sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -84,21 +84,21 @@ Each gate writes a file in `films/<slug>/` (`brief.md`, `style-guide.md`, `audio
 **User-invoked**
 
 - **[video-help](./skills/videos/video-help/SKILL.md)**: Ask which video skill or flow fits your situation. A router over the set.
-- **[video-setup](./skills/videos/video-setup/SKILL.md)**: Check and install the toolchain the video skills need. Run once per machine.
+- **[video-setup](./skills/videos/video-setup/SKILL.md)**: Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks.
 
 **Model-invoked**
 
-- **[make-video](./skills/videos/make-video/SKILL.md)**: Direct and render a video from code as a gated production; Remotion contracts, engine limits, snapshot privacy and GIF timing.
-- **[video-brief](./skills/videos/video-brief/SKILL.md)**: The director's brief (facts vs choices, banned looks, the copy budget) and a style guide: look, motion language and video type as separate layers, the same film in several styles, restyles. Holds the spec patterns behind the films people copied.
-- **[asset-prep](./skills/videos/asset-prep/SKILL.md)**: Real screens and brand facts captured from a site; cutouts, layers, textures and upscaling of supplied images; generated base footage to trace over. Official logos fetched as SVG. Also scripted app recordings, reference provenance, asset reuse scope and inspected silence boundaries.
+- **[make-video](./skills/videos/make-video/SKILL.md)**: Gated production with separate engine selection and delivery contracts, preserving source-specific review profiles.
+- **[video-brief](./skills/videos/video-brief/SKILL.md)**: Briefs, source-qualified measured judgment, brand/world choices and narrated explainers.
+- **[asset-prep](./skills/videos/asset-prep/SKILL.md)**: Screens, brand extraction, recording and prepared assets; renderer integration links to seek-engine.
 - **[beat-grid](./skills/videos/beat-grid/SKILL.md)**: Find, scan and measure music into `audio/beats.json`, the clock for picture and sound; per-frame band energy for audio-reactive visuals; word-by-word lyric timing.
-- **[voiceover](./skills/videos/voiceover/SKILL.md)**: ElevenLabs narration with word timings, per-line cache, pronunciation fixes and pause trimming, plus lip sync for a talking character.
-- **[shotlist](./skills/videos/shotlist/SKILL.md)**: A concept that passes ownership tests, a measured precedent per beat, beat structures by format, the viewer's reads on the grid, one carrier object, a 273-entry library split into ordered parts, corrected typing profiles and three storyboard variants.
-- **[seek-engine](./skills/videos/seek-engine/SKILL.md)**: The `seek(t)` render contract, the starter film, the motion number sheet and the renderer (stills, sheets, strips, motion-blurred MP4 in every format). A measured corpus from 53 professional moments, the 12 measured eases, a seekable 3D hero, iOS UI builders and isometric figures, real objects built from a photo or a name (exploded product reveals), motion blur sized by on-screen speed, a three-part drawing kit and dark/light cinematic UI stages. Corrected timing, geometry and source claims.
-- **[frame-review](./skills/videos/frame-review/SKILL.md)**: The smoke test's zero counters, contact sheets, phone test, a catalogue of AI-video tells, critic lenses with a verify pass, a rubric and ship gate, and sync and loudness checks on the delivered file. Page-chrome lint and file-level gates (end hold, flat frames, audio audit) and a blind A/B review page. Required-audio gates use the audio audit; short-clip smoothing preserves the time axis.
-- **[sound-pass](./skills/videos/sound-pass/SKILL.md)**: Synthesized SFX on measured peaks, scaled to their cause, with a progress motif; music and voice mixed; mastered to -14 LUFS and -1 dBTP; the sound norms of top launch films.
+- **[voiceover](./skills/videos/voiceover/SKILL.md)**: Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing.
+- **[shotlist](./skills/videos/shotlist/SKILL.md)**: Storyboards, measured composition/type/demo/transitions and ordered technique/precedent catalogues with evidence limits.
+- **[seek-engine](./skills/videos/seek-engine/SKILL.md)**: Pure-time rendering, measured motion, drawing/hero templates and anatomy/cinematic film adapters; live figures link to frontend.
+- **[frame-review](./skills/videos/frame-review/SKILL.md)**: Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync.
+- **[sound-pass](./skills/videos/sound-pass/SKILL.md)**: Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles.
 
-**Requirements:** Node 20+ (22+ for HyperFrames), ffmpeg with libx264, uv (or Python 3 with numpy), and Playwright's Chromium. Optional: `ELEVENLABS_API_KEY` for narration, `FAL_KEY` for generated imagery, both in the project's `.env`.
+**Requirements:** Node 22+ for the complete unflagged CDP toolchain, ffmpeg with libx264, uv (or Python 3 with numpy), and Playwright's Chromium. Optional: `ELEVENLABS_API_KEY` for narration, `FAL_KEY` for generated imagery, both in the project's `.env`.
 
 ## Anti-AI-slop
 
@@ -181,7 +181,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 
 | Skill | Covers |
 |---|---|
-| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Motion policy and audits; separate native recipes, live charts and collection topics. |
+| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Motion policy, source-grounded motion briefs and audits; native, live-chart and collection topics. |
 | [svg](./skills/frontend/svg/SKILL.md) | SVG drawing, animation and icons; canonical namespaces, use primitives and transforms. |
 | [modern-css](./skills/frontend/modern-css/SKILL.md) | CSS layout, forms and responsive policy; separate properties, functions and scroll-animation topics. |
 | [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, timelines, cleanup and plugins; corrected shuffle and MotionPathHelper APIs. |
@@ -189,6 +189,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 | [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast and audits; Tailwind aliases link to CSS custom properties. |
 | [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Physical drawings and exports; declared geometry checks distinguished from passing results. |
+| [isometric-figures](./skills/frontend/isometric-figures/SKILL.md) | Live explanatory SVG/WebGL mechanisms, source geometry, input and sampled audits; deterministic film adapters stay in videos. |
 | [react](./skills/frontend/react/SKILL.md) | Global React, Next.js, audits and Remotion Player; native navigation APIs, sheet limits and previews. |
 | [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages; canonical canvas-pixel and unavailable-WebGL checks. |
 | [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
@@ -287,4 +288,4 @@ Marketing, SEO and GEO for web and SaaS products, from Corey Haines's marketings
 
 ## Licences
 
-Code copied from other projects keeps its licence file beside the copy (`LICENSE-*.txt` in the folder that holds it, and `skills/videos/seek-engine/templates/isokit/LICENSE`).
+Code copied from other projects keeps its licence file beside the copy (`LICENSE-*.txt` in the folder that holds it, and `skills/frontend/isometric-figures/templates/isokit/LICENSE`).

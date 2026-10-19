@@ -2,16 +2,16 @@
 """Draw a film's techniques at random from the library, so films stop converging on the same few moves.
 
 An agent left to choose picks the first familiar option: the same fade-up, the same push-in, the same end card.
-This draws from the ordered library/techniques.json manifest and its sibling parts (273 measured techniques in 14 categories),
+This draws from the ordered library/techniques.json manifest and its sibling parts (273 source recipes, with per-entry evidence counts in 14 categories),
 weighted toward moves that fit the film's format and energy and toward proven workhorses. The seed is printed so a
 plan can be reproduced and written into shotlist.md.
 
   python3 scripts/draw_techniques.py --format launch --energy high --seconds 25      a whole-film plan
   python3 scripts/draw_techniques.py --format loop --energy calm --seconds 8 --seed 41
   python3 scripts/draw_techniques.py --category transition --n 3 --format launch     three transitions
-  python3 scripts/draw_techniques.py --category camera --exclude ca-orbit-hero        reroll one slot
+  python3 scripts/draw_techniques.py --category camera --exclude cam-living-hold        reroll one slot
   python3 scripts/draw_techniques.py --list [--category camera]                       ids and names
-  python3 scripts/draw_techniques.py --show tr-mask-wipe-swap                         one entry in full
+  python3 scripts/draw_techniques.py --show tr-velocity-handoff-cut                         one entry in full
 
 Formats: launch, feature, loop, sting, walkthrough, vertical. Energy: calm, medium, high.
 A plan holds about one technique per 2.5 s of film, filled in the order the format needs them, with one signature
@@ -73,6 +73,10 @@ def show(e, full=True):
         print(f"- timing: {e['timing']}")
         print(f"- use when: {e['use_when']}")
         print(f"- avoid when: {e['avoid_when']}")
+        print(f"- evidence: {e.get('evidence', 0)} (source claim, unverified; 0 has no corroborating count)")
+        for key in ("correction_note", "safety_note"):
+            if e.get(key):
+                print(f"- source qualification: {e[key]}")
 
 
 def draw(pool, rng, k):

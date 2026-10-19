@@ -16,13 +16,13 @@
 //   broken text           visible text showing NaN, undefined, [object ...] or Infinity: a data bug printed on screen
 //   text clipped          readable text cut off by a container (overflow hidden) for 0.3 s or more
 //   short reads           a line readable for less than readTime(text) = max(0.5 s, 0.3 s per word,
-//                         0.25 s + characters / 17): the word rate, plus the subtitle standard (17 characters a
+//                         0.25 s + characters / 17): the word rate, plus the source reading formula (17 characters a
 //                         second after 0.25 s to find the line) so long words and numbers get their time
 //   stalls                motion stops dead for one frame between two moves (stop-hold-go, a repeated rest pose)
 //   slow hook             (not loops) nothing visibly moves until after 1.0 s: a muted feed scrolls past
 //   single-frame pops     a frame-to-frame change over 3x its neighbours (a snap or flash), scanned at the film's
 //                         fps; designed hard cuts declared in timeline().cuts are exempt. --no-pops skips the scan
-//   low contrast          readable text (fully opaque, on screen 0.3 s or more) under WCAG contrast against what is
+//   low contrast          readable text (fully opaque, on screen 0.3 s or more) under the film contrast heuristic against what is
 //                         drawn behind it: below 3:1, or below 4.5:1 for small lines (under 3% of the frame height).
 //                         The ground is measured from the frame's own pixels in the text's box, so it covers text
 //                         over photos, gradients and canvases
@@ -75,7 +75,7 @@ async function diff(a, b) {
     return s / (A.length / 4) / 3
   }, [a.toString('base64'), b.toString('base64')])
 }
-// WCAG contrast of each text box against the frame behind it: the ground is the median colour of the box's pixels
+// Sampled contrast heuristic for each text box against the frame behind it: the ground is the median colour of the box's pixels
 // that differ clearly from the text colour (the glyphs themselves are excluded)
 async function contrasts(img, boxes) {
   return diffPage.evaluate(async ([b64, boxes, W]) => {
@@ -131,7 +131,7 @@ function textBoxes() {
         break
       }
       el.__smokeId ??= (window.__smokeIds = (window.__smokeIds || 0) + 1)
-      out.push({ id: el.__smokeId, text: own.slice(0, 40), x: r.left - stage.left, y: r.top - stage.top, w: r.width, h: r.height, clipped, drawn: !!el.closest('[data-drawn]'), color: cs.color, op: opacityOf(el) })
+      out.push({ id: el.__smokeId, text: own, x: r.left - stage.left, y: r.top - stage.top, w: r.width, h: r.height, clipped, drawn: !!el.closest('[data-drawn]'), color: cs.color, op: opacityOf(el) })
     }
     return out
   })
@@ -207,6 +207,7 @@ for (let i = 0; i <= n; i++) {
   }
   prev = img
 }
+for (const r of shown.values()) endRead(r, tl.duration)
 if (still > DEAD) note('dead stretches', stillFrom, `${still.toFixed(1)} s with nothing changing`)
 
 // determinism: same t, different seek history, must paint identical pixels

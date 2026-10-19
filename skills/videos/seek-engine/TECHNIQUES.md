@@ -33,6 +33,10 @@ window.seek = (t) => { for (const a of document.getAnimations()) { a.pause(); a.
 
 Seeking the animations survives a compositor that ignores a faked clock. Playwright's `page.clock` (install, pause, `runFor(1000 / fps)` per frame) is the alternative for timers, but it only steps forward, so it cannot render frames out of order.
 
+### Fabric.js and Rive assets
+
+[Fabric.js and rive-runtime source notes, moved from asset-prep/SKILL.md] A design saved by a Fabric.js-based editor: load it once with `StaticCanvas.loadFromJSON` (`npm i @fabricjs/browser`), then in `seek(t)` set each object's properties from `t` and call `renderAll()`, which draws synchronously. Never use its `animate()` or `requestRenderAll()`, which run on `requestAnimationFrame` and the wall clock; its `Noise` filter and spray brushes use `Math.random`, so bake their result once; turn `objectCaching` off on anything the camera scales, or its cached bitmap goes soft; and its text is canvas pixels the smoke test can't read, so rebuild the readable lines in the DOM. (Read from fabric.js's source; not yet run here.) A Rive file (`.riv`, from the Rive editor): use the low-level web runtime (`@rive-app/canvas-advanced`), never the high-level `Rive` player, which runs on its own `requestAnimationFrame`. Per timeline: one `LinearAnimationInstance`; in `seek(t)` set its `time` to `t` measured from the animation's start (setting time does not wrap, so take `t mod duration` for a loop yourself), `apply()` it, `artboard.advance(0)`, then draw the artboard synchronously. A state machine carries state (inputs, transitions, listeners): drive its inputs from a schedule written in `t` and replay it from 0 at a fixed step (one film frame), caching the step reached, exactly like a feedback shader ([SHADERS.md](SHADERS.md)). Audio and events inside the file never play in a render; place their sounds as cues. (Read from rive-runtime's source; not yet run here.)
+
 ## Drags and cursors
 
 - A drag is direct manipulation: while the cursor is held, the value is computed from the cursor's position; on release it springs back from wherever it was.

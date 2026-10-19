@@ -124,7 +124,7 @@ One line each, with its fix. Search it during every review round (`grep -n -i 'g
 - **K3 Cramming.** 17 scenes in 32 s, or 3 features in 5 s. **Fix:** 8-10 story beats per 30 s and 1-2 capabilities.
 - **K4 Flat energy.** A middle 10× calmer than the rest, or peaks with no calm between them. **Fix:** one motion peak per bar with 30-70 f of calm between; the first 6 s about 2× as dense as the middle.
 - **K5 Off-grid timing.** Cuts and hits that ignore the music. **Fix:** a beat grid; section changes on downbeats, cuts on 8ths.
-- **K6 Reads that are too short.** 13 words in 0.76 s, a URL static for 0.23 s. **Fix:** every line readable for at least max(0.5 s, 0.3 s per word, 0.25 s + characters ÷ 17), counted from when it is fully legible (a typed line from when typing starts); a line that must land on its own gets 0.3 s per word + 1.5 s; the smoke test's `short reads` counter catches the floor.
+- **K6 Reads that are too short.** 13 words in 0.76 s, a URL static for 0.23 s. **Fix:** every line meets [the canonical reading floor](SKILL.md#the-loop), counted from when it is fully legible (a typed line from when typing starts); a line that must land on its own gets [the comprehension target](../seek-engine/KINETIC-TYPE.md#reading-time-is-arithmetic); the smoke test's `short reads` counter catches the floor.
 
 ## L. Finishing
 - **L1 Pops and ghost frames.** Single-frame pops, or stale frames from `will-change` on a layer with an animated blur. **Fix:** never promote a layer with blur animating inside it; the smoke test's pop and determinism counters catch both.

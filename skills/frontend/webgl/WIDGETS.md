@@ -8,8 +8,8 @@
 
 The repo's video skills draw WebGL too, under the opposite constraints. Both are right for their medium; never carry one side's rule into the other.
 
-- **Software rasterizer.** Live page: refuse it with `failIfMajorPerformanceCaveat: true` and show the fallback ([Robustness](#robustness)). Video: the renderer runs software WebGL on purpose: seek-engine's `render.mjs` says "default is software WebGL (SwiftShader)", and isokit's verify scripts "start Chrome with WebGL on (`--enable-unsafe-swiftshader --ignore-gpu-blocklist`)" ([../../videos/seek-engine/templates/isokit/references/verify.md](../../videos/seek-engine/templates/isokit/references/verify.md)).
-- **Device pixel ratio cap.** Live page: "Do not copy a device-pixel-ratio cap from another project"; decide it from the shader's cost ([Resolution and DPR](#resolution-and-dpr)). Video: isokit states a fixed default, "Cap the device ratio at 1.5 (the `maxRatio` default)" ([../../videos/seek-engine/templates/isokit/references/webgl.md](../../videos/seek-engine/templates/isokit/references/webgl.md)), which fits its expensive ray-marched shaders, and seek-engine sizes a film's canvas to the stage in pixels ([../../videos/seek-engine/SHADERS.md](../../videos/seek-engine/SHADERS.md)).
+- **Software rasterizer.** Live page: refuse it with `failIfMajorPerformanceCaveat: true` and show the fallback ([Robustness](#robustness)). Video: seek-engine's renderer runs software WebGL on purpose (`render.mjs`: "default is software WebGL (SwiftShader)"). Separately, the live [isometric-figures](../isometric-figures/SKILL.md) verification scripts start headless Chrome with WebGL and SwiftShader permitted ([isokit verify.md](../isometric-figures/templates/isokit/references/verify.md)).
+- **Device pixel ratio cap.** Live page: "Do not copy a device-pixel-ratio cap from another project"; decide it from the shader's cost ([Resolution and DPR](#resolution-and-dpr)). The separate isokit figure contract states a fixed default, "Cap the device ratio at 1.5 (the `maxRatio` default)" ([isokit webgl.md](../isometric-figures/templates/isokit/references/webgl.md)), for its source-specific ray-marched figures; seek-engine sizes a film's canvas to the stage in pixels ([../../videos/seek-engine/SHADERS.md](../../videos/seek-engine/SHADERS.md)).
 - **Clock and context loss.** Live page: one rAF loop gated by visibility, plus context-loss handling. Video: "Draw inside `seek(t)`, synchronously. Never in `requestAnimationFrame`" (SHADERS.md); a render never needs to restore a lost context.
 
 ## One context, many instances
@@ -158,7 +158,7 @@ python3 -m http.server 8000 --directory scripts
 
 Use the [fallback contract](#the-fallback-is-a-production-surface) during verification. [webdown-a, 3d-site; flornkm, webgl-components]
 
-- **A stub that turns WebGL off** (this repo's `drive.mjs --no-webgl`, [seek-engine isokit verify.md](../../videos/seek-engine/templates/isokit/references/verify.md)): every `getContext("webgl")` or `"webgl2"` returns `null`. Run it before the page's own scripts (an init script):
+- **A stub that turns WebGL off** (this repo's `drive.mjs --no-webgl`, [isometric-figures verify.md](../isometric-figures/templates/isokit/references/verify.md)): every `getContext("webgl")` or `"webgl2"` returns `null`. Run it before the page's own scripts (an init script):
 
   ```javascript
   (()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...rest){if(/webgl/.test(String(kind)))return null;return get.call(this,kind,...rest)}})();

@@ -11,7 +11,7 @@ Copy `scripts/smoke.mjs` and `scripts/check_sync.py` from this skill's folder in
 
 ## The loop
 
-1. **Smoke: every counter reads 0.** `node scripts/smoke.mjs` (and `--format 9:16` etc. for each format). It seeks the whole film headless and counts runtime errors, readable text out of the frame or in the safe margin, text overlapping text, text clipped by its container for 0.3 s or more, broken text (NaN, undefined, [object...] printed on screen), short reads (a line on screen for less than max(0.5 s, 0.3 s per word, 0.25 s + characters ÷ 17)), stalls (motion that stops dead for a frame between two moves), a slow hook (nothing moves before 1 s, loops exempt), frames that change with seek history (nondeterminism), dead stretches with nothing changing, dead seams (a cut declared in `cuts()` where the outgoing shot has settled or the incoming one starts still), single-frame pops (a frame step over 3x its neighbours, scanned at full frame rate; designed cuts declared in `cuts()` are exempt) a loop seam that jumps, and low contrast (opaque text under 3:1 against the pixels behind it, or under 4.5:1 for small lines, held 0.3 s or more). Each counter has been proven to fire on a deliberately broken film. Fix every non-zero counter before looking at anything: the counters catch what the eye misses.
+1. **Smoke: every counter reads 0.** `node scripts/smoke.mjs` (and `--format 9:16` etc. for each format). It seeks the whole film headless and counts runtime errors, readable text out of the frame or in the safe margin, text overlapping text, text clipped by its container for 0.3 s or more, broken text (NaN, undefined, [object...] printed on screen), short reads (a line on screen for less than max(0.5 s, 0.3 s per word, 0.25 s + characters ÷ 17)), stalls (motion that stops dead for a frame between two moves), a slow hook (nothing moves before 1 s, loops exempt), frames that change with seek history (nondeterminism), dead stretches with nothing changing, dead seams (a cut declared in `cuts()` where the outgoing shot has settled or the incoming one starts still), single-frame pops (a frame step over 3x its neighbours, scanned at full frame rate; designed cuts declared in `cuts()` are exempt) a loop seam that jumps, and low contrast (opaque text under 3:1 against the pixels behind it, or under 4.5:1 for small lines, held 0.3 s or more). The source reports deliberate broken-film checks; this maintenance round did not rerun them. DOM probes do not cover pictured/canvas text, and opacity thresholds do not prove full legibility. Fix every non-zero counter before looking at anything: the counters catch what the eye misses.
 2. **Look.** Render, then open each image and actually look at it:
    - `node scripts/render.mjs beats`: the beat sheet, one settled frame per beat.
    - `node scripts/render.mjs sheet --every 0.5`: the shape of the whole piece.
@@ -57,21 +57,15 @@ Fix the worst failure each round, re-render only the affected seconds. Abort if 
 
 A goal evaluator checks the rules were met; it does not judge whether the film is good. Taste stays with the user at the gates.
 
-## Final checks on the delivered file
+## Read next
 
-```bash
-ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate,pix_fmt,color_space,color_primaries,color_transfer -show_entries format=duration -of compact out/16x9.mp4
-python3 scripts/waveform.py out/16x9.mp4                                                              # out/qa/wave.png: hits on the coral cue lines
-python3 scripts/look.py out/16x9.mp4 --out out/look --expect <seconds>                               # G0 render exists, G2 no run of more than 3 flat frames, G3 end hold 0.6-1.4 s (--hold-warn 2.5 for a launch film's designed end card) and final shot under 25%; cuts, pre-cut frames, audio audit, motion band
-# look.py takes cuts from out/<film>.mp4.events.json (render.mjs writes it from timeline().cuts) and detects them only when no cut is declared. Shutter blur and --grain change its frame differences: run the gates on a render without --grain.
-node scripts/chrome_lint.mjs index.html                                                              # G5 no page chrome: corner labels, tracked caps, counters, metadata, header bars, kickers, deck layouts, progress bars, letter-typed headlines, vibe-coded UI cards
-uv run scripts/energy_arc.py out/16x9.mp4 --map audio/map.json                                      # the measured energy arc: peaks where the norms put them, 40-60% rest, the picture climbing with the music
-uv run scripts/verify_delivery.py out/16x9.mp4 out/16x9.webm --bg "#0a0a0a" --loop --duration <s>   # decoded pixels: ground equals the token (a lifted ground is a colour-range bug), with --loop the last frame equals frame 0; for an --alpha render, extract one alpha frame (`ffmpeg -i f.mov -vf alphaextract -frames:v 1 a.png`) and composite the clip over a light and a dark ground to check the edges; --step 3 for a film drawn on threes; probes t:x,y=#hex
-uv run scripts/check_sync.py out/16x9.mp4 audio/mix.wav                                              # sync lag ≤ 1 ms, true peak ≤ -1 dBTP, -14 LUFS ±1, LRA, loudest moment
-ffmpeg -i out/16x9.mp4 -vf "fps=2,scale=320:-1,tile=6x5" -frames:v 1 out/contact.png                  # contact sheet of the actual file
-ffmpeg -i out/16x9.mp4 -vf "fps=1,scale=360:-1,tile=5x3" -frames:v 1 out/phone.png                    # phone test of the actual file
-ffmpeg -stream_loop 1 -i out/16x9.mp4 -c copy out/loop_check.mp4                                       # loops: watch the seam twice
-ffprobe -v error -select_streams v -show_entries frame=pts_time -of csv=p=0 out/16x9.mp4 | awk 'NR>1{d=$1-p; if(d<m||m=="")m=d; if(d>x)x=d}{p=$1}END{print "frame spacing", m, x}'   # even timestamps
-```
+| The job | Read |
+|---|---|
+| Decoded output, sound, loop contracts and verification limits | [DELIVERY-CHECKS.md](DELIVERY-CHECKS.md) |
+| Measured source review, lookup and ordered checklist | [MEASURED-REVIEW.md](MEASURED-REVIEW.md), [MEASURED-TELLS.md](MEASURED-TELLS.md), [MEASURED-REVIEW-CHECKLIST.md](MEASURED-REVIEW-CHECKLIST.md) |
 
-Check the size, fps, duration, yuv420p and BT.709 tags against the brief; that frame timestamps are evenly spaced and the duration is exact; that the first frame of the file is the composed frame 0; and the contact sheet of the decoded file, not just the page's sheets (the encode can shift colour and band gradients). Loudness is re-measured on the delivered file, after the AAC encode. Then report plainly: what was checked, the final scores, what was fixed, and what still needs a human eye (feel and rhythm can't be judged from stills). Audio was measured, not heard: say so, and ask a person to listen to the whole track, especially narration (names, terms, numbers).
+The generic loop above requires three rounds for a new film; make-video has format-specific budgets, the launch critic has its own gate and cap, and the measured source has a two-pass budget. Keep those tagged profiles distinct. At any cap, report unresolved gates as incomplete. [Quegenx/agent-skills, make-video, frame-review and measured review at 48e92a7]
+
+## Prove it
+
+The chosen review profile is explicit, counters and sampled-coverage limits are recorded, source-specific conflicts are named, and the actual delivered file receives [the final checks](DELIVERY-CHECKS.md).

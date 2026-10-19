@@ -144,7 +144,8 @@
    "avoid_when": "More than 6 rows, where the group outruns 30 f and the labels shrink; bars that carry no real meaning.",
    "ban_safe": true,
    "bans": [],
-   "evidence": 1
+   "evidence": 1,
+   "correction_note": "Source says six rows each animate 20 f with 5 f stagger and finish within 30 f. Last completion is 20 + 5 * (6 - 1) = 45 f; the 30 f total is incompatible with those inputs."
   },
   {
    "id": "dn-line-draw-tracked-head",
@@ -253,7 +254,8 @@
     "gradient"
    ],
    "ban_safe_variant": "One neutral hairline per row (the accent only on the row the story cares about), with no rainbow-tinted streak and no glow.",
-   "evidence": 1
+   "evidence": 1,
+   "correction_note": "Source says 1250 px in 20 f stays at most 60 px/f. Average speed alone is 62.5 px/f; those inputs cannot satisfy the claimed ceiling."
   },
   {
    "id": "dn-digit-reel-detent",
@@ -353,5 +355,6 @@
    "bans": [],
    "evidence": 0
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

@@ -1,6 +1,6 @@
 ---
 name: video-help
-description: Ask which video skill or flow fits your situation. A router over the skills in this set.
+description: Routes a video request to the relevant skill and production phase. Use when choosing a video skill or resuming the film workflow.
 disable-model-invocation: true
 ---
 

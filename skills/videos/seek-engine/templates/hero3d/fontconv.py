@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""fontconv.py - make a font readable by hero3d (opentype.js): woff2 / woff / variable / otf -> static TTF.
+"""fontconv.py - make a font readable by hero3d (opentype.js): decompress WOFF/WOFF2, instance axes and optionally subset to uncompressed sfnt.
 
 hero3d's extrudedText uses three's TTFLoader (opentype.js), which cannot read woff2 and ignores variable axes.
 brand.mjs and runtime/fonts ship woff2 / variable fonts, so convert once:
 
-  python3 fontconv.py in.woff2 out.ttf                       # decompress (static font) -> TTF
+  python3 fontconv.py in.woff2 out.ttf                       # decompress a static TrueType-outline font -> TTF
   python3 fontconv.py InterVariable.woff2 out.ttf --wght 700 # pin a variable font at weight 700 (any axis: --axis opsz=32)
   python3 fontconv.py in.ttf out.ttf --text "Fathom"         # subset to the glyphs you extrude (small + fast)
+
+Clearing flavor removes the WOFF wrapper; it does not convert CFF outlines to TrueType glyf.
+Official form: https://github.com/fonttools/fonttools/blob/main/NEWS.rst
+The old header promised every OTF input became static TTF.
 
 Needs fontTools + brotli (pip install fonttools brotli). Licence: only convert fonts you may embed (OFL / the brand's own).
 """
@@ -42,7 +46,7 @@ def main():
         opts = subset.Options(); opts.layout_features = ['kern', 'liga']; opts.name_IDs = ['*']; opts.notdef_outline = True
         sub = subset.Subsetter(opts)
         if a.text is not None:
-            chars = set(a.text) | set(' .,;:!?-–—\'"()&@#%0123456789')
+            chars = set(a.text) | set(' .,;:!?-\u2013\u2014\'"()&@#%0123456789')
             sub.populate(text=''.join(sorted(chars)))
         else:
             sub.populate(unicodes=list(range(0x20, 0x7F)) + list(range(0xA0, 0x100)) + [0x2013, 0x2014, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2026, 0x20AC])

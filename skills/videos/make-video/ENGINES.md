@@ -1,0 +1,37 @@
+# Video engines
+
+Choose a renderer from the existing workflow, preserving each engine-specific contract. [Quegenx/agent-skills, videos workflow at 48e92a7]
+
+## Choosing the engine
+
+The default engine is one HTML file with `window.seek(t)`, rendered by Playwright and ffmpeg: zero framework, every frame a pure function of time. Opus reaches for exactly this on its own, and it is the smallest system that works. Reach for a framework only when the brief needs what it adds:
+
+| Need | Engine |
+|---|---|
+| a series of data-driven videos from one template, React components reused from the product | Remotion (`npx skills add remotion-dev/skills`); check [licence eligibility](#remotion-licence) before choosing it. Read [REMOTION.md](REMOTION.md) for its frame, media and rendering contracts; embedding it in an app belongs to React's [REMOTION-PLAYER.md](../../frontend/react/REMOTION-PLAYER.md). It also ships a large library of ready-made WebGL effects (`@remotion/effects`: light leaks, halftone, progressive blur and pixelate, pixel dissolve, glow, chromatic aberration and more) and map techniques, a reason to pick it when a brief leans on those |
+| an existing HyperFrames project, its registry blocks (code diffs and morphs, flowcharts, charts, shader transitions), calibrated media treatments (VHS, 8 mm, print, CRT, ASCII), captions or audio-mixing tools | HyperFrames (`npx skills add heygen-com/hyperframes`) |
+| how something works (an algorithm, a protocol, a mechanism) shown as an invented machine in isometric line art, 2D or turning in 3D, with WebGL fire, water or light | `seek-engine` with its `ISOMETRIC.md` and the isometric toolset ([isometric-figures](../../frontend/isometric-figures/SKILL.md)); size it first (a 40-80 part figure is 30-90 min, a dense one hours) |
+| an exploded view, a teardown, an anatomy figure or a product reveal of a real physical object, from a photo or its name (tumble in, macro details, one feature working, explode and snap back, hero) | `seek-engine` with its `REAL-OBJECTS.md` (research the real dimensions and parts first) on the same isometric toolset; size it first (anatomy-reveal's products run 100-150 parts, about 2-4 hours for the object and 1 for the film) |
+| a math or physics explainer built from equations and graphs | Manim (the `manim-video` skill in browser-use/video-use), voiced with the voiceover skill |
+| a layered editor the agent drives (video layers, keyframes, shaders and audio in one local project) | Tesseract by Mirage (`npx skills add mirage-hq/Tesseract`); proprietary terms, its CLI is a downloaded binary |
+| editing existing footage: cutting a talking-head clip, adding subtitles, graphics and music to it | a footage editor: HyperFrames `talking-head-recut` / `embedded-captions`, or browser-use/video-use |
+| a format a HyperFrames community skill already templates: two apps on a photographed foldable (`duo`), an X profile as a licence card (`x-posting-license`), a Strudel track with its code lighting up (`prod-by-claude`), a film of the user's own sessions with the agent (`session-story`, `day-in-my-life`), a photo or clip repainted as brushwork (`p5-paint-animation`) | `npx skills add heygen-com/hyperframes-community-skills --skill <name>` |
+| everything else | `seek-engine` |
+
+Every rule in these skills (pure function of time, beat grid, stills first, contact-sheet review, caused sound) applies whichever engine renders the frames.
+
+HyperFrames traps: an `<audio>` without an `id` is silently left out of the mix; a property written only on the `from` side of a `fromTo` (`{opacity: 1, scale: 0}` to `{scale: 1}`) is dropped when a parallel worker seeks mid-tween, so the element vanishes in the render though the snapshot looks right: repeat it on the `to` side; `font-family` set in an external stylesheet isn't embedded at render, so keep CSS inline; the root's `data-width`, `data-height` and `data-duration` are read as static attributes, so change them when the size or length changes; and a snapshot can differ from the render, so pull the peak frames from the rendered MP4.
+
+**HyperFrames snapshot privacy, checked versions only:** CLI 0.8.70/0.8.71 can automatically describe snapshot frames with Gemini when `GEMINI_API_KEY` or `GOOGLE_API_KEY` is configured, sending image data to Google. Before snapshotting private material, inspect the pinned CLI's behavior and description option; the checked implementation supports `--describe false`. This is not a claim about every version. [heygen-com/hyperframes, packages/cli/src/commands/snapshot.ts; https://github.com/heygen-com/hyperframes/blob/v0.8.70/packages/cli/src/commands/snapshot.ts]
+
+Remotion traps that cost real time: inspect the pinned version, configured `colorSpace` and actual output before any colour conversion, then check decoded delivery pixels with frame-review's `verify_delivery.py --bg`; filter availability in its bundled ffmpeg depends on the installed build, so check the required filters before choosing a motion-blur pipeline; `npx remotion still` re-bundles on every call, so bundle once and call `renderStill` per frame; use `renderStill`'s `onBrowserLog` for browser-console measurements, with visible debug overlays when useful; `interpolateColors` can't parse `color-mix()`; in a monorepo pin every `remotion` and `@remotion/*` package to one exact version and never let the video workspace re-resolve the app's Tailwind. [product-film, references/render.md and kit/debug.tsx; official corrections: https://www.remotion.dev/docs/renderer/render-media#colorspace and https://www.remotion.dev/docs/renderer/render-still#onbrowserlog]
+
+The old line said every Remotion master was untagged limited-range BT.601 and stills could not forward logs. The official [colour-space option](https://www.remotion.dev/docs/options/color-space) has version-dependent defaults (the documented v4 and v5 branches differ), and `renderStill` exposes `onBrowserLog`; development/migration docs alone do not establish which version is released. The old blanket ffmpeg-filter claim likewise lacked an installed-build qualification. [product-film, references/render.md; official URLs above]
+
+### Remotion licence
+
+Remotion's [terms](https://www.remotion.dev/docs/terms#TeamSize) and [FAQ](https://www.remotion.dev/docs/license/faq) define Free License eligibility for individuals, teams/organizations of up to three people, nonprofits and noncommercial evaluation. For a commercial engagement, count total personnel across the parties that jointly own, control or directly use the same Remotion codebase, including part-time employees and independent contractors; four or more requires a paid licence unless a Free License exemption applies. A client that only receives finished media does not aggregate. Eligibility headcount is separate from the number of Creator seats directly using the software. The old line counted employees only; check the applicable terms before selecting the engine.
+
+## Prove it
+
+The selected engine meets the brief, its prerequisites and applicable terms are checked, and the same clock, still-review and delivered-file gates apply. [Quegenx/agent-skills, videos workflow at 48e92a7]

@@ -6,13 +6,14 @@
 
   uv run scripts/tts.py --voice <voice_id> [--model eleven_v3] [--max-pause 0.35] [--gap 0.25] [--speed 1.0]
   uv run scripts/tts.py --voice <voice_id> --takes 4 [--only hook,steps]
-      generate 4 takes of every line (or only the named lines) into audio/vo/takes/ to listen to, then stop.
+      prepare 4 cached take indexes per selected line in audio/vo/takes/, requesting only missing entries, then stop.
       Pick a winner per line with "take": k in the script and run again without --takes to assemble.
 
 Reads audio/vo-script.json, one entry per line of narration:
   [{"id": "hook", "text": "What the captions show", "say": "optional spoken form", "gap": 0.4, "take": 0}, ...]
-`say` is what is sent to the voice (pronunciation fixes, Hebrew nikud, spelled-out numbers); `text` stays clean
-for captions. Each line is cached in audio/vo/ by a hash of (say, voice, model): edit one line and only that
+`say` is sent to the voice (pronunciation fixes, Hebrew nikud, spelled-out numbers). Clean `text` replaces
+aligned caption words only when the word counts match; otherwise inspect the spoken forms in the captions.
+Each line is cached in audio/vo/ by (say, voice, model, take): edit one line and only that
 line is requested again. The key comes from ELEVENLABS_API_KEY in the environment or in .env.
 
 Writes audio/vo.wav (the mixer picks it up and ducks the music under it), audio/vo.srt (subtitles from the word
@@ -93,11 +94,18 @@ def write_srt(timeline, path, max_chars=42):
     def ts(x):
         ms = int(round(x * 1000))
         return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
+    def breaks(words):
+        return [k for k in range(1, len(words))
+                if len(" ".join(words[:k])) <= max_chars and len(" ".join(words[k:])) <= max_chars]
+
     cues = []
     for ln in timeline:
         cur = []
         for w in ln["words"]:
-            if cur and (len(" ".join(x["word"] for x in cur + [w])) > 2 * max_chars
+            if len(w["word"]) > max_chars:
+                raise ValueError(f"tts: subtitle word exceeds {max_chars} characters; revise the script")
+            candidate = [x["word"] for x in cur + [w]]
+            if cur and ((len(" ".join(candidate)) > max_chars and not breaks(candidate))
                         or (len(" ".join(x["word"] for x in cur)) > max_chars and cur[-1]["word"][-1:] in ".,;:!?")):
                 cues.append(cur)
                 cur = []
@@ -109,7 +117,7 @@ def write_srt(timeline, path, max_chars=42):
             words = [x["word"] for x in c]
             text = " ".join(words)
             if len(text) > max_chars:  # break into two rows near the middle
-                best = min(range(1, len(words)), key=lambda k: abs(len(" ".join(words[:k])) - len(text) / 2))
+                best = min(breaks(words), key=lambda k: abs(len(" ".join(words[:k])) - len(text) / 2))
                 text = " ".join(words[:best]) + "\n" + " ".join(words[best:])
             f.write(f"{i}\n{ts(c[0]['start'])} --> {ts(c[-1]['end'])}\n{text}\n\n")
 

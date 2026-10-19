@@ -206,9 +206,9 @@ def measure(path, target):
 
 
 def master(raw_path, out_path, target=-14.0, zero_tail=True):
-    """Gain to the loudness target through a peak limiter, measured and repeated until within 0.3 LU, then lower the
+    """Gain to the loudness target through a peak limiter, measured for at most six passes toward 0.3 LU, then lower the
     ceiling until the WAV's true peak sits at or under -2 dBTP. The AAC encode adds 0.5-1 dB of peak, so the delivered
-    file still clears -1 dBTP. A hit-heavy mix reaches loudness because the limiter shaves transients."""
+    file must be re-measured against -1 dBTP; convergence is not guaranteed. A hit-heavy mix reaches loudness because the limiter shaves transients."""
     ceiling, gain = -3.0, 0.0
     for _ in range(6):
         src = out_path if gain else raw_path
@@ -352,11 +352,9 @@ def main():
     mix += music * 0.8
 
     os.makedirs(os.path.join(ROOT, "audio/sfx"), exist_ok=True)
-    peaks = {}
     for name, (x, what) in kinds.items():
         if not what.startswith("supplied"):
             write_wav(os.path.join(ROOT, f"audio/sfx/{name}.wav"), x)
-        peaks[name] = measured_peak(x)
     key = arg("--key", arg("--bed") or "C")
     cue_list = thin_keys(tl.get("cues", []))
     for cue in cue_list:
@@ -374,14 +372,14 @@ def main():
             d = max(1.0, float(cue["dist"]))
             x = band(x, hi=max(250.0, 16000.0 / (1 + d / 120))) / (1 + d / 60)
             delay = d / 343.0
-        start = int(round((cue["t"] + delay) * SR)) - peaks[kind]  # the peak, not the start, sits on the cue
+        start = int(round((cue["t"] + delay) * SR)) - measured_peak(x)  # measure after pitch/world transforms; the peak sits on the cue
         idx = start + np.arange(len(x))
         if loop:
             idx %= n  # tails past the end wrap to the start, so the loop is seamless
         else:
             keep = (idx >= 0) & (idx < n)
             idx, x = idx[keep], x[keep]
-        pan = max(-0.9, min(0.9, cue.get("pan", 0.0))) if world else cue.get("pan", 0.0) * (1 if kind in ("whoosh", "rise") else 0.15)
+        pan = max(-0.9, min(0.9, cue.get("pan", 0.0))) if world else max(-1.0, min(1.0, cue.get("pan", 0.0))) * (1 if kind in ("whoosh", "rise") else 0.15)
         mix[idx, 0] += x * (1 - pan)
         mix[idx, 1] += x * (1 + pan)
     print(f"placed {len(cue_list)} cues by measured peak ({len(tl.get('cues', [])) - len(cue_list)} key sounds thinned)", flush=True)

@@ -125,7 +125,9 @@ function speedLines(ctx, x, y, dir, n = 3, len = 50, gap = 12, w = 2.4, c = INK)
 }
 function lerpColor(a, b, k) { const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b); return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], clamp(k)))).join(",")})`; }
 
-return { catmull, densify, pathOf, ik, poly, smooth, ellipse, stroke, fill, line, at, taper, grainCanvas, grainOver, hatch, fibre, burst, speedLines, lerpColor, clamp, lerp, rad, ss, hash, rng, noise1, eOut, eIn, eIO, eExpo, eBack, eElastic, eBounce, popS, mid, centroid, ellPts, rrect, INK, createCanvas, Path2D }
+function shade(hex, k) { const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.round(clamp(k > 0 ? v + (255 - v) * k : v * (1 + k), 0, 255))); return `rgb(${c.join(",")})`; }
+
+return { shade, catmull, densify, pathOf, ik, poly, smooth, ellipse, stroke, fill, line, at, taper, grainCanvas, grainOver, hatch, fibre, burst, speedLines, lerpColor, clamp, lerp, rad, ss, hash, rng, noise1, eOut, eIn, eIO, eExpo, eBack, eElastic, eBounce, popS, mid, centroid, ellPts, rrect, INK, createCanvas, Path2D }
 })()
 // ---------------------------------------------------------------- textures.mjs
 Draw.textures = (() => {

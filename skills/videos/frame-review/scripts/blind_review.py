@@ -7,14 +7,15 @@ Usage:
   FILE or FILE=Name: the name goes into the hidden key (default: the file stem; equal stems get their folder name added).
 
 Writes  OUT_DIR/index.html         one self-contained page (open it in a browser; add #<round-id> to open a tab, ids are printed)
-        OUT_DIR/videos/<round>-<L|R|X|Y|Z...>.mp4   hard links when possible (no disk cost), copies otherwise
+        OUT_DIR/videos/<run>/<round>-<L|R|X|Y|Z...>.mp4   hard links when possible (no disk cost), copies otherwise
         OUT_DIR/.answer-key.json   the answer key (hidden file, mode 600; ALSO obfuscated behind the page's two-click Reveal button).
                                    Do not open it, and do not look in videos/ before judging: file sizes can give the films away.
 Sides are randomly labelled (L/R for two films, X/Y/Z... for more) with os-level randomness; re-running keeps the earlier shuffle so
-verdicts stay valid unless --reshuffle. The page plays all films of a round in sync (play/pause, scrub, frame step, 0.25-1x, loop), lets
+verdicts stay valid unless --reshuffle. The page plays all films of a round in sync (play/pause, scrub, first-film frame step, 0.25-1x, loop), lets
 each film be heard alone (judge the picture silent first, then each soundtrack by itself), and records per-film pick / slop / 1-10 rating /
 worst-moment notes in the browser, with a "Copy verdict" button (paste it into taste/verdicts.md). Warns when the films differ in
-resolution, frame rate or duration (a giveaway, and unfair to the viewer).
+resolution, frame rate or duration (a giveaway, and unfair to the viewer). Frame stepping uses the first film's nominal
+average FPS; if probing fails, it warns and disables frame-step controls rather than assuming a frame rate.
 Exit: 0 ok, 2 bad usage (missing file, fewer than 2 films in a round).
 """
 from __future__ import annotations
@@ -22,6 +23,9 @@ from __future__ import annotations
 import argparse
 import base64
 import json
+from html import escape
+import tempfile
+from urllib.parse import quote
 import os
 import random
 import re
@@ -99,7 +103,7 @@ const store = {
   set(k, v) { try { localStorage.setItem("blind:" + k, JSON.stringify(v)); } catch {} }
 };
 const $ = (s, el = document) => el.querySelector(s);
-const fmt = t => isFinite(t) ? t.toFixed(2) + "s" : "–";
+const fmt = t => isFinite(t) ? t.toFixed(2) + "s" : " - ";
 
 // theme
 const root = document.documentElement;
@@ -152,15 +156,17 @@ PANELS.forEach(p => {
       <span class="mono clock">0.00s</span>
     </div>
     <div class="verdict">
-      <h2>Verdict: ${p.title}</h2>
-      <textarea class="overall" placeholder="Overall: which is better and why? Is either one slop?">${v.notes || ""}</textarea>
+      <h2 class="verdict-title"></h2>
+      <textarea class="overall" placeholder="Overall: which is better and why? Is either one slop?"></textarea>
       <div class="row">
         <button class="copy">Copy verdict</button>
         <button class="reveal">Reveal which is which</button>
-        <span class="hint">Keys: <kbd>Space</kbd> play/pause · <kbd>R</kbd> restart · <kbd>←</kbd><kbd>→</kbd> frame · <kbd>1</kbd>–<kbd>3</kbd> sound from film</span>
+        <span class="hint">Keys: <kbd>Space</kbd> play/pause · <kbd>R</kbd> restart · <kbd>←</kbd><kbd>→</kbd> frame · <kbd>1</kbd> - <kbd>3</kbd> sound from film</span>
       </div>
     </div>`;
   main.appendChild(sec);
+  $(".verdict-title", sec).textContent = "Verdict: " + p.title;
+  $(".overall", sec).value = v.notes || "";
   wire(p, sec, v);
 });
 
@@ -211,12 +217,16 @@ function wire(p, sec, v) {
   }
   function seek(t) { videos.forEach(x => { x.currentTime = Math.min(t, (x.duration || t) - 0.001); }); }
   function restart(play) { seek(0); setPlaying(play ?? playing); }
-  function step(d) { setPlaying(false); seek(Math.max(0, (videos[0].currentTime || 0) + d)); }
+  function step(frames) { const fps = p.items[0].fps; if (!(fps > 0)) return; setPlaying(false); seek(Math.max(0, (videos[0].currentTime || 0) + frames / fps)); }
 
   $(".play", sec).onclick = () => setPlaying(!playing);
   $(".restart", sec).onclick = () => restart();
-  $(".back", sec).onclick = () => step(-1 / 30);
-  $(".fwd", sec).onclick = () => step(1 / 30);
+  $(".back", sec).onclick = () => step(-1);
+  $(".fwd", sec).onclick = () => step(1);
+  for (const button of sec.querySelectorAll(".back, .fwd")) {
+    button.disabled = !(p.items[0].fps > 0);
+    button.title = button.disabled ? "Frame rate unavailable" : "One nominal frame of the first film";
+  }
   sec.querySelectorAll(".spd").forEach(b => b.onclick = () => {
     rate = +b.dataset.s; sec.querySelectorAll(".spd").forEach(x => x.setAttribute("aria-pressed", x === b)); videos.forEach(x => x.playbackRate = rate);
   });
@@ -232,9 +242,9 @@ function wire(p, sec, v) {
 
   $(".overall", sec).oninput = e => { v.notes = e.target.value; save(); };
   $(".copy", sec).onclick = async e => {
-    const lines = [`${p.title}: pick ${v.pick || "–"}`];
+    const lines = [`${p.title}: pick ${v.pick || " - "}`];
     films.forEach(f => { const lab = f.dataset.label, fv = v.films[lab];
-      lines.push(`  ${lab}: rating ${fv.rating ?? "–"}/10 · slop: ${fv.slop ? "yes" : "no"}${fv.note ? " · " + fv.note : ""}`); });
+      lines.push(`  ${lab}: rating ${fv.rating ?? " - "}/10 · slop: ${fv.slop ? "yes" : "no"}${fv.note ? " · " + fv.note : ""}`); });
     if (v.notes) lines.push(`  overall: ${v.notes}`);
     if (sec.classList.contains("revealed")) films.forEach(f => lines.push(`  ${f.dataset.label} = ${KEY[p.title + " · " + f.dataset.label]}`));
     try { await navigator.clipboard.writeText(lines.join("\n")); e.target.textContent = "Copied ✓"; } catch { e.target.textContent = "Copy failed"; }
@@ -255,8 +265,8 @@ document.addEventListener("keydown", e => {
   const k = $("#p-" + active)._keys;
   if (e.code === "Space") { e.preventDefault(); k.toggle(); }
   else if (e.key === "r" || e.key === "R") k.restart();
-  else if (e.key === "ArrowLeft") k.step(-1 / 30);
-  else if (e.key === "ArrowRight") k.step(1 / 30);
+  else if (e.key === "ArrowLeft") k.step(-1);
+  else if (e.key === "ArrowRight") k.step(1);
   else if (/^[1-3]$/.test(e.key)) k.solo(+e.key - 1);
 });
 
@@ -269,7 +279,7 @@ window.addEventListener("hashchange", () => { const h = location.hash.slice(1); 
 """
 
 
-def probe_warn(title: str, files: list) -> None:
+def probe_warn(title: str, files: list) -> list:
     """Warn when films differ in size / fps / duration: the viewer would guess the film from it."""
     info = []
     for f in files:
@@ -279,13 +289,16 @@ def probe_warn(title: str, files: list) -> None:
             d = json.loads(r.stdout)
             st = d["streams"][0]
             n, m = st["avg_frame_rate"].split("/")
-            info.append((st["width"], st["height"], round(float(n) / float(m), 2) if float(m) else 0, round(float(d["format"]["duration"]), 2)))
+            info.append((st["width"], st["height"], float(n) / float(m) if float(m) else 0, round(float(d["format"]["duration"]), 2)))
         except (OSError, ValueError, KeyError, IndexError, subprocess.SubprocessError):
-            return
+            print(f"warning: round '{title}': frame-rate probing failed; frame stepping disabled", file=sys.stderr)
+            return [None] * len(files)
     if len({i[:3] for i in info}) > 1:
         print("warning: round '%s': films differ in resolution/fps %s: the viewer can tell them apart by it" % (title, [i[:3] for i in info]), file=sys.stderr)
     if max(i[3] for i in info) - min(i[3] for i in info) > 0.5:
         print("warning: round '%s': durations differ %s s" % (title, [i[3] for i in info]), file=sys.stderr)
+
+    return [i[2] for i in info]
 
 
 def slug(s: str) -> str:
@@ -301,6 +314,19 @@ def main() -> None:
     ap.add_argument("--reshuffle", action="store_true")
     a = ap.parse_args()
 
+    round_ids = set()
+    for spec in a.round:
+        if len(spec) < 3:
+            ap.error(f"round '{spec[0]}' needs at least 2 films")
+        rid = slug(spec[0])
+        if rid in round_ids:
+            ap.error(f"duplicate round id: {rid}")
+        round_ids.add(rid)
+        for raw in spec[1:]:
+            source = Path(raw.partition("=")[0]).resolve()
+            if not source.is_file():
+                ap.error(f"missing film: {source}")
+
     out = Path(a.out).resolve()
     vids = out / "videos"
     vids.mkdir(parents=True, exist_ok=True)
@@ -308,8 +334,6 @@ def main() -> None:
     old = {} if a.reshuffle or not keyfile.exists() else json.loads(keyfile.read_text())
     rnd = random.SystemRandom()
     key, panels = {}, []
-    for f in vids.iterdir():
-        f.unlink()
     for spec in a.round:
         title = spec[0]
         files, given = [], {}
@@ -330,7 +354,7 @@ def main() -> None:
             names = {k: given.get(k, "%s/%s" % (Path(k).parent.name, Path(k).stem)) for k in names}
         if len(set(names.values())) < len(names):
             ap.error("round '%s': two films have the same name; give them FILE=Name" % title)
-        probe_warn(title, files)
+        fps = dict(zip(files, probe_warn(title, files)))
         rid = slug(title)
         prev = [old.get(f"{title} · {l}") for l in labels]
         if all(prev) and sorted(prev) == sorted(names.values()):
@@ -339,13 +363,14 @@ def main() -> None:
             order = files[:]
             rnd.shuffle(order)
         items = []
+        run_dir = Path(tempfile.mkdtemp(prefix=rid + "-", dir=vids))
         for lab, f in zip(labels, order):
-            dst = vids / f"{rid}-{lab}{f.suffix}"
+            dst = run_dir / f"{rid}-{lab}{f.suffix}"
             try:
                 os.link(f, dst)
             except OSError:
                 shutil.copy2(f, dst)
-            items.append({"label": lab, "src": f"videos/{dst.name}"})
+            items.append({"label": lab, "src": quote(dst.relative_to(out).as_posix()), "fps": fps[f]})
             key[f"{title} · {lab}"] = names[str(f)]
         panels.append({"id": rid, "title": title, "items": items})
         print(f"round '{title}' -> #{rid} ({len(files)} films)")
@@ -355,8 +380,8 @@ def main() -> None:
     except OSError:
         pass
     blob = base64.b64encode(json.dumps(key).encode()).decode()[::-1]
-    html = (TEMPLATE.replace("__PANELS__", json.dumps(panels)).replace("__KEY__", blob)
-            .replace("__TITLE__", a.title.replace("<", "&lt;")))
+    replacements = {"__PANELS__": json.dumps(panels).replace("<", "\\u003c"), "__KEY__": blob, "__TITLE__": escape(a.title)}
+    html = re.sub(r"__(?:PANELS|KEY|TITLE)__", lambda match: replacements[match.group()], TEMPLATE)
     (out / "index.html").write_text(html)
     print(f"wrote {out / 'index.html'}  (hidden answer key: {keyfile.name}; do not open it before judging)")
 

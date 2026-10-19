@@ -4,9 +4,10 @@
 //   node scripts/add-font.mjs "Inter" [--weights 400,600,700] [--italic]
 //   node scripts/add-font.mjs "Karantina" --weights 400,700        Hebrew and Latin subsets both come down
 //
-// Writes every subset as assets/fonts/<slug>-<n>.woff2 and assets/fonts/<slug>.css with @font-face rules
+// Writes every returned font as assets/fonts/<slug>-<n>.<extension> and assets/fonts/<slug>.css with @font-face rules
 // (font-display: block) pointing at them. Add <link rel="stylesheet" href="assets/fonts/<slug>.css"> to index.html.
-// Variable families come down as one file per subset covering the whole weight range you ask for.
+// Requests discrete weight styles, not a continuous variable-axis range (old header promised a whole range).
+// Google Fonts range syntax uses two dots: https://developers.google.com/fonts/docs/css2
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -17,8 +18,8 @@ const weights = (args.includes('--weights') ? args[args.indexOf('--weights') + 1
 const italic = args.includes('--italic')
 const axis = italic ? `ital,wght@${[0, 1].flatMap((i) => weights.map((w) => `${i},${w}`)).join(';')}` : `wght@${weights.join(';')}`
 const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family).replace(/%20/g, '+')}:${axis}&display=block`
-// a modern browser user agent, so the API answers with woff2
-const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36'
+// Identify this helper honestly; vendor the font format returned by the API.
+const UA = 'agent-skills/add-font'
 
 const res = await fetch(url, { headers: { 'User-Agent': UA } })
 if (!res.ok) {
@@ -29,9 +30,9 @@ let css = await res.text()
 const slug = family.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 const dir = path.join(process.cwd(), 'assets', 'fonts')
 fs.mkdirSync(dir, { recursive: true })
-const files = [...new Set([...css.matchAll(/url\((https:[^)]+\.woff2)\)/g)].map((m) => m[1]))]
+const files = [...new Set([...css.matchAll(/url\((https:[^)]+)\)/g)].map((m) => m[1]))]
 for (const [i, u] of files.entries()) {
-  const name = `${slug}-${i}.woff2`
+  const name = `${slug}-${i}${path.extname(new URL(u).pathname)}`
   const r = await fetch(u)
   if (!r.ok) { console.error(`add-font: could not download ${u}`); process.exit(1) }
   fs.writeFileSync(path.join(dir, name), Buffer.from(await r.arrayBuffer()))
@@ -39,5 +40,5 @@ for (const [i, u] of files.entries()) {
 }
 fs.writeFileSync(path.join(dir, `${slug}.css`), `/* ${family} from Google Fonts (check its licence on fonts.google.com; most are OFL) */\n${css}`)
 const subsets = [...css.matchAll(/\/\* ([\w-]+) \*\//g)].map((m) => m[1])
-console.log(`wrote assets/fonts/${slug}.css and ${files.length} woff2 files (${[...new Set(subsets)].join(', ') || 'one subset'})`)
+console.log(`wrote assets/fonts/${slug}.css and ${files.length} font files (${[...new Set(subsets)].join(', ') || 'one subset'})`)
 console.log(`add to index.html: <link rel="stylesheet" href="assets/fonts/${slug}.css">  then font-family: '${family}'`)

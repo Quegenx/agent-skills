@@ -13,7 +13,7 @@ in float, adds +-1 LSB triangular dither, and quantises once.
   uv run scripts/gradient.py ... --preview out/qa/bg-bands.png      also writes a x12 contrast stretch: bands show there
 
 --linear takes a CSS angle (180 = top to bottom); --radial takes cx,cy,rx,ry as fractions of the frame.
---space oklab (default; the smoothest ramp between two neutrals) or srgb (what CSS does).
+--space oklab (default; the smoothest ramp between two neutrals) or srgb (explicit gamma-encoded sRGB interpolation).
 Use the PNG as the stage: <img src="assets/bg.png" style="position:absolute;left:0;top:0;width:100%;height:100%">.
 """
 import math
@@ -29,6 +29,8 @@ def arg(name, default=None):
     return a[a.index(name) + 1] if name in a else default
 
 
+# The old header called sRGB universal CSS behavior; interpolation can be selected explicitly.
+# https://drafts.csswg.org/css-images-4/#coloring-gradient-line
 def srgb_to_lin(c):
     return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
 

@@ -1,6 +1,6 @@
-/* native-ui.js: HTML builders for iOS UI at true proportions + two Motion moves (arrive, macro). Plain <script>; pair with native-ui.css; load AFTER motion.js.
+/* native-ui.js: HTML builders for iOS UI at true proportions + two Motion moves (arrive, macro). Plain <script>; pair with native-ui.css; the arrive/macro moves require the upstream motion.js runtime, which is not bundled here.
  *
- *   <link rel="stylesheet" href="../runtime/native-ui/native-ui.css"><script src="../runtime/native-ui/native-ui.js"></script>
+ *   <link rel="stylesheet" href="native-ui.css"><script src="native-ui.js"></script>
  *   const icon = NativeUI.appIcon({ bg: 'linear-gradient(#6b5bff,#3d2fd1)', glyph: '<svg ...>' });
  *   const html = NativeUI.phone(NativeUI.lockScreen({ time: '7:52', date: 'Monday 5 October', wallpaper: 'radial-gradient(...)',
  *     notifs: [{ icon, title: 'Priya Raman', time: 'now', body: 'Landed early. Meet me at door 4? I have two bags.' }] }));

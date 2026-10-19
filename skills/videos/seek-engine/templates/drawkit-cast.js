@@ -126,8 +126,7 @@ Draw.rigs.bug = (() => {
 // feet on y = 0. Shell ≈ 170 × 90 at s = 1.   bug(ctx, x, groundY, s, pose)
 // pose: { shell: colour, flip (face +x), gait, rot, squash (0..1 flattened), flash, jaw (0..1), angry,
 //         hurt (x eyes), horns (boss), t }
-const { clamp, lerp, rad, ellipse, stroke, fill, line, at, poly, hatch, INK } = Draw.core;
-function shade(hex, k) { const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.round(clamp(k > 0 ? v + (255 - v) * k : v * (1 + k), 0, 255))); return `rgb(${c.join(",")})`; }
+const { shade, clamp, lerp, rad, ellipse, stroke, fill, line, at, poly, hatch, INK } = Draw.core;
 
 function bug(ctx, x, y, s = 1, p = {}) {
   const col = p.shell || "#6A3FA0", flip = !!p.flip, sq = p.squash || 0, t = p.t || 0, ph = p.gait;
@@ -197,13 +196,12 @@ Draw.rigs.chibi = (() => {
 //   mouth      "rest" | "smile" | "open" | "O" | "flat" | "frown" | "A" | "E" | "U" | "M"
 //   headTilt   radians; look [dx, dy] pupil offset; blush 0..1; sweat 0..1; flash 0..1
 // }
-const { clamp, lerp, rad, ellipse, stroke, fill, line, at, poly, smooth, rrect, INK } = Draw.core;
+const { shade, clamp, lerp, rad, ellipse, stroke, fill, line, at, poly, smooth, rrect, INK } = Draw.core;
 const ARM_PRESETS = {
   rest: [[12, 10], [12, 10]], up: [[150, 15], [150, 15]], cheer: [[128, 34], [128, 34]], wave: [[12, 10], [145, 30]],
   pointR: [[12, 10], [92, -4]], pointL: [[92, -4], [12, 10]], hips: [[40, 110], [40, 110]], shrug: [[55, 80], [55, 80]], carry: [[20, 60], [20, 60]],
 };
 
-function shade(hex, k) { const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.round(clamp(k > 0 ? v + (255 - v) * k : v * (1 + k), 0, 255))); return `rgb(${c.join(",")})`; }
 const O = (w = 4) => w;
 
 function limb(ctx, a, b, c, w1, w2, col, outline = 3.6) {    // two segments with round joints, outlined
@@ -323,8 +321,7 @@ Draw.rigs.critter = (() => {
 //   flash       0..1 white hit flash
 //   air         true while airborne: legs tuck
 // }
-const { clamp, lerp, rad, ellipse, stroke, fill, line, at, poly, rrect, hatch, INK } = Draw.core;
-function shade(hex, k) { const n = parseInt(hex.slice(1), 16), c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.round(clamp(k > 0 ? v + (255 - v) * k : v * (1 + k), 0, 255))); return `rgb(${c.join(",")})`; }
+const { shade, clamp, lerp, rad, ellipse, stroke, fill, line, at, poly, rrect, hatch, INK } = Draw.core;
 
 function critter(ctx, x, y, s = 1, p = {}) {
   const col = p.color || "#D97757", flip = !!p.flip, sq = p.sq ?? 1, crouch = p.crouch || 0, face = p.face || "normal", t = p.t || 0;

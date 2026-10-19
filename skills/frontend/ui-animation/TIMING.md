@@ -165,6 +165,35 @@ Springs for things that feel physical (controls, cards, dragged objects); eased 
 - Nothing flashes full-screen in under 300 ms.
 - On 120 Hz screens, durations stay the same (time, not frames): never animate by frame counts. Liveline (8% per frame) and kciter's exponential approach ease by a fixed fraction per frame instead; both positions are in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).
 
+## Writing a motion brief
+
+[video-brief, original SPEC-PATTERNS.md section 3] This is the captured numeric brief template. Its target/canvas choices are historical options, not a requirement to ship a product on a video engine. Apply this file's frequency gate, duration tables, recorded source alternatives and protected owner tokens. The old source directed every value to seek-engine's number sheet; shipped UI instead uses its UI owner here.
+
+For motion that ships in a product, or any piece where the feel must be exact. Adjectives get the
+default (300 ms, ease-in-out, a 20 px slide, a bounce on everything); numbers get exactly the numbers.
+
+```
+MOTION BRIEF
+target        [seek-engine HTML | GSAP 3 | Remotion]
+canvas        [1440 × 900, 60 fps]
+beats         0.00  card group enters from +24px
+              0.28  cards settled, title begins
+              0.46  title settled, meta fades in
+              0.60  rest state
+duration      cards 280ms · title 220ms · meta 160ms
+easing        cards cubic-bezier(0.05, 0.7, 0.1, 1) · title (0.2, 0, 0, 1) · meta (0, 0, 0, 1)
+overshoot     0% (these carry information)
+stagger       60ms between cards, total under 400ms
+properties    transform and opacity only
+reduced       cross-fade 120ms, no translation
+```
+
+Beats are a timeline, not a list: sequence relative to labels (`"<0.28"`), never as recomputed absolute
+delays. Use the relevant UI owner values above.
+Before the code, list each beat with start, duration, curve and overshoot in a table; the review checks
+the render against that table.
+
+
 ## Prove it
 
 Use the [shared motion review](SKILL.md#prove-it): check every duration and curve against the relevant table and recorded source disagreement, interrupt and reverse dynamic motion, and inspect the reduced-motion result. The owner's product tokens govern its protected designs. [ui-animation, existing timing and review sources]

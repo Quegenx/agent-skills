@@ -98,7 +98,8 @@
    "avoid_when": "The product has no input field, the film's camera grammar is flat, or the query runs past about 40 characters (the macro framing cannot hold it).",
    "ban_safe": true,
    "bans": [],
-   "evidence": 1
+   "evidence": 1,
+   "correction_note": "Source calls the 24-66 and 66-110 segments 88 f. Their combined span is 110 - 24 = 86 f."
   },
   {
    "id": "oh-oversize-fly-then-small",
@@ -199,5 +200,6 @@
    "bans": [],
    "evidence": 0
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

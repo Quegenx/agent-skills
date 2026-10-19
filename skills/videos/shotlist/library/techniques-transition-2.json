@@ -241,5 +241,6 @@
    "ban_safe_variant": "Fill every column with one flat colour: the next stage colour, or the accent if this is the film's one accent flood. Or alternate two adjacent lightness steps of one hue from column to column and let them merge into a single tone as the field closes. Never put a ramp inside a column.",
    "evidence": 1
   }
- ]
+ ],
+ "source_note": "cinetic source recipes. Evidence counts are unverified source claims; evidence 0 has no corroborating count. Starter paths/helpers belong to the source project; read techniques.json before translating. Production reads follow video-brief/COPY.md."
 }

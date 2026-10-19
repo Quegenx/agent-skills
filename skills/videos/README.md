@@ -9,13 +9,13 @@ Make videos with a coding agent, where every frame is code. Start with `make-vid
 | Skill | Covers |
 |---|---|
 | [video-help](./video-help/SKILL.md) | Choosing a skill and navigating the film workflow |
-| [video-setup](./video-setup/SKILL.md) | Toolchain setup |
-| [make-video](./make-video/SKILL.md) | Gated code-to-video production, Remotion contracts, engine limits, snapshot privacy and GIF clocks |
-| [video-brief](./video-brief/SKILL.md) | Brief, references, style guide and facts versus film choices |
-| [asset-prep](./asset-prep/SKILL.md) | Real screens, logos, prepared assets, app recordings, reference provenance, reuse scope and inspected silence boundaries |
+| [video-setup](./video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |
+| [make-video](./make-video/SKILL.md) | Gated production with separate engine selection and delivery contracts, preserving source-specific review profiles. |
+| [video-brief](./video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
+| [asset-prep](./asset-prep/SKILL.md) | Screens, brand extraction, recording and prepared assets; renderer integration links to seek-engine. |
 | [beat-grid](./beat-grid/SKILL.md) | Measured music and the shared picture/sound clock |
-| [voiceover](./voiceover/SKILL.md) | Narration, word timings and pronunciation |
-| [shotlist](./shotlist/SKILL.md) | Storyboards, reading holds and the 273-entry catalogue in ordered parts with corrected typing profiles |
-| [seek-engine](./seek-engine/SKILL.md) | Frame-driven HTML rendering, measured motion, dark/light cinematic UI stages, physical figures and the three-part drawing kit; corrected timing, geometry and source claims |
-| [frame-review](./frame-review/SKILL.md) | Smoke counters, visual review, delivery checks, audited required audio and bounded short-clip smoothing |
-| [sound-pass](./sound-pass/SKILL.md) | Caused effects, music/voice mixing and mastering |
+| [voiceover](./voiceover/SKILL.md) | Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing. |
+| [shotlist](./shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions and ordered technique/precedent catalogues with evidence limits. |
+| [seek-engine](./seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates and anatomy/cinematic film adapters; live figures link to frontend. |
+| [frame-review](./frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
+| [sound-pass](./sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |
