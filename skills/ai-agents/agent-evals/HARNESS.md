@@ -98,12 +98,16 @@ Per run: a manifest (fingerprint, variant, models, versions), one result line pe
 - **Distinguish call timeout from case deadline.** Fresh timeouts for each retry and grader do not enforce one overall case budget. A soft timeout also does not prove provider cancellation or remove billing. The supplied runner reset its timeout per operation despite promising a per-case limit. [confident-ai/eval-skills, eval-run, references/execution.md and references/toolkit.md]
 - **Token counts come from the leaf model calls,** never added again from a parent's total; an unknown count is empty, not zero. In AI SDK 7, `result.usage` is already a parent's total, across all steps (`totalUsage` is deprecated; `finalStep.usage` is the last step only, per the v7 migration guide). A cost names its price source and date and says whether every call was counted.
 - **Pilot one case first:** check that every recorded field is filled for real (an unknown silently written as 0 looks like a cheap run) and that the setting you are testing actually reached the agent and its subagents (variance hides in configuration: effort, for one, may not be applied consistently).
+- **Installed components and observed use are separate records.** Keep the rendered skill, subagent, script and plugin inventory beside the actual invocation trace. A component appearing in the inventory does not show that the agent used it; a script name appearing in command arguments does not establish successful execution. [harness2, third_party/lab_runner/opencode/run_opencode.py, `harness_inventory` and `component_use`]
+- **Document mentions are a coverage hint.** The supplied LAB adapters count filename stems in tool arguments or paths in raw session text as `documents_read`; those counters do not establish a successful read or complete content coverage. Keep that limitation with the metric rather than reporting mentions as verified reads. [harness2, third_party/lab_runner/opencode/session.py, `doc_coverage`; third_party/lab_runner/adapt_runs_cx/run_codex_lab.py, `doc_coverage`]
 - **State the size before the baseline:** cases x repetitions x models, and roughly how long it will take.
 - **Batch what can wait:** the Message Batches API is half price on input and output tokens.
 
 ## Fingerprints, variants, resume
 
 A **variant** is one version of the code. Its fingerprint hashes the commit, the uncommitted and untracked changes (outside the records folder), the case index and the repetitions. A run directory with another fingerprint is refused (`EVAL_RUN_CHANGED`): changed code is a new variant. Sort the case index before hashing it: a test runner lists files in its own cache order (failed and slow first), and an unsorted index refused the resume of a finished run. Filters (by file or case name) narrow a run without changing its fingerprint, and a rerun of the same variant skips the slots already finished.
+
+**Revalidate selected-result evidence before skipping it.** The supplied regression cases require a rerun when the chosen harness changes after selection or its deliverable disappears. A completion summary alone is insufficient evidence that the selected result remains intact. [harness2, tests/test_workflow.py, `test_recursion_budget_and_resume`]
 
 Run full suites from a **separate checkout or worktree** pinned to a commit, in the background, so you can keep editing; never change the code a recorded run is using. A lightweight eval for one task works the same way: separate agents produce outputs, each in its own worktree, and comparison agents grade them against a rubric (evaluating and refining a skill, for one).
 
@@ -177,3 +181,4 @@ test("a cancel waits for the user after the lookup", async () => {
 - The graph's primary result is observed at its user-visible boundary, with node diagnostics and cost/latency/scope guardrails separate.
 - A blamed node reproduces the failure with frozen inputs.
 - Path checks state their ordering, allowed extra/missing calls and argument-comparison contract; generation is complete before grading its frozen trajectory.
+- A selected-result resume rejects changed harness evidence or a missing deliverable; component inventories, observed invocations and heuristic document-mention counts retain their separate meanings. [harness2, tests/test_workflow.py; third_party/lab_runner/opencode/run_opencode.py and session.py]

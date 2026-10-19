@@ -38,6 +38,8 @@ The same audit grades each recommendation on four axes from 0 to 1, computed by 
 
 Code checks and judges share one function shape: they take the case and the run's result (the replies, the tools called, the retrieved context, the trace id) and return `passed`, a `reason` someone can check against the trace, and optionally a score and a confidence. A grader that can't decide (the output is empty, the trace is missing, the judge's answer didn't parse) **throws**, so the slot becomes a grader error, never a quiet fail.
 
+**Ambiguous parse recovery is a grader error too.** A response can echo the requested JSON format before giving its answer; taking the first `pass` field can manufacture a verdict the judge never gave. Reject conflicting verdicts instead of choosing one. The supplied patch adds disagreement checks to its brace scan and fallback extraction, but its earlier fenced-JSON branch returns before those checks, so that implementation does not establish ambiguity protection across the whole response. [harness2, third_party/patches/harvey-labs-judge-vertex-anthropic.diff]
+
 ## Judges
 
 A judge is a model too, so ask it narrow questions with answers that code turns into a score by fixed rules, never a generated verdict.
@@ -97,3 +99,7 @@ A judge for production (scoring live traffic, gating a release) is calibrated be
 Name a score after what it measures (`refusal`), never after the judge.
 
 Rewordings that fix a false fail often let a real mistake through two to six times in ten; calibration is how you see it. A rejected wording is worth writing down next to the kept one. A wording that fixes the false fail but lets a real defect through is worse than the original.
+
+## Prove it
+
+- A judge response that echoes the output schema or contains conflicting verdict objects cannot manufacture a quality grade through a parser fallback, including its fenced-JSON path. [harness2, third_party/patches/harvey-labs-judge-vertex-anthropic.diff]

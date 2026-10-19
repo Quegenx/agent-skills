@@ -17,6 +17,7 @@ A model is a probability, not code: the same conversation can go another way on 
 | Scheduled and background agents: bookmarks per source, a failed read that isn't a quiet day, re-check before posting, post once, read-only preferences and a ledger, scoped credentials, a spending cap from real runs | [SCHEDULED-AGENTS.md](SCHEDULED-AGENTS.md) |
 | Researching source: strongest handles, evidence lanes, negative-proof limits, exact/versioned anchors and compact localization returns | [CODE-RESEARCH.md](CODE-RESEARCH.md) |
 | Context reductions: measured units, recoverable originals, recall overhead, controlled comparisons, cost per accepted loop result and honest savings claims | [CONTEXT-COSTS.md](CONTEXT-COSTS.md) |
+| Refining the harness itself: observed divergences, scoped proposals, execution probes, parallel or sequential composition, supported lessons and experiment resume | [HARNESS-REFINEMENT.md](HARNESS-REFINEMENT.md) |
 | Executing a selected plan: shared interfaces, durable progress, rulings, authorized verification and phase handoff | [PLAN-EXECUTION.md](PLAN-EXECUTION.md) |
 | Diagnosing a recorded session: identity and record meanings, plan drift, repetitions, cost, coverage and scrubbed evidence | [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) |
 | Where each of these lives in the code: folders, names, dependency direction | the `agent-codebase` skill |

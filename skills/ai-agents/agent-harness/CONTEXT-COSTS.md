@@ -45,6 +45,9 @@ Reduce what an agent repeatedly reads while preserving the evidence and constrai
 
 For an autonomous loop, compare **cost per accepted result**: the time, compute and human review needed to produce a verified, useful change. Counts of agents, prompts or candidate patches are activity, not accepted outcomes. Use the measurement basis above rather than treating token use alone as the result. [supplied article, How to Build AI Loops That Are Replacing Prompt Engineering.md, section 7]
 
+- In a harness-refinement comparison, distinguish logical stages from actual invocations and retries. Name which reference executions are shared, and account for their physical calls once; selection and reflection are additional work outside a proposal/composition stage count. [google-research/harness2, harness2/core/ledger.py, recursion.py and selection.py]
+- Separate the cost of a fresh experiment from the incremental cost of resuming cached work. The source reports cached proposer replies as zero new spend, and its report labels editor, composer, selector and reflection spend as improver cost; neither establishes complete executor, grader or historical cost. Preserve the coverage limits under [State what the number measures](#state-what-the-number-measures). [google-research/harness2, harness2/core/proposer.py, _cached; harness2/cli/report.py, _spend_and_fallbacks]
+
 ## Data handling
 
 [JuliusBrussee/caveman, caveman-compress/SECURITY.md and caveman-evidence-review/SKILL.md]
@@ -62,3 +65,4 @@ For an autonomous loop, compare **cost per accepted result**: the time, compute 
 - The after figure includes recall overhead, and structural checks are not reported as semantic equivalence.
 - Quality, resource result, attribution and decision are reported separately; no fixture result becomes an unsupported production or monetary claim.
 - A loop comparison accounts for time, compute and human review against accepted, verified outcomes, rather than only generated candidates. [supplied article, How to Build AI Loops That Are Replacing Prompt Engineering.md, section 7]
+- Refinement stage counts, invocation attempts, shared calls, cached reuse and the measured cost coverage remain distinct. [google-research/harness2, harness2/core/ledger.py and proposer.py; harness2/cli/report.py]

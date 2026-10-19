@@ -3,6 +3,7 @@
 ## Calling the API
 
 - **Go through one client per provider** (yours or a platform proxy) that resolves the connection, attaches credentials, sets timeouts and logs the call without bodies or auth headers.
+- **Keep pool identity stable across token refresh.** Within the same [credential owner](CONNECTIONS.md#who-owns-a-connection) and backend, key shared connection pools and concurrency limits by stable connection identity. Keying them by the rotating access token strands the previous pool and resets the concurrency limit on each refresh; retain the owner boundary when reusing either. [harness2, third_party/patches/workbuddy-bench-runtime.diff, `BackendConfig.key_identity` and `UpstreamSender._backend_key`]
 - **Rate limits:** back off on 429 with jitter, and better, read the provider's rate-limit headers and resume when the window resets. Your calls to a platform have their own limit too.
 - **Reads retry; writes don't.** Retry a read on timeouts, 408, 429 and 5xx. A write (send, create, charge, post) is sent once by your client; on an ambiguous failure, look at the destination or the provider's log first, then retry with the same idempotency key where the provider supports one.
 - **A durable receipt per outbound write** (a send, a post, a join): keyed by request id and owner, written as "unknown" and flushed before the call runs, then holding the result. A repeated request answers the stored result without calling again; the same id with a different intent fails (`<KIND>_INTENT_CHANGED`); a failure after the call started stays "unknown" and is never resent automatically.
@@ -73,3 +74,7 @@ When customers use different tools for the same thing (CRMs, ATSs, accounting):
 - **Fail on purpose:** 401 (revoked), 403 (scope), 429, 500, a timeout after sending, a duplicate webhook, a webhook before the API response, a sync cut off halfway.
 - **Replay fixtures for an enrichment-routed form:** existing customer, new ICP-fit lead, unknown company, false company match, exhausted quota, timeout followed by a late success, duplicate submission, unavailable owner. Check the visible page and the resulting CRM records and tasks, not only the workflow's success flag; then a shadow run that records proposed routes without changing the live flow, then a bounded pilot. [coreyhaines31/marketingskills, revops]
 - **Two tenants in every isolation test.**
+
+## Prove it
+
+- Refreshing credentials preserves the same owner's backend pool and concurrency limit; the [connection ownership boundary](CONNECTIONS.md#who-owns-a-connection) still separates accounts and tenants. [harness2, third_party/patches/workbuddy-bench-runtime.diff, `BackendConfig.key_identity` and `UpstreamSender._backend_key`]

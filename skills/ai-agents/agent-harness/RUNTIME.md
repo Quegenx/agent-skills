@@ -42,6 +42,8 @@ returning id;
 
 Load everything the turn needs **in parallel** before the model starts: settings, memories, history, the record's state. Compute in code what code can know (the order's next step, missing fields, paid or not) and give the model facts, not puzzles. Time every preparation step as its own span; preparation is often the slow part nobody looks at.
 
+**Preserve configured fields when deriving a per-request override.** The supplied proxy reconstructed its route field by field, silently resetting an enabled option to its default before execution. Copy the complete configuration and override only the intended fields, so the effective route retains the other configured values. [harness2, third_party/patches/workbuddy-bench-runtime.diff, `proxy/main.py`]
+
 A side classifier that reads the newest message (is it simple, does it need a hint) gets a time budget of a few seconds and **fails open:** on timeout or error the turn runs without it.
 
 ## Loop settings
@@ -208,3 +210,7 @@ An agent that works for minutes or hours (research, an import, a coding task) ou
 10. Skills for rare multi-step flows; tool search once the tool list is large.
 11. Human in the loop, fitted to the product.
 12. The fix loop until a full run is clean; then read real conversations and turn each mistake into a case.
+
+## Prove it
+
+- A per-request route override retains configured values outside its explicit overrides, including an enabled option that would otherwise revert to its default. [harness2, third_party/patches/workbuddy-bench-runtime.diff, `proxy/main.py`]

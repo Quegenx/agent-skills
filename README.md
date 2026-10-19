@@ -1,6 +1,6 @@
 # Agent skills
 
-128 skills for coding agents, in ten sets:
+129 skills for coding agents, in ten sets:
 
 | Folder | What it's for |
 |---|---|
@@ -10,11 +10,11 @@
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal), Convex, Firebase and Kapso. 21 skills. |
 | [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review, debugging, engineering planning, artifact investigation and exact component/animation reconstruction. 12 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
-| [`skills/frontend/`](./skills/frontend) | How UI is built and behaves, per surface: the app itself, the marketing site, animation in general, SVG, modern CSS, GSAP, accessibility, color systems, Sonner toasts, technical drawings, React (with Next.js and React Native) and WebGL, cookie consent. 13 skills. |
+| [`skills/frontend/`](./skills/frontend) | App and marketing UI, design-system maintenance, motion, SVG, CSS, GSAP, accessibility, colors, Sonner, technical drawings, React with Next.js and React Native, WebGL and consent. 14 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy), k6 load tests and Google Analytics 4 with Tag Manager. 5 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 38 skills. |
-| Total | 128 skills in ten sets. |
+| Total | 129 skills in ten sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -116,8 +116,8 @@ Building agents that stay reliable, and the AI features around them. Start with 
 
 | Skill | Covers |
 |---|---|
-| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Agent loops, tools, history, source research, authority binding, evidence coverage, exact cleanup ownership and cost per accepted result. |
-| [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Real-agent evals, calibrated judges, review taxonomies, managed/local boundaries, DeepEval and evidence-based documentation audits. |
+| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Agent loops, tools, history, source research, harness refinement from execution evidence, supported lessons, config integrity and measured cost. |
+| [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Real-agent evals, calibrated judges, evidence coverage, resume integrity, component-use records and ambiguous-response handling. |
 | [skill-authoring](./skills/ai-agents/skill-authoring/SKILL.md) | Skill structure, routing, descriptions, reference organization, pressure scenarios and measured improvements. |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Long-term memory, evidence-based preference extraction, consolidation, retrieval, expiry and user controls. |
 | [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, every timing and size. Ships the production source in `reference/` |
@@ -140,7 +140,7 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [postgres](./skills/backend/postgres/SKILL.md) | Production schemas, pooling, transactions, WAL, recovery and PlanetScale-specific operations. |
 | [supabase](./skills/backend/supabase/SKILL.md) | Data API, RLS, Auth, database services, scoped tooling and declarative schemas; Fetch middleware authoring, bridge limits and transaction-scoped Postgres claims. |
 | [effect](./skills/backend/effect/SKILL.md) | Effect v4 code, errors, services, resources, concurrency, Schema and platform APIs. |
-| [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Connected accounts, OAuth, provider APIs, sync and webhooks, with the Kapso integration branch. |
+| [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Connected accounts, OAuth, provider APIs, sync, webhooks and Kapso; pool identity across credential refresh. |
 | [observability](./skills/backend/observability/SKILL.md) | OpenTelemetry traces, metrics, logs, health checks and incident diagnosis. Current semantic attributes, telemetry privacy, SDK buffers and collector limits. |
 | [deployment](./skills/backend/deployment/SKILL.md) | Containers, Compose, host moves, backups, release verification and npm publishing. Selected-stack SaaS walking skeleton, environment inventory and incident checklist. |
 | [performance-and-caching](./skills/backend/performance-and-caching/SKILL.md) | Query tuning, caching, browser performance and equivalent whole-task cost and correctness measurements. Planner caveats, index benefits, PostgreSQL ranking and temperature-zero limits. |
@@ -189,6 +189,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 | [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance, audits with shared P0 to P3 severity and Remotion Player integration. |
 | [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages. |
 | [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
+| [design-system-maintenance](./skills/frontend/design-system-maintenance/SKILL.md) | Extracting an existing system, mapping values, component docs, migration readiness and rendered evidence. |
 | [app-ui](./skills/frontend/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
 | [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | The production marketing-site design, motion and page templates, with reference source. |
 
