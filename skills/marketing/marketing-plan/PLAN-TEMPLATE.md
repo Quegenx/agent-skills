@@ -184,7 +184,7 @@ Quarter-by-quarter outcome state (Q1 / Q2 / Q3 / Q4).
 - Paywall + pricing review (often Activation × Revenue)
 
 ### Skills + tools
-[onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [cro SIGNUP](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SIGNUP.md), [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md), [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), etc.
+[onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [cro SIGNUP](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SIGNUP.md), [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md), [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md), [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/SKILL.md), [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md), etc.
 
 ## Section 6 - Retention
 

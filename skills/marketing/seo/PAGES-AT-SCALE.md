@@ -56,7 +56,7 @@ The same pattern applies to AI answers: near-duplicate pages per prompt wording 
 | Directory | "[category] tools", "[type] software" | Comprehensive coverage; useful filtering and sorting; details per listing (not just names); regular updates | `/directory/[category]/` or `/[category]-directory/` |
 | Profiles | "[person/company name]", "[entity] + [attribute]" | "Accurate, sourced information"; regularly updated; unique insights or aggregation; not a Wikipedia rehash | `/people/[name]/`, `/companies/[name]/` |
 
-Translations need hreflang that Google accepts: each version lists itself and all others, `x-default` as the fallback, fully qualified URLs, an ISO 639-1 language with an optional ISO 3166-1 region (never a country alone), in HTML, an HTTP `Link` header or the sitemap ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). The owner's head design already does this ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)). A glossary can carry schema.org `DefinedTerm`; Google has no rich result for it, so it is semantic markup only.
+Translations need hreflang that Google accepts: each version lists itself and all others, `x-default` as the fallback, fully qualified URLs, an ISO 639-1 language with an optional ISO 3166-1 region (never a country alone), in HTML, an HTTP `Link` header or the sitemap ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). The owner's head design already does this ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)). A glossary can carry schema.org `DefinedTerm`; Google has no rich result for it, so it is semantic markup only.
 
 ## Choosing a playbook
 
@@ -96,7 +96,7 @@ From [build a sitemap](https://developers.google.com/search/docs/crawling-indexi
 
 - "All formats limit a single sitemap to 50MB (uncompressed) or 50,000 URLs"; a sitemap index groups several. Separate sitemaps per page type make Search Console tracking easier [coreyhaines31/marketingskills, programmatic-seo].
 - "Google ignores `<priority>` and `<changefreq>`". `<lastmod>` is used only if "consistently and verifiably" accurate: the main content, structured data or links changed, not a copyright year.
-- Absolute canonical URLs only. The owner commits a static sitemap that "always name[s] the production origin" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); these rules apply to it too.
+- Absolute canonical URLs only. The owner commits a static sitemap that "always name[s] the production origin" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)); these rules apply to it too.
 
 ## Indexation and crawl budget
 

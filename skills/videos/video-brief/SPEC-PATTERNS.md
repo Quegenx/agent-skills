@@ -102,7 +102,7 @@ the first seek() call.
 
 ## 3. Motion brief with numbers (UI and web motion)
 
-[video-brief, original section 3] Shipped product motion belongs in [Writing a motion brief](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#writing-a-motion-brief), alongside the UI duration/frequency rules and protected owner tokens.
+[video-brief, original section 3] Shipped product motion belongs in [Writing a motion brief](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md#writing-a-motion-brief), alongside the UI duration/frequency rules and protected owner tokens.
 
 ## 4. Director's brief for a long autonomous run
 

@@ -224,7 +224,7 @@ Tools are the RevenueCat MCP server or the `rc` CLI (`rc paywalls generate --pro
 - **Always experiment.** Thousands of new users a day: A/B test with RevenueCat Experiments. Hundreds: directional tests. Fewer: ship and watch conversion over time.
 - **More reading.** Search the RevenueCat blog and docs for paywall best practices; any docs page is Markdown at its URL with `.md` appended.
 
-These are [RevenueCat/ai-toolkit, revenuecat-paywall-design] conversion heuristics. The source ranks conversion over aesthetics and prescribes unique CTA hues and spacing; the owner's [app-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md#the-rules), landing-page-ui and agent-chat-ui retain their production components, variants and tokens. Apply the heuristics only within those approved designs; report a conflict before a specific production change.
+These are [RevenueCat/ai-toolkit, revenuecat-paywall-design] conversion heuristics. The source ranks conversion over aesthetics and prescribes unique CTA hues and spacing; the owner's [app-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/SKILL.md#the-rules), landing-page-ui and agent-chat-ui retain their production components, variants and tokens. Apply the heuristics only within those approved designs; report a conflict before a specific production change.
 
 Audit in the source's order, subject to that owner-design boundary:
 

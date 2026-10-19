@@ -1,6 +1,6 @@
 # Remotion: frame timing, composition metadata and render output
 
-Use this when [ENGINES.md](ENGINES.md#choosing-the-engine) selects Remotion. These framework contracts come from the supplied [remotion-dev/skills](https://github.com/remotion-dev/skills) snapshot, identified there as 4.0.536, checked against the official documentation linked below. That snapshot does not establish the project's installed version. The brief, beat grid, stills and review gates remain in [SKILL.md](SKILL.md); embedding a preview in a product belongs to React's [react REMOTION-PLAYER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/REMOTION-PLAYER.md).
+Use this when [ENGINES.md](ENGINES.md#choosing-the-engine) selects Remotion. These framework contracts come from the supplied [remotion-dev/skills](https://github.com/remotion-dev/skills) snapshot, identified there as 4.0.536, checked against the official documentation linked below. That snapshot does not establish the project's installed version. The brief, beat grid, stills and review gates remain in [SKILL.md](SKILL.md); embedding a preview in a product belongs to React's [react REMOTION-PLAYER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/REMOTION-PLAYER.md).
 
 ## Start with the installed version
 

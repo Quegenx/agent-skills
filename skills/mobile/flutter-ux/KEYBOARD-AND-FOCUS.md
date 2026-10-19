@@ -193,7 +193,7 @@ Widget build(BuildContext context) {
 
 - **The article applies the keyboard inset through `SafeArea.minimum`** ("A SafeArea widget is often a convenient way to apply this"). The official `SafeArea` line (notches, cutouts, status bar, rounded corners) is in [flutter LAYOUT-AND-RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/LAYOUT-AND-RESPONSIVE.md#safearea-and-mediaquery).
 - **Author's view:** "I believe this should be the default behavior of the bottom sheet, but for now, this is the best way to handle it."
-- **Web equivalent** (keyboard over a sheet, `padding-bottom: calc(100dvh - var(--visual-viewport-height))`): [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md). Sheet sizing and results: [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
+- **Web equivalent** (keyboard over a sheet, `padding-bottom: calc(100dvh - var(--visual-viewport-height))`): [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/SHEETS.md). Sheet sizing and results: [NAVIGATION-AND-SHEETS.md](NAVIGATION-AND-SHEETS.md).
 
 ## Keyboard shortcuts
 

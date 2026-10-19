@@ -68,7 +68,7 @@ The source says nothing about consent. The address that unlocks a report is used
 - **Keywords:** the tool page targets "[thing] calculator", "[thing] generator", "free [tool type]"; supporting content targets "How to [use case]" and "What is [concept]".
 - **Why tools earn links:** genuinely useful (people reference them), unique (you can't link to just any page), shareable.
 
-On-page SEO and links are in [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md); for a site built with frontend/landing-page-ui, the tool page's title, description, structured data and share card follow its DISCOVERY.md.
+On-page SEO and links are in [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md); for a site built with web-ui/landing-page-ui, the tool page's title, description, structured data and share card follow its DISCOVERY.md.
 
 ## Build or buy
 

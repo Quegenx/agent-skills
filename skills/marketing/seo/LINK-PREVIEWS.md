@@ -10,14 +10,14 @@ From [ogp.me](https://ogp.me/):
 - **Four required properties:** "The four required properties for every page are: og:title, og:type, og:image, og:url".
 - **`og:url` is the canonical page URL:** "The canonical URL of your object that will be used as its permanent ID in the graph". URL values are "All valid URLs that utilize the http:// or https:// protocols", so write them absolute.
 - **Image sub-properties:** `og:image:url`, `og:image:secure_url`, `og:image:type`, `og:image:width`, `og:image:height`, `og:image:alt`. Width and height are optional structured properties. The source `image` skill of coreyhaines31/marketingskills listed width and height as "Required Meta Tags"; ogp.me does not. [coreyhaines31/marketingskills, image]
-- **Alt text:** "If the page specifies an og:image it should specify og:image:alt", and alt is "A description of what is in the image (not a caption)". landing-page-ui follows it: "The image's alt describes what the image shows", the article's cover alt or one message for the default share image ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)).
+- **Alt text:** "If the page specifies an og:image it should specify og:image:alt", and alt is "A description of what is in the image (not a caption)". landing-page-ui follows it: "The image's alt describes what the image shows", the article's cover alt or one message for the default share image ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)).
 - **Keep OG and X fields consistent,** and `og:url` equal to the canonical. [freescan]
 
 ## Facebook
 
 From [Meta's webmaster guide](https://developers.facebook.com/docs/sharing/webmasters) and [image guide](https://developers.facebook.com/docs/sharing/webmasters/images):
 - **`og:url`** "should be the undecorated URL, without session variables, user identifying parameters, or counters".
-- **`og:title`** "without any branding such as your site name". landing-page-ui follows it: "`og:title` is the page title without the appended brand"; `<title>` and the card's title keep the brand ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)).
+- **`og:title`** "without any branding such as your site name". landing-page-ui follows it: "`og:title` is the page title without the appended brand"; `<title>` and the card's title keep the brand ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)).
 - **`og:description`:** "usually between 2 and 4 sentences".
 - **Defaults:** `og:type` is `website`, `og:locale` is `en_US`.
 - **`fb:app_id`:** "In order to use Facebook Insights you must add the app ID to your page."
@@ -79,7 +79,7 @@ From Google Search Central ([title links](https://developers.google.com/search/d
 - **A changed image gets a new URL,** because Facebook and X cache by image URL.
 - **Images per page at scale:** generate them from a template with the page's data; programmatic pages are in [PAGES-AT-SCALE.md](PAGES-AT-SCALE.md). [coreyhaines31/marketingskills, image]
 - **Generating them with `@vercel/og`** ([Vercel](https://vercel.com/docs/og-image-generation), updated 2026-06-16): it runs on the Node.js runtime and "uses Satori and Resvg to convert HTML and CSS into PNG"; Next.js App Router already includes it; it needs Node.js 22+; fonts only `ttf`, `otf` or `woff`; "Only flexbox (`display: flex`) and a subset of CSS properties", no `display: grid`; "Maximum bundle size of 500KB" including fonts and images; `pages/` on the Node.js runtime does not support `return new Response(...)`. The source `image` skill said it "generates images at the edge"; Vercel documents the Node.js runtime. [coreyhaines31/marketingskills, image]
-- landing-page-ui's own choice is a static PNG per language, "such as `/images/og/og-image-{lang}.png`, or the article's cover" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)). Image compression and formats for the page itself: [web-performance BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/BROWSER.md#images-and-video).
+- landing-page-ui's own choice is a static PNG per language, "such as `/images/og/og-image-{lang}.png`, or the article's cover" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)). Image compression and formats for the page itself: [web-performance BROWSER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/BROWSER.md#images-and-video).
 
 ## Checking a page
 

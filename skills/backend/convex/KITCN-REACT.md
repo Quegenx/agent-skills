@@ -1,6 +1,6 @@
 # kitcn React, caching and server rendering
 
-Client guidance comes from [udecode/kitcn, SKILL.md, references/features/react.md, references/setup/react.md, next.md, start.md, expo.md] and [kitcn's React docs](https://kitcn.dev/docs/react). This topic owns adapter-specific behavior; React fundamentals remain in the [global React skill](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md). Read [setup](KITCN-SETUP.md) for generated imports, CLI ownership and environment URLs.
+Client guidance comes from [udecode/kitcn, SKILL.md, references/features/react.md, references/setup/react.md, next.md, start.md, expo.md] and [kitcn's React docs](https://kitcn.dev/docs/react). This topic owns adapter-specific behavior; React fundamentals remain in the [global React skill](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/SKILL.md). Read [setup](KITCN-SETUP.md) for generated imports, CLI ownership and environment URLs.
 
 ## Providers and client lifetime
 
@@ -9,7 +9,7 @@ Client guidance comes from [udecode/kitcn, SKILL.md, references/features/react.m
 - `createCRPCContext({ api, convexSiteUrl })` supplies `CRPCProvider`, `useCRPC` and `useCRPCClient`. The first hook returns TanStack options/proxies; the second returns an imperative typed client.
 - Mount the Convex provider and TanStack `QueryClientProvider`, with `CRPCProvider` inside the QueryClient provider and above every consumer. The source error is `useCRPC must be used within CRPCProvider`.
 - Without auth use the Convex provider; the kitcn Better Auth path uses `ConvexAuthProvider` from `kitcn/auth/client`, the auth client, Convex client and selected query bridge. Authenticated Next SSR passes its initial token; public-only paths can intentionally omit it.
-- `getQueryClientSingleton(factory)` implements the existing [request-local server/reused browser rule](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/DATA-AND-BUNDLES.md#client-data-none-swr-or-tanstack-query). `getConvexQueryClientSingleton` creates/connects the subscription bridge with `convex`, `queryClient`, optional `authStore` and `unsubscribeDelay`, whose source default is 3000 ms.
+- `getQueryClientSingleton(factory)` implements the existing [request-local server/reused browser rule](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/DATA-AND-BUNDLES.md#client-data-none-swr-or-tanstack-query). `getConvexQueryClientSingleton` creates/connects the subscription bridge with `convex`, `queryClient`, optional `authStore` and `unsubscribeDelay`, whose source default is 3000 ms.
 - Subscription lifetime is mount, subscribe, unmount, delay, unsubscribe; cached data remains until `gcTime`. The delay supports StrictMode remounts and quick back navigation; it is not an authorization grace period.
 - The auth client's plugin-specific exports require their matching plugins. Source setup exports organization hooks without `organizationClient`; use the [corrected auth plugin contract](KITCN-AUTH.md) rather than copying that client template.
 
@@ -77,9 +77,9 @@ Server `CRPCError` arrives as a `ConvexError`; inspect `error.data` for code, me
 
 | Source view | Existing owner view and retained behavior |
 |---|---|
-| Source SKILL section 8 prefers a global QueryClient mutation `onError` toast, using `mutation.meta.errorMessage` or `skipErrorToast` | [owner-design, app-ui/STATES](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#where-messages-go) puts an error in its relevant row, field or form. Retain the owner placement. |
-| Source prefers `error.data.message` over `error.message` and directly renders it | [app-ui, STATES, Messages](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md) maps error codes to the app's own localized words. Retain code-to-message mapping. |
-| Source subscription defaults disable refetch/invalidation refresh | [app-ui, STATES, Freshness](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md) rereads shown data older than 30 seconds on mount/visibility/online and invalidates changed entities. Treat this as an integration-policy conflict if applying the adapter defaults would change owner behavior. |
+| Source SKILL section 8 prefers a global QueryClient mutation `onError` toast, using `mutation.meta.errorMessage` or `skipErrorToast` | [owner-design, app-ui/STATES](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md#where-messages-go) puts an error in its relevant row, field or form. Retain the owner placement. |
+| Source prefers `error.data.message` over `error.message` and directly renders it | [app-ui, STATES, Messages](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md) maps error codes to the app's own localized words. Retain code-to-message mapping. |
+| Source subscription defaults disable refetch/invalidation refresh | [app-ui, STATES, Freshness](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md) rereads shown data older than 30 seconds on mount/visibility/online and invalidates changed entities. Treat this as an integration-policy conflict if applying the adapter defaults would change owner behavior. |
 
 The source's preference describes its own generic app. It is not approval to rewrite app-ui, landing-page-ui or agent-chat-ui. A backend integration keeps the owner design until a specific change is approved. [user owner-design rule; udecode/kitcn, SKILL.md, section 8]
 

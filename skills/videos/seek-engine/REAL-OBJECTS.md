@@ -12,7 +12,7 @@ The figure and the film are only as good as the facts behind them. Spend the fir
 
 **A. The user shows a photo.**
 1. **Read the picture, region by region.** Outline and proportions (measure ratios in pixels), every visible part and how it meets its neighbours, materials (anodised, painted, polished, rubber, fabric, glass), colours, surface decoration, text and markings, and controls, ports, seams and screws.
-2. **Several images** (front, side, back) show the depth and the hidden faces. Record what no image shows; obtain documentation or another view, omit it, or explicitly label it illustrative. Anatomy-reveal's source alternative infers hidden construction; our [evidence record](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/technical-drawing/SKILL.md#1-read-the-object-and-the-reference-separately) keeps unsupported internals out of factual geometry. [annnguyentt/anatomy-reveal-skill, SKILL.md; existing technical-drawing evidence policy]
+2. **Several images** (front, side, back) show the depth and the hidden faces. Record what no image shows; obtain documentation or another view, omit it, or explicitly label it illustrative. Anatomy-reveal's source alternative infers hidden construction; our [evidence record](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/technical-drawing/SKILL.md#1-read-the-object-and-the-reference-separately) keeps unsupported internals out of factual geometry. [annnguyentt/anatomy-reveal-skill, SKILL.md; existing technical-drawing evidence policy]
 3. **Identify it if you can.** If it is a known product (even a customised one), look up its real dimensions and internals as in case B. The photo then decides finish and decoration; the research decides size and structure.
 4. **Otherwise, scale from a known feature.** A USB-C port is 8.4 mm wide, a portafilter basket 58 mm across, a camera lens mount about 60 mm across, a phone about 72 mm wide. State the assumption.
 5. **Nothing from the photo is used as imagery.** No tracing, no texture, no embedded bitmap, no sampled pixels: every shape, colour and ornament is rebuilt as geometry (ISOMETRIC.md: "A reference image gives the finish and the mood, never the object").
@@ -94,7 +94,7 @@ The 3D mode draws convex parts only (3d.md section 5). Everything else is built 
 
 ## Building it in the 3D mode
 
-Build it the kit's way (a Node `build.mjs` that writes the page, with the audit and the 3D build) and drive it with a film script, as [the canonical turning-dial example](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/isometric-figures/templates/isokit/examples/turning-dial/build.mjs) does (ISOMETRIC.md, "Two ways to build the page").
+Build it the kit's way (a Node `build.mjs` that writes the page, with the audit and the 3D build) and drive it with a film script, as [the canonical turning-dial example](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/isometric-figures/templates/isokit/examples/turning-dial/build.mjs) does (ISOMETRIC.md, "Two ways to build the page").
 
 **Frame and units.**
 - **World units are real millimetres.**

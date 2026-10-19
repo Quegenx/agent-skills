@@ -1,6 +1,6 @@
 # Captured website source evidence
 
-From [morluto/rea, docs/website-script-export.md, docs/web-source-location.md, docs/website-module-trace.md]. Use retained browser evidence to investigate shipped JavaScript. For the rendered component and animation reconstruction workflow, use [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/pixel-reverse-engineer/SKILL.md); these tools establish source relationships rather than a visual match.
+From [morluto/rea, docs/website-script-export.md, docs/web-source-location.md, docs/website-module-trace.md]. Use retained browser evidence to investigate shipped JavaScript. For the rendered component and animation reconstruction workflow, use [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/pixel-reverse-engineer/SKILL.md); these tools establish source relationships rather than a visual match.
 
 ## Capture the source needed
 

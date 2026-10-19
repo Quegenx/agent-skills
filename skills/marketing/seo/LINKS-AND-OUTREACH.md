@@ -15,7 +15,7 @@ From [qualify outbound links](https://developers.google.com/search/docs/crawling
 - Page level: `<meta name="robots" content="nofollow">` means "Do not follow the links on this page", and "Any rule that can be used in a robots `meta` tag can also be specified as an `X-Robots-Tag`" ([robots meta tag](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag)).
 - "Google can only crawl your link if it's an `<a>` HTML element" with an `href`; "Links are also crawlable when you use JavaScript to insert them into a page dynamically"; "If you were paid in some way for the link, qualify these links with `sponsored` or `nofollow`" ([crawlable links](https://developers.google.com/search/docs/crawling-indexing/links-crawlable)).
 
-On your own site, links that users supply carry `ugc` or `nofollow`; the owner's app design already does: "**Links the item supplies** get `rel="nofollow noopener noreferrer"`" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md)).
+On your own site, links that users supply carry `ugc` or `nofollow`; the owner's app design already does: "**Links the item supplies** get `rel="nofollow noopener noreferrer"`" ([app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/DATA-VIEWS.md)).
 
 ## What Google calls link spam
 

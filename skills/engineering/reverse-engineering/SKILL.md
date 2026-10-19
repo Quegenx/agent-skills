@@ -12,7 +12,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | The job | Read |
 |---|---|
 | Decide scope and evidence type | [SKILL.md](SKILL.md) |
-| Rebuild a live component, section or animation with the source's exact visuals and behavior | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/pixel-reverse-engineer/SKILL.md) |
+| Rebuild a live component, section or animation with the source's exact visuals and behavior | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/pixel-reverse-engineer/SKILL.md) |
 | Connect an available tool surface or repair an observed blocker | [CONNECTION.md](CONNECTION.md) |
 | Analyze an ASAR or JS tree, page modules, trace a feature or compare versions | [JAVASCRIPT.md](JAVASCRIPT.md) |
 | Export captured website scripts, map source positions or trace native imports | [CAPTURED-SOURCES.md](CAPTURED-SOURCES.md) |

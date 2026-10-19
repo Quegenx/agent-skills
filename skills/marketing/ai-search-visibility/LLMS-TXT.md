@@ -43,7 +43,7 @@ Plain prose about the product goes here, before any H2.
 - The file can sit at the root or at any path ("/docs/llms.txt covers everything in /docs/"). When more than one applies, "agents should use the most specific one." The spec rejected well-known URIs (RFC 8615) because they exist only at the origin root. [https://llmstxt.org/] FreeScan checks both `/llms.txt` and `/.well-known/llms.txt`. [freescan]
 - **Markdown copies of pages:** serve each page as Markdown at the same URL with `.md` appended (`page.html.md`) or with the extension replaced (`page.md`); URLs without a file name use `index.html.md` or `index.md`. The links in llms.txt "should therefore point to LLM-friendly content, such as the markdown versions." [https://llmstxt.org/]
 - **`llms-full.txt`** (all site content in one file) is not in llmstxt.org v2. It is a vendor convention; [coreyhaines31/marketingskills, ai-seo] calls it "emerging, cheap to generate alongside llms.txt".
-- Committed discovery files always name the production origin ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)).
+- Committed discovery files always name the production origin ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)).
 
 ## How agents find them
 

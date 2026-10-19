@@ -449,7 +449,7 @@ player.setReleaseMode(ReleaseMode.stop);
 ```
 
 - The source never shows how `player` is created, and states no `audioplayers` version.
-- ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md) has a web example of a sound on completion (Honk).
+- ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PATTERNS.md) has a web example of a sound on completion (Honk).
 
 ## Fullscreen video
 

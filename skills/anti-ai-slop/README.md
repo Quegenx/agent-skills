@@ -22,4 +22,4 @@ These are discovery links; follow only the selected task's requirements.
 
 - [developer-docs](../engineering/developer-docs/SKILL.md)
 - [refactoring](../engineering/refactoring/SKILL.md)
-- [app-ui](../frontend/app-ui/SKILL.md)
+- [app-ui](../web-ui/app-ui/SKILL.md)

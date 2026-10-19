@@ -93,7 +93,7 @@ The source's HTML block used a real product's identity and URLs. Use the existin
 - **`og:image` has to be an absolute URL.** A relative path like `og-image.png` gets ignored.
 - **Size it at least 1200×630.** Meta: "Use images that are at least 1200 x 630 pixels", with a ratio "as close to 1.91:1" (https://developers.facebook.com/docs/sharing/webmasters/images). The line said "Size it 1200×630", an exact size where Meta gives a minimum.
 - **`twitter:card` picks the X layout.** The archived X Cards markup says `twitter:image` falls back to `og:image`, and "If an og:type, og:title and og:description exist in the markup but twitter:card is absent, then a summary card may be rendered"; set `twitter:card` to `summary_large_image` for the wide image. The line said X "only sometimes falls back to `og:image`". Per-platform rules are in [seo LINK-PREVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/LINK-PREVIEWS.md#x-cards).
-- The fuller tag set for a marketing site (site name, locale, a share image per language) is in [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md).
+- The fuller tag set for a marketing site (site name, locale, a share image per language) is in [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md).
 
 ## Browser tab title per page
 

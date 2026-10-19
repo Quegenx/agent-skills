@@ -10,7 +10,7 @@
 | [`skills/architecture/`](./skills/architecture) | Design system shape, components, dependency direction and domain boundaries across web, mobile and backend. 3 skills. |
 | [`skills/engineering/`](./skills/engineering) | General development: debugging, refactoring, review, planning, source research, migrations, security, delivery and Effect. 14 skills. |
 | [`skills/backend/`](./skills/backend) | APIs, databases, background work and connected services. Provider skills keep their shared contracts and web/mobile client SDKs together. 17 skills. |
-| [`skills/frontend/`](./skills/frontend) | Web/client interfaces, CSS, SVG, accessibility, animation, drawing and browser performance. One global React skill includes Next.js and React Native/Expo. 17 skills. |
+| [`skills/web-ui/`](./skills/web-ui) | Web/client interfaces, CSS, SVG, accessibility, animation, drawing and browser performance. One global React skill includes Next.js and React Native/Expo. 17 skills. |
 | [`skills/mobile/`](./skills/mobile) | Dart, Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. 6 skills. |
 | [`skills/testing/`](./skills/testing) | Software unit, integration, end-to-end and load testing, including named runners for web and mobile. Choose the project's existing framework. 7 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | General application signals and diagnosis across web, mobile and services: Sentry, PostHog, Grafana and OpenTelemetry. AI-specific Langfuse remains in ai-agents. 4 skills. |
@@ -21,7 +21,7 @@
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
-**Contents:** [Install](#install) · [AI agents](#ai-agents) · [Agent workflows](#agent-workflows) · [Anti-AI-slop](#anti-ai-slop) · [Architecture](#architecture) · [Engineering](#engineering) · [Backend](#backend) · [Frontend](#frontend) · [Mobile](#mobile) · [Testing](#testing) · [Monitoring](#monitoring) · [Marketing](#marketing) · [Videos](#videos) · [Web automation](#web-automation) · [Reference code](#reference-code) · [Licences](#licences)
+**Contents:** [Install](#install) · [AI agents](#ai-agents) · [Agent workflows](#agent-workflows) · [Anti-AI-slop](#anti-ai-slop) · [Architecture](#architecture) · [Engineering](#engineering) · [Backend](#backend) · [Web UI](#web-ui) · [Mobile](#mobile) · [Testing](#testing) · [Monitoring](#monitoring) · [Marketing](#marketing) · [Videos](#videos) · [Web automation](#web-automation) · [Reference code](#reference-code) · [Licences](#licences)
 
 ## Install
 
@@ -167,29 +167,29 @@ Detailed coverage and related task routes are in the [Backend set README](./skil
 | [supabase](./skills/backend/supabase/SKILL.md) | Data API/RLS, Auth, database services, Storage, Realtime and portable Fetch middleware; verify affected services and access boundaries. |
 | [third-party-integrations](./skills/backend/third-party-integrations/SKILL.md) | Connected accounts, OAuth, provider APIs, sync, webhooks and Kapso; pool identity across credential refresh. |
 
-## Frontend
+## Web UI
 
-Detailed coverage and related task routes are in the [Frontend set README](./skills/frontend/README.md#skills).
+Detailed coverage and related task routes are in the [Web UI set README](./skills/web-ui/README.md#skills).
 
 | Skill | Covers |
 |---|---|
-| [app-ui](./skills/frontend/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
-| [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast and audits; Tailwind aliases link to CSS custom properties. |
-| [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
-| [design-system-maintenance](./skills/frontend/design-system-maintenance/SKILL.md) | Extracting an existing system, mapping values, component docs, migration readiness and rendered evidence. |
-| [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, timelines, cleanup and plugins; corrected shuffle and MotionPathHelper APIs. |
-| [isometric-figures](./skills/frontend/isometric-figures/SKILL.md) | Live explanatory SVG/WebGL mechanisms, source geometry, input and sampled audits; deterministic film adapters stay in videos. |
-| [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | Production marketing-site design and source; browser encoding links to its current owner. |
-| [modern-css](./skills/frontend/modern-css/SKILL.md) | CSS layout, forms and responsive policy; separate properties, functions and scroll-animation topics. |
-| [pixel-reverse-engineer](./skills/frontend/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction, plus explanation-only page inspection, from live DOM, CSS, assets, JavaScript and observed behavior. |
-| [react](./skills/frontend/react/SKILL.md) | One global React skill with Next.js, React Native/Expo and native motion routes; state, Effects, composition and platform-specific verification. |
-| [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
-| [svg](./skills/frontend/svg/SKILL.md) | SVG drawing, animation and icons; canonical namespaces, use primitives and transforms. |
-| [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Physical drawings, evidence and exports; standalone viewer and download acceptance applies only to requested deliverables. |
-| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Web motion policy, timing, briefs, recipes and audits; native motion implementation routes to the global React skill. |
-| [web-accessibility](./skills/frontend/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers; complete hover/focus content criteria. |
-| [web-performance](./skills/frontend/web-performance/SKILL.md) | Browser loading, media, layout shifts, main-thread work, runtime traces and Lighthouse gates. |
-| [webgl](./skills/frontend/webgl/SKILL.md) | Live shader widgets, shared contexts/fallbacks, Three.js/R3F audits and launch pages; widget-specific requirements stay in that branch. |
+| [app-ui](./skills/web-ui/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
+| [color-system](./skills/web-ui/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast and audits; Tailwind aliases link to CSS custom properties. |
+| [cookie-consent](./skills/web-ui/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
+| [design-system-maintenance](./skills/web-ui/design-system-maintenance/SKILL.md) | Extracting an existing system, mapping values, component docs, migration readiness and rendered evidence. |
+| [gsap](./skills/web-ui/gsap/SKILL.md) | Tweens, timelines, cleanup and plugins; corrected shuffle and MotionPathHelper APIs. |
+| [isometric-figures](./skills/web-ui/isometric-figures/SKILL.md) | Live explanatory SVG/WebGL mechanisms, source geometry, input and sampled audits; deterministic film adapters stay in videos. |
+| [landing-page-ui](./skills/web-ui/landing-page-ui/SKILL.md) | Production marketing-site design and source; browser encoding links to its current owner. |
+| [modern-css](./skills/web-ui/modern-css/SKILL.md) | CSS layout, forms and responsive policy; separate properties, functions and scroll-animation topics. |
+| [pixel-reverse-engineer](./skills/web-ui/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction, plus explanation-only page inspection, from live DOM, CSS, assets, JavaScript and observed behavior. |
+| [react](./skills/web-ui/react/SKILL.md) | One global React skill with Next.js, React Native/Expo and native motion routes; state, Effects, composition and platform-specific verification. |
+| [sonner](./skills/web-ui/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
+| [svg](./skills/web-ui/svg/SKILL.md) | SVG drawing, animation and icons; canonical namespaces, use primitives and transforms. |
+| [technical-drawing](./skills/web-ui/technical-drawing/SKILL.md) | Physical drawings, evidence and exports; standalone viewer and download acceptance applies only to requested deliverables. |
+| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Web motion policy, timing, briefs, recipes and audits; native motion implementation routes to the global React skill. |
+| [web-accessibility](./skills/web-ui/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers; complete hover/focus content criteria. |
+| [web-performance](./skills/web-ui/web-performance/SKILL.md) | Browser loading, media, layout shifts, main-thread work, runtime traces and Lighthouse gates. |
+| [webgl](./skills/web-ui/webgl/SKILL.md) | Live shader widgets, shared contexts/fallbacks, Three.js/R3F audits and launch pages; widget-specific requirements stay in that branch. |
 
 ## Mobile
 
@@ -315,4 +315,4 @@ Detailed coverage and related task routes are in the [Web automation set README]
 
 ## Licences
 
-Code copied from other projects keeps its licence file beside the copy (`LICENSE-*.txt` in the folder that holds it, and `skills/frontend/isometric-figures/templates/isokit/LICENSE`).
+Code copied from other projects keeps its licence file beside the copy (`LICENSE-*.txt` in the folder that holds it, and `skills/web-ui/isometric-figures/templates/isokit/LICENSE`).

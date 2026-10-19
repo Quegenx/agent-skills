@@ -23,7 +23,7 @@ Category membership is the primary home, not an instruction to install every ski
 These are discovery links; follow only the selected task's requirements.
 
 - [flutter](../mobile/flutter/SKILL.md)
-- [react](../frontend/react/SKILL.md)
+- [react](../web-ui/react/SKILL.md)
 - [browser-automation](../web-automation/browser-automation/SKILL.md)
 - [agent-evals](../ai-agents/agent-evals/SKILL.md)
 - [ab-testing](../marketing/ab-testing/SKILL.md)

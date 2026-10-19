@@ -81,7 +81,7 @@ Google's rules for the date the source asks you to show ([publication dates](htt
 - "Don't specify future dates"; "Minimize the presence of other dates on the page".
 - Change the date only when the content substantially changed (the helpful-content warning above).
 
-The owner's blog markup carries `BlogPosting` "with its publish date" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); it has no `dateModified`, which is absent rather than wrong.
+The owner's blog markup carries `BlogPosting` "with its publish date" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)); it has no `dateModified`, which is absent rather than wrong.
 
 ## Hand-off and cadence
 

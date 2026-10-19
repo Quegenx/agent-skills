@@ -87,7 +87,7 @@ Whatever you choose: a clear single next action, no dead ends, progress indicati
 [coreyhaines31/marketingskills, onboarding]
 
 - **Checklists** for multiple setup steps, several features to discover, or self-serve B2B: 3 to 7 items, ordered by value, quick wins first, a progress bar, a celebration on completion, and a dismiss option.
-- **Empty states** are onboarding opportunities: explain what the area is for, show what it looks like with data, one clear primary action, optionally pre-populated example data. [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#empty-loading-filtered-partial) does it its own way: "Empty states sit on a card", with what to do and the action, and no example data; [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) has the copy rule ("Empty states point forward").
+- **Empty states** are onboarding opportunities: explain what the area is for, show what it looks like with data, one clear primary action, optionally pre-populated example data. [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md#empty-loading-filtered-partial) does it its own way: "Empty states sit on a card", with what to do and the action, and no example data; [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) has the copy rule ("Empty states point forward").
 - **Tooltips and tours** for complex UI or power features: 3 to 5 steps at most, dismissable at any time, not repeated for returning users.
 
 ## Email alongside the product

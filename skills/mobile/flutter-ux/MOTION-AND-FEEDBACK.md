@@ -1,6 +1,6 @@
 # Motion and feedback
 
-How a Flutter app moves and answers a touch: enter and exit timing, curves and springs (`SpringDescription`, `SpringSimulation`, scroll physics, routes, the `motor` package), implicit and switched animations, one controller with `Interval`s, a reusable `flutter_animate` entrance, press feedback, stripping Material tap effects, haptics, snack bars, switch thumb icons, a neutral spinner, a rounded progress bar and a swipe-action hint. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit Flutter tips (apparencekit.dev). Neither states a Flutter, Dart or package version; check `motor`, `haptic_feedback`, `flutter_slidable`, `once` and `flutter_animate` names against their current pub.dev release before copying. The framework-neutral numbers (durations, staggers, spring presets for Motion and CSS) live in [frontend/ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md); where these sources disagree with it, both are stated below. Painting with `CustomPainter`, image export and media are in [PAINTING-AND-MEDIA.md](PAINTING-AND-MEDIA.md).
+How a Flutter app moves and answers a touch: enter and exit timing, curves and springs (`SpringDescription`, `SpringSimulation`, scroll physics, routes, the `motor` package), implicit and switched animations, one controller with `Interval`s, a reusable `flutter_animate` entrance, press feedback, stripping Material tap effects, haptics, snack bars, switch thumb icons, a neutral spinner, a rounded progress bar and a swipe-action hint. Sources: FlutterPro tips by Kamran Bekirov (flutterpro.design) and ApparenceKit Flutter tips (apparencekit.dev). Neither states a Flutter, Dart or package version; check `motor`, `haptic_feedback`, `flutter_slidable`, `once` and `flutter_animate` names against their current pub.dev release before copying. The framework-neutral numbers (durations, staggers, spring presets for Motion and CSS) live in [web-ui/ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md); where these sources disagree with it, both are stated below. Painting with `CustomPainter`, image export and media are in [PAINTING-AND-MEDIA.md](PAINTING-AND-MEDIA.md).
 
 **Contents:** [Enter slow, exit fast](#enter-slow-exit-fast) · [Curve names](#curve-names) · [Springs](#springs) · [Implicit animations](#implicit-animations) · [AnimatedSwitcher and keys](#animatedswitcher-and-keys) · [Animate on a property change](#animate-on-a-property-change) · [Chain on one controller](#chain-on-one-controller) · [One reusable entrance](#one-reusable-entrance) · [Animated gradient button](#animated-gradient-button) · [Press feedback](#press-feedback) · [Strip Material tap effects](#strip-material-tap-effects) · [Haptics](#haptics) · [Snack bars](#snack-bars) · [Switch thumb icons](#switch-thumb-icons) · [Loading indicators](#loading-indicators) · [Swipe-action hint](#swipe-action-hint) · [Prove it](#prove-it)
 
@@ -26,8 +26,8 @@ final CurvedAnimation animation = CurvedAnimation(
 ```
 
 - In a route, the same split is `transitionDuration` and `reverseTransitionDuration`.
-- **How much faster, two views.** FlutterPro: the Material pair, exit half the entrance (entrance 100% longer). ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#staggers-and-sequencing): "Entrances run 30-50% longer than exits"; its SKILL.md says exits are "about half to two thirds of the entrance". Pick one per app.
-- **Springs: the difference is also bounce.** FlutterPro: "An expressive spring overshoots ... that bounce is what makes users notice the entrance. On an exit the same bounce pulls attention to something that's leaving. So exits use a standard spring: it stops at the target, no bounce." The rule is relative: "whatever spring the entrance uses, exit on a faster one without bounce." ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) agrees on the exit (`bounce: 0`) but gives its enter spring `bounce: 0` too and keeps overshoot "for true landings (a toggle knob, a dropped card), a couple per screen at most". Both stated; neither wins.
+- **How much faster, two views.** FlutterPro: the Material pair, exit half the entrance (entrance 100% longer). ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md#staggers-and-sequencing): "Entrances run 30-50% longer than exits"; its SKILL.md says exits are "about half to two thirds of the entrance". Pick one per app.
+- **Springs: the difference is also bounce.** FlutterPro: "An expressive spring overshoots ... that bounce is what makes users notice the entrance. On an exit the same bounce pulls attention to something that's leaving. So exits use a standard spring: it stops at the target, no bounce." The rule is relative: "whatever spring the entrance uses, exit on a faster one without bounce." ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md) agrees on the exit (`bounce: 0`) but gives its enter spring `bounce: 0` too and keeps overshoot "for true landings (a toggle knob, a dropped card), a couple per screen at most". Both stated; neither wins.
 - With the `motor` package's Material springs, entering on `expressiveSpatialDefault` means exiting on `standardSpatialFast`:
 
 ```
@@ -160,7 +160,7 @@ SingleMotionBuilder(
 - `AnimatedDefaultTextStyle` animates between text styles. Props: `curve` (example `Curves.bounceIn`), `duration` (example `Duration(milliseconds: 1300)`), `style` (the target `TextStyle`), `child` (the `Text`).
 - **Pitfall:** "Make sure not to set a `style` directly on the child `Text` widget, as `AnimatedDefaultTextStyle` manages it."
 - Trigger: update the style variables (`textColor`, `fontSize`) inside `setState`; the widget detects the change and animates. Example: a button toggles the color red to black and changes the size.
-- **Example values, two views.** The source's 1300 ms `Curves.bounceIn` is an example. ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) caps a hero reveal at 600-1200 ms and says "Errors, prices and numbers never bounce."
+- **Example values, two views.** The source's 1300 ms `Curves.bounceIn` is an example. ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md) caps a hero reveal at 600-1200 ms and says "Errors, prices and numbers never bounce."
 
 ## AnimatedSwitcher and keys
 
@@ -220,7 +220,7 @@ void didUpdateWidget(covariant UploadedAvatarAnimation oldWidget) {
 
 [ApparenceKit](https://apparencekit.dev/flutter-tips/create-complex-flutter-animations/)
 
-- Manage the whole timeline with one `AnimationController`. For each part (fade, move, resize) create a `CurvedAnimation` on that controller with an `Interval` that defines when it runs inside the total duration. Parts can sequence or overlap. The source has no code. The web-side sequencing rules are ui-animation's [four placements](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#composing-a-sequence) (sequential, overlapping, simultaneous, staggered).
+- Manage the whole timeline with one `AnimationController`. For each part (fade, move, resize) create a `CurvedAnimation` on that controller with an `Interval` that defines when it runs inside the total duration. Parts can sequence or overlap. The source has no code. The web-side sequencing rules are ui-animation's [four placements](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md#composing-a-sequence) (sequential, overlapping, simultaneous, staggered).
 
 ## One reusable entrance
 
@@ -282,7 +282,7 @@ return MoveFadeAnim(
 );
 ```
 
-- **Stagger, two views.** ApparenceKit staggers 150 ms per item with no cap (index 4 starts at 650 ms). ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md#staggers-and-sequencing): "Total stagger under about 500 ms, whatever the count: list items 30-60 ms apart", and animate only the first visible 8 to 12. Its card and list-item range is 200-350 ms, which the 300 ms fade fits and the 450 ms move exceeds.
+- **Stagger, two views.** ApparenceKit staggers 150 ms per item with no cap (index 4 starts at 650 ms). ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md#staggers-and-sequencing): "Total stagger under about 500 ms, whatever the count: list items 30-60 ms apart", and animate only the first visible 8 to 12. Its card and list-item range is 200-350 ms, which the 300 ms fade fits and the 450 ms move exceeds.
 
 ## Animated gradient button
 
@@ -367,7 +367,7 @@ class _PressableState extends State<Pressable> {
 }
 ```
 
-- **Press depth and timing, views side by side.** FlutterPro: 0.96 on `CupertinoMotion.smooth()`, the same spring in and out. ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#buttons-presses-and-feedback): 0.97 with its `ui` spring, under 100 ms in, and "press in faster than release" (Kiem's playful press goes to 0.94). None wins.
+- **Press depth and timing, views side by side.** FlutterPro: 0.96 on `CupertinoMotion.smooth()`, the same spring in and out. ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PATTERNS.md#buttons-presses-and-feedback): 0.97 with its `ui` spring, under 100 ms in, and "press in faster than release" (Kiem's playful press goes to 0.94). None wins.
 
 ## Strip Material tap effects
 
@@ -466,7 +466,7 @@ ThemeData(
 ```
 
 - The block imports from `package:flutter/material.dart` and uses `TabBarThemeData`, the newer class name; see the [flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md) for the Material package move.
-- **Pressed state.** ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md#buttons-presses-and-feedback): "Every pressable element has a pressed state". FlutterPro strips the ripple for a custom design language and does not say what replaces it; its `Pressable` above is a press state that uses no ink.
+- **Pressed state.** ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PATTERNS.md#buttons-presses-and-feedback): "Every pressable element has a pressed state". FlutterPro strips the ripple for a custom design language and does not say what replaces it; its `Pressable` above is a press state that uses no ink.
 
 ## Haptics
 
@@ -528,7 +528,7 @@ await HapticsHelper.success();
 
 - Don't show the same snack bar twice. If it's already on screen, shake it instead: "A duplicate tells the user nothing new. The shake says 'this just happened again' without piling up copies of the same message."
 - If that snack bar is on screen but stacked behind a newer one, bring it to the front and reset its timer so it stays long enough to read again.
-- Reference implementation: bunpod.app's open-source [expressive_snack](https://github.com/kamranbekirovyz/bunpod/tree/main/packages/expressive_snack) package (handles both, plus RTL and icons). The source gives no shake duration; ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/TIMING.md) gives an error shake 300-400 ms, never a bounce. The state side (an error shows once because it is cleared first) is in the [flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md).
+- Reference implementation: bunpod.app's open-source [expressive_snack](https://github.com/kamranbekirovyz/bunpod/tree/main/packages/expressive_snack) package (handles both, plus RTL and icons). The source gives no shake duration; ui-animation [ui-animation TIMING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/TIMING.md) gives an error shake 300-400 ms, never a bounce. The state side (an error shows once because it is cleared first) is in the [flutter ARCHITECTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/ARCHITECTURE.md).
 
 ## Switch thumb icons
 
@@ -689,7 +689,7 @@ const Spinner(
 
 - The arc insets by half the stroke width, so it stays inside `size` at any stroke; the color falls back to `_defaultColor`. It rotates on a plain `..repeat()`, linear, 1000 ms per turn, and labels itself with `Semantics(label: 'Loading')`.
 - **Where the painter is built, two views.** The source builds the `CustomPaint` inside the `AnimatedBuilder` builder. The [flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md): "do not put a subtree that does not depend on the animation in the builder. Build it once and pass it as `child`."
-- Whether to show a spinner at all is a separate question; see ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md).
+- Whether to show a spinner at all is a separate question; see ui-animation [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PATTERNS.md).
 
 ### Rounded linear progress
 

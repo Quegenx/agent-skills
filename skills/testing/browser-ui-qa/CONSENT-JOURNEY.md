@@ -1,6 +1,6 @@
 # Consent journey
 
-A cookie consent test proves what the browser sent, not what the banner showed: "'The banner appears' is not a test result." Source: c15t's verify-consent guide (https://c15t.com/docs/guides/verify-consent.md, Apache-2.0, tagged `[c15t]`), turned into end-to-end journeys. The consent rules themselves are [cookie-consent skill](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md); the manual release check with every location and GPC is [cookie-consent verification guide](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/VERIFY-CONSENT.md).
+A cookie consent test proves what the browser sent, not what the banner showed: "'The banner appears' is not a test result." Source: c15t's verify-consent guide (https://c15t.com/docs/guides/verify-consent.md, Apache-2.0, tagged `[c15t]`), turned into end-to-end journeys. The consent rules themselves are [cookie-consent skill](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/SKILL.md); the manual release check with every location and GPC is [cookie-consent verification guide](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/VERIFY-CONSENT.md).
 
 ## Set up the run
 
@@ -41,7 +41,7 @@ One journey per test. When using tester-army/e2e, its step API is in [tester-arm
 - **The banner closing is not the save.** "A closing banner does not prove a saved choice; wait for the backend response." [c15t, SKILL.md §7] The first journey waits for the backend response.
 - **The failed-backend test needs a browser-side init.** When the server resolves consent before the page loads (a Next.js build-time manifest), the browser never makes that request; c15t's alternative is "pointing the backend URL at an unreachable address for one run", which in tester-army/e2e is a separate target whose `app.command` env sets the unreachable URL [c15t]. Expected either way: "No banner appears, and vendors that wait for consent send no requests." "A missing banner must never mean 'allowed'." [c15t]
 - **Client-side navigation:** add a step that moves between pages without a reload and checks the vendor script loaded once, not once per navigation [c15t].
-- **Not covered here:** locations (Germany or the UK, a location without a prompt, no location headers), GPC on and off, keyboard and 375 px checks. They are in the manual check [cookie-consent verification guide](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/VERIFY-CONSENT.md); a location test needs the framework's `country` override, removed before deploy [c15t].
+- **Not covered here:** locations (Germany or the UK, a location without a prompt, no location headers), GPC on and off, keyboard and 375 px checks. They are in the manual check [cookie-consent verification guide](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/VERIFY-CONSENT.md); a location test needs the framework's `country` override, removed before deploy [c15t].
 
 ## Prove it
 

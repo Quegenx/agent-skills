@@ -1,6 +1,6 @@
 # Headless CMS for marketing content
 
-Choosing, modeling and running a CMS for marketing pages. From coreyhaines31/marketingskills `content-strategy` `headless-cms.md` (MIT), with preview facts checked against Sanity, Contentful and Strapi docs and the SEO lengths against Google. The platform opinions ("Generous", "Limited") are the source's, as of its v2.1.3; check current pricing on each vendor's site. landing-page-ui reads its blog from its own database instead of a CMS: "published articles per language, newest first, decoded by a schema at the boundary" ([landing-page-ui CONTENT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/CONTENT-PAGES.md)).
+Choosing, modeling and running a CMS for marketing pages. From coreyhaines31/marketingskills `content-strategy` `headless-cms.md` (MIT), with preview facts checked against Sanity, Contentful and Strapi docs and the SEO lengths against Google. The platform opinions ("Generous", "Limited") are the source's, as of its v2.1.3; check current pricing on each vendor's site. landing-page-ui reads its blog from its own database instead of a CMS: "published articles per language, newest first, decoded by a schema at the boundary" ([landing-page-ui CONTENT-PAGES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/CONTENT-PAGES.md)).
 
 ## Headless or traditional
 
@@ -35,7 +35,7 @@ Choosing, modeling and running a CMS for marketing pages. From coreyhaines31/mar
 | Author | name, bio, avatar, social links | Referenced from blog posts |
 | CTA Block | heading, body, buttonText, buttonUrl, variant | Reusable across pages |
 
-The source models a person as the author; landing-page-ui makes the organization the author instead: "`BlogPosting` with its publish date, image and the organization as author" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)).
+The source models a person as the author; landing-page-ui makes the organization the author instead: "`BlogPosting` with its publish date, image and the organization as author" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)).
 
 ## SEO fields
 
@@ -93,7 +93,7 @@ Exact permission models vary: Sanity uses role-based access, Contentful space-le
 - [ ] Sample content for each type before building the frontend
 - [ ] Webhooks on content changes (rebuild triggers)
 - [ ] Editor guidelines (field descriptions, character limits)
-- [ ] Delivery performance tested (CDN, caching, ISR); landing-page-ui's blog sends `Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=86400` ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md))
+- [ ] Delivery performance tested (CDN, caching, ISR); landing-page-ui's blog sends `Cache-Control: public, max-age=0, s-maxage=300, stale-while-revalidate=86400` ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md))
 - [ ] A migration plan if moving from an existing CMS
 
 ## Prove it

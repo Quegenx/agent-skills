@@ -1,6 +1,6 @@
 # Audit Kit, test links and FreeScan
 
-Two smaller tools besides squirrelscan ([SQUIRRELSCAN.md](SQUIRRELSCAN.md)): Audit Kit, a free MIT CLI that writes a client-audit workspace ([Danilaa1/auditkit](https://github.com/Danilaa1/auditkit), audit-kit.dev, 0.1.8), and FreeScan, a hosted 40-check public-page audit with an MCP server (freescan.app, no licence: restated, short quotes). Running Lighthouse yourself, with budgets and CI, is in [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md).
+Two smaller tools besides squirrelscan ([SQUIRRELSCAN.md](SQUIRRELSCAN.md)): Audit Kit, a free MIT CLI that writes a client-audit workspace ([Danilaa1/auditkit](https://github.com/Danilaa1/auditkit), audit-kit.dev, 0.1.8), and FreeScan, a hosted 40-check public-page audit with an MCP server (freescan.app, no licence: restated, short quotes). Running Lighthouse yourself, with budgets and CI, is in [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/LIGHTHOUSE-CI.md).
 
 ## Audit Kit
 

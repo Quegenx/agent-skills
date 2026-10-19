@@ -20,4 +20,4 @@ These are discovery links; follow only the selected task's requirements.
 
 - [browser-ui-qa](../testing/browser-ui-qa/SKILL.md)
 - [web-research](../marketing/web-research/SKILL.md)
-- [pixel-reverse-engineer](../frontend/pixel-reverse-engineer/SKILL.md)
+- [pixel-reverse-engineer](../web-ui/pixel-reverse-engineer/SKILL.md)

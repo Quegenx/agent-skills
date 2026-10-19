@@ -155,7 +155,7 @@ Small controls snap; large panels settle; the camera moves slowly enough to keep
 
 ## UI motion that ships in a product
 
-For compositor cost, measured frame budgets and will-change, use [ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md#move-only-what-the-compositor-can-move); for product reduced motion use [the same owner](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PERFORMANCE.md#reduced-motion). [Original MOTION-NUMBERS.md, UI motion and reduced motion chapters]
+For compositor cost, measured frame budgets and will-change, use [ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PERFORMANCE.md#move-only-what-the-compositor-can-move); for product reduced motion use [the same owner](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PERFORMANCE.md#reduced-motion). [Original MOTION-NUMBERS.md, UI motion and reduced motion chapters]
 
 ## Hits, pulses and contact
 

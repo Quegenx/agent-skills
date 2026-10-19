@@ -196,7 +196,7 @@ From the FTC's endorsement guidance ([FTC endorsement guides Q&A](https://www.ft
 "Only write "Not available" when the competitor's docs or a trial confirm it. If the evidence is just that their site doesn't mention it, say that."
 
 - **Group by category:** core functionality, collaboration, integrations, security and compliance, support and service.
-- **Ratings where useful:** a category row with star ratings for each side and a notes column. Glyphs like ✓, ✗ and stars need a text equivalent for screen readers ([web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md)).
+- **Ratings where useful:** a category row with star ratings for each side and a notes column. Glyphs like ✓, ✗ and stars need a text equivalent for screen readers ([web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md)).
 
 ## Prove it
 

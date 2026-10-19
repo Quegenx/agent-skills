@@ -1,13 +1,13 @@
 # Conversion experiments
 
-A catalogue of A/B test ideas by page, from [coreyhaines31/marketingskills, cro] `references/experiments.md`, the experiment sections of its `form.md`, and the `popups` and `signup` skills (all MIT). Each row is a hypothesis to test, not a change to ship; the caveats under each table say which variants are limited by law, Google's guidance, accessibility or the repo's copy rules. Hypotheses, primary metrics, sample size and stopping are [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) and [posthog EXPERIMENT-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-METRICS.md#sample-size-and-running-time): the source delegates test design to its ab-testing skill too. The source also lists button-color tests ("Test contrast and visibility"); they carry no rule and are left out, and contrast is a floor ([color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md)), not a variant.
+A catalogue of A/B test ideas by page, from [coreyhaines31/marketingskills, cro] `references/experiments.md`, the experiment sections of its `form.md`, and the `popups` and `signup` skills (all MIT). Each row is a hypothesis to test, not a change to ship; the caveats under each table say which variants are limited by law, Google's guidance, accessibility or the repo's copy rules. Hypotheses, primary metrics, sample size and stopping are [ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) and [posthog EXPERIMENT-METRICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENT-METRICS.md#sample-size-and-running-time): the source delegates test design to its ab-testing skill too. The source also lists button-color tests ("Test contrast and visibility"); they carry no rule and are left out, and contrast is a floor ([color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/color-system/SKILL.md)), not a variant.
 
 **Contents:** [Limits on every test](#limits-on-every-test) · [Homepage](#homepage) · [Pricing page](#pricing-page) · [Demo request page](#demo-request-page) · [Blog and resources](#blog-and-resources) · [Landing page](#landing-page) · [Feature page](#feature-page) · [Site-wide](#site-wide) · [Forms](#forms) · [Popups](#popups) · [Signup](#signup) · [Prove it](#prove-it)
 
 ## Limits on every test
 
 - **No variant may be false.** Urgency, scarcity, "Most Popular", counts, ratings and results testimonials are real in every arm ([SKILL.md](SKILL.md#the-rules), rules 4 and 5; [offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md)).
-- **No variant fails accessibility.** Targets, error cues, focus and dialogs stay at WCAG AA in every arm ([web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md)).
+- **No variant fails accessibility.** Targets, error cues, focus and dialogs stay at WCAG AA in every arm ([web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md)).
 - **No variant obscures the whole page.** "Don't obscure the entire page with interstitials" ([Google Search Central](https://developers.google.com/search/docs/appearance/avoid-intrusive-interstitials)); see [POPUPS.md](POPUPS.md#google-and-interstitials).
 - **CTA variants say the action and what the person gets;** "Get started" as a default is banned in [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md).
 - **In the owner's sites,** navigation, footer, cookie banner and form validation follow landing-page-ui ([SKILL.md](SKILL.md#where-other-skills-differ)).
@@ -160,7 +160,7 @@ A catalogue of A/B test ideas by page, from [coreyhaines31/marketingskills, cro]
 | Area | Test | Hypothesis |
 |---|---|---|
 | Site-wide | Chat widget | Impact on conversions |
-| Site-wide | Page load speed | Performance vs. features ([web-performance](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/SKILL.md)) |
+| Site-wide | Page load speed | Performance vs. features ([web-performance](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/SKILL.md)) |
 | Site-wide | Mobile experience | Responsive optimization |
 | Site-wide | Accessibility | Impact on conversion; AA conformance is the floor in every arm, not the variant |
 | Site-wide | Personalization | Dynamic content by segment |
@@ -169,7 +169,7 @@ A catalogue of A/B test ideas by page, from [coreyhaines31/marketingskills, cro]
 | Navigation | CTA in nav | An always-visible conversion path |
 | Navigation | Breadcrumbs | Navigation clarity |
 
-The source's "Cookie consent UX | Minimize friction" is left out of the table: a test that tilts the choice toward Accept contradicts the owner's banner, which denies analytics by default and shows Accept and Deny "equally prominent", and the legal limits are cookie-consent's ([SKILL.md](SKILL.md#where-other-skills-differ), [cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md)).
+The source's "Cookie consent UX | Minimize friction" is left out of the table: a test that tilts the choice toward Accept contradicts the owner's banner, which denies analytics by default and shows Accept and Deny "equally prominent", and the legal limits are cookie-consent's ([SKILL.md](SKILL.md#where-other-skills-differ), [cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/SKILL.md)).
 
 ## Forms
 
@@ -211,7 +211,7 @@ The source's "Cookie consent UX | Minimize friction" is left out of the table: a
 - **Microcopy:** minimal vs. descriptive labels; placeholder text; error message clarity and tone; password requirements upfront vs. on error (NIST: "Verifiers SHALL offer guidance to the subscriber to help the subscriber choose a strong password", [SIGNUP.md](SIGNUP.md#passwords)).
 - **Trust:** social proof next to the form; security or compliance badges; "No credit card required" (when true); privacy assurance copy.
 - **Trial:** credit card required vs. not; trial length (7 vs. 14 vs. 30 days); freemium vs. free trial; limited features vs. full access. Trial and plan design: [pricing-strategy](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/pricing-strategy/SKILL.md).
-- **Friction:** email verification required vs. delayed vs. removed; phone verification for high-value accounts; "Terms acceptance checkbox vs. implicit acceptance" is a legal question to settle before testing. The source's "Test CAPTCHA impact on completion" is limited by WCAG 3.3.8 (AA) in every arm: no cognitive function test without an alternative ([web-accessibility FORMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/FORMS.md#multi-step-forms-and-sign-in)).
+- **Friction:** email verification required vs. delayed vs. removed; phone verification for high-value accounts; "Terms acceptance checkbox vs. implicit acceptance" is a legal question to settle before testing. The source's "Test CAPTCHA impact on completion" is limited by WCAG 3.3.8 (AA) in every arm: no cognitive function test without an alternative ([web-accessibility FORMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/FORMS.md#multi-step-forms-and-sign-in)).
 - **Post-submit:** clear next-step messaging; instant product access vs. email confirmation first; a personalized welcome from signup data; auto-login after signup vs. requiring login.
 
 ## Prove it

@@ -31,4 +31,4 @@ These are discovery links; follow only the selected task's requirements.
 
 - [testing](../testing/testing/SKILL.md)
 - [e2e-testing](../testing/e2e-testing/SKILL.md)
-- [pixel-reverse-engineer](../frontend/pixel-reverse-engineer/SKILL.md)
+- [pixel-reverse-engineer](../web-ui/pixel-reverse-engineer/SKILL.md)

@@ -1,6 +1,6 @@
 # Conversion tracking on a website
 
-How to install each ad platform's tag on a website, define conversion events, deduplicate browser and server events, and validate it all before spending. From [coreyhaines31/marketingskills, ads, conversion-tracking.md] (MIT); stale lines are corrected where marked. App SDKs, the Conversions API for app events and SKAN are in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md#measurement-sdk-conversions-api-mmp) and [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ANALYTICS-AND-ATTRIBUTION.md). Consent before any tag fires (Google's consent mode included) is in [cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md); GA4 itself in [google-analytics](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md).
+How to install each ad platform's tag on a website, define conversion events, deduplicate browser and server events, and validate it all before spending. From [coreyhaines31/marketingskills, ads, conversion-tracking.md] (MIT); stale lines are corrected where marked. App SDKs, the Conversions API for app events and SKAN are in [app-growth META-ADS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/META-ADS.md#measurement-sdk-conversions-api-mmp) and [app-growth ANALYTICS-AND-ATTRIBUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ANALYTICS-AND-ATTRIBUTION.md). Consent before any tag fires (Google's consent mode included) is in [cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/SKILL.md); GA4 itself in [google-analytics](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/google-analytics/SKILL.md).
 
 **Contents:** [Why first](#why-first) · [The tags](#the-tags) · [Google Ads](#google-ads) · [Meta](#meta) · [LinkedIn](#linkedin) · [TikTok](#tiktok) · [Validation](#validation) · [Common mistakes](#common-mistakes) · [When to add server-side](#when-to-add-server-side) · [Prove it](#prove-it)
 
@@ -189,7 +189,7 @@ The **Events API** is TikTok's server-side channel; deduplicate with the pixel t
 - **Not testing on mobile:** many tags break in mobile browsers and in-app webviews.
 - **Hardcoded test values** left in production.
 - **Internal traffic not excluded.**
-- **Tags without consent management:** the source notes GDPR and CCPA require consent before tracking pixels fire where they apply ([cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md)).
+- **Tags without consent management:** the source notes GDPR and CCPA require consent before tracking pixels fire where they apply ([cookie-consent](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/SKILL.md)).
 - **A tag installed with no conversion actions defined:** it collects data but nothing optimizes.
 
 ## When to add server-side

@@ -27,7 +27,7 @@ Category membership is the primary home, not an instruction to install every ski
 
 These are discovery links; follow only the selected task's requirements.
 
-- [isometric-figures](../frontend/isometric-figures/SKILL.md)
+- [isometric-figures](../web-ui/isometric-figures/SKILL.md)
 - [ad-creative](../marketing/ad-creative/SKILL.md)
 - [social-media](../marketing/social-media/SKILL.md)
 

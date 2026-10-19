@@ -7,7 +7,7 @@ Modal sheets as routes (a spring sheet, scroll-to-dismiss, the iOS 26 sheet, pop
 ## Where the sources disagree
 
 - **Android default page transition (official, version fact).** Both sources' code names `ZoomPageTransitionsBuilder` for Android ([FlutterPro](https://flutterpro.design/details/web-page-transitions), [ApparenceKit](https://apparencekit.dev/flutter-tips/add-custom-page-transitions-gorouter/)); neither states a Flutter version. Since Flutter 3.38 the default is `PredictiveBackPageTransitionsBuilder`, so naming Zoom in `pageTransitionsTheme` keeps the old transition, and "you won't get predictive back route transitions" ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). The sources' snippets are correct for pre-3.38 apps; on 3.38+ put `PredictiveBackPageTransitionsBuilder` in the Android entry unless you mean to keep Zoom.
-- **Page transitions on the web (opinion).** FlutterPro: "no transition on web and desktop" ([FlutterPro](https://flutterpro.design/details/web-page-transitions)). The `ui-animation` skill: "a page transition 400-600 ms" ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md)). Both views are kept.
+- **Page transitions on the web (opinion).** FlutterPro: "no transition on web and desktop" ([FlutterPro](https://flutterpro.design/details/web-page-transitions)). The `ui-animation` skill: "a page transition 400-600 ms" ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/SKILL.md)). Both views are kept.
 - **Guards, router rebuilds and named routes:** see [ROUTE-GUARDS-AND-SHELLS.md](ROUTE-GUARDS-AND-SHELLS.md#where-the-sources-disagree).
 - **`IntrinsicHeight` (tension).** ApparenceKit fits a popup with `IntrinsicHeight`; the Flutter performance docs say "Avoid intrinsics" for list and grid cells ([flutter PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/PERFORMANCE.md)). The article applies it to one popup, not to list cells.
 - **Dot shorthands.** FlutterPro code uses `.iOS`, `.android`, `.transparency`, `.vertical(...)`, which need Dart 3.10+ ([dart LANGUAGE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/dart/LANGUAGE.md)). The articles state no Dart or Flutter version.
@@ -34,7 +34,7 @@ showSpringBottomSheet<bool>(
 ```
 
 - **Technique:** a `PopupRoute<T>` whose `createAnimationController()` returns `AnimationController.unbounded(...)` and whose `createSimulation({required bool forward})` returns a `SpringSimulation` seeded with the release velocity. Dragging writes `controller.value` directly, so "the velocity of a released fling is carried into the open or close spring".
-- **Spring numbers:** "SwiftUI's .smooth spring written out as plain numbers: critically damped, stiffness 4pi^2 / duration^2, at 300ms in and 200ms out". Enter `SpringDescription(mass: 1, stiffness: 438.6, damping: 41.9)`, exit `SpringDescription(mass: 1, stiffness: 987.0, damping: 62.8)`, `snapToEnd: true` on every simulation. Web springs for comparison: [ui-animation MATH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/MATH.md#a-spring-by-hand) ("A spring has no duration") and [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/PATTERNS.md) (a sheet "slides in from its edge with the `enter` spring and closes faster").
+- **Spring numbers:** "SwiftUI's .smooth spring written out as plain numbers: critically damped, stiffness 4pi^2 / duration^2, at 300ms in and 200ms out". Enter `SpringDescription(mass: 1, stiffness: 438.6, damping: 41.9)`, exit `SpringDescription(mass: 1, stiffness: 987.0, damping: 62.8)`, `snapToEnd: true` on every simulation. Web springs for comparison: [ui-animation MATH.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/MATH.md#a-spring-by-hand) ("A spring has no duration") and [ui-animation PATTERNS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PATTERNS.md) (a sheet "slides in from its edge with the `enter` spring and closes faster").
 - **Close rule:** a fling faster than 0.9 sheet heights per second down closes, faster than 0.9 up keeps it open; otherwise it closes when it rests below half its height.
 - **Overdrag:** past fully open the drag meets resistance 100 (`delta *= 1 / (1 + overshoot * _overdragResistance)`), and on release the velocity is damped by the same factor before springing back to 1.
 - **One coordinate space:** drag deltas and velocity are divided by the sheet's own height, "so the gesture and the route animation share one coordinate space".
@@ -324,7 +324,7 @@ Navigator.of(context).push(
 
 - **Keeping your own sheet:** the handoff alone is `scroll_drag_detector` (https://pub.dev/packages/scroll_drag_detector, same author). It gives the combined gesture; moving the sheet, the resistance and the close-or-snap-back decision stay on you. Working example: https://github.com/whynotmake-it/rivership/blob/main/packages/stupid_simple_sheet/lib/stupid_simple_sheet.dart
 - **"Don't set a custom `ScrollConfiguration`"** on the sheet content: the package needs Flutter's default scroll behavior to catch the moment the list hits the top.
-- The web counterpart (scroll chaining with `overscroll-behavior: auto`) is in [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SHEETS.md).
+- The web counterpart (scroll chaining with `overscroll-behavior: auto`) is in [ui-animation SHEETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/SHEETS.md).
 
 ## iOS 26 adaptive sheet
 
@@ -597,7 +597,7 @@ MaterialApp(
 
 - **Android entry on Flutter 3.38+:** the default is `PredictiveBackPageTransitionsBuilder`, not Zoom ([flutter VERSIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/VERSIONS.md), https://docs.flutter.dev/release/breaking-changes/default-android-page-transition). To keep the native default there, put `PredictiveBackPageTransitionsBuilder` in the non-web branch of the `.android` entry instead of `ZoomPageTransitionsBuilder`.
 - **Text versus code:** the article's rule says "native defaults on Android and iOS, even in a mobile browser", but its code uses the no-op builder for `.android` and `.iOS` whenever `kIsWeb`, so a mobile browser gets no transition too.
-- **The other view:** the `ui-animation` skill gives a page transition 400-600 ms ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/ui-animation/SKILL.md)). More web guidance is in [WEB-SHELL.md](WEB-SHELL.md).
+- **The other view:** the `ui-animation` skill gives a page transition 400-600 ms ([ui-animation SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/SKILL.md)). More web guidance is in [WEB-SHELL.md](WEB-SHELL.md).
 
 ### Per route with go_router
 

@@ -1,6 +1,6 @@
 # Grafana plugin frontend
 
-Sources: [grafana/skills, plugin-bundle-size, grafana-scenes and react-19-plugin-migration], checked against Grafana Plugin Tools, React and Scenes documentation. These rules apply inside a Grafana-hosted plugin. They do not replace the owner's app-ui, landing-page-ui or agent-chat-ui design; generic React behavior stays in [react](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/react/SKILL.md).
+Sources: [grafana/skills, plugin-bundle-size, grafana-scenes and react-19-plugin-migration], checked against Grafana Plugin Tools, React and Scenes documentation. These rules apply inside a Grafana-hosted plugin. They do not replace the owner's app-ui, landing-page-ui or agent-chat-ui design; generic React behavior stays in [react](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/SKILL.md).
 
 ## Measure the startup graph
 

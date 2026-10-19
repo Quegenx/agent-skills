@@ -28,7 +28,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 5. **Ask to upgrade after value, never mid-flow,** with a cool-down of days after a dismiss and a visible "Not now" [coreyhaines31/marketingskills, paywalls] ([UPGRADE-PROMPTS.md](UPGRADE-PROMPTS.md#timing-and-frequency)).
 6. **On mobile the store's rules win:** the billed amount is the most prominent price, trial terms say when the charge happens and how to cancel, the store owns payment and refunds, and lapsed users get win-back offers, not a second trial ([UPGRADE-PROMPTS.md](UPGRADE-PROMPTS.md#store-rules-for-in-app-upgrades)).
 7. **Every trial that converts follows ROSCA,** and every countdown, count or "value" on a prompt is real ([offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md)).
-8. **In the owner's app, plan gates follow app-ui:** an empty state with a link to the plans, and a muted line at the limit ([app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#empty-loading-filtered-partial)).
+8. **In the owner's app, plan gates follow app-ui:** an empty state with a link to the plans, and a muted line at the limit ([app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md#empty-loading-filtered-partial)).
 9. **Label unsourced numbers.** The sources' "+40% completion" from endowed progress, abandonment rates and product benchmarks have no study; quote them as the source's claims or leave them out.
 
 ## Prove it

@@ -14,7 +14,7 @@ URLs and links are the structure search engines and people actually walk. This f
 6. **Short but descriptive:** `/blog/landing-page-conversions` over `/blog/how-to-improve-landing-page-conversion-rates` (the source's opinion).
 7. **Trim parameters that don't change the content** ([url-structure](https://developers.google.com/search/docs/crawling-indexing/url-structure)).
 
-On the owner's sites, "The default language has no path prefix, the second lives under its code (`/en`)" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md)); the patterns below say nothing about locale and must not override it. The canonical host (apex or `www`) is decided in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/deployment/SKILL.md#moving-to-a-new-host-without-downtime).
+On the owner's sites, "The default language has no path prefix, the second lives under its code (`/en`)" ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)); the patterns below say nothing about locale and must not override it. The canonical host (apex or `www`) is decided in [deployment SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/deployment/SKILL.md#moving-to-a-new-host-without-downtime).
 
 ## Patterns by page type
 
@@ -35,7 +35,7 @@ On the owner's sites, "The default language has no path prefix, the second lives
 | Integration | `/integrations/{name}` | `/integrations/slack` |
 | Template | `/templates/{slug}` | `/templates/marketing-plan` |
 
-The owner's reference site differs on purpose: features at the top level (`/ai-agent`, `/monitoring`), legal pages with full names (`/privacy-policy`, `/terms-of-service`), one `/competitors` page and `/help/{topic}` ([site-navigation-items.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/shared/navigation/site-navigation-items.ts), [site-footer-links.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/widgets/footer/site-footer-links.ts), [routes](https://github.com/Quegenx/agent-skills/tree/main/skills/frontend/landing-page-ui/reference/routes)). On those sites the house routes win; on a new site, pick one pattern per page type and keep it.
+The owner's reference site differs on purpose: features at the top level (`/ai-agent`, `/monitoring`), legal pages with full names (`/privacy-policy`, `/terms-of-service`), one `/competitors` page and `/help/{topic}` ([site-navigation-items.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/reference/website/shared/navigation/site-navigation-items.ts), [site-footer-links.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/reference/website/widgets/footer/site-footer-links.ts), [routes](https://github.com/Quegenx/agent-skills/tree/main/skills/web-ui/landing-page-ui/reference/routes)). On those sites the house routes win; on a new site, pick one pattern per page type and keep it.
 
 ## Common URL mistakes
 

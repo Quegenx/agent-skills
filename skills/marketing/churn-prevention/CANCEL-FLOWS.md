@@ -143,7 +143,7 @@ Trigger → Survey → Dynamic Offer → Confirmation → Post-Cancel
 └─────────────────────────────────────┘
 ```
 
-- Keep "continue cancelling" visible on every step (no dark patterns); one primary offer + one fallback, "not a wall of options"; specific dollar savings; the customer's name and account data where possible; mobile-friendly; no guilt-trip copy ("Are you sure you want to abandon us?"). Never hide the cancel button. The component patterns for these screens (dialogs, in-place confirms) are in [app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md).
+- Keep "continue cancelling" visible on every step (no dark patterns); one primary offer + one fallback, "not a wall of options"; specific dollar savings; the customer's name and account data where possible; mobile-friendly; no guilt-trip copy ("Are you sure you want to abandon us?"). Never hide the cancel button. The component patterns for these screens (dialogs, in-place confirms) are in [app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/SKILL.md).
 
 ## B2C and self-serve
 

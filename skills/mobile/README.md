@@ -21,7 +21,7 @@ Category membership is the primary home, not an instruction to install every ski
 
 These are discovery links; follow only the selected task's requirements.
 
-- [react](../frontend/react/SKILL.md)
+- [react](../web-ui/react/SKILL.md)
 - [patrol](../testing/patrol/SKILL.md)
 - [maestro](../testing/maestro/SKILL.md)
 - [e2e-testing](../testing/e2e-testing/SKILL.md)

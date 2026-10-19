@@ -33,7 +33,7 @@ The template wraps seek(D) to seek(0), while an N-frame render ends at D - 1/fps
 
 Use `--expect-audio` for a profile that requires audible audio and `--strict` when a failing look.py gate must fail the command. The old example enabled neither. Inspect its actual GATES result. A missing usable sync correlation is unverified, not a measured pass. Pass the same selected `--lufs` profile to the mixer and sync checker; the source foley-only -20 profile differs from the generic -14 profile. Still images cannot establish sound or continuous rhythm.
 
-The smoke contrast check uses relative text-box height and sampled background pixels. It is a film heuristic, not proof of WCAG conformance; the official text-size/contrast definitions are in [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/MOTION-AND-ZOOM.md#contrast). [https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum]
+The smoke contrast check uses relative text-box height and sampled background pixels. It is a film heuristic, not proof of WCAG conformance; the official text-size/contrast definitions are in [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/MOTION-AND-ZOOM.md#contrast). [https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum]
 
 ## Prove it
 

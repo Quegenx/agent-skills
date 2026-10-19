@@ -40,7 +40,7 @@ For the Headline Statement and Stat Callout templates ([STATIC-TEMPLATES.md](STA
 
 - One dominant sentence in a bold, legible sans-serif. As a starting point, the headline takes roughly 50 to 70% of the composition; adjust after testing at actual size.
 - Intentional line breaks that keep phrases together; product or logo secondary unless recognizing the product is the job.
-- A dark background with light text, or a strong brand color with contrasting text, from the brand's actual palette, checked for readability ([color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md)).
+- A dark background with light text, or a strong brand color with contrasting text, from the brand's actual palette, checked for readability ([color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/color-system/SKILL.md)).
 - Include the audience's specific moment, one defensible idea and enough qualification to read truthfully. Leave out competing stock imagery, tiny disclaimers, fake review UI, extra badges and an unsupported second claim.
 - Preview at the **actual mobile feed display size**, not only on a desktop canvas: the whole headline and its material qualifiers must read without zooming. If not, shorten the claim or change the layout; never shrink the required qualification into a footnote.
 - Export sizes, crops, safe areas and text limits come from [PLATFORM-SPECS.md](PLATFORM-SPECS.md). The 50 to 70% suggestion is not a platform rule or a text-coverage threshold.

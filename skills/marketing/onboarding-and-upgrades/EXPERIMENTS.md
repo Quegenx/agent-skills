@@ -28,7 +28,7 @@ A catalogue of tests for activation and in-product upgrades, with the store and 
 | Mobile | Touch targets; swipe navigation; fewer screens; mobile-friendly inputs; permission timing |
 | Accessibility | Screen reader support; keyboard navigation; color contrast; font sizing |
 
-- **Already decided elsewhere, don't re-test blindly:** permission timing on mobile has an in-context rule in app-growth ([app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ONBOARDING.md)); accessibility items are requirements, not variants ([web-accessibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md)).
+- **Already decided elsewhere, don't re-test blindly:** permission timing on mobile has an in-context rule in app-growth ([app-growth ONBOARDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/ONBOARDING.md)); accessibility items are requirements, not variants ([web-accessibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md)).
 - **A "trial time remaining" or "urgency" variant** must show the real remaining time ([offer-design FTC-PRICING-CLAIMS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/offer-design/FTC-PRICING-CLAIMS.md#scarcity-urgency-and-dark-patterns)).
 
 ## Upgrade prompt experiments

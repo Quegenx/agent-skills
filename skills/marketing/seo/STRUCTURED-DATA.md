@@ -117,7 +117,7 @@ From Google's [review snippet](https://developers.google.com/search/docs/appeara
 
 ## Where landing-page-ui differs
 
-The owner's marketing site keeps its own head design in [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md); the owner's file stays as it is.
+The owner's marketing site keeps its own head design in [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md); the owner's file stays as it is.
 - **Agrees with Google since the owner's 2026-10-18 fixes:** FAQ markup is kept "so the markup matches the visible text" and the file records that "Google no longer shows FAQ rich results"; "the `WebSite` `url` is the bare origin in both languages"; and "every JSON-LD script's text goes through one serializer that replaces `<` with its unicode escape `\u003c` after `JSON.stringify`".
 - **Organization placement, two views.** landing-page-ui links every page "by `@id` to one `Organization` and one `WebSite` declared on the home page", which matches Google's home-page placement; squirrelscan's `entity-dangling` would flag it.
 - **Author.** landing-page-ui makes "the organization as author" of a `BlogPosting`; Google allows `Organization` authors and recommends `author.url`.

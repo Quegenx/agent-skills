@@ -60,7 +60,7 @@ checkout_payment_completed
 - Document decisions.
 - "Keep provider-defined names when using automatic or recommended events (e.g. GA4 `click`, `view_search_results`, `purchase`). Map internal business names explicitly; naming a custom event does not make the provider collect it automatically."
 
-Conflict on format: this source uses past-tense object-action (`signup_completed`); the PostHog skill records PostHog's present-tense `category:object_action` and its `[object] [verb]` alternative ([posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md#naming-events-and-properties)). Both say: pick one per project and reuse what the project already has. The owner's website uses the past-tense form (`app_entry_clicked`, [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/DISCOVERY.md#consent-and-analytics)).
+Conflict on format: this source uses past-tense object-action (`signup_completed`); the PostHog skill records PostHog's present-tense `category:object_action` and its `[object] [verb]` alternative ([posthog EVENTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EVENTS.md#naming-events-and-properties)). Both say: pick one per project and reuse what the project already has. The owner's website uses the past-tense form (`app_entry_clicked`, [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md#consent-and-analytics)).
 
 ## Essential events
 

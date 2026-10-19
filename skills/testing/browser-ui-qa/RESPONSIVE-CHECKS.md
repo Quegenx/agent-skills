@@ -1,13 +1,13 @@
 # Viewports and container widths
 
-Which screen sizes to check, how to see several widths at once, and how to test a container query in a test. Sources: [responsive-craft] (its testing checklist and preview tool, MIT), [flornkm, prefer-container-queries] (MIT), [webdown-a, 3d-site] (its implementation checklist and scene verification). Fixed-width containers for one component's worst cases are in [WORST-CASE-DATA.md](WORST-CASE-DATA.md); the owner's responsive rules are in [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE.md).
+Which screen sizes to check, how to see several widths at once, and how to test a container query in a test. Sources: [responsive-craft] (its testing checklist and preview tool, MIT), [flornkm, prefer-container-queries] (MIT), [webdown-a, 3d-site] (its implementation checklist and scene verification). Fixed-width containers for one component's worst cases are in [WORST-CASE-DATA.md](WORST-CASE-DATA.md); the owner's responsive rules are in [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/RESPONSIVE.md).
 
 ## Viewport sizes
 
-- **A 3D or media-heavy page:** the old topic and [webgl: launch-page acceptance](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/webgl/LAUNCH-SITES.md#prove-it) pointed at each other for the source's four sizes, but neither contained the list. That source-specific list is unavailable in this copy; do not substitute the unrelated responsive-craft widths below. Canvas proof is [webgl: owned by WebGL](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/webgl/WIDGETS.md#nonblank-canvas-proof). [webdown-a, 3d-site; local source-coverage review]
+- **A 3D or media-heavy page:** the old topic and [webgl: launch-page acceptance](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/webgl/LAUNCH-SITES.md#prove-it) pointed at each other for the source's four sizes, but neither contained the list. That source-specific list is unavailable in this copy; do not substitute the unrelated responsive-craft widths below. Canvas proof is [webgl: owned by WebGL](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/webgl/WIDGETS.md#nonblank-canvas-proof). [webdown-a, 3d-site; local source-coverage review]
 - **A wider width list** [responsive-craft], in its priority order: 390, 360, 1920, 768, 1366, 375, 1024, 320, 430, 1440. The source ranks them by market share without naming where the figures come from, so only the widths are kept here.
-- **Between the widths** [responsive-craft]: drag from 280px to 2560px instead of jumping between breakpoints; the quotes and the real-phone caveat are in [modern-css RESPONSIVE-FORKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE-FORKS.md#prove-it).
-- **At each width** [responsive-craft]: no horizontal scroll ("any at all is a failure"); text overflow from long words, URLs and usernames; images and media inside their boxes; navigation reachable; flex and grid wrapping where expected; positioned elements not overlapping or off-screen; modals, dropdowns and tooltips stacking correctly; sticky elements sticking without overlapping each other. The source also checks "44px minimum" touch targets; this repo's floor is 24px and a target between 24px and 44px is not reported as a failure ([web-accessibility HIT-AREAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/HIT-AREAS.md)).
+- **Between the widths** [responsive-craft]: drag from 280px to 2560px instead of jumping between breakpoints; the quotes and the real-phone caveat are in [modern-css RESPONSIVE-FORKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/RESPONSIVE-FORKS.md#prove-it).
+- **At each width** [responsive-craft]: no horizontal scroll ("any at all is a failure"); text overflow from long words, URLs and usernames; images and media inside their boxes; navigation reachable; flex and grid wrapping where expected; positioned elements not overlapping or off-screen; modals, dropdowns and tooltips stacking correctly; sticky elements sticking without overlapping each other. The source also checks "44px minimum" touch targets; this repo's floor is 24px and a target between 24px and 44px is not reported as a failure ([web-accessibility HIT-AREAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/HIT-AREAS.md)).
 
 ## Several widths side by side
 
@@ -38,10 +38,10 @@ test('card adapts in narrow container', async ({ page }) => {
 
 This is a component test, not a user journey: the project's journey rules (plain-language steps, no selectors) don't apply to it.
 
-Where to resize it (the narrowest real context, not mobile viewport widths) [flornkm, prefer-container-queries]: [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE.md#a-fluid-scale-that-keeps-desktop-exact).
+Where to resize it (the narrowest real context, not mobile viewport widths) [flornkm, prefer-container-queries]: [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/RESPONSIVE.md#a-fluid-scale-that-keeps-desktop-exact).
 
 ## Prove it
 
 - The screenshots at each listed width show no horizontal scroll and no clipped label, and the drag from 280px to 2560px finds no width that breaks between breakpoints.
 - The container-query test fails when the container query is deleted from the CSS and passes with it back.
-- Canvas and no-WebGL acceptance use the [webgl: canonical renderer verification](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/webgl/WIDGETS.md#nonblank-canvas-proof). [webdown-a, 3d-site; flornkm, webgl-components]
+- Canvas and no-WebGL acceptance use the [webgl: canonical renderer verification](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/webgl/WIDGETS.md#nonblank-canvas-proof). [webdown-a, 3d-site; flornkm, webgl-components]

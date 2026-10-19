@@ -60,7 +60,7 @@ Source: [Jakub Krehel, interface-review]. "Everything else fails loudly at `merg
 
 - "**Detached HEAD.** Use the merge base against the default branch and name the SHA, not a branch, in the scope block."
 - "**Shallow clone**, the CI default, where `merge-base` returns nothing. Fetch `--deepen=50`, retry, then `--deepen=200`, then report the scope as unresolvable. Deepening writes to `.git` and not to the working tree, so it is permitted; note it in Verification."
-  - Lighthouse CI hits the same problem as "Ancestor hash not determinable" and documents its own fetch-depth fix: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md#troubleshooting).
+  - Lighthouse CI hits the same problem as "Ancestor hash not determinable" and documents its own fetch-depth fix: [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/LIGHTHOUSE-CI.md#troubleshooting).
 - "**Mid-rebase or mid-merge**, the one that does not fail loudly. `git diff` succeeds and returns something that is not the change, so the review looks fine and is wrong." Detect it with `git rev-parse --git-path` against `rebase-merge`, `rebase-apply`, `MERGE_HEAD` and `CHERRY_PICK_HEAD`; "Do not test `.git/` paths directly, because they are not directories inside a linked worktree. Stop and say the tree is mid-operation." Caveat from git-rev-parse(1) and a test: `--git-path` resolves a path and does not check that it exists, and takes one path per flag (`git rev-parse --git-path rebase-merge MERGE_HEAD` fails with "ambiguous argument"). Run one `--git-path` per name, then test each returned path.
 
 ## Excluded paths
@@ -121,18 +121,18 @@ git blame -L <line>,<line> "$BASE"..<head-ref> -- path/to/file
 
 ## UI changes: removed signals and absent states
 
-Source: [Jakub Krehel, interface-review]. "Regressions are invisible in the post-change state. Read the `-` side of every hunk." "A signal is a lead, not a finding. A removal is a regression only when nothing in the change replaces it". A checker that scans changed lines reads the `+` side ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/CHECKS.md#a-checker-in-ci)); this is the other half. The Owner column names this repo's skill; the source routes to its own `better-*` skills.
+Source: [Jakub Krehel, interface-review]. "Regressions are invisible in the post-change state. Read the `-` side of every hunk." "A signal is a lead, not a finding. A removal is a regression only when nothing in the change replaces it". A checker that scans changed lines reads the `+` side ([app-ui CHECKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/CHECKS.md#a-checker-in-ci)); this is the other half. The Owner column names this repo's skill; the source routes to its own `better-*` skills.
 
 | Removed from the `-` side | Owner here | What to check |
 | --- | --- | --- |
-| `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `role=` | [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md) | The control or region lost its accessible name, description or announcement |
+| `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `role=` | [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md) | The control or region lost its accessible name, description or announcement |
 | `alt=`, `<label`, `for=`, `htmlFor`, `scope=` | web-accessibility | Image, field or table cell lost its programmatic association |
 | `<button>`, `<a>`, `<nav>`, `<main>`, `<ul>` replaced by `div` or `span` | web-accessibility | Keyboard and assistive-technology behavior was traded for styling |
 | `:focus-visible`, `:focus`, `outline`, `tabindex` | web-accessibility | Keyboard users lost the focus indicator or the element left the tab order |
 | `prefers-reduced-motion` | web-accessibility | Motion now ignores the user's system preference |
-| `prefers-contrast` | [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/color-system/SKILL.md) | Colors now ignore the user's contrast preference |
-| Logical properties swapped for `left` / `right` | [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/RESPONSIVE.md), with its exceptions (centring with `left: 50%` and a translate, code blocks, parts measured in physical pixels at runtime) | Direction-aware layout was dropped |
-| `lang=`, `dir=` | [modern-css](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/modern-css/SKILL.md) | Language metadata or text direction was dropped |
+| `prefers-contrast` | [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/color-system/SKILL.md) | Colors now ignore the user's contrast preference |
+| Logical properties swapped for `left` / `right` | [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/RESPONSIVE.md), with its exceptions (centring with `left: 50%` and a translate, code blocks, parts measured in physical pixels at runtime) | Direction-aware layout was dropped |
+| `lang=`, `dir=` | [modern-css](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/SKILL.md) | Language metadata or text direction was dropped |
 | `text-wrap`, `line-clamp`, `overflow-wrap`, `tabular-nums`, `font-feature-settings` | modern-css | Text rendering, wrapping or numeral alignment silently changed |
 | A color token swapped for a literal, or a token swapped for a lighter one | color-system | The rendered contrast pair may now fail; measure it |
 | A user-facing string deleted or shortened | [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md) | A label, error or empty state lost the information it carried |

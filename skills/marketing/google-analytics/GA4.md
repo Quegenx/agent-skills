@@ -85,7 +85,7 @@ gtag('config', 'GA_MEASUREMENT_ID', {
 });
 ```
 
-In a typed codebase, route every call through one helper that does nothing on the server or without the tag, as the owner's website does with `trackAnalyticsEvent` ([google-analytics.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/reference/website/shared/site/google-analytics.ts)). The dataLayer form of these calls is in [GTM.md](GTM.md#datalayer-patterns).
+In a typed codebase, route every call through one helper that does nothing on the server or without the tag, as the owner's website does with `trackAnalyticsEvent` ([google-analytics.ts](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/reference/website/shared/site/google-analytics.ts)). The dataLayer form of these calls is in [GTM.md](GTM.md#datalayer-patterns).
 
 ## Key events
 
@@ -156,7 +156,7 @@ Real-time reports [coreyhaines31/marketingskills, analytics]: Reports, Real-time
 
 ## Privacy
 
-[coreyhaines31/marketingskills, analytics] No PII in analytics properties; set data retention; have user deletion capabilities; use consent mode ([CONSENT-MODE.md](CONSENT-MODE.md)); collect only what you need; integrate with a consent management platform ([cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md)). The source also listed "IP anonymization"; Google: "In Google Analytics 4, IP masking is not necessary since IP addresses are not logged or stored" (https://support.google.com/analytics/answer/2763052).
+[coreyhaines31/marketingskills, analytics] No PII in analytics properties; set data retention; have user deletion capabilities; use consent mode ([CONSENT-MODE.md](CONSENT-MODE.md)); collect only what you need; integrate with a consent management platform ([cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/SKILL.md)). The source also listed "IP anonymization"; Google: "In Google Analytics 4, IP masking is not necessary since IP addresses are not logged or stored" (https://support.google.com/analytics/answer/2763052).
 
 ## Reading GA4 from an agent
 

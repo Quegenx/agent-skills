@@ -122,7 +122,7 @@ The source calls ad-to-page congruence the most underrated lever and tells you t
 3. Mirror the candidate's promise in a truthful landing-page variant and run a fresh randomized test against the unchanged page, with ads and traffic split held constant and the primary metric, guardrails, sample size and stopping rule fixed in advance ([ab-testing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md)).
 4. Report the effect and its uncertainty. "There is no guaranteed minimum conversion lift"; keep the original page when the evidence doesn't justify replacing it.
 
-The source also says to keep "at least 3 split tests running" because "3 × ~10-20% lift each (compounding)" builds a better funnel; that arithmetic contradicts its own no-guaranteed-lift line and is left out here. Page message match is in [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SKILL.md) and [cro](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md).
+The source also says to keep "at least 3 split tests running" because "3 × ~10-20% lift each (compounding)" builds a better funnel; that arithmetic contradicts its own no-guaranteed-lift line and is left out here. Page message match is in [landing-page-ui](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/SKILL.md) and [cro](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cro/SKILL.md).
 
 ## Setup checklists
 
@@ -161,7 +161,7 @@ From [coreyhaines31/marketingskills, ads, platform-setup-checklists.md], correct
 
 **TikTok:** Ads Manager account, business verification, payment; pixel with ViewContent and Purchase and the Events API; custom and lookalike audiences, interest categories; vertical 9:16 creative that feels native, a hook in the first 3 seconds, captions, licensed music.
 
-**Pre-launch, any platform:** conversion tracking tested with a real conversion; landing page mobile-friendly and fast; UTMs working; budget type, start and end dates correct; targeting matches the intended audience; creative approved; team told; reporting ready [coreyhaines31/marketingskills, ads]. The source's "loads fast (<3 sec)" is not a Core Web Vitals threshold: use web.dev's Core Web Vitals instead, LCP of 2.5 seconds or less (https://web.dev/articles/vitals); measuring it is in [web-performance](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/SKILL.md).
+**Pre-launch, any platform:** conversion tracking tested with a real conversion; landing page mobile-friendly and fast; UTMs working; budget type, start and end dates correct; targeting matches the intended audience; creative approved; team told; reporting ready [coreyhaines31/marketingskills, ads]. The source's "loads fast (<3 sec)" is not a Core Web Vitals threshold: use web.dev's Core Web Vitals instead, LCP of 2.5 seconds or less (https://web.dev/articles/vitals); measuring it is in [web-performance](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/SKILL.md).
 
 ## Audience options per platform
 

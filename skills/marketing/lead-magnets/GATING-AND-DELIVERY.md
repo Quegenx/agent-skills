@@ -46,7 +46,7 @@ The source's structure [coreyhaines31/marketingskills, lead-magnets]:
 5. **Form:** minimal fields, clear CTA button.
 6. **FAQ:** address hesitations ("Is it really free? What format?").
 
-The FAQ answers questions prospects really ask; anti-slop-copy rejects "an FAQ of generic questions ("Is my data secure?") nobody asked about this product" ([anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)). Page copy is in [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md); the page's head and share card follow frontend/landing-page-ui's DISCOVERY.md for a site built with it.
+The FAQ answers questions prospects really ask; anti-slop-copy rejects "an FAQ of generic questions ("Is my data secure?") nobody asked about this product" ([anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md)). Page copy is in [anti-slop-copy](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/SKILL.md); the page's head and share card follow web-ui/landing-page-ui's DISCOVERY.md for a site built with it.
 
 ## Delivery methods
 

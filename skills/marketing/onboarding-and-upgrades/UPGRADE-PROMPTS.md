@@ -83,7 +83,7 @@ What you've accomplished:
 ```
 
 - **This template models a web trial that lapses.** A store trial converts automatically, so it needs no "Continue with Pro" purchase; the in-app screen says when the charge happens and how to cancel (Play: "how a user can cancel if they do not want to convert").
-- **The owner's app does plan gates differently.** [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/STATES.md#empty-loading-filtered-partial): "A feature the plan doesn't include shows an empty state with what it does and a link to the plans, and the server refuses it too (it answers with an empty page, not an error)." [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/DATA-VIEWS.md): "at the limit a muted line says so, with an upgrade hint only below the top plan." No modal, price or "Maybe Later" there; in that app, follow app-ui.
+- **The owner's app does plan gates differently.** [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md#empty-loading-filtered-partial): "A feature the plan doesn't include shows an empty state with what it does and a link to the plans, and the server refuses it too (it answers with an empty page, not an error)." [app-ui DATA-VIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/DATA-VIEWS.md): "at the limit a muted line says so, with an upgrade hint only below the top plan." No modal, price or "Maybe Later" there; in that app, follow app-ui.
 
 ## Timing and frequency
 

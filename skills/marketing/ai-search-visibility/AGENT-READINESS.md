@@ -4,7 +4,7 @@ Whether an agent can reach a page, find what is on the site and parse it, before
 
 ## How agents read a page
 
-Google: browser agents may analyze "visual renderings (like screenshots), inspecting the DOM structure, and interpreting the accessibility tree." [https://developers.google.com/search/docs/fundamentals/ai-optimization-guide] So the same semantic HTML that serves assistive tech serves agents: `<main>`, `<nav>`, `<article>`, `<button>`, a real heading hierarchy, `alt` text, every interactive element labelled, ARIA only where native HTML falls short, and pricing, specs and contact on a public page. [coreyhaines31/marketingskills, ai-seo] The accessibility rules themselves are in [web-accessibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-accessibility/SKILL.md).
+Google: browser agents may analyze "visual renderings (like screenshots), inspecting the DOM structure, and interpreting the accessibility tree." [https://developers.google.com/search/docs/fundamentals/ai-optimization-guide] So the same semantic HTML that serves assistive tech serves agents: `<main>`, `<nav>`, `<article>`, `<button>`, a real heading hierarchy, `alt` text, every interactive element labelled, ARIA only where native HTML falls short, and pricing, specs and contact on a public page. [coreyhaines31/marketingskills, ai-seo] The accessibility rules themselves are in [web-accessibility SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md).
 
 ## The three questions
 
@@ -42,7 +42,7 @@ Lighthouse lists these audits under agentic browsing [https://developer.chrome.c
 - Accessibility: Accessibility for agents
 - Layout stability
 
-The audit ids, and the caveat that the released Lighthouse shipping the category was not verified, are in [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/web-performance/LIGHTHOUSE-CI.md#the-agentic-browsing-category). The page names the WebMCP audits without describing them; their use is in [webmcp VALIDATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/webmcp/VALIDATION.md#lighthouses-webmcp-audits).
+The audit ids, and the caveat that the released Lighthouse shipping the category was not verified, are in [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/LIGHTHOUSE-CI.md#the-agentic-browsing-category). The page names the WebMCP audits without describing them; their use is in [webmcp VALIDATION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/webmcp/VALIDATION.md#lighthouses-webmcp-audits).
 
 ## Scoring tools (vendor)
 

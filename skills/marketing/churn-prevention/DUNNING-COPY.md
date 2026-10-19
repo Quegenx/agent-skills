@@ -210,7 +210,7 @@ Match each date in the copy to your real retry and grace schedule; the deadline 
 └─────────────────────────────────────┘
 ```
 
-Where these notices sit in the product UI is the job of [app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/app-ui/SKILL.md).
+Where these notices sit in the product UI is the job of [app-ui SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/SKILL.md).
 
 ## Webhooks
 

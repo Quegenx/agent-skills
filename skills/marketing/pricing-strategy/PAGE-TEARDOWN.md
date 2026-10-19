@@ -54,7 +54,7 @@ A scored audit of a live pricing page for clarity, transparency and readability 
 | 9 | Per-tier depth in text | Each plan's inclusions, limits and quotas stated in words | Differences only as checkmark columns in an image; limits unnamed |
 | 10 | Structured data & extractability | Markup meets the identified consumer's requirements where needed; clean semantic HTML and the intended search-crawler policy (`llms.txt` a nice-to-have, not yet a standard) | Requested eligible markup is incomplete; pricing behind auth or interaction; unintended search-crawler blocks |
 
-[landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/landing-page-ui/SECTIONS.md#plans) already covers dimensions 2 and 7 its own way: "an audience line under the name" and "a screen-reader sentence ("99 shekels a month") in place of the visual pair".
+[landing-page-ui SECTIONS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/SECTIONS.md#plans) already covers dimensions 2 and 7 its own way: "an audience line under the name" and "a screen-reader sentence ("99 shekels a month") in place of the visual pair".
 
 ## Structured data and AI bots
 

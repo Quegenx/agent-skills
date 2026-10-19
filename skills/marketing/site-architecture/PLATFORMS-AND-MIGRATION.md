@@ -51,7 +51,7 @@ Often the job is a new section (a blog, landing pages, a resource library, pages
 - The proxied pages return the main domain in their canonical tags, sitemap and Open Graph URLs, not the origin's.
 - Asset paths (CSS, JS, images, fonts) are routed too, or the pages break.
 - The origin (for example `origin.example.com`) isn't indexed separately: protect it by hostname (a password, an IP allowlist, or an `X-Robots-Tag: noindex` header set only on the origin hostname). Then confirm the proxied production responses carry no `noindex` in their HTML or headers, because "an origin-wide `noindex` can pass straight through the proxy and deindex production". A `robots.txt` block alone doesn't prevent indexing: Google calls robots.txt "not a mechanism for keeping a web page out of Google" and says to block indexing with `noindex` or password protection ([robots intro](https://developers.google.com/search/docs/crawling-indexing/robots/intro)).
-- Analytics and consent run on both systems, configured for one domain ([cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/frontend/cookie-consent/SKILL.md)).
+- Analytics and consent run on both systems, configured for one domain ([cookie-consent SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/cookie-consent/SKILL.md)).
 - Test on a staging subdomain before switching production routing.
 
 A hosted router in front of the whole domain puts the vendor's edge in front of every page, which is the tradeoff to weigh [coreyhaines31/marketingskills, site-architecture].
