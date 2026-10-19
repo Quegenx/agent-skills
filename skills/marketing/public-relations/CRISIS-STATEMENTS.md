@@ -118,7 +118,7 @@ Issuing the refunds and credits in billing code is [../../backend/stripe/SKILL.m
 
 ## Public postmortem
 
-[coreyhaines31/marketingskills, public-relations] For Tier 3 and 4, published once the crisis is resolved and the root cause confirmed. The internal postmortem it draws on (four timestamps, the detection gap, no person as the cause) is [../../backend/observability/DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#the-postmortem); the public one keeps that rule too.
+[coreyhaines31/marketingskills, public-relations] For Tier 3 and 4, published once the crisis is resolved and the root cause confirmed. The internal postmortem it draws on (four timestamps, the detection gap, no person as the cause) is [../../monitoring/observability/DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#the-postmortem); the public one keeps that rule too.
 
 ```
 # [Incident name]: Postmortem

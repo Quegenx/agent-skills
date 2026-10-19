@@ -41,6 +41,18 @@ create policy "owners update their notes" on public.notes
 
   A SELECT wrapper permits an init-plan optimization only when its result does not depend on each row. This helper receives that row's `team_id`; the wrapper does not make its membership result constant for the whole query. [https://supabase.com/docs/guides/database/postgres/row-level-security#call-functions-with-select]
 
+### Tenant membership
+
+A tenant policy checks actual membership:
+
+```sql
+create policy "members read their tenant's projects" on projects
+  for select to authenticated
+  using (tenant_id in (select tenant_id from memberships where user_id = (select auth.uid())));
+```
+
+Test this as each role, using `set local role authenticated; set local request.jwt.claims = '{"sub": "..."}'`, or two real users through the client. Generic tenant-context handling stays in [TENANCY.md](../secure-coding/TENANCY.md).
+
 ## Views and functions that bypass RLS
 
 - **Views apply their owner's permissions and policies by default, and the owner is usually `postgres`, so they bypass RLS.** On Postgres 15+ create them `with (security_invoker = true)`; on older versions revoke access from `anon` and `authenticated` or keep them in a schema the API doesn't expose.

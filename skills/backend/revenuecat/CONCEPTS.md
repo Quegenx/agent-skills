@@ -270,87 +270,15 @@ Platform Server Notifications reduce these delays (see [STORE-SETUP.md](STORE-SE
 
 ## Plan changes
 
-- **You cannot upgrade or downgrade on behalf of customers.**
-- **App Store: no code changes.** Upgrades are immediate with a prorated refund, downgrades apply at next renewal, crossgrades are immediate if the duration is the same, else at next renewal. Upgrades during intro periods keep both products active.
-- **Google Play: pass the old product and a replacement mode.** RevenueCat Paywalls use the editor setting **Play Store only: Replacement mode**. Custom flows pass the old product ID and an optional mode. Preconditions: exactly one active Play subscription to replace (none: do a fresh purchase), fresh or recently cached CustomerInfo, the target Package resolved from the current offering, Billing Library 7+ (via the SDK).
-
-Flutter:
-
-```dart
-final productChangeInfo = StoreProductChangeInfo(
-  "oldProductId",
-  replacementMode: StoreReplacementMode.withoutProration,
-);
-final purchaseResult = await Purchases.purchase(
-  PurchaseParams.storeProduct(
-    newProduct,
-    productChangeInfo: productChangeInfo,
-  ),
-);
-```
-
-React Native:
-
-```jsx
-const productChangeInfo = {
-  oldProductIdentifier: "oldProductId",
-  replacementMode: Purchases.STORE_REPLACEMENT_MODE.WITHOUT_PRORATION,
-};
-const { customerInfo } = await Purchases.purchaseStoreProduct(
-  newProduct,
-  productChangeInfo,
-);
-```
-
-| Scenario | Mode | Billing effect |
-|---|---|---|
-| Standard upgrade (monthly to annual) | `WITH_TIME_PRORATION` | Immediate switch, remaining time credited |
-| Upgrade, keep the existing billing date | `CHARGE_PRORATED_PRICE` | Immediate switch, prorated charge now |
-| Switch to or from a prepaid plan | `CHARGE_FULL_PRICE` | Immediate switch, full charge now |
-| Upgrade during an active free trial | `CHARGE_PRORATED_PRICE` | Immediate switch, prorated charge now |
-| Downgrade (annual to monthly) | `DEFERRED` | Switch applies at next renewal |
-
-- **The RevenueCat default is `WITHOUT_PRORATION`; set the intended mode explicitly.** For trial upgrades, use `WITHOUT_PRORATION` to preserve the trial, or `CHARGE_PRORATED_PRICE` to end it. The source wrongly banned preserving trial access. [RevenueCat/ai-toolkit, rc-plan-changes; https://www.revenuecat.com/docs/subscription-guidance/managing-subscriptions; https://developer.android.com/google/play/billing/subscriptions#replacement-recommendations]
-- **`CHARGE_PRORATED_PRICE` requires an increased price per unit of time; `DEFERRED` can upgrade or downgrade at renewal.** Check restrictions for the actual plan transition: same-subscription switches to an auto-renewing plan support `CHARGE_FULL_PRICE` or `WITHOUT_PRORATION`, not every mode. The source wrongly said Google rejects every deferred upgrade. [https://developer.android.com/google/play/billing/subscriptions#replacement-modes]
-- **Derive the old product ID from `activeSubscriptions`,** stripping the `:basePlanId` suffix: "Hardcoded SKUs break when a user has migrated between plans." If you pass `"productId:basePlanId"` the SDK strips it, but slicing it yourself is clearer.
-- **After the change** `activeSubscriptions` holds the new `productId:basePlanId` and the entitlement stays active across the switch: "do not gate UI on the SKU string". For `DEFERRED`, `activeSubscriptions` reports the old product until next renewal; RevenueCat tracks the pending switch and flips it after Google's renewal RTDN.
-- **Delete `linkedPurchaseToken` traversal code.** RevenueCat resolves the chain, marks the old token replaced, and attributes both tokens to the same App User ID.
-- **Webhooks:** `PRODUCT_CHANGE` is informative; its `expiration_at_ms` is for the old product.
-- **Amazon doesn't support product changes.** RevenueCat Billing: upgrade and downgrade paths live in the web Customer Portal; upgrades are immediate with a partial refund, downgrades apply at cycle end, not prorated.
+The complete [plan-change contract](BILLING-AND-RECOVERY.md#upgrades-downgrades-and-crossgrades) owns replacement modes, platform behavior and SDK calls.
 
 ## Price changes
 
-These rules come from the Google Play chapter.
-
-- **Two kinds for active subscribers.** Opt-out (typically decreases, and increases within Google's opt-out threshold) applies automatically at next renewal. Opt-in (larger increases) shows Google's own consent dialog; consent continues at the new price, decline cancels at period end.
-- **"For most price change scenarios, there is nothing to implement in your app or backend."** RevenueCat processes `SUBSCRIPTION_PRICE_CHANGE_UPDATED` and related RTDNs and updates CustomerInfo when cohort or consent state changes.
-
-| Question | Opt out | Opt in |
-|---|---|---|
-| Typical trigger | Decrease, or small increase within Google's threshold | Larger increase above Google's threshold |
-| User consent | Not required | Required, prompted by Google Play UI |
-| If user declines | N/A | Subscription cancels at period end, `CANCELLATION` webhook fires |
-| New price applies | Automatically at next renewal | After user consents in Play's dialog |
-| RTDN RevenueCat consumes | `SUBSCRIPTION_PRICE_CHANGE_UPDATED` | `SUBSCRIPTION_PRICE_CHANGE_UPDATED`, then `SUBSCRIPTION_CANCELED` if declined |
-| App code change | None required | None required |
-| Paywall price source | `pkg.product.price.formatted` [Kotlin] (new purchases only) | `pkg.product.price.formatted` [Kotlin] (new purchases only) |
-
-1. **Edit the price in Play Console** (subscription > base plan > edit price); Google asks how existing subscribers are treated, based on magnitude and region.
-2. **Nothing to toggle in RevenueCat.** Confirm the new price appears on the product in the dashboard after propagation.
-3. **Optionally refresh offerings** so new purchasers see the new price.
-4. **Read entitlements as usual after consent resolves.** "Do not build a consent dialog. Google Play shows it."
-5. **Treat a decline like any other cancellation** (`CANCELLATION` webhook).
-6. **Optional pre-warning:** an in-app banner driven by a webhook event, or a specific Offering for the affected cohort via Targeting; "an enhancement, not part of the price change contract".
-
-- **Legacy cohorts keep the old price** until Google migrates them; this is not visible in the SDK. The product's formatted price is always correct for new purchases.
-- **Apple Server Notifications V2 auto-detect price changes** (see [STORE-SETUP.md](STORE-SETUP.md)).
+Store-controlled price changes and their RevenueCat events are in [BILLING-AND-RECOVERY.md](BILLING-AND-RECOVERY.md#price-changes).
 
 ## Cancellations
 
-- **Detection takes a few hours,** near real time with server notifications. Apple: only the user cancels, at least 24 hours before renewal. Google: developers can cancel via Play Console or API; prepaid can't be cancelled. Stripe: via dashboard or API. Amazon: can't cancel.
-- **Link to the store's management screen with `managementURL`.** "Google requires developers to allow customers to cancel a subscription within apps."
-- **"Deleting a user from RevenueCat WILL NOT cancel their subscription."**
-- **Refunds, grace periods and Refund Control** are in [BILLING-AND-RECOVERY.md](BILLING-AND-RECOVERY.md).
+Cancellation ownership, detection and the deletion boundary are in [BILLING-AND-RECOVERY.md](BILLING-AND-RECOVERY.md#cancellations); the [management link](BILLING-AND-RECOVERY.md#read-state-dont-compute-it) opens the appropriate store screen.
 
 ## Prove it
 

@@ -22,6 +22,16 @@ Function and data rules come from [get-convex/agent-skills, convex-expert, conve
 - **Register cron work with the actual generated function reference.** Separate recurring schedules from delayed work and from durable multi-step orchestration; the generic workflow choice remains in [background-jobs](../background-jobs/DURABLE-WORKFLOWS.md). [get-convex/agent-skills, convex-crons, convex-design]
 - **Environment access is not actions-only.** It is supported in queries, mutations, actions and HTTP actions; declare typed environment where supported and keep values out of logs and reports. The old convex-env rule prohibited process.env in queries and mutations. Components have a separate declared environment boundary. [https://docs.convex.dev/production/environment-variables; COMPONENTS.md]
 
+## Native scheduling guarantees
+
+- `ctx.scheduler.runAfter(ms, fn, args)` and `runAt(timestamp, fn, args)` schedule durably. From a mutation, scheduling is atomic with the mutation: it happens only if the mutation commits.
+- **Scheduled mutations run exactly once** and are retried on transient errors. **Scheduled actions run at most once and are not retried:** an action that calls an external API can fail and simply not run again. For important work, have the action record its outcome through a mutation, and let a mutation (or a cron) check for unfinished jobs and reschedule them.
+- Schedule `internal` functions so clients can't call them directly.
+- Recurring work goes in `crons.ts`. A cron that might overlap a still-running previous run must check job state before starting.
+- For many parallel actions with limits and retries, use a work pool component rather than scheduling unbounded actions at once.
+
+Use the [generic first-run watermark policy](../background-jobs/WORKERS.md#convex-scheduler-and-crons) when that recurring job needs it. Native guarantees come from the existing worker/provider guidance. [https://docs.convex.dev/scheduling/scheduled-functions; https://docs.convex.dev/scheduling/cron-jobs]
+
 ## Prove it
 
 Read the complete public-to-database call path, generated references and configured function directory. Verify each validator and output shape against the installed API; demonstrate the actual index range and bound rather than merely finding withIndex; inspect HTTP and storage authorization and cron targets; report any unperformed runtime verification. [get-convex/agent-skills, convex-reviewer, convex-verify]

@@ -1,13 +1,13 @@
 # Flutter (purchases_flutter)
 
-`purchases_flutter` wraps StoreKit, Google Play Billing and the RevenueCat backend for Flutter apps. Most outcomes come down to three things: `Purchases.configure` runs exactly once, awaited, before anything reads offerings or customer info; the right public key goes to the right platform; and access is decided by an entitlement identifier in `customerInfo.entitlements.active`, kept current by a listener, never by product IDs or purchase history. Entitlements, offerings and packages are explained in [CONCEPTS.md](CONCEPTS.md); store consoles in [STORE-SETUP.md](STORE-SETUP.md); paywalls and Customer Center in [PAYWALLS.md](PAYWALLS.md); sandbox and Test Store in [TESTING.md](TESTING.md); errors in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+`purchases_flutter` wraps StoreKit, Google Play Billing and the RevenueCat backend for Flutter apps. Most outcomes come down to three things: `Purchases.configure` runs exactly once, awaited, before anything reads offerings or customer info; the right public key goes to the right platform; and access is decided by an entitlement identifier in `customerInfo.entitlements.active`, kept current by a listener, never by product IDs or purchase history. Entitlements, offerings and packages are explained in [CONCEPTS.md](CONCEPTS.md); store consoles in [STORE-SETUP.md](STORE-SETUP.md); paywalls in [PAYWALLS.md](PAYWALLS.md), subscriber management in [CUSTOMER-CENTER.md](CUSTOMER-CENTER.md); sandbox and Test Store in [TESTING.md](TESTING.md); errors in [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 **Contents:** [Install](#install) · [Configure](#configure) · [Identify users](#identify-users) · [Customer info and entitlement gates](#customer-info-and-entitlement-gates) · [Offerings and packages](#offerings-and-packages) · [Purchase flow](#purchase-flow) · [Restore](#restore) · [Flutter Web](#flutter-web) · [Customer attributes](#customer-attributes) · [Versions and breaking changes](#versions-and-breaking-changes) · [Prove it](#prove-it)
 
 ## Install
 
 - **Prerequisite: Flutter 3.22 or later.** (v9.0.0 raised the minimum to Flutter 3.22.0 and Dart 3.4.0.)
-- **Add the packages.** `flutter pub add purchases_flutter purchases_ui_flutter`. `purchases_ui_flutter` is only needed for RevenueCat Paywalls and Customer Center. Take the latest tag from https://github.com/RevenueCat/purchases-flutter/releases (the docs' pubspec example pins `^10.10.0` for both; if the releases page is unreachable, ask the user or check the existing `pubspec.yaml`).
+- **Add the packages.** `flutter pub add purchases_flutter purchases_ui_flutter`. `purchases_ui_flutter` is only needed for [RevenueCat Paywalls](PAYWALLS.md) and [Customer Center](CUSTOMER-CENTER.md). Take the latest tag from https://github.com/RevenueCat/purchases-flutter/releases (the docs' pubspec example pins `^10.10.0` for both; if the releases page is unreachable, ask the user or check the existing `pubspec.yaml`).
 
 ```yaml
 dependencies:
@@ -95,7 +95,7 @@ Future<void> initPlatformState() async {
 }
 ```
 
-- **Configuration options.** API key (required); App User ID (optional, `null` for anonymous; see below); Purchases Completed By (only if you have your own purchase code, see [CONCEPTS.md](CONCEPTS.md)).
+- **Configuration options.** API key (required); App User ID (optional, `null` for anonymous; see below); Purchases Completed By (only if you have your own purchase code, see [MIGRATION.md](MIGRATION.md#adoption-observer-mode)).
 - **Test Store key.** The Test Store has its own API key. In release builds the SDK crashes on purpose when it finds a Test Store key, and the Flutter SDK does not expose the opt-out. Never submit an app configured with a Test Store key: use the Test Store key for debug builds and the platform key for release (Test Store needs Flutter SDK 9.8.0+; details in [TESTING.md](TESTING.md)).
 - **Blocked regions (mainland China, Russia, Myanmar).** Before configuring: `await Purchases.setProxyURL("https://api.rc-backup.com/");`.
 - **Paywall locale.** `..preferredUILocaleOverride = 'es-ES'` on the configuration, or `await Purchases.overridePreferredUILocale('de-DE');`.
@@ -103,7 +103,7 @@ Future<void> initPlatformState() async {
 
 ## Identify users
 
-- **Anonymous by default.** Without an App User ID, RevenueCat generates `$RCAnonymousID:...` and caches it on the device; a reinstall creates a new one, and anonymous IDs can't share status across apps and platforms. Pass `appUserID` at configure only if you already have an authenticated user at launch; otherwise call `logIn` later.
+Read the shared [App User ID and alias contract](IDENTITY.md#app-user-ids) before this platform adapter.
 
 ```dart
 await Purchases.configure(
@@ -112,8 +112,7 @@ await Purchases.configure(
 );
 ```
 
-- **Choose the ID carefully; it is hard to change.** Use a stable, opaque, non-guessable value such as your backend user UUID (UUID v4 recommended) or a hash of the user id. Never an email, phone number, sequential database id, IDFA, or a hard-coded string (it could unlock entitlements for users who never paid). Max 100 characters, case sensitive, scoped to the whole project; no `/`. Blocked values include `'no_user'`, `'null'`, `'none'`, `'nil'`, `'(null)'`, `'NaN'`, `'\\x00'`, `''`, `'unidentified'`, `'undefined'`, `'unknown'`, `'anonymous'`, `'guest'`, `'-1'`, `'0'`, `'[]'`, `'{}'`, `'[object Object]'`.
-- **Call `logIn` after your auth confirms the session,** typically from your auth-state listener, not speculatively. `Purchases.logIn(appUserID)` resolves to `LogInResult(customerInfo, created)`; `created` is true the first time this ID reaches RevenueCat. Anonymous purchases are aliased onto the real ID on the first `logIn`, so letting users buy before signing in loses nothing. In webhooks `original_app_user_id` is then the anonymous id and `app_user_id` the provided one.
+- **Login result:** `Purchases.logIn(appUserID)` resolves to `LogInResult(customerInfo, created)`. Follow the [shared identity contract](IDENTITY.md#login-switching-and-aliases) for authentication timing and alias behavior.
 
 ```dart
 import 'package:flutter/services.dart';
@@ -144,11 +143,7 @@ Future<void> signOutRevenueCat() async {
 }
 ```
 
-- **Account switching: the sources disagree.** The RevenueCat identify-user skill says `logOut()` first, then `logIn(newId)`, because a second `logIn` would alias the two IDs together. The docs say to call `logIn` directly with no `logOut`, and their alias table says a logIn from a non-anonymous ID never merges. The official form governs the listener below: switch known IDs with `logIn` directly. The source's merge claim is wrong for a non-anonymous current ID. See https://www.revenuecat.com/docs/customers/identifying-customers.md.
-- **Custom-IDs-only apps.** If every user has an account, identify before configuring, configure only with the custom ID, and never call `logOut`; on account switch call `logIn`. Otherwise a provided user's subscription may be transferred to an anonymous ID, recoverable only through restore on the original platform.
-- **Configured with an `appUserID` up front,** you generally don't need `logIn` until that user signs out and back in as somebody else.
-- **What `logIn` merges (docs alias table).** Anonymous to a new ID, or to an existing ID without an anonymous alias: merged. Anonymous to an existing ID that already has an anonymous alias, or any non-anonymous ID to any ID: the current ID is logged out, the provided one logged in, no merge or purchase transfer. After a merge only one ID stays in `original_app_user_id` (webhooks list the others in `aliases`), and any merged ID returns the same CustomerInfo, history and attributes.
-- **Custom IDs are cross-platform.** The same ID on different platforms is the same user with shared entitlements, but a user can only manage a subscription on the platform it was purchased from.
+- **Account switching:** follow the shared [login and alias rules](IDENTITY.md#login-switching-and-aliases); the adapter below switches known IDs with `logIn` directly.
 
 ```dart
 class RevenueCatIdentitySync {
@@ -459,7 +454,7 @@ Future<CustomerInfo?> restore() async {
 }
 ```
 
-- **What restore does.** It attaches the current store receipt to the current RevenueCat user; it never switches identities. Whether it transfers access from another App User ID is the project's restore behavior setting (default: transfer), described in [CONCEPTS.md](CONCEPTS.md).
+- **What restore does.** It attaches the current store receipt to the current RevenueCat user; it never switches identities. Whether it transfers access from another App User ID is the project's restore behavior setting (default: transfer), described in [IDENTITY.md](IDENTITY.md#restore-behavior).
 - **Consumables and non-renewing subscriptions** can only be restored with custom App User IDs.
 - **Consumed one-time products on Android.** Google Billing Client 8 removed querying consumed one-time purchases (purchases-flutter 9.0.0+), and 10.0.0 removed RevenueCat's workaround: without a login system, configure each one-time product correctly as consumable or non-consumable, or customers can't restore them from 10.0.0 on. Mitigation for anonymous apps: back up RevenueCat's SharedPreferences file (`RevenueCatBackupAgent.REVENUECAT_PREFS_FILE_NAME`) with Auto Backup, or set `android:backupAgent="com.revenuecat.purchases.backup.RevenueCatBackupAgent"` on `<application>` (this disables Auto Backup).
 
@@ -470,11 +465,7 @@ Future<CustomerInfo?> restore() async {
 
 ## Customer attributes
 
-- **Set** with `Purchases.setAttributes({ "age" : "24", "custom_group_id" : "abc123" });`; clear one by passing `null` or an empty string (`Purchases.setAttributes({"age" : ""});`).
-- **Limits.** Up to 50 custom attributes per subscriber; keys up to 40 characters, starting with a letter, letters, numbers, `-` and `_` only, no whitespace; values up to 500 characters. Keys starting with `$` are reserved.
-- **Reserved keys** (e.g. `$displayName`, `$email`, `$phoneNumber`, `$fcmTokens`, `$posthogUserId`, `$mixpanelDistinctId`, `$amplitudeUserId`, `$onesignalId`, attribution keys such as `$mediaSource` and `$campaign`) can be set by key or with helpers: `Purchases.setEmail("test@example.com")`, `Purchases.setPhoneNumber("+16505551234")`, `Purchases.setDisplayName("John Appleseed")`. Device identifiers and attribution data can't be changed once set.
-- **Sync timing.** Attributes reach RevenueCat only when `Purchases.configure()` runs, the app is backgrounded, or a purchase is made or restored. Call `syncAttributesAndOfferingsIfNeeded()` to sync immediately; it is needed when Targeting uses custom attributes and also refreshes the cached Offering.
-- **Write-only and not secure storage.** The SDK can't read attributes back (use the REST API with a secret key, webhooks' `subscriber_attributes`, integrations or exports), and anyone with the public key can write them, so never keep subscription status or balances in them.
+The shared [attribute contract and setter calls](IDENTITY.md#customer-attributes) own limits, reserved keys, sync timing and write-only security.
 
 ## Versions and breaking changes
 

@@ -88,7 +88,7 @@ deno run \
 
 ## OTLP path for OpenTelemetry-first projects
 
-Node.js only. Use it only when OpenTelemetry tracing is already set up (`@opentelemetry/sdk-node` or `@opentelemetry/sdk-trace-node` in `package.json`, or `NodeTracerProvider` in source). `@sentry/node-core/light` does not bundle its own OpenTelemetry: it hooks into your existing `TracerProvider` and exports spans over OTLP. Do not set `tracesSampleRate`; OpenTelemetry controls sampling. Vendor-neutral OpenTelemetry is the [observability skill](../../backend/observability/SKILL.md).
+Node.js only. Use it only when OpenTelemetry tracing is already set up (`@opentelemetry/sdk-node` or `@opentelemetry/sdk-trace-node` in `package.json`, or `NodeTracerProvider` in source). `@sentry/node-core/light` does not bundle its own OpenTelemetry: it hooks into your existing `TracerProvider` and exports spans over OTLP. Do not set `tracesSampleRate`; OpenTelemetry controls sampling. Vendor-neutral OpenTelemetry is the [observability skill](../observability/SKILL.md).
 
 | Scenario | Path |
 |---|---|

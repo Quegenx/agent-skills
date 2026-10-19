@@ -1,6 +1,6 @@
 # Tempo
 
-Storing and querying traces with Grafana Tempo and TraceQL. Tempo accepts OTLP, Jaeger, Zipkin, OpenCensus and Kafka and stores Parquet blocks in S3, GCS or Azure. A TraceQL query is evaluated one trace at a time as a pipeline, and its speed is decided mostly by the time range, scoped attributes and trace-level intrinsics. Instrumenting services with OpenTelemetry is in [the observability skill](../../backend/observability/SKILL.md); collector pipelines are in [ALLOY.md](ALLOY.md). Docs: https://grafana.com/docs/tempo/latest/ ; TraceQL: https://grafana.com/docs/tempo/latest/traceql/
+Storing and querying traces with Grafana Tempo and TraceQL. Tempo accepts OTLP, Jaeger, Zipkin, OpenCensus and Kafka and stores Parquet blocks in S3, GCS or Azure. A TraceQL query is evaluated one trace at a time as a pipeline, and its speed is decided mostly by the time range, scoped attributes and trace-level intrinsics. Instrumenting services with OpenTelemetry is in [the observability skill](../observability/SKILL.md); collector pipelines are in [ALLOY.md](ALLOY.md). Docs: https://grafana.com/docs/tempo/latest/ ; TraceQL: https://grafana.com/docs/tempo/latest/traceql/
 
 **Contents:** [Architecture](#architecture) · [Run and send traces](#run-and-send-traces) · [What to put in spans](#what-to-put-in-spans) · [TraceQL](#traceql) · [TraceQL metrics](#traceql-metrics) · [Metrics generator](#metrics-generator) · [Grafana data source](#grafana-data-source) · [HTTP API](#http-api) · [Tuning and troubleshooting](#tuning-and-troubleshooting) · [Prove it](#prove-it)
 

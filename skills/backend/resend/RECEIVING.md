@@ -39,35 +39,7 @@ support.acme.com.  MX  10  <resend-mx-value>
 ## The webhook
 
 - **Verify every request's signature** (svix headers) against the raw body to prevent spoofed events, then return `200`. Resend retries on any non-200 response.
-- **The `verify()` options conflict between sources.** The vendor receiving reference passes `svix-*` header keys and `secret`:
-
-```typescript
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export async function POST(req: Request) {
-  const payload = await req.text();
-
-  const event = resend.webhooks.verify({
-    payload,
-    headers: {
-      'svix-id': req.headers.get('svix-id'),
-      'svix-timestamp': req.headers.get('svix-timestamp'),
-      'svix-signature': req.headers.get('svix-signature'),
-    },
-    secret: process.env.RESEND_WEBHOOK_SECRET,
-  });
-
-  if (event.type === 'email.received') {
-    // Process the email
-  }
-
-  return new Response('OK', { status: 200 });
-}
-```
-
-  The SDK source (`VerifyWebhookOptions`), the docs' verify page and the agent-inbox skill take `headers: { id, timestamp, signature }` and `webhookSecret`, and the agent-inbox skill lists passing `secret` or `svix-*` keys as a mistake. Confirm in the current docs. Verification code with `webhookSecret` is in [WEBHOOKS.md](WEBHOOKS.md) and [AGENT-INBOX.md](AGENT-INBOX.md).
+- **Verification, deduplication and retry behavior:** [WEBHOOKS.md](WEBHOOKS.md#verify-the-signature) owns the SDK contract and the attributed receiving-source example.
 - **The docs' receiving pages skip verification.** Their routes parse `await request.json()` and call verification optional ("You can also implement webhook request verification"); the vendor reference says "Always verify signatures", and the verify page says to use the raw body. The docs' attachments route, as published:
 
 ```ts

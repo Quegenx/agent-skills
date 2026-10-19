@@ -179,6 +179,8 @@ OneSignal.User.removeObserver(observer);
 
 ## Tags
 
+- **Avoid PII** in tags or tag-derived criteria [OneSignal segmentation reference]. Identify users with External ID rather than tags ([Users and IDs](#users-and-ids)).
+
 - **Tags are key-value pairs on the User** for traits and behaviors used in segmentation and personalization, not full profiles or logs. They have lifetime retention.
 - **All values are strings:** labels (`"free"`, `"VIP"`), numbers (`"42"`, `"3.14"`, which enables numeric filters), timestamps (`"1685400000"`, Unix **seconds**, for Time Operators), booleans (`"true"`/`"false"` or `"1"`/`"0"`, the latter to reduce payload). Arrays, objects, nested values and JSON blobs are not supported: use Custom Events.
 - **Restricted keys:** `message`, `notification`, `subscription`, `user`, `template`, `app`, `org`, `dynamic_content`, `data_feed`, `journey`, `custom_data`.

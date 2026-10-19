@@ -11,7 +11,7 @@ React Email turns React and TypeScript components into email HTML, and it is bui
 | `react-email` | 6.11.3 | All components, `render`, `pretty`, `toPlainText`, `pixelBasedPreset`, the `email` CLI. `"engines": { "node": ">=20.19.0" }` |
 | `@react-email/ui` | 6.11.3 | The preview server (renamed from `@react-email/preview-server` in 6.0) |
 | `@react-email/render` | 2.1.1 | The render utilities as their own package |
-| `@react-email/editor` | 1.7.14 | The embeddable visual editor ([PATTERNS.md](PATTERNS.md)) |
+| `@react-email/editor` | 1.7.14 | The embeddable visual editor ([EDITOR.md](EDITOR.md)) |
 
 - **Node 20.19 or later.** The CLI needs it since react-email@6.10.0 (2026-09-23, chokidar v5); the dev server refuses to start on older Node.
 - **Newer releases are only on GitHub.** The docs changelog's newest entry is April 16, 2026 (6.0.0); later releases are listed at https://github.com/resend/react-email/releases.

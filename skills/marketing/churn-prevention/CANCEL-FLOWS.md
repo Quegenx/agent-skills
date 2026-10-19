@@ -211,6 +211,7 @@ from customers like you.
 | Day 60 | Address their specific cancel reason if resolved |
 | Day 90 | Final win-back with special offer |
 
+- **Email tone and return path** [coreyhaines31/marketingskills, emails]: "No guilt, no desperation"; personalize by cancellation reason; make returning easy. That source describes the day-30/60/90 ladder above as 2 to 3 emails over 90 days.
 - **Win-back mail is marketing mail:** consent, unsubscribe and the transactional line are in [../../backend/email-practices/COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md) and [../../backend/email-practices/EMAIL-TYPES.md](../../backend/email-practices/EMAIL-TYPES.md). The source's "Don't use post-cancel data for marketing without consent" skips the other lawful bases; follow COMPLIANCE.md instead.
 - **Data after cancel (EU).** Tell users the retention period and offer an export before deletion. The source says "Honor deletion requests within 30 days"; GDPR Art. 12(3) says "without undue delay and in any event within one month of receipt of the request. That period may be extended by two further months where necessary", and you inform the person of any extension within the first month ([GDPR Art. 12](https://gdpr-info.eu/art-12-gdpr/)).
 

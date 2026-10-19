@@ -5,7 +5,7 @@ description: "Sets up and runs Sentry across React, browser JavaScript, React Ro
 
 # Sentry
 
-Sentry captures errors and crashes and ties each one to the release, request and exact line that caused it; beyond errors it records traces, logs, metrics, profiles, Session Replay, crons, uptime and AI monitoring, all joined by one trace ID. Per-platform setup comes from the current Sentry docs, not memory: every docs page is served as Markdown by appending `.md` to its URL (catalog: https://docs.sentry.io/platforms.md). Most outcomes come down to three things: the platform's `init` runs before the code that fails, the event is confirmed in Sentry rather than assumed, and production stack traces are readable. Vendor-neutral OpenTelemetry is the [observability](../../backend/observability/SKILL.md) skill.
+Sentry captures errors and crashes and ties each one to the release, request and exact line that caused it; beyond errors it records traces, logs, metrics, profiles, Session Replay, crons, uptime and AI monitoring, all joined by one trace ID. Per-platform setup comes from the current Sentry docs, not memory: every docs page is served as Markdown by appending `.md` to its URL (catalog: https://docs.sentry.io/platforms.md). Most outcomes come down to three things: the platform's `init` runs before the code that fails, the event is confirmed in Sentry rather than assumed, and production stack traces are readable. Vendor-neutral OpenTelemetry is the [observability](../observability/SKILL.md) skill.
 
 | The job | Read |
 |---|---|

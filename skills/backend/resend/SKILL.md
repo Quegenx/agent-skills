@@ -29,7 +29,7 @@ Resend sends email from your server through one HTTP API (`https://api.resend.co
 1. **The API key lives in `RESEND_API_KEY` on the server and never reaches a browser, a commit or a prompt.** Give each service its own key and prefer `sending_access`; reads of domains, contacts, receiving and inboxes need Full access.
 2. **Install the latest SDK** (Node `resend`, never `@resend/node`): at least 6.14.0, and 6.34.1 for Inboxes.
 3. **Check `error` on every call instead of relying on `try/catch`:** the Node SDK returns `{ data, error }` and does not throw. Deletes are `.remove()`, never `.delete()`.
-4. **Pass an idempotency key derived from the event on every send** (`welcome-email/<user-id>`), and retry only 429 and 5xx, with exponential backoff and the same key. Fix every other error instead of retrying it.
+4. **Pass an idempotency key derived from the event on every send** (`welcome-email/<user-id>`), and follow [LIMITS-AND-ERRORS.md](LIMITS-AND-ERRORS.md#retries) for named retryable errors, quota waits and exponential backoff with the same key.
 5. **Send from a verified subdomain whose records match exactly,** add DMARC yourself, and keep open and click tracking off for transactional email. `onboarding@resend.dev` is for tests only.
 6. **Test only with the `@resend.dev` addresses** (`delivered@`, `bounced@`, `complained@`, `suppressed@`), never fake addresses at real providers.
 7. **Verify every webhook's signature against the raw body,** dedupe on `svix-id`, and return 200 quickly: any other response triggers retries. Webhook payloads carry no email body; fetch it from the API.

@@ -12,7 +12,7 @@ Grafana Alerting evaluates rules (queries plus a condition, on an interval, with
 - **One multi-dimensional rule, not one rule per host, service or endpoint.** Start with a single dimension such as `service` or `endpoint`; add `region` or `instance` only when it improves actionability.
 - **Design for first responders.** Each alert says why it exists, what triggered it and how to investigate; link dashboards and runbooks in annotations. "If no action is possible, it shouldn't be an alert"; use a dashboard instead. Alerts behave like technical debt over time.
 - **Every alert has an owner** (team) and a system scope (service or component). "Notification routing is as important as the alerts."
-- **Set thresholds from an observed baseline, in peacetime.** "Debating that baseline while an incident is underway means you are already late." Alerts catch momentary problems, not slow decline; a week-over-week comparison panel finds that ([DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#three-kinds-of-time)).
+- **Set thresholds from an observed baseline, in peacetime.** "Debating that baseline while an incident is underway means you are already late." Alerts catch momentary problems, not slow decline; a week-over-week comparison panel finds that ([DIAGNOSE.md](../observability/DIAGNOSE.md#three-kinds-of-time)).
 - **Fight flapping** with a pending period and with aggregation over a window instead of raw values; prefer percentiles to averages for latency and errors; use `keep_firing_for` or recovery thresholds during recovery.
 
 ```promql
@@ -30,7 +30,7 @@ quantile_over_time(0.95, http_duration_seconds[5m]) > 3
 - **Graduate noisy symptom alerts into SLOs** and alert on error-budget burn rate; one SLO across teams replaces several latency alerts.
 - **Keep alerts few and simple.** Aim for as few alerts as possible, link each to the relevant consoles, and allow slack for small blips; page on latency at only one point in a stack, as high up as possible; page on user-visible errors plus severe invisible failures (e.g. losing money); split alerts per request type when low-traffic types would drown. Batch jobs: page when a job hasn't succeeded recently enough, with a threshold of at least 2 full runs ("For a job that runs every 4 hours and takes an hour, 10 hours would be a reasonable threshold"). Offline processing: alert on how long data takes to get through. Capacity: being near capacity often needs human intervention. Alert names: CamelCase by community convention.
 - **Monitor the monitoring.** Alert that Prometheus, Alertmanager and PushGateway are up; prefer one end-to-end blackbox test (PushGateway to Prometheus to Alertmanager to email) plus external blackbox monitoring.
-- **Review continuously.** After incidents, check which alerts fired and how they shaped the response; remove alerts that lead to no action; "Use dashboards and observability tools for investigation, not alerts." The postmortem's first question is the detection gap, from the first trace on a graph to the alert firing: can that sign become an alert ([DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#the-postmortem))?
+- **Review continuously.** After incidents, check which alerts fired and how they shaped the response; remove alerts that lead to no action; "Use dashboards and observability tools for investigation, not alerts." The postmortem's first question is the detection gap, from the first trace on a graph to the alert firing: can that sign become an alert ([DIAGNOSE.md](../observability/DIAGNOSE.md#the-postmortem))?
 
 ## How rules work
 
@@ -564,7 +564,7 @@ resource "grafana_oncall_on_call_shift" "weekday" {
 ### Slack, incidents, roles, limits
 
 - **Slack:** install at OnCall Settings > Chat Ops > Slack; users connect in Profile; set a default channel. Message actions: Acknowledge, Resolve, Silence, Add responders, Add note. Slash commands: `/escalate`, `/oncall`.
-- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; source severity P1 to P4, mapped here to P0 to P3 respectively; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#the-postmortem)).
+- **Incidents:** declare from an alert group ("Declare Incident") or Slack `/incident declare`; source severity P1 to P4, mapped here to P0 to P3 respectively; add responders; status Investigating > Identified > Monitoring > Resolved; the timeline is tracked automatically and the postmortem is drafted from it (how to write it: [DIAGNOSE.md](../observability/DIAGNOSE.md#the-postmortem)).
 - **RBAC roles:** `oncall-admin`, `oncall-editor`, `oncall-viewer`, `oncall-notifications-receiver`. Assign integrations and schedules to teams.
 - **Rate limits:** 300 alerts per integration per 5 min; 500 alerts per org per 5 min; 300 API requests per key per 5 min.
 - **Always `send_resolved: true` and `max_alerts: 100`** on Alertmanager webhooks.

@@ -99,7 +99,7 @@ The official pages, to re-read when a rule matters: Gmail https://support.google
 
 - **Scope:** all domains and consumer email brands hosted by Yahoo Mail, including AOL; not Yahoo Japan.
 - **Dates:** enforcement began February 2024, rolled out gradually through the first half of the year; List-Unsubscribe enforcement began June 2024.
-- **Bulk sender:** "a significant volume of mail"; Yahoo specifies no threshold. The sender is viewed at the authenticated domain or From: header domain level, and spoofed mail counts toward the thresholds.
+- **Bulk sender:** "a significant volume of mail"; Yahoo specifies no threshold. The [official Yahoo FAQ](https://senders.yahooinc.com/faqs/), fetched for this correction, explicitly declines to publish a numeric threshold. The former Resend contacts and OneSignal email summaries applied Gmail’s 5,000/day threshold to Yahoo; those source claims are retained here as history and corrected by Yahoo’s primary statement. The sender is viewed at the authenticated domain or From: header domain level, and spoofed mail counts toward the thresholds.
 - **Spam rate** is calculated on mail delivered to the inbox.
 - **Non-compliance** means the spam folder or rejection with a specific error code.
 - **No whitelisting program.** Maximum message size is about 25 MB.

@@ -33,12 +33,10 @@ Everyone merges small changes to the main branch at least daily instead of keepi
 
 ## Experiments (A/B)
 
-- Write the hypothesis and the conversion metric first: conversion rate is conversions divided by visitors who saw the variant (subscribers / visitors), not the other way round.
-- Let an experiment tool or a proper statistical test decide the winner; eyeballing two percentages isn't a result.
-- Decide the metric, the minimum effect worth detecting and the sample size before starting. Don't stop early when the numbers look good.
+Use the canonical [A/B testing method](../../marketing/ab-testing/SKILL.md) for the hypothesis, metrics, sample size, stopping rule and result. Keep the flag's implementation contract here. [existing api-design, FLAGS.md, Experiments (A/B)]
+
 - Log exposure when the user actually sees the variant, not when the flag was evaluated somewhere they never reached.
 - Keep assignment stable for the whole experiment, and don't change the split mid-way without restarting the analysis.
-- Watch guardrail metrics (errors, latency, cancellations) alongside the target metric.
 
 ## Removing a flag
 

@@ -199,32 +199,7 @@ static readonly layer = Layer.unwrap(
 
 ## Testing with layers
 
-- **`it.effect` from `@effect/vitest`** provides test services (`TestClock`, `TestConsole`) and a fresh `Scope` closed after each test; `it.live` uses live services. Don't wrap the test body in `Effect.scoped`: the runner already manages its scope.
-- **Per test:** `Effect.gen(...).pipe(Effect.provide(TodoService.layerTest))` inside `it.effect`. For independent resources per test, `Effect.provide(layer, { local: true })`.
-- **Shared across a block:** `layer(L)("name", (it) => ...)` or `it.layer(L)` builds one layer for the block and tears it down in `afterAll`; state carries over between its tests. Options: `concurrent`, `memoMap`, `timeout`, `excludeTestServices`. Named layers can override suite concurrency with `{ concurrent: false | true }`; anonymous layers inherit it. In concurrent tests use the callback's `ctx.expect`.
-- **Expose a test ref with `Layer.provideMerge`** so tests can read the state the fake writes:
-
-```ts
-export class TodoRepoTestRef extends Context.Service<TodoRepoTestRef, Ref.Ref<Array<Todo>>>()("app/TodoRepoTestRef") {
-  static readonly layer = Layer.effect(TodoRepoTestRef, Ref.make(Array.empty()))
-}
-
-// in TodoRepo:
-static readonly layerTest = Layer.effect(TodoRepo, Effect.gen(function*() {
-  const store = yield* TodoRepoTestRef
-  // ... create / list against the Ref
-  return TodoRepo.of({ create, list })
-})).pipe(Layer.provideMerge(TodoRepoTestRef.layer))
-
-// in TodoService:
-static readonly layerTest = this.layerNoDeps.pipe(
-  Layer.provideMerge(TodoRepo.layerTest)
-)
-```
-
-- **`Layer.mock(Service, partial)`:** Effect, Stream and Channel members left out (or functions returning them) fail with an unimplemented defect when used; non-effectful properties stay required.
-- **Three strategies:** provide `layerWithoutDependencies` plus a test dependency layer (such as `FileSystem.layerNoop({...})`); replace the service with `Effect.provideService(Cache, Cache.of({...}))`; or run the live `layer`.
-- **Test config** through `ConfigProvider.layer(ConfigProvider.fromUnknown({...}))` (RESOURCES-AND-CONFIG.md).
+See [test scopes, shared layers and service fakes](TESTING.md#mocking-services-with-test-layers).
 
 ## Structuring an application
 

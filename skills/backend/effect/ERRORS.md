@@ -33,6 +33,14 @@ export class SomeError extends Schema.TaggedError<SomeError>()("SomeError", {
 - **The tag doubles as the identifier** by default; an explicit identifier as the first argument overrides it. `Schema.Error<E>("E")({ ... })` is the untagged version. All `Class` features work: `extend`, `annotate`, `check`.
 - **Wrap an unknown cause with `cause: Schema.Defect()`.** It encodes JavaScript `Error`s to `{ name, message, cause? }` JSON (`{ includeStack: true }` adds stacks). It carries defects across JSON boundaries; it does not preserve every JavaScript value exactly.
 
+`Schema.Error` is a Class and YieldableError whose `name` is its identifier; tagged error instances have `stack`. The schema-class guide gives `Schema.Error<E>("E")({ id: Schema.Number })` as the untagged constructor example. The schema-class guide also uses this cause-wrapper form:
+
+```ts
+  class DatabaseError extends Schema.TaggedError<DatabaseError>()("DatabaseError", { cause: Schema.Defect() }) {}
+```
+
+`Schema.Defect(options?)` encodes to Json: JSON objects with a string `message` decode to Error values; `{ excludeCause: true }` omits the cause. `ErrorInstance` accepts only Error values. [Existing SCHEMA-CLASSES.md, Errors]
+
 ### Data.TaggedError
 
 `Data.TaggedError("Tag")<{ fields }>` is for domain errors with discriminated-union handling, and the docs' error pages use it throughout. It extends `Cause.YieldableError`; `_tag` is left out of the constructor argument. `Data.Error<{ ... }>` is for yieldable errors that don't need a tag; a `message` field becomes the error's `.message`. Data errors can carry a `cause` that integrates with JavaScript's `Error.cause`.
@@ -53,6 +61,19 @@ class AiError extends Schema.TaggedError<AiError>()("AiError", {
   reason: Schema.Union([RateLimitError, QuotaExceededError, SafetyBlockedError])
 }) {}
 ```
+
+### Mapping decode errors at the edge
+
+```ts
+  export const decodeUser = Schema.decodeUnknownEffect(User)
+  export const parseUserPayload = Effect.fn("parseUserPayload")((input: unknown) =>
+    decodeUser(input).pipe(
+      Effect.mapError((error) => new InvalidUserPayload({ message: error.message }))
+    )
+  )
+```
+
+HTTP status annotations remain in [HTTP.md](HTTP.md#errors).
 
 ## Catching
 

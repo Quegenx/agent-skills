@@ -22,7 +22,7 @@ Audit Kit asks the same at intake [audit-kit, `ak new`]: "Client name" and "Webs
 | Discovery | Robots rules, canonical, sitemap routing, title, description, headings and structured data agree ([../seo/TECHNICAL-AUDIT.md](../seo/TECHNICAL-AUDIT.md)). |
 | Public security | HTTPS, response headers, mixed content, form transport, exposed files ([../../backend/secure-coding/HEADERS.md](../../backend/secure-coding/HEADERS.md)). |
 | Accessibility | Semantics, labels, keyboard, alternatives, contrast, reflow and errors, automated and manual ([../../frontend/web-accessibility/REVIEW.md](../../frontend/web-accessibility/REVIEW.md)). |
-| Design and runtime | Hierarchy, primary action, responsive layout, stability, performance and console health ([../../backend/performance-and-caching/LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md)). |
+| Design and runtime | Hierarchy, primary action, responsive layout, stability, performance and console health ([../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md)). |
 
 Mistakes FreeScan names: chasing 100 before fixing the critical path; treating automated output as final truth ("Public scanners have bounded access", so reproduce findings and add manual testing where the tool cannot see context); bundling unrelated fixes, which hides which change caused which result.
 
@@ -77,10 +77,10 @@ The header checklist itself, sourced from MDN, is [../../backend/secure-coding/H
 
 Audit Kit runs one headless Lighthouse lab run and saves the raw JSON, with no field data and no repeated runs [audit-kit]. Lab numbers let an agent iterate; field data confirms the win ([../../backend/performance-and-caching/MEASURE.md](../../backend/performance-and-caching/MEASURE.md#lab-to-field-one-slow-spot-at-a-time)). Two corrections to its labels:
 
-- Audit Kit lists TBT as a Core Web Vital and always applies the mobile TBT bands; TBT is the lab proxy for INP, with separate desktop bands ([LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#reading-a-lighthouse-result)).
+- Audit Kit lists TBT as a Core Web Vital and always applies the mobile TBT bands; TBT is the lab proxy for INP, with separate desktop bands ([LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md#reading-a-lighthouse-result)).
 - Its score colours (85 and 65) are not Lighthouse's ([SCORING.md](SCORING.md#lighthouse-bands)), and 8 of the 14 audit ids it reads no longer exist in Lighthouse 13 ([TOOLS.md](TOOLS.md#audit-kit)).
 
-How to run Lighthouse, read it and gate on it: [../../backend/performance-and-caching/LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md).
+How to run Lighthouse, read it and gate on it: [../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md).
 
 ## Prove it
 

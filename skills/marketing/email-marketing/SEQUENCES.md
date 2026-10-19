@@ -1,8 +1,8 @@
 # Sequences
 
-A sequence is a set of automated emails that starts on a trigger (a signup, a download, a trial, inactivity) and stops on a goal or an exit condition. This file designs the flow and writes the emails; it follows the coreyhaines31/marketingskills `emails` skill (MIT), copied with its tag, and the official pages each correction names. Every email after a transactional welcome is marketing: it needs recorded consent and an unsubscribe ([COMPLIANCE.md](COMPLIANCE.md), [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#marketing-emails)). The single lifecycle emails (billing, usage, win-back, campaigns) are in [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md); cold outreach sequences are in [../../marketing/cold-outreach/SEQUENCES.md](../../marketing/cold-outreach/SEQUENCES.md); in-app onboarding is in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md).
+A sequence is a set of automated emails that starts on a trigger (a signup, a download, a trial, inactivity) and stops on a goal or an exit condition. This file designs the flow and writes the emails; it follows the coreyhaines31/marketingskills `emails` skill (MIT), copied with its tag, and the official pages each correction names. Every email after a transactional welcome is marketing: it needs recorded consent and an unsubscribe ([COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md), [LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#marketing-emails)). The single lifecycle emails (billing, usage, win-back, campaigns) are in [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md); cold outreach sequences are in [../cold-outreach/SEQUENCES.md](../cold-outreach/SEQUENCES.md); in-app onboarding is in [../../mobile/app-growth/RETENTION-AND-MONETIZATION.md](../../mobile/app-growth/RETENTION-AND-MONETIZATION.md).
 
-**Contents:** [Before you write](#before-you-write) · [Principles](#principles) · [Length and timing](#length-and-timing) · [Triggers and exit conditions](#triggers-and-exit-conditions) · [Welcome](#welcome) · [Lead nurture](#lead-nurture) · [Onboarding](#onboarding) · [Re-engagement](#re-engagement) · [Writing each email](#writing-each-email) · [Subject and preview](#subject-and-preview) · [Personalization and segments](#personalization-and-segments) · [Testing and metrics](#testing-and-metrics) · [The output](#the-output) · [Prove it](#prove-it)
+**Contents:** [Before you write](#before-you-write) · [Principles](#principles) · [Length and timing](#length-and-timing) · [Triggers and exit conditions](#triggers-and-exit-conditions) · [Welcome](#welcome) · [Lead nurture](#lead-nurture) · [Onboarding](#onboarding) · [Re-engagement](#re-engagement) · [Writing each email](#writing-each-email) · [Campaign copy conventions](#campaign-copy-conventions) · [Subject and preview](#subject-and-preview) · [Personalization and segments](#personalization-and-segments) · [Testing and metrics](#testing-and-metrics) · [The output](#the-output) · [Prove it](#prove-it)
 
 ## Before you write
 
@@ -40,8 +40,8 @@ A sequence is a set of automated emails that starts on a trigger (a signup, a do
 Length depends on the sales cycle, product complexity and relationship stage.
 
 - **Delays:** the welcome email immediately; early sequence 1-2 days apart; nurture 2-4 days apart; long-term weekly or bi-weekly.
-- **Days and time zones:** "B2B: Avoid weekends"; "B2C: Test weekends"; send at the recipient's local time. The repo's general rule ("weekday mornings 9 to 11 AM local time, Tuesday to Thursday often best; test your own audience") is in [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#marketing-emails).
-- **Frequency is a promise:** Yahoo asks you to honor the frequency the list promised ([LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#marketing-emails)), so a daily course needs a signup that said daily.
+- **Days and time zones:** "B2B: Avoid weekends"; "B2C: Test weekends"; send at the recipient's local time. The repo's general rule ("weekday mornings 9 to 11 AM local time, Tuesday to Thursday often best; test your own audience") is in [Campaign copy conventions](#campaign-copy-conventions).
+- **Frequency is a promise:** Yahoo asks you to honor the frequency the list promised ([Campaign copy conventions](#campaign-copy-conventions)), so a daily course needs a signup that said daily.
 
 ## Triggers and exit conditions
 
@@ -51,7 +51,7 @@ Length depends on the sales cycle, product complexity and relationship stage.
 
 ## Welcome
 
-[coreyhaines31/marketingskills, emails] 5-7 emails over 12-14 days. Goal: activate, build trust, convert. The first email may be the transactional welcome, which must not be promotional ([EMAIL-TYPES.md](EMAIL-TYPES.md#keep-the-two-apart)); everything after it is marketing.
+[coreyhaines31/marketingskills, emails] 5-7 emails over 12-14 days. Goal: activate, build trust, convert. The first email may be the transactional welcome, which must not be promotional ([EMAIL-TYPES.md](../../backend/email-practices/EMAIL-TYPES.md#keep-the-two-apart)); everything after it is marketing.
 
 | # | Send | Subject | Job |
 |---|---|---|---|
@@ -63,7 +63,7 @@ Length depends on the sales cycle, product complexity and relationship stage.
 | 6 | Day 9-11 | Have you tried [Feature] yet? | Highlight an underused capability; direct CTA to try it |
 | 7 | Day 12-14 | Ready to [upgrade/buy/commit]? | Summarize value; clear offer; urgency if appropriate; risk reversal (guarantee, trial) |
 
-"Urgency if appropriate" means a real deadline only; fake countdowns and false limited-time claims are FTC dark patterns ([../../marketing/offer-design/FTC-PRICING-CLAIMS.md](../../marketing/offer-design/FTC-PRICING-CLAIMS.md)).
+"Urgency if appropriate" means a real deadline only; fake countdowns and false limited-time claims are FTC dark patterns ([../offer-design/FTC-PRICING-CLAIMS.md](../offer-design/FTC-PRICING-CLAIMS.md)).
 
 ## Lead nurture
 
@@ -80,7 +80,7 @@ Length depends on the sales cycle, product complexity and relationship stage.
 | 7 | Day 15-18 | Objection handler: FAQ or myth-busting |
 | 8 | Day 19-21 | Direct offer: clear pitch, specific CTA, urgency if available |
 
-The lead magnet's email joins a marketing sequence only with marketing consent ([COMPLIANCE.md](COMPLIANCE.md#the-laws), GDPR Art. 7(4)); without it, email 1 is the delivery and the sequence stops there.
+The lead magnet's email joins a marketing sequence only with marketing consent ([COMPLIANCE.md](../../backend/email-practices/COMPLIANCE.md#the-laws), GDPR Art. 7(4)); without it, email 1 is the delivery and the sequence stops there.
 
 [more skills, copywriting-playbook.md] Another optional narrative arc is problem, agitation, solution, proof and offer across the sequence. These are ordered beats, not a prescribed five-email count or one beat per send. Keep this file's consent, entry and exit rules and choose timing for the actual sequence; the guide supplies no additional schedule.
 
@@ -111,8 +111,8 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
 | 3 | Day 5-7 after | We miss you. Here's something special | An offer if appropriate |
 | 4 | Day 10-14 after | Should we stop emailing you? | Honest and direct; "One-click to stay or go"; "Clean the list if no response" |
 
-- **The trigger differs between sources:** this one says 30-60 days, its eval 90; the repo's hygiene rule says no opens or clicks in 45 to 90 days, with one "We miss you" email before removal ([LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#hygiene-and-re-engagement)). Pick one and write it down.
-- **Subject lines stay honest here too.** The source's eval expected "aggressive subject lines to break through"; CAN-SPAM says "The subject line must accurately reflect the content of the message" (https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business), and Gmail bans `Re:` or `Fwd:` bait ([DELIVERABILITY.md](DELIVERABILITY.md#message-format-and-display-names)).
+- **The trigger differs between sources:** this one says 30-60 days, its eval 90; the repo's hygiene rule says no opens or clicks in 45 to 90 days, with one "We miss you" email before removal ([LISTS-AND-CAPTURE.md](../../backend/email-practices/LISTS-AND-CAPTURE.md#hygiene-and-re-engagement)). Pick one and write it down.
+- **Subject lines stay honest here too.** The source's eval expected "aggressive subject lines to break through"; CAN-SPAM says "The subject line must accurately reflect the content of the message" (https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business), and Gmail bans `Re:` or `Fwd:` bait ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#message-format-and-display-names)).
 - **Sunset non-responders** after the last email; inactive subscribers hurt deliverability.
 
 ## Writing each email
@@ -121,7 +121,7 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
 
 - **Structure:** Hook (the first line), Context (why this matters to them), Value (the useful content), CTA (what to do next), Sign-off ("Human, warm close").
 - **Length:** 50-125 words transactional; 150-300 educational; 300-500 story-driven. "If it's long, it better be good."
-- **CTA:** buttons for primary actions, links for secondary ones, one clear primary CTA per email, button text "Action + outcome". The repo's marketing structure line allows "multiple calls to action" ([LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#marketing-emails)); this source says one primary.
+- **CTA:** buttons for primary actions, links for secondary ones, one clear primary CTA per email, button text "Action + outcome". The repo's marketing structure line allows "multiple calls to action" ([Campaign copy conventions](#campaign-copy-conventions)); this source says one primary.
 - **Tone:** conversational, I/we and you, active voice. "Read it out loud. Does it sound like a person?"
 - **Formatting:** paragraphs of 1-3 sentences, white space, bullets, bold sparingly, mobile-first.
 - **Email tells to cut:**
@@ -130,29 +130,41 @@ The mobile trial nurture (day 0, 1, 3, 5, 6, 7) and the push schedule are in [..
   - "**Sign-off filler**: 'Feel free to reach out if you have any questions.' Ask for one specific action, or end."
   - The general tells (contrast reveals, negation lists, pile-ons, colon reveals, em dashes in subject and preview) are in [../../anti-ai-slop/anti-slop-writing/TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md).
 
+## Campaign copy conventions
+
+[resend/email-best-practices] These conventions retain the source’s multiple-CTA structure alongside the one-primary-CTA sequence rule above, and its mobile subject limit alongside the range below. Test for the actual audience.
+
+- **Subject lines:** clear, specific, 50 characters or less for mobile (the emails source says "40-60 characters ideal", [SEQUENCES.md](SEQUENCES.md#subject-and-preview)); curiosity without misleading; A/B test. Right: "Your weekly digest: 5 productivity tips". Wrong: "You won't believe what happened!"
+- **Structure:** above the fold, a value proposition, a primary call to action and an engaging visual; a scannable body (short paragraphs, bullets) with a clear hierarchy and multiple calls to action; a footer with unsubscribe, company info, physical address (CAN-SPAM) and social links.
+- **Mobile-first:** single column, buttons at least 44x44px, text at least 16px; test on iOS, Android and in dark mode.
+- **Segment** by behavior (purchases, activity), demographics, preferences, engagement level and signup source, for higher open and click rates, lower unsubscribes and a better experience.
+- **Personalize** with name in the subject or greeting, location-specific content, behavior-based recommendations and purchase history, using only data you have permission to use; don't over-personalize (it can feel intrusive).
+- **Frequency:** start conservative, increase with engagement, let users set preferences, monitor unsubscribe rates. Yahoo: honor the frequency the list promised.
+- **Timing:** weekday mornings 9 to 11 AM local time, Tuesday to Thursday often best; test your own audience.
+
 ## Subject and preview
 
 [coreyhaines31/marketingskills, emails]
 
-- **Subject:** "Clear > Clever", "Specific > Vague", benefit or curiosity, "40-60 characters ideal". The repo's line says "50 characters or less for mobile" ([LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#marketing-emails)); both are source conventions, so test.
+- **Subject:** "Clear > Clever", "Specific > Vague", benefit or curiosity, "40-60 characters ideal". The repo's line says "50 characters or less for mobile" ([Campaign copy conventions](#campaign-copy-conventions)); both are source conventions, so test.
 - **Patterns:** question ("Still struggling with X?"), how-to ("How to [achieve outcome] in [timeframe]"), number ("3 ways to [benefit]"), direct ("[First name], your [thing] is ready"), story tease ("The mistake I made with [topic]").
-- **Emoji:** the source says "Test emoji (they're polarizing)"; Gmail bans emoji that imitate verification, and display names carry none ([DELIVERABILITY.md](DELIVERABILITY.md#message-format-and-display-names)).
-- **Preview text** extends the subject, "~90-140 characters", and doesn't repeat it. Transactional pre-headers stay under 90 characters ([EMAIL-TYPES.md](EMAIL-TYPES.md#designing-transactional-emails)).
+- **Emoji:** the source says "Test emoji (they're polarizing)"; Gmail bans emoji that imitate verification, and display names carry none ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#message-format-and-display-names)).
+- **Preview text** extends the subject, "~90-140 characters", and doesn't repeat it. Transactional pre-headers stay under 90 characters ([EMAIL-TYPES.md](../../backend/email-practices/EMAIL-TYPES.md#designing-transactional-emails)).
 
 ## Personalization and segments
 
 [coreyhaines31/marketingskills, emails]
 
-- **Merge fields:** first name with a fallback ("there" or "friend"), company name (B2B), relevant data (usage, plan). Use only data you have permission to use ([LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#marketing-emails)).
+- **Merge fields:** first name with a fallback ("there" or "friend"), company name (B2B), relevant data (usage, plan). Use only data you have permission to use ([Campaign copy conventions](#campaign-copy-conventions)).
 - **Dynamic content** by segment, behavior or stage.
 - **Segments:** by stage (trial vs paid, new vs long-term, engaged vs at-risk) and by profile (industry or role, use case, company size). The source also segments "Openers vs. non-openers"; opens are unreliable (below), so segment on clicks and activity instead.
 
 ## Testing and metrics
 
-- **What to test** [coreyhaines31/marketingskills, emails]: subject lines "(highest impact)", send times, length, CTA placement and copy, personalization level, sequence timing; one variable at a time, a sufficient sample, statistical significance, and documented learnings. Sample size and significance are in [../../marketing/ab-testing/SKILL.md](../../marketing/ab-testing/SKILL.md).
-- **Opens are not a reliable metric.** Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), and Google says low open rates "aren't necessarily an accurate indicator of deliverability" ([DELIVERABILITY.md](DELIVERABILITY.md#gmail)). The source's "Open rate (benchmark: 20-40%)" is left out as a target.
+- **What to test** [coreyhaines31/marketingskills, emails]: subject lines "(highest impact)", send times, length, CTA placement and copy, personalization level, sequence timing; one variable at a time, a sufficient sample, statistical significance, and documented learnings. Sample size and significance are in [../ab-testing/SKILL.md](../ab-testing/SKILL.md).
+- **Opens are not a reliable metric.** Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), and Google says low open rates "aren't necessarily an accurate indicator of deliverability" ([DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#gmail)). The source's "Open rate (benchmark: 20-40%)" is left out as a target.
 - **Track instead** [coreyhaines31/marketingskills, emails]: click rate (the source's benchmark: 2-5%), unsubscribe rate (the source: "keep under 0.5%"), conversion rate against the sequence goal, revenue per email if applicable. The benchmarks are the source's, not measured.
-- **Complaints and bounces** stop a sequence: the stop-loss rules are in [DELIVERABILITY.md](DELIVERABILITY.md#stop-loss-rules).
+- **Complaints and bounces** stop a sequence: the stop-loss rules are in [DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md#stop-loss-rules).
 
 ## The output
 

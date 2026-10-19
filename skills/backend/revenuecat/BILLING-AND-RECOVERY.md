@@ -1,8 +1,8 @@
 # Billing and recovery
 
-What happens to a subscription after the first purchase: failed renewals, cancellations, pauses, refunds, plan changes, win-back, Google Play's alternative billing programs, and selling on the web with RevenueCat's web billing. The mechanism that decides most outcomes: the store owns the money and the state, RevenueCat turns every state change into `CustomerInfo` fields and webhook events, and access is read from the entitlement's `isActive` (or v2 `gives_access`), never computed from dates. The webhook side of each flow is in [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md); SDK syntax is in [FLUTTER.md](FLUTTER.md) and [REACT-NATIVE.md](REACT-NATIVE.md); entitlements and offerings are in [CONCEPTS.md](CONCEPTS.md); Stripe itself is [../stripe/SKILL.md](../stripe/SKILL.md).
+What happens to a subscription after the first purchase: failed renewals, cancellations, pauses, refunds, plan changes, win-back, Google Play's alternative billing programs, with web purchase setup in [WEB-BILLING.md](WEB-BILLING.md). The mechanism that decides most outcomes: the store owns the money and the state, RevenueCat turns every state change into `CustomerInfo` fields and webhook events, and access is read from the entitlement's `isActive` (or v2 `gives_access`), never computed from dates. The webhook side of each flow is in [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md); SDK syntax is in [FLUTTER.md](FLUTTER.md) and [REACT-NATIVE.md](REACT-NATIVE.md); entitlements and offerings are in [CONCEPTS.md](CONCEPTS.md); Stripe itself is [../stripe/SKILL.md](../stripe/SKILL.md).
 
-**Contents:** [Read state, don't compute it](#read-state-dont-compute-it) · [Billing issues and grace periods](#billing-issues-and-grace-periods) · [Cancellations](#cancellations) · [Pauses](#pauses) · [Win-back and retention](#win-back-and-retention) · [Refunds](#refunds) · [Refund Control](#refund-control) · [Upgrades, downgrades and crossgrades](#upgrades-downgrades-and-crossgrades) · [Google Play alternative billing](#google-play-alternative-billing) · [RevenueCat Web: pick a billing engine](#revenuecat-web-pick-a-billing-engine) · [RevenueCat Billing](#revenuecat-billing) · [Web SDK](#web-sdk) · [Stripe Billing integration](#stripe-billing-integration) · [Redemption Links](#redemption-links) · [Testing web purchases](#testing-web-purchases) · [Prove it](#prove-it)
+**Contents:** [Read state, don't compute it](#read-state-dont-compute-it) · [Billing issues and grace periods](#billing-issues-and-grace-periods) · [Cancellations](#cancellations) · [Pauses](#pauses) · [Win-back and retention](#win-back-and-retention) · [Refunds](#refunds) · [Refund Control](#refund-control) · [Upgrades, downgrades and crossgrades](#upgrades-downgrades-and-crossgrades) · [Price changes](#price-changes) · [Google Play alternative billing](#google-play-alternative-billing) · [RevenueCat Web: pick a billing engine](#revenuecat-web-pick-a-billing-engine) · [RevenueCat Billing](#revenuecat-billing) · [Web SDK](#web-sdk) · [Stripe Billing integration](#stripe-billing-integration) · [Redemption Links](#redemption-links) · [Testing web purchases](#testing-web-purchases) · [Prove it](#prove-it)
 
 ## Read state, don't compute it
 
@@ -100,9 +100,11 @@ curl -H "Authorization: Bearer $RC_SECRET_API_KEY" \
 
 ## Upgrades, downgrades and crossgrades
 
-- **Developers cannot change a plan on the customer's behalf.**
-- **App Store:** no code changes. Upgrades are immediate with a prorated refund; downgrades take effect at the next renewal; crossgrades are immediate if the duration matches, else at the next renewal. Upgrades during intro periods keep both products active.
-- **Google Play:** RevenueCat Paywalls use the editor setting **Play Store only: Replacement mode**. Custom flows pass the old product ID and an optional replacement mode:
+- **You cannot upgrade or downgrade on behalf of customers.**
+- **App Store: no code changes.** Upgrades are immediate with a prorated refund, downgrades apply at next renewal, crossgrades are immediate if the duration is the same, else at next renewal. Upgrades during intro periods keep both products active.
+- **Google Play: pass the old product and a replacement mode.** RevenueCat Paywalls use the editor setting **Play Store only: Replacement mode**. Custom flows pass the old product ID and an optional mode. Preconditions: exactly one active Play subscription to replace (none: do a fresh purchase), fresh or recently cached CustomerInfo, the target Package resolved from the current offering, Billing Library 7+ (via the SDK).
+
+Flutter:
 
 ```dart
 final productChangeInfo = StoreProductChangeInfo(
@@ -117,6 +119,8 @@ final purchaseResult = await Purchases.purchase(
 );
 ```
 
+React Native:
+
 ```jsx
 const productChangeInfo = {
   oldProductIdentifier: "oldProductId",
@@ -128,17 +132,49 @@ const { customerInfo } = await Purchases.purchaseStoreProduct(
 );
 ```
 
-| Replacement mode | Notes |
-|---|---|
-| `WITHOUT_PRORATION` | Default |
-| `WITH_TIME_PRORATION` | |
-| `CHARGE_FULL_PRICE` | |
-| `CHARGE_PRORATED_PRICE` | Upgrades only |
-| `DEFERRED` | Requires Google server notifications |
+| Scenario | Mode | Billing effect |
+|---|---|---|
+| Standard upgrade (monthly to annual) | `WITH_TIME_PRORATION` | Immediate switch, remaining time credited |
+| Upgrade, keep the existing billing date | `CHARGE_PRORATED_PRICE` | Immediate switch, prorated charge now |
+| Switch to or from a prepaid plan | `CHARGE_FULL_PRICE` | Immediate switch, full charge now |
+| Upgrade during an active free trial | `CHARGE_PRORATED_PRICE` | Immediate switch, prorated charge now |
+| Downgrade (annual to monthly) | `DEFERRED` | Switch applies at next renewal |
 
-- **Amazon** doesn't support product changes.
-- **RevenueCat Billing:** upgrade and downgrade paths live in the web Customer Portal; upgrades are immediate with a partial refund, downgrades at cycle end, not prorated.
-- **`PRODUCT_CHANGE` is informative,** and its `expiration_at_ms` is for the old product. Event flows are in [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md#event-flows).
+- **The RevenueCat default is `WITHOUT_PRORATION`; set the intended mode explicitly.** For trial upgrades, use `WITHOUT_PRORATION` to preserve the trial, or `CHARGE_PRORATED_PRICE` to end it. The source wrongly banned preserving trial access. [RevenueCat/ai-toolkit, rc-plan-changes; https://www.revenuecat.com/docs/subscription-guidance/managing-subscriptions; https://developer.android.com/google/play/billing/subscriptions#replacement-recommendations]
+- **`CHARGE_PRORATED_PRICE` requires an increased price per unit of time; `DEFERRED` can upgrade or downgrade at renewal.** Check restrictions for the actual plan transition: same-subscription switches to an auto-renewing plan support `CHARGE_FULL_PRICE` or `WITHOUT_PRORATION`, not every mode. The source wrongly said Google rejects every deferred upgrade. [https://developer.android.com/google/play/billing/subscriptions#replacement-modes]
+- **Derive the old product ID from `activeSubscriptions`,** stripping the `:basePlanId` suffix: "Hardcoded SKUs break when a user has migrated between plans." If you pass `"productId:basePlanId"` the SDK strips it, but slicing it yourself is clearer.
+- **After the change** `activeSubscriptions` holds the new `productId:basePlanId` and the entitlement stays active across the switch: "do not gate UI on the SKU string". For `DEFERRED`, `activeSubscriptions` reports the old product until next renewal; RevenueCat tracks the pending switch and flips it after Google's renewal RTDN.
+- **Delete `linkedPurchaseToken` traversal code.** RevenueCat resolves the chain, marks the old token replaced, and attributes both tokens to the same App User ID.
+- **`DEFERRED` requires Google server notifications** ([STORE-SETUP.md](STORE-SETUP.md#google-real-time-developer-notifications-rtdn)). [https://www.revenuecat.com/docs/subscription-guidance/managing-subscriptions]
+- **Webhooks:** `PRODUCT_CHANGE` is informative; its `expiration_at_ms` is for the old product.
+- **Amazon doesn't support product changes.** RevenueCat Billing: upgrade and downgrade paths live in the web Customer Portal; upgrades are immediate with a partial refund, downgrades apply at cycle end, not prorated.
+
+## Price changes
+
+These rules come from the Google Play chapter.
+
+- **Two kinds for active subscribers.** Opt-out (typically decreases, and increases within Google's opt-out threshold) applies automatically at next renewal. Opt-in (larger increases) shows Google's own consent dialog; consent continues at the new price, decline cancels at period end.
+- **"For most price change scenarios, there is nothing to implement in your app or backend."** RevenueCat processes `SUBSCRIPTION_PRICE_CHANGE_UPDATED` and related RTDNs and updates CustomerInfo when cohort or consent state changes.
+
+| Question | Opt out | Opt in |
+|---|---|---|
+| Typical trigger | Decrease, or small increase within Google's threshold | Larger increase above Google's threshold |
+| User consent | Not required | Required, prompted by Google Play UI |
+| If user declines | N/A | Subscription cancels at period end, `CANCELLATION` webhook fires |
+| New price applies | Automatically at next renewal | After user consents in Play's dialog |
+| RTDN RevenueCat consumes | `SUBSCRIPTION_PRICE_CHANGE_UPDATED` | `SUBSCRIPTION_PRICE_CHANGE_UPDATED`, then `SUBSCRIPTION_CANCELED` if declined |
+| App code change | None required | None required |
+| Paywall price source | `pkg.product.price.formatted` [Kotlin] (new purchases only) | `pkg.product.price.formatted` [Kotlin] (new purchases only) |
+
+1. **Edit the price in Play Console** (subscription > base plan > edit price); Google asks how existing subscribers are treated, based on magnitude and region.
+2. **Nothing to toggle in RevenueCat.** Confirm the new price appears on the product in the dashboard after propagation.
+3. **Optionally refresh offerings** so new purchasers see the new price.
+4. **Read entitlements as usual after consent resolves.** "Do not build a consent dialog. Google Play shows it."
+5. **Treat a decline like any other cancellation** (`CANCELLATION` webhook).
+6. **Optional pre-warning:** an in-app banner driven by a webhook event, or a specific Offering for the affected cohort via Targeting; "an enhancement, not part of the price change contract".
+
+- **Legacy cohorts keep the old price** until Google migrates them; this is not visible in the SDK. The product's formatted price is always correct for new purchases.
+- **Apple Server Notifications V2 auto-detect price changes** (see [STORE-SETUP.md](STORE-SETUP.md)).
 
 ## Google Play alternative billing
 
@@ -150,109 +186,32 @@ const { customerInfo } = await Purchases.purchaseStoreProduct(
 | RevenueCat Web Billing via `Offering.webCheckoutURL` / `Package.webCheckoutURL` | Supported. Not a Google alternative billing program. |
 | User Choice Billing, Alternative Billing Only, External Offers, External Payment Links | No dedicated SDK APIs. Implement with the Play Billing Library alongside RevenueCat. |
 
-- **Don't conflate RevenueCat's web checkout with Google's alternative billing.** After a web purchase, users redeem it in the app through deep link handling ([Redemption Links](#redemption-links)).
+- **Don't conflate RevenueCat's web checkout with Google's alternative billing.** After a web purchase, users redeem it in the app through deep link handling ([Redemption Links](WEB-BILLING.md#redemption-links)).
 - **Path A:** wait for SDK support (avoids raw Play Billing Library code next to RevenueCat). **Path B:** hand-roll it. The SDK owns the `BillingClient` instance, so raw `BillingClient` calls alongside it need care; set `purchasesAreCompletedBy(PurchasesAreCompletedBy.MY_APP)` so acknowledgement stays with your app for purchases you manage, while standard Play purchases stay with the SDK.
 
 ## RevenueCat Web: pick a billing engine
 
-- **Engines:** RevenueCat Billing (Stripe as the payment gateway), Stripe Billing, or Paddle Billing (Paddle as merchant of record). **Integration paths:** Web Purchase Links, the Web SDK, Web Paywalls, Funnels, app-to-web purchases, Redemption Links.
-- **Choose your path:** no other billing tool, RevenueCat Billing; keep an existing Stripe checkout and only sync, Stripe Billing plus Track External Purchases; Stripe as merchant of record, Stripe Managed Payments.
-- **iOS links to the web:** an April 2025 U.S. District Court ruling lets iOS developers guide users to web payment flows without extra Apple fees. Only show links to web checkout in storefronts where you're eligible for alternative payments.
-
-| | RevenueCat Billing | Stripe Billing | Paddle Billing |
-|---|---|---|---|
-| Merchant of record | You (Stripe gateway) | You by default, or Stripe with Managed Payments | Paddle |
-| Products created in | RevenueCat | Imported from Stripe | Imported from Paddle |
-| Taxes | Optional Stripe Tax or Avalara AvaTax | | |
-| Customer management | RevenueCat Customer Portal | Stripe Customer Portal or a custom URL | Paddle URLs |
-| Emails | RevenueCat | Stripe (except redemption emails) | Paddle |
-| Testing | Stripe Test Mode or Sandboxes (Sandboxes recommended) | Stripe Test Mode or Sandboxes | Separate Paddle sandbox |
-| Limits | No translated content in web purchase links; India not supported; no B2B | | One product per purchase |
+See [WEB-BILLING.md](WEB-BILLING.md#revenuecat-web-pick-a-billing-engine).
 
 ## RevenueCat Billing
 
-- **Formerly "Web Billing",** recommended for a deeper integration. RevenueCat doesn't store card data. The web config attaches an existing Stripe account or a **claimable sandbox**, which cannot take real payments until claimed (claim it before the deadline).
-- **Connect Stripe:** only the RevenueCat project owner can connect. Install the RevenueCat Stripe App from the Stripe App Marketplace through account settings, **Connect Stripe account**, then **View Stripe app settings** and sign in with RevenueCat. Uninstalling the app revokes all permissions. Several Stripe accounts are possible.
-- **Test mode or Sandboxes:** with test mode, one RevenueCat Billing config and Stripe test cards. With Sandboxes, install the app in each sandbox and create two RevenueCat Billing configs (production and sandbox). RevenueCat anticipates test mode will eventually be deprecated.
-- **Webhook-only event:** `INVOICE_ISSUANCE` fires for RevenueCat Billing only; `metadata` on events is RevenueCat Billing only.
+See [WEB-BILLING.md](WEB-BILLING.md#revenuecat-billing).
 
 ## Web SDK
 
-- **Install:** `npm install --save @revenuecat/purchases-js`. With unpkg, use `Purchases.Purchases.configure()`.
-- **Configure once:** `Purchases.configure({ apiKey: WEB_BILLING_PUBLIC_API_KEY, appUserId: appUserId })`. `Purchases.getSharedInstance()` throws if not configured.
-- **Identity:** identify customers through shared auth such as Firebase, Supabase or auth.js, so purchases follow them across web and mobile. For anonymous buyers use `Purchases.generateRevenueCatAnonymousAppUserId()` together with Redemption Links.
-- **Offerings:** `getOfferings({ currency: "EUR" })`; otherwise the geolocated currency or the app default.
-- **Purchase:** `purchase({ rcPackage: pkg })` returns a `PurchaseResult` with `customerInfo` and `redemptionInfo`. `PurchaseParams` options: `customerEmail`, `defaultLocale`, `selectedLocale`, `htmlTarget`, `metadata`.
-- **Paywall:** `presentPaywall({ htmlTarget, offering })`.
-- **Attributes:** `Purchases.getSharedInstance().setAttributes({...})`.
-- **Apple Pay and Google Pay** are registered automatically on `pay.rev.cat` and `signup.cat`; register your own domain for the Web SDK.
+See [WEB-BILLING.md](WEB-BILLING.md#web-sdk).
 
 ## Stripe Billing integration
 
-- **Setup:** connect the Stripe account; **Web**, create a Stripe config (toggles: **Use Managed Payments when Available**; External Purchase Tracking, registering on invoice creation or after paid; Redemption Links; Appearance; Subscription management, where the **Stripe Customer Portal URL** is returned as `managementUrl`); create products in Stripe (one price per product recommended); **Product Catalog**, **Products**, the Stripe config, **Import**; create Offering packages; Web Purchase Links live under **Funnels > Purchase Links**.
-- **Tax behaviour:** configs created on or after May 1, 2026 default to **Tax-excluded**; earlier configs use the legacy estimate.
-- **Stripe server notifications are required for Stripe.**
-- **Pricing models in RevenueCat flows:** recurring flat rate and one-off flat rate. Package pricing only as external purchases. Tiered, usage-based and customer-chooses pricing are not supported. A price's type can't change after import. Repeat consumables are allowed (enforce limits in Stripe).
-- **Unsupported payment methods:** async bank debits (`us_bank_account`, `sepa_debit`, ...), bank transfers, cash vouchers, PayPal, UPI, and redirect-based methods (Cash App Pay, iDEAL, Bancontact, Revolut Pay, Klarna).
-- **Other limits:** prorations are not in MRR (pass `prorate=false`); cancellations can take up to two hours to show; one billing issue event per failure; self-service runs through the Stripe Customer Portal; Test Clocks are not fully supported; `UNCANCELLATION` is not sent for Stripe.
-- **Renewal gap:** the entitlement extends when the new period starts, but `RENEWAL` arrives only after the invoice is paid. Keep access until `EXPIRATION`, or call `GET /subscribers` before removing it. A missing `RENEWAL` does not mean the subscription expired.
+See [WEB-BILLING.md](WEB-BILLING.md#stripe-billing-integration).
 
 ## Redemption Links
 
-- **What they are:** one-time-use deep links, valid for 60 minutes after a web purchase, so checkout needs no App User ID. A link is valid for one redemption; redeeming on another device sends a new link to the billing email.
-- **Where the link appears:** Web Purchase Links show it on the success page and in the email; a custom redirect gets a `redeem_url` query param (for example `https://your-app.com/success?redeem_url=rc-abc123://redeem_web_purchase?redemption_token=xyz789`). The Web SDK returns `PurchaseResult.redemptionInfo` instead.
-- **Failure cases:** the app isn't installed, a desktop browser, or the link is older than 60 minutes (show a QR code). An expired link triggers a new emailed link (unless recovery emails are disabled).
-- **Minimum SDKs:** purchases-flutter 8.4.0, react-native-purchases 8.5.0, iOS 5.14.1, Android 8.10.6.
-- **Setup:** copy the custom URL scheme from the web config; register it (iOS URL Types; an Android intent-filter with `android:scheme=<YOUR_CUSTOM_SCHEME>`); handle the deep link (in Flutter with `app_links` or similar). In the dashboard add an App icon, App name and a store link, and set **Enable only for Sandbox** first.
-- **Association:** anonymous and identified combinations are aliased, except identified plus identified, which follows restore behaviour (default transfer). The resulting `PURCHASE_REDEEMED` webhook is described in [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md#event-types).
-- **Flutter:**
-
-```dart
-String redemptionUrl = 'YOUR_REDEMPTION_URL';
-final webPurchaseRedemption = await Purchases.parseAsWebPurchaseRedemption(redemptionUrl);
-if (webPurchaseRedemption != null) {
-  final result = await Purchases.redeemWebPurchase(webPurchaseRedemption);
-  switch (result) {
-    case WebPurchaseRedemptionSuccess(:final customerInfo):
-      // Redemption was successful and entitlements were granted to the user.
-      break;
-    case WebPurchaseRedemptionError(:final error):
-      // Redemption failed due to an error.
-      break;
-    case WebPurchaseRedemptionPurchaseBelongsToOtherUser():
-      // The purchase associated to the link belongs to a different user and it cannot be redeemed.
-      break;
-    case WebPurchaseRedemptionInvalidToken():
-      // The redemption link is invalid.
-      break;
-    case WebPurchaseRedemptionExpired(:final obfuscatedEmail):
-      // The redemption link has expired. A new one has been sent to the user to the provided obfuscated email.
-      break;
-  };
-}
-```
-
-- **React Native:** `const webPurchaseRedemption = await Purchases.parseAsWebPurchaseRedemption(redemptionUrl);`, then `const result = await Purchases.redeemWebPurchase(webPurchaseRedemption);` and `switch (result.result)` over `WebPurchaseRedemptionResultType.SUCCESS` (`result.customerInfo`), `ERROR` (`result.error`), `PURCHASE_BELONGS_TO_OTHER_USER`, `INVALID_TOKEN` and `EXPIRED` (`result.obfuscatedEmail`). (The docs' React Native snippet starts with a Dart-style `String redemptionUrl = ...` line, which is not valid TypeScript.)
+See [WEB-BILLING.md](WEB-BILLING.md#redemption-links).
 
 ## Testing web purchases
 
-- **There is no App Review on the web,** so test thoroughly in sandbox. Don't share sandbox URLs with users.
-- **RevenueCat Billing sandbox** renews at most six times, on a compressed clock:
-
-| Period | Sandbox length |
-|---|---|
-| P1D to P1M | 5 minutes |
-| P2M | 10 minutes |
-| P3M | 15 minutes |
-| P6M | 30 minutes |
-| P1Y | 60 minutes |
-| Trial, intro | 5 minutes |
-| Discount window | 11 minutes |
-| Grace period | 3 minutes |
-| Billing retries | Every 3 minutes, up to 5 attempts |
-
-- **Stripe Billing and Paddle sandboxes** use full periods. Apple Pay and Google Pay can use real cards in sandbox.
-- **Test a redemption link** with `<YOUR_CUSTOM_SCHEME>://redeem_web_purchase?redemption_token=<ANY_TOKEN>` (for example `xcrun simctl openurl booted "..."`); the app should show its invalid-link UI.
+See [WEB-BILLING.md](WEB-BILLING.md#testing-web-purchases).
 
 ## Prove it
 
@@ -261,4 +220,4 @@ if (webPurchaseRedemption != null) {
 - Pausing in the Play sandbox gives `isActive` false, and `/v1/subscribers/{id}` returns `paused_expiration_time_ms`.
 - A dashboard refund on Google Play or RevenueCat Billing expires the subscription immediately.
 - With alternative billing, standard purchases still appear in the dashboard, alternative-billing purchases reconcile with RevenueCat subscriber state, and each purchase is acknowledged exactly once.
-- A RevenueCat Billing sandbox monthly subscription renews every 5 minutes up to six times, and a redemption link opens the app and grants the entitlement; an invalid token shows the invalid-link UI.
+- Web purchase redemption passes the checks in [WEB-BILLING.md](WEB-BILLING.md#prove-it).

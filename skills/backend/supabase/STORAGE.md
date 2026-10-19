@@ -352,28 +352,7 @@ max_indexes = 5
 
 ## Vector buckets
 
-- **Alpha.** Hosted vector buckets use Amazon S3 Vectors; local ones use pgvector.
-- **Create a bucket and an index:**
-
-```js
-supabase.storage.vectors.createBucket('embeddings')
-supabase.storage.vectors.from('embeddings').createIndex({ indexName, dataType: 'float32', dimension: 1536, distanceMetric: 'cosine' })
-```
-
-- **Fix the index shape up front.** Metrics: cosine, euclidean, l2; data type `float32` only; dimension, metric and data type can't change after creation. Wrong dimensions make inserts and queries fail. Deleting an index is permanent.
-- **One similarity operator,** `<===>`, in vector buckets and their foreign data wrappers.
-
-| Limit | Value |
-|---|---|
-| Buckets per project | 10 |
-| Indexes per bucket | 10 (CLI template `max_indexes = 5`) |
-| Dimensions | 4096 max |
-| Vectors per insert or update request | 1000 on the limits page, 500 on the intro, creating and storing pages: check the current docs |
-| PutVector body | 20 MB (raised from 1.6 MB) |
-| Hosted query | `topK` up to 10,000, 100 results per response, `nextToken` pagination |
-| Local query | `topK` up to 100, no `nextToken` |
-
-- **Local:** `[storage.vector] enabled = true`, declare `[storage.vector.buckets.<name>]`, then `supabase seed buckets`.
+See [vector bucket APIs, limits and SQL-surface conflicts](VECTORS-SCALE-AND-STORAGE.md#vector-buckets-storage-public-alpha).
 
 ## Errors
 

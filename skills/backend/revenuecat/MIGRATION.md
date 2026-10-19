@@ -94,7 +94,7 @@ Use `STOREKIT_VERSION.STOREKIT_1` for StoreKit 1 code. Your iOS code keeps finis
 
 - **If the app has its own accounts,** call `await Purchases.logIn(existingAppUserID);` once configured, after your authentication completes. It attaches prior purchase history to the right RevenueCat user on ingestion; without it, purchases go to an anonymous RevenueCat user and can't be matched later. Skip it only when there are no authenticated users.
 - **Bring existing purchases in with `syncPurchases`,** not `restorePurchases`. `syncPurchases` shows no OS prompts and is "typically used for migrating subscriptions"; it carries a risk of transferring or aliasing an anonymous user. React Native's current method is `syncPurchasesForResult()`: `const { customerInfo } = await Purchases.syncPurchasesForResult();`. `restorePurchases` "**should not** be triggered programmatically, since it may cause OS level sign-in prompts"; call it only from a user action.
-- **Restore behavior** (**Project settings > General**, all apps in the project) decides what happens when a receipt already belongs to another identified user: **Transfer to new App User ID** (default), **Transfer if there are no active subscriptions**, **Keep with original App User ID** ("Use with caution"; returns `RECEIPT_ALREADY_IN_USE`; only for apps that require an account before purchase), or **Share between App User IDs (legacy)** (legacy projects only; can't be re-enabled once switched off). Sandbox can use a different behavior ("Use a different restore behavior for sandbox").
+- **Restore behavior:** use the shared [project and sandbox transfer policy](IDENTITY.md#restore-behavior) when ingesting receipts that already belong to another user.
 
 ### Cut over to RevenueCat
 

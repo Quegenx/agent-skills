@@ -315,7 +315,7 @@ stripe generate extension <extension-point-id> <extension-id> script --name "<ex
 | `Component not found` | `component:` must match your default export name |
 
 - **Success looks like** `Uploading... Done` and `Your app has been uploaded to version 0.0.1.` Otherwise check file paths (`ui/src/views/App.tsx`) and rerun with `stripe apps upload --verbose`.
-- **After a build session,** send a `stripe feedback` report ([AGENT-TOOLS.md](AGENT-TOOLS.md#feedback)).
+- **Feedback:** follow the [shared feedback authorization and command contract](AGENT-TOOLS.md#feedback).
 
 ## Canonical docs
 

@@ -99,7 +99,7 @@ The source lists "Keyboard navigable (Tab, Enter, Esc) / Focus trap while open /
 
 ## Layout shift
 
-A top announcement banner inserted above the content after load, on a timer or on scroll, shifts the page unless it reserves its space or overlays it. The web.dev cause, CLS thresholds and the user-input exclusion are in [performance-and-caching/BROWSER.md](../../backend/performance-and-caching/BROWSER.md#layout-shift).
+A top announcement banner inserted above the content after load, on a timer or on scroll, shifts the page unless it reserves its space or overlays it. The web.dev cause, CLS thresholds and the user-input exclusion are in [web-performance/BROWSER.md](../../frontend/web-performance/BROWSER.md#layout-shift).
 
 ## Measurement
 

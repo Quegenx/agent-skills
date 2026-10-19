@@ -88,7 +88,8 @@ const { data } = await supabase.from("loans").select().abortSignal(signal); // s
 
 ## Retry, timeout, circuit breaker
 
-- **Retry only what's safe:** reads, and writes protected by idempotency. Retry only transient failures: network errors, timeouts, 502/503/504, and 429 after `Retry-After`. Never retry 400, 401, 403, 404, 409 or 422.
+- **Retry only what's safe:** reads, and writes protected by idempotency. Retry only transient failures: network errors, timeouts, 502/503/504, and 429 after `Retry-After`. Never retry 400, 401, 403, 404 or 422.
+- **Classify a `409` by the operation's conflict contract.** The [in-progress idempotency-key case](#idempotency-keys) above tells the client to retry later; `409` alone is not a retry decision. MDN describes conflicts with current resource state and implementation-specific concurrent-update uses. The old line said "Never retry 400, 401, 403, 404, 409 or 422", contradicting this file's processing-state contract. [https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/409; existing api-design, RELIABILITY.md, Idempotency keys]
 - **Backoff with jitter,** a small number of attempts (two or three), honoring `Retry-After`.
 - **Compose in this order:** an overall deadline around everything, retries inside it, a per-attempt timeout inside each retry, and a circuit breaker that stops calling a dependency that keeps failing (it fails fast for a cool-down, then lets a trial request through).
 - **The budget must fit the deadline.** Worst case = attempts x per-attempt timeout + the sum of backoff delays. With a 2 s deadline, a 600 ms per-attempt timeout and delays of 100 and 200 ms, three attempts take at most 3 x 600 + 300 = 2,100 ms: over budget, so allow two attempts or shorten the per-attempt timeout.
@@ -123,6 +124,6 @@ const lookup = fetchCatalog(id).pipe(
 - A reasonable starting point for a public API is around 1,000 requests per hour per key, then per-endpoint limits, higher tiers for paying customers, and a lower one for a client that misbehaves.
 - Keep counters in a shared store (Redis, the database) when there is more than one instance; an in-memory limiter gives each instance its own budget, so the real limit is the limit times the instance count. In a distributed system, enforce limits at the gateway or reverse proxy, before requests reach the services.
 - Respond 429 with `Retry-After`, and document the limits.
-- **Shed load when overloaded.** A queue in front of a saturated server is "debt that lengthens everyone's wait". Cap it and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly", instead of "everyone dies slowly and fairly, together" ([DIAGNOSE.md](../observability/DIAGNOSE.md#queues-backpressure-load-shedding)).
+- **Shed load when overloaded.** A queue in front of a saturated server is "debt that lengthens everyone's wait". Cap it and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly", instead of "everyone dies slowly and fairly, together" ([DIAGNOSE.md](../../monitoring/observability/DIAGNOSE.md#queues-backpressure-load-shedding)).
 
 **Prove it:** two users each get their own budget; repeated requests hit 429 at the documented point; a request with a forged `X-Forwarded-For` lands in the same bucket as the real address.

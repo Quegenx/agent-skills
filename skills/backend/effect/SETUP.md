@@ -30,6 +30,10 @@ If you need to learn more about particular Effect apis and concepts that the
 guide doesn't cover, search through the source code in `node_modules/effect/src`.
 ```
 
+## v4 module paths
+
+- **`@effect/rpc`, `@effect/ai`, `@effect/cli`** are now `effect/rpc`, `effect/ai`, `effect/cli`. Beta-era `effect/unstable/*` paths were removed in `4.0.0-rc.118`. Provider SDKs remain separate as `@effect/ai-*`. [Existing RPC-AI-CLI.md, introduction and Porting from v3]
+
 ## Prove it
 
 `node_modules/effect/AGENTS.md` and `node_modules/effect/src` exist after install, and the block above is in the agent instructions file.

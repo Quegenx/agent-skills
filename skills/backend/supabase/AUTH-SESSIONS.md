@@ -145,18 +145,9 @@ const supabase = createClient('https://<supabase-project>.supabase.co', 'SUPABAS
 | Base client or do-it-yourself | `@supabase/supabase-js` |
 
 - **Both wrappers build on supabase-js, and they coexist:** `@supabase/ssr` is not deprecated. They can be composed (ssr owns cookies, server primitives get the token); see `https://github.com/supabase/server/blob/main/docs/ssr-frameworks.md`.
-- **`@supabase/server`** verifies JWTs, resolves the new API keys (`SUPABASE_PUBLISHABLE_KEYS`, `SUPABASE_SECRET_KEYS`), and gives a caller-scoped client and an admin client. `withOAuthProtectedResource` handles OAuth discovery for MCP servers.
+- **`@supabase/server`:** its Bearer/API-key modes, caller/admin context, OAuth discovery and portable package middleware have one owner in [SERVER-MIDDLEWARE.md](SERVER-MIDDLEWARE.md).
 
-```ts
-import { withSupabase } from '@supabase/server'
-export default {
-  fetch: withSupabase({ auth: 'user' }, async (req, ctx) => {
-    // ctx.supabase is scoped to the caller and respects RLS
-    const { data } = await ctx.supabase.from('todos').select()
-    return Response.json(data)
-  }),
-}
-```
+The [Fetch handler example](SERVER-MIDDLEWARE.md#fetch-handler-example) shows the caller-scoped query.
 
 - **A plain server-side supabase-js client** takes `auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }`. Without storage it warns "No storage option exists to persist the session..."; safe to ignore if you don't use auth on the server.
 
@@ -303,7 +294,8 @@ return myNewResponse
 
 - **Defaults:** `autoRefreshToken: true`, `persistSession: true` (local storage), `detectSessionInUrl: true` (can be a function, to ignore other OAuth providers' fragments), `flowType: 'implicit'`, `debug: false`, `throwOnError: false`, `lockAcquireTimeout: 5000`, `skipAutoInitialize: false`. `initialize()` runs automatically; call it yourself only with `skipAutoInitialize: true`.
 - **No more `navigator.locks`:** in-tab refreshes are single-flight, cross-tab races are resolved server-side by parent-of-active, and rotated tokens are discarded if storage changed mid-refresh (`AuthRefreshDiscardedError`). To be v3-ready, omit `lock` and `lockAcquireTimeout`.
-- **`onAuthStateChange((event, session) => ...)`** events: `INITIAL_SESSION`, `SIGNED_IN` (sign-in and tab refocus; can fire very often), `SIGNED_OUT` (sign-out, sign-out from another device, time-box, inactivity, single-session), `TOKEN_REFRESHED` (keep the access token in memory instead of calling `getSession()` often), `USER_UPDATED`, `PASSWORD_RECOVERY`, `MFA_CHALLENGE_VERIFIED`. Callbacks may be async and call other auth methods, but events are awaited in order, so keep them quick; events are emitted across tabs. Unsubscribe with `data.subscription.unsubscribe()`. Register it early and keep it bug-free: a broken one is a common cause of server "invalid refresh token" errors.
+- **`onAuthStateChange((event, session) => ...)`** events: `INITIAL_SESSION`, `SIGNED_IN` (sign-in and tab refocus; can fire very often), `SIGNED_OUT` (sign-out, sign-out from another device, time-box, inactivity, single-session), `TOKEN_REFRESHED` (keep the access token in memory instead of calling `getSession()` often), `USER_UPDATED`, `PASSWORD_RECOVERY`, `MFA_CHALLENGE_VERIFIED`. Events are awaited in order, so keep callbacks quick; events are emitted across tabs. Unsubscribe with `data.subscription.unsubscribe()`. Register it early and keep it bug-free: a broken one is a common cause of server "invalid refresh token" errors.
+- **Prefer a synchronous callback and defer refresh-triggering work.** Since auth-js v2.107.0, the default lockless path permits `getUser`, `setSession` and session reads inside callbacks; older clients and the custom-lock path retain the lock-based hazard. Awaiting `refreshSession` or another `_callRefreshToken` path inside `TOKEN_REFRESHED` still deadlocks, and the async overload remains deprecated for that case. The old DATA-API line said async Supabase calls always deadlock; the old AUTH-SESSIONS line permitted async auth calls without this refresh exception. [https://github.com/supabase/supabase-js/blob/master/packages/core/auth-js/migrations/lockless-coordination.md; https://github.com/supabase/supabase-js/blob/master/packages/core/auth-js/src/GoTrueClient.ts; https://supabase.com/docs/reference/javascript/auth-onauthstatechange]
 - **Non-browser apps** (React Native, Electron) call `startAutoRefresh()` and `stopAutoRefresh()`, wired to `AppState` `'active'`; browsers refresh only in foreground tabs.
 - **`auth.dispose()`** stops auto-refresh, removes the `visibilitychange` listener, closes the cross-tab `BroadcastChannel` and clears subscribers; for React Strict Mode and HMR. Safe to call repeatedly; an in-flight refresh may still persist a rotated session.
 - **`refreshSession()`** or `refreshSession({ refresh_token })` always returns a new session and throws on an invalid token. `setSession({ access_token, refresh_token })` refreshes if expired and fires `SIGNED_IN`.

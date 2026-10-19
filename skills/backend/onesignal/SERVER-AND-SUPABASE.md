@@ -2,7 +2,7 @@
 
 Your backend sends OneSignal messages with the REST API or the Node server SDK, using an App API key that never leaves the server, and it learns what happened through Event Streams (outbound event webhooks). What decides most outcomes: the user must already be identified by the same External ID your server targets (your database or Supabase user ID passed to `OneSignal.login`), every send carries `target_channel` and an `idempotency_key`, and your webhook receiver answers fast and dedupes on `event.id`. Endpoints, limits and error codes are in [REST-API.md](REST-API.md); identifying users is [USER-MODEL.md](USER-MODEL.md); Supabase itself is [../supabase/SKILL.md](../supabase/SKILL.md).
 
-**Contents:** Node server SDK; Sending from Supabase Edge Functions; Choosing webhooks vs Event Streams; Event Streams; Event Stream data; Journey webhooks; Web push webhooks; Prove it.
+**Contents:** [Node server SDK](#node-server-sdk) · [Sending from Supabase Edge Functions](#sending-from-supabase-edge-functions) · [Choosing webhooks vs Event Streams](#choosing-webhooks-vs-event-streams) · [Event Streams](#event-streams) · [Event Stream data](#event-stream-data) · [Journey webhooks](#journey-webhooks) · [Web push webhooks](#web-push-webhooks) · [Prove it](#prove-it)
 
 ## Node server SDK
 
@@ -301,10 +301,20 @@ serve(async (req) => {
 
 ## Journey webhooks
 
-- **External systems only.** Create the webhook (location above) before adding them to a step. Endpoints must be public and reachable over HTTP/HTTPS. Webhooks cannot call OneSignal APIs; never suggest that they do, or that OneSignal rate-limits them.
-- **Plan for bursts.** Many users reaching a webhook step at once send a burst of requests; route them through your own server or a queue.
-- **Dedupe retries on `event.id`.**
-- **Tags aren't available in standalone webhook tests;** validate with Test Users in a live Journey.
+### Journey webhook transport contract
+
+- **Access requires contacting sales.**
+- **Where to configure:** the vendor skill says create webhooks in **Data > Webhooks** before adding them to a step; the webhook docs say **Settings > Journey webhooks**. Confirm in the current dashboard.
+- **Endpoints must be public:** publicly routable over HTTP/HTTPS with a valid TLD.
+- **Webhooks cannot call OneSignal APIs.** They are for external systems only.
+- **Disallowed headers:** `content-length`, `referer`, `metadata-flavor`, `x-google-metadata-request`, `host`, any `x-onesignal*`.
+- **Liquid works in all fields:** `{{ user.onesignal_id }}`, `{{ user.external_id }}`, `{{ user.tags.your_tag_key_here }}` (not in Test), `{{ user.language }}`.
+- **Retries:** recoverable errors (for example `429`) retry with increasing delays; repeated failures become permanently failed; consistent failures auto-disable the webhook and email admins.
+- **No rate limiting by OneSignal.** Many users reaching a webhook step at once send a burst of HTTP requests. Respond fast and defer processing; route through your own server or a queue rather than third parties.
+- **Deduplicate retries on `event.id`.**
+- **Secure the endpoint** with `Authorization: Bearer YOUR_SECRET_TOKEN`.
+- **Tags are not available in standalone webhook tests;** use Test Users in a live Journey for full validation.
+
 - **Add a 15-minute Wait after a Tag User step** before a webhook that depends on the tag.
 - **Don't fire the same custom event from both the SDK and a backend webhook** unless it is deduplicated with `idempotency_key`.
 

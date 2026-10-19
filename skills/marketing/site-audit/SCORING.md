@@ -53,7 +53,7 @@ A hand-scored line per area, each out of 10, then "Overall:" and "Notes:" [audit
 
 ## Lighthouse bands
 
-Lighthouse's own report colours a category "0 to 49 (red): Poor", "50 to 89 (orange): Needs Improvement" and "90 to 100 (green): Good" ([performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring)). Audit Kit tones its Lighthouse numbers at 85 and 65 instead, so an 86 shows green there and orange in Lighthouse: report Lighthouse's bands. Weights, budgets and CI gates: [../../backend/performance-and-caching/LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md).
+Lighthouse's own report colours a category "0 to 49 (red): Poor", "50 to 89 (orange): Needs Improvement" and "90 to 100 (green): Good" ([performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring)). Audit Kit tones its Lighthouse numbers at 85 and 65 instead, so an 86 shows green there and orange in Lighthouse: report Lighthouse's bands. Weights, budgets and CI gates: [../../frontend/web-performance/LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md).
 
 ## What a score is not
 

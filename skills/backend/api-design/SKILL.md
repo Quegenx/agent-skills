@@ -13,7 +13,7 @@ An API is a promise to clients you don't control. Every decision below is cheap 
 | Safe retries, idempotency keys, deadlines, cancellation, retry/timeout/circuit breaker, rate limits | [RELIABILITY.md](RELIABILITY.md) |
 | Rolling out behind a flag, A/B experiments | [FLAGS.md](FLAGS.md) |
 | Streaming updates to a browser (SSE) | [STREAMING.md](STREAMING.md) |
-| Changing a developer tool's public surface (CLI flag, score, config, JSON report, package API, exit code, GitHub Action): the job, reuse, one metric, the default and compatibility artifacts, docs, the kill metric and the brief | [PRODUCT-PASS.md](PRODUCT-PASS.md) |
+| Before changing a developer tool's public surface: the job, reuse, metric, defaults, compatibility and removal brief | [Engineering planning](../../architecture/engineering-planning/PRODUCT-PASS.md) |
 
 ## The rules under all of them
 

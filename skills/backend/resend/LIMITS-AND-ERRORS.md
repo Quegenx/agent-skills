@@ -1,8 +1,8 @@
 # Limits and errors
 
-Resend limits requests per second per team (shared by every key), emails per day or month by plan (sent and received both count), and sender reputation by bounce and complaint rates. Errors come back as `{ name, message, statusCode }`; the vendor skill and the docs' onboarding prompt retry only 429 and 500, with exponential backoff and an idempotency key, and fix everything else. Logs (`GET /logs`) show every API request with full bodies for 30 days, and `GET /usage` shows quota use.
+Resend limits requests per second per team (shared by every key), emails per day or month by plan (sent and received both count), and sender reputation by bounce and complaint rates. Errors come back as `{ name, message, statusCode }`; retry classification is defined in [Retries](#retries), with exponential backoff and an idempotency key. Logs (`GET /logs`) show every API request with full bodies for 30 days, and `GET /usage` shows quota use.
 
-**Contents:** [Rate limits](#rate-limits) · [Quotas](#quotas) · [Plan limits and retention](#plan-limits-and-retention) · [Reputation thresholds](#reputation-thresholds) · [Error codes](#error-codes) · [Common 401 and 403 causes](#common-401-and-403-causes) · [Retries](#retries) · [Logs](#logs) · [Usage](#usage) · [Security facts](#security-facts) · [Prove it](#prove-it)
+**Contents:** [Rate limits](#rate-limits) · [Quotas](#quotas) · [Plan limits and retention](#plan-limits-and-retention) · [Reputation thresholds](#reputation-thresholds) · [Error codes](#error-codes) · [Common 401 and 403 causes](#common-401-and-403-causes) · [Retries](#retries) · [Email-practices retry source examples](#email-practices-retry-source-examples) · [What to retry](#what-to-retry) · [Backoff](#backoff) · [Error handling](#error-handling) · [Logs](#logs) · [Usage](#usage) · [Security facts](#security-facts) · [Prove it](#prove-it)
 
 ## Rate limits
 
@@ -94,8 +94,9 @@ Resend limits requests per second per team (shared by every key), emails per day
 
 ## Retries
 
-- **Retry only 429 and 500** (vendor skill and the docs' onboarding prompt): max 3 to 5 retries, exponential backoff of 1 s, 2 s, 4 s, 8 s, 16 s (cumulative 1, 3, 7, 15, 31 s), always with the same idempotency key. Don't retry 400, 401, 403, 422 or `not_found`; fix the request, key or domain. On 409, follow the table above. The docs' error table also says retry later for 503 `service_unavailable`.
-- **On a 429, `retry-after` gives the seconds to wait** (rate-limit headers above).
+- **Classify by the error name and status:** retry rate-limit `429` after the response headers’ delay, `500 application_error`, `503 service_unavailable`, and transient network failures with the same idempotency key. A `409 concurrent_idempotent_requests` is safe to retry later; `409 resource_locked` needs a short delay. Do not retry `invalid_idempotent_request` unchanged. Fix other request/authentication errors first. The [official errors reference](https://resend.com/docs/api-reference/errors) supplies these distinctions.
+- **A quota 429 is not a short rate-limit window:** `daily_quota_exceeded` waits until midnight UTC or an upgrade; monthly quota needs the quota reset or an upgrade. Follow [Quotas](#quotas).
+- **Backoff convention retained from the vendor skill:** max 3 to 5 retries, 1 s, 2 s, 4 s, 8 s, 16 s (cumulative 1, 3, 7, 15, 31 s); respect `retry-after` seconds. The vendor/onboarding claim “only 429 and 500” is narrower than the specific official errors reference above; it is retained here as source history, not a second retry policy ([errors reference](https://resend.com/docs/api-reference/errors)).
 - **The Node SDK has no retry logic** that a source search could find (not proof of absence); the vendor skill ships the helpers below.
 
 Node error switch:
@@ -130,7 +131,7 @@ if (error) {
 
 The vendor skill's switch uses `api_error` for server errors; the docs name it `application_error` (see above).
 
-Node retry helper:
+Node retry helper, retained verbatim from the vendor skill. Its exclusion list retries more errors than the contract above and its key is optional; apply the canonical classification and reuse a key before adapting it:
 
 ```typescript
 async function sendEmailWithRetry(
@@ -168,6 +169,82 @@ async function sendEmailWithRetry(
 ```
 
 - **Batch retries** work the same way with `resend.batch.send(emails, { idempotencyKey })`; treat `validation_error` and `not_found` as non-retryable, and give each chunk of a large batch its own key ([SENDING.md](SENDING.md#send-a-batch)).
+
+## Email-practices retry source examples
+
+The source’s status-only tables below are historical generalizations; the named Resend exceptions and quota distinctions in [Retries](#retries) take precedence.
+
+### What to retry
+
+[resend/email-best-practices] Historical status-only classification; [Retries](#retries) owns named provider exceptions.
+
+| Failure | Retry? |
+|---|---|
+| 5xx (server error) | Yes: transient, likely to resolve |
+| 429 (rate limit) | Yes: wait for the rate-limit window |
+| 4xx (client error) | No: fix the request first |
+| Network timeout | Yes: transient |
+| DNS failure | Yes: may be transient |
+
+| Code | Meaning | Action |
+|---|---|---|
+| 400 | Bad request | Fix payload (invalid email, missing field) |
+| 401 | Unauthorized | Check API key |
+| 403 | Forbidden | Check permissions, domain verification |
+| 404 | Not found | Check endpoint URL |
+| 422 | Validation error | Fix request data |
+| 429 | Rate limited | Back off, retry after delay |
+| 500 | Server error | Retry with backoff |
+| 503 | Service unavailable | Retry with backoff |
+
+
+[resend/email-best-practices] These examples are retained verbatim. Their status-only predicates omit the retryable 409 names, treat quota 429 like rate limiting, and do not pass an idempotency key. They are source comparisons; [Retries](#retries) owns the active contract. The jitter convention is 1s, 2s, 4s, 8s, capped at 30,000 ms, up to 5 attempts.
+
+### Backoff
+
+- **Exponential backoff with jitter** (to prevent a thundering herd): 1s, 2s, 4s, 8s, capped at 30000 ms, up to 5 attempts:
+
+```typescript
+async function sendWithRetry(emailData, maxRetries = 5) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const { data, error } = await resend.emails.send(emailData);
+    if (!error) {
+      return data;
+    }
+    if (!isRetryable(error) || attempt === maxRetries - 1) {
+      throw error;
+    }
+    const delay = Math.min(1000 * Math.pow(2, attempt), 30000);
+    await sleep(delay + Math.random() * 1000); // Add jitter
+  }
+}
+
+function isRetryable(error) {
+  return error.statusCode >= 500 ||
+         error.statusCode === 429;
+}
+```
+
+### Error handling
+
+- **Queue retryable failures; log and alert on the rest,** especially critical mail like password resets:
+
+```typescript
+const { data, error } = await resend.emails.send(emailData);
+
+if (error) {
+  if (error.statusCode === 429) {
+    await queueForRetry(emailData, error.retryAfter);
+  } else if (error.statusCode >= 500) {
+    await queueForRetry(emailData);
+  } else {
+    await logFailure(error, emailData);
+    await alertOnCriticalEmail(emailData); // For password resets, etc.
+  }
+} else {
+  await logSuccess(data.id, emailData);
+}
+```
 
 ## Logs
 

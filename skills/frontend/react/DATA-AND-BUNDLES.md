@@ -291,7 +291,7 @@ https://nextjs.org/docs/app/guides/lazy-loading (checked 2026-10-18):
   ```
 
   The rules say the `typeof window !== 'undefined'` check "prevents bundling preloaded modules for SSR"; no Next.js page checked says so, so don't count on it for server bundle size.
-- **Check the output.** Confirm the build produced the split chunk; the general rule is in [../../backend/performance-and-caching/BROWSER.md](../../backend/performance-and-caching/BROWSER.md#bundle).
+- **Check the output.** Confirm the build produced the split chunk; the general rule is in [../web-performance/BROWSER.md](../web-performance/BROWSER.md#bundle).
 
 ## Paths the bundler can analyze
 

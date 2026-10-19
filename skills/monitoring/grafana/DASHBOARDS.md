@@ -15,7 +15,7 @@ A Grafana dashboard is a JSON document of panels, variables, annotations and lin
 | Four Golden Signals | Latency, Traffic, Errors, Saturation | Like RED plus saturation |
 
 - **USE reports causes, RED reports user experience.** "The USE method tells you how happy your machines are, the RED method tells you how happy your users are." Alert on symptoms, so alert from RED dashboards. For each service, instrument the code to expose RED metrics for each component.
-- **Reading the graphs** (symptoms before causes, percentiles, CPU against response time, pools, the diagnosis table, incidents and postmortems) lives in the `observability` skill's [DIAGNOSE.md](../../backend/observability/DIAGNOSE.md).
+- **Reading the graphs** (symptoms before causes, percentiles, CPU against response time, pools, the diagnosis table, incidents and postmortems) lives in the `observability` skill's [DIAGNOSE.md](../observability/DIAGNOSE.md).
 
 ### Build each dashboard
 
@@ -28,7 +28,7 @@ A Grafana dashboard is a JSON document of panels, variables, annotations and lin
 - **Turn stacking off in most cases.** Stacked graphs can mislead and hide important data.
 - **Avoid unnecessary refreshing.** If the data changes every hour, you don't need a 30-second refresh rate.
 - **Document in place.** Dashboard docs in a Text panel (purpose, links, instructions); panel docs in the panel description (shown on hover over the `i`).
-- **Panels that make causes readable:** CPU utilization next to a CPU throttle metric (containers), cache hit rate, per-process event loop lag (Node), queue length or wait time, connection wait time ([DIAGNOSE.md](../../backend/observability/DIAGNOSE.md)).
+- **Panels that make causes readable:** CPU utilization next to a CPU throttle metric (containers), cache hit rate, per-process event loop lag (Node), queue length or wait time, connection wait time ([DIAGNOSE.md](../observability/DIAGNOSE.md)).
 - **A weekly comparison panel** draws last week's same-weekday P99 on top of today's. A 1%-a-day decline produces zero alerts over four weeks: "An alert is a way to catch momentary problems, not a way to find slow decline. Comparison is."
 - **Split metrics by version label during a canary,** because in a gradual rollout "the metrics of the two versions can blend together"; compare canary and existing "at the same time, under the same traffic conditions."
 - **Aim for fewer than 20 panels,** use rows (collapsible) to group, and use folders as RBAC boundaries with consistent tags.
@@ -374,7 +374,7 @@ Reference: https://grafana.com/docs/grafana/latest/panels-visualizations/query-t
 ]
 ```
 
-- **Mark deploys first.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more" ([DIAGNOSE.md](../../backend/observability/DIAGNOSE.md#the-thirty-minutes-after-a-deploy)).
+- **Mark deploys first.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more" ([DIAGNOSE.md](../observability/DIAGNOSE.md#the-thirty-minutes-after-a-deploy)).
 - **Annotation types:** native (manual: Ctrl/Cmd+click a time series panel) and query annotations. Create them through the API too ([PROVISIONING-AND-API.md](PROVISIONING-AND-API.md#annotations)).
 
 Deploys from Loki:

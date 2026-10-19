@@ -193,7 +193,7 @@ The integration review below comes from a third-party skill [appeeky].
   - Webhook signatures verified with `constructEvent` ([WEBHOOKS.md](WEBHOOKS.md)).
   - Race conditions: an existing-subscription check before create (no double-bill).
   - Stripe errors caught by type, with user-friendly messages.
-  - Amounts in cents, with no float rounding bugs.
+  - Amounts follow the [currency contract](AGENT-TOOLS.md#the-stripe-mcp), with no float rounding bugs.
   - Secrets from env, never hardcoded.
   - `proration_behavior` set intentionally on subscription updates ([BILLING.md](BILLING.md)).
 - **Report** as Critical (file:line, issue, fix), Improve, Good, and Top fix. Use the Stripe MCP only to confirm suspicions against live behavior (for example duplicate subscriptions).

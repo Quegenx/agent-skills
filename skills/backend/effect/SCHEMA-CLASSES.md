@@ -30,7 +30,7 @@ How Effect v4 Schema builds values: `make`, constructor defaults, opaque structs
 
 - **One declaration gives a runtime validator and a TypeScript class.** Use a stable module-path identifier:
 
-  ```ts
+```ts
   export class User extends Schema.Class<User>("path/to/module/User")({
     id: Schema.Int,
     name: Schema.NonEmptyString,
@@ -38,7 +38,7 @@ How Effect v4 Schema builds values: `make`, constructor defaults, opaque structs
     role: Schema.Literals(["admin", "member"])
   }) {}
   export type UserEncoded = typeof User["Encoded"]
-  ```
+```
 
 - **The identifier is required and stable:** it labels diagnostics and generated references, formats instances (`String(alice)` is `Person({"name":"Alice","age":30})`), and derives a runtime marker that recognizes instances across hot module reloads where `instanceof` fails. It is explicit because the JS class name is not available while `extends` is evaluated and can change under renaming or minification. Omitting `Self` is a `MissingSelfGeneric<"Schema.Class">` type error.
 - **Signature:** `Schema.Class<Self, Brand = {}>(identifier)(fieldsOrStruct, annotations?)`. Statics include `make`, `makeOption`, `makeEffect`, `annotate`, `annotateKey`, `check`, `extend`, `mapFields`.
@@ -59,47 +59,14 @@ How Effect v4 Schema builds values: `make`, constructor defaults, opaque structs
 
 ## Errors
 
-- **Define custom errors with `Schema.TaggedError`:**
-
-  ```ts
-  export class SomeError extends Schema.TaggedError<SomeError>()("SomeError", { message: Schema.String }) {}
-  ```
-
-  It is a `Schema.Error` plus `_tag`, catchable with `Effect.catchTag("HttpError", ...)` and `Effect.catchTags({ NotFound: ..., Unauthorized: ... })`. Signature `Schema.TaggedError<Self>(identifier?)(tag, fields)`; the identifier defaults to the tag. It supports `extend`, `annotate` and `check`, and instances have a `stack`.
-- **Yield errors directly, and always return when raising one** inside `Effect.gen`:
-
-  ```ts
-  return yield* new FileProcessingError({ message: "..." })
-  ```
-
-- **Wrap unknown causes with `Schema.Defect()`:**
-
-  ```ts
-  class DatabaseError extends Schema.TaggedError<DatabaseError>()("DatabaseError", { cause: Schema.Defect() }) {}
-  ```
-
-  `Schema.Defect(options?)` encodes to `Json`: JSON objects with a string `message` decode to `Error` values, and `Error`s encode to `{ name, message, cause? }`. `{ includeStack: true }` adds stacks; `{ excludeCause: true }` omits causes. It carries defects across JSON boundaries and does not preserve every JavaScript value exactly; `ErrorInstance` accepts only `Error` values.
-- **`Schema.Error<E>("E")({ id: Schema.Number })`** is a Class that is also a `YieldableError`, with `name` set to the identifier.
-- **Keep every `_tag` unique.** Two errors with the same tag are indistinguishable to `Effect.catchTag` and `catchTags`, with no compiler or runtime warning.
-- **Map decode failures to a domain error at the edge:**
-
-  ```ts
-  export const decodeUser = Schema.decodeUnknownEffect(User)
-  export const parseUserPayload = Effect.fn("parseUserPayload")((input: unknown) =>
-    decodeUser(input).pipe(
-      Effect.mapError((error) => new InvalidUserPayload({ message: error.message }))
-    )
-  )
-  ```
-
-- HTTP status codes on error classes are in [SCHEMA-INTEGRATIONS.md](SCHEMA-INTEGRATIONS.md).
+See [tagged error construction, Defect encoding and decoder error mapping](ERRORS.md#defining-errors).
 
 ## Existing classes
 
 - **Validate constructor arguments of a class you already have** with a tuple schema's `make` inside the constructor: `const PersonConstructorArguments = Schema.Tuple([Schema.String, Schema.Finite])`; `PersonConstructorArguments.make([name, age])` throws "Expected a finite number\n  at [1]". Subclasses validate only their additional arguments.
 - **Give an existing class a schema** with `instanceOf` and a `toCodecJson` link:
 
-  ```ts
+```ts
   Schema.instanceOf(Person, {
     title: "Person",
     toCodecJson: () => Schema.link<Person>()(
@@ -109,7 +76,7 @@ How Effect v4 Schema builds values: `make`, constructor defaults, opaque structs
         encode: (instance) => [instance.name, instance.age] as const
       }))
   })
-  ```
+```
 
   Add `.pipe(Schema.encodeTo(Schema.Struct({ name, age }), SchemaTransformation.transform({...})))` for an explicit encoding.
 - **`Data.Error` with schema-validated props:** `class Err extends Data.Error<typeof Props.Type> { constructor(props) { super(Props.make(props)) } }`, with the schema `Schema.instanceOf(Err, {...}).pipe(Schema.encodeTo(Props, transformation))`. The guide's example puts the link under a `serialization.json` annotation while every other example uses `toCodecJson`; treat that as an inconsistency in the guide.

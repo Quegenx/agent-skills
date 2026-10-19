@@ -115,82 +115,15 @@ Throttling spreads one send over time so the traffic it causes (app opens, image
 
 ## Mobile push permission
 
-The system prompt can be shown **once on iOS and twice on Android (Google and Huawei)**; after that the user must re-enable notifications in system settings. Apple and Google both recommend explaining the value before asking.
-
-- **Ask after a value moment.** Prompting on first launch is the single biggest cause of low opt-in rates (the exception: apps whose value is obvious within seconds, such as ride-hailing). Be specific about what they will get ("Get a heads-up the moment your order leaves the kitchen. That's it, no promos.").
-- **Most iOS apps should combine provisional notifications with an in-app soft prompt; most Android apps should start with the soft prompt.** Provisional is often the highest-conversion path on iOS and the default starting point.
-- **Explain value with an in-app soft prompt.** Dismissing it does not consume a system prompt attempt, so re-ask users who declined it (for example every 2 weeks). Iterating on copy and timing routinely shifts opt-in rates by tens of percentage points.
-- **Three approaches:**
-  - In-app soft prompt: recommended and the default; needs no code release.
-  - Programmatic `requestPermission()` / `optIn()`: for preference centers and profile screens.
-  - Provisional: iOS only.
-- **Remove every other prompt first.** The soft prompt needs the `OneSignalInAppMessages` package. Remove `requestPermission()` / `optIn()` on app start, native `requestAuthorizationWithOptions` (iOS), Android `requestPermissions`, and any code that generates push tokens directly.
-- **The Push Permission Prompt click action** auto-filters to unsubscribed users (in-app messages with it are not shown to users who already allowed notifications), and for a user who already declined the maximum number of times it opens the app's notification settings, like `requestPermission(fallbackToSettings: true)`.
-- **Triggers, lowest to highest conversion:** on app open (rarely optimal); after session time (a good default); on a specific user event (best for conversion); programmatically via the in-app trigger SDK methods. Tip: trigger the soft prompt right after a user opens or acts on a provisional notification.
-- **Schedule:** Only once converts poorly, Every time is too aggressive; use Multiple times, e.g. `20` per user with a `2 weeks` gap. Loosen to `30 days` or `60 days` for lower-engagement or utility apps.
-- **Programmatic calls:** pass `fallbackToSettings: true` to `requestPermission()`. If the user opted out via `optOut()` (`notification_types: -2`), `requestPermission()` alone will not change the status; call `optIn()`, which requests permission and clears the opt-out.
-- **Measure the funnel:** in-app message click listener (button tapped), in-app message lifecycle listener (impressions, dismissals), push permission observer (system prompt result).
-- **The native system prompt cannot be customized.** Android shows a runtime permission only on Android 13 (API 33)+; since August 31, 2023 Play requires target API 33+; Android 12 and lower grant automatically.
-
-### iOS provisional (Direct-to-History)
-
-- **What it does:** iOS 12+ delivers quietly to Notification Center only (no banner, sound or lock screen); the user can choose Deliver Quietly or Turn Off. Requires OneSignal SDK 2.9.0 or newer. With it on, all iOS Subscriptions start as Subscribed.
-- **Enable it:** **Settings > Apple iOS > Advanced Configuration > Enable iOS 12 direct to history** (unchecked by default).
-- **A denied regular prompt stops provisional too.** If you prompt for regular permission and the user denies, provisional notifications stop.
-
-### Example onboarding strategy
-
-1. **iOS only:** enable direct to history and send 2 to 3 high-quality notifications in the first week. Android and Huawei skip this phase.
-2. **Soft prompt** in **Messages > In-App**: audience **Show to all users** (the Push Permission Prompt click action filters to unsubscribed), trigger on a high-signal event or 5 minutes of session time, schedule **Multiple times** with max `20` per user and gap `2 weeks` (about 10 months).
-3. **After 1 to 2 weeks** check the report, instrument the funnel with the SDK listeners, and change one variable at a time.
+Prompt strategy, provisional notifications, in-app configuration, the funnel and examples are owned by [PERMISSIONS.md](PERMISSIONS.md#mobile-in-app-soft-prompt).
 
 ## Web push permission
 
-Browsers highly recommend that websites be more selective with the native prompt. OneSignal soft prompts (slidedown, email/phone, bell, custom link) run before the native prompt; they do not subscribe anyone by themselves.
-
-- **Set up prompts** at **Settings > Push & In-App > Web Settings > Permission Prompt Setup > Add Prompt**, or in custom code with `promptOptions` in `init` (`slidedown`, `text`, `categories`, `type` = `email` | `sms` | `smsAndEmail`, `customlink`, `autoPrompt`, `delay`) and the bell via `notifyButton`.
-- **Default icon:** **Settings > Push & In-App > Web**; PNG, JPG or non-animated GIF; recommended `256×256`; without it a generic bell shows.
-- **Slide prompt text:** action message up to 90 characters, button labels up to 15; font, size and colors are not customizable.
-- **Categories:** up to 10, each stored as a Data Tag `1`/`0`, key convention `cat_<category>` (e.g. `cat_breaking_news`).
-- **Bell:** the icon image cannot change and it cannot sit in the top corners; it cannot be disabled per page. Hide it with `displayPredicate` returning `false` (or a Promise of false), e.g. `return !OneSignal.Notifications.permission`. Its default accessible name "Manage notifications" is set via `launcher.button.aria-label`. It suits returning visitors and those who dismissed a prompt.
-
-```html
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(function(OneSignal) {
-    OneSignal.init({
-      appId: "YOUR_APP_ID",
-      notifyButton: {
-        enable: true,
-        size: 'medium',
-        theme: 'default',
-        position: 'bottom-right',
-        showCredit: false,
-        displayPredicate: function() {
-          return !OneSignal.Notifications.permission;
-        }
-      }
-    });
-  });
-</script>
-```
-
-(Trimmed from the full docs example: the `offset`, `text` and `colors` keys are omitted.)
-
-- **Custom link:** `promptOptions.customlink` { `enabled`, `style` ('button'|'link'), `size`, `color`, `text`{`subscribe`,`unsubscribe`,`explanation`}, `unsubscribeEnabled` }, rendered into `<div class='onesignal-customlink-container'></div>`.
-- **Auto prompt delays** are Page Views AND Seconds on Page: both must be satisfied.
-- **Slidedown back-off:** after the 1st dismissal wait 3 days, the 2nd 7 days, the 3rd+ 30 days. It applies to Push, Category and Email/Phone slidedowns; bypass it with the Web SDK Slidedown methods; clearing cookies resets the cycle. The native prompt's own back-off cannot be bypassed.
-- **Native prompt per browser:** Chrome 80+ shows a quieter UI for frequent deniers and high-denial sites, and backs off after 3 attempts (after the 3rd dismissal it is suppressed for 7 days). Firefox 72+ and Safari 12.1+ require a user gesture. Edge is trust-based (untrusted sites get a bell icon in the browser bar). The typical setup auto-shows the Slide Prompt on Chrome mobile, Firefox and Safari; to use the native prompt directly, turn off Auto Prompt and call the Web SDK `requestPermission()`.
-- **Ask when engaged:** after add-to-cart, a profile update or sign-in. Put opt-in controls in a preference center.
-- **Measure before experimenting:** start with the native browser prompt for a few months to measure your baseline opt-in rate, then experiment. Track with the `permissionPromptDisplay`, `permissionChange` and `slidedown` events. To A/B test prompts, set up your own method with custom code: initialize with different prompting options, detect subscribes with the Subscription Change event and tag users by variant.
-- **Where it never works:** the native prompt never shows in Incognito, Private or Guest modes; social-media in-app webviews (Instagram, TikTok, Facebook) do not support web push.
+Prompt types, code, Bell, native browser restrictions and back-off are owned by [PERMISSIONS.md](PERMISSIONS.md#web-prompt-types).
 
 ## Web push browser behavior
 
-- **Permission states:** Default, Granted, Denied (temporary after repeated "x", permanent after Block or a settings change). Clearing cookies or site data stops notifications temporarily, but the user may be re-subscribed automatically on return if permission was not removed.
-- **Browser closed:** Chrome, Firefox, Opera and Edge receive with the browser closed on Android and Windows, not on macOS; Safari does on macOS. Subscribers have up to 3 days to retrieve the last known missing notification before it expires.
-- **Test a prompt like a first-time visitor:** not in incognito. Reset the permission, delete site data, prompt and Allow, check the console, read `OneSignal.User.PushSubscription.id` in the console, add that subscription to Test Users, then send via Test & Preview > Send Test Push.
+Permission states, browser-closed source qualifications and the first-visitor test are maintained in [PERMISSIONS.md](PERMISSIONS.md#web-push-browser-behavior).
 
 ## A/B testing and retargeting
 
@@ -202,11 +135,7 @@ Browsers highly recommend that websites be more selective with the native prompt
 
 ## API rate limits and app disablement
 
-The full retry rules belong with the REST API; these are the ones that decide whether a send storm takes your app down.
-
-- **Application message limit:** in any rolling 15-minute window, up to **10 × total subscribed Subscriptions** messages. Exceeding it temporarily disables the app (admins get an email and a Re-enable banner). Causes: infinite loops, retry storms, unexpected segment growth. A `429` never disables the app; only message volume can.
-- **Never retry message sends without an `idempotency_key`,** and reuse the same key on every attempt. Simple retry: wait 100 s, up to 3 total attempts. Time-sensitive: exponential backoff with jitter (2s, 4s, 8s... up to 60s), cap 10 attempts, stop after 10 to 15 minutes, wait `max(Retry-After, backoff)`. Don't retry 400, 401 or 403.
-- **Batch:** high-volume messaging should use fewer message creation requests with larger audiences, not one request per user. Create/Cancel message: Free 150 req/sec/app, Paid 6,000 req/sec/app; `POST /notifications` and `DELETE /notifications` share a limit. A `429` body is `{"errors": ["API rate limit exceeded."]}` with `Retry-After`.
+The request limits, rolling application message limit and disable/re-enable behavior are owned by [REST-API.md](REST-API.md#rate-limits-and-message-limits); retry strategies and idempotency are owned by [Retries and idempotency](REST-API.md#retries-and-idempotency).
 
 ## Auditing a messaging program
 

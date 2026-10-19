@@ -226,18 +226,13 @@ Defaults React Email gives you (since 6.5.0, 2026-05-27; upgrade with `npm insta
 - `<Markdown>` renders layout tables with `role="presentation"`.
 - `<Preview>` also emits a `<title>`.
 
-What the author still owns:
+The author applies [ACCESSIBILITY.md](../email-practices/ACCESSIBILITY.md) to the rendered content. Component-specific mappings remain:
 
-- **Open with one `<Heading as="h1">`,** nest subheadings in order and never skip levels. Very short, SMS-style emails may skip the heading.
-- **Describe meaningful images** (`alt="Red bicycle leaning against a brick wall"`, not `alt="image"`), and give decorative ones (spacers, dividers, background flourishes) an explicit `alt=""`. Never omit `alt`.
 - **Linked images are never decorative:** inside a `<Link>` or `<Button>` the alt describes where the link goes (`alt="View order #123"`); `alt=""` leaves the link without an accessible name.
 - **Link text names the destination:** `<Button>Read the report</Button>`, not "click here".
-- **Text contrast 4.5:1 (WCAG AA),** and preview in dark mode.
 - **`role="presentation"`** on hand-built layout tables outside `<Markdown>`.
 - **Non-English emails:** `<Html lang={locale} dir={isRTL ? 'rtl' : 'ltr'}>` ([PATTERNS.md](PATTERNS.md#internationalization)).
 - **Send a plain-text version** ([RENDERING-AND-SENDING.md](RENDERING-AND-SENDING.md)).
-
-The full email accessibility rule set is in [../email-practices/SKILL.md](../email-practices/SKILL.md).
 
 ## Changes by version
 

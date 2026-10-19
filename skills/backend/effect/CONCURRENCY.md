@@ -155,10 +155,7 @@ Use these when fibers must be tracked beyond one parent, for example one fiber p
 ## Process keep-alive and running
 
 - **The v4 runtime keeps Node alive by itself:** a reference-counted keep-alive timer means a fiber waiting on `Deferred.await` keeps the process alive without `runMain`.
-- **Still use `runMain` for programs:** it handles signals (SIGINT and SIGTERM interrupt the root fiber), exit codes and error reporting.
-- **`Effect.runFork(effect, options?)`** returns a fiber. `RunOptions`: `signal` interrupts the fiber, `scheduler`, `uninterruptible` starts the fiber uninterruptibly, `onFiberStart`.
-- **`Runtime<R>` was removed:** capture services with `Effect.context<R>()` and run with `Effect.runForkWith(services)`. `ManagedRuntime` bridges Effect into non-Effect code.
-- **Background tasks without a service interface** go in `Layer.effectDiscard`; prefer services and Layers. Write reusable functions with `Effect.fn("name")`, and `Effect.fnUntraced` for library and hot paths.
+- [Entry points and managed runtimes](RESOURCES-AND-CONFIG.md#entry-points) own signals, shutdown, runners and the removed Runtime API. [Service/layer structure](SERVICES-AND-LAYERS.md#structuring-an-application) owns background worker layers.
 
 ## Anti-patterns
 

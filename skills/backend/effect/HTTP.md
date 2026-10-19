@@ -146,6 +146,20 @@ const SchemaErrorHandlerLayer = HttpApiMiddleware.layerSchemaErrorTransform(
 
   Attach with `.middleware(SchemaErrorHandler)` on an endpoint, group or API, and `Layer.provide(SchemaErrorHandlerLayer)`.
 
+### Schema error representation
+
+The schema integration guide's status-tagged error form:
+
+```ts
+  class UserNotFound extends Schema.TaggedError<UserNotFound>()("UserNotFound", {}, { httpApiStatus: 404 }) {}
+```
+
+The schema integration guide also gives the struct form `Schema.Struct({ _tag: Schema.tag("UserNotFound"), message: Schema.String }).pipe(HttpApiSchema.status(404))`, failed with `UserNotFound.make({...})`. [Existing SCHEMA-INTEGRATIONS.md, HTTP (HttpApi)]
+
+The integration guide's other forms are `HttpApiSchema.asNoContent({ decode: () => new UserNotFound() })`, `.annotate({ description: "A user", identifier: "User" })` and the branded id `Schema.String.pipe(Schema.brand("UserId"))`. [Existing SCHEMA-INTEGRATIONS.md, HTTP (HttpApi)]
+
+A request decode failure returns an empty 400 and is ignored by error reporters; response encoding failure returns an empty 500 and is reported. Both raise `HttpApiSchemaError`, with `kind: "Params" | "Headers" | "Query" | "Body" | "Payload" | "ResponseHeaders"` and `cause: Schema.SchemaError`. The existing `layerSchemaErrorTransform` example above customizes it at endpoint, group or API level. `OpenApi.fromApi(api, options)` forwards `referencePolicy` when extracting schema components. [Existing SCHEMA-INTEGRATIONS.md, HTTP (HttpApi)]
+
 ## Middleware and security
 
 - **Define middleware as a class extending `HttpApiMiddleware.Service`,** implement it as a `Layer`, attach it to an endpoint, group or API:

@@ -1,30 +1,10 @@
 # Reliability
 
-Production sending means every email goes out exactly once and failures are handled gracefully, and every bounce or complaint comes back into your data. Network issues, timeouts or server errors can leave you uncertain whether an email was sent, and retrying without idempotency risks duplicates; the fixes are an idempotency key derived from the business event and a webhook endpoint that acknowledges fast and processes each event once. The examples use the Resend Node SDK because the source does; full SDK and webhook setup (signature verification, registering endpoints, receiving) is in [../resend/SKILL.md](../resend/SKILL.md). Queues and retries in general are the `background-jobs` skill.
-
-**Contents:** [Idempotency keys](#idempotency-keys) · [What to retry](#what-to-retry) · [Backoff](#backoff) · [Error handling](#error-handling) · [A queue for critical email](#a-queue-for-critical-email) · [Timeouts](#timeouts) · [Delivery events](#delivery-events) · [The webhook endpoint](#the-webhook-endpoint) · [Handling bounces and complaints](#handling-bounces-and-complaints) · [Webhook retries](#webhook-retries) · [Testing and storing events](#testing-and-storing-events) · [Prove it](#prove-it)
+Network issues, timeouts or server errors can leave you uncertain whether an email was sent. Derive an idempotency key from the business event, persist critical mail in a queue, and process delivery events once. Provider fields, retention windows, SDK options and payloads belong to the provider: [Resend](../resend/SKILL.md), [OneSignal](../onesignal/REST-API.md). General queue and worker mechanics are in [background-jobs](../background-jobs/SKILL.md).
 
 ## Idempotency keys
 
-- **Send a unique key with each request.** If the same key is sent again, the server returns the original response instead of sending another email. Derive the key from the business event, not from the attempt:
-
-```typescript
-// Generate deterministic key based on the business event
-const idempotencyKey = `password-reset-${userId}-${resetRequestId}`;
-
-await resend.emails.send({
-  from: 'noreply@example.com',
-  to: user.email,
-  subject: 'Reset your password',
-  html: emailHtml,
-}, {
-  headers: {
-    'Idempotency-Key': idempotencyKey
-  }
-});
-```
-
-  (The `from` here is the source's; [EMAIL-TYPES.md](EMAIL-TYPES.md#designing-transactional-emails) says to avoid `noreply@` on transactional mail.)
+Reuse one key for the same logical send; never generate a fresh random value or `Date.now()` on each retry. Generate a UUID once when there is no natural event key. Check the provider’s key scope and expiration: Resend’s 24-hour cache and both source request-option examples are in [SENDING.md](../resend/SENDING.md#idempotency-keys).
 
 | Strategy | Example | When |
 |---|---|---|
@@ -33,74 +13,18 @@ await resend.emails.send({
 | UUID | `crypto.randomUUID()` | No natural key: generate it once and reuse it on every retry |
 
 - **If you retry the same logical send, the same key must be generated.** Avoid `Date.now()` or random values generated fresh on each attempt.
-- **Keys are typically cached for 24 hours.** Retries within this window return the original response; after expiration the same key triggers a new send, so complete your retry logic well within 24 hours.
 
 ## What to retry
 
-| Failure | Retry? |
-|---|---|
-| 5xx (server error) | Yes: transient, likely to resolve |
-| 429 (rate limit) | Yes: wait for the rate-limit window |
-| 4xx (client error) | No: fix the request first |
-| Network timeout | Yes: transient |
-| DNS failure | Yes: may be transient |
-
-| Code | Meaning | Action |
-|---|---|---|
-| 400 | Bad request | Fix payload (invalid email, missing field) |
-| 401 | Unauthorized | Check API key |
-| 403 | Forbidden | Check permissions, domain verification |
-| 404 | Not found | Check endpoint URL |
-| 422 | Validation error | Fix request data |
-| 429 | Rate limited | Back off, retry after delay |
-| 500 | Server error | Retry with backoff |
-| 503 | Service unavailable | Retry with backoff |
+Classify the provider’s response before retrying. Transient network timeouts and DNS failures may be retried with the same key; fix invalid payloads, credentials and permissions first. Rate limits and quota exhaustion need different waits. Resend’s named 409, 429, 500 and 503 cases are maintained in [LIMITS-AND-ERRORS.md](../resend/LIMITS-AND-ERRORS.md#retries).
 
 ## Backoff
 
-- **Exponential backoff with jitter** (to prevent a thundering herd): 1s, 2s, 4s, 8s, capped at 30000 ms, up to 5 attempts:
-
-```typescript
-async function sendWithRetry(emailData, maxRetries = 5) {
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    const { data, error } = await resend.emails.send(emailData);
-    if (!error) {
-      return data;
-    }
-    if (!isRetryable(error) || attempt === maxRetries - 1) {
-      throw error;
-    }
-    const delay = Math.min(1000 * Math.pow(2, attempt), 30000);
-    await sleep(delay + Math.random() * 1000); // Add jitter
-  }
-}
-
-function isRetryable(error) {
-  return error.statusCode >= 500 ||
-         error.statusCode === 429;
-}
-```
+Use exponential backoff with jitter to avoid a thundering herd; honor provider retry headers and cap attempts. The source’s 1s, 2s, 4s, 8s convention, 30-second cap and five-attempt helper are preserved with its Resend classification limitations in [LIMITS-AND-ERRORS.md](../resend/LIMITS-AND-ERRORS.md#email-practices-retry-source-examples).
 
 ## Error handling
 
-- **Queue retryable failures; log and alert on the rest,** especially critical mail like password resets:
-
-```typescript
-const { data, error } = await resend.emails.send(emailData);
-
-if (error) {
-  if (error.statusCode === 429) {
-    await queueForRetry(emailData, error.retryAfter);
-  } else if (error.statusCode >= 500) {
-    await queueForRetry(emailData);
-  } else {
-    await logFailure(error, emailData);
-    await alertOnCriticalEmail(emailData); // For password resets, etc.
-  }
-} else {
-  await logSuccess(data.id, emailData);
-}
-```
+Queue retryable failures; log and alert on permanent failures, especially critical mail such as password resets. The Resend SDK response/error examples are maintained with the provider retry owner above.
 
 ## A queue for critical email
 
@@ -114,98 +38,32 @@ For critical emails, use a queue to ensure delivery even if the initial send fai
 
 ## Timeouts
 
-- **Set timeouts to avoid hanging requests.** The source's snippet, verbatim:
-
-```typescript
-const signal = new AbortSignal.timeout(10000);
-
-await resend.emails.send(emailData, { signal });
-```
-
-- **Recommended:** 10 to 30 seconds for email API calls.
+Set a timeout to avoid hanging requests. The source recommends 10 to 30 seconds for email API calls; its Resend timeout snippet and the canonical request-options contract live in [SETUP.md](../resend/SETUP.md#the-node-sdk-contract).
 
 ## Delivery events
 
-| Event | Meaning |
-|---|---|
-| `email.sent` | Accepted by Resend (confirms the send started) |
-| `email.delivered` | Delivered to the recipient's server |
-| `email.bounced` | Hard or soft bounce (list hygiene, alerting) |
-| `email.complained` | Marked as spam: unsubscribe immediately |
-| `email.opened` | Opened (engagement tracking) |
-| `email.clicked` | Link clicked (engagement tracking) |
-
-- **Register the endpoint** in the Resend dashboard or through the API.
+Distinguish an API acceptance from delivery to the recipient’s server. Feed delivery status, bounces and complaints back into your data. Event names and payloads are owned by [Resend WEBHOOKS.md](../resend/WEBHOOKS.md#event-types) or [OneSignal](../onesignal/SKILL.md).
 
 ## The webhook endpoint
 
-- **Accept POST, return 2xx quickly (within 5 seconds), and handle duplicates.** Acknowledge first, then process:
-
-```typescript
-app.post('/webhooks/resend', async (req, res) => {
-  // Return 200 immediately to acknowledge receipt
-  res.status(200).send('OK');
-
-  // Process asynchronously
-  processWebhookAsync(req.body).catch(console.error);
-});
-```
-
-- **Always verify webhook signatures** to prevent spoofing. The email-best-practices example, verbatim:
-
-```typescript
-import { Webhook } from 'svix';
-
-const webhook = new Webhook(process.env.RESEND_WEBHOOK_SECRET);
-
-app.post('/webhooks/resend', (req, res) => {
-  try {
-    const payload = webhook.verify(
-      JSON.stringify(req.body),
-      {
-        'svix-id': req.headers['svix-id'],
-        'svix-timestamp': req.headers['svix-timestamp'],
-        'svix-signature': req.headers['svix-signature'],
-      }
-    );
-    // Process verified payload
-  } catch (err) {
-    return res.status(400).send('Invalid signature');
-  }
-});
-```
-
-- **Conflict on the body you verify:** the example above verifies `JSON.stringify(req.body)`, a re-stringified parsed body. The Resend agent-email-inbox reference says verification "is sensitive to the exact bytes: if your framework parses and re-stringifies the JSON before you verify, the signature check will fail", requires the raw body (`req.text()` in the Next.js App Router, `express.raw({ type: 'application/json' })` in Express), and lists `express.json()` on the webhook route as a common mistake. Confirm in the current docs; the raw-body form is in [../resend/SKILL.md](../resend/SKILL.md).
-- **Webhooks may be sent multiple times. Process each event once,** keyed by `event.id`: if `isEventProcessed(eventId)`, skip; otherwise `handleEvent`, then `markEventProcessed`.
-- **Also:** return 200 quickly and process asynchronously to avoid timeouts; log everything (store raw events for debugging); alert on webhook processing failures; and use a job queue for complex handling.
+Verify signatures before processing, acknowledge quickly (the email-best-practices source says within five seconds), and process duplicates once using the provider’s documented delivery identity. Resend uses the `svix-id` header, not a JSON `event.id`; raw-body verification and the preserved conflicting source examples live in [WEBHOOKS.md](../resend/WEBHOOKS.md#verify-the-signature).
 
 ## Handling bounces and complaints
 
-- **Bounce:** read `const { email_id, email, bounce_type } = event.data;`. On a hard bounce, `suppressEmail(email, 'hard_bounce')` and `removeFromAllLists(email)`. On a soft bounce, `incrementSoftBounce`, and when `count >= 3`, `suppressEmail(email, 'soft_bounce_limit')`.
-- **Complaint:** "Immediate suppression - no exceptions": `suppressEmail(email, 'complaint')`, `removeFromAllLists`, `logComplaint(event)`.
-- **Delivered:** `updateEmailStatus(email_id, 'delivered')`.
-- **Suppression helpers and rules** are in [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#suppression-list).
+Hard bounces and complaints cause immediate suppression and removal from active lists; the source suppresses after three soft bounces. Delivery updates the recorded status. [LISTS-AND-CAPTURE.md](LISTS-AND-CAPTURE.md#suppression-list) owns the business policy and helpers; [Resend WEBHOOKS.md](../resend/WEBHOOKS.md#bounce-types) owns its payload mapping and the source’s flat-field expressions.
 
 ## Webhook retries
 
-- **A non-2xx response makes Resend retry with exponential backoff.** The two Resend sources give different schedules; confirm in the current docs:
-
-| email-best-practices | agent-email-inbox reference |
-|---|---|
-| Retry 1 after about 30 seconds | Attempt 1 immediately |
-| Retry 2 after about 1 minute | Attempt 2 after 5 seconds |
-| Retry 3 after about 5 minutes | Attempt 3 after 5 minutes |
-| Continues for about 24 hours | Then after 30 minutes, 2 hours, 5 hours and 10 hours (7 attempts) |
+Persist work and handle retries safely; the provider owns retry timing and replay behavior. Resend’s current eight-attempt schedule and attributed older schedules live in [WEBHOOKS.md](../resend/WEBHOOKS.md#retries-and-replays).
 
 ## Testing and storing events
 
-- **Local testing:** use ngrok or similar to expose localhost (`ngrok http 3000`, then use the ngrok URL as the webhook endpoint); send test events from the Resend dashboard or trigger each event type manually.
-- **Storing webhook data:** https://github.com/resend/resend-webhooks-ingester and https://resend.com/docs/dashboard/webhooks/how-to-store-webhooks-data.
+Log raw events for debugging, alert on processing failures, and queue complex work. Resend’s tunnel, dashboard test-event and storage instructions live in [WEBHOOKS.md](../resend/WEBHOOKS.md#local-development) and [Store the events](../resend/WEBHOOKS.md#store-the-events).
 
 ## Prove it
 
-- Sending the same business event twice with the same idempotency key produces one email.
-- A forced 500 or 429 is retried with growing delays capped at 30 seconds; a 400 or 422 is not retried and is logged.
-- A send that hangs aborts within 10 to 30 seconds.
-- The webhook endpoint answers 2xx within 5 seconds, rejects a tampered signature, and processing the same `event.id` twice changes nothing the second time.
-- A test hard bounce and a test complaint each put the address on the suppression list and remove it from all lists; three soft bounces do the same.
+- Sending the same business event twice produces one email within the provider’s idempotency window.
+- Transient failures retry with growing delays and the same key; permanent failures are logged and alerted.
+- A hanging send aborts within the configured 10 to 30 seconds.
+- The webhook rejects a tampered signature and a repeated delivery changes no state the second time.
+- A hard bounce, a complaint and the source’s three-soft-bounce threshold each update suppression.

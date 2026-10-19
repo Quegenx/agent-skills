@@ -13,7 +13,8 @@ React Email builds emails from React and TypeScript components and turns them in
 | The canonical template, structure rules, every component and its props, accessibility defaults and duties | [COMPONENTS.md](COMPONENTS.md) |
 | Tailwind and `pixelBasedPreset`, what doesn't inline, required classes, borders, layout and images, the brand config, dark mode, client support caveats | [STYLING.md](STYLING.md) |
 | `render`, `pretty`, `toPlainText`, runtimes, sending with Resend (SDK, MCP, uploaded templates) and with other providers | [RENDERING-AND-SENDING.md](RENDERING-AND-SENDING.md) |
-| What to ask before building, props instead of `{{placeholders}}`, the footer, the ready templates' props and caveats, internationalization, the `@react-email/editor` visual editor | [PATTERNS.md](PATTERNS.md) |
+| What to ask before building, props instead of `{{placeholders}}`, the footer, the ready templates' props and caveats, internationalization | [PATTERNS.md](PATTERNS.md) |
+| The embeddable `@react-email/editor`: setup, API, export, themes and custom extensions | [EDITOR.md](EDITOR.md) |
 | Full code of the five ready templates: password reset, order confirmation, notification with code block, multi-column newsletter, team invitation | [TEMPLATES.md](TEMPLATES.md) |
 
 Current docs as markdown for agents: https://react.email/docs/llms.txt. Client CSS support: https://www.caniemail.com.

@@ -32,20 +32,13 @@ returning *;
 
 ## Supabase Queues (pgmq)
 
-- Send with `pgmq_public.send(queue_name, message, sleep_seconds)` (the delay before the message becomes visible), or `pgmq.send` inside your own transaction alongside the job row.
-- Read with `pgmq_public.read(queue_name, sleep_seconds, n)`. **That `sleep_seconds` is the visibility timeout:** how long the message stays hidden from other consumers while you work on it. Set it longer than the handler's worst case. A value of 0 makes the message visible again at once and another worker will process it too.
-- After success, `delete` it (or `archive` it to keep history). If the handler fails, do nothing: the message reappears after the timeout and is retried.
-- Each message carries `read_ct`, the number of times it was read. Past a limit (say 5), archive it to a dead-letter queue or table and alert, instead of retrying a poison message forever.
-- Trigger consumers from `pg_cron` or an Edge Function on a schedule; process a small batch per run and stay under the function's time limit.
+See [Supabase queue APIs, visibility, permissions and consumers](../supabase/CRON-AND-QUEUES.md#queues-consumers).
 
 ## Convex scheduler and crons
 
-- `ctx.scheduler.runAfter(ms, fn, args)` and `runAt(timestamp, fn, args)` schedule durably. From a mutation, scheduling is atomic with the mutation: it happens only if the mutation commits.
-- **Scheduled mutations run exactly once** and are retried on transient errors. **Scheduled actions run at most once and are not retried:** an action that calls an external API can fail and simply not run again. For important work, have the action record its outcome through a mutation, and let a mutation (or a cron) check for unfinished jobs and reschedule them.
-- Schedule `internal` functions so clients can't call them directly.
-- Recurring work goes in `crons.ts`. A cron that might overlap a still-running previous run must check job state before starting.
+Use [native Convex scheduling guarantees](../convex/FUNCTIONS-AND-DATA.md#native-scheduling-guarantees) for durable API calls, atomicity, execution/retry guarantees and cron registration.
+
 - **A recurring job's first run sets its watermark to "now"** rather than processing all history; backfills and resets: [../../marketing/marketing-loops/LOOP-STATE.md](../../marketing/marketing-loops/LOOP-STATE.md#resetting-and-backfilling-safely) [coreyhaines31/marketingskills, marketing-loops].
-- For many parallel actions with limits and retries, use a work pool component rather than scheduling unbounded actions at once.
 
 ## Retries and failure
 

@@ -145,7 +145,7 @@ Swapping a word for a synonym makes a new tell. Replace it with the fact it stoo
 
 ## 7. Social posts and email
 
-Everything above applies; these are the tells specific to the format. Full post and email craft lives in [social-media/POSTS.md](../../marketing/social-media/POSTS.md), [SEQUENCES.md](../../backend/email-practices/SEQUENCES.md#writing-each-email) and [cold-outreach/COPY.md](../../marketing/cold-outreach/COPY.md).
+Everything above applies; these are the tells specific to the format. Full post and email craft lives in [social-media/POSTS.md](../../marketing/social-media/POSTS.md), [SEQUENCES.md](../../marketing/email-marketing/SEQUENCES.md#writing-each-email) and [cold-outreach/COPY.md](../../marketing/cold-outreach/COPY.md).
 
 **Social posts** [coreyhaines31/marketingskills, social]:
 - **Broetry (Ban):** "one short sentence per line, every line, for the whole post. Write paragraphs and break lines where a person would pause."

@@ -36,6 +36,24 @@ import { SqlClient, SqlModel, SqlSchema } from "effect/sql"
 - **`Group.insert.makeEffect({ name, slug, notes: null })`** fills the generated id and timestamps from the Effect clock, so tests control them with `TestClock`.
 - **At an HTTP boundary** use `User.json` for responses and `User.jsonCreate` / `User.jsonUpdate` for payloads (HTTP.md).
 
+### Model variants example
+
+The schema integration guide uses this original declaration:
+
+```ts
+  class Group extends Model.Class<Group>("Group")({
+    id: Model.UuidV4Insert(GroupId),
+    name: Schema.NonEmptyString,
+    slug: Schema.NonEmptyString.pipe(Model.FieldExcept(["update", "jsonUpdate"])),
+    notes: Schema.NullOr(Schema.String).pipe(Model.FieldOnly(["select", "insert"])),
+    memberCount: Model.Field({ select: Schema.Int, json: Schema.Int }),
+    createdAt: Model.DateTimeInsert,
+    updatedAt: Model.DateTimeUpdate
+  }) {}
+```
+
+`Model.Date` is also available alongside the field helpers above. [Existing SCHEMA-INTEGRATIONS.md, SQL and Model]
+
 ## Repositories
 
 - **Derive CRUD from the model:**
@@ -48,6 +66,16 @@ SqlModel.makeRepository(Group, { tableName: "groups", spanPrefix: "Groups", idCo
 - **`findById` fails with `NoSuchElementError`.** Map it: `Effect.catchTags({ NoSuchElementError: () => new GroupNotFound({ id }), SchemaError: Effect.die, SqlError: Effect.die })`.
 - **Soft delete:** pass `softDeleteColumn`; reads then ignore soft-deleted rows and delete updates that column instead of removing the row.
 - **`SqlModel.makeResolvers`** builds batched request resolvers for insert, insert-void, find-by-id and delete.
+
+The schema integration guide shows the domain-error mapping in full:
+
+```ts
+  repo.findById(id).pipe(Effect.catchTags({
+    NoSuchElementError: () => new GroupNotFound({ id }),
+    SchemaError: Effect.die,
+    SqlError: Effect.die
+  }))
+```
 
 ## Queries
 

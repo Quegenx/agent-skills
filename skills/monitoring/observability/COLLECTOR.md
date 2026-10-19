@@ -1,5 +1,7 @@
 # Where telemetry goes
 
+Choose direct export, a local Collector or an agent/gateway arrangement from the existing OpenTelemetry and Collector references below. This guide keeps telemetry destinations, batching, privacy and backend configuration together. [existing observability, COLLECTOR.md]
+
 ## Three shapes, by size
 
 The SDK's batching span processor has a bounded queue. The old direct-export row said there was no buffer, which does not describe a configured batching processor. https://opentelemetry.io/docs/specs/otel/trace/sdk/#batching-processor
@@ -71,5 +73,7 @@ The decisions that matter:
 - **Local development:** the `grafana/otel-lgtm` image runs a Collector, Tempo, Loki, Prometheus and Grafana in one container; Jaeger's all-in-one image is enough for traces alone (UI on 16686, OTLP on 4317).
 - **A self-hosted stack:** the Collector with Tempo for traces, Loki for logs, Prometheus (or Mimir) for metrics, and Grafana for dashboards and alerting.
 - **Hosted (Grafana Cloud, Honeycomb, Datadog and others):** point the exporter or the gateway at the vendor's OTLP endpoint with three settings: `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf`, and `OTEL_EXPORTER_OTLP_HEADERS` carrying the authorization token. Keep the token out of logs and source control.
+
+## Prove it
 
 A working exporter isn't working monitoring. Check that service names and environments are right, that the sampling rate is what you meant, that logs open from traces, and that you have alerts on the few numbers that matter (error rate, latency percentiles, queue age, saturation) before the first incident needs them.

@@ -208,18 +208,12 @@ select name from (values ('50%_off sale'), ('50 percent off'), ('50x off')) v(na
 where name like replace(replace(replace('50%_off', '\', '\\'), '%', '\%'), '_', '\_') || '%' escape '\';
 ```
 
-In TypeScript, escape before binding: `const pattern = input.replace(/[\\%_]/g, (c) => "\\" + c) + "%"`, then `where name like $1 escape '\'`. A prefix `like` uses a B-tree index only with the C collation or a `text_pattern_ops` index; a case-insensitive search must use the same collation or expression (`lower(name)`) as its index.
+In TypeScript, escape before binding: `const pattern = input.replace(/[\\%_]/g, (c) => "\\" + c) + "%"`, then `where name like $1 escape '\'`. Index/collation requirements for prefix and case-insensitive searches are in [QUERIES.md](../performance-and-caching/QUERIES.md#predicates-the-index-can-use-sargable).
 
 ## Partitions and CTEs
 
-```sql
--- the planner skips partitions only when the filter compares the partition key itself
-explain (costs off) select count(*) from audit where at >= '2026-02-01' and at < '2026-03-01';
-explain (costs off) select count(*) from audit where date_trunc('month', at) = '2026-02-01';   -- scans every partition
+See [partition-pruning/CTE plans and Postgres partition lifecycle](../performance-and-caching/QUERIES.md#partitions-and-cte-materialization).
 
--- a CTE referenced once is inlined into the query (Postgres 12+); materialized evaluates it once, as a fence
-explain (costs off) with recent as (select * from orders) select * from recent where id = 10;
-explain (costs off) with recent as materialized (select * from orders) select * from recent where id = 10;
-```
+## Prove it
 
-Partition large append-only tables (audit logs, events) by time so queries on one month read one partition and old months drop instantly (`drop table` or `detach partition`, instead of a slow `delete`). Use `materialized` deliberately: when a CTE is expensive and referenced several times, or must run exactly once; otherwise it blocks filters from reaching the underlying index.
+Check the changed query against the relevant examples above; for partition pruning or materialization, use the [plan evidence](../performance-and-caching/QUERIES.md#prove-it) at its owner.

@@ -92,6 +92,8 @@ Emails must be readable by screen readers, dark-mode clients, translation tools 
 - **Meaningful images** (product shots, charts, screenshots, anything carrying information): give the purpose and the key details. Wrong: `alt="image"`, `alt="photo of a bike"`. Right: `alt="Red bicycle leaning against a brick wall on a rainy street"`.
 - **Decorative images** (spacers, dividers, background flourishes, pure branding ornaments): `alt=""`, which tells screen readers to skip them, for example `<img src="divider.png" alt="" role="presentation">`. Omitting `alt` is not the same: some screen readers announce the filename. An image that conveys no information not already in the surrounding text is decorative; an image inside an `<a>` is not.
 
+The React Email source’s meaningful-image example is `alt="Red bicycle leaning against a brick wall"` rather than `alt="image"`; a linked image uses `alt="View order #123"` [resend/react-email]. Component defaults remain in [COMPONENTS.md](../react-email/COMPONENTS.md#accessibility).
+
 ## The title tag
 
 - **Include a `<title>`** (Serious). Many clients and assistive technologies read it first, and it shows when the email is viewed as a web page.
@@ -110,8 +112,7 @@ Emails must be readable by screen readers, dark-mode clients, translation tools 
 
 ## React Email defaults
 
-- **In the latest React Email,** `<Html>` sets `lang` and `dir`, `<Img>` defaults to `alt=""`, `<Markdown>` tables render `role="presentation"`, and `<Preview>` emits a `<title>`. Upgrade with `npm install react-email@latest`.
-- **The content rules still have to be applied by hand:** heading hierarchy, descriptive alt and link text, contrast, the linked-image rule.
+Component defaults and their limits are maintained in [COMPONENTS.md](../react-email/COMPONENTS.md#accessibility); the author still applies the content rules above.
 
 ## Testing
 

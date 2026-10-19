@@ -157,3 +157,9 @@ supabase db dump --db-url [CONNECTION_STRING] -f data.sql --use-copy --data-only
 ```
 
   Restore with `psql --single-transaction --variable ON_ERROR_STOP=1 --file roles.sql --file schema.sql --command 'SET session_replication_role = replica' --file data.sql --dbname [CONNECTION_STRING]`. Enable Webhooks and non-default extensions on the new project first; re-enable Realtime publications after. For Vault/pgsodium, copy the 64-character hex root key via `GET/PUT https://api.supabase.com/v1/projects/$REF/pgsodium` before pausing or deleting the old project. Dump the `supabase_migrations` schema to keep migration history. That page's "direct connection string" uses `postgres.[PROJECT-REF]` at `db.[PROJECT-REF].supabase.com`, unlike the connect guide's `postgres` at `db.[PROJECT-REF].supabase.co`; copy the string from the Connect dialog.
+
+## Prove it
+
+- **Connections:** the client connects with the string from the Connect dialog on the mode its runtime needs (prepared statements off in transaction mode), and `pg_stat_activity` shows no growing `idle in transaction` sessions.
+- **Advisors:** `supabase db advisors` or MCP `get_advisors` for `security` and `performance` report nothing new, every remaining finding read and justified.
+- **Backups:** on Free, a `supabase db dump` of roles, schema and data restores into a fresh project with the `psql --single-transaction` command in [Backups and PITR](#backups-and-pitr).

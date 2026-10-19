@@ -43,17 +43,11 @@ The pipeline runs from the email form through validation, double opt-in and a re
 
 ## Marketing emails
 
-- **Sequences and lifecycle mail** (welcome, nurture, onboarding, re-engagement, billing and win-back), with their timing, exit conditions and copy, are in [SEQUENCES.md](SEQUENCES.md) and [LIFECYCLE-EMAILS.md](LIFECYCLE-EMAILS.md). The rules below apply to all of them.
+- **Sequences and lifecycle mail** (welcome, nurture, onboarding, re-engagement, billing and win-back), with their timing, exit conditions and copy, are in [SEQUENCES.md](../../marketing/email-marketing/SEQUENCES.md) and [LIFECYCLE-EMAILS.md](../../marketing/email-marketing/LIFECYCLE-EMAILS.md). The rules below apply to all of them.
 - **Core:** consent first (explicit opt-in required, especially GDPR/CASL); value-driven (useful content, not just promotions); respect preferences (let users control frequency and content types).
 - **Required in every marketing email:** clear sender identification, a physical mailing address (CAN-SPAM), an unsubscribe mechanism, and an indication that it is marketing (GDPR).
 - **Unsubscribe:** prominent in every email; one-click preferred; immediately (GDPR) or within 10 days (CAN-SPAM), immediate preferred; free; no login. Headers are in [COMPLIANCE.md](COMPLIANCE.md#the-list-unsubscribe-headers).
-- **Subject lines:** clear, specific, 50 characters or less for mobile (the emails source says "40-60 characters ideal", [SEQUENCES.md](SEQUENCES.md#subject-and-preview)); curiosity without misleading; A/B test. Right: "Your weekly digest: 5 productivity tips". Wrong: "You won't believe what happened!"
-- **Structure:** above the fold, a value proposition, a primary call to action and an engaging visual; a scannable body (short paragraphs, bullets) with a clear hierarchy and multiple calls to action; a footer with unsubscribe, company info, physical address (CAN-SPAM) and social links.
-- **Mobile-first:** single column, buttons at least 44x44px, text at least 16px; test on iOS, Android and in dark mode.
-- **Segment** by behavior (purchases, activity), demographics, preferences, engagement level and signup source, for higher open and click rates, lower unsubscribes and a better experience.
-- **Personalize** with name in the subject or greeting, location-specific content, behavior-based recommendations and purchase history, using only data you have permission to use; don't over-personalize (it can feel intrusive).
-- **Frequency:** start conservative, increase with engagement, let users set preferences, monitor unsubscribe rates. Yahoo: honor the frequency the list promised.
-- **Timing:** weekday mornings 9 to 11 AM local time, Tuesday to Thursday often best; test your own audience.
+- **Campaign copy, segmentation, personalization, frequency and timing:** [email-marketing/SEQUENCES.md](../../marketing/email-marketing/SEQUENCES.md#campaign-copy-conventions).
 - **Watch:** bounce rate below 2%, complaint rate below 0.05% (the thresholds other sources give are in [DELIVERABILITY.md](DELIVERABILITY.md#reputation-and-thresholds)).
 
 ## Suppression list
@@ -97,7 +91,7 @@ async function suppressEmail(email: string, reason: string, sourceId?: string) {
 }
 ```
 
-  As written in the source, `canSendTo` doesn't lowercase the address while `suppressEmail` does, and the `reason` union lacks `'soft_bounce_limit'`, which the webhook handler in [RELIABILITY.md](RELIABILITY.md#handling-bounces-and-complaints) passes.
+  As written in the source, `canSendTo` doesn't lowercase the address while `suppressEmail` does, and the `reason` union lacks `'soft_bounce_limit'`, which the preserved source webhook handler in [WEBHOOKS.md](../resend/WEBHOOKS.md#handling-bounces-and-complaints) passes.
 
 - **Skip suppressed addresses in the send path:**
 
@@ -126,7 +120,7 @@ async function sendEmail(to: string, emailData: EmailData) {
 More: https://resend.com/docs/knowledge-base/audience-hygiene.
 
 - **Remove immediately:** hard bounces, unsubscribes, complaints. Gmail also says auto-unsubscribe after multiple bounces.
-- **Inactive** means no opens or clicks in 45 to 90 days (the emails source starts re-engagement after "30-60 days of inactivity", and its eval uses 90; its four-email version is in [SEQUENCES.md](SEQUENCES.md#re-engagement)). Opens are a weak signal: Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), so judge inactivity on clicks and product activity where you can. Send a "We miss you" or "Still interested?" email, wait 14 to 30 days, then remove non-responders from active lists. A CRM rule like "Archive contacts with no activity in 12+ months" [coreyhaines31/marketingskills, revops] is about CRM records, not the mailing list; both hold. The source's job selects `getInactiveSubscribers(90)` and removes a subscriber when `daysSince(subscriber.reengagement_sent) > 30`.
+- **Inactive** means no opens or clicks in 45 to 90 days (the emails source starts re-engagement after "30-60 days of inactivity", and its eval uses 90; its four-email version is in [SEQUENCES.md](../../marketing/email-marketing/SEQUENCES.md#re-engagement)). Opens are a weak signal: Apple Mail Privacy Protection "prevents senders from seeing if you've opened the email message they sent you" (https://support.apple.com/guide/iphone/use-mail-privacy-protection-iphf084865c7/ios), so judge inactivity on clicks and product activity where you can. Send a "We miss you" or "Still interested?" email, wait 14 to 30 days, then remove non-responders from active lists. A CRM rule like "Archive contacts with no activity in 12+ months" [coreyhaines31/marketingskills, revops] is about CRM records, not the mailing list; both hold. The source's job selects `getInactiveSubscribers(90)` and removes a subscriber when `daysSince(subscriber.reengagement_sent) > 30`.
 - **Gmail:** periodically confirm recipients still want your mail, and consider unsubscribing people who never open.
 
 ## Retention

@@ -83,11 +83,7 @@ Testing logs (`TestConsole`, and why `it.effect` hides them) is in [TESTING.md](
 
 ### Effect.fn
 
-- **Reusable functions:** "prefer `Effect.fn("name")` when tracing is useful and `Effect.fnUntraced` when it is not, particularly in library implementations and hot paths. Avoid functions that only wrap and return `Effect.gen`." Inline code uses `Effect.gen`.
-- **`Effect.fn("name")`** improves stack traces and attaches a span (`Effect.withSpan` behind the scenes). The name should match the function name; service methods use `Effect.fn("Service.method")`.
-- **Forms:** `Effect.fn(body, ...)` is a stack-frame boundary with no span; `Effect.fn("operationName", options?)(body, ...)` is a named span, with `SpanOptionsNoTrace` (attributes, links, parent or root, kind, sampling, level). `{ self }` binds `this`. Type the return with `Effect.fn.Return<A, E, R>`.
-- **Pass combinators as extra arguments, never `.pipe`:** each transform receives the previous result and the original arguments.
-- **`Effect.fnUntraced`** "avoids tracing and stack-frame capture while still reusing the generator body."
+See [Effect.fn names, forms and combinator placement](CODE-STYLE.md#effectfn).
 
 ### Span APIs (all on `Effect`)
 

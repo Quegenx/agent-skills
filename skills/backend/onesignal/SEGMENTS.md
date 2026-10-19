@@ -66,13 +66,7 @@ A Segment is a dynamic group of Subscriptions defined by filters, and it updates
 
 ## Tags
 
-- **Values must be strings.** Send numbers as `"42"` to enable numeric filters; send booleans as `"1"`/`"0"` to reduce payload. No arrays, objects or JSON: use Custom Events for those.
-- **Restricted keys:** `message`, `notification`, `subscription`, `user`, `template`, `app`, `org`, `dynamic_content`, `data_feed`, `journey`, `custom_data`.
-- **Identify users with External ID, not tags.**
-- **Tags per user are limited by plan** (example: 20 per user). At the limit you cannot add new tags (delete one first); updates to existing tags still succeed.
-- **Web SDK:** the user must exist before tags; call `login`. Tags are lost if the user navigates away before they are sent. Cleared browser data loses tags unless `login` re-associates the user.
-- **Mobile SDK v5+ caches and retries** tag writes.
-- **Avoid PII** in tags or tag-derived criteria.
+The string representation, restricted keys, identity, plan limits and SDK write lifecycle are owned by [USER-MODEL.md](USER-MODEL.md#tags). Avoid PII in tag-derived criteria; Time Operators below own timestamp targeting.
 
 ## Time Operators
 

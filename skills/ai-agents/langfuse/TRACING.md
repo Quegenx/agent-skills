@@ -1,6 +1,6 @@
 # Tracing with Langfuse
 
-Sources: [langfuse/skills, langfuse, references/instrumentation.md] and Langfuse's [observation-first API migration](https://langfuse.com/faq/all/deprecated-api-migration). Generic span propagation and collection remain in [observability](../../backend/observability/SKILL.md).
+Sources: [langfuse/skills, langfuse, references/instrumentation.md] and Langfuse's [observation-first API migration](https://langfuse.com/faq/all/deprecated-api-migration). Generic span propagation and collection remain in [observability](../../monitoring/observability/SKILL.md).
 
 ## Integration and hierarchy
 

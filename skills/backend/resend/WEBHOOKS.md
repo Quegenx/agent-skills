@@ -2,7 +2,7 @@
 
 Resend sends real-time HTTPS POSTs with a JSON body `{ type, created_at, data }` when email, domain, contact, suppression, topic and inbox events happen. Delivery is signed with Svix, at least once and not in order. The sources require verifying the signature against the raw request body (parsing and re-stringifying JSON breaks it), deduping on the `svix-id` header, and returning 200 quickly; any other response triggers retries. Inbound mail (`email.received`) is covered in [RECEIVING.md](RECEIVING.md), inbox events in [AGENT-INBOX.md](AGENT-INBOX.md).
 
-**Contents:** [Uses](#uses) · [Event types](#event-types) · [Bounce types](#bounce-types) · [Payloads](#payloads) · [Create a webhook](#create-a-webhook) · [Verify the signature](#verify-the-signature) · [Handle events](#handle-events) · [Retries and replays](#retries-and-replays) · [Delivery history](#delivery-history) · [Manage webhooks](#manage-webhooks) · [Store the events](#store-the-events) · [IP allowlist](#ip-allowlist) · [Local development](#local-development) · [Common mistakes](#common-mistakes) · [Prove it](#prove-it)
+**Contents:** [Uses](#uses) · [Event types](#event-types) · [Bounce types](#bounce-types) · [Payloads](#payloads) · [Create a webhook](#create-a-webhook) · [Verify the signature](#verify-the-signature) · [Handle events](#handle-events) · [Retries and replays](#retries-and-replays) · [Source examples and corrections](#source-examples-and-corrections) · [The webhook endpoint](#the-webhook-endpoint) · [Handling bounces and complaints](#handling-bounces-and-complaints) · [Delivery history](#delivery-history) · [Manage webhooks](#manage-webhooks) · [Store the events](#store-the-events) · [IP allowlist](#ip-allowlist) · [Local development](#local-development) · [Common mistakes](#common-mistakes) · [Prove it](#prove-it)
 
 ## Uses
 
@@ -166,7 +166,7 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-The vendor skill's Next.js example (`headers` keyed by the `svix-*` names, and `secret`):
+Historical vendor skill Next.js example, retained verbatim for source comparison. Its `svix-*` keys and `secret` are not the current SDK option names:
 
 ```typescript
 import { Resend } from 'resend';
@@ -216,7 +216,7 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-- **Option names, sources disagree:** the SDK source (`VerifyWebhookOptions`) and the docs' verify page use `headers: { id, timestamp, signature }` and `webhookSecret`. The vendor skill, the Agent Email Inbox skill page and the examples repo pass `headers: { 'svix-id', 'svix-timestamp', 'svix-signature' }` and `secret`. In the v6.34.1 source, `VerifyWebhookOptions` is `{ payload: string; headers: { id; timestamp; signature }; webhookSecret: string }`, and `verify` maps those headers to Svix's `webhook-id`, `webhook-timestamp` and `webhook-signature`. Confirm in the current docs.
+- **Option names, sources disagree:** the SDK source (`VerifyWebhookOptions`) and the docs' verify page use `headers: { id, timestamp, signature }` and `webhookSecret`. The vendor skill, the Agent Email Inbox skill page and the examples repo pass `headers: { 'svix-id', 'svix-timestamp', 'svix-signature' }` and `secret`. In the v6.34.1 source, `VerifyWebhookOptions` is `{ payload: string; headers: { id; timestamp; signature }; webhookSecret: string }`, and `verify` maps those headers to Svix's `webhook-id`, `webhook-timestamp` and `webhook-signature`. The [official verification guide](https://resend.com/docs/webhooks/verify-webhooks-requests), fetched for this correction, confirms `headers: { id, timestamp, signature }` and `webhookSecret`; use that contract.
 - **Manually with Svix:** `npm install svix`, then `import { Webhook } from 'svix'; const wh = new Webhook(secret); wh.verify(payload, headers);` with the `svix-id`, `svix-timestamp` and `svix-signature` headers; it throws on failure. Fully manual header verification: https://docs.svix.com/receiving/verifying-payloads/how-manual.
 - **Return 400 on a failed verification** and 200 on every valid event.
 
@@ -232,21 +232,115 @@ export async function POST(req: NextRequest) {
 
 - **Retry schedule when the endpoint doesn't return 200,** each delay counted from the previous failure:
 
-| Attempt | Vendor skill | Docs |
-|---|---|---|
-| 1 | Immediately | Immediately |
-| 2 | 5 seconds | 5 seconds |
-| 3 | 5 minutes | 5 minutes |
-| 4 | 30 minutes | 30 minutes |
-| 5 | 2 hours | 2 hours |
-| 6 | 5 hours | 5 hours |
-| 7 | 10 hours | 10 hours |
-| 8 | | 10 hours |
+| Attempt | Delay after the previous failure |
+|---|---|
+| 1 | Immediately |
+| 2 | 5 seconds |
+| 3 | 5 minutes |
+| 4 | 30 minutes |
+| 5 | 2 hours |
+| 6 | 5 hours |
+| 7 | 10 hours |
+| 8 | 10 hours |
 
-  Example from the docs: an event that fails 3 times then succeeds is delivered about 35 minutes 5 seconds after the first attempt. A separate docs page says Resend retries failed deliveries "for up to 24 hours" when the endpoint returns 5xx, which is shorter than the schedule above. Confirm in the current docs.
+The [official retries and replays page](https://resend.com/docs/webhooks/retries-and-replays), fetched for this correction, gives all eight attempts. Its example succeeds about 35 minutes 5 seconds after an initial attempt and three failures. Historical source differences remain: the vendor/agent-inbox reference stopped at seven attempts; email-best-practices said approximately 30 seconds, 1 minute, 5 minutes, continuing about 24 hours; the [official storage FAQ](https://resend.com/docs/webhooks/how-to-store-webhooks-data) still says “up to 24 hours” for 5xx. Use the specific schedule above; the general FAQ is inconsistent with its total duration.
 - **Removing or disabling the endpoint stops attempts.**
 - **An endpoint that keeps failing is disabled automatically,** and the team gets an email (endpoint URL, how long it has failed). Re-enable it on the Webhooks page.
 - **Manual replay** from the dashboard works on `failed` and `succeeded` messages: backfill after an outage, reprocess with new code, or send to another endpoint. The API replay `resend.webhooks.events.replay({ webhookId, eventId })` queues one more delivery immediately, returns the same event ID and does not schedule or change automatic retries. It returns 422 if the webhook is disabled or the payload is no longer available.
+
+## Source examples and corrections
+
+The examples below are preserved code from the receiving and email-best-practices sources. They do not define alternate verification, acknowledgement or identity contracts: verify the raw body with [Verify the signature](#verify-the-signature), then deduplicate using [Handle events](#handle-events). The first email-best-practices route acknowledges without verifying; the second re-stringifies JSON. Do not use either unchanged.
+
+### Receiving source verification
+
+- **The `verify()` options conflict between sources.** The vendor receiving reference passes `svix-*` header keys and `secret`:
+
+```typescript
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function POST(req: Request) {
+  const payload = await req.text();
+
+  const event = resend.webhooks.verify({
+    payload,
+    headers: {
+      'svix-id': req.headers.get('svix-id'),
+      'svix-timestamp': req.headers.get('svix-timestamp'),
+      'svix-signature': req.headers.get('svix-signature'),
+    },
+    secret: process.env.RESEND_WEBHOOK_SECRET,
+  });
+
+  if (event.type === 'email.received') {
+    // Process the email
+  }
+
+  return new Response('OK', { status: 200 });
+}
+```
+
+  The SDK source (`VerifyWebhookOptions`), the docs' verify page and the agent-inbox skill take `headers: { id, timestamp, signature }` and `webhookSecret`, and the agent-inbox skill lists passing `secret` or `svix-*` keys as a mistake. The [official verification guide](https://resend.com/docs/webhooks/verify-webhooks-requests) confirms the contract in [Verify the signature](#verify-the-signature); the source’s invalid options above are retained only for comparison.
+### Email-best-practices endpoint examples
+
+#### The webhook endpoint
+
+[resend/email-best-practices] Historical examples below; verify raw bytes before acknowledgement using [Verify the signature](#verify-the-signature).
+
+- **Accept POST, return 2xx quickly (within 5 seconds), and handle duplicates.** Acknowledge first, then process:
+
+```typescript
+app.post('/webhooks/resend', async (req, res) => {
+  // Return 200 immediately to acknowledge receipt
+  res.status(200).send('OK');
+
+  // Process asynchronously
+  processWebhookAsync(req.body).catch(console.error);
+});
+```
+
+- **Always verify webhook signatures** to prevent spoofing. The email-best-practices example, verbatim:
+
+```typescript
+import { Webhook } from 'svix';
+
+const webhook = new Webhook(process.env.RESEND_WEBHOOK_SECRET);
+
+app.post('/webhooks/resend', (req, res) => {
+  try {
+    const payload = webhook.verify(
+      JSON.stringify(req.body),
+      {
+        'svix-id': req.headers['svix-id'],
+        'svix-timestamp': req.headers['svix-timestamp'],
+        'svix-signature': req.headers['svix-signature'],
+      }
+    );
+    // Process verified payload
+  } catch (err) {
+    return res.status(400).send('Invalid signature');
+  }
+});
+```
+
+- **Conflict on the body you verify:** the example above verifies `JSON.stringify(req.body)`, a re-stringified parsed body. The Resend agent-email-inbox reference says verification "is sensitive to the exact bytes: if your framework parses and re-stringifies the JSON before you verify, the signature check will fail", requires the raw body (`req.text()` in the Next.js App Router, `express.raw({ type: 'application/json' })` in Express), and lists `express.json()` on the webhook route as a common mistake. The [official verification guide](https://resend.com/docs/webhooks/verify-webhooks-requests) confirms the raw-body requirement; use [Verify the signature](#verify-the-signature).
+- **Historical identity claim:** email-best-practices used `event.id` with `isEventProcessed(eventId)`, `handleEvent`, then `markEventProcessed`. Resend’s JSON payload shown above has `{ type, created_at, data }`; the [official storage guide](https://resend.com/docs/webhooks/how-to-store-webhooks-data) identifies the `svix-id` header for deduplication. Use [Handle events](#handle-events).
+- **Also:** return 200 quickly and process asynchronously to avoid timeouts; log everything (store raw events for debugging); alert on webhook processing failures; and use a job queue for complex handling.
+
+### Email-best-practices payload handlers
+
+#### Handling bounces and complaints
+
+- **Bounce:** read `const { email_id, email, bounce_type } = event.data;`. On a hard bounce, `suppressEmail(email, 'hard_bounce')` and `removeFromAllLists(email)`. On a soft bounce, `incrementSoftBounce`, and when `count >= 3`, `suppressEmail(email, 'soft_bounce_limit')`.
+- **Complaint:** "Immediate suppression - no exceptions": `suppressEmail(email, 'complaint')`, `removeFromAllLists`, `logComplaint(event)`.
+- **Delivered:** `updateEmailStatus(email_id, 'delivered')`.
+- **Suppression helpers and rules** are in [LISTS-AND-CAPTURE.md](../email-practices/LISTS-AND-CAPTURE.md#suppression-list).
+
+The email-best-practices event table described `email.bounced` as a hard or soft bounce, whereas [Bounce types](#bounce-types) distinguishes `email.delivery_delayed` from the permanent bounce event. That source claim remains a comparison here.
+
+The source’s flat `email`/`bounce_type` payload differs from the current nested `bounce` and `to` fields in [Payloads](#payloads); its `soft_bounce_limit` reason is absent from the generic suppression type. Preserve the business suppression policy, but map it to the provider payload before adapting these source expressions.
 
 ## Delivery history
 
@@ -329,6 +423,8 @@ const { data: rotated, error: rotateError } = await resend.webhooks.rotateSignin
 - **CLI:** `resend webhooks update ... --events email.sent email.delivered --status enabled`, `delete`, `get`, `list`.
 
 ## Store the events
+
+The email-best-practices source linked [the original storage guide URL](https://resend.com/docs/dashboard/webhooks/how-to-store-webhooks-data); the directly fetched [current storage guide](https://resend.com/docs/webhooks/how-to-store-webhooks-data) supports the `svix-id` identity above.
 
 - **Webhooks are ephemeral, and Resend keeps email data 30 days on all plans** (flexible on Enterprise). Store events yourself for longer.
 - **Store at least** the `svix-id`, event type, timestamp and email ID.

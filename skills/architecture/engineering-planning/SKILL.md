@@ -1,11 +1,11 @@
 ---
 name: engineering-planning
-description: "Turns an engineering request into resolved decisions, a user-centered specification, dependency-aware tickets or a self-contained implementation handoff, then executes or resumes the selected plan with a durable progress ledger. Use when shaping a feature, investigating an ambiguous design, writing an RFC, planning work across sessions or carrying an accepted plan through implementation."
+description: "Turns an engineering request into resolved decisions, a user-centered specification, dependency-aware tickets or a self-contained implementation handoff, then executes or resumes the selected plan with a durable progress ledger. Use when shaping a feature, investigating an ambiguous design, writing an RFC or developer-tool product brief, planning work across sessions or carrying an accepted plan through implementation."
 ---
 
 # Engineering planning
 
-Resolve the uncertainty that matters to the requested outcome, then choose the smallest useful planning artifact. Sources are Matt Pocock's grilling, questionnaires, specs, tickets, wayfinder and wizard; obra/superpowers' brainstorming and writing-plans; shadcn's improve planning and reconciliation references; and Octocode's RFC and prerequisite references. Source workflows do not expand the user's authorization.
+Resolve the uncertainty that matters to the requested outcome, then choose the smallest useful planning artifact. Sources are Matt Pocock's grilling, questionnaires, specs, tickets, wayfinder and wizard; obra/superpowers' brainstorming and writing-plans; shadcn's improve planning and reconciliation references; Octocode's RFC and prerequisite references; and React Doctor's developer-tool product-thinking runbook. Source workflows do not expand the user's authorization.
 
 | The job | Read |
 |---|---|
@@ -16,6 +16,7 @@ Resolve the uncertainty that matters to the requested outcome, then choose the s
 | Prepare an implementation plan for an executor without conversation history | [HANDOFF-PLANS.md](HANDOFF-PLANS.md) |
 | Execute or resume an accepted plan, track decisions and hand off a phase | [EXECUTION.md](EXECUTION.md) |
 | Develop and audit a consequential proposal | [RFC.md](RFC.md) |
+| Before changing a developer tool's public surface: observed job, reuse, one metric, defaults, compatibility and removal brief | [PRODUCT-PASS.md](PRODUCT-PASS.md) |
 | Guide a human through steps requiring their access or judgment | [MANUAL-STEPS.md](MANUAL-STEPS.md) |
 
 ## The rules

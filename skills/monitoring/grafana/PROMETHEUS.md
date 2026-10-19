@@ -1,6 +1,6 @@
 # Prometheus
 
-Designing Prometheus metrics, recording rules, histograms and scrape configs, and storing them long term in Grafana Mimir. A series is one unique metric name plus label key-value set, and too many series means memory pressure, slow queries, ingest pressure and a high bill, so the labels you attach and how many values each one takes decide most outcomes. Querying is in [PROMQL.md](PROMQL.md); label strategy, cardinality fires and Grafana Cloud cost are in [CARDINALITY-AND-COST.md](CARDINALITY-AND-COST.md); OpenTelemetry instrumentation is in [the observability skill](../../backend/observability/SKILL.md).
+Designing Prometheus metrics, recording rules, histograms and scrape configs, and storing them long term in Grafana Mimir. A series is one unique metric name plus label key-value set, and too many series means memory pressure, slow queries, ingest pressure and a high bill, so the labels you attach and how many values each one takes decide most outcomes. Querying is in [PROMQL.md](PROMQL.md); label strategy, cardinality fires and Grafana Cloud cost are in [CARDINALITY-AND-COST.md](CARDINALITY-AND-COST.md); OpenTelemetry instrumentation is in [the observability skill](../observability/SKILL.md).
 
 **Contents:** [Metric names](#metric-names) · [Labels](#labels) · [What to instrument](#what-to-instrument) · [Histograms vs summaries](#histograms-vs-summaries) · [Recording rules](#recording-rules) · [Scraping](#scraping) · [Exemplars](#exemplars) · [Mimir](#mimir) · [Prove it](#prove-it)
 

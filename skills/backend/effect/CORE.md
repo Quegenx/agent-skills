@@ -95,44 +95,11 @@ Keep the logic in effects and run them at the program's edge: an app ideally mak
 
 ## Entry points
 
-- **A process: `NodeRuntime.runMain(effect, { disableErrorReporting?, teardown? })`.** It interrupts the fiber on `SIGINT` or `SIGTERM` and calls the teardown to pick the exit code. It is dual. Bun has the same shape (`BunRuntime.runMain(program, { disableErrorReporting: true })`); the browser has `BrowserRuntime.runMain` from `@effect/platform-browser`. Disable error reporting only if the app already centralizes it.
-- **Still use `runMain` in v4.** The core runtime now keeps the Node process alive while fibers are suspended (v3 needed `runMain` for that), but `runMain` still gives signal handling (graceful interrupt of the root fiber), exit codes (`process.exit(code)`) and error reporting.
-- **Put teardown logic in the main effect.** `runMain` handles the interrupt and finalizers run; `Effect.runPromise` gives no graceful teardown on CTRL+C.
-- **An app made of layers: `NodeRuntime.runMain(Layer.launch(HttpServerLive))`.** `Layer.launch(layer)` turns the layer into a long-running `Effect<never>`; this suits an HTTP server plus background workers. A worker layer is `Layer.effectDiscard(Effect.gen(... Effect.forkScoped(loop)))`.
-- **Exit codes from `Runtime.defaultTeardown`:** `0` on success; `130` for interruption-only failures (a mixed cause takes the squash path); the squashed error's `[Runtime.errorExitCode]` if present; otherwise `1`.
-- **Set an error's exit code or silence its report** with the markers, both read from `Cause.squash(cause)`:
-
-```ts
-class MyError extends Data.TaggedError("MyError") {
-  readonly [Runtime.errorExitCode] = 42
-}
-// already reported elsewhere: readonly [Runtime.errorReported] = false
-```
-
-- **`Runtime.makeRunMain(({ fiber, teardown }) => ...)`** is for platform adapters; most applications use a platform runner.
+See [process entry points, teardown and exit codes](RESOURCES-AND-CONFIG.md#entry-points).
 
 ## ManagedRuntime
 
-Use it to run Effect from code you don't control the entry of: web handlers, framework hooks (React and others), worker queues, legacy callback APIs.
-
-- **`ManagedRuntime.make(layer, { memoMap? })`** builds the layer lazily on first use and caches its context for later runs. Methods: `runPromise`, `runSync` (synchronous edges), `runCallback` (callback-only APIs), `runFork`, `dispose`.
-- **Build one runtime from the application layer** and share it across handlers.
-- **Dispose it when done** (`dispose` or `disposeEffect` releases the resources). A disposed runtime cannot be reused.
-- **Share one memo map across runtimes,** or memoization breaks between them.
-
-```ts
-export const appMemoMap = Layer.makeMemoMapUnsafe()
-const runtime = ManagedRuntime.make(TodoRepo.layer, { memoMap: appMemoMap })
-
-// in a handler
-await runtime.runPromise(
-  TodoRepo.use((repo) => repo.getById(id)).pipe(
-    Effect.catchTag("TodoNotFound", () => Effect.succeed(null))
-  )
-)
-
-process.once("SIGINT", () => void runtime.dispose())
-```
+See [ManagedRuntime construction, sharing and disposal](RESOURCES-AND-CONFIG.md#managedruntime).
 
 ## Option and Result
 

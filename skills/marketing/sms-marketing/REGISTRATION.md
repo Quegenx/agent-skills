@@ -27,6 +27,8 @@ Each tax ID may register up to five Standard or Low-Volume Standard brands; more
 
 ## Throughput by Trust Score
 
+The OneSignal source describes long codes as 3 to 225 MPS; Twilio’s score table below gives a 3.75 MPS low-volume convention and the 225 total at Trust Score 75 to 100 (75 each to AT&T, T-Mobile and Verizon). Keep the source range as a provider summary, and plan from the specific carrier table. OneSignal application timings and registration setup remain in [EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-registration).
+
 From Twilio (https://support.twilio.com/hc/en-us/articles/1260803225669). The source's table ("Verified brand 75-100+ msg/sec / Standard 4-10 / Unregistered 0.1 msg/sec or blocked") is stale.
 
 | Trust Score | SMS MPS per major carrier (AT&T, T-Mobile, Verizon) | Total |

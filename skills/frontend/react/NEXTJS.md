@@ -275,11 +275,11 @@ const inter = Inter({
 - **Preloading follows the file type:** a font called in a page preloads on that route, in a layout on every route under it, in the root layout on all routes.
 - **Call each font once.** Each call is "hosted as one instance", so define fonts in one file (`styles/fonts.ts`) and import the objects.
 - **Fonts as a CLS fix** only "when the route actually loads external font CSS or swaps text after render"; "Do not migrate fonts when CLS is caused by images, ads, embeds, or injected UI." [Vercel, vercel-optimize, support-topics/next-font-cls-self-hosting.md].
-- A hand-written font preload needs `crossorigin`; that is in [../../backend/performance-and-caching/BROWSER.md](../../backend/performance-and-caching/BROWSER.md#connections-fonts-and-scripts).
+- A hand-written font preload needs `crossorigin`; that is in [../web-performance/BROWSER.md](../web-performance/BROWSER.md#connections-fonts-and-scripts).
 
 ## next/script
 
-https://nextjs.org/docs/app/api-reference/components/script (checked 2026-10-18). `next/script` since 11.0.0; `beforeInteractive` and `afterInteractive` support `app` since 13.0.0. Plain `defer` and `async` are in [BROWSER.md](../../backend/performance-and-caching/BROWSER.md#connections-fonts-and-scripts).
+https://nextjs.org/docs/app/api-reference/components/script (checked 2026-10-18). `next/script` since 11.0.0; `beforeInteractive` and `afterInteractive` support `app` since 13.0.0. Plain `defer` and `async` are in [BROWSER.md](../web-performance/BROWSER.md#connections-fonts-and-scripts).
 
 | `strategy` | When it loads | Docs' examples |
 |---|---|---|

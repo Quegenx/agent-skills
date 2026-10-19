@@ -126,7 +126,7 @@ Local is for validation, cloud is for scale. Trust cloud for measurement and loc
 
 ## Investigating the backend
 
-Only when the user owns the backend and has Grafana access. Don't guess the language, datasources, service label keys (`service_name`, `service`, `app`, `job`, `namespace`, `container`) or metric names: discover them. Vendor-neutral instrumentation is the observability skill ([../../backend/observability/SKILL.md](../../backend/observability/SKILL.md)).
+Only when the user owns the backend and has Grafana access. Don't guess the language, datasources, service label keys (`service_name`, `service`, `app`, `job`, `namespace`, `container`) or metric names: discover them. Vendor-neutral instrumentation is the observability skill ([../observability/SKILL.md](../observability/SKILL.md)).
 
 1. **Datasources:** `mcp-grafana` `list_datasources()`, or `gcx datasources list -o json`. Record UIDs and types. Neither configured: pause and ask the user to authenticate one.
 2. **Labels:** ask for the exact key and value and confirm with `up{<label_key>="<label_value>"}` (no series means the wrong label), or `list_label_names(datasource_uid=...)` and `list_label_values(datasource_uid=..., label="service_name")`.

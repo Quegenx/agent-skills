@@ -90,7 +90,7 @@ order by timestamp desc limit 20;
 | Status | Code | Cause and first move |
 |---|---|---|
 | 3XX | | `Response.redirect()` |
-| 401 | `UNAUTHORIZED_NO_AUTH_HEADER`, `UNAUTHORIZED_INVALID_JWT_FORMAT` (not `Bearer <JWT>`), `UNAUTHORIZED_LEGACY_JWT` (bad HS256), `UNAUTHORIZED_ASYMMETRIC_JWT` (bad ES256/RS256), `UNAUTHORIZED_UNSUPPORTED_TOKEN_ALGORITHM` | The `verify_jwt` check. Check which header carries which credential (Auth above). |
+| 401 | `UNAUTHORIZED_NO_AUTH_HEADER`, `UNAUTHORIZED_INVALID_JWT_FORMAT` (not `Bearer <JWT>`), `UNAUTHORIZED_LEGACY_JWT` (bad HS256), `UNAUTHORIZED_ASYMMETRIC_JWT` (bad ES256/RS256), `UNAUTHORIZED_UNSUPPORTED_TOKEN_ALGORITHM` | The `verify_jwt` check. Check which header carries which credential ([function auth](EDGE-FUNCTIONS.md#auth)). |
 | 404 | `NOT_FOUND` (`Requested function was not found`) | Missing function or wrong path. |
 | 404 | `NOT_FOUND_FUNCTION_BLOB` | The bundle is missing, even while the Dashboard shows ACTIVE; usually concurrent deploys. The 404 guide gives the message `Function deployment bundle not found`; the error-codes page says it reuses the `NOT_FOUND` message. |
 | 405 | | Method not in the allowed list. |
@@ -107,3 +107,7 @@ order by timestamp desc limit 20;
 - **Cold-start 504s or worker-creation timeouts on the first request after idle** come from large dependency trees or expensive top-level setup: avoid slow top-level `await`, create heavy clients lazily inside the handler, shrink the bundle, keep critical functions warm. Slow boots: look for `booted` events; if only some are slow, note their `region` and contact support.
 - **Error tracking with Sentry:** `npm:@sentry/deno@^8` with `defaultIntegrations: false` (there's no `Deno.serve` instrumentation, so no per-request scope separation); use `withScope`, tag `SB_REGION` and `SB_EXECUTION_ID`, and `await Sentry.flush(2000)`.
 - **When the limits don't fit,** move the work to another server-side runtime or self-host edge functions.
+
+## Prove it
+
+Use the [Edge Functions acceptance checks](EDGE-FUNCTIONS.md#prove-it) for long work, resource limits, database callers and the existing test commands.

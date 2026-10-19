@@ -2,7 +2,7 @@
 
 The REST API sends push, email and SMS, manages users and subscriptions, and reads delivery stats from your server. Most outcomes are decided by three things: which key you send (App API key for one app, Organization API key for org-level calls), the one targeting method in each Create message request, and whether retries reuse the same `idempotency_key`. Sending from Node and Supabase is [SERVER-AND-SUPABASE.md](SERVER-AND-SUPABASE.md); users, External IDs and aliases as concepts are [USER-MODEL.md](USER-MODEL.md); building segments is [SEGMENTS.md](SEGMENTS.md).
 
-**Contents:** Which API for which job; Keys and authentication; Network; Rate limits and message limits; Retries and idempotency; Create message; Push fields; Data (silent) notifications; Transactional sends and `custom_data`; Responses and errors; View and cancel messages; Users API; Aliases API; Subscriptions API; Deleting users and subscriptions; Prove it.
+**Contents:** [Which API for which job](#which-api-for-which-job) · [Keys and authentication](#keys-and-authentication) · [Network](#network) · [Rate limits and message limits](#rate-limits-and-message-limits) · [Retries and idempotency](#retries-and-idempotency) · [Create message](#create-message) · [Push fields](#push-fields) · [Data (silent) notifications](#data-silent-notifications) · [Transactional sends and custom_data](#transactional-sends-and-custom_data) · [Responses and errors](#responses-and-errors) · [View and cancel messages](#view-and-cancel-messages) · [Users API](#users-api) · [Aliases API](#aliases-api) · [Subscriptions API](#subscriptions-api) · [Deleting users and subscriptions](#deleting-users-and-subscriptions) · [Prove it](#prove-it)
 
 ## Which API for which job
 
@@ -59,7 +59,7 @@ Limits are **per app and per endpoint**, evaluated when the request is received.
 
 | Endpoint | Limit |
 |---|---|
-| Create message and Cancel message (shared between `POST` and `DELETE /notifications`) | Free **150 requests/sec/app**; Paid **6,000 requests/sec/app** (more via support) |
+| Create message and Cancel message (shared between `POST /notifications` and `DELETE /notifications`) | Free **150 requests/sec/app**; Paid **6,000 requests/sec/app** (more via support) |
 | Create custom events | Its own limit; 2,024 bytes per event, 1 MB per request body |
 | Journeys API | Per app per endpoint; honor `Retry-After`; back off when polling View journey |
 | Create, update, delete users or subscriptions | **1,000 requests/sec/app**; **1 request/sec per user or subscription**; up to **100 property updates per request** |
@@ -294,7 +294,7 @@ with template text `Your verification code is {{ message.custom_data.verificatio
 }
 ```
 
-- **Stay under 2KB** for push and SMS (10KB for email); limit carts to 3 to 5 items. Over the limit: "API Error: Request body too large".
+- **Per-channel `custom_data` cap:** 2KB for push/SMS, 10KB for email. The [specific push API reference](https://documentation.onesignal.com/reference/push-notification) and [email API reference](https://documentation.onesignal.com/reference/email), fetched for this correction, both specify those limits. The [general personalization guide](https://documentation.onesignal.com/docs/en/personalization-api-custom-data) still says “Stay under 2KB” and “Request body too large” universally, including its email example. That conflicting general claim is retained here; use the channel API contract. The guide’s cart advice is to limit the first 3 to 5 items. Test empty arrays, missing fields and maximum item counts before production.
 - **Separate high-volume transactional sends from marketing.**
 - **Scheduled transactional message you may not need:** send with `send_after`, store the returned `id`, and cancel it if it is no longer needed.
 

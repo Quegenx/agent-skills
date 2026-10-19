@@ -309,6 +309,9 @@ schemas = ["public", "graphql_public", "pgmq_public"]
 - **Use a queue instead of recursive Edge Function calls** for large datasets (it handles backpressure), and to move long work out of a function that hits worker timeouts into chunked async processing.
 - **Monitor** in the Dashboard (status, retries, payload; postpone, archive or delete a message) or with `pgmq.metrics`.
 
+- **Consumer visibility and poison messages:** set visibility longer than the handler's worst case; zero makes a read message immediately available to another worker. After a chosen read-count ceiling (the existing worker example uses 5), archive the poison message to a dead-letter queue or table and alert. This is an application retry policy; pgmq has no built-in dead-letter/max-retry setting.
+- Trigger consumers through cron or a scheduled Edge Function, process small batches and stay below the function runtime limit. [Existing background-jobs/WORKERS.md, Supabase Queues]
+
 ## pg_net: async HTTP from SQL
 
 - **Asynchronous, so it is usable inside triggers.** The API is in beta and signatures may change.
@@ -343,9 +346,12 @@ net.http_delete(url text, params jsonb default '{}'::jsonb, headers jsonb defaul
 - **Never put a trigger on `net._http_response` or `net.http_request_queue`;** it risks an infinite loop.
 - **Reconfigure (pg_net 0.12.0+):** read with `select "name", "setting" from pg_settings where "name" like 'pg_net%';`. Changing needs superuser, so ask Support for a grant such as `grant alter system on parameter pg_net.ttl to postgres;`, then `alter system set pg_net.ttl to '24 hours'; select net.worker_restart();`.
 
+Database Webhooks execute the next queued batch; a too-short webhook timeout can therefore produce bulk timeouts. Dropping pg_net stops Database Webhooks. [DATABASE.md](DATABASE.md#database-webhooks-and-pg_net) owns the webhook trigger/payload contract.
+
 ## pg_net: security
 
 - **Every role that can use pg_net can read every queued request, `Authorization` and `apikey` headers included.** A Vault secret is encrypted at rest, but its decrypted value sits in `headers` like any other. `postgres` and any `login` role can use pg_net. On some projects only `postgres, anon, authenticated, service_role, supabase_functions_admin` can execute `http_get` and `http_post`, but other roles can still insert into the queue and the worker sends those rows. A `PUBLIC`-derived privilege lets any session insert into `net.http_request_queue`.
+- **Schema usage:** `net` grants `USAGE` to `PUBLIC`; `anon` and `authenticated` are `NOLOGIN` and `net` is not exposed. Turning on Database Webhooks re-grants `usage` on `net` to `anon`, `authenticated` and `service_role`. [Existing DATABASE.md, Database webhooks and pg_net]
 - **You can't lock it down with grants or RLS.** `supabase_admin` owns the tables; RLS can't be added and changing grants isn't supported. `revoke` as `postgres` prints `WARNING: no privileges could be revoked for "net"` (hidden in the SQL Editor), `grant` prints `no privileges were granted`. Removing the `PUBLIC` grants breaks pg_net with `permission denied for table http_request_queue`, and with it every cron job that calls pg_net.
 - **Mitigate instead:** give `login` only to trusted service roles; treat header credentials as readable by every connecting role; never add `net` to exposed schemas (then `anon` and `authenticated` could read queued credentials); drop pg_net if unused (that deletes unsent requests and stored responses and stops Database Webhooks).
 - **Grants come back** on `create extension pg_net`, a major Postgres upgrade, or turning on Database Webhooks. Major upgrades (and enabling pg_net 0.11 or older) revoke `execute` on `http_get` and `http_post` from `PUBLIC` and grant it to the five roles above.

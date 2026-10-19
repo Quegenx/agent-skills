@@ -1,5 +1,7 @@
 # Instrumenting a Node service
 
+Wire the Node SDK before instrumented libraries load, then add business spans, metrics, correlated logs and propagation. These are the existing OpenTelemetry SDK recipes and corrections from this guide; acceptance evidence is shared with the skill entrypoint. [existing observability, INSTRUMENT.md]
+
 ## The SDK, loaded first
 
 The SDK patches libraries as they load, so it must start before anything else is imported: a separate file loaded with `node --import ./instrumentation.js` (or `--require` for CommonJS), not an import at the top of `server.ts` after other modules.
@@ -144,3 +146,7 @@ A batch consumer that handles messages from many traces can instead start its ow
 - **Production volume:** `OTEL_TRACES_SAMPLER=parentbased_traceidratio` with `OTEL_TRACES_SAMPLER_ARG=0.1` keeps 10% of new traces and follows the parent's decision for incoming ones, so a trace is complete or absent across all services. The ratio sampler alone, without the parent rule, cuts traces into fragments.
 - **Keep the rare and valuable:** head sampling decides before anyone knows a request will fail. Tail sampling in a collector (or the backend) decides after the trace completes and can keep every error and every slow trace while sampling the rest; it needs all spans of a trace to reach the same collector.
 - Metrics are aggregated, not sampled: counts stay exact whatever the trace sampling rate.
+
+## Prove it
+
+Apply the shared [trace, log-correlation, metric-cardinality and exporter-outage acceptance checks](SKILL.md#prove-it). [existing observability, SKILL.md, Prove it]

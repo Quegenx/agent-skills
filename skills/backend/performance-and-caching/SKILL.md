@@ -1,6 +1,6 @@
 ---
 name: "performance-and-caching"
-description: "Makes slow endpoints, pages and queries fast: measure first, Lighthouse and Lighthouse CI gates, then N+1s, indexes and query plans, full-text search, caching with invalidation, and loading states, media and long lists in the browser. Use when something is slow, an index isn't used, a cache misbehaves, a page loads slowly, or a Lighthouse score or CI gate needs setting up or reading."
+description: "Measures and improves server and query performance, caching and production cost: request breakdowns, bounded parallel waits, query plans and indexes, cache validity/invalidation, Vercel metrics and telemetry-led audits. Use when an endpoint or query is slow, an index is not used, a cache misbehaves, or production latency or cost needs investigation."
 ---
 
 # Performance and caching
@@ -12,12 +12,9 @@ Speed comes from doing less work, then from doing it at the same time, and only 
 | Find where the time goes; cut round trips; parallelize (start early, await late; never ahead of an auth check; not for CPU-bound work); index; slow-route, cold-start and upstream thresholds on Vercel; deterministic counts and CI ratchets; steering an agent's perf push | [MEASURE.md](MEASURE.md) |
 | Push filtering, aggregation, ordering and limits into SQL; anti-joins, top N, window functions, sargable predicates, keyset pagination, index design and index regressions, full-text search | [QUERIES.md](QUERIES.md) |
 | Add, fix or remove a cache at any layer; Vercel CDN headers, `Vary`, 404s and `immutable`; what `cacheLife` proves; module-level and browser storage caches; large lookup data: fetch granularity, cache tiers, Bloom filters, indexed shards | [CACHING.md](CACHING.md) |
-| Loading states: static shell, prefetch on hover, cached visited pages, waterfalls, no spinners; a static input that takes typing before hydration; layout shift per named region; preconnect and React DOM resource hints, font preloads with `crossorigin`, `defer`/`async` and `next/script` strategies; images and video that load late or shift the layout, `srcset`, `sizes` and `<picture>` art direction, Next.js 16 `preload` replacing `priority`, Safari's MP4 in `<img>`, playing only visible video, long lists and `content-visibility: auto` vs `hidden`, DOM vs canvas, canvas sizing in device pixels, WASM and WebGPU; the tab icon in background tabs (animation itself: the `ui-animation` skill) | [BROWSER.md](BROWSER.md) |
+| Browser loading, media, layout shifts, long lists, main-thread work, interaction traces and Lighthouse gates | [web-performance](../../frontend/web-performance/SKILL.md) |
 | Read production metrics on Vercel with `vercel metrics`: setup checks and what each failure means, Observability Plus access and retention, the query catalog with documented metric names, the window, limit and rate rules, Core Web Vitals good limits, project vs team cost | [VERCEL-METRICS.md](VERCEL-METRICS.md) |
 | Audit production cost and performance from metrics: candidate gates, bounded investigations, abstentions and evidence-backed recommendations | [TELEMETRY-AUDIT.md](TELEMETRY-AUDIT.md) |
-| Read a Lighthouse result (score weights, bands, TBT as the lab proxy for INP), audit ids renamed in Lighthouse 13, Lighthouse CI: stages from no assertions to budgets, setup, pages behind login, variance and hardware, assertions and presets (the real 0.9 default), uploads, tokens and GitHub status checks, troubleshooting, the LHCI server, the Agentic Browsing category | [LIGHTHOUSE-CI.md](LIGHTHOUSE-CI.md) |
-| JavaScript holding the main thread: long tasks, splitting and yielding, batching and backpressure, cheap keystrokes in controlled inputs, no layout reads between style writes, passive touch and wheel listeners, `requestIdleCallback` with a timeout and fallback, priority queues, Web Workers and transfers, dropping or merging what the screen can't use | [MAIN-THREAD.md](MAIN-THREAD.md) |
-| Trace one slow interaction end to end: define it, build mode and React performance tracks, Long Animation Frames, Event Timing and INP, render outlines, the tool's summed layout shift vs web.dev's CLS, tying findings to source, the report and validating a fix | [RUNTIME-TRACE.md](RUNTIME-TRACE.md) |
 
 ## The rules
 

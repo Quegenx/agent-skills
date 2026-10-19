@@ -95,17 +95,7 @@ No other step types exist.
 
 ## Webhooks
 
-- **Access requires contacting sales.**
-- **Where to configure:** the vendor skill says create webhooks in **Data > Webhooks** before adding them to a step; the webhook docs say **Settings > Journey webhooks**. Confirm in the current dashboard.
-- **Endpoints must be public:** publicly routable over HTTP/HTTPS with a valid TLD.
-- **Webhooks cannot call OneSignal APIs.** They are for external systems only.
-- **Disallowed headers:** `content-length`, `referer`, `metadata-flavor`, `x-google-metadata-request`, `host`, any `x-onesignal*`.
-- **Liquid works in all fields:** `{{ user.onesignal_id }}`, `{{ user.external_id }}`, `{{ user.tags.your_tag_key_here }}` (not in Test), `{{ user.language }}`.
-- **Retries:** recoverable errors (for example `429`) retry with increasing delays; repeated failures become permanently failed; consistent failures auto-disable the webhook and email admins.
-- **No rate limiting by OneSignal.** Many users reaching a webhook step at once send a burst of HTTP requests. Respond fast and defer processing; route through your own server or a queue rather than third parties.
-- **Deduplicate retries on `event.id`.**
-- **Secure the endpoint** with `Authorization: Bearer YOUR_SECRET_TOKEN`.
-- **Tags are not available in standalone webhook tests;** use Test Users in a live Journey for full validation.
+A Webhook node requires a configured webhook and sales access. Transport, authentication, allowed headers, Liquid, retries and testing are owned by [SERVER-AND-SUPABASE.md](SERVER-AND-SUPABASE.md#journey-webhooks). Add the 15-minute Wait after Tag User when the webhook depends on that tag.
 
 ## Editing live Journeys
 

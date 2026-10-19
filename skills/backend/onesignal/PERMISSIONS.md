@@ -2,12 +2,13 @@
 
 Nobody receives push until the system prompt is shown and accepted, and that prompt is scarce: iOS shows it **once**, Android (Google and Huawei) **twice**, and browsers back off or block sites that ask too often. So the system prompt goes last, after a soft prompt (an in-app message or a Slidedown) has explained the value and the user has said yes; dismissing a soft prompt costs no system attempt. "Prompting on first launch ... is the single biggest cause of low opt-in rates." Setup is [SETUP-WEB.md](SETUP-WEB.md) and [SETUP-MOBILE.md](SETUP-MOBILE.md); subscription status codes are in [USER-MODEL.md](USER-MODEL.md).
 
-**Contents:** [Principles](#principles) · [Mobile: in-app soft prompt](#mobile-in-app-soft-prompt) · [Mobile: programmatic prompting](#mobile-programmatic-prompting) · [iOS provisional (direct to history)](#ios-provisional-direct-to-history) · [Mobile permission API](#mobile-permission-api) · [Web: prompt types](#web-prompt-types) · [Web: Slidedown in code](#web-slidedown-in-code) · [Web: Subscription Bell and custom link](#web-subscription-bell-and-custom-link) · [Web: native prompt and browser rules](#web-native-prompt-and-browser-rules) · [Web: back-off](#web-back-off) · [Web: when prompts misbehave](#web-when-prompts-misbehave) · [Prove it](#prove-it)
+**Contents:** [Principles](#principles) · [Mobile: in-app soft prompt](#mobile-in-app-soft-prompt) · [Mobile: programmatic prompting](#mobile-programmatic-prompting) · [iOS provisional (direct to history)](#ios-provisional-direct-to-history) · [Mobile permission API](#mobile-permission-api) · [Web: prompt types](#web-prompt-types) · [Web: Slidedown in code](#web-slidedown-in-code) · [Web: Subscription Bell and custom link](#web-subscription-bell-and-custom-link) · [Web: native prompt and browser rules](#web-native-prompt-and-browser-rules) · [Web: back-off](#web-back-off) · [Web: when prompts misbehave](#web-when-prompts-misbehave) · [Web push browser behavior](#web-push-browser-behavior) · [Prove it](#prove-it)
 
 ## Principles
 
+- **First-launch exception and copy** [OneSignal messaging practices]: apps whose value is obvious within seconds, such as ride-hailing, can be exceptions. Explain the specific value ("Get a heads-up the moment your order leaves the kitchen. That's it, no promos."). The source says copy/timing changes routinely shift opt-in rates by tens of percentage points; that is its reported outcome, not a guarantee.
 - **Ask after a value moment,** not on first launch: after add-to-cart, a profile update, sign in, following a topic, or another commitment action.
-- **Start iOS on provisional notifications** (the default starting point), then convert with a soft prompt.
+- **Start iOS on provisional notifications** (the default starting point), then convert with a soft prompt. The messaging-practices source calls this often the highest-conversion path; most Android apps start with a soft prompt. Apple and Google both recommend explaining the value before asking [OneSignal messaging practices].
 - **Explain value with a soft prompt** before the system prompt. Soft prompts never subscribe anyone by themselves; they also keep browsers from auto-blocking you.
 - **Re-ask users who declined the soft prompt on a cadence** (e.g. every 2 weeks).
   - Flutter community view (opinion), on re-asking and timing: [FlutterPro](https://flutterpro.design/details/notification-permission-priming): "If the user skips twice, stop asking"; the settings page turns them on later. [ApparenceKit](https://apparencekit.dev/blog/apparencekit-4-update/) asks on an onboarding permission page, and [another ApparenceKit post](https://apparencekit.dev/blog/flutter-notifications-push-and-locale/) "right after app launches or after he has signed in", against the value-moment rule above. The plugin-level Flutter version: ../../mobile/flutter-ux/NOTIFICATIONS-AND-PERMISSIONS.md.
@@ -153,6 +154,7 @@ OneSignalDeferred.push(async function(OneSignal) {
 
 - **Slidedown methods:** `OneSignal.Slidedown.promptPush()`, `promptPushCategories()` (also triggers the native prompt if not yet granted), `promptSms()`, `promptEmail()`, `promptSmsAndEmail()`, each taking `options`; `OneSignal.Slidedown.addEventListener('slidedownShown', fn)`. With `react-onesignal`, call them after `init` resolves.
 - **Native prompt directly:** turn off Auto Prompt and call `OneSignal.Notifications.requestPermission()` (subject to browser back-off). Call `isPushSupported()` before prompting programmatically.
+- **Event-name source difference:** messaging practices names `slidedown`; the permission/SDK reference names `slidedownShown` below. Preserve the source distinction when choosing the listener [OneSignal messaging practices].
 - **Track prompts** with the `permissionPromptDisplay` and `permissionChange` Notifications events and the `slidedownShown` event.
 - **Localization:** with Custom Code, detect the browser language and init with different text; the native prompt translates itself. A/B testing prompts: Custom Code plus the Subscription change event plus tags.
 
@@ -161,6 +163,7 @@ OneSignalDeferred.push(async function(OneSignal) {
 - **Subscription Bell** (`notifyButton`, disabled by default): a bottom-corner widget that opens the native prompt for unsubscribed users. You cannot change its icon image, place it in a top corner, or disable it per page. Options: `enable`, `displayPredicate`, `size` (`'small'|'medium'|'large'`), `theme` (`'default'` or `'inverse'`), `position` (`'bottom-left'|'bottom-right'`), `offset`, `prenotify`, `showCredit`, `text`, `colors`.
 - **Bell `text` keys:** `'launcher.button.aria-label'` (default `'Manage notifications'`), `'tip.state.unsubscribed'`, `'tip.state.subscribed'`, `'tip.state.blocked'`, `'message.prenotify'`, `'message.action.subscribed'`, `'message.action.resubscribed'`, `'message.action.unsubscribed'`, `'dialog.main.title'`, `'dialog.main.button.subscribe'`, `'dialog.main.button.unsubscribe'`, `'dialog.blocked.title'`, `'dialog.blocked.message'`.
 - **Bell `colors` keys:** `'circle.background'`, `'circle.foreground'`, `'badge.background'`, `'badge.foreground'`, `'badge.bordercolor'`, `'pulse.color'`, `'dialog.button.background.hovering'`, `'dialog.button.background.active'`, `'dialog.button.background'`, `'dialog.button.foreground'`.
+- **`displayPredicate` can return `false` or a Promise of false** to hide the Bell [OneSignal messaging practices].
 - **Hide the Bell once subscribed:**
 
 ```javascript
@@ -176,6 +179,34 @@ notifyButton: {
 
 - **Custom link** (Custom Code): `promptOptions.customlink` with `enabled: true`, `style` (`"button"` or `"link"`), `size`, `color: { button, text }`, `text: { subscribe, unsubscribe, explanation }`, `unsubscribeEnabled`. Render into `<div class='onesignal-customlink-container'></div>`. CSS classes: `onesignal-customlink-container`, `onesignal-customlink-subscribe`, `onesignal-customlink-explanation`, `state-subscribed`, `state-unsubscribed`, `button`, `link`, `small`, `medium`, `large`, `hide`; every element also has `onesignal-reset`.
 
+### Subscription Bell initialization example
+
+The messaging-practices source’s complete initialization example is retained here; the `offset`, `text` and `colors` keys were omitted there. The Bell suits returning visitors and people who dismissed a prompt.
+
+```html
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(function(OneSignal) {
+    OneSignal.init({
+      appId: "YOUR_APP_ID",
+      notifyButton: {
+        enable: true,
+        size: 'medium',
+        theme: 'default',
+        position: 'bottom-right',
+        showCredit: false,
+        displayPredicate: function() {
+          return !OneSignal.Notifications.permission;
+        }
+      }
+    });
+  });
+</script>
+```
+
+(Trimmed from the full docs example: the `offset`, `text` and `colors` keys are omitted.)
+
 ## Web: native prompt and browser rules
 
 - **Required and not customizable;** it is triggered automatically after the soft prompts.
@@ -184,6 +215,8 @@ notifyButton: {
 - **User gesture required:** Firefox 72+ and Safari 12.1+. The Typical Site native prompt config won't work on Safari.
 - **Edge** is trust-based: untrusted sites get a bell icon in the browser bar.
 - **iOS:** only from a tap inside a Home Screen web app ([SETUP-WEB.md](SETUP-WEB.md#ios-web-push-home-screen-web-app)). Calling `Notification.requestPermission()` yourself skips the OneSignal subscription.
+
+- **Source difference on Safari auto-prompts:** messaging practices says Typical Site auto-shows Slidedown on Chrome mobile, Firefox and Safari; the permission reference above says Typical Site native prompt config does not work on Safari. Keep the explicit user-gesture and iOS setup requirements; confirm the selected setup in the current dashboard.
 
 ## Web: back-off
 
@@ -200,6 +233,14 @@ notifyButton: {
 - **Slide prompt keeps showing:** incognito, or it is triggered programmatically without Auto Prompt.
 - **Incognito:** the Slidedown can still appear with `autoPrompt: true` but subscriptions typically don't persist, and `isPushSupported()` does not detect private browsing.
 - **In-app webviews** (Instagram, TikTok, Facebook) do not support web push.
+
+## Web push browser behavior
+
+- **Permission states:** Default, Granted, Denied (temporary after repeated "x", permanent after Block or a settings change). Clearing cookies or site data stops notifications temporarily, but the user may be re-subscribed automatically on return if permission was not removed.
+- **Browser closed:** Chrome, Firefox, Opera and Edge receive with the browser closed on Android and Windows, not on macOS; Safari does on macOS. Subscribers have up to 3 days to retrieve the last known missing notification before it expires.
+- **Test a prompt like a first-time visitor:** not in incognito. Reset the permission, delete site data, prompt and Allow, check the console, read `OneSignal.User.PushSubscription.id` in the console, add that subscription to Test Users, then send via Test & Preview > Send Test Push.
+
+The browser-closed claim above differs from the browser-closed troubleshooting limitation in [MIGRATION-AND-TROUBLESHOOTING.md](MIGRATION-AND-TROUBLESHOOTING.md); both source claims remain attributed and require platform-specific confirmation.
 
 ## Prove it
 

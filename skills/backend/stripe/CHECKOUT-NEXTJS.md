@@ -122,7 +122,7 @@ export default async function Success({ searchParams }) {
 ## Fulfillment
 
 - **Webhooks are required.** Customers aren't guaranteed to reach your landing page, and subscriptions and payment methods with delayed success notification need webhook fulfillment. Payment Links run on Checkout, so the same applies.
-- **Also fulfill from the landing page,** because webhooks can be delayed: read the Session ID from the URL, run the same fulfillment function, then render. Webhooks stay required.
+- **Also fulfill from the landing page,** because webhooks can be delayed: read the Session ID from the URL on the server, run the same fulfillment function, then render. Webhooks stay required. The old shared rule prohibited fulfillment from the success page; Stripe recommends this additional server entrypoint, never a client-only success decision. [https://docs.stripe.com/checkout/fulfillment?payment-ui=stripe-hosted]
 - **Fulfill once per payment.** The function may be called several times, possibly concurrently, for the same Session. It must: (1) handle repeated calls with the same Session ID; (2) accept a Session ID; (3) retrieve the Session with `line_items` expanded; (4) check `payment_status`; (5) fulfill the line items; (6) record fulfillment status.
 
 ```node

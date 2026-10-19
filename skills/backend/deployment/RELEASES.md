@@ -12,12 +12,7 @@ A production deploy should be able to answer, from evidence and not from trust: 
 
 ## Cached build outputs
 
-[React Doctor, run-parity] A cached artifact (a baseline, a build output reused by later runs) is evidence only while it can be checked again.
-
-- **Key the cache on everything that could change the output:** the exact tool commit, the input manifest's hash, the evaluator or schema hash, the rule set or config hash. "Never cache an older unstamped run." Stamp every record with its producer, not only the file.
-- **Keep a provenance file next to the artifact:** its sha256, byte length, record count, the input manifest's sha256 and the producer. Re-verify on every reuse by streaming the raw bytes and re-checking each record's producer; "Any mismatch is a cache miss." One appended space in the file must fail the check.
-- **Exact key sets:** a provenance object with an unexpected extra field fails, and a verifier never follows a path out of the provenance to some other shared cache; each artifact directory is self-contained evidence.
-- **Write once, atomically:** write to `<path>.tmp` with the `wx` flag (fail if it exists), then `rename`. The output path "is created exclusively and never overwrites an existing artifact."
+[React Doctor, run-parity] A cached artifact (a baseline, a build output reused by later runs) is evidence only while it can be checked again. The complete producer/input identity, per-record verification, exact provenance shape and write-once procedure is owned by [cached baseline provenance](../../architecture/lint-rule-authoring/BASE-HEAD-PARITY.md#cached-baselines).
 
 ## Sign with the build's identity, not a long-lived key
 

@@ -92,6 +92,15 @@ await supabase.storage.vectors.from('embeddings').createIndex({
 ```
 
   Python: `supabase.storage.vectors().create_bucket('embeddings')` and `bucket.create_index(index_name='documents-openai', dimension=1536, distance_metric='cosine', data_type='float32')`. `metadataConfiguration: { nonFilterableMetadataKeys: ['raw_text'] }` marks keys you won't filter on. The launch post shows `createIndex('documents-openai', { ... })`; the reference uses the single-object form above.
+The Storage guide also shows this creation form:
+
+```js
+supabase.storage.vectors.createBucket('embeddings')
+supabase.storage.vectors.from('embeddings').createIndex({ indexName, dataType: 'float32', dimension: 1536, distanceMetric: 'cosine' })
+```
+
+- **Storage-specific limits:** PutVector bodies allow 20 MB (raised from 1.6 MB); the local CLI template sets `max_indexes = 5`, unlike the ten-index alpha limit above. [Supabase Storage/vector guides; existing STORAGE.md, Vector buckets]
+
 - **Index settings are permanent:** dimension, distance metric and data type (only `float32`) can't change; a wrong dimension makes inserts and queries fail; deleting an index can't be undone. Cosine suits OpenAI, Cohere embed-english-v3.0, sentence-transformers and Google text-embedding-004; Llama 2 takes cosine or L2. Metrics offered: cosine, euclidean, L2.
 - **Methods:** `listBuckets({ prefix })`, `getBucket(name)`, `deleteBucket(name)` (delete its indexes first), `bucket.listIndexes({ prefix })`, `bucket.getIndex(name)`, `bucket.deleteIndex(name)`, `index.putVectors({ vectors: [{ key, data: { float32: [...] }, metadata }] })` (insert or update by key), `index.getVectors({ keys, returnData, returnMetadata })`, `index.listVectors({ maxResults, nextToken, returnData, returnMetadata })`, `index.deleteVectors({ keys })`, `index.queryVectors({ queryVector: { float32 }, topK, filter, returnDistance, returnMetadata, nextToken })`.
 - **Results rank by distance, lowest first;** convert with `similarity: 1 - result.distance`. Filters look like `{ category: 'electronics', in_stock: true, price: { $lte: 500 } }` and can apply before or after the similarity search. For more than 100 results, set `topK` up to 10,000 and loop on `nextToken` until the response omits it, keeping the other parameters unchanged.
@@ -101,3 +110,7 @@ await supabase.storage.vectors.from('embeddings').createIndex({
 - **S3 Vectors wrapper (FDW):** `create extension if not exists wrappers with schema extensions;` and `create foreign data wrapper s3_vectors_wrapper handler s3_vectors_fdw_handler validator s3_vectors_fdw_validator;`. Server options: `vault_access_key_id` and `vault_secret_access_key` (otherwise credentials sit in plain text in `pg_catalog.pg_foreign_server`) or `aws_access_key_id` and `aws_secret_access_key`, plus `aws_region`, optional `endpoint_url` and `batch_size`. Foreign tables need `bucket_name`, `index_name` and `rowid_column`; import with `import foreign schema "my-vector-bucket" from server s3_vectors_server into s3_vectors;`.
 - **Wrapper tables** are `key text not null, data s3vec not null, metadata jsonb` and support select, insert and delete only (update is delete plus insert; no truncate). `s3vec` is Float32 (`'[0.1, 0.2]'::s3vec`, shown as `s3vec:5`). Only these patterns push down: `data <==> vector`, `metadata <==> '{"price": {"$gte": 100, "$lte": 500}}'::jsonb` (`$eq $ne $gt $gte $lt $lte $in $nin $exists $and $or`), `key = ...`, `key in (...)`; other complex `where` clauses are unsupported. `s3vec_distance(data)` gives the distance only inside a `<==>` search (0.0 otherwise; lower is closer). Materialized views on these tables may fail during logical backups.
 - **The docs disagree on the SQL surface:** the bucket guides use type `embd`, `embd_distance(data)`, `metadata->>'category' = ...` filters and joins; the wrapper reference uses `s3vec`, `s3vec_distance()` and `jsonb` filters and rules out complex `where` clauses. The intro writes the operator `<===>`, the examples `<==>`. Read the wrapper reference (`https://supabase.com/docs/guides/database/extensions/wrappers/s3_vectors.md`) before writing SQL against buckets.
+
+## Prove it
+
+Use the [vector bucket acceptance criteria](VECTORS.md#prove-it): the same local/hosted topK and pagination work within their stated limits, and batches stay within 500. Production sizing follows the workload benchmarks above.

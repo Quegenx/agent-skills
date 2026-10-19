@@ -380,7 +380,7 @@ Long press is `zeego/context-menu` with the same `Root`, `Trigger`, `Content`, `
 
 [Vercel, react-native-skills]
 
-- **Request the size you show:** "4000x3000 image loaded for a 100x100 thumbnail" costs memory and scroll jank. Ask the server or an image CDN for 2x the display size: `${product.imageUrl}?w=200&h=200&fit=cover` for a 100×100 slot. The web rule is in [../../backend/performance-and-caching/BROWSER.md](../../backend/performance-and-caching/BROWSER.md).
+- **Request the size you show:** "4000x3000 image loaded for a 100x100 thumbnail" costs memory and scroll jank. Ask the server or an image CDN for 2x the display size: `${product.imageUrl}?w=200&h=200&fit=cover` for a 100×100 slot. The web rule is in [../web-performance/BROWSER.md](../web-performance/BROWSER.md).
 - **`expo-image` over the core `Image`:** "memory-efficient caching, blurhash placeholders, progressive loading, and better performance for lists." Cross-platform with the web: `SolitoImage` from `solito/image`, which uses `expo-image`.
 
 ```tsx

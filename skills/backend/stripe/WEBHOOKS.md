@@ -1,6 +1,6 @@
 # Webhooks
 
-Stripe tells your server what happened through events sent to an event destination (a webhook endpoint, Amazon EventBridge or Azure Event Grid). Webhooks are never optional: they are recommended for every payment integration and required for subscriptions, delayed-notification payment methods and any post-payment side effect. Most outcomes come down to four things: verifying the signature against the untouched raw body with the right `whsec_` secret, returning `2xx` fast before heavy work, deduplicating because Stripe retries and doesn't guarantee order, and fulfilling from the event (never the success page). Checkout specifics live in [PAYMENTS.md](PAYMENTS.md), the subscription lifecycle in [BILLING.md](BILLING.md), Supabase Edge Functions in [SUPABASE.md](SUPABASE.md).
+Stripe tells your server what happened through events sent to an event destination (a webhook endpoint, Amazon EventBridge or Azure Event Grid). Webhooks are never optional: they are recommended for every payment integration and required for subscriptions, delayed-notification payment methods and any post-payment side effect. Most outcomes come down to four things: verifying the signature against the untouched raw body with the right `whsec_` secret, returning `2xx` fast before heavy work, deduplicating because Stripe retries and doesn't guarantee order, and using the shared [Checkout fulfillment contract](CHECKOUT-NEXTJS.md#fulfillment). Checkout specifics live in [PAYMENTS.md](PAYMENTS.md), the subscription lifecycle in [BILLING.md](BILLING.md), Supabase Edge Functions in [SUPABASE.md](SUPABASE.md).
 
 **Contents:** [Why webhooks are required](#why-webhooks-are-required) · [Event destinations](#event-destinations) · [Thin vs snapshot events](#thin-vs-snapshot-events) · [The handler contract](#the-handler-contract) · [Next.js route handlers](#nextjs-route-handlers) · [Express handlers](#express-handlers) · [Event notification handlers (thin events)](#event-notification-handlers-thin-events) · [Signature verification by hand](#signature-verification-by-hand) · [Fulfillment](#fulfillment) · [Subscription events to handle](#subscription-events-to-handle) · [Mapping events to your records](#mapping-events-to-your-records) · [Retries, ordering and duplicates](#retries-ordering-and-duplicates) · [Secrets, IPs and versions](#secrets-ips-and-versions) · [Local testing](#local-testing) · [Troubleshooting and recovery](#troubleshooting-and-recovery) · [Conflicts between sources](#conflicts-between-sources) · [Prove it](#prove-it)
 
@@ -251,8 +251,8 @@ app.post(
 
 ## Fulfillment
 
-- **Fulfill from the event handler, not the success or return page** (https://docs.stripe.com/checkout/fulfillment.md). Customers aren't guaranteed to visit it (for example, they pay then lose internet), so success-page-only logic silently drops orders.
-- **Checkout:** handle both `checkout.session.completed` and `checkout.session.async_payment_succeeded`, and fulfill only when the session's `payment_status` isn't `unpaid`. With delayed-notification methods, `completed` arrives while still unpaid, so fulfilling on it alone grants access for payments that later fail and never fulfills the ones that succeed. Handle `checkout.session.async_payment_failed` for failures. Full flow in [PAYMENTS.md](PAYMENTS.md).
+- **Checkout fulfillment and its server entrypoints** are defined once in [CHECKOUT-NEXTJS.md](CHECKOUT-NEXTJS.md#fulfillment). Required webhooks cover customers who never reach the redirect.
+- **Checkout events:** handle `checkout.session.completed`, `checkout.session.async_payment_succeeded` and `checkout.session.async_payment_failed` under the [payment-status-gated fulfillment contract](CHECKOUT-NEXTJS.md#fulfillment).
 - **Subscriptions:** provision when you receive `invoice.paid` and the subscription `status` is `active` (see below).
 
 ## Subscription events to handle
@@ -352,6 +352,6 @@ stripe.events.list({ ending_before: 'evt_001', types: [...], delivery_success: f
 - `stripe trigger payment_intent.succeeded` reaches the handler and returns `200`; altering the body or using the Dashboard secret returns `400`.
 - The route reads the raw body (`await req.text()`, `express.raw`, or `bodyParser: false` with `buffer(req)`), and no JSON parser runs before it.
 - Sending the same event twice (`stripe events resend <event_id> --webhook-endpoint=<endpoint_id>`) changes nothing the second time and returns `200`.
-- Checkout fulfillment runs on `checkout.session.completed` and `checkout.session.async_payment_succeeded`, gated on `payment_status`, and never on the success page.
+- Checkout passes the [fulfillment checks](CHECKOUT-NEXTJS.md#prove-it), including repeated webhook delivery and landing-page requests, with payment-status gating.
 - A subscription integration handles `customer.subscription.*`, `invoice.paid` and `invoice.payment_failed`, plus `charge.dispute.created`, `charge.refunded` and `radar.early_fraud_warning.created`, and nothing it doesn't act on.
 - The Event deliveries tab shows `Delivered`, with no `Failed` entries.

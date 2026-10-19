@@ -10,13 +10,13 @@ What Effect v4 derives from a schema (metadata, JSON Schema, test data, equivale
 - **`Schema.resolveAnnotations(schema)`:** when the schema has checks, annotations come from the last check, so `.check(Schema.isNonEmpty().annotate({ title: "from check" }))` wins over the base annotations. `Schema.resolveAnnotationsKey(schema)` reads `annotateKey` annotations.
 - **Custom annotations through module augmentation:**
 
-  ```ts
+```ts
   declare module "effect/Schema" {
     namespace Annotations {
       interface Augment { readonly version?: readonly [number, number, number] | undefined }
     }
   }
-  ```
+```
 
 - **`.annotate` on a transformation annotates the decoded side.** Output that follows the encoded side (JSON Schema) needs `Schema.annotateEncoded({...})` (for example on `Schema.Trim`), or annotate the source before `Schema.decodeTo(Schema.Trimmed, SchemaTransformation.trim())`.
 
@@ -30,13 +30,13 @@ What Effect v4 derives from a schema (metadata, JSON Schema, test data, equivale
 - **References:** an `identifier` creates a `$defs` entry referenced by `$ref`. Recursive schemas always get a reference, with a synthetic name when there is no identifier; some docs say recursive schemas require an identifier.
 - **Custom types and checks:** a `toCodecJson` annotation drives both the runtime codec and the JSON Schema (useful for OpenAPI). Check-level `toJsonSchema` callbacks return `schema` (exact) or `[schema, true]` (approximate, may accept more); return `[{}, true]` to omit a constraint, while a bare `{}` declares "no constraint" and is trusted. Filters without `toJsonSchema` count as approximate. Callbacks must not mutate their input or returned fragments. For `Schema.Record(Key, Value)`, `patternProperties` must represent the key check exactly.
 
-  ```ts
+```ts
   Schema.instanceOf(Headers, {
     toCodecJson: () => Schema.link<Headers>()(
       Schema.Array(Schema.Tuple([Schema.String, Schema.String])),
       { decode: SchemaGetter.transform(...), encode: SchemaGetter.transform((headers) => [...headers.entries()]) })
   })
-  ```
+```
 
 - **Draft-07:** `JsonSchema.toDocumentDraft07(Schema.toJsonSchemaDocument(schema))`. Converters throw rather than silently change meaning (draft-07 cannot express dynamic refs, unevaluated constraints, or non-default `minContains`/`maxContains`).
 
@@ -65,18 +65,18 @@ What Effect v4 derives from a schema (metadata, JSON Schema, test data, equivale
 
 - **Three parts:** the schema says which inputs are allowed, `Arbitrary<A>` generates and shrinks, and `it.prop`, `it.effect.prop` or `Arbitrary.checkEffect` runs the rule.
 
-  ```ts
+```ts
   const integer = Arbitrary.schema(Schema.Int)
   it.prop("adding zero is identity", [integer], ([value]) => value + 0 === value)
-  ```
+```
 
   Default 100 runs; inputs as an array or a record.
 - **Constrain inputs with Schema checks** (`Schema.Int.check(Schema.isBetween({ minimum: -100, maximum: 100 }))`). Bounds, lengths, finite and int, supported regex patterns and uniqueness generate matching values directly; other checks reject after generation. Prefer a check when it can describe the allowed inputs.
 - **`Arbitrary.schema` generates decoded `Type` values** (numbers for `NumberFromString`) and throws immediately for unsupported schemas. Recursive schemas need a finite path (`Schema.suspend` plus `isMaxLength`). Declarations resolve through `toCodecArbitrary`, then the built-in representation, then `toCodecJson`, then `toCodec`. A custom `shrink` option exists.
 
-  ```ts
+```ts
   toCodecArbitrary: () => Schema.link<UserId>()(Schema.Int.check(...), SchemaTransformation.transform({...}))
-  ```
+```
 
   The old `arbitrary` filter annotation is `arbitraryConstraint` (for example `{ order: Order.Number, minimum: 0, exclusiveMinimum: true }`).
 - **Combinators:** `Arbitrary.Constant`, `map`, `filter`, `filterMap`, `flatMap`, `all` (tuples or records), `array(item, { minLength?, maxLength })`. Callbacks must be deterministic and pure and must not mutate generated values. Use `Object.hasOwn` on generated records; some lack the `Object` prototype.
@@ -87,79 +87,30 @@ What Effect v4 derives from a schema (metadata, JSON Schema, test data, equivale
 
 ## HTTP (HttpApi)
 
-- **Schemas first:** path params, query, headers, payloads, responses and errors are all schemas, used to validate requests, serialize responses, generate docs and type the client. Status codes and content types are schema annotations, not endpoint config.
-- **Write domain types; the endpoint coerces.** Path, query and header schemas go through `Schema.toCodecStringTree`; JSON payload, success and error schemas through `Schema.toCodecJson`. Use `Schema.Int` directly, with no string or JSON transformation added by hand.
-- **Endpoint options:** `params`, `query`, `headers` (a record of fields or a full schema), `payload` (a schema or an array; for GET, a record of schemas read from the query string), `success` (default 200 with no content), `error` (default 500 JSON). Any schema that encodes to `Schema.Void` is "no content".
-- **Encodings:** `HttpApiSchema.asJson` (default), `asFormUrlEncoded`, `asText({ contentType })`, `asUint8Array`, `asMultipart`, `asMultipartStream`. Status with `HttpApiSchema.status(404)` or the `httpApiStatus` annotation.
-- **Errors with a status:**
-
-  ```ts
-  class UserNotFound extends Schema.TaggedError<UserNotFound>()("UserNotFound", {}, { httpApiStatus: 404 }) {}
-  ```
-
-  Or a struct: `Schema.Struct({ _tag: Schema.tag("UserNotFound"), message: Schema.String }).pipe(HttpApiSchema.status(404))`, failed with `UserNotFound.make({...})`. Group related errors in a wrapper (`UsersError` with `reason: Schema.Union([UserNotFound, SearchQueryTooShort])`) so services and endpoints don't list too many error types. Bodiless errors: `HttpApiSchema.asNoContent({ decode: () => new UserNotFound() })`. Predefined: `HttpApiError.NotFound`, `Unauthorized` and others, `HttpApiDecodeError` (400, the request did not match the schema), plus `*NoContent` variants.
-- **Schema failures:** a request that fails decoding gets an empty 400 and is ignored by error reporters; a response that fails encoding gets an empty 500 and is reported. Both raise `HttpApiSchemaError` with `kind: "Params" | "Headers" | "Query" | "Body" | "Payload" | "ResponseHeaders"` and `cause: Schema.SchemaError`. Customize at endpoint, group or API level:
-
-  ```ts
-  HttpApiMiddleware.layerSchemaErrorTransform(SchemaErrorHandler, (schemaError) =>
-    Effect.fail(new ValidationError({ message: `Invalid request: ${schemaError.message}` })))
-  ```
-
-- **Docs:** `.annotate({ description: "A user", identifier: "User" })` (the identifier lists the schema under Models in Scalar). `OpenApi.fromApi(api, options)` applies `referencePolicy` when extracting components.
-- **Query arrays:** `Schema.optionalKey(Schema.Array(Schema.String))` accepts `?a=1&a=2`, one value, or none.
-- **Response headers:** `HttpApiSchema.WithHeaders(schema, { "x-total-count": Schema.Int })`, with the handler returning `HttpApiSchema.withHeaders({ body, headers })`; header values are stringified at the boundary. `HttpApiSchema.encodeToWithHeaders({ body: HttpApiSchema.Empty(404), headers: {...} }, { decode, encode })` folds headers into a domain error class.
-- **Payload and response variants:** with `Model.Class` (see [SQL and Model](#sql-and-model)), respond with `User.json` and accept `User.jsonCreate` / `User.jsonUpdate`, so clients cannot set generated ids or timestamps. Branded ids: `Schema.String.pipe(Schema.brand("UserId"))`.
+See [HttpApi request/response codecs, status/error schemas and headers](HTTP.md#request-schemas).
 
 ## RPC
 
-- **`Rpc.make(tag, { payload?, success?, error?, defect?, stream?, primaryKey? })`** (unstable). `payload` is a schema or struct fields (fields become a `Schema.Struct`). Defaults: `success: Schema.Void`, `error: Schema.Never`, `defect: Schema.Defect()`. `stream: true` wraps success and error in `RpcSchema.Stream(success, error)` and sets the normal error schema to `Schema.Never`. `primaryKey` makes the payload a `Schema.Class` with a `PrimaryKey` derived from it.
-- **Serialization:** the `RpcSerialization` service has `codecFor: <S>(schema: S) => Schema.Codec<S["Type"], unknown, ...>`; JSON serializations return `Schema.toCodecJson`, so the encoded side is JSON. Layers: `layerJson`, `layerNdjson`, `layerJsonRpc`, `layerNdJsonRpc`, `layerSchemaBinary`.
-- **Cluster entities use the same definitions:** `Rpc.make("Increment", { payload: { amount: Schema.Int }, success: Schema.Int })`; persist messages with `.annotate(ClusterSchema.Persisted, true)`.
+See [RPC schema defaults, serialization and cluster messages](RPC.md#rpc).
 
 ## Config
 
 - **`Config.schema(schema, path?)` decodes raw strings into typed values** (`"8080"` to `8080`, `"true"` to `true`):
 
-  ```ts
+```ts
   const AppConfig = Config.schema(Schema.Struct({ host: Schema.String, port: Schema.Int, debug: Schema.Boolean }))
   AppConfig.parse(provider)
-  ```
+```
 
 - **It uses the canonical `Schema.StringTree` codec** and the encoded AST to decide what to load. Opaque encodings (`Schema.Any`, `Schema.Unknown`, `Schema.ObjectKeyword`, `Schema.Json`, `Schema.MutableJson`) are rejected synchronously at construction, even nested; for arbitrary JSON in one value use `Schema.fromJsonString(Schema.Json)`.
 - **Lists and maps from one string:** plain `Schema.Array` and `Schema.Record` accept structural input only. Use `Config.Array(Schema.String, "items")` for `"a,b,c"` and `Config.Record(Schema.String, Schema.String, "items")` for `"a=1,b=2"` (options `separator`, `keyValueSeparator`).
 - **Absence:** a missing value reaches the decoder as `undefined`, so `Config.schema(Schema.UndefinedOr(Schema.String), "key")` succeeds with `undefined`. If the schema rejects `undefined`, `Config.withDefault` and `Config.option` apply. A struct schema validates one structured input (missing required fields fail); `Config.all` composes independent children.
-- **Validation errors are not absence.** `ConfigError` wraps a `SourceError` or a `SchemaError` (check `error.cause._tag === "SchemaError"`). `Config.withDefault` and `Config.option` recover only from absence; use `Config.orElse` for validation errors.
-- **There is no public `Config.make`;** start from a constructor or `Config.schema`, then `Config.map`, `mapEffect`, `all`, `orElse`, `withDefault`. `ConfigProvider.constantCase` maps camelCase keys to `SCREAMING_SNAKE_CASE`.
+- **Validation errors are not absence:** use the [canonical Config fallback/error contract](RESOURCES-AND-CONFIG.md#config).
+- Custom Config construction uses the [canonical constructors/combinators](RESOURCES-AND-CONFIG.md#config). `ConfigProvider.constantCase` maps camelCase keys to `SCREAMING_SNAKE_CASE`.
 
 ## SQL and Model
 
-- **`Model` (`effect/schema`, unstable) keeps one field declaration as the source of truth** and derives variants for selecting, inserting, updating and JSON. Define domain models with `Model.Class`:
-
-  ```ts
-  class Group extends Model.Class<Group>("Group")({
-    id: Model.UuidV4Insert(GroupId),
-    name: Schema.NonEmptyString,
-    slug: Schema.NonEmptyString.pipe(Model.FieldExcept(["update", "jsonUpdate"])),
-    notes: Schema.NullOr(Schema.String).pipe(Model.FieldOnly(["select", "insert"])),
-    memberCount: Model.Field({ select: Schema.Int, json: Schema.Int }),
-    createdAt: Model.DateTimeInsert,
-    updatedAt: Model.DateTimeUpdate
-  }) {}
-  ```
-
-  Variants: `Group`, `Group.insert`, `Group.update`, `Group.json`, `Group.jsonCreate`, `Group.jsonUpdate`. Other exports: `Override`, `GeneratedByDb`, `GeneratedByApp`, `Sensitive`, `FieldOption`, `BooleanSqlite`, `Date`, `DateTimeInsert`/`DateTimeUpdate` (with `FromDate`/`FromNumber` variants), `JsonFromString`, `UuidV7Insert`, `UuidV4BytesInsert`.
-- **Generated values use the Effect clock:** `Group.insert.makeEffect({ name, slug, notes: null })` fills the id and timestamps, so tests control them with `TestClock`.
-- **Repositories:** `SqlModel.makeRepository(Group, { tableName, spanPrefix, idColumn })` derives insert, update, findById and delete.
-- **Queries (`SqlSchema`, unstable):** `` SqlSchema.findAll({ Request: Schema.Void, Result: Group, execute: () => sql`SELECT * FROM groups ORDER BY createdAt` }) ``; also `findNonEmpty`, `findOne` (fails with `NoSuchElementError` on no rows), `findOneOption`, `void`. Each encodes the request before `execute` and decodes the unknown driver rows into the result schema.
-- **Keep service errors on the domain:** treat database and encoding failures as defects.
-
-  ```ts
-  repo.findById(id).pipe(Effect.catchTags({
-    NoSuchElementError: () => new GroupNotFound({ id }),
-    SchemaError: Effect.die,
-    SqlError: Effect.die
-  }))
-  ```
+See [Model variants, repositories, query codecs and domain-error mapping](SQL.md#models).
 
 ## Forms and web frameworks
 

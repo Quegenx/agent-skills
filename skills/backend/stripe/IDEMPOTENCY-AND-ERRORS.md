@@ -94,7 +94,7 @@ async function exampleFunction(args) {
 - **Stored errors:** PaymentIntent `last_payment_error` (cleared on update; not a history log), SetupIntent `last_setup_error`, Invoice `last_finalization_error`, SetupAttempt `setup_error`, Payout `failure_code`, Refund `failure_reason`.
 - **Least privilege:** use restricted keys with only the needed permissions (for example `payment_intent_write`, `payment_intent_read`, `charge_read`).
 - **Test errors** with the PaymentMethods `pm_card_visa`, `pm_card_chargeDeclinedFraudulent`, `pm_card_radarBlock`, and `stripe trigger payment_intent.payment_failed`. Decline card numbers: [TESTING-AND-CLI.md](TESTING-AND-CLI.md).
-- **[appeeky] review items:** Stripe errors caught by type with user-friendly messages; amounts in cents with no float rounding bugs.
+- **[appeeky] review items:** Stripe errors caught by type with user-friendly messages; amounts follow the [currency contract](AGENT-TOOLS.md#the-stripe-mcp), with no float rounding bugs.
 
 ## Rate limits
 

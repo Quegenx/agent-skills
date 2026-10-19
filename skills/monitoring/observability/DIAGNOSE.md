@@ -1,6 +1,6 @@
 # Reading graphs and diagnosing incidents
 
-How to read monitoring graphs and act on what they show: in peacetime, mid-incident and in the postmortem. Building the panels and alerts is in the `grafana` skill ([DASHBOARDS.md](../../monitoring/grafana/DASHBOARDS.md), [ALERTING-AND-ONCALL.md](../../monitoring/grafana/ALERTING-AND-ONCALL.md)).
+How to read monitoring graphs and act on what they show: in peacetime, mid-incident and in the postmortem. Building the panels and alerts is in the `grafana` skill ([DASHBOARDS.md](../grafana/DASHBOARDS.md), [ALERTING-AND-ONCALL.md](../grafana/ALERTING-AND-ONCALL.md)).
 
 Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/server-monitoring-analysis-guide/en/ (the four signals and the change statistic cite the Google SRE book, https://sre.google/sre-book/monitoring-distributed-systems/).
 
@@ -21,7 +21,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 - **A vertical drop** means requests are failing to arrive (the load balancer, DNS or gateway out front), not that the server went idle. "If every server metric looks clean in the middle of an incident, that itself is the biggest anomaly signal."
 - **A vertical rise** means a viral surge, crawler traffic or an attack. Regular early-morning spikes "are almost always batch jobs or cron. If the spikes are regular, suspect an internal job first."
 - **Traffic is the denominator.** "The same 500 errors mean very different things at a million requests per minute and at a thousand." Divide any count (errors, slow queries) by traffic and read it as a rate.
-- **A spike after an incident starts is usually a retry storm,** "the same users knocking again and again", not more users. Clients and gateways retrying at once push traffic to 2 to 3 times normal. Retries need exponential backoff, jitter and a budget on total retrying ([RELIABILITY.md](../api-design/RELIABILITY.md#retry-timeout-circuit-breaker)): "A well-built retry absorbs a transient failure. A badly built one amplifies the incident."
+- **A spike after an incident starts is usually a retry storm,** "the same users knocking again and again", not more users. Clients and gateways retrying at once push traffic to 2 to 3 times normal. Retries need exponential backoff, jitter and a budget on total retrying ([RELIABILITY.md](../../backend/api-design/RELIABILITY.md#retry-timeout-circuit-breaker)): "A well-built retry absorbs a transient failure. A badly built one amplifies the incident."
 
 ## Latency
 
@@ -61,7 +61,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 - **The connection pool runs dry first.** The article cites defaults of 200 for Tomcat's thread pool and 10 for HikariCP's connection pool: with 200 threads sharing 10 connections, "the connection pool runs dry before the thread pool does whenever the DB slows even slightly."
 - **A vertical P99 jump means a pool ran dry.** A queued request's time is its own processing plus everyone ahead of it. "If P99 on a graph didn't degrade gradually but jumped vertically at some point, it is likely that a pool somewhere just ran dry."
 - **Read the slope of active threads,** not the absolute utilization. A steep climb that does not follow traffic means "the cause is usually not the pool itself but a delay somewhere else."
-- **Bigger pools lengthen the line.** When the app logs "connection timeout", "adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow before asking whether the pool is too small: put the connection wait time metric next to the DB's slow query log ([CONNECTIONS.md](../postgres/CONNECTIONS.md)).
+- **Bigger pools lengthen the line.** When the app logs "connection timeout", "adding connections only makes the line in front of the slow DB longer", and more concurrent sessions can make the DB slower still. Ask why returns became slow before asking whether the pool is too small: put the connection wait time metric next to the DB's slow query log ([CONNECTIONS.md](../../backend/postgres/CONNECTIONS.md)).
 - **Health checks spread the failure.** Threads blocked on the DB make health checks time out, the load balancer removes the server, and the rest absorb its traffic and run dry faster: "One slow query toppling the whole cluster like dominoes is the most common scenario for a cascading failure." Restarting the dead servers is wasted effort; they reattach to the same slow DB ([HEALTH.md](HEALTH.md)).
 
 ## Event-loop servers
@@ -79,7 +79,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 ## Queues, backpressure, load shedding
 
 - **A growing queue is "debt that lengthens everyone's wait":** 100 queued at 100/s is a 1s wait, 10,000 queued is 100s. Once the wait passes the client timeout, every successful run "just produces a response nobody is left to receive", and the queue eats memory until OOM. Traffic exceeding throughput like this is called backpressure.
-- **Shed load.** Flow control means telling the stage in front and explicitly refusing the traffic you cannot digest right now, instead of hiding the backpressure inside the queue. The simplest form, load shedding: cap the queue and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly". Without it, "everyone dies slowly and fairly, together" ([RELIABILITY.md](../api-design/RELIABILITY.md#rate-limits)).
+- **Shed load.** Flow control means telling the stage in front and explicitly refusing the traffic you cannot digest right now, instead of hiding the backpressure inside the queue. The simplest form, load shedding: cap the queue and reject the overflow immediately with 429: "some requests are failed fast, and in exchange the accepted remainder is served properly". Without it, "everyone dies slowly and fairly, together" ([RELIABILITY.md](../../backend/api-design/RELIABILITY.md#rate-limits)).
 - **The signature of missing flow control:** "If the queue length or wait time graph will not stop trending upward, flow control is missing or insufficient. A healthy system's queue graph may slosh, but it always returns to equilibrium."
 
 ## Cache hit rate
@@ -89,7 +89,7 @@ Reference: "How to Read Server Monitoring Graphs", https://kciter.so/posts/serve
 
 ## When two dashboards disagree
 
-- **A timeout above the work records a success nobody received.** Gateway timeout 3s, backend query 5s: the user gets a 504 at 3s while the backend finishes and "proudly records a success". "The backend metrics show no failures, and the gateway metrics show no successes", and under overload the wasted work delays recovery. Give the inner layer a shorter timeout than the outer (gateway 3s, backend DB timeout about 2.5s), the article's "timeout budget" ([RELIABILITY.md](../api-design/RELIABILITY.md#deadlines-and-cancellation)).
+- **A timeout above the work records a success nobody received.** Gateway timeout 3s, backend query 5s: the user gets a 504 at 3s while the backend finishes and "proudly records a success". "The backend metrics show no failures, and the gateway metrics show no successes", and under overload the wasted work delays recovery. Give the inner layer a shorter timeout than the outer (gateway 3s, backend DB timeout about 2.5s), the article's "timeout budget" ([RELIABILITY.md](../../backend/api-design/RELIABILITY.md#deadlines-and-cancellation)).
 - "When one layer's error rate and another layer's success rate contradict each other, look at the timeout settings before the code."
 
 ## The diagnosis table
@@ -123,7 +123,7 @@ The same dashboard serves three purposes. Peacetime: find where problems will oc
 ## The thirty minutes after a deploy
 
 - **Changes cause most outages.** "Roughly 70% of outages originate in changes to a running system" (SRE book). A deploy is the biggest and most frequent change, so "The thirty minutes after a deploy are the time to read the graphs with the most concentration."
-- **Mark deploys on the graphs.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more." (Grafana annotations: [DASHBOARDS.md](../../monitoring/grafana/DASHBOARDS.md#links-and-annotations).)
+- **Mark deploys on the graphs.** "Half of incident analysis is the question 'did this change happen before the deploy or after' … for the cost, no other monitoring improvement pays off more." (Grafana annotations: [DASHBOARDS.md](../grafana/DASHBOARDS.md#links-and-annotations).)
 - **Some wobble is expected.** The JIT is not warm, local caches are empty and pools are being re-established, so "P99 jumping to double or triple right after a deploy is not, in itself, an anomaly." Read the direction: a spike that slopes down over minutes is warmup, so wait; a spike that sticks or worsens means consider a rollback.
 - **Agree on rollback criteria in advance,** for example "if the error rate exceeds X% after a deploy, or P99 shows no recovery trend within 10 minutes, roll back without debate." "A rollback is a way to resolve the problem decisively within minutes. The cause can be found after the system is stable."
 - **Reduce the wobble** with a **slow start** (ramp traffic up gradually after a deploy) or a **warmup stage** that sends priming requests before real traffic to heat the JIT, caches and pools. "The effect is especially large on the JVM, which runs several times slower until the JIT compiler has optimized the frequently executed code."
@@ -141,7 +141,7 @@ A 1%-a-day decline produces zero alerts over four weeks. "An alert is a way to c
 - **Reach causation, not correlation.** Mid-incident analysis stops at correlation ("we reverted the deploy and the incident ended"); the postmortem asks "why was that deploy a problem, and why didn't review catch it?" Go one layer past the surface cause: not "because of a slow query" but "because there was no procedure for checking the execution plan of queries against large tables."
 - **Never write a person as the cause.** "The moment a person's name goes into the cause field, whoever is standing there during the next incident will hide it or blame themselves … A postmortem that blames people only makes the next incident longer." Record only the context: "in this situation, this was the judgment that had to be made."
 - **The output is "a list of changes that make the next incident shorter":** panels, alerts, rollback criteria agreed in advance, root-cause removal.
-- **The public postmortem is a separate document.** For Tier 3 and 4 incidents in the crisis tiers, publish a postmortem with a summary, timeline, a specific root cause ("Avoid vague phrases like 'a configuration issue.'"), impact, specific verifiable changes, what went well and what you'd do differently; it keeps the no-person rule above. Template: [../../marketing/public-relations/CRISIS-STATEMENTS.md](../../marketing/public-relations/CRISIS-STATEMENTS.md#public-postmortem) [coreyhaines31/marketingskills, public-relations].
+- **The public postmortem is a separate document.** For P0 and P1 public crises, publish a postmortem (repo mapping of the source: Tier 4 to P0, Tier 3 to P1, Tier 2 to P2, Tier 1 to P3) with a summary, timeline, a specific root cause ("Avoid vague phrases like 'a configuration issue.'"), impact, specific verifiable changes, what went well and what you'd do differently; it keeps the no-person rule above. Template: [../../marketing/public-relations/CRISIS-STATEMENTS.md](../../marketing/public-relations/CRISIS-STATEMENTS.md#public-postmortem) [coreyhaines31/marketingskills, public-relations].
 
 ## Prove it
 

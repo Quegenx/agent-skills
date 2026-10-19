@@ -51,20 +51,7 @@ export async function withTenant<T>(tenantId: string, work: (tx: Tx) => Promise<
 
 ## Supabase
 
-The full platform checklist (Data API grants, views and `security definer` functions that bypass RLS, update policies, storage, keys) is the `supabase` skill's SECURITY.md.
-
-Every table exposed through the API needs RLS enabled with policies, because the browser talks to the database through it (the anonymous and authenticated roles are subject to policies; the service-role key bypasses them and stays on servers).
-
-```sql
-create policy "members read their tenant's projects" on projects
-  for select to authenticated
-  using (tenant_id in (select tenant_id from memberships where user_id = (select auth.uid())));
-```
-
-- **Wrap `auth.uid()` and `auth.jwt()` in `(select ...)`** so Postgres evaluates them once per statement instead of once per row; on large tables that is the difference between fast and unusable.
-- **Tenant or role claims come from `app_metadata`** (server-written), never `user_metadata`, which users can edit.
-- **Write separate policies per command** (`select`, `insert`, `update`, `delete`) with both `using` and `with check` where rows are written, and index the columns policies filter on.
-- **Test policies as each role:** in SQL, `set local role authenticated; set local request.jwt.claims = '{"sub": "..."}'`, then try another tenant's rows; or use two real test users through the client.
+See [the Supabase platform security checklist and tenant-membership policy](../supabase/SECURITY.md).
 
 ## Prove it
 

@@ -27,7 +27,7 @@ The source supplies fixed windows, an ordering from hottest to coolest and blank
 ## Hand off to the existing owners
 
 - **Offer and in-product timing:** use [UPGRADE-PROMPTS.md](UPGRADE-PROMPTS.md), including its store eligibility rules. The audience worksheet does not change the owner's app design.
-- **Lifecycle messages:** use [email lifecycle guidance](../../backend/email-practices/LIFECYCLE-EMAILS.md) for engagement-based trial recovery and [sequence design](../../backend/email-practices/SEQUENCES.md) for entry, exit and message conditions. Channel eligibility, consent and suppression follow [email-practices](../../backend/email-practices/SKILL.md); a reachable address alone is not approval to send.
+- **Lifecycle messages:** use [email lifecycle guidance](../email-marketing/LIFECYCLE-EMAILS.md) for engagement-based trial recovery and [sequence design](../email-marketing/SEQUENCES.md) for entry, exit and message conditions. Channel eligibility, consent and suppression follow [email-practices](../../backend/email-practices/SKILL.md); a reachable address alone is not approval to send.
 - **Payment failures:** keep [dunning](../churn-prevention/DUNNING-COPY.md) separate from promotional recovery. Sending state and duplicate prevention belong to [email reliability](../../backend/email-practices/RELIABILITY.md), not a new per-user sent marker in the worksheet.
 - **Measurement:** record the outcome, comparison group, observation horizon and refund follow-up. Design the comparison with [ab-testing](../ab-testing/SKILL.md), including its sample and allocation rules. The source's assumed conversion rates and fixed holdout percentage are not adopted. [nestyme/awesome-prompts, almost-paid/SKILL.md]
 

@@ -2,7 +2,7 @@
 
 Resend sends email from your server through one HTTP API (`https://api.resend.com`), the official SDKs that wrap it, or SMTP. The API key lives in a server-side env var and never reaches a browser (the API has no CORS, on purpose, to protect the key); the `from` address uses a domain you verified (see [DOMAINS.md](DOMAINS.md)); and the Node SDK returns `{ data, error }` instead of throwing, so check `error` rather than relying on `try/catch`.
 
-**Contents:** [Install the SDK](#install-the-sdk) · [API keys and permissions](#api-keys-and-permissions) · [The Node SDK contract](#the-node-sdk-contract) · [Raw HTTP and pagination](#raw-http-and-pagination) · [Next.js](#nextjs) · [Other JS runtimes](#other-js-runtimes) · [Auth libraries](#auth-libraries) · [SMTP](#smtp) · [Supabase](#supabase) · [The MCP server](#the-mcp-server) · [Docs and skills for agents](#docs-and-skills-for-agents) · [Prove it](#prove-it)
+**Contents:** [Install the SDK](#install-the-sdk) · [API keys and permissions](#api-keys-and-permissions) · [The Node SDK contract](#the-node-sdk-contract) · [Email-practices timeout source example](#email-practices-timeout-source-example) · [Timeouts](#timeouts) · [Raw HTTP and pagination](#raw-http-and-pagination) · [Next.js](#nextjs) · [Other JS runtimes](#other-js-runtimes) · [Auth libraries](#auth-libraries) · [SMTP](#smtp) · [Supabase](#supabase) · [The MCP server](#the-mcp-server) · [Docs and skills for agents](#docs-and-skills-for-agents) · [Prove it](#prove-it)
 
 ## Install the SDK
 
@@ -75,6 +75,22 @@ if (error) {
 }
 console.log('Sent:', data.id);
 ```
+
+## Email-practices timeout source example
+
+[resend/email-best-practices] The source below is preserved verbatim; `new AbortSignal.timeout(...)` differs from the non-constructor `AbortSignal.timeout(...)` form in [The Node SDK contract](#the-node-sdk-contract). Use that canonical request-options contract when adapting this example.
+
+### Timeouts
+
+- **Set timeouts to avoid hanging requests.** The source's snippet, verbatim:
+
+```typescript
+const signal = new AbortSignal.timeout(10000);
+
+await resend.emails.send(emailData, { signal });
+```
+
+- **Recommended:** 10 to 30 seconds for email API calls.
 
 ## Raw HTTP and pagination
 

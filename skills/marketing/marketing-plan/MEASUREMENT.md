@@ -172,7 +172,7 @@ For every channel or initiative, the plan should specify when to stop. Often mis
 Examples:
 - "If a paid channel has CAC > 2× target after 30 days at meaningful spend, pause."
 - "If onboarding Variant 3 doesn't show statistically meaningful lift (or directional lift + congruent qualitative signal) after 4 weeks, move to Variant 1."
-- "If lifecycle Flow 4 has open rate < 12% after 6 weeks, redo subject lines + audience segmentation." (Opens are unreliable: Google says low open rates "aren't necessarily an accurate indicator of deliverability", quoted in [email-practices DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md); [SEQUENCES.md](../../backend/email-practices/SEQUENCES.md) reports "clicks, conversions, unsubscribes and complaints, not opens".)
+- "If lifecycle Flow 4 has open rate < 12% after 6 weeks, redo subject lines + audience segmentation." (Opens are unreliable: Google says low open rates "aren't necessarily an accurate indicator of deliverability", quoted in [email-practices DELIVERABILITY.md](../../backend/email-practices/DELIVERABILITY.md); [SEQUENCES.md](../email-marketing/SEQUENCES.md) reports "clicks, conversions, unsubscribes and complaints, not opens".)
 
 **Two scopes, both kept.** The source's "CAC > 2× target after 30 days at meaningful spend" is a plan-level, blended-CAC rule. [app-growth BUDGET-AND-ROAS.md](../../mobile/app-growth/BUDGET-AND-ROAS.md) has a per-channel test rule [appeeky]: "spend > 2× target CPA with 0 conversions = pause channel" with a 48-hour first kill window. Use each at its own scope. Likewise the source's "Blended LTV/CAC > 3" is a plan health check, while app-growth's "CPA < 0.5× LTV to scale aggressively" is a paid-scaling gate on a different denominator.
 

@@ -89,7 +89,7 @@ export class SomeError extends Schema.TaggedError<SomeError>()("SomeError", {
 - **Never write your own `isRecord` or `isString`:** use the `Predicate` module's helpers, composed with `Predicate.and`, `Predicate.or`, `Predicate.not` and `Predicate.compose`.
 - **Use `DateTime`** instead of `Date` and `Date.now`.
 - **Use `_tag` as the discriminant field** of tagged unions, so `catchTag`, `Match.tag` and `Data.TaggedEnum` work on it.
-- **Run at the edge.** Call `run*` once, close to the program's edge, and make the process entry point `NodeRuntime.runMain` (or `BunRuntime.runMain`, `BrowserRuntime.runMain`), or `runMain(Layer.launch(appLayer))` for an app built from layers. Embed Effect in a framework with one `ManagedRuntime`, and dispose it. Details in CORE.md.
+- **Run at the edge.** Call `run*` once, close to the program's edge, and make the process entry point `NodeRuntime.runMain` (or `BunRuntime.runMain`, `BrowserRuntime.runMain`), or `runMain(Layer.launch(appLayer))` for an app built from layers. Embed Effect in a framework with one `ManagedRuntime`, and dispose it. Details in [RESOURCES-AND-CONFIG.md](RESOURCES-AND-CONFIG.md#managedruntime).
 - **Recover from typed errors with typed operators;** recover from defects only at boundaries (ERRORS.md).
 - **`Effect.sync` and `Effect.promise` must not throw or reject.** When throwing is expected, use `Effect.try` or `Effect.tryPromise` with a `catch` that returns a typed error and never throws (CORE.md).
 

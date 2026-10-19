@@ -1,6 +1,6 @@
 # State and coordination: Ref, Deferred, Semaphore, Latch, Queue, PubSub, References
 
-**Contents:** [Ref](#ref) · [SynchronizedRef](#synchronizedref) · [SubscriptionRef](#subscriptionref) · [Transactions](#transactions) · [Deferred](#deferred) · [Semaphore](#semaphore) · [Latch](#latch) · [Queue](#queue) · [PubSub](#pubsub) · [Fiber-local values: References](#fiber-local-values-references) · [Anti-patterns](#anti-patterns) · [Prove it](#prove-it)
+**Contents:** [Ref](#ref) · [SynchronizedRef](#synchronizedref) · [SubscriptionRef](#subscriptionref) · [Transactions](#transactions) · [Deferred](#deferred) · [Semaphore](#semaphore) · [Latch](#latch) · [Queue](#queue) · [PubSub](#pubsub) · [Fiber-local values: References](#fiber-local-values-references) · [Atoms and reactivity](#atoms-and-reactivity) · [Anti-patterns](#anti-patterns) · [Prove it](#prove-it)
 
 Everything here targets Effect v4. In v4, `Ref`, `Deferred`, `Queue` and `Fiber` are no longer Effects: `yield* ref` or `yield* deferred` no longer works, because passing such a value to an Effect combinator would read it instead of treating it as a value. Use the module functions (`Ref.get`, `Deferred.await`, `Queue.take`). Fibers and FiberSet are in [CONCURRENCY.md](CONCURRENCY.md).
 
@@ -118,6 +118,20 @@ const subscribe = Stream.fromPubSub(pubsub)
 - **Scheduler tuning:** v3 `FiberRef.currentMaxOpsBeforeYield` and `currentScheduler` map to `References.MaxOpsBeforeYield` and `References.Scheduler`, set with `Effect.provideService`. The per-function migration notes for `Effect.withMaxOpsBeforeYield` and `Effect.withScheduler` say there is no direct public replacement; the References above are what the FiberRef guide and source provide.
 - **Define your own** with `Context.Reference` for config values or feature flags that have a default.
 
+## Atoms and reactivity
+
+- **Core in `effect/reactivity`;** bindings in `@effect/atom-react` (hooks plus SSR hydration helpers), `@effect/atom-solid`, `@effect/atom-vue`.
+- **An `Atom` describes one piece of reactive state;** the `AtomRegistry` runs reads, remembers values, tracks dependencies, starts effects and streams, and cleans up unused atoms. Each registry is independent.
+- **Constructors:** `Atom.make` takes a value or read function (plain values make writable state), or an `Effect` / `Stream` exposed as an `AsyncResult`. `Atom.fn`: writing an argument starts the computation, state as `AsyncResult`. `Atom.family`: memoized factory, same object for the same argument.
+- **`AsyncResult<A, E>`** is no value yet, success `A` or failure `E`, each with a `waiting` flag so the UI keeps the current value while newer work loads.
+- **Lifetime:** atoms auto-dispose by default; `Atom.keepAlive` keeps one mounted without subscribers (`autoDispose` undoes it); `Atom.setIdleTTL` disposes after a finite idle time.
+- **Run effects that need services** with `Atom.runtime(layer | (get) => layer)`, which returns an `AtomRuntime<R, E>`; also `addGlobalLayer` and `withReactivity(keys)` (refresh when the keys change).
+- **Combinators:** `readable`, `writable`, `subscriptionRef`, `fnSync`, `pull`, `withFallback`, `map`, `mapResult`, `transform`, `debounce`, `withRefresh`, `swr` (`revalidateOnMount`, `revalidateOnFocus`: `true` respects `staleTime`, `"always"` forces), `optimistic` / `optimisticFn` (failures roll back to the latest source value), `batch`, `refreshOnWindowFocus`, `kvs` (backed by a schema-encoded `KeyValueStore` entry), `searchParam` (a schema passed here must be synchronous with no context), `serializable` (schema plus stable key for hydration), `withServerValue`, `withEquality`, `withLabel`, `toStream`, `get`, `set`, `update`, `modify`, `refresh`, `mount`.
+- **Hydration:** `Hydration.dehydrate` / `hydrate` move `Atom.serializable` values between registries. **`Reactivity`** caches nothing; it registers handlers for keys, invalidates keys and wraps successful mutations so they invalidate.
+- **API clients as atoms:** `AtomHttpApi.Service<Self>()(id, { api, httpClient, transformClient?, transformResponse?, baseUrl?, runtime? })` gives query atoms (`reactivityKeys`, `timeToLive`, `serializationKey`) and mutations that invalidate reactivity keys on success. It turns `SchemaError` and `HttpClientError` into defects. `AtomRpc.Service` is the RPC equivalent.
+- **React hooks:** `useAtomValue(atom, selector?)`, `useAtom`, `useAtomSet` (`promise` / `promiseExit` modes for `AsyncResult` atoms), `useAtomSuspense`, `useAtomMount`, `useAtomRefresh`, `useAtomSubscribe`, `useAtomInitialValues`, `useAtomRef`, `useAtomRefProp`, `useAtomRefPropValue`; `RegistryProvider` / `RegistryContext`; `HydrationBoundary`; `ScopedAtom.make` for provider-owned atoms (`const Counter = make(() => Atom.make(0))`, `<Counter.Provider>`, `Counter.use()`).
+- **Hook gotchas:** `useAtomSuspense` has `suspendOnWaiting` default `false`, and without `includeFailure` it throws failures with `Cause.squash(result.cause)`, so wrap callers in an error boundary. Late Suspense boundaries hydrate with the same snapshot as earlier readers, then update to the live value.
+
 ## Anti-patterns
 
 - **`yield* ref`, `yield* deferred`, `yield* queue`:** v4 values are not Effects; use `Ref.get`, `Deferred.await`, `Queue.take`.
@@ -127,6 +141,7 @@ const subscribe = Stream.fromPubSub(pubsub)
 - **Publishing before subscribing** without a `replay` buffer: those messages are gone.
 - **Unbounded PubSub by default.**
 - **Treating `asDequeue` as a runtime guard:** it is a type only.
+- **`useAtomSuspense` without an error boundary** when `includeFailure` is off.
 
 ## Prove it
 

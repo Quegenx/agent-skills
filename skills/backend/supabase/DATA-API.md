@@ -121,7 +121,7 @@ raise sqlstate 'PGRST' using message = json_build_object('code','123','message',
 - **`throwOnError()`** rejects instead of returning `error`; `setHeader()` sets a header for one request; `retry(false)` disables retry for one query.
 - **Long URLs fail with Cloudflare 520,** most often at 16+ KB in headers or URL (long `in` lists): move the data into an RPC body.
 - **`or()` bug:** 400 `column ... does not exist` on PATCH/POST/DELETE with `or()` filters in PostgREST before 14.4; upgrade (14.5+) or add `&select=id,example_column`.
-- **Async Supabase calls inside `onAuthStateChange` deadlock** the next call on that client (known bug).
+- Auth callback reentrancy and its SDK-version boundary are defined in [AUTH-SESSIONS.md](AUTH-SESSIONS.md#client-api-notes-supabase-js).
 
 ### Querying with supabase_flutter (Dart)
 

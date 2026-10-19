@@ -18,7 +18,7 @@ Sending email and SMS/MMS/RCS through OneSignal: sender and DNS setup, warm-up, 
 | Record | Purpose | Rule |
 |---|---|---|
 | TXT | SPF | One SPF record only: append includes, e.g. `v=spf1 include:spf.onesignal.email include:mailgun.org include:your-other-spf-records ~all`; minimal OneSignal-only `v=spf1 include:spf.onesignal.email ~all` |
-| TXT | DMARC | OneSignal uses `v=DMARC1; p=none;`. Don't add a duplicate; an existing one must be that or stricter (`p=quarantine`, `p=reject`). Required for domains sending 5,000+/day to Gmail or Yahoo |
+| TXT | DMARC | OneSignal uses `v=DMARC1; p=none;`. Don't add a duplicate; an existing one must be that or stricter (`p=quarantine`, `p=reject`). Mailbox-provider scope is owned by [DELIVERABILITY.md](../email-practices/DELIVERABILITY.md#sender-requirements-by-mailbox-provider); Yahoo publishes no numeric bulk threshold |
 | CNAME | DKIM | Two records required: one active, one secondary for rotation |
 | CNAME | Open and click tracking | Can be omitted on a no-tracking sender (this disables opens and clicks for it) |
 | MX | | Priority `10`. Don't overwrite an existing MX (e.g. Gmail); a warning on an MX pointing elsewhere is acceptable |
@@ -36,7 +36,7 @@ Sending email and SMS/MMS/RCS through OneSignal: sender and DNS setup, warm-up, 
 | Threshold | Value |
 |---|---|
 | Warm-up needed from a new or cold domain | about **2,000+ emails/day** |
-| Bulk sender (permanent classification) | **5,000+/day to Gmail or Yahoo** |
+| Gmail bulk sender (permanent classification) | **5,000+/day to Gmail**; Yahoo has no published numeric threshold ([DELIVERABILITY.md](../email-practices/DELIVERABILITY.md#yahoo-and-aol)) |
 | OneSignal Acceptable Use Policy bounces | < **5%** |
 | OneSignal Acceptable Use Policy spam complaints | < **0.08%** |
 | Google spam rate | < **0.10%**, never **0.30%** |
@@ -116,11 +116,9 @@ test@example.com,true
 
 ## Email compliance
 
-- **Explicit opt-in is required** in the EU (GDPR), UK, Canada (CASL), Australia, New Zealand, Singapore and Hong Kong; US CAN-SPAM allows an opt-out model. Germany recommends or requires double opt-in.
-- **Consent checkbox unchecked by default;** run re-consent campaigns for stale lists.
-- **Every marketing email has an unsubscribe link.** CAN-SPAM: honor within 10 business days; GDPR: immediately, without undue delay; never require a login to opt out.
-- **Accurate From and Reply-To, a non-deceptive subject, a physical address.**
-- **Open-tracking consent** (CNIL and Garante guidance, April 2026): tag `open_tracking_consent: true|false`, segment with `country`, and send non-consenting users through a secondary subdomain without the tracking CNAME (`email-notracking.example.com`); omitting the CNAME disables opens and clicks for that sender.
+General consent, jurisdictions, unsubscribe deadlines, sender identity and the original UK/open-tracking source qualifications are owned by [COMPLIANCE.md](../email-practices/COMPLIANCE.md#onesignal-source-qualifications).
+
+- **OneSignal open-tracking implementation:** tag `open_tracking_consent: true|false`, segment with `country`, and send non-consenting users through a secondary subdomain without the tracking CNAME (`email-notracking.example.com`); omitting the CNAME disables opens and clicks for that sender.
 
 ## SMS model and setup
 
@@ -132,7 +130,7 @@ test@example.com,true
 |---|---|---|
 | Alphanumeric | fast | 10 MPS default; one-way (no STOP, no double opt-in, no two-way); opt-out managed separately |
 | Toll-free | days | 3 MPS default, up to 25+; one number covers US and Canada |
-| Long codes | weeks | 3 to 225 MPS (Twilio: 225 is the total at Trust Score 75 to 100, 75 each to AT&T, T-Mobile and Verizon) |
+| Long codes | weeks | See [REGISTRATION.md](../../marketing/sms-marketing/REGISTRATION.md#throughput-by-trust-score) for Trust Score totals and the provider’s 3 to 225 MPS source range |
 | Short code | weeks to months | 100+ MPS, premium |
 | RCS | 8 to 16 weeks | 100 MPS, premium |
 
@@ -142,18 +140,8 @@ test@example.com,true
 ## SMS registration
 
 - **Every application needs** brand info (legal name, address, tax ID, website, vertical) and campaign info (use case, 2 to 5 sample messages, opt-in flow with screenshots, opt-out flow, HELP response, frequency, privacy policy URL, ToS URL).
-- **US approval times:** toll-free 3 to 5 business days; 10DLC 1 to 3 weeks (throughput set by the TCR trust score: Twilio lists 225, 120 and 12 MPS in total at Trust Score 75 to 100, 50 to 74 and 1 to 49, plus a T-Mobile daily cap per brand (EIN) that returns error 30023; [REGISTRATION.md](../../marketing/sms-marketing/REGISTRATION.md#throughput-by-trust-score)); short code 8 to 12 weeks; RCS 8 to 16 weeks (carriers prioritize Fortune 1000 and 100K+ msgs/month). The SMS setup page instead groups short codes and RCS as "typically 8 to 16 weeks".
-- **US state laws apply by recipient location:**
-
-| State | Rule |
-|---|---|
-| Florida (FTSA), Oklahoma (OTSA) | Max 3 texts per 24 hours on the same topic; 8 AM to 8 PM |
-| Maryland | 3 per 24 h, express written consent, consent logs |
-| Washington | 8 AM to 8 PM |
-| California | Opt-out response within 15 business days |
-| Virginia | Full-name identification |
-
-- **Canada:** bilingual STOP/ARRET and HELP/AIDE; max 320 characters; Quebec marketing in French or bilingual.
+- **US approval times:** toll-free 3 to 5 business days; 10DLC 1 to 3 weeks (throughput, carrier totals and T-Mobile brand cap are owned by [REGISTRATION.md](../../marketing/sms-marketing/REGISTRATION.md#throughput-by-trust-score)); short code 8 to 12 weeks; RCS 8 to 16 weeks (carriers prioritize Fortune 1000 and 100K+ msgs/month). The SMS setup page instead groups short codes and RCS as "typically 8 to 16 weeks".
+- **State and country rules:** [SMS compliance](../../marketing/sms-marketing/COMPLIANCE.md#onesignal-jurisdiction-guidance) owns the state table and Canadian bilingual/length rules.
 - **UK:** generic sender IDs (Verify, OTP, Alert, Info) are blocked by BT; RCS only on +44 numbers; short code freeze mid-December to early January.
 - **Unregistered sender IDs are blocked** in Ireland, Singapore, the Philippines and Thailand.
 
@@ -164,24 +152,23 @@ test@example.com,true
   - Text-to-subscribe keyword, or a QR code `sms:+[phone_number]?body=KEYWORD` (RCS: `sms:+[phone_number]?service_id=[your_agent_id]%40rbm.goog&body=MESSAGE`).
   - A separate unchecked box at checkout; physical forms; an email prompt (an email address doesn't imply SMS consent).
   - iOS 26 "Unknown Senders" filter: text-to-subscribe and QR make you a known sender.
-- **Promotional disclosure:** brand name, recurring automated **marketing** messages, frequency, "Msg & data rates may apply", STOP, ToS and Privacy links, and that consent is not a condition of purchase. Pre-checked checkboxes are non-compliant everywhere. By origin: the TCPA's prior express written consent is a signed agreement that names the seller and the number and says signing is not a condition of purchase (47 CFR 64.1200(f)(9), https://www.ecfr.gov/current/title-47/chapter-I/subchapter-B/part-64/subpart-L/section-64.1200); the confirmation contents (program name, HELP or care contact, how to opt out, frequency, fees) are CTIA's (Messaging Principles 2023 §5.1.2.1).
-- **Transactional and OTP consent:** phone entry in a form with a visible disclosure near the field (brand, the specific message types, "Msg & data rates may apply", STOP). A phone number alone is not consent; consent covers only the stated purpose, so don't mix in "updates and offers" language. Under the TCPA an informational text (an event reminder the person signed up for) needs prior express consent, oral or written; adding a promotion makes it marketing, which needs written consent (FCC, https://docs.fcc.gov/public/attachments/DOC-393514A1.pdf, n.48).
+- **Promotional and transactional/OTP disclosure wording:** [COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md#onesignal-consent-disclosures) owns the TCPA/CTIA distinction and purpose limits.
 - **Validate the audience:** Lookup (valid, active, mobile); only collect numbers where you have an approved sender; verify ownership with an OTP; store E.164 (`+14155551234`), which the API and CSV require. Never route SMS or bill by the number's prefix: the prefix shows the issuing carrier, not the live one, after number portability; use an HLR or portability lookup ([../../frontend/web-accessibility/PHONE-NUMBERS.md](../../frontend/web-accessibility/PHONE-NUMBERS.md#the-prefix-is-not-the-carrier)) [skills-il, israeli-phone-formatter]. A vCard `.vcf` sent via Media URL (MMS rates) belongs in the welcome flow.
 - **Double opt-in** is required for cart abandonment programs in the US and recommended otherwise. Set it up at **Settings > Platforms > SMS Settings > Consent Management** (Send Message Prompt + Text to Subscribe keyword); reply syncing at **SMS Settings > Senders > Setup Replies** is required. Tag which use case the subscriber opted into.
 - **Each channel's consent is separate** (OneSignal blog, October 2026): a yes to push doesn't carry over to texts. SMS and RCS have no system prompt; honor STOP immediately; for email, ask at signup and offer preference options early.
 
 ## Keywords and opt-out
 
-- **Protected keywords:** `STOP` (aliases `UNSUBSCRIBE`, `CANCEL`), `HELP`, `START` (aliases `UNSTOP`, `YES`); their replies can only be changed through support. STOP is scoped to that sender. The legal duty is wider than this list: the FCC's per se revocation words are stop, quit, end, revoke, opt out, cancel and unsubscribe, and any other wording counts if a reasonable person would read it as a revocation (47 CFR 64.1200(a)(10)), so read inbound replies for intent; a 2026 FCC order lets a sender designate an exclusive method once it takes effect ([COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md#revocation-fcc)).
-- **STOP is final from your side.** Users who texted STOP cannot be resubscribed through the dashboard or API; they must text START, UNSTOP or YES. Re-subscribing an SMS Subscription without the user's consent violates carrier compliance rules (CTIA). The FCC deadline for honoring a revocation is ten business days at most, and the only message allowed after it is one confirmation with no marketing (presumed within consent if sent within 5 minutes; 47 CFR 64.1200(a)(10), (a)(12)).
-- **Alphanumeric senders need an unsubscribe link in every message,** e.g. `https://yourbrand.com/sms-unsubscribe?uid={{ onesignal_id }}` (or `{{ subscription_id }}`). The page needs a confirmation button: don't auto-unsubscribe on page load, because link previews would trigger it. It calls the Update Subscription API or sets a tag (`promo = false`). Because a one-way sender can't take a reply, the FCC also requires each text to say two-way texting isn't available and to give other ways to revoke (47 CFR 64.1200(a)(10)).
+- **Protected keywords:** `STOP` (aliases `UNSUBSCRIBE`, `CANCEL`), `HELP`, `START` (aliases `UNSTOP`, `YES`); their replies can only be changed through support. STOP is scoped to that sender. The FCC’s broader revocation duty and unresolved 2026 source claim are maintained in [COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md#revocation-fcc).
+- **STOP is final from your side.** Users who texted STOP cannot be resubscribed through the dashboard or API; they must text START, UNSTOP or YES. Re-subscribing an SMS Subscription without the user's consent violates carrier compliance rules (CTIA). Legal timing and the one permitted confirmation are maintained in [COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md#revocation-fcc).
+- **Alphanumeric senders need an unsubscribe link in every message,** e.g. `https://yourbrand.com/sms-unsubscribe?uid={{ onesignal_id }}` (or `{{ subscription_id }}`). The page needs a confirmation button: don't auto-unsubscribe on page load, because link previews would trigger it. It calls the Update Subscription API or sets a tag (`promo = false`). The legal one-way-sender disclosure is maintained in [COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md#revocation-fcc).
 - **Shared senders (not recommended):** custom keywords (NOPROMO sets `promo = false`) at **Settings > Platforms > SMS Settings > Keywords**; include the keyword in every message of that type and exclude by User Tag. Consent by Sender shows on the SMS subscription. Auto-responder at **SMS Settings > Auto-Responder**.
 - **Keyword matching** is case-insensitive: a single word matches as the first or last word or in parentheses; a multi-word keyword only in parentheses. Keywords are global per sender (avoid `1`, `2`, `3` across concurrent campaigns). Syncing keywords to OneSignal breaks existing Twilio replies.
 - **Preference centers:** the opt-in model (target `fall = true`) and the opt-out model (exclude `fall = false`) give different audiences; pick one. Keyword tags can trigger Journeys.
 
 ## Composing SMS, MMS, RCS
 
-- **Encoding and billing:** GSM-7 is 160 chars per segment (153 when multi-part); UCS-2 (emoji, accents, non-Latin) is 70 (67 multi). Billing is per segment: 200 GSM-7 characters = 2; 100 characters with an emoji = 2.
+- **Encoding, segment limits and billing examples:** [CHANNEL-AND-COPY.md](../../marketing/sms-marketing/CHANNEL-AND-COPY.md#length-and-segments) owns GSM-7/UCS-2 and multipart rules.
 - **MMS:** up to 10 attachments, 5MB total, US, Canada and Australia only, flat rate.
 - **Links:** one trackable link per SMS, no personalization in tracked links. Don't use `bit.ly`, `tinyurl.com` or `goo.gl` (US carriers block them); use UTM parameters or branded domains.
 - **RCS:** cards with up to three actions, carousels, link, keyword-reply and phone actions; images 2:1, 16:9, 7:3 (top) or 3:4 (left); max 3,072 characters; SMS fallback (not for text-only RCS). Automations prefer RCS automatically once it is approved.
@@ -189,10 +176,8 @@ test@example.com,true
 
 ## SMS compliance
 
-- **Consent is not transferable** (CTIA 2023 §5.1.2.2: consent "should apply only to the campaign(s) and specific Message Sender for which it was intended"); purchased, rented or shared lists are non-compliant everywhere. Keep timestamped opt-in and opt-out records: the burden of proof is on you.
-- **Every body** carries the brand name and an opt-out instruction, and content matches the approved use case.
-- **Prohibited:** illegal content, phishing/smishing, fraud, spam; SHAFT content is restricted (CTIA Short Code Monitoring Handbook v1.9 audit tables in §6: legal SHAFT content needs a working age gate, federally illegal content means removing the call to action; [COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md#restricted-content-shaft)); cannabis is prohibited in the US and Australia (CBD is OK in the UK). Australia: unsubscribe must keep working 30 days after sending.
-- **Quiet hours for promotional SMS** (local time): US 8 AM to 9 PM (47 CFR 64.1200(c)(1), which applies to "telephone solicitation"), Canada 9 AM to 9 PM, UK 8 AM to 8 PM, EU 8 AM to 8 PM, Australia 9 AM to 8 PM. OneSignal has no built-in quiet hours for SMS: use a Journey Time Window node, which uses the recipient's time zone. Transactional and OTP are generally exempt.
+Consent scope and records, the body/footer rule, SHAFT restrictions, local quiet hours and country qualifications are owned by [COMPLIANCE.md](../../marketing/sms-marketing/COMPLIANCE.md). OneSignal has no built-in SMS quiet hours: use a Journey Time Window node, which uses the recipient’s time zone; the source treats transactional and OTP as generally exempt.
+
 - **SMS pumping protections** (OneSignal SMS): spend warnings, automatic send disabling above a threshold, geographic restrictions to contracted geographies.
 
 ## Prove it

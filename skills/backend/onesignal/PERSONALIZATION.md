@@ -11,7 +11,7 @@ Filling messages with per-recipient data: Liquid syntax, where each kind of data
 | SMS | `contents` |
 | In-app | Tag substitution only (no `journey.*`, `message.*`, `subscription.*`, `user.*`). Tags must be set before the session starts; the available tags are what `getTags` returns |
 | Live Activities | `event_updates`, `contents`, `headings` |
-| Journey webhooks | All fields; see [JOURNEYS.md](JOURNEYS.md#webhooks) |
+| Journey webhooks | All fields; see [SERVER-AND-SUPABASE.md](SERVER-AND-SUPABASE.md#journey-webhooks) |
 
 ## Data sources
 
@@ -52,28 +52,7 @@ Filling messages with per-recipient data: Liquid syntax, where each kind of data
 
 ## API `custom_data`
 
-- **Message-specific and not stored;** it must be used with a `template_id`. Reference it as `{{ message.custom_data.key_name }}`. The request fields and per-channel size caps are in [REST-API.md](REST-API.md#transactional-sends-and-custom_data).
-- **Missing keys render empty** but the message still sends.
-- **Arrays** index from 0 (a missing index returns empty) and support `.size`, `.first`, `.last`.
-- **Bulk personalization keyed by External ID:** `{% assign user = message.custom_data.users[subscription.external_id] %}`. Every recipient needs an `external_id`.
-- **Stay under 2KB;** exceeding it returns "Request body too large". Limit carts to the first 3 to 5 items.
-- **Best practices:** `default` filters; pre-format values in your backend; test edge cases; fallback templates for critical transactional messages; separate high-volume transactional from marketing.
-
-```json
-{
-  "app_id": "YOUR_APP_ID",
-  "template_id": "YOUR_TEMPLATE_ID",
-  "include_aliases": {
-    "external_id": ["user123", "user456"]
-  },
-  "custom_data": {
-    "users": {
-      "user123": { "first_name": "John", "points": "150", "level": "Gold" },
-      "user456": { "first_name": "Sarah", "points": "200", "level": "Platinum" }
-    }
-  }
-}
-```
+Use message-specific, ephemeral data for OTPs, temporary links or arrays; choose persistent tags or Journey data using [Data sources](#data-sources). The `template_id` requirement, Liquid prefix, missing-field behavior, arrays, bulk JSON, matching External IDs and per-channel size limits are maintained once in [REST-API.md](REST-API.md#transactional-sends-and-custom_data).
 
 Push template (Message field):
 
@@ -133,7 +112,7 @@ You left {{cart.first.product_name}} and {{item_count | minus: 1}} more items in
 
 ## Prove it
 
-- **No OTP or secure link is stored in a tag;** they travel in `custom_data` with a `template_id`, and the request body is under 2KB.
+- **No OTP or secure link is stored in a tag;** they travel in `custom_data` with a `template_id`, and the data respects [REST-API.md’s per-channel caps](REST-API.md#transactional-sends-and-custom_data).
 - **No Journey template references `message.custom_data`.**
 - **Push `data` contains no Liquid,** and `contents`, `headings`, `subtitle`, `apns_alert` and `url` contain no `for` loops.
 - **Numeric tag comparisons** cast with `plus: 0` or compare against a quoted string.

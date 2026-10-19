@@ -35,7 +35,7 @@ Checks 1 to 5 resolve most reports.
 3. **Bundle ID or package name matches the RevenueCat app exactly,** capitalization included, per environment. A mismatch gives empty offerings. MCP: `list-apps` (`bundle_id` for iOS, `package_name` for Play and Amazon).
 4. **The current offering has packages:** MCP `list-offerings` with `expand=items.package.product`; the offering with `is_current: true` needs at least one package, each pointing at a store product. Zero packages gives empty `availablePackages` while `getOfferings` succeeds.
 5. **Store products are live:** "Ready to Submit" or "Approved" in App Store Connect, "Active" in Play Console. Drafts are not returned, even in sandbox. When offerings arrive but products fail to resolve, this is "almost always the cause". MCP `get-product-store-state` (field `store_status`).
-6. **The test account is right:** a sandbox Apple account on the device; on Android a license tester Gmail installed through the testing-track opt-in link, not sideloaded. See [TESTING.md](TESTING.md).
+6. **The test account and build use the selected channel:** follow [TESTING.md](TESTING.md#google-play-testing) for licensed Android debug or test-track paths; use a sandbox Apple account on iOS.
 7. **Network:** corporate VPNs, captive portals and some DNS filters silently block the RevenueCat or store APIs; try another network. In mainland China, Russia and Myanmar set `await Purchases.setProxyURL("https://api.rc-backup.com/");` before configuring.
 8. **The `appUserID`:** a wrong `logIn(appUserID)` attaches entitlements to a different RevenueCat user. Print the current ID (Flutter `Purchases.appUserID`).
 9. **Reset:** uninstall, sign back into the sandbox or tester account, reinstall from the correct channel, relaunch.
@@ -98,10 +98,10 @@ Checks 1 to 5 resolve most reports.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| Purchases fail on a build from `flutter run`, `npx react-native run-android`, Android Studio or `adb install` | A sideloaded debug-key build cannot buy licensed products, even for license testers | Install a signed AAB from the testing track's opt-in link |
-| Products don't load | Opt-in link never opened; not a license tester; products not **Active**; app not on the required track | "You must open the Opt-in URL"; add the tester; activate the product or base plan; see the track note below |
+| Purchases fail on a build from `flutter run`, `npx react-native run-android`, Android Studio or `adb install` | Check the actual account and build against the selected licensed-testing path | Follow [TESTING.md](TESTING.md#google-play-testing); a debug signature alone does not exclude a license tester |
+| Products don't load | Products not **Active**, or the account/build does not meet the selected testing path | Activate the product or base plan; check the [licensed-testing contract](TESTING.md#google-play-testing), including opt-in when using a test track |
 | "not available in your country" on the opt-in link | Fresh upload still propagating (roughly 15 minutes) | Wait and retry |
-| "Item attempting to purchase could not be found" | Debug build without the testing track | Install from the track |
+| "Item attempting to purchase could not be found" | Check the build, tester account and configured products | Follow the [licensed testing contract](TESTING.md#google-play-testing) and match product identifiers |
 | A real card is charged | The account isn't a license tester | Add it under License testing |
 | "Something went wrong" | The device may need a PIN | Set a device PIN |
 | Every request returns "app not found" equivalents | The `applicationId` in `android/app/build.gradle(.kts)` (not the Kotlin package) differs from Dashboard, Project, Apps, Android, Package name | Match it; each flavor gets its own dashboard entry or RevenueCat project |
@@ -113,13 +113,13 @@ Checks 1 to 5 resolve most reports.
 | Reflection crash only in release | R8 or Proguard rules overridden (the SDK ships consumer rules, no extra config needed) | Pair `minifyEnabled true` with `shrinkResources true`; don't override the SDK's consumer rules |
 | `ProxyBillingActivity` `NullPointerException` | Automated tests or Play pre-launch reports on LG Nexus 5X or rooted devices | Safe to ignore; silence it in crash reporting |
 
-- **Android checklist:** test account added as a license tester; service account credentials (JSON) uploaded to RevenueCat with Finance permissions; subscriptions use `product_id:base_plan_id`; new products wait 24 hours. License testers plus the testing track is "the single most common Android gotcha".
+- **Android checklist:** test account added as a license tester; service account credentials (JSON) uploaded to RevenueCat with Finance permissions; subscriptions use `product_id:base_plan_id`; new products wait 24 hours. Use the [licensed-testing paths](TESTING.md#google-play-testing) for the account and distribution check.
 - **Don't call `getOfferings` in your Android app's `Application.onCreate`:** it causes extra network requests (for example on push notifications), and the SDK pre-fetches offerings automatically (<https://www.revenuecat.com/docs/getting-started/displaying-products>).
-- **Which track:** the troubleshooting skill's checklist says "App published to at least closed testing track (internal testing won't work)", and the docs say a closed track is required before products can be fetched, even for testing; the testing-setup skill and the troubleshooting platform files use a signed AAB on **Internal Testing**. Check the current docs; a closed track satisfies both.
+- **Testing path:** use the [single licensed-testing contract](TESTING.md#google-play-testing) for debug sideloading versus track distribution; do not infer eligibility from the track alone.
 
 ### Store checklists
 
-From the docs' empty-offerings page: App Store Connect agreements including the Paid Applications Agreement signed with banking done (up to 24 hours to propagate); Apple Developer membership active and auto-renewing; App-Specific Shared Secret and In-App Purchase Key both added; Google Play agreements signed; app on a closed track; license testers in **Play Console > Settings > License testing**; App Store products Approved or with complete metadata ("Prepare for Submission" and "Ready for Review" load in sandbox when the metadata is complete); the first in-app purchase submitted with an app version, never separately; identifiers match exactly; a physical device; bundle ID and package name match (case sensitive, per environment); the per-platform API key; no StoreKit Configuration in the Xcode scheme when testing live; new products can take up to 24 hours after release.
+From the docs' empty-offerings page: App Store Connect agreements including the Paid Applications Agreement signed with banking done (up to 24 hours to propagate); Apple Developer membership active and auto-renewing; App-Specific Shared Secret and In-App Purchase Key both added; Google Play agreements signed; the [licensed debug or test-track requirements](TESTING.md#google-play-testing); App Store products Approved or with complete metadata ("Prepare for Submission" and "Ready for Review" load in sandbox when the metadata is complete); the first in-app purchase submitted with an app version, never separately; identifiers match exactly; a physical device; bundle ID and package name match (case sensitive, per environment); the per-platform API key; no StoreKit Configuration in the Xcode scheme when testing live; new products can take up to 24 hours after release.
 
 ## Flutter
 
@@ -158,7 +158,7 @@ final apiKey = Platform.isIOS
 | JS bound to an old native module | Stale caches after a bump or native build file change | `npx react-native start --reset-cache`, `pod install`, or `npx expo prebuild --clean` |
 | Key change has no effect | A JS reload doesn't re-run native init | Kill and relaunch |
 | `current: null` or empty `current.availablePackages` | Dashboard offering misconfigured; watch the native console for product lookup failures | Match IDs, case included |
-| Entitlement not active | Read before the purchase promise resolved; product not attached; sideloaded Android build | Await `Purchases.getCustomerInfo()` after the purchase; attach the product; use `eas build --profile preview` or a signed AAB from the opt-in link |
+| Entitlement not active | Read before the purchase promise resolved; product not attached; test account/build mismatch | Await `Purchases.getCustomerInfo()` after the purchase; attach the product; follow the [licensed-testing contract](TESTING.md#google-play-testing) |
 | `react-native-purchases-ui` paywall blank | No paywall on the offering; offerings fetched before it was configured; below iOS 15 or Android minSdk 24 | Configure it; restart the app |
 
 ```ts

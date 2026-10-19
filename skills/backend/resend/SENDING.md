@@ -2,7 +2,7 @@
 
 Resend sends transactional email (receipts, confirmations, notifications) through `POST /emails` for one email and `POST /emails/batch` for up to 100 distinct emails in one request. Batch can't carry attachments and fails as a whole if one email is invalid; the sources ask for an idempotency key on every send so a retry doesn't send twice, and for testing with Resend's `@resend.dev` test addresses. Marketing to large lists with unsubscribe links belongs in Broadcasts ([CONTACTS-AND-BROADCASTS.md](CONTACTS-AND-BROADCASTS.md)); hosted templates are in [TEMPLATES.md](TEMPLATES.md), templates as code in [../react-email/SKILL.md](../react-email/SKILL.md), and deliverability practice in [../email-practices/SKILL.md](../email-practices/SKILL.md).
 
-**Contents:** [Single or batch](#single-or-batch) · [Send one email](#send-one-email) · [Send a batch](#send-a-batch) · [Idempotency keys](#idempotency-keys) · [Attachments and inline images](#attachments-and-inline-images) · [Scheduling](#scheduling) · [Tags and custom headers](#tags-and-custom-headers) · [Test addresses](#test-addresses) · [Email statuses](#email-statuses) · [Manage sent emails](#manage-sent-emails) · [Metrics](#metrics) · [Suppressions](#suppressions) · [Anti-patterns](#anti-patterns) · [Prove it](#prove-it)
+**Contents:** [Single or batch](#single-or-batch) · [Send one email](#send-one-email) · [Send a batch](#send-a-batch) · [Idempotency keys](#idempotency-keys) · [Attachments and inline images](#attachments-and-inline-images) · [Scheduling](#scheduling) · [Tags and custom headers](#tags-and-custom-headers) · [Test addresses](#test-addresses) · [Email statuses](#email-statuses) · [Manage sent emails](#manage-sent-emails) · [Metrics](#metrics) · [Suppressions](#suppressions) · [Anti-patterns](#anti-patterns) · [Email-practices idempotency source example](#email-practices-idempotency-source-example) · [Prove it](#prove-it)
 
 ## Single or batch
 
@@ -191,6 +191,8 @@ console.log(`Sent ${result.successful}/${result.totalChunks} chunks successfully
 
 ## Idempotency keys
 
+The Node SDK’s supported convenience option is `{ idempotencyKey }` in the second argument, as shown below; [the official idempotency guide](https://resend.com/docs/dashboard/emails/idempotency-keys) confirms 24-hour retention.
+
 - **Supported on:** Send Email, Send Batch, and the Inbox operations Send Draft, Reply to Thread Email and Forward Thread Email ([AGENT-INBOX.md](AGENT-INBOX.md)). Template sends use the same endpoint, so pass a key there too.
 - **How it works:** Resend checks whether a request with the same key was sent in the last 24 hours. Same key and same payload returns the original response without sending again. Same key and a different payload returns 409 `invalid_idempotent_request`. Same key while the first request is still running returns 409 `concurrent_idempotent_requests` (safe to retry later).
 - **Key rules:** 1 to 256 characters (otherwise 400 `invalid_idempotency_key`), unique per request, expires after 24 hours. Use a UUID or a string that identifies the email.
@@ -336,6 +338,28 @@ for (const row of data.data ?? []) {
 - **Testing with fake addresses** instead of `delivered@resend.dev`.
 - **Calling the API from the browser:** there is no CORS, by design, to protect the key. Send from the server.
 - **Sending from `onboarding@resend.dev` in production,** or from a `from` domain that doesn't exactly match a verified domain (403).
+
+## Email-practices idempotency source example
+
+[resend/email-best-practices] The source uses the generic request-header form below. The Node convenience option and key scope are owned by [Idempotency keys](#idempotency-keys).
+
+```typescript
+// Generate deterministic key based on the business event
+const idempotencyKey = `password-reset-${userId}-${resetRequestId}`;
+
+await resend.emails.send({
+  from: 'noreply@example.com',
+  to: user.email,
+  subject: 'Reset your password',
+  html: emailHtml,
+}, {
+  headers: {
+    'Idempotency-Key': idempotencyKey
+  }
+});
+```
+
+  (The `from` here is the source's; [EMAIL-TYPES.md](../email-practices/EMAIL-TYPES.md#designing-transactional-emails) says to avoid `noreply@` on transactional mail.)
 
 ## Prove it
 

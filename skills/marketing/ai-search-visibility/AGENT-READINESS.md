@@ -42,7 +42,7 @@ Lighthouse lists these audits under agentic browsing [https://developer.chrome.c
 - Accessibility: Accessibility for agents
 - Layout stability
 
-The audit ids, and the caveat that the released Lighthouse shipping the category was not verified, are in [LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#the-agentic-browsing-category). The page names the WebMCP audits without describing them; their use is in [../../web-automation/webmcp/VALIDATION.md](../../web-automation/webmcp/VALIDATION.md#lighthouses-webmcp-audits).
+The audit ids, and the caveat that the released Lighthouse shipping the category was not verified, are in [LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md#the-agentic-browsing-category). The page names the WebMCP audits without describing them; their use is in [../../web-automation/webmcp/VALIDATION.md](../../web-automation/webmcp/VALIDATION.md#lighthouses-webmcp-audits).
 
 ## Scoring tools (vendor)
 

@@ -94,8 +94,8 @@ All [appeeky].
 
 ## Pricing experiments and price increases
 
-- **Changing the recurring amount, currency or interval needs a new Price.** Supported maintenance updates remain allowed, including documented lookup-key, tax-behavior and currency-options updates subject to their constraints. The old line incorrectly limited all updates to metadata, nickname and active. Inspect the current update schema before changing a live object. [https://docs.stripe.com/api/prices/update]
-- **Move a lookup key to the new price** with `transfer_lookup_key: true` so code that reads `prices.list({ lookup_keys: [...] })` picks it up.
+- **Price mutations and lookup-key transfers:** follow the [catalog contract](BILLING.md#model-the-catalog).
+
 - **Test design** [appeeky]: a new Price object; split traffic at checkout (price ID by cohort or flag); grandfather existing subscriptions on the old price; compare conversion %, ARPU and churn at 30 and 60 days.
 - **Price increase playbook** [appeeky]: (1) create the new higher price; (2) send new customers to it; (3) keep existing customers or migrate them with notice (email plus `subscriptions.update`); (4) measure the churn delta. When migrating, replace the subscription item by `id` and resend the quantity ([SUBSCRIPTION-CHANGES.md](SUBSCRIPTION-CHANGES.md#upgrades-and-downgrades)).
 - **Grandfathering: the sources differ.** [appeeky] grandfathers existing subscriptions on the old price during a test. [coreyhaines31/marketingskills, pricing] grandfathers "as a *transition* (a grace period), not a permanent exemption" and migrates existing customers in waves, 5 to 10% first, with the reason explained months ahead ([../../marketing/pricing-strategy/PRICE-CHANGES.md](../../marketing/pricing-strategy/PRICE-CHANGES.md#rollout)). Both views stand, each for its own job (testing a price versus migrating the base).
@@ -110,14 +110,11 @@ All [appeeky].
 - **Proration with discounts:** prorations use the discounted price and proration lines are `discountable=false`; changing coupons or discounts alone creates no prorations.
 - **Billing credits apply after discounts,** before taxes.
 - **Cancellation deflection:** the Customer Portal can offer a coupon and collect cancellation reasons.
-- **The portal's cancel page** (https://docs.stripe.com/customer-management/cancellation-page): cancel in the portal "is enabled by default". Reasons you can enable: "It's too expensive", "I need more features", "I found an alternative", "I no longer need it", "Customer service was less than expected", "Ease of use was less than expected", "Quality was less than expected", "Other reason" (free text). They show on the subscription page, in Sigma, and in "The `subscription.updated` webhook". The coupon is set at Settings > customer portal > Cancellations > "Retention Coupon". Period-end cancellation behaves differently by billing mode ([BILLING.md](BILLING.md#customer-portal)). Matching offers to reasons and the discount limits are in [../../marketing/churn-prevention/CANCEL-FLOWS.md](../../marketing/churn-prevention/CANCEL-FLOWS.md#match-the-offer-to-the-reason).
+- **Portal cancellation reasons and retention-coupon settings:** see [Customer portal](BILLING.md#customer-portal); matching offers to reasons remains in [CANCEL-FLOWS.md](../../marketing/churn-prevention/CANCEL-FLOWS.md#match-the-offer-to-the-reason).
 
 ## Health dashboard
 
-[appeeky]
-
-- **Run order:** (1) `get_stripe_account_info`; (2) MRR (active, with past_due as at risk); (3) subscription status table; (4) top 5 past_due by MRR; (5) payment failures over the last 30 days; (6) card mix, active vs past_due; (7) open disputes from `GetDisputes`; (8) available balance from `GetBalance`.
-- **Traffic lights** for MRR trend, churn and past due, payment failures, webhooks and emails (manual or code check), fraud and Radar; end with "Top 3 actions this week". Use the shared `.agents/product-context.md` for relevant marketing targets; its contract is in [anti-slop-copy/CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). Do not create another required billing-context file. [user shared-context rule]
+The complete [account-health runbook](OPERATIONS.md#health-dashboard) owns the eight-step sequence, traffic lights and three weekly actions. [appeeky]
 
 ## Prove it
 

@@ -28,13 +28,13 @@ The source attributes the opt-in disclosure elements (frequency, "Msg & data rat
 | Express consent (non-written) | Informational/transactional (delivery, account alerts) | Phone number provided during transaction with awareness it'll be used to text |
 | Established business relationship | NOT sufficient for marketing SMS | Doesn't apply |
 
-- **A phone number given at checkout is not marketing consent.** OneSignal says the same: "A phone number alone is not consent" ([../../backend/onesignal/EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-consent)).
+- **A phone number given at checkout is not marketing consent.** The preserved OneSignal disclosure below says “A phone number alone is not consent”.
 - **Damages:** the source states statutory damages of "$500-$1,500 **per message**" [coreyhaines31/marketingskills, sms]. This round did not check that figure against the statute.
 
 ## The opt-in disclosure
 
 - **The CTIA opt-in confirmation** (CTIA 2023 §5.1.2.1) is sent before any other message and includes the program name, a customer care contact or HELP, how to opt out, the recurring message frequency, and fees.
-- **Consent is scoped:** it "should apply only to the campaign(s) and specific Message Sender for which it was intended" (CTIA 2023 §5.1.2.2). Purchased, rented or shared lists are non-compliant everywhere ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-compliance)).
+- **Consent is scoped:** it "should apply only to the campaign(s) and specific Message Sender for which it was intended" (CTIA 2023 §5.1.2.2). Purchased, rented or shared lists are non-compliant everywhere [OneSignal, Email and SMS source].
 - **The source's disclosure template** [coreyhaines31/marketingskills, sms]:
 
 ```
@@ -45,9 +45,9 @@ Reply HELP for help and STOP to cancel. Msg frequency varies. Msg & data rates
 may apply. View [Terms](link) and [Privacy](link).
 ```
 
-- **Placement:** "Place this **directly adjacent** to the phone number field and submit button. Do not bury it in a footer." [coreyhaines31/marketingskills, sms]. The checkbox is unchecked by default ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-consent)).
+- **Placement:** "Place this **directly adjacent** to the phone number field and submit button. Do not bury it in a footer." [coreyhaines31/marketingskills, sms]. The checkbox is unchecked by default [OneSignal, Email and SMS source].
 - **Cart abandonment texts in the US need double opt-in** (OneSignal: "Double opt-in is required for cart abandonment programs in the US"). The source's cart flow assumes a single opt-in; keep OneSignal's rule.
-- **Record the opt-in:** timestamp, IP, page URL and the exact disclosure shown [coreyhaines31/marketingskills, sms]. The burden of proof is on the sender ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-compliance)).
+- **Record the opt-in:** timestamp, IP, page URL and the exact disclosure shown [coreyhaines31/marketingskills, sms]. The burden of proof is on the sender [OneSignal, Email and SMS source].
 
 ## Revocation (FCC)
 
@@ -81,12 +81,12 @@ HELP response (HELP variants: HELP, INFO):
 ## The opt-out footer
 
 - **Source:** "Reply STOP to opt out (required on opt-in confirmation and at least quarterly thereafter; carrier-recommended on every promotional message)" [coreyhaines31/marketingskills, sms]. No official source for "quarterly" was found; CTIA says senders "should state in the message how and what words effect an opt-out".
-- **Repo rule (kept):** "Every body carries the brand name and an opt-out instruction" ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-compliance)). Put the footer on every message.
+- **Repo rule (kept):** "Every body carries the brand name and an opt-out instruction" [OneSignal, Email and SMS source]. Put the footer on every message.
 
 ## Quiet hours and Do-Not-Call
 
 - **Federal quiet hours:** no telephone solicitation before 8 a.m. or after 9 p.m. local time at the called party's location (64.1200(c)(1)). The rule covers "telephone solicitation"; OneSignal treats transactional and OTP as generally exempt.
-- **Stricter states and other countries:** the table in [OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-registration) (Florida and Oklahoma 8 AM to 8 PM and 3 texts per 24 hours, Washington 8 AM to 8 PM, and others) and the country hours under [SMS compliance](../../backend/onesignal/EMAIL-AND-SMS.md#sms-compliance).
+- **Stricter states and other countries:** the preserved [OneSignal jurisdiction guidance](#onesignal-jurisdiction-guidance) below supplies the state table and country hours.
 - **The source's default:** "Practical default: 9am-8pm recipient-local for safety" [coreyhaines31/marketingskills, sms]. It calls 9 to 8 "carrier-recommended", which neither CTIA 2023 nor any carrier page fetched for this round says. As a self-imposed window it sits inside every rule above.
 - **Time zones:** "Time zone is determined by area code, but area codes lie (people move)." [coreyhaines31/marketingskills, sms]. In OneSignal, a Journey Time Window node uses the recipient's time zone.
 - **Do-Not-Call applies to marketing texts to wireless numbers** (64.1200(c)(2), (e)). National registrations are honored indefinitely; company-specific do-not-call requests for 5 years (64.1200(d)(6)).
@@ -94,7 +94,9 @@ HELP response (HELP variants: HELP, INFO):
 
 ## Restricted content (SHAFT)
 
-CTIA's Short Code Monitoring Handbook v1.9, audit tables in §6 (URL above): SHAFT is sex, hate, alcohol, firearms and tobacco. Federally illegal content means the call to action must be removed; legal SHAFT content needs a working age gate. Both are Severity 0 in the short code audit, CTIA's most serious level (P0 on this repo's scale). The source lists SHAFT "without explicit use case" as a common 10DLC rejection. Cannabis is prohibited in the US and Australia ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#sms-compliance)).
+[OneSignal, Email and SMS] Prohibited content includes illegal content, phishing/smishing, fraud and spam.
+
+CTIA's Short Code Monitoring Handbook v1.9, audit tables in §6 (URL above): SHAFT is sex, hate, alcohol, firearms and tobacco. Federally illegal content means the call to action must be removed; legal SHAFT content needs a working age gate. Both are Severity 0 in the short code audit, CTIA's most serious level (P0 on this repo's scale). The source lists SHAFT "without explicit use case" as a common 10DLC rejection. Cannabis is prohibited in the US and Australia [OneSignal, Email and SMS source].
 
 ## Outside the US
 
@@ -104,6 +106,34 @@ The law tables (GDPR, CASL, Spam Act, PECR, LGPD) and their unsubscribe deadline
 - **Canada (CASL):** every message includes sender identification (legal name and any operating names), a mailing address, a phone, email or website contact, and an unsubscribe mechanism that works within 10 business days. OneSignal adds bilingual STOP/ARRET and HELP/AIDE.
 - **Australia (Spam Act 2003):** express or inferred consent ("inferred has narrow application"), sender ID, a working unsubscribe; enforced by ACMA.
 - **Several jurisdictions at once:** "Default to the **strictest** standard across all jurisdictions"; "Track consent jurisdiction per subscriber".
+
+### OneSignal jurisdiction guidance
+
+[OneSignal, Email and SMS] These source-specific jurisdiction claims are relocated intact; this organization change does not revalidate them as current law.
+
+- **US state laws apply by recipient location:**
+
+| State | Rule |
+|---|---|
+| Florida (FTSA), Oklahoma (OTSA) | Max 3 texts per 24 hours on the same topic; 8 AM to 8 PM |
+| Maryland | 3 per 24 h, express written consent, consent logs |
+| Washington | 8 AM to 8 PM |
+| California | Opt-out response within 15 business days |
+| Virginia | Full-name identification |
+
+- **Canada:** bilingual STOP/ARRET and HELP/AIDE; max 320 characters; Quebec marketing in French or bilingual.
+- **Country quiet hours for promotional SMS** (recipient-local, OneSignal source): Canada 9 AM - 9 PM; UK and EU 8 AM - 8 PM; Australia 9 AM - 8 PM. The US federal window and scope are in [Quiet hours and Do-Not-Call](#quiet-hours-and-do-not-call). Transactional and OTP are generally exempt in that source.
+- **Australia:** unsubscribe must keep working 30 days after sending.
+- **Content qualification:** the OneSignal source says CBD is OK in the UK, while cannabis is prohibited in the US and Australia. The existing [SHAFT section](#restricted-content-shaft) owns CTIA’s distinction between legal age-gated and federally illegal content.
+
+### OneSignal consent disclosures
+
+[OneSignal, Email and SMS] The source’s disclosure and purpose qualifications are retained here alongside the law/industry distinctions above:
+
+- **Promotional disclosure:** brand name, recurring automated **marketing** messages, frequency, "Msg & data rates may apply", STOP, ToS and Privacy links, and that consent is not a condition of purchase. Pre-checked checkboxes are non-compliant everywhere. By origin: the TCPA's prior express written consent is a signed agreement that names the seller and the number and says signing is not a condition of purchase (47 CFR 64.1200(f)(9), https://www.ecfr.gov/current/title-47/chapter-I/subchapter-B/part-64/subpart-L/section-64.1200); the confirmation contents (program name, HELP or care contact, how to opt out, frequency, fees) are CTIA's (Messaging Principles 2023 §5.1.2.1).
+- **Transactional and OTP consent:** phone entry in a form with a visible disclosure near the field (brand, the specific message types, "Msg & data rates may apply", STOP). A phone number alone is not consent; consent covers only the stated purpose, so don't mix in "updates and offers" language. Under the TCPA an informational text (an event reminder the person signed up for) needs prior express consent, oral or written; adding a promotion makes it marketing, which needs written consent (FCC, https://docs.fcc.gov/public/attachments/DOC-393514A1.pdf, n.48).
+
+Consent is not transferable; keep timestamped opt-in and opt-out records. Every message body carries the brand and an opt-out instruction, and content matches the approved use case [OneSignal, Email and SMS]. Platform settings and protected keywords remain in [EMAIL-AND-SMS.md](../../backend/onesignal/EMAIL-AND-SMS.md#sms-consent).
 
 ## No cold texting
 

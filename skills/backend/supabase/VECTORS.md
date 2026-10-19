@@ -1,6 +1,6 @@
 # Vectors and AI
 
-Supabase does vector search inside Postgres with the pgvector extension (`vector`), so embeddings live next to the rows they describe, RLS filters similarity searches like any other select, and the SQL function you write decides whether the index is used. Most outcomes come down to three matches: the same embedding model for stored and query vectors, the index operator class matching the query's distance operator, and the `order by` sorting on that operator directly. Vector buckets (Storage, public alpha) are a separate, slower store for large volumes; the last sections cover them.
+Supabase does vector search inside Postgres with the pgvector extension (`vector`), so embeddings live next to the rows they describe, RLS filters similarity searches like any other select, and the SQL function you write decides whether the index is used. Most outcomes come down to three matches: the same embedding model for stored and query vectors, the index operator class matching the query's distance operator, and the `order by` sorting on that operator directly. Vector buckets (Storage, public alpha) are a separate, slower store for large volumes; [VECTORS-SCALE-AND-STORAGE.md](VECTORS-SCALE-AND-STORAGE.md#vector-buckets-storage-public-alpha) covers them.
 
 **Contents:** [How search works](#how-search-works) · [Setup: extension, types, operators](#setup-extension-types-operators) · [Querying from a client: wrap it in a function](#querying-from-a-client-wrap-it-in-a-function) · [Indexes](#indexes) · [Hybrid search (full-text plus vectors)](#hybrid-search-full-text-plus-vectors) · [Generating embeddings](#generating-embeddings) · [Automatic embeddings (keep vectors in sync)](#automatic-embeddings-keep-vectors-in-sync) · [RAG with permissions](#rag-with-permissions) · [Production and compute sizing](VECTORS-SCALE-AND-STORAGE.md#production-and-compute-sizing) · [Vecs (Python client)](VECTORS-SCALE-AND-STORAGE.md#vecs-python-client) · [Vector buckets (Storage, public alpha)](VECTORS-SCALE-AND-STORAGE.md#vector-buckets-storage-public-alpha) · [Debugging](#debugging) · [Prove it](#prove-it)
 
@@ -26,6 +26,35 @@ Supabase does vector search inside Postgres with the pgvector extension (`vector
 
 - **Pick the operator by normalization.** Inner product is fastest when vectors are normalized (OpenAI embeddings are); cosine is the safe default when you don't know, and gives the best results with an index on unnormalized vectors. On normalized vectors cosine and inner product rank identically.
 - **Structured or unstructured metadata:** dedicated columns can be filtered, constrained, indexed and migrated; a `jsonb` column suits user-defined or unknown fields and prototypes but pushes integrity into app code. Combining both (known fields as columns plus `meta jsonb`) works. A client library that creates tables for you (Vecs) emits DDL: copy that SQL into your migrations before production.
+
+### Model-tracked index example
+
+The generic AI search guide uses this original schema/query form to keep the model/version alongside indexed content:
+
+```sql
+create extension if not exists vector with schema extensions;
+
+create table documents (
+  id bigint primary key generated always as identity,
+  owner_id uuid not null,
+  language text not null,
+  content text not null,
+  embedding extensions.vector(1536) not null,   -- dimensions must match the model
+  embedding_model text not null                  -- e.g. 'text-embedding-3-small@2024'
+);
+
+create index on documents using hnsw (embedding vector_cosine_ops);
+
+-- nearest neighbours, closest first
+select id, content, embedding <=> $1 as distance
+from documents
+order by embedding <=> $1
+limit 10;
+```
+
+- Locally, the `pgvector/pgvector:pg17` image includes the extension and runs through Docker Compose.
+- Keeping vectors beside relational data permits joins/filters without a second store to sync. A dedicated vector database needs a measured scale/feature reason.
+- Pick similarity thresholds from the labeled search set rather than a copied value. [Existing ai-features/VECTOR-SEARCH.md, Postgres with pgvector (Supabase)]
 
 ## Querying from a client: wrap it in a function
 

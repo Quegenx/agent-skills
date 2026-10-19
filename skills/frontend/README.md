@@ -1,8 +1,8 @@
 # Frontend skills
 
-How UI is built and behaves: the app itself (`app-ui`), the marketing site (`landing-page-ui`), animation and motion in general (`ui-animation`), SVG drawing, effects and animation (`svg`), modern CSS from nerdy.dev with current browser support (`modern-css`), GSAP (`gsap`), web accessibility (`web-accessibility`), color systems (`color-system`), maintaining an existing design system (`design-system-maintenance`), the Sonner toast library (`sonner`), technical drawings (`technical-drawing`), React with Next.js and React Native (`react`) WebGL on live pages (`webgl`) and cookie consent (`cookie-consent`). The agent's chat UI is in the ai-agents set (`agent-chat-ui`). `app-ui`, `landing-page-ui` and `agent-chat-ui` ship their production source in `reference/`. Details in the [main README](../../README.md#frontend).
+How UI is built and behaves: the app itself (`app-ui`), the marketing site (`landing-page-ui`), animation and motion in general (`ui-animation`), SVG drawing, effects and animation (`svg`), modern CSS from nerdy.dev with current browser support (`modern-css`), GSAP (`gsap`), web accessibility (`web-accessibility`), color systems (`color-system`), maintaining an existing design system (`design-system-maintenance`), the Sonner toast library (`sonner`), technical drawings (`technical-drawing`), React with Next.js and React Native (`react`), WebGL on live pages (`webgl`), cookie consent (`cookie-consent`) and browser performance (`web-performance`). The agent's chat UI is in the ai-agents set (`agent-chat-ui`). `app-ui`, `landing-page-ui` and `agent-chat-ui` ship their production source in `reference/`. Details in the [main README](../../README.md#frontend).
 
-14 skills.
+15 skills.
 
 ## Skills
 
@@ -22,3 +22,4 @@ How UI is built and behaves: the app itself (`app-ui`), the marketing site (`lan
 | [design-system-maintenance](./design-system-maintenance/SKILL.md) | Extracting an existing system, role-aware value mapping, source-derived component docs, migration readiness and rendered review, preserving production owner rules. |
 | [app-ui](./app-ui/SKILL.md) | The product's own UI (the signed-in app), its component layer and design system: tokens, controls, menus that grow from their trigger, dialogs that grow from their button, in-place confirms, sign-in and sign-up, the shell and sidebar, filters, tables, boards and lists, pending and empty states, right-to-left, a drift checker. Ships the production source in `reference/` |
 | [landing-page-ui](./landing-page-ui/SKILL.md) | A product's marketing site, apart from the app: its own tokens and stylesheet, a hero that assembles letter by letter, two-tone headings, story sections built from real product screens, carousels, FAQ with structured data, a floating header that grows into a menu, a revealed footer, language and theme transitions, contact, help, blog and legal pages, head tags and consent. Ships the production source in `reference/` |
+| [web-performance](./web-performance/SKILL.md) | Browser loading/media, layout stability, main-thread scheduling, reproducible runtime traces and Lighthouse CI, preserving source-specific measurement limits. |

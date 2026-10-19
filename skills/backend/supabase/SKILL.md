@@ -12,7 +12,7 @@ Supabase puts Postgres directly behind an HTTP API the browser can call. That ma
 | Data API exposure, grants, RLS policies, views, functions, keys, auth sessions, storage, dependencies: the security checklist | [SECURITY.md](SECURITY.md) |
 | The CLI, the MCP server, docs, schema changes and migrations, advisors, debugging | [WORKFLOW.md](WORKFLOW.md) |
 | The Data API: exposure and grants, requests, keys and roles, its error codes | [DATA-API.md](DATA-API.md) |
-| Database functions, triggers, webhooks, extensions, roles, timeouts, connection strings and poolers, advisor lints, read replicas, backups, type generation | [DATABASE.md](DATABASE.md) |
+| Database functions, triggers, webhooks, extensions, roles, timeouts and type generation | [DATABASE.md](DATABASE.md) |
 | Database operations: connection strings and poolers, Postgres configuration and disk, advisor lints, read replicas, backups and PITR | [DATABASE-OPERATIONS.md](DATABASE-OPERATIONS.md) |
 | Auth keys, sessions, JWTs and signing keys, getClaims and getUser, SSR with cookies | [AUTH-SESSIONS.md](AUTH-SESSIONS.md) |
 | Auth sign-in methods, PKCE, redirect URLs, identity linking, email, rate limits and CAPTCHA | [AUTH-SIGN-IN.md](AUTH-SIGN-IN.md) |
@@ -20,7 +20,8 @@ Supabase puts Postgres directly behind an HTTP API the browser can call. That ma
 | Auth MFA, roles and custom claims in RLS, hooks, your user tables and the admin API, the auth schema, local dev, production, error codes | [AUTH-USERS.md](AUTH-USERS.md) |
 | Realtime: Broadcast, Presence, Postgres Changes, private channels, limits, reconnects, error codes | [REALTIME.md](REALTIME.md) |
 | Realtime operations: connections, heartbeats and reconnects, limits, settings, local development and self-hosting, the wire protocol, debugging, dated changes | [REALTIME-OPERATIONS.md](REALTIME-OPERATIONS.md) |
-| Edge Functions: limits, dependencies, secrets, auth, CORS, composable Fetch middleware, typed context, framework bridges, Postgres transaction scope and database callers | [EDGE-FUNCTIONS.md](EDGE-FUNCTIONS.md) |
+| Edge Functions: limits, dependencies, secrets, auth, CORS, database callers and links to portable middleware | [EDGE-FUNCTIONS.md](EDGE-FUNCTIONS.md) |
+| Portable server packages: auth modes/context, composable Fetch middleware, Postgres scope, framework bridges | [SERVER-MIDDLEWARE.md](SERVER-MIDDLEWARE.md) |
 | Edge Functions operations: background tasks, streams and WebSockets, data, storage and AI, local development, testing, deploying, debugging and error codes | [EDGE-FUNCTIONS-OPERATIONS.md](EDGE-FUNCTIONS-OPERATIONS.md) |
 | Storage: buckets, uploads (standard, resumable, S3), access control, signed URLs, image transformations, CDN, analytics and vector buckets, error codes | [STORAGE.md](STORAGE.md) |
 | Cron, Queues and `pg_net`: scheduling, the queue API, visibility timeouts, consumers, async HTTP, the trigger to queue to function pipeline | [CRON-AND-QUEUES.md](CRON-AND-QUEUES.md) |

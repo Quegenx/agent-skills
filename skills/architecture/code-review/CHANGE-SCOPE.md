@@ -60,7 +60,7 @@ Source: [Jakub Krehel, interface-review]. "Everything else fails loudly at `merg
 
 - "**Detached HEAD.** Use the merge base against the default branch and name the SHA, not a branch, in the scope block."
 - "**Shallow clone**, the CI default, where `merge-base` returns nothing. Fetch `--deepen=50`, retry, then `--deepen=200`, then report the scope as unresolvable. Deepening writes to `.git` and not to the working tree, so it is permitted; note it in Verification."
-  - Lighthouse CI hits the same problem as "Ancestor hash not determinable" and documents its own fetch-depth fix: [LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#troubleshooting).
+  - Lighthouse CI hits the same problem as "Ancestor hash not determinable" and documents its own fetch-depth fix: [LIGHTHOUSE-CI.md](../../frontend/web-performance/LIGHTHOUSE-CI.md#troubleshooting).
 - "**Mid-rebase or mid-merge**, the one that does not fail loudly. `git diff` succeeds and returns something that is not the change, so the review looks fine and is wrong." Detect it with `git rev-parse --git-path` against `rebase-merge`, `rebase-apply`, `MERGE_HEAD` and `CHERRY_PICK_HEAD`; "Do not test `.git/` paths directly, because they are not directories inside a linked worktree. Stop and say the tree is mid-operation." Caveat from git-rev-parse(1) and a test: `--git-path` resolves a path and does not check that it exists, and takes one path per flag (`git rev-parse --git-path rebase-merge MERGE_HEAD` fails with "ambiguous argument"). Run one `--git-path` per name, then test each returned path.
 
 ## Excluded paths

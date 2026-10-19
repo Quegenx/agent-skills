@@ -67,7 +67,7 @@ app.post("/orders/:id/refund", requirePermission(Permission.OrdersRefund), refun
 - **Resolve permissions server-side** from the user's roles (cached briefly) rather than packing every permission into the token: tokens stay small, and a permission change applies within the cache lifetime instead of at the next login.
 - **A permission isn't ownership.** "Can refund orders" doesn't mean "can refund this tenant's order": also check that the resource belongs to the caller's tenant or user, in the query itself (see [TENANCY.md](TENANCY.md)).
 - **Default deny:** a route without an explicit policy should fail a test, not be public by accident.
-- **Supabase:** keep roles and permissions in tables and check them in RLS policies or in a custom access token hook that adds them as claims. Authorization data goes in `app_metadata` (only the server can write it), never `user_metadata`, which the user can edit.
+- **Supabase:** [AUTH-USERS.md](../supabase/AUTH-USERS.md#authorization-data-in-rls) owns provider role/permission tables, trusted claims and access-token hooks.
 - **Builder access to the deploy platform comes from the company directory** once non-engineers deploy agents: company-managed accounts through single sign-on rather than personal ones, access added and removed by directory sync from the identity provider's assignments, and internal tools private by default (Rillet on Vercel, in Vercel's write-up).
 
 ## Next.js Server Actions
@@ -145,7 +145,7 @@ Convex identity, optional application users rows, Convex Auth setup and document
 
 ## Two-factor authentication (TOTP)
 
-The server and an authenticator app share a random secret; both derive a 6-digit code from it and the current 30-second time step, so checking needs no network call. With Supabase, `supabase.auth.mfa.enroll` / `challenge` / `verify` do this, and a restrictive RLS policy requiring `(select auth.jwt()->>'aal') = 'aal2'` enforces it in the database. Building it yourself means getting each of these right:
+The server and an authenticator app share a random secret; both derive a 6-digit code from it and the current 30-second time step, so checking needs no network call. Supabase's enrollment/challenge/verification APIs and restrictive assurance policy are in [AUTH-USERS.md](../supabase/AUTH-USERS.md#mfa). Building it yourself means getting each of these right:
 
 - **Enrollment:** generate the secret (20 random bytes, Base32 for the `otpauth://totp/Issuer:account?secret=...&issuer=...` URI shown as a QR code), store it as **pending**, and activate 2FA only after the user submits a valid first code. Activating first locks out anyone who never finished scanning. Show the Base32 secret as text beside the QR code for manual entry, and delete pending secrets from abandoned setups after a short time. Every 2FA endpoint requires an authenticated user.
 - **Login is two steps:** a correct password with 2FA enabled returns a short-lived (2 to 3 minutes), limited-scope token that can only call the verification endpoint. The full session is issued only after the code checks out; issuing it after the password makes the second factor decorative.

@@ -1,6 +1,6 @@
 # Trace one slow interaction
 
-One interaction, recorded in the browser and read end to end: what the user did, which long animation frames it produced, what the browser and React did inside them, and which source line owns the cost. The method is React Doctor's `performance` skill ([React Doctor, performance]; millionco/react-doctor, © 2026 Million Software, Inc., Modified MIT License), each browser fact checked against the W3C, MDN, web.dev, Chrome and react.dev page linked beside it. It works with any recorder: React Doctor's `scan`, the DevTools Performance panel, or chrome-devtools-mcp's `performance_start_trace` ([INSPECT-A-PAGE.md](../../web-automation/browser-automation/INSPECT-A-PAGE.md) in browser-automation). Loading, media and lists are in [BROWSER.md](BROWSER.md), fixes for a busy main thread in [MAIN-THREAD.md](MAIN-THREAD.md), server and benchmark timing in [MEASURE.md](MEASURE.md).
+One interaction, recorded in the browser and read end to end: what the user did, which long animation frames it produced, what the browser and React did inside them, and which source line owns the cost. The method is React Doctor's `performance` skill ([React Doctor, performance]; millionco/react-doctor, © 2026 Million Software, Inc., Modified MIT License), each browser fact checked against the W3C, MDN, web.dev, Chrome and react.dev page linked beside it. It works with any recorder: React Doctor's `scan`, the DevTools Performance panel, or chrome-devtools-mcp's `performance_start_trace` ([INSPECT-A-PAGE.md](../../web-automation/browser-automation/INSPECT-A-PAGE.md) in browser-automation). Loading, media and lists are in [BROWSER.md](BROWSER.md), fixes for a busy main thread in [MAIN-THREAD.md](MAIN-THREAD.md), server and benchmark timing in [MEASURE.md](../../backend/performance-and-caching/MEASURE.md).
 
 "Measure one reproducible interaction, connect browser work to React renders, and report only conclusions supported by the trace." [React Doctor, performance]
 
@@ -147,7 +147,7 @@ Name the layout-shift row "total layout shift during the recording" when it come
 4. Compare medians for interaction, blocking, and component duration
 5. Confirm behavior and accessibility did not regress
 
-"Reject improvements that only move work outside the recorded window or disable useful behavior." The server-side version of the same trap is in [MEASURE.md](MEASURE.md#compare-honestly).
+"Reject improvements that only move work outside the recorded window or disable useful behavior." The server-side version of the same trap is in [MEASURE.md](../../backend/performance-and-caching/MEASURE.md#compare-honestly).
 
 ## Prove it
 

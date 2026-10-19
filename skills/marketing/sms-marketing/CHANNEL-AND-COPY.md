@@ -25,7 +25,7 @@ Read `.agents/product-context.md` first if it exists (defined in [../../anti-ai-
 | Win-back lapsed customers | **Both** | SMS for the strong nudge, email for the offer detail |
 | Post-purchase upsell | **SMS** | Ride the purchase momentum |
 
-"SMS earns the right to interrupt because of opt-in. Use it for messages that genuinely benefit from immediacy. If it could wait 24 hours, send it via email." [coreyhaines31/marketingskills, sms]. Outside the US, check [WHATSAPP.md](WHATSAPP.md) first. Email sequences are in [../../backend/email-practices/SKILL.md](../../backend/email-practices/SKILL.md).
+"SMS earns the right to interrupt because of opt-in. Use it for messages that genuinely benefit from immediacy. If it could wait 24 hours, send it via email." [coreyhaines31/marketingskills, sms]. Outside the US, check [WHATSAPP.md](WHATSAPP.md) first. Email sequences are in [../email-marketing/SKILL.md](../email-marketing/SKILL.md).
 
 ## Principles
 
@@ -50,7 +50,7 @@ The source says "Short links are mandatory (`klvy.co`, `txt.attn.tv`, branded sh
 
 ### Length and segments
 
-- **160 GSM-7 characters = 1 segment;** multi-part messages carry 153 each. UCS-2 (emoji, accented characters, curly quotes, non-Latin) carries 70, or 67 per part. Billing is per segment ([OneSignal](../../backend/onesignal/EMAIL-AND-SMS.md#composing-sms-mms-rcs)).
+- **160 GSM-7 characters = 1 segment;** multi-part messages carry 153 each. UCS-2 (emoji, accented characters, curly quotes, non-Latin) carries 70, or 67 per part. Billing is per segment [OneSignal, Email and SMS source]. A 200-character GSM-7 message is two segments; the emoji example below preserves the source’s other billing example.
 - **161 to 306 characters = 2 segments:** "Acceptable for richer messages, but you're paying double per send." [source]
 - **One emoji switches the whole message to UCS-2,** so a 100-character text with an emoji is 2 segments. The source recommends at most one emoji per message; preview the segment count before sending and multiply the extra segments by the list size.
 - **MMS** carries an image and up to 1,600 characters; the source puts it at "3-5x the SMS cost" (Twilio lists $0.022 per MMS against $0.0083 per SMS segment). "Use sparingly for high-impact moments."

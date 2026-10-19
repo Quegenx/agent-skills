@@ -8,7 +8,7 @@ In v4 the platform services (FileSystem, Path, Terminal, Stdio, child processes,
 
 - **All Effect packages share one version and release together:** `effect@4.0.0-beta.0` matches `@effect/sql-pg@4.0.0-beta.0`.
 - **Inside `effect`, as subpath exports:** `effect/ai`, `effect/cli`, `effect/cluster`, `effect/devtools`, `effect/encoding`, `effect/eventlog`, `effect/http`, `effect/http-api`, `effect/net`, `effect/observability`, `effect/persistence`, `effect/process`, `effect/reactivity`, `effect/graphql`, `effect/rpc`, `effect/schema`, `effect/socket`, `effect/sql`, `effect/workflow`, `effect/workers`, `effect/testing`. Top-level modules such as `FileSystem`, `Path`, `Terminal`, `Stdio`, `PlatformError` import from `effect`.
-- **Still separate packages:** `@effect/platform-*` (runtimes), `@effect/sql-*` (drivers, SQL.md), `@effect/ai-*` (providers, RPC-AI-CLI.md), `@effect/atom-*` (framework bindings), `@effect/opentelemetry`, `@effect/vitest`.
+- **Still separate packages:** `@effect/platform-*` (runtimes), `@effect/sql-*` (drivers, SQL.md), `@effect/ai-*` (providers, [AI-AND-MCP.md](AI-AND-MCP.md)), `@effect/atom-*` (framework bindings), `@effect/opentelemetry`, `@effect/vitest`.
 - **Runtime packages:** `@effect/platform-node` (file system, HTTP client and server, sockets, workers, terminal), `@effect/platform-bun` (the same for Bun), `@effect/platform-deno` (the same for Deno, including HTTP, sockets, cluster transports, multipart and `DenoServices`), `@effect/platform-browser` (HTTP client, workers, key-value storage, IndexedDB, clipboard, geolocation). `@effect/platform-node-shared` is internal to the Node, Bun and Deno packages. Install with `npm install effect @effect/platform-node`.
 - **Stability:** the effect.website table marks FileSystem, Path, PlatformLogger, Runtime and Terminal as Stable, but the JSDoc of every module here (and of the platform packages) says `@stability unstable`, `@since 4.0.0`. Treat them as unstable.
 - **The v4 docs site covers only** Platform Introduction, FileSystem, Path, PlatformLogger, Runtime and Terminal. For the rest, read the package's `LLMS.md`, `ai-docs/` and source.
@@ -25,17 +25,8 @@ Effect.runSync(program.pipe(Effect.provide(Path.layer)))
 
   Deno: `deno run -RE index.ts` grants Read and Environment permissions.
 - **`NodeServices.layer` provides `ChildProcessSpawner | Crypto | FileSystem | Path | Stdio | Terminal`** (it merges `NodeFileSystem`, `NodeCrypto`, `NodePath`, `NodeStdio`, `NodeTerminal` under `NodeChildProcessSpawner`). Add `NodeWorker` separately when needed.
-- **`NodeRuntime.runMain(effect, { disableErrorReporting?, teardown? })`** (also data-last) sets the exit code (`1` on error, `0` on success), logs errors in the "pretty" format by default, and installs SIGINT and SIGTERM handlers that interrupt running fibers and still run teardown. `disableErrorReporting: true` when the app already centralizes error reporting. `BunRuntime.runMain` has the same shape; `BrowserRuntime.runMain` exists too. Custom teardown:
-
-```ts
-NodeRuntime.runMain(failure, {
-  teardown: function customTeardown(exit, onExit) {
-    if (exit._tag === "Failure") { onExit(1) } else { onExit(0) }
-  }
-})
-```
-
-- **Model the whole app as layers and `Layer.launch` it** (HTTP server plus background workers): `Layer.launch` turns a layer into a long-running `Effect<never>`. A background worker is `Layer.effectDiscard(Effect.gen(function*() { ...; yield* Effect.forkScoped(loop) }))`.
+- The [runtime lifecycle contract](RESOURCES-AND-CONFIG.md#entry-points) owns signals, exit codes, error reporting and custom teardown.
+- For long-running servers/workers, use the [app-as-layers lifecycle](RESOURCES-AND-CONFIG.md#entry-points).
 - **Node modules:** NodeAddressResolver, NodeChildProcessSpawner, NodeClusterHttp, NodeClusterSocket, NodeCrypto, NodeDatagramSocket, NodeDns, NodeFileSystem, NodeHttpClient, NodeHttpIncomingMessage, NodeHttpPlatform, NodeHttpServer, NodeHttpServerRequest, NodeMultipart, NodeMultipartParser, NodePath, NodeRedis, NodeRuntime, NodeServices, NodeSink, NodeSocket, NodeSocketServer, NodeStdio, NodeStream, NodeTerminal, NodeWorker, NodeWorkerRunner, Undici. Bun has the parallel `Bun*` set with `BunServices`; Deno the `Deno*` set with `DenoKeyValueStore` and `DenoServices`.
 - **Browser modules:** BrowserCrypto, BrowserHttpClient, BrowserKeyValueStore, BrowserPersistence, BrowserRuntime, BrowserSocket, BrowserStream, BrowserWorker, BrowserWorkerRunner, Clipboard, Geolocation, IndexedDb (with IndexedDbDatabase, IndexedDbQueryBuilder, IndexedDbTable, IndexedDbVersion), Permissions. `BrowserHttpClient.layerXMLHttpRequest` is an XHR client (`CurrentXHRResponseType`, `withXHRArrayBuffer`).
 - **`NodeHttpServer.layer(evaluate: LazyArg<Http.Server>, options)`** provides `HttpServer | NodeServices | HttpPlatform | Etag.Generator` (error `ServeError`). `options` extends `Net.ListenOptions` with `disablePreemptiveShutdown?`, `gracefulShutdownTimeout?: Duration.Input` and `websocket?` (ws `ServerOptions`, such as `{ perMessageDeflate: true }`). `layerConfig(evaluate, Config.Wrap<Options>)` reads options from Config. `layerTest` listens on an ephemeral port with a fetch `HttpClient` for integration tests. The server closes during scope finalization, with optional graceful shutdown, and a request fiber is interrupted if the client closes the response early. `BunHttpServer` exports `make`, `layerServer`, `layerHttpServices`, `layer`, `layerTest`, `layerConfig`. HTTP itself is HTTP.md.
@@ -132,7 +123,7 @@ const exitCode = yield* handle.exitCode
 
 ## Cluster
 
-- **Model stateful services as entities distributed across machines** (`effect/cluster`). Entity messages are `Rpc`s (RPC-AI-CLI.md):
+- **Model stateful services as entities distributed across machines** (`effect/cluster`). Entity messages are [`Rpc`s](RPC.md#rpc):
 
 ```ts
 const Increment = Rpc.make("Increment", { payload: { amount: Schema.Int }, success: Schema.Int })
@@ -182,17 +173,7 @@ WorkflowProxyServer.layerHttpApi(MyApi, "workflows", myWorkflows)
 
 ## Atoms and reactivity
 
-- **Core in `effect/reactivity`;** bindings in `@effect/atom-react` (hooks plus SSR hydration helpers), `@effect/atom-solid`, `@effect/atom-vue`.
-- **An `Atom` describes one piece of reactive state;** the `AtomRegistry` runs reads, remembers values, tracks dependencies, starts effects and streams, and cleans up unused atoms. Each registry is independent.
-- **Constructors:** `Atom.make` takes a value or read function (plain values make writable state), or an `Effect` / `Stream` exposed as an `AsyncResult`. `Atom.fn`: writing an argument starts the computation, state as `AsyncResult`. `Atom.family`: memoized factory, same object for the same argument.
-- **`AsyncResult<A, E>`** is no value yet, success `A` or failure `E`, each with a `waiting` flag so the UI keeps the current value while newer work loads.
-- **Lifetime:** atoms auto-dispose by default; `Atom.keepAlive` keeps one mounted without subscribers (`autoDispose` undoes it); `Atom.setIdleTTL` disposes after a finite idle time.
-- **Run effects that need services** with `Atom.runtime(layer | (get) => layer)`, which returns an `AtomRuntime<R, E>`; also `addGlobalLayer` and `withReactivity(keys)` (refresh when the keys change).
-- **Combinators:** `readable`, `writable`, `subscriptionRef`, `fnSync`, `pull`, `withFallback`, `map`, `mapResult`, `transform`, `debounce`, `withRefresh`, `swr` (`revalidateOnMount`, `revalidateOnFocus`: `true` respects `staleTime`, `"always"` forces), `optimistic` / `optimisticFn` (failures roll back to the latest source value), `batch`, `refreshOnWindowFocus`, `kvs` (backed by a schema-encoded `KeyValueStore` entry), `searchParam` (a schema passed here must be synchronous with no context), `serializable` (schema plus stable key for hydration), `withServerValue`, `withEquality`, `withLabel`, `toStream`, `get`, `set`, `update`, `modify`, `refresh`, `mount`.
-- **Hydration:** `Hydration.dehydrate` / `hydrate` move `Atom.serializable` values between registries. **`Reactivity`** caches nothing; it registers handlers for keys, invalidates keys and wraps successful mutations so they invalidate.
-- **API clients as atoms:** `AtomHttpApi.Service<Self>()(id, { api, httpClient, transformClient?, transformResponse?, baseUrl?, runtime? })` gives query atoms (`reactivityKeys`, `timeToLive`, `serializationKey`) and mutations that invalidate reactivity keys on success. It turns `SchemaError` and `HttpClientError` into defects. `AtomRpc.Service` is the RPC equivalent.
-- **React hooks:** `useAtomValue(atom, selector?)`, `useAtom`, `useAtomSet` (`promise` / `promiseExit` modes for `AsyncResult` atoms), `useAtomSuspense`, `useAtomMount`, `useAtomRefresh`, `useAtomSubscribe`, `useAtomInitialValues`, `useAtomRef`, `useAtomRefProp`, `useAtomRefPropValue`; `RegistryProvider` / `RegistryContext`; `HydrationBoundary`; `ScopedAtom.make` for provider-owned atoms (`const Counter = make(() => Atom.make(0))`, `<Counter.Provider>`, `Counter.use()`).
-- **Hook gotchas:** `useAtomSuspense` has `suspendOnWaiting` default `false`, and without `includeFailure` it throws failures with `Cause.squash(result.cause)`, so wrap callers in an error boundary. Late Suspense boundaries hydrate with the same snapshot as earlier readers, then update to the live value.
+See [Atom state, hydration, reactivity and React bindings](STATE-AND-COORDINATION.md#atoms-and-reactivity).
 
 ## Porting from v3
 
@@ -210,7 +191,6 @@ WorkflowProxyServer.layerHttpApi(MyApi, "workflows", myWorkflows)
 - **Sharing a `KeyValueStore.layerFileSystem` directory with other data;** `clear` deletes it.
 - **Non-idempotent side effects in activities or `DurableQueue` handlers.**
 - **`WorkflowEngine.layerMemory` or `TestRunner.layer` in production.**
-- **`useAtomSuspense` without an error boundary** when `includeFailure` is off.
 
 ## Prove it
 

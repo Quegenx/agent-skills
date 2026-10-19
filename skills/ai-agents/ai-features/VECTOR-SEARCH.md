@@ -26,35 +26,7 @@ Most real products need two of them. See hybrid search below.
 
 ## Postgres with pgvector (Supabase)
 
-```sql
-create extension if not exists vector with schema extensions;
-
-create table documents (
-  id bigint primary key generated always as identity,
-  owner_id uuid not null,
-  language text not null,
-  content text not null,
-  embedding extensions.vector(1536) not null,   -- dimensions must match the model
-  embedding_model text not null                  -- e.g. 'text-embedding-3-small@2024'
-);
-
-create index on documents using hnsw (embedding vector_cosine_ops);
-
--- nearest neighbours, closest first
-select id, content, embedding <=> $1 as distance
-from documents
-order by embedding <=> $1
-limit 10;
-```
-
-- Locally, the `pgvector/pgvector:pg17` image is Postgres with the extension preinstalled (run it with docker compose).
-- The main reason to stay in Postgres: vectors sit next to the relational data, so one query can join, filter by ordinary columns, and paginate, with no second store to sync. A dedicated vector database earns its place at a scale or feature set you've measured you need.
-- Operators and their index operator classes: `<=>` cosine distance (`vector_cosine_ops`), `<->` Euclidean distance (`vector_l2_ops`), `<#>` negative inner product (`vector_ip_ops`). The index only helps a query that uses the operator matching its class. Similarity for cosine is `1 - (a <=> b)`.
-- **Order by the distance expression itself** (`order by embedding <=> $1`), not by a computed similarity column, or the index isn't used.
-- Expose search through a SQL function and call it with `supabase.rpc(...)`; apply ownership and visibility filters inside the function (row level security applies to functions with `security invoker`).
-- **HNSW:** better recall and speed, more memory, can be created on an empty table. **IVFFlat:** faster to build and smaller, but it clusters the rows that exist when it's built. Building it on an empty table (a common tutorial shortcut) gives useless clusters; build it after loading representative data and rebuild as data grows. Indexed `vector` columns are limited to 2,000 dimensions (`halfvec` allows more).
-- **Filters with an approximate index** can return fewer rows than requested, because the filter is applied after the index scan. Raise the search width (`hnsw.ef_search`) or use iterative scans in recent pgvector versions, and test filtered queries specifically.
-- A similarity threshold (e.g. `> 0.78`) is data-specific. Pick it from your labeled set, never by copying a number.
+See [Supabase/pgvector schema, operators, indexes, filters and RPC contracts](../../backend/supabase/VECTORS.md).
 
 ## Convex
 
@@ -159,3 +131,7 @@ Build a set of queries with the expected results, mixing:
 - queries with no right answer.
 
 For each change (model, index, threshold, chunking, filter), measure how often the expected item appears in the top k (recall at k) and where it ranks, for vector, keyword and hybrid side by side, and compare the approximate index against exact search on the same queries. Measure query latency at your real data size against a stated target. Record the model and index settings with the numbers.
+
+## Prove it
+
+Use [Evaluating it](#evaluating-it) to compare recall and latency on the same query set.

@@ -149,9 +149,21 @@ layer(Foo.layer)("layer", (it) => {
 - **Hold fake state in its own service around a `Ref`,** which the in-memory fake reads and writes and the test asserts on with `Ref.get(ref)`:
 
 ```ts
-class TodoRepoTestRef extends Context.Service<TodoRepoTestRef, Ref.Ref<Array<Todo>>>()(...) {
+export class TodoRepoTestRef extends Context.Service<TodoRepoTestRef, Ref.Ref<Array<Todo>>>()("app/TodoRepoTestRef") {
   static readonly layer = Layer.effect(TodoRepoTestRef, Ref.make(Array.empty()))
 }
+
+// in TodoRepo:
+static readonly layerTest = Layer.effect(TodoRepo, Effect.gen(function*() {
+  const store = yield* TodoRepoTestRef
+  // ... create / list against the Ref
+  return TodoRepo.of({ create, list })
+})).pipe(Layer.provideMerge(TodoRepoTestRef.layer))
+
+// in TodoService:
+static readonly layerTest = this.layerNoDeps.pipe(
+  Layer.provideMerge(TodoRepo.layerTest)
+)
 ```
 
 - **Mock part of a service with `Layer.mock(Service, partialImpl)`** (also curried, `Layer.mock(Service)(impl)`). "Any missing members that are `Effect`s, `Stream`s, `Channel`s, or functions returning them will fail with an unimplemented defect when used." Non-Effect properties stay required (`PartialEffectful<S>`).
@@ -166,10 +178,12 @@ const testUserLayer = Layer.mock(UserService, {
 
 - **Override a default service per effect:** `Clock`, `ConfigProvider`, `Console`, `Random` and `Tracer` are `Context.Reference`s, so `Effect.provideService` replaces them.
 - **Simulate configuration:** `ConfigProvider.layer(ConfigProvider.fromUnknown({ LOG_LEVEL: "Warn" }))`.
-- **HttpApi handlers:** test through an in-memory typed client with `HttpApiTest.groups(Api, ["users"])` and `HttpServer.layerServices`, without starting a server; swap middleware implementations (`HttpApiMiddleware.layerClient`) to cover authorized and unauthorized cases.
+- **HttpApi handlers:** use the [HTTP-owned typed-client/middleware test recipe](HTTP.md#testing-httpapi).
 - **GraphQL clients:** `GraphQLClient.layerTest` (bound as `GitHub.layerTest({...handlers})`) answers each operation by name. "Nothing is encoded or decoded and no middleware runs. An operation without a handler dies with an `UnimplementedError` defect." To test partial data with errors, or the encode and decode path, build the real client over a scripted `GraphQLProtocol` layer.
 - **Isolate metrics:** the default `Metric.MetricRegistry` map is shared, so give each test a fresh one: `Effect.provideService(program, Metric.MetricRegistry, new Map())`.
 - **Capture spans** with an in-memory tracer; the pattern is in [OBSERVABILITY.md](OBSERVABILITY.md) (Testing spans).
+
+For per-test resources independent of an enclosing runtime, use `Effect.provide(layer, { local: true })`. Other strategies are the implementation's no-dependencies layer with a test dependency (`FileSystem.layerNoop({...})`), replacing the service with `Effect.provideService(Cache, Cache.of({...}))`, or running the live layer. [Existing SERVICES-AND-LAYERS.md, Testing with layers]
 
 ## TestClock
 

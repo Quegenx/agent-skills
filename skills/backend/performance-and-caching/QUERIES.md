@@ -99,6 +99,8 @@ For "orders this month in the user's time zone", compute the month's start and n
 
 **A prefix `like 'abc%'` uses a B-tree only** when the index uses the `text_pattern_ops` operator class or the database collation is `C`. Under any other collation it's a sequential scan; check with `explain`.
 
+A case-insensitive prefix search must use the same collation or expression (`lower(name)`) as its index. [Existing sql-patterns/SHAPES.md, LIKE with user input]
+
 ## Indexes that serve the query
 
 - **Selectivity is one index benefit.** Low selectivity can favor a sequential scan, but an index can also supply ordering, stop early under an ordered limit, or support an index-only scan. The old line claimed only selective predicates benefit and treated one fifth of a table as a universal no-benefit cutoff. Inspect the actual plan and heap work instead. [https://www.postgresql.org/docs/18/indexes-ordering.html; https://www.postgresql.org/docs/18/indexes-index-only-scans.html]
@@ -153,6 +155,22 @@ limit 20;
 Query with the same configuration (`'english'`) that built the vector, or stems won't match. With an expression index (`using gin (to_tsvector('english', body))`) instead of a stored column, the query must repeat that exact expression, or the index is skipped. Typo tolerance needs more: `pg_trgm` similarity, or a dedicated engine (Elasticsearch, OpenSearch, Typesense, Meilisearch) once you need facets, highlighting, synonyms or distributed indexing. Meaning-based search and hybrid ranking are in the `ai-features` skill's VECTOR-SEARCH.md.
 
 **On a static site,** build the index at build time (MiniSearch, Lunr, Pagefind) with boosted fields (title over body), serve it compressed (Brotli shrank one 2.5 MB index to under 200 KB), load it once on the first search and cache it, then map results back to the documents and sort by score instead of date.
+
+## Partitions and CTE materialization
+
+The original SQL-patterns plan comparison demonstrates pruning and a deliberate optimization fence:
+
+```sql
+-- the planner skips partitions only when the filter compares the partition key itself
+explain (costs off) select count(*) from audit where at >= '2026-02-01' and at < '2026-03-01';
+explain (costs off) select count(*) from audit where date_trunc('month', at) = '2026-02-01';   -- scans every partition
+
+-- a CTE referenced once is inlined into the query (Postgres 12+); materialized evaluates it once, as a fence
+explain (costs off) with recent as (select * from orders) select * from recent where id = 10;
+explain (costs off) with recent as materialized (select * from orders) select * from recent where id = 10;
+```
+
+Use `materialized` deliberately when an expensive CTE is referenced several times or must run exactly once; otherwise it blocks filters from reaching the underlying index. Partition lifecycle/retention belongs to [Postgres](../postgres/SCHEMA.md#partitioning).
 
 ## Prove it
 

@@ -96,8 +96,7 @@ Trusted Entitlements protects against man-in-the-middle attacks that grant entit
 
 ## User identity
 
-- **Anonymous IDs** look like `$RCAnonymousID:...`. They are device-scoped identifiers, not credentials, and are shared by users of the same device. Use them only for pre-login flows.
-- **Call `logIn` with your own authenticated user ID** as soon as you have one. It returns `customerInfo` and `created` (true on a first login or new alias). Identity rules are in [CONCEPTS.md](CONCEPTS.md).
+See the shared [identity contract](IDENTITY.md) for anonymous IDs, authenticated login and alias behavior.
 
 ## Customer Authentication (private beta)
 

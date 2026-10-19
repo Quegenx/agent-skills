@@ -9,16 +9,19 @@ RevenueCat sits between the app and the stores: its SDK runs the store purchase 
 
 | The job | Read |
 |---|---|
-| The object model, what RevenueCat replaces, CustomerInfo and EntitlementInfo fields, caching and offline, subscription states, the purchase call, one-time products, plan and price changes, cancellations | [CONCEPTS.md](CONCEPTS.md) |
-| Creating the project, MCP or `rc` bootstrap, app configs, API keys, App Store Connect (In-App Purchase Key, products), Google Play Console (service credentials, products), store server notifications, the dashboard catalog, restore behavior | [STORE-SETUP.md](STORE-SETUP.md) |
+| The object model, what RevenueCat replaces, CustomerInfo and EntitlementInfo fields, caching and offline, subscription states, the purchase call, one-time products | [CONCEPTS.md](CONCEPTS.md) |
+| Creating the project, MCP or `rc` bootstrap, app configs, API keys, App Store Connect (In-App Purchase Key, products), Google Play Console (service credentials, products), store server notifications, the dashboard catalog and the restore-policy link | [STORE-SETUP.md](STORE-SETUP.md) |
 | Flutter: install, configure, current identity and direct account switching, entitlement gates and the listener, offerings, purchase and restore, Flutter Web, breaking changes by version | [FLUTTER.md](FLUTTER.md) |
 | React Native and Expo: install, development builds, configure, current identity and direct account switching, entitlement gates, offerings, purchase and restore, React Native Web, breaking changes by version | [REACT-NATIVE.md](REACT-NATIVE.md) |
-| Choosing RevenueCat Paywalls or a custom paywall, presenting paywalls in Flutter, React Native and web, paywall options, creating and editing dashboard paywalls with MCP or `rc`, design and audit rules, Customer Center | [PAYWALLS.md](PAYWALLS.md) |
+| Choosing RevenueCat Paywalls or a custom paywall, presenting paywalls in Flutter, React Native and web, paywall options, creating and editing dashboard paywalls with MCP or `rc`, design and audit rules | [PAYWALLS.md](PAYWALLS.md) |
+| Existing-subscriber management: Customer Center configuration, platform differences, callbacks and Flutter/React Native views | [CUSTOMER-CENTER.md](CUSTOMER-CENTER.md) |
+| Shared identity, aliases, account switching, restore-transfer policy and customer attributes | [IDENTITY.md](IDENTITY.md) |
+| RevenueCat Web billing engines, the Web SDK, Stripe Billing compatibility and purchase redemption links | [WEB-BILLING.md](WEB-BILLING.md) |
 | Testing channels, the Test Store and its key, keys per build, Flutter and Expo test builds, App Store sandbox and StoreKit files, Google Play licensed debug and test-track paths, accelerated renewals, test cases, confirming on the dashboard | [TESTING.md](TESTING.md) |
 | The debug log, the universal checklist, symptoms and fixes, SDK error codes, iOS and Android specifics, Flutter and Expo specifics, known platform issues, App Store rejections, dashboard inspection | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) |
 | SDK error handling and user messages, REST API errors, API keys and rotation, supported Trusted Entitlements modes, the server as the authority, user identity, Customer Authentication | [ERRORS-AND-SECURITY.md](ERRORS-AND-SECURITY.md) |
 | What your backend owns, REST or webhooks per endpoint, webhook setup, authentication and HMAC signing, the idempotent handler, event types, fields and flows, REST API v1 and v2, rate limits, Supabase and other backends | [BACKEND-AND-WEBHOOKS.md](BACKEND-AND-WEBHOOKS.md) |
-| Billing issues and grace periods, cancellations, pauses, win-back, refunds and Refund Control, upgrades and downgrades, Google Play alternative billing, RevenueCat Web billing engines, the Web SDK, the Stripe Billing integration, Redemption Links | [BILLING-AND-RECOVERY.md](BILLING-AND-RECOVERY.md) |
+| Billing issues and grace periods, cancellations, pauses, win-back, refunds and Refund Control, plan and price changes, Google Play alternative billing | [BILLING-AND-RECOVERY.md](BILLING-AND-RECOVERY.md) |
 | Adopting RevenueCat over existing purchase code (observer mode, `purchasesAreCompletedBy`), keeping users continuous, cutting over, upgrading across SDK majors | [MIGRATION.md](MIGRATION.md) |
 | Docs for agents, the `rc` CLI, SDK or REST, project status, product store state plans, SDK feature gates and adoption, dashboard links, your own RevenueCat plan | [CLI-AND-API.md](CLI-AND-API.md) |
 | Charts through MCP: the schema-first query workflow, reading output, chart IDs, metric definitions, investigating a metric shift, comparisons, chart links | [CHARTS-AND-METRICS.md](CHARTS-AND-METRICS.md) |

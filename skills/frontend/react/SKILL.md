@@ -19,7 +19,7 @@ This skill holds react.dev's rules, with code from Vercel's react-best-practices
 | Embedding a Remotion Player preview in a React app, synchronizing metadata with inputs, and choosing the export path; composition contracts stay with make-video | [REMOTION-PLAYER.md](REMOTION-PLAYER.md) |
 | React Native and Expo: what to read before changing an app, render crashes, virtualized lists, state, measuring views, native navigators, sheets, safe areas, menus, styling, images, design-system components, fonts, monorepos, and where the source's motion rules are wrong (the motion rules themselves are in ui-animation) | [REACT-NATIVE.md](REACT-NATIVE.md) |
 | A read-only audit of a React codebase: hard rules, recon and one scanner run, triaging the scanner, reasons to reject a finding, the rule catalog by category, severity by leverage, the findings table, one plan per pick, verifying each fix, executing and reconciling plans, where it differs from the motion audit, the diff review and the owner's app-ui | [AUDIT.md](AUDIT.md) |
-| Trace one slow interaction in the browser: long animation frames, React Performance Tracks, linking a measurement to its source line, the report and validating a fix by medians | [../../backend/performance-and-caching/RUNTIME-TRACE.md](../../backend/performance-and-caching/RUNTIME-TRACE.md) |
+| Trace one slow interaction in the browser: long animation frames, React Performance Tracks, linking a measurement to its source line, the report and validating a fix by medians | [../web-performance/RUNTIME-TRACE.md](../web-performance/RUNTIME-TRACE.md) |
 
 ## The rules
 

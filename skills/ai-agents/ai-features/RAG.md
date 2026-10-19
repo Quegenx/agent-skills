@@ -40,7 +40,7 @@ export function chunkText(sentences: string[], maxChars = 2000, overlapChars = 2
 - **Give chunks deterministic ids** (`${documentId}:${chunkIndex}`) and upsert, so re-indexing the same document doesn't duplicate it.
 - **Re-index by replacing, not only upserting:** delete all chunks for the document, then insert the new ones, in one transaction. Upsert alone leaves stale chunks behind when a document gets shorter, and a deleted document must lose all its chunks. Stale chunks produce confident wrong answers.
 - **Embed in batches** (one call with many chunks, such as `embedMany`), not one request per chunk, and index large uploads in a background job ([AI-JOBS.md](AI-JOBS.md)) instead of inside the upload request.
-- Embed and store as in [VECTOR-SEARCH.md](VECTOR-SEARCH.md), including when to build an IVFFlat index (after the data is loaded, not on an empty table). Use hybrid search when questions include names, codes or exact terms; give each list more candidates than the final count, or fusion has little to work with.
+- Embed and store as in [VECTOR-SEARCH.md](VECTOR-SEARCH.md), with [pgvector index timing](../../backend/supabase/VECTORS.md#indexes) at its provider owner. Use hybrid search when questions include names, codes or exact terms; give each list more candidates than the final count, or fusion has little to work with.
 
 ## Answering
 
@@ -81,3 +81,7 @@ For each change (chunking, model, retrieval settings, prompt), check:
 - **Freshness:** after editing or shortening a document, does the answer follow the new version, with no leftover chunks?
 
 Record model, prompt version and retrieval settings next to the results.
+
+## Prove it
+
+Use [Testing it](#testing-it) to verify retrieval, support, refusal and freshness.

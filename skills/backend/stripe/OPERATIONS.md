@@ -41,13 +41,13 @@ Run in this order:
 8. Available balance from `GetBalance`.
 
 - **Headline:** MRR, active subscriptions, and past-due count with the amount at risk.
-- **Use shared product context for relevant marketing targets:** `.agents/product-context.md`, as defined in [CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). [user shared-context rule]
+- **Use shared product context for relevant marketing targets:** `.agents/product-context.md`, as defined in [CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). Do not create another required billing-context file. [user shared-context rule]
 - **Report a traffic light per area:** MRR trend; churn and past due; payment failures; webhooks and emails (a manual or code check, see [WEBHOOKS.md](WEBHOOKS.md)); fraud and Radar.
 - **Close with "Top 3 actions this week".**
 
 ## Prove it
 
-- Every list call followed `has_more` with `starting_after` until it was false; no totals came from a capped search.
+- Every total follows the shared [endpoint-pagination contract](AGENT-TOOLS.md#the-stripe-mcp), with any host cap or incomplete coverage explicit.
 - The dispute metric names its numerator, denominator, window and applicable program; 0.75% is labeled only as Stripe's broad industry indicator. [https://docs.stripe.com/disputes/measuring]
 - Signed balance-transaction net amounts reconcile to the selected payout, and any bank-deposit difference remains explicit. [https://docs.stripe.com/reports/payout-reconciliation]
 - The health report covers all eight steps, shows a traffic light for each of the five areas and ends with three actions.

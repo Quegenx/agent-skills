@@ -93,9 +93,35 @@ BackgroundTask.pipe(
 
 ## Entry points
 
-- **Run the program with `NodeRuntime.runMain(program, { disableErrorReporting?, teardown? })`** (or `BunRuntime.runMain`, `BrowserRuntime.runMain`). It installs SIGINT and SIGTERM handlers and interrupts running fibers for a graceful shutdown; the default teardown sets exit code `1` on a non-interrupted failure. `Effect.runPromise` gives no graceful teardown on CTRL+C, so put teardown logic in the main effect.
-- **App as a layer:** `NodeRuntime.runMain(Layer.launch(HttpServerLive))` for an app made of layers (HTTP server plus background workers). `Layer.launch` builds the layer, keeps it alive until interrupted, then closes its scope and runs every finalizer.
-- **v4 removes `Runtime<R>`; use `Context<R>`.** Run functions live on `Effect`: `Effect.context<R>()` plus `Effect.runForkWith(services)` replaces `Effect.runtime` plus `Runtime.runFork`, and `Effect.runSyncWith(context)(program)` runs with an existing Context instead of `Effect.provide`. The `Runtime` module keeps only `Teardown`, `defaultTeardown` and `makeRunMain`.
+- **A process: `NodeRuntime.runMain(effect, { disableErrorReporting?, teardown? })`.** It interrupts the fiber on `SIGINT` or `SIGTERM` and calls the teardown to pick the exit code. It is dual. Bun has the same shape (`BunRuntime.runMain(program, { disableErrorReporting: true })`); the browser has `BrowserRuntime.runMain` from `@effect/platform-browser`. Errors log in the pretty format by default. Disable error reporting only if the app already centralizes it.
+- **Still use `runMain` in v4.** The core runtime now keeps the Node process alive while fibers are suspended (v3 needed `runMain` for that), but `runMain` still gives signal handling (graceful interrupt of the root fiber), exit codes (`process.exit(code)`) and error reporting.
+- **Put teardown logic in the main effect.** `runMain` handles the interrupt and finalizers run; `Effect.runPromise` gives no graceful teardown on CTRL+C.
+- **An app made of layers: `NodeRuntime.runMain(Layer.launch(HttpServerLive))`.** `Layer.launch(layer)` builds the layer, keeps it alive until interrupted, then closes its scope and runs every finalizer. It turns the layer into a long-running `Effect<never>`; this suits an HTTP server plus background workers. A worker layer is `Layer.effectDiscard(Effect.gen(... Effect.forkScoped(loop)))`.
+- **Exit codes from `Runtime.defaultTeardown`:** `0` on success; `130` for interruption-only failures (a mixed cause takes the squash path); the squashed error's `[Runtime.errorExitCode]` if present; otherwise `1`.
+- **Set an error's exit code or silence its report** with the markers, both read from `Cause.squash(cause)`:
+
+```ts
+class MyError extends Data.TaggedError("MyError") {
+  readonly [Runtime.errorExitCode] = 42
+}
+// already reported elsewhere: readonly [Runtime.errorReported] = false
+```
+
+- **`Runtime.makeRunMain(({ fiber, teardown }) => ...)`** is for platform adapters; most applications use a platform runner.
+
+- The removed `Runtime<R>` migration and context-based runners are defined with [basic runners](CORE.md#running-effects).
+
+### Custom teardown
+
+The platform guide's original teardown example:
+
+```ts
+NodeRuntime.runMain(failure, {
+  teardown: function customTeardown(exit, onExit) {
+    if (exit._tag === "Failure") { onExit(1) } else { onExit(0) }
+  }
+})
+```
 
 ## ManagedRuntime
 
@@ -126,6 +152,24 @@ const shutdown = () => {
 
 process.once("SIGINT", shutdown)
 process.once("SIGTERM", shutdown)
+```
+
+### Service lookup bridge
+
+The core guide uses this service lookup and error-recovery form:
+
+```ts
+export const appMemoMap = Layer.makeMemoMapUnsafe()
+const runtime = ManagedRuntime.make(TodoRepo.layer, { memoMap: appMemoMap })
+
+// in a handler
+await runtime.runPromise(
+  TodoRepo.use((repo) => repo.getById(id)).pipe(
+    Effect.catchTag("TodoNotFound", () => Effect.succeed(null))
+  )
+)
+
+process.once("SIGINT", () => void runtime.dispose())
 ```
 
 ## Anti-patterns

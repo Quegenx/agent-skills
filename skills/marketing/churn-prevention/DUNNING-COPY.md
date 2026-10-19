@@ -52,6 +52,21 @@ This takes less than 30 seconds.
 
 [coreyhaines31/marketingskills, churn-prevention] Rules: a direct link to the payment update page ("no login required if possible"); show what they'll lose; "Don't blame ('your payment failed' not 'you failed to pay')"; include a support contact. The source's "Plain text performs better" is its opinion. Stripe can send the failed-payment email and host the update page itself ([../../backend/stripe/BILLING.md](../../backend/stripe/BILLING.md#smart-retries-and-dunning)); the content a payment-failed email must carry is in [../../backend/email-practices/EMAIL-TYPES.md](../../backend/email-practices/EMAIL-TYPES.md#what-each-transactional-email-contains).
 
+### Lifecycle-email schedule variant
+
+[coreyhaines31/marketingskills, emails] The emails source uses the following 3 to 4-email schedule; its final notice at day 10 to 14 differs from the day-10 copy below. Choose the schedule before using either template.
+
+- **Failed payment recovery,** 3-4 emails over 7-14 days:
+
+| Day | Email |
+|---|---|
+| 0 | Friendly notice, update payment link |
+| 3 | Reminder, service may be interrupted |
+| 7 | Urgent, account will be suspended |
+| 10-14 | Final notice, what they'll lose |
+
+  "Assume it's an accident (card expired, etc.)"; clear, direct, no guilt; one CTA to update payment; explain what happens if it isn't resolved. Key metrics: recovery rate, time to recovery.
+
 **Email 1, day 0 (friendly, matter-of-fact):**
 
 ```

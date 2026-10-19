@@ -14,7 +14,7 @@ Before an app can sell anything, three places must agree: the store console (App
 
 1. **Sign up or log in at `app.revenuecat.com` and create a project.** One project holds the iOS, Android and web apps for the same product. Entitlements, custom App User IDs and secret keys are project-wide.
 2. **Every project has a Test Store.** You can build and test against it before any store exists (see [TESTING.md](TESTING.md)). Before review, connect the real stores and set up server notifications.
-3. **Add an app config** from **Apps** (App Store, Play Store, Amazon) or a **web config** from **Web** (RevenueCat Billing, "formerly Web Billing"; Stripe, a manual integration; Paddle). Web billing is covered in [BILLING-AND-RECOVERY.md](BILLING-AND-RECOVERY.md).
+3. **Add an app config** from **Apps** (App Store, Play Store, Amazon) or a **web config** from **Web** (RevenueCat Billing, "formerly Web Billing"; Stripe, a manual integration; Paddle). Web billing is covered in [WEB-BILLING.md](WEB-BILLING.md).
 4. **Build the catalog:** entitlements, imported products attached to entitlements, an offering with packages marked Current ([Catalog in the dashboard](#catalog-in-the-dashboard)).
 5. **Copy each platform's public SDK API key** from the app settings and hand off to SDK configuration with: the API key, the current offering identifier, the entitlement identifiers.
 
@@ -146,7 +146,7 @@ Next Steps:
 | Google Cloud service account JSON | Google Cloud Console | RevenueCat authenticates to the Play Developer API |
 | Financial data viewer permission | Play Console users and permissions | Service account reads subscription state |
 
-- **Upload a build first.** An APK must be uploaded before creating in-app products. The app must be published on a closed track before products can be fetched, even for testing. Add licensed testers in **Play Console > Settings > License testing** (see [TESTING.md](TESTING.md)).
+- **Upload a build before creating store products.** The store-setup source requires an uploaded APK for product creation. For purchase-test eligibility, use the [licensed debug and test-track paths](TESTING.md#google-play-testing); a closed-track install is not a universal requirement. [https://developer.android.com/google/play/billing/test]
 
 ### Create products
 
@@ -220,21 +220,7 @@ Stores send these to RevenueCat (your own server gets RevenueCat webhooks instea
 
 ## Restore behavior (project setting)
 
-Set in **Project settings > General**; applies to all apps in the project, with an optional separate sandbox behavior ("Use a different restore behavior for sandbox"). It also applies when an identified user makes a new purchase whose receipt belongs to another identified user (except legacy share). It only governs purchases owned by identified IDs; anonymous owners get aliased.
-
-| Option | Behavior |
-|---|---|
-| **Transfer to new App User ID** (default) | UserA loses access when UserB restores on the same device; an anonymous user restoring an identified owner's receipt receives the transfer; two anonymous users get aliased |
-| **Transfer if there are no active subscriptions** | One-time purchases don't prevent transfer |
-| **Keep with original App User ID** | "Use with caution"; returns `RECEIPT_ALREADY_IN_USE`; only for apps requiring accounts before purchase |
-| **Share between App User IDs (legacy)** | Legacy projects only; can't be re-enabled once switched |
-
-| App type | Choose |
-|---|---|
-| No login (anonymous only) | Transfer (required to restore after reinstall) |
-| Optional login, or purchase before account | Transfer |
-| Account required | Transfer recommended |
-| Account required plus strict single-owner logic | Keep with original |
+The shared [restore-transfer policy](IDENTITY.md#restore-behavior) defines project and sandbox settings, ownership and aliases.
 
 ## When products don't load
 
@@ -242,7 +228,7 @@ Debug log: `There's a problem with your configuration. None of the products regi
 
 - **Agreements:** App Store Connect Paid Applications Agreement signed with banking (up to 24 hours to propagate); Google Play agreements accepted.
 - **Apple membership** active and auto-renewing; both the App-Specific Shared Secret and the In-App Purchase Key added.
-- **Play track:** app published on a closed track; licensed testers added.
+- **Play testing:** follow the [licensed debug or test-track prerequisites](TESTING.md#google-play-testing).
 - **App Store product status** Approved or metadata complete.
 - **Identifiers** match exactly; Bundle ID and package name match (case-sensitive, per environment).
 - **Correct per-platform API key.**

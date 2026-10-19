@@ -11,7 +11,7 @@ Most wrong query results come from a few mistakes: a row that means something ot
 |---|---|
 | Joins that multiply, division ("bought all"), both/either/never, subsets, rollups, cross-tabs, medians, ratios, ties, deduplication, skylines | [GROUPS.md](GROUPS.md) |
 | Previous and next rows, running totals, streaks, sessions, funnels, attribution, cohorts, time zones, months, buckets, business hours, ranges, availability, bitemporal data | [TIME.md](TIME.md) |
-| Hierarchies and graphs, JSON in and out, ordered lists, networks, nearest neighbors, bitmasks, allocating money, brackets, reconciliation, LIKE escaping, partitions, CTEs | [SHAPES.md](SHAPES.md) |
+| Hierarchies and graphs, JSON in and out, ordered lists, networks, nearest neighbors, bitmasks, allocating money, brackets, reconciliation, LIKE escaping; routes to partition/CTE plan guidance | [SHAPES.md](SHAPES.md) |
 
 ## The rules
 
