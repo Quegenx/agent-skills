@@ -1,0 +1,23 @@
+<!-- [word-fold, assets/kit/starter.html] -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>__WORD__ · word fold</title>
+<style>
+html,body{margin:0;height:100%;background:#16181d;overflow:hidden}
+#frame{position:fixed;left:50%;top:50%;transform-origin:50% 50%;overflow:hidden;background:#0b0c0e}
+#frame svg{display:block;width:100%;height:100%}
+</style></head>
+<body>
+<script src="../vendor/kc-player.js"></script>
+<script>
+/* __WORD__: word-fold engine (fold.js). The strip walks across the word and becomes its last letter. */
+window.FOLD={
+  word:'__WORD__',
+  gaps:__GAPS__,                 // set by scripts/space_word.py
+  ending:'__END__',              // last letter: A, T, I or N (see references/endings.md)
+  ribbon:'__COLOR__',            // strip colour
+  ink:'#FAF9EF',                 // letters
+  bg:['#14171a','#08090a']       // top-right → bottom-left
+};
+</script>
+<script src="fold.js"></script>
+</body></html>

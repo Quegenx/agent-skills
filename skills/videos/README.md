@@ -16,6 +16,6 @@ Make videos with a coding agent, where every frame is code. Start with `make-vid
 | [beat-grid](./beat-grid/SKILL.md) | Measured music and the shared picture/sound clock |
 | [voiceover](./voiceover/SKILL.md) | Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing. |
 | [shotlist](./shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions and ordered technique/precedent catalogues with evidence limits. |
-| [seek-engine](./seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates and anatomy/cinematic film adapters; live figures link to frontend. |
+| [seek-engine](./seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
 | [frame-review](./frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
 | [sound-pass](./sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |

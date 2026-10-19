@@ -73,6 +73,8 @@ The exit runs the same pen backwards in reverse writing order.
 
 ## A letter that becomes a shape
 
+For a strip that walks across a word and becomes its final letter, use [WORD-FOLD.md](WORD-FOLD.md), the sourced CoAnimator kit and its glyph/ending guides. [word-fold, SKILL.md]
+
 To morph letters into shapes (or other letters), make the font vector at build time (`opentype.js` reads the font file; flatten each glyph's curves to points), resample every contour to the same count (~96) by arc length, wind them all the same way and start each at its topmost point, so nothing twists. Targets (a circle, a star, another glyph) use the same form; the morph is a straight blend of the point lists, eased in and out over ~0.45 s. A counter (the hole in O, R, P) pairs with a near-zero ring at the target's centre (radius ~0.01, not 1, which leaves a visible dot), so it closes on the way out and reopens on the way back. Shapes assembling into a word read as order only if each fragment carries its own colour and they resolve to one on arrival; without that they read as debris.
 
 ## Exits in the device's own voice

@@ -94,7 +94,7 @@ Each gate writes a file in `films/<slug>/` (`brief.md`, `style-guide.md`, `audio
 - **[beat-grid](./skills/videos/beat-grid/SKILL.md)**: Find, scan and measure music into `audio/beats.json`, the clock for picture and sound; per-frame band energy for audio-reactive visuals; word-by-word lyric timing.
 - **[voiceover](./skills/videos/voiceover/SKILL.md)**: Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing.
 - **[shotlist](./skills/videos/shotlist/SKILL.md)**: Storyboards, measured composition/type/demo/transitions and ordered technique/precedent catalogues with evidence limits.
-- **[seek-engine](./skills/videos/seek-engine/SKILL.md)**: Pure-time rendering, measured motion, drawing/hero templates and anatomy/cinematic film adapters; live figures link to frontend.
+- **[seek-engine](./skills/videos/seek-engine/SKILL.md)**: Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend.
 - **[frame-review](./skills/videos/frame-review/SKILL.md)**: Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync.
 - **[sound-pass](./skills/videos/sound-pass/SKILL.md)**: Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles.
 
