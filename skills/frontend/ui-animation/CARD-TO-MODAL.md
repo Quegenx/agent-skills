@@ -86,3 +86,7 @@ transition={{
 
 - **When not to:** the approach "deliberately bypass[es] Next.js's routing system"; "If you need server-side rendering for every route change or rely heavily on Next.js's data fetching patterns, this might not be the right solution." The View Transitions route in [PATTERNS.md](PATTERNS.md#shared-elements-a-thumbnail-becomes-the-detail) is the alternative.
 - The article's modal sends focus to its container and handles no Escape; the focus and dismiss rules in [PATTERNS.md](PATTERNS.md#modals-sheets-popovers) still apply.
+
+## Prove it
+
+Use the [modal focus and dismiss rules](PATTERNS.md#modals-sheets-popovers) and [shared motion review](SKILL.md#prove-it). Verify the real shared-link route and the Back/Forward behavior described above, keeping the article's push-on-close versus app-ui's replace-on-close disagreement visible. [RNDR Realm, Building Smooth Page Transitions in React]

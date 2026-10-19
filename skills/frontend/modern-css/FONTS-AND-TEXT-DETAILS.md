@@ -1,8 +1,8 @@
 # Fonts and text details
 
-CSS for what a font file can do and for the small text details around it: synthesis, axes and OpenType features through their properties, optical sizes, small caps and super and subscripts, tabular against proportional figures, font smoothing, hanging punctuation, underlines, selection, the caret, the iOS input zoom, decorative text, fallback-font metrics, hyphenation limits, and list markers and counters. **This file is not from nerdy.dev**, unlike the rest of this skill. Its sources are third-party agent skills, tagged on each section: [Jakub Krehel, better-typography] (jakubkrehel/skills, `better-typography`), [Craft] (gustavo-fior/craft, the articles at [craft.gustavofior.com](https://craft.gustavofior.com)) and [css-modern-features] (rushenn/css-modern-features, MIT, `references/typography.md` and `references/components.md`). Support status is from MDN and browser-compat-data, checked 2026-10-18; where a source's claim is wrong or stale, the official form is given with its URL and the source's words are named. Units, `text-wrap`, `text-box` and the `GRAD` axis from nerdy.dev are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md); gradient text and text stroke are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); type scale, measure and tracking as review rules belong to [RESPONSIVE.md](RESPONSIVE.md).
+CSS for what a font file can do and for the small text details around it: synthesis, axes and OpenType features through their properties, optical sizes, small caps and super and subscripts, tabular against proportional figures, font smoothing, hanging punctuation, underlines, selection, the caret, the iOS input zoom, decorative text, fallback-font metrics, hyphenation limits, and list markers and counters. **This file is not from nerdy.dev**, unlike the rest of this skill. Its sources are third-party agent skills, tagged on each section: [Jakub Krehel, better-typography] (jakubkrehel/skills, `better-typography`), [Craft] (gustavo-fior/craft, the articles at [craft.gustavofior.com](https://craft.gustavofior.com)), [Emil Kowalski, mobile-native], [Vercel, web-interface-guidelines; writing-guidelines] and [css-modern-features] (rushenn/css-modern-features, MIT, `references/typography.md` and `references/components.md`). Support status is from MDN and browser-compat-data, checked 2026-10-18; where a source's claim is wrong or stale, the official form is given with its URL and the source's words are named. Units, `text-wrap`, `text-box` and the `GRAD` axis from nerdy.dev are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md); gradient text and text stroke are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); type scale, measure and tracking as review rules are in [Type review](#type-review); responsive layout and units are in [RESPONSIVE.md](RESPONSIVE.md).
 
-**Contents:** [Properties over raw tags](#properties-over-raw-tags) · [Synthesis](#synthesis) · [Axes, static and variable](#axes-static-and-variable) · [OpenType features](#opentype-features) · [Optical sizes](#optical-sizes) · [Small caps, superscripts and subscripts](#small-caps-superscripts-and-subscripts) · [Tabular and proportional figures](#tabular-and-proportional-figures) · [Font smoothing](#font-smoothing) · [Hanging punctuation](#hanging-punctuation) · [Underlines](#underlines) · [Selection](#selection) · [Placeholder and caret](#placeholder-and-caret) · [The iOS input zoom](#the-ios-input-zoom) · [Decorative text](#decorative-text) · [Fallback font metrics](#fallback-font-metrics) · [Hyphenation limits](#hyphenation-limits) · [List markers and counters](#list-markers-and-counters) · [Prove it](#prove-it)
+**Contents:** [Properties over raw tags](#properties-over-raw-tags) · [Synthesis](#synthesis) · [Axes, static and variable](#axes-static-and-variable) · [OpenType features](#opentype-features) · [Optical sizes](#optical-sizes) · [Small caps, superscripts and subscripts](#small-caps-superscripts-and-subscripts) · [Tabular and proportional figures](#tabular-and-proportional-figures) · [Font smoothing](#font-smoothing) · [Hanging punctuation](#hanging-punctuation) · [Underlines](#underlines) · [Selection](#selection) · [Placeholder and caret](#placeholder-and-caret) · [The iOS input zoom](#the-ios-input-zoom) · [Decorative text](#decorative-text) · [Fallback font metrics](#fallback-font-metrics) · [Hyphenation limits](#hyphenation-limits) · [List markers and counters](#list-markers-and-counters) · [Type review](#type-review) · [Typography review checks](#typography-review-checks) · [Prove it](#prove-it)
 
 ## Properties over raw tags
 
@@ -200,7 +200,7 @@ a:hover {
 [Jakub Krehel, better-typography]
 
 - "Keep text selectable by default. `::selection` can carry brand into the reading experience, as long as the selected combination stays legible." "`::target-text` styles the phrase a shared link scrolls to." "The Custom Highlight API styles ranges you pick yourself, like search matches, without extra markup."
-- "`user-select: none` belongs on a draggable or gesture-driven surface where accidental selection interferes. Never across the interface and never because a button label can be highlighted." app-ui decides otherwise for its controls: "Labels ... are `user-select: none`" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)).
+- "`user-select: none` belongs on a draggable or gesture-driven surface where accidental selection interferes. Never across the interface and never because a button label can be highlighted." app-ui decides otherwise for its controls: "Labels ... are `user-select: none`" ([../app-ui/CONTROLS.md](../app-ui/CONTROLS.md)). mobile-native puts it on buttons, tabs, chips and drag handles ([anti-slop-ui DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#pressed-states)). [Emil Kowalski, mobile-native]
 - **Status, and what the source leaves out:**
   - `::target-text` is Baseline newly available since 2024-12-11 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::target-text)).
   - The Custom Highlight API is Baseline newly available since 2026-03-24 (Firefox 149 full, 140 partial) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API)).
@@ -216,7 +216,7 @@ a:hover {
 
 ## The iOS input zoom
 
-[Jakub Krehel, better-typography] The source says iOS Safari zooms into inputs set under 16px; Apple's and WebKit's docs don't state the threshold, so treat it as observed platform behavior. Two fixes:
+[Jakub Krehel, better-typography; Emil Kowalski, mobile-native] The sources say iOS Safari zooms into inputs set under 16px; Apple's and WebKit's docs don't state the threshold, so treat it as observed platform behavior. mobile-native also reports that it does not zoom back out on blur. Never use `user-scalable=no` or `maximum-scale=1`; MDN notes that iOS10+ ignores these by default ([viewport meta](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/viewport)). mobile-native sets `input, textarea, select { font-size: 16px; }` globally or only under `@media (pointer: coarse)`. Two better-typography fixes:
 
 - "**Size up on mobile.** The input renders at `16px` on small screens and drops to the design size from the `sm` breakpoint up": `<input className="text-base sm:text-sm" type="email" />`.
 - "**Scale the text down.** Keep `font-size` at `16px` so Safari never zooms, then render at the intended size with a transform. Widen the element by the inverse of the scale so it still fills its container once shrunk. Divide `line-height` by the same factor so the intended leading survives. `origin-left` pins the text to the start edge, `origin-right` under RTL." Verbatim:
@@ -337,6 +337,43 @@ ol li::before {
 ```
 
   Two comments lost their dashes ("Ordered list, style the number", "Nested counters: ...").
+
+## Type review
+
+Jakub Krehel's better-typography, for reviewing how text renders [Jakub Krehel, better-typography]. Where the owner's apps set a value, `app-ui` and `landing-page-ui` decide; the lines below say where they differ.
+
+- **Measured, not preferred:** "Unitless line-height, weight `400` or heavier below `18px`, a 60 to 75 character measure, `16px` inputs on iOS and `tabular-nums` on changing values are findings when missed." "Letter-spacing, pairing and scale ratios are heuristics. Report them only where they break the project's own scale. Never propose a new typeface, paid or free, unless the task asks for a type change."
+- **Fonts and weights:** "Rarely use more than three fonts; marketing pages can carry more than apps." "A serif headline over a sans body reads as deliberate, two near-identical sans-serifs read as a mistake." "Weights `100` to `300` belong at `28px` and up, checked against the background even there."
+- **Line-height by role:** "Display text `1.1`, headings `1.2` to `1.3`, body copy `1.5` to `1.6`." "Anything that wraps to three or more lines needs at least `1.4`, even in a height-constrained row." app-ui runs tighter: its base, small and extra-small text are ".9375 / 1.3333, .8125 / 1.2308, .75 / 1.5".
+- **Tracking by size:** "Headings at `24px` and up take `-0.01em` to `-0.02em`. Uppercase labels at `14px` or smaller take `0.05em`. Body copy stays at `0`. Use `em` so tracking scales with the size." "`font-kerning: none` is never a fix." The owner's apps differ: app-ui sets `letter-spacing: 0` on `h1` to `h4`, and landing-page-ui says "Fixed tracking is in px, from -0.16px to -1.44px" and resets negative tracking in right-to-left ("Negative tracking is for Latin only").
+- **Measure:** "`65ch` measures characters directly, one `ch` being the width of the `0`"; "At a `16px` body size the 60 to 75 character range lands roughly between `560px` and `680px`." Vercel's report pages keep "near" 60 to 68 ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#report-and-evidence-page-layout)).
+- **Size floors:** "Start long-form body text at `16px`, the browser default." "UI text can go smaller. Start inputs and menus at `14px` and captions at `13px`, and rarely go below `12px`."
+- **Headings descend:** "A heading is never smaller than body text unless it is a deliberate overline"; deep levels may share a size "as long as weight or letter-spacing keeps them distinct".
+- **Case and alignment:** "Store text in natural case and set case with `text-transform`, so a redesign never means rewriting copy." "Keep interface text at `text-align: start`. `justify` belongs only in specific editorial layouts."
+- **Figures:** check the [tabular and proportional figure rule](#tabular-and-proportional-figures), including numeric columns and prose. [Jakub Krehel, better-typography]
+- **Wrapping:** better-typography calls `text-wrap: pretty` "Safe on any paragraph, long-form included", and make-interfaces-feel-better says to skip it on text of 10 or more lines. MDN: `pretty` "is intended for body copy" and "has a negative effect on performance, so it should be only used for longer blocks of text when the layout is more important than speed" ([text-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-wrap)); it is not Baseline ([TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#text-wrap-balance)).
+- **Selection:** check [Selection](#selection) for the better-typography rule, Safari support and the recorded owner/mobile-native alternatives.
+- **Punctuation:** the source says rendered strings use the ellipsis character for `...` and a real dash for `--` [Jakub Krehel, better-typography]. Before replacing the aside, ask whether it belongs at all. The owner's rule forbids em and en dashes at every length; use " - ", commas or "to" ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting)). The old line cited "none in short copy"; the source's real-dash view remains a disagreement, not permission under the owner rule.
+- **Quotes and spaces that hold:** "Curly quotes `“` `”` not straight `"`" and "Non-breaking spaces: `10&nbsp;MB`, `⌘&nbsp;K`, brand names" [Vercel, web-interface-guidelines]; writing-guidelines extends the curly rule to single quotes, "not straight `"` or `'`" [Vercel, writing-guidelines].
+- **The severity** (mapped once in [SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md#6-delivery-report)): "`HIGH` makes text unreadable, truncates content with no way back to it or clips text at 320px width or 200% zoom"; `MEDIUM` "breaks the type system or the visual heading hierarchy"; `LOW` "is isolated polish". "Without a browser, check declared size and weight per heading level, descending within each semantic section. Check declared line-height, units and measure. Check truncation rules against realistic string lengths."
+
+The patterns a script can find are in [Typography review checks](#typography-review-checks).
+
+## Typography review checks
+
+[Jakub Krehel, better-typography] The typography rows from the responsive review, with each source fix retained:
+
+| Pattern | Fix | Source |
+| --- | --- | --- |
+| `line-height` in `px` or `rem` | A unitless value | better-typography |
+| `letter-spacing` in `px` | The same value in `em` (landing-page-ui keeps px tracking by design) | better-typography |
+| Weight `100` to `300` or `font-thin`, `font-light` on text under `18px` | `400` or heavier | better-typography |
+| `text-wrap: balance` on a paragraph | `text-wrap: pretty` | better-typography |
+| `text-align: justify` in application UI | `text-align: start` | better-typography |
+| `-webkit-line-clamp` without `display: -webkit-box` | Add `display: -webkit-box` and `-webkit-box-orient: vertical` | better-typography |
+| `text-decoration-skip-ink: none` | Remove it; set `text-underline-offset` or `from-font` instead | better-typography |
+| `-webkit-font-smoothing` or `antialiased` inside a component | Move it to the root | better-typography |
+| `user-select: none` or `select-none` on a layout root or text container | Remove it; keep it only on a drag or gesture surface | better-typography |
 
 ## Prove it
 

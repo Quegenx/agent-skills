@@ -31,13 +31,7 @@ div {
 }
 ```
 
-- **An external file must declare `xmlns`** to be marked as an SVG image:
-
-```svg
-<svg xmlns="http://www.w3.org/2000/svg">
-  <circle cx="50" cy="50" r="40" />
-</svg>
-```
+- **External namespace requirement:** use the declaration and complete image-file example in [BASICS.md](BASICS.md#xmlns).
 
 - **External, as a document:** `<iframe>`, `<object>` or `<embed>`.
 
@@ -88,19 +82,7 @@ frame.addEventListener("load", () => {
 
 ## xmlns and namespaces
 
-- **`xmlns="http://www.w3.org/2000/svg"`** says the `<svg>` and its children belong to the SVG dialect. Declare it once on the root (it is implied if omitted). The namespace name is just a string; the URI is not a link.
-- **A DOCTYPE does not identify content;** DTDs are for validation only.
-- **In HTML, namespaces are implied:** HTML `http://www.w3.org/1999/xhtml`, SVG `http://www.w3.org/2000/svg`, MathML `http://www.w3.org/1998/Math/MathML`. Writing `<svg>` brings in the SVG namespace. XML namespace prefixes are not valid in HTML (prefixed `svg:svg` markup works only in `.xhtml`).
-- **External SVG files (`<img>`, CSS `url()`) need `xmlns`.** Inside `<foreignObject>`, the XHTML namespace can be omitted in SVG embedded in HTML but is mandatory in an SVG document.
-- **Create SVG elements with `createElementNS()`.** `document.createElement()` never creates SVG elements: `createElement("circle")` makes an unknown HTML element that renders nothing. Attributes are not namespaced (except legacy `xlink:href`), so plain `setAttribute()` works.
-
-```js
-const svgNS = "http://www.w3.org/2000/svg";
-const circle = document.createElementNS(svgNS, "circle");
-circle.setAttribute("cx", 50);
-```
-
-- **`href`, not `xlink:href`.** `xlink:href` is deprecated since SVG 2; if both are present, `href` wins. In XML, `xlink:href` needs `xmlns:xlink` bound, because an unbound prefix is an XML error. The sources differ in emphasis: MDN's older namespaces crash course says to always include the XLink declaration, while the `<use>` and linking pages say the attribute is deprecated and to use plain `href`. Check the current docs; new markup uses `href`.
+Namespace declarations, HTML versus XML parsing, prefix restrictions and the XHTML requirement inside `foreignObject` are defined once in [BASICS.md](BASICS.md#xmlns). Script-created nodes and the sources' differing attribute-method guidance are in [JS-AND-REACT.md](JS-AND-REACT.md#create-svg-elements); modern `href`, legacy XLink and their source disagreement are in [REUSE-AND-TRANSFORMS.md](REUSE-AND-TRANSFORMS.md#href-vs-xlinkhref).
 
 ## Data URIs
 
@@ -116,30 +98,7 @@ circle.setAttribute("cx", 50);
 
 ## Sprites with symbol and use
 
-- **`<use>` duplicates nodes from an SVG document elsewhere,** as if deeply cloned into a non-exposed DOM. Attributes: `href`, `x`, `y` (default `0`, an additional final offset), `width`, `height` (default `0`; they only have an effect when `<use>` refers to an `<svg>` or `<symbol>`, i.e. something with a `viewBox`). In SVG 2, `x`, `y`, `width`, `height` are geometry properties usable in CSS.
-- **Attributes on the referenced element win over `<use>`.** Most attributes on `<use>` are ignored if the referenced element already defines them (unlike the CSS cascade); only `x`, `y`, `width`, `height` and `href` still apply, and any attribute not set on the referenced element is applied. So leave `fill` off the source shape to let each `<use>` set it:
-
-```html
-<svg viewBox="0 0 30 10" xmlns="http://www.w3.org/2000/svg">
-  <circle id="myCircle" cx="5" cy="5" r="4" />
-  <use href="#myCircle" x="10" fill="blue" />
-  <use href="#myCircle" x="20" fill="white" stroke="red" />
-</svg>
-```
-
-- **CSS doesn't reliably reach the clone.** Cloned nodes are not exposed, and CSS properties aren't guaranteed to inherit into them unless you request inheritance explicitly. See [STYLING.md](STYLING.md#css-custom-properties) for custom properties inside `<use>`.
-- **`<symbol>` defines a template that only `<use>` renders.** It is not meant to be rendered itself (some browsers refuse even with CSS `display`), adds structure and semantics, and so promotes accessibility. Attributes: `viewBox`, `preserveAspectRatio` (default `xMidYMid meet`), `x`, `y` (default `0`), `width`, `height` (default `auto`), `refX`, `refY`.
-
-```html
-<svg viewBox="0 0 80 20" xmlns="http://www.w3.org/2000/svg">
-  <!-- Our symbol in its own coordinate system -->
-  <symbol id="myDot" width="10" height="10" viewBox="0 0 2 2">
-    <circle cx="1" cy="1" r="1" />
-  </symbol>
-  <use href="#myDot" x="5" y="5" opacity="1.0" />
-  <use href="#myDot" x="20" y="5" opacity="0.8" />
-</svg>
-```
+The clone, symbol template, attributes, per-instance styling, source-context width/height disagreement and fragment-support limits are defined in [REUSE-AND-TRANSFORMS.md](REUSE-AND-TRANSFORMS.md#use), with the complete symbol example in [symbol](REUSE-AND-TRANSFORMS.md#symbol).
 
 - **External sprite:** `<use href="icons.svg#search" />` is the basis of the SVG sprite pattern.
 
@@ -149,8 +108,7 @@ circle.setAttribute("cx", 50);
 </svg>
 ```
 
-- **External `<use>` must be same-origin.** Browsers may refuse a cross-origin `href`, and there is no defined way to set or opt into a cross-origin policy for `<use>`.
-- **Always include a fragment.** MDN's `<use>` page says modern implementations can load a whole external document without a fragment (check its compat table); MDN's linking guide says that is not supported everywhere and to always name the element with a fragment identifier. Check the current docs.
+- **Deployment and styling:** use a same-origin sprite with a fragment identifier, and leave source attributes such as `fill` unset when each instance must choose them. See the canonical [origin and fragment qualifications](REUSE-AND-TRANSFORMS.md#use) and [custom-property styling](STYLING.md#css-custom-properties).
 
 ## Fragment views
 

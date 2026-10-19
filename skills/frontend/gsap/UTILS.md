@@ -1,6 +1,6 @@
 # gsap.utils: clamp, mapRange, random, snap, distribute, wrap and the rest
 
-**gsap.utils** are pure helpers, with no registration, used in tween vars (function-based values), in ScrollTrigger or Observer callbacks, or in any JS that drives GSAP; all live on `gsap.utils` [GreenSock, gsap-utils]. Hand-written per-frame math (lerp, sawtooth loops, controlled randomness) is in [../ui-animation/MATH.md](../ui-animation/MATH.md). Full list: https://gsap.com/docs/v3/HelperFunctions
+**gsap.utils** are helpers, with no registration, used in tween vars (function-based values), in ScrollTrigger or Observer callbacks, or in any JS that drives GSAP; all live on `gsap.utils` [GreenSock, gsap-utils]. Hand-written per-frame math (lerp, sawtooth loops, controlled randomness) is in [../ui-animation/MATH.md](../ui-animation/MATH.md). Full list: https://gsap.com/docs/v3/HelperFunctions
 
 **Contents:** [The function form](#the-function-form) · [clamp](#clampmin-max-value) · [mapRange](#maprangeinmin-inmax-outmin-outmax-value) · [normalize](#normalizemin-max-value) · [interpolate](#interpolatestart-end-progress) · [random](#randomminimum-maximum-snapincrement-returnfunction--randomarray-returnfunction) · [snap](#snapsnapto-value) · [shuffle](#shufflearray) · [distribute](#distributeconfig) · [getUnit](#getunitvalue) · [unitize](#unitizefunction-unit) · [splitColor](#splitcolorcolor-returnhsl) · [selector](#selectorscope) · [toArray](#toarrayvalue-scope) · [pipe](#pipefunctions) · [wrap](#wrapmin-max-value) · [wrapYoyo](#wrapyoyomin-max-value) · [Prove it](#prove-it)
 
@@ -123,7 +123,9 @@ gsap.to(".x", { x: 200, snap: { x: 20 } });
 
 ## shuffle(array)
 
-[GreenSock, gsap-utils] Returns a new array with the same elements in random order.
+Shuffles the supplied array in place and returns that same array. The [official shuffle reference](https://gsap.com/docs/v3/GSAP/UtilityMethods/shuffle()) explicitly says it does not create a new array.
+
+The supplied gsap-utils source and old line said it returned a new array with the same elements in random order, and the old intro called these helpers pure. [GreenSock, gsap-utils]
 
 ```javascript
 gsap.utils.shuffle([1, 2, 3, 4]); // e.g. [3, 1, 4, 2]

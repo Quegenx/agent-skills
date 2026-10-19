@@ -329,7 +329,7 @@ li {
 }
 ```
 
-  The post said `sibling-index()` was "available in stable Chrome and Safari"; it is Baseline 2026 now (see [Support](#support)). The function itself and `sibling-count()` are in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md).
+  The post said `sibling-index()` was "available in stable Chrome and Safari"; it is Baseline 2026 now (see [Support](#support)). The function itself and `sibling-count()` are in [CSS-FUNCTIONS.md](CSS-FUNCTIONS.md#sibling-index-and-sibling-count).
 - An index variable does the same without `sibling-index()`. [nerdy.dev: Nintendo Switch Homescreen recreated with CSS and a li'l bit of JS](https://nerdy.dev/nintendo-switch-homescreen-css-recreation) (2025-06-13) introduces the games list from the right on load, "providing the hint that there's directionality in this games list, hinting at scroll":
 
 ```css

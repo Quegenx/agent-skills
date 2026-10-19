@@ -164,7 +164,7 @@ Support for the gradient functions themselves: `linear-gradient()` is Baseline w
 }
 ```
 
-- **An animated hard line by transitioning only the hint:** zero the stop positions and move the hint through a custom property. `--size` must be registered with `@property` to transition (the post introduces `@property` in an earlier demo whose code is not exported; see [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md)). [nerdy.dev: Learn With Jason (live in studio)](https://nerdy.dev/jason-and-adam-do-portland)
+- **An animated hard line by transitioning only the hint:** zero the stop positions and move the hint through a custom property. `--size` must be registered with `@property` to transition (the post introduces `@property` in an earlier demo whose code is not exported; see [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md)). [nerdy.dev: Learn With Jason (live in studio)](https://nerdy.dev/jason-and-adam-do-portland)
 
 ```css
 html {

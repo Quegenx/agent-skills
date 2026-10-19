@@ -83,14 +83,9 @@ gsap.to(".dot", {
 
 The skill gives `alignOrigin` a default of `[0.5, 0.5]` and curviness a range of "0-2" as general "path smoothing"; the docs state neither. They give curviness default 1, applied only to point arrays (0 makes straight lines, 2 "much more curvy"), and no alignOrigin default, so set `alignOrigin` explicitly as the sample does. https://gsap.com/docs/v3/Plugins/MotionPathPlugin/
 
-- **MotionPathHelper** is a visual editor for alignment and offset, for development only:
+- **MotionPathHelper** edits a motion path in the browser for development. Load and register both `MotionPathPlugin` and `MotionPathHelper`. The [official helper reference](https://gsap.com/docs/v3/Plugins/MotionPathHelper) accepts a Tween that already has a motion path, or a target/selector plus an optional vars object whose `path` holds the path. After editing, its COPY MOTION PATH button copies the path data to use in the tween or SVG. The documented instance method is `kill()`; the static `MotionPathHelper.editPath(path, config)` makes an SVG path editable.
 
-```javascript
-gsap.registerPlugin(MotionPathPlugin, MotionPathHelperPlugin);
-
-const helper = MotionPathHelper.create(".dot", "#path", { end: 0.5 });
-// adjust in UI, then use helper.path or helper.getProgress() in your animation
-```
+The source and old block registered `MotionPathHelperPlugin`, used `create(target, path, vars)`, and recommended `helper.path` or `helper.getProgress()`; those forms are not established by the [official helper reference](https://gsap.com/docs/v3/Plugins/MotionPathHelper). [GreenSock, gsap-plugins]
 
 ## Prove it
 

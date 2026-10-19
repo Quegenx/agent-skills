@@ -1,6 +1,6 @@
 # Typography and units
 
-Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`), drop caps, rhythm that follows the writing mode, `text-wrap: balance` and its limits, `text-box` trimming, the variable-font `GRAD` axis for dark mode and contrast, `text-grow`, `text-emphasis-style`, and the emoji naming convention for custom names. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN and web-features (checked 2026-10-17). Code is copied from the posts; where a post's code is wrong today, the corrected form is given with the MDN link and the change is named. Spacing by line and text measure for whole layouts are in [RESPONSIVE.md](RESPONSIVE.md); SVG text is in [../svg/SHAPES-AND-TEXT.md](../svg/SHAPES-AND-TEXT.md).
+Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`), drop caps, rhythm that follows the writing mode, `text-wrap: balance` and its limits, `text-box` trimming, the variable-font `GRAD` axis for dark mode and contrast, `text-grow`, `text-emphasis-style`. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN and web-features (checked 2026-10-17). Code is copied from the posts; where a post's code is wrong today, the corrected form is given with the MDN link and the change is named. Spacing by line and text measure for whole layouts are in [RESPONSIVE.md](RESPONSIVE.md); the source's custom naming convention is in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md#emoji-in-custom-names); SVG text is in [../svg/SHAPES-AND-TEXT.md](../svg/SHAPES-AND-TEXT.md).
 
 ## Line-height units: lh and rlh
 
@@ -134,75 +134,6 @@ h1 {
   }
 }
 ```
-
-## Emoji in custom names
-
-- **The problem:** many CSS features take author names, some dashed and some not, so the same word ends up unique only within a context. [nerdy.dev: An Emoji Naming Convention](https://nerdy.dev/css-emoji-convention) (2025-02-20)
-
-```css
-@keyframes foo {}
-@property --foo {}
-
-.element {
-  --foo: bar;
-  animation: foo linear both;
-  view-timeline-name: --foo;
-  view-transition-name: foo;
-  anchor-name: --foo;
-  container-name: foo;
-}
-```
-
-- **An emoji prefix per kind of name** "to help delineate the intended use"; the post confirms it is valid CSS (CodePen vEYLwpv) and frames it as "Not an answer, but an answer?". Verbatim:
-
-```css
-@keyframes 🔑-example {}
-@property --﹫-example {}
-@font-palette-values --🔡-example {}
-
-:root {
-  --﹫-example-typed: baz;
-  --🔒-example-private: foo;
-  --regular-var: bar;
-}
-
-::view-transition-group(.🏘️-example) {}
-::view-transition-new(🏞️-example) {}
-
-@layer 🥞-example {
-  .🤓-example-class {
-    container-name: 📦-example;
-    view-transition-name: 🏞️-example;
-    view-transition-class: 🏘️-example;
-    view-timeline-name: --📽️-example;
-    anchor-name: --⚓-example;
-    font-palette: --🔡-example;
-    animation: 🔑-example 1s;
-
-    > p {
-      @container 📦-example (inline-size < 20ch) {
-        font-size: var(--﹫-example);
-      }
-    }
-  }
-}
-
-@layer 🥞-example-utilities {
-  .🔧-utility-class,  
-  .🧹-reset-class,  
-  .🔍-debug-class {
-    …
-  }
-  
-  .🗣️-sr-only {}
-  
-  .🍱-grid {}
-}
-```
-
-- **"I think it's a good idea to `--` all your custom names, just to make it really clear they aren't internal CSS keywords."** Both forms are valid where a `<custom-ident>` is allowed: MDN `container-name` takes a case-sensitive `<custom-ident>`, dashed allowed, not `or`, `and`, `not` or `default`, never quoted ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container-name)). Same post.
-- app-ui names containers without dashes (`@container main (inline-size >= 48rem)` in [page-layout.css](../app-ui/reference/styles/layout/shell/page-layout.css)). anti-slop-code's emoji rule is listed under comments: "decorative banners and emoji" ([SKILL.md](../../anti-ai-slop/anti-slop-code/SKILL.md)).
-- Naming the other kinds (layers, anchors, view transitions) is covered in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md), [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md) and [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md).
 
 ## Prove it
 

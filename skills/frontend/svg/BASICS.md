@@ -51,10 +51,12 @@ The owner's course example, a monitor drawn with three shapes:
 - **The namespace is `http://www.w3.org/2000/svg`,** the same for SVG 2 as for earlier versions. It is just a string: it looks like a URI only for uniqueness and links nowhere.
 - **Required on the outermost `svg` of SVG documents** and inside HTML documents with XML serialization. When SVG is parsed as XML the declaration must be present, otherwise user agents show the XML markup or report an error. SVG as an XML dialect must always bind namespaces correctly.
 - **Not needed inline in HTML or on inner `svg`.** With the HTML syntax the parser supplies the namespace automatically; inlining works without it because SVG code is valid HTML.
+- **In HTML, namespaces are implied:** HTML `http://www.w3.org/1999/xhtml`, SVG `http://www.w3.org/2000/svg`, MathML `http://www.w3.org/1998/Math/MathML`. Writing `<svg>` brings in the SVG namespace. XML namespace prefixes are not valid in HTML (prefixed `svg:svg` markup works only in `.xhtml`).
+- **Inside `<foreignObject>`,** the XHTML namespace can be omitted in SVG embedded in HTML but is mandatory in an SVG document.
 - **Needed when the SVG is referenced as an image** (`<img>` or CSS `url()`): mark it explicitly with `xmlns`.
 - **Unprefixed vs prefixed.** An unprefixed `xmlns` on `svg` makes SVG the default namespace for every element in scope; a prefixed declaration (`xmlns:svg="..."`) means prefixing every element (`<svg:rect>`).
 - **`xlink:href` needs its own declaration,** `xmlns:xlink="http://www.w3.org/1999/xlink"`, in XML; an unbound prefix is an XML error. See [REUSE-AND-TRANSFORMS.md](REUSE-AND-TRANSFORMS.md#href-vs-xlinkhref).
-- **Scripts use the namespace-aware DOM methods.** MDN's namespaces guide says to use `createElementNS`, `setAttributeNS`, `getAttributeNS` rather than `createElement`, `setAttribute`, with `null` for unprefixed attributes (`rect.getAttributeNS(null, "x")`). MDN's SVG scripting guide agrees on `createElementNS` but says attributes (except legacy `xlink:href`) are not namespaced, so plain `setAttribute()` suffices. Confirm in current MDN; see [EMBEDDING-AND-ICONS.md](EMBEDDING-AND-ICONS.md) and [JS-AND-REACT.md](JS-AND-REACT.md).
+- **Creating and changing nodes from script:** use the namespace-aware element creation and the explicitly qualified attribute-method guidance in [JS-AND-REACT.md](JS-AND-REACT.md#create-svg-elements).
 
 Inline in HTML, no `xmlns`:
 

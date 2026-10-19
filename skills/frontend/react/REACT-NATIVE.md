@@ -259,7 +259,7 @@ function MeasuredBox({ children }: { children: React.ReactNode }) {
 
 - **Stacks:** `@react-navigation/native-stack` (`createNativeStackNavigator`), or Expo Router's `<Stack />`, which is the native stack. Avoid `@react-navigation/stack`.
 - **Tabs:** `react-native-bottom-tabs` with `@bottom-tabs/react-navigation` (`createNativeBottomTabNavigator`, `tabBarIcon: () => ({ sfSymbol: 'house' })`), or Expo Router's `NativeTabs`. Avoid `@react-navigation/bottom-tabs` "when native feel matters"; its 7.x page points to a separate native bottom tabs navigator.
-- **Headers:** native options over `header: () => <CustomHeader />`: `title`, `headerLargeTitleEnabled: true` (iOS-only), `headerSearchBarOptions: { placeholder: 'Search' }` for the native search bar. React Navigation 7 documents both options.
+- **Headers:** native options over `header: () => <CustomHeader />`: `title`, `headerLargeTitleEnabled: true` (iOS-only), `headerSearchBarOptions: { placeholder: 'Search' }` for the native search bar. [React Navigation 7](https://reactnavigation.org/docs/native-stack-navigator/) documents both options. The motion source adds "`headerLargeTitle` is deprecated" [Emil Kowalski, animate-expo]; that is not stated there (unconfirmed).
 
 The source's native-tabs layout, with only the import path changed to the SDK 58 form (correction below):
 
@@ -283,7 +283,7 @@ export default function TabLayout() {
 }
 ```
 
-**`NativeTabs`, corrected** ([Expo native tabs](https://docs.expo.dev/router/advanced/native-tabs/)): SDK 58 and later import from `expo-router/native-tabs`; SDK 54 to 57 use `expo-router/unstable-native-tabs`, the only path the source gave. `NativeTabs.Trigger.Label` is SDK 55 and later. `Icon` takes `sf`, `md`, `src`, `xcasset`, `drawable`, or `{ default, selected }`. On iOS, native tabs turn on automatic content insets for the first `ScrollView` of each tab screen; `disableAutomaticContentInsets` on the trigger turns that off, and then "you must manage safe area insets manually". The import and eager rendering of tab screens are also in [../ui-animation/REACT-NATIVE.md](../ui-animation/REACT-NATIVE.md#pick-the-tool).
+**`NativeTabs`, corrected** ([Expo native tabs](https://docs.expo.dev/router/advanced/native-tabs/)): SDK 58 and later import from `expo-router/native-tabs`; SDK 54 to 57 use `expo-router/unstable-native-tabs`, the only path the source gave. `NativeTabs.Trigger.Label` is SDK 55 and later. `Icon` takes `sf`, `md`, `src`, `xcasset`, `drawable`, or `{ default, selected }`. On iOS, native tabs turn on automatic content insets for the first `ScrollView` of each tab screen; `disableAutomaticContentInsets` on the trigger turns that off, and then "you must manage safe area insets manually". All tab screens render eagerly, and that can't be changed; the motion consequence is in [../ui-animation/REACT-NATIVE.md](../ui-animation/REACT-NATIVE.md#pick-the-tool).
 
 ## Sheets and modals
 
@@ -301,7 +301,9 @@ export default function TabLayout() {
 />
 ```
 
-React Navigation's `formSheet` "Uses "BottomSheetBehavior" on Android and "UIModalPresentationFormSheet" … on iOS", with `sheetAllowedDetents` as `'fitToContents'` or fractions ([native stack navigator](https://reactnavigation.org/docs/native-stack-navigator/)). The platform limits (three detents on Android, no grabber on Android, `fitToContents` needs sized content) are in [../ui-animation/REACT-NATIVE.md](../ui-animation/REACT-NATIVE.md#screen-transitions).
+React Navigation's `formSheet` "Uses "BottomSheetBehavior" on Android and "UIModalPresentationFormSheet" … on iOS", with `sheetAllowedDetents` as `'fitToContents'` or fractions ([native stack navigator](https://reactnavigation.org/docs/native-stack-navigator/)). Motion recipes are in [../ui-animation/REACT-NATIVE-RECIPES.md](../ui-animation/REACT-NATIVE-RECIPES.md#screen-transitions).
+
+- **`formSheet` differs by platform** ([Expo modals](https://docs.expo.dev/router/advanced/modals/)): Android caps detents at three; `sheetGrabberVisible` is iOS-only; Android form sheets can't host native headers or nested stacks; `fitToContents` needs explicitly sized content, not a `flex: 1` root.
 
 **`<Modal presentationStyle="formSheet">`, corrected** ([Modal](https://reactnative.dev/docs/modal)): `presentationStyle` is iOS-only and "controls how the modal appears (generally on larger devices such as iPad or plus-sized iPhones)"; `formSheet` "covers narrow-width view centered (only on larger devices)". So it is not a detented bottom sheet, and it has no Android form. On iOS, `onRequestClose` is also called when a `pageSheet` or `formSheet` modal is dismissed by dragging. The source offered the core `Modal` with `formSheet` as an equal bottom-sheet replacement; use the navigator's `formSheet` for that.
 
@@ -332,7 +334,8 @@ function Feed({ bottomOffset }: { bottomOffset: number }) {
 
 - **`Pressable` over the Touchables** [Vercel, react-native-skills]. The source says "Never use `TouchableOpacity`"; React Native doesn't deprecate it and calls Pressable "a more extensive and future-proof way" ([TouchableOpacity](https://reactnative.dev/docs/touchableopacity)). Prefer `Pressable`; the docs don't mark the Touchables deprecated.
 - **Inside scrolling lists,** `Pressable` from `react-native-gesture-handler` coordinates with the scroll "as long as you are using the ScrollView from `react-native-gesture-handler` as well." Animated press states are in [Motion rules in this source](#motion-rules-in-this-source).
-- **Native menus with [zeego](https://zeego.dev)** [Vercel, react-native-skills], instead of an absolutely positioned JS menu: native menus "provide built-in accessibility, consistent platform UX, and better performance". Expo Router's `Link.Menu` is iOS-only ([../ui-animation/REACT-NATIVE.md](../ui-animation/REACT-NATIVE.md#pick-the-tool)); zeego covers both platforms.
+- **Native menus with [zeego](https://zeego.dev)** [Vercel, react-native-skills], instead of an absolutely positioned JS menu: native menus "provide built-in accessibility, consistent platform UX, and better performance"; zeego covers both platforms.
+- **`Link.Preview` and `Link.Menu`** are an "iOS-only feature available in SDK 54 and later"; a `Link` with a preview or menu but no `Link.Trigger` throws ([Expo link preview](https://docs.expo.dev/router/reference/link-preview/)).
 
 ```tsx
 import * as DropdownMenu from 'zeego/dropdown-menu'
@@ -472,7 +475,7 @@ The source's animation rules belong to [../ui-animation/REACT-NATIVE.md](../ui-a
 - **Gesture builders rebuilt every render:** memoize gesture objects, or use the Gesture Handler 3 hooks (`useTapGesture`), which have Reanimated integration on by default ([Reanimated interactions](https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/reanimated-interactions/)).
 - **A shared value read in JSX** (``title={`Count: ${count.get()}`}``, the source's "Correct" example) breaks "Don't read or modify the value of a shared value during a component's render" ([useSharedValue](https://docs.swmansion.com/react-native-reanimated/docs/core/useSharedValue/)).
 - **Derive, react only for side effects** [Vercel, react-native-skills]: "When deriving a shared value from another, use `useDerivedValue`… Use `useAnimatedReaction` only for side effects that don't produce a value (e.g., triggering haptics, logging…)", as the threshold recipe in ui-animation does.
-- **Press feedback, both ways.** The source drives press scale with `GestureDetector`, `Gesture.Tap()` and shared values "instead of Pressable's `onPressIn`/`onPressOut`… no JS thread round-trip". [../ui-animation/REACT-NATIVE.md](../ui-animation/REACT-NATIVE.md#press-feedback) uses `Pressable` with a Reanimated CSS transition: "A press scale is a CSS transition; a drag is a shared value", and `setState` "fires twice per press, not per frame". ui-animation's rule stays the default.
+- **Press feedback, both ways.** The source drives press scale with `GestureDetector`, `Gesture.Tap()` and shared values "instead of Pressable's `onPressIn`/`onPressOut`… no JS thread round-trip". [../ui-animation/REACT-NATIVE-RECIPES.md](../ui-animation/REACT-NATIVE-RECIPES.md#press-feedback) uses `Pressable` with a Reanimated CSS transition: "A press scale is a CSS transition; a drag is a shared value", and `setState` "fires twice per press, not per frame". ui-animation's rule stays the default.
 
 ## Prove it
 

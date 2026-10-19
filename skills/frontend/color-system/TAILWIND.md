@@ -1,6 +1,6 @@
 # Tailwind
 
-Color scales and semantic tokens in Tailwind v4's `@theme`, what the default palette is (OKLCH, 11 steps), dark mode repointing and `inline`, what the opacity modifier compiles to, and migrating a hex theme. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged, corrected against [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme), [tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors) and Tailwind's source. Namespaces, `--color-*: initial;` and Adam Argyle's adaptive utilities are in [modern-css CUSTOM-PROPERTIES-AND-FUNCTIONS.md](../modern-css/CUSTOM-PROPERTIES-AND-FUNCTIONS.md#your-tokens-in-tailwind-v4).
+Color scales and semantic tokens in Tailwind v4's `@theme`, what the default palette is (OKLCH, 11 steps), dark mode repointing and `inline`, what the opacity modifier compiles to, and migrating a hex theme. Sources: Jakub Krehel's better-colors and oklch-skill, each tagged, corrected against [tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme), [tailwindcss.com/docs/colors](https://tailwindcss.com/docs/colors) and Tailwind's source. Namespaces, `--color-*: initial;` and Adam Argyle's adaptive utilities are in [modern-css CUSTOM-PROPERTIES.md](../modern-css/CUSTOM-PROPERTIES.md#your-tokens-in-tailwind-v4).
 
 ## The default palette is OKLCH
 

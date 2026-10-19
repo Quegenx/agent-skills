@@ -181,20 +181,20 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 
 | Skill | Covers |
 |---|---|
-| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Web/app motion, timing, gestures, scroll, native CSS, React transitions and audits. |
-| [svg](./skills/frontend/svg/SKILL.md) | Drawing, styling, animation, filters, icons, embedding, accessibility and sanitization. |
-| [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern CSS: layout and responsive policy, units, queries, typography, forms, top-layer controls, animation, color and browser support. |
-| [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, eases, timelines with corrected placement arguments/defaults, React cleanup, ScrollTrigger and plugins. |
-| [web-accessibility](./skills/frontend/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers with numbering validity separate from identity. |
-| [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast with a shared measurement script, dark mode, gamut and color audits. |
+| [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Motion policy and audits; separate native recipes, live charts and collection topics. |
+| [svg](./skills/frontend/svg/SKILL.md) | SVG drawing, animation and icons; canonical namespaces, use primitives and transforms. |
+| [modern-css](./skills/frontend/modern-css/SKILL.md) | CSS layout, forms and responsive policy; separate properties, functions and scroll-animation topics. |
+| [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, timelines, cleanup and plugins; corrected shuffle and MotionPathHelper APIs. |
+| [web-accessibility](./skills/frontend/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers; complete hover/focus content criteria. |
+| [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast and audits; Tailwind aliases link to CSS custom properties. |
 | [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
-| [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Evidence-based exploded, orthographic and section drawings with dimensions and exports. |
-| [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance, audits with shared P0 to P3 severity and Remotion Player integration. |
+| [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Physical drawings and exports; declared geometry checks distinguished from passing results. |
+| [react](./skills/frontend/react/SKILL.md) | Global React, Next.js, audits and Remotion Player; native navigation APIs, sheet limits and previews. |
 | [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages. |
 | [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
 | [design-system-maintenance](./skills/frontend/design-system-maintenance/SKILL.md) | Extracting an existing system, mapping values, component docs, migration readiness and rendered evidence. |
 | [app-ui](./skills/frontend/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
-| [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | The production marketing-site design, motion and page templates, with reference source. |
+| [landing-page-ui](./skills/frontend/landing-page-ui/SKILL.md) | Production marketing-site design and source; browser encoding links to its current owner. |
 | [web-performance](./skills/frontend/web-performance/SKILL.md) | Browser loading, media, layout shifts, main-thread work, runtime traces and Lighthouse gates. |
 
 ## Web automation

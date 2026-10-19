@@ -53,7 +53,7 @@ The suggestion must fit the source's budgets, UI under 300ms: the table is in [A
 
 ### Function
 
-Does motion help or hinder here? "Decoration on functional, information-dense UI hinders. A decorative mouse-tracking effect is fine on a marketing page; on a functional graph in a banking app, no animation is better. Data the user is trying to *read* or *act on* should not move for style." Live motion that explains a value change is a different case ([PATTERNS.md](PATTERNS.md#live-values-and-charts)).
+Does motion help or hinder here? "Decoration on functional, information-dense UI hinders. A decorative mouse-tracking effect is fine on a marketing page; on a functional graph in a banking app, no animation is better. Data the user is trying to *read* or *act on* should not move for style." Live motion that explains a value change is a different case ([LIVE-CHARTS.md](LIVE-CHARTS.md#live-values-and-charts)).
 
 ## Where to hunt
 

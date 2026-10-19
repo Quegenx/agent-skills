@@ -12,49 +12,7 @@ Many SVG attributes are also CSS properties, so CSS transitions and keyframes an
 
 ## Transforms: transform-origin and transform-box
 
-- **`transform-origin` defaults to `0 0` on SVG elements.** Only the root `<svg>` and `<svg>` elements that are direct children of `foreignObject` get `50% 50%` "as in normal CSS". The spec: the initial value is `50% 50%`, but "For SVG elements without associated CSS layout box the initial used value is 0 0 as if the user agent style sheet contained `*:not(svg), *:not(foreignObject) > svg { transform-origin: 0 0; }`".
-- **The reference box defaults to the viewBox.** `transform-box` is `content-box | border-box | fill-box | stroke-box | view-box`, initial `view-box`, not inherited, animated discretely. So transform-origin lengths, percentages and keywords are relative to the SVG's `viewBox` unless the element has a CSS layout box: `transform-origin="center"` puts the origin at the center of the viewBox, not of the element.
-
-| `transform-box` | Reference box |
-|---|---|
-| `fill-box` | the object bounding box |
-| `stroke-box` | the stroke bounding box |
-| `view-box` | the nearest SVG viewport; with a `viewBox`, the box sits at the viewBox origin with the viewBox width and height |
-| `content-box`, `border-box` | on SVG elements without a CSS layout box, used as `fill-box` and `stroke-box` |
-
-  On elements with a CSS layout box, `fill-box` is used as `content-box`, and `stroke-box`/`view-box` as `border-box`.
-- **`transform-box` affects** `transform`, the individual `translate`/`scale`/`rotate` properties, and `transform-origin`.
-- **To spin an element around its own center, set `transform-box: fill-box`.** Without it, "the transform origin is the center of the SVG canvas, and so you get a very different effect."
-
-```css
-#box {
-  transform-origin: 50% 50%; /* anything other than `0 0` to see the effect */
-  transform-box: fill-box;
-  animation: rotate-box 3s linear infinite;
-}
-
-@keyframes rotate-box {
-  to {
-    transform: rotate(360deg);
-  }
-}
-```
-
-- **Motion's docs call this the "transform origin gotcha":** an HTML element rotates around its own centre, an SVG element around the viewBox origin, "usually the top left corner". Its fix is `transform-box: fill-box; transform-origin: center;`. It says older libraries like GSAP normalise origin by measuring, which is no longer necessary, and Motion's own components apply `fill-box` automatically (opt out with `transformBox: "view-box"`).
-- **The course's Module 1 example** sets the origin as lengths with the default `transform-box: view-box`, where lengths are relative to the SVG's `viewBox`:
-
-```css
-.lid {
-  transform: rotate(30deg);
-  transform-origin: 55px 30px;
-}
-```
-
-| `transform-box` value | Chrome | Firefox | Safari |
-|---|---|---|---|
-| property, `fill-box`, `view-box` | 64 | 55 | 11 |
-| `border-box` | 118 | | |
-| `content-box`, `stroke-box` | 118 | 125 | 13.1 |
+Use the canonical [origin and reference-box rules](REUSE-AND-TRANSFORMS.md#transform-origin-and-transform-box), including CSS layout-box mapping, individual transforms, the explicit-origin and rotating-box examples, Motion's automatic `fill-box` behavior and opt-out, and the compatibility table.
 
 ## Transitions and keyframes
 

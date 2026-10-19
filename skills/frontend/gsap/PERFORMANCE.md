@@ -29,7 +29,7 @@ landing-page-ui animates the nav's `height` on purpose: "**The menu grows out of
 [GreenSock, gsap-performance]
 
 - Use **stagger** instead of many separate tweens with manual delays when the animation is the same; it's more efficient.
-- For long lists, virtualize or animate only the visible items; don't create hundreds of simultaneous tweens if it causes jank. Long lists in general are in the `performance-and-caching` skill's BROWSER.md.
+- For long lists, virtualize or animate only the visible items; don't create hundreds of simultaneous tweens if it causes jank. Long lists in general are in [web-performance BROWSER.md](../web-performance/BROWSER.md#long-lists).
 - **Reuse timelines;** never create a new timeline every frame.
 - Don't create hundreds of overlapping tweens or ScrollTriggers without testing on low-end devices.
 

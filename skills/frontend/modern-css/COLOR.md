@@ -1,6 +1,6 @@
 # Color
 
-Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes from one hue, `color-mix()` and the space it mixes in, relative colour syntax with OKLCH's real channel ranges, `alpha()`, `contrast-color()`, `light-dark()` with page and component light/dark strategies, system and accent colours, P3 with an sRGB fallback, APCA contrast and forced colours. Source: Adam Argyle's nerdy.dev posts, each tagged; current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Gradient interpolation spaces and hue routes are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); colour tokens as custom properties are in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md); building and auditing a whole colour system (ramps, roles, token names, WCAG and APCA levels, gamut clamping) is in [color-system](../color-system/SKILL.md).
+Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes from one hue, `color-mix()` and the space it mixes in, relative colour syntax with OKLCH's real channel ranges, `alpha()`, `contrast-color()`, `light-dark()` with page and component light/dark strategies, system and accent colours, P3 with an sRGB fallback, APCA contrast and forced colours. Source: Adam Argyle's nerdy.dev posts, each tagged; current support comes from MDN (checked 2026-10-17) and is stated once where a feature is introduced. Code is copied from the posts unless a fix is named next to it. Gradient interpolation spaces and hue routes are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md); colour tokens as custom properties are in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md); building and auditing a whole colour system (ramps, roles, token names, WCAG and APCA levels, gamut clamping) is in [color-system](../color-system/SKILL.md).
 
 **Contents:** [Lightness: LCH and OKLCH over HSL](#lightness-lch-and-oklch-over-hsl) · [OKLCH palettes from one hue](#oklch-palettes-from-one-hue) · [color-mix() and its space](#color-mix-and-its-space) · [Relative colour syntax](#relative-colour-syntax) · [alpha()](#alpha) · [contrast-color()](#contrast-color) · [light-dark() and color-scheme](#light-dark-and-color-scheme) · [Page and component light and dark](#page-and-component-light-and-dark) · [System and accent colours](#system-and-accent-colours) · [Wide gamut: P3 with an sRGB fallback](#wide-gamut-p3-with-an-srgb-fallback) · [Contrast scores: APCA and L*](#contrast-scores-apca-and-l) · [Forced colours](#forced-colours) · [Prove it](#prove-it)
 
@@ -88,7 +88,7 @@ Modern CSS colour: why LCH and OKLCH beat HSL for manipulation, OKLCH palettes f
   "Result is `rgb(255 0 0 / 5%)`."
 - **The space matters, in his words:** "I chose `oklab` very specifically here, it gave me the mix I expected. Other color spaces did not." His own second example mixes `in srgb` and gets the exact expected result. app-ui's reference code fades brand colours `in srgb` (`color-mix(in srgb, var(--primary) 25%, transparent)` in [date-range-picker.module.css](../app-ui/reference/components/ui/forms/date-range/date-range-picker.module.css)).
 - **The space is optional now:** it defaults to `oklab`, so `color-mix(red, blue)` equals `color-mix(in oklab, red, blue)` (MDN). The post always names it.
-- **Scheme-aware mixes:** a `color-mix(in srgb, Canvas, CanvasText 15%)` stop reads in both themes [nerdy.dev: LLM chat prototype](https://nerdy.dev/llm-chat-prototype) (2025-07-28), and a scrollbar thumb mixes `light-dark()` with `#0000 50%` ([SCROLL.md](SCROLL.md)).
+- **Scheme-aware mixes:** a `color-mix(in srgb, Canvas, CanvasText 15%)` stop reads in both themes [nerdy.dev: LLM chat prototype](https://nerdy.dev/llm-chat-prototype) (2025-07-28), and a scrollbar thumb mixes `light-dark()` with `#0000 50%` ([SCROLLBARS.md](SCROLLBARS.md)).
 
 ## Relative colour syntax
 
@@ -159,7 +159,7 @@ button {
 - **Adaptive scrim** [nerdy.dev: Adaptive Scrim](https://nerdy.dev/adaptive-scrim) (2024-09-08): a caption band that flips with `light-dark()`; the code and MDN's `border-image` caveat are in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md#borders-scrims-and-shadows).
 - **Tint native widgets:** `accent-color: light-dark(deeppink, yellow)` and its support are in [SELECT-AND-FORMS.md](SELECT-AND-FORMS.md#accent-color).
 - **Icons per scheme:** Nice Select ships its chevron and checkmark as SVG data URIs "with variants for each color scheme"; "Pre-defined black/white SVGs avoid runtime color manipulation." [nerdy.dev: Nice Select](https://nerdy.dev/nice-select) (2026-02-03).
-- A custom `--light-dark()` that works beyond colours is in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#custom-functions-and-if).
+- A custom `--light-dark()` that works beyond colours is in [CSS-FUNCTIONS.md](CSS-FUNCTIONS.md#custom-functions-and-if).
 
 ## Page and component light and dark
 
@@ -274,10 +274,7 @@ button {
 
 ## Forced colours
 
-`forced-colors` is Baseline widely available (since 2025-03-12, web-features).
-
-- **Replace shadows with transparent borders:** "Where there are shadows and colors to help distinguish UI elements, they're replaced with a transparent 1px border so that in `forced-colors-mode` there are visual affordances." [nerdy.dev: New Year, New Site](https://nerdy.dev/new-year-new-site) (2023-01-01). "Transparent borders are your friend!" [nerdy.dev: Nintendo Switch Homescreen recreated with CSS and a li'l bit of JS](https://nerdy.dev/nintendo-switch-homescreen-css-recreation) (2025-06-13).
-- **Use it to debug:** forced colours are "a really great way to debug spacing and skeletal aspects of the UI"; style with `@media (forced-colors: active)`. In Nice Select "even the sticky scroll state respects this". [nerdy.dev: Nice Select](https://nerdy.dev/nice-select) (2026-02-03)
+The feature status, transparent-border technique and structural-debug use are defined in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md#forced-colors). [nerdy.dev: New Year, New Site](https://nerdy.dev/new-year-new-site), [Nintendo Switch homescreen](https://nerdy.dev/nintendo-switch-homescreen-css-recreation), [Nice Select](https://nerdy.dev/nice-select)
 
 ## Prove it
 

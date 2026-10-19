@@ -1,6 +1,6 @@
 # CSS infinity
 
-Infinity recipes from Adam Argyle's [CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases) (2026-07-25), with numeric ranges, radius percentages and NaN behavior checked against the official pages linked below. Source code is retained verbatim. Other custom properties and math functions are in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md); scroll triggers and frozen view transitions are in [SCROLL.md](SCROLL.md#scroll-triggered-animation) and [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md#debugging).
+Infinity recipes from Adam Argyle's [CSS Infinity Use Cases](https://nerdy.dev/css-infinity-use-cases) (2026-07-25), with numeric ranges, radius percentages and NaN behavior checked against the official pages linked below. Source code is retained verbatim. Other custom properties are in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md), and math functions are in [CSS-FUNCTIONS.md](CSS-FUNCTIONS.md); scroll triggers and frozen view transitions are in [SCROLL-ANIMATIONS.md](SCROLL-ANIMATIONS.md#scroll-triggered-animation) and [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md#debugging).
 
 ## calc(infinity)
 
@@ -75,7 +75,7 @@ Infinity recipes from Adam Argyle's [CSS Infinity Use Cases](https://nerdy.dev/c
       }
     }
   ```
-  Freezing view transitions for inspection is in [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md); the never-reverse scroll trigger is in [SCROLL.md](SCROLL.md).
+  Freezing view transitions for inspection is in [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md); the never-reverse scroll trigger is in [SCROLL-ANIMATIONS.md](SCROLL-ANIMATIONS.md#scroll-triggered-animation).
 - **Doesn't work:** a backdrop from an infinite spread, `.backdrop { box-shadow: 0 0 0 calc(infinity * 1px) #0005; }`, carries the post's own warning, "This actually doesn't work!" ([Bramus explains why](https://front-end.social/@bramus/117043307620167329)).
 
 ## Prove it

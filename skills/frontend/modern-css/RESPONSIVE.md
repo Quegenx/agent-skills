@@ -26,7 +26,7 @@ Layout reads its content and its container, not the screen. These rules keep des
 
 - **Every fluid token's maximum is today's measured desktop size,** so the change only shrinks narrower layouts. Ramp between two page widths (say 22.5rem and 60rem).
 - **The formula for a step:** max = px / 16; min = max × ratio (0.75 for space, 0.85 for display type); slope = 100 × (max − min) / (wide − narrow) in `cqi`; intercept = min − (max − min) × narrow / (wide − narrow) in `rem`.
-- **Register tokens as typed custom properties** (`@property --space-4 { syntax: "<length>" }`) computed on `:root` (for overlays portaled to the body) and on the page area, so components scale with the page, not with their own small containers. A component that should scale with itself uses `cqi` directly. Registering also makes a token type-safe, and `inherits: false` can perform better: [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#typed-properties-with-property).
+- **Register tokens as typed custom properties** (`@property --space-4 { syntax: "<length>" }`) computed on `:root` (for overlays portaled to the body) and on the page area, so components scale with the page, not with their own small containers. A component that should scale with itself uses `cqi` directly. Registering also makes a token type-safe, and `inherits: false` can perform better: [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md#typed-properties-with-property).
 - **A modular scale can be written in CSS** (the owner's rule): `calc(1rem * pow(var(--ratio), 2))`. `pow()` is Baseline widely available since 2026-06-07 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/pow)), so it belongs here, not among the enhancements. Keep each step's maximum at the measured desktop size.
 - **Name space steps after the framework's step numbers** (`--space-4` is the fluid twin of `p-4`), so the fluid version of every spacing class is obvious.
 - **Body and control text stay fixed `rem`;** only display sizes (20px and up) are fluid, and never below 85%.
@@ -55,26 +55,7 @@ The order agrees: "Intrinsic CSS first (`auto-fit`, `flex-wrap`, `clamp()`) → 
 - `:has()` for a parent that changes with what it holds, and `:not(:has())` for one that lacks it ([CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md#has-and-selectors)); `aspect-ratio` for media.
 - **Room for translation:** "Translated strings grow, and short ones grow proportionally more, so a one-word button label is the riskiest thing on the screen. Size text containers with `max-width` and `min-height`, never a fixed width or height, and let rows wrap. Test with pseudo-localization and one long-string locale such as German" [Jakub Krehel, better-layout].
 
-## Type review
-
-Jakub Krehel's better-typography, for reviewing how text renders [Jakub Krehel, better-typography]. Where the owner's apps set a value, `app-ui` and `landing-page-ui` decide; the lines below say where they differ.
-
-- **Measured, not preferred:** "Unitless line-height, weight `400` or heavier below `18px`, a 60 to 75 character measure, `16px` inputs on iOS and `tabular-nums` on changing values are findings when missed." "Letter-spacing, pairing and scale ratios are heuristics. Report them only where they break the project's own scale. Never propose a new typeface, paid or free, unless the task asks for a type change."
-- **Fonts and weights:** "Rarely use more than three fonts; marketing pages can carry more than apps." "A serif headline over a sans body reads as deliberate, two near-identical sans-serifs read as a mistake." "Weights `100` to `300` belong at `28px` and up, checked against the background even there."
-- **Line-height by role:** "Display text `1.1`, headings `1.2` to `1.3`, body copy `1.5` to `1.6`." "Anything that wraps to three or more lines needs at least `1.4`, even in a height-constrained row." app-ui runs tighter: its base, small and extra-small text are ".9375 / 1.3333, .8125 / 1.2308, .75 / 1.5".
-- **Tracking by size:** "Headings at `24px` and up take `-0.01em` to `-0.02em`. Uppercase labels at `14px` or smaller take `0.05em`. Body copy stays at `0`. Use `em` so tracking scales with the size." "`font-kerning: none` is never a fix." The owner's apps differ: app-ui sets `letter-spacing: 0` on `h1` to `h4`, and landing-page-ui says "Fixed tracking is in px, from -0.16px to -1.44px" and resets negative tracking in right-to-left ("Negative tracking is for Latin only").
-- **Measure:** "`65ch` measures characters directly, one `ch` being the width of the `0`"; "At a `16px` body size the 60 to 75 character range lands roughly between `560px` and `680px`." Vercel's report pages keep "near" 60 to 68 ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#report-and-evidence-page-layout)).
-- **Size floors:** "Start long-form body text at `16px`, the browser default." "UI text can go smaller. Start inputs and menus at `14px` and captions at `13px`, and rarely go below `12px`."
-- **Headings descend:** "A heading is never smaller than body text unless it is a deliberate overline"; deep levels may share a size "as long as weight or letter-spacing keeps them distinct".
-- **Case and alignment:** "Store text in natural case and set case with `text-transform`, so a redesign never means rewriting copy." "Keep interface text at `text-align: start`. `justify` belongs only in specific editorial layouts."
-- **Figures:** tabular on "timers, counters, prices and numeric table columns"; "Leave figures in prose proportional."
-- **Wrapping:** better-typography calls `text-wrap: pretty` "Safe on any paragraph, long-form included", and make-interfaces-feel-better says to skip it on text of 10 or more lines. MDN: `pretty` "is intended for body copy" and "has a negative effect on performance, so it should be only used for longer blocks of text when the layout is more important than speed" ([text-wrap](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-wrap)); it is not Baseline ([TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#text-wrap-balance)).
-- **Selection:** "`user-select: none` belongs on a draggable or gesture-driven surface where accidental selection interferes. Never across the interface and never because a button label can be highlighted." app-ui's labels "are `user-select: none`", and mobile-native puts it on buttons, tabs, chips and drag handles ([DETAILS.md](../../anti-ai-slop/anti-slop-ui/DETAILS.md#pressed-states)). Plain `user-select` does nothing in Safari without `-webkit-user-select`.
-- **Punctuation:** the source says rendered strings use the ellipsis character for `...` and a real dash for `--` [Jakub Krehel, better-typography]. Before replacing the aside, ask whether it belongs at all. The owner's rule forbids em and en dashes at every length; use " - ", commas or "to" ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting)). The old line cited "none in short copy"; the source's real-dash view remains a disagreement, not permission under the owner rule.
-- **Quotes and spaces that hold:** "Curly quotes `“` `”` not straight `"`" and "Non-breaking spaces: `10&nbsp;MB`, `⌘&nbsp;K`, brand names" [Vercel, web-interface-guidelines]; writing-guidelines extends the curly rule to single quotes, "not straight `"` or `'`" [Vercel, writing-guidelines].
-- **The severity** (mapped once in [SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md#6-delivery-report)): "`HIGH` makes text unreadable, truncates content with no way back to it or clips text at 320px width or 200% zoom"; `MEDIUM` "breaks the type system or the visual heading hierarchy"; `LOW` "is isolated polish". "Without a browser, check declared size and weight per heading level, descending within each semantic section. Check declared line-height, units and measure. Check truncation rules against realistic string lengths."
-
-The patterns a script can find are in [Enforce what a script can see](#enforce-what-a-script-can-see).
+Type scale, measure, tracking and the source-qualified type review are in [FONTS-AND-TEXT-DETAILS.md](FONTS-AND-TEXT-DETAILS.md#type-review).
 
 ## Touch and browser chrome
 
@@ -96,7 +77,7 @@ Emil Kowalski's mobile-native removes "the tells that give it away" on a phone: 
 
 - **Hover:** "Both conditions matter. `(hover: hover)` means the primary input can hover. `(pointer: fine)` means it's precise, like a mouse." Tailwind 4's `hover:` compiles to `@media (hover: hover)` only, with no `(pointer: fine)`, and `@custom-variant hover (&:hover);` opts out ([Tailwind upgrade guide](https://tailwindcss.com/docs/upgrade-guide)). agent-chat-ui uses one condition: "Put every hover style inside `@media (hover: hover)`".
 - **Tap highlight:** `html { -webkit-tap-highlight-color: transparent; }` once, then "make sure every tappable element has its own `:active` state, because you've just removed the only feedback the browser was giving."
-- **Input zoom:** iOS Safari zooms into an input under 16px "and it does not zoom back out on blur"; `input, textarea, select { font-size: 16px; }`, or only under `@media (pointer: coarse)`. Apple's and WebKit's docs don't document the 16px threshold; it is observed behaviour. Never `user-scalable=no` or `maximum-scale=1`; MDN: "iOS10+ ignores it by default" ([viewport meta](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/viewport)).
+- **Input zoom:** the observed threshold, the two source fixes, zoom-lock prohibition and owner capability-based exception are in [FONTS-AND-TEXT-DETAILS.md](FONTS-AND-TEXT-DETAILS.md#the-ios-input-zoom). [Emil Kowalski, mobile-native; Jakub Krehel, better-typography]
 - **Overscroll:** `html, body { overscroll-behavior: none; }` in an app, `overscroll-behavior: contain` on inner scrollers; drop `none` from `html` "if the app is a scrolling document where pull-to-refresh is welcome". No `touchmove` + `preventDefault()` listener for this ([why](SCROLL.md#scroller-structure-and-essentials)). ui-animation's sheets keep `auto` on purpose, so scroll chaining is the dismiss gesture.
   - **The other view, gated by pointer:** "Page rubber-band suppression: `overscroll-behavior: none` on `<html>` inside `@media (pointer: fine)`; keep coarse-pointer page defaults for pull-to-refresh. Test hybrid touch devices: `pointer` describes the primary input" [Vercel, web-interface-guidelines]. mobile-native decides by app against document, Vercel by input. Vercel adds that `none` "also disables scroll chaining and native swipe navigation"; MDN's `none` "Prevents scrolling from continuing outside the scroll container and also prevents overscroll 'bounce' effects" and says nothing about swipe navigation ([overscroll-behavior](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overscroll-behavior)).
 - **Gesture axes:** which axes each `touch-action` value leaves to the browser, and when a native-scroll carousel needs none, are in [modern-css SCROLL.md](SCROLL.md#scroller-structure-and-essentials) [Emil Kowalski, mobile-native].
@@ -155,7 +136,7 @@ The owner's rule: inside `@supports` only, where the page works without them.
 
 The owner's rule: features one engine ships alone.
 
-- `if()` and `@function`: Chromium only (Chrome and Edge 137 and 139), not Baseline, experimental ([MDN `if()`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/if), [MDN `@function`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@function)); [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md#custom-functions-and-if).
+- `if()` and `@function`: Chromium only (Chrome and Edge 137 and 139), not Baseline, experimental ([MDN `if()`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/if), [MDN `@function`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@function)); [CSS-FUNCTIONS.md](CSS-FUNCTIONS.md#custom-functions-and-if).
 - `@container scroll-state()`: Chrome and Edge 133 only, not Baseline ([SCROLL.md](SCROLL.md#scroll-state-queries)).
 - `display: grid-lanes` (the shipped name for masonry): experimental, Safari 26.4 only ([MDN `display`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display), [Grid lanes guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Grid_lanes); [LAYOUT.md](LAYOUT.md#grid-and-subgrid)).
 - `random()`: Safari 26.2 only, not Baseline ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/random)); niche decoration, not responsiveness.
@@ -179,15 +160,6 @@ More rows a script can see, each with the fix its source gives:
 | `user-select: none` on `body` or `html` | Only on controls | mobile-native |
 | User-agent sniffing to detect touch | `(hover)` / `(pointer)` media queries | mobile-native |
 | `user-scalable=no` or `maximum-scale=1` | 16px inputs, fixing the cause | mobile-native |
-| `line-height` in `px` or `rem` | A unitless value | better-typography |
-| `letter-spacing` in `px` | The same value in `em` (landing-page-ui keeps px tracking by design) | better-typography |
-| Weight `100` to `300` or `font-thin`, `font-light` on text under `18px` | `400` or heavier | better-typography |
-| `text-wrap: balance` on a paragraph | `text-wrap: pretty` | better-typography |
-| `text-align: justify` in application UI | `text-align: start` | better-typography |
-| `-webkit-line-clamp` without `display: -webkit-box` | Add `display: -webkit-box` and `-webkit-box-orient: vertical` | better-typography |
-| `text-decoration-skip-ink: none` | Remove it; set `text-underline-offset` or `from-font` instead | better-typography |
-| `-webkit-font-smoothing` or `antialiased` inside a component | Move it to the root | better-typography |
-| `user-select: none` or `select-none` on a layout root or text container | Remove it; keep it only on a drag or gesture surface | better-typography |
 
 ## Prove it
 

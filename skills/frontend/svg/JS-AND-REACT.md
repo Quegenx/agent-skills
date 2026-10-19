@@ -2,6 +2,18 @@
 
 Script reaches SVG three ways: the Web Animations API (`element.animate()`, the CSS engine driven from JS), a `requestAnimationFrame` loop that writes attributes or styles each frame, and the geometry methods (`getTotalLength()`, `getPointAtLength()`) that measure paths. What decides most outcomes: Motion's docs say WAAPI can't animate attributes that never became CSS properties (`viewBox`, `points`), a rAF loop must compute progress from its timestamp, and inline SVG in React is JSX (SVGR can generate it) with camelCase attribute names. Autoplaying motion that lasts over five seconds alongside other content needs a way to pause it (WCAG 2.2.2). Property support: [STYLING.md](STYLING.md); CSS-only animation: [CSS-ANIMATION.md](CSS-ANIMATION.md); SMIL: [SMIL.md](SMIL.md); timing and easing: [../ui-animation/SKILL.md](../ui-animation/SKILL.md); elements and paths: [BASICS.md](BASICS.md), [PATHS.md](PATHS.md).
 
+## Create SVG elements
+
+- **Create SVG elements with `createElementNS()`.** `document.createElement()` never creates SVG elements: `createElement("circle")` makes an unknown HTML element that renders nothing. Attributes are not namespaced (except legacy `xlink:href`), so plain `setAttribute()` works.
+
+```js
+const svgNS = "http://www.w3.org/2000/svg";
+const circle = document.createElementNS(svgNS, "circle");
+circle.setAttribute("cx", 50);
+```
+
+- **Scripts use the namespace-aware DOM methods.** MDN's namespaces guide says to use `createElementNS`, `setAttributeNS`, `getAttributeNS` rather than `createElement`, `setAttribute`, with `null` for unprefixed attributes (`rect.getAttributeNS(null, "x")`). MDN's SVG scripting guide agrees on `createElementNS` but says attributes (except legacy `xlink:href`) are not namespaced, so plain `setAttribute()` suffices. The sources retain these different attribute-method recommendations; namespace declarations are in [BASICS.md](BASICS.md#xmlns).
+
 ## Inline versus external
 
 - **Inline SVG can be scripted like HTML.** The course: inlining lets you manipulate the SVG with JavaScript like regular HTML, but means more DOM nodes, or "larger JavaScript bundles" in a component library like React. External references (`<img>`, CSS `url()`) cut bundle size and let the browser cache the file, but may not load immediately "and you're more limited on animation options".
@@ -73,7 +85,7 @@ path.animate({ strokeDashoffset: [length, 0] }, 2000)
 - **Props are camelCase,** like the DOM standard (e.g. `tabIndex`; SVGR turns `fill-rule` into `fillRule`). "You can convert existing SVG to JSX with an online converter."
 - **Namespaced attributes drop the colon:** `xlink:href` to `xlinkHref`, `xml:lang` to `xmlLang`, `xml:space` to `xmlSpace`, `xmlns:xlink` to `xmlnsXlink`, plus `xlinkActuate`, `xlinkArcrole`, `xlinkRole`, `xlinkShow`, `xlinkTitle`, `xlinkType`, `xmlBase`.
 - **`style` keys are camelCase.** A number gets `px` appended unless the property is unitless. React recommends `style` only for dynamic values and `className` otherwise.
-- **Motion for React** (Motion's docs): `<motion.path initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} />` draws a line; `<motion.svg viewBox="0 0 200 200" animate={{ viewBox: "-100 -100 300 300" }} />` animates viewBox, "something neither CSS or WAAPI can animate". The draw props `pathLength`, `pathSpacing` and `pathOffset` work on circle, ellipse, line, path, polygon, polyline and rect. Its components apply `transform-box: fill-box` automatically (opt out with `transformBox: "view-box"`).
+- **Motion for React** (Motion's docs): `<motion.path initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} />` draws a line; `<motion.svg viewBox="0 0 200 200" animate={{ viewBox: "-100 -100 300 300" }} />` animates viewBox, "something neither CSS or WAAPI can animate". The draw props `pathLength`, `pathSpacing` and `pathOffset` work on circle, ellipse, line, path, polygon, polyline and rect. Its transform-origin behavior is defined with the [canonical Motion qualification](REUSE-AND-TRANSFORMS.md#transform-origin-and-transform-box).
 
 ### SVGR
 

@@ -57,7 +57,7 @@ A sticky footer or cookie banner needs `scroll-padding-bottom` the same way.
 
 A non-modal overlay (a slide-in, a sticky bar, a cookie notice) passes 2.4.11 when it is modal, when scroll padding reserves its space, or, for a notification that needs no action, when it closes on losing focus; one that neither takes focus nor closes when focus leaves "will be at risk of failing" where it can cover focusable items ([Understanding 2.4.11](https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html)). Popup rules beyond focus are in [marketing/cro/POPUPS.md](../../marketing/cro/POPUPS.md#accessibility).
 
-**Cookie banners** [c15t]: "Blocking banners carry `role="dialog"` and `aria-modal="true"`. Non-blocking banners leave page controls usable by keyboard and pointer", and "A notice never traps focus or locks scroll." Its interface check: "Tab through the banner and dialog with the keyboard only. Focus stays inside a modal dialog and returns to the button that opened it when it closes. Set the viewport to 375 pixels wide and switch to a language with long labels, such as German. After applying your theme, check text contrast and that focus rings are visible." The banner itself is [cookie-consent](../cookie-consent/SKILL.md).
+**Cookie banners** [c15t]: provider-specific blocking, notice behavior and release checks are in [cookie-consent BANNER-UI.md](../cookie-consent/BANNER-UI.md#blocking-and-non-blocking) and [VERIFY-CONSENT.md](../cookie-consent/VERIFY-CONSENT.md). Apply the generic focus-obscuration rule above to any non-blocking banner.
 
 ## Skip link
 

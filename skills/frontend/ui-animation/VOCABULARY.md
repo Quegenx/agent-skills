@@ -64,7 +64,7 @@ Changing an element's position, size, or angle. [Emil Kowalski, animation-vocabu
 - **Skew**: Slant an element along the X or Y axis, shearing it out of its rectangular shape. Built: [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move) ("skew is not an independent transform value").
 - **3D tilt / Flip**: Rotate in 3D space (rotateX / rotateY) to add depth. Built: the tilt card in [MATH.md](MATH.md#face-the-direction-of-travel), [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#morphs-and-other-effects).
 - **Perspective**: How strong the 3D effect looks - a lower value exaggerates depth, like the viewer is closer. Built: [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#morphs-and-other-effects).
-- **Transform origin**: The anchor point a scale or rotation grows or spins from. Built: [PATTERNS.md](PATTERNS.md#modals-sheets-popovers), [../svg/CSS-ANIMATION.md](../svg/CSS-ANIMATION.md#transforms-transform-origin-and-transform-box).
+- **Transform origin**: The anchor point a scale or rotation grows or spins from. Built: [PATTERNS.md](PATTERNS.md#modals-sheets-popovers), [../svg/REUSE-AND-TRANSFORMS.md](../svg/REUSE-AND-TRANSFORMS.md#transform-origin-and-transform-box).
 - **Origin-aware animation**: An element animates out of its trigger, like a popover growing from the button that opened it instead of from its own center which is the default in CSS. Built: "Grow from the trigger" in [PATTERNS.md](PATTERNS.md#modals-sheets-popovers). The CSS default is `transform-origin: 50% 50% 0` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/transform-origin)).
 
 ## Transitions between states
@@ -84,9 +84,9 @@ Connecting one state, view, or element to another. [Emil Kowalski, animation-voc
 Motion tied to scrolling or navigating between views. [Emil Kowalski, animation-vocabulary]
 
 - **Scroll reveal**: Elements fade or slide into place as they enter the viewport. Built: [PATTERNS.md](PATTERNS.md#scroll-linked-motion).
-- **Scroll-driven animation**: An animation whose progress is tied directly to scroll position. Built: [NATIVE-CSS.md](NATIVE-CSS.md#scroll-driven-animations), [../modern-css/SCROLL.md](../modern-css/SCROLL.md#scroll-driven-animation).
+- **Scroll-driven animation**: An animation whose progress is tied directly to scroll position. Built: [NATIVE-CSS.md](NATIVE-CSS.md#scroll-driven-animations), [../modern-css/SCROLL-ANIMATIONS.md](../modern-css/SCROLL-ANIMATIONS.md#scroll-driven-animation).
 - **Parallax**: Background and foreground move at different speeds while scrolling, creating depth. Built: [PATTERNS.md](PATTERNS.md#scroll-linked-motion).
-- **Page transition**: An animation that plays when navigating from one page or route to another. Built: [TIMING.md](TIMING.md#duration-by-element), [REACT-NATIVE.md](REACT-NATIVE.md#screen-transitions).
+- **Page transition**: An animation that plays when navigating from one page or route to another. Built: [TIMING.md](TIMING.md#duration-by-element), [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#screen-transitions).
 - **View transition**: The browser morphs between two states or pages, connecting shared elements. Built: [NATIVE-CSS.md](NATIVE-CSS.md#view-transitions), [../modern-css/VIEW-TRANSITIONS.md](../modern-css/VIEW-TRANSITIONS.md#same-document-transitions).
 
 ## Feedback and interaction
@@ -94,12 +94,12 @@ Motion tied to scrolling or navigating between views. [Emil Kowalski, animation-
 Responding to the user's actions. [Emil Kowalski, animation-vocabulary]
 
 - **Hover effect**: Visual change when the cursor moves over an element. Built: [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback).
-- **Press / Tap feedback**: A subtle scale-down when an element is clicked, so it feels physical. Built: [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback) (which also lets professional tools "shift tone" instead of scaling), [REACT-NATIVE.md](REACT-NATIVE.md#press-feedback).
-- **Hold to confirm**: A progress effect that fills up while the user holds a button. Built: not in these skills.
+- **Press / Tap feedback**: A subtle scale-down when an element is clicked, so it feels physical. Built: [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback) (which also lets professional tools "shift tone" instead of scaling), [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#press-feedback).
+- **Hold to confirm**: A progress effect that fills up while the user holds a button. Built: [REVEALS.md](REVEALS.md#hold-to-confirm).
 - **Drag**: Moving an element by grabbing it, often with momentum when released. Built: [PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap), [PHYSICS.md](PHYSICS.md#the-hand).
 - **Drag to reorder**: Dragging items in a list to rearrange them, while the others shift to make room. Built: board drag and drop in [../app-ui/DATA-VIEWS.md](../app-ui/DATA-VIEWS.md#boards-and-lists-of-the-same-items).
-- **Swipe to dismiss**: Dragging an element off-screen to close it, like a drawer or toast. Built: [SHEETS.md](SHEETS.md#a-swipeable-sheet-on-native-scroll), [REACT-NATIVE.md](REACT-NATIVE.md#drag-to-dismiss-sheet).
-- **Rubber-banding**: Resistance and snap-back when you drag past a boundary (the iOS overscroll feel). Built: `dragElastic` in [PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap), walls in [PHYSICS.md](PHYSICS.md#walls-and-rubber-banding), `rubberband()` in [REACT-NATIVE.md](REACT-NATIVE.md#two-worklets-projection-and-rubber-banding).
+- **Swipe to dismiss**: Dragging an element off-screen to close it, like a drawer or toast. Built: [SHEETS.md](SHEETS.md#a-swipeable-sheet-on-native-scroll), [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#drag-to-dismiss-sheet).
+- **Rubber-banding**: Resistance and snap-back when you drag past a boundary (the iOS overscroll feel). Built: `dragElastic` in [PATTERNS.md](PATTERNS.md#gestures-drag-throw-snap), walls in [PHYSICS.md](PHYSICS.md#walls-and-rubber-banding), `rubberband()` in [REACT-NATIVE-RECIPES.md](REACT-NATIVE-RECIPES.md#two-worklets-projection-and-rubber-banding).
 - **Shake / Wiggle**: A quick side-to-side jitter signaling an error or rejected input. Built: [TIMING.md](TIMING.md#duration-by-element), [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback), [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
 - **Ripple**: A circle expanding from the point of a tap, confirming the press. Built: in part, the `sin` ripples and pulse rings in [MATH.md](MATH.md#waves-sin-and-phase).
 
@@ -145,12 +145,12 @@ Animations that run on their own. [Emil Kowalski, animation-vocabulary]
 
 The small touches that separate good from great. [Emil Kowalski, animation-vocabulary]
 
-- **Blur**: A blur filter used to soften an element or mask tiny imperfections. Built: not as a polish technique here; motion blur is in [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
+- **Blur**: A blur filter used to soften an element or mask tiny imperfections. Built: [REVEALS.md](REVEALS.md#blur-bridges-a-crossfade); motion blur is in [../modern-css/GRADIENTS-AND-EFFECTS.md](../modern-css/GRADIENTS-AND-EFFECTS.md#shake-glitch-and-motion-blur).
 - **Clip-path**: Clipping an element to a shape, used for reveals, masks, and before/after sliders. Built: [../svg/CLIP-AND-MASK.md](../svg/CLIP-AND-MASK.md#css-clip-path-and-mask-on-html), [PERFORMANCE.md](PERFORMANCE.md#move-only-what-the-compositor-can-move).
 - **Mask**: Hiding or revealing parts of an element using a shape or gradient - like clip-path, but with soft, fadeable edges. Built: [../svg/CLIP-AND-MASK.md](../svg/CLIP-AND-MASK.md#clip-or-mask), the text shimmer in [../app-ui/STATES.md](../app-ui/STATES.md#pending).
-- **Before / after slider**: A draggable divider that wipes between two overlaid images to compare them. Built: not in these skills.
+- **Before / after slider**: A draggable divider that wipes between two overlaid images to compare them. Built: [REVEALS.md](REVEALS.md#a-before-and-after-slider).
 - **Line drawing**: An SVG path that draws itself in, like an invisible pen tracing it. Built: [../svg/CSS-ANIMATION.md](../svg/CSS-ANIMATION.md#line-drawing-with-stroke-dasharray-and-stroke-dashoffset).
-- **Text morph**: Text that animates character by character when it changes, drawing attention to the new value. Built: [../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#text-that-changes), and the "Continue" to "Confirm" label in [PATTERNS.md](PATTERNS.md#height-and-accordions).
+- **Text morph**: Text that animates character by character when it changes, drawing attention to the new value. Built: [../app-ui/CONTROLS.md](../app-ui/CONTROLS.md#text-that-changes), and the "Continue" to "Confirm" label in [PATTERNS.md](PATTERNS.md#numbers).
 - **Skeleton / Shimmer**: A placeholder with a moving sheen shown while content loads. Built: [TIMING.md](TIMING.md#duration-by-element), [../app-ui/STATES.md](../app-ui/STATES.md#pending).
 - **Number ticker**: Digits rolling or counting up to a value. Built: [PATTERNS.md](PATTERNS.md#numbers).
 - **Tabular numbers**: Fixed-width digits so numbers don't shift around as they change. Essential for tickers, timers, and counters. Built: [PATTERNS.md](PATTERNS.md#numbers).

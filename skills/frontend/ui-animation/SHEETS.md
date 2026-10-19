@@ -25,3 +25,7 @@ The React Aria Sheet ("Scrolling is All You Need: Building a Swipeable Sheet") i
   - Diagonal drags lock to one axis in a scroller; `scroll-axis-lock: none` (Chrome 153 per the post, no MDN page yet) unlocks them, and swipe to dismiss is among its uses. The author still found it "a bit clumsy" and filed performance regressions ([nerdy.dev: Scroll Axis Lock](https://nerdy.dev/css-scroll-axis-lock), 2026-08-10). Both recipes are in [../modern-css/SCROLL.md](../modern-css/SCROLL.md).
 
 The article states no focus, Escape or reduced-motion rules beyond building on its Modal; the ones in [PATTERNS.md](PATTERNS.md#modals-sheets-popovers) still apply.
+
+## Prove it
+
+Use the existing [focus and dismissal requirements](PATTERNS.md#modals-sheets-popovers), [gesture checks](GESTURES.md#prove-it) and [reduced-motion review](SKILL.md#prove-it). Preserve the native-scroll, snap-point, content-scroll and software-keyboard behavior described above. [React Aria, Scrolling is All You Need: Building a Swipeable Sheet]

@@ -84,8 +84,10 @@ Gradients themselves are in [GRADIENTS-AND-PATTERNS.md](GRADIENTS-AND-PATTERNS.m
 
 - **A live deep clone.** `<use>` duplicates nodes from an SVG document elsewhere, as if deep-cloned into a non-exposed DOM (like a cloned `<template>`). The clones stay linked to the source and reflect DOM changes to the original. The SVG DOM contains only the `use` element, not the instance elements.
 - **Attributes:** `href` (URL), `xlink:href` (deprecated; `href` wins if both are set), `x`, `y` (default `0`), `width`, `height`.
+- **Geometry properties in SVG 2:** `x`, `y`, `width` and `height` can also be set as CSS properties. [MDN `<use>` reference](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/use)
 - **`x`/`y` are a final translate.** They append `translate(x,y)` after the other transforms on the `use` element itself, not only on the cloned content. That shifts `userSpaceOnUse` masks, clips and filters on the `use`. To avoid it, nest the `use` in a `g` and put the effect on the `g`.
 - **`width`/`height` only matter for a viewport.** They take effect only when the referenced element is an `svg` or `symbol`, overriding its values; `auto` keeps the referenced element's values. `use` itself does not establish a viewport. Negative values are invalid and ignored; zero disables rendering where they apply.
+- **Width/height source contexts, kept explicit:** the [MDN `<use>` reference](https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/use) lists their defaults as `0` and says they only affect a referenced `svg` or `symbol` with a `viewBox`. This topic's existing SVG 2 summary above instead says `auto` preserves the referenced values. These differently scoped source statements are retained; the current SVG 2 sizing rules have not been rechecked here to resolve the distinction.
 - **The source wins.** Most attributes on `use` are ignored if the referenced element already sets them; only `x`, `y`, `width`, `height` and `href` still apply. Attributes the source leaves unset are applied from the `use`. So leave `fill`/`stroke` off the source to restyle each instance:
 
 ```html
@@ -103,6 +105,7 @@ Gradients themselves are in [GRADIENTS-AND-PATTERNS.md](GRADIENTS-AND-PATTERNS.m
 - **Same origin only.** Browsers may apply the same-origin policy and refuse a cross-origin `href`, and there is no defined way to set a cross-origin policy for `use`; the spec does not allow cross-origin or data URL requests in `use`.
 - **No data URIs.** Data URIs in `use href` are deprecated for security reasons (also via `set` or `setAttribute`): removed in Chrome 120 and Firefox 122, never removed in Safari. See [OPTIMIZING-AND-SECURITY.md](OPTIMIZING-AND-SECURITY.md).
 - **Whole-document references without a fragment** are new in SVG 2. MDN says modern implementations have been updated to allow them; browser-compat data lists only Chrome 137 (Firefox and Safari no, experimental). Keep the `#fragment` until support is confirmed in current data.
+- **The linking guide's stricter view:** MDN's linking guide says whole-document references are not supported everywhere and to always name the element with a fragment identifier; the `<use>` reference describes modern whole-document support. Keep these source contexts explicit when choosing a sprite reference.
 
 ## href vs xlink:href
 
@@ -180,11 +183,22 @@ Here the red rect's top-left corner (10,10) lands at (50,80).
 
 ## transform-origin and transform-box
 
-- **Default origin `0 0`** for all SVG elements, except root `<svg>` elements and `<svg>` that are direct children of `foreignObject`, which get `50% 50%` as in normal CSS.
-- **Relative to the viewBox by default.** Lengths, percentages and keywords are relative to the reference box, and `transform-box` defaults to `view-box`, so `transform-origin="center"` is the center of the viewBox, not of the element.
-- **Rotate about the element's own center** with `transform-box: fill-box` plus `transform-origin: 50% 50%` (or `center`).
-- **`transform-box` values:** `content-box`, `border-box`, `fill-box` (object bounding box), `stroke-box` (stroke bounding box), `view-box` (the nearest SVG viewport, positioned at the viewBox origin and sized to its width and height).
-- **Or give an explicit origin.** The owner's course example sets it in px:
+- **`transform-origin` defaults to `0 0` on SVG elements.** Only the root `<svg>` and `<svg>` elements that are direct children of `foreignObject` get `50% 50%` "as in normal CSS". The spec: the initial value is `50% 50%`, but "For SVG elements without associated CSS layout box the initial used value is 0 0 as if the user agent style sheet contained `*:not(svg), *:not(foreignObject) > svg { transform-origin: 0 0; }`".
+- **The reference box defaults to the viewBox.** `transform-box` is `content-box | border-box | fill-box | stroke-box | view-box`, initial `view-box`, not inherited, animated discretely. So transform-origin lengths, percentages and keywords are relative to the SVG's `viewBox` unless the element has a CSS layout box: `transform-origin="center"` puts the origin at the center of the viewBox, not of the element.
+
+| `transform-box` | Reference box |
+|---|---|
+| `fill-box` | the object bounding box |
+| `stroke-box` | the stroke bounding box |
+| `view-box` | the nearest SVG viewport; with a `viewBox`, the box sits at the viewBox origin with the viewBox width and height |
+| `content-box`, `border-box` | on SVG elements without a CSS layout box, used as `fill-box` and `stroke-box` |
+
+  On elements with a CSS layout box, `fill-box` is used as `content-box`, and `stroke-box`/`view-box` as `border-box`.
+- **`transform-box` affects** `transform`, the individual `translate`/`scale`/`rotate` properties, and `transform-origin`.
+- **To spin an element around its own center, set `transform-box: fill-box`.** Without it, "the transform origin is the center of the SVG canvas, and so you get a very different effect."
+
+- **Motion's docs call this the "transform origin gotcha":** an HTML element rotates around its own centre, an SVG element around the viewBox origin, "usually the top left corner". Its fix is `transform-box: fill-box; transform-origin: center;`. It says older libraries like GSAP normalise origin by measuring, which is no longer necessary, and Motion's own components apply `fill-box` automatically (opt out with `transformBox: "view-box"`).
+- **Or give an explicit origin.** The course's Module 1 example sets the origin as lengths with the default `transform-box: view-box`, where lengths are relative to the SVG's `viewBox`:
 
 ```css
 .lid {

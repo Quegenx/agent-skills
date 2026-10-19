@@ -1,10 +1,10 @@
 # Patterns
 
-**Contents:** [Enter and exit](#enter-and-exit) · [Lists](#lists-that-stagger-reorder-and-remove) · [Shared elements](#shared-elements-a-thumbnail-becomes-the-detail) · [A card that opens a modal and owns the URL](CARD-TO-MODAL.md) · [Modals, sheets, popovers](#modals-sheets-popovers) · [Trays](#trays-a-flow-in-steps-over-the-current-screen) · [A button that grows into a panel](#a-button-that-grows-into-a-panel) · [Height and accordions](#height-and-accordions) · [Buttons](#buttons-presses-and-feedback) · [Feedback where it happened](#feedback-where-it-happened) · [Icons that turn into each other](#icons-that-turn-into-each-other) · [Numbers](#numbers) · [Live values and charts](#live-values-and-charts) · [Gestures](#gestures-drag-throw-snap) · [Scroll](#scroll-linked-motion) · [Galleries](#galleries-carousels-and-rings) · [Delight](#delight-where-flourish-goes) · [Tells](#tells-of-template-motion)
-
 **More in their own files:** [hold to confirm, clip-path and blur reveals, the generation reveal](REVEALS.md) · [drag details and the release velocity](GESTURES.md) · [toasts and tooltips](TOASTS-AND-TOOLTIPS.md) · [one highlight per list, weight that changes, merged selection](HIGHLIGHTS-AND-SELECTION.md)
 
 React with Motion (`motion/react`), and CSS where it's enough. Keep the transition presets from [TIMING.md](TIMING.md) in one module:
+
+**Contents:** [Enter and exit](#enter-and-exit) · [Lists](#lists-that-stagger-reorder-and-remove) · [Shared elements](#shared-elements-a-thumbnail-becomes-the-detail) · [A card that opens a modal and owns the URL](CARD-TO-MODAL.md) · [Modals, sheets, popovers](#modals-sheets-popovers) · [Trays](#trays-a-flow-in-steps-over-the-current-screen) · [A button that grows into a panel](#a-button-that-grows-into-a-panel) · [Height and accordions](#height-and-accordions) · [Buttons](#buttons-presses-and-feedback) · [Feedback where it happened](#feedback-where-it-happened) · [Icons that turn into each other](#icons-that-turn-into-each-other) · [Numbers](#numbers) · [Live values and charts](#live-values-and-charts) · [Gestures](#gestures-drag-throw-snap) · [Scroll](#scroll-linked-motion) · [Galleries](#galleries-carousels-and-rings) · [Delight](#delight-where-flourish-goes) · [Tells](#tells-of-template-motion)
 
 ```tsx
 // motion-presets.ts
@@ -214,7 +214,7 @@ playful: [transition:background-color_180ms_ease-out,scale_420ms_var(--press-spr
 
   Use a real `<button role="switch" aria-checked>`, so it works with Space and Enter, With reduced motion, keep the stretch (it is feedback) and make the travel instant.
 - **Kiem's switch, for numbers:** a 72×32 track with a 40px pill thumb placed by `left` and `right` (`left-[29px] right-[3px]` on, `left-[3px] right-[29px]` off), so stretching moves one edge. Travel is `transition-[left,right] duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)]`; while held, `group-active:duration-[160ms] group-active:ease-out` moves the far edge 9px toward the travel side (`group-active:left-[20px]` on, `group-active:right-[20px]` off); the track colour is `transition-colors duration-200 ease-out`. With reduced motion, `motion-reduce:transition-none` on track and thumb makes the stretch instant too, where the line above animates it. `left` and `right` are layout properties, which [PERFORMANCE.md](PERFORMANCE.md) keeps out of animations.
-- **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in the `performance-and-caching` skill's BROWSER.md.
+- **Feedback is instant, results can follow:** the press responds in the same frame. Data should already be there (prefetched on hover, cached from the last visit); when it isn't, a skeleton that matches the final layout, so nothing shifts when content arrives, never a spinner. For an action, update optimistically; a progress indicator appears only after about 300 ms (a fast response never flashes one) and only when the outcome can't be shown in advance. Loading states as a whole are in [web-performance/BROWSER.md](../web-performance/BROWSER.md#loading-states).
 - Success lands once (a check that draws in 200-300 ms), errors shake horizontally 2-3 times over 300-400 ms with no bounce, and the message stays.
 
 ## Feedback where it happened
@@ -229,23 +229,7 @@ From Honk, a real-time chat app (Benji Taylor's "Honkish"); no durations given.
 ## Icons that turn into each other
 
 - **Same shape at another angle: rotate, don't morph.** Arrows (four directions, 90° apart), chevrons, and plus and cross (45° apart) share coordinates and differ only by a rotation. Morphing arrow-right into arrow-down "looked janky… the lines bend and warp. When you rotate, it just works." (Benji Taylor, "Morphing icons with Claude").
-- **Keep the angle in a ref and never unwind it:** add the change taken the short way round; when the next icon is a different shape, settle the rotation on the nearest whole turn and morph the lines to coordinates with the target's rotation already baked in, so a turned arrow becomes a check without spinning back. From the shipped component (de-minified; the names are ours):
-
-```js
-if (prev && prev.group === next.group) {
-  let delta = next.rotation - prev.rotation;
-  if (delta > 180) delta -= 360; else if (delta < -180) delta += 360;   // shortest way round
-  rotate = rotationRef.current + delta;                                   // accumulate, never unwind
-  lines = next.lines;                                                     // shared base coordinates
-} else {
-  rotate = 360 * Math.round(rotationRef.current / 360);                   // settle on the nearest whole turn
-  lines = rotateLines(next.lines, next.rotation);                         // rotation baked into the endpoints
-}
-rotationRef.current = rotate; prevIcon.current = name;
-// <motion.svg initial={false} animate={{ rotate }} transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}>
-```
-
-- The three-line icon geometry, the collapsed lines and `rotateLines` are in [the `svg` skill](../svg/SKILL.md).
+- The three-line icon geometry, rotation groups and complete transition algorithm have one owner: [MORPHING-ICONS.md](../svg/MORPHING-ICONS.md#cross-group-morphs-and-the-transition). [Benji Taylor, Morphing icons with Claude]
 - **Which icons animate, both ways:** animate "Infrequent state swaps such as play to pause, like to liked or copy to copied", not "Hover-revealed actions in list rows" or "Tab and navigation icon swaps" [Jakub Krehel, better-ui].
   - The same author's other skill animates "Icons that appear on hover (action buttons)" [Jakub Krehel, make-interfaces-feel-better].
 - **Not every pair takes the ideal path:** "Some morphs have slightly awkward intermediate states, and some rotations overshoot." Play the pairs ([SKILL.md](SKILL.md#prove-it)).
@@ -276,35 +260,7 @@ export function Count({ value }: { value: number }) {
 
 ## Live values and charts
 
-Liveline, a real-time line chart for React: "One `<canvas>`, one `requestAnimationFrame` loop. When a new value arrives, nothing jumps."
-
-- **One easing for every part:** the line lerps toward the new state at 8% per frame (`lerpSpeed`), and "The Y-axis range, the badge, the grid labels all use the same lerp", so it "feels like one thing breathing rather than a bunch of parts updating independently". The per-frame form against TIMING's per-second rule is in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).
-- **Interpolate between updates:** "Feed it data however you like. WebSocket, polling, random walk. Liveline interpolates between updates so even infrequent data looks smooth."
-- **What would be clipped jumps; the rest eases:** "The range snaps outward instantly when data exceeds it, so the line is never clipped."
-- **Tiny movements fill the height:** `exaggerate` tightens the Y range for values that move in tiny increments (a heart rate).
-- **Direction:** `momentum` adds arrows to the live dot, green up, red down, grey flat, and they fade out fully before the new direction fades in; `valueMomentumColor` tints the number by direction. In Family, scrubbing a price chart flips the arrow alongside the changing numbers.
-- **A 60fps number stays out of React:** `showValue` "updates at 60fps through direct DOM manipulation, not React re-renders" ([PERFORMANCE.md](PERFORMANCE.md#react-animate-without-re-rendering)).
-- **Loading, empty, paused:** `loading` shows "a breathing line animation"; "When data arrives, the flat line morphs smoothly into the actual chart". If data never arrives it falls back to a quiet empty state, with your own text through `emptyText`. `paused` "freezes the chart in place while data continues arriving in the background. When you resume, it catches up to real time."
-- **Same data, another view:** a toggle morphs between line and candlestick, and "The live candle keeps updating in real time, growing its wicks as new ticks arrive."
-- **Ambient motion that carries data:** orderbook labels "spawn at the bottom, drift upward, and fade out", bigger orders brighter, and the stream speed reacts to price momentum and orderbook churn: "Calm markets drift slowly, volatile ones rush."
-- **Loud motion is opt-in:** `degen` adds burst particles and chart shake on momentum swings, "For when subtlety is not the goal"; everything else "is off by default or has sensible defaults".
-- **One colour in, a palette out:** `color` takes any CSS colour, converted to HSL, and every variant (line, fill gradient, glow, badge, grid labels) is derived from it. [nerdy.dev](https://nerdy.dev/lch-luminance-vs-hsl-lightness) (2022-12-02) derives in LCH-type spaces instead: HSL 50% "is almost never 50% as humans see it". Neither wins.
-- **Moving beats jumping:** Family holds that price charts that move instead of jumping "could make the app feel faster" (an opinion, no measurement).
-- **Test it on hostile data:** "A chart that only looks good on calm data isn't much use." Liveline's demos: wild swings at 100 ms updates; near-flat with `exaggerate` at 150 ms; chaotic huge spikes at 80 ms; frequent sharp reversals at 60 ms ("Sharp reversals are the classic breaking point"); near-flat with massive isolated spikes at 120 ms; rapid zigzag at 50 ms; and irregular arrival, "long quiet stretches of 1-3 seconds between points, then sudden bursts at 40-80ms", because "WebSocket connections drop, batch updates land all at once, mobile networks stall."
-
-```tsx
-import { Liveline } from 'liveline'
-
-function Chart({ data, value }) {
-  return (
-    <div style={{ height: 200 }}>
-      <Liveline data={data} value={value} />
-    </div>
-  )
-}
-```
-
-`npm install liveline`; it fills its parent, so set a height on the wrapper. Defaults include `lerpSpeed` 0.08, `theme` `'dark'`, `color` `'#3b82f6'` and `window` 30, with `windows={[{ label: '1m', secs: 60 }, { label: '5m', secs: 300 }]}` for switchable ranges.
+See [live values and charts](LIVE-CHARTS.md) for the complete recipe.
 
 ## Gestures: drag, throw, snap
 
@@ -344,35 +300,7 @@ onClick:e=>{let t=i.current;i.current=!1,!(e.detail!==0&&!t)&&n()}
 
 ## Galleries, carousels and rings
 
-A collection is one function: each item's pose from its offset to the focus (`index - focus`, fractional while it moves). Store poses as separate numbers (x, y, z, three rotations, scale, opacity) and blend value by value, angles the short way round; never blend transform matrices or strings, which swing along odd paths when an item goes from a curve to flat.
-
-```ts
-const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
-const lerpAngle = (a: number, b: number, p: number) => a + ((((b - a) % 360) + 540) % 360 - 180) * p;
-type Pose = { x: number; y: number; z: number; rx: number; ry: number; rz: number; s: number; o: number };
-const pose = (o: Partial<Pose> = {}): Pose => ({ x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0, s: 1, o: 1, ...o });
-const blend = (A: Pose, B: Pose, p: number): Pose => ({
-  x: lerp(A.x, B.x, p), y: lerp(A.y, B.y, p), z: lerp(A.z, B.z, p),
-  rx: lerpAngle(A.rx, B.rx, p), ry: lerpAngle(A.ry, B.ry, p), rz: lerpAngle(A.rz, B.rz, p),
-  s: lerp(A.s, B.s, p), o: lerp(A.o, B.o, p),
-});
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
-
-const layouts = {
-  row: (d: number) => pose({ x: d * 260 }),
-  coverflow: (d: number) => {
-    const near = clamp(d, -1, 1);                                       // neighbours turn, the rest stack flat behind
-    return pose({ x: near * 200 + (d - near) * 90, z: -Math.abs(near) * 180, ry: -near * 55 });
-  },
-};
-```
-
-- **Change layout from wherever the items are:** evaluate both layouts at the item's current offset and blend with one eased progress; it can start mid-drag.
-- **No crossing paths:** keep every layout ordered along the offset, and a change of shape moves the group in one direction.
-- **Endless with a dozen items:** wrap the offset into a window around the focus, `((((i - focus) % n) + n + n / 2) % n) - n / 2`, and fade items to zero over the last unit before the edge, so the one that jumps sides is invisible.
-- **Lean into speed:** tilt each item by the collection's velocity (`clamp(v * 14, -40, 40)` degrees), so a throw leans and settles.
-- **Opening one item:** blend its pose toward the flat detail box, rotations finishing in the first half and the item lifting toward the viewer early, so it untwists clear of its neighbours; load the full-size image on press, swap it in after it decodes.
-- Drive the poses with motion values (`useMotionValue` for focus, `useTransform` per item), not React state; keep items real `img` and `li` elements with alt text and keyboard focus.
+See [galleries, carousels and rings](COLLECTIONS.md) for the complete recipe.
 
 ## Delight: where flourish goes
 
@@ -389,3 +317,7 @@ Family's delight-impact curve: "the potential for delight increases as the frequ
 ## Tells of template motion
 
 Everything fading up on scroll; a uniform 0.5 s ease on every element; the same entrance for a toast, a modal and a page; bouncy springs on serious content; staggers that make the last item wait over a second; a spinner on every action; hover states that move layout; an icon change done as a crossfade of two SVGs when the shapes could transform ("There's no sense of transformation"); particles with machine-perfect speeds and angles ([MATH.md](MATH.md#controlled-randomness)). Each is a missing decision about what changed.
+
+## Prove it
+
+Use the [shared motion review](SKILL.md#prove-it), then the dedicated checks for [gestures](GESTURES.md#prove-it), [reveals](REVEALS.md#prove-it), [toasts and tooltips](TOASTS-AND-TOOLTIPS.md#prove-it), [live charts](LIVE-CHARTS.md#prove-it) or [collections](COLLECTIONS.md#prove-it) when that pattern is involved. [ui-animation, existing pattern and review sources]

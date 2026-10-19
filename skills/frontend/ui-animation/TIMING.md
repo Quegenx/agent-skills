@@ -164,3 +164,7 @@ Springs for things that feel physical (controls, cards, dragged objects); eased 
 - Text being read moves at most a few pixels per frame; it lands sharp, never still drifting.
 - Nothing flashes full-screen in under 300 ms.
 - On 120 Hz screens, durations stay the same (time, not frames): never animate by frame counts. Liveline (8% per frame) and kciter's exponential approach ease by a fixed fraction per frame instead; both positions are in [MATH.md](MATH.md#exponential-approach-chase-a-target-that-moves).
+
+## Prove it
+
+Use the [shared motion review](SKILL.md#prove-it): check every duration and curve against the relevant table and recorded source disagreement, interrupt and reverse dynamic motion, and inspect the reduced-motion result. The owner's product tokens govern its protected designs. [ui-animation, existing timing and review sources]

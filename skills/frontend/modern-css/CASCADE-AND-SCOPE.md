@@ -67,7 +67,7 @@ How styles find their elements and which one wins: cascade layers (named, nested
   }
   ```
 
-  "It slots into your workflow, you don't need to slot into its." MDN: "`:where()` always has 0 specificity" (Baseline widely available since 2023-07-21, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:where)). The `--_` prefix marks component-private custom properties ([CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md)).
+  "It slots into your workflow, you don't need to slot into its." MDN: "`:where()` always has 0 specificity" (Baseline widely available since 2023-07-21, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:where)). The `--_` prefix marks component-private custom properties ([CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md)).
 - **An anonymous layer for defaults that are easy to beat.** [nerdy.dev: Using @starting-style and transition-behavior for enter and exit stage effects](https://nerdy.dev/using-starting-style-and-transition-behavior-for-enter-and-exit-stage-effects) (2024-05-20) wraps its global enter and exit styles in `@layer { … }`; the snippet and the post's reasons are in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md).
 - **Not real: import-map paths in `@import`.** [nerdy.dev: CSS Wishlist 2025](https://nerdy.dev/css-wishlist-2025) (2024-12-17) wishes for `@import "$design-system/open-props.min.css" layer(design.system);`. The `layer()` part is shipped (above); the `$design-system` import map is a wish only ([csswg-drafts #8297](https://github.com/w3c/csswg-drafts/issues/8297)).
 
@@ -243,8 +243,76 @@ CSS nesting and the `&` selector are Baseline widely available since 2026-06-11 
 
 ## Custom names
 
-- **Emoji prefixes and dashed names.** [nerdy.dev: An Emoji Naming Convention](https://nerdy.dev/css-emoji-convention) (2025-02-20): the post's snippets, its "`--` all your custom names" advice and app-ui's undashed container names are in [TYPOGRAPHY-AND-UNITS.md](TYPOGRAPHY-AND-UNITS.md#emoji-in-custom-names).
-- **`--_` for private custom properties.** The async-overrides note and Open Props UI (above) both prefix component-internal properties with `--_`; the convention and its origin are in [CUSTOM-PROPERTIES-AND-FUNCTIONS.md](CUSTOM-PROPERTIES-AND-FUNCTIONS.md).
+- **`--_` for private custom properties.** The async-overrides note and Open Props UI (above) both prefix component-internal properties with `--_`; the convention and its origin are in [CUSTOM-PROPERTIES.md](CUSTOM-PROPERTIES.md).
+
+### Emoji in custom names
+
+- **The problem:** many CSS features take author names, some dashed and some not, so the same word ends up unique only within a context. [nerdy.dev: An Emoji Naming Convention](https://nerdy.dev/css-emoji-convention) (2025-02-20)
+
+```css
+@keyframes foo {}
+@property --foo {}
+
+.element {
+  --foo: bar;
+  animation: foo linear both;
+  view-timeline-name: --foo;
+  view-transition-name: foo;
+  anchor-name: --foo;
+  container-name: foo;
+}
+```
+
+- **An emoji prefix per kind of name** "to help delineate the intended use"; the post confirms it is valid CSS (CodePen vEYLwpv) and frames it as "Not an answer, but an answer?". Verbatim, with trailing whitespace removed:
+
+```css
+@keyframes 🔑-example {}
+@property --﹫-example {}
+@font-palette-values --🔡-example {}
+
+:root {
+  --﹫-example-typed: baz;
+  --🔒-example-private: foo;
+  --regular-var: bar;
+}
+
+::view-transition-group(.🏘️-example) {}
+::view-transition-new(🏞️-example) {}
+
+@layer 🥞-example {
+  .🤓-example-class {
+    container-name: 📦-example;
+    view-transition-name: 🏞️-example;
+    view-transition-class: 🏘️-example;
+    view-timeline-name: --📽️-example;
+    anchor-name: --⚓-example;
+    font-palette: --🔡-example;
+    animation: 🔑-example 1s;
+
+    > p {
+      @container 📦-example (inline-size < 20ch) {
+        font-size: var(--﹫-example);
+      }
+    }
+  }
+}
+
+@layer 🥞-example-utilities {
+  .🔧-utility-class,
+  .🧹-reset-class,
+  .🔍-debug-class {
+    …
+  }
+
+  .🗣️-sr-only {}
+
+  .🍱-grid {}
+}
+```
+
+- **"I think it's a good idea to `--` all your custom names, just to make it really clear they aren't internal CSS keywords."** Both forms are valid where a `<custom-ident>` is allowed: MDN `container-name` takes a case-sensitive `<custom-ident>`, dashed allowed, not `or`, `and`, `not` or `default`, never quoted ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container-name)). Same post.
+- app-ui names containers without dashes (`@container main (inline-size >= 48rem)` in [page-layout.css](../app-ui/reference/styles/layout/shell/page-layout.css)). anti-slop-code's emoji rule is listed under comments: "decorative banners and emoji" ([SKILL.md](../../anti-ai-slop/anti-slop-code/SKILL.md)).
+- Naming layers is covered in [Cascade layers](#cascade-layers); anchors and view transitions are covered in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md) and [VIEW-TRANSITIONS.md](VIEW-TRANSITIONS.md).
 
 ## Specificity
 
@@ -258,7 +326,7 @@ The specificity facts from the sections above, in one place:
 
 ## What to study next
 
-- **One list of modern features.** [nerdy.dev: One List To Rule Them All](https://nerdy.dev/cascading-secret-sauce) (2025-09-10) answers "how do I find what to study to keep up?" and "what's new in CSS?" with links grouped as Selectors, Pseudo Elements, Language, @rules, Color, Functions, Properties, Values, Queries and Units, and no explanations or code. Not every entry ships in all browsers; check each on MDN before using it. One listed name, `scrollbar-size`, does not exist ([SCROLL.md](SCROLL.md)).
+- **One list of modern features.** [nerdy.dev: One List To Rule Them All](https://nerdy.dev/cascading-secret-sauce) (2025-09-10) answers "how do I find what to study to keep up?" and "what's new in CSS?" with links grouped as Selectors, Pseudo Elements, Language, @rules, Color, Functions, Properties, Values, Queries and Units, and no explanations or code. Not every entry ships in all browsers; check each on MDN before using it. One listed name, `scrollbar-size`, does not exist ([SCROLLBARS.md](SCROLLBARS.md)).
 
 ## Headless, boneless, skinless, lifeless
 

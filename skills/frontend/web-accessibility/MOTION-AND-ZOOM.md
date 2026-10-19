@@ -71,8 +71,11 @@ Reduced motion targets vestibular triggers, not feedback.
 
 [WCAG 2.2, 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) (AA). A tooltip or popover that appears on hover or focus must be:
 
-- **Dismissible** "without moving pointer hover or keyboard focus", usually with Escape (the APG tooltip pattern: "Escape: Dismisses the Tooltip", [APG tooltip](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)).
+- **Dismissible** without moving hover or keyboard focus, except when the content communicates an input error or does not obscure or replace meaningful content. The APG tooltip pattern uses Escape ([APG tooltip](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)).
 - **Hoverable:** "the pointer can be moved over the additional content without the additional content disappearing".
+- **Persistent:** keep the additional content visible until hover or focus leaves both the trigger and the additional content, the user dismisses it, or its information becomes invalid.
+
+The criterion exempts browser-controlled additional content whose presentation the author has not modified. Our old summary listed only dismissibility and hoverability and omitted persistence and these exceptions. [W3C Understanding 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html)
 
 A tooltip that hides on the group's `pointerleave` while the bubble has `pointer-events: none`, with no Escape handler, fails both. [transitions.dev]
 
@@ -105,4 +108,4 @@ Write media queries in `rem` or `em` where the codebase allows. At a larger brow
 
 ## Prove it
 
-With reduced motion on, nothing slides, zooms or parallaxes and no state is lost; every autoplaying carousel, video or loop longer than five seconds can be paused, stopped or hidden; no action or error toast closes on its own, and a timed toast pauses while hovered or focused; every hover or focus tooltip closes on Escape and stays while the pointer moves onto it; at 200% text size and at 320 CSS px wide nothing clips or scrolls sideways outside tables, maps and code; `grep -rnE 'maximum-scale|user-scalable' src/ public/` is empty; and every text, state and focus pair passes its row of the contrast table.
+With reduced motion on, nothing slides, zooms or parallaxes and no state is lost; every autoplaying carousel, video or loop longer than five seconds can be paused, stopped or hidden; no action or error toast closes on its own, and a timed toast pauses while hovered or focused; every hover or focus tooltip closes on Escape and stays while the pointer moves onto it; additional hover/focus content stays visible until hover or focus leaves both its trigger and the additional content, the user dismisses it or its information becomes invalid; at 200% text size and at 320 CSS px wide nothing clips or scrolls sideways outside tables, maps and code; `grep -rnE 'maximum-scale|user-scalable' src/ public/` is empty; and every text, state and focus pair passes its row of the contrast table.

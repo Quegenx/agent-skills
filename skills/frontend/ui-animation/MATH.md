@@ -18,7 +18,7 @@ function lerp(a, b, t) {
 }
 ```
 
-An easing function takes a progress value between 0 and 1 and returns an adjusted one; the cubic Bézier is the most widely used way to express it. A cubic Bézier is recursive linear interpolation: interpolate P0 to P1, P1 to P2 and P2 to P3 at `t` (three points), then those three (two points), then those two (one point on the curve). How to read and shape a `cubic-bezier` is in [TIMING.md](TIMING.md#curves); the gallery blend in [PATTERNS.md](PATTERNS.md#galleries-carousels-and-rings) uses the same `lerp`.
+An easing function takes a progress value between 0 and 1 and returns an adjusted one; the cubic Bézier is the most widely used way to express it. A cubic Bézier is recursive linear interpolation: interpolate P0 to P1, P1 to P2 and P2 to P3 at `t` (three points), then those three (two points), then those two (one point on the curve). How to read and shape a `cubic-bezier` is in [TIMING.md](TIMING.md#curves); the gallery blend in [COLLECTIONS.md](COLLECTIONS.md#galleries-carousels-and-rings) uses the same `lerp`.
 
 ## Exponential approach: chase a target that moves
 
@@ -30,7 +30,7 @@ value += (target - value) * factor; // factor: 0~1
 
 - Each frame moves the value in proportion to the remaining difference, so it approaches fast and then slows: the gap shrinks by `(1 - factor)` per frame, and a larger factor converges faster. It stays natural when the target changes: a sudden jump in the cursor turns it smoothly from where it is. It works for any value, not only position.
 - **Counters and progress:** a dashboard counter "climbs quickly toward its target number and then slows down as it settles". A progress bar whose real value "jumps forward in chunks depending on network conditions" looks smooth and continuous when the displayed bar chases the real value this way.
-- **Live charts:** Liveline lerps the line, the Y-axis range, the badge and the grid labels toward the new state at 8% per frame (`lerpSpeed`, default `0.08`), all on the same lerp, so the chart "feels like one thing breathing rather than a bunch of parts updating independently" ([PATTERNS.md](PATTERNS.md#live-values-and-charts)).
+- **Live charts:** Liveline lerps the line, the Y-axis range, the badge and the grid labels toward the new state at 8% per frame (`lerpSpeed`, default `0.08`), all on the same lerp, so the chart "feels like one thing breathing rather than a bunch of parts updating independently" ([LIVE-CHARTS.md](LIVE-CHARTS.md#live-values-and-charts)).
 - **Per frame or per second:** [TIMING.md](TIMING.md#speed-limits) says durations stay the same on 120 Hz screens and to "never animate by frame counts". kciter applies the factor "every frame" and Liveline eases "8% per frame"; neither gives a frame-time correction. Both positions stand; neither wins.
 
 ## A spring by hand
@@ -188,3 +188,7 @@ Randomness removes the mechanical feel: "give particle speeds a ±20% variance, 
 | Distribution | Random | Even spacing + slight jitter |
 
 Split the animation into what's intended (particles rising) and the "unintended elements that were put there on purpose" (small speed differences), and decide where the boundary between them sits.
+
+## Prove it
+
+Use the [gesture handoff checks](GESTURES.md#prove-it) for release behavior and the [physics verification](PHYSICS.md#prove-it) when using its solver. Keep the per-frame versus per-second source disagreement explicit when reviewing a moving target. [kciter; Liveline; Nathan Gitter; feel]

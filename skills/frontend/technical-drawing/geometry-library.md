@@ -117,4 +117,6 @@ Run the helper checks with `node scripts/test-geometry.cjs` from this skill's di
 
 ## Prove it
 
-`node scripts/test-geometry.cjs` passes all 14 checks after any helper change; minimum, default and maximum parameter values each reconstruct a credible assembly at zero explosion with the same part IDs; touching curved surfaces show no dotted contact lines; and representative primitives were rendered and their outlines inspected.
+After any helper change, run the supplied geometry checks and report their actual result; minimum, default and maximum parameter values each reconstruct a credible assembly at zero explosion with the same part IDs; touching curved surfaces show no dotted contact lines; and representative primitives were rendered and their outlines inspected.
+
+The old line said "passes all 14 checks"; [scripts/test-geometry.cjs](scripts/test-geometry.cjs) declares 15 top-level cases. A static declaration count does not establish that any check passed.
