@@ -67,7 +67,7 @@ Container queries are Baseline widely available since 2025-08-14 (newly availabl
 - **Below, arbitrary and named:** "`@max-md:` styles below a container size"; "`@min-[475px]:` arbitrary values when the scale does not fit"; "`@container/sidebar` plus `@md/sidebar:flex-row` to name a container and query it from deeper in the tree, past other containers."
 - **From Tailwind's docs** (not in the source): stack a range as `@sm:@max-md:flex-col`; `@container` makes an inline-size container, and `@container-size` (or `@container-size/{name}`) a size container "when you need to use container query length units that depend on the block size, like `cqb`"; custom sizes are theme variables, `@theme { --container-8xl: 96rem; }`; units go in arbitrary values such as `w-[50cqw]`.
 - **Tailwind v3 is not the same syntax.** The source: "On Tailwind v3, the same syntax needs the `@tailwindcss/container-queries` plugin." The plugin's README gives sizes only "from `@xs` (`20rem`) to `@7xl` (`80rem`)" (no `@3xs` or `@2xs`), writes arbitrary values as `@[17.5rem]:`, documents no `@max-*` variants, and says "As of Tailwind CSS v4.0, container queries are supported in the framework by default and this plugin is no longer required" ([tailwindcss-container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries)). On v3, write the plugin's own syntax; check the Tailwind version first, as the source says.
-- **Porting `md:` classes and reviewing them** (`md` is 768px of viewport, `@md` is 448px of container; the review mistakes) is in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md). The source keeps viewport breakpoints for page-level layout, viewport-fixed or sticky bars and a "Global typography scale tied to screen size"; anti-slop-ui keeps one only for the shell, and a query that only stepped a size "becomes one `clamp()`" (same file).
+- **Porting `md:` classes and reviewing them** (`md` is 768px of viewport, `@md` is 448px of container; the review mistakes) is in [RESPONSIVE.md](RESPONSIVE.md). The source keeps viewport breakpoints for page-level layout, viewport-fixed or sticky bars and a "Global typography scale tied to screen size"; anti-slop-ui keeps one only for the shell, and a query that only stepped a size "becomes one `clamp()`" (same file).
 
 ## Name-only container queries
 
@@ -144,7 +144,7 @@ Range syntax is Baseline widely available since 2025-09-27 (newly available 2023
   ```
 
   The post (2022-12) said Safari had it only in Technology Preview, "aka plugin still required"; no plugin is needed now. MDN: "The range comparisons above are inclusive. To exclude the comparison value, use `<` and/or `>`", for example `@media (30em < width < 50em)` ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using)).
-- **A second view on viewport queries.** anti-slop-ui keeps a viewport media query only for the app shell and uses media queries otherwise only for capabilities and preferences ([../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)). The range syntax works the same either way.
+- **A second view on viewport queries.** anti-slop-ui keeps a viewport media query only for the app shell and uses media queries otherwise only for capabilities and preferences ([RESPONSIVE.md](RESPONSIVE.md)). The range syntax works the same either way.
 
 ## Custom media
 
@@ -208,7 +208,7 @@ Range syntax is Baseline widely available since 2025-09-27 (newly available 2023
   ```
 
   "Use nesting, query from JavaScript, or both." MDN syntax: `@custom-media <extension-name> [<media-query-list> | true | false ];`, where with `true` "The @custom-media value always evaluates to true" and with `false` "The @custom-media value always evaluates to false". When several rules use the same name, "the rule that is in scope at the time a @media rule is evaluated is used. Earlier references are not retroactively updated", and the overriding behavior "is still under discussion" and may change.
-- **Scope note.** `--md-only` is a viewport breakpoint; anti-slop-ui: "Only the shell keeps a viewport media query" ([../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)).
+- **Scope note.** `--md-only` is a viewport breakpoint; anti-slop-ui: "Only the shell keeps a viewport media query" ([RESPONSIVE.md](RESPONSIVE.md)).
 
 ## Reduced motion
 
@@ -302,7 +302,7 @@ The interaction media queries (`hover`, `any-hover`, `pointer`, `any-pointer`) a
   ```
 
   Nesting is covered in [CASCADE-AND-SCOPE.md](CASCADE-AND-SCOPE.md#nesting). As a named query: `@custom-media --portrait (orientation: portrait);` (above).
-- **A second view.** anti-slop-ui allows media queries only for the shell, capabilities and preferences ([../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)); that file calls the orientation flip "a viewport-shape query this line doesn't list". The post does not address that rule.
+- **A second view.** anti-slop-ui allows media queries only for the shell, capabilities and preferences ([RESPONSIVE.md](RESPONSIVE.md)); that file calls the orientation flip "a viewport-shape query this line doesn't list". The post does not address that rule.
 
 ## Color gamut
 

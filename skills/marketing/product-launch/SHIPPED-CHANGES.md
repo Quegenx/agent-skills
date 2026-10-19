@@ -1,6 +1,6 @@
 # From shipped code to marketing
 
-Turning what merged this week into a changelog entry, announcement drafts and a list of pages the change made wrong. Source: [coreyhaines31/marketingskills, launch] `references/shipped-changes.md` (v2.2.0, MIT, Corey Haines). Quotes keep the source's words with its dashes replaced. How big an announcement each tier of change gets is in [product-launch LAUNCH-PLAN.md](../../marketing/product-launch/LAUNCH-PLAN.md#ongoing-launches); this file is the copy.
+Turning what merged this week into a changelog entry, announcement drafts and a list of pages the change made wrong. Source: [coreyhaines31/marketingskills, launch] `references/shipped-changes.md` (v2.2.0, MIT, Corey Haines). Quotes keep the source's words with its dashes replaced. How big an announcement each tier of change gets is in [product-launch LAUNCH-PLAN.md](LAUNCH-PLAN.md#ongoing-launches); copy and claim tests are in [anti-slop-copy](../../anti-ai-slop/anti-slop-copy/SKILL.md).
 
 [coreyhaines31/marketingskills, launch] "Most product updates never get marketed because nobody translates them. The engineers wrote the PR description for each other, and by the time marketing hears about it, the moment has passed."
 
@@ -17,7 +17,7 @@ Turning what merged this week into a changelog entry, announcement drafts and a 
 
 ## Translate before you write
 
-[coreyhaines31/marketingskills, launch] "For each change, write one line: **'You can now ___'** or **'___ no longer ___.'** If you can't fill that in, the change is invisible to customers. Refactors, dependency bumps, CI, and test changes go in no marketing output at all." Then sort the visible changes into major, medium and minor ([LAUNCH-PLAN.md](../../marketing/product-launch/LAUNCH-PLAN.md#ongoing-launches)). "Several medium changes that share a theme ('five improvements to reporting') can be bundled into one major-tier story."
+[coreyhaines31/marketingskills, launch] "For each change, write one line: **'You can now ___'** or **'___ no longer ___.'** If you can't fill that in, the change is invisible to customers. Refactors, dependency bumps, CI, and test changes go in no marketing output at all." Then sort the visible changes into major, medium and minor ([LAUNCH-PLAN.md](LAUNCH-PLAN.md#ongoing-launches)). "Several medium changes that share a theme ('five improvements to reporting') can be bundled into one major-tier story."
 
 ## Ground every claim in the change
 
@@ -27,11 +27,11 @@ Turning what merged this week into a changelog entry, announcement drafts and a 
 - "If a PR says the change is partial ('phase 1,' 'first step toward'), the announcement says so too."
 - "Credit the user who asked for it, where the team does that and the user agreed."
 
-No "we're excited to announce" ([PAGES.md](PAGES.md#page-types)).
+No "we're excited to announce" ([PAGES.md](../../anti-ai-slop/anti-slop-copy/PAGES.md#page-types)).
 
 ## Marketing that just became wrong
 
-[coreyhaines31/marketingskills, launch] "Every shipped change can also make an existing claim false: a new limit, a renamed plan, a removed integration, a price change. Check the site, docs, comparison pages, and ads for statements the change contradicts." On a schedule that is the claim-drift loop in [marketing-loops](../../marketing/marketing-loops/SKILL.md). "A new integration can deserve its own page ('[Product] + [Tool] integration')"; add new pages to the backlog in [content-strategy](../../marketing/content-strategy/SKILL.md).
+[coreyhaines31/marketingskills, launch] "Every shipped change can also make an existing claim false: a new limit, a renamed plan, a removed integration, a price change. Check the site, docs, comparison pages, and ads for statements the change contradicts." On a schedule that is the claim-drift loop in [marketing-loops](../marketing-loops/SKILL.md). "A new integration can deserve its own page ('[Product] + [Tool] integration')"; add new pages to the backlog in [content-strategy](../content-strategy/SKILL.md).
 
 ## Weekly digest
 
@@ -75,7 +75,7 @@ The changelog uses the Keep a Changelog headings ([keepachangelog.com 1.1.0](htt
 - **Changelog:** "one line per change, written for a customer and in past or present tense. Link docs for anything non-obvious."
 - **Blog post (major only):** "the problem the customer had, what changed, how to use it (with screenshots), and who it's for."
 - **Email:** "lead with the change for that segment; one call to action that takes them to the feature" (sending rules in [email-practices](../../backend/email-practices/SKILL.md)).
-- **Social:** "one concrete detail per post, with a screenshot or 10-second clip of the feature doing it" ([social-media](../../marketing/social-media/SKILL.md)).
+- **Social:** "one concrete detail per post, with a screenshot or 10-second clip of the feature doing it" ([social-media](../social-media/SKILL.md)).
 
 "Drafts are staged for a human to review and send. Nothing in this workflow publishes on its own."
 

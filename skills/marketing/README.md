@@ -21,14 +21,14 @@ Marketing, SEO and GEO for web and SaaS products: getting found in Google (`seo`
 | [ab-testing](./ab-testing/SKILL.md) | Tool-agnostic A/B testing: hypotheses, metrics and guardrails, sample sizes from the standard formula, duration with unequal splits, sequential testing, templates, an experimentation program |
 | [marketing-attribution](./marketing-attribution/SKILL.md) | Which marketing caused revenue: attribution models, MTA versus MMM versus incrementality, self-reported attribution, attribution by business type, stitching booking and checkout webhooks to analytics |
 | [paid-ads](./paid-ads/SKILL.md) | Web advertising, current Google Search mechanics, statistical bounds and scoped Meta fatigue diagnosis. |
-| [ad-creative](./ad-creative/SKILL.md) | Platform-specific ad formats, grounded hooks, creative roadmaps and implied-answer openings. |
+| [ad-creative](./ad-creative/SKILL.md) | Platform-specific formats, grounded hooks, creative roadmaps and implied-answer openings; source-attributed copy formulas, headline/CTA construction and ad testing order. |
 | [creator-marketing](./creator-marketing/SKILL.md) | Influencer, creator, UGC and ambassador programs: vetting, deals and rights, briefs, FTC and platform disclosure, creator ad programs, newsletter sponsorships, Telegram channels |
 | [social-media](./social-media/SKILL.md) | Organic strategy, current X ranking evidence, platform limits and normalized listening scores. Reddit community tutorials/inbound handoff and shootable short-form planning. |
 | [cold-outreach](./cold-outreach/SKILL.md) | Lawful B2B cold outreach: who may be emailed, sending setup, copy, sequences, LinkedIn, replies, plays and benchmarks |
 | [prospecting](./prospecting/SKILL.md) | Lawful demand signals, account research, sourcing and enrichment without evasion procedures. Browser cross-references follow the current stop-at-access-limits rule. |
 | [sales-enablement](./sales-enablement/SKILL.md) | Sales collateral: decks, one-pagers, objection handling, battle cards, win-loss analysis, demo scripts, cold calls within the FTC and FCC rules |
 | [revops](./revops/SKILL.md) | Lifecycle stages, lead scoring calibrated on a holdout, routing, inbound enrichment, pipeline metrics, CRM automations on current HubSpot and Salesforce features |
-| [product-launch](./product-launch/SKILL.md) | Launches and announcements: the readiness gate, owned, rented and borrowed channels, launch phases, and Product Hunt from its own guide |
+| [product-launch](./product-launch/SKILL.md) | Launches and feature announcements: readiness, channels, phases, launch tiers and Product Hunt; source-verified shipped-change inputs, deployment status, content drift, digests and announcement drafts. |
 | [public-relations](./public-relations/SKILL.md) | Press: story angles, pitching, newsjacking, press requests, podcast prep, crisis communication and statements |
 | [partners-and-community](./partners-and-community/SKILL.md) | Co-marketing partners, the five partnership types, and community programs with FTC disclosure for ambassadors and contests |
 | [event-marketing](./event-marketing/SKILL.md) | Events that produce pipeline: the event arc, portfolio, sponsorship, speaking, webinar funnels, lawful badge-scan follow-up |

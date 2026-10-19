@@ -214,18 +214,7 @@ All from [ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude
 ### MCP servers for Flutter work
 
 - **The author's set** [ApparenceKit](https://apparencekit.dev/blog/vibe-coding-flutter-claude-code/), "For a Flutter app where the bug is half client, half backend": the Supabase MCP (query dev schema and rows; [../../backend/supabase/WORKFLOW.md](../../backend/supabase/WORKFLOW.md)), the Sentry MCP (recent crashes and stack traces; [../../monitoring/sentry/DEBUGGING-ISSUES.md](../../monitoring/sentry/DEBUGGING-ISSUES.md)) and the GitHub MCP (PRs, issues, recent commits), next to the Dart and Flutter MCP server above.
-- **Deslop for duplicate code** [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/): its MCP tool `find-similar` belongs in the agent's write loop (call it before writing a function, reuse what already exists); wire it into Claude Code with `claude mcp add deslop -s user -- deslop-mcp --root .`. Exclude generated files first, or `.g.dart` and `.freezed.dart` drown the report. `.deslop.toml` at the root (`exclude` skips files; `report_hide` still counts them but hides them from the report):
-
-```toml
-[defaults]
-exclude = ["**/build/**", "**/.dart_tool/**"]
-report_hide = ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart"]
-
-[threshold]
-max_duplication_percent = 5.0
-```
-
-  The duplicate-helpers rule it serves is in [../../anti-ai-slop/anti-slop-code/RULES.md](../../anti-ai-slop/anti-slop-code/RULES.md).
+- **Deslop for duplicate code** [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/): use the canonical [Deslop setup and configuration](../../architecture/refactoring/DUPLICATION.md#deslop), preserving its distinction between `exclude` and `report_hide` for generated `.g.dart` and `.freezed.dart` files. The semantic reuse rule remains in [anti-slop code](../../anti-ai-slop/anti-slop-code/RULES.md#structure).
 
 ## Docs for agents
 

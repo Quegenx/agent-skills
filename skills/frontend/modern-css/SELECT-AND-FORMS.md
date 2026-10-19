@@ -63,7 +63,7 @@ Native form controls styled and animated with CSS: the customizable `<select>` (
 
 ## Fields that size to content
 
-- anti-slop-ui already says "Textareas grow with `field-sizing: content`, no script" ([../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)). The growth itself is instant.
+- anti-slop-ui already says "Textareas grow with `field-sizing: content`, no script" ([RESPONSIVE.md](RESPONSIVE.md)). The growth itself is instant.
 - **Animate the growth** [nerdy.dev: Transitioning Field Sizing Content With CSS](https://nerdy.dev/transitioning-field-sizing-content-with-css), 2026-10-03: "Use anchor to track the size changes in a `textarea` (or whatever) and transition instead of instantly update." Demo code not exported ([demo](https://codepen.io/argyleink/pen/qErPZoR)); anchoring is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md).
 - **Support:** `field-sizing` is Baseline 2026, newly available since 2026-06-16 (Chrome 123, Firefox 152, Safari 26.2), [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing).
 
@@ -71,7 +71,7 @@ Native form controls styled and animated with CSS: the customizable `<select>` (
 
 - [nerdy.dev: CSS interpolate-size to the rescue](https://nerdy.dev/interpolate-size), 2024-09-25: "the password field is hidden until a valid username is provided"; the post's code and MDN's notes on `interpolate-size` are in [TRANSITIONS-AND-STARTING-STYLE.md](TRANSITIONS-AND-STARTING-STYLE.md#interpolate-size-and-calc-size).
 - **Support:** `:user-valid` is Baseline widely available since 2026-05-02 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:user-valid)); `:has()` is widely available ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has)); `interpolate-size` is Limited availability and experimental, Chrome 129 only, values `allow-keywords` and `numeric-only` (the default) ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/interpolate-size)). Without it the field still appears once the username is valid, without the height transition.
-- anti-slop-ui lists `interpolate-size: allow-keywords` among features to use "Inside `@supports` only, where the page works without them" ([../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)); the post sets it on `:root` with no guard.
+- anti-slop-ui lists `interpolate-size: allow-keywords` among features to use "Inside `@supports` only, where the page works without them" ([RESPONSIVE.md](RESPONSIVE.md)); the post sets it on `:root` with no guard.
 
 ## Form state and values into CSS
 

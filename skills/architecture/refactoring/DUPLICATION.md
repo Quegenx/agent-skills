@@ -1,6 +1,6 @@
 # Duplication and maintenance hotspots
 
-Use jscpd to find candidate copies and rank maintenance work, then read the actual code before changing it. Sources: [kucherenko/jscpd, jscpd, dry-refactoring, codebase-refactoring], checked against the [official CLI](https://github.com/kucherenko/jscpd/blob/v5.4.1/rust/crates/cpd/src/cli.rs) and the version qualifications below. This is a tool reference; the [reuse test](../../anti-ai-slop/anti-slop-code/RULES.md#structure) and [refactoring transformations](SKILL.md#techniques-smallest-first) keep their definitions at those owners.
+Use jscpd to find candidate copies and rank maintenance work, then read the actual code before changing it. Sources: [kucherenko/jscpd, jscpd, dry-refactoring, codebase-refactoring], checked against the [official CLI](https://github.com/kucherenko/jscpd/blob/v5.4.1/rust/crates/cpd/src/cli.rs) and the version qualifications below. Deslop and truffler references come from [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) and [React Doctor, find-similar-functions], respectively. This is a tool reference; the [reuse test](../../anti-ai-slop/anti-slop-code/RULES.md#structure) and [refactoring transformations](SKILL.md#techniques-smallest-first) keep their definitions at those owners.
 
 ## Establish the scan
 
@@ -69,6 +69,49 @@ npx jscpd --reporters ai <path>
 - **P2, confidence reasons.** The [official scorer](https://github.com/kucherenko/jscpd/blob/master/rust/crates/basta/src/confidence.rs) can give an unused export 85 with no contrary-evidence reasons. Read reasons when present; their absence does not imply a score of at least 90. The source promised a reason for every score below 90. [kucherenko/jscpd, codebase-refactoring/SKILL.md]
 - **P3, AST fallback.** The [official similarity implementation](https://github.com/kucherenko/jscpd/blob/master/rust/crates/cpd-similarity/src/lib.rs#L53) uses the configured ratio, otherwise `0.8`, when the CLI option has no ratio. One source command comment instead says 82 percent. [kucherenko/jscpd, jscpd/SKILL.md]
 
+## Deslop
+
+[ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)
+
+A tool for the search step: [Deslop](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) (https://github.com/Nimblesite/Deslop) parses code into a tree-sitter AST for Dart, C#, Rust, Python, JavaScript, TypeScript/TSX, PHP, F# and Go, "No source-level regex touches this pipeline", so renamed copies match:
+
+```dart
+String formatUserLabel(User u) => '${u.firstName} ${u.lastName}';
+
+String buildAuthorName(Author a) => '${a.firstName} ${a.lastName}';
+```
+
+Three scores fuse into one; pairs must cross `FUSED_THRESHOLD` 0.85 and group by transitive closure; clusters rank by `weight = clone_node_count × (cluster_size − 1) × log2(1 + spanned_bytes)`. Run `deslop .` (install `brew install nimblesite/tap/deslop`); reports land in `.deslop/` (git-ignore it). Exclude generated code in `.deslop.toml` (`exclude` skips files, `report_hide` counts them but hides them):
+
+```toml
+[defaults]
+exclude = ["**/build/**", "**/.dart_tool/**"]
+report_hide = ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart"]
+
+[threshold]
+max_duplication_percent = 5.0
+```
+
+For an agent, Deslop's MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in [code-review LAYERS.md](../code-review/LAYERS.md#4-automated-checks-that-block).
+
+Two tools share the name: Nimblesite's **Deslop** above is a tree-sitter duplicate finder (`deslop .`, `deslop-mcp`); React Doctor's **deslop** is a simplification prompt (the source of the rules tagged [React Doctor, deslop] in [anti-slop code](../../anti-ai-slop/anti-slop-code/RULES.md)), and it runs truffler for the search.
+
+## truffler
+
+[React Doctor, find-similar-functions]
+
+[truffler](https://github.com/rayhanadev/truffler) (`@rayhanadev/truffler`, MIT) is a fuzzy symbol-name search for JavaScript and TypeScript, built on oxc-parser. It ranks names and shows signatures; Deslop matches AST shape, so it also catches renamed copies. truffler needs Bun: its bin is TypeScript source with `#!/usr/bin/env bun`. Recipes [React Doctor, find-similar-functions]:
+
+```bash
+truffler "normalize path" src --kind function,method,constant,type --limit 20
+truffler "score" src --kind function,method --format json --limit 15
+truffler "<query>" <root> --kind function,method,constant,type,interface --limit 20
+```
+
+With no installed binary and no new dependencies allowed, use `bunx` only "if network/package execution is acceptable for the environment": `bunx @rayhanadev/truffler "parse config" src --kind function,method,type --limit 20`. Flags, from the truffler README: `--limit`/`-l` (default 50), `--format`/`-f` `text|json` (default `text`), `--kind`/`-k` a comma list of `class, constant, enum, enum-member, export, function, import, interface, method, property, type, variable` (default `class, enum, function, interface, method, property, type`). Use JSON "when you need structured fields for ranking, locations, signatures, or automation". It keeps a per-project index under the home directory (`.truffler/projects/.../symbols.json`) and reparses only changed files. It is young: first release 2026-05-26, one maintainer. "If `truffler` cannot be run, say so and fall back to the repository's available search tools."
+
 ## Prove it
 
 The report records the installed version, paths, formats, exclusions and detector settings; every acted-on candidate has both source spans inspected and its semantic differences accounted for; rejected candidates have reasons; before/after scans use identical settings; health comparisons name unmeasured or changed dimensions; dead-code deletions have independent reachability evidence; and behavior verification is reported separately from tool scores. [kucherenko/jscpd, jscpd; dry-refactoring; codebase-refactoring]
+
+For Deslop, inspect candidates for different meanings and distinguish `exclude` (skip files) from `report_hide` (count files but hide them in the report). For truffler, identify its available runtime and use the repository's search tools if it cannot run. [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/); [React Doctor, find-similar-functions]

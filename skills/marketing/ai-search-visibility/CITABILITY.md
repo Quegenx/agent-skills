@@ -34,7 +34,7 @@ The source also suggests "aim for 100-167 words" per paragraph; nothing official
 Where the rubric disagrees with official docs:
 - **FAQPage and HowTo points.** aeo.js's hints say "Google AI Overviews heavily rely on structured data" and "Add FAQPage or HowTo structured data to boost AI citation rate". Google: "There are no additional requirements to appear in AI Overviews or AI Mode", "no special schema.org structured data that you need to add" [https://developers.google.com/search/docs/appearance/ai-features]; the FAQ rich result is not shown from 2026-05-07 and HowTo from 2023-09-14 [https://developers.google.com/search/updates]. Those points measure nothing Google uses.
 - **llms.txt points.** Lighthouse marks a missing llms.txt N/A, not a failure ([LLMS-TXT.md](LLMS-TXT.md#lighthouses-check)).
-- **Meta lengths.** Title 10 to 70 and description 50 to 200 are aeo.js's numbers. Google: "There's no limit on how long a meta description can be" [https://developers.google.com/search/docs/appearance/snippet]. The repo's docs rule quotes c15t's house limits (60 and 160, "no standard sets them") in [DOCS.md](../../anti-ai-slop/anti-slop-writing/DOCS.md#frontmatter-for-search-and-agents). Both are house numbers.
+- **Meta lengths.** Title 10 to 70 and description 50 to 200 are aeo.js's numbers. Google: "There's no limit on how long a meta description can be" [https://developers.google.com/search/docs/appearance/snippet]. The repo's docs rule quotes c15t's house limits (60 and 160, "no standard sets them") in [developer-docs](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md#frontmatter-for-search-and-agents). Both are house numbers.
 
 ## Running it
 

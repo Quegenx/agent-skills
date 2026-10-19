@@ -1,6 +1,6 @@
 ---
 name: product-launch
-description: "Plans web and SaaS product launches and feature announcements: the readiness gate (Simple, Lovable, Complete), owned, rented and borrowed channels, the five launch phases, how much marketing each update deserves, the launch checklist, and a Product Hunt launch run by Product Hunt's own rules (accounts, scheduling, listing limits, first comment, what gets a product removed, relaunching). Use when planning a launch, a beta or early access, a feature announcement or a Product Hunt launch, or when a launch flopped."
+description: "Plans web and SaaS product launches and feature announcements: the readiness gate (Simple, Lovable, Complete), owned, rented and borrowed channels, the five launch phases, how much marketing each update deserves, shipped-change digests and announcement drafts, the launch checklist, and a Product Hunt launch run by Product Hunt's own rules (accounts, scheduling, listing limits, first comment, what gets a product removed, relaunching). Use when planning a launch, a beta or early access, a feature announcement or a Product Hunt launch, or when a launch flopped."
 ---
 
 # Product launch
@@ -12,6 +12,7 @@ Before asking questions, read the shared product context file `.agents/product-c
 | The job | Read |
 |---|---|
 | Is it ready to launch (Stealth Mode, "Just One More Feature", SLC), owned, rented and borrowed channels, the five phases from internal to full launch, post-launch work, update tiers for later features, the three-part checklist, the questions to ask first | [LAUNCH-PLAN.md](LAUNCH-PLAN.md) |
+| Turning shipped code into a changelog, announcement drafts, claim-drift updates and a weekly digest | [SHIPPED-CHANGES.md](SHIPPED-CHANGES.md) |
 | Product Hunt: who can post, the 1-week account wait, self-hunting, day and time, scheduling, every listing field and its limit, the maker's first comment, what is against the rules, launch day, the Product Page, relaunching within 6 months | [PRODUCT-HUNT.md](PRODUCT-HUNT.md) |
 
 ## The rules

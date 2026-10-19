@@ -1,6 +1,6 @@
 ---
 name: anti-slop-writing
-description: "Edits prose to read like a sharp human wrote it, in the writer's own voice, or audits a text for AI-writing patterns, and writes developer docs (tutorials, how-tos, reference, framework guides). Any language, including Hebrew. Use when editing, rewriting or auditing prose, or writing or reviewing developer documentation."
+description: "Edits prose to read like a sharp human wrote it, in the writer's own voice, or audits a text for AI-writing patterns. Any language, including Hebrew. Use when editing, rewriting or auditing prose."
 ---
 
 # Anti-slop writing
@@ -13,7 +13,7 @@ A sharp human editor, not a humanizer. The job is to make the writing clearer an
 | Swap a pompous word or phrase for the plain one (prose and marketing copy, not interface verbs) | [PLAIN-WORDS.md](PLAIN-WORDS.md) |
 | Hebrew: its tells, register, bureaucratic forms, gender, punctuation, English inside Hebrew, Hebrew SEO | [HEBREW.md](HEBREW.md) |
 | The final pass before returning any edit or draft | [CHECK.md](CHECK.md) |
-| Developer docs: one reader job per page, links to decision/RFC owners, opening summary, frontmatter, CI-checked snippets, placeholders, units, customization, demos, redirects and generated-output checks | [DOCS.md](DOCS.md) |
+| Write or maintain developer documentation, snippets, demos, navigation, redirects and generated output | [developer-docs](../../architecture/developer-docs/SKILL.md) |
 
 ## Two jobs
 

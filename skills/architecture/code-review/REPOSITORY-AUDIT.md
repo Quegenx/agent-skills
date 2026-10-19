@@ -54,7 +54,7 @@ if (process.argv[1] && isMain()) {
 | Architecture and deletion | Duplication, wrong responsibility boundaries, dead paths, speculative abstractions or hidden coupling | [Refactoring](../refactoring/SKILL.md) |
 | Dependencies and migrations | Reachable advisories, supported-version requirements, confirmed deprecations, duplicate tools and migration blast radius | [System migration](../system-migration/SKILL.md) |
 | Developer workflow | Broken documented setup, missing required configuration, unusable feedback or misleading errors | The repository's own scripts and runbooks |
-| Documentation | Wrong setup/API guidance or missing decisions with a concrete cost | [Documentation writing](../../anti-ai-slop/anti-slop-writing/DOCS.md) |
+| Documentation | Wrong setup/API guidance or missing decisions with a concrete cost | [Documentation writing](../developer-docs/WRITING-AND-PUBLISHING.md) |
 | Direction | Stated but unfinished intent, useful asymmetries, manual friction or nearby capabilities | Present as maintainer options, separately from defects |
 
 These are investigation prompts, not findings by keyword match. Confirm platform-specific claims against the matching official documentation before recommending a correction. [shadcn/improve, references/audit-playbook.md]

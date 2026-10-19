@@ -28,10 +28,10 @@ One review of a screen, flow or feature across accessibility, layout, writing, t
 | # | Domain (source skill) | Owning skill here |
 |---|---|---|
 | 1 | Accessibility (`better-accessibility`) | [web-accessibility](../../frontend/web-accessibility/SKILL.md), with this skill's absolutes ([SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these)) |
-| 2 | Layout (`better-layout`) | [RESPONSIVE.md](RESPONSIVE.md) and [modern-css](../../frontend/modern-css/SKILL.md) |
+| 2 | Layout (`better-layout`) | [RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md) and [modern-css](../../frontend/modern-css/SKILL.md) |
 | 3 | Writing (`better-writing`) | [anti-slop-copy](../anti-slop-copy/SKILL.md), its [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md) for interface text |
 | 4 | Typography (`better-typography`) | [TYPOGRAPHY-AND-UNITS.md](../../frontend/modern-css/TYPOGRAPHY-AND-UNITS.md) in modern-css, and [PATTERNS.md](PATTERNS.md#decoration-and-type) |
-| 5 | Color (`better-colors`) | [color-system](../../frontend/color-system/SKILL.md), with [scripts/contrast.py](scripts/contrast.py) for every pair |
+| 5 | Color (`better-colors`) | [color-system](../../frontend/color-system/SKILL.md), with [scripts/contrast.py](../../frontend/color-system/scripts/contrast.py) for every pair |
 | 6 | UI polish and motion (`better-ui`) | This skill ([PATTERNS.md](PATTERNS.md), [DETAILS.md](DETAILS.md)), [ui-animation](../../frontend/ui-animation/SKILL.md) for motion, and [app-ui](../../frontend/app-ui/SKILL.md) for the owner's app components |
 
 - **A missing owner:** "mark that domain `Not reviewed`, name it and continue with the rest. Do not recreate its rules from memory, substitute a neighbour or claim holistic coverage."

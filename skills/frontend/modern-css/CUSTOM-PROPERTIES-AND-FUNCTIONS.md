@@ -79,7 +79,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
     border-radius: var(--radius-conditional-2);
   }
   ```
-  The 2026 form uses `infinity` and `vi` or `cqi` ([CSS infinity](CSS-INFINITY.md)); the `100cqi` variant compares with the container instead. How these `vw` tricks meet anti-slop-ui's `vw` rule is in [RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md).
+  The 2026 form uses `infinity` and `vi` or `cqi` ([CSS infinity](CSS-INFINITY.md)); the `100cqi` variant compares with the container instead. How these `vw` tricks meet anti-slop-ui's `vw` rule is in [RESPONSIVE.md](RESPONSIVE.md).
 - **Pseudo-private props** (Lea Verou's name): start the name with `--_` and don't register it on `:root`; it signals "the intent to keep them localized to that component". Vanilla Extract emits this pattern. "I've seen usage where they are treated as overwritable, and I've seen usage where they are not."
   ```css
   .card {
@@ -264,7 +264,7 @@ All from [nerdy.dev: 10 powerful ways to use CSS variables](https://nerdy.dev/cu
   });
   ```
 - **Rotating border beams** [Libraries.dev, border-beam]: its rotate types "animate registered CSS custom properties (`@property`)", and without it "Older browsers step instead of interpolating." "Paint cost comes from masks, conic/radial gradients and blur filters redrawn every frame. Keep a handful of live beams per screen." The source puts `@property` at "Safari 15.4+"; it is Safari 16.4 ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property)). The rounded shine border is in [GRADIENTS-AND-EFFECTS.md](GRADIENTS-AND-EFFECTS.md#borders-scrims-and-shadows).
-- anti-slop-ui registers its fluid tokens so they are "computed on `:root`" and on the page area ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)).
+- anti-slop-ui registers its fluid tokens so they are "computed on `:root`" and on the page area ([RESPONSIVE.md](RESPONSIVE.md)).
 
 ## The custom property bomb
 

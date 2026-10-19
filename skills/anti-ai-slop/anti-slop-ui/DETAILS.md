@@ -82,7 +82,7 @@ function $c(e,t){let n=e/Gc;return n+(Qc[e]-n)*t}
 function el(e){return`linear-gradient(to top, ${Yc.map((t,n)=>`rgb(0 0 0 / ${t.toFixed(4)}) ${($c(n,e)*100).toFixed(3)}%`).join(`, `)})`}
 ```
 
-Check contrast at the worst spot under the text (`scripts/contrast.py`), not at the darkest part of the scrim.
+Check contrast at the worst spot under the text ([contrast.py](../../frontend/color-system/scripts/contrast.py)), not at the darkest part of the scrim.
 
 **A caption scrim that follows the theme, no script:** Argyle's `light-dark()` with `border-image: fill` ([GRADIENTS-AND-EFFECTS.md](../../frontend/modern-css/GRADIENTS-AND-EFFECTS.md#borders-scrims-and-shadows)). It paints one translucent colour, not an eased ramp.
 
@@ -110,7 +110,7 @@ Geometry centres the box; the eye centres the weight.
     transform: translateX(2px); /* physical on purpose: playback icons never mirror */
   }
   ```
-  make-interfaces-feel-better writes `margin-left: 2px`. Craft's prose says the play icon "moves left" while its code shifts it right by 1px (`translateX(1px)`); the code agrees with the rule above. Media playback stays left to right in RTL ([RESPONSIVE.md](RESPONSIVE.md#icons-in-right-to-left)).
+  make-interfaces-feel-better writes `margin-left: 2px`. Craft's prose says the play icon "moves left" while its code shifts it right by 1px (`translateX(1px)`); the code agrees with the rule above. Media playback stays left to right in RTL ([RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md#icons-in-right-to-left)).
 - **Asymmetric icons:** "Stars, arrows and carets carry uneven visual weight. Fix the `viewBox` or path in the SVG, so the component needs no extra offset. Where the asset cannot change, nudge its wrapper" (`<span className="translate-x-px">`) [Jakub Krehel, better-ui]. Craft moves the star and the download icon up a bit: "this is a per icon decision, not a global rule" [Craft].
 - **The blur test:** "Add a heavy `filter: blur()` to it in the inspector, or squint at it, and the shape collapses into a soft blob of ink. The blob sits where the icon's visual weight is, not where its bounding box is, so if it lands off the center of the button the nudge you need is the distance back" [Craft].
 - **Shape weight:** "when a circle or triangle is drawn inside the same box as a square, it appears smaller to the eye" [Craft].

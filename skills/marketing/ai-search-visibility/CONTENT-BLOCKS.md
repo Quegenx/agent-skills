@@ -1,6 +1,6 @@
 # Content that answer engines can lift
 
-How to structure a page so an answer engine can quote a passage of it correctly, without writing a second version "for AI". Google's position comes first because it limits everything else; the block templates and the fan-out matrix are from [coreyhaines31/marketingskills, ai-seo] (MIT; the matrix adapted there from Profound's MIT skill), with the source's example statistics removed. Docs-specific rules live in [../../anti-ai-slop/anti-slop-writing/DOCS.md](../../anti-ai-slop/anti-slop-writing/DOCS.md); page copy in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+How to structure a page so an answer engine can quote a passage of it correctly, without writing a second version "for AI". Google's position comes first because it limits everything else; the block templates and the fan-out matrix are from [coreyhaines31/marketingskills, ai-seo] (MIT; the matrix adapted there from Profound's MIT skill), with the source's example statistics removed. Docs-specific rules live in [../../architecture/developer-docs/WRITING-AND-PUBLISHING.md](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md); page copy in [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
 
 **Contents:** [Google's limits](#googles-limits) · [Structure rules](#structure-rules) · [Block templates](#block-templates) · [Fact-family fan-out matrix](#fact-family-fan-out-matrix) · [Authority by domain](#authority-by-domain) · [By content type](#by-content-type) · [What not to do](#what-not-to-do) · [Prove it](#prove-it)
 
@@ -25,7 +25,7 @@ The source's view of other engines: they "actively reward extractable structure"
 
 [freescan] Lead with the direct answer, then scope, evidence, exceptions and limits under descriptive headings. Each section must keep its meaning when quoted alone: define acronyms, don't lean on "this" or "the above result". Original research states its population, data window, exclusions, aggregation, sample size and update time; say when a sample is too small, and separate measured data from interpretation.
 
-These match the repo's docs rules: "Keep each explanation understandable when retrieved alone" and "do not force every heading into a question" ([DOCS.md](../../anti-ai-slop/anti-slop-writing/DOCS.md#headings-and-structure)).
+These match the repo's docs rules: "Keep each explanation understandable when retrieved alone" and "do not force every heading into a question" ([developer-docs](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md#headings-and-structure)).
 
 **Freshness** [coreyhaines31/marketingskills, ai-seo]: a visible "Last updated: [date]", refreshes on competitive topics (the source says quarterly at minimum), and outdated facts removed. The cadence is the source's opinion; the refresh workflow is [../seo/CONTENT-REFRESH.md](../seo/CONTENT-REFRESH.md).
 

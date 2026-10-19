@@ -101,7 +101,7 @@ Write media queries in `rem` or `em` where the codebase allows. At a larger brow
 - Measure every state, not only the resting one: hover, focus and placeholder text each get their own rendered pair [freescan].
 - Inactive (disabled) controls and logos are exempt ([SEMANTICS-AND-ARIA.md](SEMANTICS-AND-ARIA.md#disabled-states)).
 - 1.4.11 covers "any visual information necessary to indicate state, such as whether a component is selected" ([Understanding 1.4.11](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)). A selected segment marked only by a white 12% pill on a near-black bar measures about 1.45:1, and its active text against inactive text about 2.5:1, so no cue of the selected state reaches 3:1. [Emil Kowalski, prototype], measured in the findings
-- Measure the rendered pair, never eyeball it: `python3 <anti-slop-ui>/scripts/contrast.py "#777777" "#ffffff"` ([anti-slop-ui](../../anti-ai-slop/anti-slop-ui/SKILL.md)). When it fails, report the pair and the criterion it misses, and leave the colors alone unless asked.
+- Measure the rendered pair, never eyeball it: `python3 <color-system>/scripts/contrast.py "#777777" "#ffffff"` ([color-system](../color-system/CONTRAST.md)). When it fails, report the pair and the criterion it misses, and leave the colors alone unless asked.
 
 ## Prove it
 

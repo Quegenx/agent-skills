@@ -10,12 +10,13 @@ Copy that a buyer believes: specific, built from facts, in the customer's words,
 | The job | Read |
 |---|---|
 | Page structures, sections, headline shapes, page types | [PAGES.md](PAGES.md) |
-| Drafting or rewriting: diagnosis, decompose and lock, the three-question gate, declined claims, ad copy formulas | [DRAFTING.md](DRAFTING.md) |
+| Drafting or rewriting: diagnosis, decompose and lock, the three-question gate, declined claims | [DRAFTING.md](DRAFTING.md) |
 | Editing or reviewing existing copy: edit modes, the seven sweeps, the expert panel | [REVIEW.md](REVIEW.md) |
 | The brand voice profile and tone by context | [VOICE.md](VOICE.md) |
 | The product context file every copy task reads | [CONTEXT.md](CONTEXT.md) |
 | Interface text: buttons, errors, empty states, confirmations | [MICROCOPY.md](MICROCOPY.md) |
-| Turning merged code into a changelog and announcement drafts | [SHIPPED-CHANGES.md](SHIPPED-CHANGES.md) |
+| Turning merged code into a changelog and announcement drafts | [product-launch SHIPPED-CHANGES.md](../../marketing/product-launch/SHIPPED-CHANGES.md) |
+| Ad copy formulas, search headlines, social hooks, CTAs by stage and test order | [ad-creative COPY-FORMULAS.md](../../marketing/ad-creative/COPY-FORMULAS.md) |
 
 ## 1. Facts before words
 
@@ -81,7 +82,7 @@ On top of the prose patterns in `anti-slop-writing`:
 - **Label headings:** "Features", "Why us", "How it works" as the whole heading. Write headings that make a claim.
 - **Exclamation marks and hype punctuation** in body copy.
 - **Automation hype:** "set it and forget it," "fully autonomous marketing," "AI does everything," "10x on autopilot," "growth hacking machine" [coreyhaines31/marketingskills, marketing-loops].
-- **Ads:** "Stacked negations to fit a character limit", "Hook slop: a generic 'POV:', 'Stop scrolling,' 'Here's what nobody tells you about X'" (a POV hook "is fine when the situation is hyper-specific"), and "CTA slop: 'Get started today'" [coreyhaines31/marketingskills, ad-creative]. "Across a batch, vary the sentence shapes. Ten variations that all open the same way read as generated." Where app-growth's TikTok formats use these hooks, both views are in [TIKTOK-ADS.md](../../mobile/app-growth/TIKTOK-ADS.md).
+- **Ads:** use the [ad-specific writing tells](../../marketing/ad-creative/SKILL.md#writing-the-copy), including the source disagreement about TikTok hooks. [coreyhaines31/marketingskills, ad-creative]
 - **Selling an SEO product:** "SEO-tool marketing that promises rankings, traffic, or 'guaranteed results', or that invents scores without showing the method behind them." and "Fear-based upsells that turn observations into emergencies. A `noindex` is an observation until intent says otherwise." [iannuttall/seo].
 
 ## 6. Output

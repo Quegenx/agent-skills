@@ -7,12 +7,13 @@ description: "Removes AI code slop (narrating comments, bloated names, needless 
 
 The cost of writing code collapsed; the cost of reading it didn't. Code that's slow to understand is slop even when it works. Load `anti-slop` for the shared rules (do what was asked, verify before claiming). The rule catalogue with examples is [RULES.md](RULES.md).
 
-Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md) agent (Apache-2.0), tagged [Anthropic, code-simplifier]; React Doctor's `deslop` skill, which is that agent's text with additions (indirection, inlining single-use functions, leftover scaffolding, consolidating duplicates with truffler), tagged [React Doctor, deslop] for the additions only; and React Doctor's `find-similar-functions`, which comes from the [truffler](https://github.com/rayhanadev/truffler) repo (MIT), tagged [React Doctor, find-similar-functions]. React Doctor's `deslop` is not Nimblesite's Deslop duplicate finder; RULES.md tells the two apart.
+Rules tagged in RULES.md come from: Anthropic's [code-simplifier](https://github.com/anthropics/claude-plugins-official/blob/main/plugins/code-simplifier/agents/code-simplifier.md) agent (Apache-2.0), tagged [Anthropic, code-simplifier]; React Doctor's `deslop` skill, which is that agent's text with additions (indirection, inlining single-use functions, leftover scaffolding, consolidating duplicates with truffler), tagged [React Doctor, deslop] for the additions only; and React Doctor's `find-similar-functions`, which comes from the [truffler](https://github.com/rayhanadev/truffler) repo (MIT), tagged [React Doctor, find-similar-functions]. React Doctor's `deslop` is not Nimblesite's Deslop duplicate finder; the [duplication reference](../../architecture/refactoring/DUPLICATION.md#deslop) tells the two apart.
 
 | The job | Read |
 |---|---|
 | Review or remove code slop without changing behavior | [RULES.md](RULES.md) |
 | Use FixMySlop when selected, with its rule controls, baseline and source-version limits | [FIXMYSLOP.md](FIXMYSLOP.md) |
+| Select Deslop, truffler or jscpd for duplication and reuse evidence | [Duplication tools](../../architecture/refactoring/DUPLICATION.md) |
 
 ## Guardrails
 

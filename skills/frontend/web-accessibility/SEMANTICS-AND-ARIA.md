@@ -56,7 +56,7 @@ Where a native element is truly impossible, the full polyfill is `role="button"`
 
 - **3.1.1 Language of Page (A):** "The default human language of each web page can be programmatically determined." Understanding 3.1.1: "Screen readers can load the correct pronunciation rules", and on a page with several languages the default is "the language which is used most" ([Understanding 3.1.1](https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html)). Set it on the root from the active locale as a BCP 47 tag [freescan], with the direction beside it: `<html lang="he" dir="rtl">`, in the markup, not only in CSS [skills-il, hebrew-rtl-best-practices].
 - **3.1.2 Language of Parts (AA):** "The human language of each passage or phrase in the content can be programmatically determined", except "proper names, technical terms, words of indeterminate language" and words that have become part of the surrounding language ([Understanding 3.1.2](https://www.w3.org/WAI/WCAG22/Understanding/language-of-parts.html)). An English passage inside a Hebrew page carries `lang="en"` as well as `dir="ltr"`: `dir` fixes the order, `lang` fixes the pronunciation. The source's own log lists "lang+dir pairing on embedded spans" as deferred; this is that pairing.
-- A route per language sets its own `lang`, taken from the active locale [freescan]. Direction in CSS (logical properties, `:dir()`, isolating values) is in [anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#direction).
+- A route per language sets its own `lang`, taken from the active locale [freescan]. Direction in CSS (logical properties, `:dir()`, isolating values) is in [modern-css/RESPONSIVE.md](../modern-css/RESPONSIVE.md#direction).
 
 ## Accessible names
 

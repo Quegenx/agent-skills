@@ -1,6 +1,6 @@
 # Layout
 
-Flex and grid fixes that are easy to forget (intrinsic minimum sizes, shrinking, intrinsically responsive columns), grid and subgrid slots, stacking in one cell, a pointer to the circle layout with trig and `sibling-index()`, layering without `position: absolute`, balanced wrapping, centering, aspect ratios that follow orientation, and logical properties against physical ones. Source: Adam Argyle's nerdy.dev posts and notes (one bullet tagged [css-modern-features], rushenn/css-modern-features, MIT), with current support from MDN (checked 2026-10-17). Code is copied from the posts; where a post's code is outdated, the current form is given with the MDN link and the change is named. Units, fluid scales and container queries for whole layouts are in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md); container and style queries are in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md); anchoring one element to another is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md).
+Flex and grid fixes that are easy to forget (intrinsic minimum sizes, shrinking, intrinsically responsive columns), grid and subgrid slots, stacking in one cell, a pointer to the circle layout with trig and `sibling-index()`, layering without `position: absolute`, balanced wrapping, centering, aspect ratios that follow orientation, and logical properties against physical ones. Source: Adam Argyle's nerdy.dev posts and notes (one bullet tagged [css-modern-features], rushenn/css-modern-features, MIT), with current support from MDN (checked 2026-10-17). Code is copied from the posts; where a post's code is outdated, the current form is given with the MDN link and the change is named. Units, fluid scales and container queries for whole layouts are in [RESPONSIVE.md](RESPONSIVE.md); container and style queries are in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md); anchoring one element to another is in [ANCHOR-POSITIONING.md](ANCHOR-POSITIONING.md).
 
 ## Three unintuitive layout solutions
 
@@ -31,7 +31,7 @@ Adam's "least favorite, easy to forget, unintuitive CSS layout 'solutions'". `fl
 }
 ```
 
-  The reason, quoted by the post from Evan Minto: "When the container is smaller than 10rem, the minimum value in our minmax() expression is set to the full width of the container, giving us a nice single-column view with no overflow. When the container is larger than 10rem, the minimum value is set to 10rem, so we get a responsive grid with equal tracks of at least 10rem each." anti-slop-ui's breakpoint-free grid is the same pattern with 15rem ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)).
+  The reason, quoted by the post from Evan Minto: "When the container is smaller than 10rem, the minimum value in our minmax() expression is set to the full width of the container, giving us a nice single-column view with no overflow. When the container is larger than 10rem, the minimum value is set to 10rem, so we get a responsive grid with equal tracks of at least 10rem each." anti-slop-ui's breakpoint-free grid is the same pattern with 15rem ([RESPONSIVE.md](RESPONSIVE.md)).
 
 ## Grid and subgrid
 
@@ -56,7 +56,7 @@ Adam's "least favorite, easy to forget, unintuitive CSS layout 'solutions'". `fl
 ```
 
   The source's floors (Chrome 117, Safari 16, Firefox 71) match browser-compat-data; subgrid's status is above.
-- **Masonry is `display: grid-lanes`** (and `inline-grid-lanes`), the shipped name of the masonry proposal: experimental, Safari 26.4 only, no Chrome or Firefox ([MDN `display`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display), [Grid lanes guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Grid_lanes)). No nerdy.dev source covers it; anti-slop-ui lists it among [features not to build a system on](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#dont-build-a-system-on-them).
+- **Masonry is `display: grid-lanes`** (and `inline-grid-lanes`), the shipped name of the masonry proposal: experimental, Safari 26.4 only, no Chrome or Firefox ([MDN `display`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display), [Grid lanes guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Grid_lanes)). No nerdy.dev source covers it; anti-slop-ui lists it among [features not to build a system on](RESPONSIVE.md#dont-build-a-system-on-them).
 - **Stack children in one cell** with `grid-area: 1/1`; Adam uses it to pile radios in a centered cell (the circle layout below) and to layer the parts of the VisBug logo. [nerdy.dev: VisBug v0.4.0 release notes](https://nerdy.dev/a-2024-visbug-update)
 
 ```css
@@ -129,7 +129,7 @@ visbug-logo {
 ## Physical against logical
 
 - **"is it time to forget about physical properties like `margin-top` and `left`? Can't throw out the x/y transforms tho"**. [nerdy.dev: Is It Time To Throw Out Physical Properties](https://nerdy.dev/is-it-time-to-throw-out-physical-properties) (2024-01-07)
-- anti-slop-ui's logical rule also keeps an exception for "centring with `left: 50%` and a translate" ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)), and app-ui lists the values it keeps physical by design, such as a measured position placed with `left: 0` plus `translate` ([../app-ui/SKILL.md](../app-ui/SKILL.md)).
+- anti-slop-ui's logical rule also keeps an exception for "centring with `left: 50%` and a translate" ([RESPONSIVE.md](RESPONSIVE.md)), and app-ui lists the values it keeps physical by design, such as a measured position placed with `left: 0` plus `translate` ([../app-ui/SKILL.md](../app-ui/SKILL.md)).
 - **Ask models for them.** "I prompt LLMs with logical properties." And: "Even prompting in logical properties, you have to ask for this kind of CSS. These should be CSS tablestakes output from LLMs, but it's not. And even when you ask for it, or provide documentation that spells it out, it's not guaranteed to work." [nerdy.dev: Prompt In Logical Properties](https://nerdy.dev/prompt-in-logical-properties) (2026-01-27), [nerdy.dev: Why AI Sucks At Front End](https://nerdy.dev/why-ai-sucks-at-front-end) (2026-04-12)
 
 ## Notes with no technique

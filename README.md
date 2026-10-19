@@ -1,6 +1,6 @@
 # Agent skills
 
-131 skills for coding agents, in ten sets:
+132 skills for coding agents, in ten sets:
 
 | Folder | What it's for |
 |---|---|
@@ -8,13 +8,13 @@
 | [`skills/videos/`](./skills/videos) | Make videos with a coding agent, where every frame is code: brief, assets, music clock, shot list, render, review, sound. 11 skills. |
 | [`skills/anti-ai-slop/`](./skills/anti-ai-slop) | Keep what the agent writes, designs and codes from reading as generic AI output. 5 skills. |
 | [`skills/backend/`](./skills/backend) | Servers, data and integrations: APIs, jobs, messaging, SQL, third-party integrations, observability, deployment, performance, security, Postgres, Supabase, Effect, payments (Stripe, RevenueCat), email (Resend, React Email, sending rules) and push (OneSignal), Convex, Firebase and Kapso. 21 skills. |
-| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review, debugging, engineering planning and execution, source research, artifact investigation and exact component/animation reconstruction. 13 skills. |
+| [`skills/architecture/`](./skills/architecture) | Design and structure of any codebase: architecture, system design, domain modeling, migrations, refactoring, algorithms, testing, code review, debugging, engineering planning and execution, source research, developer docs, artifact investigation and exact component/animation reconstruction. 14 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Agents and tests in a real browser or device: end-to-end tests for web and mobile (Flutter, React Native), browser automation, scraping, WebMCP tools, research reports. 5 skills. |
 | [`skills/frontend/`](./skills/frontend) | App and marketing UI, design-system maintenance, motion, SVG, CSS, GSAP, accessibility, colors, Sonner, technical drawings, React with Next.js and React Native, WebGL and consent. 14 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | Errors, analytics and telemetry in production: Sentry, PostHog, the Grafana stack (Prometheus, Loki, Tempo, Pyroscope, Alloy), k6 load tests and Google Analytics 4 with Tag Manager. 5 skills. |
 | [`skills/mobile/`](./skills/mobile) | Mobile apps from code to store: Flutter, Dart, shipping to the App Store and Google Play, app store optimization, and growth (ads, attribution, retention), plus community Flutter UX tips with a design review and custom RenderObjects. 8 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing, SEO and GEO for web and SaaS products: technical SEO, structured data, AI search visibility, site audits and architecture, content, CRO and A/B tests, attribution, paid ads and ad creative, creators and social, lawful outreach, prospecting and sales, launches and PR, pricing, offers and churn, SMS and WhatsApp, plans, loops, an advisor council and client-service playbooks. 38 skills. |
-| Total | 131 skills in ten sets. |
+| Total | 132 skills in ten sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -105,10 +105,10 @@ Each gate writes a file in `films/<slug>/` (`brief.md`, `style-guide.md`, `audio
 Start with `anti-slop`; it holds the shared rules and routes to the others.
 
 - **[anti-slop](./skills/anti-ai-slop/anti-slop/SKILL.md)**: The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies.
-- **[anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md)**: Voice-preserving prose, evidence-based audits, Hebrew guidance and developer docs checked against actual commands and files.
-- **[anti-slop-copy](./skills/anti-ai-slop/anti-slop-copy/SKILL.md)**: Grounded product copy, point edits, shared context, review panels and source-attributed alternatives. Research-to-copy traceability, scoped headline exploration and truthful early-stage proof handling.
-- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, product-specific concepts, honest chart data, component states, responsive/RTL behavior and scoped WCAG contrast. Adds measured improvement shortlists. Routes exact reconstruction to pixel-reverse-engineer.
-- **[anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md)**: Behavior-preserving cleanup, duplication pointers, runtime contracts and optional FixMySlop scans with manual triage.
+- **[anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md)**: Voice-preserving prose, evidence-based audits and Hebrew guidance; routes developer documentation to developer-docs.
+- **[anti-slop-copy](./skills/anti-ai-slop/anti-slop-copy/SKILL.md)**: Grounded product copy, shared context, point edits, source traceability and review; routes ad formulas and shipped announcements to their owners.
+- **[anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md)**: Purposeful interfaces, honest data, component states and measured improvement shortlists; routes responsive CSS, contrast and exact reconstruction to their owners.
+- **[anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md)**: Behavior-preserving cleanup, runtime contracts and optional FixMySlop triage; links canonical duplication tools.
 
 ## AI agents
 
@@ -164,11 +164,12 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [system-design](./skills/architecture/system-design/SKILL.md) | Load balancing, caching, queues, CDNs, feeds, sandboxes; worked designs from URL shorteners to data recovery. Commit-order limits and idempotent feed fan-out. |
 | [domain-modeling](./skills/architecture/domain-modeling/SKILL.md) | Contexts, aggregates, invariants, events, sagas, CQRS, domain glossaries and decision records. Shallow collection protection and projection watermark gaps. |
 | [system-migration](./skills/architecture/system-migration/SKILL.md) | Incremental ports, legacy replacement, dependency changes and jscpd function maps with behavior evidence. |
-| [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving changes, typed errors, deep modules, duplication and dependency-usage audits. Behavior-preserving validation, typestate and undo tradeoffs. |
+| [refactoring](./skills/architecture/refactoring/SKILL.md) | Behavior-preserving changes, typed errors, deep modules, dependency audits and jscpd, Deslop and truffler duplication/reuse evidence. |
 | [algorithm-patterns](./skills/architecture/algorithm-patterns/SKILL.md) | Recognizing the problem's shape: hash maps, windows, prefix sums, graphs, dynamic programming, budgets. JavaScript midpoint coercion and source-qualified numeric budgets. |
 | [testing](./skills/architecture/testing/SKILL.md) | Behavior tests, real infrastructure, independent oracles and re-auditing results after oracle faults; provider, malformed-fixture and mutation evidence. |
 | [code-review](./skills/architecture/code-review/SKILL.md) | Evidence-based reviews, P0 to P3 severity, scanner/security audits and fresh-fact/decision audit policy. |
 | [code-research](./skills/architecture/code-research/SKILL.md) | Source investigation, exact anchors, version identity, claim ledgers and coverage limits. |
+| [developer-docs](./skills/architecture/developer-docs/SKILL.md) | Source-verified developer docs, CI-backed snippets, navigation, redirects and generated output. |
 | [debugging](./skills/architecture/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specs, work breakdown, handoff, RFCs and selected-plan execution/resume. |
 | [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and retained evidence; routes exact UI reconstruction to pixel-reverse-engineer. |
@@ -182,10 +183,10 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 |---|---|
 | [ui-animation](./skills/frontend/ui-animation/SKILL.md) | Web/app motion, timing, gestures, scroll, native CSS, React transitions and audits. |
 | [svg](./skills/frontend/svg/SKILL.md) | Drawing, styling, animation, filters, icons, embedding, accessibility and sanitization. |
-| [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern layout, queries, forms, top-layer controls, motion, colors and browser support. Corrected registration, geometry and dismissal contracts, CSS infinity, flex balancing and Tailwind aliases. |
+| [modern-css](./skills/frontend/modern-css/SKILL.md) | Modern CSS: layout and responsive policy, units, queries, typography, forms, top-layer controls, animation, color and browser support. |
 | [gsap](./skills/frontend/gsap/SKILL.md) | Tweens, eases, timelines with corrected placement arguments/defaults, React cleanup, ScrollTrigger and plugins. |
 | [web-accessibility](./skills/frontend/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers with numbering validity separate from identity. |
-| [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, semantic tokens, contrast, dark mode, gamut and color audits. |
+| [color-system](./skills/frontend/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast with a shared measurement script, dark mode, gamut and color audits. |
 | [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Evidence-based exploded, orthographic and section drawings with dimensions and exports. |
 | [react](./skills/frontend/react/SKILL.md) | Global React rules, React 19, Next.js, React Native, performance, audits with shared P0 to P3 severity and Remotion Player integration. |
@@ -249,14 +250,14 @@ Marketing, SEO and GEO for web and SaaS products, from Corey Haines's marketings
 | [ab-testing](./skills/marketing/ab-testing/SKILL.md) | Tool-agnostic A/B testing: hypotheses, metrics and guardrails, sample sizes from the standard formula, duration with unequal splits, sequential testing, templates, an experimentation program |
 | [marketing-attribution](./skills/marketing/marketing-attribution/SKILL.md) | Which marketing caused revenue: attribution models, MTA versus MMM versus incrementality, self-reported attribution, attribution by business type, stitching booking and checkout webhooks to analytics |
 | [paid-ads](./skills/marketing/paid-ads/SKILL.md) | Web advertising, current Google Search mechanics, statistical bounds and scoped Meta fatigue diagnosis. |
-| [ad-creative](./skills/marketing/ad-creative/SKILL.md) | Platform-specific ad formats, grounded hooks, creative roadmaps and implied-answer openings. |
+| [ad-creative](./skills/marketing/ad-creative/SKILL.md) | Ad formats, grounded hooks, copy formulas, headline/CTA construction, testing order and creative roadmaps. |
 | [creator-marketing](./skills/marketing/creator-marketing/SKILL.md) | Influencer, creator, UGC and ambassador programs: vetting, deals and rights, briefs, FTC and platform disclosure, creator ad programs, newsletter sponsorships, Telegram channels |
 | [social-media](./skills/marketing/social-media/SKILL.md) | Organic strategy, current X ranking evidence, platform limits and normalized listening scores. Reddit community tutorials/inbound handoff and shootable short-form planning. |
 | [cold-outreach](./skills/marketing/cold-outreach/SKILL.md) | Lawful B2B cold outreach: who may be emailed, sending setup, copy, sequences, LinkedIn, replies, plays and benchmarks |
 | [prospecting](./skills/marketing/prospecting/SKILL.md) | Lawful demand signals, account research, sourcing and enrichment without evasion procedures. Browser cross-references follow the current stop-at-access-limits rule. |
 | [sales-enablement](./skills/marketing/sales-enablement/SKILL.md) | Sales collateral: decks, one-pagers, objection handling, battle cards, win-loss analysis, demo scripts, cold calls within the FTC and FCC rules |
 | [revops](./skills/marketing/revops/SKILL.md) | Lifecycle stages, lead scoring calibrated on a holdout, routing, inbound enrichment, pipeline metrics, CRM automations on current HubSpot and Salesforce features |
-| [product-launch](./skills/marketing/product-launch/SKILL.md) | Launches and announcements: the readiness gate, owned, rented and borrowed channels, launch phases, and Product Hunt from its own guide |
+| [product-launch](./skills/marketing/product-launch/SKILL.md) | Launch planning, channels, phases, Product Hunt and shipped-change announcement/digest workflows. |
 | [public-relations](./skills/marketing/public-relations/SKILL.md) | Press: story angles, pitching, newsjacking, press requests, podcast prep, crisis communication and statements |
 | [partners-and-community](./skills/marketing/partners-and-community/SKILL.md) | Co-marketing partners, the five partnership types, and community programs with FTC disclosure for ambassadors and contests |
 | [event-marketing](./skills/marketing/event-marketing/SKILL.md) | Events that produce pipeline: the event arc, portfolio, sponsorship, speaking, webinar funnels, lawful badge-scan follow-up |

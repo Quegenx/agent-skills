@@ -20,7 +20,7 @@ How to draft or rewrite page copy so it keeps the writer's good choices and earn
 
 1. Check whether audience research already exists. Fill missing evidence through [customer-research](../../marketing/customer-research/SKILL.md), keeping the profile and [quote bank](../../marketing/customer-research/SOURCES.md#what-to-capture) available before drafting. A research-only request returns those assets rather than unsolicited copy.
 2. Position from the overlap between dissatisfaction with alternatives and the product's actual strengths. For the existing [so-what pass](REVIEW.md#the-seven-sweeps), the guide proposes asking twice to reach the felt outcome. Use the audience's evidenced vocabulary within the confirmed [brand voice](VOICE.md#build-the-profile-from-evidence); research does not replace a real writer's choices.
-3. Pick the framework for the format and the reader's [awareness](../../marketing/marketing-council/advisors/eugene-schwartz.md#core-frameworks). Reuse the [PAS and feature-benefit definitions](#ad-copy-formulas) and existing [AIDA framework](../../marketing/cold-outreach/COPY.md#frameworks). A true founder story can follow the shared problem, attempted alternatives and discovery; never supply an experience the founder did not have.
+3. Pick the framework for the format and the reader's [awareness](../../marketing/marketing-council/advisors/eugene-schwartz.md#core-frameworks). Reuse the [PAS and feature-benefit definitions](../../marketing/ad-creative/COPY-FORMULAS.md#primary-text) and existing [AIDA framework](../../marketing/cold-outreach/COPY.md#frameworks). A true founder story can follow the shared problem, attempted alternatives and discovery; never supply an experience the founder did not have.
 4. Choose proof that answers the leading research objection. Deliver brief notes identifying which harvested phrases were used and which objections the copy answers. For existing copy, explain the supported changes while preserving the diagnosis and scope above.
 
 [more skills, copywriting-playbook.md] If proof is absent and the product really is early, say so plainly and use truthful specifics and actual guarantee terms. The guide's claim that the early label converts buyers is unverified; the disclosure does not promise a result.
@@ -88,23 +88,6 @@ Rules that override the persona: never invent the writer's opinions, experience,
 ## Output for a point edit
 
 [coreyhaines31/marketingskills, copywriting] "For a point edit (Situation C), return only the changed lines with a one-line reason each. Skip the annotations and alternatives below unless asked." Full-page output is in [SKILL.md](SKILL.md#6-output).
-
-## Ad copy formulas
-
-[coreyhaines31/marketingskills, ads, ad-copy-templates.md] Skeletons for primary text; every proof slot takes a real number or a named quote from the product context ([SKILL.md](SKILL.md#3-tests-every-headline-and-claim-must-pass)), and the source's sample stats are left out.
-
-| Formula | Lines |
-|---|---|
-| Problem-Agitate-Solve (PAS) | Problem statement / Agitate the pain / Introduce solution / CTA |
-| Before-After-Bridge (BAB) | Current painful state / Desired future state / Your product as the bridge |
-| Social Proof Lead | Impressive stat or testimonial / What you do / CTA |
-| Feature-Benefit Bridge | Feature / So that... / Which means... |
-| Direct Response | Bold claim or outcome / Proof point / CTA "with urgency if genuine" |
-
-- **Search headlines:** [Keyword] + [Benefit], [Action] + [Outcome], [Question], [Number] + [Benefit], [Keyword] + [Differentiator], [Price/Offer] + [Keyword].
-- **Social hooks:** outcome, curiosity, contrarian, specificity, question, number, story. The source's question hook ("What if you could cut your admin time in half?") is a shape [PAGES.md](PAGES.md#the-hero-problem-picture-path) keeps out of headlines. The hook slop to avoid is in [SKILL.md](SKILL.md#5-copy-slop-specific-to-pages).
-- **CTAs by stage:** soft for "Top of funnel, cold audiences, complex products" (See How It Works, Watch Demo, Get the Guide); hard for "Bottom of funnel, warm audiences, clear offers" (Start Free Trial, Book a Demo); urgency "use when genuine" only (Offer Ends [Date]); action-oriented (Get Your Free Report, Calculate Your ROI). Write them in sentence case ([MICROCOPY.md](MICROCOPY.md#rules)).
-- **Testing order** "in order of impact": hook or angle, headline, primary benefit, CTA, supporting proof points. "Test one element at a time for clean data." Campaign-side testing is in [paid-ads](../../marketing/paid-ads/SKILL.md); concepts and hooks for creative are in [ad-creative](../../marketing/ad-creative/SKILL.md).
 
 ## Prove it
 

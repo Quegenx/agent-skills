@@ -10,6 +10,8 @@ Measuring a foreground against the background it actually renders on, the WCAG 2
 - Which requirement applies to a pair is an accessibility decision ([web-accessibility](../web-accessibility/SKILL.md)). "Where neither that skill nor the project names a standard, report the WCAG 2 result and add the APCA value."
 - **Two views on the default metric.** oklch-skill: "Use APCA as the default", with WCAG 2 "still required when making formal WCAG 2.x conformance claims" [Jakub Krehel, oklch-skill]. anti-slop-ui makes WCAG 2 the absolute rule ("text at least 4.5:1 ... Compute it, never eyeball it", [anti-slop-ui SKILL.md](../../anti-ai-slop/anti-slop-ui/SKILL.md)), and better-colors reports WCAG 2 first. VisBug shows both and finds "moments where they disagree" ([modern-css COLOR.md](../modern-css/COLOR.md#contrast-scores-apca-and-l)).
 
+For hex pairs, use [scripts/contrast.py](scripts/contrast.py): `python3 <color-system>/scripts/contrast.py "#777777" "#ffffff"`. Several colors after the first check each against it; verdicts compare the unrounded ratio. [contrast.py](scripts/contrast.py), moved from anti-slop-ui's contrast helper.
+
 ## WCAG 2 thresholds
 
 [Jakub Krehel, better-colors] "WCAG 2 is the standard formal conformance claims are made against."

@@ -82,40 +82,7 @@ The search, before writing and for every helper, type or constant the change tou
 
 The other view, not taken: React Doctor's deslop extracts the merged helper as "one function per file under `utils/`, per the repo convention". That is its repo's convention; here the file is named after the concept it implements, and a reflexive `*Util` is itself slop (see Names).
 
-A tool for the search step: [Deslop](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/) (https://github.com/Nimblesite/Deslop) parses code into a tree-sitter AST for Dart, C#, Rust, Python, JavaScript, TypeScript/TSX, PHP, F# and Go, "No source-level regex touches this pipeline", so renamed copies match:
-
-```dart
-String formatUserLabel(User u) => '${u.firstName} ${u.lastName}';
-
-String buildAuthorName(Author a) => '${a.firstName} ${a.lastName}';
-```
-
-Three scores fuse into one; pairs must cross `FUSED_THRESHOLD` 0.85 and group by transitive closure; clusters rank by `weight = clone_node_count × (cluster_size − 1) × log2(1 + spanned_bytes)`. Run `deslop .` (install `brew install nimblesite/tap/deslop`); reports land in `.deslop/` (git-ignore it). Exclude generated code in `.deslop.toml` (`exclude` skips files, `report_hide` counts them but hides them):
-
-```toml
-[defaults]
-exclude = ["**/build/**", "**/.dart_tool/**"]
-report_hide = ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart"]
-
-[threshold]
-max_duplication_percent = 5.0
-```
-
-For an agent, Deslop's MCP server's `find-similar` belongs in the write loop: call it before writing a function and reuse what is close (`claude mcp add deslop -s user -- deslop-mcp --root .`). Limits: it finds and does not fix, and lookalikes can mean different things ("A price formatter and a weight formatter share every line and must stay apart"); on a first run take the top ten by weight and ignore the tail. The CI gate is in the `code-review` skill's LAYERS.md.
-
-Two tools share the name: Nimblesite's **Deslop** above is a tree-sitter duplicate finder (`deslop .`, `deslop-mcp`); React Doctor's **deslop** is a simplification prompt (the source of the rules tagged [React Doctor, deslop] here), and it runs truffler for the search.
-
-For jscpd's separate exact, renamed and near-miss passes, hotspot reports and version-specific flag corrections, use [DUPLICATION.md](../../architecture/refactoring/DUPLICATION.md). [kucherenko/jscpd, jscpd; dry-refactoring]
-
-[truffler](https://github.com/rayhanadev/truffler) (`@rayhanadev/truffler`, MIT) is a fuzzy symbol-name search for JavaScript and TypeScript, built on oxc-parser. It ranks names and shows signatures; Deslop matches AST shape, so it also catches renamed copies. truffler needs Bun: its bin is TypeScript source with `#!/usr/bin/env bun`. Recipes [React Doctor, find-similar-functions]:
-
-```bash
-truffler "normalize path" src --kind function,method,constant,type --limit 20
-truffler "score" src --kind function,method --format json --limit 15
-truffler "<query>" <root> --kind function,method,constant,type,interface --limit 20
-```
-
-With no installed binary and no new dependencies allowed, use `bunx` only "if network/package execution is acceptable for the environment": `bunx @rayhanadev/truffler "parse config" src --kind function,method,type --limit 20`. Flags, from the truffler README: `--limit`/`-l` (default 50), `--format`/`-f` `text|json` (default `text`), `--kind`/`-k` a comma list of `class, constant, enum, enum-member, export, function, import, interface, method, property, type, variable` (default `class, enum, function, interface, method, property, type`). Use JSON "when you need structured fields for ranking, locations, signatures, or automation". It keeps a per-project index under the home directory (`.truffler/projects/.../symbols.json`) and reparses only changed files. It is young: first release 2026-05-26, one maintainer. "If `truffler` cannot be run, say so and fall back to the repository's available search tools."
+For Deslop structural matching, truffler symbol search and jscpd clone passes, use the canonical [duplication tool references](../../architecture/refactoring/DUPLICATION.md). The semantic reuse test above remains the decision rule. [ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/); [React Doctor, find-similar-functions]; [kucherenko/jscpd, jscpd; dry-refactoring]
 
 **Deep nesting.** Four levels of `if`. Guard clauses and early returns.
 

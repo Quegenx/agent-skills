@@ -1,6 +1,6 @@
 # Developer docs
 
-Tutorials, how-tos, reference, framework guides, styling recipes and demos: pages a developer reads mid-task and an agent retrieves one section at a time. Two primary sources: Vercel's [Writing Guidelines](https://github.com/vercel-labs/writing-guidelines) (MIT), the writing rules, tagged [Vercel, writing-guidelines]; and c15t's `writing-docs` skill ([c15t/c15t](https://github.com/c15t/c15t), Apache-2.0), the method for a docs site whose code, navigation and agent outputs are generated and checked, tagged [c15t, writing-docs]. FixMySlop's docs rules add manifest and local-link checks, tagged [MrSpideyNihal/FixMySlop, fixmyslop/core/slop/rules_docs.py]. Vendor tooling (Vercel's `meta.*` fields and `<Steps/>`, c15t's scripts and leadtype components) is left out. The prose pass is still [TELLS.md](TELLS.md) and [CHECK.md](CHECK.md); where these sources disagree with them, both views are stated and marked.
+Tutorials, how-tos, reference, framework guides, styling recipes and demos: pages a developer reads mid-task and an agent retrieves one section at a time. Two primary sources: Vercel's [Writing Guidelines](https://github.com/vercel-labs/writing-guidelines) (MIT), the writing rules, tagged [Vercel, writing-guidelines]; and c15t's `writing-docs` skill ([c15t/c15t](https://github.com/c15t/c15t), Apache-2.0), the method for a docs site whose code, navigation and agent outputs are generated and checked, tagged [c15t, writing-docs]. FixMySlop's docs rules add manifest and local-link checks, tagged [MrSpideyNihal/FixMySlop, fixmyslop/core/slop/rules_docs.py]. Vendor tooling (Vercel's `meta.*` fields and `<Steps/>`, c15t's scripts and leadtype components) is left out. The prose pass is still [TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md) and [CHECK.md](../../anti-ai-slop/anti-slop-writing/CHECK.md); where these sources disagree with them, both views are stated and marked.
 
 **Contents:** [Plan the page](#plan-the-page) · [Tone by content type](#tone-by-content-type) · [Voice](#voice) · [Open with the answer](#open-with-the-answer) · [Frontmatter for search and agents](#frontmatter-for-search-and-agents) · [Headings and structure](#headings-and-structure) · [Lists](#lists) · [Code comes from code CI checks](#code-comes-from-code-ci-checks) · [Snippets on the page](#snippets-on-the-page) · [Placeholders](#placeholders) · [Units, emphasis and punctuation](#units-emphasis-and-punctuation) · [Claims match the source](#claims-match-the-source) · [Show customization](#show-customization) · [Demos and previews](#demos-and-previews) · [Navigation and coverage](#navigation-and-coverage) · [Moving and removing pages](#moving-and-removing-pages) · [Writing with a model](#writing-with-a-model) · [Check the generated output](#check-the-generated-output) · [Quality checklist](#quality-checklist) · [Prove it](#prove-it)
 
@@ -11,7 +11,7 @@ Tutorials, how-tos, reference, framework guides, styling recipes and demos: page
 - One content type per page: Tutorial, How-to, Reference, Conceptual, Troubleshooting or Landing. "Page does one job: tutorial OR how-to OR reference, not three at once".
 - "Title is user-shaped (the user's question), not feature-shaped (the engineer's name)".
 - "Goal is verb-driven (Bloom's taxonomy): 'configure', 'explain', 'debug' (testable)".
-- "Multi-audience pages: short shared opener, then technical subsections". For marketing pages [PAGES.md](../anti-slop-copy/PAGES.md#know-which-reader-youre-talking-to) says the opposite, "split the page or the path"; docs keep one page per task.
+- "Multi-audience pages: short shared opener, then technical subsections". For marketing pages [PAGES.md](../../anti-ai-slop/anti-slop-copy/PAGES.md#know-which-reader-youre-talking-to) says the opposite, "split the page or the path"; docs keep one page per task.
 
 Establish the contract before writing [c15t, writing-docs]:
 1. "Identify the reader's task, framework, router and deployment." Variants of one framework need their own instructions: "Next.js App Router, Pages Router and static export need different instructions. Vue and Nuxt, and Svelte and SvelteKit, also need distinct setup paths."
@@ -23,7 +23,7 @@ Check documented npm, pnpm, yarn and bun run-script names against the actual man
 
 The [Diataxis view](https://diataxis.fr/) names four reader needs: learning through a tutorial, completing a task with a how-to, looking up reference and understanding an explanation. Use this as a planning distinction under the existing one-job-per-page rule, rather than combining a lesson, a procedure and exhaustive reference in one document. [bgauryy/octocode, octocode-documentation/references/diataxis.md]
 
-Decision records belong with [the architecture glossary and ADRs](../../architecture/domain-modeling/GLOSSARY-AND-ADRS.md); RFC and live implementation-status audits belong with [engineering planning](../../architecture/engineering-planning/RFC.md). Link those records from agent-facing instructions when the same decision would otherwise be reopened. [bgauryy/octocode, octocode-documentation/references/adr.md]
+Decision records belong with [the architecture glossary and ADRs](../domain-modeling/GLOSSARY-AND-ADRS.md); RFC and live implementation-status audits belong with [engineering planning](../engineering-planning/RFC.md). Link those records from agent-facing instructions when the same decision would otherwise be reopened. [bgauryy/octocode, octocode-documentation/references/adr.md]
 
 ## Tone by content type
 
@@ -37,22 +37,22 @@ Decision records belong with [the architecture glossary and ADRs](../../architec
 | Conceptual | "explain like the reader will teach it back; examples and analogies welcome" |
 | Troubleshooting | "empathetic but not apologetic; acknowledge then fix" |
 
-The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#rules).
+The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md#rules).
 
 ## Voice
 
 [Vercel, writing-guidelines]
-- Active voice, with the "by monkeys" test ([TELLS.md](TELLS.md#1-structure-the-worst-offenders), Actorless passive).
+- Active voice, with the "by monkeys" test ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#1-structure-the-worst-offenders), Actorless passive).
 - `you`, "never `the user` or `one can`".
 - "Imperative for steps: 'Click **Add Project**', not 'You will need to click **Add Project**'".
 - "Contractions encouraged (`you'll`, `it's`) for warmth".
 - "Present tense unless describing future behavior".
 - `we` only for deliberate company actions ("we recommend", "we deprecated"), "never as a stand-in for 'you'".
 - "No rhetorical questions (sounds like marketing)".
-- "Sentences under 20 words target". The other view: TELLS.md counts uniform sentence length as a tell ([Uniform rhythm](TELLS.md#1-structure-the-worst-offenders)), so treat 20 words as a ceiling for docs, not a length to hit every time.
-- The second-read test: [CHECK.md](CHECK.md) item 13.
-- `easy`, `simple` and `quick` are banned ([TELLS.md](TELLS.md#3-vocabulary)); weasel words and vague quantifiers become figures ([TELLS.md](TELLS.md#4-honesty)).
-- "Earn every detail: cut a number, name, or implementation detail if a more general phrasing wouldn't change the reader's understanding or action". This pulls against "Concrete over abstract" in [SKILL.md](SKILL.md#editing-principles); both hold: keep the detail the reader acts on, cut the one that changes nothing.
+- "Sentences under 20 words target". The other view: TELLS.md counts uniform sentence length as a tell ([Uniform rhythm](../../anti-ai-slop/anti-slop-writing/TELLS.md#1-structure-the-worst-offenders)), so treat 20 words as a ceiling for docs, not a length to hit every time.
+- The second-read test: [CHECK.md](../../anti-ai-slop/anti-slop-writing/CHECK.md) item 13.
+- `easy`, `simple` and `quick` are banned ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#3-vocabulary)); weasel words and vague quantifiers become figures ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#4-honesty)).
+- "Earn every detail: cut a number, name, or implementation detail if a more general phrasing wouldn't change the reader's understanding or action". This pulls against "Concrete over abstract" in [SKILL.md](../../anti-ai-slop/anti-slop-writing/SKILL.md#editing-principles); both hold: keep the detail the reader acts on, cut the one that changes nothing.
 
 ## Open with the answer
 
@@ -69,7 +69,7 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 
 ## Headings and structure
 
-- **Case** [Vercel, writing-guidelines]: "Sentence case for page headings (`H1` `H2` `H3`): 'Configure environment variables', not 'Configure Environment Variables'"; "Title case for nav labels: 'Configuring Environment Variables'". Vercel's interface guidelines say the opposite for headings and buttons, "Title Case for headings/buttons (Chicago style)" [Vercel, web-design-guidelines]. This repo keeps sentence case for headings ([TELLS.md](TELLS.md#5-formatting), [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#rules)); title-case nav labels fit its "one capitalization rule per element type".
+- **Case** [Vercel, writing-guidelines]: "Sentence case for page headings (`H1` `H2` `H3`): 'Configure environment variables', not 'Configure Environment Variables'"; "Title case for nav labels: 'Configuring Environment Variables'". Vercel's interface guidelines say the opposite for headings and buttons, "Title Case for headings/buttons (Chicago style)" [Vercel, web-design-guidelines]. This repo keeps sentence case for headings ([TELLS.md](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting), [MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md#rules)); title-case nav labels fit its "one capitalization rule per element type".
 - **Task headings** readers would search for. "Question headings help when the section answers a question; do not force every heading into a question." [c15t, writing-docs] Subheadings are descriptive, not cute: "Caveats when self-hosting on Cloudflare", not "Caveats"; never a single generic word (`Overview`, `Caveats`, `Notes`) [Vercel, writing-guidelines].
 - **Sections survive retrieval alone.** "Keep each explanation understandable when retrieved alone. Name the API, framework and condition rather than referring to 'the above'." [c15t, writing-docs]
 - **Terms** [Vercel, writing-guidelines]: "Acronyms spelled out on first use: 'Content Security Policy (CSP) blocks inline scripts'"; "Define every term the first time you use it (link to its conceptual page)".
@@ -82,7 +82,7 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 ## Lists
 
 [Vercel, writing-guidelines]
-- "Three or more list-shaped items in a paragraph: convert to a list". The other view: TELLS.md writes prose where two sentences read better than bullets ([Formatting](TELLS.md#5-formatting)). In docs, list steps, options and requirements; keep reasoning in prose.
+- "Three or more list-shaped items in a paragraph: convert to a list". The other view: TELLS.md writes prose where two sentences read better than bullets ([Formatting](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting)). In docs, list steps, options and requirements; keep reasoning in prose.
 - "Bulleted for unordered; numbered for ordered (lifecycles, sequential steps)".
 - "Always introduce a list with a colon".
 - "No periods at the end of list items unless they are full sentences".
@@ -111,7 +111,7 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 - "Minimal comments in code blocks; prefer prose explanation", and "Explain what every code block does in prose (don't drop and run)".
 - "Don't reference full example files at the end of guides ('See `train.py`'); the guide is the deliverable".
 - "Always use the latest model strings"; "Outdated model strings in examples" are an anti-pattern. (Vercel's rule names specific ids, left out here; check the provider's current list.)
-- Dates and numbers in samples go through `Intl.DateTimeFormat` and `Intl.NumberFormat`, not hard-coded formats ([MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#build-strings-whole-for-every-language)).
+- Dates and numbers in samples go through `Intl.DateTimeFormat` and `Intl.NumberFormat`, not hard-coded formats ([MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md#build-strings-whole-for-every-language)).
 
 ## Placeholders
 
@@ -124,10 +124,10 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 ## Units, emphasis and punctuation
 
 [Vercel, writing-guidelines]
-- "Space + uppercase unit: `64 KB`, `5 KB`, `200 ms`"; "Exception: seconds is bare: `30s`"; "Consistent across the corpus so readers can develop scanning habits". (`ms` is lowercase in Vercel's own example; `Intl`'s unit output, "12 MB" in [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#build-strings-whole-for-every-language), agrees on the space.)
+- "Space + uppercase unit: `64 KB`, `5 KB`, `200 ms`"; "Exception: seconds is bare: `30s`"; "Consistent across the corpus so readers can develop scanning habits". (`ms` is lowercase in Vercel's own example; `Intl`'s unit output, "12 MB" in [MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md#build-strings-whole-for-every-language), agrees on the space.)
 - "**Bold** means UI element or critical fact, never emphasis-for-emphasis-sake"; "Reaching for bold for tone: the sentence is weak; rewrite it".
 - "`Inline code` for paths, file extensions, identifiers, short snippets: `/api`, `.tsx`, `body`, `query`, `req`". "Rule: if it would look weird without a monospace font, monospace it".
-- Em dashes: Vercel never uses em dashes "or dashes (`-`) as punctuation; use colons, commas, periods, or rephrase". The other view: TELLS.md allows one or two in long text ([Formatting](TELLS.md#5-formatting)). In docs, take Vercel's stricter rule.
+- **Owner punctuation rule:** no em or en dashes anywhere in this repository; use " - ", commas or "to" [Owner writing rule]. Vercel's stricter docs view never uses em dashes "or dashes (`-`) as punctuation; use colons, commas, periods, or rephrase" [Vercel, writing-guidelines]. The old line said "TELLS.md allows one or two in long text"; that permissive old rule is retained as a disagreement in [Formatting](../../anti-ai-slop/anti-slop-writing/TELLS.md#5-formatting), not the active owner rule.
 - "Curly quotes", "Ellipsis `…`, not three dots `...`", "Loading states end with `…`", "Non-breaking spaces in `10&nbsp;MB`, `⌘&nbsp;K`, brand names", "`&` over 'and' only where space-constrained (nav labels, buttons)".
 - Source formatting: "Don't hard-wrap paragraphs: each paragraph is one line in source, let the editor wrap"; "One blank line before headings; one blank line before and after code blocks"; "No `---` horizontal rules between sections"; "No extra blank lines between elements that aren't paragraph breaks".
 
@@ -164,7 +164,7 @@ The interface-text analogue is "tone by stakes" in [MICROCOPY.md](../anti-slop-c
 - Every public page is registered in the navigation config. Framework variants nest in one group (the framework selector reads it), every framework sidebar uses the same group order, and shared tabs follow the selector's order everywhere. "Do not flatten frameworks into separate root groups to shorten the config."
 - "Every exported vendor helper needs a discoverable guide", covering "configuration, registration, options, actual loading and revocation behavior, and verification".
 - "Give each framework its own usable example, including server/browser ownership and cleanup where needed. Do not send Nuxt readers to a plain Vue snippet or TanStack Start readers to a generic React provider. Check that all tabs survive Markdown conversion so agents receive the same framework coverage."
-- "Avoid thin framework duplicates, keyword repetition and unsupported comparisons. Use factual titles, unique descriptions and descriptive link text." Link text: [MICROCOPY.md](../anti-slop-copy/MICROCOPY.md#rules), "Links say where they go".
+- "Avoid thin framework duplicates, keyword repetition and unsupported comparisons. Use factual titles, unique descriptions and descriptive link text." Link text: [MICROCOPY.md](../../anti-ai-slop/anti-slop-copy/MICROCOPY.md#rules), "Links say where they go".
 
 ## Moving and removing pages
 
@@ -225,4 +225,4 @@ Vercel's review output, one line per finding, grouped by file: `file:line - issu
 - No placeholder matches `<TOKEN>`, `xxx`, `your-token` or `ABC123`; no code fence lacks a language tag; no snippet runs past 25 lines without prose.
 - Every moved or removed route has a row and a permanent redirect, and no redirect target carries a fragment that would drop the old anchor.
 - The generated Markdown was read, and the report says which examples were compiled, run in a browser, or only checked against source.
-- The prose passed [CHECK.md](CHECK.md).
+- The prose passed [CHECK.md](../../anti-ai-slop/anti-slop-writing/CHECK.md).

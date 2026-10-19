@@ -51,7 +51,7 @@ The usual: lint, type checks, tests on every platform, and a build. A typical CL
 - **A Lighthouse CI gate** posts its own GitHub status check; make that check required, and drop the `|| echo` its GitLab example ends with. Tokens and setup: [LIGHTHOUSE-CI.md](../../backend/performance-and-caching/LIGHTHOUSE-CI.md#upload-tokens-and-status-checks).
 
 - **The PR template asks how the change was tested and how to undo it,** under the headings "Testing", "Risk" and "How to revert". The agent can fill it in, but the person who asked for the change signs off on it.
-- **A duplication gate** ([ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)): Deslop (the tool is in the `anti-slop-code` skill's RULES.md) fails the step with exit code 3 above the ceiling, naming the measured percentage and the ceiling. `only-changed` reports only clusters the diff touches, so legacy duplication doesn't block every PR; `upload-artifact` keeps the HTML report. It posts no PR comment: read the `duplication-percent` step output and post it yourself. "Pin the version. Do not float on a tag."
+- **A duplication gate** ([ApparenceKit](https://apparencekit.dev/blog/deslop-duplicate-code-flutter/)): Deslop (the tool is in [refactoring/DUPLICATION.md](../refactoring/DUPLICATION.md#deslop)) fails the step with exit code 3 above the ceiling, naming the measured percentage and the ceiling. `only-changed` reports only clusters the diff touches, so legacy duplication doesn't block every PR; `upload-artifact` keeps the HTML report. It posts no PR comment: read the `duplication-percent` step output and post it yourself. "Pin the version. Do not float on a tag."
 
 ```yaml
 name: deslop

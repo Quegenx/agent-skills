@@ -131,7 +131,7 @@ Source: [Jakub Krehel, interface-review]. "Regressions are invisible in the post
 | `:focus-visible`, `:focus`, `outline`, `tabindex` | web-accessibility | Keyboard users lost the focus indicator or the element left the tab order |
 | `prefers-reduced-motion` | web-accessibility | Motion now ignores the user's system preference |
 | `prefers-contrast` | [color-system](../../frontend/color-system/SKILL.md) | Colors now ignore the user's contrast preference |
-| Logical properties swapped for `left` / `right` | [anti-slop-ui RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md), with its exceptions (centring with `left: 50%` and a translate, code blocks, parts measured in physical pixels at runtime) | Direction-aware layout was dropped |
+| Logical properties swapped for `left` / `right` | [modern-css RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md), with its exceptions (centring with `left: 50%` and a translate, code blocks, parts measured in physical pixels at runtime) | Direction-aware layout was dropped |
 | `lang=`, `dir=` | [modern-css](../../frontend/modern-css/SKILL.md) | Language metadata or text direction was dropped |
 | `text-wrap`, `line-clamp`, `overflow-wrap`, `tabular-nums`, `font-feature-settings` | modern-css | Text rendering, wrapping or numeral alignment silently changed |
 | A color token swapped for a literal, or a token swapped for a lighter one | color-system | The rendered contrast pair may now fail; measure it |

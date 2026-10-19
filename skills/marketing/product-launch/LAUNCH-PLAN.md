@@ -94,7 +94,7 @@ Sending the invite and onboarding emails lawfully and reliably is [../../backend
 - **Space out releases:** stagger announcements instead of shipping everything at once.
 - **Reuse what worked** in earlier announcements.
 - **Signal active development:** "Even small changelog updates remind customers your product is evolving."
-- **Turning merged pull requests into the week's changelog, announcement drafts and the pages a change made wrong** (inputs, "You can now ___", grounding claims, the weekly digest with Keep a Changelog headings, drafts staged for review) is the copy skill's job: [../../anti-ai-slop/anti-slop-copy/SKILL.md](../../anti-ai-slop/anti-slop-copy/SKILL.md).
+- **Turning merged pull requests into the week's changelog, announcement drafts and the pages a change made wrong** (inputs, "You can now ___", grounding claims, the weekly digest with Keep a Changelog headings, drafts staged for review) is in [SHIPPED-CHANGES.md](SHIPPED-CHANGES.md).
 
 ## Checklist
 

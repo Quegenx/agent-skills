@@ -1,6 +1,6 @@
 # Document a canonical component
 
-Produce one draft entry from implementation, props, styles, stories and real consumers. Sources: the supplied `component-docs/SKILL.md` and `references/doc-format.md`, with registry and readiness context from `build-design-system/references/components.md`. General developer writing stays in [anti-slop-writing DOCS.md](../../anti-ai-slop/anti-slop-writing/DOCS.md).
+Produce one draft entry from implementation, props, styles, stories and real consumers. Sources: the supplied `component-docs/SKILL.md` and `references/doc-format.md`, with registry and readiness context from `build-design-system/references/components.md`. General developer writing stays in [developer-docs](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md).
 
 ## Establish the source contract
 

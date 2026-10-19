@@ -1,6 +1,6 @@
 # Navigation
 
-Navigation patterns for headers, footers, sidebars, breadcrumbs and mobile, from coreyhaines31/marketingskills' `site-architecture` (MIT, references/navigation-patterns.md), copied where quoted, with Google's crawlable-links doc and the WAI-ARIA breadcrumb pattern where they apply. The owner's own marketing header and footer are a house pattern with their own rules ([../../frontend/landing-page-ui/MOTION.md](../../frontend/landing-page-ui/MOTION.md#the-floating-header)); where the source disagrees, both views are below and the house pattern wins on those sites. Responsive navigation forks for app screens are in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE-FORKS.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE-FORKS.md#6-complex-navigation).
+Navigation patterns for headers, footers, sidebars, breadcrumbs and mobile, from coreyhaines31/marketingskills' `site-architecture` (MIT, references/navigation-patterns.md), copied where quoted, with Google's crawlable-links doc and the WAI-ARIA breadcrumb pattern where they apply. The owner's own marketing header and footer are a house pattern with their own rules ([../../frontend/landing-page-ui/MOTION.md](../../frontend/landing-page-ui/MOTION.md#the-floating-header)); where the source disagrees, both views are below and the house pattern wins on those sites. Responsive navigation forks for app screens are in [RESPONSIVE-FORKS.md](../../frontend/modern-css/RESPONSIVE-FORKS.md#6-complex-navigation).
 
 ## Navigation types
 

@@ -79,7 +79,7 @@ A hosted router in front of the whole domain puts the vendor's edge in front of 
 
 - Watch Search Console for 404s and coverage drops daily for two weeks, then weekly; fix missing redirects as they appear [coreyhaines31/marketingskills, site-architecture].
 - Compare traffic to the same period before, by page. "A dip of a few weeks can be normal; a sustained drop on specific pages usually means a missing redirect or lost content." Google also expects temporary ranking fluctuation during a move ([site move](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)).
-- Update internal links to the new URLs instead of relying on redirects: "Change the internal links on the new site from the old URLs to the new URLs" (same page). Docs sites follow the same rule ([../../anti-ai-slop/anti-slop-writing/DOCS.md](../../anti-ai-slop/anti-slop-writing/DOCS.md#moving-and-removing-pages)).
+- Update internal links to the new URLs instead of relying on redirects: "Change the internal links on the new site from the old URLs to the new URLs" (same page). Docs sites follow the same rule ([../../architecture/developer-docs/WRITING-AND-PUBLISHING.md](../../architecture/developer-docs/WRITING-AND-PUBLISHING.md#moving-and-removing-pages)).
 - Keep the redirects "for as long as possible", "generally at least 1 year" (same page).
 
 ## Prove it

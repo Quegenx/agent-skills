@@ -12,6 +12,7 @@ A color system is a few ramps, each step doing one job, named by role and measur
 | Choosing a notation, why OKLCH, channels and formatting, HSL hue drift, converting and bulk conversion, `color-mix()` and relative color in tokens, gradient interpolation spaces | [FORMATS-AND-OKLCH.md](FORMATS-AND-OKLCH.md) |
 | Which ramps a system needs, the role of every step (Tailwind and Radix), white text on the solid fill, neutrals, status hues, the brand color, a correct ramp, culori, the chroma-percentage algorithm, scale labels, several hues at once | [PALETTES.md](PALETTES.md) |
 | Measuring the rendered pair, WCAG 2 and APCA thresholds, Lc's sign, fixing a pair through lightness, the lightness gap, text polarity, translucent and computed colors | [CONTRAST.md](CONTRAST.md) |
+| Compute WCAG 2 contrast between hex colors with unrounded pass/fail checks | [scripts/contrast.py](scripts/contrast.py) |
 | Primitive and semantic tiers, the role inventory, naming grammar and anti-patterns, tokens only in their role, one color one meaning, one filled action, culture | [TOKENS-AND-NAMING.md](TOKENS-AND-NAMING.md) |
 | The dark palette, the switching mechanism, increased contrast per appearance, gamut, max chroma by L and H, the clamp, P3 as an enhancement, hex fallbacks | [DARK-MODE-AND-GAMUT.md](DARK-MODE-AND-GAMUT.md) |
 | Tailwind v4's OKLCH palette and 11 steps, a scale in `@theme`, semantic tokens and the doubled utility, `.dark` and `@theme inline`, the opacity modifier, migrating a hex theme | [TAILWIND.md](TAILWIND.md) |

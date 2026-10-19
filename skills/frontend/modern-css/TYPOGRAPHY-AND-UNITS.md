@@ -1,6 +1,6 @@
 # Typography and units
 
-Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`), drop caps, rhythm that follows the writing mode, `text-wrap: balance` and its limits, `text-box` trimming, the variable-font `GRAD` axis for dark mode and contrast, `text-grow`, `text-emphasis-style`, and the emoji naming convention for custom names. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN and web-features (checked 2026-10-17). Code is copied from the posts; where a post's code is wrong today, the corrected form is given with the MDN link and the change is named. Spacing by line and text measure for whole layouts are in [../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md); SVG text is in [../svg/SHAPES-AND-TEXT.md](../svg/SHAPES-AND-TEXT.md).
+Line-based and font-based units (`lh`, `rlh`, `cap`, `rcap`, `rch`, `rex`, `ric`), drop caps, rhythm that follows the writing mode, `text-wrap: balance` and its limits, `text-box` trimming, the variable-font `GRAD` axis for dark mode and contrast, `text-grow`, `text-emphasis-style`, and the emoji naming convention for custom names. Source: Adam Argyle's nerdy.dev posts and notes, with current support from MDN and web-features (checked 2026-10-17). Code is copied from the posts; where a post's code is wrong today, the corrected form is given with the MDN link and the change is named. Spacing by line and text measure for whole layouts are in [RESPONSIVE.md](RESPONSIVE.md); SVG text is in [../svg/SHAPES-AND-TEXT.md](../svg/SHAPES-AND-TEXT.md).
 
 ## Line-height units: lh and rlh
 
@@ -51,7 +51,7 @@ h1 {
 ```
 
 - **Root-relative versions: `rcap`, `rch`, `rex`, `ric`, `rlh`.** They are the font-relative units measured on the root element ("Even more typographic precision"). In 2023 Adam only "asked about `rcap`"; it now exists. Support: `rcap`, `rch`, `rex` and `ric` are Baseline newly available since 2026-01-13 (Chrome 118 for `rcap`, 111 for the others; Firefox 147; Safari 17.2; [MDN `<length>`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length)). [nerdy.dev: CSS Recently In All Browsers](https://nerdy.dev/CSS-recently-in-all-browsers) (2026-04-26), [nerdy.dev: New CSS Relative Units](https://nerdy.dev/new-relative-units-ric-rex-rlh-and-rch)
-- **`ic` is the advance of the "水" glyph** (the CJK water ideograph): size CJK measure and gaps in `ic` the way Latin measure uses `ch`. Baseline widely available (newly 2022-10-03, widely 2025-04-03; [MDN `<length>`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length)). No nerdy.dev source covers it; it is the owner's rule in anti-slop-ui ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#units)).
+- **`ic` is the advance of the "水" glyph** (the CJK water ideograph): size CJK measure and gaps in `ic` the way Latin measure uses `ch`. Baseline widely available (newly 2022-10-03, widely 2025-04-03; [MDN `<length>`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length)). No nerdy.dev source covers it; it is the owner's rule in anti-slop-ui ([RESPONSIVE.md](RESPONSIVE.md#units)).
 - **"54 CSS length units"** was the count in January 2023 ("And I don't think we're done yet!"); the count was not re-checked. A quiz demo is on CodePen (oNxbNzy, not exported). [nerdy.dev: New CSS Relative Units](https://nerdy.dev/new-relative-units-ric-rex-rlh-and-rch)
 - **Query by reading length in `ch`:** a container query pattern switches from an inline flex layout to a centered block layout "based on available reading length for the text", and Adam likes `ch` for it "since I'm wanting to switch based on available reading length for the text". The note has no code. Container queries are in [QUERIES-AND-PREFERENCES.md](QUERIES-AND-PREFERENCES.md). [nerdy.dev: A CSS Container Query Pattern](https://nerdy.dev/a-css-container-query-pattern)
 - **A Blink layout-unit observation:** the note reports `33554432px` and links Chromium's `layout_unit.h` and Bramus on Mastodon. Our old line presented it as the maximum CSS length generally; supported numeric ranges and precision are implementation dependent, so do not apply it to every engine or property. [nerdy.dev: Max Value Of A CSS Length Layout Unit](https://nerdy.dev/max-value-of-a-css-length-layout-unit) (2026-08-05), [CSS Values: Numeric types](https://drafts.csswg.org/css-values-4/#numeric-types)
@@ -68,7 +68,7 @@ h1, h2, h3 {
 
 - **Balance has a line limit.** MDN: `balance` "is only supported for blocks of text spanning a limited number of lines (six or less for Chromium and ten or less for Firefox)" (same MDN page). Longer text wraps normally.
 - **Pitfall: the box does not shrink to the balanced lines.** "After text wraps, text balances, flex wraps, etc... there aren't any great ways to have the inline space of the container shrink to fit to the longest wrapped row." A balanced heading in a bordered or filled box keeps extra space at the inline end. Open since 2016 (csswg-drafts #191; [Kizu's write-up](https://kizu.dev/shrinkwrap-problem/)). [nerdy.dev: CSS Wishlist 2025](https://nerdy.dev/css-wishlist-2025) (2024-12-17)
-- The nerdy.dev sources give no rule for `text-wrap: pretty`; anti-slop-ui puts `pretty` on paragraphs, list items and captions ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)). `pretty` is not Baseline: Chrome 117 and Safari 26, not Firefox (browser-compat-data `css.properties.text-wrap.pretty`); where it is unsupported text wraps normally. The Baseline banner above covers the property, not this value. The Text Wrap episode of The CSS Podcast (ep 84) covers the shorthand. [nerdy.dev: The CSS Podcast On Text Wrap](https://nerdy.dev/the-css-podcast-on-text-wrap)
+- The nerdy.dev sources give no rule for `text-wrap: pretty`; anti-slop-ui puts `pretty` on paragraphs, list items and captions ([RESPONSIVE.md](RESPONSIVE.md)). `pretty` is not Baseline: Chrome 117 and Safari 26, not Firefox (browser-compat-data `css.properties.text-wrap.pretty`); where it is unsupported text wraps normally. The Baseline banner above covers the property, not this value. The Text Wrap episode of The CSS Podcast (ep 84) covers the shorthand. [nerdy.dev: The CSS Podcast On Text Wrap](https://nerdy.dev/the-css-podcast-on-text-wrap)
 
 ## text-box: trim the font's inner spacing
 
@@ -88,7 +88,7 @@ h1, p, button {
 }
 ```
 
-- app-ui trims only h1 and h2, inside `@supports` ([../app-ui/TOKENS.md](../app-ui/TOKENS.md)), and anti-slop-ui puts it "on large headings" ([RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md)).
+- app-ui trims only h1 and h2, inside `@supports` ([../app-ui/TOKENS.md](../app-ui/TOKENS.md)), and anti-slop-ui puts it "on large headings" ([RESPONSIVE.md](RESPONSIVE.md)).
 
 ## Variable fonts: GRAD for dark mode and contrast
 

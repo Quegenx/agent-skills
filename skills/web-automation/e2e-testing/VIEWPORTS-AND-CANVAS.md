@@ -1,12 +1,12 @@
 # Viewports, container widths and canvases
 
-Which screen sizes to check, how to see several widths at once, how to test a container query in a test, and how to prove a WebGL canvas drew something and that the page still works without it. Sources: [responsive-craft] (its testing checklist and preview tool, MIT), [flornkm, prefer-container-queries] (MIT), [webdown-a, 3d-site] (its implementation checklist and scene verification) and [flornkm, webgl-components] (MIT). Fixed-width containers for one component's worst cases are in [WORST-CASE-DATA.md](WORST-CASE-DATA.md); the owner's responsive rules are in [anti-slop-ui RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md).
+Which screen sizes to check, how to see several widths at once, how to test a container query in a test, and how to prove a WebGL canvas drew something and that the page still works without it. Sources: [responsive-craft] (its testing checklist and preview tool, MIT), [flornkm, prefer-container-queries] (MIT), [webdown-a, 3d-site] (its implementation checklist and scene verification) and [flornkm, webgl-components] (MIT). Fixed-width containers for one component's worst cases are in [WORST-CASE-DATA.md](WORST-CASE-DATA.md); the owner's responsive rules are in [modern-css RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md).
 
 ## Viewport sizes
 
 - **A 3D or media-heavy page** [webdown-a, 3d-site]: its four sizes and per-size checks are in [webgl LAUNCH-SITES.md](../../frontend/webgl/LAUNCH-SITES.md#prove-it).
 - **A wider width list** [responsive-craft], in its priority order: 390, 360, 1920, 768, 1366, 375, 1024, 320, 430, 1440. The source ranks them by market share without naming where the figures come from, so only the widths are kept here.
-- **Between the widths** [responsive-craft]: drag from 280px to 2560px instead of jumping between breakpoints; the quotes and the real-phone caveat are in [anti-slop-ui RESPONSIVE-FORKS.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE-FORKS.md#prove-it).
+- **Between the widths** [responsive-craft]: drag from 280px to 2560px instead of jumping between breakpoints; the quotes and the real-phone caveat are in [modern-css RESPONSIVE-FORKS.md](../../frontend/modern-css/RESPONSIVE-FORKS.md#prove-it).
 - **At each width** [responsive-craft]: no horizontal scroll ("any at all is a failure"); text overflow from long words, URLs and usernames; images and media inside their boxes; navigation reachable; flex and grid wrapping where expected; positioned elements not overlapping or off-screen; modals, dropdowns and tooltips stacking correctly; sticky elements sticking without overlapping each other. The source also checks "44px minimum" touch targets; this repo's floor is 24px and a target between 24px and 44px is not reported as a failure ([web-accessibility HIT-AREAS.md](../../frontend/web-accessibility/HIT-AREAS.md)).
 
 ## Several widths side by side
@@ -38,7 +38,7 @@ test('card adapts in narrow container', async ({ page }) => {
 
 This is a component test, not a user journey: the project's journey rules (plain-language steps, no selectors) don't apply to it.
 
-Where to resize it (the narrowest real context, not mobile viewport widths) [flornkm, prefer-container-queries]: [anti-slop-ui RESPONSIVE.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE.md#a-fluid-scale-that-keeps-desktop-exact).
+Where to resize it (the narrowest real context, not mobile viewport widths) [flornkm, prefer-container-queries]: [modern-css RESPONSIVE.md](../../frontend/modern-css/RESPONSIVE.md#a-fluid-scale-that-keeps-desktop-exact).
 
 ## Did the canvas draw
 

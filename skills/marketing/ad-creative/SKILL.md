@@ -12,6 +12,7 @@ Ad creative fails on its inputs more often than on its writing: ungrounded gener
 | The job | Read |
 |---|---|
 | Character limits and sizes for Google RSA and PMax, Meta feed, Reels, Stories and lead forms, LinkedIn, TikTok and X, character counting, writing across platforms | [PLATFORM-SPECS.md](PLATFORM-SPECS.md) |
+| Primary-text formulas, search headline shapes, social hooks, CTAs by stage and test order | [COPY-FORMULAS.md](COPY-FORMULAS.md) |
 | Text-led headlines by awareness stage, six treatments, the evidence sheet, headline as the visual | [HEADLINES.md](HEADLINES.md) |
 | The hook as visual + spoken line + caption, the segment-to-hook pipeline and matrix, 13 opening moves, the diagnostic funnel, the on-ramp, fidelity laddering | [HOOKS.md](HOOKS.md) |
 | Which ads to make next: three signals, evidence tiers, exploration vs scaling, the roadmap and production tiers, the monthly retro, Ad Library and review research | [CREATIVE-ROADMAP.md](CREATIVE-ROADMAP.md) |

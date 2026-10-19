@@ -49,7 +49,7 @@ Its other principles: "Value Must Exceed Effort" (a clear value proposition abov
 
 ## Multi-step forms
 
-- **When** [coreyhaines31/marketingskills, cro]: "More than 5-6 fields", logically distinct sections, conditional paths, complex forms (applications, quotes). Another view, [anti-slop-ui/RESPONSIVE-FORKS.md](../../anti-ai-slop/anti-slop-ui/RESPONSIVE-FORKS.md): "Fill-once → stepped wizard (B) for 10+ fields, single column (A) for fewer". Both are heuristics; test the threshold.
+- **When** [coreyhaines31/marketingskills, cro]: "More than 5-6 fields", logically distinct sections, conditional paths, complex forms (applications, quotes). Another view, [modern-css/RESPONSIVE-FORKS.md](../../frontend/modern-css/RESPONSIVE-FORKS.md): "Fill-once → stepped wizard (B) for 10+ fields, single column (A) for fewer". Both are heuristics; test the threshold.
 - **Practices** [coreyhaines31/marketingskills, cro]: "Progress indicator (step X of Y) / Start with easy, end with sensitive / One topic per step / Allow back navigation / Save progress (don't lose data on refresh) / Clear indication of required vs. optional."
 - **Progressive commitment** [coreyhaines31/marketingskills, cro]: just email, then name and company, then qualifying questions, then contact preferences.
 - **Don't ask twice:** WCAG 2.2 SC 3.3.7 Redundant Entry (Level A) applies to every step; its wording is in [web-accessibility/FORMS.md](../../frontend/web-accessibility/FORMS.md#multi-step-forms-and-sign-in).
