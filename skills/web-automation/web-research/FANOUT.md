@@ -1,5 +1,7 @@
 # Setup, subagents and the fan-out
 
+Research orchestration from the Browserbase company, competitor and event workflows. Their profiles, templates and helpers are [upstream workspace prerequisites](COMPILER.md#source-workspace-prerequisite), not bundled assets. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+
 ## The pipeline shape
 
 - **One orchestrator, many research subagents:** the orchestrator does one-time setup and is the only one that talks to the user; subagents research in parallel and each writes one markdown file per entity (YAML frontmatter plus body sections); a deterministic Node script compiles the HTML views and a CSV.
@@ -10,10 +12,10 @@
 - **Keep one shared marketing context.** [browserbase/skills, company-research/SKILL.md; repository context convention] Read `.agents/product-context.md` as defined in [CONTEXT.md](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). The source's research profiles below are job artifacts, not a second definition of shared marketing context; confirm any run-specific ICP against that context instead of silently replacing it.
 - **Store one profile per company** at `profiles/{slug}.json`, the same shape for every research job: `company, website, product, icp_description, existing_customers[], competitors[], use_cases[], researched_at`. Competitor analysis adds `precise_category`, `category_include_keywords` and `exclusion_list` (COMPETITORS.md).
 - **Keep profiles out of git:** `.gitignore` with `profiles/*.json` and `!profiles/example.json`.
-- **A profile is a fact sheet:** Company, Product, Existing Customers, Competitors, Use Cases. Don't put the ICP, the pitch angle or sub-verticals in it; those are per-run targeting decisions.
+- **Two source profile views:** the serialized source shape above includes `icp_description`, while the fact-sheet guidance says not to put ICP, pitch angles or sub-verticals in the profile because targeting is per-run. Preserve that disagreement explicitly; do not silently remove a required source field or treat a saved ICP as the current run's confirmed targeting. Shared product context remains at its [existing owner](../../anti-ai-slop/anti-slop-copy/CONTEXT.md). [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
 - **Research the user's own company properly.** A thin profile produces generic search queries, weak lead scoring and cookie-cutter emails. The scoring spec those leads feed is [revops LEAD-SCORING.md](../../marketing/revops/LEAD-SCORING.md).
 - **Reuse with a confirm:** "I have your profile from {researched_at}. Still accurate?" If yes, skip self-research. For competitor analysis, still run the lane enrichment on the user's company so the matrix has fresh evidence.
-- **Resolve the profile without guessing** (event prospecting): an explicit `--user-company <slug>` first; otherwise list `profiles/*.json` excluding `example.json`. Exactly one: use it and say which. Several: ask. None: fail loudly with instructions. Never look outside the skill's `profiles/` folder, and never use `example.json`, which is a template.
+- **Resolve the profile without guessing** (event prospecting): an explicit `--user-company <slug>` first; otherwise list `profiles/*.json` excluding `example.json`. Exactly one: use it and say which. Several: ask. None: fail loudly with instructions. That fixed `profiles/` restriction belongs to the selected upstream workspace; this installed Markdown skill has no bundled profiles directory. Do not use `example.json` as a real company profile. [browserbase/skills, event-prospecting; upstream workspace inventory]
 
 ## Subagent prompts
 
@@ -22,10 +24,10 @@
 
 ## Tools and permission prompts
 
-- **Shell only in subagents** (Claude Code): subagents may use only Bash. WebFetch, WebSearch, Write, Read, Glob and Grep are banned, and using any one fails the run.
-- **One CLI for the web** (Browserbase `browse` CLI): every search goes through `browse cloud search`, every fetch through `browse cloud fetch` or the extractor script (EVIDENCE.md), never the built-in web tools.
-- **One Bash call is one permission prompt.** Batch all of a subagent's file writes into a single Bash call of chained heredocs, and chain searches and fetches with `&&`.
-- **Write files with a quoted heredoc delimiter** so the shell expands nothing, one delimiter per file kind (`COMPANY_MD`, `COMPETITOR_MD`, `PERSON_MD`, `BATTLE_MD`). Never the Write tool or `python3 -c`.
+- **Source benchmark tool profile:** the source's Claude Code run permits only Bash in its subagents and fails its benchmark on WebFetch, WebSearch, Write, Read, Glob or Grep. Keep that as a tagged source-run constraint, not an instruction to override the current user's required tools or repository instructions. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+- **Source CLI route:** Browserbase's workflow uses `browse cloud search` and `browse cloud fetch` or its extractor. The current user/repository tool contract takes precedence; see the canonical [search adapter](../web-scraping/WEB-SEARCH.md#research-cli-adapter) and [fetch adapter](../web-scraping/FETCHING.md#option-research-extractor-helper-vendor). [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+- **Source batching assumption:** the source equates one Bash call with one permission prompt and chains its work. Permission behavior depends on the active environment; preserve existing authorization and its required tools. Count the actual browse calls against the agreed budget when batching, rather than treating a batch as one paid request. [browserbase/skills, source permission workflow; user authorization and budget rules]
+- **Source shell-write form:** a quoted heredoc delimiter prevents shell expansion, one delimiter per file kind (`COMPANY_MD`, `COMPETITOR_MD`, `PERSON_MD`, `BATTLE_MD`). The source's prohibition on Write and `python3 -c` belongs to its benchmark profile above, not a general tool ban. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
 
 ```bash
 cat << 'COMPANY_MD' > {OUTPUT_DIR}/{slug}.md
@@ -33,8 +35,8 @@ cat << 'COMPANY_MD' > {OUTPUT_DIR}/{slug}.md
 COMPANY_MD
 ```
 
-- **Use full literal paths** (Claude Code): `~` and `$HOME` trigger "shell expansion syntax" approval prompts. Resolve the home directory once and replace `{SKILL_DIR}` with the literal path in subagent prompts.
-- **Offer a permanent allowlist** (Claude Code, `~/.claude/settings.json` under `permissions.allow`): `"Bash(browse:*)", "Bash(bunx:*)", "Bash(bun:*)", "Bash(node:*)", "Bash(cat:*)", "Bash(mkdir:*)", "Bash(sed:*)", "Bash(head:*)", "Bash(tr:*)", "Bash(rm:*)"`.
+- **Source permission profile uses full literal paths:** its Claude Code setup reports "shell expansion syntax" approval prompts for `~` and `$HOME`, resolves the home directory once and substitutes the literal `{SKILL_DIR}` path in subagent prompts. This is the source environment's observation, not a guarantee about every active permission system. [browserbase/skills, source permission workflow]
+- **Keep authorization scoped.** The source offered a permanent broad shell allowlist, including deletion. Do not make that a generic setup default. Use existing authorization; ask before unapproved destructive or outward-facing actions, and preserve user files and prior raw snapshots under the [cleanup boundary](COMPETITORS.md#the-pipeline). [browserbase/skills, source permission workflow; user standing rules]
 
 ## Depth modes
 
@@ -46,11 +48,11 @@ Company research:
 | deep | 2-3 sub-questions, 5-8 calls | about 50 companies |
 | deeper | 4-5 sub-questions, 10-15 calls | about 25 companies |
 
-Competitor analysis: quick runs lane 1 only for about 30-50 competitors; deep runs lanes 1 and 2 for about 15-25 and yields 5-10 mentions across source types; deeper runs all 4 lanes for about 5-15. Profiling one competitor (competitor-profiling) defaults the other way round: "Default to **quick scan** unless the user requests deep profiling or specifies a small number of competitors (3 or fewer)." Its quick scan is homepage and pricing plus a domain rank and ranked-keywords summary, skipping reviews, tech stack and backlink details; deep adds every key page, review sites, full backlinks and keywords, competitor discovery, tech stack, content strategy and review mining `[coreyhaines31/marketingskills, competitor-profiling]`.
+One competitor source variant says quick runs lane 1 for about 30-50 competitors, deep runs lanes 1 and 2 for about 15-25 with 5-10 mentions, and deeper runs all 4 lanes for about 5-15. The [current retained competitor workflow](COMPETITORS.md#lanes-and-the-merge) instead lists five research lanes plus a separate synthesis lane. State which tagged variant the run uses; these source estimates do not authorize extra lanes or calls. [browserbase/skills, competitor-analysis source variants] Profiling one competitor (competitor-profiling) defaults the other way round: "Default to **quick scan** unless the user requests deep profiling or specifies a small number of competitors (3 or fewer)." Its quick scan is homepage and pricing plus a domain rank and ranked-keywords summary, skipping reviews, tech stack and backlink details; deep adds every key page, review sites, full backlinks and keywords, competitor discovery, tech stack, content strategy and review mining `[coreyhaines31/marketingskills, competitor-profiling]`.
 
 ## Hard call caps
 
-- **Per entity:** competitor analysis caps quick at 3, deep at 8, deeper at 12 browse calls per competitor, with a per-lane budget in the fan-out of 5-8 (deep) and 10-15 (deeper). Event prospecting caps ICP triage at 1 call per company, deep research at 5 per company, and person enrichment at 4 per person (2 in deep mode, 4 in deeper).
+- **Existing per-entity competitor cap:** quick 3, deep 8, deeper 12 browse calls. A different source fan-out gives each lane 5-8 calls in deep and 10-15 in deeper; those independent budgets can exceed the entity cap and are not additive defaults. Keep the existing entity cap, including all research lanes, unless the user authorizes a concrete alternate budget. Do not invent new numeric lane allocations or extend the cap for missing evidence. Event prospecting's separate caps remain triage 1/company, deep research 5/company and person enrichment 2 in deep or 4 in deeper. [browserbase/skills, competitor-analysis and event-prospecting source variants; existing per-entity cap]
 - **Count in the call:** prepend a counter comment to every Bash call and reset N for each entity: `# browse call N/8 (deep mode)`, `# browse call N/{TOTAL}`, `# browse call N/5 (company: {slug})`, `# browse call N/{LANES} (person: {slug})`.
 - **At the cap, write what you have.** Never a 9th call in deep mode "to be thorough". If a lane fails, don't compensate with an extra call; in triage, don't make a second call to "save" a company. Partial output beats blocking the pipeline.
 - **Why it matters:** in one competitor run two lanes hit 29-30 calls each and took the wall clock of the whole 30-agent fan-out from 5 to 12 minutes.
@@ -83,9 +85,9 @@ Either way:
 ## Failures and counts
 
 - **A subagent fails: log it and continue.** If more than 50% of a wave fail, pause and tell the user.
-- **Missing content, two readings:** event prospecting still writes the file (`Unknown`, score 3 or less) because the file must exist for the compiler to render the row; company research skips the company and marks `product_description` as `Unknown`.
-- **Check counts after each fan-out:** `ls companies/*.md | wc -l` equals `wc -l seed_companies.txt`, and `grep -l "triage_only: false" ... | wc -l` equals `wc -l icp_fits.txt`.
+- **Missing content, two readings:** event prospecting writes an `Unknown` file with score 3 or less so its compiler can render a row; the company source also describes skipping a company while marking its description `Unknown`. Report which variant materialized a file and which inputs were skipped/failed. Do not apply the all-inputs-have-files acceptance rule to the skip variant. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+- **Check counts for the selected stage:** in the all-inputs-materialized variant, company files match the seed list and `triage_only: false` files match the fit list. For a source variant that skips inputs, record those omissions separately instead of claiming the same equality. Compiler name deduplication is a later stage with its own retained count. [browserbase/skills, count checks; COMPILER.md deduplication contract]
 
 ## Prove it
 
-The profile in use is named in chat and isn't `example.json`; shared marketing context remains `.agents/product-context.md`; every subagent prompt contains the profile fields and the literal output path; each subagent's calls carry a counter that never exceeds its cap; retained entity counts are checked against the requested deliverable and any shortfall is reported; each wave's file count matches its input list; a wave with more than half its subagents failed stopped and asked.
+The profile in use is named in chat and isn't `example.json`; shared marketing context remains `.agents/product-context.md`; every subagent prompt contains the profile fields and the literal output path; each subagent's calls carry a counter that never exceeds its cap; retained entity counts are checked against the requested deliverable and any shortfall is reported; each wave's materialized count matches the selected source variant, with skipped/failed inputs accounted for; a wave with more than half its subagents failed stopped and asked.

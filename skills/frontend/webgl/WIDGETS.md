@@ -147,7 +147,25 @@ python3 -m http.server 8000 --directory scripts
 ```
 
 - Expect the probe to report `FALLBACK`, then confirm every widget in your app shows its fallback, correctly clipped and painting nothing outside its frame. The two no-GPU states differ: `--disable-gpu` removes WebGL entirely, while the GUI toggle (Settings, System, "Use graphics acceleration when available", off, then restart) usually leaves a software rasterizer that the strict context refuses anyway. Both land on the fallback branch, and the GUI toggle is the exact state the affected users are in. (Chrome's flags and settings were not checked against Chrome's docs.)
-- The same checks inside a test suite (a stub that turns WebGL off, the nonblank-canvas read): [../../web-automation/e2e-testing/VIEWPORTS-AND-CANVAS.md](../../web-automation/e2e-testing/VIEWPORTS-AND-CANVAS.md).
+
+### Nonblank canvas proof
+
+[webdown-a, 3d-site] "Verify canvas has nonblack/nontransparent pixels after load"; the rest of its 3D checks (framing on resize, a missing asset, reduced motion, disposal) are in [LAUNCH-SITES.md](LAUNCH-SITES.md#prove-it).
+
+- **Read pixels in the same task as the draw, or from a screenshot.** Drawing-buffer lifetime is defined in [One context, many instances](#one-context-many-instances); later-task reads are not reliable proof of an empty render. The old test topic said they always read empty. [Khronos WebGL 1.0, section 2.2](https://registry.khronos.org/webgl/specs/latest/1.0/)
+
+### Verification with WebGL disabled
+
+Use the [fallback contract](#the-fallback-is-a-production-surface) during verification. [webdown-a, 3d-site; flornkm, webgl-components]
+
+- **A stub that turns WebGL off** (this repo's `drive.mjs --no-webgl`, [seek-engine isokit verify.md](../../videos/seek-engine/templates/isokit/references/verify.md)): every `getContext("webgl")` or `"webgl2"` returns `null`. Run it before the page's own scripts (an init script):
+
+  ```javascript
+  (()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...rest){if(/webgl/.test(String(kind)))return null;return get.call(this,kind,...rest)}})();
+  ```
+
+  Then check that the content still reads and each scene shows its fallback image or layout [webdown-a, 3d-site: "The content must remain usable if the scene system fails"].
+- **A real browser with no GPU, and a `forceFallback` prop for a healthy one** [flornkm, webgl-components]: the Chrome command and the docs-page demo are in [webgl WIDGETS.md](#verify-without-eyeballs) ([the fallback](#the-fallback-is-a-production-surface)).
 
 ## Prove it
 

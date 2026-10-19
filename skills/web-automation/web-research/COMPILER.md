@@ -1,8 +1,22 @@
 # Compiling the HTML views and CSV
 
+The Browserbase source compilers turn research artifacts into reports. This file documents their source contracts rather than supplying those programs. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+
+## Source workspace prerequisite
+
+The installed skill contains Markdown only: it does not bundle scripts, package manifests, profiles or report templates. Obtain and read the exact source resources for the selected job before using the commands below. Do not invent substitute helpers or assume source-relative paths resolve from this installed folder. [browserbase/skills, source workspace inventories]
+
+| Job | Exact source resources |
+| --- | --- |
+| Company research | [scripts](https://github.com/browserbase/skills/tree/main/skills/company-research/scripts), [profiles](https://github.com/browserbase/skills/tree/main/skills/company-research/profiles), [references/templates](https://github.com/browserbase/skills/tree/main/skills/company-research/references) |
+| Competitor analysis | [scripts](https://github.com/browserbase/skills/tree/main/skills/competitor-analysis/scripts), [references/templates](https://github.com/browserbase/skills/tree/main/skills/competitor-analysis/references) |
+| Event prospecting | [scripts](https://github.com/browserbase/skills/tree/main/skills/event-prospecting/scripts), [profiles](https://github.com/browserbase/skills/tree/main/skills/event-prospecting/profiles), [references/templates](https://github.com/browserbase/skills/tree/main/skills/event-prospecting/references) |
+
+These are existing source-workspace contracts, not fresh runtime certification of every helper. Inspect the exact obtained revision and preserve its version boundaries. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+
 ## The compiler
 
-- **No dependencies:** each `scripts/package.json` is private with `"type": "module"` and no dependencies; the scripts use only Node built-in modules.
+- **Source package metadata:** each source `scripts/package.json` is private with `"type": "module"` and no dependencies; the scripts use only Node built-in modules.
 - **The compiler never changes the `.md` files,** so after manual edits it can simply be re-run.
 - **The competitor compiler opens the output without a shell:** `execFileSync('open', [path])`, so a folder name with shell metacharacters can't break out into command execution. The company and event compilers use `execSync` with an interpolated string, the injection risk that avoids.
 - **The company and event compilers fill templates with a function replacer:** `.replace(/\{\{TABLE_ROWS\}\}/g, () => tableRows)`, so a `$` in content (a price string, say) isn't read as `$&`, `$1` or `$$`.
@@ -38,4 +52,4 @@ After compiling: the totals, the depth, the score distribution (8-10, 5-7, 1-4),
 
 ## Prove it
 
-Run the compiler twice on the same folder and diff the output; the CSV opens with one row per entity and a quoted field containing a comma survives; no company appears twice under a suffix variant ("Acme" and "Acme Inc"), and Cisco keeps its name; the user's company is absent from every competitor column; a price with `$` renders unchanged.
+After obtaining and inspecting the selected source compiler, run it twice on the same authorized folder and diff the output; the CSV opens with one row per entity and a quoted field containing a comma survives; no company appears twice under a suffix variant ("Acme" and "Acme Inc"), and Cisco keeps its name; the user's company is absent from every competitor column; a price with `$` renders unchanged.

@@ -1,10 +1,12 @@
 # Captured traffic to an OpenAPI spec
 
-**Contents:** [What it can and can't tell you](#what-it-can-and-cant-tell-you) · [Review the output for secrets](#review-the-output-for-secrets) · [Capture](#capture) · [Generate](#generate) · [Pipeline](#pipeline) · [Static generator limits](#static-generator-limits) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
+From [browserbase/skills, browser-to-api/SKILL.md and scripts], with its source-reading limitations below. A site's own pages call its API; the Browserbase generator turns recorded request/response pairs into a best-effort OpenAPI 3.1 document, client and report offline. The generator needs Node 18+ and the standard library. The shared [observed API environment boundary](CAPTURES-AND-EVIDENCE.md#project-an-observed-api-environment) remains separate from a complete server contract.
 
-A site's own pages call its API; record that traffic while you drive the flows you care about, then turn the request and response pairs into an OpenAPI 3.1 spec, a client and a report, offline. The tools are Browserbase's `browse` CLI with the `browser-trace` capture, and the `browser-to-api` generator (Node 18+, standard library only).
+**Contents:** [What it can and can't tell you](#what-it-can-and-cant-tell-you) · [Review the output for secrets](#review-the-output-for-secrets) · [Source prerequisites](#source-prerequisites) · [Capture](#capture) · [Generate](#generate) · [Pipeline](#pipeline) · [Static generator limits](#static-generator-limits) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
 ## What it can and can't tell you
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 - **Coverage is the flows you drove.** A trace cannot prove the API is complete; drive every flow you want documented.
 - **Schemas are inductive, not contractual:** they describe the samples seen.
@@ -14,9 +16,21 @@ A site's own pages call its API; record that traffic while you drive the flows y
 
 ## Review the output for secrets
 
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
 **The generated client copies raw header values.** The client's default headers include any non-standard header present in more than 50% of samples, with the **raw first observed value**, written into `client.mjs`, and the HTML report embeds `client.mjs`. Only `cookie`, `authorization`, `x-api-key` and standard headers are skipped, so CSRF tokens, `x-*-token`, session and signature headers reach the generated client unredacted, even though the redaction step would have redacted them in the spec. Before sharing or committing `client.mjs` or `index.html`, search them for tokens, session IDs and signatures, and replace the values.
 
+## Source prerequisites
+
+[browserbase/skills, browser-to-api/SKILL.md; browser-to-api/scripts/discover.mjs]
+
+This Markdown skill does not install the [browser-to-api generator and modules](https://github.com/browserbase/skills/tree/main/skills/browser-to-api/scripts) or the sibling [browser-trace scripts](https://github.com/browserbase/skills/tree/main/skills/browser-trace/scripts). Commands below are source-layout examples: inspect the obtained upstream workspace and installed `browse` contract before using them. Do not execute these paths as if the helpers shipped beside this file.
+
+The [browser-automation capture workflow](../../web-automation/browser-automation/RUN-TRACING.md#capture) owns the tracer setup and run lifecycle. The example below preserves this generator's body-snapshot and input-layout prerequisites, rather than defining another generic observer. Use only authorized traffic and review private captures before sharing. [browserbase/skills, browser-to-api/SKILL.md; existing browser capture owner]
+
 ## Capture
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 ```bash
 TARGET=9222
@@ -36,7 +50,9 @@ node ../browser-trace/scripts/bisect-cdp.mjs my-site
 
 ## Generate
 
-`node scripts/discover.mjs --run .o11y/my-site`, then open `.o11y/my-site/api-spec/index.html`, the self-contained HTML report that is the main deliverable. Read `report.md` first for curl examples.
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
+In the inspected upstream generator workspace, `node scripts/discover.mjs --run .o11y/my-site` writes the outputs below. Read `report.md` as text first. Before opening or sharing `index.html`, review credentials in the client/report and the [output-encoding defect](#static-generator-limits); only view the HTML after that boundary is safe. The old source instructed opening the report immediately. [browserbase/skills, browser-to-api/SKILL.md; scripts/discover.mjs; scripts/emit.mjs]
 
 | Flag | Default | Meaning |
 |---|---|---|
@@ -56,7 +72,11 @@ An unknown argument exits with code 2. Outputs: `index.html`, `client.mjs` (zero
 
 ## Pipeline
 
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
 ### Load: pair requests with responses
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 - **Pairing is only by CDP requestId.** The source keeps the last response for that ID and can attach it to an earlier request in a redirect chain. It does not build a verified hop-by-hop request/response join; inspect the original events and body correspondence before treating redirected observations as an endpoint contract. The old line described the terminal response as an adequate pairing guarantee. [browserbase/skills, browser-to-api/scripts/load.mjs; https://chromedevtools.github.io/devtools-protocol/tot/Network/#event-requestWillBeSent]
 - **Drop** `OPTIONS`, `data:` and `blob:` URLs, and 3xx responses.
@@ -71,12 +91,16 @@ An unknown argument exits with code 2. Outputs: `index.html`, `client.mjs` (zero
 
 ### Filter: drop noise
 
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
 At the filter stage, `--origins` gates everything (host equal or a `.`-suffix match), a user `--exclude` wins, and `--include` can rescue that stage's default excludes. It cannot restore rows dropped by load, override origin/user exclusions or prevent the later normalize stage from discarding page/noise classifications. The old troubleshooting claim said --include bypassed filtering globally. [browserbase/skills, browser-to-api/scripts/discover.mjs, scripts/filter.mjs, scripts/normalize.mjs]
 
 - **Default excludes:** segment, mixpanel, google-analytics, googletagmanager, datadog(hq), sentry.io, amplitude, fullstory, hotjar, intercom.io, clarity.ms, cloudflareinsights, doubleclick, facebook.com/tr.
 - **Static files:** `png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|otf|css|map|mp4|webm|mp3|m4a`, plus `/sw.js`, `/service-worker.js`, `/manifest.json`, `/robots.txt`, `/favicon.ico`.
 
 ### Normalize: group into endpoints
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 - **Template paths in two passes:** per segment first, then across each bucket's raw paths for slugs; group by `(method, origin, template)`.
 - **Path segment rules:** `v\d+`, `api`, `graphql`, `rest`, `public`, `private`, `me`, `self` are never templated. UUID v1 to v5 becomes `{id}` (string, uuid); all digits `{id}` (integer); hex of 8+ characters `{id}` (string); base62 of 8+ characters **with uppercase, lowercase and a digit** `{id}` (string). In the second pass, a column that varies across same-length paths where every value matches `^[A-Za-z0-9_-]+$` becomes `{slug}`. Repeats are numbered `{id}`, `{id2}`, with one shared counter, so `{slug2}` can follow `{id}`. (The docs describe looser base62 and "short alpha" slug rules; this is what the code does.)
@@ -87,6 +111,8 @@ At the filter stage, `--origins` gates everything (host equal or a `.`-suffix ma
 
 ### Infer: schemas from samples
 
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
 - **Merge:** a field is required when present in all non-null samples; types are unioned (integer and number kept apart); `[t, 'null']` when nullable; mixed types become a type array (valid in OpenAPI 3.1).
 - **Formats** when at least 80% of strings match, checked in order: uuid, date-time, uri, email.
 - **Enums** only when at most 8 distinct values over at least 5 samples, **and** distinct values ≤ max(2, floor(n/2)); otherwise every distinct ID across N samples would look like an N-way enum. (The docs state only the first condition.)
@@ -94,6 +120,8 @@ At the filter stage, `--origins` gates everything (host equal or a `.`-suffix ma
 - **Observed auth headers:** `authorization`, `x-api-key`, any `*token*`, `^x-.*-auth`.
 
 ### Redact
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 - **Headers:** `authorization`, `cookie`, `set-cookie`, `x-csrf-token`, `x-xsrf-token`, `x-api-key`, `proxy-authorization`, plus any matching `/token/i`, `/secret/i`, `/signature/i`, `/session/i`.
 - **Body keys** (case-folded, `_` and `-` removed): `password`, `token`, `secret`, `api_key`/`apikey`, `accesstoken`, `refreshtoken`, `creditcard`, `ssn`.
@@ -103,21 +131,27 @@ At the filter stage, `--origins` gates everything (host equal or a `.`-suffix ma
 
 ### Emit
 
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
 - **Confidence:** `low` with 2 or fewer samples or any flag; `high` with 10+ samples and 2+ statuses; else `medium`.
 - **Components** are hoisted by a stable structural hash when referenced twice or more, or when the object has 4+ properties; named from the last static path segment (`Request` suffix for request bodies) or the property key, falling back to `Schema<n>`, with `_<n>` on collisions.
 - **`operationId`:** `<method>_<path tokens>` or `<method>_<OpName>`. `requestBody` only for POST, PUT, PATCH, DELETE. Each status gets a default description; the example attaches to the first status only.
 - **Extensions:** `x-confidence {samples, statusCodes, normalizationFlags, confidence}`, `x-sample-count`, `x-observed-auth`, `x-origin`, `x-also-served-from` (the same method and path on several origins keeps the one with more samples).
 - **`servers`** sorted by sample count; title `<host> (discovered)`; `info.version` `0.1.0-discovered`.
-- **`client.mjs`:** `BASE`, default headers (`Content-Type: application/json`, a fixed Chrome 136 user agent, and the frequent non-standard headers above), a `request()` that throws on `!res.ok` and parses JSON by content type. Persisted-query GraphQL gets a `HASHES` table and `extensions.persistedQuery {version: 1, sha256Hash}`.
+- **`client.mjs`:** `BASE`, default headers (`Content-Type: application/json`, the frequent non-standard headers above, and a source-generated browser identity header that must not be used for impersonation), a `request()` that throws on `!res.ok` and parses JSON by content type. Persisted-query GraphQL gets a `HASHES` table and `extensions.persistedQuery {version: 1, sha256Hash}`.
 - **YAML without a library:** quote anything that could re-parse differently: reserved words (`true`, `false`, `null`, `yes`, `no`, `on`, `off`, `~`, plus `True`, `False`, `Null`, `TRUE`, `FALSE`, `NULL`), numeric-looking strings, a first character from the YAML 1.2 indicators `` , [ ] { } # & * ! | > ' " % @ ` ``, or a leading `- ? :`; strings with `'` or newlines become double-quoted JSON strings.
 
 ### Known report quirks
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 - The HTML report labels every card's method `POST`, and labels the protocol "GraphQL (APQ)" whenever any decomposed operation exists; check methods in `openapi.yaml`.
 - Redirect 3xx responses are dropped, not recorded on the next request as the docs say.
 - The reference docs describe an `open-swagger-ui.mjs` script that is not shipped; use `index.html`.
 
 ## Static generator limits
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 These are source-reading defects in the supplied generator, not an executed validation result or permission to rewrite it. [browserbase/skills, browser-to-api/scripts/emit.mjs, scripts/lib/schema-merge.mjs]
 
@@ -132,14 +166,18 @@ The shared HTML and JSON-in-HTML boundary is defined in [secure-coding/CATALOG.m
 
 ## Troubleshooting
 
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
+
 | Symptom | Cause and fix |
 |---|---|
-| `paired.jsonl` empty | The trace has no XHR or Fetch `Network.requestWillBeSent`; exercise dynamic flows (static-only sites yield nothing) |
+| `paired.jsonl` empty | Inspect recorded requests and the load-stage method/URL/status gates. The loader retains XHR, Fetch, Document and API-shaped URLs; absence of XHR/Fetch alone does not explain empty paired output. The old line incorrectly said static-only sites yielded nothing. [browserbase/skills, browser-to-api/scripts/load.mjs] |
 | `paths: {}` | Inspect each saved pipeline stage and its drop reason; --include only affects its documented filter-stage branch, not load/normalization or origin/user exclusions |
 | Over-aggressive templating | `--exclude` the noisy paths |
 | Everything `type: "string"` | Bodies aren't JSON or weren't captured; check `reqBody` and `respBody` in `paired.jsonl` |
-| Validator rejects `info.version` `0.1.0-discovered` | Edit it after generation |
+| Validator rejects `info.version` `0.1.0-discovered` | Inspect the validator or consumer's documented restriction. OpenAPI 3.1.1 defines this as a required string distinct from the `openapi` specification version; that field definition does not prohibit this value. The old advice prescribed editing without naming a restriction. [https://spec.openapis.org/oas/v3.1.1.html#info-object] |
 
 ## Prove it
+
+[browserbase/skills, browser-to-api/SKILL.md and scripts]
 
 `report.md` lists an endpoint for every flow you drove and none for analytics or static files; `--min-samples 2` leaves the endpoints you care about; response schemas have real types (not all strings), which shows bodies were captured. A search of `client.mjs`, `index.html` and `samples/` for the token, cookie and session values from the capture finds none. Path parameters and origins match the intended request, nullable/date formats describe the samples, and report interpolation is safe before the HTML is opened or shared. State unperformed validation rather than claiming a runnable complete client. [browserbase/skills, browser-to-api/scripts/emit.mjs, scripts/lib/schema-merge.mjs]

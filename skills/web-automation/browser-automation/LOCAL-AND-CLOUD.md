@@ -21,16 +21,18 @@
 - Reuse the installed browser harness before adding another. When a debug port has several pages, select the requested app by a positive stable marker, with an exclusion marker when needed; tab order alone is not identity.
 - If no page matches, report the available titles and URLs instead of choosing the first tab. Keep selectors, ports and script paths tied to the current repository, and leave sessions you did not create running.
 - Playwright documents its Chromium CDP attach path as lower fidelity than a Playwright-protocol connection. Check the installed version and browser support before relying on advanced behavior; an attached browser is not a promise of equivalent capabilities. [Playwright BrowserType.connectOverCDP](https://playwright.dev/docs/api/class-browsertype#browser-type-connect-over-cdp)
-- Chrome 136+ does not honor remote debugging on the default Chrome data directory; use a separate user data directory for debugging. The source's normal-profile fallback is stale for that contract. [Chrome remote debugging change](https://developer.chrome.com/blog/remote-debugging-port); [bgauryy/octocode, octocode-chrome-devtools/scripts/open-browser.mjs]
+- Chrome 136+ does not honor the command-line remote-debugging switches on the default Chrome data directory; use a separate user data directory for that route. The consent-based existing-profile route is described in [SIGNED-IN-SESSIONS.md](SIGNED-IN-SESSIONS.md#enabling-remote-debugging). The source's normal-profile fallback is stale for that contract. [Chrome remote debugging change](https://developer.chrome.com/blog/remote-debugging-port); [bgauryy/octocode, octocode-chrome-devtools/scripts/open-browser.mjs]
 
 ## Local versus Browserbase (vendor)
 
 | | Local | Browserbase |
 |---|---|---|
-| Speed | Faster | Slightly slower |
+| Speed | Source describes it as faster; no measured guarantee | Source describes it as slightly slower; no measured guarantee |
 | Needs | Chrome installed | API key |
-| Cookies and auth across runs | No | Persist through contexts |
-| Parallel tasks | One at a time | Up to 20+ |
+| Cookies and auth across runs | Attached mode reuses the selected profile; isolated mode starts clean | Persist through contexts |
+| Parallel tasks | Separate named daemon sessions are supported | Limited by the project's configured concurrency |
+
+The old comparison said local authentication never persisted and local work was always serial, while cloud allowed "20+". Those are not universal limits: mode and session ownership matter. Read project concurrency rather than copying that number. [browserbase/skills, browser]; [Browserbase project-concurrency example](https://docs.browserbase.com/integrations/vercel/quickstart)
 
 ## Modes in the `browse` CLI (vendor)
 
@@ -43,8 +45,8 @@
 
 ## Cloud session lifecycle (Browserbase)
 
-- **A session ends as soon as its last CDP client disconnects.** Create it with `--keep-alive` and attach the real automation to its `connectUrl` before or together with any observer, or the session dies when a short-lived client closes.
-- **Keep-alive sessions persist until explicitly closed and consume resources.** Release them: `browse cloud sessions update "$SESSION_ID" --status REQUEST_RELEASE`.
+- **Without keep-alive, a session ends when its CDP connection closes.** Create it with `--keep-alive` when it must survive disconnects, and attach the real automation to its `connectUrl` before or together with any observer. The old line omitted the keep-alive condition. [Browserbase keep alive](https://docs.browserbase.com/platform/browser/long-sessions/keep-alive)
+- **Keep-alive sessions persist across disconnects until released or their session timeout, and consume resources.** Release them when done: `browse cloud sessions update "$SESSION_ID" --status REQUEST_RELEASE`. The old wording omitted the timeout. [Browserbase keep alive](https://docs.browserbase.com/platform/browser/long-sessions/keep-alive)
 - **Release only sessions you own.** Never end a production worker's session you attached to for debugging.
 - **List running sessions client-side;** there is no `--status` flag: `browse cloud sessions list | jq -r '.[] | select(.status == "RUNNING") | .id'`.
 - **A session hitting `--timeout` ends mid-run.** Raise the timeout when creating it (the tracing wrapper reads `BB_SESSION_TIMEOUT`, default 600 s, for example `1800`).

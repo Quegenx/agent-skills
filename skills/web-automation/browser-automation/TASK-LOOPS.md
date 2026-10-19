@@ -4,7 +4,9 @@
 
 ## The pattern
 
-An inner agent runs the task in a browser; an outer agent reads the trace, changes one thing, and runs it again until it passes. Hold the task, the result contract, the inputs and the evaluator fixed; only the strategy (or the system prompt) changes. The output is a site-specific playbook; once deterministic navigation replaces exploration the cost drops sharply (one tool claims 80% or more).
+The general [fixed-eval improvement method](../../ai-agents/agent-evals/FIX-LOOP.md#before-the-loop-starts-and-inside-each-round) owns hypotheses, controlled comparisons and keep/revert decisions. Here the editable surface is the browser strategy or hosted system prompt, with the task, result contract, inputs and evaluator held fixed. The output is a site-specific playbook. The source tool claims cost drops of 80% or more after deterministic navigation replaces exploration; that is a source claim, not a measured guarantee for another task. [browserbase/skills, autobrowse; optimize-agent-prompt]
+
+**Source-workspace prerequisites:** `scripts/evaluate.mjs`, `scripts/unify-trace.mjs`, templates and the code-generation workspace are in upstream [autobrowse](https://github.com/browserbase/skills/tree/main/skills/autobrowse). Hosted-agent commands refer to [optimize_agent_prompt.mjs](https://github.com/browserbase/skills/blob/main/skills/optimize-agent-prompt/scripts/optimize_agent_prompt.mjs) and its source references. These helpers are not shipped in this Markdown skill. The CLI/API fields, model defaults and token prices below describe those source workflows; recheck the chosen version before a paid run. [browserbase/skills, autobrowse; optimize-agent-prompt]
 
 ## A strategy loop (autobrowse)
 
@@ -21,7 +23,7 @@ The loop:
 3. **Read `traces/<t>/latest/summary.md`;** on failure drill into `trace.json` at the failing turn and its screenshots.
 4. **Form one hypothesis:** find the exact failing turn and the single heuristic that would have prevented it. Examples: wait 1 s after a dropdown click (options animate in); navigate straight to the deep URL, skipping the landing page; use `fill #field_3`, not `type` (the field clears on focus); add `wait timeout 2000` before the snapshot when a spinner shows.
 5. **Update `strategy.md`:** keep what worked, fix the specific failure, add a concrete heuristic. A good strategy has a fast path (a direct URL), a step-by-step workflow with timing, site knowledge (selector ids, field names, success indicators) and failure recovery.
-6. **Judge:** pass or progress, keep it; no progress or regression, revert `strategy.md` and try a different hypothesis.
+6. **Judge:** apply the canonical [keep/revert method](../../ai-agents/agent-evals/FIX-LOOP.md#hillclimbing) to this task's evidence; keep the browser strategy or restore it before the next hypothesis. [browserbase/skills, autobrowse; existing agent-evals]
 
 Only edit the strategy, one hypothesis per iteration, build on wins, trust the trace.
 
@@ -77,9 +79,11 @@ The same loop with the system prompt as the variable (Browserbase Agents API, ve
 - **Completeness alone rewards confident wrong answers.** Combine run status, required-field coverage, regexes for known facts, regexes for factuality warnings (such as "submitted successfully"), and human review of provenance and safety. The regexes never go to the inner agent.
 - **Result schema:** required outcome and evidence, explicit nullable fields, an outcome enum (success, blocked, partial, not-found), inputs echoed back to catch filter or date drift, `additionalProperties: false`.
 - **The task states the goal and the result contract,** not the navigation solution.
-- **A shorter run that drops filters, guesses, violates safety or fails is a regression.** Keep a change when correctness or safety improves, or quality holds at materially lower cost. Revert a regression before the next hypothesis; on a plateau stop stacking rules and simplify a brittle prompt.
+- **Browser-result acceptance:** retain the task's filters, provenance, safety boundary and result contract. Apply the existing [keep/revert and plateau method](../../ai-agents/agent-evals/FIX-LOOP.md#hillclimbing) instead of rewarding a shorter failed run. [browserbase/skills, autobrowse; optimize-agent-prompt]
 - **Converge on 2 passes of the last 3, one of them an unchanged rerun.** Don't call a prompt optimal from one task: test a holdout matrix (several sites, entities, result shapes and a different failure regime).
 - **Encode forbidden irreversible actions before any run** (such as a real payment). Safety warnings penalize evidence of them, and no iteration broadens the agent's authority to complete the task. The harness enforces a budget, and the evaluator never rewards a shorter failed or unsafe run.
+
+**Conflict, both views.** These browser sources graduate on two passes in the last three, including an unchanged prompt rerun. The existing agent-eval rule says a two-of-three case still has a real occasional failure and calls for at least three repetitions, five for flaky cases. Keep the browser threshold as its source-specific operational rule, not proof of production reliability; use the stricter [agent-eval criterion](../../ai-agents/agent-evals/SKILL.md#the-rules) for that job. [browserbase/skills, autobrowse; optimize-agent-prompt]; [existing agent-evals, rule 3]
 
 ## Prove it
 

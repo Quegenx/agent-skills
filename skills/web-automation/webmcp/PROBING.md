@@ -6,9 +6,9 @@ Run this last, after validation is green, and by hand against the live page rath
 
 Use a persistent browser session so probes accumulate against real state. In the page:
 
-- `document.modelContext.getTools()` returns the tool objects.
+- Discover and select the tool using the [current asynchronous browser contract](TOOL-CONTRACT.md#the-browser-api). [Chrome imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api)
 - Current executeTool takes the discovered tool object and a serializable argument object. The old source required JSON.stringify(args) and said a plain object failed; Chrome now accepts objects and deprecates JSON strings from Chrome 155. Check the actual browser/pinned driver version. [Chrome imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api)
-- Error messages are replaced by a generic invocation-failed string, so record only ACCEPTED or REJECTED.
+- Record ACCEPTED or REJECTED and the relevant structured outcome under the [platform-rejection versus returned-failure contract](TOOL-CONTRACT.md#the-browser-api). The old source expected a generic invocation-failed string; do not assert that literal text across browser/driver versions. [WebMCP specification](https://webmachinelearning.github.io/webmcp/#supporting-concepts)
 
 With the `browse` CLI:
 

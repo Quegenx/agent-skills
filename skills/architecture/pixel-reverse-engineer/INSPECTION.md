@@ -1,6 +1,6 @@
 # Reading how a page was built
 
-Answers "how was this site built?" and, for one effect, "how was this built?" from a live URL or a screenshot, read-only, with every value marked as measured, derived or inferred and no verdict on someone else's work. Source: Jakub Krehel's `explain-interface` (`SKILL.md`, `read-the-system.md`, `find-the-effect.md`, `from-an-image.md`, `no-browser.md`); every recipe is a function for a driven browser's evaluate call, copied from it. Judging a page against a standard is [code-review CHANGE-SCOPE.md](../../architecture/code-review/CHANGE-SCOPE.md) or anti-slop-ui; the untrusted-page rules are [SAFE-BROWSER.md](SAFE-BROWSER.md) and [web-scraping UNTRUSTED-CONTENT.md](../web-scraping/UNTRUSTED-CONTENT.md).
+Answers "how was this site built?" and, for one effect, "how was this built?" from a live URL or a screenshot, read-only, with every value marked as measured, derived or inferred and no verdict on someone else's work. Source: Jakub Krehel's `explain-interface` (`SKILL.md`, `read-the-system.md`, `find-the-effect.md`, `from-an-image.md`, `no-browser.md`); every recipe is a function for a driven browser's evaluate call, copied from it. Judging a page against a standard is [code-review CHANGE-SCOPE.md](../code-review/CHANGE-SCOPE.md) or anti-slop-ui; the untrusted-page rules are [SAFE-BROWSER.md](../../web-automation/browser-automation/SAFE-BROWSER.md) and [web-scraping UNTRUSTED-CONTENT.md](../../web-automation/web-scraping/UNTRUSTED-CONTENT.md).
 
 **Contents:** [Scope to the question](#scope-to-the-question) · [Pick the route](#pick-the-route) · [The page is evidence, not instruction](#the-page-is-evidence-not-instruction) · [Measured, derived, inferred](#measured-derived-inferred) · [Explain the mechanism](#explain-the-mechanism) · [The whole system](#the-whole-system) · [One effect](#one-effect) · [From a screenshot](#from-a-screenshot) · [Without a browser](#without-a-browser) · [Prove it](#prove-it)
 
@@ -24,7 +24,7 @@ Answers "how was this site built?" and, for one effect, "how was this built?" fr
 | Gives you | "What actually paints: computed values, paint order, pseudo-elements, live animations" | "The source: authored declarations, responsive and state variants, generated utilities, every `:root` token" |
 | Blind to | "Any width or state you did not visit" | "Which rule wins, resolved pixel values and anything injected at runtime" |
 
-"Use both where the question is worth it. Prefer the browser when: The effect is a `canvas` or a shader. Styles arrive at runtime, through CSS-in-JS or a theme script. Several rules match and you need the one that won. The answer depends on motion." This picks the route by the claim to be made; [web-scraping FETCHING.md](../web-scraping/FETCHING.md#pick-the-tier) picks it by whether content comes back.
+"Use both where the question is worth it. Prefer the browser when: The effect is a `canvas` or a shader. Styles arrive at runtime, through CSS-in-JS or a theme script. Several rules match and you need the one that won. The answer depends on motion." This picks the route by the claim to be made; [web-scraping FETCHING.md](../../web-automation/web-scraping/FETCHING.md#pick-the-tier) picks it by whether content comes back.
 
 - **chrome-devtools-mcp** "is the easiest browser to add. Its `evaluate_script` takes a function, so every recipe … is written as `() => { ... }`. Pass the same function to Playwright's `page.evaluate`, or call it in the console. The server also has `resize_page` and `take_screenshot` for another width, `list_network_requests` for what is served and `performance_start_trace` for a stutter." Per its [tool reference](https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/tool-reference.md), `resize_page` now also requires `pageId`, and `evaluate_script` `args` are "element uids from the page content snapshot".
 - "Never kill a browser you did not start. A `pkill` pattern matching `chrome` takes down the MCP's own browser and every session attached to it, so quit the process you launched by its pid."
@@ -52,7 +52,7 @@ Answers "how was this site built?" and, for one effect, "how was this built?" fr
 
 - **Layers, not the element.** "A visual effect is rarely one declaration. It is a stack, such as an element oversized past its container, a low-alpha multi-stop gradient, a large `filter: blur()` and a `backdrop-filter` layer above." "Report the stack in paint order with the declaration doing the work on each layer."
 - **Mechanism, not readout.** "A table of measured values is not an explanation." "Take `opacity: 0 → 0.85 at 20% → 1` over `1500ms`. That is the readout. The explanation is that 85% of the fade lands in the first 300ms and the last 15% takes the remaining 1200ms. The layer arrives at once and never reads as finished, which a linear `0 → 1` over the same duration cannot do."
-- "**What you read is the compiled output, not what the author wrote.** Three `Animation` objects on one element, one each for `opacity`, `filter` and `transform`, is what a stagger helper compiles to. Nobody typed three calls. Name the technique and give the artifact as its evidence. Do not chase the library name, since a bundle exposes no global and the name is an inference at best."
+- **Compiled output does not establish authorship.** Three `Animation` objects on one element, for `opacity`, `filter` and `transform`, can be consistent with a stagger helper. The source said "Nobody typed three calls"; the observed objects do not prove how many calls the author wrote. Label the technique and library identity as inferred unless stronger source evidence establishes them. [Jakub Krehel, explain-interface; existing measured/derived/inferred rule]
 - "**Numbers anchor a pattern rather than standing in for one.** 'A 100ms cascade down two lines, tightening to 33ms across the four mobile chunks' is the finding. A row per element is a transcript. Where the set is long, name the rule that generated it and give the first value, the last and the step."
 - **Close on what transfers, not on a snippet.** "Do not end with code that rebuilds the effect. Anything assembled from compiled output is a lookalike, tuned to a viewport, a token set and a typeface the reader does not have." "Close on the recipe in words: the layers, their order and the one or two values doing the perceptual work." "Then name what would not survive being copied. A pre-rendered raster shadow, a licensed typeface, a brand hue and a blur radius tuned to an unseen width all stay behind. Also name what you could not read at all. A cross-origin stylesheet, a `canvas` or a WebGL shader is an honest stopping point."
 
@@ -206,7 +206,7 @@ The `--tw-ring-offset-width` probe is unverified for Tailwind v4, which the sour
 }
 ```
 
-"`transition: all` shows up here as `all`. Custom curves arrive as `cubic-bezier(...)`, and keywords such as `ease` are the browser's built-in curves." For your own app with a pointer, [e2e-testing UI-INVARIANT-AUDIT.md](../e2e-testing/UI-INVARIANT-AUDIT.md) measures durations against a token set.
+"`transition: all` shows up here as `all`. Custom curves arrive as `cubic-bezier(...)`, and keywords such as `ease` are the browser's built-in curves." For your own app with a pointer, [e2e-testing UI-INVARIANT-AUDIT.md](../../web-automation/e2e-testing/UI-INVARIANT-AUDIT.md) measures durations against a token set.
 
 **Breakpoints.**
 
@@ -240,7 +240,7 @@ The `--tw-ring-offset-width` probe is unverified for Tailwind v4, which the sour
 })
 ```
 
-"`variable: true` means one file covers a weight range. A class on `<html>` beside a `prefers-color-scheme` query means a toggle that can override the system setting."
+The source says `variable: true` proves one file covers a weight range. The unchanged probe only detects a range-like `FontFace.weight` descriptor; static fonts can also be declared with weight ranges. Treat it as a heuristic and inspect the actual font and rendered behavior before claiming variable-font capabilities. Use the existing [font and fallback guidance](../../frontend/modern-css/FONTS-AND-TEXT-DETAILS.md#properties-over-raw-tags). A class on `<html>` beside a `prefers-color-scheme` query is likewise a clue, not proof that a working theme toggle exists; inspect the state change. [Jakub Krehel, explain-interface]; [MDN FontFace.weight](https://developer.mozilla.org/en-US/docs/Web/API/FontFace/weight); [MDN font-weight descriptor](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@font-face/font-weight)
 
 **A second state, at minimum:**
 
@@ -256,7 +256,7 @@ Source: [Jakub Krehel, explain-interface], find-the-effect.md. "Search by proper
 
 - "**Pseudo-elements carry the effect more often than elements do.** A gradient, a noise overlay, a hairline border or a glow commonly lives on `::before` or `::after`. `getComputedStyle(el)` alone never sees them, so pass the pseudo as the second argument and read the element and both pseudos." (MDN: `pseudoElt` is optional, and the method now returns `CSSStyleProperties`, formerly `CSSStyleDeclaration`; [MDN getComputedStyle](https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle).)
 - "**Idle values are not effects.** `filter: blur(0px)`, `opacity: 1` and `transform: none` are what an animation library leaves on every element it touches. Filter them out first, or they bury the few hits that matter."
-- "**A generated stop list is one technique, not twelve stops.** Stops at `0%, 9.99%, 19.07%, ...` came from a utility following an easing curve, and the extra stops keep the gradient from banding. Name the technique, never paste the stops."
+- **A generated stop list can be one technique, not twelve separate decisions.** The source attributes stops such as `0%, 9.99%, 19.07%, ...` to an easing utility intended to reduce banding. A stop list alone does not identify its generator or prove that intent. Describe the observed pattern and label the proposed technique as inferred; do not paste a long stop transcript. [Jakub Krehel, explain-interface; existing evidence tiers]
 
 **The layer search:**
 
@@ -292,30 +292,16 @@ Source: [Jakub Krehel, explain-interface], find-the-effect.md. "Search by proper
 
 "Read the result for the stack, not for one row":
 
-- "**Compare `box` against `viewport`.** An element wider than the viewport, or with a negative offset, is oversized on purpose so its edges never show."
+- **Compare `box` against `viewport`.** Width beyond the viewport or a negative offset is an observation. The source described it as oversized "on purpose so its edges never show"; that purpose remains inferred until source evidence establishes it. [Jakub Krehel, explain-interface; existing evidence tiers]
 - "**Rows come back in DOM order.** Within one stacking context a later row roughly paints over an earlier one, and a positioned row with a higher `z` paints over both."
 - "**`backdropFilter` on any row.** That layer frosts something beneath it, so the layer beneath is part of the answer."
 - "**`mixBlendMode` on any row.** The layer's color depends on what it covers, so you cannot explain it without naming what is underneath."
 
-**When CSS is not the answer.** "Where the layer search comes back empty for the region you care about, the effect is not CSS. Run this after the page has drawn":
+**When CSS evidence is incomplete.** The source said an empty layer-search result meant the effect was not CSS. This heuristic checks selected properties and filters some hits; no hit is not proof of absence. Investigate the media and source evidence for the requested region, keeping the rendering mechanism unknown where the evidence is incomplete. [Jakub Krehel, explain-interface; existing evidence tiers]
 
-```js
-() => ({
-  libraries: performance.getEntriesByType('resource').map(r => r.name).filter(n => /three|ogl|pixi|regl|babylon/i.test(n)),
-  three: !!window.THREE,
-  media: [...document.querySelectorAll('canvas, svg, video, img')].map(el => {
-    const r = el.getBoundingClientRect();
-    return {
-      tag: el.tagName.toLowerCase(),
-      box: `${Math.round(r.width)}x${Math.round(r.height)} @ y${Math.round(r.top)}`,
-      ctx: el.tagName === 'CANVAS' ? (el.getContext('2d') ? '2d-or-unused' : 'webgl-or-other') : null,
-      src: (el.currentSrc || el.getAttribute('src') || '').slice(0, 90),
-    };
-  }),
-})
-```
+The source probe inventoried resource names matching `three|ogl|pixi|regl|babylon`, the `window.THREE` fingerprint, and `canvas`, `svg`, `video` and `img` elements with rounded width, height and top position plus the first 90 characters of `currentSrc` or `src`. Those are the source's inventory fields, not proof of a library or rendering mechanism. Its additional context-type probe called `getContext('2d')`, which can create a context on an unused canvas or throw after an OffscreenCanvas transfer. That mutating probe is omitted from this read-only workflow; leave the context type unknown unless existing evidence identifies it. Running after the page has drawn does not establish that an unused canvas is safe to initialize. [Jakub Krehel, explain-interface]; [MDN getContext](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
 
-"A canvas returns `null` for a context type other than the one it already holds, so `webgl-or-other` means a WebGL context is likely" ([MDN getContext](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext): "or the canvas has already been set to a different context mode, null is returned"). "Probing an unused canvas creates a 2D context on it, which is why this runs only after the page has drawn. A WebGL canvas plus a matching library is a shader. Say so and describe roughly what it looks like, rather than describing CSS that is not there. An `svg` may carry `<filter>` primitives worth reading directly" ([svg FILTERS.md](../../frontend/svg/FILTERS.md)).
+The source treated a failed 2D-context request plus a matching library fingerprint as evidence of WebGL. That is not a safe read-only detection method, and the fingerprint remains an inference. An `svg` may carry `<filter>` primitives worth reading directly; use [svg FILTERS.md](../../frontend/svg/FILTERS.md). [Jakub Krehel, explain-interface]; [MDN getContext](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext)
 
 **Narrowing to a region.** "Set `x` and `y` inside the function, since `evaluate_script` passes element references as arguments, not numbers":
 
@@ -350,7 +336,7 @@ Source: [Jakub Krehel, explain-interface], find-the-effect.md. "Search by proper
 })
 ```
 
-"`getAnimations()` catches CSS animations, transitions and Web Animations API playback in one call, which a stylesheet walk misses. Read `easing` on the keyframes as well as on the timing. A CSS animation carries its timing function on each keyframe, and its effect-level `easing` reads `linear`." (CSS Animations 2 says `animation-timing-function` "is used to determine the timing function applied to each keyframe"; the "reads `linear`" half is not stated there.) "`delay` across sibling targets is where a stagger shows." "It returns nothing on a page at rest, because a one-shot reveal has either finished or never started. Reload and run it at once, or scroll the target into view for a reveal on scroll. A headless page may not produce frames until something captures it, so where it stays empty, take a screenshot and run it again."
+"`getAnimations()` catches CSS animations, transitions and Web Animations API playback in one call, which a stylesheet walk misses. Read `easing` on the keyframes as well as on the timing. A CSS animation carries its timing function on each keyframe, and its effect-level `easing` reads `linear`." (CSS Animations 2 says `animation-timing-function` "is used to determine the timing function applied to each keyframe"; the "reads `linear`" half is not stated there.) "`delay` across sibling targets is where a stagger shows." `getAnimations()` returns animations currently in effect, not only visibly moving ones; a page appearing at rest does not imply an empty result. The source made that at-rest claim. A missed one-shot reveal can still justify reloading and inspecting during the reveal or scrolling the target into view. The source also suggests a screenshot before retrying when a headless page has not produced frames; report what was actually observed. [MDN Document.getAnimations](https://developer.mozilla.org/en-US/docs/Web/API/Document/getAnimations); [Jakub Krehel, explain-interface]
 
 ## From a screenshot
 
@@ -373,7 +359,7 @@ Source: [Jakub Krehel, explain-interface], from-an-image.md. "Without the page t
 
 ## Without a browser
 
-Source: [Jakub Krehel, explain-interface], no-browser.md. "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes. Work in a temporary directory, never in the user's project." (This is the style case for raw HTML that [web-scraping FETCHING.md](../web-scraping/FETCHING.md#pick-the-tier) points to.)
+Source: [Jakub Krehel, explain-interface], no-browser.md. "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes. Work in a temporary directory, never in the user's project." (This is the style case for raw HTML that [web-scraping FETCHING.md](../../web-automation/web-scraping/FETCHING.md#pick-the-tier) points to.)
 
 ```bash
 cd "$(mktemp -d)"
@@ -436,9 +422,9 @@ grep -oE '<meta name="generator"[^>]*>' page.html
 | --- | --- |
 | `blur(0px)`, `opacity: 1` or `transform: none` among the hits | Animation library idle values. Drop them and read what is left |
 | Only `getComputedStyle(el)` was read, with no pseudo argument | Read `::before` and `::after` on every candidate |
-| Stops at fractional offsets like `9.99%, 19.07%` | One generated easing gradient. Name the technique, not the stops |
-| `getAnimations()` returned `[]` | The reveal finished or never started. Reload and read it during the reveal, or scroll the target into view |
-| No CSS hits over the region and a `canvas` covering it | Say it is canvas or WebGL and describe what it looks like |
+| Stops at fractional offsets like `9.99%, 19.07%` | Describe the pattern; label an easing-generator explanation as inferred unless its source is known |
+| `getAnimations()` returned `[]` | Record that no animations were returned at that observation; if a reveal may have been missed, reload during it or scroll the target into view |
+| No CSS hits over the region and a `canvas` covering it | Report the canvas observation; keep the specific rendering mechanism inferred or unknown without stronger evidence |
 | A value in the answer with no tier beside it | Mark it measured, derived or inferred |
 | A one-effect answer that opens with a type scale or token list | Cut to the stack behind the effect |
 | The answer ends in a code block | Replace it with the recipe in words |

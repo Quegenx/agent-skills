@@ -2,6 +2,8 @@
 
 **Contents:** [Observer model](#a-second-cdp-client-that-never-acts) · [Capture](#capture) · [Bisecting](#bisecting-the-stream) · [Querying](#querying) · [Playbooks](#debug-playbooks) · [Troubleshooting](#troubleshooting) · [Prove it](#prove-it)
 
+**Source-workspace prerequisite:** commands using `scripts/` below refer to the upstream [browser-trace scripts](https://github.com/browserbase/skills/tree/main/skills/browser-trace/scripts). This installed skill contains the documented contracts, not those helper modules. Check out and inspect the matching upstream workspace before using its commands; do not infer that a current repository has these scripts. Capture artifacts can contain credentials and private content; apply the existing [private-trace handling](TASK-LOOPS.md#the-inner-agent). [browserbase/skills, browser-trace; autobrowse]
+
 ## A second CDP client that never acts
 
 - **Every Chrome DevTools target accepts multiple concurrent CDP clients.** The automation is one client; the observer is a second that enables only observation domains (Network, Console, Runtime, Log, Page).
@@ -45,7 +47,7 @@ node scripts/bb-finalize.mjs my-run --release
 
 - **To debug a session already running** (a stuck worker), attach with `node scripts/bb-capture.mjs <session-id> mid-flight-debug`, open the debugger URL, record about 120 s, then stop, bisect and finalize **without** `--release`: it is not your session.
 - **Use a wrapper, not manual steps.** It enforces keep-alive, fetches the `connectUrl`, captures the debugger URL and stamps the manifest; doing it by hand invites mistakes.
-- **Attach the automation to the session before or with the tracer.** A Browserbase session ends when its last CDP client disconnects.
+- **Attach the automation to the session before or with the tracer.** A Browserbase session without keep-alive ends on disconnect; keep-alive sessions persist until released or their timeout. The old line omitted that condition. [Browserbase keep alive](https://docs.browserbase.com/platform/browser/long-sessions/keep-alive)
 - **Don't sample faster than about 1 s;** every sample runs CLI reads and a screenshot.
 - **Always run stop, even after a crash,** so background processes don't linger and the manifest gets `stopped_at`.
 - **Fail loudly on a bad target:** wait 1000 ms after spawning the firehose and check it is alive (`process.kill(pid, 0)`); if not, print `stderr.log`, kill the sampler and exit 1, so the user sees the real error instead of a silent zero-event capture.

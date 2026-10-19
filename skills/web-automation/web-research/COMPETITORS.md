@@ -8,10 +8,12 @@ Public vs and alternative pages built from this research are [comparison-pages](
 
 0 setup, 1 self-research (the same five-lane depth as competitors), 2 depth and seeds, 3 discovery (three waves), 4 gate, 4.5 user confirm (mandatory), 5 enrichment (five lanes per competitor), 5b `matrix.json`, 5c fact-check, 5d battle cards, re-merge, 6 screenshots, 7 compile.
 
-- **Start every re-run clean.** The compiler ingests every `{slug}.md` and the merge never deletes slugs dropped from the current set: `rm -f "$OUTPUT_DIR"/*.md && rm -rf "$OUTPUT_DIR"/partials "$OUTPUT_DIR"/screenshots`.
+- **Start from the intended run's generated output.** The compiler ingests every `{slug}.md`, and merge does not remove dropped slugs. Cleanup is limited to explicitly authorized, run-owned disposable outputs; preserve user files, manual source records and prior raw snapshots. The old source broadly deleted all output Markdown, partials and screenshots without establishing ownership. Do not use that deletion command on an unresolved directory. [browserbase/skills, competitor-analysis; user standing rules]
 - **Keep dated raw snapshots outside `$OUTPUT_DIR`** `[coreyhaines31/marketingskills, competitor-profiling]`: competitor-profiling saves every fetch before synthesis under `competitor-profiles/raw/<competitor-slug>/<YYYY-MM-DD>/` (`scrapes/` one `.md` per page, `seo/` one `.json` per data call, `reviews/` one file per review site), and "Always create the date folder fresh on a new run; never overwrite a prior date's data." Its reason: "A single scrape can't support "hasn't changed" claims; only dated snapshots (prior raw folders, archived pages, changelogs) can." The clean re-run above deletes the compiled output only; raw folders that live outside it survive, so both rules hold.
 
 ## Discovery waves
+
+The named extraction/gating/merge/screenshot scripts below require the [exact upstream workspace](COMPILER.md#source-workspace-prerequisite); they are not installed with this skill. [browserbase/skills, competitor-analysis]
 
 Use all three; each finds what the others miss.
 
@@ -53,7 +55,7 @@ Use all three; each finds what the others miss.
 - **Why:** enrichment is expensive. 5 competitors times 5 lane subagents is 25 subagents, about 10-15 minutes of wall clock and about 300 `browse cloud` calls.
 - **Show three buckets,** a table each: PASS; UNKNOWN (always surface these, they are the silent misses); and rejected brands, the top 10 or so REJECTs whose titles contain a seed token or recur in the wave C graph.
 - **Ask with checkboxes plus a free-text "add more" field** (Claude Code `AskUserQuestion`). Write the ticked set to `/tmp/competitor_enrichment_set.txt`, which is the enrichment input, not the passed list.
-- **No answer, or "just run it":** fall back to the passed list and warn.
+- **Authorization is an answer, not elapsed time.** The source grouped no answer with "just run it" and fell back to PASS. No response does not authorize this paid gate. An explicit instruction to proceed with the concrete shown set/cost can authorize it; do not ask again for permission already granted. [browserbase/skills, competitor-analysis; user authorization rules]
 - **Ten or more candidates:** `[coreyhaines31/marketingskills, competitor-profiling]` suggest profiling the top 5 first, "based on domain overlap or market similarity".
 - **A request about one competitor that names none:** "Never guess the competitor. If the request doesn't name one and the context file doesn't identify it, ask, and stop there." `[coreyhaines31/marketingskills, competitors]`
 
@@ -158,4 +160,4 @@ A change is recorded as what changed, never why, unless the competitor said so p
 
 ## Prove it
 
-The enrichment set file holds exactly what the user ticked; every raw date folder from earlier runs still exists; every competitor has a marketing partial; `matrix.json` has a `userCompany` and a `sources` entry for every summary cell; `matrix_fact_check.md` ends with the spot-check line within 25 calls; every battle-card URL appears in that competitor's partials; no screenshot was taken from a `chrome-error://` tab; no rep-facing output shows ✗ for a cell without docs or trial evidence.
+The enrichment set file holds exactly the explicitly authorized set; every raw date folder from earlier runs still exists; every competitor has a marketing partial; `matrix.json` has a `userCompany` and a `sources` entry for every summary cell; `matrix_fact_check.md` ends with the spot-check line within 25 calls; every battle-card URL appears in that competitor's partials; no screenshot was taken from a `chrome-error://` tab; no rep-facing output shows ✗ for a cell without docs or trial evidence.

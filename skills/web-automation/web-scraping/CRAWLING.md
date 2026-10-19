@@ -1,5 +1,7 @@
 # Crawling politely
 
+From [D4Vinci/Scrapling, scrapling-official/references/spiders], [open-seo] and [aeo.js]. Keep each crawler's settings distinct from [Google's robots parser](https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec).
+
 **Contents:** [Guardrails](#guardrails) · [How a crawler runs](#how-a-crawler-runs) · [Option: Scrapling spiders](#option-scrapling-spiders-vendor) · [Requests and dedup](#requests-and-dedup) · [robots.txt](#robotstxt) · [How Google reads robots.txt](#how-google-reads-robotstxt) · [Concurrency and delay](#concurrency-and-delay) · [AutoThrottle](#autothrottle) · [Blocked responses](#blocked-responses) · [Audit crawlers](#audit-crawlers-worked-limits) · [Sessions per request](#sessions-per-request) · [Checkpoints, dev cache, streaming](#checkpoints-dev-cache-streaming) · [Hooks, stats, logging](#hooks-stats-logging) · [Templates](#templates) · [Export](#export) · [Inside Scrapy](#inside-scrapy) · [Prove it](#prove-it)
 
 ## Guardrails
@@ -70,11 +72,11 @@ result.completed; result.paused
 
 What the file means is defined by the parser that reads it; Google's rules are the common reference ([robots.txt spec](https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec)):
 
-- **One group applies:** the crawler picks "the group with the most specific user agent", and the other groups are ignored.
+- **Select the most specific user-agent group.** Google internally combines rules from multiple applicable groups for that specific user agent; it does not merge a specific-agent group with the wildcard group. The old summary said other groups were ignored without the repeated-specific-group merging qualification. [https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec]
 - **Within the group, the longest path wins:** "the most specific rule based on the length of the rule path"; on a true tie, "the least restrictive rule".
 - **Google supports `user-agent`, `allow`, `disallow` and `sitemap`;** "other fields such as `crawl-delay` aren't supported", so `Content-Signal` is ignored too. Other crawlers do honor `crawl-delay` (Anthropic supports "the non-standard Crawl-delay extension", [Anthropic crawlers](https://support.claude.com/en/articles/8896518)), and Scrapling's `robots_txt_obey` honors it as above.
 - **Size:** the file limit is 500 KiB.
-- **Fetch errors:** any 4xx except 429 means no robots.txt, so everything is allowed. On a 5xx Google stops crawling for 12 hours while retrying, then uses its last cached copy for 30 days, then, if the site is generally reachable, treats it as having no robots.txt.
+- **Fetch errors:** any 4xx except 429 means Google assumes no robots crawl restrictions. On a 5xx Google stops crawling for the first 12 hours while retrying; for the next 30 days it uses the last good copy while retrying, or assumes no restrictions if no cached copy exists. After 30 days a generally available site is treated as having no robots.txt; if the site has general availability problems, crawling remains stopped while robots fetches continue. The old summary omitted the no-cache and generally-unavailable-site branches. These are Google's rules, not Scrapling's fail-closed behavior above. [https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec]
 
 A crawler that clears its user-agent set on blank lines, or treats a `Disallow: /` in any group as a block for every bot, misreads real files; aeo.js's audit parser does both [aeo.js]. Use a maintained parser (OpenSEO uses `robots-parser` [open-seo]). Writing a robots.txt for your own site, including the AI crawler tokens, is [../../marketing/ai-search-visibility/AI-CRAWLERS.md](../../marketing/ai-search-visibility/AI-CRAWLERS.md).
 

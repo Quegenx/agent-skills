@@ -1,5 +1,7 @@
 # Evidence: what a field may say
 
+Research evidence rules from Browserbase's company/competitor/event workflows and the existing marketing sources tagged below. Fetch/search transport has its own scraping owner; this topic keeps what a research field may claim. [browserbase/skills, company-research, competitor-analysis and event-prospecting; existing repository research rules]
+
 ## Anti-hallucination rules
 
 - **Typography is not a product.** Never infer `product_description`, `industry` or `target_audience` from fonts, the framework (Framer, Next.js, React), the design system or polish.
@@ -33,7 +35,7 @@
 
 - **In markdown:** `- **[confidence]** fact (source: url)`.
 - **Other skills use the same three words for other tests.** customer-research grades a theme by corroboration ("3+ independent sources; mentioned unprompted; consistent across segments") and calls it theme confidence ([customer-research](../../marketing/customer-research/SKILL.md#theme-confidence)); prospecting grades a lead ("confirmed by at least two independent sources or official business page") ([prospecting](../../marketing/prospecting/SKILL.md)). The table above grades one fact by its source; don't mix the scales in one file. customer-research also ranks job postings "Low-medium" signal, consistent with `medium` here.
-- **How a value was obtained is a second axis** [Jakub Krehel, explain-interface]: the table above grades the source; claims read off a page also carry Measured, Derived or Inferred, and a stack fingerprint is itself an inference that needs its evidence ("A fingerprint that did not fire is not evidence of absence"). The tiers and fingerprints are defined in [browser-automation INSPECT-A-PAGE.md](../browser-automation/INSPECT-A-PAGE.md#measured-derived-inferred). The stack still never stands in for what the company does (the first rule above).
+- **How a value was obtained is a second axis** [Jakub Krehel, explain-interface]: the table above grades the source; claims read off a page also carry Measured, Derived or Inferred, and a stack fingerprint is itself an inference that needs its evidence ("A fingerprint that did not fire is not evidence of absence"). The tiers and fingerprints are defined in [pixel-reverse-engineer INSPECTION.md](../../architecture/pixel-reverse-engineer/INSPECTION.md#measured-derived-inferred). The stack still never stands in for what the company does (the first rule above).
 
 ## The research loop
 
@@ -49,14 +51,14 @@
 | P3 | deeper only | Decision makers, competitive landscape, case studies |
 
 - **Query patterns:** `"{company} tech stack engineering blog"`, `"{company} careers software engineer"` (job posts reveal the stack), `"{company} funding round 2025 2026"`, `"{company} VP engineering CTO LinkedIn"`. Job posts as a record of a buyer's pain are in [customer-research SOURCES.md](../../marketing/customer-research/SOURCES.md#linkedin-and-job-posts).
-- **Watching news** `[coreyhaines31/marketingskills, public-relations]`: Google News RSS `https://news.google.com/rss/search?q=QUERY&hl=en-US&gl=US&ceid=US:en`; HN Algolia `https://hn.algolia.com/api/v1/search_by_date?query=QUERY&tags=story&numericFilters=created_at_i>${SINCE}`. For Reddit, use its Data API with OAuth, not anonymous `.json` URLs: "Clients must authenticate with a registered OAuth token"; "Traffic not using OAuth or login credentials will be blocked"; the free limit is "100 queries per minute (QPM) per OAuth client id"; the User-Agent is `<platform>:<app ID>:<version string> (by /u/<reddit username>)` ([Reddit Data API Wiki](https://support.reddithelp.com/hc/en-us/articles/16160319875092-Reddit-Data-API-Wiki)). The source used `curl -s -A "newsjack/1.0" "https://www.reddit.com/r/SUBREDDIT/top.json?t=day&limit=15"`. The newsjacking loop around these feeds is [public-relations NEWSJACKING.md](../../marketing/public-relations/NEWSJACKING.md#monitoring).
+- **Watching news:** use the existing [Google News, HN and compliant Reddit monitoring owner](../../marketing/public-relations/NEWSJACKING.md#monitoring). That chapter keeps the complete feed/API definitions and old-source correction; research findings still need their URL, date and confidence here. [coreyhaines31/marketingskills, public-relations]
 
 ## Discovering targets
 
 - **Discovery queries** combine: industry plus stage plus geography; tech stack plus use case; competitor adjacency ("alternatives to X"); buyer persona plus pain point.
 - **Keep only homepages.** Drop blog posts and news (globenewswire, techcrunch), directories and aggregators (tracxn, crunchbase, g2), and the user's own competitors and customers. For competitors, the noise list adds seektool.ai, respan.ai, agentsindex.ai, toolradar.com, aitoolsatlas.ai, aidirectory.com, vibecodedthis.com, aichief.com, openalternative.co, cbinsights.com, saasworthy.com, softwareworld.com, capterra.com, trustradius.com.
-- **Search command** (`browse` CLI): `browse cloud search "{q}" --num-results 25 --output /tmp/company_discovery_batch_{N}.json`. Competitor discovery uses `--num-results 12`, research 10, person enrichment 5. The output is `{ requestId, query, results: [{ url, title, author, publishedDate }] }` in one version and `{ id, url, title, image, favicon }` in another, so parse both.
-- **Clear old batches first:** `rm -f /tmp/company_discovery_batch_*.json` (or `/tmp/competitor_discovery_batch_*.json`).
+- **Search adapter and source quotas:** use [WEB-SEARCH.md](../web-scraping/WEB-SEARCH.md#research-cli-adapter) for the source command and envelope versions. The research source requests 25 results in its discovery example, 12 for competitor discovery, 10 for research and 5 for person enrichment; those are source/mode quotas, not platform defaults or new call authorization. [browserbase/skills, research workflows]
+- **Batch cleanup:** apply the [authorized run-owned cleanup boundary](COMPETITORS.md#the-pipeline). The old source cleared shared temporary batch globs; do not delete another run's or the user's files. [browserbase/skills, source discovery workflow; user standing rules]
 
 ## Dedup by domain
 
@@ -70,31 +72,15 @@
   2. Scan it for keywords: `customer, case-stud, pricing, about, use-case, blog, docs, industry, solution` (for competitors: `pricing, customer, compare, vs, about, features, integrations`).
   3. Optionally fetch `/llms.txt`: bonus context, often incomplete.
   4. Pick the 3-5 most relevant URLs.
-- **No sitemap: read the homepage nav, then probe** `[coreyhaines31/marketingskills, competitor-profiling]`: "Fetch the homepage first. Its nav links often reveal the actual paths". Otherwise try pricing `/pricing`, `/plans`, `/packages`, `/pricing-plans`; about `/about`, `/about-us`, `/company`, `/team`; features `/features`, `/product`, `/platform`, `/solutions`; customers `/customers`, `/case-studies`, `/clients`, `/success-stories`; integrations `/integrations`, `/apps`, `/connect`; blog `/blog`, `/resources`, `/insights`. An empty homepage: try the `www.` variant and flag the site as JS-rendered.
+- **No sitemap: read the homepage nav, then probe** `[coreyhaines31/marketingskills, competitor-profiling]`: "Fetch the homepage first. Its nav links often reveal the actual paths". Otherwise try pricing `/pricing`, `/plans`, `/packages`, `/pricing-plans`; about `/about`, `/about-us`, `/company`, `/team`; features `/features`, `/product`, `/platform`, `/solutions`; customers `/customers`, `/case-studies`, `/clients`, `/success-stories`; integrations `/integrations`, `/apps`, `/connect`; blog `/blog`, `/resources`, `/insights`. If the homepage is unreadable, a permitted `www.` or rendered fetch can supply further evidence; report the cause as unknown until observed. The old source said to flag an empty homepage as JS-rendered, which conflicts with this topic's observations-are-not-causes rule. [coreyhaines31/marketingskills, competitor-profiling; existing research evidence rule]
 
 ## Extracting a page
 
-- **Small structured files fetch raw:** `browse cloud fetch --allow-redirects` is fine for `sitemap.xml`, `robots.txt`, `llms.txt`. HTML that will reach a model goes through an extractor.
-- **Don't pipe the fetch through `sed`.** Without `--output`, `browse cloud fetch` returns a JSON envelope with the HTML as an escaped string; a naive `sed` strips `<>` from wrapper and content alike and removes the `<meta>` tags, which on Framer and Next.js single-page apps are often the only readable content.
-- **The other reading:** the competitor pipeline treats `browse cloud fetch --allow-redirects` as returning clean markdown by default, adds `--format raw` for HTML and then `sed ... | tr -s ' \n' | head -c 3000`. Responses are limited to 1 MB; for JS-heavy pages use `browse open <url> --remote` then `browse get markdown`. Keep about 3000 characters per page.
-- **An extractor script** (`extract_page.mjs`, built on `browse`):
-  - `node extract_page.mjs <url> [--max-chars N]`, default 3000 (event triage uses 2000).
-  - Fetches with `browse cloud fetch --allow-redirects <url> --output <tmpfile>` into a `mkdtemp` folder that is deleted afterwards.
-  - **Thin pages fall back to a browser:** below `THIN_CONTENT_THRESHOLD = 200` body characters, run `browse open <url> --local --headless` and `browse get markdown` in a session named `extract-page-${pid}-${Date.now()}` (via `BROWSE_SESSION`), with 90000 ms timeouts, a 50 MB buffer and `browse stop` in `finally` (15000 ms). Use the markdown only if it is longer than the body.
-  - **Tolerate banners:** the CLI can print lines such as "Update available..." before the JSON, so parse from the first `{`, then fall back to a lenient regex `/"markdown"\s*:\s*"((?:\\.|[^"\\])*)"/s`.
-  - Extracts `<title>`, `meta name=description`, `og:title` and `og:description` in either attribute order, up to 10 h1-h3 headings, and visible text with script, style, noscript and comments removed and entities decoded.
-  - Prints `URL / FETCH_OK / FALLBACK_TO_BROWSE / TITLE / META_DESCRIPTION / OG_TITLE / OG_DESCRIPTION / HEADINGS (" | " joined) / BODY_CHARS / BODY:`.
-- **Counters filled by JavaScript** `[coreyhaines31/marketingskills, competitor-profiling]`: headcount, client counts and live stats "return placeholder values" to a plain fetch; "note the gap and flag as "JS-rendered, value unconfirmed" in the profile", or read it through the browser fallback.
+Use the canonical [research extractor transport and source-workspace contract](../web-scraping/FETCHING.md#option-research-extractor-helper-vendor). It preserves both tagged CLI output readings, browser fallback and the source snippet; this research file owns the evidence fields and run budgets. [browserbase/skills, company-research and competitor-analysis]
 
-```js
-if (body.length < THIN_CONTENT_THRESHOLD) {
-  const md = browseGetMarkdown(url);
-  if (md && md.length > body.length) {
-    body = md.replace(/\s+/g, " ").slice(0, maxChars);
-    fallbackUsed = true;
-  }
-}
-```
+- **Research text budget:** the source helper defaults to 3000 characters per page; event triage uses 2000. Keep the run's chosen limit explicit. [browserbase/skills, company-research and event-prospecting]
+- **Evidence fields:** `URL / FETCH_OK / FALLBACK_TO_BROWSE / TITLE / META_DESCRIPTION / OG_TITLE / OG_DESCRIPTION / HEADINGS (" | " joined) / BODY_CHARS / BODY:`. [browserbase/skills, extract_page.mjs]
+- **Counters filled by JavaScript** `[coreyhaines31/marketingskills, competitor-profiling]`: headcount, client counts and live stats "return placeholder values" to a plain fetch; "note the gap and flag as "JS-rendered, value unconfirmed" in the profile", or read it through the browser fallback.
 
 ## Prove it
 

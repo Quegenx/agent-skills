@@ -70,16 +70,44 @@ export default {
 
 ## Mobile targets
 
+[tester-army/e2e, mobile engine and Flutter example]
+
 - **Engine:** `@e2e-dev/mobile` (pins `agent-device` exactly), driving through callstack `agent-device`. Needs Xcode plus a simulator runtime, or the Android SDK plus an emulator; a phone needs Developer Mode plus runner signing, or adb USB debugging. Run `npx agent-device doctor` once; name a phone by its `npx agent-device devices` name. On iPhone, device settings and the clipboard are simulator-only.
 - **Config:** `mobile({ platform: 'ios' })`, `app: { bundleId }`, `workers: 1`, `tools: mobileTools(iphone)` from `@e2e-dev/mobile/tools`.
 - **The engine installs nothing:** a fixture calls `device.installApp()` once per device. `launchArguments` and `permissions` ride every fresh launch.
 - **Expo dev build on the iOS simulator:** `launchArguments: ['--initialUrl', 'http://localhost:8081', '-EXDevMenuShowsAtLaunch', 'NO', '-EXDevMenuIsOnboardingFinished', 'YES', '-EXDevMenuShowFloatingActionButton', 'NO']`, `app.command` `npx expo start --port 8081`, `readyUrl: 'http://localhost:8081/status'`.
 - **One worker per device.** No `device` means every booted simulator or emulator plus connected phones, up to `workers`; one `device` is one worker; a list is an explicit pool. Two sessions on one device fight: one target per device for parallel work.
 - **Hosted devices:** `easSimulators({ buildId })` from `@e2e-dev/eas` (`EXPO_TOKEN`; session cap 40 min on the standard plan), `limrun()` from `@e2e-dev/limrun` (`LIMRUN_API_KEY`; iOS keyboard actions are `UNSUPPORTED_CAPABILITY`), `testmu({ device, osVersion, app })` from `@e2e-dev/testmu` (`LT_USERNAME`, `LT_ACCESS_KEY`).
-- **Timing:** `transition` (default 500 ms) for a control that appeared or moved; `settle` (default 150 ms); `settle: false` skips it.
+- **Timing:** `transition` (default 500 ms) for a control that appeared or moved; `settle` (default 150 ms) is the stability window after a tap, fill, scroll or back; `settle: false` skips it. The Flutter guide explains the platform distinction: "iOS reports the final frame at once, Android the frame in flight".
 - **Network:** `setNetwork('offline')` and `setAirplaneMode(true)` are Android only, and `setNetwork('offline')` turns off Wi-Fi only. An offline test uses `setAirplaneMode(true)` (Android 11+) under `platforms: ['android']` and turns it off in `afterEach`.
-- **Unsupported on devices:** `selectOption`, `setInputFiles`, `scrollIntoView`, `secondaryTap`, `modifiers` (`UNSUPPORTED_CAPABILITY`); no `test.setup` or `session`, so sign in per test.
+- **Unsupported on devices:** `selectOption`, `setInputFiles`, `scrollIntoView`, `secondaryTap`, `modifiers` (`UNSUPPORTED_CAPABILITY`); no `test.setup` or `session`, so sign in per test or seed the app.
 - **React Native on iOS:** checkbox and radio state come from the accessibility value; a tab is `other` with `selected` (query it by test id or label); a plain `View` is a leaf (scope to the `ScrollView` or give the children test ids).
+
+- **e2e matching:** `getByTestId(id, { visible? })` reads the accessibility identifier on iOS and the resource id on Android. A string matches the whole id, case included, and a RegExp tests it; on Android the `<package>:id/` prefix may be left off. Several matches fail with `LOCATOR_AMBIGUOUS`. It is listed as "Last resort" after role, label and text queries. `below`, `above`, `leftOf`, `rightOf` and `containsDescendants` have no port. "`placeholder` is the only attribute a device node has."
+
+- **Android cold start in e2e:** locator actions and `expect` wait through "insufficient foreground app content", but immediate reads (`count()`, `isVisible()`) see no matches, so `not.toBeVisible()` can pass while the screen is unreadable.
+
+- **A timed-out action is not retried in e2e:** a tap, fill or swipe that outlives its timeout fails with `ACTION_FAILED`, since "the input may have landed".
+
+- **e2e `screen.scrollUntilVisible(target, { direction, momentum, timeout })`** defaults `'down'`, `'slow'`, `30000`. On a locator it scrolls that node: `await screen.getByTestId('feed').scrollUntilVisible(row);`.
+
+- **Swipe direction differs:** e2e's `screen.swipe({ direction: 'down' })` names the content's direction, Maestro names the finger's.
+
+- **e2e equivalents:** `inputText` is `screen.getByTestId('field').fill('text')`, `eraseText` is `.clear()`, `hideKeyboard` is `device.dismissKeyboard()`, `pressKey: Enter` is `.press('Enter')`. `dismissKeyboard()` uses the keyboard's dismiss key where it has one (Android, iPad), else a short drag at the screen centre, and fails with `UNSUPPORTED_CAPABILITY` if the keyboard stays.
+
+- **e2e sets permissions before launch** "so no system prompt appears": `app.permissions` (`{ camera: 'grant', notifications: 'deny', location: 'reset' }`), or `device.setPermission(name, 'grant' | 'deny' | 'reset')`, one per call, before `app.open()`. There is no `all`, and nothing is granted unless named. `deny` answers no silently on iOS and on Android revokes, so the OS asks again.
+
+- **A visible system alert in e2e:** `device.alert('accept' | 'dismiss')`; the agent gets an `alert` tool through `mobileTools(...)`.
+
+- **iOS double tap:** `doubleTap()` sends two taps about 285 ms apart; give gesture detectors 350 ms or more. [tester-army/e2e, mobile engine]
+
+- **e2e, one job per platform:** iOS on macOS with a Release simulator `.app` (no signing) and a booted simulator; Android on Linux with KVM, a Release `.apk` and a booted emulator. Hosted Apple Silicon Macs can't run the Android emulator.
+
+- **Pin the iOS runtime in e2e CI:** "the accessibility tree changes between iOS releases". Create the simulator on a named runtime and boot it by UDID; cache `~/.agent-device` (the XCUITest runner is built there); commit the replay cache so local recordings replay in CI.
+
+- **e2e run steps:** `xcrun simctl install booted path/to/MyApp.app` then `npx e2e run --target ios --reporter list,junit`; `adb install -r path/to/app.apk` then `npx e2e run --target android --reporter list,junit`.
+
+- **Hosted provider distinction:** the EAS `maestro` job type runs Maestro flows, not the e2e runner. The hosted-device adapters are listed above; the source also permits a custom `DeviceProvider`. [tester-army/e2e, mobile engine]
 
 ## Environment variables
 
@@ -98,7 +126,7 @@ export default {
 
 - **`.e2e/` is runner output:** read it, never edit it. It holds `report.json`, `junit.xml`, `summary.md`, `ai-trace.json`, `sessions/`, and `results/<test>/trace.md` with `attempt-<n>/`. `results/` is cleared once a run's tests start; `--last-failed` writes under `rerun-<n>/`.
 - **`report.json` is for scripts (jq), not reading:** `run.status`, `run.exitCode`, `run.errors[]`, `run.results[]` (`titlePath`, `file`, `source`, `tags`, `agent`, `repeat`, `selected`, `status`, `attempts[].steps[]`, `artifacts[]`, `error`), and `run.summary` (passed, failed, interrupted, flaky, skipped).
-- **`markdown` reporter** writes `summary.md` to paste into a PR or handoff. **`github()`** from `@e2e-dev/github` posts one PR comment per run plus a job summary; it needs `pull-requests: write` and `GITHUB_TOKEN`.
+- **`markdown` reporter** writes `summary.md` for a handoff. [tester-army/e2e, reporting]
 
 ## Exit codes and signals
 
@@ -121,21 +149,6 @@ export default {
 - **Upload artifacts unless cancelled,** so a test that failed and then passed on retry keeps its evidence.
 - **Start the app through the runner** so teardown happens on every exit path; pass the model key from secrets; commit the cache for replays.
 
-```yaml
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec e2e-web install chromium --with-deps
-      - run: npx e2e run --reporter list,junit
-        env:
-          AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
-          E2E_USER_ADMIN_USERNAME: ${{ secrets.E2E_USER_ADMIN_USERNAME }}
-          E2E_USER_ADMIN_PASSWORD: ${{ secrets.E2E_USER_ADMIN_PASSWORD }}
-      - if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with: { name: e2e-artifacts, path: .e2e/results, if-no-files-found: warn, retention-days: 7 }
-```
-
-- The workflow pins actions by SHA and sets `permissions: contents: read`.
-
 ## Prove it
 
-Setup is done when `npx e2e run tests/example.e2e.ts` passes, `package.json` has `"test:e2e": "e2e run"`, `.gitignore` lists the `.e2e/` outputs (drop the `.e2e/cache/` line to commit replays), and CI runs the whole suite, agent steps included, on pull requests. `CI=1 npx e2e run` runs the CI defaults locally.
+Setup is done when `npx e2e run tests/example.e2e.ts` passes, `package.json` has `"test:e2e": "e2e run"`, `.gitignore` lists the `.e2e/` outputs (drop the `.e2e/cache/` line to commit replays), and the authorized CI run covers the whole suite, agent steps included. `CI=1 npx e2e run` runs the CI defaults locally.

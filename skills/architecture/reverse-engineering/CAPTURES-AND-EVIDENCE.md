@@ -23,6 +23,8 @@ From [morluto/rea, reverse-engineer-anything/references/evidence-workflows.md; r
 - Preserve the stated unknown authorization model, response semantics and state transitions. The supplied article asked for an OpenAPI specification and working client from HAR; these finite observations do not establish a complete contract. [art, How To Turn Opus 5.5 Into Your Personal Reverse Engineer (Full Setup Included) .md]
 - This projection supports the documented HAR profile, not every saved capture format. Preserve typed refusals when explicit sensitive declarations cannot be rechecked from retained parent evidence; do not bypass that refusal by treating the raw capture as public.
 
+For the separate Browserbase workflow that infers an OpenAPI document and client from recorded samples, read [TRAFFIC-TO-OPENAPI.md](TRAFFIC-TO-OPENAPI.md). Its generator and output-safety limits do not expand this REA projection's coverage. [browserbase/skills, browser-to-api; morluto/rea, docs/web-network-captures.md]
+
 ## Preserve the record
 
 [morluto/rea, reverse-engineer-anything/references/evidence-workflows.md]

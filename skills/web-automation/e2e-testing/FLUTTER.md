@@ -67,8 +67,8 @@ Semantics(
 )
 ```
 
-- **Maestro matching:** `text` and `id` are regular expressions by default (escape `$` and `[` with `\`), case-insensitive, and tap the first match; `index` is 0-based and picks one of several. `id` is the Resource ID on Android and `accessibilityIdentifier` on iOS. Relative selectors: `below`, `above`, `leftOf`, `rightOf`, `containsChild`, `childOf`, `containsDescendants`.
-- **e2e matching:** `getByTestId(id, { visible? })` reads the accessibility identifier on iOS and the resource id on Android. A string matches the whole id, case included, and a RegExp tests it; on Android the `<package>:id/` prefix may be left off. Several matches fail with `LOCATOR_AMBIGUOUS`. It is listed as "Last resort" after role, label and text queries. `below`, `above`, `leftOf`, `rightOf` and `containsDescendants` have no port. "`placeholder` is the only attribute a device node has."
+- **Maestro matching and selectors:** use the [shared Maestro contract](MAESTRO.md#selectors); Flutter identifiers and labels are described above. [mobile-dev-inc/maestro-docs, Flutter selectors]
+- **e2e matching:** use the [shared mobile engine contract](RUNNER-SETUP.md#mobile-targets). Flutter reports its identifier unprefixed on both platforms. [tester-army/e2e, Flutter example]
 - **A screen set up for e2e** (from its Flutter example; field and button bodies shortened, and `Image.asset(..., excludeFromSemantics: true)` hides the decorative logo):
 
 ```dart
@@ -113,13 +113,12 @@ child: Semantics(
 
 ## Setup and running with Maestro
 
-- **Install:** Java 17 or higher with `JAVA_HOME` set (the known-issues page recommends 17 or 21). `curl -fsSL "https://get.maestro.mobile.dev" | bash`, or Homebrew: `brew tap mobile-dev-inc/tap`, `brew trust --formula mobile-dev-inc/tap/maestro`, `brew install mobile-dev-inc/tap/maestro`. Verify with `maestro --help`.
-- **iOS:** Xcode Simulators, Xcode Command Line Tools (`xcode-select --install`), the app targeted by Bundle ID. If Xcode was installed without opening it, run `xcodebuild -runFirstLaunch` or no simulators appear.
-- **Android:** ADB, auto-detecting running emulators or physical devices with USB Debugging on; the flow targets the package (`appId`). An emulator on API 31 or higher is recommended. "Maestro assumes the application is already installed on the target device/emulator before the test begins."
-- **Builds:** Android `flutter build apk --debug` (output `build/app/outputs/flutter-apk/`); iOS `flutter build ios --debug --simulator` (output `build/ios/iphonesimulator/`).
+Use [Maestro setup](MAESTRO.md#setup-and-running) for installation, device prerequisites, CLI flags, app reset and Studio. The Flutter-specific steps remain below. [mobile-dev-inc/maestro-docs, Flutter guide]
+
+- **Builds:** Android `flutter build apk --debug` (output `build/app/outputs/flutter-apk/`); iOS `flutter build ios --debug --simulator` (output `build/ios/iphonesimulator/`, including `Runner.app` in the source example).
+
 - **Different app ids per platform:** `appId: ${APP_ID}` in the flow, then `maestro test -e APP_ID=com.example.app.ios flow.yaml`.
-- **CLI flags:** global `--device` / `--udid` and `-p` / `--platform` (`--platform=ios`). `test` takes `--format` (`JUNIT`, `HTML`, `NOOP`), `--output`, `-s` / `--shards`, `--include-tags`, `--exclude-tags`, `-c` / `--continuous`. Subcommands include `start-device`, `list-devices`, `record`, `mcp`.
-- **`launchApp`** stops the app first by default (`stopApp: true`); `clearState: true` clears data; `clearKeychain: true` clears the whole iOS keychain.
+
 - **Pass launch arguments** with `launchApp: arguments:` and read them in Flutter with the `flutter_launch_arguments` package:
 
 ```dart
@@ -133,12 +132,11 @@ Future<void> getArguments() async {
 ```
 
 - **Let the app know it runs under Maestro** with `arguments: { isMaestro: "true" }`, for example to turn off custom animations that `waitForAnimationToEnd` misses. Checking ports `7001` (Android) / `22087` (iOS) is deprecated and unsupported on Maestro Cloud.
-- **Maestro Studio** (desktop, needs the Android SDK and/or Xcode): connect a device, right-click an element to add a YAML command, take autocomplete's real selectors from the device screen, run step by step. Downloads: `https://studio.maestro.dev/MaestroStudio.dmg` (macOS), `https://studio.maestro.dev/MaestroStudio.exe` (Windows).
 
 ## Setup and running with e2e
 
-- **Layout:** the test project lives in `e2e/` beside the Flutter project, since a Flutter app has no `package.json`. Dev dependencies `e2e ^0.18.0`, `@e2e-dev/mobile ^0.10.0`, `ai ^7.0.0`; Node 22.22.3+, 24.8+ or 26+. From an existing Maestro suite, `npx e2e init --yes --engine mobile` writes a mobile config.
-- **Build and install first; the engine installs nothing on its own.** Android `flutter build apk` then `flutter install`; iOS `flutter build ios --simulator` then `flutter install`; pick a device with `flutter install -d <id>`. Or set `app.appPath` and call `device.installApp()`. "After app changes, build and install again before you run the tests."
+- **Layout:** the test project lives in `e2e/` beside the Flutter project, since a Flutter app has no `package.json`. Source example dev dependencies are `e2e ^0.18.0`, `@e2e-dev/mobile ^0.10.0`, `ai ^7.0.0`; Node requirements are in [Install](RUNNER-SETUP.md#install) and the shared engine contract is in [Mobile targets](RUNNER-SETUP.md#mobile-targets). From an existing Maestro suite, `npx e2e init --yes --engine mobile` writes a mobile config. [tester-army/e2e, Flutter example]
+- **Build and install the Flutter app first.** Android `flutter build apk` then `flutter install`; iOS `flutter build ios --simulator` then `flutter install`; pick a device with `flutter install -d <id>`. Or set `app.appPath` and call `device.installApp()`. "After app changes, build and install again before you run the tests."
 - **Run:** `cd e2e && npm install && npx agent-device doctor && npm run test:e2e:android`, with scripts `"test:e2e:android": "e2e run --target android"` and `"test:e2e:ios": "e2e run --target ios"`.
 - **Config:** one target per platform, the same bundle id, `workers: 1`:
 
@@ -178,72 +176,33 @@ await agent.assert('the app greets Grace by name');
 ```
 
 - **Start each test with `app.open()`:** between tests "the app stays where the last test left it".
-- **No `test.setup` or session snapshot on devices:** sign in per test or seed the app.
-- **Checked with** e2e 0.18.0, `@e2e-dev/mobile` 0.10.0 and Flutter 3.47 on an Android 16 emulator and an iOS 26 simulator.
+- **Device state and sessions:** use the [shared mobile engine contract](RUNNER-SETUP.md#mobile-targets). [tester-army/e2e, Flutter example]
+
+- **Source example checked with** e2e 0.18.0, `@e2e-dev/mobile` 0.10.0 and Flutter 3.47 on an Android 16 emulator and an iOS 26 simulator.
 
 ## Waits
 
-- **Wait on state, not time.** Maestro waits for the screen to settle automatically, no `sleep()` needed; for something expected to appear or disappear soon, use an assertion. `assertVisible` / `assertNotVisible` poll until the element appears or the timer runs out.
-- **Maestro defaults:** assertions 7 seconds; longer with `extendedWaitUntil`:
+Maestro timing, assertions and animation waits are [defined once here](MAESTRO.md#waiting-and-scrolling). Shared e2e action/expectation deadlines, mobile stability windows, cold-start limits and non-retried actions are in [runner configuration](RUNNER-SETUP.md#config) and [Mobile targets](RUNNER-SETUP.md#mobile-targets). [mobile-dev-inc/maestro-docs; tester-army/e2e]
 
-```yaml
-- extendedWaitUntil:
-    visible: "My text that should be visible"
-    timeout: 10000
-```
-
-- **`waitForAnimationToEnd`** defaults to 15000 ms, and if the animation is still running at the timeout "the command succeeds and execution continues".
-- **Ghost taps in Maestro:** add `retryTapIfNoChange: true`, which retries "if the UI hierarchy does not change after the initial tap". `waitToSettleTimeoutMs` is a best-effort settle timeout per tap.
-- **e2e defaults:** `actionTimeout` 30000, `assertionTimeout` 5000 (the default `expect` deadline), `launchTimeout` 60000, `retries` 0 (1 in CI). `mobile({ settle })` is the stability window after a tap, fill, scroll or back, default 150 ms; `mobile({ transition })` waits before acting on a control that just appeared or moved, default 500 ms ("iOS reports the final frame at once, Android the frame in flight").
 - **Maestro waits in e2e terms:** `retryTapIfNoChange` / `waitToSettleTimeoutMs` become engine-wide `mobile({ settle, transition })`; `waitForAnimationToEnd` becomes "an assertion on the settled state"; `extendedWaitUntil` becomes `.toBeVisible({ timeout })`.
-- **Android cold start in e2e:** locator actions and `expect` wait through "insufficient foreground app content", but immediate reads (`count()`, `isVisible()`) see no matches, so `not.toBeVisible()` can pass while the screen is unreadable.
-- **A timed-out action is not retried in e2e:** a tap, fill or swipe that outlives its timeout fails with `ACTION_FAILED`, since "the input may have landed".
 
 ## Scrolling
 
-- **Maestro `scrollUntilVisible`** defaults: `direction` `DOWN`, `timeout` `20000` ms, `speed` `40` (0-100), `visibilityPercentage` `100`, `centerElement` `false`.
-
-```yaml
-- scrollUntilVisible:
-    element:
-      id: ".*some_view_id"
-    direction: DOWN
-```
-
-- **Partial scroll areas:** Maestro swipes from the screen centre to 10% from the edge, so in a bottom sheet or small scrolling widget the swipe may miss; write a custom scroll loop.
-- **e2e `screen.scrollUntilVisible(target, { direction, momentum, timeout })`** defaults `'down'`, `'slow'`, `30000`. On a locator it scrolls that node: `await screen.getByTestId('feed').scrollUntilVisible(row);`.
-- **Swipe direction differs:** e2e's `screen.swipe({ direction: 'down' })` names the content's direction, Maestro names the finger's.
-- **Not on e2e devices:** `selectOption`, `setInputFiles`, `scrollIntoView`, `secondaryTap`, modifiers on taps. iOS `doubleTap()` is two taps about 285 ms apart; give gesture detectors 350 ms or more.
+Use the [Maestro scrolling contract](MAESTRO.md#waiting-and-scrolling) or the [e2e mobile scrolling and swipe-direction contract](RUNNER-SETUP.md#mobile-targets). Neither API should be redefined as a Flutter-specific operation. [mobile-dev-inc/maestro-docs; tester-army/e2e]
 
 ## Text input and the keyboard
 
-- **Maestro `inputText`** "works even if no text field is focused"; in practice tap the field first (`tapOn: { id: MyTextInput }`, then `inputText`). On Android it supports ASCII only (#146).
-- **iOS simulator secure fields:** `inputText` fails on `secureTextEntry` fields because of Password AutoFill. Turn off AutoFill Passwords in the simulator's Settings, run the two `plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ...` commands on CI, or use a plain text field in test builds.
-- **iOS `hideKeyboard` is flaky in Maestro** (no native API; it scrolls from the screen centre): `tapOn` a non-interactive area instead. On Maestro Cloud it now fails the test if the keyboard stays.
-- **e2e equivalents:** `inputText` is `screen.getByTestId('field').fill('text')`, `eraseText` is `.clear()`, `hideKeyboard` is `device.dismissKeyboard()`, `pressKey: Enter` is `.press('Enter')`. `dismissKeyboard()` uses the keyboard's dismiss key where it has one (Android, iPad), else a short drag at the screen centre, and fails with `UNSUPPORTED_CAPABILITY` if the keyboard stays.
+Maestro input, the Android Unicode source/version conflict, secure-field and keyboard caveats are [defined here](MAESTRO.md#text-input-and-the-keyboard). e2e input and keyboard operations are [defined here](RUNNER-SETUP.md#mobile-targets). [mobile-dev-inc/maestro-docs; tester-army/e2e]
+
 - **Secrets in e2e:** `type_secret` and `screen.getByLabel(...).fill(secret)` fill declared secrets into secure fields, and no screenshots are sent after a secret fill.
 
 ## Permissions and native dialogs
 
-- **Maestro grants all permissions at `launchApp` by default.** Override:
-
-```yaml
-- launchApp:
-    permissions:
-      all: deny
-      camera: allow
-      location: allow
-```
-
-- **Mid-flow, `setPermissions`.** Values `allow`, `deny`, `unset`. On iOS `allow` also dismisses the prompt; iOS notifications show a prompt that Maestro taps **Allow** on, while Android grants silently. iOS extras: `location: always | inuse | never`, `photos: limited`. Some permissions exist on one platform only (`photos`, `motion`, `siri` iOS; `bluetooth`, `phone`, `sms`, `storage` Android), and custom Android permission ids are accepted.
-- **e2e sets permissions before launch** "so no system prompt appears": `app.permissions` (`{ camera: 'grant', notifications: 'deny', location: 'reset' }`), or `device.setPermission(name, 'grant' | 'deny' | 'reset')`, one per call, before `app.open()`. There is no `all`, and nothing is granted unless named. `deny` answers no silently on iOS and on Android revokes, so the OS asks again.
-- **A visible system alert in e2e:** `device.alert('accept' | 'dismiss')`; the agent gets an `alert` tool through `mobileTools(...)`.
+Use [Maestro permission and reset semantics](MAESTRO.md#permissions-and-native-dialogs) or [e2e pre-launch permissions and alerts](RUNNER-SETUP.md#mobile-targets). Flutter does not change either runner contract. [mobile-dev-inc/maestro-docs; tester-army/e2e]
 
 ## Known limitations and issues
 
 - **Maestro:**
-  - iOS lists that paginate in `willDisplayCell` misfires under XCTest, which Maestro uses (a native `UITableView` / `UICollectionView` issue).
-  - Hardened or MDM Android devices that reject the companion driver APK (`INSTALL_PARSE_FAILED_NO_CERTIFICATES`) are not supported.
   - A container transform (animations package) made targets untappable on iOS (#796, closed for lack of a minimal repro).
   - Studio cannot interact with an iOS native pop-up in landscape (#2065, open, labelled framework: flutter).
   - Flutter Desktop is unsupported; Flutter Web issues are under [Flutter Web](#flutter-web).
@@ -253,29 +212,7 @@ await agent.assert('the app greets Grace by name');
 
 ## CI
 
-- **Maestro Cloud from GitHub Actions** (`mobile-dev-inc/action-maestro-cloud@v2.0.2` with `api-key`, `project-id`, `app-file`; Cloud needs a paid plan), Flutter Android job:
-
-```yaml
-- uses: subosito/flutter-action@v2
-  with:
-    channel: "stable"
-- run: flutter build apk --debug
-- uses: mobile-dev-inc/action-maestro-cloud@v2.0.2
-  with:
-    api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
-    project-id: ${{ secrets.MAESTRO_PROJECT_ID }}
-    app-file: build/app/outputs/flutter-apk/app-debug.apk
-```
-
-- **Flutter iOS job:** `runs-on: macos-13`, `flutter build ios --debug --simulator`, `app-file: build/ios/iphonesimulator/Runner.app`.
-- **Cloud binaries:** Android APK only (no `.aab`), ARM or multi-arch (x86-only fails), Release and Debug both work. iOS simulator `.app` only: "Do not upload binaries built for physical iOS devices."
-- **Cloud devices:** default Android API 33 (Android 13) and iOS 16; override with `device-os` / `device-model` (`android-34`, `pixel_6`, `iOS-26-2`, `iPhone-17-Pro`); list with `maestro list-cloud-devices`. From the CLI: `maestro cloud --app-binary [your-app-binary] --flows [your-flow-directory]`.
-- **Local Maestro CLI** is "the primary tool for automated execution in Continuous Integration (CI) systems"; local Android runs "1 device at a time", Cloud parallelises.
-- **e2e, one job per platform:** iOS on macOS with a Release simulator `.app` (no signing) and a booted simulator; Android on Linux with KVM, a Release `.apk` and a booted emulator. Hosted Apple Silicon Macs can't run the Android emulator.
-- **Pin the iOS runtime in e2e CI:** "the accessibility tree changes between iOS releases". Create the simulator on a named runtime and boot it by UDID; cache `~/.agent-device` (the XCUITest runner is built there); commit the replay cache so local recordings replay in CI.
-- **e2e run steps:** `xcrun simctl install booted path/to/MyApp.app` then `npx e2e run --target ios --reporter list,junit`; `adb install -r path/to/app.apk` then `npx e2e run --target android --reporter list,junit`.
-- **e2e on GitHub Actions** (the documented example builds a React Native app; swap in `flutter build`): iOS `runs-on: macos-26`, `UDID=$(xcrun simctl create e2e "iPhone 17" com.apple.CoreSimulator.SimRuntime.iOS-26-5)`, `xcrun simctl bootstatus "$UDID" -b`. Android: `reactivecircus/android-emulator-runner` v2.38.0 with `api-level: 36`, `arch: x86_64`, `target: google_apis`, `profile: pixel_7`, `disable-animations: true`, after an "Enable KVM" udev step, with `actions/setup-java` Java 17. Upload `.e2e` as an artifact.
-- **Hosted devices for e2e:** Limrun, EAS Simulators (`easSimulators()`), TestMu AI (`testmu()`), or a custom `DeviceProvider`. The EAS `maestro` job type runs Maestro flows, not e2e.
+Maestro Cloud binary/device requirements and the official CLI form are in [Maestro CI](MAESTRO.md#ci). Shared e2e platform prerequisites, runtime pinning, installation/run steps and hosted-device distinctions are in [Mobile targets](RUNNER-SETUP.md#mobile-targets). Flutter build outputs remain in [Setup and running with Maestro](#setup-and-running-with-maestro). GitHub Actions and PR lifecycle examples are excluded by owner scope. [mobile-dev-inc/maestro-docs; tester-army/e2e; owner scope]
 
 ## Prove it
 

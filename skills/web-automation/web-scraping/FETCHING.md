@@ -1,6 +1,8 @@
 # Fetching pages
 
-**Contents:** [Pick the tier](#pick-the-tier) · [Safety: TLS and redirects](#safety-tls-and-redirects) · [Option: Browserbase Fetch API](#option-browserbase-fetch-api-vendor) · [Option: Scrapling CLI](#option-scrapling-cli-vendor) · [Option: Scrapling HTTP fetcher](#option-scrapling-http-fetcher-vendor) · [Option: Scrapling browser fetcher](#option-scrapling-browser-fetcher-vendor) · [Stealth fetchers](#stealth-fetchers) · [Capturing XHR data](#capturing-xhr-data) · [Prove it](#prove-it)
+From [browserbase/skills, fetch and search] and [D4Vinci/Scrapling, scrapling-official], with the source research extractor below. Fetching page data is separate from [driving a browser](../browser-automation/SKILL.md) and [reconstructing an API from recorded traffic](../../architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md).
+
+**Contents:** [Pick the tier](#pick-the-tier) · [Safety: TLS and redirects](#safety-tls-and-redirects) · [Option: Browserbase Fetch API](#option-browserbase-fetch-api-vendor) · [Research extractor helper](#option-research-extractor-helper-vendor) · [Option: Scrapling CLI](#option-scrapling-cli-vendor) · [Option: Scrapling HTTP fetcher](#option-scrapling-http-fetcher-vendor) · [Option: Scrapling browser fetcher](#option-scrapling-browser-fetcher-vendor) · [Stealth fetchers](#stealth-fetchers) · [Capturing XHR data](#capturing-xhr-data) · [Prove it](#prove-it)
 
 ## Pick the tier
 
@@ -9,7 +11,7 @@
 - **Step up on empty content.** Empty content from a plain fetch means the page probably needs rendering. When unsure, start with plain fetch; if it fails or returns empty, escalate to a browser fetch.
 - **A crawler** when it is many pages from a site (CRAWLING.md).
 - **Check `statusCode` before you process content.**
-- **Style questions need raw bytes:** for how a page was built, "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes" [Jakub Krehel, explain-interface]. That is the "`.html` only to parse structure" case below; the greps for utility classes, inline gradients, tokens, `@layer`, breakpoints and stack fingerprints are in [browser-automation INSPECT-A-PAGE.md](../browser-automation/INSPECT-A-PAGE.md#without-a-browser).
+- **Style questions need raw bytes:** for how a page was built, "Do not use a markdown-converting fetch for this. It strips exactly what you came for, so fetch the raw bytes" [Jakub Krehel, explain-interface]. That is the "`.html` only to parse structure" case below; the greps for utility classes, inline gradients, tokens, `@layer`, breakpoints and stack fingerprints are in [pixel-reverse-engineer INSPECTION.md](../../architecture/pixel-reverse-engineer/INSPECTION.md#without-a-browser).
 
 | Use case | Plain fetch | Browser |
 |---|---|---|
@@ -56,6 +58,31 @@ Fetches a URL with no browser session; faster and cheaper than one.
 | 502 | Response too large, or TLS verification failed | Fetch a narrower URL or use a browser to pull out specific content; `allowInsecureSsl` only for trusted hosts |
 | 504 | Timed out | Default timeout is **60 s and not configurable per request**; use a browser session, which has longer timeouts |
 
+## Option: research extractor helper (vendor)
+
+[browserbase/skills, company-research/scripts/extract_page.mjs; competitor-analysis/references/research-patterns.md]
+
+**Upstream workspace prerequisite:** [extract_page.mjs](https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/extract_page.mjs) is not installed by this Markdown skill. The source command `node extract_page.mjs <url> [--max-chars N]` assumes that inspected helper is present in its workspace. Keep research character budgets, output fields and thin-evidence decisions in [web-research/EVIDENCE.md](../web-research/EVIDENCE.md#extracting-a-page).
+
+- **Small structured files fetch raw:** the source uses `browse cloud fetch --allow-redirects` for `sitemap.xml`, `robots.txt` and `llms.txt`. HTML intended for a model goes through an extractor and remains [untrusted content](UNTRUSTED-CONTENT.md).
+- **Company-research source view:** without `--output`, its instructions describe a JSON envelope containing escaped HTML and warn against piping it through `sed`, which can remove the meta tags that are the only available copy on a page. The helper itself writes `browse cloud fetch --allow-redirects <url> --output <tmpfile>` to a `mkdtemp` directory and deletes that directory afterwards. [browserbase/skills, company-research/references/research-patterns.md; company-research/scripts/extract_page.mjs]
+- **Competitor source view:** its pipeline instead describes clean Markdown by default, `--format raw` for HTML, then `sed ... | tr -s ' \n' | head -c 3000`; it states a 1 MB response limit and uses `browse open <url> --remote` then `browse get markdown` for JavaScript-heavy pages. These are conflicting source readings, not an established current CLI contract. Inspect the installed `browse` help/output before selecting an adapter; the raw REST Fetch API above does not establish CLI defaults. [browserbase/skills, competitor-analysis/references/research-patterns.md]
+- **Thin-page fallback in the helper:** below `THIN_CONTENT_THRESHOLD = 200` body characters it calls `browse open <url> --local --headless` and `browse get markdown` in a session named `extract-page-${pid}-${Date.now()}` through `BROWSE_SESSION`. Each fallback call has a 90000 ms timeout; the Markdown call has a 50 MB buffer. `browse stop` runs in `finally` with 15000 ms. The initial cloud-fetch call has no explicit helper timeout; the fallback limits do not cover that call. It uses the Markdown only when longer than the initial body. [https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/extract_page.mjs]
+- **Tolerate banners:** the CLI can print lines such as "Update available..." before the JSON, so parse from the first `{`, then fall back to a lenient regex `/"markdown"\s*:\s*"((?:\\.|[^"\\])*)"/s`. This is the source helper's parser, not a guarantee that every installed CLI output matches it. [browserbase/skills, company-research/scripts/extract_page.mjs]
+- **Actual text reduction:** the helper extracts title, description and Open Graph tags in two attribute orders and up to 10 h1-h3 headings. Its regex text pass removes scripts, styles, noscript, comments and tags, replaces a small named-entity set and replaces decimal numeric entity references with spaces. It does not evaluate CSS/aria-hidden visibility, isolate a body DOM or fully decode entities. The old description called this visible text with entities decoded; hidden/head text can remain. It does not supply the hidden-element cleaning described in [UNTRUSTED-CONTENT.md](UNTRUSTED-CONTENT.md), and its output remains untrusted. [https://github.com/browserbase/skills/blob/main/skills/company-research/scripts/extract_page.mjs]
+
+The source's fallback branch, unchanged; its inputs and output budget belong to the helper/research workflow above. [browserbase/skills, company-research/scripts/extract_page.mjs]
+
+```js
+if (body.length < THIN_CONTENT_THRESHOLD) {
+  const md = browseGetMarkdown(url);
+  if (md && md.length > body.length) {
+    body = md.replace(/\s+/g, " ").slice(0, maxChars);
+    fallbackUsed = true;
+  }
+}
+```
+
 ## Option: Scrapling CLI (vendor)
 
 Current contracts below target Scrapling 0.5. Read the installed help/schema before calling it; older 0.4.15 examples are not interchangeable. This library's Python internals do not require adding Python implementation recipes to a TS/JS application. [D4Vinci/Scrapling, scrapling-official/SKILL.md; https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
@@ -85,7 +112,7 @@ Do not use CAPTCHA solving, bot-detection bypass, impersonation or identity/prox
 
 - **Use explicit browser-session network history in 0.5.** Enable `record_requests` on the session and inspect `session.network`; one-shot fetches do not return a capture list. `capture_xhr` and `response.captured_xhr` were removed, even when the old option was None. [https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md]
 - **History is retained completed traffic across the session, not only the last page.** Search filters apply after collection; search returns at most 100 retained matches by default, while `limit=None` requests all retained matches without expanding retention. Unfinished requests and unavailable bodies are not proof of absent traffic. Read needed MCP history before closing its session. [D4Vinci/Scrapling, scrapling-official/references/fetching/stealthy.md; https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py]
-- **Captured traffic remains sensitive evidence.** Review headers, bodies and generated clients for credentials before sharing; the separate [traffic-to-OpenAPI workflow](TRAFFIC-TO-OPENAPI.md) owns spec/client generation. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md; existing traffic owner]
+- **Captured traffic remains sensitive evidence.** Review headers, bodies and generated clients for credentials before sharing; the separate [traffic-to-OpenAPI workflow](../../architecture/reverse-engineering/TRAFFIC-TO-OPENAPI.md) owns spec/client generation. [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md; existing traffic owner]
 
 ## Prove it
 

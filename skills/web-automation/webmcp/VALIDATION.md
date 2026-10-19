@@ -40,6 +40,8 @@ List every expected tool in a small `webmcp.e2e.json`. Discovery is mandatory; i
 
 ## The validator (Stagehand v4)
 
+This is the source validator's contract, not a bundled runnable script. The installed skill contains Markdown only; obtain and inspect the exact [add-webmcp source workspace](https://github.com/browserbase/skills/tree/main/skills/add-webmcp) and installed Stagehand version before relying on the helper. Keep the older alpha route in [INIT-SCRIPT.md](INIT-SCRIPT.md) version-scoped. [browserbase/skills, add-webmcp and webmcp-gen]
+
 Use Stagehand v4's real discovery and invocation path:
 
 - `Stagehand.create({ browser })`, take the first page or `newPage()`, optionally `page.addInitScript({ path })`, `page.goto(url, { waitUntil: "load" })`.
@@ -60,7 +62,7 @@ Headed, headless, sandbox and executable-path choices apply only to the local br
 
 ## The consequential gate
 
-Before launching any browser, refuse every case whose `risk` is `consequential` **and** has an `input`, unless an explicit allow-consequential override is passed for an authorized sandbox. The refusal names the tools and says to remove the input for discovery-only validation. Test the gate itself: a config with an invoked `submit_order` exits 1, names it, and launches no browser.
+Apply this gate to both source-app tools and the [injected-script route](INIT-SCRIPT.md#validating-the-script-stagehand-36-alpha). Before launching any browser, refuse every case whose `risk` is `consequential` **and** has an `input`, unless an explicit allow-consequential override is passed for an authorized sandbox. The refusal names the tools and says to remove the input for discovery-only validation. Test the gate itself: a config with an invoked `submit_order` exits 1, names it, and launches no browser.
 
 ## Proof the app ships its own tools
 

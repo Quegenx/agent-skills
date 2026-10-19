@@ -19,11 +19,11 @@ An end-to-end test drives the app the way a user does and proves the outcome on 
 | Stress-testing one component with worst-case data: schema-backed values, a Demo / Worst case toggle or an isolated page of every scenario, failure signatures and their fixes, truncate, wrap or clamp, the report | [WORST-CASE-DATA.md](WORST-CASE-DATA.md) |
 | The worst-case value catalog: names, emails and identifiers, labels from data, numbers and money, collections, time, images, states, environment | [WORST-CASE-VALUES.md](WORST-CASE-VALUES.md) |
 | A cookie consent journey: production build, counting vendor requests, rejection that survives a reload, withdrawal and its reload, a consent backend that is down | [CONSENT-JOURNEY.md](CONSENT-JOURNEY.md) |
-| Which viewport sizes to check, several widths side by side, a container query in a test, proving a WebGL canvas drew and testing the page with WebGL off | [VIEWPORTS-AND-CANVAS.md](VIEWPORTS-AND-CANVAS.md) |
-| Measuring a running page with Playwright and a real pointer: hover glide or per-row, tab-select shift, off-token durations and `transition: all`, control heights, variable-font faces, overflow | [UI-INVARIANT-AUDIT.md](UI-INVARIANT-AUDIT.md) |
+| Which viewport sizes to check, several widths side by side, a container query in a test, and the canonical WebGL verification route | [RESPONSIVE-CHECKS.md](RESPONSIVE-CHECKS.md) |
+| Measuring a running page with Playwright and a real pointer: hover glide or per-row, tab-select shift, off-token durations and `transition: all`, control heights, loaded font descriptors and their evidence limits, overflow | [UI-INVARIANT-AUDIT.md](UI-INVARIANT-AUDIT.md) |
 | Porting Playwright, Cypress, Selenium, Detox or Maestro tests one proven slice at a time | [SUITE-MIGRATION.md](SUITE-MIGRATION.md) |
 | Generating a `verify-<app>` skill so the next coding agent can prove its change | [VERIFICATION-SKILL.md](VERIFICATION-SKILL.md) |
-| React Native and Expo with Maestro: selectors, auth pre-flight, OTP by email, iOS gotchas, CI | [MAESTRO.md](MAESTRO.md) |
+| Maestro for React Native, Expo and Flutter: shared setup, selectors, waiting, scrolling, input, permissions, auth pre-flight and OTP | [MAESTRO.md](MAESTRO.md) |
 | Flutter with Patrol: setup, the test suite architecture, test keys, native dialogs, common failures | [PATROL.md](PATROL.md) |
 | Flutter end to end: choosing Patrol, Maestro or e2e, Semantics identifiers, MergeSemantics, Flutter Web, waits, permissions, CI | [FLUTTER.md](FLUTTER.md) |
 
@@ -36,7 +36,7 @@ An end-to-end test drives the app the way a user does and proves the outcome on 
 5. **Judge meaning, not phrasing.** `toContain('Pro')`, not the exact sentence a model produced.
 6. **Secrets never appear in test code.** Declare accounts and secrets in config with values from the environment, and pass only opaque handles to fills and agents.
 7. **Give test data a run-unique name** (`Invoice ${Date.now()}`) and clean it up in `afterEach`, so retries and replays never trip over leftovers. Explorers each get their own account.
-8. **Never change app code or weaken an assertion to go green.** Propose the app change instead; never widen a timeout without a reason or drop a step.
+8. **Never weaken an assertion to go green.** The e2e source says not to change app code during test authoring; Patrol permits adding shared test keys, and rule 3 permits accessibility instrumentation. Keep both source conventions explicit: use those changes only within the user's authorized scope, and propose any unapproved app behavior change. Never widen a timeout without a reason or drop a step. [tester-army/e2e, writing tests; leancodepl/patrol, test keys; owner AGENTS.md]
 9. **Ask before adding a test framework** to a project that lacks one, and name any framework already there. Do not commit on the user's behalf; list what you created and leave project files as you found them.
 
 ## Prove it

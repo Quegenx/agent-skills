@@ -28,7 +28,6 @@ Look at routes and screens; forms and submit handlers; server actions, API handl
 | Next.js App Router | `app/**/page.*`, `route.*`, files with `"use server"`, client components, server actions, root layouts and providers |
 | Next.js Pages Router | `pages/**`, `pages/api/**`, `_app.*`, API clients, form handlers |
 | React routers | `<Route>`, `createBrowserRouter`, route modules, mutation and query hooks, the root render entry |
-| Vue/Nuxt, Svelte/SvelteKit, Remix and similar | route modules, server/load/action files, composables, root layouts |
 | Any stack | `<form>`, submit listeners, task-named functions (`search*`, `calculate*`, `save*`), network clients and query/mutation hooks, RPC routers, OpenAPI or JSON Schema, validation libraries, authorization middleware, local persistence or state stores (including localForage), existing `modelContext` usage |
 
 A line-level scan for leads can match these kinds:
@@ -46,7 +45,7 @@ A line-level scan for leads can match these kinds:
 | authorization | authorize, authorization, permission, requireUser, requireAuth, isAdmin, canAccess, csrf, idempotency |
 | framework-route (by path) | `app/**/page.*`, `app/**/layout.*` and `app/**/route.*`, `pages/` including `pages/api/`, `routes/`, `route/` or `router/` directories |
 
-Scan scope that keeps it sane: source extensions `.js .jsx .mjs .cjs .ts .tsx .vue .svelte .html`; skip `.git .next .nuxt .output .svelte-kit .turbo .vercel build coverage dist node_modules out target vendor`, symlinks, files over 512 KB, and files starting with `.env`, `credentials` or `secrets`. Detect frameworks from every `package.json` (dependencies and devDependencies): next, react, react-router or react-router-dom, @remix-run/react, vue, nuxt, svelte, @sveltejs/kit, vite, astro, express, fastify, hono. With a file cap (10,000 by default), fail loudly and ask to narrow the repository rather than truncating silently.
+Source scan limits: selected source extensions `.js .jsx .mjs .cjs .ts .tsx .html`; skip `.git .next .output .turbo .vercel build coverage dist node_modules out target vendor`, symlinks, files over 512 KB, and files starting with `.env`, `credentials` or `secrets`. Selected package signals include next, react, react-router or react-router-dom, @remix-run/react, vite, astro, express, fastify and hono. Record Vue/Nuxt, Svelte/SvelteKit, Angular and native-only branches as skipped under the owner's stack rule; do not grow those recipes here. With the source file cap (10,000 by default), fail loudly and narrow the repository rather than silently truncating. These scan leads are a source helper's contract, not a bundled scanner or proof of complete capability coverage. [browserbase/skills, add-webmcp; user selected-stack rule]
 
 - **A Node script that never runs when symlinked:** comparing `process.argv[1]` with `import.meta.url` through `path.resolve` alone never matches when the script is reached through a symlink, and the script exits silently. Resolve both with `realpathSync`:
 

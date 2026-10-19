@@ -1,6 +1,6 @@
 # Measuring a running page against UI invariants
 
-A headless browser loads a route, moves a real pointer and prints what the rendered page does: whether a list's hover glides or blinks off between rows, whether selecting a tab shoves its neighbours, which transition durations survive the cascade, which control heights ship, whether the loaded font can render a weight change, and what overflows. Source: [fluid-functionalism], `scripts/audit.mjs` and `references/stack-audit.md`, a Playwright script written for its own component system; the code below is copied from it with the system's token values marked as the ones to swap for the project's. It answers part of what a lint-style checker lists as blind spots, such as "layout at each viewport, overflow at 390px" ([app-ui CHECKS.md](../../frontend/app-ui/CHECKS.md#a-checker-in-ci)). Turning its lines into advice goes through the evidence gate in [UI improvement shortlist](../../anti-ai-slop/anti-slop-ui/IMPROVEMENT-SHORTLIST.md#the-evidence-gate).
+A headless browser loads a route, moves a real pointer and prints what the rendered page does: whether a list's hover glides or blinks off between rows, whether selecting a tab shoves its neighbours, which transition durations survive the cascade, which control heights ship, which loaded font descriptors have a weight range, and what overflows. Source: [fluid-functionalism], `scripts/audit.mjs` and `references/stack-audit.md`, a Playwright script written for its own component system; the code below is copied from it with the system's token values marked as the ones to swap for the project's. It answers part of what a lint-style checker lists as blind spots, such as "layout at each viewport, overflow at 390px" ([app-ui CHECKS.md](../../frontend/app-ui/CHECKS.md#a-checker-in-ci)). Turning its lines into advice goes through the evidence gate in [UI improvement shortlist](../../anti-ai-slop/anti-slop-ui/IMPROVEMENT-SHORTLIST.md#the-evidence-gate).
 
 ## Why measure
 
@@ -14,8 +14,10 @@ A headless browser loads a route, moves a real pointer and prints what the rende
 - **SELECT:** "whether selecting a tab moves the other tabs (a weight change without a ghost span)."
 - **TRANSITIONS:** "CSS durations off FF's tokens (0/60/80/120/160/180/240ms) and `transition-property: all`, with example elements." The comment on the token list: "Anything else is off the system: Tailwind's bare `transition` class is 150ms, the usual culprit." [fluid-functionalism, audit.mjs] For another project, pass its own duration tokens.
 - **LADDER:** "the distribution of control heights against 36 / 28px" (the system's two densities; pass the project's own control heights).
-- **FONT:** "for each family that sets `font-variation-settings: 'wght'`, whether a variable face actually loaded. A static face means every weight change on the page is silently inert."
+- **FONT:** a source heuristic for families using `font-variation-settings: 'wght'`, based on loaded `FontFace.weight` descriptors. This does not prove which axes the font file contains or that a rendered weight change works. [fluid-functionalism, audit.mjs; MDN FontFace.weight]
 - **OVERFLOW:** "horizontal overflow and the element causing it."
+
+**Upstream-only invocation:** `scripts/audit.mjs` and its package manifest are not shipped in this skill. The following is the source workspace command, not an executable local path; its extracted fragments below are not a complete replacement script. Inspect the actual upstream asset before using it, and do not install dependencies automatically. [fluid-functionalism, scripts/audit.mjs; local file inventory]
 
 ```bash
 cd <skill>/scripts && npm install        # once: playwright-core
@@ -138,7 +140,7 @@ function probeTransitions(tokens) {
 
 **Control heights:** every visible `button, [role="button"], select, [role="tab"], [role="combobox"], [role="option"], [role="menuitem"]`, text-like `input` and boxed `a` (a link counts only when it has a background or a top border and is not `display: inline`), bucketed by rounded height and compared with the ladder at ±1px; up to four off-ladder heights print, each with an example path [fluid-functionalism, audit.mjs].
 
-**Variable fonts actually loaded:**
+**Loaded font descriptors, a heuristic:**
 
 ```js
 function probeFonts() {
@@ -161,7 +163,7 @@ function probeFonts() {
 }
 ```
 
-The three verdicts print as "variable face loaded: weight changes can render", "only static faces loaded: weight changes cannot render" and "no matching web font loaded: the system fallback decides".
+The source prints "variable face loaded: weight changes can render", "only static faces loaded: weight changes cannot render" and "no matching web font loaded: the system fallback decides". Those labels overstate this probe. `FontFace.weight` is the CSS descriptor, and `@font-face` weight ranges can describe static or variable files; the range is not proof of file capabilities. Check the actual font and rendered change before making that stronger claim. The old topic repeated the source verdict as proof. [FontFace.weight](https://developer.mozilla.org/en-US/docs/Web/API/FontFace/weight), [font-weight descriptor](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@font-face/font-weight). General font-property/fallback behavior is [defined once here](../../frontend/modern-css/FONTS-AND-TEXT-DETAILS.md#properties-over-raw-tags).
 
 **Horizontal overflow and its widest cause:**
 
@@ -193,4 +195,4 @@ This is the same `scrollWidth > clientWidth` test as the responsive sweep in [AD
 
 ## Prove it
 
-Every claim about hover, tab shift, durations, control heights, fonts or overflow quotes a printed line with its route and width; the duration and height lists passed in are the project's own tokens, not the source's; the report names the blind spots it did not cover (JS springs, closed popups, auth, reduced motion); and after a fix, one re-run on the same route no longer prints the line that justified it.
+Every claim about hover, tab shift, durations, control heights, font descriptors or overflow quotes a printed line with its route and width; a font-capability claim also has actual font/render evidence, and a missing upstream script is reported as unavailable; the duration and height lists passed in are the project's own tokens, not the source's; the report names the blind spots it did not cover (JS springs, closed popups, auth, reduced motion); and after a fix, one re-run on the same route no longer prints the line that justified it.

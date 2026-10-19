@@ -1,5 +1,7 @@
 # Event prospecting
 
+Event discovery, company triage and person evidence from the Browserbase event-prospecting workflow, with the existing contact-provenance rules below. Recon/extraction/compiler scripts and profiles require the [source workspace](COMPILER.md#source-workspace-prerequisite); they are not bundled here. [browserbase/skills, event-prospecting]
+
 ## The pipeline
 
 0 setup, 1 load the profile, 2 recon the event page, 3 extract people, 4 group by company, 5 ICP triage (1 call), 6 filter by threshold (default 6), 7 deep research on fits (5 calls), 8 enrich speakers (scope asked), 9 compile.
@@ -65,4 +67,4 @@ Detect in this order, with one `browse eval` that probes everything. Order matte
 
 ## Prove it
 
-Observed people and company counts, extraction strategy and coverage limitations are reported without inferring a platform failure from an empty result; each researched company URL has identity evidence; `ls companies/*.md | wc -l` equals `wc -l seed_companies.txt` and the `triage_only: false` count equals `wc -l icp_fits.txt`; no two person files share a slug; every hook in a sample of five traces to a cited finding or the talk title; every file parses with its closing `---`; every person file has a source, a collection date and a lawful basis.
+Observed people and company counts, extraction strategy and coverage limitations are reported without inferring a platform failure from an empty result; each researched company URL has identity evidence; the selected event workflow's materialized company stubs match the seed list and completed-fit files match the fit list, with failures reported; no two person files share a slug; every hook in a sample of five traces to a cited finding or the talk title; every file parses with its closing `---`; every person file has a source, a collection date and a lawful basis.

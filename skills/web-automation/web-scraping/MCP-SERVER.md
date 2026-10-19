@@ -1,6 +1,10 @@
 # A scraping MCP server
 
+From [D4Vinci/Scrapling, scrapling-official/references/mcp-server.md], checked against the [current server source](https://github.com/D4Vinci/Scrapling/blob/main/scrapling/core/ai/server.py) and [0.5 migration guide](https://github.com/D4Vinci/Scrapling/blob/main/docs/migrating-to-v0.5.md). This is a scraping server, distinct from [first-party WebMCP page tools](../webmcp/SKILL.md).
+
 ## Auth on Streamable HTTP
+
+[D4Vinci/Scrapling, scrapling-official/references/mcp-server.md]
 
 On stdio only the program that started the server can reach it; on Streamable HTTP anyone who can reach the port can call every tool, including fetching any URL from the machine running it.
 

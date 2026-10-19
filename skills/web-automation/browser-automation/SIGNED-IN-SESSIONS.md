@@ -2,6 +2,8 @@
 
 A cloud browser starts signed out. To run as you, export the cookies from a local browser where you are signed in and load them into a persistent context that later cloud sessions start from. The cookies are your credentials.
 
+**Source-workspace prerequisite:** the sync helper, flags and flow below refer to upstream [cookie-sync](https://github.com/browserbase/skills/tree/main/skills/cookie-sync). This Markdown skill does not ship that executable helper. Check its version and supported connection route before transferring an authorized session. [browserbase/skills, cookie-sync]
+
 ## Security
 
 - **Cookies are credentials.** Moving them moves an authenticated session to another machine: only do it with your own account.
@@ -11,7 +13,7 @@ A cloud browser starts signed out. To run as you, export the cookies from a loca
 
 ## Export from the local browser
 
-- **`context.cookies()` over CDP returns every domain in the browser,** not just the active tab: it uses `Storage.getCookies`. Injection uses `Storage.setCookies`.
+- **`context.cookies()` without URL filters returns all cookies in that BrowserContext,** not only the active tab's domain and not automatically every context in the browser. The source said every domain in the browser. The cookie-sync source uses `Storage.getCookies` and `Storage.setCookies` for reading and injection. [browserbase/skills, cookie-sync]; [Playwright BrowserContext.cookies](https://playwright.dev/docs/api/class-browsercontext#browser-context-cookies)
 - **At least one tab must be open.**
 - **Find the DevTools endpoint.** If `CDP_URL` matches `^wss?://.+/devtools/browser/`, use it as is. Otherwise convert `ws` to `http` (`wss` to `https`), strip a trailing `/`, GET `<base>/json/version` and use `webSocketDebuggerUrl`; fail if the response isn't OK or the field is missing. Without `CDP_URL`, read the `DevToolsActivePort` file (line 1 the port, line 2 the path) and build `ws://${CDP_HOST || '127.0.0.1'}:${port}${path}`; a file with fewer than two lines is an error.
 - **`DevToolsActivePort` lives in the profile root or its `Default/` folder** (check `CDP_PORT_FILE` first):
@@ -24,8 +26,8 @@ A cloud browser starts signed out. To run as you, export the cookies from a loca
 
 ### Enabling remote debugging
 
-- **Chrome 146 and later (recommended):** `chrome://flags/#allow-remote-debugging`, set Enabled, restart. This works with your real profile, so your real cookies are available. Warn when the detected Chrome major version is below 146.
-- **Any version:** launch with `--remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug` and set `CDP_URL=ws://127.0.0.1:9222` (Windows: `--user-data-dir=%TEMP%\chrome-debug`, `set CDP_URL=...`). Chrome won't open the debugging port on an existing profile, so this is a fresh profile and **your real cookies are not in it.**
+- **Consent-based existing-profile connection, Chrome 144+:** enable remote debugging at `chrome://inspect/#remote-debugging`, use a client supporting Chrome's auto-connect flow, and accept Chrome's connection permission prompt. The source prescribed a Chrome 146 flag and a below-146 warning; Chrome documents the consent UI from 144 instead. This does not establish that the source cookie-sync helper's port-file discovery supports that flow. [Chrome existing-session debugging](https://developer.chrome.com/blog/chrome-devtools-mcp-debug-your-browser-session)
+- **Command-line debug port:** the source launches with `--remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug` and sets `CDP_URL=ws://127.0.0.1:9222` (Windows: `--user-data-dir=%TEMP%\chrome-debug`, `set CDP_URL=...`). From Chrome 136, these command-line debugging switches require a non-default user-data directory. The old line prohibited every existing profile; the restriction concerns the default Chrome data directory. A newly created dedicated profile does not contain your normal profile's cookies. [browserbase/skills, cookie-sync]; [Chrome debugging-port restriction](https://developer.chrome.com/blog/remote-debugging-port)
 
 ## Convert and filter
 
@@ -80,7 +82,7 @@ Flow: local Chrome through Stagehand (`new Stagehand({env: 'LOCAL', localBrowser
 
 | Message | Fix |
 |---|---|
-| "No DevToolsActivePort found" | Enable the flag, or launch with a port and set `CDP_URL` |
+| "No DevToolsActivePort found" | Use the documented command-line-port/custom-profile route and set `CDP_URL`; a consent-based connection requires a compatible client |
 | "No open page targets found" | Open a tab |
 | "WebSocket error" | Chrome may be hung: force quit and reopen |
 | Cookies expired in the context | Re-run with `--context <id>` |

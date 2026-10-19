@@ -172,8 +172,8 @@ Detailed coverage is in the [Backend set README](./skills/backend/README.md#skil
 | [developer-docs](./skills/architecture/developer-docs/SKILL.md) | Source-verified developer docs, CI-backed snippets, navigation, redirects and generated output. |
 | [debugging](./skills/architecture/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared root causes and evidence-based verification. Discriminating controls, tested-artifact identity and state-effect evidence limits. |
 | [engineering-planning](./skills/architecture/engineering-planning/SKILL.md) | Interviews, specs, local breakdown, handoffs, RFCs, execution and scoped developer-tool product briefs. |
-| [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and retained evidence; routes exact UI reconstruction to pixel-reverse-engineer. |
-| [pixel-reverse-engineer](./skills/architecture/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction from live DOM, CSS, assets, JavaScript and behavior. |
+| [reverse-engineering](./skills/architecture/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and observed-traffic OpenAPI generation; routes exact UI reconstruction to pixel-reverse-engineer. |
+| [pixel-reverse-engineer](./skills/architecture/pixel-reverse-engineer/SKILL.md) | Exact component and animation reconstruction, plus explanation-only page inspection, from live DOM, CSS, assets, JavaScript and observed behavior. |
 
 ## Frontend
 
@@ -190,7 +190,7 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 | [sonner](./skills/frontend/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [technical-drawing](./skills/frontend/technical-drawing/SKILL.md) | Physical drawings and exports; declared geometry checks distinguished from passing results. |
 | [react](./skills/frontend/react/SKILL.md) | Global React, Next.js, audits and Remotion Player; native navigation APIs, sheet limits and previews. |
-| [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages. |
+| [webgl](./skills/frontend/webgl/SKILL.md) | Live-page widgets, shared contexts, fallbacks, three.js/R3F audits and 3D launch pages; canonical canvas-pixel and unavailable-WebGL checks. |
 | [cookie-consent](./skills/frontend/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
 | [design-system-maintenance](./skills/frontend/design-system-maintenance/SKILL.md) | Extracting an existing system, mapping values, component docs, migration readiness and rendered evidence. |
 | [app-ui](./skills/frontend/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
@@ -201,11 +201,11 @@ Detailed coverage is in the [Frontend set README](./skills/frontend/README.md#sk
 
 | Skill | Covers |
 |---|---|
-| [e2e-testing](./skills/web-automation/e2e-testing/SKILL.md) | Web/mobile journeys, decision-model execution, failure triage, Maestro, Patrol and adversarial UI evidence. |
-| [browser-automation](./skills/web-automation/browser-automation/SKILL.md) | Browser ownership, sessions, scoped interception, paired-clock tracing and evidence-based task loops. Routes exact reconstruction to pixel-reverse-engineer. |
-| [web-scraping](./skills/web-automation/web-scraping/SKILL.md) | Permitted fetch/crawl/parse workflows, current Scrapling contracts and qualified traffic-to-OpenAPI generation. |
-| [webmcp](./skills/web-automation/webmcp/SKILL.md) | Task tools, closed schemas, current registration/invocation lifecycle, confirmation and live probing. |
-| [web-research](./skills/web-automation/web-research/SKILL.md) | Parallel research with source identity, bounded discovery, honest coverage and evidence-backed reports. |
+| [e2e-testing](./skills/web-automation/e2e-testing/SKILL.md) | Web/mobile journeys, decision-model execution, failure triage, canonical Maestro/mobile setup, adversarial UI evidence and responsive checks; canvas proof routes to WebGL. |
+| [browser-automation](./skills/web-automation/browser-automation/SKILL.md) | Browser ownership, scoped interception, versioned local/cloud sessions, paired-clock tracing and evidence-based task loops. Page inspection routes to pixel-reverse-engineer. |
+| [web-scraping](./skills/web-automation/web-scraping/SKILL.md) | Permitted fetch/crawl/parse workflows, qualified Scrapling contracts and canonical research fetch/search adapters; observed-traffic API generation routes to reverse-engineering. |
+| [webmcp](./skills/web-automation/webmcp/SKILL.md) | Task tools, closed schemas, versioned registration/invocation, rejection versus returned failures and shared consequence gates for source-app and injected routes. |
+| [web-research](./skills/web-automation/web-research/SKILL.md) | Parallel research with tagged profiles/lane budgets, scoped cleanup and paid gates, evidence fields and source-workspace prerequisites for reports. |
 
 ## Monitoring
 

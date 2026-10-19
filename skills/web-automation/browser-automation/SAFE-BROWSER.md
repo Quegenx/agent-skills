@@ -10,6 +10,8 @@ runtime agent -> only tool: safe_browser -> local Chromium
      -> Fetch.continueRequest (allowed) | Fetch.failRequest (blocked)
 ```
 
+**Source-workspace prerequisite:** this file documents the upstream [safe-browser demo](https://github.com/browserbase/skills/tree/main/skills/safe-browser); its executable harness is not shipped with this Markdown skill. The proof below requires that source implementation, not just these excerpts. [browserbase/skills, safe-browser]
+
 ## Tool design
 
 - **Expose constrained actions, not raw CDP:** `goto` (an absolute URL through `Page.navigate`), `extract_front_page`, `extract_comments`, `current_url`, `audit_log`.

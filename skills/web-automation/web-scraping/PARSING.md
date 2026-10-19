@@ -1,10 +1,12 @@
 # Parsing HTML
 
+From [D4Vinci/Scrapling, scrapling-official/references/parsing], with the class-token qualification checked against [lxml.cssselect](https://lxml.de/cssselect.html).
+
 **Contents:** [Choosing a selector](#choosing-a-selector) · [Option: Scrapling Selector](#option-scrapling-selector-vendor) · [Selecting](#selecting) · [Similar elements](#similar-elements) · [Adaptive selectors](#adaptive-selectors) · [Coming from BeautifulSoup](#coming-from-beautifulsoup) · [Pitfalls](#pitfalls) · [Prove it](#prove-it)
 
 ## Choosing a selector
 
-- **Select by class with CSS, not XPath.** An XPath class match won't be accurate when the element has another class.
+- **Prefer CSS for convenient class-token matching.** Exact whole-class attribute equality misses elements with another class, but an appropriate XPath token expression works: lxml itself compiles CSS class selection to XPath with whitespace-normalized token membership. The source example and old line generalized the failure of whole-attribute equality into a limitation of XPath. [https://lxml.de/cssselect.html; D4Vinci/Scrapling, scrapling-official/references/parsing/selection.md]
 - **Select narrowly** so only the content you need reaches the next step (UNTRUSTED-CONTENT.md).
 - **Resolve relative links to absolute URLs** (`page.urljoin(href)`) before following them.
 - **For repeated items** (products, table rows, form fields, reviews), find one by its text, walk up to its container, then find the elements similar to it.

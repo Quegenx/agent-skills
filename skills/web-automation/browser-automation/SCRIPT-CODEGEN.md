@@ -1,6 +1,8 @@
 # Turning a run into a deterministic script
 
-Once a task loop has converged, the exploration is no longer needed: generate a plain script from the successful run and replay it without an agent.
+Once a task loop has converged, the exploration is no longer needed: generate a plain script from the successful run and replay it without an agent. [browserbase/skills, autobrowse]
+
+**Source-workspace prerequisite:** the generator, prompt templates, scaffolds and runners described below belong to the upstream [autobrowse workspace](https://github.com/browserbase/skills/tree/main/skills/autobrowse), including [scripts/codegen.mjs](https://github.com/browserbase/skills/blob/main/skills/autobrowse/scripts/codegen.mjs) and `codegen/`. They are not shipped with this Markdown skill. Budgets, model choices and cost heuristics below are source defaults, not a newly verified price or compatibility guarantee. [browserbase/skills, autobrowse]
 
 ## The pipeline
 
@@ -18,7 +20,7 @@ Context (task, strategy, a CDP bridge reference, the unified events or the trace
 
 - **Self-contained:** needs only the browser service's API key, creates its own fresh session (create, connect, use, release).
 - **Connect, never launch:** always `connectOverCDP`, never `chromium.launch()`. Get the page with `const [context] = browser.contexts(); const page = context.pages()[0] ?? await context.newPage();`.
-- **Don't call `browser.close()` on a `connectOverCDP` attachment:** it tears down the remote session early and can leak resources. Release the session in `finally` instead (on Browserbase, `browse cloud sessions update <id> --status REQUEST_RELEASE`).
+- **Distinguish driver disconnection from cloud-session release.** Playwright closes a launched browser, but closing a CDP-connected Browser disconnects its connection; its upstream reconnect test retains the existing browser pages. The old line treated every CDP close as browser termination. Browserbase separately ends a non-keep-alive session on disconnect; keep-alive sessions survive disconnects and still require explicit release when done. Clean up only the session you own in `finally` (on Browserbase, `browse cloud sessions update <id> --status REQUEST_RELEASE`). [Playwright Browser.close](https://playwright.dev/docs/api/class-browser#browser-close); [Playwright CDP reconnect test](https://github.com/microsoft/playwright/blob/main/tests/library/chromium/connect-over-cdp.spec.ts); [Browserbase keep alive](https://docs.browserbase.com/platform/browser/long-sessions/keep-alive)
 - **Locator preference:** `data-testid`, then role and name, then id, then text, then xpath. Pick locators from the recorded descriptors; don't invent them.
 - **Auto-waiting actions over explicit waits:** `locator.click()` and `fill()`. Where the trace shows a slow XHR after an action, `page.waitForResponse(...)` instead of a sleep.
 - **Final stdout line is JSON:** `{"success":true,"data":...}` or `{"success":false,"error":"..."}`, with a non-zero exit on failure. Validate the output with a Zod schema mirroring the task's output section.

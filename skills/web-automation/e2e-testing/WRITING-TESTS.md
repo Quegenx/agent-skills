@@ -55,7 +55,7 @@ await expect(screen.getByText('Order confirmed')).toBeVisible();
 - **Prefer stable handles:** roles and accessible names, labels, test ids, routes. Take selectors from the source (labels, roles, text); add an `aria-label` or heading where the app lacks an accessible name rather than fall back to CSS classes.
 - **Run-unique test data** (`Invoice ${Date.now()}`) and `afterEach` cleanup, so replays and retries never trip over leftovers.
 - **`await` every step call** (an unawaited step is `STEP_NOT_AWAITED`).
-- **Do not change app code to make a test pass;** propose the app change instead.
+- **Source app-edit convention:** do not change app behavior to make a test pass; propose that change instead. Authorized shared test keys and accessibility labels follow the [tagged instrumentation scope](SKILL.md#the-rules), not an implicit exception that weakens the assertion. [tester-army/e2e, writing tests; leancodepl/patrol, test keys; owner AGENTS.md]
 
 ## Registration and fixtures
 
@@ -69,7 +69,7 @@ await expect(screen.getByText('Order confirmed')).toBeVisible();
 
 ## Locators
 
-- **Query order:** `getByRole(role, name?, { exact, checked, disabled, selected, expanded, pressed, level, visible })` first; then `getByLabel`, `getByPlaceholder`, `getByText`, `getByDisplayValue`; `getByTestId` last. Test ids per platform: web `data-testid`, React Native `testID`, SwiftUI `.accessibilityIdentifier`, Compose `testTag` with `testTagsAsResourceId`, Flutter `Semantics(identifier:)`, .NET MAUI `AutomationId`.
+- **Query order:** `getByRole(role, name?, { exact, checked, disabled, selected, expanded, pressed, level, visible })` first; then `getByLabel`, `getByPlaceholder`, `getByText`, `getByDisplayValue`; `getByTestId` last. Test ids per platform: web `data-testid`, React Native `testID`, Flutter `Semantics(identifier:)`. Native-only Swift/Kotlin and .NET mappings are skipped under the owner stack. [tester-army/e2e, locators; owner stack]
 - **Roles are a closed union** (button, link, textbox, ... region); `img` aliases `image`.
 - **Text match is exact after whitespace normalization, whole string and case-sensitive** in `e2e`: `name: 'Save'` misses `Save changes` (unlike Playwright). `exact: false` is a case-insensitive substring; a RegExp matches as written.
 - **A query that misses makes a negated assertion pass,** so check it positively.

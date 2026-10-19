@@ -18,14 +18,16 @@ The job is to let an agent do in the page what a user can already do there, thro
 
 ## The rules
 
+[browserbase/skills, add-webmcp and webmcp-gen; existing repository contract and consequence rules]
+
 1. **Tools are complete user tasks**, such as `search_catalog` or `save_draft`, not one tool per endpoint, and each traces to behavior the product already has. A route name or schema alone does not prove a capability is usable, authorized or safe.
 2. **Expose only what the UI grants the current user.** No internal or admin-only operations, authentication bypasses, raw database access or secret-bearing operations.
 3. **One contract.** Derive the JSON Schema from the app's existing validator, close it with `additionalProperties: false`, and make the execute-time parser reject unknown keys too. Agent-provided input is untrusted: validate again inside the handler.
 4. **Call the boundary the UI calls.** Do not duplicate server business logic in the executor; existing validation, authorization and business rules stay authoritative.
 5. **Report the app's state, never the request.** Read the outcome from the application, polling until reactive state settles; echoing turns a silent no-op into a passing test.
 6. **Annotations are hints, not enforcement.** The app enforces permissions, validation, confirmation, idempotency and replay protection; never weaken CSRF, same-origin, auth or confirmation checks to pass a test.
-7. **Consequential actions keep the app's real confirmation.** Split preview from commit where possible, never add `toolautosubmit`, and never invoke them in automated validation without an explicitly authorized sandbox.
-8. **Never return or embed secrets:** no tokens, cookies, headers, stack traces, hidden form fields, DOM nodes or whole HTML documents in results, and no secrets in browser code.
+7. **Consequential actions keep the app's real confirmation.** Split preview from commit where possible, never add `toolautosubmit`, and apply the [same consequence gate](VALIDATION.md#the-consequential-gate) to source-app and injected tools. Never invoke them in automated validation without an explicitly authorized sandbox.
+8. **Never return or embed secrets:** no tokens, cookies, headers, stack traces, hidden form fields, DOM nodes or whole HTML documents in results, and no secrets in browser code. The [legacy generator's returned stack](INIT-SCRIPT.md#what-the-compiled-script-does) conflicts with this rule; the rule applies to fulfilled failure payloads too.
 9. **Fix discrepancies where they are.** Do not loosen a schema, downgrade an annotation or delete a probe to make a check pass.
 
 ## Prove it

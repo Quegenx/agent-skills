@@ -1,11 +1,11 @@
 ---
 name: reverse-engineering
-description: "Investigates shipped JavaScript, Electron, Flutter APK, WASM and SQLite artifacts and observed web features with REA: scoped analysis, source recovery, runtime observation, captures, version comparison and evidence coverage. Use when ordinary source is missing, a shipped package differs from source, or a feature needs artifact or runtime evidence."
+description: "Investigates shipped JavaScript, Electron, Flutter APK, WASM and SQLite artifacts and observed web features with REA: scoped analysis, source recovery, runtime observation, captures, version comparison and evidence coverage; best-effort API inference from recorded traffic with the separate Browserbase generator. Use when ordinary source is missing, a shipped package differs from source, or a feature needs artifact or runtime evidence."
 ---
 
 # Reverse engineering
 
-From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. Ordinary complete-source investigation belongs in [debugging](../debugging/SKILL.md) and [code research](../code-research/SOURCE-RESEARCH.md).
+From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. The [recorded-traffic API generator](TRAFFIC-TO-OPENAPI.md) comes from [browserbase/skills, browser-to-api]; it has separate source-workspace prerequisites and sample-based limits. Ordinary complete-source investigation belongs in [debugging](../debugging/SKILL.md) and [code research](../code-research/SOURCE-RESEARCH.md).
 
 | The job | Read |
 |---|---|
@@ -18,6 +18,7 @@ From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, W
 | Inspect local WASM interfaces or a coherent SQLite database/WAL snapshot | [OFFLINE-ARTIFACTS.md](OFFLINE-ARTIFACTS.md) |
 | Observe a user action, perform a declared scenario or reconcile static/runtime evidence | [RUNTIME.md](RUNTIME.md) |
 | Inspect saved captures, retained records, unknowns and finite comparisons | [CAPTURES-AND-EVIDENCE.md](CAPTURES-AND-EVIDENCE.md) |
+| Infer a best-effort OpenAPI document from recorded traffic using the separate Browserbase generator | [TRAFFIC-TO-OPENAPI.md](TRAFFIC-TO-OPENAPI.md) |
 
 ## The rules
 

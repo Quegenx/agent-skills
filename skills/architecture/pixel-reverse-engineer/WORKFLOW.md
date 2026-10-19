@@ -66,7 +66,7 @@ For every relevant selector, capture the complete rule and all contexts that mod
 
 Preserve exact source values whenever available. Do not replace an extracted literal with an approximately matching design-system token. Use an existing token only when its resolved value and behavior are actually equivalent.
 
-For the existing browser inspection recipes, route limitations and evidence labels, use [INSPECT-A-PAGE.md](../../web-automation/browser-automation/INSPECT-A-PAGE.md). This workflow adds reconstruction; it does not duplicate those inspection mechanics. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, explain-interface]
+For the existing browser inspection recipes, route limitations and evidence labels, use [INSPECTION.md](INSPECTION.md). This workflow adds reconstruction; it does not duplicate those inspection mechanics. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, explain-interface]
 
 ### Breakpoints
 
@@ -120,7 +120,7 @@ Custom attributes/elements, generated wrappers, runtime behavior, imports, or bu
 
 Library-looking names are clues only, not assumptions. Never assume a library because it appeared in a previous task.
 
-The [explanation-only inspection workflow](../../web-automation/browser-automation/INSPECT-A-PAGE.md#explain-the-mechanism) says not to chase a library name from compiled output. Here a reconstruction may need a confirmed specialized dependency; a weak fingerprint remains an inference, not a confirmed identity. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, explain-interface]
+The [explanation-only inspection workflow](INSPECTION.md#explain-the-mechanism) says not to chase a library name from compiled output. Here a reconstruction may need a confirmed specialized dependency; a weak fingerprint remains an inference, not a confirmed identity. [pixel-reverse-engineer, SKILL.md]; [Jakub Krehel, explain-interface]
 
 If a specialized library is responsible for behavior difficult or inaccurate to recreate manually, use it when appropriate. Preserve relevant props, timing/easing/spring configuration, locale, element type, sequencing, exported styles, host CSS, inline styles, custom-element styles, `::part(...)`, masks, CSS exports, and required DOM attributes.
 

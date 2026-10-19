@@ -27,7 +27,7 @@ Site lessons that recur:
 
 - **The real entry URL may differ from the one you were given.** Navigate directly to the actual form URL.
 - **Map or geocoder-driven fields:** don't type into the derived field. Type into the search box, wait 2000 ms, snapshot, click the suggestion, press Enter, wait 3000 ms, press Tab.
-- **Stable CSS ids** can be filled directly (`fill "#id"`). Some refs stay the same across sessions and can skip the snapshot; others vary per session and always need one.
+- **Stable CSS ids** can be filled directly (`fill "#id"`); they are selectors, not snapshot refs. The source also suggested reusing some refs across sessions. Keep this file's existing latest-snapshot rule for every ref. [browserbase/skills, browser; existing snapshot-and-act contract]
 - **The turn budget is a failure mode.** A form can succeed while the agent runs out of turns before reading the confirmation: extra verification snapshots, retries by another method, screenshots and `get value` checks all spend turns. Prescribe a turn-by-turn budget and make the last turn a JSON output with no tool call.
 
 ## Waiting
@@ -48,7 +48,7 @@ Install or check: `which browse || npm install -g browse`. Refs look like `@0-5`
 |---|---|
 | Navigation | `open <url>` (`--wait load\|domcontentloaded\|networkidle`, default `load`), `reload`, `back`, `forward` |
 | State | `snapshot` (`--compact` = tree only, no ref maps), `screenshot` (prints base64 JSON; `--path`, `--full-page`), `get url\|title\|text\|html\|markdown\|value\|box\|visible\|checked [selector]`, `refs` (cached ref map of the last snapshot) |
-| Interaction | `click <ref>`, `click_xy <x> <y>`, `hover <x> <y>`, `type <text>` (`--delay 100` ms per key, `--mistakes` for human-like typos), `fill <selector> <value>` (`--press-enter`), `select <selector> <values...>`, `upload <selector\|ref> <files...>` (remote uses base64 injection), `press <key>` (Enter, Tab, Escape, Cmd+A, Ctrl+C) |
+| Interaction | `click <ref>`, `click_xy <x> <y>`, `hover <x> <y>`, `type <text>` (`--delay 100` ms per key), `fill <selector> <value>` (`--press-enter`), `select <selector> <values...>`, `upload <selector\|ref> <files...>` (remote uses base64 injection), `press <key>` (Enter, Tab, Escape, Cmd+A, Ctrl+C) |
 | Mouse | `mouse scroll <x> <y> <dx> <dy>` (positive dy scrolls down), `mouse drag <x1> <y1> <x2> <y2>` (default 10 steps; `--steps 20`, `--delay 50`, `--button right`, `--return-xpath`), `highlight <selector>` (default 2 s; `-d 5000`) |
 | Checks and waits | `is visible\|checked <selector>` (returns `{visible: bool}`), `wait load`, `wait selector ".results"`, `wait timeout 3000` |
 | Session | `start`, `stop` (`--force`), `status` (resolved mode and target), `tab new [url]`, `tab list`, `tab switch <index\|targetId>`, `tab close [index]` (refuses to close the last tab) |
