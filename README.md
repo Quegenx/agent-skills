@@ -298,7 +298,7 @@ Detailed coverage and related task routes are in the [Videos set README](./skill
 | [video-brief](./skills/videos/video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
 | [video-help](./skills/videos/video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
 | [video-setup](./skills/videos/video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |
-| [voiceover](./skills/videos/voiceover/SKILL.md) | Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing. |
+| [voiceover](./skills/videos/voiceover/SKILL.md) | ElevenLabs v4 narration with audio tags and character timestamps, cached takes, conditional caption mapping, bounded subtitles and source-qualified mouth timing. |
 
 ## Web automation
 

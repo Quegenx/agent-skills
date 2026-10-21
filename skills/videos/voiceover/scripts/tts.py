@@ -2,9 +2,9 @@
 # requires-python = ">=3.10"
 # dependencies = ["numpy"]
 # ///
-"""Voiceover with word timings, via ElevenLabs text-to-speech with timestamps. Run with uv from the film folder.
+"""Voiceover with word timings, via ElevenLabs timestamp APIs (v4 Text to Dialogue by default). Run with uv from the film folder.
 
-  uv run scripts/tts.py --voice <voice_id> [--model eleven_v3] [--max-pause 0.35] [--gap 0.25] [--speed 1.0]
+  uv run scripts/tts.py --voice <voice_id> [--model eleven_v4] [--max-pause 0.35] [--gap 0.25] [--speed 1.0]
   uv run scripts/tts.py --voice <voice_id> --takes 4 [--only hook,steps]
       prepare 4 cached take indexes per selected line in audio/vo/takes/, requesting only missing entries, then stop.
       Pick a winner per line with "take": k in the script and run again without --takes to assemble.
@@ -53,8 +53,16 @@ def api_key():
 
 
 def request(say, voice, model, key):
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128"
-    body = json.dumps({"text": say, "model_id": model}).encode()
+    if model == "eleven_v4":
+        # Eleven v4 uses Text to Dialogue; retain Text to Speech for explicitly selected older models.
+        # https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-with-timestamps
+        if len(say) > 2000:
+            sys.exit("tts: split Eleven v4 narration into lines of at most 2000 characters for reliable generation")
+        url = "https://api.elevenlabs.io/v1/text-to-dialogue/with-timestamps?output_format=mp3_44100_128"
+        body = json.dumps({"inputs": [{"text": say, "voice_id": voice}], "model_id": model}).encode()
+    else:
+        url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}/with-timestamps?output_format=mp3_44100_128"
+        body = json.dumps({"text": say, "model_id": model}).encode()
     req = urllib.request.Request(url, data=body, headers={"xi-api-key": key, "Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=180) as r:
@@ -127,7 +135,7 @@ def main():
     if not os.path.exists(script_path):
         sys.exit("tts: write audio/vo-script.json first (see the docstring for its shape)")
     lines = json.load(open(script_path))
-    voice, model = arg("--voice"), arg("--model", "eleven_v3")
+    voice, model = arg("--voice"), arg("--model", "eleven_v4")
     if not voice:
         sys.exit("tts: pass --voice <voice_id> (the user's cloned voice or a library voice)")
     max_pause, default_gap, speed = float(arg("--max-pause", 0.35)), float(arg("--gap", 0.25)), float(arg("--speed", 1.0))

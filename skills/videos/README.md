@@ -21,7 +21,7 @@ Category membership is the primary home, not an instruction to install every ski
 | [video-brief](video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
 | [video-help](video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
 | [video-setup](video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |
-| [voiceover](voiceover/SKILL.md) | Narration and cached takes, conditional caption mapping, bounded subtitle rows and source-qualified mouth timing. |
+| [voiceover](voiceover/SKILL.md) | ElevenLabs v4 narration with audio tags and character timestamps, cached takes, conditional caption mapping, bounded subtitles and source-qualified mouth timing. |
 
 ## Related task routes
 
