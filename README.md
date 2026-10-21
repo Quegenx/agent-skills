@@ -186,7 +186,7 @@ Detailed coverage and related task routes are in the [Web UI set README](./skill
 | [sonner](./skills/web-ui/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [svg](./skills/web-ui/svg/SKILL.md) | SVG drawing, animation and icons; canonical namespaces, use primitives and transforms. |
 | [technical-drawing](./skills/web-ui/technical-drawing/SKILL.md) | Physical drawings, evidence and exports; standalone viewer and download acceptance applies only to requested deliverables. |
-| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Web motion policy, timing, briefs, recipes and audits; native motion implementation routes to the global React skill. |
+| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Web motion policy, timing, briefs, recipes and audits, plus 662 named Animista presets with recorded preview defaults and CSS limits; native motion implementation routes to the global React skill. |
 | [web-accessibility](./skills/web-ui/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms and phone numbers; complete hover/focus content criteria. |
 | [web-performance](./skills/web-ui/web-performance/SKILL.md) | Browser loading, media, layout shifts, main-thread work, runtime traces and Lighthouse gates. |
 | [webgl](./skills/web-ui/webgl/SKILL.md) | Live shader widgets, shared contexts/fallbacks, Three.js/R3F audits and launch pages; widget-specific requirements stay in that branch. |

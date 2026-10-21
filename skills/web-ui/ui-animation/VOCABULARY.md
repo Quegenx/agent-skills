@@ -2,6 +2,8 @@
 
 A reverse lookup: someone describes an effect loosely ("the bouncy thing when a popover opens", "it resists and snaps back") and gets the exact term back, so a human can tell an agent "Morph, not Crossfade" in two words. The glossary is Emil Kowalski's `animation-vocabulary` skill, "For naming an effect, not designing or building one" (tagged [Emil Kowalski, animation-vocabulary]); its definitions are quoted as it gives them, with two corrected against the official docs. After each term, **Built:** points to where this repo builds it, or says that it doesn't.
 
+For exact Animista preset identifiers and preview defaults, use the separate [Animista catalog](ANIMISTA.md); this glossary retains the general effect definitions. [Animista, animista.json and animista-play-catalog.md]
+
 **Contents:** [Naming method](#naming-method) · [Close terms told apart](#close-terms-told-apart) · [Entrances and exits](#entrances-and-exits) · [Sequencing and timing](#sequencing-and-timing) · [Movement and transforms](#movement-and-transforms) · [Transitions between states](#transitions-between-states) · [Scroll](#scroll) · [Feedback and interaction](#feedback-and-interaction) · [Easing](#easing) · [Spring animations](#spring-animations) · [Looping and ambient motion](#looping-and-ambient-motion) · [Polish and effects](#polish-and-effects) · [Performance](#performance) · [Principles to know](#principles-to-know) · [Prove it](#prove-it)
 
 ## Naming method

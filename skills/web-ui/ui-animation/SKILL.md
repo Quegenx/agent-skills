@@ -7,6 +7,8 @@ description: "Designs and builds website and web-app animations that feel delibe
 
 The model knows what a card entrance is. It doesn't know this card should take 280 ms, the one behind it should start 60 ms later, and both must be interruptible mid-flight. Pick from the numbers; deviate on purpose, never by accident. Every animation answers one question: what changed, and where did it go?
 
+The optional [Animista catalog](ANIMISTA.md) adds exact preset names and recorded preview settings from Ana Travas's `animista.json` and the supplied play catalog; its defaults remain separate from the product rules below. [Animista, animista.json and animista-play-catalog.md]
+
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
@@ -30,6 +32,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | React Native and Expo motion policy and setup: Reanimated runtimes, tool choices, springs, haptics and reduced motion | [React native motion policy](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/REACT-NATIVE-MOTION.md) |
 | React Native worked recipes: press, sheet, swipe, header, list, keyboard, tab, navigation, toast and threshold | [React native motion recipes](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/REACT-NATIVE-MOTION-RECIPES.md) |
 | Name an effect or a feeling: the term to ask for, and close terms told apart | [VOCABULARY.md](VOCABULARY.md) |
+| Look up Animista's 75 groups and 662 variations, recorded preview settings and generated-CSS limits | [ANIMISTA.md](ANIMISTA.md) |
 | Review existing motion: scan, rank, write one fix plan per pick | [AUDIT.md](AUDIT.md) |
 | Find where motion belongs, and reject the rest | [OPPORTUNITIES.md](OPPORTUNITIES.md) |
 
