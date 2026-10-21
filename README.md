@@ -138,8 +138,8 @@ Detailed coverage and related task routes are in the [Engineering set README](./
 | [engineering-planning](./skills/engineering/engineering-planning/SKILL.md) | Interviews, specs, local breakdown, handoffs, RFCs, execution and scoped developer-tool product briefs. |
 | [lint-rule-authoring](./skills/engineering/lint-rule-authoring/SKILL.md) | Detector contracts, implementation, corpus validation, fuzzing, FP/FN audits and base/head parity. |
 | [refactoring](./skills/engineering/refactoring/SKILL.md) | Behavior-preserving transformations, typed errors, module boundaries and duplication tools; verify the actual code being refactored. |
-| [reverse-engineering](./skills/engineering/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and observed-traffic OpenAPI generation; routes exact UI reconstruction to pixel-reverse-engineer. |
-| [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Trust boundaries, authentication, tenant isolation, parsers and package controls; provider RLS mechanics route to their owners. |
+| [reverse-engineering](./skills/engineering/reverse-engineering/SKILL.md) | JS/Electron, captured scripts, source maps, Node inspection, Flutter APK/AOT, offline WASM/SQLite and observed-traffic OpenAPI generation; routes exact UI reconstruction to pixel-reverse-engineer. Selected behavior specifications, interaction semantics, investigation handoffs, Electron IPC inventories and security-patch comparisons. |
+| [secure-coding](./skills/engineering/secure-coding/SKILL.md) | Trust boundaries, authentication, tenant isolation, parsers and package controls; provider RLS mechanics route to their owners. Electron IPC sender validation and restricted bridge exposure. |
 | [system-migration](./skills/engineering/system-migration/SKILL.md) | Legacy replacement, synchronization, shadow comparisons, cutover and function maps, with tagged source alternatives. |
 | [ultracite](./skills/engineering/ultracite/SKILL.md) | Selected Ultracite setup, backend detection, checks, fixes, diagnostics, initialization and upgrades; review-process work stays separate. |
 
@@ -291,9 +291,9 @@ Detailed coverage and related task routes are in the [Videos set README](./skill
 | [beat-grid](./skills/videos/beat-grid/SKILL.md) | Find, scan and measure music into `audio/beats.json`, the clock for picture and sound; per-frame band energy for audio-reactive visuals; word-by-word lyric timing. |
 | [frame-review](./skills/videos/frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
 | [make-video](./skills/videos/make-video/SKILL.md) | Gated film production with engine selection before setup; shared story/review gates and engine-specific runtime contracts. |
-| [marketing-video](./skills/videos/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs |
+| [marketing-video](./skills/videos/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs. Source-scoped camera direction presets distinguish movement, lens, framing, focus, time and transitions. |
 | [seek-engine](./skills/videos/seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
-| [shotlist](./skills/videos/shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. |
+| [shotlist](./skills/videos/shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. Generated-footage camera directions link to marketing-video. |
 | [sound-pass](./skills/videos/sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |
 | [video-brief](./skills/videos/video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
 | [video-help](./skills/videos/video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |

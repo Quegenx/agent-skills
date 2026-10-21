@@ -5,7 +5,7 @@ description: "Investigates shipped JavaScript, Electron, Flutter APK, WASM and S
 
 # Reverse engineering
 
-From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. The [recorded-traffic API generator](TRAFFIC-TO-OPENAPI.md) comes from [browserbase/skills, browser-to-api]; it has separate source-workspace prerequisites and sample-based limits. Ordinary complete-source investigation belongs in [debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/debugging/SKILL.md) and [code research](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-research/SOURCE-RESEARCH.md).
+From [morluto/rea, reverse-engineer-anything] and its website-source, Flutter, WASM and SQLite guides, checked against the project's [README](https://github.com/morluto/rea/blob/main/README.md) and tool contracts. Use this for a lawful investigation of the user's identified artifact or web feature. The [recorded-traffic API generator](TRAFFIC-TO-OPENAPI.md) comes from [browserbase/skills, browser-to-api]; it has separate source-workspace prerequisites and sample-based limits. Selected investigation checklists also draw on [JoasASantos/REA-Prompts, README.md]. Ordinary complete-source investigation belongs in [debugging](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/debugging/SKILL.md) and [code research](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-research/SOURCE-RESEARCH.md).
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
@@ -14,12 +14,12 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Decide scope and evidence type | [SKILL.md](SKILL.md) |
 | Rebuild a live component, section or animation with the source's exact visuals and behavior | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/pixel-reverse-engineer/SKILL.md) |
 | Connect an available tool surface or repair an observed blocker | [CONNECTION.md](CONNECTION.md) |
-| Analyze an ASAR or JS tree, page modules, trace a feature or compare versions | [JAVASCRIPT.md](JAVASCRIPT.md) |
+| Analyze an ASAR or JS tree, page modules, trace a feature, inventory Electron IPC or compare selected security patches/versions | [JAVASCRIPT.md](JAVASCRIPT.md) |
 | Export captured website scripts, map source positions or trace native imports | [CAPTURED-SOURCES.md](CAPTURED-SOURCES.md) |
 | Identify a Flutter APK build or inspect bounded Dart AOT facts | [FLUTTER-ARTIFACTS.md](FLUTTER-ARTIFACTS.md) |
 | Inspect local WASM interfaces or a coherent SQLite database/WAL snapshot | [OFFLINE-ARTIFACTS.md](OFFLINE-ARTIFACTS.md) |
 | Observe a user action, perform a declared scenario or reconcile static/runtime evidence | [RUNTIME.md](RUNTIME.md) |
-| Inspect saved captures, retained records, unknowns and finite comparisons | [CAPTURES-AND-EVIDENCE.md](CAPTURES-AND-EVIDENCE.md) |
+| Inspect saved captures, retained records, unknowns, finite comparisons and selected behavior/interaction specifications or investigation handoffs | [CAPTURES-AND-EVIDENCE.md](CAPTURES-AND-EVIDENCE.md) |
 | Infer a best-effort OpenAPI document from recorded traffic using the separate Browserbase generator | [TRAFFIC-TO-OPENAPI.md](TRAFFIC-TO-OPENAPI.md) |
 
 ## The rules

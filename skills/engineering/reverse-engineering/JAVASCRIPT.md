@@ -34,6 +34,7 @@ From [morluto/rea, reverse-engineer-anything/references/javascript-applications.
 - Containment traversal can reach unrelated siblings. Reached nodes are not automatically participants in the feature.
 - BrowserWindow options, preload/contextBridge surfaces, IPC registrations, utility processes and native binding requests are static observations. Dynamic or ambiguous channels stay unresolved; a requested native member is not a verified native export.
 - Only a unique exact literal IPC channel supports an inferred pairing. State that it is inferred and retain coverage limitations.
+- For a selected Electron IPC security review, inventory `ipcMain` handlers and channels exposed through preload/`contextBridge`; trace accepted arguments through shell, child-process, filesystem or webview-navigation operations and record intervening validation with file/function evidence. Apply the [Electron sender and exposure controls](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/BROWSER-BOUNDARIES.md#electron-ipc) and preserve the existing static-versus-observed boundary. [JoasASantos/REA-Prompts, README.md, IPC & contextIsolation security review; morluto/rea, reverse-engineer-anything/references/javascript-applications.md]
 
 ## Query semantic relationships
 
@@ -52,6 +53,7 @@ From [morluto/rea, reverse-engineer-anything/references/javascript-applications.
 - Added/removed requires complete opposite-side coverage. Otherwise report unknown.
 - For one exported callable's returned shape, use compare_javascript_export_shapes with explicit module paths and export names. Inspect property inventories and presence separately from unresolved values.
 - Accept variant pairing only under the tool's supported exact discriminant. Static shape inference does not establish runtime behavior; use scoped runtime evidence when behavior is the question.
+- When comparing a selected security fix, identify the check added or changed and inspect sibling paths and callers for the same unfixed pattern. Report possible incomplete fixes as hypotheses with source evidence until authorized controlled validation establishes the result; use the existing [shared-cause investigation](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/debugging/SKILL.md#find-the-first-divergence) and [security evidence contract](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/SECURITY-AUDITS.md). [JoasASantos/REA-Prompts, README.md, Patch diffing (1-day to incomplete-fix hunting)]
 
 ## Compare historical source with a bundle
 

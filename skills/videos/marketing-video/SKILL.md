@@ -5,13 +5,14 @@ description: "Produces marketing video with tools rather than code: choosing bet
 
 # Marketing video
 
-Marketing video is four approaches, each good at one job: a film built in code, footage a video model generates, a talking head an avatar delivers, and long recordings cut into short clips. Pick the approach from the video's goal and the assets you have before picking a tool. Anything built in code (a launch film, a product walkthrough, a templated series) is the [make-video](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/SKILL.md) skill; a scripted recording of your own app is [asset-prep APP-RECORDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/APP-RECORDING.md). This skill covers the rest. Source: [coreyhaines31/marketingskills, video] v2.2.1 (MIT, (c) 2025 Corey Haines), with its stale specs corrected against ai.google.dev, heygen.com/pricing and developers.openai.com.
+Marketing video is four approaches, each good at one job: a film built in code, footage a video model generates, a talking head an avatar delivers, and long recordings cut into short clips. Pick the approach from the video's goal and the assets you have before picking a tool. Anything built in code (a launch film, a product walkthrough, a templated series) is the [make-video](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/make-video/SKILL.md) skill; a scripted recording of your own app is [asset-prep APP-RECORDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/APP-RECORDING.md). This skill covers the rest. Source: [coreyhaines31/marketingskills, video] v2.2.1 (MIT, (c) 2025 Corey Haines), with its stale specs corrected against ai.google.dev, heygen.com/pricing and developers.openai.com. Camera presets are paraphrased from the supplied [n, camera-movments.md], with terminology checked against Adobe, Nikon and Snorricam.
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 | The job | Read |
 |---|---|
-| Video models: Veo's official limits, the removed Sora API, the source's model picks, the prompt formula, camera and style vocabulary, prompt mistakes, workflow and cost | [AI-GENERATION.md](AI-GENERATION.md) |
+| Video models: Veo's official limits, the removed Sora API, the source's model picks, the prompt formula, style vocabulary, prompt mistakes, workflow and cost | [AI-GENERATION.md](AI-GENERATION.md) |
+| Camera vocabulary and footage presets: movement, speed, framing, ending, lens/physical travel, viewpoint, focus and time effects | [CAMERA-PROMPTS.md](CAMERA-PROMPTS.md) |
 | AI avatars: HeyGen's current plans and MCP server, custom avatars and consent, Synthesia, when an avatar is the wrong tool, personalized outreach videos | [AVATARS.md](AVATARS.md) |
 | Cutting long recordings into clips: the Descript, Opus Clip, CapCut workflow, captions, platform aspect ratios | [REPURPOSING.md](REPURPOSING.md) |
 

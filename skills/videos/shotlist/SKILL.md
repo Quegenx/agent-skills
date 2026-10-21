@@ -60,6 +60,7 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 - **The key beat of a shot sits in its middle**, not at the end where the cut eats it.
 - **A cut must add information.** If the next shot shows the same thing bigger, move the camera instead.
 - **State the camera for every row**, even "locked", and for a locked shot name what must not move.
+- For footage or video-model camera directions, use [marketing-video CAMERA-PROMPTS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/marketing-video/CAMERA-PROMPTS.md); keep this shotlist's story, technique-selection and approval gates. [n, camera-movments.md; shotlist, existing workflow]
 - **Show feeling as behaviour:** "the antenna droops, the body sinks 6 px", not "it is sad".
 - **Exposure per action** for drawn films: twos for acting, ones for fast moves and tracked shots, a hold for a read. Decide it here, not in code.
 - **Paste the style guide verbatim** at the top of `index.html` as a comment; a paraphrase drifts between sessions.

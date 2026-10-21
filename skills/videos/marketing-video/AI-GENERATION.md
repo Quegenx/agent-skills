@@ -65,20 +65,9 @@ cinematic color grading
 
 ## Camera and style vocabulary
 
-[coreyhaines31/marketingskills, video] "Use these terms: video models understand them."
+Camera vocabulary and source-scoped movement, speed, framing and ending presets live in [CAMERA-PROMPTS.md](CAMERA-PROMPTS.md). [coreyhaines31/marketingskills, video; n, camera-movments.md]
 
-| Term | Effect |
-|---|---|
-| Static | Locked camera, no movement |
-| Pan left or right | Camera rotates horizontally |
-| Tilt up or down | Camera rotates vertically |
-| Dolly in or out | Camera moves toward or away from the subject |
-| Orbit | Camera circles the subject |
-| Tracking shot | Camera follows a moving subject |
-| Crane or aerial | Camera rises or descends |
-| Handheld | Subtle shake, documentary feel |
-| Zoom | Lens zoom (different from a dolly) |
-| Slow push | Gradual dolly in; builds tension or focus |
+[coreyhaines31/marketingskills, video]
 
 Style keywords by family: cinematic ("cinematic color grading", "anamorphic lens flare", "shallow depth of field", "film grain", "35mm film"); commercial ("clean commercial lighting", "bright and airy", "professional corporate aesthetic", "even, diffused lighting"); documentary ("handheld documentary style", "natural lighting", "candid, unposed", "observational camera"). The source's "social" family includes "bold text overlays", which rule 3 of [SKILL.md](SKILL.md#the-rules) sets in post instead.
 

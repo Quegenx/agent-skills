@@ -15,7 +15,7 @@ Every rule here comes down to one decision: trust nothing that crossed the bound
 | Tenant isolation: scoped queries plus Postgres row-level security, pooled connections, Supabase policies | [TENANCY.md](TENANCY.md) |
 | Encrypting stored secrets (AES-GCM, key versions, KMS), keeping internal services off the internet | [SECRETS-AND-NETWORK.md](SECRETS-AND-NETWORK.md) |
 | Parsers that disagree (IP spellings, duplicate JSON keys, request smuggling, Unicode lookalikes), ReDoS and expansion bombs, CSV formulas, shell arguments, card numbers in logs, CORS, reset tokens, delegation chains, webhook signatures | [PARSERS.md](PARSERS.md) |
-| Browser boundaries: window messages, cross-tab identity, service-worker caches, DOM gadgets and cross-site observations | [BROWSER-BOUNDARIES.md](BROWSER-BOUNDARIES.md) |
+| Browser and Electron boundaries: window messages, cross-tab identity, service-worker caches, DOM gadgets, cross-site observations and IPC sender/bridge controls | [BROWSER-BOUNDARIES.md](BROWSER-BOUNDARIES.md) |
 | Package installation boundaries: version-specific lifecycle-script policies, direct and transitive execution, dependency sources, evidence and exceptions | [PACKAGE-INSTALLS.md](PACKAGE-INSTALLS.md) |
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]

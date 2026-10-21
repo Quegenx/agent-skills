@@ -14,9 +14,9 @@ Category membership is the primary home, not an instruction to install every ski
 | [beat-grid](beat-grid/SKILL.md) | Measured music and the shared picture/sound clock |
 | [frame-review](frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
 | [make-video](make-video/SKILL.md) | Gated film production with engine selection before setup; shared story/review gates and engine-specific runtime contracts. |
-| [marketing-video](marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs |
+| [marketing-video](marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs. Source-scoped camera direction presets distinguish movement, lens, framing, focus, time and transitions. |
 | [seek-engine](seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
-| [shotlist](shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. |
+| [shotlist](shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. Generated-footage camera directions link to marketing-video. |
 | [sound-pass](sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |
 | [video-brief](video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
 | [video-help](video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
