@@ -103,4 +103,4 @@ In TypeScript, dependency-cruiser or `eslint-plugin-boundaries` (or `import/no-r
 
 ## End-to-end tests
 
-A handful, for the flows that must never silently break, run against a deployed environment with real auth: Playwright for anything with a UI. Keep them independent of each other, give each its own user and data, and write the steps as a person would describe them (the project's acceptance-test conventions).
+A handful, for the flows that must never silently break, run against a deployed environment with real auth. Select the installed runner that supports the target through the [E2E router](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/e2e-testing/SKILL.md); the old wording said "Playwright for anything with a UI", while that router already distinguishes browser, Patrol, Maestro and tester-army/e2e targets. Keep tests independent, give each its own user and data, and write the steps as a person would describe them. [owner AGENTS.md, End-to-End and Acceptance Tests and Prefer established dependencies; existing e2e-testing, Choose the implementation skill]

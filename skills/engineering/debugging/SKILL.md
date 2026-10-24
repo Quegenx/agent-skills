@@ -61,6 +61,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 - Prefer debugger or REPL inspection when available; otherwise add focused instrumentation at the boundaries that distinguish causes. Give temporary debug output a unique searchable prefix and remove it before completion.
 - For performance regressions, establish measurements first. Profiling, timings and query plans belong to [performance-and-caching](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/performance-and-caching/SKILL.md); avoid replacing measurement with a large log dump.
 - If both explanations survive, name the runtime input, log or configuration fact needed to separate them. Say what remains unknown.
+- When two or more fixes sharing a premise fail the same gate, write that premise down before another fix. Identify an observation that would differ if it were false and check it within the task's authorized verification; if that check cannot run, report the missing evidence rather than stack another fix on the untested premise. This targets a shared assumption, separately from obra's three-failed-fixes architecture discussion below. [new/skills/principle-attack-the-premise, SKILL.md; existing debugging, VERIFICATION.md#evidence-and-authority]
 
 ## Repair and close
 

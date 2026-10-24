@@ -1,6 +1,6 @@
 ---
 name: code-research
-description: "Investigates code questions from exact source, callers, history and observed results, preserving evidence, version identity and coverage limits. Use when locating an implementation, explaining behavior, tracing dependencies, comparing a change or researching an installed dependency."
+description: "Investigates code questions from exact source, callers, history and observed results, preserving evidence, version identity, confidence and coverage limits. Use when locating an implementation, explaining behavior or historical rationale, tracing dependencies, comparing a change or researching an installed dependency."
 ---
 
 # Code research
@@ -12,7 +12,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | The job | Read |
 |---|---|
 | Choose the research boundary and evidence requirements | [SKILL.md](SKILL.md) |
-| Locate source, establish behavior, keep a claim ledger and return exact anchors | [SOURCE-RESEARCH.md](SOURCE-RESEARCH.md) |
+| Locate source, establish behavior or historical motivation, keep a confidence ledger and explain the observed flow | [SOURCE-RESEARCH.md](SOURCE-RESEARCH.md) |
 
 ## The rules
 

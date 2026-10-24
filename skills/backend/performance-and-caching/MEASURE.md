@@ -95,6 +95,20 @@ Only after the above. A cache adds stale data and a second source of truth. Good
 
 Apply one change, re-measure the same way, record the result, then the next change. Keep a small table: change, before, after, conditions. Revert changes that didn't help; they're only complexity. A change that does help can still be refused when the gain isn't worth its upkeep: one 900-line PR got "going to gavel that 2ms per send is not worth the complexity of maintaining this build plugin."
 
+## Validate the benchmark
+
+[new/skills, benchmark-checklist/SKILL.md]
+
+- Write the exact claim before measuring and read the script: what is timed, counted and omitted? Check host load and disclose unavoidable contention. Interleave the compared sides so drift does not favor only one.
+- Identify the limiter, including a saturated load generator. Profile in a separate run from the reported timing because the profiler changes the work being timed. Choose the project's installed, platform-appropriate tools; the source's Linux-specific commands are not universal prerequisites.
+- Use representative production builds, flags, data, versions, pool/transaction/batching settings and cache conditions for each side. An untuned default measures that configuration; it cannot establish the inherent winner between options. If tuning cannot be made comparable, report the limitation rather than selecting a winner from that run.
+- Check physical and workload limits: bytes against bandwidth, operation cost against cores, and the changed portion against total duration. The source's removal of a 10% portion means at most 10% less duration, equivalent to speed factor `1 / 0.9`, about 11.11% more throughput; its "11% faster" wording concerns that inverse-rate comparison. Keep latency reduction separate from throughput increase.
+- Count failures, non-success responses and incorrect outputs. Confirm that the intended work happened inside the timed region: requests reached the server, writes persisted, bytes were read, and lazy or asynchronous results were actually consumed. Fast rejection or omitted work is not a faster completed task.
+- For the source's comparative timing protocol, run each side at least five times in alternating order and report the median and range. Treat a gap smaller than run variation as no measurable difference; use the existing harness's statistics for a close call. This is a source protocol, not a universal statistical guarantee. It supplements the request-distribution percentiles above rather than replacing them with a median across runs.
+- Measure the user-visible end-to-end path alongside a microbenchmark, with realistic data and concurrency, and report the helper's share of the whole. Removing all of a helper that occupies 1% of duration can save at most 1% of that duration.
+- A quick ballpark explicitly requested by the user may be one disclosed run, but still verify errors and that the work occurred. Choosing between options is not a ballpark.
+- Report the verdict, units, run count, range and limiter. A claimed difference with an unknown limiter, untuned comparison or unchecked errors/work is inconclusive. Use the existing [claim verdict contract](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/debugging/VERIFICATION.md#verdict) rather than turning a noisy result into a speedup claim.
+
 ## Compare the completed task
 
 [morluto/rea, rea-analysis-optimization/SKILL.md]
@@ -155,3 +169,5 @@ Lab counts let an agent iterate faster than the deploy cadence; field data confi
 ## Prove it
 
 Take a reader dashboard that queries loans and calls two remote services. Measure the breakdown. Remove one repeated query and measure. Then run the two remote calls in parallel with a concurrency bound and measure again. Report each change's effect separately, with the conditions. For any count used as a CI gate, show that driving it down moved wall-clock time on the same benchmark.
+
+For a benchmark comparison, retain error and completed-work counts, comparable tuning and host conditions, the limiter, actual run count and spread, and the end-to-end significance. State when these gaps make the result inconclusive; label a requested single-run ballpark as such. [new/skills, benchmark-checklist/SKILL.md]

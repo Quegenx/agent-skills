@@ -11,9 +11,9 @@ Category membership is the primary home, not an instruction to install every ski
 | Skill | Covers |
 |---|---|
 | [agent-dx-audit](agent-dx-audit/SKILL.md) | Task-based audits of agent-facing docs, SDKs and skills: target/goal intake, personas, scoped credentials, discovery traces, onboarding scores and an evidence-backed HTML report. |
-| [coding-agent-harness](coding-agent-harness/SKILL.md) | Coding-agent session diagnosis, Claude host workflows, session scheduling and completion evidence; separate from a product agent runtime. |
+| [coding-agent-harness](coding-agent-harness/SKILL.md) | Coding-agent session diagnosis, Claude host workflows, session scheduling and completion evidence; separate from a product agent runtime. Adds operator decision trails, scoped context pickup, human decisions and completion-inbox reconciliation. |
 | [guided-learning](guided-learning/SKILL.md) | Learning missions, cited resources, observed evidence, interactive lessons and reusable reference material. |
-| [skill-authoring](skill-authoring/SKILL.md) | Skill structure, routing, descriptions, optional scripts, audit contracts, distribution and authorized measurement; portable named dependencies. |
+| [skill-authoring](skill-authoring/SKILL.md) | Skill structure, routing, descriptions, optional scripts, audit contracts, distribution and authorized measurement; portable named dependencies. Adds evidence-based reflection lenses and enforcement of recurring corrections. |
 
 ## Related task routes
 

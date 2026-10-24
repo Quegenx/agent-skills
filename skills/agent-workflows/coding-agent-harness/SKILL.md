@@ -1,11 +1,13 @@
 ---
 name: coding-agent-harness
-description: "Configures workflows, session scheduling and completion instructions for an existing coding agent, and diagnoses its recorded sessions. Use when operating or customizing a Codex or Claude-style development agent, investigating a costly or drifting coding run, or using the sourced Claude Code workflow and session-scheduler contracts."
+description: "Configures workflows, session scheduling and completion instructions for an existing coding agent, maintains decision trails and scoped context pickup, coordinates long runs, and diagnoses recorded sessions. Use when operating or customizing a Codex or Claude-style development agent, resuming or reporting on coding work, investigating a costly or drifting run, or using the sourced Claude Code workflow and session-scheduler contracts."
 ---
 
 # Coding-agent harness
 
 Operate an existing coding agent using its actual host contract. Sources are the repository's agent-harness prompt and Claude Code workflow/scheduling guidance, plus obra/superpowers diagnosing-superpowers for session investigation. The Claude Code-specific APIs below apply to that host; they do not establish equivalent APIs in Codex or another agent. [existing agent-harness, PROMPT.md, WORKFLOWS.md and SCHEDULED-AGENTS.md; obra/superpowers, diagnosing-superpowers]
+
+Decision trails, context pickup, catch-up reports and program coordination also draw on the supplied show-me-your-work, recall, ketchup and poteto-mode workflows. [new/skills/show-me-your-work, SKILL.md; new/skills/recall, SKILL.md; new/skills/ketchup, SKILL.md; new/skills/poteto-mode, playbooks/orchestrate.md]
 
 | The job | Read |
 |---|---|
@@ -13,6 +15,7 @@ Operate an existing coding agent using its actual host contract. Sources are the
 | Configure Claude Code dynamic workflows, templates and subagent model selection | [CLAUDE-WORKFLOWS.md](CLAUDE-WORKFLOWS.md) |
 | Schedule work inside a Claude Code session, with expiry and resume limits | [SESSION-SCHEDULING.md](SESSION-SCHEDULING.md) |
 | Set evidence-based coding completion instructions | [INSTRUCTIONS.md](INSTRUCTIONS.md) |
+| Keep an attributable decision trail, rebuild scoped working context, coordinate a standing program or catch the human up | [OPERATOR-RUNS.md](OPERATOR-RUNS.md) |
 | Investigate a recorded run, worker transcripts, drift, cost and a shareable evidence copy | [SESSION-DIAGNOSIS.md](SESSION-DIAGNOSIS.md) |
 
 ## Required references by branch

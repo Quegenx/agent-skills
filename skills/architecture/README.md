@@ -10,7 +10,7 @@ Category membership is the primary home, not an instruction to install every ski
 
 | Skill | Covers |
 |---|---|
-| [domain-modeling](domain-modeling/SKILL.md) | Bounded contexts, aggregates, invariants, domain and integration events, sagas, CQRS, event sourcing. Also: Canonical domain glossaries and lightweight ADRs for consequential tradeoffs. Shallow collection protection and projection watermark gaps. |
+| [domain-modeling](domain-modeling/SKILL.md) | Bounded contexts, aggregates, invariants, domain and integration events, sagas, CQRS, event sourcing. Also: Canonical domain glossaries and lightweight ADRs for consequential tradeoffs. Shallow collection protection and projection watermark gaps. Clarifies that constructive types still require enforced numeric invariants. |
 | [software-architecture](software-architecture/SKILL.md) | Monolith, modular monolith or services; layers, slices, module boundaries, data ownership, scaling and service extraction. Logic prototypes, transaction scope, isolation and rollback limits remain here; legacy replacement execution routes to system-migration. |
 | [system-design](system-design/SKILL.md) | Component choices, failure modes, load balancing, caching, queues, feeds and sandboxes with worked designs. Shared recovery procedures route to deployment and Postgres; the design example retains its architectural context. |
 

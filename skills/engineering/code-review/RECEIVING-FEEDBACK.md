@@ -12,6 +12,14 @@ Use this before implementing review suggestions, particularly when their meaning
 - When feedback conflicts with an owner's accepted design or architectural decision, identify both positions and their evidence before changing that decision. A review suggestion does not grant authority to replace production design.
 - If evidence is unavailable, name the missing input and what cannot be concluded. Do not convert an unverified suggestion into a claimed fix.
 
+## Synthesize multiple reviews
+
+[new/skills/interrogate, SKILL.md and references/lead-judgment.md]
+
+Give independent reviewers the same intent and relevant context. Merge duplicate findings while retaining their provenance and explicit disagreements; agreement is a signal to inspect, not proof. Trace a proposed failure through actual callers and give even an isolated correctness or security finding proper scrutiny.
+
+Give each finding a disposition and a short technical reason: **Act on** for demonstrated issues relevant to the goal, **Consider** for a legitimate improvement whose cost remains unsettled, **Noted** for valid but currently non-actionable context, or **Dismissed** for a wrong or unsupported objection. These are dispositions, not severities. Map source critical/warning/nit labels onto the existing P0 to P3 scale by actual impact. Review synthesis does not authorize applying the suggestions.
+
 ## Resolve uncertainty at its boundary
 
 [obra/superpowers, receiving-code-review, SKILL.md] stops all implementation if any feedback item is unclear, because items may depend on one another. The repository's AGENTS.md keeps independent work moving: determine which items depend on the unresolved answer, hold those, and continue only the authorized independent items. Preserve the dependency concern without making one unclear item block unrelated progress.
@@ -31,3 +39,5 @@ Use this before implementing review suggestions, particularly when their meaning
 [obra/superpowers, receiving-code-review, SKILL.md]
 
 Each accepted suggestion has codebase evidence and an authorized change; each rejected or deferred suggestion has a technical reason; unclear dependent work stays pending; completed checks are distinguished from unrun checks; and the response identifies the actual correction rather than claiming agreement as proof.
+
+A multi-review synthesis retains finding provenance, explicit disagreement and each disposition's technical reason; consensus is not substituted for a checked failure path. [new/skills/interrogate, SKILL.md and references/lead-judgment.md]

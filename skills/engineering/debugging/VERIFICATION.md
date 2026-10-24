@@ -42,6 +42,16 @@ Give one verdict for the specific claim, followed by the claim, artifacts or met
 - Name the enforcing boundary reached and what a mock, simulator, direct method call or source-only inspection cannot establish. A passing fixture can reject a claim about that path without proving every retry or real-provider behavior safe. One run does not establish customer impact frequency.
 - Run only authorized checks and keep reproductions isolated. Report the narrow missing observation when a decisive check would exceed the task's permissions. Stop widening verification after required checks pass unless a new change, failure or unresolved concern justifies more work.
 
+## Find the fact a safety claim depends on
+
+[new/skills/blast-radius, SKILL.md]
+
+- Identify the one or two facts that make the change safe, rather than stop at a list of direct callers. Trace their enforcing boundaries through the pinned dependency and local patches, returned JSON, stored columns, wire formats, other-language consumers, feature flags and teardown timing when relevant.
+- Say where each fact's evidence stops: an unsupported assertion, an exact source location, a failure-path walkthrough, execution of the real code, or reproduction in the running application. A helper's successful execution does not establish that the application's actual path reached it. Keep confirmed risks separate from cases checked and cleared.
+- The source requires a script and runtime proof. This repository retains the [authorization limits](#evidence-and-authority): use the strongest permitted evidence, name the missing observation and do not claim runtime proof from a source-only reading. The verdict above still applies to the specific stated claim, not this evidence ladder as a whole. [new/skills/blast-radius, SKILL.md; existing debugging, VERIFICATION.md#evidence-and-authority]
+
+For a model's fidelity, bounds and sensitivity, use [formal verification](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/testing/FORMAL-VERIFICATION.md). For launch, driving, evidence and cleanup across a project's actual surfaces, use [project verification](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/testing/PROJECT-VERIFICATION.md). These are selected verification branches, not permission to execute them. [new/skills/create-formal-verification-skill, SKILL.md; new/skills/create-verification-skill, SKILL.md]
+
 ## Artifacts
 
 [cursor/plugins, verify-this/SKILL.md]

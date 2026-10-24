@@ -167,6 +167,8 @@ Loading indicators, equalizer bars, ripples, and the typing indicator: "The thre
 const p = (t % period) / period; // always 0~1, resets every period
 ```
 
+That example's "always" assumes nonnegative time and a positive period: JavaScript `%` is remainder and keeps the dividend's sign. Delayed illustration channels can sample negative time; use the normalized loop definition [below](#illustration-tracks-and-stable-variation) for those. The old comment did not state this limit. [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder; rossark-motion-skill, templates/react-native/motion.ts]
+
 It rises linearly from 0 to 1, then drops straight back to 0. Map `p` onto scale or opacity for a repeating "spread out and fade away":
 
 ```js
@@ -188,6 +190,17 @@ Randomness removes the mechanical feel: "give particle speeds a ±20% variance, 
 | Distribution | Random | Even spacing + slight jitter |
 
 Split the animation into what's intended (particles rising) and the "unintended elements that were put there on purpose" (small speed differences), and decide where the boundary between them sits.
+
+## Illustration tracks and stable variation
+
+[rossark-motion-skill, templates/react-native/motion.ts; SKILL.md sections 2 and 5]
+
+- **A stopped segment or a continuous pose chain:** the source's `track` reads `[time, value, optional 'out']` keys, easing each segment in/out or using its arrival key's out curve. Its `flow` reads time/value pose keys with monotone cubic interpolation and weighted harmonic-mean interior tangents. Endpoints, changes of slope sign and repeated-value holds get zero tangent; monotone interior keys can carry motion through without a stop. The source's statement that it passes through every pose does not mean nonzero speed through an extremum or hold.
+- **Keep keys ordered:** the flow implementation divides value differences by adjacent time differences. Supply sorted, distinct key times; repeated values create holds, not repeated timestamps. A loop's final value matches its first. The illustration application is in [living illustrations](ILLUSTRATION-ACTING.md#acting-between-poses).
+- **Phase uses a fraction of a cycle:** the source wave is sine of `(t / period + phase) * 2 * Math.PI`, giving values from -1 to 1. This is the same wave/phase technique [above](#waves-sin-and-phase), with time expressed against a period.
+- **Normalize delayed loop time:** compute `p = (t / period + phase) % 1`, then use `p < 0 ? p + 1 : p`. This keeps the loop progress nonnegative when a delayed child samples time before zero. It corrects the nonnegative-time assumption in the earlier sawtooth example.
+- **Envelope and beat window:** the source's bell is `Math.sin(Math.PI * Math.min(1, Math.max(0, p)))`, zero at either end and one at the middle. Its segment helper clamps before/after the beat and eases progress within it. Use a beat window for an accent that appears only during a named action.
+- **Stable indexed variation:** the source derives `x` from `Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453` and returns `x - Math.floor(x)`. An item's index and salt reproduce its phase, speed or size across renders; do not call Math.random on every frame. Keep variation within the artwork's chosen range, using the existing [controlled-randomness guidance](#controlled-randomness).
 
 ## Prove it
 

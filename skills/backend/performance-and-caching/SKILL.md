@@ -9,7 +9,7 @@ Speed comes from doing less work, then from doing it at the same time, and only 
 
 | The step | Read |
 |---|---|
-| Find where the time goes; cut round trips; parallelize (start early, await late; never ahead of an auth check; not for CPU-bound work); index; slow-route, cold-start and upstream thresholds on Vercel; deterministic counts and CI ratchets; steering an agent's perf push | [MEASURE.md](MEASURE.md) |
+| Find where the time goes; validate benchmark work, errors, tuning, limits and repeated comparisons; cut round trips; parallelize (never ahead of auth checks or for CPU work); index; Vercel thresholds; deterministic counts and steering a perf push | [MEASURE.md](MEASURE.md) |
 | Push filtering, aggregation, ordering and limits into SQL; anti-joins, top N, window functions, sargable predicates, keyset pagination, index design and index regressions, full-text search | [QUERIES.md](QUERIES.md) |
 | Add, fix or remove a cache at any layer; Vercel CDN headers, `Vary`, 404s and `immutable`; what `cacheLife` proves; module-level and browser storage caches; large lookup data: fetch granularity, cache tiers, Bloom filters, indexed shards | [CACHING.md](CACHING.md) |
 | Browser loading, media, layout shifts, long lists, main-thread work, interaction traces and Lighthouse gates | [web-performance](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/SKILL.md) |

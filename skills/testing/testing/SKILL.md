@@ -1,6 +1,6 @@
 ---
 name: testing
-description: "Writes tests that catch real bugs, from unit tests to integration tests on real Postgres, architecture tests, test-first behavior slices and interactive terminal harnesses. Use when writing or reviewing tests, setting up a test database, or investigating an interactive CLI or TUI."
+description: "Writes tests that catch real bugs: unit and real-infrastructure integration tests, architecture tests, test-first slices, terminal harnesses, project verification skills and code-linked formal verification. Use when writing or reviewing tests, setting up a test database, investigating a CLI/TUI, or creating and maintaining project verification."
 ---
 
 # Testing
@@ -14,6 +14,8 @@ A test is worth what it would catch. Imagine the plausible broken versions of th
 | Creating or evaluating a lint rule or detector, including its contract, fixtures, real-code labels, fuzzing and paired comparisons | [lint-rule-authoring](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/lint-rule-authoring/SKILL.md) |
 | Authorized test-first development: one public behavior slice, the intended failing check, minimal implementation and existing persistence/callback exceptions | [TDD.md](TDD.md) |
 | An interactive CLI or TUI: reuse its harness, capture before acting, deterministic prompt waits, transcripts, inspector environment and profile evidence | [CLI-HARNESS.md](CLI-HARNESS.md) |
+| Generate or maintain a project verification skill: launch, Doctor, drive, evidence, cleanup, feature maps and source/live drift | [PROJECT-VERIFICATION.md](PROJECT-VERIFICATION.md) |
+| Create or maintain code-linked formal checks: tool choice, atomicity, scope, counterexample replay, mutation sensitivity and sync commits | [FORMAL-VERIFICATION.md](FORMAL-VERIFICATION.md) |
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 

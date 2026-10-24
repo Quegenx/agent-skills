@@ -53,6 +53,22 @@ Find the source that settles a question, preserve what the tool actually observe
 - Stop locating once the solver has the decisive sites. If the exact site was supplied, send it directly to the scoped task rather than buying another discovery pass.
 - An honest no-match result states its checked scope. The parent verifies load-bearing locations under the [delegation contract](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md#delegation-packets); compressed output does not remove that responsibility.
 
+## Mechanics and historical motivation
+
+[new/skills/why, SKILL.md, references/epistemics.md and references/synthesizer-prompt.md]
+
+- Code establishes what happens; it does not establish why an author chose it. For a motivation question, seek contemporaneous rationale in history, decision records, issues, documents or conversations. Treat a hypothesis supplied by the user as one candidate to investigate.
+- Record authorship, time and source status. A later explanation, draft, incident symptom or analytics result may support a different claim from the original decision. Preserve contradictory records with both citations rather than choose the tidier account.
+- Use confidence labels consistently: **Direct** for an explicit statement answering the question; **Supported** for converging indirect evidence; **Inferred** for an interpretation with its reasoning exposed; **Speculative** for a plausible account with equally fitting alternatives; **Unknown** when the checked record does not settle the question. Direct and supported claims need adjacent citations; interpretations need qualified language.
+- Keep the question, search terms, checked windows and unavailable sources visible. A missing connector, inaccessible record or empty search does not establish that the rationale never existed. Distinguish what the next change should preserve, change or avoid and the risk of an unresolved interpretation.
+- The source calls for every historical evidence lane to be searched. Keep the existing [bounded claim ledger](#keep-a-claim-ledger): select the next lane that could change the conclusion, stop at the agreed evidence or budget boundary, and report unsearched lanes with reasons. [new/skills/why, SKILL.md and references/synthesizer-prompt.md; existing code-research, SOURCE-RESEARCH.md#keep-a-claim-ledger]
+
+## Explain the observed flow
+
+[new/skills/how, references/explainer-prompt.md]
+
+For an explanation rather than a location request, adapt the handback to the question: a short overview, necessary concepts, the actual trigger and data/control flow, decisive files and non-obvious gotchas. Use concrete symbols and prose rather than a code dump. Check contradictory findings against source; a diagram needs verified edges and should clarify the flow. Preserve unanswered questions instead of hiding them in a smooth narrative.
+
 ## Prove it
 
 [bgauryy/octocode, octocode-research/references/code-research.md and loop-mode.md; dzhng/jevgrep, jevgrep/SKILL.md]
@@ -62,3 +78,4 @@ Find the source that settles a question, preserve what the tool actually observe
 - The installed or resolved revision is recorded where version affects the claim.
 - The ledger shows which alternative was rejected, or the missing check that prevents a conclusion.
 - A retrieval that was still running or truncated was resumed from its real handle, not replaced by an invented result.
+- A motivation answer distinguishes explicit rationale, converging evidence, interpretation, speculation and unknowns; it preserves contradictory records and names unavailable or unsearched lanes. [new/skills/why, references/epistemics.md and references/synthesizer-prompt.md]

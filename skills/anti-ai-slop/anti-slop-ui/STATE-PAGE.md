@@ -2,7 +2,7 @@
 
 A throwaway page inside the app that renders one real component in every state its code can reach, fed by mock data, with a switcher to flip between states while you work on the visuals. It is Jakub Krehel's `state-machine` skill (jakubkrehel/skills: SKILL.md and switcher.md). This skill's rule "map every state the screen can reach and only those" ([SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these)) says what; this file is how. The owner's app prescribes what each state looks like in [app-ui STATES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md); a Flutter app gets the same from widget previews ([flutter AGENT-TOOLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/mobile/flutter/AGENT-TOOLING.md#widget-previews)).
 
-**Contents:** [What it is for](#what-it-is-for) · [1. Scope one component](#1-scope-one-component) · [2. Find the states in the code](#2-find-the-states-in-the-code) · [3. Build the throwaway page](#3-build-the-throwaway-page) · [4. Feed each state at the data boundary](#4-feed-each-state-at-the-data-boundary) · [5. The switcher](#5-the-switcher) · [6. Confirm every state, then hand over](#6-confirm-every-state-then-hand-over) · [Remove it](#remove-it-in-one-step-on-the-users-word) · [Where the owner's app differs](#where-the-owners-app-differs) · [Before you finish](#before-you-finish) · [Prove it](#prove-it)
+**Contents:** [What it is for](#what-it-is-for) · [1. Scope one component](#1-scope-one-component) · [2. Find the states in the code](#2-find-the-states-in-the-code) · [Control contracts](#record-each-reachable-controls-contract) · [3. Build the throwaway page](#3-build-the-throwaway-page) · [4. Feed each state at the data boundary](#4-feed-each-state-at-the-data-boundary) · [5. The switcher](#5-the-switcher) · [6. Confirm every state, then hand over](#6-confirm-every-state-then-hand-over) · [Remove it](#remove-it-in-one-step-on-the-users-word) · [Where the owner's app differs](#where-the-owners-app-differs) · [Before you finish](#before-you-finish) · [Prove it](#prove-it)
 
 ## What it is for
 
@@ -30,6 +30,15 @@ A throwaway page inside the app that renders one real component in every state i
 - "Say which kinds you dropped and why in one line."
 - "Combine kinds only where the code branches on the combination, such as `member-empty`, never as a cross product."
 
+### Record each reachable control's contract
+
+[typeui-fundamentals, ux-principles.md sections 3, 8 and 9; Jakub Krehel, state-machine]
+
+- Separate the control's functional type, visual style and current state. Treat the three dimensions independently; a new state does not automatically require a new visual style.
+- For each reachable state, record four things: its visual treatment, the trigger that enters it, the event that exits it and the native semantic or accessibility hook that exposes it. Record the trigger and next state for each transition, including failure and leaving the surface during loading.
+- TypeUI lists default, hover, pressed, focus, disabled, loading, success, error and selected. Use the relevant states the real component already supports; retain the existing rule against invented branches and a full cross product.
+- This adds a state record, not TypeUI's fixed visual prescriptions. The owner's app continues to use its own [state designs](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/app-ui/STATES.md), including its documented focus decision. Generic focus, disabled and busy semantics remain with [web accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md).
+
 ## 3. Build the throwaway page
 
 [Jakub Krehel, state-machine]
@@ -46,7 +55,7 @@ A throwaway page inside the app that renders one real component in every state i
 1. Props, where the component takes its data as props.
 2. "The app's own data seam: a seeded query cache, a mock provider or the project's request mocks."
 
-- "A fixture threaded through props five levels down tests a path production never takes. Where the only way in is editing the component, say so and ask before adding a seam." The same line as e2e-testing's "**Mock only where a production boundary already isolates the external system.**" ([tester-army-e2e VERIFICATION-SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/tester-army-e2e/VERIFICATION-SKILL.md)).
+- "A fixture threaded through props five levels down tests a path production never takes. Where the only way in is editing the component, say so and ask before adding a seam." The same line as project verification's "**Mock only where a production boundary already isolates the external system.**" ([project verification](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/testing/PROJECT-VERIFICATION.md#define-observable-proof)).
 - "Make the data look like the product. Real-shaped names, timestamps, amounts and the item counts users actually have. Three rows of 'Test item' make every state look fine." This skill says the same of marketing demos ([PATTERNS.md](PATTERNS.md#content-and-function), "Pristine demo"); here it covers development fixtures too.
 - "Loading and pending states hold still. Keep them pending until the switcher moves, rather than resolving after a timeout."
 

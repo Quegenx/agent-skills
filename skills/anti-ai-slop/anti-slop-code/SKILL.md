@@ -23,7 +23,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 - **Scope:** the diff against the main branch when reviewing a branch; the named files when given; otherwise ask, or start with the most recently changed files. The other view, not taken: code-simplifier and deslop end with "You operate autonomously and proactively, refining code immediately after it's written or modified without requiring explicit requests" [Anthropic, code-simplifier]. Here a cleanup runs when asked, on the scope above.
 - **Match the codebase,** not your taste: its naming, error handling, comment density and test style. Something is slop when it's inconsistent with the surrounding code or adds reading cost for nothing, not when it differs from what you'd write.
 - **Minimal, focused edits.** Remove the slop; don't rewrite working code around it. Comment-only cleanups touch comments only.
-- **Run the tests and the type checker** before and after. Report what you ran and the result.
+- **Verify within the task's authorization.** Run the relevant tests and type checker before and after only when permitted; report what ran, its result and what remained unrun. The old unconditional instruction does not override a user's no-tests or no-builds restriction. [repository AGENTS.md, Goal-Driven Execution; existing debugging, VERIFICATION.md#evidence-and-authority]
 
 ## What to look for
 
@@ -38,6 +38,8 @@ In order of damage (details and examples in [RULES.md](RULES.md)):
 8. **Comments:** narration of the next line, step-by-step "Step 1/2/3", decorative banners and emoji, docblocks that repeat the signature, end-of-block markers, vague TODOs, and paragraph-long comments for a one-line fact.
 
 Keep comments that explain why: business rules, constraints, workarounds and the bug they avoid, security, concurrency, protocol details, performance trade-offs, edge cases, legal notices.
+
+The supplied no-comments workflow removes ambiguous comments rather than restore them. Keep the existing rule above and the requirement to document non-obvious constraints at their definition; uncertainty about a rationale calls for investigation, not automatic deletion. [new/skills/no-comments, SKILL.md; existing anti-slop-code, SKILL.md; repository AGENTS.md, Code Discoverability]
 
 ## The structural review (when asked for a strict or deep review)
 

@@ -72,6 +72,17 @@ Vercel's `vercel-optimize` audit wires its subagents through deterministic scrip
 
 Compact localization returns use [code-research](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-research/SOURCE-RESEARCH.md#a-localization-handback); a selected implementation plan resumes through [engineering-planning EXECUTION.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/engineering-planning/EXECUTION.md), using this packet mechanism rather than defining another one.
 
+## Synthesize competing candidates
+
+Use this branch when parallel attempts should produce one coherent artifact rather than only a tournament winner. Keep the bounded request/result and independent-review contracts above. [new/skills/arena, SKILL.md; existing agent-harness, WORKFLOWS.md, Delegation packets]
+
+- State the artifact and a concrete, task-specific rubric before generation. Candidates receive the same task and separate output locations; the rubric is the picker's tool. Declare the race's selection rule before spawning, and include exact revision identities and measurement methods when the comparison depends on them. [new/skills/arena, SKILL.md, Frame; new/skills/swarm, SKILL.md, Frame]
+- Wait until candidates finish writing before a cross-judge reads them. Disclose a candidate that produced no output as a dropout. A missing coverage slice is a gap, not a pass; repair a result that omits the identity or method required by its brief. [new/skills/arena, SKILL.md, Fan out and Cross-judge; new/skills/swarm, SKILL.md, Aggregate]
+- Read every candidate end to end and score each criterion instead of choosing by overall feel. Compare the independent judge's reasoning with the parent's; disagreement requires reading both rationales and checking the rubric, not treating agreement as proof. [new/skills/arena, SKILL.md, Pick a base; existing agent-harness, WORKFLOWS.md, Delegation packets]
+- Choose the base a future maintainer can extend without breaking invariants; when tied, prefer a cleaner boundary or smaller API. Review losing candidates for specific useful parts and integrate selected ideas coherently rather than pasting or averaging whole approaches. [new/skills/arena, SKILL.md, Pick a base and Graft]
+- Convergence may leave nothing to graft. Wide divergence is a reason to revisit an underspecified frame. Verify the synthesized artifact, and distinguish a wrong frame from an overlooked candidate idea when verification exposes a problem. [new/skills/arena, SKILL.md, Graft and Verify]
+- Return the artifact with the chosen base and why, the judge's verdict, each adopted idea's candidate, rejected alternatives, convergence or dropouts, and the actual verification result. [new/skills/arena, SKILL.md, Outputs]
+
 ## Author and reviewer loops
 
 An agent author and an agent reviewer can keep each other busy indefinitely: one pull request went through more than fifty rounds of review and fixes overnight before its author stopped it. A git blame of what the reviewer kept flagging found about 59% of it was code present since the reviewer's first pass: it was finding a few more old bugs each round, not new ones.

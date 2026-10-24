@@ -16,6 +16,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Set fidelity, evidence and target-project constraints | [SKILL.md](SKILL.md) |
 | Inspect, extract, implement and compare the requested live component or animation | [WORKFLOW.md](WORKFLOW.md) |
 | Explain how a live page or effect was built without reconstructing it; inspect styles, layers and motion; distinguish measured, derived and inferred evidence | [INSPECTION.md](INSPECTION.md) |
+| Measure recorded illustration motion: full-rate crops, subject edges, poses, proportions, decoded colors and matched-time comparison | [REFERENCE-MOTION.md](REFERENCE-MOTION.md) |
 | Investigate shipped JS/Electron artifacts or reconcile static and runtime evidence | [Reverse engineering](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/reverse-engineering/SKILL.md) |
 | Build from Figma or a design image instead of a live implementation | [Building from a design file](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/FROM-DESIGN.md) |
 

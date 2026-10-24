@@ -20,6 +20,10 @@ Use this when test-first development is requested or already authorized for a fe
 3. Add the smallest implementation that satisfies that behavior. Do not anticipate future tests or fill the change with speculative options.
 4. Check the relevant existing behavior as authorized, then let the next slice respond to what this cycle revealed. Writing all tests first and all implementation later commits to assumptions before seeing whether the boundary is useful.
 
+## When a failing test is impractical
+
+[new/skills, tdd/SKILL.md] also permits TDD for an obvious cheap local bug check. Keep the existing authorization requirement: an easy test does not authorize execution when the task restricts it. If a new test would require broad infrastructure, brittle mocks or unrelated fixture churn, use the closest useful authorized reproduction instead. Do not create a harness merely to satisfy the workflow. State why a failing-before check could not be demonstrated and name the actual alternative evidence.
+
 ## Keep the existing exceptions
 
 [mattpocock/skills, tdd, tests.md] treats database side-channel assertions and collaborator call counts/order as implementation coupling. This repository keeps two scoped exceptions: [fresh persisted-state readback](INTEGRATION.md#integration-tests-against-real-infrastructure) proves the actual write, and [recording commands or counting callback invocations](SKILL.md#fakes-for-code-that-orchestrates) distinguishes outcomes where calling is itself the behavior. Keep those checks when the contract requires them, rather than applying a blanket ban.

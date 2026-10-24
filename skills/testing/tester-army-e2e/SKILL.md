@@ -18,7 +18,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Read runner traces, diagnose failures, measure flakes and use its live MCP | [DEBUGGING.md](DEBUGGING.md) |
 | Use this runner's explorer and reproduce bug-bash findings | [BUG-BASH.md](BUG-BASH.md) |
 | Migrate an existing suite into tester-army/e2e one proven slice at a time | [SUITE-MIGRATION.md](SUITE-MIGRATION.md) |
-| Generate an observed project verification skill using this runner | [VERIFICATION-SKILL.md](VERIFICATION-SKILL.md) |
+| Apply this runner's engines, Doctor, sessions and charters to the shared project verification contract | [VERIFICATION-SKILL.md](VERIFICATION-SKILL.md) |
 | Run this runner against a Flutter app | [FLUTTER.md](FLUTTER.md) |
 
 ## The rules

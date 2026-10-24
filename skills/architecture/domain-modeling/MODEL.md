@@ -82,6 +82,8 @@ The old TS illustration exposed mutable child objects through a copied array; se
 
 **Boundary validation and invariants are both needed.** Request validation (a zod schema on the input) rejects malformed data early with field-level errors. Invariants are what the domain guarantees regardless of caller: a background job, a queue consumer or a future teammate calling `Order.create` directly still can't break them. Some checks appear in both places on purpose; the domain must never depend on the boundary having run.
 
+**A constructive representation must actually exclude the invalid value.** A duration stored as plain TypeScript `number` still admits negative values; the factory or transition must enforce the range invariant. Type assertions add no runtime validation. The supplied TypeScript patterns said `{ start: Date; durationMs: number }` made a negative range impossible; that claim is incorrect. [new/skills/typescript-best-practices, references/patterns.md; https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#the-primitives-string-number-and-boolean; https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions]
+
 **First error or all errors:** a transition usually stops at the first broken rule; a method that accepts a batch (adding several exercises to a workout, each needing a distance or a duration) should collect every invalid item and return them together, then apply nothing if any failed.
 
 **Entities need a real identity:** reject an empty or placeholder ID in the constructor, and compare entities by type and ID, never by their fields.

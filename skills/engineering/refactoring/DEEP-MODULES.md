@@ -46,8 +46,21 @@ Tests should observe the new interface's behavior and survive internal changes. 
 - Compare operations/types, invariants, ordering, errors, usage, hidden implementation and dependency strategy. Judge depth, locality and seam placement, then recommend a design or an explicitly reasoned combination.
 - The source uses three or more parallel designers as its exploration pattern. Apply the existing [workflow cost and scope rules](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md#cost-and-stopping); the number is an optional source technique, not a mandatory panel for every module.
 
+## Start with the caller
+
+[new/skills/architect, SKILL.md and references/rationale-template.md]
+
+- Before deriving types and signatures, sketch the consumer's usage from the real task: what they import, call and receive. The source uses two or three realistic call sites. Keep the usage and type sketch consistent; revise the shape when it forces the caller to absorb internal complexity.
+- Record a concise rationale: problem and existing constraints, usage, proposed data structures and flow, enforced invariants, accepted tradeoffs, concrete rejected alternatives, open questions and the next implementation step. When candidates were synthesized, state the base, adopted ideas and rejected ideas with reasons; use the shared [candidate synthesis](https://github.com/Quegenx/agent-skills/blob/main/skills/ai-agents/agent-harness/WORKFLOWS.md) rather than another selection workflow.
+- Screen the shape for callers coordinating internal stages, policy or representation duplicated across modules, split state ownership, importable internals and lists that must be synchronized by hand. Group knowledge with its owner; a legitimate forwarding adapter still needs its policy or adaptation made explicit. [new/skills/architect, references/design-red-flags.md]
+- Evaluate reader load through the layers a maintainer must trace and the state they must hold at once. Concentrating useful capability is different from adding a long call chain. [new/skills/principle-minimize-reader-load, SKILL.md; new/skills/architect, references/design-red-flags.md]
+
+The source allows planned intermediate breakage while filling a sketch. This repository keeps a working end-to-end version and grows in layers; a design sketch does not authorize a broken checkpoint or a wider refactor. [new/skills/architect, SKILL.md; repository AGENTS.md, Architecture and Surgical Changes]
+
 ## Prove it
 
 [mattpocock/skills, codebase-design/SKILL.md, codebase-design/DEEPENING.md, codebase-design/DESIGN-IT-TWICE.md]
 
 Name what complexity each proposed interface hides, where the deletion test moves it, which dependency justifies each adapter, and what the tests observe across the public surface. Alternatives must differ in interface choices rather than names alone. A replacement test must reach the behavior before its predecessor is removed.
+
+The usage and proposed signatures agree, and the rationale records accepted tradeoffs, rejected shapes, unresolved decisions and the next implementation step. [new/skills/architect, references/rationale-template.md]

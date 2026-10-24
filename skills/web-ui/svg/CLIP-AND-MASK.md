@@ -114,6 +114,15 @@ Clipping and masking hide parts of an element using other shapes. A clip is all 
 
 All are animatable.
 
+## Illustration lids and touching edges
+
+[rossark-motion-skill, SKILL.md sections 4 and 8; templates/react-native/liveFace.tsx; demo/RevealScene.swift]
+
+- Clip moving pupils to the eye white, but let the skin that closes over it cover the anti-aliased white edge. The React Native template's skin clip uses white width plus 2 and height plus 2 drawing units; its skin rectangles extend farther. This is a source-specific overscan recipe, not a two-pixel-per-side rule for every eye.
+- Inspect coincident anti-aliased edges in motion. Rossark replaces a hair cap with a hole that meets its boundary with one outline around the face, avoiding the hairline it observed across the eyes. A seam is a rendered finding, not proof that every compound path or clip is defective.
+- Check subpath winding when overlapping pieces unexpectedly cancel. The source fills its pieces separately rather than treating differently wound overlapping subpaths as a guaranteed union. Keep the intended fill rule explicit; do not change the drawing merely to match this recipe.
+- Face layering and acting are defined in [living illustrations](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/ILLUSTRATION-ACTING.md#a-face-that-stays-part-of-the-drawing); the React Native component contract is in [React illustration](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/REACT-NATIVE-ILLUSTRATION.md#choreography-and-geometry).
+
 ## Opacity and hiding
 
 - **`opacity` fades the whole element; `fill-opacity` and `stroke-opacity`** fade one paint. The stroke is painted on top of the fill, so a semi-transparent stroke shows the fill through its inner half.
