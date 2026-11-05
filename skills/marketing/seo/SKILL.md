@@ -1,6 +1,6 @@
 ---
 name: seo
-description: "Gets a site's pages crawled, indexed and chosen in Google Search the way Search Central documents it: the technical audit (reachability, robots, noindex and X-Robots-Tag, canonicals, sitemaps, the 30-type issue catalogue, triage into a work order, index bloat), choosing the one to three changes worth making and sizing them honestly, ranking evidence, pages at scale with the 12 programmatic playbooks and Google's doorway and scaled-content rules, local SEO and Business Profile rules, link attributes and link spam, link prospecting and outreach, directory submissions with a tracker, content refresh with dates and redirects, plus structured data, link previews, shared project context and self-contained SEO reports. Use when auditing a site's SEO, planning programmatic or location pages, working on Maps visibility, earning backlinks or submitting to directories, refreshing a decaying page, or checking a tool's SEO claim against Google."
+description: "Gets a site's pages crawled, indexed and chosen in Google Search the way Search Central documents it: the technical audit (reachability, robots, noindex and X-Robots-Tag, canonicals, sitemaps, the 30-type issue catalogue, triage into a work order, index bloat), choosing the one to three changes worth making and sizing them honestly, ranking evidence, pages at scale with the 12 programmatic playbooks and Google's doorway and scaled-content rules, local profiles, citations and outcome baselines, international annotations and canonicals, link attributes and link spam, link prospecting and outreach, directory submissions with a tracker, content refresh with dates and redirects, plus structured data, link previews, shared project context and self-contained SEO reports. Use when auditing a site's SEO, planning programmatic or location pages, working on Maps visibility, earning backlinks or submitting to directories, refreshing a decaying page, or checking a tool's SEO claim against Google."
 ---
 
 # SEO
@@ -11,10 +11,11 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
-| Crawl validity, the audit order (reachability, control, canonical, interpretation, discovery), tool thresholds vs Google, the 30-type issue catalogue with fixes, check logic, triage into a work order, index bloat, choosing the one to three changes worth making, sizing, ranking evidence, OpenSEO as the tool | [TECHNICAL-AUDIT.md](TECHNICAL-AUDIT.md) |
+| Crawl validity, the audit order (reachability, control, canonical, interpretation, discovery), tool thresholds vs Google, the 30-type issue catalogue with fixes, check logic, triage into a work order, index bloat, choosing the one to three changes worth making, title proposals and click-through, sizing, ranking evidence, OpenSEO as the tool | [TECHNICAL-AUDIT.md](TECHNICAL-AUDIT.md) |
+| Localized pages: reciprocal alternates, valid codes, optional fallback, canonical intent and generated sitemap output | [INTERNATIONAL-SEO.md](INTERNATIONAL-SEO.md) |
 | Programmatic pages: assessment, principles, Google's doorway, scaled-content and thin-affiliation policies, the 12 playbooks, linking, sitemap limits and `lastmod`, crawl budget and `noindex`, platform requirements, subpath vs subdomain, checklists | [PAGES-AT-SCALE.md](PAGES-AT-SCALE.md) |
-| Maps and the local pack: inputs, the workflow, reading a rank grid, chains, Google's review and business-name rules, the report | [LOCAL.md](LOCAL.md) |
-| `rel` values and link spam, editorial link prospects, lawful outreach and verifying the actual backlink | [LINKS-AND-OUTREACH.md](LINKS-AND-OUTREACH.md) |
+| Maps and the local pack: eligibility, private addresses, profile facts, citations, useful location pages, outcome baselines, rank grids, chains, review and business-name rules, the report | [LOCAL.md](LOCAL.md) |
+| `rel` values and link spam, page-level diagnosis, reclamation, editorial prospects, lawful outreach state, vendor/disavow gates and actual backlink verification | [LINKS-AND-OUTREACH.md](LINKS-AND-OUTREACH.md) |
 | Directory assets, tiers kept and dropped, MCP registry, positioning, approval, submission and the tracker | [DIRECTORY-SUBMISSIONS.md](DIRECTORY-SUBMISSIONS.md) |
 | The directory submission tracker with `Observed rel` and `Checked at` | [submission-tracker.csv](submission-tracker.csv) |
 | Refreshing a decaying page: when, refresh vs rewrite, the gap grid, six passes, what to keep, dates, redirects, cadence | [CONTENT-REFRESH.md](CONTENT-REFRESH.md) |

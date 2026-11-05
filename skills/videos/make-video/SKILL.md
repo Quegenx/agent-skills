@@ -54,6 +54,8 @@ Work through them in order. Each one writes its file and shows it to the user. S
 
 ## Modes
 
+- **A reusable product-film library:** follow [PRODUCT-FILM-LIBRARIES.md](PRODUCT-FILM-LIBRARIES.md) for shared captured screens, fictional cast, feature-claim checks, retained artifacts and discrepancy records; keep this studio's gates and selected engine. [video, references/code-rendered-product-films.md]
+
 - **New film:** every gate, as above.
 - **Same film in several styles:** one composition, frozen timing, one `STYLES` entry per look, `render.mjs full --style <name>` each, and a side-by-side compare (video-brief's `STYLES.md`).
 - **Restyle** ("more cinematic", "make it cyberpunk"): modify, don't rebuild. Change the look tokens or motion constants, keep story, timing and assets, and edit only scenes whose assets clash.

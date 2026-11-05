@@ -10,14 +10,14 @@ Category membership is the primary home, not an instruction to install every ski
 
 | Skill | Covers |
 |---|---|
-| [asset-prep](asset-prep/SKILL.md) | Screens, brand extraction, recording and prepared assets; renderer integration links to seek-engine. |
-| [beat-grid](beat-grid/SKILL.md) | Measured music and the shared picture/sound clock |
-| [frame-review](frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
-| [make-video](make-video/SKILL.md) | Gated film production with engine selection before setup; shared story/review gates and engine-specific runtime contracts. |
+| [asset-prep](asset-prep/SKILL.md) | Product captures and prepared assets; supplied-media stream/color inspection, bounded local footage edits, captions and editor-handoff limits. |
+| [beat-grid](beat-grid/SKILL.md) | Measured music and the shared picture/sound clock; observed onsets kept separate from fitted beat positions. |
+| [frame-review](frame-review/SKILL.md) | Frame review and decoded-file checks; property-specific evidence, retained streams, edited boundaries and explicit sampling limits. |
+| [make-video](make-video/SKILL.md) | Gated film production, engine selection and local footage routes; reusable product-film libraries with captures, claim checks and discrepancy records. |
 | [marketing-video](marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs. Source-scoped camera direction presets distinguish movement, lens, framing, focus, time and transitions. |
-| [seek-engine](seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
-| [shotlist](shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. Generated-footage camera directions link to marketing-video. |
-| [sound-pass](sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |
+| [seek-engine](seek-engine/SKILL.md) | Pure-time rendering, measured motion and film adapters; held-pose stop motion on one global pose grid alongside existing styles. |
+| [shotlist](shotlist/SKILL.md) | Storyboards, composition, type, demos and transitions; measured footage-selection candidates kept separate from semantic scene decisions. |
+| [sound-pass](sound-pass/SKILL.md) | Picture-driven effects, music and mastering; supplied-audio alignment, threshold-based quiet detection and bed-versus-master fades. |
 | [video-brief](video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
 | [video-help](video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
 | [video-setup](video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |

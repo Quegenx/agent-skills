@@ -13,7 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 |---|---|
 | Scope the work and preserve the installed system | [SKILL.md](SKILL.md) |
 | Inventory surfaces, extract roles, map values and establish component readiness | [EXTRACTION-AND-MAPPING.md](EXTRACTION-AND-MAPPING.md) |
-| Write one component's documentation from its implementation and real uses | [COMPONENT-DOCS.md](COMPONENT-DOCS.md) |
+| Document a component, measured anatomy sheet or instrumented interaction poster from its real implementation | [COMPONENT-DOCS.md](COMPONENT-DOCS.md) |
 | Move screens onto the system with captured visual and behavior evidence | [MIGRATION.md](MIGRATION.md) |
 
 Color notation and token definitions remain in [color-system](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/color-system/SKILL.md), general behavior comparison in [system-migration](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/system-migration/SKILL.md), rendered critique in [anti-slop-ui REVIEW.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/REVIEW.md), and accessibility requirements in [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/SKILL.md).

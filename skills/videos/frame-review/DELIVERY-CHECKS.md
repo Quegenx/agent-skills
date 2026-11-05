@@ -35,6 +35,10 @@ Use `--expect-audio` for a profile that requires audible audio and `--strict` wh
 
 The smoke contrast check uses relative text-box height and sampled background pixels. It is a film heuristic, not proof of WCAG conformance; the official text-size/contrast definitions are in [web-accessibility](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/MOTION-AND-ZOOM.md#contrast). [https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum]
 
+For supplied-footage edits, preserve a property-specific record: expected value, measured value, difference, tolerance, source/reference identity and measurement provenance. Name unverified properties explicitly. A completed artifact or a zero process exit does not establish every requested property; preserve unresolved attribution when the artifact, reference or measurement cannot yet be distinguished as the cause. [kajisho5/ffmpeg-skill, docs/contract.md; scripts/_common/emit.py; references/report.md]
+
+Inventory selected, retained and dropped streams; compare their own start/end spans rather than container duration alone, and decode both ends and edited joins. Check actual selected-track identity, not merely audio presence. State which cues/frames/windows were inspected: pixel difference or ink proves neither correct glyphs nor readability, and sampled timestamps do not establish whole-file cadence. Frame comparisons must pair corresponding frames with an explicit time base. [kajisho5/ffmpeg-skill, scripts/_common/emit.py; tests/test_cut_copy.py; tests/test_picture.py; tests/bench_vt.py]
+
 ## Prove it
 
 Report the selected profile, measured gates, actual decoded frames and any unverified measurements. A stopped review budget never counts as passing a gate. [Quegenx/agent-skills, videos workflow at 48e92a7]

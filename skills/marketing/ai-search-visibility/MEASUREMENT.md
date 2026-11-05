@@ -14,7 +14,7 @@ For Google results, use Search Console rather than automated result scraping: Go
 - Collapse wording variants into one core prompt per intent and spend the budget on repeat runs.
 - Run each query 3 to 5 times per platform, in a fresh session each time.
 - Track the mention or citation *rate* ("cited in 3 of 5 runs"), never a yes or no from one run, and report the sample size with every number ("40% mention rate, n=5").
-- "Compare rates over time, not runs. A drop from 4/5 to 3/5 is noise; a drop from 4/5 to 0/5 sustained across a month is signal."
+- Compare rates over time, not runs. The source illustrates noise with 4/5 to 3/5 and signal with a sustained 4/5 to 0/5; those are practitioner illustrations, not a statistical significance test. Record sample size, repeated-run conditions and uncertainty before a verdict. [coreyhaines31/marketingskills, ai-seo/references/format-volatility.md]
 - Before diagnosing why you're not cited, split the cause: **technical** (can't be crawled or parsed, [AGENT-READINESS.md](AGENT-READINESS.md)), **comprehension** (described inaccurately or vaguely, [ANSWER-ACCURACY.md](ANSWER-ACCURACY.md)), or **trust** (understood but not selected, [VISIBILITY-AUDIT.md](VISIBILITY-AUDIT.md#cited-is-not-recommended)).
 
 Trackers differ in what they sample: OpenSEO collects ChatGPT and Gemini from their consumer sites and Claude and Perplexity through their APIs, uses the latest finished run per day for its trend, and charges more for "Run now" than for scheduled checks [openseo.so, /docs/ai-visibility]. Check what each tool samples before comparing numbers across tools. [coreyhaines31/marketingskills, ai-seo]
@@ -58,7 +58,7 @@ FreeScan's list of what to track is the same shape: crawl and index state, landi
 | **Pre/post on a stable cohort** | Nothing better is possible | Low; confounders easily swamp it |
 | **Exposure panel or incrementality study** | Budget for a vendor panel | Varies with the panel's method |
 
-**Reporting language:** say whether you have an **observation** ("branded search rose after the change"), an **association** ("pages with more AI mentions saw more direct visits") or a **causal result** ("the holdout pages didn't move; the treated pages did"). "Most AEO reporting only supports the first two. Say so." Aggregate small groups in panel and self-reported data and follow your consent and retention policies.
+**Reporting language:** say whether you have an **observation** ("branded search rose after the change"), an **association** ("pages with more AI mentions saw more direct visits") or a **causal result** justified by the evaluation design and its assumptions. The source calls "the holdout pages didn't move; the treated pages did" causal, but that difference alone does not establish causality; identify randomization or the justified comparison design and remaining confounders. "Most AEO reporting only supports the first two. Say so." Aggregate small groups in panel and self-reported data and follow your consent and retention policies.
 
 ## Prove it
 

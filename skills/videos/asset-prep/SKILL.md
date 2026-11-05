@@ -1,6 +1,6 @@
 ---
 name: asset-prep
-description: "Captures and prepares what a video animates: site screenshots, brand colours, fonts and logos, cutouts, cleanup and upscaling. Use when a video shows a real product or site, or supplied images need preparing."
+description: "Captures and prepares what a video animates: site screenshots, brand colours, fonts and logos, cutouts, cleanup and upscaling, plus inspection and local edits of supplied footage. Use when a video shows a real product or site, or supplied images or footage need preparing."
 ---
 
 # Asset prep
@@ -10,6 +10,14 @@ description: "Captures and prepares what a video animates: site screenshots, bra
 Everything lands in the film's `assets/`, and every file is listed in `brief.md` under ASSETS with where it came from. List what you found **before** animating anything. A screen the story needs and you don't have is a blocker: ask for it.
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
+
+## Read by job
+
+| The job | Read |
+|---|---|
+| Record a real app flow with the bundled recording source | [APP-RECORDING.md](APP-RECORDING.md) |
+| Inspect supplied footage, its streams, geometry, color and evidence limits | [MEDIA-INSPECTION.md](MEDIA-INSPECTION.md) |
+| Cut, assemble, caption or layer supplied footage locally; replay or hand off an edit | [FOOTAGE-EDITS.md](FOOTAGE-EDITS.md) |
 
 ## Capture a product from its site
 
@@ -63,7 +71,7 @@ The posters-to-layers pipeline: take a flat image apart so each piece can move o
 | Paper, cardboard, grain textures | crop patches from the source with OpenCV, feather edges, tile to cover the frame | |
 | Upscale a final or an asset | Real-ESRGAN (`realesrgan-ncnn-vulkan`) | 2x or 4x |
 | Colour and size facts | `ffprobe`, a quick numpy read of pixels | measure, never guess |
-| Real video clips | all-intra re-encode or a JPEG sequence; scene detection before looping; a phone recording is often HEVC and full range, so re-encode it to H.264 limited range (`-pix_fmt yuv420p -color_range tv`) or it comes out washed out | call the Skill tool with "seek-engine" for the recipes |
+| Real video clips | all-intra re-encode or a JPEG sequence for the chosen renderer; inspect source range, transfer and matrix before conversion, using [MEDIA-INSPECTION.md](MEDIA-INSPECTION.md#color-descriptions-and-transformations); scene detection before looping [https://ffmpeg.org/ffmpeg-all.html#setparams] | call the Skill tool with "seek-engine" for the recipes |
 
 These pull models on first use (hundreds of MB): say so before running one. Save each layer as its own PNG with alpha, named for what it is (`cat.png`, `bag-empty.png`), and record the layer list. Check every cutout at 100% on a contrasting background before animating it: a halo of the old background is the usual tell.
 
@@ -83,7 +91,7 @@ For a game, a tool or anything with live behaviour, record real use (replays, sc
 
 **Transforming supplied footage:** probe it first (`ffprobe` duration, fps, size, audio, subtitle tracks), write down what must not change (the voice, the captions, the length, the person, the order of information), then plan segment by segment: what the original shows, what replaces it, what has to be drawn or repaired. Make a 10-second sample, check it against the original audio and captions, then do the rest.
 
-When the job is cutting the footage itself (picking takes, trimming a talk), route to video-use (make-video's engine table); when a film here cuts supplied speech, its correctness rules hold: cut only on word boundaries from a word-level transcript (never phrase-level subtitles, which lose the gaps), padded 30-200 ms because word timestamps drift 50-100 ms; prefer silences of 400 ms or more as cut points, use 150-400 ms ones only after looking, never under 150 ms; give 400-600 ms of air at a speaker change and keep the laugh after a punchline (the reaction is the beat); put a 30 ms audio fade on both sides of every cut or each one pops; extract each segment and join them with a lossless copy, so overlays don't re-encode everything twice; shift each overlay so its frame 0 lands at its window start; offset subtitle times into the output timeline (`word.start − segment start + segment offset`) and burn them last, after every overlay; cache transcripts per source file. Check every cut in the rendered file (frames and waveform around each boundary) for a jump, a pop, a caption hidden under an overlay. When two shots of the same speaker meet, keep the eyes at the same height and horizontal place on screen across the cut, measured in the final crop and scale (a small reframe or uniform scale per shot, never chasing the eyes frame by frame); reframing can't fix a change in where they look. To trim dead air at the head and tail, inspect the actual clip's waveform and pause boundaries before accepting cuts. Do not automatically pass `loudnorm.input_thresh` into `silencedetect=noise`: the former is an EBU relative loudness gate, while the latter is an amplitude threshold (a ratio, or dB when suffixed). The old line and the source substituted one for the other without a validated conversion. Keep the threshold specific to the inspected clip; no replacement dB value is established here. [heygen-com/hyperframes, remotion-markup/silence-detection.md; official correction: https://ffmpeg.org/ffmpeg-filters.html#loudnorm and https://ffmpeg.org/ffmpeg-filters.html#silencedetect]
+When the job is cutting the footage itself (picking takes, trimming a talk), use [FOOTAGE-EDITS.md](FOOTAGE-EDITS.md) for local editing or make-video's engine table for an external editor; when a film here cuts supplied speech, its correctness rules hold: cut only on word boundaries from a word-level transcript (never phrase-level subtitles, which lose the gaps), padded 30-200 ms because word timestamps drift 50-100 ms; prefer silences of 400 ms or more as cut points, use 150-400 ms ones only after looking, never under 150 ms; give 400-600 ms of air at a speaker change and keep the laugh after a punchline (the reaction is the beat); put a 30 ms audio fade on both sides of every cut or each one pops; extract each segment and use lossless-copy assembly only when streams, codecs and time bases are compatible and the decoded boundaries match the intended cut (see [FOOTAGE-EDITS.md](FOOTAGE-EDITS.md#assemble-without-silently-changing-the-edit)); shift each overlay so its frame 0 lands at its window start; offset subtitle times into the output timeline (`word.start − segment start + segment offset`) and burn them last, after every overlay; cache transcripts per source file. Check every cut in the rendered file (frames and waveform around each boundary) for a jump, a pop, a caption hidden under an overlay. When two shots of the same speaker meet, keep the eyes at the same height and horizontal place on screen across the cut, measured in the final crop and scale (a small reframe or uniform scale per shot, never chasing the eyes frame by frame); reframing can't fix a change in where they look. To trim dead air at the head and tail, inspect the actual clip's waveform and pause boundaries before accepting cuts. Do not automatically pass `loudnorm.input_thresh` into `silencedetect=noise`: the former is an EBU relative loudness gate, while the latter is an amplitude threshold (a ratio, or dB when suffixed). The old line and the source substituted one for the other without a validated conversion. Keep the threshold specific to the inspected clip; no replacement dB value is established here. [heygen-com/hyperframes, remotion-markup/silence-detection.md; official correction: https://ffmpeg.org/ffmpeg-filters.html#loudnorm and https://ffmpeg.org/ffmpeg-filters.html#silencedetect; copy-assembly qualification: https://ffmpeg.org/ffmpeg-formats.html#concat; kajisho5/ffmpeg-skill, scripts/cut.py; scripts/join.py]
 
 ## Archival material (history and explainers)
 
@@ -111,4 +119,4 @@ A photo or a generated face that speaks is one still image plus three mouth patc
 
 ## Done when
 
-Every asset the shot list needs exists in `assets/`, is listed with its source, has been looked at, and nothing on screen will be invented.
+Every asset the shot list needs exists in `assets/`, is listed with its source, has been looked at, and nothing on screen will be invented. Supplied footage also meets the selected [inspection](MEDIA-INSPECTION.md#prove-it) and [edit](FOOTAGE-EDITS.md#prove-it) checks; report any unperformed measurement or review. [kajisho5/ffmpeg-skill, scripts/_common/probe.py; scripts/_common/emit.py]

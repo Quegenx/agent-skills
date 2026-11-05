@@ -13,6 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Playful feature stickers with thick outlines, a few extruded parts and a complete still pose, as an optional alternative style | [STICKERS.md](STICKERS.md) |
 | Choose the figure and its physical vocabulary | [Craft](templates/isokit/references/craft.md) and [walkthrough](templates/isokit/references/walkthrough.md) |
 | Build round parts, pipes and recorded geometry | [Round parts API](templates/isokit/references/kit-lathe-and-tube.md) and [geometry audit](templates/isokit/references/kit-audit.md) |
 | Drive live input and motion | [Motion and interaction](templates/isokit/references/motion.md) |

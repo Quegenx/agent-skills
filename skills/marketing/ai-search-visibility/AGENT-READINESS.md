@@ -11,7 +11,7 @@ Google: browser agents may analyze "visual renderings (like screenshots), inspec
 [coreyhaines31/marketingskills, ai-seo]
 
 **1. Access: can an agent get to the page and see real content?**
-- Core content in the initial HTML response. "Most agents never execute JavaScript. If the content only exists after client-side rendering, it doesn't exist." The repo's analytics notes say the same: "Most crawlers and AI agents never run JS" ([posthog WEB-ANALYTICS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/WEB-ANALYTICS.md)).
+- Keep core content in the initial HTML for fetch-only clients. The source and old line generalized that "Most agents never execute JavaScript"; browser agents can execute it. Record the actual client and retrieval mode instead of applying that generalization to every agent. [coreyhaines31/marketingskills, ai-seo/references/agent-readiness.md; https://agentready.org]
 - No bot challenge or firewall block on the intended discovery path (see [AI-CRAWLERS.md](AI-CRAWLERS.md#check-the-firewall-not-only-the-file)).
 - Correct HTTP behavior: real status codes (no soft-404s), stable canonical URLs, recoverable errors. Soft 404s and SPA fallbacks return 200 with unrelated HTML; before crediting robots.txt, a sitemap or llms.txt, check the final URL, content type, title and body. [freescan]
 
@@ -19,6 +19,7 @@ Google: browser agents may analyze "visual renderings (like screenshots), inspec
 - robots.txt with an explicit, purpose-specific AI-crawler stance.
 - A sitemap that loads and parses cleanly.
 - llms.txt, optionally (see [LLMS-TXT.md](LLMS-TXT.md)).
+- Link shipped discovery resources from pages agents actually visit, such as the homepage, docs entry or footer, or appropriate head links. A resource existing at a guessed path does not establish discoverability; Markdown is optional rather than a substitute for accessible HTML. [coreyhaines31/marketingskills, ai-seo/references/agent-readiness.md; https://agentready.org]
 
 **3. Parseability: once there, can the agent tell what the page is?**
 - Valid, substantive JSON-LD that matches the visible text (the markup rules are in [seo STRUCTURED-DATA.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/STRUCTURED-DATA.md)). Google: "Structured data isn't required for generative AI search, and there's no special schema.org markup you need to add." [https://developers.google.com/search/docs/fundamentals/ai-optimization-guide]
@@ -87,7 +88,7 @@ Rules: consistent units (monthly vs annual, per-seat vs flat); specific limits, 
 [coreyhaines31/marketingskills, ai-seo, okf] introduces Open Knowledge Format for data/catalog metadata; a marketing-site bundle is a repurposing. Current [official SPEC v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md), last modified 2026-08-21, supersedes v0.1. The source and this file formerly named v0.1 and recommended timestamp; v0.2 supersedes timestamp with generated.at, allowing legacy fallback when generated is absent. No search-discovery or SEO benefit is implied by conformance.
 - Cross-linked Markdown files use YAML frontmatter: type is required, while title, description, resource and tags are optional; an index.md is optional. The source distributes a bundle as a repository, tarball or subdirectory. [official SPEC v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md); [coreyhaines31/marketingskills, ai-seo/references/okf.md]
 - Serve it at `/okf/`, starting with `/okf/index.md`, and add a line to llms.txt pointing to it.
-- "Nothing crawls the web for OKF bundles yet." Skip it for a site under 10 pages, a closed platform without custom paths, or when nobody maintains the other machine-readable files.
+- The source says "Nothing crawls the web for OKF bundles yet"; no announced search integration was verified in this review, which is narrower than proving no crawler uses them. Skip it for a site under 10 pages, a closed platform without custom paths, or when nobody maintains the other machine-readable files.
 
 ```markdown
 ---

@@ -23,6 +23,8 @@ The platform terms and data rules that apply while building a list, before anyth
 - **Vendors that depend on LinkedIn can disappear.** The source reports lawsuits against Proxycurl and ProAPIs and removed company pages for Apollo, Seamless and HeyReach; this is news it reports, not verified. "Keep an alternative."
 - The source: "Messages, InMail, and connection requests are still processing of personal data, so GDPR, PECR, and similar laws apply exactly as they do to email" [coreyhaines31/marketingskills, prospecting].
 
+LinkedIn supports an owner downloading their own first-degree connections; included email addresses depend on each connection's visibility/download permission. This does not authorize an unsolicited campaign list or imply a Sales Navigator prospect export. Authorized private relationship research for an introduction is distinct from scraping or enriching an unsolicited contact list. The old Prove it line prohibited every LinkedIn export; retain the outreach restriction without denying this official self-export feature. [LinkedIn export help](https://www.linkedin.com/help/linkedin/answer/a566336/export-connections-from-linkedin)
+
 ## Google Maps
 
 Google's Maps Platform Terms 3.2.3(a), "No Scraping": customers "will not export, extract, or otherwise scrape Google Maps Content for use outside the Services", including to "copy and save business names, addresses, or user reviews"; 3.2.3(b) bans caching "except as expressly permitted" (https://cloud.google.com/maps-platform/terms). The Places policies: "You must not pre-fetch, cache, or store Places API content beyond the allowed exceptions", and "the place ID ... is exempt from the caching restrictions. You can therefore store place ID values indefinitely" (https://developers.google.com/maps/documentation/places/web-service/policies).
@@ -67,4 +69,4 @@ GitHub's Acceptable Use Policies (https://docs.github.com/en/site-policy/accepta
 
 ## Prove it
 
-A sample of ten rows each shows source, collection date, lawful basis (EU and UK) and last verification; no stored field came from Maps content other than a place ID; no person on the list came from GitHub or a LinkedIn export; no row was qualified on a sensitive trait; the provider contract names your use case; and the retention date is written on the list.
+A sample of ten rows each shows source, collection date, lawful basis (EU and UK) and last verification; no stored field came from Maps content other than a place ID; no unsolicited contact list came from GitHub or a LinkedIn export, and any authorized private-network research stayed within the introduction rules in [SIGNALS.md](SIGNALS.md#warm-introduction-paths); no row was qualified on a sensitive trait; the provider contract names your use case; and the retention date is written on the list.

@@ -41,6 +41,8 @@ Source keywords from how buyers describe the problem (sales calls, your search t
 2. Mine the search terms report weekly (below).
 3. Add **Broad only after** 30+ conversions a month in the campaign, smart bidding live, and a tight negative list. The source: "Broad without all three is a donation to Google." The thresholds are practitioner.
 
+**AI Max test:** the source applies the same readiness gates as Broad above, excludes unsuitable landing URLs, reviews chosen search terms and landing pages weekly, and compares against a campaign without AI Max. Those volume gates are practitioner policy, not Google requirements. Google describes search term matching as broad match plus keywordless technology and provides asset optimization controls; review the actual controls before enabling a live experiment. The source also warns that expanded landing URLs may reach pages inappropriate for ads. [coreyhaines31/marketingskills, ads/references/google-search-playbook.md; https://support.google.com/google-ads/answer/15910187?hl=en]
+
 ## Negative keywords
 
 **Mechanics:** a negative broad needs ALL its words present, in any order (negative broad "free trial" does not block "free" alone); negative phrase blocks the words in order; negative exact blocks only that query. Apple Ads negatives work the same way ([app-growth](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/SKILL.md#the-rules)). Most accidental over- and under-blocking traces to this.

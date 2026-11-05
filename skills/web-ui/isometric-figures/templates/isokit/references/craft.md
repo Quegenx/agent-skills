@@ -241,4 +241,6 @@ Some subjects can't be drawn with lines: fire, exhaust, water, caustics, real la
 
 ## Prove it
 
+[svg-vector, SKILL.md, sections 1, 5 and 8] For a deliberately simpler line figure, keep static hit silhouettes independent of the moving art and check the visible face's center and corners against its intended target. Dot grids and link pulses can play once as part of the same gesture, then return to a readable still; they need not become unrelated perpetual effects. Its silhouette/crease/lip tones are a source-specific alternative, while this manual retains the tone table above.
+
 [isokit, references/verify.md; references/verify-checklist.md] Apply the [figure verification workflow](verify.md) to the parts used here. Preserve recorded-shape coverage, sampled states and quick/partial/skipped labels; a zero geometry audit still requires the line and visual checks.

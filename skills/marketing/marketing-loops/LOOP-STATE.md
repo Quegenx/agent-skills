@@ -1,6 +1,6 @@
 # Loop state and run logging
 
-Idempotency is only real if the loop can remember what it already did between runs. This reference defines where that state lives and how to log runs - so loops don't double-act, re-nag the same people, or re-alert the same issue.
+Durable state records what a loop did between runs. This reference defines the marketing bookkeeping and run log; the [atomic idempotency contract](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/RELIABILITY.md#idempotency-keys) owns prevention of duplicate effects across crashes and concurrent runs. [coreyhaines31/marketingskills, marketing-loops, references/loop-state.md; existing api-design, RELIABILITY.md]
 
 Source: [coreyhaines31/marketingskills, marketing-loops] `references/loop-state.md` (v1.6.0, MIT, Corey Haines), copied with its dashes replaced, skill names mapped to this repo, and `.agents/product-marketing.md` written as this repo's `.agents/product-context.md`.
 
@@ -35,7 +35,7 @@ A state file holds whatever the loop needs to not repeat itself:
 
 - **cursor / watermark** - the high-water mark of what's been processed (a timestamp or last ID). The loop only looks at items past it.
 - **handled** - dedupe keys for items already acted on, so re-runs skip them.
-- **cooldowns** - per-entity suppression windows so you never re-contact someone inside the window.
+- **cooldowns** - per-entity suppression windows recording the next eligible contact time; enforcement follows the idempotency contract below.
 - **in_flight** - open items (running tests, active interventions) so the loop doesn't start a conflicting one.
 - **counters** - attempt counts that drive stop conditions (e.g., "after 2 win-back emails, stop").
 
@@ -43,10 +43,9 @@ Keep state small and prune it: expire old `handled`/`cooldown` entries once they
 
 ## Idempotency patterns
 
-- **Watermark**: process only items newer than `cursor`; advance `cursor` at the end of a successful run. Safe to re-run - it won't reprocess.
-- **Dedupe set**: before acting on an item, check its key against `handled`; add it after acting.
-- **Cooldown map**: before contacting an entity, check `cooldowns[entity]`; set it after contact.
-- **In-flight guard**: before starting an action that shouldn't overlap (a test, an intervention), check `in_flight`.
+The source uses watermarks, handled keys, cooldowns and in-flight lists as marketing bookkeeping. Its check, act, then record sequence is not an atomic claim: a crash after the effect or two concurrent runs can repeat it. Follow the canonical [idempotency contract](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/api-design/RELIABILITY.md#idempotency-keys) before acting, and reconcile an [uncertain external outcome](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/background-jobs/EXTERNAL-SIDE-EFFECTS.md) before retrying. A file or watermark alone is not the guarantee the old line claimed. [coreyhaines31/marketingskills, marketing-loops, references/loop-state.md; existing api-design, RELIABILITY.md]
+
+Keep these fields for progress and suppression windows; update them from confirmed outcomes under that contract. A check-only `in_flight` list is not a concurrency lock. [coreyhaines31/marketingskills, marketing-loops, references/loop-state.md; existing api-design, RELIABILITY.md]
 
 ## Run logging
 
@@ -69,7 +68,7 @@ Log at minimum: timestamp, how many items checked, how many acted on, and a shor
 
 ## Session end: decisions and learnings
 
-The state file stops a loop from repeating itself. It doesn't help the rest of the team, or the next drafting session, learn from what the loop found. Close every run that acted, and every manual working session on a loop, with a short session-end step:
+The state file records processed work; duplicate prevention follows the contract above. It does not by itself help the rest of the team, or the next drafting session, learn from what the loop found. Close every run that acted, and every manual working session on a loop, with a short session-end step:
 
 1. **Write 1 to 3 decisions to the run log.** A decision is something that changes what happens next: "paused the competitor-term ad group pending a new landing page," "kept variant B as control," "dropped Reddit from the listening sources." Routine runs that changed nothing get no decision line; "no action" in the log is enough.
 2. **Note open items** that carry to the next run (a test still collecting data, an approval still pending) in the state file's `in_flight`, so the next run picks them up instead of starting over.

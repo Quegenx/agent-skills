@@ -114,7 +114,7 @@ This is the operational thesis behind the AARRR mapping (Sections 4 to 8) and th
 
 ## The 70/20/10 resource-allocation rule
 
-The 10% experimental bucket here and the "10-20% experimental budget" in [BUDGET.md](BUDGET.md) are the same layer named twice.
+The experimental bucket here and the buffer in [BUDGET.md](BUDGET.md) can fund the same work, but their denominators differ: this split allocates 10% of the total, while BUDGET adds 10 to 20% on top of the acquisition base. The source and old line called them the same layer without that distinction. Choose one allocation with an explicit denominator and do not add the same experimental work twice. [coreyhaines31/marketingskills, marketing-plan, references/growth-patterns.md and references/budget-planning.md]
 
 Layering S-curves only works if the next curve is funded *before* the current one plateaus. The 70/20/10 rule is the budgeting discipline that guarantees it. Split marketing effort and spend across three buckets:
 
@@ -127,7 +127,7 @@ Layering S-curves only works if the next curve is funded *before* the current on
 Why it matters for the plan:
 
 - It operationalizes "start the next S-curve before the current one plateaus" - the 20% + 10% *is* the next curve, funded on purpose rather than scrambled for after a plateau hits.
-- It maps cleanly onto the **10 to 20% experimental budget buffer** in [BUDGET.md](BUDGET.md) - the experimental layer is the 10% here.
+- Reconcile it with the **10 to 20% experimental budget buffer** in [BUDGET.md](BUDGET.md): a share of the final total is not the same percentage as a buffer added to a base. Keep the amount and denominator visible; these ratios are the source's planning heuristics. [coreyhaines31/marketingskills, marketing-plan, references/growth-patterns.md and references/budget-planning.md]
 - It gives Section 11 (Ops stack) and Section 10 (12-month outlook) a defensible allocation logic instead of dumping the whole budget into what's currently working.
 
 **In the plan:** Section 10 (12-month outlook) names what sits in each bucket now, and what's expected to graduate. Section 11 (Ops stack) shows the 70/20/10 split across the AARRR stages. Adjust the ratio by phase - Phase 1 companies (still hunting for any channel that works) may run closer to 40/30/30; Phase 3 companies with a proven engine can run 80/15/5.

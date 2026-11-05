@@ -1,6 +1,6 @@
 # Local SEO
 
-Local SEO works out why a business does or doesn't show in Google Maps and the local pack near its customers, and what to fix first. The workflow comes from OpenSEO's `local-seo` skill (every-app/open-seo, MIT); the review and naming rules are Google's own policies, quoted. Location landing pages built from a template are in [PAGES-AT-SCALE.md](PAGES-AT-SCALE.md) (the Locations playbook); `LocalBusiness` markup is in [STRUCTURED-DATA.md](STRUCTURED-DATA.md).
+Local SEO works out why a business does or doesn't show in Google Maps and the local pack near its customers, and what to fix first. The workflow comes from OpenSEO's `local-seo` skill (every-app/open-seo, MIT), with profile, citation and measurement additions from [coreyhaines31/marketingskills, seo-audit/references/local-seo.md, local-seo-profile-and-citations.md and local-seo-pages-and-measurement.md]; the review and naming rules are Google's own policies, quoted. Location landing pages built from a template are in [PAGES-AT-SCALE.md](PAGES-AT-SCALE.md) (the Locations playbook); `LocalBusiness` markup is in [STRUCTURED-DATA.md](STRUCTURED-DATA.md).
 
 ## Inputs
 
@@ -54,10 +54,48 @@ The source's guardrail is "Never recommend review gating, fake reviews, or keywo
 
 Apple's equivalent rules for app reviews are in [aso RATINGS-AND-REVIEWS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/aso/RATINGS-AND-REVIEWS.md).
 
+## Business model and profile facts
+
+[coreyhaines31/marketingskills, seo-audit/references/local-seo.md and local-seo-profile-and-citations.md]; [Google representation guidelines](https://support.google.com/business/answer/3038177); [service-area guidance](https://support.google.com/business/answer/9157481)
+
+| Actual operation | Audit boundary |
+|---|---|
+| Storefront | Confirm a real customer-facing location and the hours customers can visit |
+| Service-area business | Customers are served at their locations; hide a residential address and use the actual operating base, not a profile per target city |
+| Hybrid | Show an eligible staffed customer-facing location and the actual service area |
+| Multiple bases | Confirm genuinely separate eligible locations, staff and service areas before recommending separate profiles |
+| Online-only | Do not invent a physical presence to obtain Business Profile eligibility |
+
+Check the real-world name, appropriate categories, services, customer-contact phone, website destination, ordinary and special hours, and real photographs with permission. Keep the description factual; Google's rules exclude links and promotional prices or offers. Do not promise a ranking improvement from posting or filling a field. Apply the existing [naming and review rules](#what-google-forbids) and optional Q&A boundary above.
+
+Keep private verification addresses separate from public profile fields, citations and website markup. Do not publish a home address merely to satisfy structured-data requirements. Google local-business rich-result eligibility still requires its documented public properties; `areaServed` does not replace a missing required address. Use [STRUCTURED-DATA.md](STRUCTURED-DATA.md) for that definition. [official representation guidelines above; coreyhaines31/marketingskills, seo-audit/references/local-seo-pages-and-measurement.md]
+
+## Citation cleanup and useful location pages
+
+[coreyhaines31/marketingskills, seo-audit/references/local-seo-profile-and-citations.md and local-seo-pages-and-measurement.md]
+
+- Make a correction record with entity/location, listing URL, observed public facts, verified source of truth, correction or duplicate action, access/status and date. Compare meaning rather than punctuation; prioritize a wrong phone, address or location identity over harmless formatting differences.
+- Preserve legitimate branch numbers and separate-location identities. On a real move, update the existing identity rather than creating an unnecessary duplicate. Paid distribution is optional; do not recommend buying directory coverage as an eligibility requirement.
+- A location page represents an actual location. A service-coverage page needs useful local service evidence, availability and customer information; it does not establish a storefront or justify a new profile. Do not invent offices or generate city-swapped pages. Scaled-page rules remain in [PAGES-AT-SCALE.md](PAGES-AT-SCALE.md).
+
+## Measure customer outcomes
+
+[coreyhaines31/marketingskills, seo-audit/references/local-seo-pages-and-measurement.md]
+
+| Evidence | Keep its limit visible |
+|---|---|
+| Qualified calls and inquiries | Count the actual qualified outcome, not every tap |
+| Profile interactions | Interactions are not completed purchases or attended visits |
+| Search Console clicks and queries | Separate brand/nonbrand demand and the page/location scope |
+| Tagged website actions | Confirm the event and destination before equating it with a lead |
+| Local visibility observations | Record the point, query, date and returned-result coverage using the grid rules above |
+
+Record a baseline by location and period, then compare like-for-like windows and customer outcomes. Distance, demand and query mix can change. Do not promise a fixed uplift or recovery date, or attribute a change to one profile edit merely because it followed it. A narrow request for a profile description does not require a full local audit first. [coreyhaines31/marketingskills, seo-audit/references/local-seo.md and local-seo-pages-and-measurement.md]
+
 ## Report
 
 [open-seo, local-seo] In order: **Snapshot** (one or two sentences, then category, rating, review count, claimed status; a row per location for a chain); **The one fix**; **Head to head** (signal, this business, best competitor, gap: categories, reviews with count, recency and owner replies, hours and completeness, website link); **Maps coverage** (where visibility drops and who wins there; label every value in a chart); posting only when the basics are competitive; **What to do next** as an ordered list; **How this report was made**, reading each missing grid rank against that point's `resultsCount`.
 
 ## Prove it
 
-The listing is matched by `cid` or `place_id`; the grid's center matches the storefront; every missing grid rank is read against its `resultsCount`; the first fix is a category, claim or website-link problem whenever one exists; each listing links to its own location page; no recommendation gates, buys or filters reviews or stuffs the business name; optional Q&A evidence uses a verified available surface rather than the discontinued API; the user saw the cost before any 5x5 grid ran. [open-seo, local-seo; official Q&A sources above]
+The listing is matched by `cid` or `place_id`; the grid's center matches the storefront; every missing grid rank is read against its `resultsCount`; the first fix is a category, claim or website-link problem whenever one exists; each listing links to its own location page; no recommendation gates, buys or filters reviews or stuffs the business name; optional Q&A evidence uses a verified available surface rather than the discontinued API; the user saw the cost before any 5x5 grid ran; private addresses stayed private, citation changes use a verified source of truth, coverage pages do not invent locations, and outcome comparisons name their location, period and limits. [open-seo, local-seo; official Q&A sources above]

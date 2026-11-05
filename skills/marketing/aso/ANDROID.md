@@ -64,7 +64,7 @@ Google Play has no hidden keyword field: per [eronred] it indexes the app name, 
 
 ## Preview video
 
-- **Google's rules:** a single YouTube video URL (no playlist or channel, no timecode parameters); ads disabled; public or unlisted; not age-restricted; embeddable. Only the first 30 seconds autoplay (muted); show real footage in the first 10 seconds; at least 80% representative of the experience. The video shows before the screenshots.
+- **Google's rules:** a single YouTube video URL (no playlist or channel, no timecode parameters); ads disabled; public or unlisted; not age-restricted; embeddable. The preview may autoplay inline with muted audio for up to 30 seconds depending on device, setting, connection and surface; a play button appears when autoplay is unavailable. Show real footage in the first 10 seconds; at least 80% representative of the experience. The video shows before the screenshots. The old line presented autoplay as unconditional. [https://support.google.com/googleplay/android-developer/answer/9866151]
 - **Preview copy exception:** awards from Google Play such as "Best Of" may be displayed in preview video copy. Keep this scope distinct from screenshot/feature-graphic recommendations and Apple's separate asset rules. [https://support.google.com/googleplay/android-developer/answer/9866151?hl=en]
 - **[eronred]:** 30 s recommended, 2 min max; landscape preferred; audio allowed and recommended; real people, narration and a marketing intro are fine (logo or intro at most 3 s); it may end on "Get it free".
 - **CTA conflict:** Google says avoid "Free" and calls to action like "download now", "install now", "play now", "try now" in assets and copy, so leave out [eronred]'s "Get it free" ending.

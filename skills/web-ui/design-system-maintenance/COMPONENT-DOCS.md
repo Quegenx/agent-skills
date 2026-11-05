@@ -49,6 +49,30 @@ Record a section with no sourced content as Not applicable with a reason, rather
 
 Deliver the draft with Sources, Conflicts and Guessed at records. Name unsupported or planned behavior plainly. Preserve the team's documentation format and destination where one exists; the supplied default is `docs/system/<name>.md` with a draft marker. Publishing remains a separate action.
 
+## Measured anatomy sheets
+
+[dimensional-drawing, SKILL.md, House rules, Code system and Measuring a UI component]
+
+- For a component anatomy or redline, draw slots and their sizing rules instead of fabricated production copy. Distinguish content-sized, remaining-space and parent-filling regions; do not dimension a particular string as though it were a system constraint.
+- Put each dimension's code, variable name and value in a table. Show derived formulas with their result and check the arithmetic against the visible regions. An unavailable value stays `[TBD]`, with proportional geometry labeled schematic.
+- Measure the real component and relevant instances after fonts and layout settle. Preserve the source, state, scale and units. A worked source example's measurements are not observations of the current app.
+- Prefer one legible sheet with aligned views, component-specific details, slots and nearby variable tables. Choose only the views that explain the component. Physical-object drafting remains in [technical-drawing](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/technical-drawing/SKILL.md).
+
+## Instrumented interaction posters
+
+[interface-bts, SKILL.md, sections 1 to 3; references/drafting.md; references/drivers.md]
+
+- Explain input, decision and output in one sentence, then choose three moments that expose that mechanism. Freeze the real component using its own handlers and animation clock rather than drawing a second imitation.
+- Give every displayed value an origin: a runtime measurement, a named constant with its code source, a derived value or an explicitly unknown estimate. Generate notes from those held values so the prose cannot silently disagree with the drawing.
+- Keep each moment in the same camera and scale. Show the one or two dimensions the explanation depends on, measured from a meaningful datum; label enlarged detail views and their scale.
+- Verify that channels shown as one mechanism actually agree at the held instant. If opacity and scale use different curves, show that difference instead of one misleading shared curve.
+- Label a spring response derived from configuration as derived. Distinguish the library's actual rest criteria from a position-only settling estimate, and report any sampling cutoff rather than inventing an exact duration.
+- Compare a synthetic gesture driver with one real browser interaction before claiming parity. A scaled fixture can change measurements and thresholds. Document any changed portal, positioning, modality or controller behavior; that fixture is not proof of the unchanged production interaction.
+- Keep poster events and temporary hooks scoped to their own subject, restore hooks on teardown, and check that posters sharing a page do not alter each other's moments or the host's keyboard access.
+- Preserve the app's real theme and production design. The source's poster typography, paper and accent choices style the documentation artifact, not the component being documented.
+
 ## Prove it
 
 Every documented API, state, token and example has a source path; each conflict and judgment call is explicit; behavior is described as implemented; missing evidence remains visible; and no component or story was changed merely to make its documentation complete. [supplied design skills, component-docs/SKILL.md]
+
+For an anatomy sheet, every dimension code resolves to its table and every formula closes. For a motion poster, the component, notes and plotted channel agree at each moment, the driver matches the observed interaction, and unavailable captures or measurements stay unverified. An empty overlap report does not establish coverage of posters that were never in view. [dimensional-drawing, SKILL.md, Before publishing; interface-bts, SKILL.md, section 5]

@@ -59,6 +59,22 @@ Your own product's events for rank 1 come from your analytics ([posthog SKILL.md
 - **A services agency selling to B2B SaaS (for example a CRO and landing page agency).** Signals: funding in the last 60 days; a new VP of marketing or head of growth; open growth or performance marketing roles; a redesigned site or new pricing page; paid campaigns launching. Play: value-first teardown, sent only after they say yes. Volume: "about 50 well-researched accounts a week beats 5,000 generic sends."
 - **A self-serve SaaS tool (for example an email verification product).** Signals: company-domain signups, credit or plan limits hit, large uploads, team invites; off-product, companies hiring lifecycle, RevOps or SDR roles and outreach tools in their stack. Play: product-led for usage signals, problem-led for the rest. "Every send has to model the deliverability the product sells."
 
+## Warm introduction paths
+
+[coreyhaines31/marketingskills, prospecting/references/signal-plays.md, Warm paths]
+
+- With authorization, match ICP accounts to the user's existing relationship records, such as their own network, calendar or inbox. A meeting establishes a relationship observation, not a buying moment. Do not automatically export records or contact anyone.
+- Ask the connector whether the relationship is real and whether an introduction is appropriate. Obtain both sides' permission before the introduction, and get human approval before contact. Disclose a compensated connector arrangement rather than presenting it as an independent recommendation.
+- Keep personal-network research separate from a campaign list; the platform boundary is in [LIST-COMPLIANCE.md](LIST-COMPLIANCE.md#linkedin).
+
+## Evidence-backed gap plays
+
+[coreyhaines31/marketingskills, prospecting/references/signal-plays.md, Gap plays]
+
+- Inspect the actual page or ad destination, offer and relevant customer journey. Record the checked URL, date and screenshot or other concrete evidence; recheck within seven days before authorized use. State the observation first and frame the possible implication as a question.
+- A missing browser tag does not establish missing server-side measurement. A homepage destination can be deliberate; a long-running ad can be successful. Copyright dates and surface appearance do not prove neglect, wasted spend or fatigue.
+- The verified gap must map to an offer you can actually deliver. Accept "No gap found". Never manufacture a problem to justify a pitch. Use [web-research GROWTH-TEARDOWN.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/GROWTH-TEARDOWN.md) for a broader dated marketing history; keep a prospecting play tied to the specific checked gap.
+
 ## Account tiers
 
 [coreyhaines31/marketingskills, prospecting] Assign the tier before writing anything.
@@ -81,4 +97,4 @@ Keep campaigns small: the source says several vendor and agency datasets show ca
 
 ## Prove it
 
-Every lead has a signal date and its signal is inside the freshness window or downgraded; every signal type you track maps to one row of the play table; no Hot lead rests on a rank-8 signal alone; no draft mentions a tracked visit or opens with congratulations; and each account has a tier before any copy exists.
+Every lead has a signal date and its signal is inside the freshness window or downgraded; every signal type you track maps to one row of the play table; no Hot lead rests on a rank-8 signal alone; no draft mentions a tracked visit or opens with congratulations; each account has a tier before any copy exists; every gap has a checked URL/date and no unsupported hidden-tracking or ad-performance claim; and every introduction has both sides' permission and approval before contact.

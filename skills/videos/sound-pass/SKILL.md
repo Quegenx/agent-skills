@@ -69,6 +69,12 @@ A licensed SFX file works too: put it at `audio/samples/<kind>.wav` (or .mp3) an
 
 Writing and cutting to a script, measured: [MEASURED-SOUND-SYNC.md](MEASURED-SOUND-SYNC.md) (voice-led timing, on-screen words landing 0-2 frames before they are heard, silence before the hit, music pulled down while the viewer reads, one to three hand-placed hero hits).
 
+## Supplied footage audio
+
+- Audio cross-correlation aligns recordings of sound; it does not establish that a visible mouth or action matches that sound. Preserve per-recording confidence and measured offset/drift, and check the resulting picture and sound. An unavailable correlation stays unverified. [kajisho5/ffmpeg-skill, scripts/sync.py; scripts/multicam.py; references/gotchas.md#sync-multicam-and-drift]
+- Quiet detection is threshold-based, not literal digital zero or semantic sentence detection. Inspect channels separately when a combined signal could cancel; FFmpeg's `silencedetect` supports per-channel processing and a noise tolerance in amplitude ratio or suffixed dB. Keep [asset-prep's loudness-gate distinction](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/SKILL.md#real-use-as-footage). [https://ffmpeg.org/ffmpeg-all.html#silencedetect; kajisho5/ffmpeg-skill, scripts/silence.py]
+- Distinguish fading the music bed from fading the entire mix. Pad/trim the bed to the intended picture duration rather than letting a shorter music file end the video; inspect the delivered result after encoding. The source's social -14 LUFS default does not replace this skill's foley-only profile. [kajisho5/ffmpeg-skill, scripts/audio.py; tests/test_audio.py; existing sound-pass, Mix]
+
 ## Check sync
 
 Close your eyes and listen: if the sound has no shape without the picture, it isn't finished. Then measure: re-render and run `uv run scripts/check_sync.py out/16x9.mp4 audio/mix.wav` (from frame-review): lag within 1 ms, true peak ≤ -1 dBTP after AAC, -14 ±1 LUFS, the loudness range, and where the loudest moment sits (the payoff, not the end card). Then draw the sound: `python3 <this skill>/scripts/waveform.py` (or pass the MP4) writes `out/qa/wave.png`, the waveform with every cue as a coral line and every beat as a blue one; each transient should sit on a coral line or a hair after it. A hit between lines means a hand-typed time or a stale mix. Then check that the hits sit on their frames in a strip around the busiest moment.

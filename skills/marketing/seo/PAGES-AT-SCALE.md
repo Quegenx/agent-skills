@@ -56,7 +56,7 @@ The same pattern applies to AI answers: near-duplicate pages per prompt wording 
 | Directory | "[category] tools", "[type] software" | Comprehensive coverage; useful filtering and sorting; details per listing (not just names); regular updates | `/directory/[category]/` or `/[category]-directory/` |
 | Profiles | "[person/company name]", "[entity] + [attribute]" | "Accurate, sourced information"; regularly updated; unique insights or aggregation; not a Wikipedia rehash | `/people/[name]/`, `/companies/[name]/` |
 
-Translations need hreflang that Google accepts: each version lists itself and all others, `x-default` as the fallback, fully qualified URLs, an ISO 639-1 language with an optional ISO 3166-1 region (never a country alone), in HTML, an HTTP `Link` header or the sitemap ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). The owner's head design already does this ([landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md)). A glossary can carry schema.org `DefinedTerm`; Google has no rich result for it, so it is semantic markup only.
+Translations use the [international SEO audit](INTERNATIONAL-SEO.md), which owns annotation methods, valid codes, reciprocal alternates and canonical choices. Google recommends an optional `x-default` fallback; this file formerly made it sound mandatory. The owner's chosen fallback remains part of [landing-page-ui DISCOVERY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/landing-page-ui/DISCOVERY.md). A glossary can carry schema.org `DefinedTerm`; Google has no rich result for it, so it is semantic markup only.
 
 ## Choosing a playbook
 
@@ -116,7 +116,7 @@ What the platform has to do [coreyhaines31/marketingskills, programmatic-seo imp
 |---|---|---|
 | Enough items | Every page is usually one CMS item or database row | The plan's item or row limit at the volume you'll reach in a year, not today's |
 | Data refresh | Stale data makes pages wrong and thin | How rows get updated (CSV re-import, API, sync tool, webhook) and whether pages update without a full rebuild |
-| Server-rendered HTML | "Crawlers and AI engines need the content in the initial HTML" | Pages render on the server or at build time, not only in client-side JavaScript |
+| Server-rendered HTML | A reliability preference for important content; Google can also process rendered JavaScript ([STRUCTURED-DATA.md](STRUCTURED-DATA.md#format-and-placement)). The source made initial HTML a universal requirement | Pages render on the server or at build time, not only in client-side JavaScript |
 | Conditional sections | Unique value per page depends on showing or hiding sections by data | The template can branch on field values, not just print them |
 | Per-page indexation control | You'll `noindex` thin variations and split sitemaps | Per-item `noindex`, canonical overrides, sitemaps split by page type |
 | Internal linking | Hubs, spokes and related links drive discovery | Templates can query related items (same category, nearby location) |

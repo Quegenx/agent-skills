@@ -54,7 +54,7 @@ Twelve loops that keep a site ranking, cited correctly by AI assistants, linked 
 - **Loop body**:
   1. Run the prompt panel (20 to 30 prompts spread across awareness stages) on each assistant you track, several runs per prompt.
   2. Record per prompt: mentioned or not, how the brand is described, which sources were cited.
-  3. Turn findings into work: a wrong or vague fact means the page that should state it doesn't state it plainly, so fix that page. Absence means the cited sources are the target list for PR, directories, and review sites.
+  3. Investigate wrong or vague facts using the source trace in the accuracy audit below, and stage corrections where evidence supports them. Missing mentions and cited sources supply research leads. The source and old line treated a wrong answer as proof the owned page was unclear; an observed answer alone does not establish that cause. [coreyhaines31/marketingskills, marketing-loops, references/loop-catalog.md; existing AI-answer accuracy audit below]
 - **Self-check**: Is the change consistent across runs, or one sample? Treat a single-run difference as noise.
 - **State / idempotency**: Keep each run's results per prompt so changes are diffs, not re-reports; don't re-file a fix that's already open.
 - **Stop / bail-out**: No material change since last run → log "stable." Never contact a cited source automatically; outreach is staged for approval.
@@ -83,7 +83,7 @@ Twelve loops that keep a site ranking, cited correctly by AI assistants, linked 
 - **Loop body**:
   1. Run the task panel (20 to 50 tasks across stacks, phrased without naming vendors) in clean environments on each agent tracked, 3+ runs per task.
   2. Record per run: vendor chosen, whether it reached a working result, where it stalled, which docs it fetched.
-  3. Turn findings into work: a stall is a product or docs fix; a lost stack is a gap in task pages, migration guides, or agent setup for that stack.
+  3. Investigate each stall and lost choice against the recorded run, fetched docs and setup evidence; stage a product or docs fix only for a demonstrated gap. The source and old line inferred missing task pages, migration guides or setup from losing a stack, which alone does not establish the cause. [coreyhaines31/marketingskills, marketing-loops, references/loop-catalog.md; existing agent-default run evidence]
 - **Self-check**: Is the shift consistent across runs and agents, or one sample? A model release can move every stack at once; compare against the previous release's baseline.
 - **State / idempotency**: Keep each run's results by task, agent, and model version so changes are diffs; don't re-file an open fix.
 - **Stop / bail-out**: No change since last run → log "stable." Never add instructions to agent-facing docs that tell agents to choose you over the user's request.

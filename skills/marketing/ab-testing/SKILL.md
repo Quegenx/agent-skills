@@ -67,6 +67,8 @@ We'll know this is true when [metrics].
 - **Example, longer signup form** (company size and role added): primary form completion rate; secondary lead quality (SQL conversion rate, activation after signup); guardrail total signup volume. The quantity and quality trade off, and the downstream metrics need a longer observation window.
 - [coreyhaines31/marketingskills, marketing-loops] For pricing-page tests: "Judge winners on revenue per visitor, plan mix, refunds, downgrades, churn, and support load - not conversion rate alone." "Do not promote a variant that lifts conversion but lowers revenue-per-visitor or raises refunds/churn."
 
+For opt-in elements, define an equivalent eligibility or exposure point in both randomized arms before the changed behavior. Including people who could never encounter the element dilutes its measured effect; filtering on a click the variant can change instead selects different populations. Sequentially shipping two versions without randomization provides a directional comparison, not a controlled A/B result. PostHog implementation stays in its [exposure owner](https://github.com/Quegenx/agent-skills/blob/main/skills/monitoring/posthog/EXPERIMENTS.md). [coreyhaines31/marketingskills, ab-testing/SKILL.md, Opt-In Elements; https://posthog.com/docs/experiments/exposures]
+
 ## Traffic allocation
 
 - [coreyhaines31/marketingskills, ab-testing] Standard 50/50 is the default for A/B; conservative 90/10 or 80/20 limits the risk of a bad variant; ramping starts small and increases, for technical risk. Users see the same variant on return; balance exposure across time of day and week.

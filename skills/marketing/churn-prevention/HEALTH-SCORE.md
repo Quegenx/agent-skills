@@ -4,18 +4,18 @@ The save that happens before the customer clicks Cancel: leading risk signals, a
 
 ## Risk signals
 
-[coreyhaines31/marketingskills, churn-prevention] The source's leading indicators; the timings are its own estimates.
+[coreyhaines31/marketingskills, churn-prevention] The source's leading indicators; the timings are its own estimates. Its Critical/High/Medium/Low risk labels map once to P0/P1/P2/P3 here; these are practitioner priorities, not validated churn predictions.
 
 | Signal | Risk level | Timeframe |
 |---|---|---|
-| Login frequency drops 50%+ | High | 2-4 weeks before cancel |
-| Key feature usage stops | High | 1-3 weeks before cancel |
-| Support tickets spike then stop | High | 1-2 weeks before cancel |
-| Email open rates decline | Medium | 2-6 weeks before cancel |
-| Billing page visits increase | High | Days before cancel |
-| Team seats removed | High | 1-2 weeks before cancel |
-| Data export initiated | Critical | Days before cancel |
-| Individual recommendation rating is 0-6 (detractor) | Medium | 1-3 months before cancel |
+| Login frequency drops 50%+ | P1 | 2-4 weeks before cancel |
+| Key feature usage stops | P1 | 1-3 weeks before cancel |
+| Support tickets spike then stop | P1 | 1-2 weeks before cancel |
+| Email open rates decline | P2 | 2-6 weeks before cancel |
+| Billing page visits increase | P1 | Days before cancel |
+| Team seats removed | P1 | 1-2 weeks before cancel |
+| Data export initiated | P0 | Days before cancel |
+| Individual recommendation rating is 0-6 (detractor) | P2 | 1-3 months before cancel |
 
 ## The health score
 
@@ -93,4 +93,4 @@ The source suggests PostHog: feature flags split users into flows server-side an
 
 ## Prove it
 
-Every score component is on 0 to 100 with a written mapping; an account with one signal missing shows a partial score and its coverage, or "insufficient data", never a score that counts the missing signal as 0; the tiers were checked against later renewals before triggering outreach; each report names its churn formula; and saved customers are followed for at least 30 days before a save counts.
+Every score component is on 0 to 100 with a written mapping; an account with one signal missing shows a partial score and its coverage, or "insufficient data", never a score that counts the missing signal as 0; the tiers were checked against later renewals before triggering outreach; each report names its churn formula; and saved customers are followed over a declared observation window with later churn and LTV reported. The source's 30-day example warns against counting short-lived saves; it does not establish a universal minimum window. [coreyhaines31/marketingskills, churn-prevention, SKILL.md]

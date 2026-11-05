@@ -94,6 +94,15 @@ From transitions.dev's card tilt, described:
 
 fluid-functionalism's switch: the thumb is draggable with pointer capture and a 2px dead zone; release past the midpoint toggles, otherwise it springs back; a `didDrag` flag swallows the click that follows a drag; the hover shape applies only for `pointerType === "mouse"`, so touch never sticks in it; it mounts at duration 0. The held-switch stretch is in [PATTERNS.md](PATTERNS.md#buttons-presses-and-feedback).
 
+## Authored cursors and drags
+
+[stageshow, references/motion.md, The cursor and Drags and selection; references/rehearse.md, What to watch]
+
+- In a product illustration, distinguish the mouse's continuous held drag from a finger's flick and throw. The carried item keeps its pickup offset throughout the path and transforms; it does not ease behind the hand while held.
+- Pick up at the press, not before it. A carried surface can lift and tilt as one object, including its text, then settle flat in the destination slot. A handoff must preserve size, position and appearance.
+- Keep an authored text selection under its I-beam on every frame rather than growing the highlight by an unrelated timer. Review the pointer hotspot through the actual transforms; a correct resting box alone does not establish alignment during travel.
+- An authored cursor moves toward the next action, follows an object or clears the result. It does not cover the label it clicks, and it stays where the press occurred while a changing button resizes. These presentation rules do not change the real control's input behavior.
+
 ## Prove it
 
 On a real phone: tap a button faster than its press animation and see the whole press; press a disabled button and see nothing move. Drag a sheet past the element's edge and off the screen edge: it keeps following. Put a second finger down mid-drag: nothing jumps. Flick a short distance fast: it dismisses; drag slowly past the threshold: it dismisses; drag slowly short of it: it springs back. Throw a carousel and watch the release: the settle continues the throw's speed instead of starting from rest.

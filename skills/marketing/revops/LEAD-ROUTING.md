@@ -146,7 +146,7 @@ Measure weekly:
 - **Median time to first contact** (less skewed by outliers).
 - **% of leads contacted within SLA** (the source's target: 90%+).
 - **Contact rate by time of day** (identify coverage gaps).
-- **Conversion rate by response time** (prove the ROI of speed).
+- **Conversion rate by response time** (compare observed buckets). The source says this proves ROI; the association alone does not establish causality. Apply the [attribution evaluation rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/MEASUREMENT-PARADIGMS.md).
 
 Phone steps in an escalation chain follow the calling rules in [sales-enablement COLD-CALLS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/sales-enablement/COLD-CALLS.md#the-rules-this-sits-inside).
 

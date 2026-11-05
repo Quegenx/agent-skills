@@ -32,7 +32,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 - A new fractional CMO or consulting engagement; a founder who needs a 12-month roadmap to share with the team or investors; scattered marketing work (SEO research, voice docs, audit findings) to consolidate; an existing scored audit to sequence into action.
 - **Not** for a single-channel tactical document (that goes to the channel's skill, such as [email-marketing](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/email-marketing/SKILL.md), [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md), [seo](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/seo/SKILL.md) or [onboarding-and-upgrades](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/onboarding-and-upgrades/SKILL.md)), and not for ideas without a plan ([growth-ideas](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/growth-ideas/SKILL.md)).
-- **A "quick, short plan" request** is resisted and explained rather than silently answered with a stripped-down plan: the plan is the comprehensive artifact, and a quick single-channel plan belongs to that channel's skill (the source's eval 6).
+- **A "quick, short plan" request** gets the scope and length the user asked for, with missing inputs and unassessed sections stated. The source's eval 6 resists a short plan in favor of its comprehensive artifact; keep that format as the default, while explicit user scope takes precedence. A single-channel plan can use that channel's skill. [coreyhaines31/marketingskills, marketing-plan, eval 6; repository instruction precedence]
 
 ## The three phases
 
@@ -42,7 +42,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 2. **REVIEW:** draft Sections 2 to 13 in order, then Section 1; present each in chat ("Approve, adjust, or expand?"), save each confirmed section to `sections/NN.md`, tick it in `progress.md`.
 3. **FINALIZE:** compile `final_plan.md` in order 1 to 13, run the six verification checks, set `phase: finalized`.
 
-State lives in `~/marketing-plans/{client-slug}/` (`materials/`, `research.md`, `progress.md`, `sections/01.md`..., `final_plan.md`), so the plan resumes where it stopped. **A finalized plan is never silently overwritten:** ask whether to revise as v{N+1}, start fresh, or re-open a section. **Path safety:** build `{client-slug}` only by slugifying to lowercase `[a-z0-9-]`, reject `..`, `/` and absolute paths, and never read or write outside `~/marketing-plans/`, which "keeps one client's plan - and their data - from leaking into another client's context" (the same rule as path traversal in [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/SKILL.md)).
+State lives in `~/marketing-plans/{client-slug}/` (`materials/`, `research.md`, `progress.md`, `sections/01.md`..., `final_plan.md`), so the plan resumes where it stopped. **A finalized plan is never silently overwritten:** ask whether to revise as v{N+1}, start fresh, or re-open a section. **Path safety:** build `{client-slug}` only by slugifying to lowercase `[a-z0-9-]`, reject `..`, `/` and absolute paths, and keep reads and writes within the selected client's folder. Follow [secure-coding](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/secure-coding/SKILL.md) for the actual path and authorization boundaries. The source and old line claimed slug/path restrictions prevent client-context leaks; a folder naming rule alone does not establish client isolation. [coreyhaines31/marketingskills, marketing-plan; existing secure-coding]
 
 ## The 13 sections
 
@@ -58,7 +58,7 @@ State lives in `~/marketing-plans/{client-slug}/` (`materials/`, `research.md`, 
 12. **Tactical idea bank:** all 139 ideas with status Now / Q2 / Q3+ / Q4+ / Skip.
 13. **Measurement, RACI, open decisions, appendix.**
 
-Format: one markdown file, H2 headers (`## 1. Executive summary`), tables for RACI, the idea bank and the ops stack, cross-references written `§N`, about 8,000 to 12,000 words. "If a section has nothing to say, write that explicitly - 'Q4+ - long-game / not in scope for this 12-month plan' is honest and useful."
+The source's comprehensive format is one markdown file, H2 headers (`## 1. Executive summary`), tables for RACI, the idea bank and the ops stack, cross-references written `§N`, about 8,000 to 12,000 words. An explicit shorter request takes precedence over this default. "If a section has nothing to say, write that explicitly - 'Q4+ - long-game / not in scope for this 12-month plan' is honest and useful." [coreyhaines31/marketingskills, marketing-plan; repository instruction precedence]
 
 ## Marketing as investing
 
@@ -126,7 +126,7 @@ From the source's nine evals [coreyhaines31/marketingskills, marketing-plan]:
 - "Turn our audit into a plan": the audit's scores go into Section 3 with their date, nothing is re-scored, and the full 13 sections still follow.
 - "Pick up where we left off": `progress.md` is read and the plan resumes; a finalized plan prompts revise / fresh / re-open.
 - A hybrid hardware and software company at Series A: the hybrid archetype's emphasis in every stage, Series A budgets, skips with reasons.
-- "Just give me a quick plan": resisted with the reason and the alternatives.
+- "Just give me a quick plan": the requested short scope is respected, and missing evidence or omitted assessments remain explicit; the source's resisted-request expectation does not override the user. [coreyhaines31/marketingskills, marketing-plan, eval 6; repository instruction precedence]
 - A founder asking for the one channel: answered with the investing framing, the size and frequency gate, 70/20/10 and weekly plateau alerts, mapped to §2, §10 and §13.
 - A "$12B market" claim: the market is defined, TAM, SAM and SOM are separated, two methods are triangulated with visible math, and ranges carry confidence labels and the assumption to test.
 - $1M to $2M at $50 ARPC, $100 CAC and 85% retention on both cohorts: 2,255 customers, $225,500 before the buffer, a check of $2,000,050.

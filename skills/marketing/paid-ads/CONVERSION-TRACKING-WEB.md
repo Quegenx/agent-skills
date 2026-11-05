@@ -170,6 +170,8 @@ The **Events API** is TikTok's server-side channel; deduplicate with the pixel t
 
 ## Validation
 
+For sender inventory, trigger predicates, click-ID transport and the evidence required to separate firing, arrival and attribution, use [CONVERSION-TRACKING-DIAGNOSTICS.md](CONVERSION-TRACKING-DIAGNOSTICS.md). [coreyhaines31/marketingskills, conversion-tracking, references/audit-playbook.md]
+
 **In the browser:** the tag fires on every page (a browser extension shows it); conversion events fire after the confirmed action, not on the button click; parameters carry the right currency, amount and content IDs; no duplicate events on one action; events fire on desktop and mobile, including in-app browsers.
 
 **In the platform:** events appear in its event manager or diagnostics; test conversions show the right values; server events deduplicate with browser events. The source's "Event match quality is acceptable (Meta: score > 6)" is a practitioner bar; Meta publishes no threshold that was found.

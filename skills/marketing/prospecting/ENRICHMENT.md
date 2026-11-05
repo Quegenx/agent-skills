@@ -84,11 +84,13 @@ Pilot on representative rows before a broad run: a fresh hit, an expired hit, a 
 
 | Result | Action |
 |---|---|
-| Valid | Send |
+| Valid | Eligible only after lawful-basis, consent, suppression and separately authorized send checks in [LIST-COMPLIANCE.md](LIST-COMPLIANCE.md) and [SKILL.md](SKILL.md#the-rules) |
 | Invalid, disposable, or spam trap | Suppress permanently |
 | Role address (info@, sales@) | Exclude from personal sequences. Fine only for local businesses that publish it as their main contact |
 | Catch-all (accept-all) | The policy below |
 | Unknown | Retry once later; don't send if it's still unknown |
+
+The source and this file formerly equated a valid address with permission to send. Verification does not establish consent, lawful use or authorization. [coreyhaines31/marketingskills, prospecting/references/sourcing-and-enrichment.md; existing SKILL.md rules]
 
 This adds pre-send verification of lists you didn't collect yourself to the repo's signup-time validation (format, DNS, MX, disposable) in [email-practices LISTS-AND-CAPTURE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/LISTS-AND-CAPTURE.md#capturing-addresses). The bounce limit that pauses a campaign is in [cold-outreach SENDING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SENDING.md#verify-before-you-send).
 

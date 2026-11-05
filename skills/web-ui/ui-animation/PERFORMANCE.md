@@ -111,13 +111,15 @@ Always-on effects drawn every frame (orbs, border beams, voice glows, avatars, m
 - In CSS: `@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms; transition-duration: 150ms; } }` is a blunt fallback; better, write the reduced version of each animation deliberately.
   - **Opt in instead of opting out:** Argyle puts transitions, animations and `scroll-behavior: smooth` inside `@media (prefers-reduced-motion: no-preference)`, so a reduced-motion user gets the end states with no movement at all ([nerdy.dev: Nintendo Switch Homescreen](https://nerdy.dev/nintendo-switch-homescreen-css-recreation), 2025-06-13; [Using @starting-style and transition-behavior](https://nerdy.dev/using-starting-style-and-transition-behavior-for-enter-and-exit-stage-effects), 2024-05-20). The line above keeps a short fade instead; rule 8 in [SKILL.md](SKILL.md) says reduce, don't remove.
 - **What to switch, what to keep:** turn off parallax and autoplay, start carousels paused, make smooth scrolling jump; keep spinners, hover colour, the focus ring and press feedback [Jakub Krehel, better-accessibility].
-- Autoplaying motion that lasts more than five seconds (carousels, background video, looping animations) needs a pause control. A loop with no place for one, such as an animated tab icon, stops when the loading state ends, when the user reads the notification, or when the tab loses focus: "Even a subtle pulse drains battery on mobile."
+- For nonessential moving, blinking or scrolling information that starts automatically, lasts more than five seconds and appears alongside other content, provide a way to pause, stop or hide it. Auto-updating information alongside other content also needs control, without the five-second exception. The old line treated every autoplay animation over five seconds as requiring a pause button and implied state completion or tab blur could substitute. [W3C WCAG 2.2, SC 2.2.2](https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide)
 
 ## Bundle
 
 Motion's `LazyMotion` with `domAnimation` and the `m` component starts at about 4.6 kB instead of the full `motion` component; load `domMax` (drag, layout) only where it's used. Heavy effects (3D galleries, Lottie, WebGL) load with a dynamic `import()` on the screen that needs them.
 
 ## Measuring
+
+- **A deterministic export is not a live pacing check.** For an authored product illustration, compare real animation-frame timestamps with elapsed time and the visible transform. Check pause, offscreen, hidden-tab and finished one-shot states stop their work; resume and replay must not skip or repeat an accumulation. Record the actual browser and device checked. [stageshow, references/choreography.md, Review the full change; references/rehearse.md, Live pacing]
 
 The Performance panel with 4x CPU slowdown: record the interaction and look at the animation frames for long tasks, Layout and Paint entries. The Rendering tab's "Paint flashing" and "Layer borders" show what repaints and what got its own layer. Interaction responsiveness is INP: an animation that starts late because a click handler did heavy work first is an INP problem, not an animation one; respond visually first, then do the work. INP and TBT are "essentially ways of expressing how long the main thread was blocked" (kciter).
 

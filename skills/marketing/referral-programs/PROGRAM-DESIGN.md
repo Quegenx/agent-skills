@@ -112,7 +112,7 @@ Applying this to a referral link posted publicly for a reward is interpretation,
 
 ## Emails
 
-The launch email, copied from the source with its placeholders:
+The launch email below is copied from the source with its placeholders. **Source conflict:** it promises a reward for signup, while [Rewards](#rewards) and [Prove it](#prove-it) require the meaningful qualifying action. Before using the template, align its promise and steps with the actual qualifying action and program terms; retain the existing qualifying-action rule. [coreyhaines31/marketingskills, referrals/SKILL.md and references/program-examples.md]
 
 ```
 Subject: You can now earn [reward] for sharing [Product]

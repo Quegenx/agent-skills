@@ -28,6 +28,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | A sheet swiped away on native scroll: snap points, swipe-synced animation, stacking, the software keyboard | [SHEETS.md](SHEETS.md) |
 | Per-frame math in your own loop: lerp and exponential approach, a spring by hand, physics, facing the direction of travel, sine waves, sawtooth loops, controlled randomness, piecewise segments | [MATH.md](MATH.md) |
 | Drawn characters and scenes: face layers, moving holds, delayed follow-through, limbs, weight, prop contact and camera-dependent proportions | [ILLUSTRATION-ACTING.md](ILLUSTRATION-ACTING.md) |
+| Authored product illustrations: a readable poster, retained UI tracks, cause and payoff, loop resets and rehearsal in the real host | [PRODUCT-ILLUSTRATIONS.md](PRODUCT-ILLUSTRATIONS.md) |
 | Smooth on a slow phone: which properties, GPU vs main thread, React re-renders, reduced motion, measuring | [PERFORMANCE.md](PERFORMANCE.md) |
 | Motion from a physical model: words to spring numbers, bodies, fields and walls, the hand that drags, projection on release, baking physics into keyframes | [PHYSICS.md](PHYSICS.md) |
 | React Native and Expo motion policy and setup: Reanimated runtimes, tool choices, springs, haptics and reduced motion | [React native motion policy](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/react/REACT-NATIVE-MOTION.md) |

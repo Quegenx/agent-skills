@@ -32,7 +32,7 @@ The source and this file formerly reduced that restriction to all +1 numbers. Me
 - The window opens when the customer messages you and lasts 24 hours from their latest message; each new customer message resets it.
 - Inside it you can send free-form messages (text, media, interactive buttons and lists) without pre-approval.
 - Outside it only a **pre-approved template** goes out; free-form sends fail with error 131047 ("Re-engagement message").
-- "A cart recovery message 1 hour after abandonment is almost always outside a window, so it must be an approved template."
+- The source says a recovery message one hour after abandonment is "almost always outside" a window, but abandonment time does not establish the last customer message. Decide from that customer's actual message history and any verified free entry point window; otherwise use the approved marketing-template path. [coreyhaines31/marketingskills, sms, references/whatsapp.md; existing WHATSAPP.md, Prove it]
 
 ## Template categories
 
@@ -110,7 +110,7 @@ Per-message pricing since **July 1, 2025**: you pay per delivered message, at a 
 
 ## Click-to-WhatsApp ads
 
-- **Free entry point window:** when someone messages you from a CTWA ad or a Facebook Page call-to-action button and you reply within 24 hours, a window opens from your reply; Meta says it may stay open up to 7 days. While open, marketing, utility, authentication and service messages are free; Meta Business Agent messages are still charged. "Check the window's actual expiry in your delivery data rather than assuming the maximum."
+- **Free entry point window, primary verification pending:** the source groups CTWA ads and Facebook Page call-to-action buttons under an up-to-7-day window after a timely reply. This round could not retrieve the primary Meta documentation to confirm the duration for each entry route; do not present the grouped maximum as a verified Meta rule. Check the actual trigger and expiry in delivery data and current primary guidance before quoting free-message duration or costs. The previous line attributed the shared maximum directly to Meta. [coreyhaines31/marketingskills, sms, references/whatsapp.md; https://developers.facebook.com/documentation/ads-commerce/marketing-api/ad-creative/messaging-ads/click-to-whatsapp]
 - **How to use it** [source]: hook the ad on a reason to chat (a quiz, sizing help, a quote, a code to claim); pre-fill the first message ("Hi! I'd like my 15% welcome code."); reply fast with 2 to 3 qualifying reply buttons; convert or hand off while the window is open; ask for marketing opt-in in the chat. Ads themselves are in [paid-ads SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/SKILL.md).
 
 ## Playbooks

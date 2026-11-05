@@ -1,6 +1,6 @@
 ---
 name: web-research
-description: "Runs company research, competitor analysis and event prospecting with parallel research subagents: setup questions and reusable profiles, discovery waves, hard call caps per entity with tagged source variants, one file per entity, anti-hallucination rules, user confirmation gates, feature matrices and battle cards from verified evidence, and compiled HTML reports and CSV. Use when researching a list of target companies, mapping a product's competitors, prospecting an event's speakers, or building any pipeline that researches many entities on the web."
+description: "Runs company research, dated growth teardowns, competitor analysis and event prospecting with parallel research subagents: setup questions and reusable profiles, discovery waves, hard call caps per entity with tagged source variants, one file per entity, anti-hallucination rules, user confirmation gates, feature matrices and battle cards from verified evidence, and compiled HTML reports and CSV. Use when researching a list of target companies, mapping a product's competitors, prospecting an event's speakers, or building any pipeline that researches many entities on the web."
 ---
 
 # Web research
@@ -11,6 +11,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Dated marketing moves, comparable traffic history, funnel/content observations and evidence-backed adaptations | [GROWTH-TEARDOWN.md](GROWTH-TEARDOWN.md) |
 | Setup questions, reusable profiles, subagent prompts, tool and permission rules, depth modes, call caps, waves, sizing, failed subagents | [FANOUT.md](FANOUT.md) |
 | Evidence: observed/inferred/implication, findings/confidence, research loop, news-owner route, discovery filters, page discovery, research extraction fields/budgets and domain dedup; transport links to scraping | [EVIDENCE.md](EVIDENCE.md) |
 | Competitor analysis: three discovery waves, the category gate, the confirm step, five lanes and the merge, the feature matrix and its fact-check, how a `false` renders publicly, battle cards, the landscape summary and positioning map, dated raw snapshots and change logs, screenshots | [COMPETITORS.md](COMPETITORS.md) |

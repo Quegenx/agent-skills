@@ -17,7 +17,7 @@ The same "which channel drives revenue?" question wants a different source of tr
 
 **Tooling:** the CRM (HubSpot, Salesforce) as truth; a product-analytics tool identifying by user or account ID for first-party first touch; self-reported fields written to the CRM.
 
-**The trap to name:** branded search and direct look like the best "channels" because that's where researched buyers convert. They're where demand created elsewhere cashes out. Segment branded vs non-branded search and treat a big direct share as evidence the top of funnel is working, not as a channel to invest in.
+**The trap to name:** branded search and direct look like the best "channels" because that's where researched buyers convert. They're where demand created elsewhere cashes out. Segment branded vs non-branded search and investigate a big direct share rather than treating it as proof the top of funnel works. The source makes that inference, but repeat visitors and measurement loss can also contribute; apply the [hub's attribution caveats](SKILL.md#the-rules).
 
 ## Ecommerce / DTC (short cycle, self-serve)
 

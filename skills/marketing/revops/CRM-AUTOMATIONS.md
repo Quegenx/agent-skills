@@ -67,7 +67,9 @@ Booking form submitted
 
 The source checks company size before the existing-customer lookup; the enrichment playbook's first branch preserves an existing customer's account owner ([INBOUND-ENRICHMENT.md](INBOUND-ENRICHMENT.md#agree-the-branches)). Under the source's order, an existing customer at a company over 500 reaches the enterprise AE calendar, not the account owner.
 
-No-show workflow: wait 30 minutes after the scheduled time; was a call or meeting logged? Yes, no action. No, send a "Sorry we missed you" email to the prospect and create a task "Reschedule with [Contact Name]" due next business day. A second no-show flags the contact and alerts the manager.
+The source no-show recipe below infers attendance from logged activity. Missing notes alone do not prove absence; confirm attendance before a no-show message or escalation. [coreyhaines31/marketingskills, revops/references/automation-playbooks.md]
+
+Source no-show workflow, subject to that evidence gate: wait 30 minutes after the scheduled time; was a call or meeting logged? Yes, no action. No, send a "Sorry we missed you" email to the prospect and create a task "Reschedule with [Contact Name]" due next business day. A second no-show flags the contact and alerts the manager.
 
 ## Zapier patterns
 

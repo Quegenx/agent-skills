@@ -41,6 +41,8 @@ uv run scripts/analyze_audio.py grid audio/song.mp3 --bars 8 --drop-at 0.4  # wi
 
 `start` is where the film's frame 0 sits in the song. `beats` are relative to frame 0. Tested on a synthetic track: start within 1 ms, drift under 2 ms over 8 bars.
 
+**Measured support versus a fitted grid:** keep observed onsets distinct from inferred regular beat positions. Do not claim a point was measured merely because a tempo extrapolation places it there; if the source lacks usable support, leave the snap unverified or decline it rather than inventing beats. The source toolkit's confidence thresholds and tempo range are local heuristics, not general accuracy guarantees. [kajisho5/ffmpeg-skill, scripts/scenes.py; scripts/_common/decision.py; tests/test_editing.py]
+
 ## Use it
 
 - The page never hardcodes the tempo: `render.mjs` and `smoke.mjs` read `beats.json` and call `configure({ beat })`, and the film derives everything from `B`. Write states and cues in beats (`beat(4)`), so a re-measure retimes the whole film.

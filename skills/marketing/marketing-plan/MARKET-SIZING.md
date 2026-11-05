@@ -58,11 +58,11 @@ Search volume is an intent proxy. It measures people actively looking, which und
 
 ### 3. Competitor-led
 
-Infer market size and maturity from what competitors visibly earn.
+Infer market size and maturity from competitor revenue evidence, separating reported figures from estimates. The source calls this what competitors visibly earn, but its example mixes reports with headcount-derived assumptions. [coreyhaines31/marketingskills, marketing-plan, references/market-sizing.md]
 
 **Mini-example:**
 - 6 direct competitors; 2 report ARR publicly or via press (~$15M and ~$8M), the other 4 estimated from headcount (~40-80 staff each at ~$150K revenue per employee → ~$6M-$12M each)
-- Combined visible revenue: **~$47M-$71M**
+- Combined reported and estimated revenue: **~$47M-$71M**, including **~$23M reported** and **~$24M-$48M estimated** from the four headcount assumptions. These remain the source's illustrative inputs, not independently observed earnings. [coreyhaines31/marketingskills, marketing-plan, references/market-sizing.md; arithmetic: 15+8 and 4 times 6 to 12]
 - Cross-check: review counts on G2 and Capterra, pricing pages, hiring pace, ad activity
 
 If the combined revenue of competitors is larger than your SAM estimate, your SAM is probably too narrow (or competitors serve segments you excluded). In this example, $47M-$71M exceeds the $43M bottom-up SAM, which suggests competitors also sell to enterprise or non-sales teams. If combined revenue is tiny, the category may be early or the demand may be weaker than it looks.
@@ -87,10 +87,10 @@ Put each method's result side by side for the same layer (usually SOM or SAM):
 | Channel-led | ~$0.45M | $80 CPL holds at scale | Low |
 
 How to read the comparison:
-- **Compare like with like.** The search-led figure covers one channel, so it's a floor for SOM rather than a competing estimate. Here, bottom-up and channel-led agree around $0.4M-$0.5M, and search alone gets about halfway there, which is consistent.
-- **Estimates overlap** → the overlap is your working range.
-- **Estimates differ by more than ~3×** → one assumption is broken. Find it before presenting any number.
-- **Bottom-up far exceeds channel-led** → demand exists but the plan can't reach it yet. That points to a budget or channel constraint, which belongs in Section 10 (funding-stage unlocks).
+- **Compare like with like.** The search-led figure covers one channel and depends on ranking, click and conversion assumptions. It is a channel scenario, not an observed lower bound for SOM; the source and old line called it a floor. Keep channel coverage explicit before comparing it with broader estimates. [coreyhaines31/marketingskills, marketing-plan, references/market-sizing.md]
+- **Estimates overlap** → the overlap can be a working planning range, not a statistical confidence interval. Retain each method's scope and assumptions. [coreyhaines31/marketingskills, marketing-plan, references/market-sizing.md; existing Evidence and confidence]
+- **Estimates differ by more than ~3×** → investigate assumptions, scope and time windows before presenting the range. The source's threshold is a diagnostic heuristic; disagreement does not prove exactly one assumption is broken. [coreyhaines31/marketingskills, marketing-plan, references/market-sizing.md]
+- **Bottom-up far exceeds channel-led** → investigate a possible budget or channel constraint for Section 10. The source says demand exists but cannot be reached; a hypothetical buyer/capture calculation does not establish actual demand. [coreyhaines31/marketingskills, marketing-plan, references/market-sizing.md]
 - **Channel-led far exceeds bottom-up** → the reachable-buyer count is probably too low, or the channel assumptions are optimistic.
 
 Top-down analyst reports can serve as a sanity check on TAM. Don't use them as the primary method for a local or niche market, because global category figures rarely translate.

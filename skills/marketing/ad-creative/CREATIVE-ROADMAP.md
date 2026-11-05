@@ -16,7 +16,7 @@ One source alone misleads: the account tells you what worked among things you tr
 |---|---|---|
 | **Account performance** | Winners and losers by angle, hook and format; funnel metrics per concept ([HOOKS.md](HOOKS.md#the-diagnostic-funnel)); fatigue | The ad platforms' reporting |
 | **Customer and brand** | Verbatim pain, desire and objection language; unexpected uses; who actually buys vs who is targeted | The corpus (`inputs/reviews/`, `inputs/comments/`), sales-call notes, support themes ([customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md)) |
-| **External organic** | What the niche watches unpaid: top content, hooks, formats, vocabulary; competitor ads running long enough to be presumed working | Ad libraries, [research workflows](#research-workflows), [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md) |
+| **External organic** | What the niche watches unpaid: top content, hooks, formats, vocabulary; competitor ads with observed run history, a proxy rather than conversion proof | Ad libraries, [research workflows](#research-workflows), [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md) |
 
 **Cadence:** a monthly deep dive (60 to 90 minutes, all three sources, feeds the roadmap) plus a weekly ~20-minute refresh (new winners and losers, new review themes, anything spiking). Every session ends in concepts, not notes. **Trust rule:** each insight carries its receipt (which review, which ad's metrics, which post); one without a source doesn't enter the icebox.
 
@@ -28,7 +28,7 @@ A **concept** is one testable hypothesis: *segment × motivation × angle × for
 |---|---|---|
 | 1 | Your own account: a converting ad with the same angle or segment | Strongest: iterate and extend |
 | 2 | Your customers verbatim: recurring review or call language | Strong: build new creative on it |
-| 3 | Competitor creative running 60+ days (presumed working) | Good: adapt the angle, never the ad |
+| 3 | Competitor creative running 60+ days (source heuristic, not conversion proof) | Good: adapt the angle, never the ad |
 | 4 | Organic engagement in the niche | Moderate: validate cheaply first |
 | 5 | A cross-niche pattern | Weak: icebox until corroborated |
 | 6 | Team hunch, no external signal | Weakest: low-fi test or drop |
@@ -81,7 +81,7 @@ One file a month (`retros/YYYY-MM.md`):
 ## Next slate  - first draft of next month, updated evidence ranks
 ```
 
-- **Judge concepts, not ads:** three executions failing says the concept is wrong; one says the execution was.
+- **Judge concepts, not ads:** repeated failed executions warrant investigating the concept, but neither three failures nor one failure identifies the cause by itself. The source asserted three meant the concept was wrong; apply the sample and evidence gates below.
 - **Read the funnel, not the ROAS column:** the funnel says what to fix; ROAS only says something is broken.
 - **Enough data before verdicts:** a two-day read is a coin flip; the account rules are in [paid-ads](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/AUDIT-GUARDRAILS.md#recommendation-safety).
 - **Every learning lands somewhere:** an icebox update, a re-rank or a kill. A retro that changes nothing was a meeting.
@@ -106,11 +106,13 @@ Agent runs for the research that eats most of a strategist's time; the agent doe
 | Inferred personas | Who each cluster appears to target |
 | Top 10 by impressions | Ranked, with what each leans on, or "unknown" where the library shows no impression data |
 
-Follow-ups in the same chat: which have run longest (longest-running ≈ proven), which lean on partnerships. The format split and durations feed [FORMAT-TIERS.md](FORMAT-TIERS.md); what the library does and doesn't show is in [app-growth AD-CREATIVES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/AD-CREATIVES.md#competitor-ad-teardowns).
+Follow-ups in the same chat: which have run longest (longest-running is an observed longevity signal, not proof of profitable conversion), which lean on partnerships. The format split and durations feed [FORMAT-TIERS.md](FORMAT-TIERS.md); what the library does and doesn't show is in [app-growth AD-CREATIVES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/app-growth/AD-CREATIVES.md#competitor-ad-teardowns).
 
 **2. Reviews → personas.** Three steps in one chat: export reviews to CSV by product variant (sample for large counts; the source finds ~3k reviews enough signal instead of 40k+); synthesize personas into an **editable document first** and get it approved (it doubles as reusable context for every later copy task); only then turn it into a deck. The signature move: put **who the creative seems to target** (from the teardown) beside **who actually buys** (from the reviews). Creative aimed at 25-year-old early adopters while reviews come from 45-year-old repeat buyers is a concrete brief for the next round. Deeper voice-of-customer and JTBD: [customer-research](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/customer-research/SKILL.md).
 
 **3. Organic teardown.** Monthly, of a competitor's or admired brand's own social (separate from their paid library): followers (and trend), top posts by engagement **each with a direct link**, what they're doubling down on (education, creator partnerships, launch phases, UGC volume), and strengths and gaps to exploit. Full competitor dossiers: [web-research COMPETITORS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/web-research/COMPETITORS.md).
+
+**4. Persistent competitor ad tracker.** Maintain history rather than repeating an isolated teardown. Use exact competitor/library URLs and collect only through permitted access. Retain authorized creative references or copies, identifiers, hook, angle, offer, format, duration, first-seen and last-seen dates. Diff weekly observations into new, no longer observed and still observed ads, then turn supported angle gaps into briefs. First-seen is the tracker observation, not necessarily launch date; longevity and added variants are signals to investigate, not access to a competitor's conversions. Choose build versus buy by expected use and maintenance. [coreyhaines31/marketingskills, ads/references/creative-research-automation.md]
 
 **Running them well:** answer the agent's mid-run questions (date ranges, metrics, detail); chain each sequence in one chat so steps build on each other; schedule recurring teardowns to land in a team channel ([marketing-loops](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-loops/SKILL.md)); keep the personas doc as shared context.
 

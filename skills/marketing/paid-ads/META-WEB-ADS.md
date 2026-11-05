@@ -32,7 +32,7 @@ Two CBO campaigns over the **same audience**: Scaling (~80% of budget, graduated
 
 ## Destination testing
 
-When the page, not the creative, is the biggest unknown: one CBO per persona, one ad set per destination type (product page, listicle or advertorial, quiz, demo page), the **same creatives in every ad set**, so any spread between ad sets is the destination. Run it in the Testing campaign, judge each ad set against TCPL at the usual gates, then graduate the winning creative × destination pair. The source labels this "Practitioner-reported pattern (Alexander Pauwelyn, 2026), not a platform-documented mechanic", including its "~30%" new-reach gain. Owned review-style pages must disclose ownership ([GOOGLE-ADS-AUDIT.md](GOOGLE-ADS-AUDIT.md#landing-page)).
+When the page, not the creative, is the biggest unknown: one CBO per persona, one ad set per destination type (product page, listicle or advertorial, quiz, demo page), the **same creatives in every ad set**, to reduce creative differences. The source says any spread is the destination, but this campaign layout alone does not establish a causal destination effect; delivery and audience allocation can differ. Use the existing [experiment design](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/ab-testing/SKILL.md) before making a causal claim. Run it in the Testing campaign, judge each ad set against TCPL at the usual gates, then graduate the winning creative × destination pair. The source labels this "Practitioner-reported pattern (Alexander Pauwelyn, 2026), not a platform-documented mechanic", including its "~30%" new-reach gain. Owned review-style pages must disclose ownership ([GOOGLE-ADS-AUDIT.md](GOOGLE-ADS-AUDIT.md#landing-page)).
 
 ## Stage 1: delivery check
 
@@ -47,7 +47,7 @@ Iterating a delivery-killed ad, change the hook, visual or format only: the audi
 
 Weekly, rolling 14-day data; stop at the first triggered action:
 
-1. **Data gate:** spend < 3× TCPL → wait. At true cost per QL equal to target, 3× TCPL should produce ~3 qualified leads; zero at that spend has about a 5% probability (e^-3, which holds), so judging at 3× gives ~95% confidence; 2× has a 13% false-negative rate, 5× overpays.
+1. **Data gate:** spend < 3× TCPL → wait. At true cost per QL equal to target, 3× TCPL should produce ~3 qualified leads; under a Poisson count model with expected count 3, zero has probability e^-3, about 5%. That conditional calculation is not 95% confidence that the ad fails, and the spend gate is not a universal sample guarantee. The source presented it as ~95% confidence and called the 2× gate a 13% false-negative rate; retain these only as conditional model heuristics, subject to [recommendation safety](AUDIT-GUARDRAILS.md#recommendation-safety).
 2. **Zero pixel leads** at ≥ 3× TCPL → swap and abandon the concept.
 3. **Quality** (needs the CRM): pixel leads but zero qualified → swap, keep the format, change the angle. Qualified rate < 40% → swap and add ICP-filtering language (at 40%, true cost per QL is 2.5× the pixel CPL). 40 to 60% → monitor a week. ≥ 60% → proceed.
 4. **Cost:** cost per QL ≤ TCPL → candidate winner; 1 to 1.5× → monitor; > 1.5× → swap.

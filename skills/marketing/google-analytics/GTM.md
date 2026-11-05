@@ -76,7 +76,7 @@ dataLayer.push({
 });
 ```
 
-Form submission and button click:
+Form submission attempt and button click. The source labels this `form_submitted`, but the native submit event below does not prove server acceptance. Keep it as attempt telemetry; a conversion needs the actual confirmed-success signal. [coreyhaines31/marketingskills, conversion-tracking, references/audit-playbook.md]
 
 ```javascript
 document.querySelector('#contact-form').addEventListener('submit', function() {
@@ -172,7 +172,7 @@ Settings the source gives [coreyhaines31/marketingskills, analytics]:
 </script>
 ```
 
-Event, trigger Custom Event `form_submitted`:
+Event, trigger Custom Event `form_submitted`, only if the application emits it after confirmed acceptance. Do not connect the native-submit attempt example above directly to this Lead tag. The old examples used the same name for an attempt and an outcome. [coreyhaines31/marketingskills, conversion-tracking, references/audit-playbook.md]
 
 ```html
 <script>
@@ -244,6 +244,10 @@ function() {
 
 "For monetary tracking, prefer the numeric amount and currency from the application data layer. If a DOM variable is needed, have the application render `data-price` as an unformatted, non-negative decimal in major currency units; pass its currency separately. Do not infer the amount or currency from presentation text: `parseFloat` turns `$1,234.56` into `1` after removing `$`, and localized separators have different meanings. A missing or invalid amount returns `null`, so skip that monetary event or diagnose it before sending; reserve `0` for an explicitly free item."
 
+For sender inventory and firing versus destination-arrival evidence, use [conversion diagnostics](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/paid-ads/CONVERSION-TRACKING-DIAGNOSTICS.md). [coreyhaines31/marketingskills, conversion-tracking, references/audit-playbook.md]
+
 ## Prove it
+
+A submit attempt is distinguished from accepted success before any Lead conversion is connected; destination arrival is either observed or recorded as a pending check. [coreyhaines31/marketingskills, conversion-tracking, references/audit-playbook.md]
 
 In Preview, each tag fires once on its intended trigger and not elsewhere, every variable resolves to the expected value, and the container holds no second copy of a tag the site also loads directly; the price variable returns `1234.56` for `data-price="1234.56"`, `null` when the attribute is missing, empty or localized (`1.234,56`, `$1,234.56`), and `0` only for an item rendered as `data-price="0"`; every published version has a descriptive name and notes listing what changed and where it was tested.

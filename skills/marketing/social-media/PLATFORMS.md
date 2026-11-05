@@ -60,12 +60,14 @@ What works on each platform, from coreyhaines31/marketingskills `social` (`refer
 - **The metric** is the view counter under each post (reactions and comments are optional per channel), so track views ÷ subscribers against channels of the same size, topic and language (the baseline tables are in [creator-marketing TELEGRAM-CHANNELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/TELEGRAM-CHANNELS.md#vetting-a-channel)).
 - **Views keep arriving for days:** about 15% in the first hour, 50% in 24 hours, 67% in 72 hours. Judge a post after a week.
 - **Posting hour barely matters:** in Russian- and Ukrainian-language channels, posts published between 9:00 and 21:00 ended within 1% of each other after a week.
-- **Frequency costs reach:** median 16.6% for channels posting less than every other day, 10.7% at 0.5 to 1 posts a day, 6.9% at 1 to 2, 5.1% at 2 to 4, about 4.5% above 4. Most channels post 1 to 2 times a day.
-- **Ads cost reach:** ad-heavy channels reach a smaller share of subscribers per post than ad-free ones ([creator-marketing TELEGRAM-CHANNELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/TELEGRAM-CHANNELS.md#vetting-a-channel), check 4).
+- **Frequency and reach, observational vendor data:** median 16.6% for channels posting less than every other day, 10.7% at 0.5 to 1 posts a day, 6.9% at 1 to 2, 5.1% at 2 to 4, about 4.5% above 4. Most channels post 1 to 2 times a day.
+- **Ad load and reach, observational vendor data:** ad-heavy channels reach a smaller share of subscribers per post than ad-free ones ([creator-marketing TELEGRAM-CHANNELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/TELEGRAM-CHANNELS.md#vetting-a-channel), check 4).
 - **Works:** one clear topic and a predictable format; fewer, stronger posts; cross-promotion and paid posts in channels of similar size and topic (the main growth lever without a recommendation feed); a pinned post that tells new subscribers what the channel is.
 - **Doesn't:** several ads a day; judging a post in its first hours; treating subscriber count as audience.
 - **Format:** the first line is the headline, shown in the chat-list preview. Compare topics on their own baselines ([creator-marketing TELEGRAM-CHANNELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/TELEGRAM-CHANNELS.md#vetting-a-channel), check 2).
 - Buying posts in other channels (vetting, ad networks, pricing per view) is in [creator-marketing TELEGRAM-CHANNELS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/creator-marketing/TELEGRAM-CHANNELS.md).
+
+The Telegram frequency and ad-load comparisons do not establish that either caused lower reach. Use the channel's actual baseline and [attribution evaluation rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/MEASUREMENT-PARADIGMS.md) before a causal claim. [coreyhaines31/marketingskills, social/references/platforms.md]
 
 ## Prove it
 

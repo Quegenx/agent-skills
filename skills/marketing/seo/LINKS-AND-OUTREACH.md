@@ -1,6 +1,6 @@
 # Links and outreach
 
-Link attributes, Google's link-spam limits, editorial prospecting, lawful outreach and verifying an actual backlink. Sources: Google Search Central, OpenSEO's `link-prospecting` skill (every-app/open-seo, MIT), and coreyhaines31/marketingskills `directory-submissions` v2.1.1 (MIT) for backlink verification. The directory assets, catalog, positioning and submission workflow are in [DIRECTORY-SUBMISSIONS.md](DIRECTORY-SUBMISSIONS.md); the tracker is [submission-tracker.csv](submission-tracker.csv). Press coverage is in [public-relations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/SKILL.md); general cold email is in [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md).
+Link attributes, Google's link-spam limits, editorial prospecting, lawful outreach and verifying an actual backlink. Sources: Google Search Central, OpenSEO's `link-prospecting` skill (every-app/open-seo, MIT), and coreyhaines31/marketingskills `directory-submissions` v2.1.1 (MIT) for backlink verification, plus `link-building` SKILL.md and references/tactics.md, prospecting-and-outreach.md and risk-policy.md for diagnosis, reclamation and risk review. The directory assets, catalog, positioning and submission workflow are in [DIRECTORY-SUBMISSIONS.md](DIRECTORY-SUBMISSIONS.md); the tracker is [submission-tracker.csv](submission-tracker.csv). Press coverage is in [public-relations SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/public-relations/SKILL.md); general cold email is in [cold-outreach SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SKILL.md).
 
 ## Link attributes
 
@@ -35,7 +35,7 @@ Verbatim from [spam policies](https://developers.google.com/search/docs/essentia
 
 The carve-out: "It's not a violation of our policies to have such links as long as they are qualified with a `rel="nofollow"` or `rel="sponsored"` attribute value to the `<a>` tag."
 
-Domain Rating (DR) is an Ahrefs metric, not a Google signal; Google's docs don't mention it. A directory with a high DR and almost no organic traffic usually gets its DR from badge-swap rings [coreyhaines31/marketingskills, directory-submissions]: judge directories by traffic and fit, not DR.
+Domain Rating (DR) is an Ahrefs metric, not a Google signal; Google's docs don't mention it. The directory source attributes high DR with little organic traffic to badge-swap rings; those observations alone do not establish the cause. Judge directories by verified audience, editorial fit and actual link practices, not DR. [coreyhaines31/marketingskills, directory-submissions; existing observations-are-not-causes rule in TECHNICAL-AUDIT.md]
 
 ## Finding link prospects
 
@@ -50,6 +50,15 @@ Domain Rating (DR) is an Ahrefs metric, not a Google signal; Google's docs don't
 
 For "best of" listicles, the directory source's search patterns are `"best [category] tools" 2026`, `"best [competitor] alternative"`, `"top AI [category]"`, `"[category] tools review"` [coreyhaines31/marketingskills, directory-submissions].
 
+## Diagnose the target and reclaim earned links
+
+[coreyhaines31/marketingskills, link-building/SKILL.md and references/tactics.md]
+
+- Check the target page's indexing, query intent and useful content before recommending links. Compare its referring domains with three to five outranking pages, and add useful internal links from relevant strong pages. A page-level gap is a diagnosis to investigate, not proof that links are the only bottleneck; similar counts do not prove a content problem either.
+- Reclaim an existing unlinked mention by identifying the exact sentence and a destination useful to its readers. Negative mentions need a response decision before a link request; do not treat every mention as an outreach opportunity.
+- Inspect earned inbound links to dead URLs or redirect chains. Repair the destination with the [canonical migration and redirect owner](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-architecture/URLS-AND-LINKS.md), then ask valuable referring pages to update the link directly. Do not promise recovery of a particular amount of ranking value.
+- For another site's broken resource, confirm that a proposed replacement covers the actual missing subject; build an appropriate asset or skip the pitch. Use real partner, integration, customer or vendor relationships, and ask list authors for an honest evaluation rather than a promised rank or reciprocal link.
+
 ## Outreach
 
 - **Contact paths from public sources only** [open-seo, link-prospecting]: author bylines, contact pages, editorial guidelines, about and team pages, professional profiles, mastheads, and `Person`/`Organization`/`sameAs`/`email` structured data. "Only record contact details that were actually found. Include the source URL". "Do not invent email addresses, social handles, or contact names." If nothing turns up, name the next discovery step (author page, contact page, professional profile).
@@ -57,6 +66,18 @@ For "best of" listicles, the directory source's search patterns are `"best [cate
 - **The law.** Every email follows CAN-SPAM, GDPR, PECR and CASL as written in [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md).
 - **Messages.** "Avoid spammy mass outreach. Personalize by page and reason." [open-seo, link-prospecting] Draft two or three reusable messages: resource or list inclusion, an article update, a comparison mention. Ask to be reviewed or considered; don't trade a product, credits or money for a link. The directory source's listicle template offers "a free account + credits for readers" in exchange for a mention, which is "Exchanging goods or services for links" when it aims at a link; any gift is disclosed and any resulting link qualified.
 - **Report** [open-seo, link-prospecting]: the angle; a prospects table (URL, site, source, angle, contact path, priority); why each prospect fits, then the exact ask; the drafts; limitations (contact paths not found, competitors, likely paid placements, which source found each contact); what to send first.
+
+## Outreach state and risk review
+
+[coreyhaines31/marketingskills, link-building/references/prospecting-and-outreach.md and risk-policy.md]
+
+Keep one deduplicated record with domain, exact referring page, tactic, target destination, lawful contact provenance, approval/status, sent/follow-up/placement dates and result. If an AI engine cited the prospect, record the actual prompt and observation; a placement is not a guarantee of future retrieval or recommendation. Verify observed attributes using [the backlink procedure](#verify-the-actual-backlink). The source's tactic-specific cap is one follow-up about a week later, then stop; this does not relax the [general sending and opt-out rules](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/cold-outreach/SENDING.md).
+
+When reviewing a vendor, inspect actual placements, relevance, editorial standards, commercial terms and reporting. Selling unqualified links by DR, guaranteed optimized anchors, any-topic publication and counts-only reports are risk signals to investigate. Apply [Google's link-spam definition](#what-google-calls-link-spam), not a vendor's label. The source bans every paid insertion into an old article; Google's distinction is the manipulative purpose and required qualification, not article age alone.
+
+For an actual manual action, read the Search Console notice, remove or qualify controlled or purchased links, record unsuccessful removal attempts and prepare a reconsideration explanation of the changes. Do not infer a manual action from a third-party toxicity score. [coreyhaines31/marketingskills, link-building/references/risk-policy.md]
+
+Google's disavow gate requires both a considerable quantity of spammy, artificial or low-quality incoming links **and** an actual or likely manual action caused by them. Try removal first; most sites do not need the tool and incorrect use can harm Search performance. The source simplified this to a manual action or large self-created link volume; keep Google's conjunctive gate. An audit does not authorize uploading a disavow list or changing an existing one. [official disavow guidance](https://support.google.com/webmasters/answer/2648487?hl=en); [owner approval rule]
 
 ## Verify the actual backlink
 
@@ -71,4 +92,4 @@ The source's procedure [coreyhaines31/marketingskills, directory-submissions], w
 
 ## Prove it
 
-Every prospect was chosen for topical fit and traffic, not DR; no link was bought, swapped, required by a badge or created by an automated service without being qualified; every contact detail has a source URL and was found in public, business-role sources; each outreach email meets [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md); every verified backlink has an observed `rel` and timestamp from the anchor itself, with page-level `nofollow` and `X-Robots-Tag` checked. [open-seo, link-prospecting; coreyhaines31/marketingskills, directory-submissions; Google links guidance above]
+Every prospect was chosen for topical fit and traffic, not DR; no link was bought, swapped, required by a badge or created by an automated service without being qualified; every contact detail has a source URL and was found in public, business-role sources; each outreach email meets [email-practices COMPLIANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/backend/email-practices/COMPLIANCE.md); every verified backlink has an observed `rel` and timestamp from the anchor itself, with page-level `nofollow` and `X-Robots-Tag` checked; target-page gaps remain hypotheses, outreach state prevents duplicate pitches, and any disavow recommendation satisfies both official conditions without an unauthorized upload. [open-seo, link-prospecting; coreyhaines31/marketingskills, directory-submissions; Google links guidance above]

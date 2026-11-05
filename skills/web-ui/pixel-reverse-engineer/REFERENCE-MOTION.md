@@ -48,6 +48,17 @@ Frame and edge measurement for a web or app illustration, from rossark-motion-sk
 - Check the loop seam, the frozen-loop frame and the final one-shot frame as well as the action's most dramatic pose. Report any part whose contact or transform drifts.
 - For a recording shown in a device frame, measure against the device's visible screen. A prop entering from outside a stage can still be visibly inside that screen.
 
+## Matched captures and channel evidence
+
+[reanimate, SKILL.md, steps 0 to 5; references/capture.md; references/analysis.md; references/verify.md]
+
+- Record target and destination, selected region or time range and requested fidelity before capturing. Match viewport, device scale, crop, pre-state, trigger path, duration, sampling rate and rendering backend between reference and candidate. Keep each round's artifacts and capture settings.
+- Build one row per element and property: selector correspondence, trigger, start/end, delay or stagger, from/to values, easing and evidence. Include parts that remain still. For scroll-linked motion, compare at the same scroll positions rather than assuming seconds identify the same state.
+- Prefer declared implementation values when available, then measured tracks, then frame observations. A fitted curve is a candidate explanation, not proof of the original implementation; overshoot alone does not uniquely identify a spring.
+- Repeat a reference capture to measure its own variation before attributing all candidate differences to the reconstruction. A virtual clock and seeded random generator do not establish byte-identical captures when other clocks, server data or unhooked paths remain uncontrolled.
+- Report onset, holds, endpoint and seam as well as aggregate mismatch. State alignment offsets, sampling gaps, missing or extra frames/channels, tolerances and capture caps; an overlap-only comparison cannot establish parity of the omitted interval. Do not silently align away a late start or relax the requested fidelity.
+- GPU traces can supply shaders, uniforms and scene-property evidence. Name the hooks, truncation and unobserved paths instead of calling a partial trace complete ground truth. Live inspection retains the [evidence tiers](INSPECTION.md#measured-derived-inferred).
+
 ## Prove it
 
 [rossark-motion-skill, SKILL.md sections 10 and 11; pixel-reverse-engineer, SKILL.md]
@@ -55,3 +66,5 @@ Frame and edge measurement for a web or app illustration, from rossark-motion-sk
 - The evidence record identifies source recording, time basis, crop, coordinate units, measured parts, amplitude/period and the timestamps used for comparison.
 - Separate measured motion from guessed implementation. Report color-match gaps, compressed-pixel limits, resampling limits and unobserved device behavior.
 - Preserve the target project's protected design decisions and the requested reconstruction scope. Rossark's blanket claim that exact copying is always fine for a private test is not a legal permission supplied by this workflow.
+
+- Report matched capture conditions, reference variation, per-channel deviations and the latest comparison artifacts. Distinguish declared, fitted and visually inferred curves, and show unresolved rows with their numbers and reason rather than an unsupported overall pass. [reanimate, SKILL.md, Report; references/analysis.md; references/verify.md]

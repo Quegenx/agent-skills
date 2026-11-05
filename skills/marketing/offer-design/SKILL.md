@@ -24,7 +24,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 ## The rules
 
-1. **Fix the offer before the copy.** Score dream outcome, perceived likelihood, time delay and effort 1 to 10 and work on the lowest; most stuck offers need proof, not features [coreyhaines31/marketingskills, offers] ([OFFER-ANATOMY.md](OFFER-ANATOMY.md#scoring-the-levers)).
+1. **Fix the offer before the copy.** Review dream outcome, perceived likelihood, time delay and effort using the [scoring limits](OFFER-ANATOMY.md#scoring-the-levers), and target an evidenced weakness. The source favors proof over more features; its undefined scoring direction does not establish that the lowest number is a binding constraint. [coreyhaines31/marketingskills, offers]
 2. **Ship all six components or leave one out on purpose:** core, bonuses, guarantee, scarcity, name, price and payment structure [coreyhaines31/marketingskills, offers].
 3. **Every number on the offer is real.** A "was" price was charged openly for a substantial period; a "$X value" names a comparable price that substantial sales happen at; an installment plan shows the count and the total (16 CFR 233.1, 233.2; FTC dark patterns report) ([FTC-PRICING-CLAIMS.md](FTC-PRICING-CLAIMS.md)).
 4. **A bonus is a "free" item:** no mark-up on the core to pay for it, terms beside it and not behind an asterisk, not the same offer more than 6 months in 12 (16 CFR 251.1).

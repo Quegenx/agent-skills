@@ -75,6 +75,8 @@ You know what happens because you wrote the code. The viewer sees it once, at fu
 - Speech and spoken-word films follow phrases, pauses and emphasis rather than the beat: write the cue sheet from the voice's word times.
 - Lyrics and captions vary in weight: some lines go huge as the hook, most sit like subtitles. Leave room in the composition where a line will land big (characters right, text left).
 
+For supplied-footage selection, measured energy/duration/motion proposes candidates, not what a scene means; keep those decisions in the [local footage workflow](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/FOOTAGE-EDITS.md#preserve-captions-and-supplied-layers). [kajisho5/ffmpeg-skill, scripts/scenes.py; scripts/metadata.py]
+
 ## Precedent per beat
 
 `python3 <this skill>/scripts/precedent.py query --beat proof --content ui --text "selection becomes result" --k 6` returns what professional motion designers did at that kind of beat: 156 measured rules (WHEN, DO, BECAUSE, with frame numbers and the moment ids they come from), the 53 study moments and 507 rules decoded from 39 reference films (`library/moments.json` and its eight ordered JSONL parts; beats hook, turn, proof, cta; content ui, type, logo, number, 3d). Run one query per beat, adopt one rule, and write its id beside the beat (`PR-A01: crop to one object at 3.3x, reveal the product by pulling back`). The rows are model-decoded and unverified: the source-scoped measured chapters in the router outrank them.

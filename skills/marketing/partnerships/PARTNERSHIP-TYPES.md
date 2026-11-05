@@ -41,7 +41,7 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 
 [coreyhaines31/marketingskills, co-marketing] Campaign types, scoring and agreements are in [PARTNER-MARKETING.md](PARTNER-MARKETING.md). Two ideas from the chapter:
 
-- **Permissionless co-marketing:** build assets around brands your audience already loves, with no contract; the book's example is Notion publishing templates for Airbnb, Amazon and Tesla.
+- **Independent assets, with permission boundaries:** the book advocates assets built around larger brands without a partnership contract. Keep that as its attributed case, not authority to impersonate a brand, reuse unauthorized assets or imply endorsement. Publish user-owned or authorized assets and describe any actual relationship accurately. [coreyhaines31/marketingskills, co-marketing, references/partnership-types.md; owner standing rules 9]
 - **Content ecosystems:** show up consistently where your audience already gathers on someone else's platform (the book's example: Gong on SaaStr), and pair it with newsletter swaps and cross-promotion where each side keeps its own leads.
 
 ## App stores and marketplaces
@@ -57,7 +57,7 @@ The book's flagship claim: HubSpot's partner program at "$100M ARR, ~40% of reve
 
 - **Retention or expansion problem:** integrations first, and the marketplace listing that comes with them.
 - **Distribution without headcount:** affiliates (fast, pay on results) or resellers (slower, higher-touch, services upside).
-- **Content but no reach:** co-marketing, starting with permissionless assets and newsletter swaps.
+- **Content but no reach:** co-marketing, starting with user-owned or authorized assets and newsletter swaps; keep the permission boundaries above. [coreyhaines31/marketingskills, co-marketing; owner standing rules 9]
 - **A platform owns your buyer's workflow:** that app store or marketplace, all-in.
 
 "Programs compound: integrations create marketplace presence, marketplace presence attracts resellers, resellers and affiliates create the case studies that fuel co-marketing."

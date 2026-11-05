@@ -14,9 +14,11 @@ The default engine is one HTML file with `window.seek(t)`, rendered by Playwrigh
 | an exploded view, a teardown, an anatomy figure or a product reveal of a real physical object, from a photo or its name (tumble in, macro details, one feature working, explode and snap back, hero) | `seek-engine` with its `REAL-OBJECTS.md` (research the real dimensions and parts first) on the same isometric toolset; size it first (anatomy-reveal's products run 100-150 parts, about 2-4 hours for the object and 1 for the film) |
 | a math or physics explainer built from equations and graphs | Manim (the `manim-video` skill in browser-use/video-use), voiced with the voiceover skill |
 | a layered editor the agent drives (video layers, keyframes, shaders and audio in one local project) | Tesseract by Mirage (`npx skills add mirage-hq/Tesseract`); proprietary terms, its CLI is a downloaded binary |
-| editing existing footage: cutting a talking-head clip, adding subtitles, graphics and music to it | a footage editor: HyperFrames `talking-head-recut` / `embedded-captions`, or browser-use/video-use |
+| editing existing footage: cutting a talking-head clip, adding subtitles, graphics and music to it | local inspection and editing with [asset-prep FOOTAGE-EDITS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/videos/asset-prep/FOOTAGE-EDITS.md), or a footage editor: HyperFrames `talking-head-recut` / `embedded-captions`, or browser-use/video-use |
 | a format a HyperFrames community skill already templates: two apps on a photographed foldable (`duo`), an X profile as a licence card (`x-posting-license`), a Strudel track with its code lighting up (`prod-by-claude`), a film of the user's own sessions with the agent (`session-story`, `day-in-my-life`), a photo or clip repainted as brushwork (`p5-paint-animation`) | `npx skills add heygen-com/hyperframes-community-skills --skill <name>` |
 | everything else | `seek-engine` |
+
+The local footage route covers source/output clocks, compatible assembly, captions/layers, replay and editor omissions; it does not require the source toolkit's 42 scripts. [kajisho5/ffmpeg-skill, scripts/cut.py; scripts/join.py; scripts/render.py; scripts/_common/timeline.py]
 
 The shared pure-time, beat-grid, stills-first, contact-sheet and caused-sound principles apply across engines. Use the selected engine's runtime contract and commands; seek-engine scaffolding and flags are not requirements for a Remotion or HyperFrames project. [Quegenx/agent-skills, make-video/REMOTION.md and seek-engine/SKILL.md]
 

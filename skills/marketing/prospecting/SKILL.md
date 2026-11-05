@@ -13,7 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
-| Ranking buying signals, freshness windows, signal-to-play table, account tiers, tools that detect signals | [SIGNALS.md](SIGNALS.md) |
+| Warm introductions, evidenced public-gap plays and ranking buying signals, freshness windows, signal-to-play table, account tiers, tools that detect signals | [SIGNALS.md](SIGNALS.md) |
 | Research time per tier, where the useful facts are, the Tier 1 account brief, rules for agent research, segment briefs | [ACCOUNT-RESEARCH.md](ACCOUNT-RESEARCH.md) |
 | SaaS and general B2B: technographic, growth, trigger and decay signals, sources, checklists, CSV columns, top-target order | [SAAS-AND-B2B.md](SAAS-AND-B2B.md) |
 | Local small businesses: website-status classes, proximity and decay, the browser workflow, checklist, scoring, columns | [LOCAL-SMB.md](LOCAL-SMB.md) |

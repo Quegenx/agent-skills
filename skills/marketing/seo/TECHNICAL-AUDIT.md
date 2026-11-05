@@ -2,7 +2,7 @@
 
 A technical SEO audit answers two questions in order: can search engines reach, read and index the pages that matter, and which few changes would grow organic traffic that converts. The check catalogue and its logic come from OpenSEO's audit engine (every-app/open-seo, MIT, `src/shared/audit-issues.ts`, `page-reporters.ts`, `multipage-checks.ts`); the audit order and verification steps from FreeScan's public check library (freescan.app, no licence, so paraphrased); the opportunity method from OpenSEO's `seo-audit` skill (MIT). Where a tool's threshold disagrees with Google's docs, both are given and Google's wins. Scoring a whole site across SEO, security, accessibility and design, and writing fix briefs, is in [site-audit SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/site-audit/SKILL.md); Lighthouse runs are in [web-performance LIGHTHOUSE-CI.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-performance/LIGHTHOUSE-CI.md); Search Console data and URL Inspection are in [search-console SKILL.md](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SKILL.md).
 
-**Contents:** [Severity](#severity) · [Check the crawl first](#check-the-crawl-first) · [Audit order](#audit-order) · [Tool thresholds are not Google rules](#tool-thresholds-are-not-google-rules) · [The issue catalogue](#the-issue-catalogue) · [Check logic](#check-logic) · [Triage into a work order](#triage-into-a-work-order) · [Index bloat](#index-bloat) · [Finding the few changes worth making](#finding-the-few-changes-worth-making) · [Ranking evidence](#ranking-evidence) · [OpenSEO as the tool](#openseo-as-the-tool) · [Prove it](#prove-it)
+**Contents:** [Severity](#severity) · [Check the crawl first](#check-the-crawl-first) · [Audit order](#audit-order) · [Tool thresholds are not Google rules](#tool-thresholds-are-not-google-rules) · [The issue catalogue](#the-issue-catalogue) · [Check logic](#check-logic) · [Triage into a work order](#triage-into-a-work-order) · [Index bloat](#index-bloat) · [Title proposals and click-through](#title-proposals-and-click-through) · [Finding the few changes worth making](#finding-the-few-changes-worth-making) · [Ranking evidence](#ranking-evidence) · [OpenSEO as the tool](#openseo-as-the-tool) · [Prove it](#prove-it)
 
 ## Severity
 
@@ -15,6 +15,8 @@ Findings use the repo's one scale, P0 to P3, as defined in [code-review REVIEWER
 - **A broken or near-empty crawl comes first** (certificate error, 5xx, one page): check redirects and certificate variants yourself and search for the business; "a dead domain with a live successor flips the whole recommendation to 'redirect the old domain'." [open-seo, seo-audit]
 - **A JavaScript shell is a coverage gap, not thin content.** "The initial app shell cannot establish what the rendered page is missing. Report the coverage gap instead of thin-content/missing-heading claims." [open-seo, page-reporters.ts] Re-run with JavaScript rendering, and serve important content and navigation in the initial HTML.
 - **Blocks are reported, never bypassed.** OpenSEO's remedy is the site owner's consent: allowlist the crawler's user agent (`OpenSEO-Audit`) in the WAF, or Shopify's "Crawler access" signature [open-seo, audit-issues.ts]; how it classifies 429s and challenge pages is in [web-scraping CRAWLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/CRAWLING.md#blocked-responses). A crawler-specific block can be "a deliberate licensing or traffic-control decision" [freescan, /checks/seo/crawler-access]. Polite crawling (backoff, `Retry-After`, stopping and marking the report incomplete) is in [web-scraping CRAWLING.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-automation/web-scraping/CRAWLING.md); evading bot protection is a do-not.
+
+- **Schema needs the right observation surface.** Raw HTML can contain server-rendered JSON-LD; a text extractor can strip scripts, and client rendering can add them. Absence from converted text is not proof of absence. Inspect raw HTML and, when needed, the rendered DOM using [STRUCTURED-DATA.md](STRUCTURED-DATA.md). The source categorically excluded `curl` from schema detection; that was too broad. [coreyhaines31/marketingskills, seo-audit/SKILL.md]
 
 ## Audit order
 
@@ -118,6 +120,29 @@ From OpenSEO's checklist article [openseo.so, /library/site-audit/technical-seo-
 - Choosing the fix. The source: `noindex` when the page has a purpose for users, 410 or 301 when it has none. Google adds: for duplicates use `rel=canonical`, not `noindex`, because `noindex` "will completely block the page from Search", and "Don't use the robots.txt file for canonicalization purposes" ([consolidate-duplicate-urls](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls)). `noindex` is for pages that should not be in Search at all.
 - Never delete, `noindex` or redirect a page with traffic or backlinks without the owner's approval [coreyhaines31/marketingskills, marketing-loops seo-operator].
 
+## Title proposals and click-through
+
+[coreyhaines31/marketingskills, seo-audit/references/title-tags.md]
+
+Read the actual query results before proposing a title: note page formats, expected qualifiers and promises the page can truthfully deliver. Keep title, H1, URL and description about the same subject without requiring identical wording. Keep stable slugs when changing a year or count. Length is a tool heuristic [above](#tool-thresholds-are-not-google-rules); retain the owner's appended-brand rule even though this source suggests omitting unknown brands.
+
+| Page type | Source pattern |
+|---|---|
+| Product or feature | `[Category] for [Audience] \| [Brand]` |
+| Pricing | `[Brand] Pricing: Plans and Costs` |
+| Comparison | `[A] vs [B]: [the deciding difference]` |
+| Alternatives | `[N] Best [Competitor] Alternatives ([Year])` |
+| Listicle | `[N] Best [Things] for [Audience] in [Year]` |
+| How-to | `How to [Task]` or `How to [Task] Without [Obstacle]` |
+| Definition | `What Is [Term]? [Short payoff]` |
+| Guide | `[Topic]: A Complete Guide for [Audience]` |
+| Template or tool | `Free [Thing] [Template/Calculator] ([Format])` |
+| Troubleshooting | `How to Fix [Problem]` or `[Error]: What It Means and How to Fix It` |
+
+Use a count, year or "free" only when the content fulfills it. Return a row per candidate with page, current title, proposed title and reason; offer two or three options only for the most important pages. These are practitioner patterns, not promises of rankings or clicks.
+
+The source calls low CTR in the top five a title/description problem and says a one-page before/after gain is attributable. Treat both as hypotheses: compare query, position, intent, result features and period before diagnosing; record the baseline and a bounded change. Causal measurement belongs to [marketing-attribution](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/marketing-attribution/SKILL.md), and candidate selection to [search-console](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/search-console/SKILL.md). A rewritten title or changed CTR alone does not establish the cause. [existing ranking evidence rule below]
+
 ## Finding the few changes worth making
 
 OpenSEO's `seo-audit` method [open-seo, seo-audit]. Goal: "Research broadly; recommend selectively." The report leads with "one to three recommendations that either capture meaningfully more qualified search demand or stop a real loss."
@@ -152,4 +177,4 @@ Facts from openseo.so and the repo README, as of 2026-10; confirm prices on the 
 
 ## Prove it
 
-The crawl's fetch classes are all `ok` (or each block is reported, not counted as thin content); every finding carries P0 to P3 and a fix; no title, description or word-count threshold is stated as Google's rule; issues are grouped by type into a work order ranked by pages fixed; index-bloat decisions rest on a URL Inspection sample; the report leads with one to three recommendations, each with its evidence, mechanism and uncertainty, and every rejected shortlist row has a reason; every live SERP ranking is written "#N (page P)" with query, country, date and listings returned, while Search Console positions are identified as averages; no ranking came from scraping Google.
+The crawl's fetch classes are all `ok` (or each block is reported, not counted as thin content); every finding carries P0 to P3 and a fix; no title, description or word-count threshold is stated as Google's rule; issues are grouped by type into a work order ranked by pages fixed; index-bloat decisions rest on a URL Inspection sample; the report leads with one to three recommendations, each with its evidence, mechanism and uncertainty, and every rejected shortlist row has a reason; every live SERP ranking is written "#N (page P)" with query, country, date and listings returned, while Search Console positions are identified as averages; no ranking came from scraping Google; title proposals fulfill their promises and preserve the owner's brand rule, and a CTR change is not presented as causal proof.

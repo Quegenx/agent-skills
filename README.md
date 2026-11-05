@@ -176,17 +176,17 @@ Detailed coverage and related task routes are in the [Web UI set README](./skill
 | [app-ui](./skills/web-ui/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
 | [color-system](./skills/web-ui/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast and audits; Tailwind aliases link to CSS custom properties. |
 | [cookie-consent](./skills/web-ui/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
-| [design-system-maintenance](./skills/web-ui/design-system-maintenance/SKILL.md) | Extracting an existing system, mapping values, component docs, migration readiness and rendered evidence. |
+| [design-system-maintenance](./skills/web-ui/design-system-maintenance/SKILL.md) | Existing-system extraction, value mapping and component docs; measured anatomy sheets and instrumented interaction posters from real implementation. |
 | [gsap](./skills/web-ui/gsap/SKILL.md) | Tweens, timelines, cleanup and plugins; corrected shuffle and MotionPathHelper APIs. |
-| [isometric-figures](./skills/web-ui/isometric-figures/SKILL.md) | Live explanatory SVG/WebGL mechanisms, source geometry, input and sampled audits; deterministic film adapters stay in videos. |
+| [isometric-figures](./skills/web-ui/isometric-figures/SKILL.md) | Live explanatory SVG/WebGL mechanisms and sampled audits; optional playful sticker style, with deterministic film adapters in videos. |
 | [landing-page-ui](./skills/web-ui/landing-page-ui/SKILL.md) | Production marketing-site design and source; browser encoding links to its current owner. |
 | [modern-css](./skills/web-ui/modern-css/SKILL.md) | CSS layout, forms and responsive policy; separate properties, functions and scroll-animation topics. |
-| [pixel-reverse-engineer](./skills/web-ui/pixel-reverse-engineer/SKILL.md) | Exact live component/animation reconstruction and explanation-only inspection, plus measured reference motion from frames, edges, colors and timestamps. |
+| [pixel-reverse-engineer](./skills/web-ui/pixel-reverse-engineer/SKILL.md) | Exact live component and animation reconstruction; matched captures, reference variation, per-channel motion evidence and explicit coverage limits. |
 | [react](./skills/web-ui/react/SKILL.md) | One global React skill: state, Effects, composition, Next.js, React Native/Expo, native motion and SVG illustration clocks, faces and lifecycle limits. |
 | [sonner](./skills/web-ui/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
 | [svg](./skills/web-ui/svg/SKILL.md) | SVG drawing, animation, icons, clipping/masking and illustration seams; canonical namespaces, use primitives and transforms. |
 | [technical-drawing](./skills/web-ui/technical-drawing/SKILL.md) | Physical drawings, evidence and exports; standalone viewer and download acceptance applies only to requested deliverables. |
-| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Web motion policy, timing, recipes, audits, illustration acting and pose math; 662 named Animista presets; native implementation routes to React. |
+| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Web motion policy, timing, gestures, illustration acting and Animista presets; authored product illustrations, retained UI tracks and live pacing checks. |
 | [web-accessibility](./skills/web-ui/web-accessibility/SKILL.md) | WCAG/APG interfaces, focus/keyboard, forms, phone numbers, target sizes and motion; hover/focus criteria and AAA focus-indicator area. |
 | [web-performance](./skills/web-ui/web-performance/SKILL.md) | Browser loading, media, layout shifts, main-thread work, runtime traces and Lighthouse gates. |
 | [webgl](./skills/web-ui/webgl/SKILL.md) | Live shader widgets, shared contexts/fallbacks, Three.js/R3F audits and launch pages; widget-specific requirements stay in that branch. |
@@ -217,7 +217,7 @@ Detailed coverage and related task routes are in the [Testing set README](./skil
 | [maestro](./skills/testing/maestro/SKILL.md) | Maestro YAML flows for React Native, Expo and Flutter: setup, selectors, waits, auth, native dialogs and platform-specific verification. |
 | [patrol](./skills/testing/patrol/SKILL.md) | Flutter E2E with Patrol: Dart tests, native automation, shared Keys, setup, module conventions and Patrol-only verification. |
 | [tester-army-e2e](./skills/testing/tester-army-e2e/SKILL.md) | The tester-army/e2e web/mobile runner: exact steps, agent goals, replay, traces, bug bashes, migration and runner-specific project verification. |
-| [testing](./skills/testing/testing/SKILL.md) | Behavior, integration and terminal tests, independent oracles and parser fixtures; finite-scope formal checks and runner-neutral project verification. |
+| [testing](./skills/testing/testing/SKILL.md) | Behavior, integration and terminal tests; finite-scope formal checking, faithful state projections and version-specific checker evidence. |
 
 ## Monitoring
 
@@ -236,12 +236,12 @@ Detailed coverage and related task routes are in the [Marketing set README](./sk
 
 | Skill | Covers |
 |---|---|
-| [ab-testing](./skills/marketing/ab-testing/SKILL.md) | Tool-agnostic A/B testing: hypotheses, metrics and guardrails, sample sizes from the standard formula, duration with unequal splits, sequential testing, templates, an experimentation program |
-| [ad-creative](./skills/marketing/ad-creative/SKILL.md) | Grounded concepts, hooks, formats, copy and creative roadmaps; canonical safe zones and corrected RSA acceptance. |
-| [ai-search-visibility](./skills/marketing/ai-search-visibility/SKILL.md) | AI discovery, crawler controls, citation evidence and measurement; local versus remote aeo.js checks. |
-| [app-growth](./skills/marketing/app-growth/SKILL.md) | Mobile acquisition, attribution, onboarding, paywalls and retention; Apple, Meta, Google and other platform checks follow the task. |
-| [aso](./skills/marketing/aso/SKILL.md) | Store audits, keywords, metadata, screenshots/art directions and experiments; Apple indexed-field rules stay specific to the App Store. |
-| [churn-prevention](./skills/marketing/churn-prevention/SKILL.md) | Cancellation, health scores and source-qualified dunning copy; provider retry settings and verified access recovery. |
+| [ab-testing](./skills/marketing/ab-testing/SKILL.md) | Tool-agnostic experiments, hypotheses, sample sizes, stopping rules and equivalent exposure in both randomized arms. |
+| [ad-creative](./skills/marketing/ad-creative/SKILL.md) | Grounded concepts, hooks, formats, copy and roadmaps; persistent competitor-ad history with longevity separate from conversion proof. |
+| [ai-search-visibility](./skills/marketing/ai-search-visibility/SKILL.md) | AI discovery, crawler controls, citation evidence and measurement; linked discovery, client-specific JavaScript limits and qualified causal claims. |
+| [app-growth](./skills/marketing/app-growth/SKILL.md) | Mobile acquisition, attribution, onboarding, paywalls and retention; dated subscription cohorts and qualified store-fee eligibility. |
+| [aso](./skills/marketing/aso/SKILL.md) | Store audits, keywords, metadata, screenshots and experiments; separate unknown evidence, metric denominators and conditional preview playback. |
+| [churn-prevention](./skills/marketing/churn-prevention/SKILL.md) | Cancellation, health scores and dunning; P0 to P3 finding severity and explicit observation windows for saved accounts. |
 | [cold-outreach](./skills/marketing/cold-outreach/SKILL.md) | Lawful outreach, sending, copy, cadences, LinkedIn and replies; permanent Gmail bulk status and human approval boundaries. |
 | [community-marketing](./skills/marketing/community-marketing/SKILL.md) | Community identity, launch, onboarding, rituals, support, ambassadors, platform choice and health. |
 | [comparison-pages](./skills/marketing/comparison-pages/SKILL.md) | Evidence-backed alternative/versus pages, data hubs and audience-aware P0 to P3 audits. |
@@ -251,35 +251,35 @@ Detailed coverage and related task routes are in the [Marketing set README](./sk
 | [customer-research](./skills/marketing/customer-research/SKILL.md) | Public evidence and Sales Safari, interviews, surveys and personas with minimum evidence and source qualifications. |
 | [email-marketing](./skills/marketing/email-marketing/SKILL.md) | Campaign copy, sequences and lifecycle strategy; delivery and dunning link to their owners. |
 | [event-marketing](./skills/marketing/event-marketing/SKILL.md) | Event portfolios, sponsorship, speaking and webinars; meeting, recording and follow-up checks follow the selected role and format. |
-| [google-analytics](./skills/marketing/google-analytics/SKILL.md) | GA4, GTM, events, UTM, Consent Mode and reporting; event, pricing-variable and consent checks apply to their selected branches. |
+| [google-analytics](./skills/marketing/google-analytics/SKILL.md) | GA4, GTM, events, UTM, Consent Mode and reporting; submit attempts distinguished from confirmed business outcomes. |
 | [growth-ideas](./skills/marketing/growth-ideas/SKILL.md) | 139 marketing ideas and buyer psychology; source-qualified applications, consolidated definitions and the corrected Fogg model. |
 | [keyword-research](./skills/marketing/keyword-research/SKILL.md) | Search demand, intent clusters and competitor evidence; first-party Search Console metrics distinguished from SERP listings. |
 | [lead-magnets](./skills/marketing/lead-magnets/SKILL.md) | Lead magnets and free tools: planning, gating and delivery under double opt-in and GDPR Art. 7(4), formats, promotion and measurement, free-tool types and cases |
-| [marketing-attribution](./skills/marketing/marketing-attribution/SKILL.md) | Which marketing caused revenue: attribution models, MTA versus MMM versus incrementality, self-reported attribution, attribution by business type, stitching booking and checkout webhooks to analytics |
+| [marketing-attribution](./skills/marketing/marketing-attribution/SKILL.md) | Attribution models, MTA, MMM, incrementality and first-party stitching; Direct traffic is a signal to investigate rather than causal proof. |
 | [marketing-council](./skills/marketing/marketing-council/SKILL.md) | Twelve simulated advisors with sourced frameworks; one-advisor quick takes stay separate from multi-advisor dissent and disagreement maps. |
 | [marketing-images](./skills/marketing/marketing-images/SKILL.md) | Image methods, prompts and platform sizes; actual-photo fidelity, reference decomposition and casual-phone options. Routes store screenshot production to ASO. |
-| [marketing-loops](./skills/marketing/marketing-loops/SKILL.md) | Recurring marketing contracts, catalogues and operators; cadence, state, deduplication, approval and stop conditions. |
-| [marketing-plan](./skills/marketing/marketing-plan/SKILL.md) | Resumable AARRR plans, budgets, market sizing, hiring and metrics; corrected idea counts and current channel-owner routes. |
-| [offer-design](./skills/marketing/offer-design/SKILL.md) | Offer anatomy, guarantees, bonuses, scarcity, discounts and paid info-products; FTC claims and canonical Stripe Price rules. |
+| [marketing-loops](./skills/marketing/marketing-loops/SKILL.md) | Recurring marketing contracts, operators and state; canonical atomic deduplication and evidence before diagnosing SEO causes. |
+| [marketing-plan](./skills/marketing/marketing-plan/SKILL.md) | Resumable AARRR plans, budgets, market sizing, hiring and metrics; explicit quick-plan scope, assumptions and budget denominators. |
+| [offer-design](./skills/marketing/offer-design/SKILL.md) | Offer anatomy, guarantees, bonuses, scarcity and discounts; source scoring limits kept separate from the value equation. |
 | [onboarding-and-upgrades](./skills/marketing/onboarding-and-upgrades/SKILL.md) | Activation, upgrade prompts, experiments and recovery cohorts; canonical psychology/store rules and cooldown constraints. |
-| [paid-ads](./skills/marketing/paid-ads/SKILL.md) | Web ad operations, scoped audits and measurement; separate B2B acquisition and account-based marketing topics. |
-| [partnerships](./skills/marketing/partnerships/SKILL.md) | Partner selection, co-marketing, integrations, resellers and marketplaces; agreements, lead sharing and lawful outreach. |
+| [paid-ads](./skills/marketing/paid-ads/SKILL.md) | Web ad operations, B2B acquisition and ABM; conversion diagnostics separate confirmed outcomes, firing, arrival and attribution, with controlled AI Max proposals. |
+| [partnerships](./skills/marketing/partnerships/SKILL.md) | Partner selection, co-marketing, integrations and marketplaces; agreements, permissions, lead sharing and truthful affiliation. |
 | [pricing-strategy](./skills/marketing/pricing-strategy/SKILL.md) | Pricing models, tiers, trials, research and rollout; page audits with consumer-specific markup and crawler policy. |
 | [product-launch](./skills/marketing/product-launch/SKILL.md) | Launch planning, ORB channels, phases and shipped announcements; Product Hunt listing checks apply only to that launch channel. |
-| [prospecting](./skills/marketing/prospecting/SKILL.md) | Lawful demand signals, account research, sourcing and enrichment; canonical contact-data policy and no evasion procedures. |
-| [public-relations](./skills/marketing/public-relations/SKILL.md) | Pitching, requests, newsjacking, press assets and crisis communication; deliverables and evidence follow the selected PR mode. |
-| [referral-programs](./skills/marketing/referral-programs/SKILL.md) | Product virality, customer referrals and affiliates; canonical two-source reward sizing, K-factor, disclosure, fraud, measurement and payouts, with mobile implementations linked. |
+| [prospecting](./skills/marketing/prospecting/SKILL.md) | Lawful demand signals, warm introductions, evidenced public gaps and enrichment; valid contact data is separate from send authorization. |
+| [public-relations](./skills/marketing/public-relations/SKILL.md) | Pitching, requests, newsjacking, press assets and crisis communication; corrected service chronology and source-qualified outcome claims. |
+| [referral-programs](./skills/marketing/referral-programs/SKILL.md) | Product virality, referrals and affiliates; combined reward sizing, actual qualifying actions, disclosure, fraud and payouts. |
 | [review-management](./skills/marketing/review-management/SKILL.md) | Neutral review invitations, public replies, moderation, reputation triage and permissioned testimonial reuse. |
-| [revops](./skills/marketing/revops/SKILL.md) | Lead lifecycle, scoring, routing, enrichment, pipeline and CRM recipes; Salesforce scheduling and date-field limits. |
-| [sales-enablement](./skills/marketing/sales-enablement/SKILL.md) | Decks, one-pagers, objections, battle cards, win-loss, demos and calls; verified price comparisons and print constraints. |
+| [revops](./skills/marketing/revops/SKILL.md) | Lead lifecycle, scoring, routing, enrichment and CRM recipes; attendance evidence and response-time associations distinguished from causal proof. |
+| [sales-enablement](./skills/marketing/sales-enablement/SKILL.md) | Decks, one-pagers, objections, demos and calls; verified comparisons and documented compliance evidence without invented certifications. |
 | [search-console](./skills/marketing/search-console/SKILL.md) | Reading a site's own Search Console data and saying only what it shows: click drops, quick wins, low CTR, decay, cannibalization, URL Inspection, the API's quotas and data loss, the iannuttall `seo` CLI and MCP |
-| [seo](./skills/marketing/seo/SKILL.md) | Technical SEO, structured data, local visibility and scaled pages; shared project setup/reporting, link outreach and directory submissions. |
+| [seo](./skills/marketing/seo/SKILL.md) | Technical, international and local SEO, structured data and scaled pages; verified locale annotations, factual business profiles, link outreach and directory records. |
 | [service-businesses](./skills/marketing/service-businesses/SKILL.md) | Complete client-service guides: offers, qualified demos, approvals, delivery, actual-outcome billing, recurring work and handoff. |
 | [site-architecture](./skills/marketing/site-architecture/SKILL.md) | Information architecture: page hierarchy, URL patterns, breadcrumbs, header, footer and mobile navigation, internal links, platforms and migrations with Google's site-move rules, sitemap diagrams, site types |
 | [site-audit](./skills/marketing/site-audit/SKILL.md) | Permission-scoped audits, scanner limits, scoring, feedback and fix evidence; self-contained plans link to engineering handoffs. |
-| [sms-marketing](./skills/marketing/sms-marketing/SKILL.md) | Lawful SMS/MMS/WhatsApp, consent, encoding and sequences; sender-specific registration and provider opt-out boundaries. |
-| [social-media](./skills/marketing/social-media/SKILL.md) | Organic strategy, posts, Reddit, short-form planning and listening; dated X ranking evidence and canonical writing rules. |
-| [web-research](./skills/marketing/web-research/SKILL.md) | Parallel company, competitor and event research with evidence/budgets; matrix, battle-card and compiler checks follow selected outputs. |
+| [sms-marketing](./skills/marketing/sms-marketing/SKILL.md) | Lawful SMS, MMS and WhatsApp programs; actual conversation history, consent and explicit unverified platform-window claims. |
+| [social-media](./skills/marketing/social-media/SKILL.md) | Organic strategy, posts, short-form planning and listening; dated ranking evidence and observational Telegram reach comparisons. |
+| [web-research](./skills/marketing/web-research/SKILL.md) | Company, competitor and event research; dated growth teardowns, comparable evidence windows and observed facts separate from inferred causes. |
 
 ## Videos
 
@@ -287,14 +287,14 @@ Detailed coverage and related task routes are in the [Videos set README](./skill
 
 | Skill | Covers |
 |---|---|
-| [asset-prep](./skills/videos/asset-prep/SKILL.md) | Screens, brand extraction, recording and prepared assets; renderer integration links to seek-engine. |
-| [beat-grid](./skills/videos/beat-grid/SKILL.md) | Find, scan and measure music into `audio/beats.json`, the clock for picture and sound; per-frame band energy for audio-reactive visuals; word-by-word lyric timing. |
-| [frame-review](./skills/videos/frame-review/SKILL.md) | Review and measured tells, separate decoded-file checks, full-text DOM read sampling and explicitly measured sync. |
-| [make-video](./skills/videos/make-video/SKILL.md) | Gated film production with engine selection before setup; shared story/review gates and engine-specific runtime contracts. |
+| [asset-prep](./skills/videos/asset-prep/SKILL.md) | Product captures and prepared assets; supplied-media stream/color inspection, bounded local footage edits, captions and editor-handoff limits. |
+| [beat-grid](./skills/videos/beat-grid/SKILL.md) | Measured music and the shared picture/sound clock; observed onsets kept separate from fitted beat positions. |
+| [frame-review](./skills/videos/frame-review/SKILL.md) | Frame review and decoded-file checks; property-specific evidence, retained streams, edited boundaries and explicit sampling limits. |
+| [make-video](./skills/videos/make-video/SKILL.md) | Gated film production, engine selection and local footage routes; reusable product-film libraries with captures, claim checks and discrepancy records. |
 | [marketing-video](./skills/videos/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs. Source-scoped camera direction presets distinguish movement, lens, framing, focus, time and transitions. |
-| [seek-engine](./skills/videos/seek-engine/SKILL.md) | Pure-time rendering, measured motion, drawing/hero templates, anatomy/cinematic film adapters and a sourced word-fold CoAnimator kit; live figures link to frontend. |
-| [shotlist](./skills/videos/shotlist/SKILL.md) | Storyboards, measured composition/type/demo/transitions, separate beat-role and composition-diagram references, and sourced technique catalogues. Generated-footage camera directions link to marketing-video. |
-| [sound-pass](./skills/videos/sound-pass/SKILL.md) | Picture-driven effects, transformed peak alignment, separate music and measured sound chapters, selected mastering profiles. |
+| [seek-engine](./skills/videos/seek-engine/SKILL.md) | Pure-time rendering, measured motion and film adapters; held-pose stop motion on one global pose grid alongside existing styles. |
+| [shotlist](./skills/videos/shotlist/SKILL.md) | Storyboards, composition, type, demos and transitions; measured footage-selection candidates kept separate from semantic scene decisions. |
+| [sound-pass](./skills/videos/sound-pass/SKILL.md) | Picture-driven effects, music and mastering; supplied-audio alignment, threshold-based quiet detection and bed-versus-master fades. |
 | [video-brief](./skills/videos/video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. |
 | [video-help](./skills/videos/video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
 | [video-setup](./skills/videos/video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |

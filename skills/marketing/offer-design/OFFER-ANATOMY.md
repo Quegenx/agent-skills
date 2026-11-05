@@ -30,7 +30,7 @@ The buyer compares Value to Price. **"Price is the comparison, not the value."**
 
 ## Scoring the levers
 
-[coreyhaines31/marketingskills, offers] Score each lever 1 to 10 honestly; **the lowest is the binding constraint.**
+[coreyhaines31/marketingskills, offers, references/value-equation.md] The source scores each lever 1 to 10 and calls the lowest the binding constraint, but does not define the score direction for time delay and effort, which sit in the denominator. Record the scale's meaning before comparing scores; if its direction is undefined, describe the observed weakness without ranking by the lowest number. This diagnostic rubric does not establish a causal binding constraint, and its ordinal scores are not measured inputs to the value equation.
 
 - **Dream outcome:** can the buyer picture, in concrete terms, the day after this works? Is it named specifically enough to repeat to a friend?
 - **Perceived likelihood:** do they have "at least three named, comparable proof points"? Is the method specific enough to repeat? Have you answered "but my situation is different"?
@@ -109,7 +109,7 @@ Doesn't include:
 
 1. **Identify the business type** (service, course, coaching, info product, SaaS, agency, B2B); the playbook is type-specific ([OFFER-FORMATS.md](OFFER-FORMATS.md)).
 2. **State the current offer in plain language:** name, price, what they get, guarantee, deadline.
-3. **Run the value equation:** score each lever 1 to 10; the lowest is the binding constraint.
+3. **Review the four levers** using the [scoring limits](#scoring-the-levers); name the evidenced weakness rather than assuming an undefined low score proves a binding constraint.
 4. **Audit the anatomy:** which of the six components is missing or weak?
 5. **Pick one lever to fix this iteration;** don't rebuild everything.
 6. **Draft the changed component:** a new bonus, guarantee, scarcity, name or payment plan.
@@ -124,4 +124,4 @@ Doesn't include:
 
 ## Prove it
 
-The offer can be written in one plain paragraph (name, price, what's in and out, guarantee, deadline); each of the four levers has a score and the change being made targets the lowest; all six components are present or deliberately absent; a buyer can repeat the name and outcome in one text message; any installment price shows the count and total; and a stated lift is computed by multiplication and labelled as a scenario until a test confirms it.
+The offer can be written in one plain paragraph (name, price, what's in and out, guarantee, deadline); each lever has evidence and any score has a defined direction, with the proposed change targeting a stated weakness; all six components are present or deliberately absent; a buyer can repeat the name and outcome in one text message; any installment price shows the count and total; and a stated lift is computed by multiplication and labelled as a scenario until a test confirms it. [coreyhaines31/marketingskills, offers; scoring limits above]

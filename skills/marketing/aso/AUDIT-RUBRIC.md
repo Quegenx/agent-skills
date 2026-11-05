@@ -49,7 +49,7 @@ Example: Title 7, Description 6, Visuals 8, Ratings 9, Metadata 5, Conversion 7 
 | 30-49 | D | Major optimization needed across multiple dimensions |
 | 0-29 | F | Listing needs a complete overhaul |
 
-- **Per dimension:** 9-10 = A, 7-8 = B, 5-6 = C, 3-4 = D, 1-2 = F; 0 means "Cannot assess (data unavailable)".
+- **Per dimension:** 9-10 = A, 7-8 = B, 5-6 = C, 3-4 = D, 1-2 = F. The source uses 0 for "Cannot assess (data unavailable)"; report N/A instead of treating missing evidence as poor performance. Exclude unavailable dimensions from a partial weighted calculation, divide by assessed weight and report that coverage; label the result partial and do not apply the complete-data grade bands as though all six dimensions were assessed. The missing-data calculation is the existing [health-score rule](https://github.com/Quegenx/agent-skills/blob/main/skills/marketing/churn-prevention/HEALTH-SCORE.md#the-health-score). [coreyhaines31/marketingskills, aso, references/scoring-criteria.md; existing churn-prevention, HEALTH-SCORE.md]
 - **Against [eronred]'s printed weights** ([AUDIT.md](AUDIT.md#the-weighted-score)): both source tables print visual weights totaling 25 (eronred: screenshots 15 + preview 5 + icon 5), but eronred's full iOS table totals 110%, so these are not equal normalized shares. The source tables differ on ratings (20 here, 15 there) and description (15 flat here, 5 iOS and 15 Android there); use the arithmetic correction at that owner when calculating the weighted average. [coreyhaines31/marketingskills, aso; eronred, ASO audit]
 
 ## Dimension rubrics
@@ -240,6 +240,6 @@ The keyword table carries the source's note: without a paid ASO tool there is no
 ## Prove it
 
 - The report states the brand tier with a one-line reason before any score.
-- The overall score equals the weighted sum of the six dimension scores times 10, and its grade matches the band table.
+- With all six dimensions assessed, the overall score equals their weighted sum times 10 and its grade matches the band table. Missing dimensions show N/A, assessed-weight coverage and an explicitly partial normalized result or no overall score; no missing field is scored as failure. [coreyhaines31/marketingskills, aso, references/scoring-criteria.md; existing churn-prevention, HEALTH-SCORE.md#the-health-score]
 - Every text recommendation quotes the current text, the exact replacement and its character count within the store's limit.
 - The Limitations block is present, and no figure in the report claims a search volume or ranking the audit could not measure.

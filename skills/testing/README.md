@@ -16,7 +16,7 @@ Category membership is the primary home, not an instruction to install every ski
 | [maestro](maestro/SKILL.md) | Maestro YAML flows for React Native, Expo and Flutter: setup, selectors, waits, auth, native dialogs and platform-specific verification. |
 | [patrol](patrol/SKILL.md) | Flutter E2E with Patrol: Dart tests, native automation, shared Keys, setup, module conventions and Patrol-only verification. |
 | [tester-army-e2e](tester-army-e2e/SKILL.md) | The tester-army/e2e web/mobile runner: exact steps, optional agent goals, replay, setup, traces, bug bashes and migration into this runner. Keeps runner-specific verification while linking the shared project-verification contract. |
-| [testing](testing/SKILL.md) | Behavior tests, real Postgres, architecture/contracts, vertical TDD and terminal harnesses. Independent oracles, malformed fixtures and mutation evidence remain; named UI stress fixtures and lint-rule authoring route to their canonical owners. Adds finite-scope formal verification and runner-neutral project-verification maintenance. |
+| [testing](testing/SKILL.md) | Behavior, integration and terminal tests; finite-scope formal checking, faithful state projections and version-specific checker evidence. |
 
 ## Related task routes
 

@@ -15,9 +15,10 @@ Inbound PR, copied from coreyhaines31/marketingskills `public-relations` (MIT): 
 | Featured (featured.com) | Web app, expert profiles, journalist requests (per HARO's blog, the old Featured app now lives in Connectively) | Free tier; paid pro |
 | Help A B2B Writer (helpab2bwriter.com) | Twice-weekly email of B2B queries | Free |
 | SourceBottle (sourcebottle.com) | Australia-focused, global queries | Free |
-| Terkel (terkel.io) | Roundups ("we asked 50 experts...") | Free |
 | JournoRequests (X account) | Aggregated journalist tweets; UK-skewed | Free |
 | #JournoRequest (X hashtag) | Live journalist requests | Free |
+
+The source listed Terkel as a separate active service. Featured records its July 2023 rename from Terkel, and the original platform now lives at Connectively; do not count those names as independent services. [Featured About](https://featured.com/about)
 
 - **Starter set:** HARO, Qwoted and Help A B2B Writer, plus watching `#JournoRequest` on X. Pick 2 or 3; "don't try all 7". [coreyhaines31/marketingskills, public-relations]
 

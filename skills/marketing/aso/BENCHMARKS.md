@@ -6,7 +6,7 @@ Third-party conversion, rating, screenshot, video, custom page and event figures
 
 ## Conversion rate by category
 
-[coreyhaines31/marketingskills, aso] reports, citing "AppTweak 2025 Benchmarks Report (H1 2024 data, US market)": average page view to install conversion iOS 25.0%, Google Play 27.3%.
+[coreyhaines31/marketingskills, aso] reports, citing "AppTweak 2025 Benchmarks Report (H1 2024 data, US market)": reported store conversion metrics of iOS 25.0% and Google Play 27.3%. The source labels these page-view-to-install conversion, yet its 115% row includes installs without a product-page visit. Do not interpret the table as the probability that a counted page visitor installs; establish the exact download/install numerator, view/impression denominator, scope and window before comparing it with console data. The underlying benchmarks remain unverified, as stated above.
 
 | Category | iOS CVR | Google Play CVR |
 |---|---|---|
@@ -22,7 +22,7 @@ Third-party conversion, rating, screenshot, video, custom page and event figures
 | Games (Board) | 1.2% | 7.3% |
 | Games (overall) | 3-5% realistic | -- |
 
-*"Above 100% = some users install from search without visiting product page."
+*The source explains its above-100% row with installs from search without a product-page visit. Keep that as the source's metric explanation, not a conditional visitor conversion rate. [coreyhaines31/marketingskills, aso, references/benchmarks.md]
 
 ## Ratings
 
