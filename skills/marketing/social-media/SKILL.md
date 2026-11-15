@@ -1,6 +1,6 @@
 ---
 name: social-media
-description: "Plans, writes and runs organic social media for LinkedIn, X, Instagram, TikTok, Threads, YouTube, Facebook, Reddit and Telegram: goals and content pillars, hooks and post templates without AI tells, repurposing long-form into posts, a calendar and batching, engagement routines, metrics, drafts-first publishing from an agent, character and hashtag limits checked against each platform's docs, X's open-sourced ranking signals, carousel frameworks, short-form video scripts, Reddit community tutorials and inbound conversations, and social listening with a scoring rubric through official APIs. Use when writing or scheduling social posts, threads, carousels or short videos, building a content calendar, repurposing content for social, checking platform limits, growing on X, or triaging which posts to reply to."
+description: "Plans, writes and runs organic social media for LinkedIn, X, Instagram, TikTok, Threads, YouTube, Facebook, Reddit and Telegram: goals and content pillars, hooks and post templates without AI tells, repurposing long-form into posts, a calendar and batching, engagement routines, metrics, drafts-first publishing from an agent, character and hashtag limits checked against each platform's docs, X's open-sourced ranking signals, carousel frameworks, short-form video scripts, Reddit community tutorials and inbound conversations, saved-reference quote-post drafts in the user’s own voice, and social listening with a scoring rubric through official APIs. Use when writing or scheduling social posts, threads, carousels or short videos, building a content calendar, repurposing content for social, checking platform limits, growing on X, or triaging which posts to reply to."
 ---
 
 # Social media
@@ -13,6 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Turn authorized saved X references into source-backed quote-post drafts in the user’s own evidenced voice | [BOOKMARK-DRAFTS.md](BOOKMARK-DRAFTS.md) |
 | Reddit audience/community research, complete tutorial posts, inbound diagnosis and a daily human draft queue | [REDDIT.md](REDDIT.md) |
 | Context questions, the platform quick reference, content pillars, the weekly calendar and batching, engagement routine, metrics and the weekly review, what to do when engagement or reach drops, scheduling, publishing from an agent with drafts first, studying what works in your niche | [STRATEGY.md](STRATEGY.md) |
 | Hook formulas, LinkedIn, X and Instagram post templates, the social AI tells (broetry, engagement bait, emoji bullets), comment quality and comment tiers | [POSTS.md](POSTS.md) |

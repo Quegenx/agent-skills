@@ -1,6 +1,6 @@
 ---
 name: anti-slop-ui
-description: "Keeps websites and app screens from looking template-built while making them work. Use when designing or reviewing an interface's visual design."
+description: "Keeps websites and app screens from looking template-built while making them work. Use when designing or reviewing an interface's visual design, extracting builder prompts from inspected references, auditing reference overlap, or selecting a source-scoped visual or editorial page preset."
 ---
 
 # Anti-slop UI
@@ -11,6 +11,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Turn inspected interface HTML or recordings into a section-by-section builder prompt and optional reference bundle | [REFERENCE-PROMPTS.md](REFERENCE-PROMPTS.md) |
+| Audit current and historical overlap against supplied reference copy, identity, numbers, assets and motion | [REFERENCE-ORIGINALITY.md](REFERENCE-ORIGINALITY.md) |
 | Scan a page for the patterns that read as generated, and where effect libraries such as Libraries.dev place what the scan flags | [PATTERNS.md](PATTERNS.md) |
 | Component details that break as a product grows: avatar groups, stacking contexts and containing blocks, scrims, pressed states, optical alignment, nested corners, surfaces, spacing that groups, showing the product in use, report pages, design lint rules | [DETAILS.md](DETAILS.md) |
 | Units, fluid scales, container queries (Tailwind's `@md` against `md`), where other responsive skills' units differ, right-to-left layout and icons, the type review, touch and browser chrome on phones | [modern-css RESPONSIVE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/RESPONSIVE.md) |
@@ -21,6 +23,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Open every state a screen can reach on one page while doing visual work | [STATE-PAGE.md](STATE-PAGE.md) |
 | Build several named directions behind a picker and keep the chosen one | [VARIANTS.md](VARIANTS.md) |
 | Explore recurring interaction batches, record actual Keep/Kill choices and retain clean accepted components | [EXPERIMENTS.md](EXPERIMENTS.md) |
+| Select optional sourced palettes, frames, glass, tactile surfaces, icon families and visual directions | [STYLE-PRESETS.md](STYLE-PRESETS.md) |
+| Compose editorial, service, product-proof or enterprise pages with source-scoped motion recipes | [EDITORIAL-PAGE-PRESETS.md](EDITORIAL-PAGE-PRESETS.md) |
 | Compare optional borderless, grid and tactile directions while preserving accepted owner designs | [STYLE-ALTERNATIVES.md](STYLE-ALTERNATIVES.md) |
 | Build a screen from a design file so it matches | [FROM-DESIGN.md](FROM-DESIGN.md) |
 | Find inspected references for a specific surface decision, with source links and scoped takes | [REFERENCE-RESEARCH.md](REFERENCE-RESEARCH.md) |

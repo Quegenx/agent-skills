@@ -1,0 +1,31 @@
+# Package and verify a GitHub project
+
+Package only the intended project and distinguish repository publication from a working live site. Sources: [MengTo/Skills, publish-project-to-github/SKILL.md, references/github-pages.md and assets/README-template.md; workflow-ship-change/SKILL.md and scripts]. The source's game-specific release rules do not grant deployment authority in another project.
+
+## Resolve the package and publication target
+
+- Inspect directory, tracked/untracked files, history, remotes, current instructions and intended owner/name. Establish existing versus new repository, public versus private visibility, and source hosting versus a live website. Do not treat an authentication or network failure from a repository lookup as proof that its name is available. [MengTo/Skills, publish-project-to-github/SKILL.md, Resolve scope and authority; Commit and create the repository]
+- Public sharing, a visibility change, replacement of Pages settings and another repository target need the authority applicable to those exact actions. An agreed push to the project's existing repository does not imply any of them. [MengTo/Skills, publish-project-to-github/SKILL.md, Resolve scope and authority; workflow-ship-change/SKILL.md, Guardrails]
+- Audit intended public files and history for private data, credentials, missing runtime files, local-only paths, unclear rights and external runtime dependencies. A scanner proposes findings for review. The supplied shell audit can print matching secret lines, so do not copy its output into a public report or use that script as a guarantee of safe publication. [MengTo/Skills, publish-project-to-github/SKILL.md, Audit before packaging; scripts/audit_public_project.sh]
+- Reuse an existing checkout when remote/history/scope match. For a mixed workspace, package an explicitly selected directory or checkout rather than publishing the whole folder. Preserve unrelated edits. Inspect the existing license; do not invent a license choice when reuse rights have not been selected. [MengTo/Skills, publish-project-to-github/SKILL.md, Audit before packaging; Choose the packaging model]
+
+## Present the actual project
+
+Write a concrete description, verified run instructions, structure, interactions, unusual implementation decisions, runtime/network dependencies and attribution. Use a genuine preview for visual work when capture is authorized. Keep live-demo and source links distinct. An optional rebuild/remix prompt must describe the real package rather than promise unsupported behavior. [MengTo/Skills, publish-project-to-github/SKILL.md, Build the repository presentation; assets/README-template.md]
+
+## Select a Pages deployment only when applicable
+
+- GitHub Pages publishes static HTML, CSS and JavaScript. It cannot run the project's server process. The source's broad rejection of every “server, database, or private runtime” project needs this narrower distinction: a static client can call separately hosted services, but those services and their credentials/access policies are not hosted by Pages. [https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages; https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS; MengTo/Skills, publish-project-to-github/SKILL.md, Configure the public site]
+- Branch publication selects a branch plus `/` or `/docs`; a custom framework build can publish through GitHub Actions. Keep the entry file at the top of the chosen source or deployed artifact. [https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site; https://docs.github.com/en/pages/getting-started-with-github-pages/troubleshooting-404-errors-for-github-pages-sites]
+- Test a project site's repository subpath, not only localhost root. Assets and navigation must resolve under the deployed base path. A private repository does not by itself make its Pages site private; inspect the actual site's visibility before publication. [https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages; MengTo/Skills, publish-project-to-github/references/github-pages.md]
+
+## Verify each completed stage
+
+- Stage explicit paths and inspect the staged diff. Reconcile remote changes without discarding another session's work. Follow the project's actual release/check policy; the source's full-suite, screenshot-changelog, 50 MB approval threshold and particular hosting/storage choices are project rules, not defaults for every repository. [MengTo/Skills, workflow-ship-change/SKILL.md, Guardrails; Steps]
+- Keep commit contents, Git pack estimate, bytes actually transferred and deployed artifact size as different measurements. A local pack estimate is not measured wire traffic. Report only the unit and operation actually observed. [MengTo/Skills, workflow-ship-change/SKILL.md and scripts/push-main.sh; scripts/commit-size.sh; scripts/upload-size.sh]
+- Read back the exact remote repository, branch and commit. For a site, read back configuration/build/deployment status and then inspect the final HTTPS URL, required assets, a representative interaction and its return/recovery path. A successful push, configured site, completed build and verified live interaction are four separate results. [MengTo/Skills, publish-project-to-github/SKILL.md, Verify external state; Hand off exact results]
+- Verify a preview before promotion when the selected hosting workflow provides it, then verify the actual domain after promotion. The supplied live-verification scripts sample limited asset URLs and status conditions; they do not establish complete asset, authentication or interaction health. [MengTo/Skills, workflow-ship-change/SKILL.md, Publish live; scripts/verify-live.sh]
+
+## Prove it
+
+The package and target are exact, public files and rights were reviewed, visibility/source/live authority are separate, the selected Pages source and base path match the project, unrelated work is preserved and each external success has a read-back. Report the commit, repository/site URLs, actual checks and any unverified deployment or licensing limitation. [MengTo/Skills, publish-project-to-github/SKILL.md, Hand off exact results; Failure rules]

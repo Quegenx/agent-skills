@@ -31,7 +31,7 @@ Category membership is the primary home, not an instruction to install every ski
 | [lead-magnets](lead-magnets/SKILL.md) | Lead magnets and free tools: planning, gating and delivery under double opt-in and GDPR Art. 7(4), formats, promotion and measurement, free-tool types and cases |
 | [marketing-attribution](marketing-attribution/SKILL.md) | Attribution models, MTA, MMM, incrementality and first-party stitching; Direct traffic is a signal to investigate rather than causal proof. |
 | [marketing-council](marketing-council/SKILL.md) | Twelve simulated advisors with sourced frameworks; one-advisor quick takes stay separate from multi-advisor dissent and disagreement maps. |
-| [marketing-images](marketing-images/SKILL.md) | Image methods, prompts and platform sizes; actual-photo fidelity, reference decomposition and optional casual-phone prompts under existing generation policies. Routes store screenshot production and style directions to ASO. |
+| [marketing-images](marketing-images/SKILL.md) | Image methods, prompts, sizes and photo fidelity; reference-inspired campaign families and verified transparent assets under existing image rules. |
 | [marketing-loops](marketing-loops/SKILL.md) | Recurring marketing contracts, operators and state; canonical atomic deduplication and evidence before diagnosing SEO causes. |
 | [marketing-plan](marketing-plan/SKILL.md) | Resumable AARRR plans, budgets, market sizing, hiring and metrics; explicit quick-plan scope, assumptions and budget denominators. |
 | [offer-design](offer-design/SKILL.md) | Offer anatomy, guarantees, bonuses, scarcity and discounts; source scoring limits kept separate from the value equation. |
@@ -52,7 +52,7 @@ Category membership is the primary home, not an instruction to install every ski
 | [site-architecture](site-architecture/SKILL.md) | Information architecture: page hierarchy, URL patterns, breadcrumbs, header, footer and mobile navigation, internal links, platforms and migrations with Google's site-move rules, sitemap diagrams, site types |
 | [site-audit](site-audit/SKILL.md) | Permission-scoped audits, scanner limits, scoring, feedback and fix evidence; self-contained plans link to engineering handoffs. |
 | [sms-marketing](sms-marketing/SKILL.md) | Lawful SMS, MMS and WhatsApp programs; actual conversation history, consent and explicit unverified platform-window claims. |
-| [social-media](social-media/SKILL.md) | Organic strategy, posts, short-form planning and listening; dated ranking evidence and observational Telegram reach comparisons. |
+| [social-media](social-media/SKILL.md) | Organic strategy, posts, listening and dated ranking evidence; saved-reference draft queues grounded in the user's writing. |
 | [web-research](web-research/SKILL.md) | Company, competitor and event research; dated growth teardowns, comparable evidence windows and observed facts separate from inferred causes. |
 
 ## Related task routes

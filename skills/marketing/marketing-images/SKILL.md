@@ -1,6 +1,6 @@
 ---
 name: marketing-images
-description: "Makes marketing images: choosing between AI generation, AI editing, a design tool, a real screenshot with an overlay, and stock; product mockups from real screenshots; blog heroes, social graphics, profile and listing banners and brand assets; image prompts and the current image models with OpenAI's gpt-image retirement dates; platform sizes marked verified or not; actual-photo fidelity and subject-specific review, and image delivery and image SEO on your own site. Use when creating a blog hero, social graphic, banner, product mockup or brand asset, prompting an image model, resizing one design for several platforms, checking edits of actual photographs, or preparing images for a website."
+description: "Makes marketing images: choosing between AI generation, AI editing, a design tool, a real screenshot with an overlay, and stock; product mockups from real screenshots; blog heroes, social graphics, profile and listing banners and brand assets; image prompts and the current image models with OpenAI's gpt-image retirement dates; platform sizes marked verified or not; actual-photo fidelity, transparent-asset verification, reference-inspired campaign worlds and subject-specific review, and image delivery and image SEO on your own site. Use when creating a blog hero, social graphic, banner, product mockup or brand asset, prompting an image model, resizing one design for several platforms, checking edits of actual photographs, or preparing images for a website."
 ---
 
 # Marketing images
@@ -11,6 +11,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Develop distinct reference-inspired campaign worlds under the existing logo/text policy | [BRAND-WORLDS.md](BRAND-WORLDS.md) |
+| Verify transparent raster openings, preserve PNG originals and integrate source/runtime assets | [TRANSPARENT-ASSETS.md](TRANSPARENT-ASSETS.md) |
 | Actual-photo permissions, subject fidelity and full-size QA, with source-specific alternatives under existing generation/text rules | [REAL-PHOTO-EDITING.md](REAL-PHOTO-EDITING.md) |
 | Image models (the source's comparison and decision tree, OpenAI's retirement dates), the prompt formula, templates, style, lighting and composition keywords, prompt mistakes, batch workflow and cost | [PROMPTING.md](PROMPTING.md) |
 | Social, banner and listing sizes, each marked verified or not, LinkedIn's official specs, banner practices, one design resized for many platforms | [SIZES.md](SIZES.md) |

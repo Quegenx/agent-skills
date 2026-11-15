@@ -1,0 +1,23 @@
+# Audit animation work and long-session growth
+
+Measure the real route before changing its motion. Source: [MengTo/Skills, optimize-web-animations/SKILL.md and references/browser-profiling.md]. This file owns the audit method; shared frame-loop and cleanup behavior stays in [webgl WIDGETS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/webgl/WIDGETS.md#frame-loop) and [ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PERFORMANCE.md).
+
+## Establish a comparable baseline
+
+- Inspect the named route, its motion owners and existing visibility helpers. Include CSS animations, pseudo-elements, animation libraries, timers, observers, canvas/WebGL/physics loops, media and async resources that may finish after unmount. [MengTo/Skills, optimize-web-animations/SKILL.md, Inspect repo context]
+- Sample the top, middle and lower page plus a narrow viewport when layout changes. Record which owner and animation are visible or offscreen. CSS inspection must include `::before` and `::after`; inspect JavaScript frame loops separately. [MengTo/Skills, optimize-web-animations/SKILL.md, Capture a baseline in the browser]
+- Do not equate CSS `animation-play-state: running` with an animation currently producing frames. That CSS property has running/paused values, while Web Animations `Animation.playState` also distinguishes idle and finished. The supplied evaluator counts non-paused computed declarations without proving unfinished playback. [https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state; https://developer.mozilla.org/en-US/docs/Web/API/Animation/playState; MengTo/Skills, optimize-web-animations/references/browser-profiling.md]
+- For long-session growth, record DOM/canvas/image/iframe counts, available heap measurements, a bounded idle sample and repeated route changes. The source suggests 10 to 30 seconds idle; record the actual duration and conditions. Missing heap APIs or blocked instrumentation remain limitations, not proof of no leak. [MengTo/Skills, optimize-web-animations/SKILL.md, Capture a baseline in the browser]
+- Exercise client-side navigation when auditing SPA unmount cleanup. The supplied evaluator's full-page `goto` cycle creates fresh document contexts; stable counts across those reloads do not establish cleanup inside one SPA document. [MengTo/Skills, optimize-web-animations/references/browser-profiling.md, route-cycle evaluator]
+
+## Fix the owner and repeat the same observations
+
+- Reuse the smallest existing visibility owner. A section observer alone can leave distant children active inside a very long section; inspect the animated child shells too. Do not pause a visible hero through an overly broad ancestor selector. [MengTo/Skills, optimize-web-animations/SKILL.md, Patch the smallest owner that controls the motion; Good Fix Patterns; Avoid]
+- CSS pausing and canceling a JavaScript frame request are separate operations. Use the canonical lifecycle branch for stop/resume, time-base reset, reduced motion and resource cleanup rather than relying on a hidden canvas or a CSS rule. [MengTo/Skills, optimize-web-animations/SKILL.md, Patch the smallest owner that controls the motion; existing webgl WIDGETS.md]
+- Audit timers, observer subscriptions, stable listener references, captured React cleanup nodes, animation-library objects, GPU resources, media streams and late async results. A late-loaded texture must not become an orphan after its owner has been disposed. [MengTo/Skills, optimize-web-animations/SKILL.md, For leak hardening]
+- Repeat the same positions, viewport, idle interval and navigation cycle. Confirm that selected offscreen work stops, visible motion resumes correctly, counts return to their explained baseline and normal search/filter/navigation still works. A source risk, an observed accumulation and a reproduced leak are different claims. [MengTo/Skills, optimize-web-animations/SKILL.md, Verify behavior, not just builds; Report with evidence]
+- Keep stress probes bounded. A crashed tab demonstrates overload under those conditions; it does not identify a cause without further evidence. Screenshots show appearance, not CPU/GPU cost or leak freedom. [MengTo/Skills, optimize-web-animations/SKILL.md, Capture a baseline in the browser; Avoid]
+
+## Prove it
+
+Report sampled routes/positions, viewports, observed active work, before/after counts, idle and navigation conditions, cleanup findings and unavailable counters. Distinguish runtime measurements from source inspection and list only checks actually run under the task's verification policy. [MengTo/Skills, optimize-web-animations/SKILL.md, Report with evidence]

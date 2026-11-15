@@ -1,6 +1,6 @@
 ---
 name: voiceover
-description: "Generates ElevenLabs v4 narration with word timings and pronunciation fixes. Use when a video needs a voiceover, captions timed to speech, or a mispronounced word fixed."
+description: "Generates ElevenLabs v4 narration with word timings, pronunciation fixes and local voice-profile guidance. Use when a video needs a voiceover, captions timed to speech, a local voice choice, or a mispronounced word fixed."
 ---
 
 # Voiceover
@@ -12,6 +12,12 @@ Copy `scripts/tts.py` from this skill's folder into the film's `scripts/`. It ne
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
 The default is `eleven_v4`, using Text to Dialogue with character timestamps. The previous skill/helper default was `eleven_v3` through Text to Speech; the [2026-09-28 release](https://elevenlabs.io/docs/changelog/2026/9/28.md) directs v4 content creation to Text to Dialogue. Explicitly selected older models retain the helper's Text to Speech request. [https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-with-timestamps]
+
+## Local voice profiles
+
+Keep account-specific voice IDs/names, owners and routing metadata in a local profile outside the installed skill, with project-local files gitignored where appropriate. Resolve a direct voice ID or configured environment variable before a name lookup; reject missing or ambiguous name matches. Keep local routing metadata out of the generation request and use request-level overrides without changing saved account settings unless asked. [MengTo/Skills, elevenlabs-tts/SKILL.md, Local Profiles; Workflow; scripts/generate_voice.py]
+
+The source's profile example selects `eleven_multilingual_v2`, MP3 and Text to Speech `voice_settings`; this skill retains its v4 Text to Dialogue/timestamp default. Text to Speech settings apply to that request, while the existing v4 helper does not send those fields or expose the source's profile CLI. This is a configuration method, not a second bundled generator or a claim of new helper flags. [MengTo/Skills, elevenlabs-tts/SKILL.md; https://elevenlabs.io/docs/api-reference/text-to-speech/convert; existing voiceover, Generate]
 
 ## You can't hear it
 

@@ -1,6 +1,6 @@
 ---
 name: deployment
-description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups, signed releases, npm packages and selected-stack SaaS buildouts. Use when writing a Dockerfile or compose file, moving hosts, setting up backups, verifying release artifacts, publishing an npm package or wiring a selected SaaS stack."
+description: "Containers, local Compose stacks, zero-downtime host and DNS moves, backups, signed releases, npm packages, GitHub project/Pages publication and selected-stack SaaS buildouts. Use when writing a Dockerfile or compose file, moving hosts, setting up backups, verifying release artifacts, publishing an npm package or wiring a selected SaaS stack."
 ---
 
 # Deployment
@@ -11,6 +11,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Package a GitHub project, choose source versus Pages publication and verify exact external state | [GITHUB-PROJECTS.md](GITHUB-PROJECTS.md) |
 | A selected-stack SaaS walking skeleton, identity/data/worker boundaries, environment inventory and incident checklist | [SAAS-BUILDOUT.md](SAAS-BUILDOUT.md) |
 | A Dockerfile, image size and security, a local stack with Compose, migrations in containers, self-hosting a third-party image (loopback port, `env_file`, telemetry opt-out, MCP behind an identity proxy) | [CONTAINERS.md](CONTAINERS.md) |
 | Moving a site or app to a new host or DNS provider; backups and recovery | below |

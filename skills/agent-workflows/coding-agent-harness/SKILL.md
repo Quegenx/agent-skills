@@ -1,6 +1,6 @@
 ---
 name: coding-agent-harness
-description: "Configures workflows, session scheduling and completion instructions for an existing coding agent, maintains decision trails and scoped context pickup, coordinates long runs, and diagnoses recorded sessions. Use when operating or customizing a Codex or Claude-style development agent, resuming or reporting on coding work, investigating a costly or drifting run, or using the sourced Claude Code workflow and session-scheduler contracts."
+description: "Configures workflows, session scheduling and completion instructions for an existing coding agent, maintains decision trails and scoped context pickup, coordinates long runs, applies explicit quality gates, triages related sessions and diagnoses recorded sessions. Use when operating or customizing a Codex or Claude-style development agent, resuming or reporting on coding work, investigating a costly or drifting run, or using the sourced Claude Code workflow and session-scheduler contracts."
 ---
 
 # Coding-agent harness
@@ -11,6 +11,8 @@ Decision trails, context pickup, catch-up reports and program coordination also 
 
 | The job | Read |
 |---|---|
+| Preserve the task while iterating against explicit gates or a requested per-item quality score | [QUALITY-GATES.md](QUALITY-GATES.md) |
+| Reconcile related sessions, landed work, pending questions and artifacts before authorized archival | [THREAD-TRIAGE.md](THREAD-TRIAGE.md) |
 | Choose the host branch and required evidence | [SKILL.md](SKILL.md) |
 | Configure Claude Code dynamic workflows, templates and subagent model selection | [CLAUDE-WORKFLOWS.md](CLAUDE-WORKFLOWS.md) |
 | Schedule work inside a Claude Code session, with expiry and resume limits | [SESSION-SCHEDULING.md](SESSION-SCHEDULING.md) |

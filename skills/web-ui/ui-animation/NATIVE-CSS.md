@@ -68,8 +68,17 @@ Fade every child but the hovered one (`&:hover > *:not(:hover) { opacity: 0.25 }
 
 - The post calls Temani Afif's `:has()` variant "a more consistent experience". The post's punchier variants scale the demoted items to 0.8 on a spring inside `@media (hover) and (prefers-reduced-motion: no-preference)`, or fade and arc each item by its distance from the hovered one; that one writes a hand-set `var(--sibling-index)`, which the shipped `sibling-index()` function now replaces (Baseline 2026, newly available since August 2026, [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/sibling-index)).
 
+## Seamless decorative marquee
+
+For an explicitly selected looping strip, place two equal copies of the item sequence on one track and translate linearly by one sequence length before restarting. A `-50%` track endpoint is correct only when half the measured track equals the repeat interval, including spacing. Keep item widths stable, wait for layout-affecting assets and recheck after responsive/font changes; duplicate the end-to-start gap consistently or the seam jumps. Use an edge mask only where the design calls for it. [MengTo/Skills, marquee-loop/SKILL.md and decoded demo/index.html, duplicated track]
+
+Keep unique or carefully read content outside the moving strip. Decorative copies must not create duplicate announcements or keyboard stops; preserve one usable semantic set when items are interactive. Offer the appropriate pause behavior, and use a static arrangement under reduced motion. The source also permits very slow reduced motion; retain this repository's still branch. Do not put expensive filters/shadows on every moving item. [MengTo/Skills, marquee-loop/SKILL.md, Workflow and Guardrails; existing PERFORMANCE.md reduced-motion policy]
+
+Check a complete cycle at every shipped width, after fonts/images load and after resizing; the first repeated item and its spacing must match the initial state. Inspect keyboard/assistive access, the pause control and reduced-motion layout. This source is a selected decorative recipe; it does not override a product owner's motion/design policy. [MengTo/Skills, marquee-loop/SKILL.md; source demo's missing reduced/duplicate semantics corrected here]
+
 ## Prove it
 
+- A selected marquee completes a full cycle without a spacing jump after asset loading and resize; duplicate content adds no duplicate keyboard stops or announcements, and reduced motion shows the static set. [MengTo/Skills, marquee-loop/SKILL.md; corrections above]
 - Open and close a popover and a dialog mid-transition in Chrome: each reverses from where it is; in Firefox the exit is instant and the element still closes.
 - Turn on reduced motion: nothing slides or scales, and every opened element still appears.
 - Call `onTransitionsEnded` before setting `hidden`: the array is empty and the node goes at once; after: it waits.

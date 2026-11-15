@@ -1,6 +1,6 @@
 ---
 name: web-performance
-description: "Measures and improves browser loading and interaction performance: loading boundaries, media and lists, main-thread scheduling, interaction traces, React profiling evidence and Lighthouse gates. Use when a page loads slowly, typing or scrolling stalls, layout shifts, an interaction needs profiling, or a Lighthouse result or performance budget needs review."
+description: "Measures and improves browser loading and interaction performance: loading boundaries, media and lists, main-thread scheduling, interaction traces, React profiling evidence, offscreen animation and long-session growth audits, and Lighthouse gates. Use when a page loads slowly, typing or scrolling stalls, layout shifts, an interaction needs profiling, or a Lighthouse result or performance budget needs review."
 ---
 
 # Web performance
@@ -11,6 +11,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Audit offscreen animation work, pseudo-elements, JavaScript loops and bounded long-session growth | [ANIMATION-AUDIT.md](ANIMATION-AUDIT.md) |
 | Choose the page-loading, responsiveness, tracing or lab-gate task | [SKILL.md](SKILL.md) |
 | Loading boundaries, prefetching, fonts/scripts, images/video, layout shifts, long lists, DOM/canvas and tab icons | [BROWSER.md](BROWSER.md) |
 | Long tasks, yielding, batching, priorities, layout reads/writes, scrolling and Web Workers | [MAIN-THREAD.md](MAIN-THREAD.md) |

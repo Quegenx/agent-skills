@@ -1,6 +1,6 @@
 ---
 name: marketing-video
-description: "Produces marketing video with tools rather than code: choosing between a code-built film, AI-generated footage, an AI avatar presenter and repurposing long recordings into clips; Veo's real limits, video prompts and camera vocabulary, HeyGen and Synthesia with consent, the Descript to Opus Clip to CapCut workflow, captions and platform aspect ratios. Use when planning a product demo, explainer, social clip or update video, generating B-roll with a video model, making avatar or personalized videos, or cutting a webinar or podcast into short clips."
+description: "Produces marketing video with tools rather than code: choosing between a code-built film, AI-generated footage, an AI avatar presenter and repurposing long recordings into clips; Veo's real limits, video prompts and camera vocabulary, HeyGen and Synthesia with consent, the Descript to Opus Clip to CapCut workflow, captions and platform aspect ratios. Use when planning a product demo, explainer, social clip or update video, generating B-roll with a video model, evaluating a consented digital twin, making avatar or personalized videos, or cutting a webinar or podcast into short clips."
 ---
 
 # Marketing video
@@ -13,6 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 |---|---|
 | Video models: Veo's official limits, the removed Sora API, the source's model picks, the prompt formula, style vocabulary, prompt mistakes, workflow and cost | [AI-GENERATION.md](AI-GENERATION.md) |
 | Camera vocabulary and footage presets: movement, speed, framing, ending, lens/physical travel, viewpoint, focus and time effects | [CAMERA-PROMPTS.md](CAMERA-PROMPTS.md) |
+| Evaluate a consented digital twin with held-out face, voice and lip-sync evidence | [DIGITAL-TWINS.md](DIGITAL-TWINS.md) |
 | AI avatars: HeyGen's current plans and MCP server, custom avatars and consent, Synthesia, when an avatar is the wrong tool, personalized outreach videos | [AVATARS.md](AVATARS.md) |
 | Cutting long recordings into clips: the Descript, Opus Clip, CapCut workflow, captions, platform aspect ratios | [REPURPOSING.md](REPURPOSING.md) |
 

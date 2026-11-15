@@ -74,6 +74,14 @@ The source's example profile, for "a fictional invoicing tool for freelancers":
 
 [coreyhaines31/marketingskills, product-marketing] "When drafting as a specific person (a founder's posts, an exec's emails, a CEO's launch note), keep a separate short profile for that person and read it before the brand profile." Capture how they open and close messages; sentence habits ("length, fragments, questions, favorite phrases"); emoji, punctuation and formatting habits; templates for messages they send often; things they never say. "Refresh it from their recent writing every quarter or so, and fold in the edits they make to your drafts. Their edits are the most accurate voice data you'll get." Store it next to the context file, "for example `.agents/voice/<name>.md`".
 
+## Maintain an authored-post corpus
+
+For the user's own social voice, identify the format before choosing examples: replies reveal conversational vocabulary, standalone posts reveal hooks and pacing, and quote posts reveal how the author adds a reason or context. Keep the current user's wording authoritative; use recent same-format authored work before older samples, and generated drafts only for continuity. Do not import the named source creator's biography, product claims or persona. [MengTo/Skills, write-like-meng-on-x/SKILL.md, Start; Draft; Hone The Profile]
+
+- Keep post ID, canonical URL, timestamp, format and authored text. Separate quoted-source text and exclude pure reposts from voice evidence. Deduplicate by ID, URL and normalized text hash; replace a truncated record only after obtaining a verified full version. The source updater's longer-text preference alone does not prove completeness. [MengTo/Skills, write-like-meng-on-x/SKILL.md, Prevent Repetition; scripts/update-tweet-corpus.mjs]
+- Report sample count, date range, format mix, length/paragraph/list patterns and recurring openings/endings. Preserve observed contractions, fragments and rough edges without manufacturing typos. Check the subject, hook, anecdote and ending for repetition; a recurring view needs a new observation, mechanism or proof point. [MengTo/Skills, write-like-meng-on-x/SKILL.md, Prevent Repetition; Hone The Profile]
+- Refresh only within the authorized account view/export and persistence scope. Report blocked access and incomplete samples rather than inventing posts. The source's 20-to-50-post refresh and five-option drafting defaults are optional personal workflow choices, not requirements for every voice profile. [MengTo/Skills, write-like-meng-on-x/SKILL.md, Refresh The Voice Corpus; Draft]
+
 ## Applying it
 
 [coreyhaines31/marketingskills, product-marketing]

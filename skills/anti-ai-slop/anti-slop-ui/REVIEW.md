@@ -41,6 +41,8 @@ One review of a screen, flow or feature across accessibility, layout, writing, t
 
 [Jakub Krehel, better-interface] "Every finding cites `path/to/file:line` and shows the current implementation. When runtime behavior determines the result, source alone cannot support a visual finding and a screenshot alone cannot support a code finding." The first half matches this skill's "Never claim visual verification from code alone" ([SKILL.md](SKILL.md#3-absolute-no-purpose-excuses-these)); the second half is the converse.
 
+For a design-slop audit, separate an objective quality defect from a contextual pattern that may be intentional. Record observed, absent and unknown evidence; identify clusters and their shared cause rather than counting isolated style cues. Ask what a proposed deletion removes, what useful meaning would be lost and how to preserve the writer's or designer's intent. These are contextual review heuristics, not proof of AI authorship or a reason to assign an AI-generation score. Existing owner designs remain authoritative for their recorded choices. [MengTo/Skills, no-ai-design-slop/SKILL.md and references; audit-ai-design-slop/SKILL.md]
+
 ## 5. Severity: P0 to P3
 
 The source ranks HIGH, MEDIUM and LOW and ends in `Block` or `Approve`; the mapping onto P0 to P3 is "One scale" in [SKILL.md section 6](SKILL.md#6-delivery-report); [anti-slop-copy MICROCOPY.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-copy/MICROCOPY.md#review-format) already uses P0 to P3.

@@ -1,6 +1,6 @@
 ---
 name: anti-slop-copy
-description: "Writes and reviews website, marketing and product copy, including interface text. Use when writing landing pages, headlines, CTAs, emails or UI strings."
+description: "Writes and reviews website, marketing and product copy, including interface text and source-grounded personal voice. Use when writing landing pages, headlines, CTAs, emails or UI strings, or maintaining an authored-post voice corpus."
 ---
 
 # Anti-slop copy

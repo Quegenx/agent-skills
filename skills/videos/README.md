@@ -10,18 +10,18 @@ Category membership is the primary home, not an instruction to install every ski
 
 | Skill | Covers |
 |---|---|
-| [asset-prep](asset-prep/SKILL.md) | Product captures and prepared assets; supplied-media stream/color inspection, bounded local footage edits, captions and editor-handoff limits. Adds native app recording with a capture-clock action journal and complete encoded review; explicit alpha, sample-aspect-ratio and sidecar limits. Adds restoration, sequence assembly, temporal processing, caption semantics, proxies/masters and qualified delivery/repair routes. |
+| [asset-prep](asset-prep/SKILL.md) | Captures, media inspection, restoration, sequences and captions; live recording, edited browser demos and narration-to-picture retiming. |
 | [beat-grid](beat-grid/SKILL.md) | Measured music and the shared picture/sound clock; observed onsets kept separate from fitted beat positions. |
 | [frame-review](frame-review/SKILL.md) | Frame review and decoded-file checks; property-specific evidence, retained streams, edited boundaries and explicit sampling limits. Adds declared change regions and alpha sequence coverage. |
 | [make-video](make-video/SKILL.md) | Gated film production, engine selection and local footage routes; reusable product-film libraries with captures, claim checks and discrepancy records. |
-| [marketing-video](marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs. Source-scoped camera direction presets distinguish movement, lens, framing, focus, time and transitions. |
+| [marketing-video](marketing-video/SKILL.md) | Tool-based generation, avatars, repurposing and camera presets; consent-based digital twin evaluation separates face, voice and lip-sync. |
 | [seek-engine](seek-engine/SKILL.md) | Pure-time rendering, measured motion and film adapters; held-pose stop motion on one global pose grid alongside existing styles. |
 | [shotlist](shotlist/SKILL.md) | Storyboards, composition, type, demos and transitions; measured footage-selection candidates kept separate from semantic scene decisions. |
 | [sound-pass](sound-pass/SKILL.md) | Picture-driven effects, music and mastering; supplied-audio alignment, threshold-based quiet detection and bed-versus-master fades. Adds audio-only routing, channel-layout/side-information checks, noise-floor semantics and tempo/sample-count limits. |
 | [video-brief](video-brief/SKILL.md) | Briefs, source-qualified measured judgment, brand/world choices and narrated explainers. Adds reference roles, bounded fidelity and edit notes with explicit phase, magnitude and preserved intent. |
 | [video-help](video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
 | [video-setup](video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |
-| [voiceover](voiceover/SKILL.md) | ElevenLabs v4 narration with audio tags and character timestamps, cached takes, conditional caption mapping, bounded subtitles and source-qualified mouth timing. |
+| [voiceover](voiceover/SKILL.md) | ElevenLabs v4 narration, tags, timestamps, cached takes and captions; local voice profiles preserve per-request settings and mouth-timing limits. |
 
 ## Related task routes
 

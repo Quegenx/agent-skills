@@ -1,6 +1,6 @@
 ---
 name: browser-automation
-description: "Lets an agent drive a real browser and keeps the run reliable and safe: the snapshot and act loop with element refs, local versus cloud browsers and when to escalate, signed-in sessions with cookies treated as credentials, a constrained browser tool with a domain allowlist, recording a run with a second CDP connection and diagnosing it, self-improving task loops and judging their results, turning a converged run into a deterministic script, serverless browser functions, routing visual implementation inspection to pixel-reverse-engineer, and migrating browser-use scripts to Stagehand. Use when an agent must open pages, click, fill forms or log in, when a browser run fails or hangs, when an agentic browser script must become cheap and repeatable, or when asked how a site or visual effect was built."
+description: "Lets an agent drive a real browser and keeps the run reliable and safe: the snapshot and act loop with element refs, local versus cloud browsers and when to escalate, signed-in sessions with cookies treated as credentials, a constrained browser tool with a domain allowlist, recording a run with a second CDP connection and diagnosing it, self-improving task loops and judging their results, turning a converged run into a deterministic script, serverless browser functions, routing visual implementation inspection to pixel-reverse-engineer, capturing comparable visual and stitched-scroll evidence, and migrating browser-use scripts to Stagehand. Use when an agent must open pages, click, fill forms or log in, when a browser run fails or hangs, when an agentic browser script must become cheap and repeatable, or when asked how a site or visual effect was built."
 ---
 
 # Browser automation
@@ -11,6 +11,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Capture comparable before/key/result evidence, stitch actual scroll offsets and derive complete section crops | [VISUAL-CAPTURES.md](VISUAL-CAPTURES.md) |
 | The snapshot, ref, act loop; waits; failure heuristics; the `browse` and `agent-browser` CLIs | [SNAPSHOT-AND-ACT.md](SNAPSHOT-AND-ACT.md) |
 | Local, attached or cloud browser; matching the right page, CDP limits, stopping on blocks, cloud sessions and keep-alive | [LOCAL-AND-CLOUD.md](LOCAL-AND-CLOUD.md) |
 | Reusing a signed-in session: exporting cookies, persistent contexts, scheduled jobs | [SIGNED-IN-SESSIONS.md](SIGNED-IN-SESSIONS.md) |

@@ -1,6 +1,6 @@
 ---
 name: webgl
-description: "Ships WebGL on live web pages: small always-on shader widgets in product UI (one shared context, one frame loop with a 30fps cap and visibility pause, fragment cost, real optics, DPR chosen by shader cost, context loss and restore, fallbacks, SSR, accessibility), Three.js and React Three Fiber audits (severity by render loop, disposal, colour space, resize and pixel ratio, a visual rubric), and scroll-driven 3D launch pages (content and scene systems, the scene contract, glTF, Draco, KTX2 and HDR loaders, budgets, quality tiers, an asset manifest and a blueprint), with a GPU probe script. Use when adding, reviewing or debugging a shader, canvas or Three.js element on a website or app, auditing an R3F scene, or building a 3D product launch page."
+description: "Ships live WebGL widgets, Three.js/R3F scenes and 3D launch pages with bounded rendering, fallbacks, resource ownership, color and resolution checks. Covers procedural cloth/paper/wood, landscapes/seasons/weather, ocean/underwater/sky rays, object inspection and guided tours, projected asset quality, continuous scroll worlds and particle/scan/paper/worker effects. Use when adding or reviewing a shader or Three.js canvas, auditing R3F, building a 3D launch page, tuning a procedural material or environment, adding a camera tour, or integrating scroll-driven worlds and GPU effects."
 ---
 
 # WebGL
@@ -9,12 +9,21 @@ WebGL on a live page runs on hardware you don't control: contexts get evicted an
 
 Apply only the routes and checks for the selected job. Read a linked skill's named file from its installed folder when available, or from the linked source. Report an unavailable required reference instead of inventing it. [skill-authoring, DISTRIBUTION.md#composing-skills]
 
+Selected material, environment, camera, asset and effect studies also draw on [MengTo/Skills, 3d-cloth-material; 3d-paper-material; 3d-wood-material; 3d-wood-lighting-scorecard; 3d-falling-leaves; falling-leaves; 3d-four-seasons; 3d-sky-background; threejs-landscape; threejs-weather; threejs-towers; 3d-ultra-realistic-water; 3d-underwater-god-rays; 3d-sky-rays; 3d-orbit-inspect-demo; 3d-virtual-tour; 3d-high-poly-models; 3d-high-resolution-textures; 3d-retina-resolution]. Their source scene values are recipes, not general platform limits. Browser game state, combat, inventory, rigs, editor drafts and gameplay acceptance live in [web-games](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-games/SKILL.md).
+
 | The job | Read |
 |---|---|
 | A shader widget rendered many times per page: the live page vs video split, one shared context, the frame loop, fragment cost, glass and dispersion optics, transparency, DPR, texture cache, image decoding, context loss and restore, `failIfMajorPerformanceCaveat`, fallbacks, `"use client"` and SSR, reduced motion and ARIA, deterministic identity, verifying without eyes, nonblank-canvas proof and test-suite WebGL disabling | [WIDGETS.md](WIDGETS.md) |
 | Auditing a Three.js or R3F app: severity by render loop, the six-step workflow, P1 to P3 findings, the corrected `args` rule, disposal and `renderer.info`, the ten-row visual rubric and its causes, `outputColorSpace`, resize and `setPixelRatio`, `PerformanceMonitor` | [THREEJS-AND-R3F.md](THREEJS-AND-R3F.md) |
 | A scroll-driven 3D launch page: where the owner's landing page differs, content and scene systems, failure layers, data schemas, shell and nav, visual system, the scene contract, `GLTFLoader`, `DRACOLoader`, `KTX2Loader.detectSupport`, `HDRLoader`, budgets, quality tiers, asset manifest, glTF export checklist, the blueprint, canvas checks | [LAUNCH-SITES.md](LAUNCH-SITES.md) |
 | Study a selected folded-wave visual: shape/surface/framing channels, overlap, source-specific renderer settings and matched comparison | [FOLDED-WAVES.md](FOLDED-WAVES.md) |
+| Cloth rest-metre weave/folds, paper fibre/tear/transmission, procedural timber and a scoped wood-light scorecard | [MATERIAL-STUDIES.md](MATERIAL-STUDIES.md) |
+| Shared terrain/prop height fields, sky/season/weather state, coupled leaf tumble/drift and construction clipping/caps | [SCENE-ENVIRONMENTS.md](SCENE-ENVIRONMENTS.md) |
+| Ocean analytic normals/footprint filtering, buoyancy/reflections, underwater world-field shafts and occlusion-aware sky rays | [WATER-AND-LIGHT.md](WATER-AND-LIGHT.md) |
+| Hover/click-to-lift object inspection, guided routes, room registries, safe interrupted camera handoffs and mode restoration | [CAMERA-TOURS.md](CAMERA-TOURS.md) |
+| Projected geometry/LOD, texel density/GPU storage, explicit retina controls and physical post-target synchronization | [SCENE-ASSET-QUALITY.md](SCENE-ASSET-QUALITY.md) |
+| Continuous scroll worlds with exact semantic progress, a damped visual camera and coherent interruption/resume state | [SCROLL-WORLDS.md](SCROLL-WORLDS.md) |
+| Particle trail pools, shared-distance scan reveals, paper/FBO transitions and optional worker-loader mechanics | [INTERACTIVE-EFFECTS.md](INTERACTIVE-EFFECTS.md) |
 | Which branch this machine takes (strict context, software rasterizer, context cap, blit orientation), as JSON | [scripts/gpu-probe.html](scripts/gpu-probe.html) |
 | Licence notices for the copied script and text | [scripts/LICENSE-webgl-components.txt](scripts/LICENSE-webgl-components.txt), [LICENSE-react-doctor.txt](LICENSE-react-doctor.txt) |
 

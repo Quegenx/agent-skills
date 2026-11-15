@@ -2,6 +2,8 @@
 
 Use these only when the requested direction selects one of the supplied `borderless`, `grid` or `tactile-design` systems. They are different production choices, not a merged default style. The existing [purpose-based filter](SKILL.md#4-allowed-with-a-written-reason) remains the generic policy; `app-ui`, `landing-page-ui` and `agent-chat-ui` keep their exact owner designs. A source's instruction to remove an owner's accepted styling is a conflict to report, not authority to change it. [borderless/SKILL.md; grid/SKILL.md; tactile-design/SKILL.md; repository owner-design rule]
 
+For named whole-page art directions and exact source-scoped material recipes, read [visual-system presets](STYLE-PRESETS.md). For documentary, portfolio, service-booking, product-proof and operational page narratives, including twelve optional portfolio motion recipes, read [editorial page presets](EDITORIAL-PAGE-PRESETS.md). These remain selected alternatives under the owner-design rule above. [MengTo, style SKILL.md collection; editorial-portfolio-chapters ARTICLE.md]
+
 ## A border-removal audit
 
 [borderless, SKILL.md, Two modes, The test and Check loop]

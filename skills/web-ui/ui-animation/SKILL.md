@@ -1,6 +1,6 @@
 ---
 name: ui-animation
-description: "Designs and builds website and web-app animations that feel deliberate and stay smooth: durations, curves and springs by element, staggers, enter and exit, layout and shared-element transitions, gestures, scroll-linked motion, collections, reduced motion. React with Motion, and CSS. Use when adding, tuning or reviewing animations or transitions in a web interface; React Native and Expo motion routes to the global React skill."
+description: "Designs and builds website and web-app animations that feel deliberate and stay smooth: durations, curves and springs by element, staggers, enter and exit, layout and shared-element transitions, gestures, scroll-linked motion, collections, accessible marquee seams, reduced motion. React with Motion, and CSS. Use when adding, tuning or reviewing animations or transitions in a web interface; React Native and Expo motion routes to the global React skill."
 ---
 
 # UI animation

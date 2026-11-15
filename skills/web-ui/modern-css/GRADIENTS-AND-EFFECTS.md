@@ -395,6 +395,14 @@ form {
 
 [Jakub Krehel, make-interfaces-feel-better] The `--shadow-border` recipe (a three-layer light ring, a single white ring in dark mode, dividers, table cells and input outlines kept as borders) is in [anti-slop-ui DETAILS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/anti-ai-slop/anti-slop-ui/DETAILS.md#surfaces-and-image-outlines).
 
+### Masked border
+
+Preserve a complex background with a pointer-transparent gradient pseudo-element: inherit radius, use ring-width padding, and exclude a content-box mask from a full-box mask. `mask-composite: exclude` retains non-overlapping regions ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/mask-composite)). Check target support before adding the source's prefixed mask/xor form. Keep content/focus outside the mask; inspect both themes for double borders and radius mismatch. Source palette/widths do not replace product tokens. [MengTo/Skills, css-border-gradient/SKILL.md, Masked Pattern and Quick Checks]
+
+### Progressive backdrop blur
+
+Overlap masked `backdrop-filter` layers with increasing blur; reverse mask direction for the opposite edge. The source's eight layers (0.5 to 64px) are a preset approximation, not native variable blur or a performance guarantee. Keep overlays pointer-transparent below modals, with a readable fallback. The backdrop must show through a transparent/partial overlay ([MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/backdrop-filter)). Inspect band seams while scrolling; measure cost and reduce layers, blur or area as needed. [MengTo/Skills, progressive-blur/SKILL.md]
+
 ## Shapes and clipping
 
 - **`shape()` draws clip paths in CSS units:** "Draw complex clipping paths using standard CSS syntax and dynamic units (like `rem` or `calc()`) instead of being locked into rigid SVG pixel coordinates." Support: Baseline newly available since 2026-02-24 (Chrome 135, Firefox 148, Safari 18.4; [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/shape)). More in [svg CLIP-AND-MASK.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/svg/CLIP-AND-MASK.md). [nerdy.dev: CSS Recently In All Browsers](https://nerdy.dev/CSS-recently-in-all-browsers) (2026-04-26)
@@ -466,6 +474,7 @@ img:hover {
 
 ## Prove it
 
+- **Masked rings/blur:** decoration disabled preserves content, focus and clicks; rings align, blur bands have no seams and measured cost fits the device budget. [MengTo/Skills, css-border-gradient/SKILL.md; progressive-blur/SKILL.md]
 - **Hard stops:** zoom in on every hard line; a stop of `0` or a `0%` hint produces no visible fade band.
 - **Chart mask:** at `--thickness: 3px` the ring's inner edge is smooth, not stair-stepped; removing the `+ 1px` makes it jagged.
 - **Interpolation fallback:** in a browser without gradient interpolation the gradient still paints (the empty `--_space` keeps the declaration valid); with it, DevTools shows `in oklch` in the computed `background`.

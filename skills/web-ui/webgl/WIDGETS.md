@@ -115,7 +115,7 @@ The source: "Listen for `webglcontextlost`, call `preventDefault()`, tear down t
 - **Any** server rendering, RSC or not, imports the module on the server. So no browser APIs (`window`, `document`, `matchMedia`) at module scope, only inside functions called after mount. This one bites in Astro, Remix, Gatsby and a Vite SSR build just as hard as in Next.
 - Spread object props into primitives for effect dependencies. An inline `source={{...}}` object re-registers the instance on every render when the effect depends on object identity.
 - Registration and teardown belong in one effect returning a cleanup. The imperative handle (pointer position, visibility) goes through refs rather than state, because pointer moves must not re-render React.
-- Load the widget's code with a dynamic `import()` on the screen that needs it ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PERFORMANCE.md)).
+- Load the widget's code with a dynamic `import()` on the screen that needs it ([ui-animation PERFORMANCE.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/ui-animation/PERFORMANCE.md)). Resolve optional effects' motion/input/visibility and actual renderer-capability eligibility before importing the heavy module. Guard late asynchronous completion after unmount. A lazy component mounted before the eligibility decision can still request its code. [MengTo/Skills, add-shader-cursor-trail/SKILL.md and assets/react/CursorTrailGate.tsx]
 
 ## Accessibility and layout
 

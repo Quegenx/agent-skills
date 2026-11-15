@@ -1,6 +1,6 @@
 ---
 name: asset-prep
-description: "Captures and prepares what a video animates: site screenshots, brand colours, fonts and logos, cutouts, cleanup and upscaling, plus inspection and local edits of supplied footage. Use when a video shows a real product or site, or supplied images or footage need preparing."
+description: "Captures and prepares what a video animates: site screenshots, brand colours, fonts and logos, cutouts, cleanup and upscaling, plus edited browser-demo reconstruction, inspection and local edits of supplied footage. Use when a video shows a real product or site, or supplied images or footage need preparing."
 ---
 
 # Asset prep
@@ -15,6 +15,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 
 | The job | Read |
 |---|---|
+| Align scratch narration, real takes and picture through verified word anchors and frame endpoints | [NARRATION-RETIMING.md](NARRATION-RETIMING.md) |
+| Reconstruct an edited browser demo from real screenshots with explicit cursor, click and camera choreography | [BROWSER-DEMO-RENDERING.md](BROWSER-DEMO-RENDERING.md) |
 | Record a real app flow with the bundled recording source | [APP-RECORDING.md](APP-RECORDING.md) |
 | Record native app input and transitions, bind the action journal to capture time, and review the complete encoded loop | [NATIVE-APP-RECORDING.md](NATIVE-APP-RECORDING.md) |
 | Inspect supplied footage, its streams, geometry, color and evidence limits | [MEDIA-INSPECTION.md](MEDIA-INSPECTION.md) |
