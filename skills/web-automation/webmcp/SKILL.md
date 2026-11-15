@@ -12,6 +12,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | The job | Read |
 |---|---|
 | Finding what to expose in a codebase: the boundary, tracing each capability, search signals, exclusions, the inventory table | [INVENTORY.md](INVENTORY.md) |
+| Move existing registrations while preserving names, handlers, route/auth gates and cleanup; compare behavior separately from analytics attribution | [MIGRATING-TOOLS.md](MIGRATING-TOOLS.md) |
 | The browser API, tool names, schemas, results, risk classes and annotations, imperative vs declarative, registering in the app | [TOOL-CONTRACT.md](TOOL-CONTRACT.md) |
 | A standalone init script from a live URL: exploring the page, the manifest, authoring tool source, the emitted script, its validation | [INIT-SCRIPT.md](INIT-SCRIPT.md) |
 | Proving tools are discovered and invoke: the test ladder, Stagehand, the expectation config, the consequential gate, zero-tools failures | [VALIDATION.md](VALIDATION.md) |

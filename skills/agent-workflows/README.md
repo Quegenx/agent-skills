@@ -1,8 +1,8 @@
 # Agent workflows skills
 
-Use and customize existing agents such as Codex and Claude: skill authoring, developer-agent onboarding audits, guided learning and coding-host operations. Details in the [main README](../../README.md#agent-workflows).
+Use and customize existing agents such as Codex and Claude: skill authoring, developer-agent onboarding audits, guided learning, coding-host operations and native desktop automation. Details in the [main README](../../README.md#agent-workflows).
 
-4 skills.
+5 skills.
 
 Category membership is the primary home, not an instruction to install every skill here. Apply the selected job's routes and checks. Required selected-branch dependencies and optional related skills remain distinct.
 
@@ -12,6 +12,7 @@ Category membership is the primary home, not an instruction to install every ski
 |---|---|
 | [agent-dx-audit](agent-dx-audit/SKILL.md) | Task-based audits of agent-facing docs, SDKs and skills: target/goal intake, personas, scoped credentials, discovery traces, onboarding scores and an evidence-backed HTML report. |
 | [coding-agent-harness](coding-agent-harness/SKILL.md) | Coding-agent session diagnosis, Claude host workflows, session scheduling and completion evidence; separate from a product agent runtime. Adds operator decision trails, scoped context pickup, human decisions and completion-inbox reconciliation. |
+| [desktop-automation](desktop-automation/SKILL.md) | Native app operation through agent-desktop: scoped accessibility refs, delivery-aware recovery, input, windows, sessions and sandbox state. |
 | [guided-learning](guided-learning/SKILL.md) | Learning missions, cited resources, observed evidence, interactive lessons and reusable reference material. |
 | [skill-authoring](skill-authoring/SKILL.md) | Skill structure, routing, descriptions, optional scripts, audit contracts, distribution and authorized measurement; portable named dependencies. Adds evidence-based reflection lenses and enforcement of recurring corrections. |
 

@@ -23,7 +23,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | SMIL: `animate`, `set`, `animateTransform`, `animateMotion`, pacing, timing and chaining, JavaScript control, support and whether to use it | [SMIL.md](SMIL.md) |
 | Namespace-aware DOM creation, WAAPI, `requestAnimationFrame`, path length and points, React and SVGR, Motion, Next.js setup, reduced motion and WCAG pause rules | [JS-AND-REACT.md](JS-AND-REACT.md) |
 | Three-line icons that morph into any other: collapsed lines, rotation groups, the icon table, the transition algorithm, the starter prompt | [MORPHING-ICONS.md](MORPHING-ICONS.md) |
-| Inline vs `<img>` vs CSS vs `<object>`, image-mode restrictions, namespaces, data URIs, sprites with `symbol` and `use`, fragment views, `currentColor` icons, icons beside text (stroke by weight, size, outline and fill), a static SVG favicon, `foreignObject`, markers | [EMBEDDING-AND-ICONS.md](EMBEDDING-AND-ICONS.md) |
+| Add a missing glyph to an existing set: reuse, family measurements, outliers, requested morphs, peer review and optimizer checks | [CUSTOM-ICONS.md](CUSTOM-ICONS.md) |
+| Inline vs `<img>` vs CSS vs `<object>`, image-mode restrictions, namespaces, data URIs, sprites with `symbol` and `use`, fragment views, `currentColor` icons, icons beside text (stroke by weight, size, outline and fill), optional Kubai components, a static SVG favicon, `foreignObject`, markers | [EMBEDDING-AND-ICONS.md](EMBEDDING-AND-ICONS.md) |
 | Informative vs decorative SVG, `role="img"`, `title` and `desc`, icon buttons, links, tooling that strips names | [ACCESSIBILITY.md](ACCESSIBILITY.md) |
 | SVGO presets and risky plugins, SVGR's defaults, rendering cost, where scripts hide, serving headers, user uploads, DOMPurify | [OPTIMIZING-AND-SECURITY.md](OPTIMIZING-AND-SECURITY.md) |
 

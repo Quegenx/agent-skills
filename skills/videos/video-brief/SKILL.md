@@ -19,6 +19,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Video copy budgets, reading floor and string audit | [COPY.md](COPY.md) |
 | Named film styles and motion languages | [STYLES.md](STYLES.md) |
 | Captured film prompt structures | [SPEC-PATTERNS.md](SPEC-PATTERNS.md) |
+| Expand a short brief, scope reference takes or make an edit note unambiguous | [BRIEF-REFINEMENT.md](BRIEF-REFINEMENT.md) |
 | Narrated teaching, documentary and real-words approval | [EXPLAINERS.md](EXPLAINERS.md) |
 | Measured judgment and source-specific alternatives | [MEASURED-JUDGMENT.md](MEASURED-JUDGMENT.md) |
 | Measured ideation and PAGE | [MEASURED-IDEATION.md](MEASURED-IDEATION.md) |
@@ -117,6 +118,8 @@ When a reference is given, specify the look and the constraints, not the library
 ## Spec patterns
 
 [SPEC-PATTERNS.md](SPEC-PATTERNS.md) holds the prompt structures that produced the films people copied (the UI-morph XML spec, the launch-film spec, the director's brief for long autonomous runs, the showreel one-liner and its variants). It also covers the voiceover-led launch film, the real-site promo, the frame-exact sting, the repo-based product film, speech typography, the carrier-dot film and real footage. [EXPLAINERS.md](EXPLAINERS.md) separately owns the narrated explainer with its talking-head, split-screen, Manim and history variants; SPEC-PATTERNS retains the illustrated short from generated stills and a table of one-line starters by kind of film. Use one as the skeleton when the user asks for a prompt, when the film type matches, or when turning a loose request into a buildable spec.
+
+For a short draft or revision, use [BRIEF-REFINEMENT.md](BRIEF-REFINEMENT.md) to distinguish a new scene from a delta, scope each reference's use and preserve the parts the author wants kept. [blank-page, SKILL.md; references/finding-references.md]
 
 ## Done when
 

@@ -76,6 +76,29 @@ In Motion, "Physics-based spring animations are set via `stiffness`, `damping` a
 - The `visualDuration` presets in [TIMING.md](TIMING.md) are duration-based too: keep them for things nobody throws.
 - `type: "inertia"` "decelerate[s] a value based on its initial velocity, usually used to implement inertial scrolling" ([motion.dev](https://motion.dev/docs/animate)).
 
+## Own the gesture, not the preview's input
+
+[fluid-interactions, references/pointer-events.md, references/direction-lock.md and references/gesture-modes.md]
+
+- Track the initiating pointer ID and ignore additional pointers. End through one cleanup path for `pointerup`, `pointercancel` and `lostpointercapture`, resetting every gesture field and owned frame loop. Only `pointerup` is a normal release; cancellation must not commit a flick using stale velocity.
+- The supplied `use-drag.ts` passes measured velocity to its end callback for cancellation as well as release, contrary to its pointer-events reference's zero-velocity cancellation policy. Preserve the end reason in a controller that needs that distinction; do not assume using the helper supplies it. [fluid-interactions, code/use-drag.ts; references/pointer-events.md, Ending a gesture]
+- Capture immediately for a surface exclusively dragged; defer capture until direction ownership is decided when controls or native scrolling share the surface. Measure movement from the lock point to avoid a threshold-sized jump. The source's roughly 10 px threshold and 2:1 axis ratio are tuning choices, not platform requirements.
+- A horizontal custom gesture can leave vertical panning to the browser with `touch-action: pan-y`; the reverse uses `pan-x`. Bare axis values do not preserve pinch zoom: combine the selected axis with `pinch-zoom` when it should remain available. Restrict touch suppression to the owned gesture. The source's `none` disables browser panning and zoom on that region, so it is not a neutral default. [MDN touch-action](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action)
+- Handle failure to capture a pointer that has already ended. `setPointerCapture` throws `NotFoundError` for a pointer ID that matches no active pointer. A child's lost-capture event can bubble; distinguish it from loss of the container's own capture before settling the parent. [fluid-interactions, references/pointer-events.md; MDN setPointerCapture](https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture)
+- Do not add a destructive full-swipe outcome to a row whose existing gesture only reveals actions. Show the intended outcome before release and keep meanings related when a gesture has several modes.
+
+## Decide from intent; draw from the current value
+
+[fluid-interactions, references/springs.md, references/gesture-modes.md, references/scrubbing.md and references/swipe-back.md]
+
+- Keep the chosen destination separate from the interpolated value. A spring can look settled while still a fraction from its target; that tail must not keep an apparently closed row open or refuse new input. Use the current value to continue a drag without a jump, and the recorded destination to decide which state is intended.
+- Guard completion cleanup against a newer target. A reversed close must not later unmount the reopened content. Do not use a blanket animation-in-progress flag to lock input; reconcile a new action with the current transition.
+- If a mode depends on a pause, evaluate its preview on the gesture clock while held: a stationary finger supplies no new movement event. Use elapsed time for adaptation so a higher refresh rate does not change the threshold's behavior; stop the loop on release and teardown.
+- Fine scrubbing accumulates horizontal deltas at a rate chosen by distance from the track. Changing that rate must not jump the playhead to the finger's absolute position. Pause during the scrub, remember whether playback was active, and resume only if it was. Keep the rate and current time visible while held.
+- The source describes spring `response` as approximately the arrival time. Its conversion actually defines the undamped natural period, not a guaranteed settle time; distinguish the fitted curve, release velocity and library rest criteria. The conversion and exact response model already live in [PHYSICS.md](PHYSICS.md#modal-and-physical-numbers). [fluid-interactions, references/springs.md and code/physics.ts; PHYSICS.md, Modal and physical numbers]
+
+Every functional custom drag also needs an equivalent single-pointer path without dragging, separately from keyboard operation, except where the WCAG criterion's essential or unmodified user-agent exception applies. Arrow keys alone do not satisfy that pointer requirement. [W3C Understanding SC 2.5.7](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html)
+
 ## Follow the pointer through a spring
 
 "Tying visual changes directly to mouse position feels artificial because it lacks motion"; spring it, and only where it's decorative: "If this were a functional graph in a banking app, no animation would be better" [Emil Kowalski, emil-design-eng].
