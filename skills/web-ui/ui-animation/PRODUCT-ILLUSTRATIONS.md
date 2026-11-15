@@ -32,6 +32,14 @@ Authored miniature interfaces for a feature card, docs figure or marketing hero,
 - Review pause, resume, replay, interruption, reduced motion and return from offscreen. A paused new scene must finish its measurements without advancing the story. A clean geometry scan is not visual approval; an empty, short or gapped recording is inconclusive.
 - Keep the [gesture evidence](GESTURES.md#authored-cursors-and-drags) and [live pacing checks](PERFORMANCE.md#measuring) with their canonical owners. A deterministic export does not establish smooth live playback.
 
+## Diagnose one behavior with a matched pair
+
+[stageshow, references/teaching.md, Making a comparison; What a pair cannot show]
+
+An optional bad/good teaching pair keeps content, layout, endpoints and input timing equal while changing one behavior. Use one shared timeline, name the exact difference and provide replay. Watch at normal speed before slowing it down; if the lesson is invisible there, improve the pair. Reduced-motion endpoints may be identical because the difference lives in the transition.
+
+Keep the comparison readable at its real host size, stacking the halves when needed. A pair can isolate one failure, but cannot establish the actual demo's story continuity, crop, handoff or live input behavior. Report what the pair demonstrates separately from what was observed in the real host.
+
 ## Prove it
 
 [stageshow, references/verify.md, Hand over; references/rehearse.md, The last pass]

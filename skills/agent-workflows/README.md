@@ -14,7 +14,7 @@ Category membership is the primary home, not an instruction to install every ski
 | [coding-agent-harness](coding-agent-harness/SKILL.md) | Coding-agent session diagnosis, Claude host workflows, session scheduling and completion evidence; separate from a product agent runtime. Adds operator decision trails, scoped context pickup, human decisions and completion-inbox reconciliation. |
 | [desktop-automation](desktop-automation/SKILL.md) | Native app operation through agent-desktop: scoped accessibility refs, delivery-aware recovery, input, windows, sessions and sandbox state. |
 | [guided-learning](guided-learning/SKILL.md) | Learning missions, cited resources, observed evidence, interactive lessons and reusable reference material. |
-| [skill-authoring](skill-authoring/SKILL.md) | Skill structure, routing, descriptions, optional scripts, audit contracts, distribution and authorized measurement; portable named dependencies. Adds evidence-based reflection lenses and enforcement of recurring corrections. |
+| [skill-authoring](skill-authoring/SKILL.md) | Skill structure, routing, descriptions, optional scripts, audit contracts, distribution and authorized measurement; portable named dependencies. Adds evidence-based reflection lenses and enforcement of recurring corrections. Adds accepted-correction pairs, one rule owner and scoped existing-code sweeps. |
 
 ## Related task routes
 

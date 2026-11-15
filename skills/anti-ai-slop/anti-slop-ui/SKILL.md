@@ -20,6 +20,8 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Recommend a small measured UI improvement shortlist, with an evidence gate and explicit exceptions | [IMPROVEMENT-SHORTLIST.md](IMPROVEMENT-SHORTLIST.md) |
 | Open every state a screen can reach on one page while doing visual work | [STATE-PAGE.md](STATE-PAGE.md) |
 | Build several named directions behind a picker and keep the chosen one | [VARIANTS.md](VARIANTS.md) |
+| Explore recurring interaction batches, record actual Keep/Kill choices and retain clean accepted components | [EXPERIMENTS.md](EXPERIMENTS.md) |
+| Compare optional borderless, grid and tactile directions while preserving accepted owner designs | [STYLE-ALTERNATIVES.md](STYLE-ALTERNATIVES.md) |
 | Build a screen from a design file so it matches | [FROM-DESIGN.md](FROM-DESIGN.md) |
 | Find inspected references for a specific surface decision, with source links and scoped takes | [REFERENCE-RESEARCH.md](REFERENCE-RESEARCH.md) |
 | Reconstruct a live component and its animations from actual DOM, CSS, assets and behavior | [pixel-reverse-engineer](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/pixel-reverse-engineer/SKILL.md) |

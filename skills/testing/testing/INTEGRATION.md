@@ -25,6 +25,8 @@ Use the numbers as a starting point, not a quota: classify recent bugs by the sm
 - Preserve intentionally malformed/adversarial fixtures and their expected rejection. Updating every fixture to become valid can delete the behavior the suite exists to protect.
 - A missing required test/report must not become a green result. Optional lanes may skip only with their stated prerequisites and limits recorded.
 - A faster run that removes a distinct assertion, lifecycle boundary or concurrency case has changed coverage; compare equivalent completed work before claiming improvement.
+- Assert generated fixture properties before relying on them: the generator or encoder may normalize away the dimension, tag, format or other condition the test needs. After adding a validation gate, confirm an existing allowed-path fixture still reaches its intended behavior; add a refusal fixture separately rather than silently turning the old coverage into a validation-only check. Preserve the deliberately malformed cases above. [kajisho5/ffmpeg-skill, .claude/skills/sibling-sweep/SKILL.md, The loop; references/ci-platform-pitfalls.md, FFmpeg 7.1; wdm0006/python-skills, destructive-operations/SKILL.md, Testing]
+- Recovery tests use the [narrow failure-injection boundary](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/debugging/EXTERNAL-CONTRACTS.md#inject-only-the-failure-being-investigated), confirming the intended path was reached rather than accepting an earlier instrumentation failure. [wdm0006/python-skills, writing-defect-reports/SKILL.md, Pick the narrowest injection point]
 
 ## Integration tests against real infrastructure
 

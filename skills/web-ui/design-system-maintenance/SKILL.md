@@ -13,6 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 |---|---|
 | Scope the work and preserve the installed system | [SKILL.md](SKILL.md) |
 | Inventory surfaces, extract roles, map values and establish component readiness | [EXTRACTION-AND-MAPPING.md](EXTRACTION-AND-MAPPING.md) |
+| Document governing design language or a reconstructed URL draft with candidate evidence and promotion gates | [DESIGN-EVIDENCE.md](DESIGN-EVIDENCE.md) |
 | Document a component, measured anatomy sheet or instrumented interaction poster from its real implementation | [COMPONENT-DOCS.md](COMPONENT-DOCS.md) |
 | Explore real components in fixed comparison groups or a movable workspace, preserving native input and safe previews | [COMPONENT-EXPLORERS.md](COMPONENT-EXPLORERS.md) |
 | Move screens onto the system with captured visual and behavior evidence | [MIGRATION.md](MIGRATION.md) |

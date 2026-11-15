@@ -99,6 +99,21 @@ React Doctor 0.9.18's probe instead adds up every `layout-shift` value without `
 
 The same probe takes LCP as the largest `startTime` among the recording's `largest-contentful-paint` entries (observed with `buffered: true`). [web.dev: Largest Contentful Paint](https://web.dev/articles/lcp): "The browser will stop reporting new entries as soon as the user interacts with the page (via a tap, scroll, or keypress)", so the number describes the page load before the first input, not the recorded interaction.
 
+## Interpret a lightweight frame recorder
+
+[raphaelsalaja/skills, frames/SKILL.md and observe.js]
+
+The source's alternate workflow records three repetitions at 4x CPU slowdown, then repeats the same actions and slowdown after a fix. Record the chosen throttle, browser and build and restore the throttle afterward. Its statement that 4x represents a mid-range phone is a proxy, not a calibrated hardware equivalence; this skill's same-condition samples and real-device limits still apply.
+
+If using the supplied `observe.js` upstream, keep its fields scoped to their actual calculations:
+
+- `refresh` is derived from the median recorded rAF callback gap; `dropped` estimates missed intervals relative to that median. Neither independently measures the physical display's refresh rate or every presented frame.
+- `layoutShift` sums eligible shifts during the recording. Call it total layout shift, using the session-window distinction above.
+- `interactions` groups by interaction id and retains the longest event per group. The slowest local observation is not field INP or a population percentile.
+- Preserve the support booleans returned by `start()`. Unsupported capture is unknown, not zero cost. Keep the tab visible; avoid calling `start()` again before stopping the current recording, since the helper can leave multiple loops and observers active.
+
+Use a full performance trace when the summary cannot attribute a long frame. The recorder's budget fields do not replace the API definitions or establish that a particular source line caused the measured delay. No copy of the helper is bundled here. [frames/SKILL.md; observe.js; existing RUNTIME-TRACE.md, What each signal means]
+
 ## Connect measurements to source
 
 [React Doctor, performance] "Search the repository for measured component display names and event handlers. Confirm that each candidate runs in the recorded flow before reporting it."

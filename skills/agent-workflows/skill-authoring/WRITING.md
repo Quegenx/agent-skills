@@ -116,6 +116,14 @@ Think of skills as lightweight guides that let Claude find information when need
   "If a rule cannot stay reliable without many exceptions, move it back to agent guidance."
   For the rule itself (its contract, false positives treated as correctness bugs, edge cases, real-code hits, fuzzing and FP/FN audits): [lint-rule-authoring LINT-RULES.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/lint-rule-authoring/LINT-RULES.md).
 
+## Turn a repeated correction into a project rule
+
+[raphaelsalaja/skills, rule/SKILL.md]
+
+An explicit “make it a rule”, “always”, “never” or “remember this” asks for durable guidance; after the same correction twice, propose it rather than silently changing policy. Read the existing instruction files, put the accepted rule with its topic owner, and give it a short broken/fixed pair drawn from the actual correction. Keep the rule to one to three sentences plus the pair; other locations point to its one home.
+
+Resolve a contradiction with the decision owner instead of leaving two incompatible project instructions active. This differs from this repository's source-comparison documents, which deliberately retain tagged alternatives. When the authorized change includes applying the new rule to current code, find its existing violations, fix them within that scope and list the affected files. Writing guidance alone does not prove the code follows it. The source's automatic sweep does not expand a documentation-only request. [rule/SKILL.md, Give it one home and Sweep the code; repository authorization rules]
+
 ## Rule files: one rule, an Incorrect and a Correct
 
 Vercel's React and React Native skills keep each rule in its own file and compile them for agents [Vercel, react-best-practices], [Vercel, react-native-skills]:

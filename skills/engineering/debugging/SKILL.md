@@ -13,6 +13,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 |---|---|
 | Classify the request, build a reproducer, trace the cause and choose a repair | [SKILL.md](SKILL.md) |
 | Test a falsifiable claim, compare evidence and state a verdict | [VERIFICATION.md](VERIFICATION.md) |
+| Probe exact upstream calls, inspect actual requests and response shapes, sweep the failure class and target fault injection | [EXTERNAL-CONTRACTS.md](EXTERNAL-CONTRACTS.md) |
 
 ## The rules
 

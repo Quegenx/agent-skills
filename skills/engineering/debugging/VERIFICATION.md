@@ -52,6 +52,14 @@ Give one verdict for the specific claim, followed by the claim, artifacts or met
 
 For a model's fidelity, bounds and sensitivity, use [formal verification](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/testing/FORMAL-VERIFICATION.md). For launch, driving, evidence and cleanup across a project's actual surfaces, use [project verification](https://github.com/Quegenx/agent-skills/blob/main/skills/testing/testing/PROJECT-VERIFICATION.md). These are selected verification branches, not permission to execute them. [new/skills/create-formal-verification-skill, SKILL.md; new/skills/create-verification-skill, SKILL.md]
 
+## Report the layer actually established
+
+[wdm0006/python-skills, writing-defect-reports/SKILL.md, The anomaly is real; Your earlier note; Withdraw published claims]
+
+A finding's title should name the outermost layer its evidence supports. If a helper is wrong but a downstream gate absorbs it, report the internal defect and that absorption; do not claim the user-visible symptom occurred. An unreachable script or branch is a reachability finding, not proof the shipped build or feature failed. Use the existing [reachable-trigger review](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md#evidence-first-findings).
+
+Recheck earlier notes against the current reviewed source and decision records. If a previously published claim proves wrong, correct it where the original readers saw it, stating the wrong claim and supported replacement. Outward corrections still require the task's authorization; record a correction that cannot be posted rather than silently treating the old statement as repaired.
+
 ## Artifacts
 
 [cursor/plugins, verify-this/SKILL.md]

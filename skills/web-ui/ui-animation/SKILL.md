@@ -29,6 +29,12 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Per-frame math in your own loop: lerp and exponential approach, a spring by hand, physics, facing the direction of travel, sine waves, sawtooth loops, controlled randomness, piecewise segments | [MATH.md](MATH.md) |
 | Drawn characters and scenes: face layers, moving holds, delayed follow-through, limbs, weight, prop contact and camera-dependent proportions | [ILLUSTRATION-ACTING.md](ILLUSTRATION-ACTING.md) |
 | Authored product illustrations: a readable poster, retained UI tracks, cause and payoff, loop resets and rehearsal in the real host | [PRODUCT-ILLUSTRATIONS.md](PRODUCT-ILLUSTRATIONS.md) |
+| Compose product figures and feature grids: heroes, satellites, crop ownership, native-size copy and contrasting neighbors | [ILLUSTRATION-COMPOSITION.md](ILLUSTRATION-COMPOSITION.md) |
+| Explain product relationships with measured leaders, aggregation, transfer, shared trunks and ongoing phases | [PRODUCT-RELATIONSHIPS.md](PRODUCT-RELATIONSHIPS.md) |
+| Flat object characters: recognizable silhouettes, sphere-projected capsule eyes and numeric mood blends | [OBJECT-AVATARS.md](OBJECT-AVATARS.md) |
+| Multi-body collision piles: shape hulls, spring dragging, visual squash, sleep and settled reduced-motion output | [PHYSICS-PILES.md](PHYSICS-PILES.md) |
+| Remove motion while preserving state, lifecycle, input and cleanup contracts | [REMOVE-MOTION.md](REMOVE-MOTION.md) |
+| Optional motion blur: host and layer setup, shutter and technique choices, manual paths and cleanup | [MOTION-BLUR.md](MOTION-BLUR.md) |
 | Live HTML product demos: named step windows, computed frames, workflow dependencies, measured pointers and CSS seek limits | [HTML-PRODUCT-DEMOS.md](HTML-PRODUCT-DEMOS.md) |
 | Smooth on a slow phone: which properties, GPU vs main thread, React re-renders, reduced motion, measuring | [PERFORMANCE.md](PERFORMANCE.md) |
 | Motion from a physical model: words to spring numbers, bodies, fields and walls, the hand that drags, projection on release, baking physics into keyframes | [PHYSICS.md](PHYSICS.md) |

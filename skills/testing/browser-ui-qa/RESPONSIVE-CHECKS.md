@@ -9,6 +9,16 @@ Which screen sizes to check, how to see several widths at once, and how to test 
 - **Between the widths** [responsive-craft]: drag from 280px to 2560px instead of jumping between breakpoints; the quotes and the real-phone caveat are in [modern-css RESPONSIVE-FORKS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/modern-css/RESPONSIVE-FORKS.md#prove-it).
 - **At each width** [responsive-craft]: no horizontal scroll ("any at all is a failure"); text overflow from long words, URLs and usernames; images and media inside their boxes; navigation reachable; flex and grid wrapping where expected; positioned elements not overlapping or off-screen; modals, dropdowns and tooltips stacking correctly; sticky elements sticking without overlapping each other. The source also checks "44px minimum" touch targets; this repo's floor is 24px and a target between 24px and 44px is not reported as a failure ([web-accessibility HIT-AREAS.md](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/HIT-AREAS.md)).
 
+## Breakpoint edges and short heights
+
+[raphaelsalaja/skills, viewports/SKILL.md]
+
+For the source's explicit sweep, inspect 320x568, 375x812, 768x1024, 1024x768 and 1440x900, then one CSS pixel below and above each breakpoint read from the actual project. Its breakpoint-edge captures use an 800px height. This is a separate source recipe from responsive-craft's width list above; select and report the applicable coverage rather than silently treating either list as exhaustive device testing.
+
+At each capture, inspect actual sideways page scroll, labels, wrapping and reachable actions. Open dialogs, sheets and menus at the source's short landscape size, 812x375, and verify that their contents scroll and actions remain reachable. Exercise the touch path and controls otherwise revealed by hover. Width alone does not identify the hardware or its input capability.
+
+The source also doubles the root font size at 1024px. Keep that as a layout smoke check, separately from actual text resize and browser zoom: changing the root size does not exercise every fixed-pixel label. Use the [accessibility owner's zoom and reflow checks](https://github.com/Quegenx/agent-skills/blob/main/skills/web-ui/web-accessibility/MOTION-AND-ZOOM.md#zoom-and-reflow). The source's `overflow.js` produces candidates; it does not completely inspect left overflow, fixed elements, frames, shadow roots, occlusion or actual hit regions. Confirm its findings in that width's capture. [viewports/SKILL.md; overflow.js]
+
 ## Several widths side by side
 
 [responsive-craft, scripts/preview.js] A live preview page puts one iframe per width next to the others (375, 768, 1024 and 1440 by default; `--breakpoints 320,768,1024,1440,1920` overrides). Each iframe gets that exact pixel width, so viewport media queries inside it fire at that width, and each frame scrolls and navigates on its own.

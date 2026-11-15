@@ -16,6 +16,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Moving a site or app to a new host or DNS provider; backups and recovery | below |
 | Provenance, keyless signing and verification before promotion, offline verification, release transparency, cached build outputs | [RELEASES.md](RELEASES.md) |
 | Creating a monorepo npm package, its exports map, release notes and versions, trusted publishing from CI | [NPM-PACKAGES.md](NPM-PACKAGES.md) |
+| Required package inputs, entry-point contents, isolated installed-artifact execution and committed served-output drift | [ARTIFACT-CHECKS.md](ARTIFACT-CHECKS.md) |
 
 ## The rules
 

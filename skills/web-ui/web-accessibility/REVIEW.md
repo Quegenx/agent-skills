@@ -2,7 +2,7 @@
 
 How to review a screen, a component or a change for accessibility: the two walks, what counts as a finding, severity on the repo's P0 to P3 scale, verification, the report and the grep table. Sources: [Jakub Krehel, better-accessibility, SKILL.md] for the method, [Jakub Krehel, better-interface] for the escalation triggers and the fix ladder, [Jakub Krehel, interface-review] for the removed-signals pass, corrected against WCAG 2.2. Severity uses the scale in [code-review REVIEWER.md](https://github.com/Quegenx/agent-skills/blob/main/skills/engineering/code-review/REVIEWER.md).
 
-**Contents:** [Two walks](#two-walks) · [Criteria, not conventions](#criteria-not-conventions) · [Severity](#severity) · [Fix the cheapest way](#fix-the-cheapest-way) · [Verification](#verification) · [The report](#the-report) · [Reviewing a change: removed signals](#reviewing-a-change-removed-signals) · [Before you finish](#before-you-finish) · [Prove it](#prove-it)
+**Contents:** [Two walks](#two-walks) · [Record the keyboard walk](#record-the-keyboard-walk) · [Criteria, not conventions](#criteria-not-conventions) · [Severity](#severity) · [Fix the cheapest way](#fix-the-cheapest-way) · [Verification](#verification) · [The report](#the-report) · [Reviewing a change: removed signals](#reviewing-a-change-removed-signals) · [Before you finish](#before-you-finish) · [Prove it](#prove-it)
 
 ## Two walks
 
@@ -12,6 +12,17 @@ How to review a screen, a component or a change for accessibility: the two walks
 2. **Screen reader:** every control announces a name, a role and its state.
 
 When unsure, take the platform default over a custom rebuild, and remove ARIA rather than add it.
+
+## Record the keyboard walk
+
+[raphaelsalaja/skills, keyboard/SKILL.md and tabstops.js]
+
+- Start in the requested page state. Use the browser automation tool's actual key-input path or operating-system input, then walk forward with Tab and back with Shift+Tab. Dispatching a DOM `KeyboardEvent` invokes listeners and is not evidence that browser focus navigation occurred. MDN distinguishes dispatched events from user-agent events; `isTrusted` alone is also not proof of a human action, since programmatic `focus()` can produce trusted events. [dispatchEvent](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent), [isTrusted](https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted)
+- Record each reached stop's order, computed role/name, visible focus and the key used to operate it. Compare the walk with the visible controls; a script's candidate list does not establish complete reachability.
+- Exercise the widget's existing [APG key map](FOCUS-AND-KEYBOARD.md#keyboard-patterns-aria-apg), open and close overlays, and check focus after deleting a row, dismissing a notification, collapsing content and submitting. Read the actual destination rather than treating a callback as focus evidence.
+- Report a failure with its stop number, key, observed outcome, source location when found and the applicable criterion or convention. A stop not reached stays unverified. Record inaccessible frames or shadow trees as coverage gaps; the supplied recorder does not traverse them, and a non-none box shadow does not by itself prove a visible ring.
+
+The source's report labels all composites with several Tab stops as failures. Use the actual widget pattern and the criterion-versus-convention policy below instead of making that a blanket WCAG claim. The source recorder and its overlay are not bundled here. [keyboard/SKILL.md, Operate each control; tabstops.js; existing REVIEW.md, Criteria, not conventions]
 
 ## Criteria, not conventions
 

@@ -10,13 +10,13 @@ Category membership is the primary home, not an instruction to install every ski
 
 | Skill | Covers |
 |---|---|
-| [browser-ui-qa](browser-ui-qa/SKILL.md) | Browser UI evidence, adversarial checks, component stress fixtures, responsive/container coverage, consent and measured invariants. |
+| [browser-ui-qa](browser-ui-qa/SKILL.md) | Browser UI evidence, adversarial checks, component stress fixtures, responsive/container coverage, consent and measured invariants. Adds breakpoint-edge and short-height sweeps plus optical-alignment measurement and capture limits. |
 | [e2e-testing](e2e-testing/SKILL.md) | Framework-neutral user journeys, separate actions and observable outcomes; implementation routes to the selected test tool. |
 | [k6](k6/SKILL.md) | Load/browser tests, executors, scenarios, checks/thresholds, Cloud runs/results, maintenance and a separate trend-analysis topic; corrected Rate direction, open-model pacing, capacity arithmetic and billing units. Missing source-only assets are marked unavailable. |
 | [maestro](maestro/SKILL.md) | Maestro YAML flows for React Native, Expo and Flutter: setup, selectors, waits, auth, native dialogs and platform-specific verification. |
 | [patrol](patrol/SKILL.md) | Flutter E2E with Patrol: Dart tests, native automation, shared Keys, setup, module conventions and Patrol-only verification. |
 | [tester-army-e2e](tester-army-e2e/SKILL.md) | The tester-army/e2e web/mobile runner: exact steps, optional agent goals, replay, setup, traces, bug bashes and migration into this runner. Keeps runner-specific verification while linking the shared project-verification contract. |
-| [testing](testing/SKILL.md) | Behavior, integration and terminal tests; finite-scope formal checking, faithful state projections and version-specific checker evidence. |
+| [testing](testing/SKILL.md) | Behavior, integration and terminal tests; finite-scope formal checking, faithful state projections and version-specific checker evidence. Adds generated-fixture property checks and intended fault-boundary evidence. |
 
 ## Related task routes
 

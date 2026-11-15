@@ -17,6 +17,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Verify consent through vendor requests, rejection persistence, withdrawal and backend failure | [CONSENT-JOURNEY.md](CONSENT-JOURNEY.md) |
 | Check viewport sweeps, side-by-side previews and container queries | [RESPONSIVE-CHECKS.md](RESPONSIVE-CHECKS.md) |
 | Measure rendered hover, tab shift, CSS durations, control heights, font-descriptor limits and overflow | [UI-INVARIANT-AUDIT.md](UI-INVARIANT-AUDIT.md) |
+| Verify column edges, gaps, cap-height alignment, optical glyph balance and painted-bound limitations | [OPTICAL-ALIGNMENT.md](OPTICAL-ALIGNMENT.md) |
 
 ## The rules
 

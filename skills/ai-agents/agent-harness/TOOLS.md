@@ -1,6 +1,6 @@
 # Agent tools and their contracts
 
-Tool selection, input and output contracts, resource ownership and untrusted-content boundaries. History replay and compaction are in [CONVERSATION-CONTEXT.md](CONVERSATION-CONTEXT.md).
+Tool selection, input and output contracts, resource ownership and untrusted-content boundaries. History replay and compaction are in [CONVERSATION-CONTEXT.md](CONVERSATION-CONTEXT.md). Server-side CLI wrappers, execution errors, silent deadlines, responsiveness and optional client capabilities are in [SERVER-TOOLS.md](SERVER-TOOLS.md).
 
 ## Tools
 

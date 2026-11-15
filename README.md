@@ -1,6 +1,6 @@
 # Agent skills
 
-146 skills for coding agents, in thirteen sets:
+147 skills for coding agents, in thirteen sets:
 
 | Folder | What it's for |
 |---|---|
@@ -10,14 +10,14 @@
 | [`skills/architecture/`](./skills/architecture) | Design system shape, components, dependency direction and domain boundaries across web, mobile and backend. 3 skills. |
 | [`skills/engineering/`](./skills/engineering) | General development: debugging, refactoring, review, planning, source research, migrations, security, delivery and Effect. 14 skills. |
 | [`skills/backend/`](./skills/backend) | APIs, databases, background work and connected services. Provider skills keep their shared contracts and web/mobile client SDKs together. 17 skills. |
-| [`skills/web-ui/`](./skills/web-ui) | Web/client interfaces, CSS, SVG, accessibility, animation, drawing and browser performance. One global React skill includes Next.js and React Native/Expo. 17 skills. |
+| [`skills/web-ui/`](./skills/web-ui) | Web/client interfaces, CSS, SVG, accessibility, animation, drawing and browser performance. One global React skill includes Next.js and React Native/Expo. 18 skills. |
 | [`skills/mobile/`](./skills/mobile) | Dart, Flutter implementation, mobile platform behavior, signing, store review and releases. Testing tools and cross-platform providers are listed below for discovery. 7 skills. |
 | [`skills/testing/`](./skills/testing) | Software unit, integration, end-to-end and load testing, including named runners for web and mobile. Choose the project's existing framework. 7 skills. |
 | [`skills/monitoring/`](./skills/monitoring) | General application signals and diagnosis across web, mobile and services: Sentry, PostHog, Grafana and OpenTelemetry. AI-specific Langfuse remains in ai-agents. 4 skills. |
 | [`skills/marketing/`](./skills/marketing) | Marketing strategy, copy, SEO, advertising, ASO, app growth, campaign analytics, company/competitor research and commercial conversion workflows. 44 skills. |
 | [`skills/videos/`](./skills/videos) | Make, edit, render and review videos. The code-built film studio and tool-based generation, avatars and editing keep their own workflows. 12 skills. |
 | [`skills/web-automation/`](./skills/web-automation) | Drive browsers, extract permitted web data and expose user-visible browser capabilities through WebMCP. 3 skills. |
-| Total | 146 skills in thirteen sets. |
+| Total | 147 skills in thirteen sets. |
 
 Works in Claude Code, Codex and any agent that reads Agent Skills. Each skill is a plain folder with a `SKILL.md`.
 
@@ -83,7 +83,7 @@ Detailed coverage and related task routes are in the [AI agents set README](./sk
 | [agent-chat-ui](./skills/ai-agents/agent-chat-ui/SKILL.md) | An agent's chat interface: the live status line and folded work log, smooth streaming text, approval and question cards, results as the product's own components, follow-ups, the composer with files, voice and a queue, the conversation list, every timing and size. Ships the production source in `reference/` |
 | [agent-codebase](./skills/ai-agents/agent-codebase/SKILL.md) | Agent folders, searchable concepts, module contracts, dependency direction and eval seams; SDK and verification rules follow the selected project. |
 | [agent-evals](./skills/ai-agents/agent-evals/SKILL.md) | Real-agent suites, calibrated judges, fix loops, release gates, evidence coverage and resume integrity. |
-| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Production-agent loops, prompts, gates, tools, history, runtime, refinement and rubric-based candidate synthesis; coding-host operations remain separate. |
+| [agent-harness](./skills/ai-agents/agent-harness/SKILL.md) | Production-agent runtime, prompts, gates, memory and tools; executable/MCP wrappers, deadlines, truthful results and client capability limits. |
 | [agent-memory](./skills/ai-agents/agent-memory/SKILL.md) | Durable memory, evidence-based extraction, minimal stores, consolidation, retrieval, expiry and user controls. |
 | [ai-features](./skills/ai-agents/ai-features/SKILL.md) | Vector/hybrid retrieval, cited RAG, extraction and AI jobs; embedding, permissions and paid-call checks apply to their selected branches. |
 | [jev-decisions](./skills/ai-agents/jev-decisions/SKILL.md) | Yes/no, choice and score questions, facts kept apart from evidence, thresholds and gates, agent tool gates and stop hooks, trace judges, calibration and evals, plus worked recipes (value and date extraction, search, re-ranking, taxonomies, record matching, guardrails, memory, tool suggestion). TypeScript with `@typesafe-ai/sdk`., the decide API names by AI SDK version |
@@ -99,7 +99,7 @@ Detailed coverage and related task routes are in the [Agent workflows set README
 | [coding-agent-harness](./skills/agent-workflows/coding-agent-harness/SKILL.md) | Coding-agent host workflows, scheduling, session diagnosis, decision trails, scoped pickup, human decisions and long-run reconciliation. |
 | [desktop-automation](./skills/agent-workflows/desktop-automation/SKILL.md) | Native app operation through agent-desktop: scoped accessibility refs, delivery-aware recovery, input, windows, sessions and sandbox state. |
 | [guided-learning](./skills/agent-workflows/guided-learning/SKILL.md) | Learning missions, cited resources, observed evidence, interactive lessons and reusable reference material. |
-| [skill-authoring](./skills/agent-workflows/skill-authoring/SKILL.md) | Skill structure, routing, descriptions, scripts, audit contracts, distribution, authorized measurement, reflection and recurring-correction enforcement. |
+| [skill-authoring](./skills/agent-workflows/skill-authoring/SKILL.md) | Skill structure, routing, scripts, audit contracts and authorized measurement; accepted repeated corrections become one owned rule and a scoped code sweep. |
 
 ## Anti-AI-slop
 
@@ -110,7 +110,7 @@ Detailed coverage and related task routes are in the [Anti-AI-slop set README](.
 | [anti-slop](./skills/anti-ai-slop/anti-slop/SKILL.md) | The shared rules (real over invented, specific over generic) for prose, copy, interfaces, code and the agent's own plans and replies. |
 | [anti-slop-code](./skills/anti-ai-slop/anti-slop-code/SKILL.md) | Behavior-preserving cleanup, runtime contracts, rationale comments and optional FixMySlop triage; canonical duplication tools and authorized checks. |
 | [anti-slop-copy](./skills/anti-ai-slop/anti-slop-copy/SKILL.md) | Grounded product copy, shared context with mobile fields, point edits, source traceability and review; routes ad formulas and shipped announcements to their owners. |
-| [anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md) | Purposeful interfaces, honest data, reachable states and measured improvement; scoped reference research separates shipped products from concepts. |
+| [anti-slop-ui](./skills/anti-ai-slop/anti-slop-ui/SKILL.md) | UI quality, reference research and user-choice experiments; optional style alternatives and source-grounded design audit handoffs. |
 | [anti-slop-writing](./skills/anti-ai-slop/anti-slop-writing/SKILL.md) | Voice-preserving editing, drafting, evidence-based audits and Hebrew guidance; missing-draft and SEO-coaching conventions are scoped. |
 
 ## Architecture
@@ -132,9 +132,9 @@ Detailed coverage and related task routes are in the [Engineering set README](./
 | [algorithm-patterns](./skills/engineering/algorithm-patterns/SKILL.md) | Algorithm cues, canonical duplicate-set detection, windows, graphs, dynamic programming and numeric/allocation budgets. |
 | [code-research](./skills/engineering/code-research/SKILL.md) | Source investigation, historical rationale, exact anchors, version identity, calibrated confidence, claim ledgers and observed-flow explanations. |
 | [code-review](./skills/engineering/code-review/SKILL.md) | Evidence-based reviews, P0 to P3 severity, multi-review dispositions, disagreement, scanner triage and repository audits; rollout checks stay separate. |
-| [debugging](./skills/engineering/debugging/SKILL.md) | Reproduction, falsifiable hypotheses, shared-premise probes, root causes and safety evidence; controls, artifact identity and state-effect limits. |
-| [deployment](./skills/engineering/deployment/SKILL.md) | Containers, host/DNS moves, backups, releases and npm publishing; verification follows the selected deployment operation. |
-| [developer-docs](./skills/engineering/developer-docs/SKILL.md) | Source-verified developer docs, CI-backed snippets, navigation, redirects and generated output. |
+| [debugging](./skills/engineering/debugging/SKILL.md) | Reproduction, shared causes and safety evidence; exact upstream request/response probes, sibling sweeps and narrow failure injection. |
+| [deployment](./skills/engineering/deployment/SKILL.md) | Containers, host/DNS moves, backups and releases; packaged entry points, required inputs and isolated installed-artifact checks. |
+| [developer-docs](./skills/engineering/developer-docs/SKILL.md) | Source-verified docs and generated output; cross-surface claim owners and untyped consumer boundaries. |
 | [effect](./skills/engineering/effect/SKILL.md) | One cross-runtime Effect skill: services, errors, Schema, concurrency, browser/React atoms, HTTP/SQL, AI, CLI and runtime layers. |
 | [engineering-planning](./skills/engineering/engineering-planning/SKILL.md) | Interviews, specs, local breakdown, handoffs, RFCs, execution and scoped developer-tool product briefs. |
 | [lint-rule-authoring](./skills/engineering/lint-rule-authoring/SKILL.md) | Detector contracts, implementation, corpus validation, fuzzing, FP/FN audits and base/head parity. |
@@ -177,20 +177,21 @@ Detailed coverage and related task routes are in the [Web UI set README](./skill
 | [app-ui](./skills/web-ui/app-ui/SKILL.md) | The production app design, components, tokens and behavior, with its reference source. |
 | [color-system](./skills/web-ui/color-system/SKILL.md) | OKLCH, ramps, tokens, contrast and audits; Tailwind aliases link to CSS custom properties. |
 | [cookie-consent](./skills/web-ui/cookie-consent/SKILL.md) | c15t categories and regional policies, script gating, consent withdrawal and verification. |
-| [design-system-maintenance](./skills/web-ui/design-system-maintenance/SKILL.md) | Existing-system extraction, value mapping, component docs and measured posters; safe live component canvases with preserved input and layout state. |
+| [design-system-maintenance](./skills/web-ui/design-system-maintenance/SKILL.md) | System extraction, tokens, component docs and canvases; evidence-led design documents separate reconstruction from governing rules. |
 | [gsap](./skills/web-ui/gsap/SKILL.md) | Tweens, timelines, cleanup and plugins; corrected shuffle and MotionPathHelper APIs. |
 | [isometric-figures](./skills/web-ui/isometric-figures/SKILL.md) | Live SVG/WebGL mechanisms and sampled audits; optional playful stickers and line figures, with deterministic film adapters in videos. |
 | [landing-page-ui](./skills/web-ui/landing-page-ui/SKILL.md) | Production marketing-site design and source; browser encoding links to its current owner. |
 | [modern-css](./skills/web-ui/modern-css/SKILL.md) | CSS layout, forms and responsive policy; separate properties, functions and scroll-animation topics. |
-| [pixel-reverse-engineer](./skills/web-ui/pixel-reverse-engineer/SKILL.md) | Exact live component and animation reconstruction; matched captures, reference variation, per-channel motion evidence and explicit coverage limits. |
-| [react](./skills/web-ui/react/SKILL.md) | One React skill for state, Effects, composition, Next.js and Native/Expo; motion, illustration clocks and optional islandcn activity lifecycles. |
-| [sonner](./skills/web-ui/sonner/SKILL.md) | Sonner setup, toast lifecycle, promises, styling, right-to-left and troubleshooting. |
-| [svg](./skills/web-ui/svg/SKILL.md) | SVG drawing, animation, clipping, masks and icons; custom glyph family measurements, requested morph review and optional Kubai package integration. |
+| [pixel-reverse-engineer](./skills/web-ui/pixel-reverse-engineer/SKILL.md) | Exact live component and motion reconstruction; matched captures, per-channel evidence and editable studies using one saved timeline model. |
+| [react](./skills/web-ui/react/SKILL.md) | One React skill for state, Effects, Next.js and Native/Expo; motion, illustration, islandcn and optional source-curated frontend library choices. |
+| [sonner](./skills/web-ui/sonner/SKILL.md) | Sonner setup, lifecycle, promises, RTL and troubleshooting; source-corrected APIs and cascade-aware styling. |
+| [svg](./skills/web-ui/svg/SKILL.md) | SVG drawing, animation, clipping, masks and custom icons; optional Kubai React, plain JavaScript, custom-element and static-rendering routes. |
 | [technical-drawing](./skills/web-ui/technical-drawing/SKILL.md) | Physical drawings, evidence and exports; standalone viewer and download acceptance applies only to requested deliverables. |
-| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Web motion, timing, gestures and illustrations; HTML product demos, computed clocks, cancellation, scrubbing and live pacing checks. |
-| [web-accessibility](./skills/web-ui/web-accessibility/SKILL.md) | WCAG/APG interfaces, focus/keyboard, forms, phone numbers, target sizes and motion; hover/focus criteria and AAA focus-indicator area. |
-| [web-performance](./skills/web-ui/web-performance/SKILL.md) | Browser loading, media, layout shifts, main-thread work, runtime traces and Lighthouse gates. |
-| [webgl](./skills/web-ui/webgl/SKILL.md) | Live shader widgets, shared contexts/fallbacks, Three.js/R3F audits and launch pages; widget-specific requirements stay in that branch. |
+| [ui-animation](./skills/web-ui/ui-animation/SKILL.md) | Motion, gestures and illustrations; safe removal, blur, object avatars, collision piles, connectors and figure composition. |
+| [web-accessibility](./skills/web-ui/web-accessibility/SKILL.md) | WCAG/APG interfaces, forms, names, motion and targets; recorded keyboard walks separate actual focus/input evidence from helper heuristics. |
+| [web-audio](./skills/web-ui/web-audio/SKILL.md) | Browser sound cues, playback permission and live beat clocks; estimated output mapping, scheduling, tempo and teardown. |
+| [web-performance](./skills/web-ui/web-performance/SKILL.md) | Loading, media, layout and main-thread work; runtime traces and lightweight recorder cadence, interaction and shift limits. |
+| [webgl](./skills/web-ui/webgl/SKILL.md) | Live shader widgets, Three.js/R3F audits and launch pages; scoped folded-wave studies preserve renderer, fallback and measured-evidence limits. |
 
 ## Mobile
 
@@ -212,13 +213,13 @@ Detailed coverage and related task routes are in the [Testing set README](./skil
 
 | Skill | Covers |
 |---|---|
-| [browser-ui-qa](./skills/testing/browser-ui-qa/SKILL.md) | Browser UI evidence, adversarial checks, component stress fixtures, responsive/container coverage, consent and measured invariants. |
+| [browser-ui-qa](./skills/testing/browser-ui-qa/SKILL.md) | Browser evidence, adversarial and component stress checks, consent, responsive/container coverage; breakpoint edges, short heights and optical-alignment proof. |
 | [e2e-testing](./skills/testing/e2e-testing/SKILL.md) | Framework-neutral user journeys, separate actions and observable outcomes; implementation routes to the selected test tool. |
 | [k6](./skills/testing/k6/SKILL.md) | Load/browser tests, scenarios and thresholds, Cloud runs, maintenance and a separate trend-analysis topic; qualified source assets and corrected metrics. |
 | [maestro](./skills/testing/maestro/SKILL.md) | Maestro YAML flows for React Native, Expo and Flutter: setup, selectors, waits, auth, native dialogs and platform-specific verification. |
 | [patrol](./skills/testing/patrol/SKILL.md) | Flutter E2E with Patrol: Dart tests, native automation, shared Keys, setup, module conventions and Patrol-only verification. |
 | [tester-army-e2e](./skills/testing/tester-army-e2e/SKILL.md) | The tester-army/e2e web/mobile runner: exact steps, agent goals, replay, traces, bug bashes, migration and runner-specific project verification. |
-| [testing](./skills/testing/testing/SKILL.md) | Behavior, integration and terminal tests; finite-scope formal checking, faithful state projections and version-specific checker evidence. |
+| [testing](./skills/testing/testing/SKILL.md) | Behavior, integration and terminal tests; formal checking, independent fixture evidence and intended failure-boundary coverage. |
 
 ## Monitoring
 
@@ -288,14 +289,14 @@ Detailed coverage and related task routes are in the [Videos set README](./skill
 
 | Skill | Covers |
 |---|---|
-| [asset-prep](./skills/videos/asset-prep/SKILL.md) | Product captures, native app recording and prepared assets; supplied-media geometry/alpha inspection, local edits, sidecars and editor handoff. |
+| [asset-prep](./skills/videos/asset-prep/SKILL.md) | Captures, media inspection and local editing; recording, restoration, retiming, sequences, captions and delivery limits. |
 | [beat-grid](./skills/videos/beat-grid/SKILL.md) | Measured music and the shared picture/sound clock; observed onsets kept separate from fitted beat positions. |
 | [frame-review](./skills/videos/frame-review/SKILL.md) | Frame and decoded-delivery review; retained streams, edited boundaries, alpha sequence coverage and declared change regions with sampling limits. |
 | [make-video](./skills/videos/make-video/SKILL.md) | Gated film production, engine selection and local footage routes; reusable product-film libraries with captures, claim checks and discrepancy records. |
 | [marketing-video](./skills/videos/marketing-video/SKILL.md) | Marketing video with tools: AI generation, avatars, repurposing and transcript-grounded cards over complete programs. Source-scoped camera direction presets distinguish movement, lens, framing, focus, time and transitions. |
 | [seek-engine](./skills/videos/seek-engine/SKILL.md) | Pure-time rendering, measured motion and film adapters; held-pose stop motion on one global pose grid alongside existing styles. |
 | [shotlist](./skills/videos/shotlist/SKILL.md) | Storyboards, composition, type, demos and transitions; measured footage-selection candidates kept separate from semantic scene decisions. |
-| [sound-pass](./skills/videos/sound-pass/SKILL.md) | Picture-driven effects, music and mastering; supplied-audio alignment, threshold-based quiet detection and bed-versus-master fades. |
+| [sound-pass](./skills/videos/sound-pass/SKILL.md) | Picture-driven effects, music and mastering; supplied-audio alignment, stereo/mono semantics, cleanup parameters and sample-count limits. |
 | [video-brief](./skills/videos/video-brief/SKILL.md) | Briefs, measured judgment, brand/world choices and explainers; reference roles and edit notes with explicit phase, magnitude and preserved intent. |
 | [video-help](./skills/videos/video-help/SKILL.md) | Choosing a video skill and phase, with shared production gates and renderer-specific contracts. |
 | [video-setup](./skills/videos/video-setup/SKILL.md) | Complete unflagged Node22+ toolchain and installed ffmpeg/browser capability checks. |

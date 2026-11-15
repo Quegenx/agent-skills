@@ -19,6 +19,7 @@ Apply only the routes and checks for the selected job. Read a linked skill's nam
 | Record native app input and transitions, bind the action journal to capture time, and review the complete encoded loop | [NATIVE-APP-RECORDING.md](NATIVE-APP-RECORDING.md) |
 | Inspect supplied footage, its streams, geometry, color and evidence limits | [MEDIA-INSPECTION.md](MEDIA-INSPECTION.md) |
 | Cut, assemble, caption or layer supplied footage locally; replay or hand off an edit | [FOOTAGE-EDITS.md](FOOTAGE-EDITS.md) |
+| Restore interlaced, noisy or shaky footage; mask a known region or correct its viewport | [FOOTAGE-RESTORATION.md](FOOTAGE-RESTORATION.md) |
 
 ## Capture a product from its site
 
